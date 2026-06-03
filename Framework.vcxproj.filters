@@ -208,6 +208,12 @@
     <Filter Include="Source\Framework\Graphics\Command\List\Direct">
       <UniqueIdentifier>{b31f1de9-b767-4157-a497-30f5749026d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue\Fence">
+      <UniqueIdentifier>{de158b0e-5cd4-4920-923e-a8b7f570f1b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue\Direct">
+      <UniqueIdentifier>{68f52b3f-3dc1-4139-82d5-532d2845b6f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -345,6 +351,15 @@
     <ClInclude Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.h">
       <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.h">
+      <Filter>Source\Framework\Graphics\Command\Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.h">
+      <Filter>Source\Framework\Graphics\Command\Queue\Fence</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.h">
+      <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -394,6 +409,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp">
       <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.cpp">
+      <Filter>Source\Framework\Graphics\Command\Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.cpp">
+      <Filter>Source\Framework\Graphics\Command\Queue\Fence</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.cpp">
+      <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

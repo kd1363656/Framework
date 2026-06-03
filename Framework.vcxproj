@@ -344,6 +344,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Command\Definition\Constant\CommandConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.h" />
     <ClInclude Include="Source\Framework\Graphics\Definition\Constant\GraphicsManagerConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Definition\Type\Alias\GraphicsManagerTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\GraphicsManager.h" />
@@ -386,6 +389,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Command\Allocator\Direct\DirectCommandAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\CommandListBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.cpp" />
     <ClCompile Include="Source\Framework\Graphics\GraphicsManager.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Hardware\Device.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp" />

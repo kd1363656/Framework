@@ -16,8 +16,8 @@ FWK::Graphics::CommandQueueBase::~CommandQueueBase()
 
 bool FWK::Graphics::CommandQueueBase::Create(const Device& a_device)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!CreateCommandQueue(a_device), "コマンドキューの作成に失敗しました。", false)
-	FWK_ASSERT_RETURN_VALUE_IF(!CreateFence(a_device),		  "フェンスの作成に失敗しました。",	      false)
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateCommandQueue(a_device), "コマンドキューの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateFence(a_device),		 "フェンスの作成に失敗しました。",	     false);
 
 	return true;
 }
@@ -32,8 +32,8 @@ void FWK::Graphics::CommandQueueBase::WaitForGPUIdleIfNeeded()
 	const auto& l_fence = m_fence.GetREFFence();
 
 	// フェンスが存在しなければGPU完了確認はできない
-	FWK_ASSERT_RETURN_IF(!l_fence,		  "フェンスの作成に失敗しておりコマンドアロケータの使用可能かどうかの選定に失敗しました。")
-	FWK_ASSERT_RETURN_IF(!m_commandQueue, "コマンドキューが作成されておらず、GPUとの同期が取れません。")
+	FWK_ASSERT_RETURN_IF_FAILED(!l_fence,		  "フェンスの作成に失敗しておりコマンドアロケータの使用可能かどうかの選定に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!m_commandQueue, "コマンドキューが作成されておらず、GPUとの同期に失敗しました。");
 
 	// 今回の待機用に新しいフェンス値を発行する
 	// 同じ値を使いまわすとどこまでの処理完了を待っているのか分からなくなるため
@@ -41,15 +41,13 @@ void FWK::Graphics::CommandQueueBase::WaitForGPUIdleIfNeeded()
 
 	m_fence.SetLastSignaledFenceValue(l_incrementedFenceValue);
 
-	// コマンドキューに対して「命令したGPU処理が終わったら、m_fenceの値をl_targetFenceValueに更新してください」
-	// と命令をする関数
+	// コマンドキューに対して「命令したGPU処理が終わったら、m_fenceの値をl_targetFenceValueに更新してください」と命令をする関数
 	// Signal(更新対象のフェンスオブジェクト、
 	//		  GPU完了時に設定するフェンス値);
-
 	auto l_hr = m_commandQueue->Signal(l_fence.Get(), l_incrementedFenceValue);
 
 	// Signal命令に失敗したらreturn
-	FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドキューへのフェンスシグナルに失敗しました。")
+	FWK_ASSERT_RETURN_IF_FAILED(FAILED(l_hr), "コマンドキューへのフェンスシグナルに失敗しました。");
 
 	WaitForFenceValueIfNeeded(l_incrementedFenceValue);
 }
@@ -66,11 +64,11 @@ void FWK::Graphics::CommandQueueBase::ExecuteCommandLists(const CommandListBase&
 	const auto& l_commandQueue = GetREFCommandQueue             ();
 	const auto& l_commandList  = a_commandList.GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF(!l_commandQueue, "コマンドキューが作成されておらず、コマンド実行処理が行えませんでした")
-	FWK_ASSERT_RETURN_IF(!l_commandList,  "コマンドリストが作成されておらず、コマンド実行処理が行えませんでした")
+	FWK_ASSERT_RETURN_IF_FAILED(!l_commandQueue, "コマンドキューが作成されておらず、コマンド実行処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!l_commandList,  "コマンドリストが作成されておらず、コマンド実行処理に失敗しました。");
 
 	// このキューと違うコマンドリストタイプならreturn
-	FWK_ASSERT_RETURN_IF(k_createCommandListType != a_commandList.GetVALCreateCommandListType(), "コマンドリストとコマンドキューのコマンドリストタイプが違います、コマンド実行処理が行えませんでした")
+	FWK_ASSERT_RETURN_IF_FAILED(k_createCommandListType != a_commandList.GetVALCreateCommandListType(), "コマンドリストとコマンドキューのコマンドリストタイプが違います、コマンド実行処理に失敗しました。");
 
 	// ExecuteCommandLists()はID3D12CommandList*の配列を受け取るため、
 	// 1個だけ実行する場合でも配列にして渡す必要がある
@@ -81,7 +79,6 @@ void FWK::Graphics::CommandQueueBase::ExecuteCommandLists(const CommandListBase&
 
 	// ExecuteCommandLists(実行するコマンドリストの数、
 	//					   コマンドリスト配列の先頭アドレス)
-
 	// ※注意 : ExecuteCommandListをする前にコマンドリストはClose()関数を呼び出す必要がある
 	l_commandQueue->ExecuteCommandLists(k_executeListNum, l_list);
 }
@@ -90,8 +87,8 @@ void FWK::Graphics::CommandQueueBase::SignalAndTrackAllocator(CommandAllocatorBa
 {
 	const auto& l_fence = m_fence.GetREFFence();
 
-	FWK_ASSERT_RETURN_IF(!l_fence,		  "フェンスが作成されておらず、GPUとの同期処理が行えませんでした。")
-	FWK_ASSERT_RETURN_IF(!m_commandQueue, "ダイレクトコマンドキューが作成されておらず、GPUとの同期処理が行えませんでした。")
+	FWK_ASSERT_RETURN_IF_FAILED(!l_fence,		  "フェンスが作成されておらず、GPUとの同期処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!m_commandQueue, "ダイレクトコマンドキューが作成されておらず、GPUとの同期処理に失敗しました。");
 
 	const auto& l_updatedFenceValue = FetchREFLastSignaledFenceValue() + k_incrementFenceValue;
 
@@ -128,7 +125,7 @@ bool FWK::Graphics::CommandQueueBase::CreateCommandQueue(const Device& a_device)
 	const auto& l_device = a_device.GetREFDevice();
 
 	// デバイスが存在しないなら作成できないのでreturn
-	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスの作成に失敗しており、コマンドキューの作成が出来ませんでした。", false)
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスの作成に失敗しており、コマンドキューの作成に失敗しました。", false);
 
 	// コマンドキュー作成時に必要な設定構造体
 	// この構造体に「どんな種類のキューを作るか」を設定してからCreateCommandQueueに渡す
@@ -151,10 +148,9 @@ bool FWK::Graphics::CommandQueueBase::CreateCommandQueue(const Device& a_device)
 	// CreateCommandQueue(コマンドキューの設定内容、
 	//					  受け取りたいCOMインターフェース型のID、
 	//					  作成結果のポインタを書き込むアドレス);
-
 	auto l_hr = l_device->CreateCommandQueue(&l_desc, IID_PPV_ARGS(m_commandQueue.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "コマンドキューの作成に失敗しました。", false)
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "コマンドキューの作成に失敗しました。", false);
 
 	return true;
 }

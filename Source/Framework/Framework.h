@@ -99,7 +99,12 @@
 #include "Graphics/Command/List/CommandListBase.h"
 #include "Graphics/Command/List/Direct/DirectCommandList.h"
 
+// フェンス
+#include "Graphics/Command/Queue/Fence/Fence.h"
+
 // コマンドキュー
+#include "Graphics/Command/Queue/CommandQueueBase.h"
+#include "Graphics/Command/Queue/Direct/DirectCommandQueue.h"
 
 // ディスクリプタヒープ
 #include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
