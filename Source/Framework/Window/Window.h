@@ -14,19 +14,22 @@ namespace FWK
 
 		bool ProcessMessages() const;
 
-		const Struct::WindowResizeRequest& ThrowResizeRequest();
-
-		bool HasHWND() const;
+		void ClearResizeRequest();
 
 		void SaveCONFIG() const;
 
-		void SetWindowStyleTag(const TypeAlias::TagType a_set) { m_windowStyleTag = a_set; }
+		bool HasHWND() const;
+
+		bool IsMinimized() const;
+
+		void SetupWindowStyleTag(const TypeAlias::TagType a_windowStyleTag);
 
 		const auto& GetREFHWND() const { return m_hwnd; }
 
-		const auto& GetREFClientSize() const { return m_clientSize; }
+		const auto& GetREFClientSize   () const { return m_clientSize; }
+		const auto& GetREFResizeRequest() const { return m_resizeRequest; }
 
-		auto GetWindowStyleTag() const { return m_windowStyleTag; }
+		auto GetVALWindowStyleTag() const { return m_windowStyleTag; }
 
 	private:
 
@@ -50,6 +53,16 @@ namespace FWK
 
 		void ApplyClientSizeFromWMSize(const Struct::ClientSize& a_clientSize, const WPARAM& a_wPARAM);
 
+		void ApplyWindowStyle();
+
+		void ApplyNormalWindowStyle();
+		
+		void ApplyBorderlessFullScreenWindowStyle();
+
+		void StoreNormalWindowRECT();
+
+		void RequestResizeFromClientSize(const Struct::ClientSize& a_clientSize);
+
 		HINSTANCE FetchVALInstanceHandle() const;
 
 		DWORD FetchVALWindowStyle() const;
@@ -61,7 +74,13 @@ namespace FWK
 
 		static constexpr LRESULT k_windowProcedureHandledResult = 0;
 
+		// 通常ウィンドウ
+		// タイトルバー、幅、最小化、最大化、サイズ変更を持つ
 		static constexpr DWORD k_generalWindowStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
+
+		// 枠なしウィンドウ
+		// ボーダーレスフルスクリーンで使う
+		static constexpr DWORD k_borderlessFullScreenWindowStyle = WS_POPUP;
 
 		static constexpr UINT k_windowStyle = CS_HREDRAW | CS_VREDRAW;
 
@@ -85,6 +104,8 @@ namespace FWK
 		HWND m_hwnd;
 
 		Converter::WindowJsonConverter m_jsonConverter = {};
+
+		RECT m_normalWindowRECT = {};
 
 		Struct::ClientSize			m_clientSize;
 		Struct::WindowResizeRequest m_resizeRequest;

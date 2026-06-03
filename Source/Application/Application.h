@@ -23,6 +23,10 @@ private:
 
 	bool BeginFrame();
 
+	void ProcessResizeRequest();
+
+	bool CanUpdateFrame() const;
+
 	void SaveCONFIG() const;
 
 	const std::wstring k_windowClassName = L"Window";

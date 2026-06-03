@@ -343,9 +343,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Struct\TypeINFOStruct.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Concept\IsDerivedBase\IsDerivedTagBaseConcept.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\TagBase.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\TagTypeAlias.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\Alias\TagTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Utility\TagUtility.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\TypeINFOTypeAlias.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\Alias\TypeINFOTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
     <ClInclude Include="Source\Framework\Utility\File\Definition\Constant\FileUtilityConstant.h" />
@@ -391,6 +391,9 @@ if "$(Configuration)"=="Debug" (
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

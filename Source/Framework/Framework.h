@@ -23,7 +23,7 @@
 //===============================================================================
 // 型情報
 //===============================================================================
-#include "TypeINFO/Definition/Type/TypeINFOTypeAlias.h"
+#include "TypeINFO/Definition/Type/Alias/TypeINFOTypeAlias.h"
 #include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
@@ -34,7 +34,7 @@
 #include "TypeINFO/Definition/Macros/TypeInfoTagMacros.h"
 
 // タグ用TypeAlias
-#include "TypeINFO/Definition/Tag/Type/TagTypeAlias.h"
+#include "TypeINFO/Definition/Tag/Type/Alias/TagTypeAlias.h"
 
 // タグ基底構造体
 #include "TypeINFO/Definition/Tag/TagBase.h"

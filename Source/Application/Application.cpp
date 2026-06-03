@@ -36,10 +36,17 @@ void Application::Execute()
 		// ウィンドウメッセージやアプリケーションを終了するかの処理をしているので
 		// falseが戻り値ならbreakする
 		if (!BeginFrame()) { break; }
+
+		// リサイズ要求があればここで処理を行う
+		ProcessResizeRequest();
+
+		// 最小化中など、描画やゲームの更新を進めていけない状態なら
+		// アプリは終了せずに、次のメッセージ処理へ進む
+		if (!CanUpdateFrame()) { continue; }
 	}
 
 	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
-	
+	SaveCONFIG();
 }
 
 void Application::LoadCONFIG()
@@ -62,6 +69,20 @@ bool Application::BeginFrame()
 	{
 		return false;
 	}
+
+	return true;
+}
+
+void Application::ProcessResizeRequest()
+{
+	m_window.ClearResizeRequest();
+}
+
+bool Application::CanUpdateFrame() const
+{
+	// 最小化中なら描画をしないし、勝手にゲーム
+	// を更新されても困るのでfalseを返す
+	if (m_window.IsMinimized()) { return false; }
 
 	return true;
 }

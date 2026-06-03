@@ -13,7 +13,7 @@ nlohmann::json FWK::Converter::WindowJsonConverter::Serialize(const Window& a_wi
 {
 	nlohmann::json l_rootJson = {};
 
-	Utility::UpdateJson(l_rootJson, Utility::SerializeTag(a_window.GetWindowStyleTag(), k_windowStyleTagJsonKey));
+	Utility::UpdateJson(l_rootJson, Utility::SerializeTag(a_window.GetVALWindowStyleTag(), k_windowStyleTagJsonKey));
 	
 	return l_rootJson;
 }

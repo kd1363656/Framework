@@ -112,6 +112,24 @@
     <Filter Include="Source\Framework\Utility\File\Definition\Constant">
       <UniqueIdentifier>{32952e7e-a3b1-4f73-ab9d-3990d4ab54dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{bb277239-a5ec-498d-94e8-e04cbe3527da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data">
+      <UniqueIdentifier>{4c832376-7c87-4143-9ae3-ccde73b9e848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG">
+      <UniqueIdentifier>{beb37171-8f90-4dc3-afbe-5bb3e544476c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG\Window">
+      <UniqueIdentifier>{4c4df80a-747f-4282-8cbb-3c6b36c1bf8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Definition\Type\Alias">
+      <UniqueIdentifier>{623c78fc-df27-4159-a9ae-3efab7351365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Definition\Tag\Type\Alias">
+      <UniqueIdentifier>{eda1ca5f-f37b-447b-aab9-d7e555f90dd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -138,9 +156,6 @@
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h">
       <Filter>Source\Framework\TypeINFO\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\TypeINFOTypeAlias.h">
-      <Filter>Source\Framework\TypeINFO\Definition\Type</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Struct\TypeINFOStruct.h">
       <Filter>Source\Framework\TypeINFO\Definition\Struct</Filter>
     </ClInclude>
@@ -158,9 +173,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeInfoTagMacros.h">
       <Filter>Source\Framework\TypeINFO\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\TagTypeAlias.h">
-      <Filter>Source\Framework\TypeINFO\Definition\Tag\Type</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h">
       <Filter>Source\Framework\Window\Definition\Struct</Filter>
@@ -198,6 +210,12 @@
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\Alias\TypeINFOTypeAlias.h">
+      <Filter>Source\Framework\TypeINFO\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\Alias\TagTypeAlias.h">
+      <Filter>Source\Framework\TypeINFO\Definition\Tag\Type\Alias</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -220,5 +238,10 @@
     <Text Include="Documents\CodingConventions.txt">
       <Filter>Dosuments</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json">
+      <Filter>Asset\Data\CONFIG\Window</Filter>
+    </None>
   </ItemGroup>
 </Project>
