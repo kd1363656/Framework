@@ -142,6 +142,18 @@
     <Filter Include="Asset\Data\CONFIG\FPS">
       <UniqueIdentifier>{dd960a41-4700-475b-84c2-da5295a5e977}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics">
+      <UniqueIdentifier>{08958517-a60f-4f12-a6da-0da0e7d396dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Definition">
+      <UniqueIdentifier>{6d04e9c4-3134-4771-8697-0a80a579186c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Definition\Type">
+      <UniqueIdentifier>{93d2d352-75d7-447f-b895-20967438d3e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Definition\Type\Alias">
+      <UniqueIdentifier>{2efd8b22-a34e-40d6-a8ec-43b8e6fc638e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -234,6 +246,12 @@
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h">
       <Filter>Source\Framework\FPS\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\GraphicsManager.h">
+      <Filter>Source\Framework\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Definition\Type\Alias\GraphicsManagerTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Definition\Type\Alias</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -256,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp">
       <Filter>Source\Framework\FPS\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\GraphicsManager.cpp">
+      <Filter>Source\Framework\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

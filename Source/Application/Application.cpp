@@ -26,6 +26,10 @@ int WINAPI WinMain(_In_     HINSTANCE,
 
 void Application::Execute()
 {
+	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+
+	INIT(l_graphicsManager);
+
 	LoadCONFIG();
 
 	// ロードし終わった後の処理を実行(ウィンドウ生成など)
@@ -54,6 +58,11 @@ void Application::Execute()
 
 	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
 	SaveCONFIG();
+}
+
+void Application::INIT(FWK::Graphics::GraphicsManager& a_graphicsManager)
+{
+	a_graphicsManager.INIT();
 }
 
 void Application::LoadCONFIG()

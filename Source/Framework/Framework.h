@@ -76,3 +76,10 @@
 //===============================================================================
 #include "FPS/Converter/Json/FPSControllerJsonConverter.h"
 #include "FPS/FPSController.h"
+
+//===============================================================================
+// 描画管理クラス
+//===============================================================================
+// グラフィックスマネージャー
+#include "Graphics/Definition/Type/Alias/GraphicsManagerTypeAlias.h"
+#include "Graphics/GraphicsManager.h"
