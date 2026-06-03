@@ -17,7 +17,6 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -53,86 +52,343 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="Tools\BuildCustomizations\dxc.props" />
   </ImportGroup>
-  <ImportGroup Label="Shared" >
+  <ImportGroup Label="Shared">
   </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
+
+if not exist "$(TargetDir)" mkdir "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if not exist "%DXC_BIN_DIR%\dxcompiler.dll" (
+    echo [ERROR] dxcompiler.dll が見つかりません: %DXC_BIN_DIR%\dxcompiler.dll
+    exit /b 1
+)
+
+if not exist "%DXC_BIN_DIR%\dxil.dll" (
+    echo [ERROR] dxil.dll が見つかりません: %DXC_BIN_DIR%\dxil.dll
+    exit /b 1
+)
+
+if "$(Configuration)"=="Debug" (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" (
+        echo [ERROR] D3D12MAd.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Debug\D3D12MAd.dll
+        exit /b 1
+    )
+) else (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" (
+        echo [ERROR] D3D12MA.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Release\D3D12MA.dll
+        exit /b 1
+    )
+)
+
+copy /Y "%DXC_BIN_DIR%\dxcompiler.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+copy /Y "%DXC_BIN_DIR%\dxil.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if "$(Configuration)"=="Debug" (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+) else (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
+
+if not exist "$(TargetDir)" mkdir "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if not exist "%DXC_BIN_DIR%\dxcompiler.dll" (
+    echo [ERROR] dxcompiler.dll が見つかりません: %DXC_BIN_DIR%\dxcompiler.dll
+    exit /b 1
+)
+
+if not exist "%DXC_BIN_DIR%\dxil.dll" (
+    echo [ERROR] dxil.dll が見つかりません: %DXC_BIN_DIR%\dxil.dll
+    exit /b 1
+)
+
+if "$(Configuration)"=="Debug" (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" (
+        echo [ERROR] D3D12MAd.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Debug\D3D12MAd.dll
+        exit /b 1
+    )
+) else (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" (
+        echo [ERROR] D3D12MA.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Release\D3D12MA.dll
+        exit /b 1
+    )
+)
+
+copy /Y "%DXC_BIN_DIR%\dxcompiler.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+copy /Y "%DXC_BIN_DIR%\dxil.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if "$(Configuration)"=="Debug" (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+) else (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
+
+if not exist "$(TargetDir)" mkdir "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if not exist "%DXC_BIN_DIR%\dxcompiler.dll" (
+    echo [ERROR] dxcompiler.dll が見つかりません: %DXC_BIN_DIR%\dxcompiler.dll
+    exit /b 1
+)
+
+if not exist "%DXC_BIN_DIR%\dxil.dll" (
+    echo [ERROR] dxil.dll が見つかりません: %DXC_BIN_DIR%\dxil.dll
+    exit /b 1
+)
+
+if "$(Configuration)"=="Debug" (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" (
+        echo [ERROR] D3D12MAd.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Debug\D3D12MAd.dll
+        exit /b 1
+    )
+) else (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" (
+        echo [ERROR] D3D12MA.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Release\D3D12MA.dll
+        exit /b 1
+    )
+)
+
+copy /Y "%DXC_BIN_DIR%\dxcompiler.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+copy /Y "%DXC_BIN_DIR%\dxil.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if "$(Configuration)"=="Debug" (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+) else (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-  </ItemDefinitionGroup>
+    <PostBuildEvent>
+      <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
 
-  <ItemGroup></ItemGroup>
+if not exist "$(TargetDir)" mkdir "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if not exist "%DXC_BIN_DIR%\dxcompiler.dll" (
+    echo [ERROR] dxcompiler.dll が見つかりません: %DXC_BIN_DIR%\dxcompiler.dll
+    exit /b 1
+)
+
+if not exist "%DXC_BIN_DIR%\dxil.dll" (
+    echo [ERROR] dxil.dll が見つかりません: %DXC_BIN_DIR%\dxil.dll
+    exit /b 1
+)
+
+if "$(Configuration)"=="Debug" (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" (
+        echo [ERROR] D3D12MAd.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Debug\D3D12MAd.dll
+        exit /b 1
+    )
+) else (
+    if not exist "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" (
+        echo [ERROR] D3D12MA.dll が見つかりません: $(ProjectDir)..\Library\D3D12MA\Bin\Release\D3D12MA.dll
+        exit /b 1
+    )
+)
+
+copy /Y "%DXC_BIN_DIR%\dxcompiler.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+copy /Y "%DXC_BIN_DIR%\dxil.dll" "$(TargetDir)"
+if errorlevel 1 exit /b 1
+
+if "$(Configuration)"=="Debug" (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Debug\D3D12MAd.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+) else (
+    copy /Y "$(ProjectDir)..\Library\D3D12MA\BIN\Release\D3D12MA.dll" "$(TargetDir)"
+    if errorlevel 1 exit /b 1
+)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Application\Application.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Macros\AssertReturnMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h" />
+    <ClInclude Include="Source\Framework\Framework.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOMacros.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeInfoTagMacros.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Struct\TypeINFOStruct.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Concept\IsDerivedBase\IsDerivedTagBaseConcept.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\TagBase.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\TagTypeAlias.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Utility\TagUtility.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\TypeINFOTypeAlias.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
+    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\String\Constant\StringUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
+    <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h" />
+    <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h" />
+    <ClInclude Include="Source\Framework\Window\Definition\Tag\WindowTag.h" />
+    <ClInclude Include="Source\Framework\Window\Window.h" />
+    <ClInclude Include="Source\PCH.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
+    <ClCompile Include="Source\Framework\Window\Window.cpp" />
+    <ClCompile Include="Source\PCH.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level4</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PCH.h</PrecompiledHeaderFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Documents\CodingConventions.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="Tools\BuildCustomizations\dxc.targets" />
   </ImportGroup>
 </Project>

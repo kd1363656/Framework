@@ -1,0 +1,613 @@
+﻿1.省略形の名前について=======================================================================================================================================
+・省略形の名前を書く際はすべて大文字にする(jsonのキー文字には適用しない)
+{
+	アッパーキャメルケースの場合
+	PCH
+	WindowCONFIG;
+
+	ロウワーキャメルケースの場合
+	pch
+	windowCONFIG;
+}
+2.ヘッダーについて===========================================================================================================================================
+・アッパーキャメルケースで書くこと
+{
+	理由 : 統一感がでてファイル全体が見やすくなる
+
+	例↓
+	ConverterBase.h
+}
+3.ヘッダーのインクルードについて=============================================================================================================================
+・.cppや.hでインクルードをする必要が出てきた場合ファイルの先頭で行うこと
+{
+	理由 : ヘッダーファイルをインクルードする必要があるということは、その定義を使う必要があるということ
+	先頭でインクルードしないと確実に定義をすべての関数やクラス内に渡すことができないから。
+
+	例↓
+	#include "Device.h"
+	#include "Application.h"
+
+	Device::Device()
+	{
+		Application::GetInstance().Execute();
+	}
+}
+・プリコンパイル済みヘッダーではインクルードしたものが関係の深いものなら隣接して#include文を書き
+そうでなければ1行、行間を開けて書く。
+コメントでインクルードしているものについて書く
+{
+	理由 : 何をインクルードしているのか分かりやすいようにするため、
+	コメントは索引として書く
+
+	例↓
+	// Windows
+	//================================================
+	// Windows
+	//================================================
+	#define NOMINMAX
+	#include <Windows.h>
+	#include <wrl/client.h>
+	#include <cassert>
+	
+	//================================================
+	// STL
+	//================================================
+	#include <string>
+	#include <filesystem>
+	#include <fstream>
+	#include <limits>
+	#include <unordered_map>
+	#include <thread>
+	#include <vector>
+	#include <queue>
+	#include <algorithm>
+	#include <memory>
+}
+・リンカーは一番下に書くこと
+{
+	理由 : インクルードとリンカー設定の違いがはっきりして見やすいから
+
+	例↓
+	//================================================
+	// フレームワーク
+	//================================================
+	#include "Framework/Framework.h"
+
+	//================================================
+	// リンカー設定
+	//================================================
+	#pragma comment(lib, "winmm.lib")
+}
+4.変数の書き順について=======================================================================================================================================
+※注意 : 今から上からの条件が優先順位が高く下に行くにつれて優先順位が下がっていくものとする
+・記憶域指定子の記述順
+{
+	inline static
+	inline
+	static
+	記憶域指定子なし
+}
+・const修飾子の記述順
+{
+	constexpr
+	const
+	const修飾子なし
+}
+・配列かどうかでの記述順
+{
+	複数値を保持する型  (std::arrayなど(隣り合う配列の記述順は型別記述順を参照))
+	例↓
+
+	std::array<double> m_arrayA = {};
+	std::array<int>    m_arrayB = {};
+
+	単一の値を保持する型(intなど)
+	int m_a = 0;
+}
+・参照、ポインタ、値の記述順
+{
+	int& 参照 
+	int* ポインタ
+	int  値
+}
+・型別記述順
+{
+	型エイリアスは各型の後に記述順位がつくものとする
+	例↓
+
+	using I_N_T = int;
+
+	int m_int     = 0; // TypeAliasなし
+	I_N_T m_i_n_t = 0; // TypeAliasあり
+
+	型別大まかな優先順位は外部定義、自身定義、stdコンテナ定義、型エイリアス
+
+	右に行くにつれて定義優先順位が弱い
+	クラス、構造体、Enum、std::型、組み込み型(double、float、unsigned long long、unsigned int、int、bool、void(外部のTypeAlias, 自身のTypeAlias, stdコンテナのTypeAlias))
+}
+5.変数の命名規則について=====================================================================================================================================
+・定数はk_
+{
+	例↓
+	static const int k_num = 4;
+}
+・メンバ変数はm_
+{
+	例↓
+	class Hoge final
+	{
+	public:
+		
+		 Hoge() = default;
+		~Hoge() = default;
+	
+	private:
+		
+		int m_a = 0;
+	}
+	
+	struct HogeHoge final
+	{
+		int m_dataA = 0;
+	}
+}
+・ローカル変数はl_
+{
+	例↓
+	const Hoge l_hoge = {};
+}
+・引数はa_
+{
+	例↓
+	class Hoge final
+	{
+		 Hoge(const int a);
+		~Hoge();
+	}
+}
+6.変数の書き方について=======================================================================================================================================
+・const修飾子と型の位置を合わせない
+{
+	もしconst 修飾子を持つ変数とそうでない変数を行間なしにくっつけて書く場合
+	型の位置をconstに合わせるのではなくconstの後ろに続く型に合わせる
+	理由 : そうしたほうがconstなのかそうでないかが一目でわかるから
+	例↓
+		  int   l_numA  = 0;
+	const auto& l_hogeA = HogeA::GetInstance();
+}
+・隣接する同じ型同士ならキーと格納する型の書く位置を揃える
+{
+	例↓
+	std::unordered_map<int,         std::string> l_mapA = {};
+	std::unordered_map<std::string ,std::string> l_mapB = {};
+}
+・クラスや構造体の初期化にはUniformInitialization(波括弧初期化)を使う
+{
+	例↓
+	Hoge l_hoge = {};
+}
+・ポインタの場合は明示的にnullptrを代入する
+{
+	例↓
+	Hoge* l_hoge = nullptr;
+}
+・後ろconstがある変数ととない変数が行間なしで並んでいる場合揃えない、後ろconstがあるもの同士が隣接するならは揃える
+{
+	例↓
+	const TypeInfo* const  k_baseInfo;
+	const std::string_view k_name;
+
+	const TypeInfo*         const k_baseInfo;
+	const std::string_view* const k_name;
+}
+・組み込み型の場合floatなどで定義、そうでないクラスや構造体などで型を明示する必要がなければautoで定義
+名前が長いunsigned intなどもauto定義
+{
+	例↓
+	const auto& l_typeInfo = GetTypeInfo<T>();
+	const auto& l_string   = GetName       ();
+	
+	float l_num = 0.0F;
+}
+・配列の[]の位置を揃える
+{
+	例↓
+	l_indexListA  [3] = 1ULL;	
+	l_indexListB_B[2] = 1ULL;	
+}
+・定義
+{
+	絶対に行間を開ける
+	例↓
+	const std::uint32_t l_index = 
+	{
+		0ULL
+	};
+}
+・論理演算子使う場合は改行する(assertは除外)
+{
+	例↓
+	      bool l_isB    = true;
+	      bool l_isC    = true;
+	const bool l_result = l_isB &&
+						  l_isC;
+}
+・ビット演算子を使う場合は改行しない
+{
+	例↓
+	
+	const int l_num = 11 & 1;
+}
+・符号の位置は合わせる
+{
+	int a_num1 =  1;	
+	int a_num2 = -1;
+}
+
+7.関数について===============================================================================================================================================
+・関数の引数はデフォルト引数を使わない限り変数の書き順を参照すること
+・もし使う関数が行間を開けていなければ()の位置を合わせる
+{
+	例↓
+	auto& l_application = Application::GetInstance();
+
+	l_application.Execute       ();
+	GraphicsManager::GetInstance().Execute();
+}
+・関数の記述優先順位について
+{
+	例↓
+	大まかな処理順を優先
+	void Init  ();
+	void Load  ();
+	void Create();
+
+	void Update();
+
+	アップデートなどで使用する関数をあとは書いていく
+	void UpdateName();
+
+	Set処理と何らかの処理をする場合
+	(Applyじゃないものを採用してもよい)
+	void Apply(int a_num) const;
+
+	セッターはわざわざ名前を変えなくていい
+	変数をセットするのみの関数
+	理由 : 関数のオーバーロード機能が使えるから
+	void Set(int a_num) const;
+
+	値を取得してくる処理(あとはFindなど(Findだけじゃなくてよい))
+	const std::string& FetchREFName(int a_index) const;
+	const std::string* FetchPTRName(int a_index) const;
+
+	std::string& FetchMutableREFName(int a_index);
+	std::string* FetchMutablePTRName(int a_index);
+
+	std::string FetchVALName (int a_index) const;
+
+	// 変数の取得のみの関数
+	const Hoge& GetREFHoge() const;
+	const Hoge* GetPTRHoge() const;
+
+	Hoge& GetMutableREFName();
+	Hoge* GetMutablePTRName();
+
+	Hoge FetchValueName() const;
+}
+・同じような処理を持つ関数があるならば行間を開けずに書く(ゲッターやセッターは除外)
+{
+	例↓
+	void HogeA  ();
+	void HogeA_A();
+}
+・行間を開けていないかつ引数がある関数ならば引数の位置を合わせる
+{
+	例↓
+	void Hoge (int    a_a, int a_b);
+	void HogeB(double a_b);
+}
+・隣接する関数同士ならば戻り値の後に続くメソッド名を合わせる
+{
+	理由 : 戻り値とメソッド名に区切りがついて見やすくなるから
+	例↓
+	void        HogeA(int      a_a, int a_b);
+	std::string HogeB(HogeHoge a_hoge);
+}
+・関数の引数が4個以上なら改行する
+{
+	void RequestSpriteDraw(const Math::Vector2&      a_pos,
+						   const Math::Vector2&      a_scale,
+						   const Texture&            a_texture,
+						   const Struct::SpriteRect* a_sourceRect = nullptr,
+						   const Math::Color*        a_color      = nullptr,
+						   const Math::Vector2&      a_pivot      = Constant::k_defaultPivot);
+}
+・関数ので四個以上の引数があり改行してるものがあれば
+似たような処理でも定義側は離して定義する
+.cppでは似ているような処理の関数同氏は隣接させる
+{
+	.h↓
+	void RequestSpriteDraw(const Math::Vector2&      a_pos,
+						   const Math::Vector2&      a_scale,
+						   const Texture&            a_texture,
+						   const Struct::SpriteRect* a_sourceRect = nullptr,
+						   const Math::Color*        a_color      = nullptr,
+						   const Math::Vector2&      a_pivot      = Constant::k_defaultPivot);
+
+	void RequestModelDraw(const Struct::ModelResource& a_modelResource, const Math::Matrix& a_worldMatrix);
+
+	.cpp↓
+	void RequestSpriteDraw(const Math::Vector2&      a_pos,
+						   const Math::Vector2&      a_scale,
+						   const Texture&            a_texture,
+						   const Struct::SpriteRect* a_sourceRect = nullptr,
+						   const Math::Color*        a_color      = nullptr,
+						   const Math::Vector2&      a_pivot      = Constant::k_defaultPivot)
+	{
+		～処理～
+	}
+
+	void RequestModelDraw(const Struct::ModelResource& a_modelResource, const Math::Matrix& a_worldMatrix)	
+	{
+		～処理～
+	}
+}
+・関数の使用をする際に関数を呼び出す際の()の位置を合わせない
+{
+	例↓
+	m_hwnd = CreateWindow(a_windowClassName.c_str(),
+						  l_titleName.c_str(),
+						  l_style,
+						  k_defaultWindowPosX,
+						  k_defaultWindowPosY,
+						  m_windowConfig.width,
+						  m_windowConfig.height,
+						  nullptr,
+						  nullptr,
+						  l_hInstance,
+						  this);
+}
+8.クラスについて=============================================================================================================================================
+・クラスの書き方(基底、派生、どちらでもないクラスに共通する部分)
+{
+	class Hoge
+	{
+	private:
+
+		std::unordered_mapなどの宣言が長くなってしまうものに使うこと
+		using HogeStringMap = std::unordered_map<std::string, std::string>;
+
+		そのクラスでしか使わない構造体、クラス、Enum、型エリアリアスはprivate指定子でで一番上に定義
+		理由 : そのクラスでしか使わない定義を外部に公開する意味がないしそうすることで保守性が高まるから
+		例↓
+		
+		class HogeHoge
+		{
+			 HogeHoge() = default;
+			~HogeHoge() = default;
+		}
+
+		struct StructHoge
+		{
+			int a = 0;
+		}
+
+	public:
+
+		コンストラクタの書き方
+		
+		なにも引数などを使わないコンストラクタの場合はクラス名の位置を合わせる
+		理由 : ~の位置が分かりやすくなり一瞬でコンストラクタ・デストラクタを見分けることができるから
+		 Hoge() = default;
+		~Hoge() = default;
+		
+
+		引数などを使うコンストラクタの場合は定義だけ書いてcppで記述
+		動作を書くその場合デストラクタもcppに書く
+		コンストラクタでは変数を隣接する場合(同じ型int型が2行連続して並ぶなど)()の位置を合わせる
+		理 : 見やすいから
+		
+		 Hoge(const int a_num1, int a_numB2) : 
+			m_num1 (a_num1),
+			m_numB2(a_numB2),
+		 {}
+		~Hoge();
+		
+		関数の記述優先順位を参照して関数を書く
+
+	private:
+
+		コンストラクタ初期化を行わない場合メンバイニシャライザを使って初期化する
+		コンストラクタ初期化ならコンストラクタでメンバを初期化する
+		理由 : コンストラクタを使用するクラスなのかそうでないクラスなのかが初期化の仕方でわかるから
+		例↓
+		
+		コンストラクタがDefaultの場合.h
+		int m_a = 0;
+		
+		コンストラクタが.hで定義のみの場合の.cpp
+		Hoge(const int a_a) : 
+			m_a(a_a)
+		{}
+		Hoge() = default;
+
+		privateアクセス指定子の書き順
+		理 : 変数より関数を見る機会がデバックの時に多いからprivateの上あたりに
+		あったほうが見やすいと思ったから 
+		関数の記述優先順位を参照して関数を書く
+
+		マクロをクラス内部で使用する場合は一番下で書くこと
+		理由 : マクロでアクセス指定子を変えている可能性があるから 
+	}
+}
+・クラスの書き方(基底クラス
+{
+	ほとんどの場合は継承しないクラスと同じ
+	例↓
+	class HogeHoge
+	{
+	public:
+		
+		指定子とコンストラクタ、仮想デストラクタが分かりやすいように
+		コンストラクタ、デストラクタの名前の位置を合わせる
+		         HogeHoge() = default;
+		virtual ~HogeHoge() = default;
+	}
+)
+・継承するクラス
+{
+	もし継承が最後なら必ずfinalをつける
+	理由 : 今回のゲーム制作は一人だが、もし複数人で組むのならということを想定して
+	finalを書いておくとこれ以上継承してほしくないクラスということがコンパイラがエラーを出してくれるので
+	分かりやすいからfinalをつける
+	ほとんどの部分は継承しないクラスと同じ
+	例↓
+	class HogeHoge final : public Hoge
+	{
+	public:
+
+		1.必ずデストラクタにoverrideを記述する
+		基底クラスのデストラクタがvirtual定義されているかどうかを調べるため
+		 HogeHoge()          = default;
+		~HogeHoge() override = default;
+
+		2.基底クラスの仮想関数の振る舞いを変える場合
+		virtual定義を基底クラスでされているかどうかを確認するためoverrideを書いておく
+		void Hoge() override;
+	}	
+}
+・シングルトンのクラス
+{
+	ほとんどの部分は継承しないクラスと同じ
+	シングルトンを安全に利用するための基底クラスを継承する
+	例↓
+	class Hoge final : public SingletonBase<Hoge>
+	{
+	private:
+
+		int m_a = 0;
+
+		1 : シングルトンのためのコンストラクタ定義をする際は
+		メンバー変数の一番下に区切ってからコンストラクタ、デストラクタを書くこと
+		
+		//===================================
+		// シングルトン 
+		//===================================
+
+		フレンドクラスにしないと基底クラスのSingletonBaseがprivateアクセス指定子にアクセスできず
+		コンパイルエラーになるから
+		friend class SingletonBase<Hoge>;
+
+		 Hoge() = default;
+		~Hoge() = default;
+	}
+}
+9. .cppについて==============================================================================================================================================
+・ヘッダーファイルのインクルードは一番上で行う
+{
+	理 : ヘッダーは構造体などの定義の情報を有しているので一番上で定義しないと定義を
+	使えない可能性があるから
+	例↓
+	.cppの記述
+	#include "Application.h"
+		
+	Application:s:Application() = default;
+}
+10.return文について=========================================================================================================================================
+・基本的に何もせずにreturnだけするなら一行で書き終える
+{
+	例↓
+	if (!GetTypeInfo<Type>()) { return; }
+}
+・処理をしてreturnするなら改行する
+{
+	例↓
+	if (!GetTypeInfo<Type>()) 
+	{
+		処理
+		return;
+	}
+}
+・連続してif分を書く、それがreturn分の場合()の位置を揃える
+{
+	if      (m_isA)  { return false; }
+	else if (m_isAB) { return false; }
+}
+・jsonの場合
+{
+	例↓
+	return nlohmann::json
+	{
+		{ a_key.data(), l_typeINFO->k_name.data() }
+	};
+}
+11.if文について=============================================================================================================================================
+・改行なしでreturn用のif文を書く場合
+{
+	例↓
+	if (!GetTypeInfo<Type>()) { return; }
+}
+・改行ありでreturn用のif文を書く場合
+{
+	例↓
+	if (TypeInfo* l_typeInfo = GetTypeInfo<Type>();
+	l_typeInfo!) 
+	{
+		return; 
+	}
+}
+・論理演算子をif文内部で使うなら改行すること
+{	
+	bool l_isA = true;
+	bool l_isB = true;
+
+	if (l_isA &&
+		l_isB)
+	{
+		...諸々の処理
+	}
+}
+・ローカル変数で再利用しないboolを使う場合if-initstatementを使用する
+2つ以上の変数を使うならif-initstatementは使わない
+{
+	例↓
+	if (TypeInfo* l_typeInfo = GetTypeInfo<Type>();
+	l_typeInfo!) 
+	{
+		return; 
+	}
+	
+	bool l_isA = true;
+	bool l_isB = true;
+
+	if (l_isA &&
+		l_isB)
+	{
+		...諸々の処理
+	}
+}
+・if文の中では()の位置は合わせない
+{
+	例↓
+	if (Application.Create() &&
+		Graphics.Create())
+	{
+		...諸々の処理
+	}
+}
+・符号の位置を合わせる
+{
+	理 : 条件文が!(false)の時かtrueの時かが瞬時にわかりやすいため
+	例↓
+
+	bool l_isA  = true;
+	bool l_isBA = true;
+	bool l_isC  = true;
+
+	if ( l_isA  && 
+		!l_isBA &&
+		 l_isC)
+	{
+		...諸々の処理
+	}
+}
