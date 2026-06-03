@@ -336,6 +336,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h" />
+    <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
+    <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOMacros.h" />
@@ -363,6 +365,8 @@ if "$(Configuration)"=="Debug" (
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
@@ -393,6 +397,7 @@ if "$(Configuration)"=="Debug" (
     <Text Include="Documents\CodingConventions.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

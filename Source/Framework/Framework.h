@@ -70,3 +70,9 @@
 #include "Window/Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
 #include "Window/Window.h"
+
+//===============================================================================
+// FPS管理クラス
+//===============================================================================
+#include "FPS/Converter/Json/FPSControllerJsonConverter.h"
+#include "FPS/FPSController.h"

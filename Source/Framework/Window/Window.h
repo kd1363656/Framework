@@ -24,6 +24,8 @@ namespace FWK
 
 		void SetupWindowStyleTag(const TypeAlias::TagType a_windowStyleTag);
 
+		void SetWindowStyleTag(const TypeAlias::TagType a_set) { m_windowStyleTag = a_set; }
+
 		const auto& GetREFHWND() const { return m_hwnd; }
 
 		const auto& GetREFClientSize   () const { return m_clientSize; }
@@ -47,7 +49,7 @@ namespace FWK
 
 		bool CreateWindowInstance(const std::wstring& a_windowClassName, const std::string& a_titleName);
 
-		void SetupClientSize();
+		void SetupNormalWindowClientSize();
 
 		void Release();
 
@@ -67,6 +69,8 @@ namespace FWK
 
 		DWORD FetchVALWindowStyle() const;
 
+		FWK::Struct::ClientSize FetchVALCurrentClientSize() const;
+
 		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Window/WindowCONFIG.json";
 
 		// ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
@@ -74,8 +78,11 @@ namespace FWK
 
 		static constexpr LRESULT k_windowProcedureHandledResult = 0;
 
+		static constexpr LONG k_clientRECTLeft = 0L;
+		static constexpr LONG k_clientRECTTop  = 0L;
+
 		// 通常ウィンドウ
-		// タイトルバー、幅、最小化、最大化、サイズ変更を持つ
+		// タイトルバー、幅、最小化、最大化を持つ
 		static constexpr DWORD k_generalWindowStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
 
 		// 枠なしウィンドウ

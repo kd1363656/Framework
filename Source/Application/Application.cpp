@@ -42,7 +42,14 @@ void Application::Execute()
 
 		// 最小化中など、描画やゲームの更新を進めていけない状態なら
 		// アプリは終了せずに、次のメッセージ処理へ進む
-		if (!CanUpdateFrame()) { continue; }
+		// ここで描画と更新をやめるのでFPSを計測
+		if (!CanUpdateFrame()) 
+		{
+			m_fpsController.EndFrame();
+			continue; 
+		}
+
+		EndFrame();
 	}
 
 	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
@@ -51,7 +58,8 @@ void Application::Execute()
 
 void Application::LoadCONFIG()
 {
-	m_window.LoadCONFIG();
+	m_window.LoadCONFIG		  ();
+	m_fpsController.LoadCONFIG();
 }
 
 void Application::PostLoadCONFIG()
@@ -61,6 +69,9 @@ void Application::PostLoadCONFIG()
 
 bool Application::BeginFrame()
 {
+	// FPSの計測開始
+	m_fpsController.BeginFrame();
+
 	if (!m_window.ProcessMessages()) { return false; }
 
 	// ウィンドウズハンドルを所持していないかエスケープキーを押されたらreturn
@@ -71,6 +82,12 @@ bool Application::BeginFrame()
 	}
 
 	return true;
+}
+void Application::EndFrame()
+{
+	m_fpsController.EndFrame();
+
+	UpdateWindowTitleBar();
 }
 
 void Application::ProcessResizeRequest()
@@ -89,5 +106,15 @@ bool Application::CanUpdateFrame() const
 
 void Application::SaveCONFIG() const
 {
-	m_window.SaveCONFIG();
+	m_window.SaveCONFIG		  ();
+	m_fpsController.SaveCONFIG();
+}
+
+void Application::UpdateWindowTitleBar() const
+{
+	// タイトル名 + FPSのテキスト
+	const auto& l_text = std::format("{} : {}", k_titleName, static_cast<int>(m_fpsController.GetVALCurrentFPS()));
+
+	// ウィンドウバーに表示
+	SetWindowTextA(m_window.GetREFHWND(), l_text.c_str());
 }

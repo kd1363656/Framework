@@ -130,6 +130,18 @@
     <Filter Include="Source\Framework\TypeINFO\Definition\Tag\Type\Alias">
       <UniqueIdentifier>{eda1ca5f-f37b-447b-aab9-d7e555f90dd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\FPS">
+      <UniqueIdentifier>{be086221-6464-4dda-9b85-9366046ac573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\FPS\Converter">
+      <UniqueIdentifier>{4297238c-ecc9-4c61-9ae9-50e1e97386f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\FPS\Converter\Json">
+      <UniqueIdentifier>{a2d55ca2-d99a-4928-a0ab-59d0c22947b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG\FPS">
+      <UniqueIdentifier>{dd960a41-4700-475b-84c2-da5295a5e977}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -216,6 +228,12 @@
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\Alias\TagTypeAlias.h">
       <Filter>Source\Framework\TypeINFO\Definition\Tag\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\FPS\FPSController.h">
+      <Filter>Source\Framework\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h">
+      <Filter>Source\Framework\FPS\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -233,6 +251,12 @@
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\FPS\FPSController.cpp">
+      <Filter>Source\Framework\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp">
+      <Filter>Source\Framework\FPS\Converter\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -242,6 +266,9 @@
   <ItemGroup>
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json">
       <Filter>Asset\Data\CONFIG\Window</Filter>
+    </None>
+    <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json">
+      <Filter>Asset\Data\CONFIG\FPS</Filter>
     </None>
   </ItemGroup>
 </Project>

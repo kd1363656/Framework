@@ -6,5 +6,4 @@ namespace FWK::Tag
 
 	struct WindowStyleNormalTag               : public WindowStyleTagBase { FWK_DEFINE_TYPE_INFO_TAG(WindowStyleNormalTag,				 WindowStyleTagBase) };
 	struct WindowStyleBorderlessFullScreenTag : public WindowStyleTagBase { FWK_DEFINE_TYPE_INFO_TAG(WindowStyleBorderlessFullScreenTag, WindowStyleTagBase) };
-	struct WindowStyleFullScreenTag			  : public WindowStyleTagBase { FWK_DEFINE_TYPE_INFO_TAG(WindowStyleFullScreenTag,           WindowStyleTagBase) };
 }

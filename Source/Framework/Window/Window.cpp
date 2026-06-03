@@ -42,9 +42,6 @@ void FWK::Window::PostLoadCONFIG(const std::wstring& a_windowClassName, const st
 	// CONFIGから読み込んだ表示形態を、実際のウィンドウに反映する
 	ApplyWindowStyle();
 
-	// クライアント領域のサイズが設定値通りになるようにウィンドウサイズを調整する
-	SetupClientSize();
-
 	// ウィンドウの表示
 	ShowWindow(m_hwnd, SW_SHOW);
 
@@ -324,46 +321,35 @@ bool FWK::Window::CreateWindowInstance(const std::wstring& a_windowClassName, co
 	return true;
 }
 
-void FWK::Window::SetupClientSize()
+void FWK::Window::SetupNormalWindowClientSize()
 {
 	// まだウィンドウが作成されていないなら何もしない
 	if (!m_hwnd) { return; }
 
-	if (m_windowStyleTag == Utility::GetVALTag<Tag::WindowStyleBorderlessFullScreenTag>())
+	if (m_windowStyleTag != Utility::GetVALTag<Tag::WindowStyleNormalTag>()) { return; }
+
+	RECT l_clientRECT =
 	{
-		ApplyBorderlessFullScreenWindowStyle();
-		return;
-	}
+		k_clientRECTLeft,
+		k_clientRECTTop,
+		static_cast<LONG>(m_clientSize.m_width),
+		static_cast<LONG>(m_clientSize.m_height)
+	};
 
-	if (m_windowStyleTag == Utility::GetVALTag<Tag::WindowStyleNormalTag>())
-	{
-		RECT l_clientRECT =
-		{
-			0L,
-			0L,
-			static_cast<LONG>(m_clientSize.m_width),
-			static_cast<LONG>(m_clientSize.m_height)
-		};
+	// 通常ウィンドウはタイトルバーや枠があるため、
+	// 欲しいクライアント領域からウィンドウ全体サイズを逆算する
+	FWK_ASSERT_RETURN_IF_FAILED(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
 
-		// 通常ウィンドはタイトルバーや枠があるため、
-		// 欲しいクライアント領域からウィンドウ全体サイズを逆算する
-		FWK_ASSERT_RETURN_IF_FAILED(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
+	const int l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
+	const int l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
 
-		const int l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
-		const int l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
-
-		SetWindowPos(m_hwnd,
-					 nullptr,
-					 k_defaultWindowPositionX,
-					 k_defaultWindowPositionY,
-					 l_windowWidth,
-					 l_windowHeight,
-					 SWP_NOZORDER | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-
-		return;
-	}
-	
-	FWK_ASSERT_RETURN("ウィンドウスタイルタグの取得に失敗しておりクライアントサイズの設定を行えませんでした。");
+	SetWindowPos(m_hwnd,
+				 nullptr,
+				 k_defaultWindowPositionX,
+				 k_defaultWindowPositionY,
+				 l_windowWidth,
+				 l_windowHeight,
+				 SWP_NOZORDER | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 }
 
 void FWK::Window::Release()
@@ -381,22 +367,28 @@ void FWK::Window::Release()
 
 void FWK::Window::ApplyClientSizeFromWMSize(const Struct::ClientSize& a_clientSize, const WPARAM& a_wPARAM)
 {
-	m_resizeRequest.m_clientSize  = a_clientSize;
+	const bool l_isMinimized = a_wPARAM == SIZE_MINIMIZED;
+
 	m_resizeRequest.m_isRequested = true;
+	m_resizeRequest.m_isMinimized = l_isMinimized;
+	
+	if (l_isMinimized)
+	{
+		// 最小化中はクライアント領域が0x0になることがある、DX12で0x0のバックバッファ
+		// にしてはいけないため、前回有効なm_clientSizeを保持する
+		m_resizeRequest.m_clientSize = m_clientSize;
 
-	// 縮小が解除されるまでフラグが動かない設計
-	m_resizeRequest.m_isMinimized = a_wPARAM == SIZE_MINIMIZED;
+		return;
+	}
 
-	// 最小化中は、クライアント領域が0になることがあるためreturn
-	if (m_resizeRequest.m_isMinimized) { return; }
-
-	if (m_clientSize.m_width  == k_invalidClientWidth ||
-		m_clientSize.m_height == k_invalidClientHeight) 
+	if (a_clientSize.m_width  == k_invalidClientWidth ||
+		a_clientSize.m_height == k_invalidClientHeight) 
 	{
 		return;
 	}
 
-	m_clientSize = m_resizeRequest.m_clientSize;
+	m_clientSize				 = a_clientSize;
+	m_resizeRequest.m_clientSize = m_clientSize;
 }
 
 void FWK::Window::ApplyWindowStyle()
@@ -428,12 +420,11 @@ void FWK::Window::ApplyNormalWindowStyle()
 	const auto l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
 	const auto l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
 
-	const bool l_hasSavedWindowRECT = l_saveWindowWidth  > 0 &&
-									  l_saveWindowHeight > 0;
-
-	if (l_hasSavedWindowRECT)
+	if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > k_invalidClientWidth &&
+										  l_saveWindowHeight > k_invalidClientWidth;
+		l_hasSavedWindowRECT)
 	{
-		// ボーダーレスフルスクリーンへ映る前の通常ウィンドウ位置へ戻す
+		// ボーダーレスフルスクリーンへ移る前の通常ウィンドウ位置へ戻す
 		SetWindowPos(m_hwnd,
 					 nullptr,
 					 static_cast<int>(m_normalWindowRECT.left),
@@ -446,8 +437,11 @@ void FWK::Window::ApplyNormalWindowStyle()
 	{
 		// 保存されたウィンドウの位置がない場合は、
 		// 現在のクライアントサイズを使って通常ウィンドウサイズを作る
-		SetupClientSize();
+		SetupNormalWindowClientSize();
 	}
+
+	// SetWindowPos後の実際のクライアント領域を取得
+	m_clientSize = FetchVALCurrentClientSize();
 
 	RequestResizeFromClientSize(m_clientSize);
 }
@@ -456,7 +450,7 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
 {
 	if (!m_hwnd) { return; }
 
-	// 通常をウィンドウ状態の位置とサイズを保存しておく
+	// 通常ウィンドウ状態の位置とサイズを保存しておく
 	StoreNormalWindowRECT();
 
 	// 枠なしウィンドウへ変更する
@@ -476,7 +470,7 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
 	const auto l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
 	const auto l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);
 
-	// モニター船体を覆う位置とサイズに変更する
+	// モニター全体を覆う位置とサイズに変更する
 	SetWindowPos(m_hwnd,
 				 HWND_TOP,
 				 l_monitorRECT.left,
@@ -532,4 +526,21 @@ DWORD FWK::Window::FetchVALWindowStyle() const
 	else if	(m_windowStyleTag == Utility::GetVALTag<Tag::WindowStyleBorderlessFullScreenTag>()) { return k_borderlessFullScreenWindowStyle; }
 
 	FWK_ASSERT_RETURN_VALUE("ウィンドウスタイルタグの取得に失敗しました。", k_generalWindowStyle);
+}
+
+FWK::Struct::ClientSize FWK::Window::FetchVALCurrentClientSize() const
+{
+	if (!m_hwnd) { return m_clientSize; }
+
+	RECT l_clientRECT = {};
+
+	if (!GetClientRect(m_hwnd, &l_clientRECT)) { return m_clientSize; }
+
+	const Struct::ClientSize l_clientSize =
+	{
+		static_cast<UINT>(l_clientRECT.right  - l_clientRECT.left),
+		static_cast<UINT>(l_clientRECT.bottom - l_clientRECT.top)
+	};
+
+	return l_clientSize;
 }

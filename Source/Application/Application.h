@@ -22,6 +22,7 @@ private:
 	void PostLoadCONFIG();
 
 	bool BeginFrame();
+	void EndFrame  ();
 
 	void ProcessResizeRequest();
 
@@ -29,11 +30,14 @@ private:
 
 	void SaveCONFIG() const;
 
+	void UpdateWindowTitleBar() const;
+
 	const std::wstring k_windowClassName = L"Window";
 	const std::string  k_titleName       = "MRI_FRAMEWORK";
 
 	static constexpr int k_exitCodeSuccess			   =  0;
 	static constexpr int k_exitCodeCOMInitializeFailed = -1;
 
-	FWK::Window m_window = {};
+	FWK::Window		   m_window		   = {};
+	FWK::FPSController m_fpsController = {};
 };
