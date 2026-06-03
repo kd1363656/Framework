@@ -157,6 +157,9 @@
     <Filter Include="Source\Framework\Graphics\Hardware">
       <UniqueIdentifier>{fed15afe-7e72-4503-b11c-b36825672938}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource">
+      <UniqueIdentifier>{f66a00a8-3c8c-408f-aa3a-32de68bbe7a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -261,6 +264,9 @@
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h">
       <Filter>Source\Framework\Graphics\Hardware</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h">
+      <Filter>Source\Framework\Graphics\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -292,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp">
       <Filter>Source\Framework\Graphics\Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp">
+      <Filter>Source\Framework\Graphics\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
