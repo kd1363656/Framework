@@ -407,7 +407,7 @@ void FWK::Window::ApplyWindowStyle()
 		return;
 	}
 
-	FWK_ASSERT_RETURN("未対応のウィンドウスタイルタグです。");
+	FWK_ASSERT_RETURN("未対応のウィンドウスタイルタグで、ウィンドウスタイルの適応に失敗しました。");
 }
 
 void FWK::Window::ApplyNormalWindowStyle()

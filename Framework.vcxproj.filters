@@ -175,6 +175,39 @@
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
       <UniqueIdentifier>{b5e9c439-eece-4bac-b3a3-4ec29e0b90e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Struct">
+      <UniqueIdentifier>{7e635020-9c7a-4f4c-bd77-f2f9c477fe32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Constant">
+      <UniqueIdentifier>{9151d8f7-ed82-4b69-b97f-4a9a8f065a6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command">
+      <UniqueIdentifier>{f0b4954f-3e21-470f-9488-cbd6dd668951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Allocator">
+      <UniqueIdentifier>{677889cb-e5e4-4f5d-bd9d-6acd59635a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List">
+      <UniqueIdentifier>{2d58cc9d-286f-4054-ad60-090d916a165c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue">
+      <UniqueIdentifier>{a31c75e2-116f-4508-b54e-737c96eb68d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Allocator\Direct">
+      <UniqueIdentifier>{bf83484b-03a4-4d1f-8d0a-c9a7ddaf4949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Definition">
+      <UniqueIdentifier>{47c2ccfa-97ee-47c5-b5c8-a3627f590a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Definition\Constant">
+      <UniqueIdentifier>{f65c4c81-5c4e-4876-a44d-23e049f8b7e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Definition\Constant">
+      <UniqueIdentifier>{7196312f-a2a0-433d-b914-519a21c93c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List\Direct">
+      <UniqueIdentifier>{b31f1de9-b767-4157-a497-30f5749026d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -288,6 +321,30 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Struct\DescriptorHeapStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Constant\DescriptorHeapConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocatorBase.h">
+      <Filter>Source\Framework\Graphics\Command\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Definition\Constant\CommandConstant.h">
+      <Filter>Source\Framework\Graphics\Command\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Allocator\Direct\DirectCommandAllocator.h">
+      <Filter>Source\Framework\Graphics\Command\Allocator\Direct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h">
+      <Filter>Source\Framework\Graphics\Command\List</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Definition\Constant\GraphicsManagerConstant.h">
+      <Filter>Source\Framework\Graphics\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.h">
+      <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -325,6 +382,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Allocator\CommandAllocatorBase.cpp">
+      <Filter>Source\Framework\Graphics\Command\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Allocator\Direct\DirectCommandAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Command\Allocator\Direct</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\CommandListBase.cpp">
+      <Filter>Source\Framework\Graphics\Command\List</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

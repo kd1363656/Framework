@@ -36,7 +36,7 @@ namespace FWK
 			++l_staticTypeID;
 
 			// 登録可能上限を超えていたらアサート
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticTypeID == Constant::k_invalidStaticTypeID, "静的TypeIDの登録可能上限に到達しています。", Constant::k_invalidStaticTypeID);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticTypeID == Constant::k_invalidStaticTypeID, "静的TypeIDの登録可能上限に到達しており、静的IDの登録に失敗しました。。", Constant::k_invalidStaticTypeID);
 
 			return l_generatedID;
 		}

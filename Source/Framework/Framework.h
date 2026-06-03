@@ -82,13 +82,29 @@
 //===============================================================================
 // グラフィックスマネージャー
 #include "Graphics/Definition/Type/Alias/GraphicsManagerTypeAlias.h"
+#include "Graphics/Definition/Constant/GraphicsManagerConstant.h"
 
 // グラフィックスデバイス管理クラス
 #include "Graphics/Hardware/Factory.h"
 #include "Graphics/Hardware/Device.h"
 
+// コマンド用定数
+#include "Graphics/Command/Definition/Constant/CommandConstant.h"
+
+// コマンドアロケータ
+#include "Graphics/Command/Allocator/CommandAllocatorBase.h"
+#include "Graphics/Command/Allocator/Direct/DirectCommandAllocator.h"
+
+// コマンドリスト
+#include "Graphics/Command/List/CommandListBase.h"
+#include "Graphics/Command/List/Direct/DirectCommandList.h"
+
+// コマンドキュー
+
 // ディスクリプタヒープ
 #include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
+#include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
+#include "Graphics/Resource/Descriptor/Heap/Definition/Struct/DescriptorHeapStruct.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 
 // リソースコンテキスト

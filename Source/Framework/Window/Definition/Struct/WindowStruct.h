@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct ClientSize
+	struct ClientSize final
 	{
 		UINT m_width  = Constant::k_defaultWindowWidth;
 		UINT m_height = Constant::k_defaultWindowHeight;
