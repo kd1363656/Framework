@@ -22,7 +22,8 @@ namespace FWK::Graphics
 		bool EnableDebugLayer() const;
 #endif
 
-		Factory m_factory = {};
-		Device  m_device  = {};
+		Factory			m_factory		  = {};
+		Device			m_device		  = {};
+		ResourceContext m_resourceContext = {};
 	};
 }

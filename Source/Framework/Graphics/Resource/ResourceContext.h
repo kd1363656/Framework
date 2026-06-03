@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace FWK::Graphcis
+namespace FWK::Graphics
 {
 	class ResourceContext final
 	{

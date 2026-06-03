@@ -160,6 +160,21 @@
     <Filter Include="Source\Framework\Graphics\Resource">
       <UniqueIdentifier>{f66a00a8-3c8c-408f-aa3a-32de68bbe7a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor">
+      <UniqueIdentifier>{d23b5101-1ece-4da0-9520-b980ae5a241e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap">
+      <UniqueIdentifier>{90475c31-da91-4dd4-99aa-595b7b6cffe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition">
+      <UniqueIdentifier>{4be7af8c-27ea-4252-9f05-8aec40188f76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
+      <UniqueIdentifier>{32320a3e-b0c9-4af3-a746-4611a5fb7c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
+      <UniqueIdentifier>{b5e9c439-eece-4bac-b3a3-4ec29e0b90e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -267,6 +282,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h">
       <Filter>Source\Framework\Graphics\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -301,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp">
       <Filter>Source\Framework\Graphics\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

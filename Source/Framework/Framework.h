@@ -87,5 +87,11 @@
 #include "Graphics/Hardware/Factory.h"
 #include "Graphics/Hardware/Device.h"
 
+// ディスクリプタヒープ
+#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
+#include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
+
+// リソースコンテキスト
+#include "Graphics/Resource/ResourceContext.h"
 
 #include "Graphics/GraphicsManager.h"
