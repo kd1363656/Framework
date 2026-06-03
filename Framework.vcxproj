@@ -348,9 +348,13 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\TypeINFOTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
+    <ClInclude Include="Source\Framework\Utility\File\Definition\Constant\FileUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Utility\File\FileUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\String\Constant\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
+    <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Tag\WindowTag.h" />
@@ -360,6 +364,7 @@ if "$(Configuration)"=="Debug" (
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
+    <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>

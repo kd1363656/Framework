@@ -26,5 +26,47 @@ int WINAPI WinMain(_In_     HINSTANCE,
 
 void Application::Execute()
 {
+	LoadCONFIG();
 
+	// ロードし終わった後の処理を実行(ウィンドウ生成など)
+	PostLoadCONFIG();
+
+	while (true)
+	{
+		// ウィンドウメッセージやアプリケーションを終了するかの処理をしているので
+		// falseが戻り値ならbreakする
+		if (!BeginFrame()) { break; }
+	}
+
+	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
+	
+}
+
+void Application::LoadCONFIG()
+{
+	m_window.LoadCONFIG();
+}
+
+void Application::PostLoadCONFIG()
+{
+	m_window.PostLoadCONFIG(k_windowClassName, k_titleName);
+}
+
+bool Application::BeginFrame()
+{
+	if (!m_window.ProcessMessages()) { return false; }
+
+	// ウィンドウズハンドルを所持していないかエスケープキーを押されたらreturn
+	if (GetAsyncKeyState(VK_ESCAPE) ||
+		!m_window.HasHWND())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void Application::SaveCONFIG() const
+{
+	m_window.SaveCONFIG();
 }

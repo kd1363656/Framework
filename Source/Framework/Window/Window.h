@@ -9,7 +9,24 @@ namespace FWK
 		 Window();
 		~Window();
 
+		void LoadCONFIG    ();
 		void PostLoadCONFIG(const std::wstring& a_windowClassName, const std::string& a_titleName);
+
+		bool ProcessMessages() const;
+
+		const Struct::WindowResizeRequest& ThrowResizeRequest();
+
+		bool HasHWND() const;
+
+		void SaveCONFIG() const;
+
+		void SetWindowStyleTag(const TypeAlias::TagType a_set) { m_windowStyleTag = a_set; }
+
+		const auto& GetREFHWND() const { return m_hwnd; }
+
+		const auto& GetREFClientSize() const { return m_clientSize; }
+
+		auto GetWindowStyleTag() const { return m_windowStyleTag; }
 
 	private:
 
@@ -31,11 +48,13 @@ namespace FWK
 
 		void Release();
 
-		void ApplyClientSizeFromWMSize(const Struct::WindowSize& a_windowSize, const WPARAM& a_wPARAM);
+		void ApplyClientSizeFromWMSize(const Struct::ClientSize& a_clientSize, const WPARAM& a_wPARAM);
 
 		HINSTANCE FetchVALInstanceHandle() const;
 
 		DWORD FetchVALWindowStyle() const;
+
+		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Window/WindowCONFIG.json";
 
 		// ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
 		static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
@@ -44,9 +63,16 @@ namespace FWK
 
 		static constexpr DWORD k_generalWindowStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
 
+		static constexpr UINT k_windowStyle = CS_HREDRAW | CS_VREDRAW;
+
+		static constexpr UINT k_timeResolutionMS = 1U;
+
+		static constexpr UINT k_msgFilterMIN		  = 0U;
+		static constexpr UINT k_msgFilterMAX		  = 0U;
 		static constexpr UINT k_wmCreateHandledResult = 0U;
 
-		static constexpr UINT k_windowStyle = CS_HREDRAW | CS_VREDRAW;
+		static constexpr UINT k_invalidClientWidth  = 0U;
+		static constexpr UINT k_invalidClientHeight = 0U;
 
 		static constexpr int k_classExtraBytes  = 0;
 		static constexpr int k_windowExtraBytes = 0;
@@ -58,11 +84,11 @@ namespace FWK
 
 		HWND m_hwnd;
 
-		Struct::WindowSize m_windowSize = {};
+		Converter::WindowJsonConverter m_jsonConverter = {};
 
-		TypeAlias::TagType m_windowStyleTag = Utility::GetVALTag<Tag::WindowStyleNormalTag>();
+		Struct::ClientSize			m_clientSize;
+		Struct::WindowResizeRequest m_resizeRequest;
 
-		bool m_isRequestResize = false;
-		bool m_isMinimized     = false;
+		TypeAlias::TagType m_windowStyleTag;
 	};
 }

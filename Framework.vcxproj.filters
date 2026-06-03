@@ -94,6 +94,24 @@
     <Filter Include="Source\Framework\Definition\Concept">
       <UniqueIdentifier>{719847fc-4732-4a83-909d-7d1d8850c4c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Window\Converter">
+      <UniqueIdentifier>{bafa8b3c-5e41-408b-af2a-3fd530cc19aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Converter\Json">
+      <UniqueIdentifier>{d51764b8-2378-4633-9a2c-367dbd814672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Json">
+      <UniqueIdentifier>{e54deec9-c939-416e-b77b-e6579b28148a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File">
+      <UniqueIdentifier>{b825293d-1bd3-4c0d-9166-e4734a992335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File\Definition">
+      <UniqueIdentifier>{e56308b9-1b88-48c2-a10f-b4e5d31c536d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File\Definition\Constant">
+      <UniqueIdentifier>{32952e7e-a3b1-4f73-ab9d-3990d4ab54dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -168,6 +186,18 @@
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Concept\IsDerivedBase\IsDerivedTagBaseConcept.h">
       <Filter>Source\Framework\TypeINFO\Definition\Tag\Concept</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
+      <Filter>Source\Framework\Utility\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\FileUtility.h">
+      <Filter>Source\Framework\Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\Definition\Constant\FileUtilityConstant.h">
+      <Filter>Source\Framework\Utility\File\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h">
+      <Filter>Source\Framework\Window\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -181,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp">
       <Filter>Source\Framework\TypeINFO\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp">
+      <Filter>Source\Framework\Window\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

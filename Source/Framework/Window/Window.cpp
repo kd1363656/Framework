@@ -13,16 +13,92 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND,
 FWK::Window::Window() : 
 	m_hwnd(nullptr),
 
+	m_clientSize   (),
+	m_resizeRequest(),
+
+	m_windowStyleTag(Utility::GetVALTag<Tag::WindowStyleNormalTag>())
+
 {}
 FWK::Window::~Window()
 {
+	// 必ず開放処理が呼ばれるようにする
+	Release();
 }
 
+void FWK::Window::LoadCONFIG()
+{
+	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
+
+	if (l_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(l_rootJson, *this);
+}
 void FWK::Window::PostLoadCONFIG(const std::wstring& a_windowClassName, const std::string& a_titleName)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!CreateWindowInstance(a_windowClassName, a_titleName), "ウィンドウインスタンスの作成に失敗しました。");
 
+	// クライアント領域のサイズが設定値通りになるようにウィンドウサイズを調整する
+	SetupClientSize();
 
+	// ウィンドウの表示
+	ShowWindow(m_hwnd, SW_SHOW);
+
+	// ウィンドウのクライアント領域をすぐに再描画
+	UpdateWindow(m_hwnd);
+
+	// timeGetTime関数の精度を1msに設定(Sleep関数などに影響する)
+	timeBeginPeriod(k_timeResolutionMS);
+}
+
+bool FWK::Window::ProcessMessages() const
+{
+	// Windowsから届いているメッセージを受け取るための変数
+	MSG l_msg = {};
+
+	// メッセージキューにたまっているメッセージを順番に取り出して処理する関数
+	// PeekMessage(取り出したメッセージの書き込み先、
+	//			　 nullptrを渡すと、このスレッドの全ウィンドウを対象にする、
+	//			　 取得するメッセージ番号の下限、
+	//			   取得するメッセージ番号の上限、
+	//			   取り出したメッセージをどうするか);
+	while (PeekMessage(&l_msg,
+					   nullptr,
+					   k_msgFilterMIN,
+					   k_msgFilterMAX,
+					   PM_REMOVE))
+	{
+		// 終了メッセージが来たら、呼びだし元に終了を知らせる
+		if (l_msg.message == WM_QUIT) { return false; }
+
+		// キー入力メッセージを、文字入力メッセージに変換する
+		// 例 : キーボードのAキー入力から'A'文字の入力メッセージを作る
+		TranslateMessage(&l_msg);
+
+		// 取り出したメッセージを対応するウィンドウプロシージャへ送る
+		DispatchMessage(&l_msg);
+	}
+
+	// 終了メッセージが来ていないので、処理を続けてよい
+	return true;
+}
+
+const FWK::Struct::WindowResizeRequest& FWK::Window::ThrowResizeRequest()
+{
+	m_resizeRequest.m_isRequested = false;
+
+	return m_resizeRequest;
+}
+
+bool FWK::Window::HasHWND() const
+{
+	return m_hwnd ? true : false;
+}
+
+void FWK::Window::SaveCONFIG() const
+{
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
 LRESULT FWK::Window::CallWindowProcedure(const HWND   a_hwnd, 
@@ -106,14 +182,10 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
 		case WM_SIZE:
 		{
 			// WM_SIZEのLPARAMには、クライアント領域の横幅と縦幅がまとめて入っている。
-			// LOWORDで下位側の値、横幅を取り出す。
-			const auto l_width = static_cast<UINT>(LOWORD(a_lPARAM));
+			// LOWORDで下位側の値、横幅を取り出し、HIWORDで上位側の値、縦幅を取り出す。
+			const Struct::ClientSize l_changedClientSize = { static_cast<UINT>(LOWORD(a_lPARAM)) , static_cast<UINT>(HIWORD(a_lPARAM)) };
 
-			// HIWORDで上位側の値、縦幅を取り出す。
-			const auto l_height = static_cast<UINT>(HIWORD(a_lPARAM));
-
-			ApplyClientSizeFromWMSize(l_width, l_height, a_wPARAM);
-
+			ApplyClientSizeFromWMSize(l_changedClientSize, a_wPARAM);
 		}
 		break;
 
@@ -207,8 +279,8 @@ bool FWK::Window::CreateWindowInstance(const std::wstring& a_windowClassName, co
 						  l_style,
 						  k_defaultWindowPositionX,
 						  k_defaultWindowPositionY,
-						  m_windowSize.m_width,
-						  m_windowSize.m_height,
+						  m_clientSize.m_width,
+						  m_clientSize.m_height,
 						  nullptr,
 						  nullptr,
 						  l_hInstance,
@@ -255,8 +327,8 @@ void FWK::Window::SetupClientSize()
 				   TRUE);
 
 		// ボーダーレスフルウィンドウのためクライアント領域かどうかを計算する必要がない
-		m_windowSize.m_width  = static_cast<std::uint32_t>(l_screenWidth);
-		m_windowSize.m_height = static_cast<std::uint32_t>(l_screenHeight);
+		m_clientSize.m_width  = static_cast<std::uint32_t>(l_screenWidth);
+		m_clientSize.m_height = static_cast<std::uint32_t>(l_screenHeight);
 
 		return;
 	}
@@ -282,8 +354,8 @@ void FWK::Window::SetupClientSize()
 		MoveWindow(m_hwnd,
 				   l_rcWND.left,
 				   l_rcWND.top,  
-				   static_cast<int>(m_windowSize.m_width)  + l_frameWidth, 
-				   static_cast<int>(m_windowSize.m_height) + l_frameHeight,
+				   static_cast<int>(m_clientSize.m_width)  + l_frameWidth, 
+				   static_cast<int>(m_clientSize.m_height) + l_frameHeight,
 				   TRUE);
 
 		return;
@@ -305,9 +377,22 @@ void FWK::Window::Release()
 	m_hwnd = nullptr;
 }
 
-void FWK::Window::ApplyClientSizeFromWMSize(const Struct::WindowSize& a_windowSize, const WPARAM& a_wPARAM)
+void FWK::Window::ApplyClientSizeFromWMSize(const Struct::ClientSize& a_clientSize, const WPARAM& a_wPARAM)
 {
-	
+	m_resizeRequest.m_clientSize  = a_clientSize;
+	m_resizeRequest.m_isRequested = true;;
+	m_resizeRequest.m_isMinimized = a_wPARAM == SIZE_MINIMIZED;
+
+	// 最小化中は、クライアント領域が0になることがあるためreturn
+	if (m_resizeRequest.m_isMinimized) { return; }
+
+	if (m_clientSize.m_width  == k_invalidClientWidth ||
+		m_clientSize.m_height == k_invalidClientHeight) 
+	{
+		return;
+	}
+
+	m_clientSize = m_resizeRequest.m_clientSize;
 }
 
 HINSTANCE FWK::Window::FetchVALInstanceHandle() const

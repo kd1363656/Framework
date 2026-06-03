@@ -18,6 +18,16 @@ public:
 
 private:
 
+	void LoadCONFIG    ();
+	void PostLoadCONFIG();
+
+	bool BeginFrame();
+
+	void SaveCONFIG() const;
+
+	const std::wstring k_windowClassName = L"Window";
+	const std::string  k_titleName       = "MRI_FRAMEWORK";
+
 	static constexpr int k_exitCodeSuccess			   =  0;
 	static constexpr int k_exitCodeCOMInitializeFailed = -1;
 

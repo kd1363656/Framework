@@ -27,6 +27,7 @@
 #include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
+#include "TypeINFO/Registry/TypeINFORegistry.h"
 
 // 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
@@ -51,9 +52,21 @@
 #include "Utility/String/StringUtility.h"
 
 //===============================================================================
+// ファイル読み込み便利関数
+//===============================================================================
+#include "Utility/File/Definition/Constant/FileUtilityConstant.h"
+#include "Utility/File/FileUtility.h"
+
+//===============================================================================
+// json変便利関数
+//===============================================================================
+#include "Utility/Json/JsonUtility.h"
+
+//===============================================================================
 // ウィンドウクラス
 //===============================================================================
 #include "Window/Definition/Tag/WindowTag.h"
 #include "Window/Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
+#include "Window/Converter/Json/WindowJsonConverter.h"
 #include "Window/Window.h"
