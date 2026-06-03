@@ -19,7 +19,7 @@ namespace FWK::Utility
 		// 文字列が空ならa_jsonが配列かどうかの結果を返す
 		if (a_key.empty()) { return a_json.is_array(); }
 
-		// もしキーが含まれているがa_jsonに含まれていな得ればreturn
+		// もしキーが含まれているがa_jsonに含まれていなければreturn
 		if (!a_json.contains(a_key)) { return false; }
 
 		// キーが含まれていればa_json[a_key.data()]が配列なのかどうかの結果を返す

@@ -4,7 +4,7 @@ void FWK::Converter::FPSControllerJsonConverter::Deserialize(const nlohmann::jso
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const float l_targetFPS = a_rootJson.value(k_targetFPSJsonKey, a_fpsController.GetVALDefaultFPS());
+	const float l_targetFPS = a_rootJson.value(k_targetFPSJsonKey, FPSController::GetVALDefaultFPS());
 
 	a_fpsController.SetTargetFPS(l_targetFPS);
 }

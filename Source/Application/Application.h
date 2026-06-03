@@ -21,7 +21,7 @@ private:
 	void INIT(FWK::Graphics::GraphicsManager& a_graphicsManager);
 
 	void LoadCONFIG    ();
-	void PostLoadCONFIG();
+	void PostLoadCONFIG(FWK::Graphics::GraphicsManager& a_graphicsManager);
 
 	bool BeginFrame();
 	void EndFrame  ();

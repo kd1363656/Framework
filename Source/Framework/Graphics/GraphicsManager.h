@@ -11,10 +11,10 @@ namespace FWK::Graphics
 		 GraphicsManager()          = default;
 		~GraphicsManager() override = default;
 
-
 	public:
 
-		void INIT();
+		void INIT		   ();
+		bool PostLoadCONFIG();
 		
 	private:
 		
@@ -22,5 +22,7 @@ namespace FWK::Graphics
 		bool EnableDebugLayer() const;
 #endif
 
+		Factory m_factory = {};
+		Device  m_device  = {};
 	};
 }

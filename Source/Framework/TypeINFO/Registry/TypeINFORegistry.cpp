@@ -13,7 +13,7 @@ const FWK::Struct::TypeINFO* FWK::TypeINFORegistry::FindByName(const std::string
 {
 	const auto& l_itr = m_typeINFONameMap.find(a_name);
 
-	// 該当する名前の型情報を取得できな蹴ればreturn;
+	// 該当する名前の型情報を取得できなければreturn;
 	if (l_itr == m_typeINFONameMap.end()) { return nullptr; }
 
 	return l_itr->second;
@@ -22,7 +22,7 @@ const FWK::Struct::TypeINFO* FWK::TypeINFORegistry::FindByID(const TypeAlias::St
 {
 	const auto& l_itr = m_typeINFOStaticTypeIDMap.find(a_staticTypeID);
 
-	// 該当するStaticIDの型情報を取得できな蹴ればreturn;
+	// 該当するStaticIDの型情報を取得できなければreturn;
 	if (l_itr == m_typeINFOStaticTypeIDMap.end()) { return nullptr; }
 
 	return l_itr->second;

@@ -1,5 +1,13 @@
 ﻿#include "GraphicsManager.h"
 
+bool FWK::Graphics::GraphicsManager::PostLoadCONFIG()
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory.Create(),			"ファクトリーの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),	"デバイスの作成処理に失敗しました。", false);
+
+	return true;
+}
+
 void FWK::Graphics::GraphicsManager::INIT()
 {
 #if defined(_DEBUG)

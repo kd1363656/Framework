@@ -33,7 +33,7 @@ void Application::Execute()
 	LoadCONFIG();
 
 	// ロードし終わった後の処理を実行(ウィンドウ生成など)
-	PostLoadCONFIG();
+	PostLoadCONFIG(l_graphicsManager);
 
 	while (true)
 	{
@@ -71,9 +71,11 @@ void Application::LoadCONFIG()
 	m_fpsController.LoadCONFIG();
 }
 
-void Application::PostLoadCONFIG()
+void Application::PostLoadCONFIG(FWK::Graphics::GraphicsManager& a_graphicsManager)
 {
 	m_window.PostLoadCONFIG(k_windowClassName, k_titleName);
+
+	FWK_ASSERT_RETURN_IF_FAILED(!a_graphicsManager.PostLoadCONFIG(), "設定を読み込んだ後の処理に失敗しました。");
 }
 
 bool Application::BeginFrame()

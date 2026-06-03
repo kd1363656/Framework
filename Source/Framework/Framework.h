@@ -31,7 +31,7 @@
 
 // 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
-#include "TypeINFO/Definition/Macros/TypeInfoTagMacros.h"
+#include "TypeINFO/Definition/Macros/TypeINFOTagMacros.h"
 
 // タグ用TypeAlias
 #include "TypeINFO/Definition/Tag/Type/Alias/TagTypeAlias.h"
@@ -58,7 +58,7 @@
 #include "Utility/File/FileUtility.h"
 
 //===============================================================================
-// json変便利関数
+// json変換便利関数
 //===============================================================================
 #include "Utility/Json/JsonUtility.h"
 
@@ -82,4 +82,9 @@
 //===============================================================================
 // グラフィックスマネージャー
 #include "Graphics/Definition/Type/Alias/GraphicsManagerTypeAlias.h"
+
+// グラフィックスデバイス管理クラス
+#include "Graphics/Hardware/Factory.h"
+#include "Graphics/Hardware/Device.h"
+
 #include "Graphics/GraphicsManager.h"

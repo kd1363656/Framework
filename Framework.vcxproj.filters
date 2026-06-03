@@ -154,6 +154,9 @@
     <Filter Include="Source\Framework\Graphics\Definition\Type\Alias">
       <UniqueIdentifier>{2efd8b22-a34e-40d6-a8ec-43b8e6fc638e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware">
+      <UniqueIdentifier>{fed15afe-7e72-4503-b11c-b36825672938}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -195,7 +198,7 @@
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOMacros.h">
       <Filter>Source\Framework\TypeINFO\Definition\Macros</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeInfoTagMacros.h">
+    <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOTagMacros.h">
       <Filter>Source\Framework\TypeINFO\Definition\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h">
@@ -252,6 +255,12 @@
     <ClInclude Include="Source\Framework\Graphics\Definition\Type\Alias\GraphicsManagerTypeAlias.h">
       <Filter>Source\Framework\Graphics\Definition\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Device.h">
+      <Filter>Source\Framework\Graphics\Hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h">
+      <Filter>Source\Framework\Graphics\Hardware</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -277,6 +286,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\GraphicsManager.cpp">
       <Filter>Source\Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Hardware\Device.cpp">
+      <Filter>Source\Framework\Graphics\Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp">
+      <Filter>Source\Framework\Graphics\Hardware</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

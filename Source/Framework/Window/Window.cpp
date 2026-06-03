@@ -1,6 +1,6 @@
 ﻿#include "Window.h"
 
-// IMGUIのWind32用メッセージ処理関数
+// IMGUIのWin32用メッセージ処理関数
 // ImGui_ImplWin32_WndProcHandler(ウィンドウハンドル、
 //								  Windowsメッセージ、
 //								  WPARAM,
