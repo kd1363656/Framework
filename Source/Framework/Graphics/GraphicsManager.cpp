@@ -14,12 +14,18 @@ void FWK::Graphics::GraphicsManager::LoadCONFIG()
 
 	m_graphicsManagerJsonConverter.Deserialize(l_rootJson, *this);
 }
-bool FWK::Graphics::GraphicsManager::PostLoadCONFIG()
+bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory.Create(),			"ファクトリーの作成に失敗しました。",   false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),	"デバイスの作成処理に失敗しました。",   false);
-	
-	m_renderer.PostDeserialize(m_device);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory.Create(),							"ファクトリーの作成に失敗しました。",					        false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),					"デバイスの作成処理に失敗しました。",					        false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_resourceContext.PostDeserialize(m_device), "リソースコンテキストのデシリアライズ後の処理に失敗しました。", false);
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderer.PostDeserialize(m_device, 
+									  a_window,
+									  m_factory,
+									  m_resourceContext.GetMutableREFRTVDescriptorPool()),
+									  "レンダラーのデシリアライズ後の処理に失敗しました。",
+									  false);
 
 	return true;
 }
@@ -38,6 +44,23 @@ void FWK::Graphics::GraphicsManager::SaveCONFIG() const
 	const auto& l_rootJson = m_graphicsManagerJsonConverter.Serialize(*this);
 
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
+}
+
+void FWK::Graphics::GraphicsManager::ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest)
+{
+	// window側でサイズ変更が起きていない場合は、何もしない
+	// 最小化中はクライアント領域が0になることがある
+	// この状態でSwapChainやRenderTargetを作り直すと、0サイズのGPUリソース作成になって失敗してしまう。
+	if (!a_windowResizeRequest.m_isRequested ||
+		a_windowResizeRequest.m_isMinimized) 
+	{
+		return; 
+	}
+
+	// ResizeBuffers()の前に、Rendererが待つDirectCommandList側のBackBuffer参照を外す、
+	// 前フレームのResourceBarrierなどがコマンドリスト内部に残っていると、
+	// SwapChain::ReleaseBackBufferList()でComPtrをResetしてもResizeBuffers()が失敗することがある
+	m_renderer.Resize(m_device, a_windowResizeRequest.m_clientSize, m_resourceContext.GetMutableREFRTVDescriptorPool());
 }
 
 #if defined(_DEBUG)

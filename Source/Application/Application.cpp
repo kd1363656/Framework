@@ -34,13 +34,16 @@ void Application::Execute()
 	l_graphicsManager.LoadCONFIG();
 
 	PostLoadCONFIG					();
-	l_graphicsManager.PostLoadCONFIG();
+	l_graphicsManager.PostLoadCONFIG(m_window);
 
 	while (true)
 	{
 		// ウィンドウメッセージやアプリケーションを終了するかの処理をしているので
 		// falseが戻り値ならbreakする
 		if (!BeginFrame()) { break; }
+
+		// ウィンドウのリサイズ通知が来ていたらリサイズ処理を行う
+		l_graphicsManager.ProcessWindowResizeRequest(m_window.GetREFResizeRequest());
 
 		// リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
 		ClearWindowResizeRequest();
@@ -100,6 +103,12 @@ void Application::EndFrame()
 	UpdateWindowTitleBar();
 }
 
+void Application::SaveCONFIG() const
+{
+	m_window.SaveCONFIG		  ();
+	m_fpsController.SaveCONFIG();
+}
+
 void Application::ClearWindowResizeRequest()
 {
 	m_window.ClearResizeRequest();
@@ -112,12 +121,6 @@ bool Application::CanUpdateFrame() const
 	if (m_window.IsMinimized()) { return false; }
 
 	return true;
-}
-
-void Application::SaveCONFIG() const
-{
-	m_window.SaveCONFIG		  ();
-	m_fpsController.SaveCONFIG();
 }
 
 void Application::UpdateWindowTitleBar() const

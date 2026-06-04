@@ -24,11 +24,11 @@ private:
 	bool BeginFrame();
 	void EndFrame  ();
 
+	void SaveCONFIG() const;
+
 	void ClearWindowResizeRequest();
 
 	bool CanUpdateFrame() const;
-
-	void SaveCONFIG() const;
 
 	void UpdateWindowTitleBar() const;
 

@@ -6,9 +6,17 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 
 	// フレームリソースのデシリアライズ
 	// json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復興時にCount側へ展開する
-	if (a_rootJson.contains(k_frameResourceJsonKey))
+	const auto& l_frameResourceJson = a_rootJson.value(k_frameResourceJsonKey, nlohmann::json{});
+	const auto& l_swapChainJson		= a_rootJson.value(k_swapChainJsonKey,	   nlohmann::json{});
+
+	if (!l_frameResourceJson.is_null())
 	{
-		DeserializeFrameResourceList(a_rootJson[k_frameResourceJsonKey], a_renderer);
+		DeserializeFrameResourceList(l_frameResourceJson, a_renderer);
+	}
+
+	if (!l_swapChainJson.is_null())
+	{
+		DeserializeSwapChain(l_swapChainJson, a_renderer);
 	}
 }
 
@@ -19,6 +27,9 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 	// フレームリソースのシリアライズ
 	// 同じ設定を持つFrameResourceを個別にすべて保存せず、Count + Template形式で保存
 	l_rootJson[k_frameResourceJsonKey] = SerializeFrameResourceList(a_renderer);
+
+	// スワップチェインのシリアライズ
+	l_rootJson[k_swapChainJsonKey] = SerializeSwapChain(a_renderer);
 
 	return l_rootJson;
 }
@@ -46,6 +57,14 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 
 		a_renderer.AddFrameResource(l_frameResource);
 	}
+}
+void FWK::Converter::RendererJsonConverter::DeserializeSwapChain(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
+{
+	if (a_rootJson.is_null()) { return; }
+
+	auto& l_swapChain = a_renderer.GetMutableREFSwapChain();
+
+	l_swapChain.Deserialize(a_rootJson);
 }
 
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const
@@ -77,4 +96,10 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList
 	l_rootJson[k_frameResourceTemplateJsonKey] = l_frameResource->Serialize();
 
 	return l_rootJson;
+}
+nlohmann::json FWK::Converter::RendererJsonConverter::SerializeSwapChain(const Graphics::Renderer& a_renderer) const
+{
+	const auto& l_swapChain = a_renderer.GetREFSwapChain();
+
+	return l_swapChain.Serialize();
 }

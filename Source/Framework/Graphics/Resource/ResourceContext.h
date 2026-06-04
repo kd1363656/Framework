@@ -9,7 +9,8 @@ namespace FWK::Graphics
 		 ResourceContext() = default;
 		~ResourceContext() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+		void Deserialize    (const nlohmann::json& a_rootJson);
+		bool PostDeserialize(const Device& a_device);
 
 		nlohmann::json Serialize() const;
 

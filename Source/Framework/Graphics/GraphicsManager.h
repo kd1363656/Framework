@@ -15,12 +15,14 @@ namespace FWK::Graphics
 
 		void INIT		   ();
 		void LoadCONFIG	   ();
-		bool PostLoadCONFIG();
+		bool PostLoadCONFIG(const Window& a_window);
 		
 		void BeginFrame();
 		void EndFrame  ();
 
 		void SaveCONFIG() const;
+
+		void ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest);
 
 		const auto& GetREFRenderer		 () const { return m_renderer; }
 		const auto& GetREFResourceContext() const { return m_resourceContext; }

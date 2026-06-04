@@ -95,9 +95,6 @@ namespace FWK
 		static constexpr UINT k_msgFilterMAX		  = 0U;
 		static constexpr UINT k_wmCreateHandledResult = 0U;
 
-		static constexpr UINT k_invalidClientWidth  = 0U;
-		static constexpr UINT k_invalidClientHeight = 0U;
-
 		static constexpr int k_classExtraBytes  = 0;
 		static constexpr int k_windowExtraBytes = 0;
 

@@ -9,19 +9,33 @@ namespace FWK::Graphics
 		 Renderer() = default;
 		~Renderer() = default;
 
-		void Deserialize    (const nlohmann::json& a_rootJson);
-		void PostDeserialize(const Device&		   a_device);
+		void Deserialize(const nlohmann::json& a_rootJson);
+
+		bool PostDeserialize(const Device&						 a_device, 
+							 const Window&						 a_window,
+							 const Factory&						 a_factory,
+								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		
 		void BeginFrame();
 		void EndFrame  ();
 
 		nlohmann::json Serialize() const;
 
+		void Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
+
 		void AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource);
 
 		const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
+		
+		const auto& GetREFSwapChain() const { return m_swapChain; }
+
+		auto& GetMutableREFSwapChain() { return m_swapChain; }
 
 	private:
+
+		void DecideNextFrameUseFrameResource();
+
+		bool PrepareForSwapChainResize();
 
 		static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
 		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
@@ -32,6 +46,8 @@ namespace FWK::Graphics
 
 		DirectCommandQueue m_directCommandQueue = {};
 		DirectCommandList  m_directCommandList  = {};
+
+		SwapChain m_swapChain = {};
 
 		Converter::RendererJsonConverter m_jsonConverter = {};
 

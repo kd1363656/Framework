@@ -17,6 +17,8 @@ namespace FWK::Graphics
 					const DirectCommandQueue&			a_directCommandQueue,
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
+		void PostCreateSetup(const HWND& a_hwnd, const Factory& a_factory) const;
+
 		void Present() const;
 
 		nlohmann::json Serialize() const;
@@ -49,9 +51,6 @@ namespace FWK::Graphics
 		void ReleaseBackBufferList(TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
 		bool IsValidBackBufferSize(const Struct::ClientSize& a_clientSize) const;
-
-		static constexpr std::uint32_t k_invalidBackBufferWidth  = 0U;
-		static constexpr std::uint32_t k_invalidBackBufferHeight = 0U;
 
 		static constexpr UINT k_defaultBackBufferNUM = 2U;
 		static constexpr UINT k_invalidBackBufferNUM = std::numeric_limits<UINT>::max();
