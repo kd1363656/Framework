@@ -26,7 +26,7 @@ namespace FWK::Converter
 		
 		static constexpr std::string_view k_frameResourceJsonKey         = "FrameResource";
 		static constexpr std::string_view k_frameResourceCountJsonKey    = "Count";
-		static constexpr std::string_view k_frameResourceTemplateJsonKey = "Tmplate";
+		static constexpr std::string_view k_frameResourceTemplateJsonKey = "Template";
 
 		static constexpr std::size_t k_defaultFrameResourceCount = 4ULL;
 		static constexpr std::size_t k_emptyFrameResourceCount   = 0ULL;

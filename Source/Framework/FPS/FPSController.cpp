@@ -6,7 +6,7 @@ void FWK::FPSController::LoadCONFIG()
 
 	if (l_rootJson.is_null()) { return; }
 
-	m_fpsControllerJsonConverter.Deserialize(l_rootJson, *this);
+	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
 
 void FWK::FPSController::BeginFrame()
@@ -39,7 +39,7 @@ void FWK::FPSController::EndFrame()
 
 void FWK::FPSController::SaveCONFIG() const
 {
-	const auto& l_rootJson = m_fpsControllerJsonConverter.Serialize(*this);
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
 
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }

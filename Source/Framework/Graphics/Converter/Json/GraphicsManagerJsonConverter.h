@@ -20,6 +20,7 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_rendererJsonKey = "Renderer";
+		static constexpr std::string_view k_resourceContextJsonKey = "ResourceContext";
+		static constexpr std::string_view k_rendererJsonKey		   = "Renderer";
 	};
 }

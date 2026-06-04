@@ -169,12 +169,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition">
       <UniqueIdentifier>{4be7af8c-27ea-4252-9f05-8aec40188f76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
-      <UniqueIdentifier>{32320a3e-b0c9-4af3-a746-4611a5fb7c42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
-      <UniqueIdentifier>{b5e9c439-eece-4bac-b3a3-4ec29e0b90e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Struct">
       <UniqueIdentifier>{7e635020-9c7a-4f4c-bd77-f2f9c477fe32}</UniqueIdentifier>
     </Filter>
@@ -234,6 +228,51 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Converter\Json">
       <UniqueIdentifier>{486de42d-0071-4df7-ae09-77e945f9dff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator">
+      <UniqueIdentifier>{fedb1182-1eb3-4196-a6da-369515a67f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter">
+      <UniqueIdentifier>{81e1848c-057c-4e71-9325-d08f41cb4a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json">
+      <UniqueIdentifier>{359a66c8-f51e-4d53-a8dc-29fd2f2183c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Converter">
+      <UniqueIdentifier>{8804748e-0e9d-4a16-af81-f2ca1ae2d52a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json">
+      <UniqueIdentifier>{ad0800f2-51a1-4e1d-8821-c7eb24f9c29b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Converter">
+      <UniqueIdentifier>{65b77c1b-8b49-4435-b36a-20f70bbabc3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Converter\Json">
+      <UniqueIdentifier>{74ae3085-08e0-407b-b974-e71111e6f0e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\SwapChain">
+      <UniqueIdentifier>{45ffbd18-01aa-44c1-ae16-5e687d026f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\SwapChain\Definition">
+      <UniqueIdentifier>{87b57aa7-b577-4e01-8eac-c199c4cb5efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct">
+      <UniqueIdentifier>{a76b834b-d2de-4f0b-8c26-1d769cf97795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition">
+      <UniqueIdentifier>{31cc8e74-4a60-4d86-8c77-6af42284934a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type">
+      <UniqueIdentifier>{5d9df124-4545-4707-b8cf-1e4eda6cb729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias">
+      <UniqueIdentifier>{cf74d719-af14-4238-b7e7-7a58193ba683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\SwapChain\Converter">
+      <UniqueIdentifier>{c1ab6510-68a2-4362-afb8-7ac59a5ea8b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json">
+      <UniqueIdentifier>{9cb42404-0610-420b-a708-4a785f67d199}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -345,9 +384,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Struct\DescriptorHeapStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Struct</Filter>
     </ClInclude>
@@ -392,6 +428,33 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\DescriptorPool.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json\DescriptorPoolJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h">
+      <Filter>Source\Framework\Graphics\Render\SwapChain</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct\SwapChainStruct.h">
+      <Filter>Source\Framework\Graphics\Render\SwapChain\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\SwapChain\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +526,21 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.cpp">
+      <Filter>Source\Framework\Graphics\Render\SwapChain</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\SwapChain\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

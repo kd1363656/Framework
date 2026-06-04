@@ -22,9 +22,11 @@ namespace FWK::Graphics
 
 		void SaveCONFIG() const;
 
-		const auto& GetREFRenderer() const { return m_renderer; }
+		const auto& GetREFRenderer		 () const { return m_renderer; }
+		const auto& GetREFResourceContext() const { return m_resourceContext; }
 
-		auto& GetMutableREFRenderer() { return m_renderer; }
+		auto& GetMutableREFRenderer		  () { return m_renderer; }
+		auto& GetMutableREFResourceContext() { return m_resourceContext; }
 
 	private:
 		

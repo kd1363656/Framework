@@ -5,8 +5,6 @@ void FWK::Graphics::GraphicsManager::INIT()
 #if defined(_DEBUG)
 	FWK_ASSERT_RETURN_IF_FAILED(!EnableDebugLayer(), "デバッグレイヤーの有効化に失敗しました。");
 #endif
-
-	m_renderer.INIT();
 }
 void FWK::Graphics::GraphicsManager::LoadCONFIG()
 {

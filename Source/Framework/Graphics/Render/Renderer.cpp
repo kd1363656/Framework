@@ -1,28 +1,10 @@
 ﻿#include "Renderer.h"
 
-void FWK::Graphics::Renderer::INIT()
-{
-	for (std::size_t l_i = 0ULL; l_i < 3; ++l_i)
-	{
-		const auto& l_frameResource = std::make_shared<FrameResource>();
-
-		l_frameResource->INIT();
-
-		m_frameResourceList.emplace_back(l_frameResource);
-	}
-
-	for (const auto& l_frameResource : m_frameResourceList)
-	{
-		if (!l_frameResource) { continue; }
-
-		l_frameResource->INIT();
-	}
-}
 void FWK::Graphics::Renderer::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_rendererJsonConverter.Deserialize(a_rootJson, *this);
+	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 void FWK::Graphics::Renderer::PostDeserialize(const Device& a_device)
 {
@@ -83,7 +65,7 @@ void FWK::Graphics::Renderer::EndFrame()
 
 nlohmann::json FWK::Graphics::Renderer::Serialize() const
 {
-	return m_rendererJsonConverter.Serialize(*this);
+	return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)

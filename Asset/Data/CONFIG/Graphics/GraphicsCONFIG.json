@@ -1,0 +1,15 @@
+{
+    "Renderer": {
+        "FrameResource": {
+            "Count": 3,
+            "Template": null
+        }
+    },
+    "ResourceContext": {
+        "RTVDescriptorPool": {
+            "DescriptorHeapIndexAllocator": {
+                "DescriptorHeapIndexAllocatorCapacity": 10000
+            }
+        }
+    }
+}

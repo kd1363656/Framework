@@ -97,11 +97,6 @@ void FWK::Window::SaveCONFIG() const
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-bool FWK::Window::HasHWND() const
-{
-	return m_hwnd ? true : false;
-}
-
 bool FWK::Window::IsMinimized() const
 {
 	return m_resizeRequest.m_isMinimized;
@@ -340,8 +335,8 @@ void FWK::Window::SetupNormalWindowClientSize()
 	// 欲しいクライアント領域からウィンドウ全体サイズを逆算する
 	FWK_ASSERT_RETURN_IF_FAILED(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
 
-	const int l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
-	const int l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
+	const auto l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
+	const auto l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
 
 	SetWindowPos(m_hwnd,
 				 nullptr,

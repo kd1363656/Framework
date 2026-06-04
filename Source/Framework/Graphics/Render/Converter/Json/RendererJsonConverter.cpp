@@ -30,16 +30,19 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 	const auto& l_frameResourceCount		= a_rootJson.value(k_frameResourceCountJsonKey,    k_defaultFrameResourceCount);
 	const auto& l_frameResourceTemplateJson = a_rootJson.value(k_frameResourceTemplateJsonKey, nlohmann::json());
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_frameResourceTemplateJson.is_null(),			    "フレームリソースのjsonデータが取得できません、デシリアライズ処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!l_frameResourceCount == k_emptyFrameResourceCount, "フレームリソースの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(l_frameResourceCount == k_emptyFrameResourceCount, "フレームリソースの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
 
-	for (std::size_t l_i = 0ULL; l_i < l_frameResourceTemplateJson; ++l_i)
+	for (std::size_t l_i = 0ULL; l_i < l_frameResourceCount; ++l_i)
 	{
 		const auto& l_frameResource = std::make_shared<Graphics::FrameResource>();
 
 		// 初期化してからデシリアライズ
-		l_frameResource->INIT		();
-		l_frameResource->Deserialize(l_frameResourceTemplateJson);
+		l_frameResource->INIT();
+
+		if (!l_frameResourceTemplateJson.is_null())
+		{
+			l_frameResource->Deserialize(l_frameResourceTemplateJson);
+		}
 
 		a_renderer.AddFrameResource(l_frameResource);
 	}
@@ -48,7 +51,7 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const
 {
 	// フレームリソースリストの保存
-	auto l_rootJson = nlohmann::json::array();
+	nlohmann::json l_rootJson = {};
 
 	const auto& l_frameResourceList = a_renderer.GetREFFrameResourceList();
 

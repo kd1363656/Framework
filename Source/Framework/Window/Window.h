@@ -18,8 +18,6 @@ namespace FWK
 
 		void SaveCONFIG() const;
 
-		bool HasHWND() const;
-
 		bool IsMinimized() const;
 
 		void SetupWindowStyleTag(const TypeAlias::TagType a_windowStyleTag);

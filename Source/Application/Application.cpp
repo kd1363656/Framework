@@ -62,7 +62,8 @@ void Application::Execute()
 	}
 
 	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
-	SaveCONFIG();
+	SaveCONFIG					();
+	l_graphicsManager.SaveCONFIG();
 }
 
 void Application::LoadCONFIG()
@@ -85,7 +86,7 @@ bool Application::BeginFrame()
 
 	// ウィンドウズハンドルを所持していないかエスケープキーを押されたらreturn
 	if (GetAsyncKeyState(VK_ESCAPE) ||
-		!m_window.HasHWND())
+		!m_window.GetREFHWND())
 	{
 		return false;
 	}

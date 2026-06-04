@@ -109,17 +109,31 @@
 // フレームリソース
 #include "Graphics/Render/Frame/FrameResource.h"
 
+// スワップチェイン
+#include "Graphics/Render/SwapChain/Definition/Struct/SwapChainStruct.h"
+#include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
+#include "Graphics/Render/SwapChain/SwapChain.h"
+
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"
 #include "Graphics/Render/Renderer.h"
 
 // ディスクリプタヒープ
-#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Struct/DescriptorHeapStruct.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 
+// ディスクリプタヒープアロケーター
+#include "Graphics/Resource/Descriptor/Heap/Allocator/Converter/Json/DescriptorHeapIndexAllocatorJsonConverter.h"
+#include "Graphics/Resource/Descriptor/Heap/Allocator/DescriptorHeapIndexAllocator.h"
+
+// ディスクリプタプール
+#include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
+#include "Graphics/Resource/Descriptor/DescriptorPool.h"
+#include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
+
 // リソースコンテキスト
+#include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 
 // グラフィックスマネージャー

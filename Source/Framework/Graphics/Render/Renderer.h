@@ -9,7 +9,6 @@ namespace FWK::Graphics
 		 Renderer() = default;
 		~Renderer() = default;
 
-		void INIT		    ();
 		void Deserialize    (const nlohmann::json& a_rootJson);
 		void PostDeserialize(const Device&		   a_device);
 		
@@ -34,7 +33,7 @@ namespace FWK::Graphics
 		DirectCommandQueue m_directCommandQueue = {};
 		DirectCommandList  m_directCommandList  = {};
 
-		Converter::RendererJsonConverter m_rendererJsonConverter = {};
+		Converter::RendererJsonConverter m_jsonConverter = {};
 
 		std::size_t m_currentFrameResourceIndex = k_initialFrameResourceIndex;
 	};
