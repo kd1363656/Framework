@@ -1,20 +1,37 @@
 ﻿#include "GraphicsManager.h"
 
-bool FWK::Graphics::GraphicsManager::PostLoadCONFIG()
-{
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory.Create(),			"ファクトリーの作成に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),	"デバイスの作成処理に失敗しました。", false);
-
-	return true;
-}
-
 void FWK::Graphics::GraphicsManager::INIT()
 {
 #if defined(_DEBUG)
 	FWK_ASSERT_RETURN_IF_FAILED(!EnableDebugLayer(), "デバッグレイヤーの有効化に失敗しました。");
 #endif
+
+	m_renderer.INIT();
+}
+void FWK::Graphics::GraphicsManager::LoadCONFIG()
+{
+	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
+
+	if (l_rootJson.is_null()) { return; }
+
+	m_graphicsManagerJsonConverter.Deserialize(l_rootJson, *this);
+}
+bool FWK::Graphics::GraphicsManager::PostLoadCONFIG()
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory.Create(),			"ファクトリーの作成に失敗しました。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),	"デバイスの作成処理に失敗しました。",   false);
+	
+	m_renderer.PostDeserialize(m_device);
+
+	return true;
 }
 
+void FWK::Graphics::GraphicsManager::SaveCONFIG() const
+{
+	const auto& l_rootJson = m_graphicsManagerJsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
+}
 
 #if defined(_DEBUG)
 bool FWK::Graphics::GraphicsManager::EnableDebugLayer() const

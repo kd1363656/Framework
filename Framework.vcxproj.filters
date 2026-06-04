@@ -214,6 +214,27 @@
     <Filter Include="Source\Framework\Graphics\Command\Queue\Direct">
       <UniqueIdentifier>{68f52b3f-3dc1-4139-82d5-532d2845b6f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render">
+      <UniqueIdentifier>{f2ee5fc1-9769-4c18-b2cd-c6e6f3038211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame">
+      <UniqueIdentifier>{466bba3f-c7f9-497c-b49c-dfa673437919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG\Graphics">
+      <UniqueIdentifier>{e18462ed-db78-455b-ad0c-6b74cdccc63b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Converter">
+      <UniqueIdentifier>{441b762c-80d0-44fc-a3c0-d58d86fcf2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Converter\Json">
+      <UniqueIdentifier>{7569ca62-efdf-4940-8ab9-fbe625e1c363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Converter">
+      <UniqueIdentifier>{e0b82556-de07-4aea-b043-59e2dd320fea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Converter\Json">
+      <UniqueIdentifier>{486de42d-0071-4df7-ae09-77e945f9dff4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -360,6 +381,18 @@
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.h">
       <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h">
+      <Filter>Source\Framework\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h">
+      <Filter>Source\Framework\Graphics\Render\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Converter\Json\GraphicsManagerJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -419,6 +452,18 @@
     <ClCompile Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.cpp">
       <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Renderer.cpp">
+      <Filter>Source\Framework\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Converter\Json\GraphicsManagerJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Converter\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -431,6 +476,9 @@
     </None>
     <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json">
       <Filter>Asset\Data\CONFIG\FPS</Filter>
+    </None>
+    <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
+      <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
   </ItemGroup>
 </Project>

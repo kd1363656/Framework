@@ -106,6 +106,13 @@
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 #include "Graphics/Command/Queue/Direct/DirectCommandQueue.h"
 
+// フレームリソース
+#include "Graphics/Render/Frame/FrameResource.h"
+
+// レンダーラー
+#include "Graphics/Render/Converter/Json/RendererJsonConverter.h"
+#include "Graphics/Render/Renderer.h"
+
 // ディスクリプタヒープ
 #include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
@@ -115,4 +122,6 @@
 // リソースコンテキスト
 #include "Graphics/Resource/ResourceContext.h"
 
+// グラフィックスマネージャー
+#include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 
 #include "Graphics/GraphicsManager.h"
