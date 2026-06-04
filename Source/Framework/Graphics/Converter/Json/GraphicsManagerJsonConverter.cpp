@@ -4,8 +4,10 @@ void FWK::Converter::GraphicsManagerJsonConverter::Deserialize(const nlohmann::j
 {
 	if (a_rootJson.is_null()) { return; }
 
+	const auto& l_rendererRootJson = a_rootJson.value(k_rendererJsonKey, nlohmann::json());
+
 	// レンダラーのデシリアライズ
-	if (a_rootJson.contains(k_rendererJsonKey))
+	if (!l_rendererRootJson.is_null())
 	{
 		auto& l_renderer = a_graphicsManager.GetMutableREFRenderer();
 

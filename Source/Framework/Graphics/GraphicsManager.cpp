@@ -26,6 +26,15 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG()
 	return true;
 }
 
+void FWK::Graphics::GraphicsManager::BeginFrame()
+{
+	m_renderer.BeginFrame();
+}
+void FWK::Graphics::GraphicsManager::EndFrame()
+{
+	m_renderer.EndFrame();
+}
+
 void FWK::Graphics::GraphicsManager::SaveCONFIG() const
 {
 	const auto& l_rootJson = m_graphicsManagerJsonConverter.Serialize(*this);

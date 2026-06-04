@@ -9,10 +9,10 @@ void FWK::Graphics::FrameResource::INIT()
 }
 bool FWK::Graphics::FrameResource::Create(const Device& a_device)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator,				  "ダイレクトコマンドアロケータが無効です。",				false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator,				   "ダイレクトコマンドアロケータが無効です。",				 false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
 
-	return false;
+	return true;
 }
 void FWK::Graphics::FrameResource::Deserialize(const nlohmann::json& a_rootJson)
 {

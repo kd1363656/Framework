@@ -28,12 +28,13 @@ void Application::Execute()
 {
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 
-	INIT(l_graphicsManager);
+	l_graphicsManager.INIT();
 
-	LoadCONFIG();
+	LoadCONFIG                  ();
+	l_graphicsManager.LoadCONFIG();
 
-	// ロードし終わった後の処理を実行(ウィンドウ生成など)
-	PostLoadCONFIG(l_graphicsManager);
+	PostLoadCONFIG					();
+	l_graphicsManager.PostLoadCONFIG();
 
 	while (true)
 	{
@@ -41,8 +42,8 @@ void Application::Execute()
 		// falseが戻り値ならbreakする
 		if (!BeginFrame()) { break; }
 
-		// リサイズ要求があればここで処理を行う
-		ProcessResizeRequest();
+		// リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
+		ClearWindowResizeRequest();
 
 		// 最小化中など、描画やゲームの更新を進めていけない状態なら
 		// アプリは終了せずに、次のメッセージ処理へ進む
@@ -53,16 +54,15 @@ void Application::Execute()
 			continue; 
 		}
 
+		// 描画処理
+		l_graphicsManager.BeginFrame();
+		l_graphicsManager.EndFrame  ();
+
 		EndFrame();
 	}
 
 	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
 	SaveCONFIG();
-}
-
-void Application::INIT(FWK::Graphics::GraphicsManager& a_graphicsManager)
-{
-	a_graphicsManager.INIT();
 }
 
 void Application::LoadCONFIG()
@@ -71,11 +71,9 @@ void Application::LoadCONFIG()
 	m_fpsController.LoadCONFIG();
 }
 
-void Application::PostLoadCONFIG(FWK::Graphics::GraphicsManager& a_graphicsManager)
+void Application::PostLoadCONFIG()
 {
 	m_window.PostLoadCONFIG(k_windowClassName, k_titleName);
-
-	FWK_ASSERT_RETURN_IF_FAILED(!a_graphicsManager.PostLoadCONFIG(), "設定を読み込んだ後の処理に失敗しました。");
 }
 
 bool Application::BeginFrame()
@@ -101,7 +99,7 @@ void Application::EndFrame()
 	UpdateWindowTitleBar();
 }
 
-void Application::ProcessResizeRequest()
+void Application::ClearWindowResizeRequest()
 {
 	m_window.ClearResizeRequest();
 }

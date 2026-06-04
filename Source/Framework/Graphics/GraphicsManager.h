@@ -17,6 +17,9 @@ namespace FWK::Graphics
 		void LoadCONFIG	   ();
 		bool PostLoadCONFIG();
 		
+		void BeginFrame();
+		void EndFrame  ();
+
 		void SaveCONFIG() const;
 
 		const auto& GetREFRenderer() const { return m_renderer; }
