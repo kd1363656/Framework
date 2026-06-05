@@ -274,6 +274,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Definition\Type\Alias">
       <UniqueIdentifier>{e9f766ff-118d-4e78-b459-253998ce6fb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph">
+      <UniqueIdentifier>{ec4b0f48-d3a0-44df-8865-cfb617ac6a74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -456,6 +459,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Type\Alias\ResourceContextTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Definition\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h">
+      <Filter>Source\Framework\Graphics\Render\Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -541,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\SwapChain\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
