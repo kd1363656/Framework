@@ -138,7 +138,7 @@ void FWK::Graphics::Renderer::SetupBackBuffer(const TypeAlias::RTVDescriptorPool
 	m_directCommandList.TransitionResourceBarrier(l_backBuffer.m_backBufferResource, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
 	m_directCommandList.SetupRenderTarget(a_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
-	m_directCommandList.ClearRenderTarget(a_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex, k_renderTargetDefaultClearColor);
+	m_directCommandList.ClearRenderTarget(a_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 }
 
 void FWK::Graphics::Renderer::DecideNextFrameUseFrameResource()

@@ -14,7 +14,7 @@ namespace FWK::Graphics
 		explicit RenderGraphPassBase(const Enum::RenderGraphPassType a_renderGraphPassType);
 		virtual ~RenderGraphPassBase();
 
-		virtual void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Execute(const ResourceContext&, Renderer&) { /*必要に応じてオーバーライドしてください*/ };
 
 		const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
 

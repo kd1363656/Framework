@@ -4,7 +4,7 @@ namespace FWK
 {
 	template <typename Type>
 		requires Concept::IsSmartPTRConcept<Type>
-	class GenericFactory final : public SingletonBase<GenericFactory<Type>>
+	class GenericFactory final : public Utility::SingletonBase<GenericFactory<Type>>
 	{
 	private:
 
@@ -63,7 +63,7 @@ namespace FWK
 		//=========================
 		// シングルトン
 		//=========================
-		friend class SingletonBase<GenericFactory<Type>>;
+		friend class Utility::SingletonBase<GenericFactory<Type>>;
 
 		 GenericFactory()          = default;
 		~GenericFactory() override = default;
