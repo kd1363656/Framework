@@ -5,7 +5,7 @@ FWK::Graphics::DirectCommandList::DirectCommandList() :
 {}
 FWK::Graphics::DirectCommandList::~DirectCommandList() = default;
 
-void FWK::Graphics::DirectCommandList::TransitionResource(const TypeAlias::ComPtr<ID3D12Resource>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
+void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
 {
 	FWK_ASSERT_RETURN_IF_FAILED(a_beforeState == a_afterState, "リソースの状態遷移前と後の遷移状態が全く一緒です、リソースの遷移に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,				   "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
@@ -21,13 +21,30 @@ void FWK::Graphics::DirectCommandList::TransitionResource(const TypeAlias::ComPt
 	// Transition.StateBefore : 切り替える前のリソース状態
 	// Transition.StateAfter  : 切り替えた後のリソース状態
 	// Transition.Subresource : どのサブリソースを遷移対象にするか
-
 	const auto& l_barrier = CD3DX12_RESOURCE_BARRIER::Transition(a_resource.Get(), a_beforeState, a_afterState);
 
 	// リソースバリアを転送
 	// ResourceBarrier(送るバリア数、
 	//				   バリア情報の先頭アドレス)
-	l_directCommandList->ResourceBarrier(k_sendBarrierNUM, &l_barrier);
+	l_directCommandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_barrier);
+}
+
+void FWK::Graphics::DirectCommandList::FlushResourceBarrierTransitionBatch()
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、リソースの一括遷移処理に失敗しました。");
+
+	if (m_resourceBarrierTransitionBatchList.empty()) { return; }
+
+	// リソースバリアを転送
+	// ResourceBarrier(送るバリア数、
+	//				   バリア情報の先頭アドレス)
+	l_directCommandList->ResourceBarrier(static_cast<UINT>(m_resourceBarrierTransitionBatchList.size()), m_resourceBarrierTransitionBatchList.data());
+
+	// リソース遷移が終われば次のフレームでも
+	// 遷移に使う要素をキャッシュしているわけではないのでクリア
+	m_resourceBarrierTransitionBatchList.clear();
 }
 
 void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState)
@@ -47,20 +64,44 @@ void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAl
 	m_resourceBarrierTransitionBatchList.emplace_back(l_barrier);
 }
 
-void FWK::Graphics::DirectCommandList::FlushResourceBarrierTransitionBatch()
+void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex) const
 {
+	FWK_ASSERT_RETURN_IF_FAILED(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "デスクリプタヒープインデックスが無効な値のため、レンダーターゲットの設定し失敗しました。");
+	
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、リソースの一括遷移処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、レンダーターゲットの設定に失敗しました。");
 
-	if (m_resourceBarrierTransitionBatchList.empty()) { return; }
+	const auto& l_handle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
 
-	// リソースバリアを転送
-	// ResourceBarrier(送るバリア数、
-	//				   バリア情報の先頭アドレス)
-	l_directCommandList->ResourceBarrier(static_cast<UINT>(m_resourceBarrierTransitionBatchList.size()), m_resourceBarrierTransitionBatchList.data());
+	// OMステージにレンダーターゲットを設定する関数
+	// OMSetRenderTargets(設定するレンダーターゲット数、
+	//					  レンダーターディスクリプタ配列の先頭アドレス、
+	//					  ディスクリプタが連続は位置かどうか、
+	//					　深度ステンシルビューのアドレス);
+	l_directCommandList->OMSetRenderTargets(k_singleSetupRenderTargetNUM,
+											&l_handle,
+										    FALSE,
+											nullptr);
+}
 
-	// リソース遷移が終われば次のフレームでも
-	// 遷移に使う要素をキャッシュしているわけではないのでクリア
-	m_resourceBarrierTransitionBatchList.clear();
+void FWK::Graphics::DirectCommandList::ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor) const
+{
+	FWK_ASSERT_RETURN_IF_FAILED(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "デスクリプタヒープインデックスが無効な値のため、レンダーターゲットのクリアに失敗しました。");
+
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、レンダーターゲットのクリアに失敗しました。");
+
+	const auto& l_handle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
+
+	// 現在のレンダーターゲットを指定色でクリアする関数
+	// ClearRenderTargetView(クリア対象のRTVハンドル、
+	//						 クリア色RGBA配列、
+	//						 部分クリアする矩形数(0の場合は矩形指定なしとみなし全面クリア)、
+	//						 矩形配列の先頭アドレス);
+	l_directCommandList->ClearRenderTargetView(l_handle,
+											   &a_clearColor.x,
+											   k_allRECTClear,
+											   nullptr);
 }

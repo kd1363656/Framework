@@ -334,8 +334,10 @@ if "$(Configuration)"=="Debug" (
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Constant.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h" />
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />

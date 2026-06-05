@@ -277,6 +277,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph">
       <UniqueIdentifier>{ec4b0f48-d3a0-44df-8865-cfb617ac6a74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Type">
+      <UniqueIdentifier>{182ff4f2-dcc5-4c18-8498-f4bea0bb2775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Alias">
+      <UniqueIdentifier>{fda36f64-1351-49f7-87c7-778739746ad2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -461,6 +467,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Constant.h">
+      <Filter>Source\Framework\Definition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

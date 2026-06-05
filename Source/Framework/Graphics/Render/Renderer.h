@@ -16,7 +16,7 @@ namespace FWK::Graphics
 							 const Factory&						 a_factory,
 								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		
-		void BeginFrame();
+		void BeginFrame(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		void EndFrame  ();
 
 		nlohmann::json Serialize() const;
@@ -33,9 +33,21 @@ namespace FWK::Graphics
 
 	private:
 
+		void ResetCommandObjects(const FrameResource& a_frameResource);
+
+		void SetupBackBuffer(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const;
+
 		void DecideNextFrameUseFrameResource();
 
 		bool PrepareForSwapChainResize();
+
+		static constexpr TypeAlias::Math::Color k_renderTargetDefaultClearColor =
+		{
+			1.0F,
+			0.80F,
+			1.0F,
+			1.0F
+		};
 
 		static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
 		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
@@ -44,10 +56,10 @@ namespace FWK::Graphics
 
 		std::weak_ptr<FrameResource> m_currentFrameResource = {};
 
+		SwapChain m_swapChain = {};
+
 		DirectCommandQueue m_directCommandQueue = {};
 		DirectCommandList  m_directCommandList  = {};
-
-		SwapChain m_swapChain = {};
 
 		Converter::RendererJsonConverter m_jsonConverter = {};
 
