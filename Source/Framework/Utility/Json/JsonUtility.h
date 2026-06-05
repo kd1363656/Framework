@@ -25,40 +25,4 @@ namespace FWK::Utility
 		// キーが含まれていればa_json[a_key.data()]が配列なのかどうかの結果を返す
 		return a_json[a_key].is_array();
 	}
-
-	inline TypeAlias::TagType DeserializeTag(const nlohmann::json& a_json, const std::string_view& a_key)
-	{
-		if (a_json.is_null()) { return Constant::k_invalidStaticTypeID; }
-
-		// jsonからTag名を取得
-		const auto& l_registry = TypeINFORegistry::GetInstance();
-		const auto& l_tagName  = a_json.value                 (a_key, std::string());
-
-		// 取得したタグ名から型情報を検索
-		const auto* l_typeINFO = l_registry.FindByName(l_tagName);
-
-		// もし型情報がnullptrを示すということはTypeTagの取得に失敗したということ
-		if (!l_typeINFO) { return Constant::k_invalidStaticTypeID; }
-
-		return l_typeINFO->k_staticTypeID;
-	}
-
-	inline nlohmann::json SerializeTag(const TypeAlias::TagType  a_tagType, const std::string_view& a_key)
-	{
-		const auto& l_registry = TypeINFORegistry::GetInstance();
-		const auto* l_typeINFO = l_registry.FindByID          (a_tagType);
-
-		if (!l_typeINFO)
-		{
-			return nlohmann::json
-			{ 
-				{ a_key, std::string() } 
-			};
-		}
-
-		return nlohmann::json
-		{
-			{ a_key, l_typeINFO->k_name }
-		};
-	}
 }

@@ -4,16 +4,16 @@ void FWK::Converter::WindowJsonConverter::Deserialize(const nlohmann::json& a_ro
 {
 	if (a_rootJson.is_null()) { return; }
 
-	TypeAlias::TagType l_styleTag = Utility::DeserializeTag(a_rootJson, k_windowStyleTagJsonKey);
+	const Enum::WindowStyle l_windowStyle = a_rootJson.value(k_windowStyleTagJsonKey, Enum::WindowStyle::Normal);
 
-	a_window.SetWindowStyleTag(l_styleTag);
+	a_window.SetWindowStyle(l_windowStyle);
 }
 
 nlohmann::json FWK::Converter::WindowJsonConverter::Serialize(const Window& a_window) const
 {
 	nlohmann::json l_rootJson = {};
 
-	Utility::UpdateJson(l_rootJson, Utility::SerializeTag(a_window.GetVALWindowStyleTag(), k_windowStyleTagJsonKey));
-	
+	l_rootJson[k_windowStyleTagJsonKey] = a_window.GetVALWindowStyle();
+
 	return l_rootJson;
 }

@@ -335,7 +335,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Constant.h" />
-    <ClInclude Include="Source\Framework\Definition\Macros\AssertReturnMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h" />
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
@@ -357,6 +358,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\IRenderGraphPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h" />
@@ -374,12 +378,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOMacros.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOTagMacros.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Struct\TypeINFOStruct.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Concept\IsDerivedBase\IsDerivedTagBaseConcept.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\TagBase.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Type\Alias\TagTypeAlias.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Tag\Utility\TagUtility.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\Alias\TypeINFOTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
@@ -391,8 +390,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h" />
+    <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h" />
-    <ClInclude Include="Source\Framework\Window\Definition\Tag\WindowTag.h" />
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>

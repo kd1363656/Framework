@@ -20,16 +20,16 @@ namespace FWK
 
 		bool IsMinimized() const;
 
-		void SetupWindowStyleTag(const TypeAlias::TagType a_windowStyleTag);
+		void SetupWindowStyle(const Enum::WindowStyle a_windowStyle);
 
-		void SetWindowStyleTag(const TypeAlias::TagType a_set) { m_windowStyleTag = a_set; }
+		void SetWindowStyle(const Enum::WindowStyle a_set) { m_windowStyle = a_set; }
 
 		const auto& GetREFHWND() const { return m_hwnd; }
 
 		const auto& GetREFClientSize   () const { return m_clientSize; }
 		const auto& GetREFResizeRequest() const { return m_resizeRequest; }
 
-		auto GetVALWindowStyleTag() const { return m_windowStyleTag; }
+		auto GetVALWindowStyle() const { return m_windowStyle; }
 
 	private:
 
@@ -112,6 +112,6 @@ namespace FWK
 		Struct::ClientSize			m_clientSize;
 		Struct::WindowResizeRequest m_resizeRequest;
 
-		TypeAlias::TagType m_windowStyleTag;
+		Enum::WindowStyle m_windowStyle;
 	};
 }

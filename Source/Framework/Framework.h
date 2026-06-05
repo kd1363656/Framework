@@ -13,7 +13,8 @@
 //===============================================================================
 // マクロ
 //===============================================================================
-#include "Definition/Macros/AssertReturnMacros.h"
+#include "Definition/Macros/Assert/AssertReturnMacros.h"
+#include "Definition/Macros/Json/JsonSerializeEnumMacros.h"
 
 //===============================================================================
 // 継承しているかどうかを確認するコンセプト
@@ -41,7 +42,6 @@
 
 // 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
-#include "TypeINFO/Definition/Macros/TypeINFOTagMacros.h"
 
 //===============================================================================
 // 文字列変換便利関数
@@ -63,7 +63,7 @@
 //===============================================================================
 // ウィンドウクラス
 //===============================================================================
-#include "Window/Definition/Tag/WindowTag.h"
+#include "Window/Definition/Enum/WindowEnum.h"
 #include "Window/Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
@@ -129,6 +129,11 @@
 #include "Graphics/Render/SwapChain/Definition/Struct/SwapChainStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
+
+// レンダーグラフ
+#include "Graphics/Render/Graph/Definition/Enum/RenderGraphEnum.h"
+#include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
+#include "Graphics/Render/Graph/RenderGraph.h"
 
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"
