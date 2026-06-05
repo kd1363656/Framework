@@ -1,1 +1,85 @@
-#pragma once
+﻿#pragma once
+
+namespace FWK::Graphics
+{
+	class Renderer;
+}
+
+namespace FWK::Graphics
+{
+	class RenderGraph
+	{
+	private:
+
+		struct ResourceAccessPassRecord final
+		{
+			Enum::RenderGraphResourceType m_resourceType = Enum::RenderGraphResourceType::None;
+
+			std::uint32_t m_passIndex   = 0U;
+			std::uint32_t m_accessOrder = 0U;
+
+			bool m_isRead             = false;
+			bool m_isWrite            = false;
+			bool m_isFinalStateAccess = false;
+		};
+
+		struct ResourceStateRecord final
+		{
+			Enum::RenderGraphResourceType m_resourceType = Enum::RenderGraphResourceType::None;
+
+			D3D12_RESOURCE_STATES m_currentState = D3D12_RESOURCE_STATE_COMMON;
+		};
+
+	public:
+
+		 RenderGraph() = default;
+		~RenderGraph() = default;
+
+		void INIT();
+
+		void BuildDefaultBackBufferGraph();
+
+		bool Compile();
+		
+		void BeginFrame();
+
+		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer);
+
+		void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
+
+		void Deserialize(const nlohmann::json& a_rootJson);
+
+		nlohmann::json Serialize() const;
+
+		const auto& GetREFPassList() const { return m_passList; }
+
+	private:
+
+		bool IsReadAccess	   (const Enum::RenderGraphResourceAccessType a_accessType) const;
+		bool IsWriteAccess	   (const Enum::RenderGraphResourceAccessType a_accessType) const;
+		bool IsFinalStateAccess(const Enum::RenderGraphResourceAccessType a_accessType) const;
+
+		void AddDependencyEdge(const std::uint32_t							  a_fromPassIndex, 
+							   const std::uint32_t							  a_toPassIndex,
+									 std::vector<std::vector<std::uint32_t>>& a_edgeList,
+									 std::vector<std::uint32_t>&			  a_inDegreelist) const;
+
+		void BuildDependency(std::vector<std::vector<std::uint32_t>>& a_edgeList, std::vector<std::uint32_t>& a_inDegreeList) const;
+
+		void TransitionPassResources	 (const RenderGraphPassBase& a_pass, Renderer& a_renderer);
+		void TransitionBackBufferResource(const RenderGraphPassBase& a_pass, Renderer& a_renderer);
+
+		D3D12_RESOURCE_STATES ConvertAccessTypeToResourceState(const Enum::RenderGraphResourceAccessType a_accessType) const;
+
+		void SetupCurrentResourceState(const Enum::RenderGraphResourceType a_resourceType);
+
+		D3D12_RESOURCE_STATES FetchVALCurrentResourceState(const Enum::RenderGraphResourceAccessType a_accessType) const;
+
+		static constexpr std::uint32_t k_noIncomingEdgeCount = 0U;
+		static constexpr std::uint32_t k_invalidPassIndex    = std::numeric_limits<std::uint32_t>::max();
+
+		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList			= {};
+		std::vector<std::uint32_t>						  m_sortedPassIndexList = {};
+		std::vector<ResourceStateRecord>				  m_resourceStateRecord = {};
+	};
+}

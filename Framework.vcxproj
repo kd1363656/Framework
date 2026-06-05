@@ -365,6 +365,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniquePTRFactory.h.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />

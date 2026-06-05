@@ -29,5 +29,7 @@ namespace FWK::Graphics
 		std::vector<Struct::RenderGraphResourceAccess> m_resourceAccessList = {};
 
 		Enum::RenderGraphPassType m_renderGraphPassType = Enum::RenderGraphPassType::None;
+
+		FWK_DEFINE_TYPE_INFO_ROOT(RenderGraphPassBase)
 	};
 }

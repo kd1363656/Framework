@@ -328,13 +328,16 @@
     <Filter Include="Source\Framework\Factory\Definition\Macros">
       <UniqueIdentifier>{a4fc2425-1d91-408a-9944-71fee1028032}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\TypeAlias">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type">
       <UniqueIdentifier>{e23ce095-9d8b-48ff-b93b-9054cfc2fe9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\TypeAlias\Factory">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias">
+      <UniqueIdentifier>{a88885ff-ed80-4306-a26e-777c52b29c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory">
       <UniqueIdentifier>{80d7c25d-4044-42b1-9b6e-fef39556bba7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\TypeAlias\Factory\UniquePTR">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique">
       <UniqueIdentifier>{4240b9de-f8cf-417e-9031-68c78de01d05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -545,6 +548,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h">
       <Filter>Source\Framework\Factory\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniquePTRFactory.h.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

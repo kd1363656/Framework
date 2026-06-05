@@ -20,5 +20,9 @@ namespace FWK::Graphics
 			1.0F,
 			1.0F
 		};
+
+		FWK_DEFINE_TYPE_INFO(RenderGraphBackBufferClearPass, RenderGraphPassBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniquePTRFactory, FWK::Graphics::RenderGraphBackBufferClearPass)
