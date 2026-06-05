@@ -286,6 +286,48 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{39304799-961e-43ef-9553-49cc4dff3042}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer">
+      <UniqueIdentifier>{f1a20a0b-92e8-459c-afd8-dd323eac8ee8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear">
+      <UniqueIdentifier>{083f5cbd-88db-46b1-877b-d050c05549be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present">
+      <UniqueIdentifier>{c48f671d-380e-4fa0-b0e8-81cc4bea16e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum">
+      <UniqueIdentifier>{464994bf-cbc3-4611-b86e-03e2523b06be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Type">
+      <UniqueIdentifier>{35de71d3-763e-4c76-8ea7-4bae42a84835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Type\Trait">
+      <UniqueIdentifier>{8a0295dc-c517-476a-aa3b-761b69e8ee52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Type\Trait\PTR">
+      <UniqueIdentifier>{d57d6fa7-f38e-4e82-bfd9-2510876d4304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{38955f26-de9d-4400-b6ff-9661311ed048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsSmartPTR">
+      <UniqueIdentifier>{53032c41-9466-474e-ba39-d1920eb5c80a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Trait">
+      <UniqueIdentifier>{f2ec1a80-2608-42d9-a0d3-d41910919923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Trait\PTR">
+      <UniqueIdentifier>{bf0e4e8e-85b0-42e6-886d-e146d397bb8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory">
+      <UniqueIdentifier>{4d88026e-0e11-4364-9644-f8eec155a2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition">
+      <UniqueIdentifier>{f26899e3-1aa4-456a-9ef1-7a3b39d32457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Macros">
+      <UniqueIdentifier>{a4fc2425-1d91-408a-9944-71fee1028032}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -332,9 +374,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\String\Constant\StringUtilityConstant.h">
       <Filter>Source\Framework\Utility\String\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
       <Filter>Source\Framework\Utility\Json</Filter>
@@ -471,8 +510,32 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\IRenderGraphPass.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
+      <Filter>Source\Framework\Definition\Enum\Type\Trait\PTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsSmartPTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
+      <Filter>Source\Framework\Definition\Type\Trait\PTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\GenericFactory.h">
+      <Filter>Source\Framework\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h">
+      <Filter>Source\Framework\Factory\Definition\Macros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -562,6 +625,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

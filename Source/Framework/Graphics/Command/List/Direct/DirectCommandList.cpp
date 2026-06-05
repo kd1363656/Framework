@@ -5,7 +5,7 @@ FWK::Graphics::DirectCommandList::DirectCommandList() :
 {}
 FWK::Graphics::DirectCommandList::~DirectCommandList() = default;
 
-void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
+void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
 {
 	FWK_ASSERT_RETURN_IF_FAILED(a_beforeState == a_afterState, "リソースの状態遷移前と後の遷移状態が全く一緒です、リソースの遷移に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,				   "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
@@ -47,7 +47,7 @@ void FWK::Graphics::DirectCommandList::FlushResourceBarrierTransitionBatch()
 	m_resourceBarrierTransitionBatchList.clear();
 }
 
-void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState)
+void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(a_beforeState == a_afterState, "リソースの状態遷移前と後の遷移状態が全く一緒です、リソース一括遷移リストの要素としての追加に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,				   "状態遷移予定のリソースが無効になっているため、リソース一括遷移リストの要素としての追加に失敗しました。");

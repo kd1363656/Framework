@@ -29,6 +29,8 @@ namespace FWK::Graphics
 		
 		const auto& GetREFSwapChain() const { return m_swapChain; }
 
+		const auto& GetREFDirectCommandList() const { return m_directCommandList; }
+
 		auto& GetMutableREFSwapChain() { return m_swapChain; }
 
 	private:
@@ -40,14 +42,6 @@ namespace FWK::Graphics
 		void DecideNextFrameUseFrameResource();
 
 		bool PrepareForSwapChainResize();
-
-		static constexpr TypeAlias::Math::Color k_renderTargetDefaultClearColor =
-		{
-			1.0F,
-			0.80F,
-			1.0F,
-			1.0F
-		};
 
 		static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
 		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;

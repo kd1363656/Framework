@@ -11,6 +11,16 @@
 #include "Definition/Constant/Constant.h"
 
 //===============================================================================
+// Enum
+//===============================================================================
+#include "Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
+
+//===============================================================================
+// TypeTrait
+//===============================================================================
+#include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
+
+//===============================================================================
 // マクロ
 //===============================================================================
 #include "Definition/Macros/Assert/AssertReturnMacros.h"
@@ -20,6 +30,11 @@
 // 継承しているかどうかを確認するコンセプト
 //===============================================================================
 #include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
+
+//===============================================================================
+// スマートポインタかどうかを確認するコンセプト
+//===============================================================================
+#include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 
 //===============================================================================
 // 文字列ハッシュ化構造体
@@ -42,6 +57,12 @@
 
 // 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
+
+//===============================================================================
+// 凡庸ファクトリー
+//===============================================================================
+#include "Factory/GenericFactory.h"
+#include "Factory/Macros/FactoryMacros.h"
 
 //===============================================================================
 // 文字列変換便利関数
@@ -133,6 +154,9 @@
 // レンダーグラフ
 #include "Graphics/Render/Graph/Definition/Enum/RenderGraphEnum.h"
 #include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
+#include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
+#include "Graphics/Render/Graph/Pass/BackBuffer/Clear/RenderGraphBackBufferClearPass.h"
+#include "Graphics/Render/Graph/Pass/BackBuffer/Present/RenderGraphBackBufferPresentPass.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
 
 // レンダーラー

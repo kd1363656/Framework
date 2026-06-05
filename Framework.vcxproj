@@ -334,11 +334,16 @@ if "$(Configuration)"=="Debug" (
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Constant.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
+    <ClInclude Include="Source\Framework\Factory\GenericFactory.h" />
+    <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h" />
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />
@@ -360,7 +365,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\IRenderGraphPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h" />
@@ -412,6 +419,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.cpp" />
