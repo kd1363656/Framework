@@ -121,9 +121,9 @@
 // ディスクリプタプール
 #include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
-#include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 // リソースコンテキスト
+#include "Graphics/Resource/Definition/Type/Alias/ResourceContextTypeAlias.h"
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 

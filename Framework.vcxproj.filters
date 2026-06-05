@@ -259,20 +259,20 @@
     <Filter Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct">
       <UniqueIdentifier>{a76b834b-d2de-4f0b-8c26-1d769cf97795}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition">
-      <UniqueIdentifier>{31cc8e74-4a60-4d86-8c77-6af42284934a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type">
-      <UniqueIdentifier>{5d9df124-4545-4707-b8cf-1e4eda6cb729}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias">
-      <UniqueIdentifier>{cf74d719-af14-4238-b7e7-7a58193ba683}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\SwapChain\Converter">
       <UniqueIdentifier>{c1ab6510-68a2-4362-afb8-7ac59a5ea8b1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json">
       <UniqueIdentifier>{9cb42404-0610-420b-a708-4a785f67d199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Definition">
+      <UniqueIdentifier>{dfd259d7-6f5e-41cc-aaec-b5afd0e882a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Definition\Type">
+      <UniqueIdentifier>{085bba62-1705-4e26-8afb-61c62fbedf50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Definition\Type\Alias">
+      <UniqueIdentifier>{e9f766ff-118d-4e78-b459-253998ce6fb3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -450,11 +450,11 @@
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct\SwapChainStruct.h">
       <Filter>Source\Framework\Graphics\Render\SwapChain\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\SwapChain\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Type\Alias\ResourceContextTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

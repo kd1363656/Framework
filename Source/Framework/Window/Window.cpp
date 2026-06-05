@@ -395,8 +395,7 @@ void FWK::Window::ApplyWindowStyle()
 		ApplyNormalWindowStyle();
 		return;
 	}
-
-	if (m_windowStyleTag == Utility::GetVALTag<Tag::WindowStyleBorderlessFullScreenTag>())
+	else if (m_windowStyleTag == Utility::GetVALTag<Tag::WindowStyleBorderlessFullScreenTag>())
 	{
 		ApplyBorderlessFullScreenWindowStyle();
 		return;
@@ -529,8 +528,10 @@ FWK::Struct::ClientSize FWK::Window::FetchVALCurrentClientSize() const
 
 	RECT l_clientRECT = {};
 
+	// クライアント領域を取得
 	if (!GetClientRect(m_hwnd, &l_clientRECT)) { return m_clientSize; }
 
+	// ウィンドウの左端、右端、上端、下端の差分からサイズを取得
 	const Struct::ClientSize l_clientSize =
 	{
 		static_cast<UINT>(l_clientRECT.right  - l_clientRECT.left),

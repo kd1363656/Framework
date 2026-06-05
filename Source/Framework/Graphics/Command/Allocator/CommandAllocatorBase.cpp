@@ -16,7 +16,6 @@ bool FWK::Graphics::CommandAllocatorBase::Create(const Device& a_device)
 	// デバイスが存在しないなら作成できないのでreturn
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスの作成に失敗しており、コマンドアロケータの作成に失敗しました。", false);
 
-
 	// コマンドアロケータを作成する関数
 	// CreateCommandAllocator(このコマンドアロケータが記録対象とするコマンドリストの種類(※注意 : 作成するコマンドリストの種類と合わせる必要がある)、
 	//						  受け取りたいCOMインターフェース型のID、
