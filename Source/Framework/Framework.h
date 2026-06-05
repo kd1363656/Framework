@@ -43,18 +43,6 @@
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
 #include "TypeINFO/Definition/Macros/TypeINFOTagMacros.h"
 
-// タグ用TypeAlias
-#include "TypeINFO/Definition/Tag/Type/Alias/TagTypeAlias.h"
-
-// タグ基底構造体
-#include "TypeINFO/Definition/Tag/TagBase.h"
-
-// タグを継承しているかどうかのコンセプト
-#include "TypeINFO/Definition/Tag/Concept/IsDerivedBase/IsDerivedTagBaseConcept.h"
-
-// タグ用便利関数
-#include "TypeINFO/Definition/Tag/Utility/TagUtility.h"
-
 //===============================================================================
 // 文字列変換便利関数
 //===============================================================================
