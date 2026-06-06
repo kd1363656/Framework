@@ -46,10 +46,10 @@ namespace FWK::Converter
 		 TextureBinaryConverter()		   = default;
 		~TextureBinaryConverter() override = default;
 
-		TextureBinaryConverter(const TextureBinaryConverter&)			  = delete;
+		TextureBinaryConverter(const TextureBinaryConverter&)	     = delete;
 		TextureBinaryConverter(	  TextureBinaryConverter&&) noexcept = delete;
 
-		TextureBinaryConverter& operator=(const TextureBinaryConverter&)			 = delete;
+		TextureBinaryConverter& operator=(const TextureBinaryConverter&)			= delete;
 		TextureBinaryConverter& operator=(	     TextureBinaryConverter&&) noexcept = delete;
 
 		bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);
@@ -60,9 +60,9 @@ namespace FWK::Converter
 
 		TextureBinaryHeader CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_filesize) const;
 
-		TextureBinarySubresourceHeader CreateTextureBinarySubresuourceHeader(const DirectX::Image& a_image) const;
+		TextureBinarySubresourceHeader CreateTextureBinarySubresourceHeader(const DirectX::Image& a_image) const;
 
-		std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage);
+		std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const;
 
 		bool IsValidScratchImage(const DirectX::ScratchImage& a_scratchImage) const;
 

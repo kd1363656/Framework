@@ -334,38 +334,20 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant">
       <UniqueIdentifier>{3ee8127a-5f0b-45bd-9a10-6fd1d64197f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag">
-      <UniqueIdentifier>{9b0bec72-16f9-4afb-9bdf-bd1f2f59a827}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Definition">
-      <UniqueIdentifier>{8f6bef02-63fc-45c7-a1e8-7d48c1e86b5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Macros">
-      <UniqueIdentifier>{b5b9039c-0368-40f4-a070-776fdc7e9e32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Concept">
-      <UniqueIdentifier>{9f8f6ee6-3177-49e4-b095-8e337fc0878a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{d44b293d-c440-40c6-a697-fdac81589bbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Utility">
-      <UniqueIdentifier>{d7716aa2-4c8e-44b4-b0e4-68d08ce91a61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Tag">
-      <UniqueIdentifier>{3d5fd18c-7b80-44a1-b06b-7b47b8694dd0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Definition\Constant">
       <UniqueIdentifier>{f45e7038-b9ea-4a4a-b7fa-d2a382851243}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Definition\Utility">
       <UniqueIdentifier>{120469a2-f09f-405b-b508-4f0654eb05cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Type">
-      <UniqueIdentifier>{fe18be38-b429-42f8-8cc9-54dd47c8fa2c}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition">
+      <UniqueIdentifier>{0fa03b3b-0def-4b88-9670-93a54a14e561}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Tag\Type\Alias">
-      <UniqueIdentifier>{e2b2e225-3367-439d-b9f8-48e93ff68160}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum">
+      <UniqueIdentifier>{84a60b0d-309b-45b1-9bd9-adee781cbc49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene">
+      <UniqueIdentifier>{2b8094c8-9c6f-4866-9fc9-c9c80866ec38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -573,29 +555,20 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Tag\TagBase.h">
-      <Filter>Source\Framework\TypeINFO\Tag</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Macros\TagTypeINFOMacros.h">
-      <Filter>Source\Framework\TypeINFO\Tag\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Concept\IsDerivedBase\IsDerivedTagBaseConcept.h">
-      <Filter>Source\Framework\TypeINFO\Tag\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Tag\Utility\TagUtility.h">
-      <Filter>Source\Framework\TypeINFO\Tag\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Tag\TextureUsageTag.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Tag</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Utility\TypeINFOUtility.h">
       <Filter>Source\Framework\TypeINFO\Definition\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Type\Alias\TagTypeAlias.h">
-      <Filter>Source\Framework\TypeINFO\Tag\Type\Alias</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Scene.h">
+      <Filter>Source\Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\SceneManager.h">
+      <Filter>Source\Framework\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -697,6 +670,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Scene.cpp">
+      <Filter>Source\Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\SceneManager.cpp">
+      <Filter>Source\Framework\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

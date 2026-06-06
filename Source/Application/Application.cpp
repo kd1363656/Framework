@@ -27,6 +27,7 @@ int WINAPI WinMain(_In_     HINSTANCE,
 void Application::Execute()
 {
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
 
 	l_graphicsManager.INIT();
 
@@ -35,6 +36,8 @@ void Application::Execute()
 
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
+
+	l_sceneManager.INIT();
 
 	while (true)
 	{

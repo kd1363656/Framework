@@ -45,7 +45,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	{
 		// テクスチャイメージからサブリソースヘッダーを作成し書き込む
 		const auto& l_image							 = l_imageList[l_imageIndex];
-		const auto& l_textureBinarySubresourceHeader = CreateTextureBinarySubresuourceHeader(l_image);
+		const auto& l_textureBinarySubresourceHeader = CreateTextureBinarySubresourceHeader(l_image);
 
 		WriteBinaryData(GetREFSingleBinaryElementCount(),
 						&l_textureBinarySubresourceHeader,
@@ -99,7 +99,7 @@ FWK::Converter::TextureBinaryConverter::TextureBinaryHeader FWK::Converter::Text
 	return l_textureBinaryHeader;
 }
 
-FWK::Converter::TextureBinaryConverter::TextureBinarySubresourceHeader FWK::Converter::TextureBinaryConverter::CreateTextureBinarySubresuourceHeader(const DirectX::Image& a_image) const
+FWK::Converter::TextureBinaryConverter::TextureBinarySubresourceHeader FWK::Converter::TextureBinaryConverter::CreateTextureBinarySubresourceHeader(const DirectX::Image& a_image) const
 {
 	TextureBinarySubresourceHeader l_textureBinarySubrourceHeader = {};
 
@@ -112,7 +112,7 @@ FWK::Converter::TextureBinaryConverter::TextureBinarySubresourceHeader FWK::Conv
 	return l_textureBinarySubrourceHeader;
 }
 
-std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage)
+std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const
 {
 	auto l_textureAssetFileSize = CalculateBinaryDataSize<TextureBinaryHeader>(GetREFSingleBinaryElementCount());
 
@@ -147,7 +147,7 @@ bool FWK::Converter::TextureBinaryConverter::IsValidScratchImage(const DirectX::
 	if (l_texMetadata.height    == k_emptyTextureHeight)    { return false; }
 	if (l_texMetadata.depth     == k_emptyTextureDepth)     { return false; }
 	if (l_texMetadata.arraySize == k_emptyTextureArraySize) { return false; }
-	if (l_texMetadata.mipLevels == DXGI_FORMAT_UNKNOWN)		{ return false; }
+	if (l_texMetadata.mipLevels == k_emptyTextureMipLevels)	{ return false; }
 
 	if (l_texMetadata.format == DXGI_FORMAT_UNKNOWN) { return false; }
 

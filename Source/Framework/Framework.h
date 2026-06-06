@@ -66,25 +66,6 @@
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
 
 //===============================================================================
-// タグ
-//===============================================================================
-
-// 型情報登録マクロ(タグ)
-#include "TypeINFO/Tag/Definition/Macros/TagTypeINFOMacros.h"
-
-// タグ基底構造体
-#include "TypeINFO/Tag/TagBase.h"
-
-// タグ用コンセプト
-#include "TypeINFO/Tag/Definition/Concept/IsDerivedBase/IsDerivedTagBaseConcept.h"
-
-// タグ用型エイリアス
-#include "TypeINFO/Tag/Definition/Type/Alias/TagTypeAlias.h"
-
-// タグ用Utility
-#include "TypeINFO/Tag/Utility/TagUtility.h"
-
-//===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
 #include "Factory/GenericFactory.h"
@@ -152,10 +133,9 @@
 
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
-#include "Graphics/Resource/Definition/Struct/ResourceContextStruct.h"
 
 // テクスチャ
-#include "Graphics/Resource/Texture/Loader/Tag/TextureUsageTag.h"
+#include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
@@ -202,3 +182,7 @@
 // グラフィックスマネージャー
 #include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 
 #include "Graphics/GraphicsManager.h"
+
+// シーン
+#include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
