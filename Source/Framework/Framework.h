@@ -114,7 +114,6 @@
 
 // ディスクリプタヒープ
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
-#include "Graphics/Resource/Descriptor/Heap/Definition/Struct/DescriptorHeapStruct.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 
 // ディスクリプタヒープアロケーター
@@ -126,6 +125,10 @@
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 
 // テクスチャ
+#include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
+#include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
+#include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Struct/TextureBinaryStruct.h"
+#include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/Definition/Constant/TextureLoaderConstant.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
@@ -136,30 +139,30 @@
 #include "Graphics/Resource/ResourceContext.h"
 
 // コマンド用定数
-#include "Graphics/Command/Definition/Constant/CommandConstant.h"
+#include "Graphics/Command/Allocator/Definition/Constant/CommandAllocatorConstant.h"
 
-// コマンドアロケータ
+// コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
-#include "Graphics/Command/Allocator/Direct/DirectCommandAllocator.h"
-
-// コマンドリスト
 #include "Graphics/Command/List/CommandListBase.h"
-#include "Graphics/Command/List/Direct/DirectCommandList.h"
-
-// フェンス
 #include "Graphics/Command/Queue/Fence/Fence.h"
-
-// コマンドキュー
 #include "Graphics/Command/Queue/CommandQueueBase.h"
-#include "Graphics/Command/Queue/Direct/DirectCommandQueue.h"
+
+// ダイレクトコマンドアロケータ
+#include "Graphics/Render/Command/Allocator/DirectCommandAllocator.h"
 
 // フレームリソース
 #include "Graphics/Render/Frame/FrameResource.h"
+
+// ダイレクトコマンドキュー
+#include "Graphics/Render/Command/Queue/DirectCommandQueue.h"
 
 // スワップチェイン
 #include "Graphics/Render/SwapChain/Definition/Struct/SwapChainStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
+
+// ダイレクトコマンドリスト
+#include "Graphics/Render/Command/List/DirectCommandList.h"
 
 // レンダーグラフ
 #include "Graphics/Render/Graph/RenderGraph.h"
