@@ -371,7 +371,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Struct\ResourceContextStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Type\Alias\ResourceContextTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json\DescriptorPoolJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\DescriptorPool.h" />
@@ -396,6 +395,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Type\Alias\TagTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Tag\TagBase.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Tag\Utility\TagUtility.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\Utility\TypeINFOUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Definition\Constant\FileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Utility\File\FileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />

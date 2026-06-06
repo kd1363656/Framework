@@ -32,8 +32,6 @@ namespace FWK::Converter
 
 		std::uint8_t* GetMutablePTRMappedData() { return m_mappedData; }
 
-	protected:
-
 		template <typename Type>
 		void ReadBinaryData(const std::uint64_t& a_readDataCount,
 							const std::uint8_t*  a_mappedData,
@@ -80,12 +78,19 @@ namespace FWK::Converter
 			a_memoryWriteOffset += l_writeDataSize;
 		}
 
-		void ReadWStringBinaryData(const std::uint64_t& a_stringBinaryFileSize,
+		void ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize,
 								   const std::uint8_t*  a_readData,
-										 std::wstring&  a_string,
+										 std::wstring&  a_wString,
 										 std::uint64_t& a_memoryReadOffset) const;
 
-		void WriteWStringBinaryData(const std::wstring&  a_string, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const;
+		void WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const;
+
+		void ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize,
+								  const std::uint8_t*  a_readData,
+										std::string&   a_string,
+										std::uint64_t& a_memoryReadOffset) const;
+
+		void WriteStringBinaryData(const std::string& a_string, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const;
 
 		template <typename Type>
 		std::uint64_t CalculateBinaryDataSize(const std::uint64_t& a_dataCount) const
@@ -93,7 +98,8 @@ namespace FWK::Converter
 			return sizeof(Type) * a_dataCount;
 		}
 
-		std::uint64_t CalculateWStringBinaryFileSize(const std::wstring& a_string) const;
+		std::uint64_t CalculateWStringBinaryFileSize(const std::wstring& a_wString) const;
+		std::uint64_t CalculateStringBinaryFileSize (const std::string&  a_string)   const;
 
 		static constexpr auto& GetREFInitialMemoryReadOffset () { return k_initialMemoryReadOffset; }
 		static constexpr auto& GetREFInitialMemoryWriteOffset() { return k_initialMemoryWriteOffset; }

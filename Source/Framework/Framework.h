@@ -52,12 +52,18 @@
 #include "TypeINFO/Definition/Type/Alias/TypeINFOTypeAlias.h"
 #include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
+
+// 型情報生成
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
+
+// 型情報登録
 #include "TypeINFO/Registry/TypeINFORegistry.h"
+
+// 型用便利関数
+#include "TypeINFO/Utility/TypeINFOUtility.h"
 
 // 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
-
 
 //===============================================================================
 // タグ
