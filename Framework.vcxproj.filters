@@ -322,6 +322,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant">
       <UniqueIdentifier>{e97115dc-3348-49b7-9c90-a168c3165fcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Converter">
+      <UniqueIdentifier>{a6a6d22e-e907-42f8-8393-fe6652e3ae9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Converter\Binary">
+      <UniqueIdentifier>{a14a36c2-09a4-41f4-b1a7-bb2346cc85e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -525,6 +531,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant\TextureLoaderConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h">
+      <Filter>Source\Framework\Converter\Binary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -619,6 +628,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp">
+      <Filter>Source\Framework\Converter\Binary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

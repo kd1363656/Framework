@@ -333,6 +333,7 @@ if "$(Configuration)"=="Debug" (
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h" />
+    <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Constant.h" />
@@ -402,6 +403,7 @@ if "$(Configuration)"=="Debug" (
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\Allocator\CommandAllocatorBase.cpp" />
