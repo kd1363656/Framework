@@ -295,12 +295,6 @@
     <Filter Include="Source\Framework\Definition\Constant">
       <UniqueIdentifier>{c5824a3b-43a4-4f30-be19-a231cc96d8a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition">
-      <UniqueIdentifier>{d6d54f04-06c0-4f9f-8416-dcd3807c9b90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant">
-      <UniqueIdentifier>{e97115dc-3348-49b7-9c90-a168c3165fcf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Converter">
       <UniqueIdentifier>{a6a6d22e-e907-42f8-8393-fe6652e3ae9c}</UniqueIdentifier>
     </Filter>
@@ -325,9 +319,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Command\Queue">
       <UniqueIdentifier>{7e00ef36-367e-47c5-9ceb-e930254ec329}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum">
-      <UniqueIdentifier>{4469aa48-af26-4a10-9b50-d091a34848c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter">
       <UniqueIdentifier>{69b828bf-24f1-4bbc-b0c7-ce3b9d6d44d6}</UniqueIdentifier>
     </Filter>
@@ -343,8 +334,38 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant">
       <UniqueIdentifier>{3ee8127a-5f0b-45bd-9a10-6fd1d64197f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Struct">
-      <UniqueIdentifier>{1e3a171d-410d-4224-b657-df24552cd911}</UniqueIdentifier>
+    <Filter Include="Source\Framework\TypeINFO\Tag">
+      <UniqueIdentifier>{9b0bec72-16f9-4afb-9bdf-bd1f2f59a827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Definition">
+      <UniqueIdentifier>{8f6bef02-63fc-45c7-a1e8-7d48c1e86b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Macros">
+      <UniqueIdentifier>{b5b9039c-0368-40f4-a070-776fdc7e9e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Concept">
+      <UniqueIdentifier>{9f8f6ee6-3177-49e4-b095-8e337fc0878a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{d44b293d-c440-40c6-a697-fdac81589bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Utility">
+      <UniqueIdentifier>{d7716aa2-4c8e-44b4-b0e4-68d08ce91a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Type">
+      <UniqueIdentifier>{fca0cada-c03b-4697-9d4f-f66991b19e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Tag\Definition\Type\Alias">
+      <UniqueIdentifier>{202d0a03-1019-493f-9dea-47309e6896e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Tag">
+      <UniqueIdentifier>{3d5fd18c-7b80-44a1-b06b-7b47b8694dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Definition\Struct">
+      <UniqueIdentifier>{43eea3e5-6bdc-4250-82d4-a4d25615cf3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Definition\Constant">
+      <UniqueIdentifier>{f45e7038-b9ea-4a4a-b7fa-d2a382851243}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -528,9 +549,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Constant.h">
       <Filter>Source\Framework\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant\TextureLoaderConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h">
       <Filter>Source\Framework\Converter\Binary</Filter>
     </ClInclude>
@@ -549,17 +567,35 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\StringHash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Struct\TextureBinaryStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Struct</Filter>
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\TagBase.h">
+      <Filter>Source\Framework\TypeINFO\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Macros\TagTypeINFOMacros.h">
+      <Filter>Source\Framework\TypeINFO\Tag\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Concept\IsDerivedBase\IsDerivedTagBaseConcept.h">
+      <Filter>Source\Framework\TypeINFO\Tag\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\Utility\TagUtility.h">
+      <Filter>Source\Framework\TypeINFO\Tag\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Tag\Definition\Type\Alias\TagTypeAlias.h">
+      <Filter>Source\Framework\TypeINFO\Tag\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Tag\TextureUsageTag.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Tag</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Struct\ResourceContextStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

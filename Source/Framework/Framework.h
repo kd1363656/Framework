@@ -58,6 +58,26 @@
 // 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
 
+
+//===============================================================================
+// タグ
+//===============================================================================
+
+// 型情報登録マクロ(タグ)
+#include "TypeINFO/Tag/Definition/Macros/TagTypeINFOMacros.h"
+
+// タグ基底構造体
+#include "TypeINFO/Tag/TagBase.h"
+
+// タグ用コンセプト
+#include "TypeINFO/Tag/Definition/Concept/IsDerivedBase/IsDerivedTagBaseConcept.h"
+
+// タグ用型エイリアス
+#include "TypeINFO/Tag/Definition/Type/Alias/TagTypeAlias.h"
+
+// タグ用Utility
+#include "TypeINFO/Tag/Utility/TagUtility.h"
+
 //===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
@@ -124,12 +144,14 @@
 #include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 
+// リソースコンテキストの定数
+#include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
+#include "Graphics/Resource/Definition/Struct/ResourceContextStruct.h"
+
 // テクスチャ
-#include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
+#include "Graphics/Resource/Texture/Loader/Tag/TextureUsageTag.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
-#include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Struct/TextureBinaryStruct.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
-#include "Graphics/Resource/Texture/Loader/Definition/Constant/TextureLoaderConstant.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 
