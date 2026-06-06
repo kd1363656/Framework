@@ -52,6 +52,10 @@ namespace FWK::Converter
 		TextureBinaryConverter& operator=(const TextureBinaryConverter&)			= delete;
 		TextureBinaryConverter& operator=(	     TextureBinaryConverter&&) noexcept = delete;
 
+		bool CanLoadTextureAsset(const std::filesystem::path& a_filePath) const;
+
+		bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
+
 		bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);
 
 	private:
@@ -62,9 +66,17 @@ namespace FWK::Converter
 
 		TextureBinarySubresourceHeader CreateTextureBinarySubresourceHeader(const DirectX::Image& a_image) const;
 
+		DirectX::TexMetadata CreateTexMetadata(const TextureBinaryHeader& a_textureBinaryHeader) const;
+
 		std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const;
 
 		bool IsValidScratchImage(const DirectX::ScratchImage& a_scratchImage) const;
+
+		bool IsValidTextureBinaryHeader(const TextureBinaryHeader& a_textureBinaryHeader) const;
+
+		bool IsValidTextureBinarySubresouceHeader(const TextureBinarySubresourceHeader& a_textureBinarySubresourceHeader) const;
+
+		bool CanReadTextureAccessRange(const std::uint64_t& a_memoryReadOffset, const std::uint64_t a_readSize) const;
 
 		static constexpr std::uint64_t k_emptyTextureWidth            = 0ULL;
 		static constexpr std::uint64_t k_emptyTextureHeight           = 0ULL;
@@ -76,6 +88,7 @@ namespace FWK::Converter
 		static constexpr std::uint64_t k_emptyTextureRowPitch      = 0ULL;
 		static constexpr std::uint64_t k_emptyTextureSlicePitch    = 0ULL;
 		static constexpr std::uint64_t k_emptyTexturePixelDataSize = 0ULL;
+		static constexpr std::uint64_t k_emptyTextureAssetReadSize = 0ULL;
 		
 		static constexpr std::uint32_t k_emptyTextureDimension  = 0U;
 		static constexpr std::uint32_t k_emptyTextureMiscFlags  = 0U;

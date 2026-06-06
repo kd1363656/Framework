@@ -1,5 +1,34 @@
 ﻿#include "TextureBinaryConverter.h"
 
+bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::filesystem::path& a_filePath) const
+{
+	// まず元のPNGが存在していて、拡張子も.pngか確認する
+	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
+
+	// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
+	const auto& l_textureAssetFilePath = CreateTextureAssetFilePath(a_filePath);
+
+	std::error_code l_sourceErrorCode = {};
+	std::error_code l_assetErrorCode  = {};
+
+	// PNGと.assetの最終更新時刻を取得する。
+	// これにより「PNGを更新したのに古い.assetを読んでしまう」問題を防ぐ。
+	const auto l_sourceLastWriteTime = std::filesystem::last_write_time(a_filePath,			    l_sourceErrorCode);
+	const auto l_assetLastWriteTime  = std::filesystem::last_write_time(l_textureAssetFilePath, l_assetErrorCode);
+
+	if (l_sourceErrorCode) { return false; }
+	if (l_assetErrorCode)  { return false; }
+
+	// .assetがPNGより古い場合は、PNGの内容が更新されている可能性がある。
+	// そのため、.assetがPNGと同じか新しい場合だけキャッシュとして扱う
+	return l_assetLastWriteTime >= l_sourceLastWriteTime;
+}
+
+bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata)
+{
+	return false;
+}
+
 bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効です。", false);
@@ -112,6 +141,11 @@ FWK::Converter::TextureBinaryConverter::TextureBinarySubresourceHeader FWK::Conv
 	return l_textureBinarySubrourceHeader;
 }
 
+DirectX::TexMetadata FWK::Converter::TextureBinaryConverter::CreateTexMetadata(const TextureBinaryHeader& a_textureBinaryHeader) const
+{
+	return DirectX::TexMetadata();
+}
+
 std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const
 {
 	auto l_textureAssetFileSize = CalculateBinaryDataSize<TextureBinaryHeader>(GetREFSingleBinaryElementCount());
@@ -155,4 +189,19 @@ bool FWK::Converter::TextureBinaryConverter::IsValidScratchImage(const DirectX::
 	if (l_texMetadata.dimension != DirectX::TEX_DIMENSION_TEXTURE2D) { return false; }
 
 	return true;
+}
+
+bool FWK::Converter::TextureBinaryConverter::IsValidTextureBinaryHeader(const TextureBinaryHeader& a_textureBinaryHeader) const
+{
+	return false;
+}
+
+bool FWK::Converter::TextureBinaryConverter::IsValidTextureBinarySubresouceHeader(const TextureBinarySubresourceHeader& a_textureBinarySubresourceHeader) const
+{
+	return false;
+}
+
+bool FWK::Converter::TextureBinaryConverter::CanReadTextureAccessRange(const std::uint64_t& a_memoryReadOffset, const std::uint64_t a_readSize) const
+{
+	return false;
 }
