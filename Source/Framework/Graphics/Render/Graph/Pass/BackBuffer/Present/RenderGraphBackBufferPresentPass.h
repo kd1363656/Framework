@@ -9,8 +9,6 @@ namespace FWK::Graphics
 		 RenderGraphBackBufferPresentPass();
 		~RenderGraphBackBufferPresentPass() override;
 
-		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer) override;
-
 		FWK_DEFINE_TYPE_INFO(RenderGraphBackBufferPresentPass, RenderGraphPassBase)
 	};
 }

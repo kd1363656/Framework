@@ -102,6 +102,9 @@ bool FWK::Graphics::DescriptorHeap::CanUseShaderVisibleFlag(const D3D12_DESCRIPT
 		break;
 
 		default:
+		{
 			return false;
+		}
+		break;
 	}
 }

@@ -35,19 +35,15 @@ namespace FWK::Graphics
 		 RenderGraph() = default;
 		~RenderGraph() = default;
 
-		void INIT();
-
+		void Deserialize				(const nlohmann::json& a_rootJson);
 		void BuildDefaultBackBufferGraph();
-
-		bool Compile();
+		bool Compile					();
 		
 		void BeginFrame();
 
 		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer);
 
 		void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
-
-		void Deserialize(const nlohmann::json& a_rootJson);
 
 		nlohmann::json Serialize() const;
 
@@ -66,20 +62,20 @@ namespace FWK::Graphics
 
 		void BuildDependency(std::vector<std::vector<std::uint32_t>>& a_edgeList, std::vector<std::uint32_t>& a_inDegreeList) const;
 
-		void TransitionPassResources	 (const RenderGraphPassBase& a_pass, Renderer& a_renderer);
-		void TransitionBackBufferResource(const RenderGraphPassBase& a_pass, Renderer& a_renderer);
+		void TransitionPassResources	 (const RenderGraphPassBase&   a_pass,		 Renderer& a_renderer);
+		void TransitionBackBufferResource(const D3D12_RESOURCE_STATES& a_afterState, Renderer& a_renderer);
 
 		D3D12_RESOURCE_STATES ConvertAccessTypeToResourceState(const Enum::RenderGraphResourceAccessType a_accessType) const;
 
-		void SetupCurrentResourceState(const Enum::RenderGraphResourceType a_resourceType);
+		void SetupCurrentResourceState(const Enum::RenderGraphResourceType a_resourceType, const D3D12_RESOURCE_STATES a_currentState);
 
-		D3D12_RESOURCE_STATES FetchVALCurrentResourceState(const Enum::RenderGraphResourceAccessType a_accessType) const;
+		D3D12_RESOURCE_STATES FetchVALCurrentResourceState(const Enum::RenderGraphResourceType a_resourceType) const;
 
 		static constexpr std::uint32_t k_noIncomingEdgeCount = 0U;
 		static constexpr std::uint32_t k_invalidPassIndex    = std::numeric_limits<std::uint32_t>::max();
 
-		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList			= {};
-		std::vector<std::uint32_t>						  m_sortedPassIndexList = {};
-		std::vector<ResourceStateRecord>				  m_resourceStateRecord = {};
+		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList			    = {};
+		std::vector<std::uint32_t>						  m_sortedPassIndexList     = {};
+		std::vector<ResourceStateRecord>				  m_resourceStateRecordList = {};
 	};
 }
