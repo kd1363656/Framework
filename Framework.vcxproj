@@ -363,6 +363,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniquePTRFactory.h.h" />
@@ -420,6 +421,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />

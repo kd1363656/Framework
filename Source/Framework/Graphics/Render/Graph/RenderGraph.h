@@ -58,7 +58,7 @@ namespace FWK::Graphics
 		void AddDependencyEdge(const std::uint32_t							  a_fromPassIndex, 
 							   const std::uint32_t							  a_toPassIndex,
 									 std::vector<std::vector<std::uint32_t>>& a_edgeList,
-									 std::vector<std::uint32_t>&			  a_inDegreelist) const;
+									 std::vector<std::uint32_t>&			  a_inDegreeList) const;
 
 		void BuildDependency(std::vector<std::vector<std::uint32_t>>& a_edgeList, std::vector<std::uint32_t>& a_inDegreeList) const;
 
@@ -77,5 +77,7 @@ namespace FWK::Graphics
 		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList			    = {};
 		std::vector<std::uint32_t>						  m_sortedPassIndexList     = {};
 		std::vector<ResourceStateRecord>				  m_resourceStateRecordList = {};
+
+		Converter::RenderGraphJsonConverter m_jsonConverter = {};
 	};
 }

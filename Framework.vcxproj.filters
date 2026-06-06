@@ -340,6 +340,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique">
       <UniqueIdentifier>{4240b9de-f8cf-417e-9031-68c78de01d05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Converter">
+      <UniqueIdentifier>{8aca1782-bd30-4da5-b13d-576d704cfe1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Converter\Json">
+      <UniqueIdentifier>{4e9b2d18-ff7b-46fe-904d-006cca052f1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -552,6 +558,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniquePTRFactory.h.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -649,6 +658,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,8 @@
 void FWK::Graphics::RenderGraph::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 void FWK::Graphics::RenderGraph::BuildDefaultBackBufferGraph()
 {
@@ -96,7 +98,7 @@ void FWK::Graphics::RenderGraph::AddPass(std::unique_ptr<RenderGraphPassBase>&& 
 
 nlohmann::json FWK::Graphics::RenderGraph::Serialize() const
 {
-	return nlohmann::json();
+	return m_jsonConverter.Serialize(*this);
 }
 
 bool FWK::Graphics::RenderGraph::IsReadAccess(const Enum::RenderGraphResourceAccessType a_accessType) const
@@ -115,7 +117,7 @@ bool FWK::Graphics::RenderGraph::IsFinalStateAccess(const Enum::RenderGraphResou
 	return a_accessType == Enum::RenderGraphResourceAccessType::Present;
 }
 
-void FWK::Graphics::RenderGraph::AddDependencyEdge(const std::uint32_t a_fromPassIndex, const std::uint32_t a_toPassIndex, std::vector<std::vector<std::uint32_t>>& a_edgeList, std::vector<std::uint32_t>& a_inDegreelist) const
+void FWK::Graphics::RenderGraph::AddDependencyEdge(const std::uint32_t a_fromPassIndex, const std::uint32_t a_toPassIndex, std::vector<std::vector<std::uint32_t>>& a_edgeList, std::vector<std::uint32_t>& a_inDegreeList) const
 {
 	// 同じパス同士では依存関係を構築しない
 	if (a_fromPassIndex == a_toPassIndex) { return; }
@@ -127,7 +129,7 @@ void FWK::Graphics::RenderGraph::AddDependencyEdge(const std::uint32_t a_fromPas
 
 	a_edgeList[a_fromPassIndex].emplace_back(a_toPassIndex);
 
-	++a_inDegreelist[a_toPassIndex];
+	++a_inDegreeList[a_toPassIndex];
 }
 
 void FWK::Graphics::RenderGraph::BuildDependency(std::vector<std::vector<std::uint32_t>>& a_edgeList, std::vector<std::uint32_t>& a_inDegreeList) const
@@ -151,7 +153,7 @@ void FWK::Graphics::RenderGraph::BuildDependency(std::vector<std::vector<std::ui
 			l_record.m_isWrite			  = IsWriteAccess			  (l_resourceAccess.m_accessType);
 			l_record.m_isFinalStateAccess = IsFinalStateAccess		  (l_resourceAccess.m_accessType);
 
-			FWK_ASSERT_RETURN_IF_FAILED(l_resourceAccess.m_resourceType == Enum::RenderGraphResourceType::None,		"RenderGraphResourceAccessTypeがNoneのため、依存関係の構築に失敗しました。");
+			FWK_ASSERT_RETURN_IF_FAILED(l_resourceAccess.m_resourceType == Enum::RenderGraphResourceType::None,		 "RenderGraphResourceTypeがNoneのため、依存関係の構築に失敗しました。");
 			FWK_ASSERT_RETURN_IF_FAILED(!l_record.m_isRead && !l_record.m_isWrite && !l_record.m_isFinalStateAccess, "RenderGraphResourceAccessTypeが不正なため、依存関係の構築に失敗しました。");
 
 			l_resourceAccessPassRecordList.emplace_back(l_record);
@@ -193,7 +195,7 @@ void FWK::Graphics::RenderGraph::BuildDependency(std::vector<std::vector<std::ui
 			{
 				const auto& l_otherRecord = l_resourceAccessPassRecordList[l_otherRecordIndex];
 
-				// Present動詞を依存させる必要はない
+				// Present同士を依存させる必要はない
 				// Presentは「最後にこの状態へ戻したい」という要求であり、通常のRead/Write系のPassの後ろにだけ置く
 				if (l_otherRecord.m_isFinalStateAccess) { continue; }
 
@@ -284,9 +286,9 @@ void FWK::Graphics::RenderGraph::TransitionPassResources(const RenderGraphPassBa
 }
 void FWK::Graphics::RenderGraph::TransitionBackBufferResource(const D3D12_RESOURCE_STATES& a_afterState, Renderer& a_renderer)
 {
-	const auto l_beforState = FetchVALCurrentResourceState(Enum::RenderGraphResourceType::BackBuffer);
+	const auto l_beforeState = FetchVALCurrentResourceState(Enum::RenderGraphResourceType::BackBuffer);
 
-	if (l_beforState == a_afterState) { return; }
+	if (l_beforeState == a_afterState) { return; }
 
 	const auto& l_swapChain			= a_renderer.GetREFSwapChain		();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
@@ -301,7 +303,7 @@ void FWK::Graphics::RenderGraph::TransitionBackBufferResource(const D3D12_RESOUR
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_backBuffer.m_backBufferResource, "BackBufferResourceが無効のため、BackBufferの状態遷移に失敗しました。");
 
-	l_directCommandList.TransitionResourceBarrier(l_backBuffer.m_backBufferResource, l_beforState, a_afterState);
+	l_directCommandList.TransitionResourceBarrier(l_backBuffer.m_backBufferResource, l_beforeState, a_afterState);
 
 	SetupCurrentResourceState(Enum::RenderGraphResourceType::BackBuffer, a_afterState);
 }
