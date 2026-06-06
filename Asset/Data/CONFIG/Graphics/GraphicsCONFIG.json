@@ -4,7 +4,6 @@
             "Count": 3,
             "Template": null
         },
-        "RenderGraph": null,
         "SwapChain": {
             "BackBufferNum": 2,
             "SyncInterval": 1

@@ -18,7 +18,6 @@ namespace FWK::Graphics
 		bool PostLoadCONFIG(const Window& a_window);
 		
 		void BeginFrame();
-		void Execute   ();
 		void EndFrame  ();
 
 		void SaveCONFIG() const;

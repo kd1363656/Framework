@@ -6,10 +6,9 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 
 	// フレームリソースのデシリアライズ
 	// json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復興時にCount側へ展開する
-	const auto& l_frameResourceJson  = a_rootJson.value(k_frameResourceJsonKey, nlohmann::json{});
-	const auto& l_swapChainJson		 = a_rootJson.value(k_swapChainJsonKey,	   nlohmann::json{});
-	const auto& l_renderGraphJson    = a_rootJson.value(k_renderGraphJsonKey,  nlohmann::json{});
-
+	const auto& l_frameResourceJson = a_rootJson.value(k_frameResourceJsonKey, nlohmann::json{});
+	const auto& l_swapChainJson		= a_rootJson.value(k_swapChainJsonKey,	   nlohmann::json{});
+	
 	if (!l_frameResourceJson.is_null())
 	{
 		DeserializeFrameResourceList(l_frameResourceJson, a_renderer);
@@ -18,11 +17,6 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 	if (!l_swapChainJson.is_null())
 	{
 		DeserializeSwapChain(l_swapChainJson, a_renderer);
-	}
-
-	if (!l_renderGraphJson.is_null())
-	{
-		DeserializeRenderGraph(l_renderGraphJson, a_renderer);
 	}
 }
 
@@ -36,9 +30,6 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 
 	// スワップチェインのシリアライズ
 	l_rootJson[k_swapChainJsonKey] = SerializeSwapChain(a_renderer);
-
-	// レンダーグラフのデシリアライズ
-	l_rootJson[k_renderGraphJsonKey] = SerializeRenderGraph(a_renderer);
 
 	return l_rootJson;
 }
@@ -74,12 +65,6 @@ void FWK::Converter::RendererJsonConverter::DeserializeSwapChain(const nlohmann:
 	auto& l_swapChain = a_renderer.GetMutableREFSwapChain();
 
 	l_swapChain.Deserialize(a_rootJson);
-}
-void FWK::Converter::RendererJsonConverter::DeserializeRenderGraph(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
-{
-	auto& l_renderGraph = a_renderer.GetMutableREFRenderGraph();
-
-	l_renderGraph.Deserialize(a_rootJson);
 }
 
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const
@@ -117,10 +102,4 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializeSwapChain(const G
 	const auto& l_swapChain = a_renderer.GetREFSwapChain();
 
 	return l_swapChain.Serialize();
-}
-nlohmann::json FWK::Converter::RendererJsonConverter::SerializeRenderGraph(const Graphics::Renderer& a_renderer) const
-{
-	const auto& l_renderGraph = a_renderer.GetREFRenderGraph();
-
-	return l_renderGraph.Serialize();
 }

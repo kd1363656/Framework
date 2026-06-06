@@ -34,11 +34,7 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 
 void FWK::Graphics::GraphicsManager::BeginFrame()
 {
-	m_renderer.BeginFrame();
-}
-void FWK::Graphics::GraphicsManager::Execute()
-{
-	m_renderer.Execute(m_resourceContext);
+	m_renderer.BeginFrame(m_resourceContext);
 }
 void FWK::Graphics::GraphicsManager::EndFrame()
 {

@@ -31,10 +31,6 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 														  "ダイレクトコマンドリストの作成処理に失敗しました。",
 														  false);
 
-	m_renderGraph.BuildDefaultBackBufferGraph();
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderGraph.Compile(), "RenderGraphのCompileに失敗しました。", false);
-
 	// ALT + ENTERキーで排他フルスクリーン設定が反映されないようにする
 	m_swapChain.PostCreateSetup(a_window.GetREFHWND(), a_factory);
 
@@ -44,7 +40,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 	return true;
 }
 
-void FWK::Graphics::Renderer::BeginFrame()
+void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContext)
 {
 	// 現在のフレームリソースの定数バッファのインデックスの初期化
 	const auto& l_currentFrameResource = m_currentFrameResource.lock();
@@ -54,11 +50,7 @@ void FWK::Graphics::Renderer::BeginFrame()
 	ResetCommandObjects(*l_currentFrameResource);
 
 	// リソース遷移の実行
-	m_renderGraph.BeginFrame();
-}
-void FWK::Graphics::Renderer::Execute(const ResourceContext& a_resourceContext)
-{
-	m_renderGraph.Execute(a_resourceContext, *this);
+	m_renderGraph.BeginFrame(a_resourceContext, *this);
 }
 void FWK::Graphics::Renderer::EndFrame()
 {
@@ -69,6 +61,9 @@ void FWK::Graphics::Renderer::EndFrame()
 	const auto& l_commandAllocator = l_currentFrameResource->GetREFDirectCommandAllocator();
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
+
+	// スワップチェインのリソース状態遷移(RENDER_TARGET -> PRESENT)
+	m_renderGraph.EndFrame(*this);
 
 	// コマンドリストへの命令記録を終了
 	m_directCommandList.Close();

@@ -16,8 +16,7 @@ namespace FWK::Graphics
 							 const Factory&						 a_factory,
 								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		
-		void BeginFrame();
-		void Execute   (const ResourceContext& a_resourceContext);
+		void BeginFrame(const ResourceContext& a_resourceContext);
 		void EndFrame  ();
 
 		nlohmann::json Serialize() const;
@@ -28,14 +27,12 @@ namespace FWK::Graphics
 
 		const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
 		
-		const auto& GetREFSwapChain  () const { return m_swapChain; }
-		const auto& GetREFRenderGraph() const { return m_renderGraph; }
-
+		const auto& GetREFSwapChain() const { return m_swapChain; }
+		
 		const auto& GetREFDirectCommandList() const { return m_directCommandList; }
 
-		auto& GetMutableREFSwapChain  () { return m_swapChain; }
-		auto& GetMutableREFRenderGraph() { return m_renderGraph; }
-
+		auto& GetMutableREFSwapChain() { return m_swapChain; }
+		
 	private:
 
 		void ResetCommandObjects(const FrameResource& a_frameResource);
