@@ -120,6 +120,11 @@
 #include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 
+// テクスチャ
+#include "Graphics/Resource/Texture/Loader/Definition/Constant/TextureLoaderConstant.h"
+#include "Graphics/Resource/Texture/Loader/TextureLoader.h"
+#include "Graphics/Resource/Texture/TextureSystem.h"
+
 // リソースコンテキスト
 #include "Graphics/Resource/Definition/Type/Alias/ResourceContextTypeAlias.h"
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
@@ -157,8 +162,6 @@
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"
 #include "Graphics/Render/Renderer.h"
-
-//
 
 // グラフィックスマネージャー
 #include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 

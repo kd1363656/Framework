@@ -307,6 +307,21 @@
     <Filter Include="Source\Framework\Factory\Definition\Macros">
       <UniqueIdentifier>{a4fc2425-1d91-408a-9944-71fee1028032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture">
+      <UniqueIdentifier>{424550c7-e4f4-446b-a428-079cbb33cc4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader">
+      <UniqueIdentifier>{654dfc4b-40ce-40e5-8cca-619d7c0406a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant">
+      <UniqueIdentifier>{c5824a3b-43a4-4f30-be19-a231cc96d8a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition">
+      <UniqueIdentifier>{d6d54f04-06c0-4f9f-8416-dcd3807c9b90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant">
+      <UniqueIdentifier>{e97115dc-3348-49b7-9c90-a168c3165fcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -471,9 +486,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Constant.h">
-      <Filter>Source\Framework\Definition</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h">
       <Filter>Source\Framework\Definition\Macros\Assert</Filter>
     </ClInclude>
@@ -500,6 +512,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h">
       <Filter>Source\Framework\Factory\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Constant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant\TextureLoaderConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -589,6 +613,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

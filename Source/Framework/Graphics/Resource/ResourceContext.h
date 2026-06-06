@@ -22,6 +22,8 @@ namespace FWK::Graphics
 
 		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};
 
+		TextureSystem m_textureSystem = {};
+
 		Converter::ResourceContextJsonConverter m_jsonConverter = {};
 	};
 }
