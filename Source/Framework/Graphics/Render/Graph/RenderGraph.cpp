@@ -6,6 +6,10 @@ void FWK::Graphics::RenderGraph::Deserialize(const nlohmann::json& a_rootJson)
 }
 void FWK::Graphics::RenderGraph::BuildDefaultBackBufferGraph()
 {
+	m_passList.clear		       ();
+	m_sortedPassIndexList.clear    ();
+	m_resourceStateRecordList.clear();
+
 	AddPass(std::make_unique<RenderGraphBackBufferClearPass>());
 	AddPass(std::make_unique<RenderGraphBackBufferPresentPass>());
 }
@@ -74,7 +78,7 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 
 		const auto& l_pass = m_passList[l_passIndex];
 
-		FWK_ASSERT_RETURN_IF_FAILED(!l_pass, "RenderGraphPassが無効のため、RenderGrapnのExecuteに失敗しました。");
+		FWK_ASSERT_RETURN_IF_FAILED(!l_pass, "RenderGraphPassが無効のため、RenderGraphのExecuteに失敗しました。");
 
 		// Passが要求する状態へ実行前に自動遷移する
 		TransitionPassResources(*l_pass, a_renderer);
@@ -148,7 +152,7 @@ void FWK::Graphics::RenderGraph::BuildDependency(std::vector<std::vector<std::ui
 			l_record.m_isFinalStateAccess = IsFinalStateAccess		  (l_resourceAccess.m_accessType);
 
 			FWK_ASSERT_RETURN_IF_FAILED(l_resourceAccess.m_resourceType == Enum::RenderGraphResourceType::None,		"RenderGraphResourceAccessTypeがNoneのため、依存関係の構築に失敗しました。");
-			FWK_ASSERT_RETURN_IF_FAILED(!l_record.m_isRead && !l_record.m_isWrite && l_record.m_isFinalStateAccess, "RenderGraphResourceAccessTypeが不正なため、依存関係の構築に失敗しました。");
+			FWK_ASSERT_RETURN_IF_FAILED(!l_record.m_isRead && !l_record.m_isWrite && !l_record.m_isFinalStateAccess, "RenderGraphResourceAccessTypeが不正なため、依存関係の構築に失敗しました。");
 
 			l_resourceAccessPassRecordList.emplace_back(l_record);
 		}
@@ -188,6 +192,10 @@ void FWK::Graphics::RenderGraph::BuildDependency(std::vector<std::vector<std::ui
 			for (std::uint32_t l_otherRecordIndex = l_groupBeginIndex; l_otherRecordIndex < l_groupEndIndex; ++l_otherRecordIndex)
 			{
 				const auto& l_otherRecord = l_resourceAccessPassRecordList[l_otherRecordIndex];
+
+				// Present動詞を依存させる必要はない
+				// Presentは「最後にこの状態へ戻したい」という要求であり、通常のRead/Write系のPassの後ろにだけ置く
+				if (l_otherRecord.m_isFinalStateAccess) { continue; }
 
 				AddDependencyEdge(l_otherRecord.m_passIndex, 
 								  l_finalRecord.m_passIndex,

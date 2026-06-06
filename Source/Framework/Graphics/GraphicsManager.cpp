@@ -34,9 +34,11 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 
 void FWK::Graphics::GraphicsManager::BeginFrame()
 {
-	auto& l_rtvDescriptorPool = m_resourceContext.GetMutableREFRTVDescriptorPool();
-
-	m_renderer.BeginFrame(l_rtvDescriptorPool);
+	m_renderer.BeginFrame();
+}
+void FWK::Graphics::GraphicsManager::Execute()
+{
+	m_renderer.Execute(m_resourceContext);
 }
 void FWK::Graphics::GraphicsManager::EndFrame()
 {

@@ -16,7 +16,8 @@ namespace FWK::Graphics
 							 const Factory&						 a_factory,
 								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		
-		void BeginFrame(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
+		void BeginFrame();
+		void Execute   (const ResourceContext& a_resourceContext);
 		void EndFrame  ();
 
 		nlohmann::json Serialize() const;
@@ -38,8 +39,6 @@ namespace FWK::Graphics
 	private:
 
 		void ResetCommandObjects(const FrameResource& a_frameResource);
-
-		void SetupBackBuffer(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const;
 
 		void DecideNextFrameUseFrameResource();
 

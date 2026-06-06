@@ -1,7 +1,7 @@
 ﻿#include "RenderGraphBackBufferClearPass.h"
 
 FWK::Graphics::RenderGraphBackBufferClearPass::RenderGraphBackBufferClearPass() : 
-	RenderGraphPassBase(Enum::RenderGraphPassType::BackBufferPresent)
+	RenderGraphPassBase(Enum::RenderGraphPassType::BackBufferClear)
 {
 	// このPassはBackBufferをRenderTargetとしてClearする。
 	// 実際のPRESENT -> RENDER_TARGETの状態遷移はRenderGraph側で自動実行する。

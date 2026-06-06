@@ -1,7 +1,7 @@
 ﻿#include "RenderGraphBackBufferPresentPass.h"
 
 FWK::Graphics::RenderGraphBackBufferPresentPass::RenderGraphBackBufferPresentPass() : 
-	RenderGraphPassBase(Enum::RenderGraphPassType::BackBufferClear)
+	RenderGraphPassBase(Enum::RenderGraphPassType::BackBufferPresent)
 {
 	AddResourceAccess(Enum::RenderGraphResourceType::BackBuffer, Enum::RenderGraphResourceAccessType::Present);
 }
