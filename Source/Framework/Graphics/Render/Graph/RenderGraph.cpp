@@ -38,6 +38,7 @@ bool FWK::Graphics::RenderGraph::Compile()
 	for (std::uint32_t l_passIndex = 0U; l_passIndex < static_cast<std::uint32_t>(l_passCount); ++l_passIndex)
 	{
 		if (l_inDegreeList[l_passIndex] != k_noIncomingEdgeCount) { continue; }
+
 		l_passQueue.emplace(l_passIndex);
 	}
 
@@ -54,6 +55,7 @@ bool FWK::Graphics::RenderGraph::Compile()
 			--l_inDegreeList[l_nextPassIndex];
 
 			if (l_inDegreeList[l_nextPassIndex] != k_noIncomingEdgeCount) { continue; }
+
 			l_passQueue.emplace(l_nextPassIndex);
 		}
 	}
@@ -109,8 +111,7 @@ bool FWK::Graphics::RenderGraph::IsReadAccess(const Enum::RenderGraphResourceAcc
 bool FWK::Graphics::RenderGraph::IsWriteAccess(const Enum::RenderGraphResourceAccessType a_accessType) const
 {
 	return a_accessType == Enum::RenderGraphResourceAccessType::Write      ||
-		   a_accessType == Enum::RenderGraphResourceAccessType::ReadWrite  ||
-		   a_accessType == Enum::RenderGraphResourceAccessType::ClearWrite;
+		   a_accessType == Enum::RenderGraphResourceAccessType::ReadWrite;
 }
 bool FWK::Graphics::RenderGraph::IsFinalStateAccess(const Enum::RenderGraphResourceAccessType a_accessType) const
 {
@@ -281,7 +282,7 @@ void FWK::Graphics::RenderGraph::TransitionPassResources(const RenderGraphPassBa
 			continue;
 		}
 
-		FWK_ASSERT_RETURN("RenderGraphで未対応のResourceTypeが指定されています。");
+		FWK_ASSERT_RETURN_IF_FAILED(l_resourceAccess.m_resourceType == Enum::RenderGraphResourceType::None, "RenderGraphで未対応のResourceTypeが指定されています。");
 	}
 }
 void FWK::Graphics::RenderGraph::TransitionBackBufferResource(const D3D12_RESOURCE_STATES& a_afterState, Renderer& a_renderer)
@@ -320,7 +321,6 @@ D3D12_RESOURCE_STATES FWK::Graphics::RenderGraph::ConvertAccessTypeToResourceSta
 
 		case Enum::RenderGraphResourceAccessType::Write:
 		case Enum::RenderGraphResourceAccessType::ReadWrite:
-		case Enum::RenderGraphResourceAccessType::ClearWrite:
 		{
 			return D3D12_RESOURCE_STATE_RENDER_TARGET;
 		}

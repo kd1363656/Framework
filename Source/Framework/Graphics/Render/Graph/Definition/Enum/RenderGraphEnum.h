@@ -36,7 +36,6 @@ namespace FWK::Enum
 		Read,
 		Write,
 		ReadWrite,
-		ClearWrite,
 		Present,
 	};
 

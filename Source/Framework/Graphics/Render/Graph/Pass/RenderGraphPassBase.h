@@ -7,6 +7,8 @@ namespace FWK::Graphics
 
 namespace FWK::Graphics
 {
+	// 描画処理の一工程でリソースの状態遷移などを行う
+	// レンダーグラフ内でまとめて管理されるもの
 	class RenderGraphPassBase
 	{
 	public:

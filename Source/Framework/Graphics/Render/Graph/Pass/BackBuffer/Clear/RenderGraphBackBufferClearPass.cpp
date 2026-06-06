@@ -5,7 +5,7 @@ FWK::Graphics::RenderGraphBackBufferClearPass::RenderGraphBackBufferClearPass() 
 {
 	// このPassはBackBufferをRenderTargetとしてClearする。
 	// 実際のPRESENT -> RENDER_TARGETの状態遷移はRenderGraph側で自動実行する。
-	AddResourceAccess(Enum::RenderGraphResourceType::BackBuffer, Enum::RenderGraphResourceAccessType::ClearWrite);
+	AddResourceAccess(Enum::RenderGraphResourceType::BackBuffer, Enum::RenderGraphResourceAccessType::Write);
 }
 FWK::Graphics::RenderGraphBackBufferClearPass::~RenderGraphBackBufferClearPass() = default;
 
