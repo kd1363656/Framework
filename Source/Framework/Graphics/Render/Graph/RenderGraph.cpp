@@ -335,12 +335,10 @@ D3D12_RESOURCE_STATES FWK::Graphics::RenderGraph::ConvertAccessTypeToResourceSta
 		case Enum::RenderGraphResourceAccessType::None:
 		default:
 		{
-			return D3D12_RESOURCE_STATE_COMMON;
+			FWK_ASSERT_RETURN_VALUE("RenderGraphResourceAccessTypeが不正です。", D3D12_RESOURCE_STATE_COMMON);
 		}
 		break;
 	}
-
-	FWK_ASSERT_RETURN_VALUE("RenderGraphResourceAccessTypeが不正です。", D3D12_RESOURCE_STATE_COMMON);
 }
 
 void FWK::Graphics::RenderGraph::SetupCurrentResourceState(const Enum::RenderGraphResourceType a_resourceType, const D3D12_RESOURCE_STATES a_currentState)

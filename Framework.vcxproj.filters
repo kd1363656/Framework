@@ -274,27 +274,6 @@
     <Filter Include="Source\Framework\Window\Definition\Enum">
       <UniqueIdentifier>{d6b0b557-7c82-415b-b06a-55ed0286ecc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition">
-      <UniqueIdentifier>{8b5f2801-5000-49b7-a81e-ea1991fc0de1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Enum">
-      <UniqueIdentifier>{d2e59d83-e716-4c0c-8790-121b75c3344e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Struct">
-      <UniqueIdentifier>{0189765d-d821-4335-b580-66de495dfa0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
-      <UniqueIdentifier>{39304799-961e-43ef-9553-49cc4dff3042}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer">
-      <UniqueIdentifier>{f1a20a0b-92e8-459c-afd8-dd323eac8ee8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear">
-      <UniqueIdentifier>{083f5cbd-88db-46b1-877b-d050c05549be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present">
-      <UniqueIdentifier>{c48f671d-380e-4fa0-b0e8-81cc4bea16e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Enum">
       <UniqueIdentifier>{464994bf-cbc3-4611-b86e-03e2523b06be}</UniqueIdentifier>
     </Filter>
@@ -327,24 +306,6 @@
     </Filter>
     <Filter Include="Source\Framework\Factory\Definition\Macros">
       <UniqueIdentifier>{a4fc2425-1d91-408a-9944-71fee1028032}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type">
-      <UniqueIdentifier>{e23ce095-9d8b-48ff-b93b-9054cfc2fe9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias">
-      <UniqueIdentifier>{a88885ff-ed80-4306-a26e-777c52b29c07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory">
-      <UniqueIdentifier>{80d7c25d-4044-42b1-9b6e-fef39556bba7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique">
-      <UniqueIdentifier>{4240b9de-f8cf-417e-9031-68c78de01d05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Converter">
-      <UniqueIdentifier>{8aca1782-bd30-4da5-b13d-576d704cfe1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Converter\Json">
-      <UniqueIdentifier>{4e9b2d18-ff7b-46fe-904d-006cca052f1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -522,21 +483,6 @@
     <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h">
       <Filter>Source\Framework\Window\Definition\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
       <Filter>Source\Framework\Definition\Enum\Type\Trait\PTR</Filter>
     </ClInclude>
@@ -554,12 +500,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h">
       <Filter>Source\Framework\Factory\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniquePTRFactory.h.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -649,18 +589,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear\RenderGraphBackBufferClearPass.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Clear</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present\RenderGraphBackBufferPresentPass.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\BackBuffer\Present</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
