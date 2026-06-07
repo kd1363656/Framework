@@ -21,7 +21,10 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		void Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
+		void Resize(const Device&						a_device, 
+					const ResourceReleaseContext&		a_resourceReleaseContext,
+					const Struct::ClientSize&			a_clientSize, 
+						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
 		void AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource);
 

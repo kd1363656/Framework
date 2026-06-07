@@ -371,13 +371,16 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Type\Alias\ResourceContextTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json\DescriptorPoolJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\DescriptorPool.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Constant\DescriptorHeapConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant\ResourceReleaseContextConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.h" />
@@ -432,6 +435,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />

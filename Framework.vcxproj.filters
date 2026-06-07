@@ -229,12 +229,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Definition">
       <UniqueIdentifier>{dfd259d7-6f5e-41cc-aaec-b5afd0e882a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Definition\Type">
-      <UniqueIdentifier>{085bba62-1705-4e26-8afb-61c62fbedf50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Definition\Type\Alias">
-      <UniqueIdentifier>{e9f766ff-118d-4e78-b459-253998ce6fb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph">
       <UniqueIdentifier>{ec4b0f48-d3a0-44df-8865-cfb617ac6a74}</UniqueIdentifier>
     </Filter>
@@ -334,9 +328,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant">
       <UniqueIdentifier>{3ee8127a-5f0b-45bd-9a10-6fd1d64197f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Definition\Constant">
-      <UniqueIdentifier>{f45e7038-b9ea-4a4a-b7fa-d2a382851243}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\TypeINFO\Definition\Utility">
       <UniqueIdentifier>{120469a2-f09f-405b-b508-4f0654eb05cc}</UniqueIdentifier>
     </Filter>
@@ -348,6 +339,30 @@
     </Filter>
     <Filter Include="Source\Framework\Scene">
       <UniqueIdentifier>{2b8094c8-9c6f-4866-9fc9-c9c80866ec38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition">
+      <UniqueIdentifier>{4d3ab3ea-dbf9-454e-a812-3e92ebebe922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type">
+      <UniqueIdentifier>{11448cc4-6504-4fbc-aa7b-34204a7b48a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias">
+      <UniqueIdentifier>{08b29e4e-a279-45a4-bcec-6559fc2ec225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Definition\Constant">
+      <UniqueIdentifier>{ec2fcd54-4495-4adf-b085-37d67cc8d15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext">
+      <UniqueIdentifier>{82c41d81-8406-49d3-9aac-5d0fad9adefc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition">
+      <UniqueIdentifier>{0a60249b-c67d-4a01-92d8-281859a8e0ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct">
+      <UniqueIdentifier>{3729dcf6-253b-4ad3-91f5-4bc5e1e5fbd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant">
+      <UniqueIdentifier>{be31a2aa-c46e-4904-b337-e686f079b0b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -486,9 +501,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\SwapChain\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Type\Alias\ResourceContextTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
     </ClInclude>
@@ -555,9 +567,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Utility\TypeINFOUtility.h">
       <Filter>Source\Framework\TypeINFO\Definition\Utility</Filter>
     </ClInclude>
@@ -569,6 +578,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\SceneManager.h">
       <Filter>Source\Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant\ResourceReleaseContextConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -676,6 +700,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp">
       <Filter>Source\Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

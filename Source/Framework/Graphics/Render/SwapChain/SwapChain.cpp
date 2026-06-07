@@ -46,15 +46,21 @@ nlohmann::json FWK::Graphics::SwapChain::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::SwapChain::Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
+bool FWK::Graphics::SwapChain::Resize(const Device&					      a_device,
+									  const ResourceReleaseContext&       a_resourceReleaseContext, 
+									  const Struct::ClientSize&		      a_clientSize,
+										    TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_swapChain,							"スワップチェインが作成されていないため、リサイズ処理に失敗しました。",     false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!IsValidBackBufferSize(a_clientSize), "リサイズ後のバックバッファサイズが無効です、リサイズ処理に失敗しました。", false);
 
 	// ResizeBuffers()は、古いBackBufferへの参照が残っていると失敗する。
 	// そのため、先にBackBufferのComPtrとRTV用DescriptorIndexを解放する
-	ReleaseBackBufferList(a_rtvDescriptorPool);
-
+	for (auto& l_backBuffer : m_backBufferList)
+	{
+		l_backBuffer.m_rtvDescriptorIndex = a_resourceReleaseContext.ReleaseRenderTargetResourceImmediately(l_backBuffer.m_rtvDescriptorIndex, l_backBuffer.m_backBufferResource, a_rtvDescriptorPool);
+	}
+	
 	// ResizeBufferは、SwapChain内部のBackBufferを新しい左図で作り直すDXGI関数
 	// ResizeBuffers(バッファ枚数、
 	//				 新しい横幅、
@@ -250,24 +256,6 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 
 	
 	return true;
-}
-
-void FWK::Graphics::SwapChain::ReleaseBackBufferList(TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
-{
-	for (auto& l_backBuffer : m_backBufferList)
-	{
-		// SwapChain::ResizeBuffers()の前に、BackBufferの参照を外す。
-		// ここは通常のComPtr自動解放に任せず、ResizeBuffers前に明示的にResetします。
-		l_backBuffer.m_backBufferResource.Reset();
-
-		if (l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex) { continue; }
-
-		// BackBuffer用RTVとして確保していたDescriptorIndexをDescriptorPoolへ返す、
-		// BackBuffer自体はSwapChainが管理する特殊なリソースなのでDeferredReleaseへ積まない
-		a_rtvDescriptorPool.Release(l_backBuffer.m_rtvDescriptorIndex);
-
-		l_backBuffer.m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;
-	}
 }
 
 bool FWK::Graphics::SwapChain::IsValidBackBufferSize(const Struct::ClientSize& a_clientSize) const

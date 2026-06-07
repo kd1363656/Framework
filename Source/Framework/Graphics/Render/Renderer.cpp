@@ -86,20 +86,27 @@ nlohmann::json FWK::Graphics::Renderer::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)
-{
-	FWK_ASSERT_RETURN_IF_FAILED(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
-
-	m_frameResourceList.emplace_back(a_frameResource);
-}
-
-void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
+void FWK::Graphics::Renderer::Resize(const Device&			             a_device,
+									 const ResourceReleaseContext&       a_resourceReleaseContext, 
+									 const Struct::ClientSize&	         a_clientSize, 
+										   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
 {
 	// スワップチェインのリサイズ前にGPUとの同期をとるなど必要な処理を行う
 	PrepareForSwapChainResize();
 
 	// バックバッファのリサイズを行う
-	FWK_ASSERT_RETURN_IF_FAILED(!m_swapChain.Resize(a_device, a_clientSize, a_rtvDescriptorPool), "リサイズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!m_swapChain.Resize(a_device,
+													a_resourceReleaseContext, 
+													a_clientSize, 
+													a_rtvDescriptorPool), 
+													"リサイズ処理に失敗しました。");
+}
+
+void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
+
+	m_frameResourceList.emplace_back(a_frameResource);
 }
 
 void FWK::Graphics::Renderer::ResetCommandObjects(const FrameResource& a_frameResource)

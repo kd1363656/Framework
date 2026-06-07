@@ -119,6 +119,12 @@
 #include "Graphics/Hardware/Factory.h"
 #include "Graphics/Hardware/Device.h"
 
+// コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
+#include "Graphics/Command/Allocator/CommandAllocatorBase.h"
+#include "Graphics/Command/List/CommandListBase.h"
+#include "Graphics/Command/Queue/Fence/Fence.h"
+#include "Graphics/Command/Queue/CommandQueueBase.h"
+
 // ディスクリプタヒープ
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
@@ -130,6 +136,12 @@
 // ディスクリプタプール
 #include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
+#include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
+
+// 遅延リソースリリースクラス
+#include "Graphics/Resource/ReleaseContext/Definition/Constant/ResourceReleaseContextConstant.h"
+#include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
+#include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
@@ -142,18 +154,11 @@
 #include "Graphics/Resource/Texture/TextureSystem.h"
 
 // リソースコンテキスト
-#include "Graphics/Resource/Definition/Type/Alias/ResourceContextTypeAlias.h"
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 
 // コマンド用定数
 #include "Graphics/Command/Allocator/Definition/Constant/CommandAllocatorConstant.h"
-
-// コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
-#include "Graphics/Command/Allocator/CommandAllocatorBase.h"
-#include "Graphics/Command/List/CommandListBase.h"
-#include "Graphics/Command/Queue/Fence/Fence.h"
-#include "Graphics/Command/Queue/CommandQueueBase.h"
 
 // ダイレクトコマンドアロケータ
 #include "Graphics/Render/Command/Allocator/DirectCommandAllocator.h"

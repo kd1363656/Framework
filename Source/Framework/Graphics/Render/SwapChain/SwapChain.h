@@ -25,7 +25,10 @@ namespace FWK::Graphics
 
 		// ※注意
 		// 呼び出す前にGPUとの完全同期を取ること
-		bool Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
+		bool Resize(const Device&				        a_device, 
+					const ResourceReleaseContext&       a_resourceReleaseContext,
+					const Struct::ClientSize&	        a_clientSize, 
+						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
 		void ResizeBackBufferList(const std::size_t a_backBufferNUM);
 
@@ -47,8 +50,6 @@ namespace FWK::Graphics
 		bool CreateSwapChain(const Window& a_window, const Factory& a_factory, const DirectCommandQueue& a_directCommandQueue);
 
 		bool CreateBackBufferList(const Device& a_device, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
-
-		void ReleaseBackBufferList(TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
 		bool IsValidBackBufferSize(const Struct::ClientSize& a_clientSize) const;
 

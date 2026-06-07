@@ -59,10 +59,15 @@ void FWK::Graphics::GraphicsManager::ProcessWindowResizeRequest(const Struct::Wi
 		return; 
 	}
 
+	const auto& l_resourceReleaseContext = m_resourceContext.GetREFResourceReleaseContext();
+
 	// ResizeBuffers()の前に、Rendererが待つDirectCommandList側のBackBuffer参照を外す、
 	// 前フレームのResourceBarrierなどがコマンドリスト内部に残っていると、
 	// SwapChain::ReleaseBackBufferList()でComPtrをResetしてもResizeBuffers()が失敗することがある
-	m_renderer.Resize(m_device, a_windowResizeRequest.m_clientSize, m_resourceContext.GetMutableREFRTVDescriptorPool());
+	m_renderer.Resize(m_device, 
+					  l_resourceReleaseContext, 
+					  a_windowResizeRequest.m_clientSize, 
+					  m_resourceContext.GetMutableREFRTVDescriptorPool());
 }
 
 #if defined(_DEBUG)
