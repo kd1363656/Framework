@@ -28,12 +28,6 @@
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID">
       <UniqueIdentifier>{2988603d-13b3-4019-8ab6-9134a66babe4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition">
-      <UniqueIdentifier>{32051aa8-1614-4369-ab89-2da6004d95cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Macros">
-      <UniqueIdentifier>{ca97f1c7-6d4f-418a-a41d-18375048434f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\TypeINFO\Definition">
       <UniqueIdentifier>{5e945844-edeb-489c-8789-40cc5a819631}</UniqueIdentifier>
     </Filter>
@@ -48,9 +42,6 @@
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry">
       <UniqueIdentifier>{02620fa5-941a-4dc6-bb35-00128b908027}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct">
-      <UniqueIdentifier>{23b5f760-7689-45d8-b2de-0fb0bdde4db8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Definition\Macros">
       <UniqueIdentifier>{7562f8c2-dd4d-4d77-bc99-63ecca56053f}</UniqueIdentifier>
@@ -72,9 +63,6 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\String\Definition\Constant">
       <UniqueIdentifier>{1f778f08-f08a-47b0-9238-c1648cd0bc5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Concept">
-      <UniqueIdentifier>{719847fc-4732-4a83-909d-7d1d8850c4c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Window\Converter">
       <UniqueIdentifier>{bafa8b3c-5e41-408b-af2a-3fd530cc19aa}</UniqueIdentifier>
@@ -232,41 +220,8 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph">
       <UniqueIdentifier>{ec4b0f48-d3a0-44df-8865-cfb617ac6a74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Type">
-      <UniqueIdentifier>{182ff4f2-dcc5-4c18-8498-f4bea0bb2775}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Macros\Assert">
-      <UniqueIdentifier>{c3b4633a-c469-4d73-972c-bbf7552b5694}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Macros\Json">
-      <UniqueIdentifier>{5990b46b-05c5-43a7-ad5d-76dfd50faea9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Window\Definition\Enum">
       <UniqueIdentifier>{d6b0b557-7c82-415b-b06a-55ed0286ecc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Enum">
-      <UniqueIdentifier>{464994bf-cbc3-4611-b86e-03e2523b06be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Enum\Type">
-      <UniqueIdentifier>{35de71d3-763e-4c76-8ea7-4bae42a84835}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Enum\Type\Trait">
-      <UniqueIdentifier>{8a0295dc-c517-476a-aa3b-761b69e8ee52}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Enum\Type\Trait\PTR">
-      <UniqueIdentifier>{d57d6fa7-f38e-4e82-bfd9-2510876d4304}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{38955f26-de9d-4400-b6ff-9661311ed048}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Concept\IsSmartPTR">
-      <UniqueIdentifier>{53032c41-9466-474e-ba39-d1920eb5c80a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Type\Trait">
-      <UniqueIdentifier>{f2ec1a80-2608-42d9-a0d3-d41910919923}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Type\Trait\PTR">
-      <UniqueIdentifier>{bf0e4e8e-85b0-42e6-886d-e146d397bb8f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Factory">
       <UniqueIdentifier>{4d88026e-0e11-4364-9644-f8eec155a2e3}</UniqueIdentifier>
@@ -303,9 +258,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary">
       <UniqueIdentifier>{761acab9-6914-47a5-8122-47f4dbf6a0e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\StringHash">
-      <UniqueIdentifier>{b1e9ebd5-16c1-40cb-aa4d-0afd400e7fe1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition">
       <UniqueIdentifier>{a0637984-b7e9-4846-9492-cab2154aefa3}</UniqueIdentifier>
@@ -475,6 +427,60 @@
     <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias">
       <UniqueIdentifier>{1bb93711-38d3-41a9-93f5-69309b70e2f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Type">
+      <UniqueIdentifier>{59b226ef-c473-4d4f-82f5-3f954df1c281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Type\Trait">
+      <UniqueIdentifier>{b8a4b0a2-81ce-412b-b147-47e6650fbd38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Type\Trait\PTR">
+      <UniqueIdentifier>{31a7f7ea-5759-4d84-af3a-4fe957dcf413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum">
+      <UniqueIdentifier>{ce42cb59-5fbd-4d27-8666-353dd0a320a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum\Type">
+      <UniqueIdentifier>{77ecbc91-20e7-4e97-8e4d-059aaafc9374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait">
+      <UniqueIdentifier>{2db6c4de-871d-4a55-b3c4-b2a1ff80ac23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR">
+      <UniqueIdentifier>{26a3fbca-dcb7-4253-94dc-9d88f1ed41d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Concept">
+      <UniqueIdentifier>{9a4e5147-bb33-4fa8-8c61-9197792b8d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR">
+      <UniqueIdentifier>{acac3ee7-bd52-42d4-ad62-ccc6f1b65717}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition">
+      <UniqueIdentifier>{14bcb1ce-fb26-414a-8dd6-3f9655076cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros">
+      <UniqueIdentifier>{c8ead644-5c10-42fa-93a2-8e5bcd59e43f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert">
+      <UniqueIdentifier>{20454773-acd9-413e-8cfb-8207068ddc84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Definition\Macros">
+      <UniqueIdentifier>{db7347af-d1b7-4c25-b9c7-e7625ff7242e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Definition\Macros\Json">
+      <UniqueIdentifier>{6c956735-8b5c-4467-b45d-e0161f4c0713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Registry\Definition">
+      <UniqueIdentifier>{df032c82-dbd3-4ee6-b71c-a548c70635ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Struct">
+      <UniqueIdentifier>{d1f391f8-9321-4623-94e2-fc0c60523847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHash">
+      <UniqueIdentifier>{6346401f-2907-4b95-82d8-241b3361b481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash">
+      <UniqueIdentifier>{86d1d7a8-cb22-422f-b00b-9cf1cf6b91ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -615,32 +621,11 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h">
-      <Filter>Source\Framework\Definition\Macros\Assert</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h">
-      <Filter>Source\Framework\Definition\Macros\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h">
       <Filter>Source\Framework\Window\Definition\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
-      <Filter>Source\Framework\Definition\Enum\Type\Trait\PTR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsSmartPTR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
-      <Filter>Source\Framework\Definition\Type\Trait\PTR</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h">
       <Filter>Source\Framework\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h">
-      <Filter>Source\Framework\Factory\Definition\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.h">
       <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
@@ -659,9 +644,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h">
-      <Filter>Source\Framework\Definition\Struct\StringHash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant</Filter>
@@ -770,6 +752,30 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\CommandListConstant.h">
       <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\Definition\Macros\FactoryMacros.h">
+      <Filter>Source\Framework\Factory\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\Definition\Type\Trait\PTR\TypeTraitPTR.h">
+      <Filter>Source\Framework\Factory\Definition\Type\Trait\PTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
+      <Filter>Source\Framework\Factory\Definition\Enum\Type\Trait\PTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
+      <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert\AssertReturnMacros.h">
+      <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Definition\Macros\Json\JsonSerializeEnumMacros.h">
+      <Filter>Source\Framework\Window\Definition\Macros\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHash\StringHashStruct.h">
+      <Filter>Source\Framework\TypeINFO\Registry\Definition\Struct\StringHash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash\WStringHashStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,37 +1,6 @@
 ﻿#pragma once
 
 //===============================================================================
-// Enum
-//===============================================================================
-#include "Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
-
-//===============================================================================
-// TypeTrait
-//===============================================================================
-#include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
-
-//===============================================================================
-// マクロ
-//===============================================================================
-#include "Definition/Macros/Assert/AssertReturnMacros.h"
-#include "Definition/Macros/Json/JsonSerializeEnumMacros.h"
-
-//===============================================================================
-// 継承しているかどうかを確認するコンセプト
-//===============================================================================
-#include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
-
-//===============================================================================
-// スマートポインタかどうかを確認するコンセプト
-//===============================================================================
-#include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
-
-//===============================================================================
-// 文字列ハッシュ化構造体
-//===============================================================================
-#include "Definition/Struct/StringHash/StringHashStruct.h"
-
-//===============================================================================
 // シングルトンを安全に扱うための基底クラス
 //===============================================================================
 #include "Utility/Singleton/SingletonUtility.h"
@@ -42,7 +11,9 @@
 #include "TypeINFO/Definition/Type/Alias/TypeINFOTypeAlias.h"
 #include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
+#include "TypeINFO/StaticTypeID/Definition/Macros/Assert/AssertReturnMacros.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
+#include "TypeINFO/Registry/Definition/Struct/StringHash/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
 #include "TypeINFO/Utility/TypeINFOUtility.h"
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
@@ -50,8 +21,12 @@
 //===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
+#include "Factory/Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
+#include "Factory/Definition/Type/Trait/PTR/TypeTraitPTR.h"
+#include "Factory/Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
+#include "Factory/Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
 #include "Factory/GenericFactory.h"
-#include "Factory/Macros/FactoryMacros.h"
+#include "Factory/Definition/Macros/FactoryMacros.h"
 
 //===============================================================================
 // バイナリーファイル化基底クラス
@@ -78,6 +53,7 @@
 //===============================================================================
 // ウィンドウクラス
 //===============================================================================
+#include "Window/Definition/Macros/Json/JsonSerializeEnumMacros.h"
 #include "Window/Definition/Enum/WindowEnum.h"
 #include "Window/Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
@@ -133,6 +109,7 @@
 #include "Graphics/Resource/Record/Definition/Type/Alias/RecordBaseTypeAlias.h"
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
+
 #include "Graphics/Resource/Record/Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
 
@@ -173,6 +150,7 @@
 #include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
 #include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
 #include "Graphics/Resource/Upload/Definition/Struct/UploadSystemStruct.h"
+#include "Graphics/Resource/Upload/Definition/Struct/WStringHash/WStringHashStruct.h"
 #include "Graphics/Resource/Upload/Definition/Type/Alias/UploadSystemTypeAlias.h"
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
