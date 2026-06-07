@@ -336,12 +336,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Constant.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\StringHash\StringHashStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h" />
     <ClInclude Include="Source\Framework\Factory\Macros\FactoryMacros.h" />
@@ -358,6 +356,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\GraphicsManager.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Device.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\CommandListConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />

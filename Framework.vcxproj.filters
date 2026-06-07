@@ -235,9 +235,6 @@
     <Filter Include="Source\Framework\Definition\Type">
       <UniqueIdentifier>{182ff4f2-dcc5-4c18-8498-f4bea0bb2775}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Type\Alias">
-      <UniqueIdentifier>{fda36f64-1351-49f7-87c7-778739746ad2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Macros\Assert">
       <UniqueIdentifier>{c3b4633a-c469-4d73-972c-bbf7552b5694}</UniqueIdentifier>
     </Filter>
@@ -285,9 +282,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader">
       <UniqueIdentifier>{654dfc4b-40ce-40e5-8cca-619d7c0406a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant">
-      <UniqueIdentifier>{c5824a3b-43a4-4f30-be19-a231cc96d8a7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Converter">
       <UniqueIdentifier>{a6a6d22e-e907-42f8-8393-fe6652e3ae9c}</UniqueIdentifier>
@@ -469,6 +463,18 @@
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct">
       <UniqueIdentifier>{9e81086c-293c-4b73-ad2f-0f35050e34ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition">
+      <UniqueIdentifier>{d85d0311-feb6-48f8-9722-ca593c8ea091}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant">
+      <UniqueIdentifier>{70a1b45f-983b-4fca-ad26-ab903688d55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type">
+      <UniqueIdentifier>{03047cf3-1bb6-485c-8c0e-53cc2ae8797b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias">
+      <UniqueIdentifier>{1bb93711-38d3-41a9-93f5-69309b70e2f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -609,9 +615,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\TypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h">
       <Filter>Source\Framework\Definition\Macros\Assert</Filter>
     </ClInclude>
@@ -644,9 +647,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Constant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h">
       <Filter>Source\Framework\Converter\Binary</Filter>
@@ -764,6 +764,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\UploadSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\CommandListConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

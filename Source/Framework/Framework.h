@@ -1,16 +1,6 @@
 ﻿#pragma once
 
 //===============================================================================
-// 型エイリアス
-//===============================================================================
-#include "Definition/Type/Alias/TypeAlias.h"
-
-//===============================================================================
-// 定数
-//===============================================================================
-#include "Definition/Constant/Constant.h"
-
-//===============================================================================
 // Enum
 //===============================================================================
 #include "Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
@@ -151,6 +141,8 @@
 #include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
 
 // ダイレクトコマンド用定数
+#include "Graphics/Render/Command/List/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
+#include "Graphics/Render/Command/List/Definition/Constant/CommandListConstant.h"
 #include "Graphics/Render/Frame/Command/Allocator/Definition/Constant/DirectCommandAllocatorConstant.h"
 
 // ダイレクトコマンドアロケータ
