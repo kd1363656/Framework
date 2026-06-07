@@ -12,8 +12,9 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_rtvDescriptorPool.Create(a_device), "RTVDescriptorPoolの作成処理に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_srvDescriptorPool.Create(a_device), "SRVDescriptorPoolの作成処理に失敗しました。", false);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_uploadSystem.Create(a_device), "アップロードシステムの作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureSystem.Create(),        "テクスチャシステムの作成処理に失敗しました。",   false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_gpuMemoryAllocator.Create(a_device), "GPUMemoryAllocatorの作成処理に失敗しました。",   false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_uploadSystem.Create(a_device),       "アップロードシステムの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureSystem.Create(),              "テクスチャシステムの作成処理に失敗しました。",   false);
 
     return true;
 }

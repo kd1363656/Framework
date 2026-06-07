@@ -183,12 +183,16 @@
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
+// メモリアロケータクラス
+#include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
+
 // テクスチャ
 #include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
+#include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 

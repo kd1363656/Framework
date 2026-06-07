@@ -380,6 +380,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Constant\DescriptorHeapConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h" />
@@ -392,6 +393,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct\TextureBatchUploadRecordBuilderStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.h" />
@@ -454,11 +456,13 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />

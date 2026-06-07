@@ -40,6 +40,8 @@ namespace FWK::Graphics
 		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};
 		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
 
+		GPUMemoryAllocator m_gpuMemoryAllocator = {};
+
 		UploadSystem m_uploadSystem = {};
 
 		TextureSystem m_textureSystem = {};
