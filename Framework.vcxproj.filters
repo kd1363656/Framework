@@ -10,9 +10,6 @@
     <Filter Include="Source\Framework">
       <UniqueIdentifier>{642edde5-5a2b-4090-aba3-432e9bbb6179}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility">
-      <UniqueIdentifier>{adc4db7f-008a-41a6-bba1-a330971bab10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dosuments">
       <UniqueIdentifier>{26a88736-694e-4bb9-821b-75ed16843981}</UniqueIdentifier>
     </Filter>
@@ -57,9 +54,6 @@
     </Filter>
     <Filter Include="Source\Framework\Window\Converter\Json">
       <UniqueIdentifier>{d51764b8-2378-4633-9a2c-367dbd814672}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Json">
-      <UniqueIdentifier>{e54deec9-c939-416e-b77b-e6579b28148a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Asset">
       <UniqueIdentifier>{bb277239-a5ec-498d-94e8-e04cbe3527da}</UniqueIdentifier>
@@ -521,9 +515,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h">
       <Filter>Source\Framework\Window\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
-      <Filter>Source\Framework\Utility\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
