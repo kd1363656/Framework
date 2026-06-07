@@ -409,23 +409,14 @@
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros">
       <UniqueIdentifier>{c8ead644-5c10-42fa-93a2-8e5bcd59e43f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert">
-      <UniqueIdentifier>{20454773-acd9-413e-8cfb-8207068ddc84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Window\Definition\Macros">
       <UniqueIdentifier>{db7347af-d1b7-4c25-b9c7-e7625ff7242e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Window\Definition\Macros\Json">
-      <UniqueIdentifier>{6c956735-8b5c-4467-b45d-e0161f4c0713}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry\Definition">
       <UniqueIdentifier>{df032c82-dbd3-4ee6-b71c-a548c70635ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Struct">
       <UniqueIdentifier>{d1f391f8-9321-4623-94e2-fc0c60523847}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHash">
-      <UniqueIdentifier>{6346401f-2907-4b95-82d8-241b3361b481}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash">
       <UniqueIdentifier>{86d1d7a8-cb22-422f-b00b-9cf1cf6b91ce}</UniqueIdentifier>
@@ -483,9 +474,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias">
       <UniqueIdentifier>{acaaf4e9-04d8-452a-b1b9-58dcb7398e74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTR">
-      <UniqueIdentifier>{1eaeca83-a099-46c6-9945-ef57337e38d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
       <UniqueIdentifier>{149ff2c6-ac7d-4231-8aa7-59925b4610e1}</UniqueIdentifier>
@@ -741,15 +729,6 @@
     <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert\AssertReturnMacros.h">
-      <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Definition\Macros\Json\JsonSerializeEnumMacros.h">
-      <Filter>Source\Framework\Window\Definition\Macros\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHash\StringHashStruct.h">
-      <Filter>Source\Framework\TypeINFO\Registry\Definition\Struct\StringHash</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash\WStringHashStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash</Filter>
     </ClInclude>
@@ -783,14 +762,23 @@
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Factory.h">
       <Filter>Source\Framework\Graphics\Hardware\Factory</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTR\ComPTRTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTR</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorIndexTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Constant\SwapChainConstant.h">
       <Filter>Source\Framework\Graphics\Render\SwapChain\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\AssertReturnMacros.h">
+      <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHashStruct.h">
+      <Filter>Source\Framework\TypeINFO\Registry\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Definition\Macros\JsonSerializeEnumMacros.h">
+      <Filter>Source\Framework\Window\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTRTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

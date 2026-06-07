@@ -4,12 +4,12 @@
 // 型情報
 //===============================================================================
 #include "TypeINFO/StaticTypeID/Definition/Type/Alias/StaticTypeIDTypeAlias.h"
-#include "TypeINFO/StaticTypeID/Definition/Macros/Assert/AssertReturnMacros.h"
+#include "TypeINFO/StaticTypeID/Definition/Macros/AssertReturnMacros.h"
 #include "TypeINFO/StaticTypeID/Definition/Constant/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/Utility/Singleton/SingletonUtility.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
-#include "TypeINFO/Registry/Definition/Struct/StringHash/StringHashStruct.h"
+#include "TypeINFO/Registry/Definition/Struct/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
 #include "TypeINFO/Registry/Definition/Macros/TypeINFORegistryMacros.h"
 
@@ -31,7 +31,7 @@
 //===============================================================================
 // ウィンドウクラス
 //===============================================================================
-#include "Window/Definition/Macros/Json/JsonSerializeEnumMacros.h"
+#include "Window/Definition/Macros/JsonSerializeEnumMacros.h"
 #include "Window/Definition/Enum/WindowEnum.h"
 #include "Window/Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
@@ -53,7 +53,7 @@
 //===============================================================================
 
 // グラフィックスデバイス管理クラス
-#include "Graphics/Hardware/Factory/Definition/Type/Alias/ComPTR/ComPTRTypeAlias.h"
+#include "Graphics/Hardware/Factory/Definition/Type/Alias/ComPTRTypeAlias.h"
 #include "Graphics/Hardware/Factory/Factory.h"
 #include "Graphics/Hardware/Device/Device.h"
 
