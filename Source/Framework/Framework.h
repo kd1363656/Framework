@@ -154,6 +154,14 @@
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
 
+// ストレージクラス
+#include "Graphics/Resource/Storage/Allocator/Definition/Type/Alias/StorageTypeAlias.h"
+#include "Graphics/Resource/Storage/Allocator/Definition/Constant/StorageIDAllocatorConstant.h"
+#include "Graphics/Resource/Storage/Allocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
+#include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
+#include "Graphics/Resource/Storage/Definition/Constant/StorageConstant.h"
+
+
 // テクスチャ
 #include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"

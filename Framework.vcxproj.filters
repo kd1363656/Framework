@@ -394,6 +394,36 @@
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Converter\Json">
       <UniqueIdentifier>{5e7303c5-2ab4-4552-a49a-eafa7657166f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage">
+      <UniqueIdentifier>{0b95a1bc-aaf6-43d3-9660-b16182ae3a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Definition">
+      <UniqueIdentifier>{c19f93b2-af91-4c5c-b266-e9ccd571b40a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator">
+      <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter">
+      <UniqueIdentifier>{c3504afa-553b-4f51-891f-def85748ee79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json">
+      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition">
+      <UniqueIdentifier>{cc5e6674-5e55-4c89-b788-232a19442cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Constant">
+      <UniqueIdentifier>{3db9232c-097d-43c3-940b-d05a38d3e798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Definition\Constant">
+      <UniqueIdentifier>{054db207-29ea-4857-8216-43130042be19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type">
+      <UniqueIdentifier>{02c7875a-fc33-4ce7-8ec8-8e3e2959ed38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type\Alias">
+      <UniqueIdentifier>{12fe6354-aeff-4d71-9b7f-90652132553f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -642,6 +672,21 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Constant\StorageIDAllocatorConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type\Alias\StorageTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Definition\Constant\StorageConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Definition\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -766,6 +811,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Upload\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
