@@ -448,12 +448,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Record">
       <UniqueIdentifier>{b9e9deb4-3964-4a2d-ae2b-a3ad24c31d7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Record\Definition">
-      <UniqueIdentifier>{df48c60f-12b5-4050-94c0-04d7bac93c06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Record\Definition\Struct">
-      <UniqueIdentifier>{f283a2ff-d35f-40ff-9fd4-e92d9b77e6d6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -732,8 +726,8 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Record</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\Definition\Struct\TextureRecordStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Record\Definition\Struct</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

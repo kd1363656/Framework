@@ -144,35 +144,11 @@
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 #include "Graphics/Resource/Record/Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
-#include "Graphics/Resource/Texture/Record/Definition/Struct/TextureRecordStruct.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
-
-// アップロードシステム
-#include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
-#include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
-#include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
-#include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
-#include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
-#include "Graphics/Resource/Upload/UploadSystem.h"
-
-// リソースコンテキストの定数
-#include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
 
 // ストレージクラス
 #include "Graphics/Resource/Storage/Allocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
 #include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
-
-// テクスチャ
-#include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
-#include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
-#include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
-#include "Graphics/Resource/Texture/Loader/TextureLoader.h"
-#include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
-#include "Graphics/Resource/Texture/TextureSystem.h"
-
-// リソースコンテキスト
-#include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
-#include "Graphics/Resource/ResourceContext.h"
 
 // ダイレクトコマンド用定数
 #include "Graphics/Render/Frame/Command/Allocator/Definition/Constant/DirectCommandAllocatorConstant.h"
@@ -193,6 +169,31 @@
 
 // ダイレクトコマンドリスト
 #include "Graphics/Render/Command/List/DirectCommandList.h"
+
+// Storageクラス
+#include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
+#include "Graphics/Resource/Storage/Converter/Json/AssetStorageJsonConverter.h"
+#include "Graphics/Resource/Storage/AssetStorage.h"
+
+// アップロードシステム
+#include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
+#include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
+#include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
+#include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
+#include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
+#include "Graphics/Resource/Upload/UploadSystem.h"
+
+// テクスチャ
+#include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
+#include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
+#include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
+#include "Graphics/Resource/Texture/Loader/TextureLoader.h"
+#include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
+#include "Graphics/Resource/Texture/TextureSystem.h"
+
+// リソースコンテキストの定数
+#include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
+#include "Graphics/Resource/ResourceContext.h"
 
 // レンダーグラフ
 #include "Graphics/Render/Graph/RenderGraph.h"

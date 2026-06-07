@@ -18,8 +18,3 @@ bool FWK::Graphics::AssetRecordBase::IsUnused() const
 {
 	return m_referenceCount == Constant::k_emptyAssetReferenceCount;
 }
-
-void FWK::Graphics::AssetRecordBase::InvalidateStorageID()
-{
-	m_storageID = Constant::k_invalidStorageID;
-}

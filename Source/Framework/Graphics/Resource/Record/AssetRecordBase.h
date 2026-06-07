@@ -22,8 +22,6 @@ namespace FWK::Graphics
 
 		bool IsUnused() const;
 
-		void InvalidateStorageID();
-
 		virtual bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) = 0;
 
 		void SetFilePath(const std::wstring& a_set) { m_filePath = a_set; }
