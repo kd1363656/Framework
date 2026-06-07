@@ -6,15 +6,15 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 
 	// フレームリソースのデシリアライズ
 	// json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復興時にCount側へ展開する
-	const auto& l_frameResourceListJson = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{});
-	const auto& l_swapChainJson		    = a_rootJson.value(k_swapChainJsonKey,	       nlohmann::json{});
-	
-	if (!l_frameResourceListJson.is_null())
+	if (const auto& l_frameResourceListJson = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{}); 
+		!l_frameResourceListJson.is_null())
 	{
 		DeserializeFrameResourceList(l_frameResourceListJson, a_renderer);
 	}
 
-	if (!l_swapChainJson.is_null())
+	// スワップチェインのデシリアライズ
+	if (const auto& l_swapChainJson = a_rootJson.value(k_swapChainJsonKey, nlohmann::json{});
+		!l_swapChainJson.is_null())
 	{
 		DeserializeSwapChain(l_swapChainJson, a_renderer);
 	}

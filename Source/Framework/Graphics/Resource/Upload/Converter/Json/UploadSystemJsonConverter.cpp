@@ -4,11 +4,10 @@ void FWK::Converter::UploadSystemJsonConverter::Deserialize(const nlohmann::json
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto& l_copyCommandAllocatorListJson = a_rootJson.value(k_copyCommandAllocatorListJsonKey, nlohmann::json{});
-
-	if (!l_copyCommandAllocatorListJson.is_null())
+	if (const auto& l_json = a_rootJson.value(k_copyCommandAllocatorListJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeCopyCommandAllocator(l_copyCommandAllocatorListJson, a_uploadSystem);
+		DeserializeCopyCommandAllocator(l_json, a_uploadSystem);
 	}
 }
 

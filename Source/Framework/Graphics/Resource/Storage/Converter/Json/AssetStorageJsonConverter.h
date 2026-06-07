@@ -18,12 +18,15 @@ namespace FWK::Converter
 
 		void Deserialize(const nlohmann::json& a_rootJson, Graphics::AssetStorage<RecordType>& a_assetStorage) const
 		{
-			if (a_rootJson.is_null())									   { return; }
-			if (!a_rootJson.contains(k_storageIDAllocatorCapacityJsonKey)) { return; }
-			
-			auto& l_storageIDAllocator = a_assetStorage.GetMutableREFStorageIDAllocator();
+			if (a_rootJson.is_null()) { return; }
 
-			l_storageIDAllocator.Deserialize(a_rootJson[k_storageIDAllocatorCapacityJsonKey]);
+			if (const auto& l_json = a_rootJson.value(k_storageIDAllocatorCapacityJsonKey, nlohmann::json{});
+				!l_json.is_null())
+			{
+				auto& l_storageIDAllocator = a_assetStorage.GetMutableREFStorageIDAllocator();
+
+				l_storageIDAllocator.Deserialize(l_json);
+			}
 		}
 
 		nlohmann::json Serialize(const Graphics::AssetStorage<RecordType>& a_assetStorage) const

@@ -448,6 +448,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Record">
       <UniqueIdentifier>{b9e9deb4-3964-4a2d-ae2b-a3ad24c31d7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter">
+      <UniqueIdentifier>{529f3c12-4721-49d2-b712-eb45190c947a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json">
+      <UniqueIdentifier>{9005080d-2f0d-4991-8330-b6ecc1193343}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -729,6 +735,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h">
       <Filter>Source\Framework\Graphics\Resource\Storage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -868,6 +877,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Record</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

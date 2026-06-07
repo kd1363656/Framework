@@ -23,6 +23,8 @@ namespace FWK::Converter
 		static constexpr std::string_view k_rtvDescriptorPoolJsonKey = "RTVDescriptorPool";
 		static constexpr std::string_view k_srvDescriptorPoolJsonKey = "SRVDescriptorPool";
 
+		static constexpr std::string_view k_textureSystemJsonKey = "TextureSystem";
+
 		static constexpr std::string_view k_uploadSystemJsonKey = "UploadSystem";
 	};
 }

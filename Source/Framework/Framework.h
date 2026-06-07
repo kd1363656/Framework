@@ -189,6 +189,7 @@
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
+#include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 
 // リソースコンテキストの定数

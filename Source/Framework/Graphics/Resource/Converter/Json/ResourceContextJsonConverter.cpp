@@ -4,29 +4,40 @@ void FWK::Converter::ResourceContextJsonConverter::Deserialize(const nlohmann::j
 {
 	if (a_rootJson.is_null()) { return; }
 
-	auto& l_rtvDescriptorPool = a_resourceContext.GetMutableREFRTVDescriptorPool();
-	auto& l_srvDescriptorPool = a_resourceContext.GetMutableREFSRVDescriptorPool();
-
-	auto& l_uploadSystem = a_resourceContext.GetMutableREFUploadSystem();
-
-	const auto& l_rtvDescriptorPoolJson = a_rootJson.value(k_rtvDescriptorPoolJsonKey, nlohmann::json{});
-	const auto& l_srvDescriptorPoolJson = a_rootJson.value(k_srvDescriptorPoolJsonKey, nlohmann::json{});
-
-	const auto& l_uploadSystemJson = a_rootJson.value(k_uploadSystemJsonKey, nlohmann::json{});
-
-	if (!l_rtvDescriptorPoolJson.is_null())
+	// RTVDescriptorPoolのデシリアライズ、
+	if (const auto& l_json = a_rootJson.value(k_rtvDescriptorPoolJsonKey, nlohmann::json{}); 
+		!l_json.is_null())
 	{
-		l_rtvDescriptorPool.Deserialize(l_rtvDescriptorPoolJson);
+		auto& l_rtvDescriptorPool = a_resourceContext.GetMutableREFRTVDescriptorPool();
+
+		l_rtvDescriptorPool.Deserialize(l_json);
 	}
 
-	if (!l_srvDescriptorPoolJson.is_null())
+	// SRVDescriptorPoolのデシリアライズ、
+	if (const auto& l_json = a_rootJson.value(k_srvDescriptorPoolJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		l_srvDescriptorPool.Deserialize(l_rtvDescriptorPoolJson);
+		auto& l_srvDescriptorPool = a_resourceContext.GetMutableREFSRVDescriptorPool();
+
+		l_srvDescriptorPool.Deserialize(l_json);
 	}
 
-	if (!l_uploadSystemJson.is_null())
+	// アップロードシステムのデシリアライズ、
+	if (const auto& l_json = a_rootJson.value(k_uploadSystemJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		l_uploadSystem.Deserialize(l_uploadSystemJson);
+		auto& l_uploadSystem = a_resourceContext.GetMutableREFUploadSystem();
+
+		l_uploadSystem.Deserialize(l_json);
+	}
+
+	// テクスチャシステムのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_textureSystemJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_textureSystem = a_resourceContext.GetMutableREFTextureSystem();
+
+		l_textureSystem.Deserialize(l_json);
 	}
 }
 
@@ -37,7 +48,8 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 	const auto& l_srvDescriptorPool = a_resourceContext.GetREFSRVDescriptorPool();
 
-	const auto& l_uploadSystem = a_resourceContext.GetREFUploadSystem();
+	const auto& l_textureSystem = a_resourceContext.GetREFTextureSystem();
+	const auto& l_uploadSystem  = a_resourceContext.GetREFUploadSystem ();
 
 	// RTVディスクリプタプールのシリアライズ
 	l_rootJson[k_rtvDescriptorPoolJsonKey] = l_rtvDescriptorPool.Serialize();
@@ -47,6 +59,9 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 
 	// UploadSystemのシリアライズ
 	l_rootJson[k_uploadSystemJsonKey] = l_uploadSystem.Serialize();
+
+	// テクスチャシステムのシリアライズ
+	l_rootJson[k_textureSystemJsonKey] = l_textureSystem.Serialize();
 
 	return l_rootJson;
 }

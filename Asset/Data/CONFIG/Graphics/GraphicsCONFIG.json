@@ -20,6 +20,13 @@
                 "DescriptorHeapIndexAllocatorCapacity": 10000
             }
         },
+        "TextureSystem": {
+            "TextureStorage": {
+                "StorageIDAllocator": {
+                    "StorageIDAllocatorCapacity": 10000
+                }
+            }
+        },
         "UploadSystem": {
             "CopyCommandAllocatorList": {
                 "Count": 4
