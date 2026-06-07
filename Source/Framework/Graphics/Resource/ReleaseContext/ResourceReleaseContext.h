@@ -11,7 +11,9 @@ namespace FWK::Graphics
 	{
 	public:
 
-		bool PushSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+		bool ReserveDeferredReleaseGPUResourceRecord(Struct::GPUResourceReleaseRecord&& a_releaseRecord);
+
+		bool ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 
 		void ReleaseAvailableDeferredResources(const DirectCommandQueue& a_directCommandQueue, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
@@ -20,7 +22,10 @@ namespace FWK::Graphics
 
 	private:
 
+		bool IsValidGPUResourceReleaseRecord	(const Struct::GPUResourceReleaseRecord&     a_releaseRecord) const;
 		bool IsValidDescriptorIndexReleaseRecord(const Struct::DescriptorIndexReleaseRecord& a_releaseRecord) const;
+
+		void ReleaseAvailableGPUResources(const UINT64& a_completedFenceValue);
 
 		template <D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
 		void ReleaseAvailableDescriptorIndices(const UINT64& a_completedFenceValue, std::vector<Struct::DescriptorIndexReleaseRecord>& a_releaseRecordList, DescriptorPool<HeapType>& a_descriptorPool)
@@ -48,6 +53,8 @@ namespace FWK::Graphics
 				a_releaseRecordList.pop_back();
 			}
 		}
+
+		std::vector<Struct::GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
 
 		std::vector<Struct::DescriptorIndexReleaseRecord> m_srvDescriptorIndexReleaseRecordList = {};
 	};

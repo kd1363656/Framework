@@ -11,4 +11,9 @@ namespace FWK::Struct
 	{
 		TypeAlias::DescriptorIndex m_descriptorIndex = Constant::k_invalidDescriptorIndex;
 	};
+
+	struct GPUResourceReleaseRecord final : public DeferredResourceReleaseRecordBase
+	{
+		Struct::GPUResource m_gpuResource = {};
+	};
 }

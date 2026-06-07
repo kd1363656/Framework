@@ -52,17 +52,9 @@
 #include "TypeINFO/Definition/Type/Alias/TypeINFOTypeAlias.h"
 #include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
-
-// 型情報生成
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
-
-// 型情報登録
 #include "TypeINFO/Registry/TypeINFORegistry.h"
-
-// 型用便利関数
 #include "TypeINFO/Utility/TypeINFOUtility.h"
-
-// 型情報登録マクロ(通常版)
 #include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
 
 //===============================================================================
@@ -119,6 +111,10 @@
 #include "Graphics/Hardware/Factory.h"
 #include "Graphics/Hardware/Device.h"
 
+// アップロードバッファークラス
+#include "Graphics/Resource/Buffer/Definition/Constant/UploadBufferConstant.h"
+#include "Graphics/Resource/Buffer/UploadBuffer.h"
+
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
 #include "Graphics/Command/List/CommandListBase.h"
@@ -143,6 +139,14 @@
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
+// レコードクラス
+#include "Graphics/Resource/Record/Definition/Type/Alias/RecordBaseTypeAlias.h"
+#include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
+#include "Graphics/Resource/Record/AssetRecordBase.h"
+#include "Graphics/Resource/Record/Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
+#include "Graphics/Resource/Texture/Record/Definition/Struct/TextureRecordStruct.h"
+#include "Graphics/Resource/Texture/Record/TextureRecord.h"
+
 // アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
 #include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
@@ -155,18 +159,15 @@
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
 
 // ストレージクラス
-#include "Graphics/Resource/Storage/Allocator/Definition/Type/Alias/StorageTypeAlias.h"
-#include "Graphics/Resource/Storage/Allocator/Definition/Constant/StorageIDAllocatorConstant.h"
 #include "Graphics/Resource/Storage/Allocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
 #include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
-#include "Graphics/Resource/Storage/Definition/Constant/StorageConstant.h"
-
 
 // テクスチャ
 #include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
+#include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 
 // リソースコンテキスト

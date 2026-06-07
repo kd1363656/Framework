@@ -32,7 +32,8 @@ namespace FWK::Graphics
 		
 		const auto& GetREFSwapChain() const { return m_swapChain; }
 		
-		const auto& GetREFDirectCommandList() const { return m_directCommandList; }
+		const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
+		const auto& GetREFDirectCommandList () const { return m_directCommandList; }
 
 		auto& GetMutableREFSwapChain() { return m_swapChain; }
 		

@@ -397,9 +397,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Storage">
       <UniqueIdentifier>{0b95a1bc-aaf6-43d3-9660-b16182ae3a83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Definition">
-      <UniqueIdentifier>{c19f93b2-af91-4c5c-b266-e9ccd571b40a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator">
       <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
     </Filter>
@@ -409,20 +406,53 @@
     <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json">
       <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition">
-      <UniqueIdentifier>{cc5e6674-5e55-4c89-b788-232a19442cfa}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer">
+      <UniqueIdentifier>{e250d46f-1052-47d6-bd20-98fe97822f4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Constant">
-      <UniqueIdentifier>{3db9232c-097d-43c3-940b-d05a38d3e798}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Definition">
+      <UniqueIdentifier>{184beb6a-3554-4abf-96e9-d1091d646d38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Definition\Constant">
-      <UniqueIdentifier>{054db207-29ea-4857-8216-43130042be19}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant">
+      <UniqueIdentifier>{7d1ab4e3-bfe4-4f10-b448-c25a7b69f6fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type">
-      <UniqueIdentifier>{02c7875a-fc33-4ce7-8ec8-8e3e2959ed38}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Builder">
+      <UniqueIdentifier>{b7d4ebf8-60c1-4937-829b-73589d655c0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type\Alias">
-      <UniqueIdentifier>{12fe6354-aeff-4d71-9b7f-90652132553f}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition">
+      <UniqueIdentifier>{ef995a1f-2442-4a82-8976-b85ca563e3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct">
+      <UniqueIdentifier>{6ff4d5c7-5c6c-48ac-bc9a-674df7407384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record">
+      <UniqueIdentifier>{40e40b5e-5a07-4cd0-bb4d-f5713f583a4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition">
+      <UniqueIdentifier>{f77aa271-5be7-40e9-8f02-391e04272196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Type">
+      <UniqueIdentifier>{d3cadae9-4705-4e16-9010-608405460dee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias">
+      <UniqueIdentifier>{d83a002b-417e-4279-a43d-0d784fa2b8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Constant">
+      <UniqueIdentifier>{062bce1b-ffa4-412d-9f53-df9722181fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Concept">
+      <UniqueIdentifier>{e8da98f5-4c75-458e-aff6-56e16f30c24b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{03dd95ed-f60b-4601-b763-603f33572a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Record">
+      <UniqueIdentifier>{b9e9deb4-3964-4a2d-ae2b-a3ad24c31d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Record\Definition">
+      <UniqueIdentifier>{df48c60f-12b5-4050-94c0-04d7bac93c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Record\Definition\Struct">
+      <UniqueIdentifier>{f283a2ff-d35f-40ff-9fd4-e92d9b77e6d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -678,14 +708,32 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Constant\StorageIDAllocatorConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Constant</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type\Alias\StorageTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Definition\Type\Alias</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant\UploadBufferConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Definition\Constant\StorageConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Definition\Constant</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct\TextureBatchUploadRecordBuilderStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias\RecordBaseTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Record\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Record\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h">
+      <Filter>Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\Definition\Struct\TextureRecordStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Record\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -817,6 +865,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Record</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Record</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

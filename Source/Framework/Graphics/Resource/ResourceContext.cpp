@@ -17,6 +17,13 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
     return true;
 }
 
+void FWK::Graphics::ResourceContext::BeginFrame(const DirectCommandQueue& a_directCommandQueue)
+{
+    // 参照カウントが0になったRecordからQueueへ積まれたGPUResource/SRVを、
+	// GPUのFence完了後に安全に解放する
+    m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue, m_srvDescriptorPool);
+}
+
 nlohmann::json FWK::Graphics::ResourceContext::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
