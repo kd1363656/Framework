@@ -143,11 +143,13 @@
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
-// コピー用キュー、アロケーター、リスト
+// アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
 #include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
 #include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
 #include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
+#include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
+#include "Graphics/Resource/Upload/UploadSystem.h"
 
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"

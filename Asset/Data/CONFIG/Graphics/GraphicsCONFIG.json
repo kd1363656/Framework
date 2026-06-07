@@ -1,6 +1,6 @@
 {
     "Renderer": {
-        "FrameResource": {
+        "FrameResourceList": {
             "Count": 3,
             "Template": null
         },
@@ -18,6 +18,11 @@
         "SRVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
                 "DescriptorHeapIndexAllocatorCapacity": 10000
+            }
+        },
+        "UploadSystem": {
+            "CopyCommandAllocatorList": {
+                "Count": 4
             }
         }
     }

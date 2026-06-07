@@ -6,12 +6,12 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 
 	// フレームリソースのデシリアライズ
 	// json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復興時にCount側へ展開する
-	const auto& l_frameResourceJson = a_rootJson.value(k_frameResourceJsonKey, nlohmann::json{});
-	const auto& l_swapChainJson		= a_rootJson.value(k_swapChainJsonKey,	   nlohmann::json{});
+	const auto& l_frameResourceListJson = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{});
+	const auto& l_swapChainJson		    = a_rootJson.value(k_swapChainJsonKey,	       nlohmann::json{});
 	
-	if (!l_frameResourceJson.is_null())
+	if (!l_frameResourceListJson.is_null())
 	{
-		DeserializeFrameResourceList(l_frameResourceJson, a_renderer);
+		DeserializeFrameResourceList(l_frameResourceListJson, a_renderer);
 	}
 
 	if (!l_swapChainJson.is_null())
@@ -26,7 +26,7 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 
 	// フレームリソースのシリアライズ
 	// 同じ設定を持つFrameResourceを個別にすべて保存せず、Count + Template形式で保存
-	l_rootJson[k_frameResourceJsonKey] = SerializeFrameResourceList(a_renderer);
+	l_rootJson[k_frameResourceListJsonKey] = SerializeFrameResourceList(a_renderer);
 
 	// スワップチェインのシリアライズ
 	l_rootJson[k_swapChainJsonKey] = SerializeSwapChain(a_renderer);
@@ -38,10 +38,10 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 {
 	if (a_rootJson.is_null()) { return; }
 	
-	const auto& l_frameResourceCount		= a_rootJson.value(k_frameResourceCountJsonKey,    k_defaultFrameResourceCount);
+	const auto& l_frameResourceCount		= a_rootJson.value(k_frameResourceCountJsonKey,    k_defaultFrameResourceListCount);
 	const auto& l_frameResourceTemplateJson = a_rootJson.value(k_frameResourceTemplateJsonKey, nlohmann::json());
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_frameResourceCount == k_emptyFrameResourceCount, "フレームリソースの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(l_frameResourceCount == k_emptyFrameResourceListCount, "フレームリソースの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
 
 	for (std::size_t l_i = 0ULL; l_i < l_frameResourceCount; ++l_i)
 	{

@@ -388,6 +388,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant">
       <UniqueIdentifier>{57b92b24-1471-498f-9a96-87bababa47c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Converter">
+      <UniqueIdentifier>{2c436a28-fdfa-41fa-8b73-ffae5819b3ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Converter\Json">
+      <UniqueIdentifier>{5e7303c5-2ab4-4552-a49a-eafa7657166f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -630,6 +636,12 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Command\Allocator</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -748,6 +760,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\Command\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Upload</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

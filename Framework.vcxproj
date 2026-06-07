@@ -391,6 +391,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant\CopyCommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
@@ -447,6 +449,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />

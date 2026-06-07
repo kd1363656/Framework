@@ -26,13 +26,13 @@ namespace FWK::Converter
 		nlohmann::json SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const;
 		nlohmann::json SerializeSwapChain		 (const Graphics::Renderer& a_renderer) const;
 		
-		static constexpr std::string_view k_frameResourceJsonKey         = "FrameResource";
+		static constexpr std::string_view k_frameResourceListJsonKey     = "FrameResourceList";
 		static constexpr std::string_view k_frameResourceCountJsonKey    = "Count";
 		static constexpr std::string_view k_frameResourceTemplateJsonKey = "Template";
 
 		static constexpr std::string_view k_swapChainJsonKey = "SwapChain";
 
-		static constexpr std::size_t k_defaultFrameResourceCount = 4ULL;
-		static constexpr std::size_t k_emptyFrameResourceCount   = 0ULL;
+		static constexpr std::size_t k_defaultFrameResourceListCount = 4ULL;
+		static constexpr std::size_t k_emptyFrameResourceListCount   = 0ULL;
 	};
 }

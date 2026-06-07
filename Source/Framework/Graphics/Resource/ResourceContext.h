@@ -17,10 +17,14 @@ namespace FWK::Graphics
 		const auto& GetREFRTVDescriptorPool() const { return m_rtvDescriptorPool; }
 		const auto& GetREFSRVDescriptorPool() const { return m_srvDescriptorPool; }
 
+		const auto& GetREFUploadSystem() const { return m_uploadSystem; }
+
 		const auto& GetREFResourceReleaseContext() const { return m_resourceReleaseContext; }
 
 		auto& GetMutableREFRTVDescriptorPool() { return m_rtvDescriptorPool; }
 		auto& GetMutableREFSRVDescriptorPool() { return m_srvDescriptorPool; }
+
+		auto& GetMutableREFUploadSystem() { return m_uploadSystem; }
 
 		auto& GetMutableREFTextureSystem() { return m_textureSystem; }
 
@@ -28,6 +32,8 @@ namespace FWK::Graphics
 
 		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};
 		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
+
+		UploadSystem m_uploadSystem = {};
 
 		TextureSystem m_textureSystem = {};
 
