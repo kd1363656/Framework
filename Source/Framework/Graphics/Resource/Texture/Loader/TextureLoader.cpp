@@ -7,6 +7,10 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
 
+	// .assetが存在していて、PNGより古くなければ.assetを優先して読み込む
+	// これにより、2回目以降はPNGのデコード処理を省略できる
+	if (m_binaryConverter.LoadTextureAsset(a_filePath, a_scratchImage, a_texMetadata)) { return true; }
+
 	const auto l_wicFlags = CreateWICFlags(a_textureLoadType);
 
 	// PNGなどの標準的な画像から情報を取得する関数
@@ -31,7 +35,7 @@ DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::Text
 	{
 		case Enum::TextureLoadType::Color:
 		{
-			// BasColor/Albedo/Diffuseのような「色」として扱うテクスチャ
+			// BaseColor/Albedo/Diffuseのような「色」として扱うテクスチャ
 			return DirectX::WIC_FLAGS_FORCE_SRGB;
 		}
 		break;
