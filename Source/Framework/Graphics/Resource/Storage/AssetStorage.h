@@ -54,7 +54,7 @@ namespace FWK::Graphics
 			return true;
 		}
 
-		bool AddReference(const std::weak_ptr<RecordType>& a_record)
+		bool AddReferenceCount(const std::weak_ptr<RecordType>& a_record)
 		{
 			const auto& l_record = a_record.lock();
 
@@ -66,7 +66,7 @@ namespace FWK::Graphics
 			return true;
 		}
 
-		bool ReleaseReference(const std::weak_ptr<RecordType>& a_record, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
+		bool SubtractReferenceCount(const std::weak_ptr<RecordType>& a_record, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
 		{
 			const auto& l_record = a_record.lock();
 
