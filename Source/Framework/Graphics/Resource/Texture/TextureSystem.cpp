@@ -53,7 +53,22 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 		return l_textureLoadResult;
 	}
 
+	// 現在のフレームで登録しようとしているパスが既に登録されているなら登録する必要がないためreturn
+	if (const auto& l_itr = m_pendingTextureBatchUploadRecordMap.find(l_filePath);
+		l_itr != m_pendingTextureBatchUploadRecordMap.end())
+	{
+		const auto& l_textureRecord = l_itr->second.m_textureRecord;
 
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_textureRecord, "該当するStorageIDのテクスチャーレコードが無効のため、テクスチャ読み込み処理に失敗しました。", l_textureLoadResult);
+
+		// すでに登録予約済みのテクスチャが再度登録されたら参照カウントを増やす
+		l_textureRecord->AddReferenceCount();
+
+		l_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
+		l_textureLoadResult.m_textureRecord = l_textureRecord;
+
+		return l_textureLoadResult;
+	}
 
 	return l_textureLoadResult;
 }
