@@ -143,6 +143,12 @@
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
+// コピー用キュー、アロケーター、リスト
+#include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
+#include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
+#include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
+#include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
+
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
 
@@ -157,11 +163,11 @@
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 
-// コマンド用定数
-#include "Graphics/Command/Allocator/Definition/Constant/CommandAllocatorConstant.h"
+// ダイレクトコマンド用定数
+#include "Graphics/Render/Frame/Command/Allocator/Definition/Constant/DirectCommandAllocatorConstant.h"
 
 // ダイレクトコマンドアロケータ
-#include "Graphics/Render/Command/Allocator/DirectCommandAllocator.h"
+#include "Graphics/Render/Frame/Command/Allocator/DirectCommandAllocator.h"
 
 // フレームリソース
 #include "Graphics/Render/Frame/FrameResource.h"

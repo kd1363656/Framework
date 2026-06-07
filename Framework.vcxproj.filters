@@ -295,17 +295,8 @@
     <Filter Include="Source\Framework\Converter\Binary">
       <UniqueIdentifier>{a14a36c2-09a4-41f4-b1a7-bb2346cc85e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Command\Allocator\Definition">
-      <UniqueIdentifier>{5f86c0c2-f8c3-4841-858a-3ef7e121a90e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Command\Allocator\Definition\Constant">
-      <UniqueIdentifier>{57b92b24-1471-498f-9a96-87bababa47c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Command">
       <UniqueIdentifier>{f4a990a6-8246-4578-b209-a8365dedac15}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Command\Allocator">
-      <UniqueIdentifier>{8db99445-c725-4684-a4bb-665e19683d8b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Command\List">
       <UniqueIdentifier>{3b3c1f17-b718-40b5-8912-670a593567c5}</UniqueIdentifier>
@@ -363,6 +354,39 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant">
       <UniqueIdentifier>{be31a2aa-c46e-4904-b337-e686f079b0b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload">
+      <UniqueIdentifier>{a36c349b-e75b-43a2-91ae-a86b6f0ab8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command">
+      <UniqueIdentifier>{8999e6fe-cd9b-47e4-94c5-c26251b82308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator">
+      <UniqueIdentifier>{39acd6a6-c73a-494c-9ff3-4a0f99a75939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition">
+      <UniqueIdentifier>{b1f03871-b7f1-4393-9548-ad7b1956e1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant">
+      <UniqueIdentifier>{0d00df9b-6895-4fde-be0f-e7b92e324ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\List">
+      <UniqueIdentifier>{be2cbfea-f887-46f9-bb82-aa82a301df95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Queue">
+      <UniqueIdentifier>{db842049-15fe-47ee-8c9f-22872e052b50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Command">
+      <UniqueIdentifier>{69ed383f-1251-448b-b0d8-342cfd833b20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Command\Allocator">
+      <UniqueIdentifier>{8db99445-c725-4684-a4bb-665e19683d8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition">
+      <UniqueIdentifier>{5f86c0c2-f8c3-4841-858a-3ef7e121a90e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant">
+      <UniqueIdentifier>{57b92b24-1471-498f-9a96-87bababa47c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -546,12 +570,6 @@
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h">
       <Filter>Source\Framework\Converter\Binary</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Command\Allocator\Definition\Constant\CommandAllocatorConstant.h">
-      <Filter>Source\Framework\Graphics\Command\Allocator\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Command\Allocator\DirectCommandAllocator.h">
-      <Filter>Source\Framework\Graphics\Render\Command\Allocator</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.h">
       <Filter>Source\Framework\Graphics\Render\Command\List</Filter>
     </ClInclude>
@@ -593,6 +611,24 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant\ResourceReleaseContextConstant.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant\CopyCommandAllocatorConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\List</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.h">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant\DirectCommandAllocatorConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\Command\Allocator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -683,9 +719,6 @@
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp">
       <Filter>Source\Framework\Converter\Binary</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Command\Allocator\DirectCommandAllocator.cpp">
-      <Filter>Source\Framework\Graphics\Render\Command\Allocator</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.cpp">
       <Filter>Source\Framework\Graphics\Render\Command\List</Filter>
     </ClCompile>
@@ -703,6 +736,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\List</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\Command\Allocator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

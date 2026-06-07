@@ -349,7 +349,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocatorBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Command\Allocator\Definition\Constant\CommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.h" />
@@ -359,10 +358,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\GraphicsManager.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Device.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Command\Allocator\DirectCommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant\DirectCommandAllocatorConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
@@ -387,6 +387,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant\CopyCommandAllocatorConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
@@ -422,10 +426,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\GraphicsManager.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Hardware\Device.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Command\Allocator\DirectCommandAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Renderer.cpp" />
@@ -440,6 +444,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
