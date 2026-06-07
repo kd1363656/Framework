@@ -3,16 +3,15 @@
 //===============================================================================
 // 型情報
 //===============================================================================
-#include "TypeINFO/Definition/Type/Alias/TypeINFOTypeAlias.h"
-#include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
-#include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
+#include "TypeINFO/StaticTypeID/Definition/Type/Alias/StaticTypeIDTypeAlias.h"
 #include "TypeINFO/StaticTypeID/Definition/Macros/Assert/AssertReturnMacros.h"
+#include "TypeINFO/StaticTypeID/Definition/Constant/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/Utility/Singleton/SingletonUtility.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
+#include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
 #include "TypeINFO/Registry/Definition/Struct/StringHash/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
-#include "TypeINFO/Utility/TypeINFOUtility.h"
-#include "TypeINFO/Definition/Macros/TypeINFOMacros.h"
+#include "TypeINFO/Registry/Definition/Macros/TypeINFORegistryMacros.h"
 
 //===============================================================================
 // 凡庸ファクトリー
@@ -52,13 +51,11 @@
 //===============================================================================
 // 描画管理クラス
 //===============================================================================
-// グラフィックスマネージャー
-#include "Graphics/Definition/Type/Alias/GraphicsManagerTypeAlias.h"
-#include "Graphics/Definition/Constant/GraphicsManagerConstant.h"
 
 // グラフィックスデバイス管理クラス
-#include "Graphics/Hardware/Factory.h"
-#include "Graphics/Hardware/Device.h"
+#include "Graphics/Hardware/Factory/Definition/Type/Alias/ComPTR/ComPTRTypeAlias.h"
+#include "Graphics/Hardware/Factory/Factory.h"
+#include "Graphics/Hardware/Device/Device.h"
 
 // アップロードバッファークラス
 #include "Graphics/Resource/Buffer/Definition/Constant/UploadBufferConstant.h"
@@ -71,6 +68,7 @@
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 
 // ディスクリプタヒープ
+#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorIndexTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 
@@ -115,6 +113,7 @@
 #include "Graphics/Render/Command/Queue/DirectCommandQueue.h"
 
 // スワップチェイン
+#include "Graphics/Render/SwapChain/Definition/Constant/SwapChainConstant.h"
 #include "Graphics/Render/SwapChain/Definition/Struct/SwapChainStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"

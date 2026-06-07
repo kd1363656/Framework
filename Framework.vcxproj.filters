@@ -28,17 +28,11 @@
     <Filter Include="Source\Framework\TypeINFO\Definition\Constant">
       <UniqueIdentifier>{7a68b3e4-b2d5-47bc-ada2-9e6a66ea3955}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Definition\Type">
-      <UniqueIdentifier>{4bf0c0be-df32-4101-aa3b-c4eb0b6c2ec6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\TypeINFO\Definition\Struct">
       <UniqueIdentifier>{3a2b6181-6b4a-4f04-bff2-af485dcb54dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry">
       <UniqueIdentifier>{02620fa5-941a-4dc6-bb35-00128b908027}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Definition\Macros">
-      <UniqueIdentifier>{7562f8c2-dd4d-4d77-bc99-63ecca56053f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Window\Definition">
       <UniqueIdentifier>{535f365e-6f68-4d07-8fcf-b844cbbacbb8}</UniqueIdentifier>
@@ -67,9 +61,6 @@
     <Filter Include="Asset\Data\CONFIG\Window">
       <UniqueIdentifier>{4c4df80a-747f-4282-8cbb-3c6b36c1bf8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Definition\Type\Alias">
-      <UniqueIdentifier>{623c78fc-df27-4159-a9ae-3efab7351365}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\FPS">
       <UniqueIdentifier>{be086221-6464-4dda-9b85-9366046ac573}</UniqueIdentifier>
     </Filter>
@@ -84,15 +75,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics">
       <UniqueIdentifier>{08958517-a60f-4f12-a6da-0da0e7d396dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Definition">
-      <UniqueIdentifier>{6d04e9c4-3134-4771-8697-0a80a579186c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Definition\Type">
-      <UniqueIdentifier>{93d2d352-75d7-447f-b895-20967438d3e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Definition\Type\Alias">
-      <UniqueIdentifier>{2efd8b22-a34e-40d6-a8ec-43b8e6fc638e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Hardware">
       <UniqueIdentifier>{fed15afe-7e72-4503-b11c-b36825672938}</UniqueIdentifier>
@@ -123,9 +105,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Command\Queue">
       <UniqueIdentifier>{a31c75e2-116f-4508-b54e-737c96eb68d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Definition\Constant">
-      <UniqueIdentifier>{7196312f-a2a0-433d-b914-519a21c93c56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Command\Queue\Fence">
       <UniqueIdentifier>{de158b0e-5cd4-4920-923e-a8b7f570f1b3}</UniqueIdentifier>
@@ -237,9 +216,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant">
       <UniqueIdentifier>{3ee8127a-5f0b-45bd-9a10-6fd1d64197f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\Definition\Utility">
-      <UniqueIdentifier>{120469a2-f09f-405b-b508-4f0654eb05cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition">
       <UniqueIdentifier>{0fa03b3b-0def-4b88-9670-93a54a14e561}</UniqueIdentifier>
@@ -481,6 +457,45 @@
     <Filter Include="Source\Framework\Window\Utility\File\Definition\Constant">
       <UniqueIdentifier>{32952e7e-a3b1-4f73-ab9d-3990d4ab54dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type">
+      <UniqueIdentifier>{4bf0c0be-df32-4101-aa3b-c4eb0b6c2ec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias">
+      <UniqueIdentifier>{623c78fc-df27-4159-a9ae-3efab7351365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Macros">
+      <UniqueIdentifier>{7562f8c2-dd4d-4d77-bc99-63ecca56053f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Constant">
+      <UniqueIdentifier>{af354a4d-cb86-4c76-b4b8-0b18bd43a65b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Device">
+      <UniqueIdentifier>{22c79050-0709-4ea2-bafe-ad74800f2059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Factory">
+      <UniqueIdentifier>{f0982185-0c0c-4e6c-9387-6e796219bdc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition">
+      <UniqueIdentifier>{7c24d2c1-c351-4fd9-80ad-cf37f088390c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type">
+      <UniqueIdentifier>{9a174042-8cf8-4eca-b560-3bed6013bd86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias">
+      <UniqueIdentifier>{acaaf4e9-04d8-452a-b1b9-58dcb7398e74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTR">
+      <UniqueIdentifier>{1eaeca83-a099-46c6-9945-ef57337e38d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
+      <UniqueIdentifier>{149ff2c6-ac7d-4231-8aa7-59925b4610e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
+      <UniqueIdentifier>{daf8cd00-08e3-47a7-a454-e4c4e1af4fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\SwapChain\Definition\Constant">
+      <UniqueIdentifier>{19345fcf-8f24-42df-9c9d-2fe820ac4393}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -507,9 +522,6 @@
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h">
       <Filter>Source\Framework\TypeINFO\Registry</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Macros\TypeINFOMacros.h">
-      <Filter>Source\Framework\TypeINFO\Definition\Macros</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h">
       <Filter>Source\Framework\Window\Definition\Struct</Filter>
     </ClInclude>
@@ -519,9 +531,6 @@
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Definition\Type\Alias\TypeINFOTypeAlias.h">
-      <Filter>Source\Framework\TypeINFO\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\FPS\FPSController.h">
       <Filter>Source\Framework\FPS</Filter>
     </ClInclude>
@@ -530,15 +539,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\GraphicsManager.h">
       <Filter>Source\Framework\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Definition\Type\Alias\GraphicsManagerTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Definition\Type\Alias</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Hardware\Device.h">
-      <Filter>Source\Framework\Graphics\Hardware</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory.h">
-      <Filter>Source\Framework\Graphics\Hardware</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h">
       <Filter>Source\Framework\Graphics\Resource</Filter>
@@ -554,9 +554,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h">
       <Filter>Source\Framework\Graphics\Command\List</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Definition\Constant\GraphicsManagerConstant.h">
-      <Filter>Source\Framework\Graphics\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.h">
       <Filter>Source\Framework\Graphics\Command\Queue</Filter>
@@ -629,9 +626,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\Utility\TypeINFOUtility.h">
-      <Filter>Source\Framework\TypeINFO\Definition\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum</Filter>
@@ -774,6 +768,30 @@
     <ClInclude Include="Source\Framework\Window\Utility\File\Definition\Constant\FileUtilityConstant.h">
       <Filter>Source\Framework\Window\Utility\File\Definition\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias\StaticTypeIDTypeAlias.h">
+      <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Macros\TypeINFORegistryMacros.h">
+      <Filter>Source\Framework\TypeINFO\Registry\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Constant\StaticTypeIDConstant.h">
+      <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Device\Device.h">
+      <Filter>Source\Framework\Graphics\Hardware\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Factory.h">
+      <Filter>Source\Framework\Graphics\Hardware\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTR\ComPTRTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorIndexTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Constant\SwapChainConstant.h">
+      <Filter>Source\Framework\Graphics\Render\SwapChain\Definition\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -799,12 +817,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\GraphicsManager.cpp">
       <Filter>Source\Framework\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Hardware\Device.cpp">
-      <Filter>Source\Framework\Graphics\Hardware</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Hardware\Factory.cpp">
-      <Filter>Source\Framework\Graphics\Hardware</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp">
       <Filter>Source\Framework\Graphics\Resource</Filter>
@@ -922,6 +934,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp">
       <Filter>Source\Framework\Graphics\Resource\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Hardware\Device\Device.cpp">
+      <Filter>Source\Framework\Graphics\Hardware\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Hardware\Factory\Factory.cpp">
+      <Filter>Source\Framework\Graphics\Hardware\Factory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

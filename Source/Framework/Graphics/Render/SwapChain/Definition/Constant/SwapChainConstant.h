@@ -8,10 +8,6 @@ namespace FWK::Constant
 	// このプロジェクトでは単一GPU前提で作成するため固定値にしている
 	inline constexpr DXGI_FORMAT k_defaultSwapChainBackBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	inline constexpr UINT k_defaultGPUNodeMask = 0U;
-
 	inline constexpr UINT k_defaultSampleCount   = 1U;
 	inline constexpr UINT k_defaultSampleQuality = 0U;
-
-	inline constexpr TypeAlias::DescriptorIndex k_invalidDescriptorIndex = std::numeric_limits<TypeAlias::DescriptorIndex>::max();
 }
