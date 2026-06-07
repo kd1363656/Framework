@@ -1,17 +1,13 @@
 ﻿#pragma once
 
 //===============================================================================
-// シングルトンを安全に扱うための基底クラス
-//===============================================================================
-#include "Utility/Singleton/SingletonUtility.h"
-
-//===============================================================================
 // 型情報
 //===============================================================================
 #include "TypeINFO/Definition/Type/Alias/TypeINFOTypeAlias.h"
 #include "TypeINFO/Definition/Constant/TypeINFOConstant.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
 #include "TypeINFO/StaticTypeID/Definition/Macros/Assert/AssertReturnMacros.h"
+#include "TypeINFO/StaticTypeID/Utility/Singleton/SingletonUtility.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "TypeINFO/Registry/Definition/Struct/StringHash/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
@@ -34,18 +30,6 @@
 #include "Converter/Binary/BinaryFileConverterBase.h"
 
 //===============================================================================
-// 文字列変換便利関数
-//===============================================================================
-#include "Utility/String/Constant/StringUtilityConstant.h"
-#include "Utility/String/StringUtility.h"
-
-//===============================================================================
-// ファイル読み込み便利関数
-//===============================================================================
-#include "Utility/File/Definition/Constant/FileUtilityConstant.h"
-#include "Utility/File/FileUtility.h"
-
-//===============================================================================
 // json変換便利関数
 //===============================================================================
 #include "Utility/Json/JsonUtility.h"
@@ -58,6 +42,10 @@
 #include "Window/Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
+#include "Window/Utility/String/Definition/Constant/StringUtilityConstant.h"
+#include "Window/Utility/String/StringUtility.h"
+#include "Window/Utility/File/Definition/Constant/FileUtilityConstant.h"
+#include "Window/Utility/File/FileUtility.h"
 #include "Window/Window.h"
 
 //===============================================================================

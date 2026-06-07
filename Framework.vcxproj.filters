@@ -13,9 +13,6 @@
     <Filter Include="Source\Framework\Utility">
       <UniqueIdentifier>{adc4db7f-008a-41a6-bba1-a330971bab10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\Singleton">
-      <UniqueIdentifier>{8a209c0a-d592-4cc1-a83a-3841a0b343e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dosuments">
       <UniqueIdentifier>{26a88736-694e-4bb9-821b-75ed16843981}</UniqueIdentifier>
     </Filter>
@@ -55,15 +52,6 @@
     <Filter Include="Source\Framework\Window\Definition\Constant">
       <UniqueIdentifier>{2f1aa13f-6c65-4602-8ab2-6b0b9d54a7fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\String">
-      <UniqueIdentifier>{9c5655da-ab0e-4def-a416-d5c5c0e1400d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\String\Definition">
-      <UniqueIdentifier>{7a74e7eb-1839-48cb-a912-f1816a0c5c22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\String\Definition\Constant">
-      <UniqueIdentifier>{1f778f08-f08a-47b0-9238-c1648cd0bc5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Window\Converter">
       <UniqueIdentifier>{bafa8b3c-5e41-408b-af2a-3fd530cc19aa}</UniqueIdentifier>
     </Filter>
@@ -72,15 +60,6 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\Json">
       <UniqueIdentifier>{e54deec9-c939-416e-b77b-e6579b28148a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\File">
-      <UniqueIdentifier>{b825293d-1bd3-4c0d-9166-e4734a992335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\File\Definition">
-      <UniqueIdentifier>{e56308b9-1b88-48c2-a10f-b4e5d31c536d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\File\Definition\Constant">
-      <UniqueIdentifier>{32952e7e-a3b1-4f73-ab9d-3990d4ab54dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Asset">
       <UniqueIdentifier>{bb277239-a5ec-498d-94e8-e04cbe3527da}</UniqueIdentifier>
@@ -481,6 +460,33 @@
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash">
       <UniqueIdentifier>{86d1d7a8-cb22-422f-b00b-9cf1cf6b91ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Utility">
+      <UniqueIdentifier>{ffdb1479-260e-4b20-a27d-25e868499ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton">
+      <UniqueIdentifier>{0e78b7eb-720c-47af-9755-85ffa44d5a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility">
+      <UniqueIdentifier>{4a001993-ee81-46e8-a958-71fcf48e4f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\String">
+      <UniqueIdentifier>{9c5655da-ab0e-4def-a416-d5c5c0e1400d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\String\Definition">
+      <UniqueIdentifier>{7a74e7eb-1839-48cb-a912-f1816a0c5c22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\String\Definition\Constant">
+      <UniqueIdentifier>{1f778f08-f08a-47b0-9238-c1648cd0bc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\File">
+      <UniqueIdentifier>{b825293d-1bd3-4c0d-9166-e4734a992335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\File\Definition">
+      <UniqueIdentifier>{e56308b9-1b88-48c2-a10f-b4e5d31c536d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\File\Definition\Constant">
+      <UniqueIdentifier>{32952e7e-a3b1-4f73-ab9d-3990d4ab54dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -491,9 +497,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Framework.h">
       <Filter>Source\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h">
-      <Filter>Source\Framework\Utility\Singleton</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Window.h">
       <Filter>Source\Framework\Window</Filter>
@@ -519,20 +522,8 @@
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h">
       <Filter>Source\Framework\Window\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\String\StringUtility.h">
-      <Filter>Source\Framework\Utility\String</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\String\Constant\StringUtilityConstant.h">
-      <Filter>Source\Framework\Utility\String\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
       <Filter>Source\Framework\Utility\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\FileUtility.h">
-      <Filter>Source\Framework\Utility\File</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Definition\Constant\FileUtilityConstant.h">
-      <Filter>Source\Framework\Utility\File\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h">
       <Filter>Source\Framework\Window\Converter\Json</Filter>
@@ -776,6 +767,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash\WStringHashStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton\SingletonUtility.h">
+      <Filter>Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\String\Definition\Constant\StringUtilityConstant.h">
+      <Filter>Source\Framework\Window\Utility\String\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\String\StringUtility.h">
+      <Filter>Source\Framework\Window\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\File\FileUtility.h">
+      <Filter>Source\Framework\Window\Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\File\Definition\Constant\FileUtilityConstant.h">
+      <Filter>Source\Framework\Window\Utility\File\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

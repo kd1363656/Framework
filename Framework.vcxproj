@@ -416,18 +416,18 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\Assert\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Utility\TypeINFOUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\File\Definition\Constant\FileUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Utility\File\FileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\String\Constant\StringUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Macros\Json\JsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\File\Definition\Constant\FileUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\File\FileUtility.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\String\Definition\Constant\StringUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>
