@@ -37,6 +37,8 @@ namespace FWK::Graphics
 		auto& GetMutableREFUploadSystem () { return m_uploadSystem; }
 		auto& GetMutableREFTextureSystem() { return m_textureSystem; }
 
+		auto& GetMutableREFResourceReleaseContext() { return m_resourceReleaseContext; }
+
 	private:
 
 		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};

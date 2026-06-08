@@ -148,6 +148,7 @@
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
+#include "Graphics/Resource/Texture/Texture.h"
 
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"

@@ -768,6 +768,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\WStringHashStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Definition\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Texture.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -916,6 +919,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory\Factory.cpp">
       <Filter>Source\Framework\Graphics\Hardware\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Texture.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
