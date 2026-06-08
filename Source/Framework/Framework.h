@@ -132,8 +132,6 @@
 #include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
 #include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
 #include "Graphics/Resource/Upload/Definition/Struct/UploadSystemStruct.h"
-#include "Graphics/Resource/Upload/Definition/Struct/WStringHash/WStringHashStruct.h"
-#include "Graphics/Resource/Upload/Definition/Type/Alias/UploadSystemTypeAlias.h"
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
@@ -148,6 +146,7 @@
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
+#include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 
 // リソースコンテキストの定数

@@ -355,12 +355,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition">
       <UniqueIdentifier>{afc74d75-6b35-4ff9-8050-aba87c0e7712}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Type">
-      <UniqueIdentifier>{684b4e90-96f0-44ff-b43e-456bf853f986}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Type\Alias">
-      <UniqueIdentifier>{8d6adf0a-d1e7-4e96-baea-389830c70341}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct">
       <UniqueIdentifier>{9e81086c-293c-4b73-ad2f-0f35050e34ab}</UniqueIdentifier>
     </Filter>
@@ -417,9 +411,6 @@
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Struct">
       <UniqueIdentifier>{d1f391f8-9321-4623-94e2-fc0c60523847}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash">
-      <UniqueIdentifier>{86d1d7a8-cb22-422f-b00b-9cf1cf6b91ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Utility">
       <UniqueIdentifier>{ffdb1479-260e-4b20-a27d-25e868499ea2}</UniqueIdentifier>
@@ -705,9 +696,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\TextureSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Type\Alias\UploadSystemTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\UploadSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct</Filter>
     </ClInclude>
@@ -728,9 +716,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash\WStringHashStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct\WStringHash</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton\SingletonUtility.h">
       <Filter>Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton</Filter>
@@ -779,6 +764,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTRTypeAlias.h">
       <Filter>Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\WStringHashStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

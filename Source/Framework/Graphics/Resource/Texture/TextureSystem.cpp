@@ -113,6 +113,27 @@ nlohmann::json FWK::Graphics::TextureSystem::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
+void FWK::Graphics::TextureSystem::RegisterPendingTextures()
+{
+	// もしアップロード処理が終わっていなければ
+	// このMapの情報を削除、Storageに登録をしてはいけないためreturn(失敗はしていないためtrueを返す)
+	if (!m_isUploadToDefaultHeapCopyCompleted) { return; }
+
+	for (const auto& [l_filePath, l_pendingTextureBatchUploadRecord] : m_pendingTextureBatchUploadRecordMap)
+	{
+		auto& l_textureRecord = l_pendingTextureBatchUploadRecord.m_textureRecord;
+
+		FWK_ASSERT_RETURN_IF_FAILED(!l_textureRecord,											   "TextureRecordが無効のため、バッチテクスチャ登録に失敗しました。");
+		FWK_ASSERT_RETURN_IF_FAILED(!m_textureStorage.RegisterRecord(l_textureRecord, l_filePath), "TextureRecordの登録に失敗したため、バッチテクスチャ登録に失敗しました。");
+	}
+
+	// そのフレーム内でロードすべきテクスチャをすべてロードし終えた状態なのでクリア
+	m_pendingTextureBatchUploadRecordMap.clear();
+
+	// 次フレームのコピー完了通知が来るまでこの関数を実行しない
+	m_isUploadToDefaultHeapCopyCompleted = false;
+}
+
 bool FWK::Graphics::TextureSystem::AddTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureStorage.AddReferenceCount(a_textureRecord), "AssetStorageでの参照数加算に失敗したため、テクスチャ参照数加算に失敗しました。", false);

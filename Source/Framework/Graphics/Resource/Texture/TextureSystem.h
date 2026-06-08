@@ -4,6 +4,10 @@ namespace FWK::Graphics
 {
 	class TextureSystem
 	{
+	private:
+
+		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
+
 	public:
 
 		 TextureSystem() = default;
@@ -20,8 +24,16 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
+		// ※ 注意
+		// UploadSystem側でテクスチャのコピーが終わっていること前提
+		void RegisterPendingTextures();
+
 		bool AddTextureReferenceCount     (const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord);
 		bool SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
+
+		void SetIsUploadToDefaultHeapCopyCompleted(const bool a_set) { m_isUploadToDefaultHeapCopyCompleted = a_set; }
+
+		const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }
 
 		const auto& GetREFTextureStorage() const { return m_textureStorage; }
 
@@ -29,7 +41,7 @@ namespace FWK::Graphics
 
 	private:
 
-		TypeAlias::PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
+		PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
 
 		AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
 
@@ -37,5 +49,7 @@ namespace FWK::Graphics
 		TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
 		Converter::TextureSystemJsonConverter m_jsonConverter = {};
+
+		bool m_isUploadToDefaultHeapCopyCompleted = false;
 	};
 }

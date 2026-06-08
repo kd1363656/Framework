@@ -21,6 +21,12 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
 
 void FWK::Graphics::ResourceContext::BeginFrame(const DirectCommandQueue& a_directCommandQueue)
 {
+    // TextureSystemにPending中のテクスチャがあれば、
+    // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のTextureResourceへコピーする。
+    // コピーが完了した後、TextureRecordをTextureStorageへ正式登録する
+    m_uploadSystem.SubmitPendingTextureCopyBatchIfNeededAndWait(m_textureSystem);
+    m_textureSystem.RegisterPendingTextures                    ();
+
     // 参照カウントが0になったRecordからQueueへ積まれたGPUResource/SRVを、
 	// GPUのFence完了後に安全に解放する
     m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue, m_srvDescriptorPool);
