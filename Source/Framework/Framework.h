@@ -147,6 +147,8 @@
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
+#include "Graphics/Resource/Texture/Default/Definition/Enum/DefaultTextureEnum.h"
+#include "Graphics/Resource/Texture/Default/DefaultTexture.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 

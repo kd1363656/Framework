@@ -391,6 +391,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum\DefaultTextureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\TextureSystemStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h" />
@@ -466,6 +468,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.cpp" />

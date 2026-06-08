@@ -475,6 +475,15 @@
     <Filter Include="Source\Framework\Graphics\Render\SwapChain\Definition\Constant">
       <UniqueIdentifier>{19345fcf-8f24-42df-9c9d-2fe820ac4393}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default">
+      <UniqueIdentifier>{4c327b9f-6f90-4dad-b896-eb169be35903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition">
+      <UniqueIdentifier>{be46a1a4-1dc7-4567-9702-520deca1eb07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum">
+      <UniqueIdentifier>{da0a97d5-70e4-4490-96d4-dbb70857d959}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -771,6 +780,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Texture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum\DefaultTextureEnum.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -922,6 +937,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Texture.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
