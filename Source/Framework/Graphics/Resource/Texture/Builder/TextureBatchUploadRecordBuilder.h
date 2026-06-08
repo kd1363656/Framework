@@ -20,6 +20,8 @@ namespace FWK::Graphics
 
 	private:
 
+		bool CreateTextureResource(const DirectX::TexMetadata& a_texMetadata, const GPUMemoryAllocator& a_gpuMemoryAllocator, Graphics::TextureRecord& a_textureRecord) const;
+
 		static constexpr UINT64 k_uploadBufferBeginOffset         = 0ULL;
 		static constexpr UINT64 k_initialRequiredUploadBufferSize = 0ULL;
 

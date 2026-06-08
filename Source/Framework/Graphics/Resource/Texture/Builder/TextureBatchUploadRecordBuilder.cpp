@@ -9,5 +9,12 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 																						  TypeAlias::SRVDescriptorPool&		a_srvDescriptorPool, 
 																						  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
 {
-	return true;
+	auto& l_textureRecord = a_textureBatchUploadRecord.m_textureRecord;
+
+
+}
+
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const DirectX::TexMetadata& a_texMetadata, const GPUMemoryAllocator& a_gpuMemoryAllocator, Graphics::TextureRecord& a_textureRecord) const
+{
+
 }

@@ -18,7 +18,8 @@ namespace FWK::Graphics
 		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			            a_device, 
 													        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
 													        const std::filesystem::path&		a_filePath,
-																  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+																  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
+															const Enum::TextureLoadType			a_loadType = Enum::TextureLoadType::Auto);
 
 		nlohmann::json Serialize() const;
 
@@ -35,7 +36,8 @@ namespace FWK::Graphics
 
 		AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
 
-		TextureLoader m_loader = {};
+		TextureLoader					m_loader				   = {};
+		TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
 		Converter::TextureSystemJsonConverter m_jsonConverter = {};
 	};
