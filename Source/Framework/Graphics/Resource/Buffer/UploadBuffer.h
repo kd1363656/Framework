@@ -9,11 +9,11 @@ namespace FWK::Graphics
 		 UploadBuffer();
 		~UploadBuffer();
 
-		UploadBuffer(const UploadBuffer&)	        = delete;
-		UploadBuffer(	   UploadBuffer&&) noexcept = delete;
+		UploadBuffer(const UploadBuffer&) = delete;
+		UploadBuffer(	   UploadBuffer&& a_other) noexcept;
 
-		UploadBuffer& operator=(const UploadBuffer&)		   = delete;
-		UploadBuffer& operator=(	  UploadBuffer&&) noexcept = delete;
+		UploadBuffer& operator=(const UploadBuffer&) = delete;
+		UploadBuffer& operator=(	  UploadBuffer&& a_other) noexcept;
 
 		bool Create(const Device& a_device, const UINT64& a_bufferSize);
 

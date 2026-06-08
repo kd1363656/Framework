@@ -11,6 +11,30 @@ FWK::Graphics::UploadBuffer::~UploadBuffer()
 	Release();
 }
 
+FWK::Graphics::UploadBuffer::UploadBuffer(UploadBuffer&& a_other) noexcept :
+	m_uploadBuffer(std::move(a_other.m_uploadBuffer)),
+	m_mappedData  (a_other.m_mappedData)
+{
+	// 移動元がデストラクタでUnmapしないようにする
+	// 所有権はこのインスタンスへ移動済み
+	a_other.m_mappedData = nullptr;
+}
+FWK::Graphics::UploadBuffer& FWK::Graphics::UploadBuffer::operator=(UploadBuffer&& a_other) noexcept
+{
+	if (this == &a_other) { return *this; }
+
+	// 既に自分がResourceを持っている場合は先に開放する
+	Release();
+
+	m_uploadBuffer = std::move(a_other.m_uploadBuffer);
+	m_mappedData   = a_other.m_mappedData;
+
+	// 移動元がデストラクタでUnMapしないようにする
+	a_other.m_mappedData = nullptr;
+
+	return *this;
+}
+
 bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a_bufferSize)
 {
 	// 二重Mapを防ぐためリリース
@@ -69,7 +93,7 @@ bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a
 void FWK::Graphics::UploadBuffer::Release()
 {
 	// Map済みなら先にUnMapする
-	// UnMap後はm_mappedDataをnullptrに戻しご使用を防ぐ
+	// UnMap後はm_mappedDataをnullptrに戻し誤使用を防ぐ
 	UnMap();
 }
 

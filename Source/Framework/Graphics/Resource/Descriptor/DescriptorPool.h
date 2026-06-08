@@ -85,14 +85,14 @@ namespace FWK::Graphics
 			return m_shaderVisibleDescriptorHeap->FetchVALGPUDescriptorHandle(a_index);
 		}
 
-		void CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
+		bool CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
 		{
-			FWK_ASSERT_RETURN_IF_FAILED(!m_shaderVisibleDescriptorHeap,				   "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました");
-			FWK_ASSERT_RETURN_IF_FAILED(a_index == Constant::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。");
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_shaderVisibleDescriptorHeap,				 "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました", false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_index == Constant::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
 
 			const auto& l_device = a_device.GetREFDevice();
 
-			FWK_ASSERT_RETURN_IF_FAILED(!l_device, "Deviceが作成されておらず、Descriptorのコピーに失敗しました。");
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "Deviceが作成されておらず、Descriptorのコピーに失敗しました。", false);
 
 			const auto l_sourceCPUDescriptorHandle      = m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle			(a_index);
 			const auto l_destinationCPUDescriptorHandle = m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
@@ -106,6 +106,8 @@ namespace FWK::Graphics
 											l_destinationCPUDescriptorHandle,
 											l_sourceCPUDescriptorHandle,
 											HeapType);
+
+			return true;
 		}
 
 		const auto& GetREFShaderVisibleDescriptorHeap() const { return m_shaderVisibleDescriptorHeap; }

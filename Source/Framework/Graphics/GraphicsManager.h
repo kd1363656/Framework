@@ -24,6 +24,8 @@ namespace FWK::Graphics
 
 		void ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest);
 
+		const auto& GetREFDevice() const { return m_device; }
+
 		const auto& GetREFRenderer		 () const { return m_renderer; }
 		const auto& GetREFResourceContext() const { return m_resourceContext; }
 

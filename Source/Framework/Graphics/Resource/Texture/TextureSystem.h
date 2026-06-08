@@ -12,9 +12,6 @@ namespace FWK::Graphics
 		void Deserialize(const nlohmann::json& a_rootJson);
 		bool Create	    ();
 
-		// 仮読み込み
-		bool LoadTextureFile(const std::filesystem::path& a_filePath, const Enum::TextureLoadType a_loadType = Enum::TextureLoadType::Auto);
-
 		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			            a_device, 
 													        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
 													        const std::filesystem::path&		a_filePath,
