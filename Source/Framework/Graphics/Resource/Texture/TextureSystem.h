@@ -7,6 +7,7 @@ namespace FWK::Graphics
 	private:
 
 		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
+		using DefaultTextureMap					 = std::unordered_map<Enum::DefaultTextureType, DefaultTexture>;
 
 	public:
 
