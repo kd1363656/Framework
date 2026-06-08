@@ -44,7 +44,7 @@ nlohmann::json FWK::Converter::DefaultTextureJsonConverter::Serialize(const Grap
 	l_colorJson[k_textureColorBJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::B);
 	l_colorJson[k_textureColorAJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::A);
 
-	Utility::UpdateJson(l_rootJson, l_colorJson);
+	l_rootJson[k_textureColorJsonKey] = l_colorJson;
 
 	return l_rootJson;
 }

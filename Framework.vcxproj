@@ -396,7 +396,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant\DefaultTextureConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum\DefaultTextureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros\DefaultTextureMacros.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\DefaultTextureJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\StringUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\TextureSystemStruct.h" />

@@ -87,7 +87,7 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_image->pixels, "DefaultTexture用Pixel領域の取得に失敗しました。", false);
 
     // R8G8B8A8_UNORM/R8G8B8A8_UNORM_SRGBは、1チャンネル8bit,合計4Biteの$GBAピクセルとして扱える
-    // m_colorはDefaultTextureColorChannel::R/G/B/8の順番で並ぶstd::array
+    // m_colorはDefaultTextureColorChannel::R/G/B/Aの順番で並ぶstd::array
     // そのため、配列の先頭から4byteをそのまま1ピクセルとして書き始める
     std::memcpy(l_image->pixels, m_color.data(), m_color.size() * sizeof(DefaultTextureColor::value_type));
 

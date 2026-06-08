@@ -53,8 +53,6 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;
 		static constexpr std::size_t k_defaultTextureSliceIndex = 0ULL;
 
-		static constexpr std::size_t k_defaultTexturePixelChannelCount = 4ULL;
-
 		Converter::DefaultTextureJsonConverter m_jsonConverter = {};
 
 		std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount> m_color = 
