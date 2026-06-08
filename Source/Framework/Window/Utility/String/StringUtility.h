@@ -2,7 +2,7 @@
 
 namespace FWK::Utility
 {
-	inline std::wstring StringToWideString(const std::string& a_string)
+	inline std::wstring StringToWString(const std::string& a_string)
 	{
 		// 空文字列だった場合空std::wstringを返す
 		if (a_string.empty()) { return {}; }
@@ -19,20 +19,20 @@ namespace FWK::Utility
 		
 		// UTF-8文字列をUTF-16(std::wstring)へ変換
 		const int l_size = MultiByteToWideChar(CP_UTF8, 
-											   Constant::k_multiByteToWideCharFlags,
+											   Constant::k_multiByteToWCharFlags,
 											   a_string.data(),
 											   static_cast<int>(a_string.size()),
 											   nullptr,
-											   Constant::k_multiByteToWideCharQueryBufferSize);
+											   Constant::k_multiByteToWCharQueryBufferSize);
 		
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_size == Constant::k_invalidConvertedWideCharSize, "MultiByteToWideChar(UTF-8からUTF-16への変換)に失敗しました。", {});
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_size == Constant::k_invalidConvertedWCharSize, "MultiByteToWideChar(UTF-8からUTF-16への変換)に失敗しました。", {});
 
 		// 出力バッファを確保しヌル文字で初期化
-		std::wstring l_result(l_size, Constant::k_wideNullCharacter);
+		std::wstring l_result(l_size, Constant::k_wNullCharacter);
 
 		// UTF-8 -> UTF-16へ実データ変換
 		MultiByteToWideChar(CP_UTF8,
-							Constant::k_multiByteToWideCharFlags,
+							Constant::k_multiByteToWCharFlags,
 							a_string.data(),
 						    static_cast<int>(a_string.size()),
 							l_result.data(),

@@ -15,12 +15,28 @@ namespace FWK::Graphics
 		DefaultTexture& operator=(const DefaultTexture&)		   = delete;
 		DefaultTexture& operator=(	    DefaultTexture&&) noexcept = default;
 
+		void Deserialize(const nlohmann::json& a_rootJson);
+
+		nlohmann::json Serialize() const;
+
 		bool CreateTextureBatchUploadRecord(const Device&					        a_device,
 											const GPUMemoryAllocator&		        a_gpuMemoryAllocator,
 											const TextureBatchUploadRecordBuilder&  a_textureBatchUploadRecordBuilder,
 												  TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool,
 												  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
 	
+		void SetColor(const TypeAlias::Math::Color& a_set) { m_color = a_set; }
+
+		void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
+
+		void SetTextureName(const std::wstring& a_set) { m_textureName = a_set; }
+
+		const auto& GetREFColor() const { return m_color; }
+
+		auto GetVALFormat() const { return m_format; }
+
+		const auto& GetREFTextureName() const { return m_textureName; }
+
 	private:
 
 		bool CreateScratchImage(DirectX::ScratchImage& a_scratchImage) const;
@@ -34,6 +50,18 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;
 		static constexpr std::size_t k_defaultTextureSliceIndex = 0ULL;
 
-		static constexpr std::size_t k_defaultTexturePixelChannelCount = 4ULL;
+		static constexpr float k_maxColorChannel = 1.0F;
+
+		TypeAlias::Math::Color m_color =
+		{
+			k_maxColorChannel,
+			k_maxColorChannel,
+			k_maxColorChannel,
+			k_maxColorChannel
+		};
+
+		DXGI_FORMAT m_format = DXGI_FORMAT_UNKNOWN;
+
+		std::wstring m_textureName = {};
 	};
 }

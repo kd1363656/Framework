@@ -415,9 +415,6 @@
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Utility">
       <UniqueIdentifier>{ffdb1479-260e-4b20-a27d-25e868499ea2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton">
-      <UniqueIdentifier>{0e78b7eb-720c-47af-9755-85ffa44d5a28}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Window\Utility">
       <UniqueIdentifier>{4a001993-ee81-46e8-a958-71fcf48e4f23}</UniqueIdentifier>
     </Filter>
@@ -483,6 +480,36 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum">
       <UniqueIdentifier>{da0a97d5-70e4-4490-96d4-dbb70857d959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Converter">
+      <UniqueIdentifier>{7757946e-fc1c-495f-8b61-ace1e313cf69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json">
+      <UniqueIdentifier>{08626815-cb62-47b0-b7fc-8e64b173c5d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility">
+      <UniqueIdentifier>{0216dc59-40fd-4d36-ad14-2d7d56a96562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json">
+      <UniqueIdentifier>{770e162c-0535-4564-970d-c7b7b0dec664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\Definition">
+      <UniqueIdentifier>{8bf33a84-0c30-4a7f-aac8-fe08cbd0d7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\Definition\Constant">
+      <UniqueIdentifier>{bd3e98f9-3e81-4b2b-8e70-14a3ab1a3dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros">
+      <UniqueIdentifier>{f07fb368-67ea-4067-bfdc-8c29fb51f7f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String">
+      <UniqueIdentifier>{b4ff2a3e-7183-4aea-a547-acaa03d3936d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition">
+      <UniqueIdentifier>{393c1b60-f8e0-49de-81f1-37a1c3c5dee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant">
+      <UniqueIdentifier>{0ef3c172-feac-4ddd-af09-989e683448ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -726,9 +753,6 @@
     <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton\SingletonUtility.h">
-      <Filter>Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Window\Utility\String\Definition\Constant\StringUtilityConstant.h">
       <Filter>Source\Framework\Window\Utility\String\Definition\Constant</Filter>
     </ClInclude>
@@ -785,6 +809,27 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\SingletonUtility.h">
+      <Filter>Source\Framework\TypeINFO\StaticTypeID\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\JsonUtility.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\Definition\Constant\JsonUtilityConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros\DefaultTextureMacros.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant\StringUtilityConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\StringUtility.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -940,6 +985,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

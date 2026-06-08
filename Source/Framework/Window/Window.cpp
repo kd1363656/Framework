@@ -229,7 +229,7 @@ bool FWK::Window::CreateWindowInstance(const std::wstring& a_windowClassName, co
 	const HINSTANCE& l_hInstance = FetchVALInstanceHandle();
 	
 	// マルチバイト文字列に変換
-	const auto& l_titleName = Utility::StringToWideString(a_titleName);
+	const auto& l_titleName = Utility::StringToWString(a_titleName);
 
 	// ウィンドウクラス登録用の設定パラメータ
 	WNDCLASSEX l_wc = {};

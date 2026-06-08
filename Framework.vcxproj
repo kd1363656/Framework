@@ -391,8 +391,14 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum\DefaultTextureEnum.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros\DefaultTextureMacros.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\Definition\Constant\JsonUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\Json\JsonUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant\StringUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\StringUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\TextureSystemStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h" />
@@ -420,7 +426,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\Singleton\SingletonUtility.h" />
+    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h" />
@@ -468,6 +474,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />
