@@ -4,6 +4,8 @@ namespace FWK::Graphics
 {
 	class DefaultTexture
 	{
+		using DefaultTextureColor = std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount>;
+
 	public:
 
 				 DefaultTexture() = default;
@@ -22,16 +24,17 @@ namespace FWK::Graphics
 		bool CreateTextureBatchUploadRecord(const Device&					        a_device,
 											const GPUMemoryAllocator&		        a_gpuMemoryAllocator,
 											const TextureBatchUploadRecordBuilder&  a_textureBatchUploadRecordBuilder,
+											const TypeAlias::StorageID				a_storageID,
 												  TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool,
 												  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
-	
-		void SetColor(const TypeAlias::Math::Color& a_set) { m_color = a_set; }
+
+		void ApplyColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel, const std::uint8_t a_colorValue);
 
 		void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
 
 		void SetTextureName(const std::wstring& a_set) { m_textureName = a_set; }
 
-		const auto& GetREFColor() const { return m_color; }
+		std::uint8_t FetchVALColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel) const;
 
 		auto GetVALFormat() const { return m_format; }
 
@@ -50,14 +53,16 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;
 		static constexpr std::size_t k_defaultTextureSliceIndex = 0ULL;
 
-		static constexpr float k_maxColorChannel = 1.0F;
+		static constexpr std::size_t k_defaultTexturePixelChannelCount = 4ULL;
 
-		TypeAlias::Math::Color m_color =
+		Converter::DefaultTextureJsonConverter m_jsonConverter = {};
+
+		std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount> m_color = 
 		{
-			k_maxColorChannel,
-			k_maxColorChannel,
-			k_maxColorChannel,
-			k_maxColorChannel
+			Constant::k_maxDefaultTextureColorChannelValue,
+			Constant::k_maxDefaultTextureColorChannelValue,
+			Constant::k_maxDefaultTextureColorChannelValue,
+			Constant::k_maxDefaultTextureColorChannelValue
 		};
 
 		DXGI_FORMAT m_format = DXGI_FORMAT_UNKNOWN;
