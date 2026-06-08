@@ -505,6 +505,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant">
       <UniqueIdentifier>{738a0565-5a90-4160-89b3-cecee690076a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility">
+      <UniqueIdentifier>{5eb5a4d2-cbd6-4c2f-8196-817ee5b80e7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -821,6 +824,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant\DefaultTextureConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility\TextureSystemJsonUtility.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

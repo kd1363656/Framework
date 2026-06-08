@@ -7,8 +7,7 @@ namespace FWK::Graphics
 	private:
 
 		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
-		using DefaultTextureMap					 = std::unordered_map<Enum::DefaultTextureType, DefaultTexture>;
-
+		
 	public:
 
 		 TextureSystem() = default;
@@ -32,9 +31,15 @@ namespace FWK::Graphics
 		bool AddTextureReferenceCount     (const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord);
 		bool SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
+		void ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, DefaultTexture&& a_defaultTexture);
+
 		void SetIsUploadToDefaultHeapCopyCompleted(const bool a_set) { m_isUploadToDefaultHeapCopyCompleted = a_set; }
 
+		static constexpr auto& GetREFDefaultTextureTypeCount() { return k_defaultTextureTypCount; }
+
 		const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }
+
+		const auto& GetREFDefaultTextureList() const { return m_defaultTextureList; }
 
 		const auto& GetREFTextureStorage() const { return m_textureStorage; }
 
@@ -42,7 +47,11 @@ namespace FWK::Graphics
 
 	private:
 
+		static constexpr std::size_t k_defaultTextureTypCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
+
 		PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
+
+		std::array<DefaultTexture, k_defaultTextureTypCount> m_defaultTextureList = {};
 
 		AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
 

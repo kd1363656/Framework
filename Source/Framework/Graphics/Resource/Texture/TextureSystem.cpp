@@ -146,3 +146,14 @@ bool FWK::Graphics::TextureSystem::SubtractTextureReferenceCount(const std::weak
 
 	return true;
 }
+
+void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, DefaultTexture&& a_defaultTexture)
+{
+	const auto l_index = static_cast<std::size_t>(a_defaultTextureType);
+
+	// デフォルトテクスチャのイーナムの種類を超えていないかどうかを確認
+	FWK_ASSERT_RETURN_IF_FAILED(l_index >= k_defaultTextureTypCount,    "イーナムの管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(l_index >= m_defaultTextureList.size(), "要素数の管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
+
+	m_defaultTextureList[l_index] = std::move(a_defaultTexture);
+}

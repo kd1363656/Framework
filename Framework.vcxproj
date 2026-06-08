@@ -391,6 +391,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility\TextureSystemJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant\DefaultTextureConstant.h" />

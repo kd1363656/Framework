@@ -154,6 +154,7 @@
 #include "Graphics/Resource/Texture/Default/Definition/Constant/DefaultTextureConstant.h"
 #include "Graphics/Resource/Texture/Default/Converter/Json/DefaultTextureJsonConverter.h"
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"
+#include "Graphics/Resource/Texture/Converter/Json/Utility/TextureSystemJsonUtility.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
