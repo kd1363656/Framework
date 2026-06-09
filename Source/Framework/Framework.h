@@ -118,6 +118,9 @@
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
+// レンダーエリアクラス
+#include "Graphics/Render/Rasterizer/RenderArea.h"
+
 // ダイレクトコマンドリスト
 #include "Graphics/Render/Command/List/DirectCommandList.h"
 

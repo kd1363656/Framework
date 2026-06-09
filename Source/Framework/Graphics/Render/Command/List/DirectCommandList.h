@@ -13,17 +13,21 @@ namespace FWK::Graphics
 
 		void FlushResourceBarrierTransitionBatch();
 
-		void AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState);
-
-		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex) const;
-
+		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)																	  const;
 		void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = Constant::k_whiteColor) const;
+
+		void SetupRenderArea(const RenderArea& a_renderArea)     const;
+
+		void AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState);
 
 	private:
 
 		static constexpr UINT k_singleSetupBarrierNUM      = 1U;
 		static constexpr UINT k_singleSetupRenderTargetNUM = 1U;
 		static constexpr UINT k_allRECTClear			   = 0U;
+
+		static constexpr UINT k_setViewportNUM       = 1U;
+		static constexpr UINT k_setScissorRectNUM    = 1U;
 
 		std::vector<D3D12_RESOURCE_BARRIER> m_resourceBarrierTransitionBatchList;
 	};

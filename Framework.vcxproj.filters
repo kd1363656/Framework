@@ -508,6 +508,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility">
       <UniqueIdentifier>{5eb5a4d2-cbd6-4c2f-8196-817ee5b80e7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Rasterizer">
+      <UniqueIdentifier>{c1438785-7921-403f-83c3-8696cf44f961}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -828,6 +831,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility\TextureSystemJsonUtility.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h">
+      <Filter>Source\Framework\Graphics\Render\Rasterizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -985,6 +991,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.cpp">
+      <Filter>Source\Framework\Graphics\Render\Rasterizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
