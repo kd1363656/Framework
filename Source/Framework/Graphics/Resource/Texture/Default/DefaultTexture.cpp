@@ -17,7 +17,7 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
                                                                    const TextureBatchUploadRecordBuilder&  a_textureBatchUploadRecordBuilder, 
                                                                    const TypeAlias::StorageID              a_storageID, 
                                                                          TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool, 
-                                                                         Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
+                                                                         Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord)
 {
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_format == DXGI_FORMAT_UNKNOWN,             "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
@@ -42,6 +42,10 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
                                                                                                         a_textureBatchUploadRecord),
                                                                                                         "DefaultTexture用TextureBatchUploadRecord作成に失敗しました。",
                                                                                                         false);
+
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_textureBatchUploadRecord.m_textureRecord, "DefaultTexture用TextureRecordが無効のため、DefaultTexture作成処理に失敗しました。", false);
+
+    m_textureRecord = a_textureBatchUploadRecord.m_textureRecord;
 
     return true;
 }

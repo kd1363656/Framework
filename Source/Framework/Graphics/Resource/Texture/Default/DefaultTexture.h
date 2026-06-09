@@ -26,7 +26,7 @@ namespace FWK::Graphics
 											const TextureBatchUploadRecordBuilder&  a_textureBatchUploadRecordBuilder,
 											const TypeAlias::StorageID				a_storageID,
 												  TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool,
-												  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
+												  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord);
 
 		void ApplyColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel, const std::uint8_t a_colorValue);
 
@@ -53,7 +53,6 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;
 		static constexpr std::size_t k_defaultTextureSliceIndex = 0ULL;
 
-		Converter::DefaultTextureJsonConverter m_jsonConverter = {};
 
 		std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount> m_color = 
 		{
@@ -62,6 +61,10 @@ namespace FWK::Graphics
 			Constant::k_maxDefaultTextureColorChannelValue,
 			Constant::k_maxDefaultTextureColorChannelValue
 		};
+
+		std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
+
+		Converter::DefaultTextureJsonConverter m_jsonConverter = {};
 
 		DXGI_FORMAT m_format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
