@@ -52,7 +52,8 @@ namespace FWK::Graphics
 
 		std::weak_ptr<FrameResource> m_currentFrameResource = {};
 
-		SwapChain m_swapChain = {};
+		SwapChain  m_swapChain  = {};
+		RenderArea m_renderArea = {};
 
 		DirectCommandQueue m_directCommandQueue = {};
 		DirectCommandList  m_directCommandList  = {};

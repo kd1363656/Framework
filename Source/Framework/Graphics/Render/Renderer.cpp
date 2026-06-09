@@ -31,6 +31,8 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 														  "ダイレクトコマンドリストの作成処理に失敗しました。",
 														  false);
 
+	m_renderArea.SetupRenderArea(m_swapChain);
+
 	// ALT + ENTERキーで排他フルスクリーン設定が反映されないようにする
 	m_swapChain.PostCreateSetup(a_window.GetREFHWND(), a_factory);
 
@@ -100,6 +102,9 @@ void FWK::Graphics::Renderer::Resize(const Device&			             a_device,
 													a_clientSize, 
 													a_rtvDescriptorPool), 
 													"リサイズ処理に失敗しました。");
+
+	// スワップチェインリサイズ後にレンダーエリアを作成
+	m_renderArea.SetupRenderArea(m_swapChain);
 }
 
 void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)
