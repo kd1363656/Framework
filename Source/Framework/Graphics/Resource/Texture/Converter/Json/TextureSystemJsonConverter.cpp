@@ -37,22 +37,28 @@ void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(c
 	if (a_rootJson.is_null())          { return; }
 	if (!Utility::IsArray(a_rootJson)) { return; }
 
-	for (std::size_t l_i = 0ULL; l_i < Graphics::TextureSystem::GetREFDefaultTextureTypeCount(); ++l_i)
+	for (std::size_t l_i = 0ULL; l_i < a_rootJson.size(); ++l_i)
 	{
 		const auto& l_json = a_rootJson[l_i];
 
-		const auto& l_defaultTextureJson = l_json.value(k_defaultTextureJsonKey,     nlohmann::json{});
+		if (l_json.is_null()) { continue; }
+
+		const auto& l_defaultTextureJson = l_json.value(k_defaultTextureJsonKey, nlohmann::json{});
+
+		if (l_defaultTextureJson.is_null()) { continue; }
+
 		const auto& l_defaultTextureType = l_json.value(k_defaultTextureTypeJsonKey, Enum::DefaultTextureType::Count);
 
+
 		// デフォルトテクスチャタイプの値がDefaultTextureTypeのCountを超えていればreturn;
-		if (static_cast<std::size_t>(l_defaultTextureType) >= static_cast<std::size_t>(Enum::DefaultTextureType::Count)) { continue; }
+		if (static_cast<std::size_t>(l_defaultTextureType) >= Graphics::TextureSystem::GetREFDefaultTextureTypeCount()) { continue; }
 
-		Graphics::DefaultTexture l_defaultTexture = {};
+		auto l_defaultTexture = std::make_shared<Graphics::DefaultTexture>();
 
-		l_defaultTexture.Deserialize(l_defaultTextureJson);
+		l_defaultTexture->Deserialize(l_defaultTextureJson);
 
 		// デシリアライズ後のデフォルトテクスチャを格納
-		a_textureSystem.ApplyDefaultTexture(l_defaultTextureType, std::move(l_defaultTexture));
+		a_textureSystem.ApplyDefaultTexture(l_defaultTextureType, l_defaultTexture);
 	}
 }
 
@@ -66,12 +72,14 @@ nlohmann::json FWK::Converter::TextureSystemJsonConverter::SerializeDefaultTextu
 	{
 		const auto& l_defaultTexture = l_defaultTextureList[l_i];
 
+		if (!l_defaultTexture) { continue; }
+
 		// 名前が空かどうかを確認
-		if (l_defaultTexture.GetREFTextureName().empty()) { continue; }
+		if (l_defaultTexture->GetREFTextureName().empty()) { continue; }
 
 		const auto l_defaultTextureType = static_cast<Enum::DefaultTextureType>(l_i);
 
-		// Countは実態を持つDefautltTextureではないので保存しない
+		// Countは実態を持つDefaultTextureではないので保存しない
 		if (static_cast<std::size_t>(l_defaultTextureType) >= static_cast<std::size_t>(Enum::DefaultTextureType::Count)) { continue; }
 
 		nlohmann::json l_json = {};
@@ -79,7 +87,7 @@ nlohmann::json FWK::Converter::TextureSystemJsonConverter::SerializeDefaultTextu
 		// DefaultTextureTypeを保存
 		l_json[k_defaultTextureTypeJsonKey] = l_defaultTextureType;
 
-		l_json[k_defaultTextureJsonKey] = l_defaultTexture.Serialize();
+		l_json[k_defaultTextureJsonKey] = l_defaultTexture->Serialize();
 
 		l_rootJsonArray.emplace_back(l_json);
 	}

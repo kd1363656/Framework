@@ -56,7 +56,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(Texture&& a_other) noe
 	return *this;
 }
 
-void FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath)
+void FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum::TextureLoadType a_loadType)
 {
 	// 既に別のStorageIDを持っている場合は先に参照を外す
 	SubtractTextureReferenceCount();
@@ -70,10 +70,13 @@ void FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath)
 	      auto& l_textureSystem      = l_resourceContext.GetMutableREFTextureSystem    ();
 	      auto& l_srvDescriptorPool  = l_resourceContext.GetMutableREFSRVDescriptorPool();
 	
+	// ロードタイプに応じたテクスチャの読み込みを行い
+	// テクスチャのGPUリソース作成の一括登録申請用の処理を行う
 	const auto& l_textureLoadResult = l_textureSystem.LoadTextureForBatchUpload(l_device,
 																				l_gpuMemoryAllocator,
 																				a_filePath,
-																				l_srvDescriptorPool);
+																				l_srvDescriptorPool,
+																				a_loadType);
 
 	// テクスチャの登録がうまくいかなければreturn
 	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID) { return; }

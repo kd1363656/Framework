@@ -7,10 +7,13 @@ void FWK::Graphics::TextureSystem::Deserialize(const nlohmann::json& a_rootJson)
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-bool FWK::Graphics::TextureSystem::Create()
+bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureStorage.Create(), "AssetStorageの作成に失敗したため、TextureSystemの作成処理に失敗しました。", false);
 
+	// 起動時にまとめてデフォルトテクスチャの作成予約を行う
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateDefaultTexturesForBatchUpload(a_device, a_gpuMemoryAllocator, a_srvDescriptorPool), "デフォルトテクスチャの作成処理に失敗したため、TextureSystemの作成処理に失敗しました。", false);
+	
 	return true;
 }
 
@@ -147,13 +150,60 @@ bool FWK::Graphics::TextureSystem::SubtractTextureReferenceCount(const std::weak
 	return true;
 }
 
-void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, DefaultTexture&& a_defaultTexture)
+void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture)
 {
 	const auto l_index = static_cast<std::size_t>(a_defaultTextureType);
 
+	FWK_ASSERT_RETURN_IF_FAILED(!a_defaultTexture, "インスタンス化されておらず、無効なデフォルトテクスチャです。デフォルトテクスチャの反映に失敗しました。");
+
 	// デフォルトテクスチャのイーナムの種類を超えていないかどうかを確認
-	FWK_ASSERT_RETURN_IF_FAILED(l_index >= k_defaultTextureTypCount,    "イーナムの管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(l_index >= k_defaultTextureTypeCount,   "Enumの管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(l_index >= m_defaultTextureList.size(), "要素数の管理範囲を超えている値となっており、デフォルトテクスチャの反映に失敗しました。");
 
-	m_defaultTextureList[l_index] = std::move(a_defaultTexture);
+	m_defaultTextureList[l_index] = a_defaultTexture;
+}
+
+bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+{
+	for (const auto& l_defaultTexture : m_defaultTextureList)
+	{
+		// Jsonに設定されていないDefaultTextureTypeはnullptrになるためスキップする
+		if (!l_defaultTexture) { continue; }
+
+		const auto& l_textureName = l_defaultTexture->GetREFTextureName();
+
+		// DefaultTextureとして登録されているのに名前が空なのは設定ミスなので失敗扱いする
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_textureName.empty(), "DefaultTextureの名前が空のため、DefaultTextureの作成予約に失敗しました。", false);
+
+		// すでにTextureStorageへ正式登録済みなら、同じDefaultTextureを作り直す必要はない
+		if (!m_textureStorage.FindVALRecord(l_textureName).expired()) { continue; }
+
+		// TextureStorageへ登録するためのStorageIDを先に確保する
+		// 作成に失敗した場合は、このStorageIDを返却する
+		const auto l_allocatedStorageID = m_textureStorage.AllocateStorageID();
+
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_allocatedStorageID == Constant::k_invalidStorageID, "DefaultTexture用StorageIDの割り当てに失敗しました。", false);
+
+		Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
+
+		// DefaultTextureから1x1のScratchImageを作成し、GPUTextureResource/UploadBuffer/SRVDescriptorをまとめたBatchUploadRecordを作る
+		if (!l_defaultTexture->CreateTextureBatchUploadRecord(a_device, 
+															  a_gpuMemoryAllocator, 
+															  m_batchUploadRecordBuilder,
+															  l_allocatedStorageID,
+															  a_srvDescriptorPool,	
+															  l_textureBatchUploadRecord))
+		{
+			// 作成失敗時はStorageIDを使わないので返却する
+			m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
+
+			FWK_ASSERT_RETURN_VALUE("DefaultTexture用TextureBatchUploadRecord作成に失敗しました。", false);
+		}
+
+		// UploadSystemでまとめてDEFAULTヒープへコピーするため、PendingMapへ登録する
+		// この時点ではまだTextureStorageへ正式登録しない
+		m_pendingTextureBatchUploadRecordMap.try_emplace(l_textureName, std::move(l_textureBatchUploadRecord));
+	}
+
+	return true;
 }

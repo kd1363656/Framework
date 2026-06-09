@@ -2,18 +2,18 @@
 
 void FWK::Scene::INIT()
 {
-	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+	if (!m_texture)
+	{
+		m_texture = std::make_shared<Graphics::Texture>();
+	}
 
-	const auto& l_device = l_graphicsManager.GetREFDevice();
+	m_texture->Load("Asset/Texture/Test.png", Enum::TextureLoadType::Color);
+}
 
-		  auto& l_resourceContext    = l_graphicsManager.GetMutableREFResourceContext  ();
-	const auto& l_gpuMemoryAllocator = l_resourceContext.GetREFGPUMemoryAllocator      ();
-	      auto& l_textureSystem      = l_resourceContext.GetMutableREFTextureSystem    ();
-	      auto& l_srvDescriptorPool  = l_resourceContext.GetMutableREFSRVDescriptorPool();
-	
-	l_textureSystem.LoadTextureForBatchUpload(l_device,
-											  l_gpuMemoryAllocator,
-											  "Asset/Texture/Test.png",
-											  l_srvDescriptorPool,
-											  Enum::TextureLoadType::Color);
+void FWK::Scene::Update()
+{
+	if (GetAsyncKeyState('B'))
+	{
+		m_texture = nullptr;
+	}
 }

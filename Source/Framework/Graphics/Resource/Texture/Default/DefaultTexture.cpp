@@ -19,7 +19,7 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
                                                                          TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool, 
                                                                          Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTexture作成処理に失敗しました。",        false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_format == DXGI_FORMAT_UNKNOWN,             "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_storageID == Constant::k_invalidStorageID, "DefaultTexture用StorageIDが無効のため、DefaultTexture作成処理に失敗しました。", false);
 
@@ -78,7 +78,7 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
                                                   k_defaultTextureArraySize,
                                                   k_defaultTextureMipLevels);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "DefaultTexture用ScratchImage野初期化に失敗しましtあ。", false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
 
     // 作成したScratchImageから、実際のピクセルデータを書き込むためのImageを取得する
     const auto* l_image = a_scratchImage.GetImage(k_defaultTextureMipIndex, k_defaultTextureItemIndex, k_defaultTextureSliceIndex);
@@ -86,9 +86,10 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_image,         "DefaultTexture用Imageの取得に失敗しました。",     false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_image->pixels, "DefaultTexture用Pixel領域の取得に失敗しました。", false);
 
-    // R8G8B8A8_UNORM/R8G8B8A8_UNORM_SRGBは、1チャンネル8bit,合計4Biteの$GBAピクセルとして扱える
+    // R8G8B8A8_UNORM / R8G8B8A8_UNORM_SRGB は、
+    // 1チャンネル8bit、合計4byteのRGBAピクセルとして扱える
     // m_colorはDefaultTextureColorChannel::R/G/B/Aの順番で並ぶstd::array
-    // そのため、配列の先頭から4byteをそのまま1ピクセルとして書き始める
+    // そのため、配列の先頭から4byteをそのまま1ピクセルとして書き込める
     std::memcpy(l_image->pixels, m_color.data(), m_color.size() * sizeof(DefaultTextureColor::value_type));
 
     return true;

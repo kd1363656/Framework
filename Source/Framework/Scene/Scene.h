@@ -9,6 +9,11 @@ namespace FWK
 		 Scene() = default;
 		~Scene() = default;
 
-		void INIT();
+		void INIT  ();
+		void Update();
+
+	private:
+
+		std::shared_ptr<Graphics::Texture> m_texture = nullptr;
 	};
 }

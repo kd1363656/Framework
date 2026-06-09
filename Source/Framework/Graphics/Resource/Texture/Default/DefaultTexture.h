@@ -63,7 +63,7 @@ namespace FWK::Graphics
 			Constant::k_maxDefaultTextureColorChannelValue
 		};
 
-		DXGI_FORMAT m_format = DXGI_FORMAT_UNKNOWN;
+		DXGI_FORMAT m_format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 		std::wstring m_textureName = {};
 	};

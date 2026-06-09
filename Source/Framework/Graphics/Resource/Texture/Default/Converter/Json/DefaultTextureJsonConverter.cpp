@@ -12,7 +12,7 @@ void FWK::Converter::DefaultTextureJsonConverter::Deserialize(const nlohmann::js
 
 	a_defaultTexture.SetFormat(l_format);
 
-	// JsonにTextureColorがない場合は、1.0を初期値と下津
+	// JsonにTextureColorがない場合は、1.0を初期値として使う
 	// これにより、Json側に色を書き忘れても真っ黒にはならない
 	if (const auto& l_json = a_rootJson.value(k_textureColorJsonKey, nlohmann::json{});
 		!l_json.is_null())

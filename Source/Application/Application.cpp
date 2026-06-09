@@ -64,6 +64,9 @@ void Application::Execute()
 		l_graphicsManager.BeginFrame();
 		l_graphicsManager.EndFrame  ();
 
+		// 更新
+		l_sceneManager.Update();
+
 		EndFrame();
 	}
 

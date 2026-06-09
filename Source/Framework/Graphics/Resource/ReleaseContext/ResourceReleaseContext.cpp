@@ -13,7 +13,7 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseSRVDescriptorI
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED				  (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "SRV用DescriptorIndexが無効のため、遅延解放予約に失敗しました。", false);
 	m_srvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
-	return false;
+	return true;
 }
 
 void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const DirectCommandQueue& a_directCommandQueue, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)

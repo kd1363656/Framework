@@ -6,8 +6,9 @@ namespace FWK
 	{
 	public:
 
-		void INIT();
-		
+		void INIT  ();
+		void Update();
+
 	private:
 
 		Scene m_scene = {};
