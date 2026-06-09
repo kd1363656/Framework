@@ -21,6 +21,8 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
+		const auto& GetREFShaderCompiler() const { return m_shaderCompiler; }
+
 		const auto& GetREFRTVDescriptorPool() const { return m_rtvDescriptorPool; }
 		const auto& GetREFSRVDescriptorPool() const { return m_srvDescriptorPool; }
 
@@ -41,12 +43,13 @@ namespace FWK::Graphics
 
 	private:
 
+		ShaderCompiler m_shaderCompiler = {};
+
 		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};
 		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
 
 		GPUMemoryAllocator m_gpuMemoryAllocator = {};
 		UploadSystem       m_uploadSystem       = {};
-
 
 		TextureSystem m_textureSystem = {};
 

@@ -387,6 +387,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Compiler\ShaderCompiler.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Shader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h" />
@@ -472,6 +475,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Compiler\ShaderCompiler.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Shader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.cpp" />

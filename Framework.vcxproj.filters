@@ -511,6 +511,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer">
       <UniqueIdentifier>{c1438785-7921-403f-83c3-8696cf44f961}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Shader">
+      <UniqueIdentifier>{49f8d637-3fe8-4951-af2b-355ef38fdbfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Shader\Compiler">
+      <UniqueIdentifier>{fd36a918-9ff4-4c4c-a740-e00bdee28f8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Shader\Converter">
+      <UniqueIdentifier>{c549feda-6792-4055-920f-cb589f987728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Shader\Converter\Json">
+      <UniqueIdentifier>{0b4dd043-5db1-44a8-8619-212fe7b5a230}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -834,6 +846,15 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Compiler\ShaderCompiler.h">
+      <Filter>Source\Framework\Graphics\Resource\Shader\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Shader.h">
+      <Filter>Source\Framework\Graphics\Resource\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -994,6 +1015,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.cpp">
       <Filter>Source\Framework\Graphics\Render\Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Compiler\ShaderCompiler.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Shader\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Shader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

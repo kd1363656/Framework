@@ -57,6 +57,11 @@
 #include "Graphics/Hardware/Factory/Factory.h"
 #include "Graphics/Hardware/Device/Device.h"
 
+// シェーダーコンパイラクラス
+#include "Graphics/Resource/Shader/Compiler/ShaderCompiler.h"
+#include "Graphics/Resource/Shader/Converter/Json/ShaderJsonConverter.h"
+#include "Graphics/Resource/Shader/Shader.h"
+
 // アップロードバッファークラス
 #include "Graphics/Resource/Buffer/Definition/Constant/UploadBufferConstant.h"
 #include "Graphics/Resource/Buffer/UploadBuffer.h"

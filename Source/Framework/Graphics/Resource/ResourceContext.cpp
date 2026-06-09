@@ -9,6 +9,8 @@ void FWK::Graphics::ResourceContext::Deserialize(const nlohmann::json& a_rootJso
 
 bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
 {
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_shaderCompiler.Create(), "ShaderCompilerの作成処理に失敗しました。", false);
+
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_rtvDescriptorPool.Create(a_device), "RTVDescriptorPoolの作成処理に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_srvDescriptorPool.Create(a_device), "SRVDescriptorPoolの作成処理に失敗しました。", false);
 
