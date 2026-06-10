@@ -54,7 +54,7 @@ bool FWK::Graphics::ResourceReleaseContext::IsValidGPUResourceReleaseRecord(cons
 }
 bool FWK::Graphics::ResourceReleaseContext::IsValidDescriptorIndexReleaseRecord(const Struct::DescriptorIndexReleaseRecord& a_releaseRecord) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_releaseRecord.m_retiredFenceValue == Constant::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",								   false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_releaseRecord.m_descriptorIndex   == Constant::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",								   false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue,       "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
 	return true;

@@ -360,12 +360,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant\RootSignatureConstant.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateEnum.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootSignatureStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h" />
@@ -468,8 +462,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.cpp" />
