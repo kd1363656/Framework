@@ -8,7 +8,8 @@ void FWK::Graphics::Renderer::Deserialize(const nlohmann::json& a_rootJson)
 }
 bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device, 
 											  const Window&						  a_window, 
-											  const Factory&					  a_factory, 
+											  const Factory&					  a_factory,
+											  const ShaderCompiler&				  a_shaderCompiler,
 													TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
 {
 	// フレームリソースがないとコマンドアロケーターを使えないため"return"
@@ -35,7 +36,14 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 	for (const auto& [l_type, l_rootSignature] : m_rootSignatureMap)
 	{
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature,					  "RootSignatureが無効のため、RootSignatureの作成に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature->Create(a_device), "ルートシグネチャの作成処理に失敗しました。",						false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature->Create(a_device), "RootSignatureの作成処理に失敗しました。",						    false);
+	}
+
+	// パイプラインステートの作成処理
+	for (const auto& [l_type, l_pipelineState] : m_pipelineStateMap)
+	{
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState,											   "PipelineStateが無効のため、PipelineStateの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState->Create(a_device, a_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
 	}
 
 	m_renderArea.SetupRenderArea(m_swapChain);
@@ -120,12 +128,19 @@ void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResour
 
 	m_frameResourceList.emplace_back(a_frameResource);
 }
-
 void FWK::Graphics::Renderer::AddRootSignature(const std::shared_ptr<RootSignature>& a_rootSignature, const Enum::RootSignatureType a_rootSignatureType)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_rootSignature, "RootSignatureが無効のため、RootSignatureMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!a_rootSignature,										 "RootSignatureが無効のため、RootSignatureMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(a_rootSignatureType == Enum::RootSignatureType::Invalid, "RootSignatureが無効な種類のため、RootSignatureMapへの登録に失敗しました。");
 
 	m_rootSignatureMap.try_emplace(a_rootSignatureType, a_rootSignature);	
+}
+void FWK::Graphics::Renderer::AddPipelineState(const std::shared_ptr<PipelineState>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_pipelineState,										 "PipelineStateが無効のため、PipelineStateMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(a_pipelineStateType == Enum::PipelineStateType::Invalid, "PipelineStateが無効な種類のため、PipelineStateMapへの登録に失敗しました。");
+
+	m_pipelineStateMap.try_emplace(a_pipelineStateType, a_pipelineState);
 }
 
 std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const
@@ -133,6 +148,14 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRoot
 	const auto& l_itr = m_rootSignatureMap.find(a_rootSignatureType);
 
 	if (l_itr == m_rootSignatureMap.end()) { return {}; }
+
+	return l_itr->second;
+}
+std::weak_ptr<FWK::Graphics::PipelineState> FWK::Graphics::Renderer::FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
+{
+	const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
+
+	if (l_itr == m_pipelineStateMap.end()) { return {}; }
 
 	return l_itr->second;
 }

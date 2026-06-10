@@ -403,9 +403,6 @@
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros">
       <UniqueIdentifier>{c8ead644-5c10-42fa-93a2-8e5bcd59e43f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Window\Definition\Macros">
-      <UniqueIdentifier>{db7347af-d1b7-4c25-b9c7-e7625ff7242e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry\Definition">
       <UniqueIdentifier>{df032c82-dbd3-4ee6-b71c-a548c70635ab}</UniqueIdentifier>
     </Filter>
@@ -472,9 +469,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility">
       <UniqueIdentifier>{0216dc59-40fd-4d36-ad14-2d7d56a96562}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros">
-      <UniqueIdentifier>{f07fb368-67ea-4067-bfdc-8c29fb51f7f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String">
       <UniqueIdentifier>{b4ff2a3e-7183-4aea-a547-acaa03d3936d}</UniqueIdentifier>
     </Filter>
@@ -532,8 +526,17 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility">
       <UniqueIdentifier>{cf19cf9a-0e8a-400d-9505-04eb0bb69306}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Macros">
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition">
+      <UniqueIdentifier>{e42bf00e-f0b7-407e-9dce-22456e5c4491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros">
       <UniqueIdentifier>{bbddf0eb-da2d-4a5a-8cfe-8aa9198068cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Converter\Json\Definition">
+      <UniqueIdentifier>{7c3d496d-e6ea-4d20-b4d4-b1c81cd645c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Converter\Json\Definition\Macros">
+      <UniqueIdentifier>{db7347af-d1b7-4c25-b9c7-e7625ff7242e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -804,9 +807,6 @@
     <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHashStruct.h">
       <Filter>Source\Framework\TypeINFO\Registry\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Definition\Macros\WindowJsonSerializeEnumMacros.h">
-      <Filter>Source\Framework\Window\Definition\Macros</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTRTypeAlias.h">
       <Filter>Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias</Filter>
     </ClInclude>
@@ -827,9 +827,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\SingletonUtility.h">
       <Filter>Source\Framework\TypeINFO\StaticTypeID\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros\DefaultTextureMacros.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Definition\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant\StringUtilityConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant</Filter>
@@ -882,9 +879,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\RootSignatureJsonUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Macros\RootSignatureMacros.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Macros</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClInclude>
@@ -893,6 +887,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Converter\Json\Definition\Macros\WindowJsonConverterMacros.h">
+      <Filter>Source\Framework\Window\Converter\Json\Definition\Macros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

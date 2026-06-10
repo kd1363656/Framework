@@ -7,6 +7,7 @@ namespace FWK::Graphics
 	private:
 
 		using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
+		using PipelineStateMap = std::unordered_map<Enum::PipelineStateType, std::shared_ptr<PipelineState>>;
 		
 	public:
 
@@ -18,6 +19,7 @@ namespace FWK::Graphics
 		bool PostDeserialize(const Device&						 a_device, 
 							 const Window&						 a_window,
 							 const Factory&						 a_factory,
+							 const ShaderCompiler&				 a_shaderCompiler,
 								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		
 		void BeginFrame(const ResourceContext& a_resourceContext);
@@ -32,11 +34,15 @@ namespace FWK::Graphics
 
 		void AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource);
 		void AddRootSignature(const std::shared_ptr<RootSignature>& a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
+		void AddPipelineState(const std::shared_ptr<PipelineState>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType);
 
 		std::weak_ptr<RootSignature> FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const;
+		std::weak_ptr<PipelineState> FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const;
 
 		const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
-		
+		const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
+		const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
+
 		const auto& GetREFSwapChain() const { return m_swapChain; }
 		
 		const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
@@ -56,6 +62,7 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
 
 		RootSignatureMap m_rootSignatureMap = {};
+		PipelineStateMap m_pipelineStateMap = {};
 
 		std::vector<std::shared_ptr<FrameResource>> m_frameResourceList = {};
 

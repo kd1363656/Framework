@@ -18,6 +18,20 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 	{
 		DeserializeSwapChain(l_swapChainJson, a_renderer);
 	}
+
+	// ルートシグネチャのデシリアライズ
+	if (const auto& l_rootSignatureJson = a_rootJson.value(k_rootSignatureMapJsonKey, nlohmann::json{});
+		!l_rootSignatureJson.is_null())
+	{
+		DeserializeRootSignatureMap(l_rootSignatureJson, a_renderer);
+	}
+
+	// パイプラインステートのデシリアライズ
+	if (const auto& l_pipelineStateJson = a_rootJson.value(k_pipelineStateMapJsonKey, nlohmann::json{});
+		!l_pipelineStateJson.is_null())
+	{
+		DeserializePipelineStateMap(l_pipelineStateJson, a_renderer);
+	}
 }
 
 nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::Renderer& a_renderer) const
@@ -66,6 +80,52 @@ void FWK::Converter::RendererJsonConverter::DeserializeSwapChain(const nlohmann:
 
 	l_swapChain.Deserialize(a_rootJson);
 }
+void FWK::Converter::RendererJsonConverter::DeserializeRootSignatureMap(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
+{
+	if (a_rootJson.is_null())		   { return; }
+	if (!Utility::IsArray(a_rootJson)) { return; }
+
+	for (const auto& l_json : a_rootJson)
+	{
+		const auto l_rootSignatureType = l_json.value(k_rootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
+
+		if (l_rootSignatureType == Enum::RootSignatureType::Invalid ||
+			!l_json.contains(k_rootSignatureJsonKey))
+		{
+			continue; 
+		}
+		
+		// ルートシグネチャのポインタを作成してレンダラー側に追加
+		const auto& l_rootSignature = std::make_shared<Graphics::RootSignature>();
+
+		l_rootSignature->Deserialize(l_json[k_rootSignatureJsonKey]);
+		
+		a_renderer.AddRootSignature(l_rootSignature, l_rootSignatureType);
+	}
+}
+void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nlohmann::json & a_rootJson, Graphics::Renderer & a_renderer) const
+{
+	if (a_rootJson.is_null())		   { return; }
+	if (!Utility::IsArray(a_rootJson)) { return; }
+
+	for (const auto& l_json : a_rootJson)
+	{
+		const auto l_pipelineStateType = l_json.value(k_pipelineStateTypeJsonKey, Enum::PipelineStateType::Invalid);
+
+		if (l_pipelineStateType == Enum::PipelineStateType::Invalid ||
+			!l_json.contains(k_pipelineStateJsonKey))
+		{
+			continue; 
+		}
+		
+		// パイプラインステートを作成してレンダラー側に追加
+		const auto& l_pipelineState = std::make_shared<Graphics::PipelineState>();
+
+		l_pipelineState->Deserialize(l_json[k_pipelineStateJsonKey]);
+		
+		a_renderer.AddPipelineState(l_pipelineState, l_pipelineStateType);
+	}
+}
 
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const
 {
@@ -102,4 +162,44 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializeSwapChain(const G
 	const auto& l_swapChain = a_renderer.GetREFSwapChain();
 
 	return l_swapChain.Serialize();
+}
+nlohmann::json FWK::Converter::RendererJsonConverter::SerializeRootSignatureMap(const Graphics::Renderer& a_renderer) const
+{
+	auto l_rootJsonArray = nlohmann::json::array();
+
+	const auto& l_rootSignatureMap = a_renderer.GetREFRootSignatureMap();
+
+	for (const auto& [l_type, l_rootSignature] : l_rootSignatureMap)
+	{
+		if (!l_rootSignature) { continue; }
+
+		nlohmann::json l_json = {};
+
+		l_json[k_rootSignatureTypeJsonKey] = l_type;
+		l_json[k_rootSignatureJsonKey]     = l_rootSignature->Serialize();
+
+		l_rootJsonArray.emplace_back(l_json);
+	}
+
+	return l_rootJsonArray;
+}
+nlohmann::json FWK::Converter::RendererJsonConverter::SerializePipelineStateMap(const Graphics::Renderer& a_renderer) const
+{
+	auto l_rootJsonArray = nlohmann::json::array();
+
+	const auto& l_pipelineStateMap = a_renderer.GetREFPipelineStateMap();
+
+	for (const auto& [l_type, l_pipelineState] : l_pipelineStateMap)
+	{
+		if (!l_pipelineState) { continue; }
+
+		nlohmann::json l_json = {};
+
+		l_json[k_pipelineStateTypeJsonKey] = l_type;
+		l_json[k_pipelineStateJsonKey]     = l_pipelineState->Serialize();
+
+		l_rootJsonArray.emplace_back(l_json);
+	}
+
+	return l_rootJsonArray;
 }

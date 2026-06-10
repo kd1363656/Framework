@@ -20,11 +20,14 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),					"デバイスの作成処理に失敗しました。",					        false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_resourceContext.PostDeserialize(m_device), "リソースコンテキストのデシリアライズ後の処理に失敗しました。", false);
 
-	auto& l_rtvDescriptorPool = m_resourceContext.GetMutableREFRTVDescriptorPool();
+		  auto& l_rtvDescriptorPool = m_resourceContext.GetMutableREFRTVDescriptorPool();
+	const auto& l_shaderCompiler    = m_resourceContext.GetREFShaderCompiler		  ();
+
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderer.PostDeserialize(m_device, 
 									  a_window,
 									  m_factory,
+									  l_shaderCompiler,
 									  l_rtvDescriptorPool),
 									  "レンダラーのデシリアライズ後の処理に失敗しました。",
 									  false);
