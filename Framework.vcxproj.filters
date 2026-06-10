@@ -511,6 +511,9 @@
     <Filter Include="Source\Framework\Window\Utility\Definition\Constant">
       <UniqueIdentifier>{bb49b979-22f4-4c93-b9e7-efd9d8d3d588}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline">
+      <UniqueIdentifier>{870f7380-432f-4fc0-b044-f56deb901d6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -843,6 +846,12 @@
     <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowStringUtilityConstant.h">
       <Filter>Source\Framework\Window\Utility\Definition\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1012,6 +1021,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

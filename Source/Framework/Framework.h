@@ -62,6 +62,8 @@
 #include "Graphics/Resource/Shader/Converter/Json/ShaderJsonConverter.h"
 #include "Graphics/Resource/Shader/Shader.h"
 
+#include "Graphics/Render/Pipeline/RootSignature.h"
+
 // アップロードバッファークラス
 #include "Graphics/Resource/Buffer/Definition/Constant/UploadBufferConstant.h"
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
