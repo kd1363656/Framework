@@ -4,6 +4,10 @@ namespace FWK::Graphics
 {
 	class Renderer final
 	{
+	private:
+
+		using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
+		
 	public:
 
 		 Renderer() = default;
@@ -27,6 +31,9 @@ namespace FWK::Graphics
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
 		void AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource);
+		void AddRootSignature(const std::shared_ptr<RootSignature>& a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
+
+		std::weak_ptr<RootSignature> FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const;
 
 		const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
 		
@@ -47,6 +54,8 @@ namespace FWK::Graphics
 
 		static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
 		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
+
+		RootSignatureMap m_rootSignatureMap = {};
 
 		std::vector<std::shared_ptr<FrameResource>> m_frameResourceList = {};
 

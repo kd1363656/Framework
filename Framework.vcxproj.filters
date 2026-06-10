@@ -888,6 +888,12 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1066,6 +1072,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

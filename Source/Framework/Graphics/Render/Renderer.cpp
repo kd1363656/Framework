@@ -12,7 +12,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 													TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
 {
 	// フレームリソースがないとコマンドアロケーターを使えないため"return"
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_frameResourceList.empty(), "フレームリソースリストがからになっており、フレームリソース作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
 
 	for (const auto& l_frameResource : m_frameResourceList)
 	{
@@ -30,6 +30,13 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 														  a_rtvDescriptorPool), 
 														  "ダイレクトコマンドリストの作成処理に失敗しました。",
 														  false);
+
+	// ルートシグネチャの作成処理
+	for (const auto& [l_type, l_rootSignature] : m_rootSignatureMap)
+	{
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature,					  "RootSignatureが無効のため、RootSignatureの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature->Create(a_device), "ルートシグネチャの作成処理に失敗しました。",						false);
+	}
 
 	m_renderArea.SetupRenderArea(m_swapChain);
 
@@ -112,6 +119,22 @@ void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResour
 	FWK_ASSERT_RETURN_IF_FAILED(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
 
 	m_frameResourceList.emplace_back(a_frameResource);
+}
+
+void FWK::Graphics::Renderer::AddRootSignature(const std::shared_ptr<RootSignature>& a_rootSignature, const Enum::RootSignatureType a_rootSignatureType)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_rootSignature, "RootSignatureが無効のため、RootSignatureMapへの登録に失敗しました。");
+
+	m_rootSignatureMap.try_emplace(a_rootSignatureType, a_rootSignature);	
+}
+
+std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const
+{
+	const auto& l_itr = m_rootSignatureMap.find(a_rootSignatureType);
+
+	if (l_itr == m_rootSignatureMap.end()) { return {}; }
+
+	return l_itr->second;
 }
 
 void FWK::Graphics::Renderer::ResetCommandObjects(const FrameResource& a_frameResource)
