@@ -436,10 +436,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Macros\WindowJsonSerializeEnumMacros.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Struct\WindowStruct.h" />
-    <ClInclude Include="Source\Framework\Window\Utility\File\Definition\Constant\WindowFileUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Window\Utility\File\WindowFileUtility.h" />
-    <ClInclude Include="Source\Framework\Window\Utility\String\Definition\Constant\WindowStringUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Window\Utility\String\WindowStringUtility.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowFileUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowStringUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\WindowFileUtility.h" />
+    <ClInclude Include="Source\Framework\Window\Utility\WindowStringUtility.h" />
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>

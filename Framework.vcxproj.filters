@@ -418,24 +418,6 @@
     <Filter Include="Source\Framework\Window\Utility">
       <UniqueIdentifier>{4a001993-ee81-46e8-a958-71fcf48e4f23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Window\Utility\String">
-      <UniqueIdentifier>{9c5655da-ab0e-4def-a416-d5c5c0e1400d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Window\Utility\String\Definition">
-      <UniqueIdentifier>{7a74e7eb-1839-48cb-a912-f1816a0c5c22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Window\Utility\String\Definition\Constant">
-      <UniqueIdentifier>{1f778f08-f08a-47b0-9238-c1648cd0bc5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Window\Utility\File">
-      <UniqueIdentifier>{b825293d-1bd3-4c0d-9166-e4734a992335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Window\Utility\File\Definition">
-      <UniqueIdentifier>{e56308b9-1b88-48c2-a10f-b4e5d31c536d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Window\Utility\File\Definition\Constant">
-      <UniqueIdentifier>{32952e7e-a3b1-4f73-ab9d-3990d4ab54dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type">
       <UniqueIdentifier>{4bf0c0be-df32-4101-aa3b-c4eb0b6c2ec6}</UniqueIdentifier>
     </Filter>
@@ -522,6 +504,12 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Shader\Converter\Json">
       <UniqueIdentifier>{0b4dd043-5db1-44a8-8619-212fe7b5a230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\Definition">
+      <UniqueIdentifier>{e56308b9-1b88-48c2-a10f-b4e5d31c536d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Window\Utility\Definition\Constant">
+      <UniqueIdentifier>{bb49b979-22f4-4c93-b9e7-efd9d8d3d588}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -765,18 +753,6 @@
     <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\String\Definition\Constant\WindowStringUtilityConstant.h">
-      <Filter>Source\Framework\Window\Utility\String\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\String\WindowStringUtility.h">
-      <Filter>Source\Framework\Window\Utility\String</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\File\WindowFileUtility.h">
-      <Filter>Source\Framework\Window\Utility\File</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\File\Definition\Constant\WindowFileUtilityConstant.h">
-      <Filter>Source\Framework\Window\Utility\File\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias\StaticTypeIDTypeAlias.h">
       <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias</Filter>
     </ClInclude>
@@ -854,6 +830,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\WindowFileUtility.h">
+      <Filter>Source\Framework\Window\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\WindowStringUtility.h">
+      <Filter>Source\Framework\Window\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowFileUtilityConstant.h">
+      <Filter>Source\Framework\Window\Utility\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowStringUtilityConstant.h">
+      <Filter>Source\Framework\Window\Utility\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
