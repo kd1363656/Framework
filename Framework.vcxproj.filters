@@ -514,6 +514,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline">
       <UniqueIdentifier>{d0a84046-f061-47ed-877e-bd64a3710805}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition">
+      <UniqueIdentifier>{0aad7bf5-91c0-454a-aa7f-1914ef71dec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum">
+      <UniqueIdentifier>{34869cf7-7b53-44d1-a140-a59f745301ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant">
+      <UniqueIdentifier>{4188ac0c-0073-4929-b2e5-3d9b0e84d847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct">
+      <UniqueIdentifier>{a9674f6a-5d33-490d-8863-c07bef64f7c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -851,6 +863,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant\RootSignatureConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootSignatureStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
