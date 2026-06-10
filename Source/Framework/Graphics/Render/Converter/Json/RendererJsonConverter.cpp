@@ -45,6 +45,12 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 	// スワップチェインのシリアライズ
 	l_rootJson[k_swapChainJsonKey] = SerializeSwapChain(a_renderer);
 
+	// ルートシグネチャマップのシリアライズ
+	l_rootJson[k_rootSignatureMapJsonKey] = SerializeRootSignatureMap(a_renderer);
+
+	// パイプラインステートのシリアライズ
+	l_rootJson[k_pipelineStateMapJsonKey] = SerializePipelineStateMap(a_renderer);
+
 	return l_rootJson;
 }
 
