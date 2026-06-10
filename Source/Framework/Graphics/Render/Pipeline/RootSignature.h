@@ -52,6 +52,6 @@ namespace FWK::Graphics
 		Converter::RootSignatureJsonConverter m_jsonConverter = {};
 
 		D3D12_ROOT_SIGNATURE_FLAGS m_rootSignatureFlags   = {};
-		D3D_ROOT_SIGNATURE_VERSION m_rootSignatureVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
+		D3D_ROOT_SIGNATURE_VERSION m_rootSignatureVersion = D3D_ROOT_SIGNATURE_VERSION_1;
 	};
 }

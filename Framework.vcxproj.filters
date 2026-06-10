@@ -538,6 +538,15 @@
     <Filter Include="Source\Framework\Window\Converter\Json\Definition\Macros">
       <UniqueIdentifier>{db7347af-d1b7-4c25-b9c7-e7625ff7242e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader">
+      <UniqueIdentifier>{a1c0aa1c-c00a-4523-a7fe-1e4ae19711c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Sprite">
+      <UniqueIdentifier>{3ef4bcd8-2cc6-4fb0-92d6-b1d381e32af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Sprite\Standard">
+      <UniqueIdentifier>{2f9fac29-c82b-40ad-ad77-b1e2527f6461}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1095,5 +1104,16 @@
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
+    <None Include="Asset\Shader\Sprite\Standard\SpriteStandardShader.hlsli">
+      <Filter>Asset\Shader\Sprite\Standard</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <DXCTask Include="Asset\Shader\Sprite\Standard\SpriteStandard_PS.hlsl">
+      <Filter>Asset\Shader\Sprite\Standard</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Sprite\Standard\SpriteStandard_MS.hlsl">
+      <Filter>Asset\Shader\Sprite\Standard</Filter>
+    </DXCTask>
   </ItemGroup>
 </Project>

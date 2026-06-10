@@ -40,7 +40,7 @@ namespace FWK::Converter
 		static constexpr std::string_view k_rootSignatureVersionJsonKey  = "RootSignatureVersion";
 
 		// RootParameterIndexMap
-		static constexpr std::string_view k_rootParameterTypeJsonKey = "RootParameterTag";
+		static constexpr std::string_view k_rootParameterTypeJsonKey = "RootParameterType";
 		static constexpr std::string_view k_indexJsonKey             = "Index";
 
 		// RootParameter

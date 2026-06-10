@@ -542,6 +542,15 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
+    <None Include="Asset\Shader\Sprite\Standard\SpriteStandardShader.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <DXCTask Include="Asset\Shader\Sprite\Standard\SpriteStandard_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Sprite\Standard\SpriteStandard_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </DXCTask>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
