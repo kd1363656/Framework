@@ -487,9 +487,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant">
       <UniqueIdentifier>{738a0565-5a90-4160-89b3-cecee690076a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility">
-      <UniqueIdentifier>{5eb5a4d2-cbd6-4c2f-8196-817ee5b80e7e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer">
       <UniqueIdentifier>{c1438785-7921-403f-83c3-8696cf44f961}</UniqueIdentifier>
     </Filter>
@@ -513,6 +510,30 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline">
       <UniqueIdentifier>{870f7380-432f-4fc0-b044-f56deb901d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition">
+      <UniqueIdentifier>{672a6bbc-09a4-445e-a578-027eafde3284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum">
+      <UniqueIdentifier>{a3712585-89ff-40ff-920d-50abd9ec2cfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct">
+      <UniqueIdentifier>{8b33060b-9741-47b8-99d4-587fca07ec8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant">
+      <UniqueIdentifier>{f551f3a7-d174-4fee-ae33-d8bd0add49ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter">
+      <UniqueIdentifier>{b0c6cb10-c899-47a6-8693-fb73a2899980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json">
+      <UniqueIdentifier>{ec3b3b62-ff26-4899-ad23-e7d6f8155f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility">
+      <UniqueIdentifier>{cf19cf9a-0e8a-400d-9505-04eb0bb69306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Macros">
+      <UniqueIdentifier>{bbddf0eb-da2d-4a5a-8cfe-8aa9198068cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -819,9 +840,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant\DefaultTextureConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility\TextureSystemJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer</Filter>
     </ClInclude>
@@ -846,10 +864,28 @@
     <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowStringUtilityConstant.h">
       <Filter>Source\Framework\Window\Utility\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootParameterStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant\RootSignatureConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\RootSignatureJsonUtility.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Macros\RootSignatureMacros.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1022,10 +1058,13 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
   </ItemGroup>

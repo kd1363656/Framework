@@ -62,6 +62,13 @@
 #include "Graphics/Resource/Shader/Converter/Json/ShaderJsonConverter.h"
 #include "Graphics/Resource/Shader/Shader.h"
 
+// ルートシグネチャ
+#include "Graphics/Render/Pipeline/Definition/Enum/RootSignatureEnum.h"
+#include "Graphics/Render/Pipeline/Definition/Constant/RootSignatureConstant.h"
+#include "Graphics/Render/Pipeline/Definition/Struct/RootParameterStruct.h"
+#include "Graphics/Render/Pipeline/Converter/Json/Utility/RootSignatureJsonUtility.h"
+#include "Graphics/Render/Pipeline/Definition/Macros/RootSignatureMacros.h"
+#include "Graphics/Render/Pipeline/Converter/Json/RootSignatureJsonConverter.h"
 #include "Graphics/Render/Pipeline/RootSignature.h"
 
 // アップロードバッファークラス
@@ -164,7 +171,6 @@
 #include "Graphics/Resource/Texture/Default/Definition/Constant/DefaultTextureConstant.h"
 #include "Graphics/Resource/Texture/Default/Converter/Json/DefaultTextureJsonConverter.h"
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"
-#include "Graphics/Resource/Texture/Converter/Json/Utility/TextureSystemJsonUtility.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
