@@ -376,11 +376,14 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Constant\SwapChainConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct\SwapChainStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Constant\ConstantBufferConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Struct\ConstantBufferStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Type\Alias\ConstantBufferTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant\UploadBufferConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h" />
@@ -485,6 +488,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.cpp" />

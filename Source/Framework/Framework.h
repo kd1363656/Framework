@@ -88,7 +88,10 @@
 #include "Graphics/Resource/Buffer/Constant/Definition/Struct/ConstantBufferStruct.h"
 #include "Graphics/Resource/Buffer/Utility/Definition/Constant/ConstantBufferUploaderAlignUpUtilityConstant.h"
 #include "Graphics/Resource/Buffer/Utility/ConstantBufferUploaderAlignUpUtility.h"
-//#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
+#include "Graphics/Resource/Buffer/Constant/Converter/Json/ConstantBufferUploaderJsonConverter.h"
+#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
+#include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
+
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
@@ -118,8 +121,6 @@
 #include "Graphics/Resource/Record/Definition/Type/Alias/StorageIDTypeAlias.h"
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
-
-#include "Graphics/Resource/Record/Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
 
 // ストレージクラス
@@ -152,7 +153,7 @@
 #include "Graphics/Render/Command/List/DirectCommandList.h"
 
 // Storageクラス
-#include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
+#include "Graphics/Resource/Record/Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
 #include "Graphics/Resource/Storage/Converter/Json/AssetStorageJsonConverter.h"
 #include "Graphics/Resource/Storage/AssetStorage.h"
 
@@ -188,6 +189,7 @@
 
 // リソースコンテキストの定数
 #include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
+#include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 
 // レンダーグラフ
