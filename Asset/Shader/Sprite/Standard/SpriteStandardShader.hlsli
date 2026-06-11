@@ -31,11 +31,6 @@ static const float k_spriteUVMAX = 1.0F;
 static const float k_spritePositionZ = 0.0F;
 static const float k_spritePositionW = 1.0F;
 
-static const float k_defaultSpriteColorR = 1.0F;
-static const float k_defaultSpriteColorG = 1.0F;
-static const float k_defaultSpriteColorB = 1.0F;
-static const float k_defaultSpriteColorA = 1.0F;
-
 static const uint  k_spriteMeshShaderThreadCountX = 1U;
 static const uint  k_spriteMeshShaderThreadCountY = 1U;
 static const uint  k_spriteMeshShaderThreadCountZ = 1U;

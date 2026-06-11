@@ -60,12 +60,12 @@ void Application::Execute()
 			continue; 
 		}
 
+		// 更新
+		l_sceneManager.Update();
+
 		// 描画処理
 		l_graphicsManager.BeginFrame();
 		l_graphicsManager.EndFrame  ();
-
-		// 更新
-		l_sceneManager.Update();
 
 		EndFrame();
 	}

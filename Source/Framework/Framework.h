@@ -81,6 +81,12 @@
 #include "Graphics/Resource/Buffer/Definition/Constant/UploadBufferConstant.h"
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
 
+// 定数バッファークラス
+#include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/ConstantBufferTypeAlias.h"
+#include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
+#include "Graphics/Resource/Buffer/Constant/Definition/Constant/ConstantBufferConstant.h"
+#include "Graphics/Resource/Buffer/Constant/Definition/Struct/ConstantBufferStruct.h"
+
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
 #include "Graphics/Command/List/CommandListBase.h"
@@ -88,7 +94,6 @@
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 
 // ディスクリプタヒープ
-#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorIndexTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 
@@ -107,7 +112,7 @@
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // レコードクラス
-#include "Graphics/Resource/Record/Definition/Type/Alias/RecordBaseTypeAlias.h"
+#include "Graphics/Resource/Record/Definition/Type/Alias/StorageIDTypeAlias.h"
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 
@@ -119,7 +124,6 @@
 #include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
 
 // ダイレクトコマンド用定数
-#include "Graphics/Render/Command/List/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
 #include "Graphics/Render/Command/List/Definition/Constant/CommandListConstant.h"
 #include "Graphics/Render/Frame/Command/Allocator/Definition/Constant/DirectCommandAllocatorConstant.h"
 
@@ -171,8 +175,8 @@
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
 #include "Graphics/Resource/Texture/Default/Definition/Enum/DefaultTextureEnum.h"
-#include "Graphics/Resource/Texture/Default/Utility/String/Definition/Constant/StringUtilityConstant.h"
-#include "Graphics/Resource/Texture/Default/Utility/String/Definition/StringUtility.h"
+#include "Graphics/Resource/Texture/Default/Utility/String/Definition/Constant/DefaultTextureStringUtilityConstant.h"
+#include "Graphics/Resource/Texture/Default/Utility/String/Definition/DefaultTextureStringUtility.h"
 #include "Graphics/Resource/Texture/Default/Definition/Constant/DefaultTextureConstant.h"
 #include "Graphics/Resource/Texture/Default/Converter/Json/DefaultTextureJsonConverter.h"
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"

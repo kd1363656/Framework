@@ -1,5 +1,6 @@
 ﻿#include "SpriteStandardShader.hlsli"
 
+// 三角形2枚でポリゴン出力用四角形を出力
 [outputtopology("triangle")]
 [numthreads(k_spriteMeshShaderThreadCountX, k_spriteMeshShaderThreadCountY, k_spriteMeshShaderThreadCountZ)]
 void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
@@ -38,6 +39,7 @@ void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
     const float l_top    =  l_spriteSize.y * g_pivot.y;
     const float l_bottom =  l_top          - l_spriteSize.y;
 	
+    // 左下、左上、右下、右上の座標を持つ配列を作成
     const float2 l_localPositionList[k_spriteVertexCount] =
     {
         float2(l_left,  l_bottom),
@@ -65,5 +67,5 @@ void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
     a_vertexList[k_spritePrimitiveVertexIndexThree].uv = float2(l_uvMAX.x, l_uvMIN.y);
 
     a_primitiveList[k_spriteFirstPrimitiveIndex]  = uint3(k_spritePrimitiveVertexIndexZero, k_spritePrimitiveVertexIndexOne, k_spritePrimitiveVertexIndexTwo);
-    a_primitiveList[k_spriteSecondPrimitiveIndex] = uint3(k_spritePrimitiveVertexIndexTwo, k_spritePrimitiveVertexIndexOne,  k_spritePrimitiveVertexIndexThree);
+    a_primitiveList[k_spriteSecondPrimitiveIndex] = uint3(k_spritePrimitiveVertexIndexTwo,  k_spritePrimitiveVertexIndexOne, k_spritePrimitiveVertexIndexThree);
 }
