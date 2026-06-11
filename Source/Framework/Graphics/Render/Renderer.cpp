@@ -66,6 +66,10 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
 
 	ResetCommandObjects(*l_currentFrameResource);
 
+	// GPUがこのフレームリソースを使い終わってから、
+	// ConstantBufferUploaderの書き込みインデックスを先頭に戻す
+	l_currentFrameResource->BeginFrame();
+
 	// リソース遷移の実行
 	m_renderGraph.BeginFrame(a_resourceContext, *this);
 }

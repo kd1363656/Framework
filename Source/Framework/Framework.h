@@ -82,18 +82,18 @@
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
 
 // 定数バッファークラス
-#include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/ConstantBufferTypeAlias.h"
-#include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
-#include "Graphics/Resource/Buffer/Constant/Definition/Constant/ConstantBufferConstant.h"
-#include "Graphics/Resource/Buffer/Constant/Definition/Struct/ConstantBufferStruct.h"
-#include "Graphics/Resource/Buffer/Utility/Definition/Constant/ConstantBufferUploaderAlignUpUtilityConstant.h"
-#include "Graphics/Resource/Buffer/Utility/ConstantBufferUploaderAlignUpUtility.h"
-#include "Graphics/Resource/Buffer/Constant/Converter/Json/ConstantBufferUploaderJsonConverter.h"
-#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
-#include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
-#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploader.h"
-#include "Graphics/Resource/Buffer/Constant/Sprite/Pass/SpritePassConstantBufferUploader.h"
-#include "Graphics/Resource/Buffer/Constant/Sprite/PerObject/SpritePerObjectConstantBufferUploader.h"
+#include "Graphics/Render/Frame/Buffer/Definition/Type/Alias/ConstantBufferTypeAlias.h"
+#include "Graphics/Render/Frame/Buffer/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
+#include "Graphics/Render/Frame/Buffer/Definition/Constant/ConstantBufferConstant.h"
+#include "Graphics/Render/Frame/Buffer/Definition/Struct/ConstantBufferStruct.h"
+#include "Graphics/Render/Frame/Buffer/Utility/Definition/Constant/ConstantBufferUploaderAlignUpUtilityConstant.h"
+#include "Graphics/Render/Frame/Buffer/Utility/ConstantBufferUploaderAlignUpUtility.h"
+#include "Graphics/Render/Frame/Buffer/Converter/Json/ConstantBufferUploaderJsonConverter.h"
+#include "Graphics/Render/Frame/Buffer/ConstantBufferUploaderBase.h"
+#include "Graphics/Render/Frame/Buffer/Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
+#include "Graphics/Render/Frame/Buffer/ConstantBufferUploader.h"
+#include "Graphics/Render/Frame/Buffer/Sprite/Pass/SpritePassConstantBufferUploader.h"
+#include "Graphics/Render/Frame/Buffer/Sprite/PerObject/SpritePerObjectConstantBufferUploader.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
@@ -137,6 +137,8 @@
 #include "Graphics/Render/Frame/Command/Allocator/DirectCommandAllocator.h"
 
 // フレームリソース
+#include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
+#include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // ダイレクトコマンドキュー

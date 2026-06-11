@@ -73,9 +73,9 @@ void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableGPUResources(const U
 			continue;
 		}
 
-		// 解放順は不要なので、末尾要素を移動してpop_backする
+		// 解放順は考慮しなくてよいので、末尾要素を移動してpop_backする
 		// pop_backされた要素内のComPtrは自然にReleaseされる
-		std::swap(m_gpuResourceReleaseRecordList[l_index], m_gpuResourceReleaseRecordList.back());
+		std::swap							   (m_gpuResourceReleaseRecordList[l_index], m_gpuResourceReleaseRecordList.back());
 		m_gpuResourceReleaseRecordList.pop_back();
 	}
 }

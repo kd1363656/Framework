@@ -2,7 +2,22 @@
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
-            "Template": null
+            "Template": {
+                "ConstantBufferUploaderList": [
+                    {
+                        "ConstantBufferUploader": {
+                            "CreateConstantBufferCount": 1
+                        },
+                        "ConstantBufferUploaderTypeName": "SpritePassConstantBufferUploader"
+                    },
+                    {
+                        "ConstantBufferUploader": {
+                            "CreateConstantBufferCount": 4096
+                        },
+                        "ConstantBufferUploaderTypeName": "SpritePerObjectConstantBufferUploader"
+                    }
+                ]
+            }
         },
         "PipelineStateMap": [
             {
