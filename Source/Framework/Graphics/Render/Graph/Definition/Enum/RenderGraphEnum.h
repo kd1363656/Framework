@@ -5,9 +5,7 @@ namespace FWK::Enum
 	enum class RenderGraphPassType
 	{
 		Invalid,
-
 		SpriteStandard,
-
 		Count,
 	};
 
@@ -22,9 +20,7 @@ namespace FWK::Enum
 	enum class RenderGraphResourceType
 	{
 		Invalid,
-
 		BackBuffer,
-
 		Count,
 	};
 
@@ -39,10 +35,8 @@ namespace FWK::Enum
 	enum class RenderGraphAccessType
 	{
 		Invalid,
-
 		Read,
 		Write,
-
 		Count,
 	};
 
@@ -58,10 +52,8 @@ namespace FWK::Enum
 	enum class RenderGraphResourceUsage
 	{
 		Invalid,
-
 		RenderTarget,
 		Present,
-
 		Count,
 	};
 

@@ -11,7 +11,7 @@ namespace FWK::Graphics
 
 		virtual void BeginFrame() { /*必要に応じてオーバーライドしてください*/ };
 
-		virtual bool SetupCommonPassConstantBuffer(const RootSignature& a_rootSignature, const DirectCommandList& a_directCommandList, const FrameResource& a_frameResource) = 0;
+		virtual bool SetupPassConstantBuffer(const RootSignature& a_rootSignature, const DirectCommandList& a_directCommandList, const FrameResource& a_frameResource) = 0;
 
 	protected:
 

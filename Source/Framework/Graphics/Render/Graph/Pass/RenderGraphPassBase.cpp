@@ -20,11 +20,15 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGra
 								a_accessType == Enum::RenderGraphAccessType::Count,
 								"RenderGraphResourceUsageが無効です。");
 
-	Struct::RenderGraphResourceAccess l_resourceAcccess = {};
+	FWK_ASSERT_RETURN_IF_FAILED(a_usage == Enum::RenderGraphResourceUsage::Invalid ||
+								a_usage == Enum::RenderGraphResourceUsage::Count,
+								"RenderGraphResourceUsageが無効です。");
 
-	l_resourceAcccess.m_resourceType = a_resourceType;
-	l_resourceAcccess.m_accessType	 = a_accessType;
-	l_resourceAcccess.m_usage		 = a_usage;
+	Struct::RenderGraphResourceAccess l_resourceAccess = {};
 
-	m_resourceAccecssList.emplace_back(l_resourceAcccess);
+	l_resourceAccess.m_resourceType = a_resourceType;
+	l_resourceAccess.m_accessType	 = a_accessType;
+	l_resourceAccess.m_usage		 = a_usage;
+
+	m_resourceAccessList.emplace_back(l_resourceAccess);
 }
