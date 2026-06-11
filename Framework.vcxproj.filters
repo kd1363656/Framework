@@ -592,6 +592,15 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant">
       <UniqueIdentifier>{50352152-4b0a-4d48-8695-d3389b4ed4a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition">
+      <UniqueIdentifier>{50b45e03-7f46-4a5c-ba93-e8679fe90349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Concept">
+      <UniqueIdentifier>{98d6dec6-be4f-4e09-aa52-44699048c8d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{bc38eeaf-9c7a-4bfa-93bb-015ed685b40a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -986,6 +995,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerived\IsDerivedConstantBufferBaseConcept.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

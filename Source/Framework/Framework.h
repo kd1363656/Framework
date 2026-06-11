@@ -139,6 +139,7 @@
 // フレームリソース
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
+#include "Graphics/Render/Frame/Definition/Concept/IsDerived/IsDerivedConstantBufferBaseConcept.h"
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // ダイレクトコマンドキュー

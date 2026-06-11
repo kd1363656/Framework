@@ -58,7 +58,7 @@ namespace FWK::Graphics
 			const auto l_alignedConstantBufferSize = Utility::AlignUp(sizeof(ConstantBufferType), k_constantBufferAlignment);
 
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_alignedConstantBufferSize != Utility::AlignUp(m_constantBufferTypeSize, k_constantBufferAlignment), "ConstantBufferUploaderの型サイズが一致しておらず、定数バッファ書き込み処理に失敗しました。", {});
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_writeIndex >= m_createConstantBufferCount,															"ConstantBufferUplaoderの容量を超えており、定数バッファ書き込み処理に失敗しました。",		  {});
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_writeIndex >= m_createConstantBufferCount,															"ConstantBufferUploaderの容量を超えており、定数バッファ書き込み処理に失敗しました。",		  {});
 
 			auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
 

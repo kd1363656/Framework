@@ -50,11 +50,11 @@ nlohmann::json FWK::Graphics::FrameResource::Serialize() const
 
 void FWK::Graphics::FrameResource::AddConstantBufferUploader(const std::shared_ptr<ConstantBufferUploaderBase>& a_constantBufferUploader)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_constantBufferUploader, "ConstantBufferUplaoderが無効のため、追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!a_constantBufferUploader, "ConstantBufferUploaderが無効のため、追加に失敗しました。");
 
 	const auto l_staticTypeID = a_constantBufferUploader->GetREFRuntimeTypeINFO().k_staticTypeID;
 
-	// すでに同じ型のUplaoderが登録されている場合は再度追加しない
+	// すでに同じ型のUploaderが登録されている場合は再度追加しない
 	if (m_constantBufferUploaderMap.contains(l_staticTypeID)) { return; }
 
 	m_constantBufferUploaderList.emplace_back(a_constantBufferUploader);
