@@ -22,14 +22,11 @@ namespace FWK::Graphics
 		
 		nlohmann::json Serialize() const;
 		
-		UINT64 AllocateCurrentBufferIndex()
-		{
-			const auto l_currentBufferIndex = m_currentBufferIndex;
+		void SetCreateConstantBufferCount(const UINT64& a_set) { m_createConstantBufferCount = a_set; }
 
-			++m_currentBufferIndex;
+		static constexpr auto& GetREFInvalidCreateConstantBufferCount() { return k_invalidCreateConstantBufferCount; }
 
-			return l_currentBufferIndex;
-		}
+		const auto& GetREFCreateConstantBufferCount() const { return m_createConstantBufferCount; }
 
 	protected:
 
@@ -51,11 +48,7 @@ namespace FWK::Graphics
 			return Write(a_constantBuffer, k_initialBufferIndex);
 		}
 
-		void SetCreateConstantBufferCount(const UINT64& a_set) { m_createConstantBufferCount = a_set; }
-
-		static constexpr auto& GetREFInvalidCreateConsntantBufferCount() { return k_invalidCreateConstantBufferCount; }
-
-		const auto& GetREFCreateConstantBufferCount() const { return m_createConstantBufferCount; }
+		UINT64 AllocateCurrentBufferIndex();
 
 	private:
 
@@ -64,12 +57,12 @@ namespace FWK::Graphics
 		{
 			const auto l_alignedConstantBufferSize = Utility::AlignUp(sizeof(ConstantBufferType), k_constantBufferAlignment);
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_alignedConstantBufferSize != Utility::AlignUp(m_constantBufferTypeSize, k_constantBufferAlignment), "ConstantBufferUploaderの型サイズが一致しておらず、定数バッファ書き込み処理に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_writeIndex >= m_createConstantBufferCount,															"ConstantBufferUplaoderの容量を超えており、定数バッファ書き込み処理に失敗しました。",		  false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_alignedConstantBufferSize != Utility::AlignUp(m_constantBufferTypeSize, k_constantBufferAlignment), "ConstantBufferUploaderの型サイズが一致しておらず、定数バッファ書き込み処理に失敗しました。", {});
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_writeIndex >= m_createConstantBufferCount,															"ConstantBufferUplaoderの容量を超えており、定数バッファ書き込み処理に失敗しました。",		  {});
 
 			auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_mappedData, "ConstantBufferUploaderの書き込み先取得に失敗しており、定数バッファ書き込み処理に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_mappedData, "ConstantBufferUploaderの書き込み先取得に失敗しており、定数バッファ書き込み処理に失敗しました。", {});
 
 			// 書き込み先のインデックスとサイズ分のオフセットを計算
 			const auto l_writeOffset = a_writeIndex * l_alignedConstantBufferSize;

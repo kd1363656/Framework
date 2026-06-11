@@ -574,6 +574,15 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definitoin\Type\Alias\Factory\Shared">
       <UniqueIdentifier>{61c3409d-ec8b-4a14-b4a8-f92a85607a43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Sprite">
+      <UniqueIdentifier>{decb56a8-37a6-4721-85a8-9ca59241f62a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Sprite\Pass">
+      <UniqueIdentifier>{d24057e4-8189-4a3a-8e94-27025e7e43eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Sprite\PerObject">
+      <UniqueIdentifier>{35cb9723-87ec-4196-8e3d-a1e125898ecb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -954,8 +963,14 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Definitoin\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBuffer.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Sprite\Pass\SpritePassConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Sprite\Pass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Sprite\PerObject\SpritePerObjectConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Sprite\PerObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

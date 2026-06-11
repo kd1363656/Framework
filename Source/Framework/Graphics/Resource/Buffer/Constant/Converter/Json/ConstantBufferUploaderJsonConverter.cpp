@@ -4,7 +4,7 @@ void FWK::Converter::ConstantBufferUploaderBaseJsonConverter::Deserialize(const 
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto& l_createConstantBufferCount = a_rootJson.value(k_createConstantBufferCountJsonKey, a_constantBufferUploaderBase.GetREFInvalidCreateConsntantBufferCount());
+	const auto& l_createConstantBufferCount = a_rootJson.value(k_createConstantBufferCountJsonKey, a_constantBufferUploaderBase.GetREFInvalidCreateConstantBufferCount());
 
 	a_constantBufferUploaderBase.SetCreateConstantBufferCount(l_createConstantBufferCount);
 }

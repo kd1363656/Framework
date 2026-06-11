@@ -91,7 +91,9 @@
 #include "Graphics/Resource/Buffer/Constant/Converter/Json/ConstantBufferUploaderJsonConverter.h"
 #include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
 #include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
-
+#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploader.h"
+#include "Graphics/Resource/Buffer/Constant/Sprite/Pass/SpritePassConstantBufferUploader.h"
+#include "Graphics/Resource/Buffer/Constant/Sprite/PerObject/SpritePerObjectConstantBufferUploader.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
