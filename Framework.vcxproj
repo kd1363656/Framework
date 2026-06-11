@@ -383,6 +383,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant\UploadBufferConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json\DescriptorPoolJsonConverter.h" />

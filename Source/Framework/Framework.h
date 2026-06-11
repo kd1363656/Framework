@@ -86,6 +86,9 @@
 #include "Graphics/Resource/Buffer/Constant/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
 #include "Graphics/Resource/Buffer/Constant/Definition/Constant/ConstantBufferConstant.h"
 #include "Graphics/Resource/Buffer/Constant/Definition/Struct/ConstantBufferStruct.h"
+#include "Graphics/Resource/Buffer/Utility/Definition/Constant/ConstantBufferUploaderAlignUpUtilityConstant.h"
+#include "Graphics/Resource/Buffer/Utility/ConstantBufferUploaderAlignUpUtility.h"
+//#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"

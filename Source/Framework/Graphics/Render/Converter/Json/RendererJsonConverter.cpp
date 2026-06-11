@@ -6,31 +6,31 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 
 	// フレームリソースのデシリアライズ
 	// json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復興時にCount側へ展開する
-	if (const auto& l_frameResourceListJson = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{}); 
-		!l_frameResourceListJson.is_null())
+	if (const auto& l_json = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{}); 
+		!l_json.is_null())
 	{
-		DeserializeFrameResourceList(l_frameResourceListJson, a_renderer);
+		DeserializeFrameResourceList(l_json, a_renderer);
 	}
 
 	// スワップチェインのデシリアライズ
-	if (const auto& l_swapChainJson = a_rootJson.value(k_swapChainJsonKey, nlohmann::json{});
-		!l_swapChainJson.is_null())
+	if (const auto& l_json = a_rootJson.value(k_swapChainJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeSwapChain(l_swapChainJson, a_renderer);
+		DeserializeSwapChain(l_json, a_renderer);
 	}
 
 	// ルートシグネチャのデシリアライズ
-	if (const auto& l_rootSignatureJson = a_rootJson.value(k_rootSignatureMapJsonKey, nlohmann::json{});
-		!l_rootSignatureJson.is_null())
+	if (const auto& l_json = a_rootJson.value(k_rootSignatureMapJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeRootSignatureMap(l_rootSignatureJson, a_renderer);
+		DeserializeRootSignatureMap(l_json, a_renderer);
 	}
 
 	// パイプラインステートのデシリアライズ
-	if (const auto& l_pipelineStateJson = a_rootJson.value(k_pipelineStateMapJsonKey, nlohmann::json{});
-		!l_pipelineStateJson.is_null())
+	if (const auto& l_json = a_rootJson.value(k_pipelineStateMapJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializePipelineStateMap(l_pipelineStateJson, a_renderer);
+		DeserializePipelineStateMap(l_json, a_renderer);
 	}
 }
 

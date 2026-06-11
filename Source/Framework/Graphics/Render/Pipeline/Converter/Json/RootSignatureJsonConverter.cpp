@@ -5,21 +5,24 @@ void FWK::Converter::RootSignatureJsonConverter::Deserialize(const nlohmann::jso
 	if (a_rootJson.is_null()) { return; }
 
 	// タグに対応したルートパラメータアクセス用インデックスを読み込む
-	if (Utility::IsArray(a_rootJson, k_rootParameterIndexMapJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_rootParameterIndexMapJsonKey, nlohmann::json::array());
+		Utility::IsArray(l_json))
 	{
-		DeserializeRootParameterIndexMap(a_rootJson[k_rootParameterIndexMapJsonKey], a_rootSignature);
+		DeserializeRootParameterIndexMap(l_json, a_rootSignature);
 	}
 
 	// ルートパラメータを読み込む
-	if (Utility::IsArray(a_rootJson, k_rootParameterListJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_rootParameterListJsonKey, nlohmann::json::array());
+		Utility::IsArray(l_json))
 	{
-		DeserializeRootParameterList(a_rootJson[k_rootParameterListJsonKey], a_rootSignature);
+		DeserializeRootParameterList(l_json, a_rootSignature);
 	}
 
 	// StaticSamplerDescを読み込む
-	if (Utility::IsArray(a_rootJson, k_staticSamplerDescListJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_staticSamplerDescListJsonKey, nlohmann::json::array());
+		Utility::IsArray(l_json))
 	{
-		DeserializeStaticSamplerDescList(a_rootJson[k_staticSamplerDescListJsonKey], a_rootSignature);
+		DeserializeStaticSamplerDescList(l_json, a_rootSignature);
 	}
 
 	// このルートシグネチャをパイプラインからどう使うかを決定するフラグ

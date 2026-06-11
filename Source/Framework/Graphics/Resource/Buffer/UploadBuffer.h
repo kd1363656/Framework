@@ -21,12 +21,16 @@ namespace FWK::Graphics
 
 		std::uint8_t* FetchPTRMappedData() const;
 
+		D3D12_GPU_VIRTUAL_ADDRESS FetchVALGPUVirtualAddress() const;
+
 		const auto& GetREFUploadBuffer() const { return m_uploadBuffer; }
 
 	private:
 
 		bool Map  ();
 		void UnMap();
+
+		static constexpr D3D12_GPU_VIRTUAL_ADDRESS k_invalidGPUVirtualAddress = 0ULL;
 
 		TypeAlias::ComPtr<ID3D12Resource2> m_uploadBuffer;
 

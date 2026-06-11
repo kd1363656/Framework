@@ -5,71 +5,73 @@ void FWK::Converter::PipelineStateJsonConverter::Deserialize(const nlohmann::jso
 	if (a_rootJson.is_null()) { return; }
 
 	// アンプリフィケーションシェーダーのデシリアライズ
-	if (a_rootJson.contains(k_amplificationShaderJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_amplificationShaderJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
 		auto& l_amplificationShader = a_pipelineState.GetMutableREFAmplificationShader();
 
-		DeserializeOptionalShader(a_rootJson[k_amplificationShaderJsonKey], l_amplificationShader);
+		DeserializeOptionalShader(l_json, l_amplificationShader);
 	}
 
 	// メッシュシェーダーのデシリアライズ
-	if (a_rootJson.contains(k_meshShaderJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_meshShaderJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
 		auto& l_meshShader = a_pipelineState.GetMutableREFMeshShader();
 
-		l_meshShader.Deserialize(a_rootJson[k_meshShaderJsonKey]);
+		l_meshShader.Deserialize(l_json);
 	}
 
 	// ピクセルシェーダーのデシリアライズ
-	if (a_rootJson.contains(k_pixelShaderJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_pixelShaderJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
 		auto& l_pixelShader = a_pipelineState.GetMutableREFPixelShader();
 
-		DeserializeOptionalShader(a_rootJson[k_pixelShaderJsonKey], l_pixelShader);
+		DeserializeOptionalShader(l_json, l_pixelShader);
 	}
 
 	// ラスタライザーデスクのデシリアライズ
-	if (a_rootJson.contains(k_rasterizerDescJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_rasterizerDescJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeRasterizerDesc(a_rootJson[k_rasterizerDescJsonKey], a_pipelineState);
+		DeserializeRasterizerDesc(l_json, a_pipelineState);
 	}
 
 	// ブレンドのデシリアライズ
-	if (a_rootJson.contains(k_blendDescJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_blendDescJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeBlendDesc(a_rootJson[k_blendDescJsonKey], a_pipelineState);
+		DeserializeBlendDesc(l_json, a_pipelineState);
 	}
 
 	// 深度ステンシルのデシリアライズ
-	if (a_rootJson.contains(k_depthStencilDescJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_depthStencilDescJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeDepthStencilDesc(a_rootJson[k_depthStencilDescJsonKey], a_pipelineState);
+		DeserializeDepthStencilDesc(l_json, a_pipelineState);
 	}
 
 	// RTVフォーマットリストのデシリアライズ
-	if (a_rootJson.contains(k_rtvFormatListJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_rtvFormatListJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeRTVFormatList(a_rootJson[k_rtvFormatListJsonKey], a_pipelineState);
-	}
-
-	// DSVフォーマットののデシリアライズ
-	if (a_rootJson.contains(k_dsvFormatJsonKey))
-	{
-		const auto l_dsvFormat = a_rootJson.value(k_dsvFormatJsonKey, DXGI_FORMAT_UNKNOWN);
-
-		a_pipelineState.SetDSVFormat(l_dsvFormat);
+		DeserializeRTVFormatList(l_json, a_pipelineState);
 	}
 
 	// サンプルデスクのデシリアライズ
-	if (a_rootJson.contains(k_sampleDescJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_sampleDescJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeSampleDesc(a_rootJson[k_sampleDescJsonKey], a_pipelineState);
+		DeserializeSampleDesc(l_json, a_pipelineState);
 	}
 
+	const auto l_dsvFormat			   = a_rootJson.value(k_dsvFormatJsonKey,			  DXGI_FORMAT_UNKNOWN);
 	const auto l_useRootSignatureType  = a_rootJson.value(k_useRootSignatureTypeJsonKey,  Enum::RootSignatureType::Invalid);
 	const auto l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 	const auto l_sampleMask			   = a_rootJson.value(k_sampleMaskJsonKey,		      UINT_MAX);
 
+	a_pipelineState.SetDSVFormat			(l_dsvFormat);
 	a_pipelineState.SetUseRootSignatureType (l_useRootSignatureType);
 	a_pipelineState.SetPrimitiveTopologyType(l_primitiveTopologyType);
 	a_pipelineState.SetSampleMask		    (l_sampleMask);

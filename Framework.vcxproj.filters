@@ -553,6 +553,15 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definitoin\Type\Alias">
       <UniqueIdentifier>{c6f82de7-7ddd-4d94-a2ce-12642c65fa25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Utility">
+      <UniqueIdentifier>{64584566-0cc0-4d82-9960-a8531fb3edb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Utility\Definition">
+      <UniqueIdentifier>{bcbe56df-6360-4da5-826d-6c6dad4c73fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Utility\Definition\Constant">
+      <UniqueIdentifier>{9138987b-3d67-4b2e-b4f8-d117335c37b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -920,6 +929,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Definitoin\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Utility\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -104,6 +104,14 @@ std::uint8_t* FWK::Graphics::UploadBuffer::FetchPTRMappedData() const
 	return m_mappedData;
 }
 
+D3D12_GPU_VIRTUAL_ADDRESS FWK::Graphics::UploadBuffer::FetchVALGPUVirtualAddress() const
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_uploadBuffer, "UploadBufferが作成されておらず、GPU仮想アドレスの取得に失敗しました。", k_invalidGPUVirtualAddress);
+
+	// SetGraphicsRootConstantBufferViewに渡すためのGPU仮想アドレスを取得する
+	return m_uploadBuffer->GetGPUVirtualAddress();
+}
+
 bool FWK::Graphics::UploadBuffer::Map()
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_uploadBuffer, "UploadBufferが作成されておらず、Mapに失敗しました。", false);
