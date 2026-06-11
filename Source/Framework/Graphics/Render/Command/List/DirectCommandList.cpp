@@ -107,6 +107,23 @@ void FWK::Graphics::DirectCommandList::SetupRenderArea(const RenderArea& a_rende
 	l_directCommandList->RSSetScissorRects(k_setScissorRectNUM, &a_renderArea.GetREFScissorRECT());
 }
 
+void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ルートシグネチャが作成されておらず、定数バッファビュー設定に失敗しました。");
+
+	const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+
+	FWK_ASSERT_RETURN_IF_FAILED(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
+
+	// RootSignature側でD3D12_ROOT_PARAMETER_TYPE_CBVにした場所へ、
+	// UploadBuffer上の定数バッファ位置を直接結びつける
+	// SetGraphicsRootConstantBufferView(ルートパラメータ番号、
+	//									 CBVとして参照させるGPU仮想アドレス);
+	l_directCommandList->SetGraphicsRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);
+}
+
 void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(a_beforeState == a_afterState, "リソースの状態遷移前と後の遷移状態が全く一緒です、リソース一括遷移リストの要素としての追加に失敗しました。");

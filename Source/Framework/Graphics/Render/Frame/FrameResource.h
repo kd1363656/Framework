@@ -23,7 +23,7 @@ namespace FWK::Graphics
 
 		void AddConstantBufferUploader(const std::shared_ptr<ConstantBufferUploaderBase>& a_constantBufferUploader);
 
-		template <Concept::IsDerivedConstantBufferBaseConcept ConstantBufferType>
+		template <Concept::IsDerivedConstantBufferUploaderBaseConcept ConstantBufferType>
 		std::weak_ptr<ConstantBufferType> FindPTRConstantBufferUploader() const
 		{
 			const auto& l_itr = m_constantBufferUploaderMap.find(ConstantBufferType::GetREFTypeINFO().k_staticTypeID);

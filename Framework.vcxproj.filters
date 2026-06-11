@@ -601,6 +601,24 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase">
       <UniqueIdentifier>{bc38eeaf-9c7a-4bfa-93bb-015ed685b40a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
+      <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition">
+      <UniqueIdentifier>{6dd41245-4b05-41c8-985f-cc1bd212552e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Enum">
+      <UniqueIdentifier>{6deddd25-8083-4078-9693-4bc774f533cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Struct">
+      <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request">
+      <UniqueIdentifier>{23eaa0fc-3ddb-4e14-8ed9-6d98387ffca1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass">
+      <UniqueIdentifier>{4bf45338-1b70-4b8f-a356-35906e0c9138}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -996,8 +1014,20 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerived\IsDerivedConstantBufferBaseConcept.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerived\IsDerivedConstantBufferUploaderBaseConcept.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1189,6 +1219,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
