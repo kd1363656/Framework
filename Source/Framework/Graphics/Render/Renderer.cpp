@@ -51,6 +51,9 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 	// ALT + ENTERキーで排他フルスクリーン設定が反映されないようにする
 	m_swapChain.PostCreateSetup(a_window.GetREFHWND(), a_factory);
 
+	// 定数バッファを書くパスに送信
+	m_renderArea.SyncSpritePassDrawRequest(m_renderGraph);
+
 	// 最初に使うフレームリソースをキャッシュ
 	m_currentFrameResource = m_frameResourceList[k_initialFrameResourceIndex];
 

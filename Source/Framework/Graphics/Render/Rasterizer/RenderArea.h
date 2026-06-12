@@ -2,6 +2,11 @@
 
 namespace FWK::Graphics
 {
+	class RenderGraph;
+}
+
+namespace FWK::Graphics
+{
 	class RenderArea final
 	{
 	public:
@@ -10,6 +15,8 @@ namespace FWK::Graphics
 		~RenderArea() = default;
 
 		bool SetupRenderArea(const SwapChain& a_swapChain);
+
+		void SyncSpritePassDrawRequest(const RenderGraph& a_renderGraph);
 
 		const auto& GetREFViewport   () const { return m_viewport; }
 		const auto& GetREFScissorRECT() const { return m_scissorRECT; }
@@ -24,5 +31,7 @@ namespace FWK::Graphics
 
 		D3D12_VIEWPORT m_viewport    = {};
 		D3D12_RECT     m_scissorRECT = {};
+
+		std::shared_ptr<Struct::CBSpritePass> m_cbSpritePass = nullptr;
 	};
 }
