@@ -139,7 +139,7 @@
 // フレームリソース
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
-#include "Graphics/Render/Frame/Definition/Concept/IsDerived/IsDerivedConstantBufferUploaderBaseConcept.h"
+#include "Graphics/Render/Frame/Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // ダイレクトコマンドキュー
@@ -202,6 +202,9 @@
 #include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
+#include "Graphics/Render/Graph/Pass/Definition/Type/Alias/Factory/Shared/RenderGraphPassSharedFactory.h"
+#include "Graphics/Render/Graph/Pass/Definition/Concept/IsDerivedBase/IsDerivedRenderGraphPassBaseConcept.h"
+#include "Graphics/Render/Graph/Converter/Json/RenderGraphJsonConverter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
 
 // レンダーラー

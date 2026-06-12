@@ -43,13 +43,17 @@ namespace FWK::Graphics
 		const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
 		const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
 
-		const auto& GetREFSwapChain() const { return m_swapChain; }
+		const auto& GetREFSwapChain  () const { return m_swapChain; }
+		const auto& GetREFRenderGraph() const { return m_renderGraph; }
 		
 		const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
 		const auto& GetREFDirectCommandList () const { return m_directCommandList; }
 
-		auto& GetMutableREFSwapChain() { return m_swapChain; }
+		auto& GetMutableREFSwapChain  () { return m_swapChain; }
+		auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 		
+		auto& GetMutableREFDirectCommandList() { return m_directCommandList; }
+
 	private:
 
 		void ResetCommandObjects(const FrameResource& a_frameResource);

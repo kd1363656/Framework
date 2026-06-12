@@ -71,7 +71,7 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
 	l_currentFrameResource->BeginFrame();
 
 	// リソース遷移の実行
-	m_renderGraph.BeginFrame(a_resourceContext, *this);
+	m_renderGraph.BeginFrame(a_resourceContext, *l_currentFrameResource, *this);
 }
 void FWK::Graphics::Renderer::EndFrame()
 {

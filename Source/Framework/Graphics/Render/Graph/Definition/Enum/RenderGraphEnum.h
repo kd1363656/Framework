@@ -63,6 +63,6 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Invalid),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::RenderTarget),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Present),
-		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Count),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Count)
 	)
 }
