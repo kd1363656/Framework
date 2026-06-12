@@ -42,6 +42,8 @@ namespace FWK::Graphics
 			a_directCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, a_rootParameterType);
 		}
 
+		void SetupSRVDescriptorHeap(const DirectCommandList& a_directCommandList, const TypeAlias::SRVDescriptorPool& a_srvDescriptorPool) const;
+
 		std::weak_ptr<RootSignature> SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
 
 		TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<Texture>&	   a_texture,	    const TextureSystem& a_textureSystem, const Enum::DefaultTextureType a_defaultTextureType) const;

@@ -14,8 +14,10 @@ namespace FWK
 
 	private:
 
-		std::shared_ptr<Graphics::Texture> m_texture = nullptr;
+		std::shared_ptr<Graphics::Texture> m_textureOne = nullptr;
+		std::shared_ptr<Graphics::Texture> m_textureTwo = nullptr;
 
-		std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData> m_spriteDrawRequestData = nullptr;
+		std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData> m_spriteDrawRequestDataOne = nullptr;
+		std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData> m_spriteDrawRequestDataTwo = nullptr;
 	};
 }

@@ -1,5 +1,11 @@
 ﻿#include "DrawRequestPerObjectBase.h"
 
+void FWK::Graphics::DrawRequestPerObjectBase::SetupSRVDescriptorHeap(const DirectCommandList& a_directCommandList, const TypeAlias::SRVDescriptorPool& a_srvDescriptorPool) const
+{
+	// SRVディスクリプタヒープをセット
+	a_directCommandList.SetupDescriptorHeap(a_srvDescriptorPool);
+}
+
 std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::DrawRequestPerObjectBase::SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
 {
 	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState(a_pipelineStateType);

@@ -22,6 +22,8 @@ namespace FWK::Graphics
 
 	private:
 
+		static constexpr TypeAlias::Math::Vector2 k_defaultTextureScale = { 256.0F, 256.0F };
+
 		DrawRequestPerObjectList<Struct::SpriteScreenPerObjectDrawRequestData> m_drawRequestPerObjectList = {};
 
 		FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDrawRequest, DrawRequestPerObjectBase)
