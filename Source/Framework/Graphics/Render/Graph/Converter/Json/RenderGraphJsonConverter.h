@@ -20,11 +20,16 @@ namespace FWK::Converter
 
 	private:
 
-		void DeserializePassList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const;
+		void DeserializePassList		   (const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const;
+		void DeserializeDrawRequestPassList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const;
 
-		nlohmann::json SerializePassList(const Graphics::RenderGraph& a_renderGraph) const;
+		nlohmann::json SerializePassList		   (const Graphics::RenderGraph& a_renderGraph) const;
+		nlohmann::json SerializeDrawRequestPassList(const Graphics::RenderGraph& a_renderGraph) const;
 
 		static constexpr std::string_view k_renderGraphPassListJsonKey     = "RenderGraphPassList";
 		static constexpr std::string_view k_renderGraphPassTypeNameJsonKey = "RenderGraphPassTypeName";
+
+		static constexpr std::string_view k_drawRequestPassListJsonKey	   = "DrawRequestPassList";
+		static constexpr std::string_view k_drawRequestPassTypeNameJsonKey = "DrawRequestPassTypeName";
 	};
 }

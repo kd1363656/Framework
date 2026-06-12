@@ -631,15 +631,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory">
       <UniqueIdentifier>{b867ecfe-6417-49a2-a3ce-97346e61abfd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Shared">
-      <UniqueIdentifier>{b91cad98-5ac5-490d-8194-816080acd990}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Concept">
-      <UniqueIdentifier>{9a84223f-41ab-40ea-9d70-0a6eb861765b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{e4512a2f-a773-47bb-8dfe-9c821cef8de0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Converter">
       <UniqueIdentifier>{a787c837-354e-404c-ae6d-5e770dd078eb}</UniqueIdentifier>
     </Filter>
@@ -663,6 +654,15 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite">
       <UniqueIdentifier>{0ea4ee48-6820-41eb-8c02-1dc04374068f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept">
+      <UniqueIdentifier>{597229e5-08f8-479b-8ba4-be0b67935723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{d44fe811-f53b-4eb5-8fd3-5ef926d0ed6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique">
+      <UniqueIdentifier>{0db8dced-4047-4668-901a-2adee0b35e64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1071,14 +1071,8 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Type\Alias\Factory\Shared\RenderGraphPassSharedFactory.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Shared</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase\IsDerivedConstantBufferUploaderBaseConcept.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Concept\IsDerivedBase\IsDerivedRenderGraphPassBaseConcept.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Concept\IsDerivedBase</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
@@ -1088,6 +1082,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\SpritePassDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1285,6 +1288,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\SpritePassDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

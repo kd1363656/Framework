@@ -10,15 +10,15 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 {
 	// 使用、ポインタがnullのパスの削除
 	RemoveExpiredPassList();
-	RemoveExpiredPassMap ();
-
-	for (const auto& l_pass : m_passList)
+	
+	// 共通定数バッファのパラメータを更新
+	for (const auto& l_drawRequestPass : m_drawRequestPassList)
 	{
-		if (!l_pass) { continue; }
+		FWK_ASSERT_RETURN_IF_FAILED(!l_drawRequestPass, "DrawRequestPassが無効のため、BeginFrame処理に失敗しました。");
 
-		l_pass->BeginFrame();
+		l_drawRequestPass->BeginFrame();
 	}
-
+	
 	ClearBackBuffer(a_resourceContext, a_renderer);
 
 	ExecutePassList(a_resourceContext, a_frameResource, a_renderer);
@@ -51,14 +51,23 @@ nlohmann::json FWK::Graphics::RenderGraph::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::RenderGraph::AddPass(const std::shared_ptr<RenderGraphPassBase>& a_pass)
+void FWK::Graphics::RenderGraph::AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_pass, "RenderGraphPassが無効のため、RenderGraphへの登録処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!a_pass, "RenderGraphPassが無効のため、PassListへの登録処理に失敗しました。");
 
-	const auto l_staticTypeID = a_pass->GetREFRuntimeTypeINFO().k_staticTypeID;
+	m_passList.emplace_back(std::move(a_pass));
+}
 
-	m_passList.emplace_back(a_pass);
-	m_passMap.try_emplace  (l_staticTypeID, a_pass);
+void FWK::Graphics::RenderGraph::AddDrawRequestPass(const std::shared_ptr<DrawRequestPassBase>& a_drawRequestPass)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestPass, "DrawRequestPassが無効のため、DrawRequestPassListへの登録に失敗しました。");
+
+	const auto l_staticTypeID = a_drawRequestPass->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	FWK_ASSERT_RETURN_IF_FAILED(m_drawRequestPassMap.contains(l_staticTypeID), "同じ型のDrawRequestPassを二重登録しようとしており、DrawRequestPassMapへの登録に失敗しました。");
+
+	m_drawRequestPassList.emplace_back(a_drawRequestPass);
+	m_drawRequestPassMap.try_emplace  (l_staticTypeID, a_drawRequestPass);
 }
 
 void FWK::Graphics::RenderGraph::ExecutePassList(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const
@@ -124,20 +133,5 @@ void FWK::Graphics::RenderGraph::RemoveExpiredPassList()
 
 		std::swap          (m_passList[l_index], m_passList.back());
 		m_passList.pop_back();
-	}
-}
-void FWK::Graphics::RenderGraph::RemoveExpiredPassMap()
-{
-	auto l_itr = m_passMap.begin();
-
-	while (l_itr != m_passMap.end())
-	{
-		if (!l_itr->second.expired())
-		{
-			++l_itr; 
-			continue;
-		}
-
-		l_itr = m_passMap.erase(l_itr);
 	}
 }

@@ -22,6 +22,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::Serialize(const Graph
 
 void FWK::Converter::FrameResourceJsonConverter::DeserializeConstantBuffer(const nlohmann::json& a_rootJson, Graphics::FrameResource& a_frameResource) const
 {
+	if (a_rootJson.is_null())		   { return; }
 	if (!Utility::IsArray(a_rootJson)) { return; }
 	
 	for (const auto& l_json : a_rootJson)

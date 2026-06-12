@@ -376,13 +376,14 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Concept\IsDerivedBase\IsDerivedRenderGraphPassBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Type\Alias\Factory\Shared\RenderGraphPassSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\CachedPassConstantBufferDrawRequestBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\SpritePassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h" />
@@ -498,6 +499,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\SpritePassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp" />

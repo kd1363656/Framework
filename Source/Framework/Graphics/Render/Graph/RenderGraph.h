@@ -13,7 +13,7 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using PassMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<RenderGraphPassBase>>;
+		using DrawRequestPassMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
 
 	public:
 
@@ -27,23 +27,29 @@ namespace FWK::Graphics
 		
 		nlohmann::json Serialize() const;
 
-		void AddPass(const std::shared_ptr<RenderGraphPassBase>& a_pass);
+		void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
 
-		template <Concept::IsDerivedRenderGraphPassBaseConcept PassType>
-		std::weak_ptr<PassType> FindVALPass() const
+		void AddDrawRequestPass(const std::shared_ptr<DrawRequestPassBase>& a_drawRequestPass);
+
+		template <Concept::IsDerivedDrawRequestPassBaseConcept DrawRequestPassType>
+		std::weak_ptr<DrawRequestPassType> FindVALDrawRequestPass() const
 		{
-			const auto& l_itr = m_passMap.find(PassType::GetREFTypeINFO().k_staticTypeID);
+			const auto l_staticTypeID = DrawRequestPassType::GetREFTypeINFO().k_staticTypeID;
 
-			if (l_itr == m_passMap.end()) { return std::weak_ptr<PassType>(); }
+			const auto& l_itr = m_drawRequestPassMap.find(l_staticTypeID);
 
-			const auto& l_pass = l_itr->second.lock();
+			if (l_itr == m_drawRequestPassMap.end()) { return {}; }
 
-			if (!l_pass) { return std::weak_ptr<PassType>(); }
+			const auto l_drawRequestPass = l_itr->second.lock();
 
-			return std::static_pointer_cast<PassType>(l_pass);
+			if (!l_drawRequestPass) { return {}; }
+
+			return std::static_pointer_cast<DrawRequestPassType>(l_drawRequestPass);
 		}
 
 		const auto& GetREFPassList() const { return m_passList; }
+
+		const auto& GetREFDrawRequestPassList() const { return m_passList; }
 
 	private:
 
@@ -57,8 +63,7 @@ namespace FWK::Graphics
 										  const Struct::BackBuffer&	  a_backBuffer) const;
 
 		void RemoveExpiredPassList();
-		void RemoveExpiredPassMap ();
-
+		
 		static constexpr TypeAlias::Math::Color k_backBufferClearColor =
 		{
 			1.0F,
@@ -67,9 +72,11 @@ namespace FWK::Graphics
 			1.0F
 		};
 
-		PassMap m_passMap = {};
+		DrawRequestPassMap m_drawRequestPassMap = {};
 
-		std::vector<std::shared_ptr<RenderGraphPassBase>> m_passList = {};
+		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList = {};
+
+		std::vector<std::shared_ptr<DrawRequestPassBase>> m_drawRequestPassList = {};
 
 		Converter::RenderGraphJsonConverter m_jsonConverter = {};
 	};

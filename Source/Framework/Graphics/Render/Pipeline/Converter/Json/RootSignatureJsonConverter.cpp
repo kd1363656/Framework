@@ -6,21 +6,21 @@ void FWK::Converter::RootSignatureJsonConverter::Deserialize(const nlohmann::jso
 
 	// タグに対応したルートパラメータアクセス用インデックスを読み込む
 	if (const auto& l_json = a_rootJson.value(k_rootParameterIndexMapJsonKey, nlohmann::json::array());
-		Utility::IsArray(l_json))
+		!l_json.is_null() && Utility::IsArray(l_json))
 	{
 		DeserializeRootParameterIndexMap(l_json, a_rootSignature);
 	}
 
 	// ルートパラメータを読み込む
 	if (const auto& l_json = a_rootJson.value(k_rootParameterListJsonKey, nlohmann::json::array());
-		Utility::IsArray(l_json))
+		!l_json.is_null() && Utility::IsArray(l_json))
 	{
 		DeserializeRootParameterList(l_json, a_rootSignature);
 	}
 
 	// StaticSamplerDescを読み込む
 	if (const auto& l_json = a_rootJson.value(k_staticSamplerDescListJsonKey, nlohmann::json::array());
-		Utility::IsArray(l_json))
+		!l_json.is_null() && Utility::IsArray(l_json))
 	{
 		DeserializeStaticSamplerDescList(l_json, a_rootSignature);
 	}

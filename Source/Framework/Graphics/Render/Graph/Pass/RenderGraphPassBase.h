@@ -20,8 +20,6 @@ namespace FWK::Graphics
 		RenderGraphPassBase& operator=(const RenderGraphPassBase&)  = delete;
 		RenderGraphPassBase& operator=(	     RenderGraphPassBase&&) = delete;
 
-		virtual void BeginFrame() { /*必要に応じてオーバーライドしてください*/  }
-
 		virtual void Execute(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) = 0;
 
 		const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
