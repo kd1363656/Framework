@@ -1,4 +1,4 @@
-{
+﻿{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -8,7 +8,7 @@
                         "ConstantBufferUploader": {
                             "CreateConstantBufferCount": 1
                         },
-                        "ConstantBufferUploaderTypeName": "SpritePassConstantBufferUploader"
+                        "ConstantBufferUploaderTypeName": "SpriteScreenPassConstantBufferUploader"
                     },
                     {
                         "ConstantBufferUploader": {
