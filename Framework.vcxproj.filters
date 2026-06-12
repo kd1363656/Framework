@@ -646,8 +646,23 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Converter\Json">
       <UniqueIdentifier>{91a69565-1610-4842-a62f-c3d4dcb8bcd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Resource">
-      <UniqueIdentifier>{d4ab9ed7-03b1-43e8-a6f9-945d3bf5a45f}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition">
+      <UniqueIdentifier>{df06c45e-22fe-4966-a285-90c4f3cebb79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type">
+      <UniqueIdentifier>{d58b670c-ec71-462b-8289-4392e90b37e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias">
+      <UniqueIdentifier>{5897e179-7fe7-43cd-bfaf-f7c7999f2aaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory">
+      <UniqueIdentifier>{fa3790a2-4f86-41cc-adf3-2b5e7c0293ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared">
+      <UniqueIdentifier>{b1318129-9f50-4c05-adc2-6e2ea81c688d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite">
+      <UniqueIdentifier>{0ea4ee48-6820-41eb-8c02-1dc04374068f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1068,8 +1083,11 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\RenderGraphResourceStateTracker.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Resource</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\CachedPassConstantBufferDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1267,9 +1285,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\RenderGraphResourceStateTracker.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
