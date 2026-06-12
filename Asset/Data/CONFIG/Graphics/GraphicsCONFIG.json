@@ -147,12 +147,12 @@
                     },
                     "MeshShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Sprite/Standard/SpriteStandard_MS.cso",
+                        "FilePath": "Asset/Shader/Sprite/Screen/SpriteScreen_MS.cso",
                         "ShaderModelVersionName": "ms_6_6"
                     },
                     "PixelShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Sprite/Standard/SpriteStandard_PS.cso",
+                        "FilePath": "Asset/Shader/Sprite/Screen/SpriteScreen_PS.cso",
                         "ShaderModelVersionName": "ps_6_6"
                     },
                     "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",

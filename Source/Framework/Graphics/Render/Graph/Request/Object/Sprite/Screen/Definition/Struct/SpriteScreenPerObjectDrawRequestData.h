@@ -7,7 +7,7 @@ namespace FWK::Struct
 	{
 		std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 
-		TypeAlias::Math::Color m_color = Constant::k_noColor;
+		TypeAlias::Math::Color m_color = Constant::k_defaultSpriteColor;
 
 		TypeAlias::Math::Vector2 m_position = TypeAlias::Math::Vector2::Zero;
 		TypeAlias::Math::Vector2 m_scale    = TypeAlias::Math::Vector2::One;

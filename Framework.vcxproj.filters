@@ -532,9 +532,6 @@
     <Filter Include="Asset\Shader\Sprite">
       <UniqueIdentifier>{3ef4bcd8-2cc6-4fb0-92d6-b1d381e32af8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Shader\Sprite\Standard">
-      <UniqueIdentifier>{2f9fac29-c82b-40ad-ad77-b1e2527f6461}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\Converter">
       <UniqueIdentifier>{ba7cb54c-2161-4aef-a7b4-f4194a168e03}</UniqueIdentifier>
     </Filter>
@@ -711,6 +708,9 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen">
       <UniqueIdentifier>{f055d817-af66-4a5f-b919-68e22457b6f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Sprite\Screen">
+      <UniqueIdentifier>{2f9fac29-c82b-40ad-ad77-b1e2527f6461}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1386,16 +1386,16 @@
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
-    <None Include="Asset\Shader\Sprite\Standard\SpriteStandardShader.hlsli">
-      <Filter>Asset\Shader\Sprite\Standard</Filter>
+    <None Include="Asset\Shader\Sprite\Screen\SpriteScreenShader.hlsli">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <DXCTask Include="Asset\Shader\Sprite\Standard\SpriteStandard_PS.hlsl">
-      <Filter>Asset\Shader\Sprite\Standard</Filter>
+    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Sprite\Standard\SpriteStandard_MS.hlsl">
-      <Filter>Asset\Shader\Sprite\Standard</Filter>
+    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

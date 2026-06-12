@@ -42,7 +42,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::RequestDraw(const Resource
 		const auto& l_textureRecord   = l_drawRequestPerObject->m_textureRecord.lock();
 		const auto  l_textureSRVIndex = FetchVALTextureSRVDescriptorIndex(l_textureRecord, l_textureSystem, Enum::DefaultTextureType::BaseColor);
 
-		FWK_ASSERT_RETURN_IF_FAILED(l_textureSRVIndex == Constant::k_invalidStorageID, "BaseColorTextureのDescriptorIndexが無効になっており、Sprite描画申請処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF_FAILED(l_textureSRVIndex == Constant::k_invalidDescriptorIndex, "BaseColorTextureのDescriptorIndexが無効になっており、Sprite描画申請処理に失敗しました。");
 
 		l_cbSpritePerObject.m_baseColorTextureSRVIndex = l_textureSRVIndex;
 

@@ -22,17 +22,14 @@ void FWK::Scene::INIT()
 		m_spriteDrawRequestDataTwo = std::make_shared<Struct::SpriteScreenPerObjectDrawRequestData>();
 	}
 
-	m_textureOne->Load("Asset/Texture/Te.png",           Enum::TextureLoadType::Color);
+	m_textureOne->Load("Asset/Texture/Test.png",         Enum::TextureLoadType::Color);
 	m_textureTwo->Load("Asset/Texture/Body_Texture.png", Enum::TextureLoadType::Color);
 
 	m_spriteDrawRequestDataOne->m_textureRecord = m_textureOne->GetREFTextureRecord();
 	m_spriteDrawRequestDataTwo->m_textureRecord = m_textureTwo->GetREFTextureRecord();
 	
-	m_spriteDrawRequestDataTwo->m_scale    = { 0.1F, 0.1F };
-	m_spriteDrawRequestDataTwo->m_position = { 400.F, 0.0F };
-
-	m_spriteDrawRequestDataOne->m_position = { -400.0F, 0.0F };
-
+	m_spriteDrawRequestDataTwo->m_scale = { 0.1F,  0.1F };
+	
 	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderGraph     = l_graphicsManager.GetREFRenderer      ().GetREFRenderGraph();
 

@@ -31,6 +31,8 @@ static const float k_spriteUVMAX = 1.0F;
 static const float k_spritePositionZ = 0.0F;
 static const float k_spritePositionW = 1.0F;
 
+static const float k_needDiscardWriteAlpha = 0.1F;
+
 static const uint  k_spriteMeshShaderThreadCountX = 1U;
 static const uint  k_spriteMeshShaderThreadCountY = 1U;
 static const uint  k_spriteMeshShaderThreadCountZ = 1U;
