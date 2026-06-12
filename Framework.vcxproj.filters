@@ -646,6 +646,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Converter\Json">
       <UniqueIdentifier>{91a69565-1610-4842-a62f-c3d4dcb8bcd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Resource">
+      <UniqueIdentifier>{d4ab9ed7-03b1-43e8-a6f9-945d3bf5a45f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1065,6 +1068,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\RenderGraphResourceStateTracker.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1261,6 +1267,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\RenderGraphResourceStateTracker.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

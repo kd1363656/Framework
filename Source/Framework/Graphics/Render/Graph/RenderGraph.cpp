@@ -132,7 +132,7 @@ void FWK::Graphics::RenderGraph::RemoveExpiredPassMap()
 
 	while (l_itr != m_passMap.end())
 	{
-		if (l_itr->second.expired())
+		if (!l_itr->second.expired())
 		{
 			++l_itr; 
 			continue;

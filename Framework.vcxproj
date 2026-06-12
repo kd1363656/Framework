@@ -381,6 +381,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Type\Alias\Factory\Shared\RenderGraphPassSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\RenderGraphResourceStateTracker.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h" />
@@ -496,6 +497,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\RenderGraphResourceStateTracker.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp" />
