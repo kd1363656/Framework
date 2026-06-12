@@ -16,6 +16,8 @@ namespace FWK::Graphics
 
 		virtual void BeginFrame() = 0;
 
+		virtual void RequestDraw(const ResourceContext& a_resourceContext, const Renderer& a_renderer) = 0;
+
 	protected:
 
 		// 定数バッファの上書き禁止(定数バッファのインデックスを進めて新しい定数バッファに書き込む方式)

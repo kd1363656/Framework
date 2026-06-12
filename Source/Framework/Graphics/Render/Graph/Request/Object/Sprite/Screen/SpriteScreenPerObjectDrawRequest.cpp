@@ -61,9 +61,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::RequestDraw(const Resource
 																				  Enum::RootParameterType::CBSpritePerObject);
 
 		// MeshShaderを1グループ実行して、画面スプライト用の四角形を描画する。
-		l_directCommandList.DispatchMesh(GetVALDefaultDispatchMeshThreadGroupCountX(),
-										 GetVALDefaultDispatchMeshThreadGroupCountY(),
-										 GetVALDefaultDispatchMeshThreadGroupCountZ());
+		l_directCommandList.DispatchMesh(GetVALDefaultDispatchMeshThreadGroupCountX(), GetVALDefaultDispatchMeshThreadGroupCountY(), GetVALDefaultDispatchMeshThreadGroupCountZ());
 	}
 }
 

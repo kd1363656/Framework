@@ -15,10 +15,9 @@ void FWK::Scene::INIT()
 	}
 
 	m_spriteDrawRequestData->m_textureRecord = m_texture->GetREFTextureRecord();
-
 	
-	auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
-	auto& l_renderGraph     = l_graphicsManager.GetMutableREFRenderer().GetMutableREFRenderGraph();
+	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
+	const auto& l_renderGraph     = l_graphicsManager.GetREFRenderer      ().GetREFRenderGraph();
 
 	const auto& l_spriteScreenPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SpriteScreenPerObjectDrawRequest>().lock();
 
