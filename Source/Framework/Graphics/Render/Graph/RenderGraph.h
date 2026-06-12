@@ -22,7 +22,7 @@ namespace FWK::Graphics
 		~RenderGraph() = default;
 
 		void Deserialize(const nlohmann::json&  a_rootJson);
-		void BeginFrame (const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer);
+		void BeginFrame (const ResourceContext& a_resourceContext, const Renderer&      a_renderer);
 		void Execute    (const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const;
 		void EndFrame   (const Renderer& a_renderer) const;
 		

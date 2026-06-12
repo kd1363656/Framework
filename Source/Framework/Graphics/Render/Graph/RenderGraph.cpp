@@ -6,7 +6,7 @@ void FWK::Graphics::RenderGraph::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer)
+void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceContext, const Renderer& a_renderer)
 {
 	// 使用、ポインタがnullのパスの削除
 	RemoveExpiredPassList();

@@ -694,6 +694,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard">
       <UniqueIdentifier>{3877e9c9-6d40-480d-9abe-2294080d6b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\Definition">
+      <UniqueIdentifier>{da848ceb-d46a-435b-a99b-6cac44c344ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\Definition\Struct">
+      <UniqueIdentifier>{d9929b51-f5c8-421d-92b1-e31f5b490b5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1134,6 +1140,12 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\SpriteStandardPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\Definition\Struct\SpriteStandardPerObjectDrawRequestData.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\Definition\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1336,6 +1348,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\SpriteStandardPerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

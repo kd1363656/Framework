@@ -44,6 +44,8 @@ namespace FWK::Graphics
 		const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
 		const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
 
+		const auto& GetREFCurrentFrameResource() const { return m_currentFrameResource; }
+
 		const auto& GetREFSwapChain () const { return m_swapChain; }
 		const auto& GetREFRenderArea() const { return m_renderArea; }
 

@@ -383,6 +383,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\Definition\Struct\SpriteStandardPerObjectDrawRequestData.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\SpriteStandardPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\CachedPassConstantBufferDrawRequestBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h" />
@@ -504,6 +506,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard\SpriteStandardPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\SpritePassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp" />
