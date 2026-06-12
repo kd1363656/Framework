@@ -59,10 +59,10 @@ bool FWK::Graphics::RenderArea::SetupRenderArea(const SwapChain& a_swapChain)
 
 void FWK::Graphics::RenderArea::SyncSpritePassDrawRequest(const RenderGraph& a_renderGraph)
 {
-	const auto& l_spritePassDrawRequest = a_renderGraph.FindVALDrawRequestPass<SpritePassDrawRequest>().lock();
+	const auto& l_spriteScreenPassDrawRequest = a_renderGraph.FindVALDrawRequestPass<SpriteScreenPassDrawRequest>().lock();
 
-	if (!l_spritePassDrawRequest) { return; }
+	if (!l_spriteScreenPassDrawRequest) { return; }
 
 	// 定数バッファの変更を反映するために定数バッファデータを送信する
-	l_spritePassDrawRequest->SetSourceConstantBuffer(m_cbSpritePass);
+	l_spriteScreenPassDrawRequest->SetSourceConstantBuffer(m_cbSpritePass);
 }

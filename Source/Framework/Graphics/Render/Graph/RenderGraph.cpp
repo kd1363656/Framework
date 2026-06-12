@@ -27,13 +27,13 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 	ClearBackBuffer(a_resourceContext, a_renderer);
 }
 
-void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const
+void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const
 {
 	for (const auto& l_pass : m_passList)
 	{
 		if (!l_pass) { continue; }
 		
-		l_pass->Execute(a_resourceContext, a_frameResource, a_renderer);
+		l_pass->Execute(a_resourceContext, a_renderer);
 	}
 }
 

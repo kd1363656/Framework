@@ -16,7 +16,7 @@ namespace FWK::Graphics
 
 		void BeginFrame() override;
 
-		void RequestDraw(const TextureSystem& a_textureSystem, Renderer& a_renderer);
+		void RequestDraw(const ResourceContext& a_resourceContext, const Renderer& a_renderer);
 
 		void AddDrawRequestPerObject(const std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData>& a_drawRequestData);
 

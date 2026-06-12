@@ -1,4 +1,4 @@
-﻿{
+{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -14,7 +14,7 @@
                         "ConstantBufferUploader": {
                             "CreateConstantBufferCount": 4096
                         },
-                        "ConstantBufferUploaderTypeName": "SpritePerObjectConstantBufferUploader"
+                        "ConstantBufferUploaderTypeName": "SpriteScreenPerObjectConstantBufferUploader"
                     }
                 ]
             }
@@ -183,9 +183,21 @@
             }
         ],
         "RenderGraph": {
-            "DrawRequestPassList": [],
-            "DrawRequestPerObjectList": [],
-            "RenderGraphPassList": []
+            "DrawRequestPassList": [
+                {
+                    "DrawRequestPassTypeName": "SpriteScreenPassDrawRequest"
+                }
+            ],
+            "DrawRequestPerObjectList": [
+                {
+                    "DrawRequestPerObjectTypeName": "SpriteScreenPerObjectDrawRequest"
+                }
+            ],
+            "RenderGraphPassList": [
+                {
+                    "RenderGraphPassTypeName": "ScreenSpritePass"
+                }
+            ]
         },
         "RootSignatureMap": [
             {

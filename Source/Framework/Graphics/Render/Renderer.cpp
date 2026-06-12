@@ -83,7 +83,7 @@ void FWK::Graphics::Renderer::Execute(const ResourceContext& a_resourceContext)
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
 
-	m_renderGraph.Execute(a_resourceContext, *l_currentFrameResource, *this);
+	m_renderGraph.Execute(a_resourceContext, *this);
 }
 void FWK::Graphics::Renderer::EndFrame()
 {

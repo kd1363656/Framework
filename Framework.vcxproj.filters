@@ -688,9 +688,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite">
       <UniqueIdentifier>{034552c5-5550-4c1d-b293-46b702868097}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Standard">
-      <UniqueIdentifier>{f055d817-af66-4a5f-b919-68e22457b6f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Sprite\Screen">
       <UniqueIdentifier>{06578a60-778f-462a-9e3a-100034c33d99}</UniqueIdentifier>
     </Filter>
@@ -711,6 +708,9 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct">
       <UniqueIdentifier>{d9929b51-f5c8-421d-92b1-e31f5b490b5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen">
+      <UniqueIdentifier>{f055d817-af66-4a5f-b919-68e22457b6f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1143,9 +1143,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Standard\ScreenSpritePass.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Sprite\Standard</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Sprite\Screen\Pass\SpriteScreenPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Sprite\Screen\Pass</Filter>
     </ClInclude>
@@ -1160,6 +1157,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1361,14 +1361,14 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Standard\ScreenSpritePass.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Sprite\Standard</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
