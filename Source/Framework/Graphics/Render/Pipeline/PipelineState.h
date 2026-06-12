@@ -38,6 +38,8 @@ namespace FWK::Graphics
 
 		const auto& GetREFPipelineState() const { return m_pipelineState; }
 
+		const auto& GetREFUseRootSignature() const { return m_useRootSignature; }
+
 		const auto& GetREFRasterizerDesc  () const { return m_rasterizerDesc; }
 		const auto& GetREFBlendDesc       () const { return m_blendDesc; }
 		const auto& GetREFDepthStencilDesc() const { return m_depthStencilDesc; }

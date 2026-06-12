@@ -11,17 +11,30 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 	// 使用、ポインタがnullのパスの削除
 	RemoveExpiredPassList();
 	
-	// 共通定数バッファのパラメータを更新
 	for (const auto& l_drawRequestPass : m_drawRequestPassList)
 	{
-		FWK_ASSERT_RETURN_IF_FAILED(!l_drawRequestPass, "DrawRequestPassが無効のため、BeginFrame処理に失敗しました。");
-
+		// 共通定数バッファのパラメータを更新
+		FWK_ASSERT_RETURN_IF_FAILED  (!l_drawRequestPass, "DrawRequestPassが無効のため、BeginFrame処理に失敗しました。");
 		l_drawRequestPass->BeginFrame();
 	}
 	
-	ClearBackBuffer(a_resourceContext, a_renderer);
+	for (const auto& l_drawRequestPerObject : m_drawRequestPerObjectList)
+	{
+		FWK_ASSERT_RETURN_IF_FAILED       (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
+		l_drawRequestPerObject->BeginFrame();
+	}
 
-	ExecutePassList(a_resourceContext, a_frameResource, a_renderer);
+	ClearBackBuffer(a_resourceContext, a_renderer);
+}
+
+void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const
+{
+	for (const auto& l_pass : m_passList)
+	{
+		if (!l_pass) { continue; }
+		
+		l_pass->Execute(a_resourceContext, a_frameResource, a_renderer);
+	}
 }
 
 void FWK::Graphics::RenderGraph::EndFrame(const Renderer& a_renderer) const
@@ -70,14 +83,16 @@ void FWK::Graphics::RenderGraph::AddDrawRequestPass(const std::shared_ptr<DrawRe
 	m_drawRequestPassMap.try_emplace  (l_staticTypeID, a_drawRequestPass);
 }
 
-void FWK::Graphics::RenderGraph::ExecutePassList(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const
+void FWK::Graphics::RenderGraph::AddDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectBase>& a_drawRequestPerObject)
 {
-	for (const auto& l_pass : m_passList)
-	{
-		if (!l_pass) { continue; }
-		
-		l_pass->Execute(a_resourceContext, a_frameResource, a_renderer);
-	}
+	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestPerObject, "DrawRequestPerObjectsが無効のため、DrawRequestPerObjectListへの登録に失敗しました。");
+
+	const auto l_staticTypeID = a_drawRequestPerObject->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	FWK_ASSERT_RETURN_IF_FAILED(m_drawRequestPerObjectMap.contains(l_staticTypeID), "同じ型のDrawRequestPerObjectを二重登録しようとしており、DrawRequestPerObjectMapへの登録に失敗しました。");
+
+	m_drawRequestPerObjectList.emplace_back(a_drawRequestPerObject);
+	m_drawRequestPerObjectMap.try_emplace  (l_staticTypeID, a_drawRequestPerObject);
 }
 
 void FWK::Graphics::RenderGraph::ClearBackBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const
@@ -85,6 +100,7 @@ void FWK::Graphics::RenderGraph::ClearBackBuffer(const ResourceContext& a_resour
 	const auto& l_swapChain			= a_renderer.GetREFSwapChain		       ();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
+	const auto& l_renderArea		= a_renderer.GetREFRenderArea			   ();
 
 	const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
 	const auto& l_backBufferList  = l_swapChain.GetREFBackBufferList		  ();
@@ -101,6 +117,9 @@ void FWK::Graphics::RenderGraph::ClearBackBuffer(const ResourceContext& a_resour
 								 D3D12_RESOURCE_STATE_PRESENT,
 								 D3D12_RESOURCE_STATE_RENDER_TARGET, 
 								 l_backBuffer);
+
+	// ビューポート、シザー矩形の設定
+	l_directCommandList.SetupRenderArea(l_renderArea);
 
 	// このバックバッファを描画先として設定する
 	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);

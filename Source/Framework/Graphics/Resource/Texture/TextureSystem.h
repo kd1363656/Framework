@@ -35,6 +35,8 @@ namespace FWK::Graphics
 
 		void SetIsUploadToDefaultHeapCopyCompleted(const bool a_set) { m_isUploadToDefaultHeapCopyCompleted = a_set; }
 
+		std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
+
 		static constexpr auto& GetREFDefaultTextureTypeCount() { return k_defaultTextureTypeCount; }
 
 		const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }

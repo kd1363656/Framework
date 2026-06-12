@@ -26,6 +26,8 @@ namespace FWK::Graphics
 
 		static constexpr auto& GetREFInvalidCreateConstantBufferCount() { return k_invalidCreateConstantBufferCount; }
 
+		const auto& GetREFConstantBufferTypeSize() const { return m_constantBufferTypeSize; }
+
 		const auto& GetREFCreateConstantBufferCount() const { return m_createConstantBufferCount; }
 
 	protected:

@@ -163,6 +163,19 @@ void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextur
 	m_defaultTextureList[l_index] = a_defaultTexture;
 }
 
+std::weak_ptr<FWK::Graphics::TextureRecord> FWK::Graphics::TextureSystem::FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const
+{
+	const auto l_defaultTextureRecordIndex = static_cast<std::size_t>(a_defaultTextureType);
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_defaultTextureRecordIndex >= m_defaultTextureList.size(), "DefaultTextureListの範囲外となっており、TextureRecordの取得に失敗しました。", {});
+
+	const auto& l_defaultTexture = m_defaultTextureList[l_defaultTextureRecordIndex];
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_defaultTexture, "DefaultTextureが無効になっており、TextureRecordの取得に失敗しました。", {});
+
+	return l_defaultTexture->GetREFTextureRecord();
+}
+
 bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
 	for (const auto& l_defaultTexture : m_defaultTextureList)

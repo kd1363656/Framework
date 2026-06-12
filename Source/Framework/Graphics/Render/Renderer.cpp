@@ -46,6 +46,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState->Create(a_device, a_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
 	}
 
+	// 画面解像度に合ったビューポート、シザー矩形を作成する
 	m_renderArea.SetupRenderArea(m_swapChain);
 
 	// ALT + ENTERキーで排他フルスクリーン設定が反映されないようにする
@@ -75,6 +76,14 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
 
 	// リソース遷移の実行
 	m_renderGraph.BeginFrame(a_resourceContext, *l_currentFrameResource, *this);
+}
+void FWK::Graphics::Renderer::Execute(const ResourceContext& a_resourceContext)
+{
+	const auto& l_currentFrameResource = m_currentFrameResource.lock();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
+
+	m_renderGraph.Execute(a_resourceContext, *l_currentFrameResource, *this);
 }
 void FWK::Graphics::Renderer::EndFrame()
 {

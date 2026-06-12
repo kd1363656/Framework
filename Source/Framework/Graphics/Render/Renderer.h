@@ -23,6 +23,7 @@ namespace FWK::Graphics
 								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		
 		void BeginFrame(const ResourceContext& a_resourceContext);
+		void Execute   (const ResourceContext& a_resourceContext);
 		void EndFrame  ();
 
 		nlohmann::json Serialize() const;
@@ -43,7 +44,9 @@ namespace FWK::Graphics
 		const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
 		const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
 
-		const auto& GetREFSwapChain  () const { return m_swapChain; }
+		const auto& GetREFSwapChain () const { return m_swapChain; }
+		const auto& GetREFRenderArea() const { return m_renderArea; }
+
 		const auto& GetREFRenderGraph() const { return m_renderGraph; }
 		
 		const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }

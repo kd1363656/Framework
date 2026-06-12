@@ -40,6 +40,10 @@ void FWK::Graphics::GraphicsManager::BeginFrame()
 	m_resourceContext.BeginFrame(m_renderer.GetREFDirectCommandQueue());
 	m_renderer.BeginFrame       (m_resourceContext);
 }
+void FWK::Graphics::GraphicsManager::Execute()
+{
+	m_renderer.Execute(m_resourceContext);
+}
 void FWK::Graphics::GraphicsManager::EndFrame()
 {
 	m_renderer.EndFrame();

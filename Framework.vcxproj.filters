@@ -664,6 +664,36 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique">
       <UniqueIdentifier>{0db8dced-4047-4668-901a-2adee0b35e64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object">
+      <UniqueIdentifier>{0d52aa74-c8e6-46e2-90fe-022e8d290333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition">
+      <UniqueIdentifier>{9a9fe84a-1f95-4e98-897f-eba5cb4a1246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type">
+      <UniqueIdentifier>{3090b02b-e696-4a22-8963-8b4e8ec7c9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias">
+      <UniqueIdentifier>{bb2e48d3-add4-45a4-8940-33cc4e82d351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory">
+      <UniqueIdentifier>{e2821b2e-31bf-448c-8341-66ca59be9803}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory\Shared">
+      <UniqueIdentifier>{6be7b704-e726-480a-81ba-2ddcf0edd8ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept">
+      <UniqueIdentifier>{1e1b5cb6-67b2-4fc8-8721-97d0758b5eac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{75e23154-b2e9-46bd-8e11-db1b05c80017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite">
+      <UniqueIdentifier>{19e434eb-6b3a-430c-bdec-bbad4ff0a3f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Standard">
+      <UniqueIdentifier>{3877e9c9-6d40-480d-9abe-2294080d6b92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1092,6 +1122,18 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPerObjectBaseConcept.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1291,6 +1333,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\SpritePassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -36,9 +36,11 @@ namespace FWK::Graphics
 
 		std::uint8_t FetchVALColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel) const;
 
-		auto GetVALFormat() const { return m_format; }
+		const auto& GetREFTextureRecord() const { return m_textureRecord; }
 
 		const auto& GetREFTextureName() const { return m_textureName; }
+
+		auto GetVALFormat() const { return m_format; }
 
 	private:
 

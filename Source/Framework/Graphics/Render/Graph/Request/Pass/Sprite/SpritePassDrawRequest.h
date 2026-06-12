@@ -14,3 +14,5 @@ namespace FWK::Graphics
 		FWK_DEFINE_TYPE_INFO(SpritePassDrawRequest, DrawRequestPassBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DrawRequestPassSharedFactory, FWK::Graphics::SpritePassDrawRequest)

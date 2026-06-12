@@ -182,6 +182,11 @@
                 "PipelineStateType": "PipelineStateType::SpriteStandard"
             }
         ],
+        "RenderGraph": {
+            "DrawRequestPassList": [],
+            "DrawRequestPerObjectList": [],
+            "RenderGraphPassList": []
+        },
         "RootSignatureMap": [
             {
                 "RootSignature": {

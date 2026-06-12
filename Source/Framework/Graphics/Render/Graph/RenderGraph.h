@@ -13,7 +13,8 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using DrawRequestPassMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
+		using DrawRequestPassMap      = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
+		using DrawRequestPerObjectMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPerObjectBase>>;
 
 	public:
 
@@ -22,14 +23,15 @@ namespace FWK::Graphics
 
 		void Deserialize(const nlohmann::json&  a_rootJson);
 		void BeginFrame (const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer);
-
-		void EndFrame(const Renderer& a_renderer) const;
+		void Execute    (const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const;
+		void EndFrame   (const Renderer& a_renderer) const;
 		
 		nlohmann::json Serialize() const;
 
 		void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
 
-		void AddDrawRequestPass(const std::shared_ptr<DrawRequestPassBase>& a_drawRequestPass);
+		void AddDrawRequestPass     (const std::shared_ptr<DrawRequestPassBase>&      a_drawRequestPass);
+		void AddDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectBase>& a_drawRequestPerObject);
 
 		template <Concept::IsDerivedDrawRequestPassBaseConcept DrawRequestPassType>
 		std::weak_ptr<DrawRequestPassType> FindVALDrawRequestPass() const
@@ -47,13 +49,28 @@ namespace FWK::Graphics
 			return std::static_pointer_cast<DrawRequestPassType>(l_drawRequestPass);
 		}
 
+		template <Concept::IsDerivedDrawRequestPerObjectBaseConcept DrawRequestPerObjectType>
+		std::weak_ptr<DrawRequestPerObjectType> FindVALDrawRequestPerObject() const
+		{
+			const auto l_staticTypeID = DrawRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
+
+			const auto& l_itr = m_drawRequestPerObjectMap.find(l_staticTypeID);
+
+			if (l_itr == m_drawRequestPerObjectMap.end()) { return {}; }
+
+			const auto l_drawRequestPerObject = l_itr->second.lock();
+
+			if (!l_drawRequestPerObject) { return {}; }
+
+			return std::static_pointer_cast<DrawRequestPerObjectType>(l_drawRequestPerObject);
+		}
+
 		const auto& GetREFPassList() const { return m_passList; }
 
-		const auto& GetREFDrawRequestPassList() const { return m_passList; }
+		const auto& GetREFDrawRequestPassList     () const { return m_drawRequestPassList; }
+		const auto& GetREFDrawRequestPerObjectList() const { return m_drawRequestPerObjectList; }
 
 	private:
-
-		void ExecutePassList(const ResourceContext& a_resourceContext, const FrameResource& a_frameResource, const Renderer& a_renderer) const;
 
 		void ClearBackBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
 
@@ -72,11 +89,13 @@ namespace FWK::Graphics
 			1.0F
 		};
 
-		DrawRequestPassMap m_drawRequestPassMap = {};
+		DrawRequestPassMap      m_drawRequestPassMap      = {};
+		DrawRequestPerObjectMap m_drawRequestPerObjectMap = {};
 
 		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList = {};
 
-		std::vector<std::shared_ptr<DrawRequestPassBase>> m_drawRequestPassList = {};
+		std::vector<std::shared_ptr<DrawRequestPassBase>>      m_drawRequestPassList      = {};
+		std::vector<std::shared_ptr<DrawRequestPerObjectBase>> m_drawRequestPerObjectList = {};
 
 		Converter::RenderGraphJsonConverter m_jsonConverter = {};
 	};

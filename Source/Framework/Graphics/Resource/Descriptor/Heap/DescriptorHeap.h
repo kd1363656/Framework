@@ -20,6 +20,8 @@ namespace FWK::Graphics
 		D3D12_CPU_DESCRIPTOR_HANDLE FetchVALCPUDescriptorHandle(const TypeAlias::DescriptorIndex a_descriptorIndex) const;
 		D3D12_GPU_DESCRIPTOR_HANDLE FetchVALGPUDescriptorHandle(const TypeAlias::DescriptorIndex a_descriptorIndex) const;
 
+		const auto& GetREFDescriptorHeap() const { return m_descriptorHeap; }
+
 		UINT GetVALDescriptorNUM () const { return m_descriptorNUM; }
 		UINT GetVALDescriptorSize() const { return m_descriptorSize; }
 

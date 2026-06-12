@@ -107,6 +107,44 @@ void FWK::Graphics::DirectCommandList::SetupRenderArea(const RenderArea& a_rende
 	l_directCommandList->RSSetScissorRects(k_setScissorRectNUM, &a_renderArea.GetREFScissorRECT());
 }
 
+void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<PipelineState>& a_pipelineState) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、パイプラインの設定に失敗しました。");
+
+	const auto& l_pipelineState = a_pipelineState.lock();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_pipelineState, "パイプラインステートが無効なため、パイプラインの設定に失敗しました。");
+
+	const auto& l_rootSignature = l_pipelineState->GetREFUseRootSignature().lock();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature, "パイプラインステートで使用するルートシグネチャが無効なため、パイプラインの設定に失敗しました。");
+
+	const auto& l_d3dRootSignature = l_rootSignature->GetREFRootSignature();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_d3dRootSignature, "ルートシグネチャが作成されておらず、パイプラインの設定に失敗しました。");
+
+	const auto& l_d3dPipelineState = l_pipelineState->GetREFPipelineState();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_d3dPipelineState, "パイプラインステートが作成されておらず、パイプラインの設定に失敗しました。");
+	
+	// コマンドリストにルートシグネチャを設定する関数
+	// SetGraphicsRootSignature(描画パイプラインで使用するルートシグネチャのポインタ);
+	// ルートシグネチャは、シェーダーにどのリソースをどう渡すかを表す設定情報
+	// これを先に設定しておかないと、後続の描画で使用するリソースの結び付けルールが決まらない
+	l_directCommandList->SetGraphicsRootSignature(l_d3dRootSignature.Get());
+
+	// コマンドリストにパイプラインステートをセットする関数
+	// SetPipelineState(パイプラインステートのポインタ)
+	// PSO(PipelineStateObject)には、
+	// どのシェーダーを使うか、
+	// どうラスタライズするか
+	// 深度テストを使うか、など
+	// 描画パイプラインの重要な設定がまとめて入っている
+	l_directCommandList->SetPipelineState(l_d3dPipelineState.Get());
+}
+
 void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
 {
 	const auto& l_directCommandList = GetREFCommandList();
@@ -122,6 +160,19 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 	// SetGraphicsRootConstantBufferView(ルートパラメータ番号、
 	//									 CBVとして参照させるGPU仮想アドレス);
 	l_directCommandList->SetGraphicsRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);
+}
+
+void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DispatchMesh処理に失敗しました。");
+
+	// メッシュシェーダーを実行するための関数
+	// DispatchMesh(X方向のグループ数、
+	//				Y方向のグループ数、
+	//				Z方向のグループ数);
+	l_directCommandList->DispatchMesh(a_threadCountGroupX, a_threadCountGroupY, a_threadCountGroupZ);
 }
 
 void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState)

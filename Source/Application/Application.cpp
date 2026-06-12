@@ -65,6 +65,7 @@ void Application::Execute()
 
 		// 描画処理
 		l_graphicsManager.BeginFrame();
+		l_graphicsManager.Execute   ();
 		l_graphicsManager.EndFrame  ();
 
 		EndFrame();
