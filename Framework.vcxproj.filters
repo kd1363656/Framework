@@ -592,9 +592,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Definition">
       <UniqueIdentifier>{6dd41245-4b05-41c8-985f-cc1bd212552e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Enum">
-      <UniqueIdentifier>{6deddd25-8083-4078-9693-4bc774f533cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Struct">
       <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
     </Filter>
@@ -739,11 +736,20 @@
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
       <UniqueIdentifier>{75ead113-91ad-4b99-a0f1-797fe7b862c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type">
+    <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition">
+      <UniqueIdentifier>{2ea5ae27-98a5-4f71-aa7e-24d78909920e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Struct">
+      <UniqueIdentifier>{33aac190-2a5a-43f1-bbec-bb769c99867b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type">
       <UniqueIdentifier>{dfbec4bd-90d1-4190-b554-f041f8203ac9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias">
+    <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias">
       <UniqueIdentifier>{d04c25fa-ec2c-4bb0-8a63-0bd9c38ac7ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Enum">
+      <UniqueIdentifier>{5e0d6d55-9cc8-4019-a93f-55bfc0be5cec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1125,9 +1131,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Definition\Struct</Filter>
     </ClInclude>
@@ -1203,8 +1206,11 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Struct\CBSpritePassStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

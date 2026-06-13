@@ -28,9 +28,4 @@ namespace FWK::Struct
 		TypeAlias::DescriptorIndex m_baseColorTextureSRVIndex = Constant::k_invalidDescriptorIndex;
 		TypeAlias::Math::Vector3   m_secondPadding		      = {};
 	};
-
-	struct CBSpritePass final
-	{
-		TypeAlias::Math::Matrix m_projectionMatrix = TypeAlias::Math::Matrix::Identity;
-	};
 }

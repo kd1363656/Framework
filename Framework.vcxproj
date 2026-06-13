@@ -352,7 +352,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTRTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Factory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\DirectCommandListConstant.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
@@ -376,7 +375,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
@@ -404,6 +402,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootParameterStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Struct\CBSpritePassStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h" />

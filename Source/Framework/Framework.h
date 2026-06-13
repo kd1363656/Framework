@@ -130,10 +130,11 @@
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
+#include "Graphics/Render/Rasterizer/Defitnition/Type/Alias/DirectXSimpleMathTypeAlias.h"
+#include "Graphics/Render/Rasterizer/Defitnition/Struct/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
 // ダイレクトコマンドリスト
-#include "Graphics/Render/Command/List/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
 #include "Graphics/Render/Command/List/Definition/Constant/DirectCommandListConstant.h"
 #include "Graphics/Render/Command/List/DirectCommandList.h"
 
@@ -194,13 +195,13 @@
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
+#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Definition/Enum/RenderGraphPassTextureEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Converter/Json/Utility/RenderTargetPassTextureJsonUtility.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTargetPassTexture.h"
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // レンダーグラフ
-#include "Graphics/Render/Graph/Definition/Enum/RenderGraphEnum.h"
 #include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/CachedPassConstantBufferDrawRequestBase.h"
