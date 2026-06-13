@@ -351,7 +351,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Hardware\Device\Device.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTRTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Factory.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\CommandListConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\DirectCommandListConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\DirectCommandList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
@@ -360,8 +361,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Constant\ConstantBufferConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Struct\ConstantBufferStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\ConstantBufferTypeAlias.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Sprite\Screen\Pass\SpriteScreenPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Sprite\Screen\PerObject\SpriteScreenPerObjectConstantBufferUploader.h" />
@@ -420,6 +419,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Constant\DescriptorHeapConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h" />

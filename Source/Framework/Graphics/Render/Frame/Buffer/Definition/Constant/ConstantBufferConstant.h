@@ -10,6 +10,4 @@ namespace FWK::Constant
 	inline constexpr UINT k_defaultSpriteRECTY      = 0U;
 	inline constexpr UINT k_defaultSpriteRECTWidth  = 0U;
 	inline constexpr UINT k_defaultSpriteRECTHeight = 0U;
-
-	inline constexpr TypeAlias::DescriptorIndex k_invalidDescriptorIndex = std::numeric_limits<TypeAlias::DescriptorIndex>::max();
 }

@@ -733,6 +733,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility">
       <UniqueIdentifier>{6529c890-fcf5-44c4-99f3-9e3f858a8da8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
+      <UniqueIdentifier>{17f6924d-3d46-45ba-acb7-e4c4b9dbce7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
+      <UniqueIdentifier>{75ead113-91ad-4b99-a0f1-797fe7b862c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type">
+      <UniqueIdentifier>{dfbec4bd-90d1-4190-b554-f041f8203ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias">
+      <UniqueIdentifier>{d04c25fa-ec2c-4bb0-8a63-0bd9c38ac7ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -954,7 +966,7 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\UploadSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\CommandListConstant.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\DirectCommandListConstant.h">
       <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Definition\Macros\FactoryMacros.h">
@@ -1101,12 +1113,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Struct\ConstantBufferStruct.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Definitoin\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\ConstantBufferTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Definitoin\Type\Alias</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Definitoin\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Definitoin\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
@@ -1193,6 +1199,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
