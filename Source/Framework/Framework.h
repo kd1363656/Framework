@@ -171,7 +171,7 @@
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
-// メモリアロケータクラス
+// メモリアロケータクラス//
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
 
 // テクスチャ
