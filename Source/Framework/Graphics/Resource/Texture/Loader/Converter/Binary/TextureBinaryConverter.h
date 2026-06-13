@@ -12,11 +12,11 @@ namespace FWK::Converter
 			std::uint16_t m_version     = Constant::k_emptyAssetVersion;
 			std::uint16_t m_assetTypeID = Constant::k_emptyAssetTypeID;
 
-			std::uint64_t m_width            = k_emptyTextureWidth;
-			std::uint64_t m_height           = k_emptyTextureHeight;
+			std::uint64_t m_width            = Constant::k_emptyTextureWidth;
+			std::uint64_t m_height           = Constant::k_emptyTextureHeight;
 			std::uint64_t m_depth            = k_emptyTextureDepth;
-			std::uint64_t m_arraySize        = k_emptyTextureArraySize;
-			std::uint64_t m_mipLevels        = k_emptyTextureMipLevels;
+			std::uint64_t m_arraySize        = Constant::k_defaultTexture2DArraySize;
+			std::uint64_t m_mipLevels        = Constant::k_defaultTexture2DMipLevels;
 			std::uint64_t m_subresourceCount = k_emptyTextureSubresourceCount;
 
 			// フォーマットは本来ならEnumだがAPI側では絶対に変更できないEnumなので
@@ -34,8 +34,8 @@ namespace FWK::Converter
 
 		struct TextureBinarySubresourceHeader final
 		{
-			std::uint64_t m_width         = k_emptyTextureWidth;
-			std::uint64_t m_height        = k_emptyTextureHeight;
+			std::uint64_t m_width         = Constant::k_emptyTextureWidth;
+			std::uint64_t m_height        = Constant::k_emptyTextureHeight;
 			std::uint64_t m_rowPitch      = k_emptyTextureRowPitch;
 			std::uint64_t m_slicePitch    = k_emptyTextureSlicePitch;
 			std::uint64_t m_pixelDataSize = k_emptyTexturePixelDataSize;
@@ -70,11 +70,7 @@ namespace FWK::Converter
 
 		std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const;
 
-		static constexpr std::uint64_t k_emptyTextureWidth            = 0ULL;
-		static constexpr std::uint64_t k_emptyTextureHeight           = 0ULL;
 		static constexpr std::uint64_t k_emptyTextureDepth            = 0ULL;
-		static constexpr std::uint64_t k_emptyTextureArraySize        = 0ULL;
-		static constexpr std::uint64_t k_emptyTextureMipLevels        = 0ULL;
 		static constexpr std::uint64_t k_emptyTextureSubresourceCount = 0ULL;
 
 		static constexpr std::uint64_t k_emptyTextureRowPitch      = 0ULL;

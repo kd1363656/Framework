@@ -125,7 +125,7 @@ void FWK::Graphics::RenderGraph::ClearBackBuffer(const ResourceContext& a_resour
 	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 
 	// 描画先に設定したBackBufferを指定色でClearする。
-	l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex, k_backBufferClearColor);
+	l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 }
 
 void FWK::Graphics::RenderGraph::TransitionBackBufferResource(const DirectCommandList&	  a_directCommandList, 

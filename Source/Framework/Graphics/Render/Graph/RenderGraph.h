@@ -81,14 +81,6 @@ namespace FWK::Graphics
 
 		void RemoveExpiredPassList();
 		
-		static constexpr TypeAlias::Math::Color k_backBufferClearColor =
-		{
-			1.0F,
-			0.80F,
-			1.0F,
-			1.0F
-		};
-
 		DrawRequestPassMap      m_drawRequestPassMap      = {};
 		DrawRequestPerObjectMap m_drawRequestPerObjectMap = {};
 
