@@ -2,7 +2,6 @@
 
 namespace FWK::Struct
 {
-	// スプライト用
 	struct SpriteScreenPerObjectDrawRequestData final
 	{
 		std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};

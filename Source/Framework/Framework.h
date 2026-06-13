@@ -181,15 +181,12 @@
 
 // 定数バッファークラス
 #include "Graphics/Render/Frame/Buffer/Definition/Constant/ConstantBufferConstant.h"
-#include "Graphics/Render/Frame/Buffer/Definition/Struct/ConstantBufferStruct.h"
 #include "Graphics/Render/Frame/Buffer/Utility/Definition/Constant/ConstantBufferUploaderAlignUpUtilityConstant.h"
 #include "Graphics/Render/Frame/Buffer/Utility/ConstantBufferUploaderAlignUpUtility.h"
 #include "Graphics/Render/Frame/Buffer/Converter/Json/ConstantBufferUploaderJsonConverter.h"
 #include "Graphics/Render/Frame/Buffer/ConstantBufferUploaderBase.h"
 #include "Graphics/Render/Frame/Buffer/Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
 #include "Graphics/Render/Frame/Buffer/ConstantBufferUploader.h"
-#include "Graphics/Render/Frame/Buffer/Sprite/Screen/Pass/SpriteScreenPassConstantBufferUploader.h"
-#include "Graphics/Render/Frame/Buffer/Sprite/Screen/PerObject/SpriteScreenPerObjectConstantBufferUploader.h"
 
 // フレームリソース
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
@@ -206,20 +203,33 @@
 // レンダーグラフ
 #include "Graphics/Render/Graph/Definition/Enum/RenderGraphEnum.h"
 #include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
+
+// 描画リクエスト(共通パス)
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/CachedPassConstantBufferDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Pass/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPassBaseConcept.h"
 #include "Graphics/Render/Graph/Request/Pass/Definition/Type/Alias/Factory/Shared/DrawRequestPassSharedFactory.h"
+#include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/Buffer/SpriteScreenPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
+
+// 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectList.h"
 #include "Graphics/Render/Graph/Request/Object/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Graphics/Render/Graph/Request/Object/Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
-#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteScreenPerObjectDrawRequestData.h"
+
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteRECTStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/CBSpritePerObjectStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteScreenPerObjectDrawRequestStruct.h"
+
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
+
+// 描画リクエスト制御パス
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Graphics/Render/Graph/Pass/Definition/Type/Alias/Factory/Unique/RenderGraphPassUniqueFactory.h"
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"
+
 #include "Graphics/Render/Graph/Converter/Json/RenderGraphJsonConverter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
 

@@ -2,14 +2,6 @@
 
 namespace FWK::Struct
 {
-	struct SpriteRECT final
-	{
-		std::uint32_t m_x      = Constant::k_defaultSpriteRECTX;
-		std::uint32_t m_y      = Constant::k_defaultSpriteRECTY;
-		std::uint32_t m_width  = Constant::k_defaultSpriteRECTWidth;
-		std::uint32_t m_height = Constant::k_defaultSpriteRECTHeight;
-	};
-
 	// ※ 注意
 	// HLSLのConstantBufferは16バイト単位でパッキングされるため、
 	// C++側の構造体レイアウトも16バイト境界を意識して定義すること
