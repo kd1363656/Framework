@@ -29,7 +29,7 @@ void FWK::Scene::INIT()
 	m_spriteDrawRequestDataTwo->m_textureRecord = m_textureTwo->GetREFTextureRecord();
 	
 	m_spriteDrawRequestDataTwo->m_scale      = { 0.1F,  0.1F };
-	m_spriteDrawRequestDataTwo->m_sourceRECT = { 0U,	0U,   2048U, 2048U};
+	m_spriteDrawRequestDataTwo->m_sourceRECT = { 0U,	0U, 2048U, 2048U};
 	
 	m_spriteDrawRequestDataOne->m_sourceRECT = { 0U, 0U, 256U, 256U };
 

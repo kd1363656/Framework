@@ -23,9 +23,8 @@ void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
     const float2 l_textureSize = float2((float)l_textureWidth, (float)l_textureHeight);
 
 	// sourceRECT指定あり : sourceRECTのサイズ
-	// sourceRECT指定なし : テクスチャ全体サイズ
-    const float2 l_baseSize   = float2((float) g_sourceRECT.z, (float) g_sourceRECT.w);
-    const float2 l_spriteSize = l_baseSize * g_scale;
+	// sourceRECT指定なし : テクスチャ全体サイ
+    const float2 l_spriteSize = l_textureSize * g_scale;
 	
 	// pivotを基準にローカル座標を作成する
 	// pivot = float2(0.0F, 0.0F) : 左上基準
