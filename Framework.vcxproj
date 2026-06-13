@@ -358,13 +358,13 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Constant\ConstantBufferConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant\DirectCommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant\RenderTargetPassTextureJsonConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase\IsDerivedConstantBufferUploaderBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
@@ -386,6 +386,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\SpriteScreenPerObjectConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant\SpriteScreenPerObjectDrawRequestConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct\CBSpritePerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct\SpriteRECTStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct\SpriteScreenPerObjectDrawRequestStruct.h" />

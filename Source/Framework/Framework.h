@@ -180,7 +180,6 @@
 #include "Graphics/Resource/ResourceContext.h"
 
 // 定数バッファークラス
-#include "Graphics/Render/Frame/Buffer/Definition/Constant/ConstantBufferConstant.h"
 #include "Graphics/Render/Frame/Buffer/Utility/Definition/Constant/ConstantBufferUploaderAlignUpUtilityConstant.h"
 #include "Graphics/Render/Frame/Buffer/Utility/ConstantBufferUploaderAlignUpUtility.h"
 #include "Graphics/Render/Frame/Buffer/Converter/Json/ConstantBufferUploaderJsonConverter.h"
@@ -189,6 +188,7 @@
 #include "Graphics/Render/Frame/Buffer/ConstantBufferUploader.h"
 
 // フレームリソース
+#include "Graphics/Render/Frame/Converter/Json/Utility/Definition/Constant/RenderTargetPassTextureJsonConstant.h"
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
@@ -218,10 +218,10 @@
 #include "Graphics/Render/Graph/Request/Object/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Graphics/Render/Graph/Request/Object/Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Constant/SpriteScreenPerObjectDrawRequestConstant.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteRECTStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteScreenPerObjectDrawRequestStruct.h"
-
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 

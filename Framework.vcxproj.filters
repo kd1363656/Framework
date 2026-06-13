@@ -709,9 +709,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json">
       <UniqueIdentifier>{f84a831e-a8d4-4df2-b5ab-eb4d22c5434d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility">
-      <UniqueIdentifier>{6529c890-fcf5-44c4-99f3-9e3f858a8da8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
       <UniqueIdentifier>{17f6924d-3d46-45ba-acb7-e4c4b9dbce7b}</UniqueIdentifier>
     </Filter>
@@ -754,8 +751,17 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer">
       <UniqueIdentifier>{e98f0d3d-0089-49c9-8b2b-a75100c5112a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Definitoin\Constant">
-      <UniqueIdentifier>{3eb09c38-b076-4fd6-9ef8-c52976119307}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility">
+      <UniqueIdentifier>{6529c890-fcf5-44c4-99f3-9e3f858a8da8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition">
+      <UniqueIdentifier>{f6007a81-a153-49a8-b98e-4ebef2b158ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant">
+      <UniqueIdentifier>{3c772842-0ba5-4a72-b721-ee2bdab0692f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant">
+      <UniqueIdentifier>{0ba6968e-21c7-4af4-a9b3-928a93df6f51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1195,7 +1201,7 @@
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility</Filter>
+      <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
@@ -1227,11 +1233,14 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct\CBSpritePerObjectStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Constant\ConstantBufferConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Definitoin\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct\SpriteRECTStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant\RenderTargetPassTextureJsonConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant\SpriteScreenPerObjectDrawRequestConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
