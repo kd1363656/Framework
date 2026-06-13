@@ -748,8 +748,20 @@
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias">
       <UniqueIdentifier>{d04c25fa-ec2c-4bb0-8a63-0bd9c38ac7ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Enum">
-      <UniqueIdentifier>{5e0d6d55-9cc8-4019-a93f-55bfc0be5cec}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Enum">
+      <UniqueIdentifier>{f9cb2205-c110-41ae-9066-a7b55f7b0725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition">
+      <UniqueIdentifier>{d2f1d955-0c29-4d3d-a779-15fc431f13b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum">
+      <UniqueIdentifier>{e6972d1e-afaa-43bc-8b36-a069ebae1c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter">
+      <UniqueIdentifier>{d4675052-3549-4c50-aeee-e7e86bc7a35d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json">
+      <UniqueIdentifier>{7013c2a8-e0ee-4a31-b4ed-a963f4e65ebf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1212,6 +1224,18 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum\RenderGraphPassTextureEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1429,6 +1453,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\RenderTargetPassTextureJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

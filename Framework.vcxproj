@@ -371,10 +371,14 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase\IsDerivedConstantBufferUploaderBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\RenderTargetPassTextureJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum\RenderGraphPassTextureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
@@ -507,8 +511,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\DirectCommandAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\RenderTargetPassTextureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />

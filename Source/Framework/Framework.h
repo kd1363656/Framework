@@ -199,9 +199,12 @@
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Converter/Json/Utility/RenderTargetPassTextureJsonUtility.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTargetPassTexture.h"
+#include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"
+#include "Graphics/Render/Frame/RenderGraph/RenderGraphFrameResource.h"
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // レンダーグラフ
+#include "Graphics/Render/Graph/Definition/Enum/RenderGraphEnum.h"
 #include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/CachedPassConstantBufferDrawRequestBase.h"
