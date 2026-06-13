@@ -449,6 +449,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Texture.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.h" />
@@ -539,6 +540,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Texture.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.cpp" />

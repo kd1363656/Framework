@@ -25,6 +25,7 @@ namespace FWK::Graphics
 
 		const auto& GetREFRTVDescriptorPool() const { return m_rtvDescriptorPool; }
 		const auto& GetREFSRVDescriptorPool() const { return m_srvDescriptorPool; }
+		const auto& GetREFDSVDescriptorPool() const { return m_dsvDescriptorPool; }
 
 		const auto& GetREFGPUMemoryAllocator() const { return m_gpuMemoryAllocator; }
 
@@ -35,6 +36,7 @@ namespace FWK::Graphics
 
 		auto& GetMutableREFRTVDescriptorPool() { return m_rtvDescriptorPool; }
 		auto& GetMutableREFSRVDescriptorPool() { return m_srvDescriptorPool; }
+		auto& GetMutableREFDSVDescriptorPool() { return m_dsvDescriptorPool; }
 
 		auto& GetMutableREFUploadSystem () { return m_uploadSystem; }
 		auto& GetMutableREFTextureSystem() { return m_textureSystem; }
@@ -47,6 +49,7 @@ namespace FWK::Graphics
 
 		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};
 		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
+		TypeAlias::DSVDescriptorPool m_dsvDescriptorPool = {};
 
 		GPUMemoryAllocator m_gpuMemoryAllocator = {};
 		UploadSystem       m_uploadSystem       = {};

@@ -13,6 +13,7 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
 
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_rtvDescriptorPool.Create(a_device), "RTVDescriptorPoolの作成処理に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_srvDescriptorPool.Create(a_device), "SRVDescriptorPoolの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_dsvDescriptorPool.Create(a_device), "DSVDescriptorPoolの作成処理に失敗しました。", false);
 
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_gpuMemoryAllocator.Create(a_device), "GPUMemoryAllocatorの作成処理に失敗しました。",   false);
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_uploadSystem.Create(a_device),       "アップロードシステムの作成処理に失敗しました。", false);
@@ -37,7 +38,10 @@ void FWK::Graphics::ResourceContext::BeginFrame(const DirectCommandQueue& a_dire
 
     // 参照カウントが0になったRecordからQueueへ積まれたGPUResource/SRVを、
 	// GPUのFence完了後に安全に解放する
-    m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue, m_srvDescriptorPool);
+    m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue,
+                                                               m_rtvDescriptorPool,
+                                                               m_srvDescriptorPool,
+                                                               m_dsvDescriptorPool);
 }
 
 nlohmann::json FWK::Graphics::ResourceContext::Serialize() const

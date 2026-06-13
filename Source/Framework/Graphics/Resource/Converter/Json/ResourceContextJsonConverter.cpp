@@ -22,6 +22,15 @@ void FWK::Converter::ResourceContextJsonConverter::Deserialize(const nlohmann::j
 		l_srvDescriptorPool.Deserialize(l_json);
 	}
 
+	// DSVDescriptorPoolのデシリアライズ、
+	if (const auto& l_json = a_rootJson.value(k_dsvDescriptorPoolJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_dsvDescriptorPool = a_resourceContext.GetMutableREFDSVDescriptorPool();
+
+		l_dsvDescriptorPool.Deserialize(l_json);
+	}
+
 	// アップロードシステムのデシリアライズ、
 	if (const auto& l_json = a_rootJson.value(k_uploadSystemJsonKey, nlohmann::json{});
 		!l_json.is_null())
@@ -47,6 +56,7 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 	const auto& l_srvDescriptorPool = a_resourceContext.GetREFSRVDescriptorPool();
+	const auto& l_dsvDescriptorPool = a_resourceContext.GetREFDSVDescriptorPool();
 
 	const auto& l_textureSystem = a_resourceContext.GetREFTextureSystem();
 	const auto& l_uploadSystem  = a_resourceContext.GetREFUploadSystem ();
@@ -56,6 +66,9 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 
 	// SRVディスクリプタプールのシリアライズ
 	l_rootJson[k_srvDescriptorPoolJsonKey] = l_srvDescriptorPool.Serialize();
+
+	// SRVディスクリプタプールのシリアライズ
+	l_rootJson[k_dsvDescriptorPoolJsonKey] = l_dsvDescriptorPool.Serialize();
 
 	// UploadSystemのシリアライズ
 	l_rootJson[k_uploadSystemJsonKey] = l_uploadSystem.Serialize();

@@ -712,6 +712,9 @@
     <Filter Include="Asset\Shader\Sprite\Screen">
       <UniqueIdentifier>{2f9fac29-c82b-40ad-ad77-b1e2527f6461}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\RenderTarget">
+      <UniqueIdentifier>{7a9dd544-7e7b-4e40-90f5-74b366c982a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1161,6 +1164,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1369,6 +1375,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

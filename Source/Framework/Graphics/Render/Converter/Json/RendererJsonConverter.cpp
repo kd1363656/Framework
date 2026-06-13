@@ -16,7 +16,9 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 	if (const auto& l_json = a_rootJson.value(k_swapChainJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		DeserializeSwapChain(l_json, a_renderer);
+		auto& l_swapChain = a_renderer.GetMutableREFSwapChain();
+
+		l_swapChain.Deserialize(l_json);
 	}
 
 	// ルートシグネチャのデシリアライズ
@@ -36,7 +38,9 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
 	if (const auto& l_json = a_rootJson.value(k_renderGraphJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		DeserializeRenderGraph(l_json, a_renderer);
+		auto& l_renderGraph = a_renderer.GetMutableREFRenderGraph();
+
+		l_renderGraph.Deserialize(l_json);
 	}
 }
 
@@ -44,12 +48,15 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 {
 	nlohmann::json l_rootJson = {};
 
+	const auto& l_swapChain   = a_renderer.GetREFSwapChain  ();
+	const auto& l_renderGraph = a_renderer.GetREFRenderGraph();
+
 	// フレームリソースのシリアライズ
 	// 同じ設定を持つFrameResourceを個別にすべて保存せず、Count + Template形式で保存
 	l_rootJson[k_frameResourceListJsonKey] = SerializeFrameResourceList(a_renderer);
 
 	// スワップチェインのシリアライズ
-	l_rootJson[k_swapChainJsonKey] = SerializeSwapChain(a_renderer);
+	l_rootJson[k_swapChainJsonKey] = l_swapChain.Serialize();
 
 	// ルートシグネチャマップのシリアライズ
 	l_rootJson[k_rootSignatureMapJsonKey] = SerializeRootSignatureMap(a_renderer);
@@ -58,7 +65,7 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 	l_rootJson[k_pipelineStateMapJsonKey] = SerializePipelineStateMap(a_renderer);
 
 	// RenderGraphのシリアライズ
-	l_rootJson[k_renderGraphJsonKey] = SerializeRenderGraph(a_renderer);
+	l_rootJson[k_renderGraphJsonKey] = l_renderGraph.Serialize();
 
 	return l_rootJson;
 }
@@ -86,14 +93,6 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 
 		a_renderer.AddFrameResource(l_frameResource);
 	}
-}
-void FWK::Converter::RendererJsonConverter::DeserializeSwapChain(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
-{
-	if (a_rootJson.is_null()) { return; }
-
-	auto& l_swapChain = a_renderer.GetMutableREFSwapChain();
-
-	l_swapChain.Deserialize(a_rootJson);
 }
 void FWK::Converter::RendererJsonConverter::DeserializeRootSignatureMap(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
 {
@@ -141,14 +140,6 @@ void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nl
 		a_renderer.AddPipelineState(l_pipelineState, l_pipelineStateType);
 	}
 }
-void FWK::Converter::RendererJsonConverter::DeserializeRenderGraph(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
-{
-	if (a_rootJson.is_null()) { return; }
-
-	auto& l_renderGraph = a_renderer.GetMutableREFRenderGraph();
-
-	l_renderGraph.Deserialize(a_rootJson);
-}
 
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const
 {
@@ -179,12 +170,6 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList
 	l_rootJson[k_frameResourceTemplateJsonKey] = l_frameResource->Serialize();
 
 	return l_rootJson;
-}
-nlohmann::json FWK::Converter::RendererJsonConverter::SerializeSwapChain(const Graphics::Renderer& a_renderer) const
-{
-	const auto& l_swapChain = a_renderer.GetREFSwapChain();
-
-	return l_swapChain.Serialize();
 }
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeRootSignatureMap(const Graphics::Renderer& a_renderer) const
 {
@@ -225,10 +210,4 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializePipelineStateMap(
 	}
 
 	return l_rootJsonArray;
-}
-nlohmann::json FWK::Converter::RendererJsonConverter::SerializeRenderGraph(const Graphics::Renderer& a_renderer) const
-{
-	const auto& l_renderGraph = a_renderer.GetREFRenderGraph();
-
-	return l_renderGraph.Serialize();
 }

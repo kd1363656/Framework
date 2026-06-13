@@ -13,9 +13,14 @@ namespace FWK::Graphics
 
 		bool ReserveDeferredReleaseGPUResourceRecord(Struct::GPUResourceReleaseRecord&& a_releaseRecord);
 
+		bool ReserveDeferredReleaseRTVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 		bool ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+		bool ReserveDeferredReleaseDSVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 
-		void ReleaseAvailableDeferredResources(const DirectCommandQueue& a_directCommandQueue, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		void ReleaseAvailableDeferredResources(const DirectCommandQueue&		   a_directCommandQueue, 
+													 TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
+													 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
+													 TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
 
 		// ※ 注意 この関数を呼び出す前に必ずGPUとの同期をとること
 		TypeAlias::DescriptorIndex ReleaseRenderTargetResourceImmediately(const TypeAlias::DescriptorIndex a_rtvDescriptorIndex, TypeAlias::ComPtr<ID3D12Resource2>& a_renderTargetResource, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const;
@@ -56,6 +61,8 @@ namespace FWK::Graphics
 
 		std::vector<Struct::GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
 
+		std::vector<Struct::DescriptorIndexReleaseRecord> m_rtvDescriptorIndexReleaseRecordList = {};
 		std::vector<Struct::DescriptorIndexReleaseRecord> m_srvDescriptorIndexReleaseRecordList = {};
+		std::vector<Struct::DescriptorIndexReleaseRecord> m_dsvDescriptorIndexReleaseRecordList = {};
 	};
 }

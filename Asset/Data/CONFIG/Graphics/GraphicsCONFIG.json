@@ -255,6 +255,11 @@
         }
     },
     "ResourceContext": {
+        "DSVDescriptorPool": {
+            "DescriptorHeapIndexAllocator": {
+                "DescriptorHeapIndexAllocatorCapacity": 10000
+            }
+        },
         "RTVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
                 "DescriptorHeapIndexAllocatorCapacity": 10000
