@@ -49,16 +49,22 @@ namespace FWK::Graphics
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
 		bool IsValidClientSize(const Struct::ClientSize& a_clientSize) const;
-		bool IsSameSize		  (const Struct::ClientSize& a_clientSize) const;
+		
+		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
+
+		static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
 
 		static constexpr UINT k_clearColorIndexR = 0U;
 		static constexpr UINT k_clearColorIndexG = 1U;
 		static constexpr UINT k_clearColorIndexB = 2U;
 		static constexpr UINT k_clearColorIndexA = 3U;
 
+		static constexpr UINT  k_mostDetailedMIP = 0U;
+		static constexpr UINT  k_planeSlice = 0U;
+
 		Struct::GPUResource m_gpuResource = {};
 
-		D3D12_RESOURCE_STATES m_currentResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
+		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
 		DXGI_FORMAT m_format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 

@@ -411,7 +411,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant\UploadBufferConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json\DescriptorPoolJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\DescriptorPool.h" />

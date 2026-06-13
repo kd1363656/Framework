@@ -166,9 +166,6 @@
     <Filter Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json">
       <UniqueIdentifier>{9cb42404-0610-420b-a708-4a785f67d199}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Definition">
-      <UniqueIdentifier>{dfd259d7-6f5e-41cc-aaec-b5afd0e882a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph">
       <UniqueIdentifier>{ec4b0f48-d3a0-44df-8865-cfb617ac6a74}</UniqueIdentifier>
     </Filter>
@@ -234,9 +231,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias">
       <UniqueIdentifier>{08b29e4e-a279-45a4-bcec-6559fc2ec225}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Definition\Constant">
-      <UniqueIdentifier>{ec2fcd54-4495-4adf-b085-37d67cc8d15f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext">
       <UniqueIdentifier>{82c41d81-8406-49d3-9aac-5d0fad9adefc}</UniqueIdentifier>
@@ -857,9 +851,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Definition\Constant\ResourceContextConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>

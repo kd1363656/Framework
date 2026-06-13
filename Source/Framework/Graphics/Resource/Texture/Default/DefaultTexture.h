@@ -48,8 +48,6 @@ namespace FWK::Graphics
 
 		static constexpr std::size_t k_defaultTextureWidth     = 1ULL;
 		static constexpr std::size_t k_defaultTextureHeight    = 1ULL;
-		static constexpr std::size_t k_defaultTextureArraySize = 1ULL;
-		static constexpr std::size_t k_defaultTextureMipLevels = 1ULL;
 
 		static constexpr std::size_t k_defaultTextureMipIndex   = 0ULL;
 		static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;

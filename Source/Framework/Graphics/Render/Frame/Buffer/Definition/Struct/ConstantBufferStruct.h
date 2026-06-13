@@ -4,10 +4,10 @@ namespace FWK::Struct
 {
 	struct SpriteRECT final
 	{
-		std::uint32_t m_x      = 0U;
-		std::uint32_t m_y      = 0U;
-		std::uint32_t m_width  = 0U;
-		std::uint32_t m_height = 0U;
+		std::uint32_t m_x      = Constant::k_defaultSpriteRECTX;
+		std::uint32_t m_y      = Constant::k_defaultSpriteRECTY;
+		std::uint32_t m_width  = Constant::k_defaultSpriteRECTWidth;
+		std::uint32_t m_height = Constant::k_defaultSpriteRECTHeight;
 	};
 
 	// ※ 注意

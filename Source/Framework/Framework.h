@@ -171,7 +171,7 @@
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
-// メモリアロケータクラス//
+// メモリアロケータクラス
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
 
 // テクスチャ
@@ -194,7 +194,6 @@
 #include "Graphics/Resource/Texture/Texture.h"
 
 // リソースコンテキストの定数
-#include "Graphics/Resource/Definition/Constant/ResourceContextConstant.h"
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"
 #include "Graphics/Resource/ResourceContext.h"
 
