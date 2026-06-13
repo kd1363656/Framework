@@ -35,7 +35,6 @@ DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::Text
 	{
 		case Enum::TextureLoadType::Color:
 		{
-			// BaseColor/Albedo/Diffuseのような「色」として扱うテクスチャ
 			return DirectX::WIC_FLAGS_FORCE_SRGB;
 		}
 		break;
@@ -43,7 +42,7 @@ DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::Text
 		case Enum::TextureLoadType::Normal:
 		case Enum::TextureLoadType::Data:
 		{
-			// Normal/Metallic/Roughness/AOなどは色ではなく数値データ。
+			//  2D画像/Normal/Metallic/Roughness/AOなどは色ではなく数値データ。
 			// sRGB補正が入ると値が壊れるため、Linear扱いにする
 			return DirectX::WIC_FLAGS_IGNORE_SRGB;
 		}

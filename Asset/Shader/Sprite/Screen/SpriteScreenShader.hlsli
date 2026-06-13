@@ -40,9 +40,8 @@ static const uint  k_spriteMeshShaderThreadCountZ = 1U;
 static const uint  k_spriteVertexCount    = 4U;
 static const uint  k_spritePrimitiveCount = 2U;
 
-static const uint  k_spriteTextureDefaultWidth    = 0U;
-static const uint  k_spriteTextureDefaultHeight   = 0U;
-static const uint  k_spriteSourceRECTInvalidSize  = 0U;
+static const uint  k_spriteTextureDefaultWidth  = 0U;
+static const uint  k_spriteTextureDefaultHeight = 0U;
 
 static const uint  k_spriteLeftBottomVertexIndex  = 0U;
 static const uint  k_spriteLeftTopVertexIndex     = 1U;

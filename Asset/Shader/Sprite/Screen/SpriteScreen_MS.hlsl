@@ -18,16 +18,13 @@ void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
 	// GetDimensions(テクスチャの横幅、
 	//				 テクスチャの縦幅);
     l_baseColorTexture.GetDimensions(l_textureWidth, l_textureHeight);
-	
-    const float2 l_textureSize = float2((float)l_textureWidth, (float)l_textureHeight);
 
-	// sourceRECTのwidth / heightが0より大きければ部分描画として扱う
-	// 大きくなければCPUからの転送に失敗しているため使用しない
-    const bool l_hasSourceRECT = (g_sourceRECT.z > k_spriteSourceRECTInvalidSize) && (g_sourceRECT.w > k_spriteSourceRECTInvalidSize);
+    // テクスチャの解像度を格納	
+    const float2 l_textureSize = float2((float)l_textureWidth, (float)l_textureHeight);
 
 	// sourceRECT指定あり : sourceRECTのサイズ
 	// sourceRECT指定なし : テクスチャ全体サイズ
-    const float2 l_baseSize   = l_hasSourceRECT ? float2((float) g_sourceRECT.z, (float) g_sourceRECT.w) : l_textureSize;
+    const float2 l_baseSize   = float2((float) g_sourceRECT.z, (float) g_sourceRECT.w);
     const float2 l_spriteSize = l_baseSize * g_scale;
 	
 	// pivotを基準にローカル座標を作成する
@@ -49,8 +46,8 @@ void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
     };
 
 	// UV座標を計算(g_sourceRECTからテクスチャのサイズを割るとUV座標が分かる)
-    const float2 l_uvMIN = l_hasSourceRECT ? float2((float)g_sourceRECT.x,					(float)g_sourceRECT.y)					/ l_textureSize : float2(k_spriteUVMIN, k_spriteUVMIN);
-    const float2 l_uvMAX = l_hasSourceRECT ? float2((float)g_sourceRECT.x + g_sourceRECT.z, (float)g_sourceRECT.y + g_sourceRECT.w) / l_textureSize : float2(k_spriteUVMAX, k_spriteUVMAX);
+    const float2 l_uvMIN = float2((float)g_sourceRECT.x,				  (float)g_sourceRECT.y)				  / l_textureSize;
+    const float2 l_uvMAX = float2((float)g_sourceRECT.x + g_sourceRECT.z, (float)g_sourceRECT.y + g_sourceRECT.w) / l_textureSize;
 	
 	[unroll]
     for (uint l_i = 0U; l_i < k_spriteVertexCount; ++l_i)
