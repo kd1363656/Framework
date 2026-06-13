@@ -17,14 +17,25 @@ namespace FWK::Graphics
 
 		bool Create(const Device&					    a_device,
 				    const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
-					const Struct::ClientSize&		    a_clientSize,
+					const DXGI_FORMAT					a_format,
+					const UINT							a_width,
+					const UINT							a_height,
+					const TypeAlias::Math::Color&		a_clearColor,
+						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
+						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+
+		bool Create(const Device&					    a_device,
+				    const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
+					const UINT							a_width,
+					const UINT							a_height,
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
 		bool Resize(const Device&						a_device,
 					const GPUMemoryAllocator&			a_gpuMemoryAllocator,
-					const Struct::ClientSize&			a_clientSize,
 					const UINT64&						a_retiredFenceValue,
+					const UINT							a_width,
+					const UINT							a_height,
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
 						  ResourceReleaseContext&	    a_resourceReleaseContext);
@@ -37,19 +48,23 @@ namespace FWK::Graphics
 
 		auto GetVALFormat() const { return m_format; }
 
+		auto GetVALWidth () const { return m_width; }
+		auto GetVALHeight() const { return m_height; }
+
 		auto GetVALRTVDescriptorIndex() const { return m_rtvDescriptorIndex; }
 		auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
 	private:
 
-		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const Struct::ClientSize&		   a_clientSize);
+		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT a_width, const UINT a_height);
 		bool CreateRTV        (const Device&			 a_device,					 TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		bool CreateSRV        (const Device&			 a_device,					 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		bool IsValidClientSize(const Struct::ClientSize& a_clientSize) const;
-		
+		bool IsValidTextureSize(const UINT a_width, const UINT a_height) const;
+		bool IsSameSize		   (const UINT a_width, const UINT a_height) const;
+
 		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
 
 		static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
@@ -60,13 +75,15 @@ namespace FWK::Graphics
 		static constexpr UINT k_clearColorIndexA = 3U;
 
 		static constexpr UINT  k_mostDetailedMIP = 0U;
-		static constexpr UINT  k_planeSlice = 0U;
+		static constexpr UINT  k_planeSlice      = 0U;
+
+		TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
 
 		Struct::GPUResource m_gpuResource = {};
 
 		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
-		DXGI_FORMAT m_format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
 
 		UINT m_width  = Constant::k_emptyTextureWidth;
 		UINT m_height = Constant::k_emptyTextureHeight;
