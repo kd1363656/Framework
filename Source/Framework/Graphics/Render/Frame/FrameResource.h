@@ -13,8 +13,22 @@ namespace FWK::Graphics
 		 FrameResource() = default;
 		~FrameResource() = default;
 
-		void INIT       ();
-		bool Create     (const Device&		   a_device);
+		void INIT();
+
+		bool Create(const Device&						a_device,
+				    const GPUMemoryAllocator&			a_gpuMemoryAllocator,
+					const Struct::ClientSize&			a_clientSize,
+						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
+						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+
+		bool Resize(const Device&						a_device,
+					const GPUMemoryAllocator&			a_gpuMemoryAllocator,
+					const Struct::ClientSize&			a_clientSize,
+					const UINT64&					    a_retiredFenceValue,
+						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
+						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
+												  ResourceReleaseContext&		a_resourceReleaseContext);
+
 		void Deserialize(const nlohmann::json& a_rootJson);
 
 		void BeginFrame();
@@ -40,6 +54,10 @@ namespace FWK::Graphics
 		const auto& GetREFConstantBufferUploaderList() const { return m_constantBufferUploaderList; }
 
 		const auto& GetREFDirectCommandAllocator() const { return m_directCommandAllocator; }
+		
+		const auto& GetREFRenderGraphFrameResource  () const { return m_renderGraphFrameResource; }
+
+		auto& GetMutableREFRenderGraphFrameResource() { return m_renderGraphFrameResource; }
 
 	private:
 
@@ -51,6 +69,8 @@ namespace FWK::Graphics
 		std::vector<std::shared_ptr<ConstantBufferUploaderBase>> m_constantBufferUploaderList = {};
 
 		std::shared_ptr<DirectCommandAllocator> m_directCommandAllocator = nullptr;
+
+		RenderGraphFrameResource m_renderGraphFrameResource = {};
 
 		Converter::FrameResourceJsonConverter m_jsonConverter = {};
 	};

@@ -20,17 +20,13 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_device.Create(m_factory),					"デバイスの作成処理に失敗しました。",					        false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_resourceContext.PostDeserialize(m_device), "リソースコンテキストのデシリアライズ後の処理に失敗しました。", false);
 
-		  auto& l_rtvDescriptorPool = m_resourceContext.GetMutableREFRTVDescriptorPool();
-	const auto& l_shaderCompiler    = m_resourceContext.GetREFShaderCompiler		  ();
-
-
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderer.PostDeserialize(m_device, 
-									  a_window,
-									  m_factory,
-									  l_shaderCompiler,
-									  l_rtvDescriptorPool),
-									  "レンダラーのデシリアライズ後の処理に失敗しました。",
-									  false);
+																  a_window,
+																  m_factory,
+																  a_window.GetREFClientSize(),
+																  m_resourceContext),
+																  "レンダラーのデシリアライズ後の処理に失敗しました。",
+																  false);
 
 	return true;
 }
@@ -67,15 +63,10 @@ void FWK::Graphics::GraphicsManager::ProcessWindowResizeRequest(const Struct::Wi
 		return; 
 	}
 
-	const auto& l_resourceReleaseContext = m_resourceContext.GetREFResourceReleaseContext();
-
 	// ResizeBuffers()の前に、Rendererが待つDirectCommandList側のBackBuffer参照を外す、
 	// 前フレームのResourceBarrierなどがコマンドリスト内部に残っていると、
 	// SwapChain::ReleaseBackBufferList()でComPtrをResetしてもResizeBuffers()が失敗することがある
-	m_renderer.Resize(m_device, 
-					  l_resourceReleaseContext, 
-					  a_windowResizeRequest.m_clientSize, 
-					  m_resourceContext.GetMutableREFRTVDescriptorPool());
+	m_renderer.Resize(m_device, a_windowResizeRequest.m_clientSize, m_resourceContext);
 }
 
 #if defined(_DEBUG)

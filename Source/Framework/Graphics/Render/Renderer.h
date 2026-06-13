@@ -16,11 +16,11 @@ namespace FWK::Graphics
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool PostDeserialize(const Device&						 a_device, 
-							 const Window&						 a_window,
-							 const Factory&						 a_factory,
-							 const ShaderCompiler&				 a_shaderCompiler,
-								   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
+		bool PostDeserialize(const Device&			   a_device, 
+							 const Window&			   a_window,
+							 const Factory&			   a_factory,
+							 const Struct::ClientSize& a_clientSize,
+								    ResourceContext&   a_resourceContext);
 		
 		void BeginFrame(const ResourceContext& a_resourceContext);
 		void Execute   (const ResourceContext& a_resourceContext);
@@ -28,10 +28,7 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		void Resize(const Device&						a_device, 
-					const ResourceReleaseContext&		a_resourceReleaseContext,
-					const Struct::ClientSize&			a_clientSize, 
-						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
+		void Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, ResourceContext& a_resourceContext);
 
 		void AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource);
 		void AddRootSignature(const std::shared_ptr<RootSignature>& a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);

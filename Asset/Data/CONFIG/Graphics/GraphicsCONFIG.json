@@ -16,7 +16,24 @@
                         },
                         "ConstantBufferUploaderTypeName": "SpriteScreenPerObjectConstantBufferUploader"
                     }
-                ]
+                ],
+                "RenderGraphFrameResource": {
+                    "RenderTargetPassTextureList": [
+                        {
+                            "ClearColor": {
+                                "A": 1.0,
+                                "B": 1.0,
+                                "G": 0.800000011920929,
+                                "R": 1.0
+                            },
+                            "Format": "DXGI_FORMAT_R16G16B16A16_FLOAT",
+                            "Height": 0,
+                            "IsFixedSize": false,
+                            "RenderGraphResourceType": "RenderGraphResourceType::SceneColor",
+                            "Width": 0
+                        }
+                    ]
+                }
             }
         },
         "PipelineStateMap": [
@@ -177,9 +194,9 @@
                         "Quality": 0
                     },
                     "SampleMask": 4294967295,
-                    "UseRootSignatureType": "RootSignatureType::SpriteStandard"
+                    "UseRootSignatureType": "RootSignatureType::SpriteScreen"
                 },
-                "PipelineStateType": "PipelineStateType::SpriteStandard"
+                "PipelineStateType": "PipelineStateType::SpriteScreen"
             }
         ],
         "RenderGraph": {
@@ -246,7 +263,7 @@
                         }
                     ]
                 },
-                "RootSignatureType": "RootSignatureType::SpriteStandard"
+                "RootSignatureType": "RootSignatureType::SpriteScreen"
             }
         ],
         "SwapChain": {

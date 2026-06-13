@@ -4,10 +4,20 @@ void FWK::Converter::FrameResourceJsonConverter::Deserialize(const nlohmann::jso
 {
 	if (a_rootJson.is_null()) { return; }
 
+	// 定数バッファのデシリアライズ
 	if (const auto& l_json = a_rootJson.value(k_constantBufferUploaderListJsonKey, nlohmann::json::array());
 		!l_json.is_null())
 	{
 		DeserializeConstantBuffer(l_json, a_frameResource);
+	}
+
+	// レンダーグラフ用レンダーターゲットテクスチャのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_renderGraphFrameResourceJsonkey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_renderGraphFrameResource = a_frameResource.GetMutableREFRenderGraphFrameResource();
+
+		l_renderGraphFrameResource.Deserialize(l_json);
 	}
 }
 
@@ -15,7 +25,13 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::Serialize(const Graph
 {
 	nlohmann::json l_rootJson = {};
 
+	auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource();
+
+	// 定数バッファのシリアライズ
 	l_rootJson[k_constantBufferUploaderListJsonKey] = SerializeConstantBuffer(a_frameResource);
+
+	// レンダーグラフ用レンダーターゲットテクスチャのシリアライズ
+	l_rootJson[k_renderGraphFrameResourceJsonkey] = l_renderGraphFrameResource.Serialize();
 
 	return l_rootJson;
 }
@@ -49,7 +65,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::SerializeConstantBuff
 	nlohmann::json l_rootJsonArray = {};
 	
 	const auto& l_constantBufferUploaderList = a_frameResource.GetREFConstantBufferUploaderList();
-
+	
 	// 生成する定数バッファの名前とその定数バッファに必要な情報をSerialize
 	for (const auto& l_constantBufferUploader : l_constantBufferUploaderList)
 	{

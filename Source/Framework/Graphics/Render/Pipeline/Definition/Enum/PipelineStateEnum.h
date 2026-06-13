@@ -5,7 +5,7 @@ namespace FWK::Enum
 	enum class PipelineStateType
 	{
 		Invalid,
-		SpriteStandard,
+		SpriteScreen,
 		Count,
 	};
 
@@ -13,7 +13,7 @@ namespace FWK::Enum
 	(
 		PipelineStateType,
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Invalid),
-		FWK_JSON_ENUM_VALUE(PipelineStateType::SpriteStandard),
+		FWK_JSON_ENUM_VALUE(PipelineStateType::SpriteScreen),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
 	)
 }

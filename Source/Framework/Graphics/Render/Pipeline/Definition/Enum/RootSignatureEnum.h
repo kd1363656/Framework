@@ -5,7 +5,7 @@ namespace FWK::Enum
 	enum class RootSignatureType
 	{
 		Invalid,
-		SpriteStandard,
+		SpriteScreen,
 		Count,
 	};
 
@@ -13,7 +13,7 @@ namespace FWK::Enum
 	(
 		RootSignatureType,
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Invalid),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteStandard),
+		FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteScreen),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
 	)
 

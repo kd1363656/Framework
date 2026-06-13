@@ -6,20 +6,31 @@ void FWK::Graphics::Renderer::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device, 
-											  const Window&						  a_window, 
-											  const Factory&					  a_factory,
-											  const ShaderCompiler&				  a_shaderCompiler,
-													TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
+bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device, 
+											  const Window&			    a_window, 
+											  const Factory&		    a_factory,
+											  const Struct::ClientSize& a_clientSize,
+													ResourceContext&    a_resourceContext)
 {
 	// フレームリソースがないとコマンドアロケーターを使えないため"return"
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
+
+	const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator      ();
+	const auto& l_shaderCompiler     = a_resourceContext.GetREFShaderCompiler          ();
+		  auto& l_rtvDescriptorPool  = a_resourceContext.GetMutableREFRTVDescriptorPool();
+		  auto& l_srvDescriptorPool  = a_resourceContext.GetMutableREFSRVDescriptorPool();
 
 	for (const auto& l_frameResource : m_frameResourceList)
 	{
 		if (!l_frameResource) { continue; }
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_frameResource->Create(a_device), "フレームリソースの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_frameResource->Create(a_device,
+																   l_gpuMemoryAllocator,
+																   a_clientSize,
+																   l_rtvDescriptorPool,
+																   l_srvDescriptorPool), 
+																   "フレームリソースの作成処理に失敗しました。", 
+																   false);
 	}
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandQueue.Create(a_device), "ダイレクトコマンドキューの作成処理に失敗しました。", false);
@@ -27,8 +38,9 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_swapChain.Create(a_window,
 														  a_device,
-														  a_factory, m_directCommandQueue, 
-														  a_rtvDescriptorPool), 
+														  a_factory, 
+														  m_directCommandQueue, 
+														  l_rtvDescriptorPool), 
 														  "ダイレクトコマンドリストの作成処理に失敗しました。",
 														  false);
 
@@ -43,7 +55,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&						  a_device,
 	for (const auto& [l_type, l_pipelineState] : m_pipelineStateMap)
 	{
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState,											   "PipelineStateが無効のため、PipelineStateの作成に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState->Create(a_device, a_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState->Create(a_device, l_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
 	}
 
 	// 画面解像度に合ったビューポート、シザー矩形を作成する
@@ -119,23 +131,41 @@ nlohmann::json FWK::Graphics::Renderer::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::Renderer::Resize(const Device&			             a_device,
-									 const ResourceReleaseContext&       a_resourceReleaseContext, 
-									 const Struct::ClientSize&	         a_clientSize, 
-										   TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
+void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, ResourceContext& a_resourceContext)
 {
 	// スワップチェインのリサイズ前にGPUとの同期をとるなど必要な処理を行う
 	PrepareForSwapChainResize();
 
+	const auto& l_gpuMemoryAllocator     = a_resourceContext.GetREFGPUMemoryAllocator           ();
+		  auto& l_resourceReleaseContext = a_resourceContext.GetMutableREFResourceReleaseContext();
+		  auto& l_rtvDescriptorPool      = a_resourceContext.GetMutableREFRTVDescriptorPool     ();
+		  auto& l_srvDescriptorPool      = a_resourceContext.GetMutableREFSRVDescriptorPool     ();
+
 	// バックバッファのリサイズを行う
 	FWK_ASSERT_RETURN_IF_FAILED(!m_swapChain.Resize(a_device,
-													a_resourceReleaseContext, 
+													l_resourceReleaseContext, 
 													a_clientSize, 
-													a_rtvDescriptorPool), 
-													"リサイズ処理に失敗しました。");
+													l_rtvDescriptorPool), 
+													"バックバッファのリサイズ処理に失敗しており、リサイズ処理に失敗しました");
 
 	// スワップチェインリサイズ後にレンダーエリアを作成
 	m_renderArea.SetupRenderArea(m_swapChain);
+
+	const auto& l_retiredFenceValue = m_directCommandQueue.FetchREFLastSignaledFenceValue();
+
+	for (const auto& l_frameResource : m_frameResourceList)
+	{
+		if (!l_frameResource) { continue; }
+
+		FWK_ASSERT_RETURN_IF_FAILED(!l_frameResource->Resize(a_device,
+															 l_gpuMemoryAllocator,
+															 a_clientSize,
+															 l_retiredFenceValue,
+															 l_rtvDescriptorPool,
+															 l_srvDescriptorPool,
+															 l_resourceReleaseContext),
+															 "フレームリソースのリサイズ処理に失敗しており、リサイズ処理に失敗しました。");
+	}
 }
 
 void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)

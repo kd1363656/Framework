@@ -17,5 +17,13 @@ namespace FWK::Converter
 		void Deserialize(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
 		nlohmann::json Serialize(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+
+	private:
+
+		void DeserializeRenderTargetPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+
+		nlohmann::json SerializeRenderTargetPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+
+		static constexpr std::string_view k_renderTargetPassTextureListJsonKey = "RenderTargetPassTextureList";
 	};
 }

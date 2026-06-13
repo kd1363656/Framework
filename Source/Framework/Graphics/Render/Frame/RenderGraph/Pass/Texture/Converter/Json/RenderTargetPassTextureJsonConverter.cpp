@@ -2,7 +2,7 @@
 
 void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::RenderTargetPassTexture& a_renderTargetPassTexture) const
 {
-	if (!a_rootJson.is_null()) { return; }
+	if (a_rootJson.is_null()) { return; }
 
 	const auto& l_clearColor = Utility::DeserializeColor(a_rootJson, k_clearColorJsonKey);
 
@@ -10,8 +10,8 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 
 	const auto l_renderGraphResourceType = a_rootJson.value(k_renderGraphResourceTypeJsonKey, Enum::RenderGraphResourceType::Invalid);
 
-	const auto l_width  = a_rootJson.value(k_widthJsonKey, Constant::k_emptyTextureWidth);
-	const auto l_height = a_rootJson.value(k_widthJsonKey, Constant::k_emptyTextureHeight);
+	const auto l_width  = a_rootJson.value(k_widthJsonKey,  Constant::k_emptyTextureWidth);
+	const auto l_height = a_rootJson.value(k_heightJsonKey, Constant::k_emptyTextureHeight);
 
 	const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
 

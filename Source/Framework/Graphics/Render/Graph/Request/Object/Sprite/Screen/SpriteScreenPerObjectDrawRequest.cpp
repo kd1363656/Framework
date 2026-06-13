@@ -15,7 +15,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::RequestDraw(const Resource
 	SetupSRVDescriptorHeap(l_directCommandList, l_srvDescriptorPool);
 
 	// パイプラインステート、ルートシグネチャをセット
-	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::SpriteStandard).lock();
+	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::SpriteScreen).lock();
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature, "Forward描画用RootSignatureが無効なため、Sprite描画申請処理に失敗しました。");
 

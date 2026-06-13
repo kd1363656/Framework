@@ -13,7 +13,7 @@ namespace FWK::Utility
 		{
 			l_json.value("R" , Constant::k_colorLess.R()),
 			l_json.value("G" , Constant::k_colorLess.G()),
-			l_json.value("B" , Constant::k_colorLess.G()),
+			l_json.value("B" , Constant::k_colorLess.B()),
 			l_json.value("A" , Constant::k_colorLess.A())
 		};
 	}
