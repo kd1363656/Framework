@@ -44,11 +44,11 @@ namespace FWK::Graphics
 
 		void SetIsFixedSize(const bool a_set) { m_isFixedSize = a_set; }
 
-		const auto& GetREFRenderTargetTexture() const { return m_renderTargeTexture; }
+		const auto& GetREFRenderTargetTexture() const { return m_renderTargetTexture; }
 
 		const auto& GetREFClearColor() const { return m_clearColor; }
 
-		auto& GetMutableREFRenderTargetTexture() const { return m_renderTargeTexture; }
+		auto& GetMutableREFRenderTargetTexture() { return m_renderTargetTexture; }
 
 		auto GetVALFormat() const { return m_format; }
 
@@ -64,7 +64,7 @@ namespace FWK::Graphics
 		UINT FetchVALTextureWidth (const UINT a_width)  const;
 		UINT FetchVALTextureHeight(const UINT a_height) const;
 
-		RenderTargetTexture m_renderTargeTexture = {};
+		RenderTargetTexture m_renderTargetTexture = {};
 
 		Converter::RenderTargetPassTextureJsonConverter m_jsonConverter = {};
 

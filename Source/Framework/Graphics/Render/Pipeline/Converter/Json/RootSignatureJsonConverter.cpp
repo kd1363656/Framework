@@ -131,6 +131,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterList(co
 			{
 				FWK_ASSERT_RETURN("未対応のRootParameterTypeが指定されており、デシリアライズ処理に失敗しました。");
 			}
+			break;
 		}
 	}
 }
@@ -259,6 +260,7 @@ nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeRootParamete
 			{
 				FWK_ASSERT_RETURN_VALUE("未対応のRootParameterTypeが指定されており、デシリアライズ処理に失敗しました。", {});
 			}
+			break;
 		}
 		
 		l_jsonArray.emplace_back(l_json);

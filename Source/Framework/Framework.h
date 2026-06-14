@@ -235,6 +235,7 @@
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Graphics/Render/Graph/Pass/Definition/Type/Alias/Factory/Unique/RenderGraphPassUniqueFactory.h"
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"
+#include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
 
 #include "Graphics/Render/Graph/Converter/Json/RenderGraphJsonConverter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"

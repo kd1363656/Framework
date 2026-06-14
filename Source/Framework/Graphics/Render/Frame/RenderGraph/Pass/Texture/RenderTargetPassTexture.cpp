@@ -22,16 +22,16 @@ bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			            
 	const auto l_width  = FetchVALTextureWidth (a_clientSize.m_width);
 	const auto l_height = FetchVALTextureHeight(a_clientSize.m_height);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderTargeTexture.Create(a_device,
-																   a_gpuMemoryAllocator,
-																   m_format,
-																   l_width,
-																   l_height,
-																   m_clearColor,
-																   a_rtvDescriptorPool,
-																   a_srvDescriptorPool),
-																   "RenderTargetPassTexture内部のRenderTargetTexture作成に失敗しました。",
-																   false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderTargetTexture.Create(a_device,
+																    a_gpuMemoryAllocator,
+																    m_format,
+																    l_width,
+																    l_height,
+																    m_clearColor,
+																    a_rtvDescriptorPool,
+																    a_srvDescriptorPool),
+																    "RenderTargetPassTexture内部のRenderTargetTexture作成に失敗しました。",
+																    false);
 
 	return true;
 }
@@ -47,16 +47,16 @@ bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&			            
 	const auto l_width  = FetchVALTextureWidth (a_clientSize.m_width);
 	const auto l_height = FetchVALTextureHeight(a_clientSize.m_height);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderTargeTexture.Resize(a_device,
-																   a_gpuMemoryAllocator,
-																   a_retiredFenceValue,
-																   l_width,
-																   l_height,
-																   a_rtvDescriptorPool,
-																   a_srvDescriptorPool,
-																   a_resourceReleaseContext),
-																   "RenderTargetPassTexture内部のRenderTargetTextureリサイズに失敗しました。",
-																   false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderTargetTexture.Resize(a_device,
+																    a_gpuMemoryAllocator,
+																    a_retiredFenceValue,
+																    l_width,
+																    l_height,
+																    a_rtvDescriptorPool,
+																    a_srvDescriptorPool,
+																    a_resourceReleaseContext),
+																    "RenderTargetPassTexture内部のRenderTargetTextureリサイズに失敗しました。",
+																    false);
 
 	return true;
 }

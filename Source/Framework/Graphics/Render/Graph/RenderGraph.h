@@ -22,9 +22,9 @@ namespace FWK::Graphics
 		~RenderGraph() = default;
 
 		void Deserialize(const nlohmann::json&  a_rootJson);
-		void BeginFrame (const ResourceContext& a_resourceContext, const Renderer& a_renderer);
-		void Execute    (const ResourceContext& a_resourceContext,       Renderer& a_renderer) const;
-		void EndFrame   (const Renderer& a_renderer) const;
+		void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
+		void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
+		void EndFrame   (      Renderer& a_renderer) const;
 		
 		nlohmann::json Serialize() const;
 
@@ -72,12 +72,14 @@ namespace FWK::Graphics
 
 	private:
 
-		void ClearBackBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
+		void ClearBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
 
-		void TransitionBackBufferResource(const DirectCommandList&    a_directCommandList, 
-									      const D3D12_RESOURCE_STATES a_beforeState,
-										  const D3D12_RESOURCE_STATES a_afterState, 
-										  const Struct::BackBuffer&	  a_backBuffer) const;
+		void TransitionPassResource                   (const RenderGraphPassBase&				a_pass,		               Renderer&		     a_renderer)									 const;
+		bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess,          Renderer&		     a_renderer)									 const;
+		void TransitionBackBufferResource			  (const DirectCommandList&					a_directCommandList, const D3D12_RESOURCE_STATES a_afterState, Struct::BackBuffer& a_backBuffer) const;
+		bool TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,	       Renderer&			 a_renderere)									 const;
+		
+		D3D12_RESOURCE_STATES ConvertVALD3D12ResourceState(const Enum::RenderGraphResourceUsage a_usage) const;
 
 		void RemoveExpiredPassList();
 		

@@ -11,8 +11,6 @@ namespace FWK::Graphics
 
 		void TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const;
 
-		void FlushResourceBarrierTransitionBatch();
-
 		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)																					   const;
 		void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = Constant::k_defaultBackBufferClearColor) const;
 
@@ -50,8 +48,6 @@ namespace FWK::Graphics
 
 		void DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const;
 
-		void AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState);
-
 	private:
 
 		static constexpr UINT k_singleSetupBarrierNUM      = 1U;
@@ -62,7 +58,5 @@ namespace FWK::Graphics
 		static constexpr UINT k_setScissorRectNUM    = 1U;
 
 		static constexpr UINT k_setDescriptorHeapNUM = 1U;
-
-		std::vector<D3D12_RESOURCE_BARRIER> m_resourceBarrierTransitionBatchList;
 	};
 }

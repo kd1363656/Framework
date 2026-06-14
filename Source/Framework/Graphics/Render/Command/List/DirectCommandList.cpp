@@ -7,8 +7,9 @@ FWK::Graphics::DirectCommandList::~DirectCommandList() = default;
 
 void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_beforeState == a_afterState, "リソースの状態遷移前と後の遷移状態が全く一緒です、リソースの遷移に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,				   "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,	 "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
+
+	if (a_beforeState == a_afterState) { return; }
 
 	const auto& l_directCommandList = GetREFCommandList();
 
@@ -27,24 +28,6 @@ void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias
 	// ResourceBarrier(送るバリア数、
 	//				   バリア情報の先頭アドレス)
 	l_directCommandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_barrier);
-}
-
-void FWK::Graphics::DirectCommandList::FlushResourceBarrierTransitionBatch()
-{
-	const auto& l_directCommandList = GetREFCommandList();
-
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、リソースの一括遷移処理に失敗しました。");
-
-	if (m_resourceBarrierTransitionBatchList.empty()) { return; }
-
-	// リソースバリアを転送
-	// ResourceBarrier(送るバリア数、
-	//				   バリア情報の先頭アドレス)
-	l_directCommandList->ResourceBarrier(static_cast<UINT>(m_resourceBarrierTransitionBatchList.size()), m_resourceBarrierTransitionBatchList.data());
-
-	// リソース遷移が終われば次のフレームでも
-	// 遷移に使う要素をキャッシュしているわけではないのでクリア
-	m_resourceBarrierTransitionBatchList.clear();
 }
 
 void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex) const
@@ -173,21 +156,4 @@ void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGrou
 	//				Y方向のグループ数、
 	//				Z方向のグループ数);
 	l_directCommandList->DispatchMesh(a_threadCountGroupX, a_threadCountGroupY, a_threadCountGroupZ);
-}
-
-void FWK::Graphics::DirectCommandList::AddTransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES& a_beforeState, const D3D12_RESOURCE_STATES& a_afterState)
-{
-	FWK_ASSERT_RETURN_IF_FAILED(a_beforeState == a_afterState, "リソースの状態遷移前と後の遷移状態が全く一緒です、リソース一括遷移リストの要素としての追加に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,				   "状態遷移予定のリソースが無効になっているため、リソース一括遷移リストの要素としての追加に失敗しました。");
-
-	// D3D12_RESOURCE_BARRIER構造体についての説明(CD3DX12_RESOURCE_BARRIER::Transition内部で使用)
-	// Type                   : このバリアがどういうバリアであるかを指定
-	// Flags                  : バリアの特別な追加設定
-	// Transition.pResource   : 状態を切り替える対象のGPUリソース
-	// Transition.StateBefore : 切り替える前のリソース状態
-	// Transition.StateAfter  : 切り替えた後のリソース状態
-	// Transition.Subresource : どのサブリソースを遷移対象にするか
-	const auto& l_barrier = CD3DX12_RESOURCE_BARRIER::Transition(a_resource.Get(), a_beforeState, a_afterState);
-
-	m_resourceBarrierTransitionBatchList.emplace_back(l_barrier);
 }

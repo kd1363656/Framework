@@ -43,6 +43,8 @@ namespace FWK::Graphics
 
 		const auto& GetREFSwapChain() const { return m_swapChain; }
 
+		auto& GetMutableREFBackBufferList() { return m_backBufferList; }
+
 		auto GetVALSyncInterval() const { return m_syncInterval; }
 
 	private:

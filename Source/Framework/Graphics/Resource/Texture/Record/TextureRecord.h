@@ -19,13 +19,9 @@ namespace FWK::Graphics
 		
 		void SetGPUResource(Struct::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
 
-		void SetCurrentState(const D3D12_RESOURCE_STATES a_set) { m_currentState = a_set; }
-
 		void SetSRVDescriptorIndex(const TypeAlias::StorageID a_set) { m_srvDescriptorIndex = a_set; }
 
 		const Struct::GPUResource& GetREFGPUResource() const { return m_gpuResource; }
-
-		D3D12_RESOURCE_STATES GetVALCurrentState() const { return m_currentState; }
 
 		TypeAlias::StorageID GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
@@ -33,8 +29,6 @@ namespace FWK::Graphics
 
 		Struct::GPUResource m_gpuResource = {};
 		
-		D3D12_RESOURCE_STATES m_currentState = D3D12_RESOURCE_STATE_COMMON;
-
 		TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 	};
 }

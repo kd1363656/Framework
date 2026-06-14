@@ -226,6 +226,8 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 	// バックバッファーを一枚ずつ取得して、それぞれに対応するRTVを作成する
 	for (auto l_backBufferIndex = 0U; l_backBufferIndex < static_cast<UINT>(m_backBufferList.size()); ++l_backBufferIndex)
 	{
+		auto& l_backBuffer = m_backBufferList[l_backBufferIndex];
+
 		// スワップチェインが内部に持っているバックバッファリソースを取得する関数
 		// GetBuffer(取得したいバックバッファーのインデックス、
 		//			 受け取りたいCOMインターフェース型のID、
@@ -240,7 +242,8 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "バックバッファ用RTVIndexの確保に失敗しており、バッファーの作成に失敗しました。", false);
 		
 		// l_backBufferIndex番目のバックバッファと紐づいているRTVのStorageIDを格納
-		m_backBufferList[l_backBufferIndex].m_rtvDescriptorIndex = l_rtvDescriptorIndex;
+		l_backBuffer.m_rtvDescriptorIndex   = l_rtvDescriptorIndex;
+		l_backBuffer.m_currentResourceState = D3D12_RESOURCE_STATE_PRESENT;
 
 		// RTVを置くディスクリプタ位置を取得する
 		// l_i番目のバックバッファに対応するRTVも、同じl_i番目の位置に書いている
@@ -251,7 +254,7 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 		// CreateRenderTargetView(RTVを作りたい対象リソース、
 		//						  RTVの見え方を指定する設定、
 		//						  作成したRTVを書き込むディスクリプタ位置);
-		l_device->CreateRenderTargetView(m_backBufferList[l_backBufferIndex].m_backBufferResource.Get(), &l_rtvDesc, l_rtvHandle);
+		l_device->CreateRenderTargetView(l_backBuffer.m_backBufferResource.Get(), &l_rtvDesc, l_rtvHandle);
 	}
 
 	

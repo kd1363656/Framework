@@ -6,6 +6,7 @@ namespace FWK::Enum
 	{
 		Invalid,
 		SpriteScreen,
+		FinalPresent,
 		Count,
 	};
 
@@ -14,6 +15,7 @@ namespace FWK::Enum
 		RootSignatureType,
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Invalid),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteScreen),
+		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
 	)
 
