@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class FinalPresentRenderTargetPassDrawRequest final : public CachedPassConstantBufferDrawRequestBase<Struct::CBFinalPresentRenderTargetPass>
+	class FinalPresentRenderTargetPassDrawRequest final : public DrawRequestRenderTargetPassBase<Struct::CBFinalPresentRenderTargetPass, Enum::RenderGraphResourceType::SceneColor>
 	{
 	public:
 
