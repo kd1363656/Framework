@@ -77,6 +77,7 @@ namespace FWK::Graphics
 		UINT m_width  = Constant::k_emptyTextureWidth;
 		UINT m_height = Constant::k_emptyTextureHeight;
 
-		bool m_isFixedSize = false;
+		bool m_isFixedSize             = false;
+		bool m_isSkipClearOnBeginFrame = false;
 	};
 }

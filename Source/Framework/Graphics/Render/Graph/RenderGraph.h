@@ -21,10 +21,11 @@ namespace FWK::Graphics
 		 RenderGraph() = default;
 		~RenderGraph() = default;
 
-		void Deserialize(const nlohmann::json&  a_rootJson);
+		void Deserialize(const nlohmann::json& a_rootJson);
+
 		void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
 		void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer);
-		void EndFrame   (      Renderer& a_renderer) const;
+		void EndFrame   (      Renderer&	    a_renderer) const;
 		
 		nlohmann::json Serialize() const;
 
@@ -72,12 +73,18 @@ namespace FWK::Graphics
 
 	private:
 
-		void ClearRenderTargetPassTexture(const ResourceContext& a_resourceContext, const Enum::RenderGraphResourceType a_resourceType, Renderer& a_renderer) const;
+		void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
+
+		bool SetupBackBufferRenderTarget             (const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+		void SetupPassRenderTarget                   (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)		  const;
+		bool SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+
+		bool IsWriteRenderTargetAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 
 		void TransitionPassResource                   (const RenderGraphPassBase&				a_pass,		               Renderer&		     a_renderer)									 const;
 		bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess,          Renderer&		     a_renderer)									 const;
 		void TransitionBackBufferResource			  (const DirectCommandList&					a_directCommandList, const D3D12_RESOURCE_STATES a_afterState, Struct::BackBuffer& a_backBuffer) const;
-		bool TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,	 const Renderer&			 a_renderere)									 const;
+		bool TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,	 const Renderer&			 a_renderer)									 const;
 		
 		D3D12_RESOURCE_STATES ConvertVALD3D12ResourceState(const Enum::RenderGraphResourceUsage a_usage) const;
 
