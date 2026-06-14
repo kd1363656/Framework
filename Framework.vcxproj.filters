@@ -784,6 +784,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct">
       <UniqueIdentifier>{091197c1-a933-473d-bf3d-8bfc2071e377}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Final">
+      <UniqueIdentifier>{7413ddfa-7403-4099-a979-53704f8697b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1275,6 +1278,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\DrawRequestRenderTargetPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1501,6 +1507,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

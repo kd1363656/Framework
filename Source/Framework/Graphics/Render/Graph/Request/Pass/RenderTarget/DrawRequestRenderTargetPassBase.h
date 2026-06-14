@@ -10,32 +10,21 @@ namespace FWK::Graphics
 		 DrawRequestRenderTargetPassBase()          = default;
 		~DrawRequestRenderTargetPassBase() override = default;
 
-	protected:
-
-		bool EnsureCurrentRenderTargetPassTexture(const FrameResource& a_frameResource)
+		std::weak_ptr<RenderTargetPassTexture> FetchVALRenderTargetPassTexture(const FrameResource& a_frameResource) const
 		{
-			// レンダーターゲットパステクスチャが無効でない場合セットする必要がないので
-			// セットが完了しているというtrueを返す
-			if (!m_renderTargetPassTexture.expired()) { return true; }
-
-			const auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource			  ();
+			const auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource           ();
 			const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(ResourceType);
 
-			// 取得したいレンダーターゲットパステクスチャが無効ならreturn
-			if (l_renderTargetPassTexture.expired()) { return false; }
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_renderTargetPassTexture.expired(), "レンダーグラフフレームリソースのレンダーターゲットパステクスチャが無効になっており、レンダーターゲットパステクスチャの取得に失敗しました。", {});
 
-			m_renderTargetPassTexture = l_renderTargetPassTexture;
-
-			return true;
+			return l_renderTargetPassTexture;
 		}
 
-		const auto& GetREFRenderTargetPasTexture() const { return m_renderTargetPassTexture; }
+	protected:
 
 		auto& GetMutableREFConstantBuffer() { return m_constantBuffer; }
 
 	private:
-
-		std::weak_ptr<RenderTargetPassTexture> m_renderTargetPassTexture = {};
 
 		ConstantBufferType m_constantBuffer = {};
 	};
