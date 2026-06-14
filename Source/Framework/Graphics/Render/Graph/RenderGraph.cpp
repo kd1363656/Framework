@@ -29,6 +29,11 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 
 void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const
 {
+	const auto& l_srvDescriptorPool = a_resourceContext.GetREFSRVDescriptorPool();
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList	   ();
+
+	l_directCommandList.SetupDescriptorHeap(l_srvDescriptorPool);
+
 	for (const auto& l_pass : m_passList)
 	{
 		if (!l_pass) { continue; }

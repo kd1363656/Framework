@@ -8,11 +8,8 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::RequestDraw(const ResourceContext& a_resourceContext, const Renderer& a_renderer)
 {
-	const auto& l_srvDescriptorPool = a_resourceContext.GetREFSRVDescriptorPool();
-	const auto& l_renderGraph       = a_renderer.GetREFRenderGraph			   ();
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList	   ();
-
-	SetupSRVDescriptorHeap(l_directCommandList, l_srvDescriptorPool);
+	const auto& l_renderGraph       = a_renderer.GetREFRenderGraph		();
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	// パイプラインステート、ルートシグネチャをセット
 	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::SpriteScreen).lock();
