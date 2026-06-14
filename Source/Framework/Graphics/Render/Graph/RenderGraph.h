@@ -23,7 +23,7 @@ namespace FWK::Graphics
 
 		void Deserialize(const nlohmann::json&  a_rootJson);
 		void BeginFrame (const ResourceContext& a_resourceContext, const Renderer& a_renderer);
-		void Execute    (const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
+		void Execute    (const ResourceContext& a_resourceContext,       Renderer& a_renderer) const;
 		void EndFrame   (const Renderer& a_renderer) const;
 		
 		nlohmann::json Serialize() const;

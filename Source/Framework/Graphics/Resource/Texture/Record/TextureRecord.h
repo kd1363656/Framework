@@ -33,7 +33,7 @@ namespace FWK::Graphics
 
 		Struct::GPUResource m_gpuResource = {};
 		
-		D3D12_RESOURCE_STATES m_currentState = D3D12_RESOURCE_STATE_COMMON;
+		D3D12_RESOURCE_STATES m_currentState = D3D12_RESOURCE_STATE_COPY_DEST;
 
 		TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 	};

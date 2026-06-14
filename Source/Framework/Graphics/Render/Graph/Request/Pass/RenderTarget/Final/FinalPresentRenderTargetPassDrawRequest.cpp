@@ -6,8 +6,8 @@ bool FWK::Graphics::FinalPresentRenderTargetPassDrawRequest::SetupPassConstantBu
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_sceneColorRenderTargetPassTexture, "シーンカラーレンダーターゲットパステクスチャが無効になっており、Pass定数の設定に失敗しました。", {});
 
-	const auto& l_renderTargetTexture        = l_sceneColorRenderTargetPassTexture->GetREFTexture();
-		  auto& l_finalPresentConstantBuffer = GetMutableREFConstantBuffer						 ();
+	const auto& l_renderTargetTexture        = l_sceneColorRenderTargetPassTexture->GetREFRenderTargetTexture();
+		  auto& l_finalPresentConstantBuffer = GetMutableREFConstantBuffer									 ();
 
 	// SRVインデックスを更新
 	l_finalPresentConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();

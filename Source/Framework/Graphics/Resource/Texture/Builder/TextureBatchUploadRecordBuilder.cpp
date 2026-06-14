@@ -36,8 +36,10 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 	// CPUOnlyに作成したSRVをShaderVisible側へコピーする
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_srvDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_textureRecord->GetVALSRVDescriptorIndex()), "CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、TextureSRV作成処理に失敗しました。", false);
 
-	// 最後にD3D12_RESOURCE_STATESと参照カウント、ファイルパスを格納する
-	l_textureRecord->SetCurrentState  (D3D12_RESOURCE_STATE_COMMON);
+	// TextureResourceはCopyCommandQueueでコピー先として扱うため、
+	// 作成直後の状態はCOPY_DESTとして扱う
+	// コピー完了後、DirectCommandList側でPIXEL_SHADER_RESIURCEへ明示遷移する
+	l_textureRecord->SetCurrentState  (D3D12_RESOURCE_STATE_COPY_DEST);
 	l_textureRecord->SetReferenceCount(Constant::k_defaultAssetReferenceCount);
 	l_textureRecord->SetStorageID     (a_storageID);
 	l_textureRecord->SetFilePath	  (a_filePath);
@@ -64,12 +66,11 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 																	static_cast<UINT16>(a_texMetadata.arraySize),
 																	static_cast<UINT16>(a_texMetadata.mipLevels));
 
-	// CopyCommandQueueでCopyTextureRegionをするために、初期状態はCOMMONにする、
-	// COMMON状態のTextureResourceは、CopyCommandQueue上のCopyTextureRegionで
-	// コピー先として使用されると暗黙的にコピー先として扱われる
+	// CopyCommandQueueでCopyTextureRegionのコピー先として使うため、
+	// 暗黙昇格に頼らず、最初からCOPY_DESTで作成する。
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateTextureResource(l_textureResourceDesc,
 																		          nullptr,
-																		          D3D12_RESOURCE_STATE_COMMON,
+																		          D3D12_RESOURCE_STATE_COPY_DEST,
 																		          l_gpuResource),
 																		          "D3D12MAによるTextureResource作成処理に失敗しており、TextureResource作成処理に失敗しました。",
 																		          false);

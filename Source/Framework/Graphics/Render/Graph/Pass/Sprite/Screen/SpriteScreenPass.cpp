@@ -6,7 +6,7 @@ FWK::Graphics::ScreenSpritePass::ScreenSpritePass()
 }
 FWK::Graphics::ScreenSpritePass::~ScreenSpritePass() = default;
 
-void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext& a_resourceContext, const Renderer& a_renderer)
+void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
