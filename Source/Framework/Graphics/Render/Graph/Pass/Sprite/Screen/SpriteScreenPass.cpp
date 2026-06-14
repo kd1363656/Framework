@@ -16,5 +16,5 @@ void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext& a_resourceC
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_spriteScreenPerObjectDrawRequest, "SpriteScreenPerObjectDrawRequestが無効のため、ScreenSpritePassの実行に失敗しました。");
 
-	l_spriteScreenPerObjectDrawRequest->RequestDraw(a_resourceContext, a_renderer);
+	l_spriteScreenPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_resourceContext, a_renderer);
 }

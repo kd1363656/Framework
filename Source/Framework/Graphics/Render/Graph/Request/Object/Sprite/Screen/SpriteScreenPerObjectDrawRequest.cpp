@@ -6,7 +6,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 	m_drawRequestPerObjectList.BeginFrame();
 }
 
-void FWK::Graphics::SpriteScreenPerObjectDrawRequest::RequestDraw(const ResourceContext& a_resourceContext, const Renderer& a_renderer)
+void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer)
 {
 	const auto& l_renderGraph       = a_renderer.GetREFRenderGraph		();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();

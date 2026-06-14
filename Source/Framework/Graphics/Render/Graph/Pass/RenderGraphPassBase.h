@@ -30,6 +30,8 @@ namespace FWK::Graphics
 
 		void WriteResource(const Enum::RenderGraphResourceType a_resourceType, const Enum::RenderGraphResourceUsage a_usage);
 
+		std::weak_ptr<RootSignature> SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
+
 	private:
 
 		void AddResourceAccess(const Enum::RenderGraphResourceType a_resourceType, const Enum::RenderGraphAccessType a_accessType, const Enum::RenderGraphResourceUsage a_usage);

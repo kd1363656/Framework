@@ -16,17 +16,17 @@ namespace FWK::Graphics
 
 		virtual void BeginFrame() = 0;
 
-		virtual void RequestDraw(const ResourceContext& a_resourceContext, const Renderer& a_renderer) = 0;
+		virtual void SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer) = 0;
 
 	protected:
 
 		// 定数バッファの上書き禁止(定数バッファのインデックスを進めて新しい定数バッファに書き込む方式)
 		template <Concept::IsDerivedConstantBufferUploaderBaseConcept ConstantBufferUploaderType, typename ConstantBufferType>
-		void SetupPerObjectConstantBuffer(const RootSignature&	        a_rootSignature,
-										  const DirectCommandList&      a_directCommandList,
-										  const FrameResource&	        a_frameResource,
-										  const ConstantBufferType&     a_constantBuffer,
-										  const Enum::RootParameterType a_rootParameterType)
+		void SetupConstantBuffer(const RootSignature&	        a_rootSignature,
+								const DirectCommandList&      a_directCommandList,
+								const FrameResource&	        a_frameResource,
+								const ConstantBufferType&     a_constantBuffer,
+								const Enum::RootParameterType a_rootParameterType)
 		{
 			auto l_constantBufferUploader = a_frameResource.FindPTRConstantBufferUploader<ConstantBufferUploaderType>().lock();
 
@@ -41,8 +41,6 @@ namespace FWK::Graphics
 			// 指定したRootParameterへUploadBuffer上の定数バッファを結びつける
 			a_directCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, a_rootParameterType);
 		}
-
-		std::weak_ptr<RootSignature> SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
 
 		TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<Texture>&	   a_texture,	    const TextureSystem& a_textureSystem, const Enum::DefaultTextureType a_defaultTextureType) const;
 		TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<TextureRecord>& a_textureRecord, const TextureSystem& a_textureSystem, const Enum::DefaultTextureType a_defaultTextureType) const;

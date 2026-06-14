@@ -1,20 +1,5 @@
 ﻿#include "DrawRequestPerObjectBase.h"
 
-std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::DrawRequestPerObjectBase::SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
-{
-	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState(a_pipelineStateType);
-	const auto& l_pipelineState     = l_pipelineStateWeak.lock       ();
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており。", {});
-
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
-
-	l_directCommandList.SetupRenderPipeline(l_pipelineState);
-
-	// 使用するルートシグネチャを戻り値にセット
-	return l_pipelineState->GetREFUseRootSignature();
-}
-
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::DrawRequestPerObjectBase::FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<Texture>& a_texture, const TextureSystem& a_textureSystem, const Enum::DefaultTextureType a_defaultTextureType) const
 {
 	if (a_texture)
