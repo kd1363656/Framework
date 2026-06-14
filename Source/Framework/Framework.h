@@ -214,6 +214,7 @@
 
 // 描画リクエスト(レンダーターゲット共通パス)
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/DrawRequestRenderTargetPassBase.h"
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Definition/Constant/FinalPresentRenderTargetPassDrawRequestConstant.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Definition/Struct/CBFinalPresentRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalPresentRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"

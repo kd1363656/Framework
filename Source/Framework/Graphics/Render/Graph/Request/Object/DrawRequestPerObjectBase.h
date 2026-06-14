@@ -48,16 +48,6 @@ namespace FWK::Graphics
 		TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<Texture>&	   a_texture,	    const TextureSystem& a_textureSystem, const Enum::DefaultTextureType a_defaultTextureType) const;
 		TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<TextureRecord>& a_textureRecord, const TextureSystem& a_textureSystem, const Enum::DefaultTextureType a_defaultTextureType) const;
 
-		static constexpr UINT GetVALDefaultDispatchMeshThreadGroupCountX() { return k_defaultDispatchMeshThreadGroupCountX; }
-		static constexpr UINT GetVALDefaultDispatchMeshThreadGroupCountY() { return k_defaultDispatchMeshThreadGroupCountY; }
-		static constexpr UINT GetVALDefaultDispatchMeshThreadGroupCountZ() { return k_defaultDispatchMeshThreadGroupCountZ; }
-
-	private:
-
-		static constexpr UINT k_defaultDispatchMeshThreadGroupCountX = 1U;
-		static constexpr UINT k_defaultDispatchMeshThreadGroupCountY = 1U;
-		static constexpr UINT k_defaultDispatchMeshThreadGroupCountZ = 1U;
-
 		FWK_DEFINE_TYPE_INFO_ROOT(DrawRequestPerObjectBase)
 	};
 }

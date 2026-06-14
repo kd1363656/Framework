@@ -790,6 +790,12 @@
     <Filter Include="Asset\Shader\Final">
       <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition">
+      <UniqueIdentifier>{f5fa8e7e-e5ad-4175-9cfe-6a5eee9f1661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant">
+      <UniqueIdentifier>{4b792c9b-e257-4b7a-8a1b-a49383c42054}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1283,6 +1289,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct\TextureBatchUploadRecordBuilderStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

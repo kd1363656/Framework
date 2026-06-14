@@ -6,10 +6,10 @@ namespace FWK::Graphics
 	{
 	public:
 
-		 FinalPresentPass()			 = default;
-		~FinalPresentPass() override = default;
+		 FinalPresentPass();
+		~FinalPresentPass() override;
 
-		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer) override;
+		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
 	private:
 
