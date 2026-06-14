@@ -11,7 +11,6 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 																				   const RootSignature&   a_rootSignature, 
 																				   const FrameResource&   a_currentFrameResource)
 {
-	const auto& l_renderGraph       = a_renderer.GetREFRenderGraph		();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	const auto& l_textureSystem = a_resourceContext.GetREFTextureSystem();
