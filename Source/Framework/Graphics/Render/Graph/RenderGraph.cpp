@@ -20,6 +20,9 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 
 	// バックバッファのリソース状態をRENDER_TARGETに遷移、バックバッファのクリア、RTVのセットを行う
 	BeginBackBuffer(a_resourceContext, a_renderer);
+
+	// 現在のFrameResourceが持つ中間RenderTargetをクリアする
+	ClearCurrentFrameRenderTargetPassTextureList(a_resourceContext, a_renderer);
 }
 void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer)
 {
@@ -121,6 +124,51 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
 
 	// 描画先に設定したBackBufferを指定色でClearする。
 	l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
+}
+
+void FWK::Graphics::RenderGraph::ClearCurrentFrameRenderTargetPassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const
+{
+	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "現在のFrameResourceが無効のため、RenderTargetPassTextureListのClearに失敗しました。");
+
+	const auto& l_renderGraphFrameResource = l_currentFrameResource->GetREFRenderGraphFrameResource();
+
+	for (const auto& l_renderTargetPassTexture : l_renderGraphFrameResource.GetREFRenderTargetPassTextureList())
+	{
+		FWK_ASSERT_RETURN_IF_FAILED(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderTargetPassTextureのClearに失敗しました。");
+
+		// クリアを毎フレームすべきでないレンダーターゲットテクスチャはクリアしない
+		if (l_renderTargetPassTexture->GetVALIsSkipClearOnBeginFrame()) { continue; }
+
+		FWK_ASSERT_RETURN_IF_FAILED(!ClearRenderTargetPassTexture(a_resourceContext, a_renderer, *l_renderTargetPassTexture), "RenderTargetPassTextureのClearに失敗しました。");
+	}
+}
+bool FWK::Graphics::RenderGraph::ClearRenderTargetPassTexture(const ResourceContext & a_resourceContext, const Renderer & a_renderer, RenderTargetPassTexture & a_renderTargetPassTexture) const
+{
+	auto& l_renderTargetTexture = a_renderTargetPassTexture.GetMutableREFRenderTargetTexture();
+
+	const auto& l_gpuResource = l_renderTargetTexture.GetREFGPUResource();
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_gpuResource.m_resource,																  "RenderTargetPassTextureのGPUResourceが無効のため、Clearに失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_renderTargetTexture.GetVALRTVDescriptorIndex() == Constant::k_invalidDescriptorIndex, "RenderTargetPassTextureのRTVDescriptorIndexが無効のため、Clearに失敗しました。", false);
+
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
+	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
+
+	// リソースをレンダーターゲットに状態遷移して現在のステートとして格納
+	if (const auto l_beforeState = l_renderTargetTexture.GetVALCurrentResourceState();
+		l_beforeState != D3D12_RESOURCE_STATE_RENDER_TARGET)
+	{
+		l_directCommandList.TransitionResourceBarrier(l_gpuResource.m_resource, l_beforeState, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		l_renderTargetTexture.SetCurrentResourceState(D3D12_RESOURCE_STATE_RENDER_TARGET);
+	}
+
+	// RenderTargetPassTexture自身が持つClearColorでClearする。
+	// SceneColorならGraphicsCONFIG.jsonのSceneColor.ClearColorが反映される。
+	l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_renderTargetTexture.GetVALRTVDescriptorIndex(), a_renderTargetPassTexture.GetREFClearColor());
+
+	return true;
 }
 
 bool FWK::Graphics::RenderGraph::SetupBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const

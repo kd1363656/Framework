@@ -13,7 +13,8 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 	const auto l_width  = a_rootJson.value(k_widthJsonKey,  Constant::k_emptyTextureWidth);
 	const auto l_height = a_rootJson.value(k_heightJsonKey, Constant::k_emptyTextureHeight);
 
-	const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
+	const auto l_isFixedSize			 = a_rootJson.value(k_isFixedSizeJsonKey,			  false);
+	const auto l_isSkipClearOnBeginFrame = a_rootJson.value(k_isSkipClearOnBeginFrameJsonKey, false);
 
 	a_renderTargetPassTexture.SetClearColor(l_clearColor);
 
@@ -24,7 +25,8 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 	a_renderTargetPassTexture.SetWidth (l_width);
 	a_renderTargetPassTexture.SetHeight(l_height);
 
-	a_renderTargetPassTexture.SetIsFixedSize(l_isFixedSize);
+	a_renderTargetPassTexture.SetIsFixedSize		    (l_isFixedSize);
+	a_renderTargetPassTexture.SetIsSkipClearOnBeginFrame(l_isSkipClearOnBeginFrame);
 }
 
 nlohmann::json FWK::Converter::RenderTargetPassTextureJsonConverter::Serialize(const Graphics::RenderTargetPassTexture & a_renderTargetPassTexture) const
@@ -38,6 +40,7 @@ nlohmann::json FWK::Converter::RenderTargetPassTextureJsonConverter::Serialize(c
 	l_rootJson[k_widthJsonKey]					 = a_renderTargetPassTexture.GetVALWidth					  ();
 	l_rootJson[k_heightJsonKey]					 = a_renderTargetPassTexture.GetVALHeight				  ();
 	l_rootJson[k_isFixedSizeJsonKey]			 = a_renderTargetPassTexture.GetVALIsFixedSize			  ();
+	l_rootJson[k_isSkipClearOnBeginFrameJsonKey] = a_renderTargetPassTexture.GetVALIsSkipClearOnBeginFrame();
 
 	return l_rootJson;
 }

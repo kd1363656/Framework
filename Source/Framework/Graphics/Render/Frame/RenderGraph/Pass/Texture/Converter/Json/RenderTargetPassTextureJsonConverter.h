@@ -26,5 +26,6 @@ namespace FWK::Converter
 		static constexpr std::string_view k_widthJsonKey				   = "Width";
 		static constexpr std::string_view k_heightJsonKey				   = "Height";
 		static constexpr std::string_view k_isFixedSizeJsonKey			   = "IsFixedSize";
+		static constexpr std::string_view k_isSkipClearOnBeginFrameJsonKey = "IsSkipClearOnBeginFrame";
 	};
 }

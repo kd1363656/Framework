@@ -44,6 +44,8 @@ namespace FWK::Graphics
 
 		void SetIsFixedSize(const bool a_set) { m_isFixedSize = a_set; }
 
+		void SetIsSkipClearOnBeginFrame(const bool a_set) { m_isSkipClearOnBeginFrame = a_set; }
+
 		const auto& GetREFRenderTargetTexture() const { return m_renderTargetTexture; }
 
 		const auto& GetREFClearColor() const { return m_clearColor; }
@@ -57,7 +59,8 @@ namespace FWK::Graphics
 		auto GetVALWidth () const { return m_width; }
 		auto GetVALHeight() const { return m_height; }
 
-		auto GetVALIsFixedSize() const { return m_isFixedSize; }
+		bool GetVALIsFixedSize		      () const { return m_isFixedSize; }
+		bool GetVALIsSkipClearOnBeginFrame() const { return m_isSkipClearOnBeginFrame; }
 
 	private:
 
