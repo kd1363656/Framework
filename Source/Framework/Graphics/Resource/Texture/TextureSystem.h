@@ -33,8 +33,6 @@ namespace FWK::Graphics
 
 		void ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture);
 
-		void SetIsUploadToDefaultHeapCopyCompleted(const bool a_set) { m_isUploadToDefaultHeapCopyCompleted = a_set; }
-
 		std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
 
 		static constexpr auto& GetREFDefaultTextureTypeCount() { return k_defaultTextureTypeCount; }
@@ -63,7 +61,5 @@ namespace FWK::Graphics
 		TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
 		Converter::TextureSystemJsonConverter m_jsonConverter = {};
-
-		bool m_isUploadToDefaultHeapCopyCompleted = false;
 	};
 }

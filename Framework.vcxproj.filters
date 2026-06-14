@@ -346,12 +346,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct">
       <UniqueIdentifier>{b85709d6-be32-4ebe-be00-f310dd55d313}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition">
-      <UniqueIdentifier>{afc74d75-6b35-4ff9-8050-aba87c0e7712}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct">
-      <UniqueIdentifier>{9e81086c-293c-4b73-ad2f-0f35050e34ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition">
       <UniqueIdentifier>{d85d0311-feb6-48f8-9722-ca593c8ea091}</UniqueIdentifier>
     </Filter>
@@ -787,6 +781,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Final">
       <UniqueIdentifier>{7413ddfa-7403-4099-a979-53704f8697b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition">
+      <UniqueIdentifier>{afc74d75-6b35-4ff9-8050-aba87c0e7712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct">
+      <UniqueIdentifier>{9e81086c-293c-4b73-ad2f-0f35050e34ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1004,9 +1004,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\TextureSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Definition\Struct\UploadSystemStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\DirectCommandListConstant.h">
       <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Constant</Filter>
@@ -1280,6 +1277,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct\TextureBatchUploadRecordBuilderStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

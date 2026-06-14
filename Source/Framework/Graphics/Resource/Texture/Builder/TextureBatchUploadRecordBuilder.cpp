@@ -39,7 +39,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 	// TextureResourceはCopyCommandQueueでコピー先として扱うため、
 	// 作成直後の状態はCOPY_DESTとして扱う
 	// コピー完了後、DirectCommandList側でPIXEL_SHADER_RESIURCEへ明示遷移する
-	l_textureRecord->SetCurrentState  (D3D12_RESOURCE_STATE_COPY_DEST);
+	l_textureRecord->SetCurrentState  (D3D12_RESOURCE_STATE_COMMON);
 	l_textureRecord->SetReferenceCount(Constant::k_defaultAssetReferenceCount);
 	l_textureRecord->SetStorageID     (a_storageID);
 	l_textureRecord->SetFilePath	  (a_filePath);
@@ -70,7 +70,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 	// 暗黙昇格に頼らず、最初からCOPY_DESTで作成する。
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateTextureResource(l_textureResourceDesc,
 																		          nullptr,
-																		          D3D12_RESOURCE_STATE_COPY_DEST,
+																		          D3D12_RESOURCE_STATE_COMMON,
 																		          l_gpuResource),
 																		          "D3D12MAによるTextureResource作成処理に失敗しており、TextureResource作成処理に失敗しました。",
 																		          false);

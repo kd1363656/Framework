@@ -143,15 +143,6 @@
 #include "Graphics/Resource/Storage/Converter/Json/AssetStorageJsonConverter.h"
 #include "Graphics/Resource/Storage/AssetStorage.h"
 
-// アップロードシステム
-#include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
-#include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
-#include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
-#include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
-#include "Graphics/Resource/Upload/Definition/Struct/UploadSystemStruct.h"
-#include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
-#include "Graphics/Resource/Upload/UploadSystem.h"
-
 // メモリアロケータクラス
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
 
@@ -160,6 +151,7 @@
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
+#include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
@@ -174,6 +166,14 @@
 #include "Graphics/Resource/Texture/RenderTarget/RenderTargetTexture.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
+
+// アップロードシステム
+#include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
+#include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"
+#include "Graphics/Resource/Upload/Command/List/CopyCommandList.h"
+#include "Graphics/Resource/Upload/Command/Queue/CopyCommandQueue.h"
+#include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
+#include "Graphics/Resource/Upload/UploadSystem.h"
 
 // リソースコンテキストの定数
 #include "Graphics/Resource/Converter/Json/ResourceContextJsonConverter.h"

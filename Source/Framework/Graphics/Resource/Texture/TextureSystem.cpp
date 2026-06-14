@@ -17,7 +17,7 @@ bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemor
 	return true;
 }
 
-FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					   a_device, 
+FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					       a_device, 
 																					   const GPUMemoryAllocator&		   a_gpuMemoryAllocator,
 																					   const std::filesystem::path&		   a_filePath, 
 																							 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
@@ -118,10 +118,6 @@ nlohmann::json FWK::Graphics::TextureSystem::Serialize() const
 
 void FWK::Graphics::TextureSystem::RegisterPendingTextures()
 {
-	// もしアップロード処理が終わっていなければ
-	// このMapの情報を削除、Storageに登録をしてはいけないためreturn(失敗はしていないためtrueを返す)
-	if (!m_isUploadToDefaultHeapCopyCompleted) { return; }
-
 	for (const auto& [l_filePath, l_pendingTextureBatchUploadRecord] : m_pendingTextureBatchUploadRecordMap)
 	{
 		auto& l_textureRecord = l_pendingTextureBatchUploadRecord.m_textureRecord;
@@ -132,9 +128,6 @@ void FWK::Graphics::TextureSystem::RegisterPendingTextures()
 
 	// そのフレーム内でロードすべきテクスチャをすべてロードし終えた状態なのでクリア
 	m_pendingTextureBatchUploadRecordMap.clear();
-
-	// 次フレームのコピー完了通知が来るまでこの関数を実行しない
-	m_isUploadToDefaultHeapCopyCompleted = false;
 }
 
 bool FWK::Graphics::TextureSystem::AddTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord)

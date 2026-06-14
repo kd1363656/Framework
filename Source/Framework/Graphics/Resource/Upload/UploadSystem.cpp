@@ -59,9 +59,6 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(T
 	// Batch + Wait方式なので、ここでGPUコピー完了まで待つ
 	// この関数を抜けた後はUploadBufferを保持し続ける必要がない
 	m_copyCommandQueue.EnsureAllocatorAvailable(*l_copyCommandAllocator);
-
-	// コピーが完了したことを伝える
-	a_textureSystem.SetIsUploadToDefaultHeapCopyCompleted(true);
 }
 
 nlohmann::json FWK::Graphics::UploadSystem::Serialize() const
