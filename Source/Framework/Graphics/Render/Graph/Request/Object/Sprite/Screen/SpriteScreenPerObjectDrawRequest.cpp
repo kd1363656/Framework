@@ -6,25 +6,14 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 	m_drawRequestPerObjectList.BeginFrame();
 }
 
-void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer)
+void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, 
+																				   const Renderer&		  a_renderer,
+																				   const RootSignature&   a_rootSignature, 
+																				   const FrameResource&   a_currentFrameResource)
 {
 	const auto& l_renderGraph       = a_renderer.GetREFRenderGraph		();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-	// パイプラインステート、ルートシグネチャをセット
-	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::SpriteScreen).lock();
-
-	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature, "Forward描画用RootSignatureが無効なため、Sprite描画申請処理に失敗しました。");
-
-	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
-
-	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、Sprite描画申請処理に失敗しました。");
-
-	const auto& l_spritePassDrawRequest = l_renderGraph.FindVALDrawRequestPass<SpriteScreenPassDrawRequest>().lock();
-
-	FWK_ASSERT_RETURN_IF_FAILED(!l_spritePassDrawRequest,																						   "スプライトパスのポインタが無効になっており、Sprite描画申請処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!l_spritePassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "スプライト定数の設定が出来ませんでした、Sprite描画申請処理に失敗しました。");
-	
 	const auto& l_textureSystem = a_resourceContext.GetREFTextureSystem();
 
 	for (const auto& l_drawRequest : m_drawRequestPerObjectList.GetREFDrawRequestPerObjectRecordList())
@@ -59,11 +48,11 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 		l_cbSpritePerObject.m_pivot		 = l_drawRequestPerObject->m_pivot;
 		l_cbSpritePerObject.m_sourceRECT = l_drawRequestPerObject->m_sourceRECT;
 
-		SetupPerObjectConstantBuffer<SpriteScreenPerObjectConstantBufferUploader>(*l_rootSignature,
-																				  l_directCommandList,
-																				  *l_currentFrameResource,
-																				  l_cbSpritePerObject,
-																				  Enum::RootParameterType::CBSpritePerObject);
+		SetupConstantBuffer<SpriteScreenPerObjectConstantBufferUploader>(a_rootSignature,
+																		 l_directCommandList,
+																		 a_currentFrameResource,
+																		 l_cbSpritePerObject,
+																		 Enum::RootParameterType::CBSpritePerObject);
 
 		// MeshShaderを1グループ実行して、画面スプライト用の四角形を描画する。
 		l_directCommandList.DispatchMesh(GetVALDefaultDispatchMeshThreadGroupCountX(), GetVALDefaultDispatchMeshThreadGroupCountY(), GetVALDefaultDispatchMeshThreadGroupCountZ());

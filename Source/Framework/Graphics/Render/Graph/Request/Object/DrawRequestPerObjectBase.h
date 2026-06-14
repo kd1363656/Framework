@@ -16,7 +16,10 @@ namespace FWK::Graphics
 
 		virtual void BeginFrame() = 0;
 
-		virtual void SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, const Renderer& a_renderer) = 0;
+		virtual void SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, 
+												  const Renderer&		 a_renderer,
+												  const RootSignature&   a_rootSignature, 
+												  const FrameResource&   a_currentFrameResource) = 0;
 
 	protected:
 
