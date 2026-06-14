@@ -19,15 +19,15 @@ namespace FWK::Graphics
 		virtual void SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, 
 												  const Renderer&		 a_renderer,
 												  const RootSignature&   a_rootSignature, 
-												  const FrameResource&   a_currentFrameResource) = 0;
+												  const FrameResource&   a_frameResource) = 0;
 
 	protected:
 
 		// 定数バッファの上書き禁止(定数バッファのインデックスを進めて新しい定数バッファに書き込む方式)
 		template <Concept::IsDerivedConstantBufferUploaderBaseConcept ConstantBufferUploaderType, typename ConstantBufferType>
-		void SetupConstantBuffer(const RootSignature&	        a_rootSignature,
+		void SetupConstantBuffer(const RootSignature&	      a_rootSignature,
 								const DirectCommandList&      a_directCommandList,
-								const FrameResource&	        a_frameResource,
+								const FrameResource&	      a_frameResource,
 								const ConstantBufferType&     a_constantBuffer,
 								const Enum::RootParameterType a_rootParameterType)
 		{

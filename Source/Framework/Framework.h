@@ -212,6 +212,11 @@
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/Buffer/SpriteScreenPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
 
+// 描画リクエスト(レンダーターゲット共通パス)
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Definition/Struct/CBFinalPresentRenderTargetPassStruct.h"
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalPresentRenderTargetPassConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
+
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectList.h"

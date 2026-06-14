@@ -19,7 +19,7 @@ namespace FWK::Graphics
 		void SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, 
 										  const Renderer&		 a_renderer,
 										  const RootSignature&   a_rootSignature, 
-										  const FrameResource&   a_currentFrameResource) override;
+										  const FrameResource&   a_frameResource) override;
 
 		void AddDrawRequestPerObject(const std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData>& a_drawRequestData);
 

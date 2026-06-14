@@ -27,7 +27,7 @@ namespace FWK::Graphics
 					const UINT64&					    a_retiredFenceValue,
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-												  ResourceReleaseContext&		a_resourceReleaseContext);
+						  ResourceReleaseContext&		a_resourceReleaseContext) const;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 

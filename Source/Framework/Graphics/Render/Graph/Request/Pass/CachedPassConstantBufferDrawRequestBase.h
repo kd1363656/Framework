@@ -23,7 +23,11 @@ namespace FWK::Graphics
 			m_constantBuffer = *l_source;
 		}
 
+		const auto& GetREFSourceConstantBuffer() const { return m_sourceConstantBuffer; }
+		
 		const auto& GetREFConstantBuffer() const { return m_constantBuffer; }
+
+		auto& GetMutableREFConstantBuffer() { return m_constantBuffer; }
 
 	private:
 

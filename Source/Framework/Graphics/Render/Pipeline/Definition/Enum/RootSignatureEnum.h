@@ -22,6 +22,7 @@ namespace FWK::Enum
 		Invalid,
 		CBSpritePass,
 		CBSpritePerObject,
+		CBFinalPresentPass,
 		Count,
 	};
 
@@ -31,6 +32,7 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RootParameterType::Invalid),
 		FWK_JSON_ENUM_VALUE(RootParameterType::CBSpritePass),
 		FWK_JSON_ENUM_VALUE(RootParameterType::CBSpritePerObject),
+		FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalPresentPass),
 		FWK_JSON_ENUM_VALUE(RootParameterType::Count),
 	)
 }

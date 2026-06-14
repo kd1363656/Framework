@@ -9,7 +9,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, 
 																				   const Renderer&		  a_renderer,
 																				   const RootSignature&   a_rootSignature, 
-																				   const FrameResource&   a_currentFrameResource)
+																				   const FrameResource&   a_frameResource)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
@@ -49,7 +49,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 
 		SetupConstantBuffer<SpriteScreenPerObjectConstantBufferUploader>(a_rootSignature,
 																		 l_directCommandList,
-																		 a_currentFrameResource,
+																		 a_frameResource,
 																		 l_cbSpritePerObject,
 																		 Enum::RootParameterType::CBSpritePerObject);
 

@@ -40,7 +40,7 @@ bool FWK::Graphics::FrameResource::Resize(const Device&			              a_device
 										  const UINT64&				          a_retiredFenceValue,
 										        TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
 										        TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
-										  	    ResourceReleaseContext&		  a_resourceReleaseContext)
+										  	    ResourceReleaseContext&		  a_resourceReleaseContext) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderGraphFrameResource.Resize(a_device,
 																		 a_gpuMemoryAllocator,
