@@ -9,8 +9,6 @@ namespace FWK::Graphics
 				 DrawRequestPassBase() = default;
 		virtual ~DrawRequestPassBase() = default;
 
-		virtual void BeginFrame() { /*必要に応じてオーバーライドしてください*/ };
-
 		virtual bool SetupPassConstantBuffer(const RootSignature& a_rootSignature, const DirectCommandList& a_directCommandList, const FrameResource& a_frameResource) = 0;
 
 	protected:

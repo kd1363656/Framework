@@ -11,13 +11,6 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 	// 使用、ポインタがnullのパスの削除
 	RemoveExpiredPassList();
 	
-	for (const auto& l_drawRequestPass : m_drawRequestPassList)
-	{
-		// 共通定数バッファのパラメータを更新
-		FWK_ASSERT_RETURN_IF_FAILED  (!l_drawRequestPass, "DrawRequestPassが無効のため、BeginFrame処理に失敗しました。");
-		l_drawRequestPass->BeginFrame();
-	}
-	
 	for (const auto& l_drawRequestPerObject : m_drawRequestPerObjectList)
 	{
 		FWK_ASSERT_RETURN_IF_FAILED       (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
@@ -32,6 +25,7 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 	const auto& l_srvDescriptorPool = a_resourceContext.GetREFSRVDescriptorPool();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList	   ();
 
+	// SRVディスクリプタヒープをセット
 	l_directCommandList.SetupDescriptorHeap(l_srvDescriptorPool);
 
 	for (const auto& l_pass : m_passList)
