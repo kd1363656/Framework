@@ -787,6 +787,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct">
       <UniqueIdentifier>{9e81086c-293c-4b73-ad2f-0f35050e34ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Final">
+      <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1530,6 +1533,9 @@
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreenShader.hlsli">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
     </None>
+    <None Include="Asset\Shader\Final\FinalPresentShader.hlsli">
+      <Filter>Asset\Shader\Final</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -1537,6 +1543,12 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Final\FinalPresent_MS.hlsl">
+      <Filter>Asset\Shader\Final</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Final\FinalPresent_PS.hlsl">
+      <Filter>Asset\Shader\Final</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>
