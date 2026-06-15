@@ -8,7 +8,8 @@ FWK::Editor::EditorManager::~EditorManager()
 
 void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 {
-	if (m_isInitialized) { return; }
+	// ログウィンドウがインスタンス化されていたら実行しない
+	if (m_logEditorWindow) { return; }
 
 	const auto& l_graphicsManager    = Graphics::GraphicsManager::GetInstance ();
 	const auto& l_device		     = l_graphicsManager.GetREFDevice		  ().GetREFDevice();
@@ -47,10 +48,6 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 	EditorStyle::ApplyDefaultFont    ();
 	EditorStyle::ApplySakuraDarkStyle();
 
-	// WIN32用ImGuiバックエンドを初期化する
-	// ImGui_ImplWind32_Init(入力を受け取る対象ウィンドウハンドル);
-	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplWin32_Init(a_hwnd), "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理にに失敗しました。");
-
 	ImGui_ImplDX12_InitInfo l_initINFO = {};
 
 	// DirectX12のDeviceを設定する
@@ -80,11 +77,20 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 	// ImGuiがsrvを開放するときに呼ばれる解放関数を設定する
 	l_initINFO.SrvDescriptorFreeFn = &EditorManager::ReleaseSRVDescriptor;
 
+	// WIN32用ImGuiバックエンドを初期化する
+	// ImGui_ImplWind32_Init(入力を受け取る対象ウィンドウハンドル);
+	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplWin32_Init(a_hwnd),      "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理にに失敗しました。");
+
 	// DirectX12用ImGuiバックエンドを初期化する
 	// ImGui_ImplDX12_Init(DirectX12用初期化情報);
-	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplDX12_Init(&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理にに失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplDX12_Init (&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理にに失敗しました。");
 
-	m_isInitialized = true;
+	if (!m_logEditorWindow)
+	{
+		m_logEditorWindow = std::make_unique<Editor::LogEditorWindow>();
+	}
+
+	m_logEditorWindow->INIT();
 }
 void FWK::Editor::EditorManager::LoadCONFIG()
 {
@@ -94,10 +100,21 @@ void FWK::Editor::EditorManager::LoadCONFIG()
 
 	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
+void FWK::Editor::EditorManager::PostLoadCONFIG() const
+{
+	// デシリアライズで追加したウィンドウの初期化
+	for (const auto& l_editorWindow : m_editorWindowList)
+	{
+		if (!l_editorWindow) { continue; }
+
+		l_editorWindow->INIT();
+	}
+}
 
 void FWK::Editor::EditorManager::DrawEdtor() const
 {
-	if (!m_isInitialized) { return; }
+	// ログウィンドウがインスタンス化されていなければ実行しない
+	if (!m_logEditorWindow) { return; }
 
 	const auto& l_graphicsManager    = Graphics::GraphicsManager::GetInstance ();
 	const auto& l_renderer			 = l_graphicsManager.GetREFRenderer		  ();
@@ -137,9 +154,32 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
+void FWK::Editor::EditorManager::AddLog(const std::source_location& a_location, const char* a_format, ...)
+{
+	// ログウィンドウがインスタンス化されていなければ実行しない
+	if (!m_logEditorWindow) { return; }
+
+	char l_logBuffer[k_logBufferSize];
+
+	va_list l_args;
+
+	va_start  (l_args,      a_format);
+	vsprintf_s(l_logBuffer, a_format, l_args);
+	va_end    (l_args);
+
+	m_logEditorWindow->AddLog(U8("[%s : %u][%s]\n%s\n"),
+							  a_location.file_name(),
+							  a_location.line(),
+							  a_location.function_name(),
+							  l_logBuffer);
+}
+
 void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");
+
+	// リスト内に保持してはいけないウィンドウを保持しない
+	if (!a_editorWindow->IsAllowCreateInList()) { return; }
 
 	const auto& l_staticID = a_editorWindow->GetREFRuntimeTypeINFO().k_staticTypeID;
 
@@ -246,12 +286,18 @@ void FWK::Editor::EditorManager::DrawEditorWindow() const
 
 		l_editorWindow->Draw();
 	}
+
+	if (m_logEditorWindow)
+	{
+		m_logEditorWindow->Draw();
+	}
 }
 
 void FWK::Editor::EditorManager::Release()
 {
-	if (!m_isInitialized) { return; }
-
+	// ログウィンドウがインスタンス化されていなければ実行しない
+	if (!m_logEditorWindow) { return; }
+	
 	ImGui_ImplDX12_Shutdown ();
 	ImGui_ImplWin32_Shutdown();
 
@@ -272,5 +318,5 @@ void FWK::Editor::EditorManager::Release()
 
 	m_srvDescriptorIndexMap.clear();
 
-	m_isInitialized = false;
+	m_logEditorWindow.reset();
 }

@@ -27,7 +27,7 @@
 #include <queue>
 #include <unordered_set>
 #include <format>
-#include <optional>
+#include <source_location>
 
 //================================================
 // 外部ライブラリ

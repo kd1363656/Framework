@@ -808,24 +808,6 @@
     <Filter Include="Source\Framework\Editor\Window">
       <UniqueIdentifier>{6aa5612a-d8a8-43b8-9a5b-a6c75fdc2fef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\View">
-      <UniqueIdentifier>{a47be25e-591b-4fc2-a2ac-fa8ebca2ec4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\View\Scene">
-      <UniqueIdentifier>{82e77f6e-1eb2-449f-978d-1b26b4d8943b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition">
-      <UniqueIdentifier>{afc12d64-63fc-44f4-8ea2-321cfc13471a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type">
-      <UniqueIdentifier>{027d0a62-34ef-4e09-98dc-572cf73c10cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias">
-      <UniqueIdentifier>{74836bf1-e013-4320-95db-9060560d84c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory">
-      <UniqueIdentifier>{5139df37-8520-42e8-ae2c-fb13bd1e7f6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Converter">
       <UniqueIdentifier>{0db30708-7e59-4c90-976e-d98f39c8aec1}</UniqueIdentifier>
     </Filter>
@@ -837,6 +819,24 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Definition\Concept">
       <UniqueIdentifier>{e15edeac-429f-4f94-88f3-b5325400e00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Scene">
+      <UniqueIdentifier>{82e77f6e-1eb2-449f-978d-1b26b4d8943b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Log">
+      <UniqueIdentifier>{637420e2-2114-41f2-bdb2-5c4e678f583d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Log\Definition">
+      <UniqueIdentifier>{afc12d64-63fc-44f4-8ea2-321cfc13471a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type">
+      <UniqueIdentifier>{027d0a62-34ef-4e09-98dc-572cf73c10cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias">
+      <UniqueIdentifier>{74836bf1-e013-4320-95db-9060560d84c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory">
+      <UniqueIdentifier>{5139df37-8520-42e8-ae2c-fb13bd1e7f6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1347,17 +1347,20 @@
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h">
       <Filter>Source\Framework\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\View\Scene\SceneViewEditorWindow.h">
-      <Filter>Source\Framework\Editor\Window\View\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory\EditorWindowSharedFactory.h">
-      <Filter>Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h">
       <Filter>Source\Framework\Editor\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Definition\Concept\IsDerivedEditorWindowBaseConcept.h">
       <Filter>Source\Framework\Editor\Definition\Concept</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory\EditorWindowSharedFactory.h">
+      <Filter>Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1598,11 +1601,14 @@
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp">
       <Filter>Source\Framework\Editor\Style</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\View\Scene\SceneViewEditorWindow.cpp">
-      <Filter>Source\Framework\Editor\Window\View\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\Log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

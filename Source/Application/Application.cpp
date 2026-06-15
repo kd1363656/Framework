@@ -38,9 +38,13 @@ void Application::Execute()
 
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
+	l_editorManager.PostLoadCONFIG  ();
 
 	l_editorManager.INIT(m_window.GetREFHWND());
 	l_sceneManager.INIT ();
+
+	int a = 0;
+	FWK_ADD_LOG("まてちゃ : %d", a);
 
 	while (true)
 	{

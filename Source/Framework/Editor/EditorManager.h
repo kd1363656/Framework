@@ -16,12 +16,15 @@ namespace FWK::Editor
 
 	public:
 
-		void INIT      (const HWND& a_hwnd);
-		void LoadCONFIG();
+		void INIT          (const HWND& a_hwnd);
+		void LoadCONFIG    ();
+		void PostLoadCONFIG() const;
 
 		void DrawEdtor() const;
 		
 		void SaveCONFIG() const;
+
+		void AddLog(const std::source_location& a_location, const char* a_format, ...);
 
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
@@ -62,7 +65,11 @@ namespace FWK::Editor
 		static constexpr float k_dockingWindowRounding   = 0.0F;
 		static constexpr float k_dockingWindowBorderSize = 0.0F;
 
+		static constexpr size_t k_logBufferSize = 1024ULL;
+
 		static constexpr int k_dockingStyleVarPopCount = 2;
+
+		std::unique_ptr<Editor::LogEditorWindow> m_logEditorWindow = nullptr;
 
 		SRVDescriptorIndexMap m_srvDescriptorIndexMap = {};
 		EditorWindowMap       m_editorWindowMap       = {};
@@ -71,7 +78,19 @@ namespace FWK::Editor
 
 		Converter::EditorManagerJsonConverter m_jsonConverter = {};
 
-		bool m_isInitialized = false;
 		bool m_isValidEditor = false;
 	};
 }
+
+// const char8_t*をconst char*として扱うマクロ(c++20から使えなくなってるので)
+#if defined(__cpp_char8_t)
+	#define U8(X) ((const char *)u8##X)
+#else
+	#define U8(x) u8##x
+#endif
+
+#define FWK_ADD_LOG(Format , ...)																							  \
+do																															  \
+{																															  \
+	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), U8(Format) __VA_OPT__(, ) __VA_ARGS__); \
+} while(false)
