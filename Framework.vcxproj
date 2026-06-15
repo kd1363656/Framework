@@ -334,6 +334,8 @@ if "$(Configuration)"=="Debug" (
   <ItemGroup>
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
+    <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Definition\Concept\IsDerivedEditorWindowBaseConcept.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
@@ -507,6 +509,7 @@ if "$(Configuration)"=="Debug" (
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\View\Scene\SceneViewEditorWindow.cpp" />

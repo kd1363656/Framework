@@ -826,6 +826,18 @@
     <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory">
       <UniqueIdentifier>{5139df37-8520-42e8-ae2c-fb13bd1e7f6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Converter">
+      <UniqueIdentifier>{0db30708-7e59-4c90-976e-d98f39c8aec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Converter\Json">
+      <UniqueIdentifier>{50121c4f-ec3b-4082-ae04-381e988aebfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Definition">
+      <UniqueIdentifier>{6dd0e412-b8d4-4322-996a-8e593f9eb425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Definition\Concept">
+      <UniqueIdentifier>{e15edeac-429f-4f94-88f3-b5325400e00a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1341,6 +1353,12 @@
     <ClInclude Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory\EditorWindowSharedFactory.h">
       <Filter>Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h">
+      <Filter>Source\Framework\Editor\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Definition\Concept\IsDerivedEditorWindowBaseConcept.h">
+      <Filter>Source\Framework\Editor\Definition\Concept</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1582,6 +1600,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\View\Scene\SceneViewEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\View\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

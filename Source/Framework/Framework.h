@@ -256,6 +256,8 @@
 #include "Editor/Window/EditorWindowBase.h"
 #include "Editor/Window/View/Scene/Definition/Type/Alias/Factory/EditorWindowSharedFactory.h"
 #include "Editor/Window/View/Scene/SceneViewEditorWindow.h"
+#include "Editor/Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
+#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
 #include "Editor/EditorManager.h"
 
 // シーン

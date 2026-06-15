@@ -88,9 +88,14 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 }
 void FWK::Editor::EditorManager::LoadCONFIG()
 {
+	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
+
+	if (l_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
 
-void FWK::Editor::EditorManager::DrawEdtor()
+void FWK::Editor::EditorManager::DrawEdtor() const
 {
 	if (!m_isInitialized) { return; }
 
@@ -98,16 +103,9 @@ void FWK::Editor::EditorManager::DrawEdtor()
 	const auto& l_renderer			 = l_graphicsManager.GetREFRenderer		  ();
 	const auto& l_directCommandList  = l_renderer.GetREFDirectCommandList	  ();
 
-	const auto& l_resourceContext			  = l_graphicsManager.GetREFResourceContext				 ();
-	const auto& l_srvDescriptorPool			  = l_resourceContext.GetREFSRVDescriptorPool            ();
-	const auto& l_shadervisibleDescriptorHeap = l_srvDescriptorPool.GetREFShaderVisibleDescriptorHeap();
-
-	FWK_ASSERT_RETURN_IF_FAILED(!l_shadervisibleDescriptorHeap, "SRVDescriptorHeapのShaderVisibleなHeapラッパーが無効のため、ImGuiの描画処理に失敗しました。");
-
-	const auto& l_descriptorHeap = l_shadervisibleDescriptorHeap->GetREFDescriptorHeap();
-
-	FWK_ASSERT_RETURN_IF_FAILED(!l_descriptorHeap, "SRVDescriptorHeapが無効のため、ImGuiの描画処理に失敗しました。");
-
+	const auto& l_resourceContext	= l_graphicsManager.GetREFResourceContext  ();
+	const auto& l_srvDescriptorPool = l_resourceContext.GetREFSRVDescriptorPool();
+	
 	// DirectX12用ImGuiバックエンドのフレーム開始処理
 	ImGui_ImplDX12_NewFrame();
 
@@ -118,14 +116,10 @@ void FWK::Editor::EditorManager::DrawEdtor()
 	ImGui::NewFrame();
 
 	DrawDockingSpace();
+	DrawEditorWindow();
 
 	// ImGuiの描画データを確定する
 	ImGui::Render();
-
-	ID3D12DescriptorHeap* l_descriptorHeapList[] =
-	{
-		l_descriptorHeap.Get()
-	};
 
 	// ImGuiのフォントテクスチャなどはSRVDescriptorHeapを使うため、描画前に設定する
 	l_directCommandList.SetupDescriptorHeap(l_srvDescriptorPool);
@@ -138,6 +132,22 @@ void FWK::Editor::EditorManager::DrawEdtor()
 
 void FWK::Editor::EditorManager::SaveCONFIG() const
 {
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
+}
+
+void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");
+
+	const auto& l_staticID = a_editorWindow->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	// 既に作成されているならばreturn
+	if (m_editorWindowMap.contains(l_staticID)) { return; }
+
+	m_editorWindowList.emplace_back(a_editorWindow);
+	m_editorWindowMap.try_emplace  (l_staticID, a_editorWindow);
 }
 
 void FWK::Editor::EditorManager::AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo * a_info, D3D12_CPU_DESCRIPTOR_HANDLE * a_outCPUHandle, D3D12_GPU_DESCRIPTOR_HANDLE * a_outGPUHandle)
@@ -227,6 +237,15 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
 
 	ImGui::DockSpace(l_dockSpaceID, l_size, ImGuiDockNodeFlags_None);
 	ImGui::End      ();
+}
+void FWK::Editor::EditorManager::DrawEditorWindow() const
+{
+	for (const auto& l_editorWindow : m_editorWindowList)
+	{
+		if (!l_editorWindow) { continue; }
+
+		l_editorWindow->Draw();
+	}
 }
 
 void FWK::Editor::EditorManager::Release()

@@ -27,17 +27,20 @@ int WINAPI WinMain(_In_     HINSTANCE,
 void Application::Execute()
 {
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
+	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
+	auto& l_sceneManager    = FWK::SceneManager::GetInstance			     ();
 
 	l_graphicsManager.INIT();
 
 	LoadCONFIG                  ();
 	l_graphicsManager.LoadCONFIG();
+	l_editorManager.LoadCONFIG  ();
 
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
 
-	l_sceneManager.INIT();
+	l_editorManager.INIT(m_window.GetREFHWND());
+	l_sceneManager.INIT ();
 
 	while (true)
 	{
@@ -66,7 +69,12 @@ void Application::Execute()
 		// 描画処理
 		l_graphicsManager.BeginFrame();
 		l_graphicsManager.Execute   ();
-		l_graphicsManager.EndFrame  ();
+
+		// エディターの描画
+		// (描画する際にレンダーターゲットのリソース状態がPresentではエディターの描画ができないため)
+		l_editorManager.DrawEdtor();
+
+		l_graphicsManager.EndFrame();
 
 		EndFrame();
 	}
@@ -74,6 +82,7 @@ void Application::Execute()
 	// もしゲームデータがセーブされていなくても変更が適用されるべき項目を自動セーブする
 	SaveCONFIG					();
 	l_graphicsManager.SaveCONFIG();
+	l_editorManager.SaveCONFIG  ();
 }
 
 void Application::LoadCONFIG()
