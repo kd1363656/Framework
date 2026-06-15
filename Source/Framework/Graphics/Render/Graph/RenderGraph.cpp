@@ -197,18 +197,6 @@ bool FWK::Graphics::RenderGraph::SetupBackBufferRenderTarget(const ResourceConte
 
 	return true;
 }
-void FWK::Graphics::RenderGraph::SetupPassRenderTarget(const ResourceContext & a_resourceContext, const RenderGraphPassBase & a_pass, const Renderer & a_renderer) const
-{
-	for (const auto& l_resourceAccess : a_pass.GetREFResourceAccessList())
-	{
-		if (!IsWriteRenderTargetAccess(l_resourceAccess)) { continue; }
-
-		if (SetupBackBufferRenderTarget(a_resourceContext, a_renderer, l_resourceAccess))			   { continue; }
-		if (SetupRenderTargetPassTextureRenderTarget(a_resourceContext, a_renderer, l_resourceAccess)) { continue; }
-
-		FWK_ASSERT_RETURN("ResourceAccessに対応するRenderTargetが存在しないため、Passの描画先設定に失敗しました。");
-	}
-}
 bool FWK::Graphics::RenderGraph::SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
 	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
@@ -232,6 +220,19 @@ bool FWK::Graphics::RenderGraph::SetupRenderTargetPassTextureRenderTarget(const 
 	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool,  l_renderTargetTexture.GetVALRTVDescriptorIndex());
 	
 	return true;
+}
+void FWK::Graphics::RenderGraph::SetupPassRenderTarget(const ResourceContext & a_resourceContext, const RenderGraphPassBase & a_pass, const Renderer & a_renderer) const
+{
+	for (const auto& l_resourceAccess : a_pass.GetREFResourceAccessList())
+	{
+		// レンダーターゲットに書き込まなければcontinue
+		if (!IsWriteRenderTargetAccess(l_resourceAccess)) { continue; }
+
+		if (SetupBackBufferRenderTarget(a_resourceContext, a_renderer, l_resourceAccess))			   { continue; }
+		if (SetupRenderTargetPassTextureRenderTarget(a_resourceContext, a_renderer, l_resourceAccess)) { continue; }
+
+		FWK_ASSERT_RETURN("ResourceAccessに対応するRenderTargetが存在しないため、Passの描画先設定に失敗しました。");
+	}
 }
 
 bool FWK::Graphics::RenderGraph::IsWriteRenderTargetAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
@@ -311,6 +312,7 @@ bool FWK::Graphics::RenderGraph::TransitionRenderTargetPassTextureResource(const
 	// 既に必要な状態ならResourceBarrierは不要
 	if (l_beforeState == l_afterState) { return true; }
 
+	// リソース状態の遷移
 	l_directCommandList.TransitionResourceBarrier(l_gpuResource.m_resource, l_beforeState, l_afterState);
 
 	// RenderGraph側でRenderTargetTextureのCPU側Stateを更新する
@@ -344,7 +346,6 @@ D3D12_RESOURCE_STATES FWK::Graphics::RenderGraph::ConvertVALD3D12ResourceState(c
 		default: 
 		{
 			FWK_ASSERT_RETURN_VALUE("未対応のRenderGraphResourceUsageが指定されたため、D3D12_RESOURCE_STATESへの変換に失敗しました。", D3D12_RESOURCE_STATE_COMMON);
-
 		}
 		break;
 	}

@@ -2,6 +2,7 @@
 
 FWK::Graphics::ScreenSpritePass::ScreenSpritePass()
 {
+	// シーンカラー用レンダーターゲットテクスチャのリソース状態をRENDER_TARGETに遷移してから書き込む
 	WriteResource(Enum::RenderGraphResourceType::SceneColor, Enum::RenderGraphResourceUsage::RenderTarget);
 }
 FWK::Graphics::ScreenSpritePass::~ScreenSpritePass() = default;

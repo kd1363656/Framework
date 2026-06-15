@@ -2,11 +2,10 @@
 
 FWK::Graphics::FinalPresentPass::FinalPresentPass()
 {
-	// SceneColorではLinear色が入っている中間レンダーターゲット
-	// FinalPresentではSRVとして読み込む。
+	// シーンカラー用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
 	ReadResource(Enum::RenderGraphResourceType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
 
-	// BackBufferは最終表示先なのでRTVとして書き込む
+	// BackBufferのリソース状態をRENDER_TARGETにして書き込む
 	WriteResource(Enum::RenderGraphResourceType::BackBuffer, Enum::RenderGraphResourceUsage::RenderTarget);
 }
 FWK::Graphics::FinalPresentPass::~FinalPresentPass() = default;

@@ -201,9 +201,6 @@
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // レンダーグラフ
-#include "Graphics/Render/Graph/Definition/Enum/RenderGraphEnum.h"
-#include "Graphics/Render/Graph/Definition/Struct/RenderGraphStruct.h"
-
 // 描画リクエスト(共通パス)
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/CachedPassConstantBufferDrawRequestBase.h"
@@ -233,6 +230,8 @@
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
+#include "Graphics/Render/Graph/Pass/Definition/Enum/RenderGraphPassEnum.h"
+#include "Graphics/Render/Graph/Pass/Definition/Struct/RenderGraphPassStruct.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Graphics/Render/Graph/Pass/Definition/Type/Alias/Factory/Unique/RenderGraphPassUniqueFactory.h"
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"

@@ -574,12 +574,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition">
-      <UniqueIdentifier>{6dd41245-4b05-41c8-985f-cc1bd212552e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Struct">
-      <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request">
       <UniqueIdentifier>{23eaa0fc-3ddb-4e14-8ed9-6d98387ffca1}</UniqueIdentifier>
     </Filter>
@@ -715,9 +709,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias">
       <UniqueIdentifier>{d04c25fa-ec2c-4bb0-8a63-0bd9c38ac7ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Definition\Enum">
-      <UniqueIdentifier>{f9cb2205-c110-41ae-9066-a7b55f7b0725}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition">
       <UniqueIdentifier>{d2f1d955-0c29-4d3d-a779-15fc431f13b3}</UniqueIdentifier>
     </Filter>
@@ -795,6 +786,12 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant">
       <UniqueIdentifier>{4b792c9b-e257-4b7a-8a1b-a49383c42054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum">
+      <UniqueIdentifier>{f9cb2205-c110-41ae-9066-a7b55f7b0725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct">
+      <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1167,9 +1164,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
     </ClInclude>
@@ -1242,9 +1236,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum\RenderGraphPassTextureEnum.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
     </ClInclude>
@@ -1292,6 +1283,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum\RenderGraphPassEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

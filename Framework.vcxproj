@@ -375,8 +375,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Enum\RenderGraphEnum.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Definition\Struct\RenderGraphStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum\RenderGraphPassEnum.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
