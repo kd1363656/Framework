@@ -386,6 +386,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum\RenderGraphPassEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h" />
@@ -405,9 +406,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\DrawRequestRenderTargetPassBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct\CBFinalPresentRenderTargetPassStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\FinalColorRenderTargetPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\FinalPresentRenderTargetPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\SpriteScreenPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.h" />
@@ -538,12 +542,14 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />

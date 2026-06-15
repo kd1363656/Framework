@@ -6,6 +6,7 @@ namespace FWK::Enum
 	{
 		Invalid,
 		SpriteScreen,
+		FinalColor,
 		FinalPresent,
 		Count,
 	};
@@ -15,6 +16,7 @@ namespace FWK::Enum
 		RootSignatureType,
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Invalid),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteScreen),
+		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalColor),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
 	)
@@ -24,6 +26,7 @@ namespace FWK::Enum
 		Invalid,
 		CBSpritePass,
 		CBSpritePerObject,
+		CBFinalColorPass,
 		CBFinalPresentPass,
 		Count,
 	};
@@ -34,6 +37,7 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RootParameterType::Invalid),
 		FWK_JSON_ENUM_VALUE(RootParameterType::CBSpritePass),
 		FWK_JSON_ENUM_VALUE(RootParameterType::CBSpritePerObject),
+		FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalColorPass),
 		FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalPresentPass),
 		FWK_JSON_ENUM_VALUE(RootParameterType::Count),
 	)

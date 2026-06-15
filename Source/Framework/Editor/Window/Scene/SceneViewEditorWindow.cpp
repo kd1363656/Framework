@@ -52,8 +52,9 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() con
 	// フレームリソースで管理されている、レンダーグラフフレームリソースを取得
 	const auto& l_renderGraphFrameResource = l_currentFrameResource->GetREFRenderGraphFrameResource();
 
-	// シーンカラーパステクスチャを取得
-	const auto& l_renderTargetPassTexture = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(Enum::RenderGraphResourceType::SceneColor).lock();
+	// ファイナルカラーパステクスチャを取得
+	// (実際にバックバッファに描画する際に使用するガンマ補正などを適用したレンダーターゲットテクスチャ)
+	const auto& l_renderTargetPassTexture = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(Enum::RenderGraphResourceType::FinalColor).lock();
 
 	if (!l_renderTargetPassTexture) { return k_invalidSceneViewTextureID; }
 

@@ -1362,6 +1362,18 @@
     <ClInclude Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory\EditorWindowSharedFactory.h">
       <Filter>Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct\CBFinalColorRenderTargetPassStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\FinalColorRenderTargetPassConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1609,6 +1621,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

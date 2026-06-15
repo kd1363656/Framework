@@ -9,8 +9,8 @@ bool FWK::Graphics::FinalPresentRenderTargetPassDrawRequest::SetupPassConstantBu
 	const auto& l_renderTargetTexture        = l_sceneColorRenderTargetPassTexture->GetREFRenderTargetTexture();
 		  auto& l_finalPresentConstantBuffer = GetMutableREFConstantBuffer									 ();
 
-	// SRVインデックスを更新
-	l_finalPresentConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
+	// 定数バッファにファイナルカラーテクスチャのSRVDescriptorIndexを渡す
+	l_finalPresentConstantBuffer.m_finalColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
 	SetupConstantBuffer<FinalPresentRenderTargetPassConstantBufferUploader>(a_rootSignature,
 																		    a_directCommandList,
