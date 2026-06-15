@@ -222,16 +222,32 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
 	// キーボード、ゲームパッド操作時のフォーカス枠色。
 	l_colorList[ImGuiCol_NavHighlight] = ConvertEditorColorToIMVEC4(k_accentColor);
 }
-void FWK::Editor::EditorStyle::ApplyDefaultFont()
+void FWK::Editor::EditorStyle::ApplyFont()
 {
 	ImGuiIO& l_io = ImGui::GetIO();
 
-	// ※注意
-	// この関数を毎フレーム呼ぶとフォントが重複登録される。
-	// 必ずEditor初期化時に1回だけ呼ぶ
-	// ImGuiに標準フォントを登録する。
-	// 日本語表示やアイコン表示をする場合は、後でここに日本語フォントとFontAwesomeをマージする。
-	l_io.Fonts->AddFontDefault();
+	FWK_ASSERT_RETURN_IF_FAILED(!l_io.Fonts, "フォントが無効です、フォントの適用に失敗しました。");
+
+	// 日本語グリフを含むフォントを読み込む。
+	// ImGuiの標準フォントは日本語を持っていないため、
+	// UTF-8文字列が正しくても日本語部分が'?'で表示される
+	ImFontConfig l_fontConfig = {};
+
+	l_fontConfig.OversampleH = 3;
+	l_fontConfig.OversampleV = 1;
+	l_fontConfig.PixelSnapH  = true;
+	
+	const ImFont* const l_japaneseFont = l_io.Fonts->AddFontFromFileTTF(k_japaneseFontPath,
+																		k_editorFontSize,
+																		&l_fontConfig,
+																		l_io.Fonts->GetGlyphRangesJapanese());
+
+	// フォント読み込みに失敗した場合だけ、最低限の標準フォントへ戻す。
+	// ただし、この阿合は日本語表示できない
+	if (!l_japaneseFont)
+	{
+		l_io.Fonts->AddFontDefault();
+	}
 }
 
 ImVec4 FWK::Editor::EditorStyle::ConvertEditorColorToIMVEC4(const TypeAlias::Math::Color& a_color)

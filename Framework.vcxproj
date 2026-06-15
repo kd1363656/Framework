@@ -209,7 +209,7 @@ if "$(Configuration)"=="Debug" (
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:preprocessor /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -275,7 +275,7 @@ if "$(Configuration)"=="Debug" (
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:preprocessor /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>

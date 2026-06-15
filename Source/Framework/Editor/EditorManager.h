@@ -94,15 +94,8 @@ namespace FWK::Editor
 	};
 }
 
-// const char8_t*をconst char*として扱うマクロ(c++20から使えなくなってるので)
-#if defined(__cpp_char8_t)
-	#define U8(X) ((const char *)u8##X)
-#else
-	#define U8(x) u8##x
-#endif
-
-#define FWK_ADD_LOG(Format , ...)																							  \
-do																															  \
-{																															  \
-	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), U8(Format) __VA_OPT__(, ) __VA_ARGS__); \
+#define FWK_ADD_LOG(Format , ...)																						 \
+do																														 \
+{																														 \
+	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), Format __VA_OPT__(,) __VA_ARGS__); \
 } while(false)

@@ -45,7 +45,7 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 	l_io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	// スタイル設定
-	EditorStyle::ApplyDefaultFont    ();
+	EditorStyle::ApplyFont           ();
 	EditorStyle::ApplySakuraDarkStyle();
 
 	ImGui_ImplDX12_InitInfo l_initINFO = {};
