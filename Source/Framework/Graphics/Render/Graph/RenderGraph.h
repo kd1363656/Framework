@@ -99,12 +99,12 @@ namespace FWK::Graphics
 												 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
 												 std::vector<std::size_t>&				a_passInDegreeList);
 
-		void AddPassDependencyEdge(const std::size_t&							a_beforPassIndex,
+		void AddPassDependencyEdge(const std::size_t&							a_beforePassIndex,
 								   const std::size_t&							a_afterPassIndex,
 										 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
-										 std::vector<std::size_t>&				a_passInDegreeList);
+										 std::vector<std::size_t>&				a_passInDegreeList) const;
 
-		bool IsSameRenderGraphFrameResource(const Struct::RenderGraphResourceAccess& a_lhs, const Struct::RenderGraphResourceAccess& a_rhs) const;
+		bool IsSameRenderGraphResource(const Struct::RenderGraphResourceAccess& a_lhs, const Struct::RenderGraphResourceAccess& a_rhs) const;
 
 		bool IsReadResourceAccess (const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 		bool IsWriteResourceAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;

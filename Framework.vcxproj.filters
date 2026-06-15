@@ -802,6 +802,30 @@
     <Filter Include="Source\Framework\Editor">
       <UniqueIdentifier>{38c53146-182d-4d18-9e5d-23388b0966bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Style">
+      <UniqueIdentifier>{60a4fdba-6280-42df-bcd7-e91454c794de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window">
+      <UniqueIdentifier>{6aa5612a-d8a8-43b8-9a5b-a6c75fdc2fef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\View">
+      <UniqueIdentifier>{a47be25e-591b-4fc2-a2ac-fa8ebca2ec4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\View\Scene">
+      <UniqueIdentifier>{82e77f6e-1eb2-449f-978d-1b26b4d8943b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition">
+      <UniqueIdentifier>{afc12d64-63fc-44f4-8ea2-321cfc13471a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type">
+      <UniqueIdentifier>{027d0a62-34ef-4e09-98dc-572cf73c10cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias">
+      <UniqueIdentifier>{74836bf1-e013-4320-95db-9060560d84c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory">
+      <UniqueIdentifier>{5139df37-8520-42e8-ae2c-fb13bd1e7f6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1305,6 +1329,18 @@
     <ClInclude Include="Source\Framework\Editor\EditorManager.h">
       <Filter>Source\Framework\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h">
+      <Filter>Source\Framework\Editor\Style</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h">
+      <Filter>Source\Framework\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\View\Scene\SceneViewEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\View\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory\EditorWindowSharedFactory.h">
+      <Filter>Source\Framework\Editor\Window\View\Scene\Definition\Type\Alias\Factory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1540,6 +1576,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp">
       <Filter>Source\Framework\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp">
+      <Filter>Source\Framework\Editor\Style</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\View\Scene\SceneViewEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\View\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
