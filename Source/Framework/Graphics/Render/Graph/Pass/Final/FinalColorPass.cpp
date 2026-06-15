@@ -23,7 +23,7 @@ void FWK::Graphics::FinalColorPass::Execute(const ResourceContext & a_resourceCo
 
 	const auto& l_finalColorDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalColorRenderTargetPassDrawRequest>().lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_finalColorDrawRequest,																						   "FinalColorRednerTargetPassDrawRequestが無効のため、FinalColorPassの実行に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!l_finalColorDrawRequest,																						   "FinalColorRenderTargetPassDrawRequestが無効のため、FinalColorPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_finalColorDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalColorPass定数バッファの設定に失敗しました。");
 
 	// SceneColor全体を読み、FinalColorへ全画面描画する

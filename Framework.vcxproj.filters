@@ -1650,6 +1650,9 @@
     <None Include="Asset\Shader\Final\FinalPresentShader.hlsli">
       <Filter>Asset\Shader\Final</Filter>
     </None>
+    <None Include="Asset\Shader\Final\FinalColorShader.hlsli">
+      <Filter>Asset\Shader\Final</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -1662,6 +1665,12 @@
       <Filter>Asset\Shader\Final</Filter>
     </DXCTask>
     <DXCTask Include="Asset\Shader\Final\FinalPresent_PS.hlsl">
+      <Filter>Asset\Shader\Final</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Final\FinalColor_MS.hlsl">
+      <Filter>Asset\Shader\Final</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Final\FinalColor_PS.hlsl">
       <Filter>Asset\Shader\Final</Filter>
     </DXCTask>
   </ItemGroup>

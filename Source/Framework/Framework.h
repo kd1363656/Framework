@@ -215,14 +215,12 @@
 // 描画リクエスト(レンダーターゲット共通パス)
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/DrawRequestRenderTargetPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Definition/Constant/FinalPresentRenderTargetPassDrawRequestConstant.h"
-#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Definition/Struct/CBFinalPresentRenderTargetPassStruct.h"
-#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalPresentRenderTargetPassConstantBufferUploader.h"
-#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
-
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Definition/Struct/CBFinalColorRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalColorRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalColorRenderTargetPassDrawRequest.h"
-
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Definition/Struct/CBFinalPresentRenderTargetPassStruct.h"
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalPresentRenderTargetPassConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
 
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
@@ -243,6 +241,7 @@
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Graphics/Render/Graph/Pass/Definition/Type/Alias/Factory/Unique/RenderGraphPassUniqueFactory.h"
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"
+#include "Graphics/Render/Graph/Pass/Final/FinalColorPass.h"
 #include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
 
 #include "Graphics/Render/Graph/Converter/Json/RenderGraphJsonConverter.h"

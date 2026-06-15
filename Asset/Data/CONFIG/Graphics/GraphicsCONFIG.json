@@ -1,4 +1,4 @@
-{
+﻿{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -15,6 +15,12 @@
                             "CreateConstantBufferCount": 4096
                         },
                         "ConstantBufferUploaderTypeName": "SpriteScreenPerObjectConstantBufferUploader"
+                    },
+                    {
+                        "ConstantBufferUploader": {
+                            "CreateConstantBufferCount": 1
+                        },
+                        "ConstantBufferUploaderTypeName": "FinalColorRenderTargetPassConstantBufferUploader"
                     },
                     {
                         "ConstantBufferUploader": {
@@ -37,6 +43,20 @@
                             "IsFixedSize": false,
                             "IsSkipClearOnBeginFrame": false,
                             "RenderGraphResourceType": "RenderGraphResourceType::SceneColor",
+                            "Width": 0
+                        },
+                        {
+                            "ClearColor": {
+                                "A": 1.0,
+                                "B": 0.0,
+                                "G": 0.0,
+                                "R": 0.0
+                            },
+                            "Format": "DXGI_FORMAT_R8G8B8A8_UNORM",
+                            "Height": 0,
+                            "IsFixedSize": false,
+                            "IsSkipClearOnBeginFrame": false,
+                            "RenderGraphResourceType": "RenderGraphResourceType::FinalColor",
                             "Width": 0
                         }
                     ]
@@ -476,6 +496,44 @@
                     ]
                 },
                 "RootSignatureType": "RootSignatureType::FinalPresent"
+            },
+            {
+                "RootSignature": {
+                    "RootParameterIndexMap": [
+                        {
+                            "Index": 0,
+                            "RootParameterType": "RootParameterType::CBFinalColorPass"
+                        }
+                    ],
+                    "RootParameterList": [
+                        {
+                            "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
+                        }
+                    ],
+                    "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",
+                    "RootSignatureVersion": "D3D_ROOT_SIGNATURE_VERSION_1",
+                    "StaticSamplerDescList": [
+                        {
+                            "AddressU": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
+                            "AddressV": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
+                            "AddressW": "D3D12_TEXTURE_ADDRESS_MODE_CLAMP",
+                            "BorderColor": "D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK",
+                            "ComparisonFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
+                            "Filter": "D3D12_FILTER_MIN_MAG_MIP_LINEAR",
+                            "MaxAnisotropy": 1,
+                            "MaxLOD": 3.4028234663852886e+38,
+                            "MinLOD": 0.0,
+                            "MipLODBias": 0.0,
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
+                        }
+                    ]
+                },
+                "RootSignatureType": "RootSignatureType::FinalColor"
             }
         ],
         "SwapChain": {
