@@ -9,7 +9,7 @@ namespace FWK::Graphics
 		 FinalColorPass();
 		~FinalColorPass() override;
 
-		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+		void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
 		FWK_DEFINE_TYPE_INFO(FinalColorPass, RenderGraphPassBase)
 	};

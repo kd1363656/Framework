@@ -10,7 +10,7 @@ bool FWK::Graphics::FinalColorRenderTargetPassDrawRequest::SetupPassConstantBuff
 	const auto& l_renderTargetTexture      = l_sceneColorRenderTargetPassTexture->GetREFRenderTargetTexture();
 		  auto& l_finalColorConstantBuffer = GetMutableREFConstantBuffer								   ();
 
-	// 定数バッファにファイナルカラーテクスチャのSRVDescriptorIndexを渡す
+	// 定数バッファにシーンカラーテクスチャのSRVDescriptorIndexを渡す
 	l_finalColorConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
 	// 定数バッファをセット

@@ -9,5 +9,5 @@ float4 main(MeshOutput a_input) : SV_Target0
     
     const float3 l_srgbColor = pow(saturate(l_linearColor.rgb), k_srgbGamma);
 
-    return float4(l_srgbColor, l_linearColor.a);
+    return float4(l_srgbColor, saturate(l_linearColor.a));
 }

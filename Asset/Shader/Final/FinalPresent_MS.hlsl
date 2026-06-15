@@ -1,8 +1,8 @@
 ﻿#include "FinalPresentShader.hlsli"
 
 // 全画面三角形を1枚だけ出力する
-// 四角形二枚ではなく大きな三角形1毎で描画することで、
-// 対角線の協会による補完差ポストエフェクトのつなぎ目を避ける
+// 四角形二枚ではなく大きな三角形1枚で描画することで、
+// 対角線の境界による補間差でのポストエフェクトのつなぎ目を避ける
 [outputtopology("triangle")]
 [numthreads(k_finalPresentMeshShaderThreadCountX, k_finalPresentMeshShaderThreadCountY, k_finalPresentMeshShaderThreadCountZ)]
 void main(out vertices MeshOutput a_vertexList   [k_finalPresentVertexCount],
@@ -10,26 +10,12 @@ void main(out vertices MeshOutput a_vertexList   [k_finalPresentVertexCount],
 {
     SetMeshOutputCounts(k_finalPresentVertexCount, k_finalPresentPrimitiveCount);
     
-    const float2 l_positionList[k_finalPresentVertexCount] = 
-    {
-        float2(-1.0F, -1.0F),
-        float2(-1.0F,  3.0F),
-        float2( 3.0F, -1.0F),
-    };
-    
-    const float2 l_uvList[k_finalPresentVertexCount] =
-    {
-        float2(0.0F,  1.0F),
-        float2(0.0F, -1.0F),
-        float2(2.0F,  1.0F),
-    };
-
     [unroll]
     for (uint l_i = 0U; l_i < k_finalPresentVertexCount; ++l_i)
     {
-        a_vertexList[l_i].position = float4(l_positionList[l_i], 0.0F, 1.0F);
-        a_vertexList[l_i].uv       = l_uvList[l_i];
-    };
+        a_vertexList[l_i].position = float4(k_finalPresentFullScreenTrianglePositionList[l_i], k_finalPresentClipPositionZ, k_finalPresentClipPositionW);
+        a_vertexList[l_i].uv       = k_finalPresentFullScreenTriangleUVList[l_i];
+    }
 
-    a_primitiveList[0] = uint3(k_finalPresentVertexIndexZero, k_finalPresentVertexIndexOne, k_finalPresentVertexIndexTwo);
+    a_primitiveList[k_finalPresentPrimitiveIndex] = uint3(k_finalPresentVertexIndexZero, k_finalPresentVertexIndexOne, k_finalPresentVertexIndexTwo);
 }

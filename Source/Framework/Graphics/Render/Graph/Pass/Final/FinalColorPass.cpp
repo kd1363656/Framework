@@ -10,7 +10,7 @@ FWK::Graphics::FinalColorPass::FinalColorPass()
 }
 FWK::Graphics::FinalColorPass::~FinalColorPass() = default;
 
-void FWK::Graphics::FinalColorPass::Execute(const ResourceContext & a_resourceContext, Renderer & a_renderer, RenderGraph & a_renderGraph)
+void FWK::Graphics::FinalColorPass::Execute(const ResourceContext&, Renderer & a_renderer, RenderGraph & a_renderGraph)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 	const auto& l_rootSignature     = SetupRenderPipeline				(a_renderer, Enum::PipelineStateType::FinalColor).lock();
