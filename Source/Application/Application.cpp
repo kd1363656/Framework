@@ -43,9 +43,6 @@ void Application::Execute()
 	l_editorManager.INIT(m_window.GetREFHWND());
 	l_sceneManager.INIT ();
 
-	int a = 0;
-	FWK_ADD_LOG("まてちゃ : {}", a);
-
 	while (true)
 	{
 		// ウィンドウメッセージやアプリケーションを終了するかの処理をしているので
@@ -76,7 +73,7 @@ void Application::Execute()
 
 		// エディターの描画
 		// (描画する際にレンダーターゲットのリソース状態がPresentではエディターの描画ができないため)
-		l_editorManager.DrawEdtor();
+		//l_editorManager.DrawEdtor();
 
 		l_graphicsManager.EndFrame();
 

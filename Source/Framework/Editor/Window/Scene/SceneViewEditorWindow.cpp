@@ -25,6 +25,13 @@ void FWK::Editor::SceneViewEditorWindow::Draw()
 	// 今回はRenderTargetTextureの解像度変更は行わなず、既存の描画結果をSceneView内に拡縮表示する
 	const auto l_sceneViewTextureID = FetchVALSceneViewTextureID();
 
+	// 無効なテクスチャなのでreturn
+	if (l_sceneViewTextureID == k_invalidSceneViewTextureID)
+	{
+		ImGui::End();
+		return; 
+	}
+
 	// SceneViewの表示領域全体に、取得したTextureを描画する
 	DrawSceneViewTexture(l_sceneViewTextureID, l_sceneViewSize);
 
