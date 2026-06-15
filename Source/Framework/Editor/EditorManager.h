@@ -24,8 +24,20 @@ namespace FWK::Editor
 		
 		void SaveCONFIG() const;
 
-		void AddLog(const std::source_location& a_location, const char* a_format, ...);
+		template <class... Args>
+		void AddLog(const std::source_location& a_location, const std::string_view& a_format, Args&&... a_args)
+		{
+			if (!m_logEditorWindow) { return; }
 
+			const std::string l_message = std::vformat(a_format, std::make_format_args(std::forward<Args>(a_args)...));
+
+			m_logEditorWindow->AddLog("[%s : %u][%s]\n%s\n",
+									  a_location.file_name(),
+									  a_location.line(),
+									  a_location.function_name(),
+									  l_message.c_str());
+		}
+		
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
 		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>

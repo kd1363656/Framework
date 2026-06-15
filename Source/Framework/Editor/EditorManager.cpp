@@ -154,26 +154,6 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-void FWK::Editor::EditorManager::AddLog(const std::source_location& a_location, const char* a_format, ...)
-{
-	// ログウィンドウがインスタンス化されていなければ実行しない
-	if (!m_logEditorWindow) { return; }
-
-	char l_logBuffer[k_logBufferSize];
-
-	va_list l_args;
-
-	va_start  (l_args,      a_format);
-	vsprintf_s(l_logBuffer, a_format, l_args);
-	va_end    (l_args);
-
-	m_logEditorWindow->AddLog(U8("[%s : %u][%s]\n%s\n"),
-							  a_location.file_name(),
-							  a_location.line(),
-							  a_location.function_name(),
-							  l_logBuffer);
-}
-
 void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");

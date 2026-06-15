@@ -44,7 +44,7 @@ void Application::Execute()
 	l_sceneManager.INIT ();
 
 	int a = 0;
-	FWK_ADD_LOG("まてちゃ : %d", a);
+	FWK_ADD_LOG("まてちゃ : {}", a);
 
 	while (true)
 	{
