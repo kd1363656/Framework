@@ -6,6 +6,87 @@ void FWK::Graphics::RenderGraph::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
+void FWK::Graphics::RenderGraph::Compile()
+{
+	// 現在のパス総数を取得
+	const auto l_passCount = m_passList.size();
+
+	// パス数が2未満ならパスが一個か0個なのでトポロジカルソートをする必要がないのでreturn
+	if (l_passCount < k_minPassCountToResolveExecutionOrder) { return; }
+
+	std::vector<std::vector<std::size_t>> l_passDependencyList = {};
+	std::vector<std::size_t>			  l_passInDegreeList   = {};
+
+	// パス数分依存関係リストを作成する
+	l_passDependencyList.resize(l_passCount);
+
+	// パス数分入次数リストを作成する(初期値は0)
+	l_passInDegreeList.resize(l_passCount, k_emptyPassInDegree);
+
+	for (std::size_t l_beforePassIndex = 0ULL; l_beforePassIndex < l_passCount; ++l_beforePassIndex)
+	{
+		if (!m_passList[l_beforePassIndex]) { continue; }
+
+		for (std::size_t l_afterPassIndex = l_beforePassIndex + k_nextPassIndexOffset; l_afterPassIndex < l_passCount; ++l_afterPassIndex)
+		{
+			if (!m_passList[l_afterPassIndex]) { continue; }
+
+			AddPassResourceDependencyEdge(l_beforePassIndex, 
+										  l_afterPassIndex,
+										  l_passDependencyList,
+										  l_passInDegreeList);
+		}
+	}
+
+	std::queue<std::size_t> l_visitQueue = {};
+
+	for (std::size_t l_passIndex = 0ULL; l_passIndex < l_passCount; ++l_passIndex)
+	{
+		// 入次数が0でないものはQueueに追加しない
+		if (l_passInDegreeList[l_passIndex] != k_emptyPassInDegree) { continue; }
+
+		l_visitQueue.push(l_passIndex);
+	}
+
+	std::vector<std::size_t> l_sortedPassIndexList = {};
+
+	// パス数分作成
+	l_sortedPassIndexList.reserve(l_passCount);
+
+	// キューが空になるまで実行
+	while (!l_visitQueue.empty())
+	{
+		const auto l_currentPassIndex = l_visitQueue.front();
+		
+		l_visitQueue.pop();
+
+		l_sortedPassIndexList.emplace_back(l_currentPassIndex);
+
+		for (const auto l_nextPassIndex : l_passDependencyList[l_currentPassIndex])
+		{
+			FWK_ASSERT_RETURN_IF_FAILED(l_passInDegreeList[l_nextPassIndex] == k_emptyPassInDegree, "RenderGraphPassの入次数が不正なため、Pass実行順の解決に失敗しました。");
+
+			--l_passInDegreeList[l_nextPassIndex];
+
+			if (l_passInDegreeList[l_nextPassIndex != k_emptyPassInDegree]) { continue; }
+
+			l_visitQueue.push(l_nextPassIndex);
+		}
+	}
+
+	FWK_ASSERT_RETURN_IF_FAILED(l_sortedPassIndexList.size() != l_passCount, "RenderGraphの依存順が循環しているため、Pass実行順の解決に失敗しました。");
+
+	std::vector<std::unique_ptr<RenderGraphPassBase>> l_sortedPassList = {};
+
+	l_sortedPassList.reserve(l_passCount);
+
+	for (const auto l_sortedPassIndex : l_sortedPassIndexList)
+	{
+		l_sortedPassList.emplace_back(std::move(m_passList[l_sortedPassIndex]));
+	}
+
+	m_passList = std::move(l_sortedPassList);
+}
 
 void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceContext, Renderer& a_renderer) 
 {
@@ -272,6 +353,7 @@ bool FWK::Graphics::RenderGraph::TransitionBackBufferResource(const Struct::Rend
 
 	auto& l_backBuffer = l_backBufferList[l_backBufferIndex];
 
+	// バックバッファのリソース状態の遷移
 	TransitionBackBufferResource(l_directCommandList, l_afterState, l_backBuffer);
 
 	return true;
@@ -366,4 +448,33 @@ void FWK::Graphics::RenderGraph::RemoveExpiredPassList()
 		std::swap          (m_passList[l_index], m_passList.back());
 		m_passList.pop_back();
 	}
+}
+
+void FWK::Graphics::RenderGraph::AddPassResourceDependencyEdge(const std::size_t&							a_beforePassIndex, 
+															   const std::size_t&							a_afterPassIndex, 
+																	 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
+																     std::vector<std::size_t>&				a_passInDegreeList)
+{
+
+}
+void FWK::Graphics::RenderGraph::AddPassDependencyEdge(const std::size_t&							a_beforPassIndex, 
+													   const std::size_t&							a_afterPassIndex, 
+															 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
+															 std::vector<std::size_t>&			    a_passInDegreeList)
+{
+
+}
+
+bool FWK::Graphics::RenderGraph::IsSameRenderGraphFrameResource(const Struct::RenderGraphResourceAccess & a_lhs, const Struct::RenderGraphResourceAccess & a_rhs) const
+{
+	return false;
+}
+
+bool FWK::Graphics::RenderGraph::IsReadResourceAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
+{
+	return false;
+}
+bool FWK::Graphics::RenderGraph::IsWriteResourceAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
+{
+	return false;
 }

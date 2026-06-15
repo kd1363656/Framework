@@ -799,6 +799,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\FBXLoader">
       <UniqueIdentifier>{50559f93-f412-4fb2-acd7-028dd405fb49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor">
+      <UniqueIdentifier>{38c53146-182d-4d18-9e5d-23388b0966bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1299,6 +1302,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\EditorManager.h">
+      <Filter>Source\Framework\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1531,6 +1537,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\EditorManager.cpp">
+      <Filter>Source\Framework\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

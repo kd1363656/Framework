@@ -251,6 +251,9 @@
 #include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 
 #include "Graphics/GraphicsManager.h"
 
+// エディター
+#include "Editor/EditorManager.h"
+
 // シーン
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"

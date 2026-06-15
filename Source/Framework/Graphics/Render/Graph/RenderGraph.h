@@ -22,6 +22,7 @@ namespace FWK::Graphics
 		~RenderGraph() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
+		void Compile    ();
 
 		void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
 		void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer);
@@ -93,6 +94,27 @@ namespace FWK::Graphics
 
 		void RemoveExpiredPassList();
 		
+		void AddPassResourceDependencyEdge(const std::size_t&							a_beforePassIndex, 
+										   const std::size_t&							a_afterPassIndex, 
+												 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
+												 std::vector<std::size_t>&				a_passInDegreeList);
+
+		void AddPassDependencyEdge(const std::size_t&							a_beforPassIndex,
+								   const std::size_t&							a_afterPassIndex,
+										 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
+										 std::vector<std::size_t>&				a_passInDegreeList);
+
+		bool IsSameRenderGraphFrameResource(const Struct::RenderGraphResourceAccess& a_lhs, const Struct::RenderGraphResourceAccess& a_rhs) const;
+
+		bool IsReadResourceAccess (const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+		bool IsWriteResourceAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+
+		static constexpr std::size_t k_minPassCountToResolveExecutionOrder = 2ULL;
+
+		static constexpr std::size_t k_emptyPassInDegree = 0ULL;
+
+		static constexpr std::size_t k_nextPassIndexOffset = 1ULL;
+
 		DrawRequestPassMap      m_drawRequestPassMap      = {};
 		DrawRequestPerObjectMap m_drawRequestPerObjectMap = {};
 

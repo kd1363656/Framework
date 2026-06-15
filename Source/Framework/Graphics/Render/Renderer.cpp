@@ -67,6 +67,9 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	// 定数バッファを書くパスに送信
 	m_renderArea.SyncSpritePassDrawRequest(m_renderGraph);
 
+	// レンダーパスの依存順序の解決を行う
+	m_renderGraph.Compile();
+
 	// 最初に使うフレームリソースをキャッシュ
 	m_currentFrameResource = m_frameResourceList[k_initialFrameResourceIndex];
 
