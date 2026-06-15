@@ -73,7 +73,7 @@ void Application::Execute()
 
 		// エディターの描画
 		// (描画する際にレンダーターゲットのリソース状態がPresentではエディターの描画ができないため)
-		//l_editorManager.DrawEdtor();
+		l_editorManager.DrawEdtor();
 
 		l_graphicsManager.EndFrame();
 

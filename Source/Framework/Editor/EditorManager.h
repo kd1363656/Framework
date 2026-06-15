@@ -29,8 +29,15 @@ namespace FWK::Editor
 		{
 			if (!m_logEditorWindow) { return; }
 
+			// a_formatとa_args...を使って、ログ本文の文字列を作成する
+			// 例 : FWK_ADD_LOG("HP = {}, Name = {}", 100, "Player");
+			// この場合はa_format = "HP = {}, Name = {}" a_args... = 100, "Player"
+			// std::make_format_args(...)はstd::vformatに渡すための「フォーマット用引数リスト」を作成する。
+			// std::forward<Args>(a_args)...は、受け取った可変長引数を1つずつ展開してstdd::make_format_argsに渡している。
+			// 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
 			const std::string l_message = std::vformat(a_format, std::make_format_args(std::forward<Args>(a_args)...));
 
+			// 呼びだし元情報をつけてログ本文を記述
 			m_logEditorWindow->AddLog("[%s : %u][%s]\n%s\n",
 									  a_location.file_name(),
 									  a_location.line(),
@@ -94,6 +101,7 @@ namespace FWK::Editor
 	};
 }
 
+// __VA_OPT(,)は可変長引数があるときだけ"","を追加するためのC++20の機能
 #define FWK_ADD_LOG(Format , ...)																						 \
 do																														 \
 {																														 \
