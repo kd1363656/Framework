@@ -167,6 +167,9 @@
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
+// モデル(Static)
+#include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
+
 // アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
 #include "Graphics/Resource/Upload/Command/Allocator/CopyCommandAllocator.h"

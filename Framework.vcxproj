@@ -434,6 +434,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h" />
@@ -546,6 +547,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ResourceContext.cpp" />

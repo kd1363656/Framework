@@ -793,6 +793,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct">
       <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model">
+      <UniqueIdentifier>{0066fa26-f44e-4fcb-8262-0ae6ae47636b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\FBXLoader">
+      <UniqueIdentifier>{50559f93-f412-4fb2-acd7-028dd405fb49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1290,6 +1296,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1519,6 +1528,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
