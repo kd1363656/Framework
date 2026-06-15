@@ -53,7 +53,8 @@ void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
     {
         const float2 l_worldPosition = l_localPositionList[l_i] + g_position;
 		
-		// 画面座標を正射影行列でクリップ座標へ変換する
+		// ピクセル座標を正射影行列でクリップ座標へ変換する
+        // 例 : 画面中央基準の座標を、X/Yが-1.0F = +1.0Fの範囲へ変換する
         a_vertexList[l_i].position = mul(float4(l_worldPosition, k_spritePositionZ, k_spritePositionW), g_projectionMatrix);
     }
 	

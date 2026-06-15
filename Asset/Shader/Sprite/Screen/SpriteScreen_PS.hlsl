@@ -3,10 +3,7 @@
 float4 main(MeshOutput a_input) : SV_Target0
 {
     // Alpha値が0.1以下ならピクセルを破棄
-    if (g_color.a < k_needDiscardWriteAlpha)
-    {
-        discard;
-    }
+    if (g_color.a < k_needDiscardWriteAlpha) { discard; }
     
     Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[g_baseColorTextureSRVIndex];
     
