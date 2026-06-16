@@ -8,6 +8,5 @@ namespace FWK::Converter
 
 		 StaticModelBinaryConverter()		   = default;
 		~StaticModelBinaryConverter() override = default;
-
 	};
 }

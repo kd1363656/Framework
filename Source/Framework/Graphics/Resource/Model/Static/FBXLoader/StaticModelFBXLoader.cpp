@@ -1,6 +1,6 @@
 ﻿#include "StaticModelFBXLoader.h"
 
-bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord) const
+bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord)
 {
 	auto& l_modelData = a_staticModelRecord.GetREFModelData();
 
