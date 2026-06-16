@@ -2,7 +2,6 @@
 
 namespace FWK::Constant
 {
-	inline constexpr std::uint64_t k_emptyModelMeshCount              = 0ULL;
 	inline constexpr std::uint64_t k_emptyModelVertexCount            = 0ULL;
 	inline constexpr std::uint64_t k_emptyModelIndexCount             = 0ULL;
 	inline constexpr std::uint64_t k_emptyTextureFilePathSize         = 0ULL;

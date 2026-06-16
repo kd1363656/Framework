@@ -49,15 +49,18 @@ void FWK::Graphics::FBXModelLoaderBase::DestroyFBXScene(ufbx_scene* a_fbxScene) 
 	ufbx_free_scene(a_fbxScene);
 }
 
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchLocalVertexPosition(const ufbx_mesh * a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点座標の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
 
-	// ufbx_get_vertex_vec3()で、指定した頂点インデックスの座標を取得する
-	// ufbx_mesh::vertex_positionには、FBX内のローカル空間の頂点座標データが入っている
-	const auto& l_position = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_position, a_vertexIndex);
+	const auto& l_localPosition = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_position, a_vertexIndex);
 
-	return ConvertUFBXVector3ToVector3(l_position);
+	// geometry_to_worldは、Geometry空間からWorld空間へ変換する行列
+	// target_axes/target_unit_metersの結果も、ufbx側の変換済み空間として扱う。
+	const auto& l_worldPosition = ufbx_transform_position(&a_fbxNode->geometry_to_world, l_localPosition);
+
+	return ConvertUFBXVector3ToVector3(l_worldPosition);
 }
 FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
@@ -79,122 +82,49 @@ FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(c
 
 	return l_convertedUV;
 }
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchLocalVertexNormal(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexNormal(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点法線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
 
 	if (!a_fbxMesh->vertex_normal.exists) { return {}; }
 
-	// ufbx_get_vertex_vec3(取得する頂点属性、
-	//						取得したい頂点Index);
-	const auto& l_normal = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_normal, a_vertexIndex);
+	const auto& l_localNormal = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_normal, a_vertexIndex);
 
-	// ufbx_vec3_normalize(正規化したいベクトル);
-	// ライティング計算では長さ1の法線を前提にするため、取得時点で正規化する
-	const auto& l_normalizedNormal = ufbx_vec3_normalize(l_normal);
+	// 法線は通常の位置変換行列をそのまま使わない。
+	// ufbx_matrix_for_normals()で法線用行列を作る
+	const auto l_normalMatrix = ufbx_matrix_for_normals(&a_fbxNode->geometry_to_world);
 
-	return ConvertUFBXVector3ToVector3(l_normalizedNormal);
+	auto l_worldNormal = ufbx_transform_direction(&l_normalMatrix, l_localNormal);
+
+	l_worldNormal = ufbx_vec3_normalize(l_worldNormal);
+
+	return ConvertUFBXVector3ToVector3(l_worldNormal);
 }
-FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchLocalVertexTangent(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexTangent(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、頂点接線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
 
-	if (!a_fbxMesh->vertex_tangent.exists)
+	ufbx_vec3 l_localTangent = { k_defaultTangentX, k_defaultTangentY, k_defaultTangentZ };
+
+	if (a_fbxMesh->vertex_tangent.exists)
 	{
-		return 
-		{
-			k_defaultTangentX,
-			k_defaultTangentY,
-			k_defaultTangentZ,
-			k_defaultTangentW
-		};
+		l_localTangent = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_tangent, a_vertexIndex);
+		l_localTangent = ufbx_vec3_normalize (l_localTangent);
 	}
 
-	// ufbx_get_vertex_vec3(取得する頂点属性、
-	//						取得したい頂点Index);
-	const auto& l_tangent = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_tangent, a_vertexIndex);
+	// Tangentは方向ベクトルなので、位置ではなくdirectionとして変換する
+	auto l_worldTangent = ufbx_transform_direction(&a_fbxNode->geometry_to_world, l_localTangent);
 
-	// ufbx_vec3_normalize(正規化したいベクトル);
-	// NormalMapのTBN計算では長さ1の接線を前提にするため、取得時点で正規化する
-	const auto& l_normalizedTangent = ufbx_vec3_normalize(l_tangent);
+	l_worldTangent = ufbx_vec3_normalize(l_worldTangent);
 
 	return
 	{
-		static_cast<float>(l_normalizedTangent.x),
-		static_cast<float>(l_normalizedTangent.y),
-		static_cast<float>(l_normalizedTangent.z),
+		static_cast<float>(l_worldTangent.x),
+		static_cast<float>(l_worldTangent.y),
+		static_cast<float>(l_worldTangent.z),
 		k_defaultTangentW
-	};
-}
-
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::TransformImportPosition(const TypeAlias::Math::Vector3& a_position) const
-{
-	// UnrealEngineで作成・出力したモデルをBlenderへ持ち込み、
-	// そのBlenderからFBXとして出力したモデルを読み込む前提で座標を補正する前提である。
-	// FBX/Blender側の座標と、自作エンジン側の座標系では、
-	// 「上方向」や「下方向」として扱う軸が異なるため、
-	// 読み込んだ頂点座標をそのまま使うとモデルの向きが合わない、
-	// そのため、ここでは読み込んだ座標を以下の通りに並び替える
-	// 読み込み元 : x,y,z -> 自作エンジン : x,z,-y
-	// yとzを入れ替えることで、Blender/FBX側の上方向を自作エンジン側の上方向へ合わせる。
-	// さらに-yにすることで前方向の向きを自作エンジンの左手系座標へ合わせる
-	// また、UnrealEngineは標準でcm単位を使うため、0.01倍にしてcm単位からm単位へ変換する
-	return
-	{
-		a_position.x * k_modelImportScale,
-		a_position.z * k_modelImportScale,
-		a_position.y * k_importAxisNegative * k_modelImportScale
-	};
-}
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::TransformImportNormal(const TypeAlias::Math::Vector3& a_normal) const
-{
-	// UnrealEngineで作成・出力したモデルをBlenderへ持ち込み、
-	// そのBlenderからFBXとして出力したモデルを読み込む前提で座標を補正する前提である。
-	// FBX/Blender側の座標と、自作エンジン側の座標系では、
-	// 「上方向」や「下方向」として扱う軸が異なるため、
-	// 読み込んだ頂点座標をそのまま使うとモデルの向きが合わない、
-	// そのため、ここでは読み込んだ座標を以下の通りに並び替える
-	// 読み込み元 : x,y,z -> 自作エンジン : x,z,-y
-	// yとzを入れ替えることで、Blender/FBX側の上方向を自作エンジン側の上方向へ合わせる。
-	// 法線は方向ベクトルなので、位置のような平行移動やスケール補正は使わない
-	TypeAlias::Math::Vector3 l_normal =
-	{
-		a_normal.x,
-		a_normal.z,
-		a_normal.y * k_importAxisNegative
-	};
-
-	l_normal.Normalize();
-
-	return l_normal;
-}
-FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::TransformImportTangent(const TypeAlias::Math::Vector4& a_tangent) const
-{
-	// UnrealEngineで作成・出力したモデルをBlenderへ持ち込み、
-	// そのBlenderからFBXとして出力したモデルを読み込む前提で座標を補正する前提である。
-	// FBX/Blender側の座標と、自作エンジン側の座標系では、
-	// 「上方向」や「下方向」として扱う軸が異なるため、
-	// 読み込んだ頂点座標をそのまま使うとモデルの向きが合わない、
-	// そのため、ここでは読み込んだ座標を以下の通りに並び替える
-	// 読み込み元 : x,y,z -> 自作エンジン : x,z,-y
-	// yとzを入れ替えることで、Blender/FBX側の上方向を自作エンジン側の上方向へ合わせる。
-	// 接線は方向ベクトルなので、位置のような平行移動やスケール補正は使わない
-	// xyzは軸変換後に正規化し、wはTangent空間の向き判定に使うため維持する
-	TypeAlias::Math::Vector3 l_tangent =
-	{
-		a_tangent.x,
-		a_tangent.z,
-		a_tangent.y * k_importAxisNegative
-	};
-
-	l_tangent.Normalize();
-
-	return
-	{
-		l_tangent.x,
-		l_tangent.y,
-		l_tangent.z,
-		a_tangent.w,
 	};
 }
 
@@ -238,6 +168,29 @@ ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const
 	// use_root_transform;
 	// trueにするとufbx側でroot_transformが適用される
 	// 今回は自作エンジン側で頂点 / 法線 / 接線 / Node / Boneを同じ変換規則で揃えるためfalseにする
+	l_loadOptions.use_root_transform = false;
+
+	// 座標系変換
+	// +X = 右
+	// +Y = Forward
+	// +Z = Up
+	// ufbxのfrontはforwardの逆なのでfront = -Y
+	l_loadOptions.target_axes = { UFBX_COORDINATE_AXIS_POSITIVE_X, UFBX_COORDINATE_AXIS_POSITIVE_Z, UFBX_COORDINATE_AXIS_NEGATIVE_Y };
+
+	// 単位変換
+	// 変換後は1.0 = 1mとして扱う
+	// 元FBXがcm単位なら100cm->1.0mになる
+	l_loadOptions.target_unit_meters = k_modelFBXTargetUnitMeters;
+
+	// target_axes/target_unit_metersの変換方法
+	// MODIFY_GEOMETRYにすると座標系変換・単位変換をGeometryにも反映する
+	l_loadOptions.space_conversion = UFBX_SPACE_CONVERSION_MODIFY_GEOMETRY;
+
+	// FBXのGeometryTransformもGeometry側へ反映する
+	// これにより、FBX特有の「Geometryだけに聞くTransform」を扱いやすくする
+	l_loadOptions.geometry_transform_handling = UFBX_GEOMETRY_TRANSFORM_HANDLING_MODIFY_GEOMETRY;
+
+	// root_transformを自前で指定する方式は使わない
 	l_loadOptions.use_root_transform = false;
 
 	return l_loadOptions;

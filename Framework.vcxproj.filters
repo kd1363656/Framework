@@ -895,6 +895,18 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter\Definition\Constant">
       <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Light">
+      <UniqueIdentifier>{e511c7bc-15d9-48c5-8b09-63bad146d696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Light\Definition">
+      <UniqueIdentifier>{724ff765-8bff-4a01-bd8f-2444a5893a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Light\Definition\Struct">
+      <UniqueIdentifier>{3068ec18-052d-4864-9548-db300b11434a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Light\Definition\Constant">
+      <UniqueIdentifier>{22fab198-0d75-494a-b752-ca12f46820d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1461,6 +1473,18 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter\Definition\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h">
+      <Filter>Source\Framework\Graphics\Render\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\LightSystemStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Constant\LightSystemConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Light\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1726,6 +1750,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Light\LightSystem.cpp">
+      <Filter>Source\Framework\Graphics\Render\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

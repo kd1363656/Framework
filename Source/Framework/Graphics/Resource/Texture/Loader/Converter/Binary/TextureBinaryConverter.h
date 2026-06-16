@@ -60,8 +60,6 @@ namespace FWK::Converter
 
 		bool CanLoadTextureAsset(const std::filesystem::path& a_filePath) const;
 
-		std::filesystem::path CreateTextureAssetFilePath(const std::filesystem::path& a_filePath) const;
-
 		TextureBinaryHeader CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_fileSize) const;
 
 		TextureBinarySubresourceHeader CreateTextureBinarySubresourceHeader(const DirectX::Image& a_image) const;

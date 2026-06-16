@@ -9,13 +9,13 @@ namespace FWK::Converter
 		struct StaticModelBinaryHeader final
 		{
 			std::uint64_t m_fileSize    = Constant::k_emptyAssetFileSize;
-			std::uint16_t m_versioin    = k_staticModelAssetTypeID;
-			std::uint16_t m_assetTypeID = k_staticModelAssetVersion;
+			std::uint16_t m_version     = k_staticModelAssetVersion;
+			std::uint16_t m_assetTypeID = k_staticModelAssetTypeID;
 
 			std::uint64_t m_modelMeshCount = Constant::k_emptyModelMeshCount;
 		};
 
-		struct StaticMOdelMeshBinaryHeader final
+		struct StaticModelMeshBinaryHeader final
 		{
 			std::uint64_t m_vertexCount = Constant::k_emptyModelVertexCount;
 			std::uint64_t m_indexCount  = Constant::k_emptyModelIndexCount;
@@ -25,7 +25,7 @@ namespace FWK::Converter
 			std::uint64_t m_roughnessTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
 			std::uint64_t m_metallicTextureFilePathSize  = Constant::k_emptyTextureFilePathSize;
 
-			std::uint64_t m_meshCount			   = Constant::k_emptyModelMeshletCount;
+			std::uint64_t m_meshletCount		   = Constant::k_emptyModelMeshletCount;
 			std::uint64_t m_uniqueVertexIndexCount = Constant::k_emptyModelUniqueVertexIndexCount;
 			std::uint64_t m_primitiveIndexCount    = Constant::k_emptyModelPrimitiveIndexCount;
 			std::uint64_t m_meshletBoundsCount     = Constant::k_emptyModelMeshletBoundsCount;
@@ -37,12 +37,24 @@ namespace FWK::Converter
 		~StaticModelBinaryConverter() override = default;
 
 		StaticModelBinaryConverter(const StaticModelBinaryConverter&)		    = delete;
-		StaticModelBinaryConverter(	     StaticModelBinaryConverter&&) noexcept = default;
+		StaticModelBinaryConverter(	     StaticModelBinaryConverter&&) noexcept = delete;
 
 		StaticModelBinaryConverter& operator=(const StaticModelBinaryConverter&)		   = delete;
-		StaticModelBinaryConverter& operator=(	    StaticModelBinaryConverter&&) noexcept = default;
+		StaticModelBinaryConverter& operator=(	    StaticModelBinaryConverter&&) noexcept = delete;
+
+		bool LoadStaticModelAsset(const std::filesystem::path& a_filePath, Struct::StaticModelData& a_staticModelData);
+
+		bool SaveStaticModelAsset(const std::filesystem::path& a_filePath, const Struct::StaticModelData& a_staticModelData);
 
 	private:
+
+		bool CanLoadStaticModelAsset(const std::filesystem::path& a_filePath) const;
+
+		StaticModelBinaryHeader CreateStaticModelBinaryHeader(const Struct::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const;
+
+		StaticModelMeshBinaryHeader CreateStaticModelMeshBinaryHeader(const Struct::StaticModelMesh& a_staticModelMesh) const;
+
+		std::uint64_t CalculateStaticModelAssetFileSize(const Struct::StaticModelData& a_staticModelData) const;
 
 		// 'S' = 0x53, 'T' = 0x54のため、0x5354で"ST"を表す
 		static constexpr std::uint16_t k_staticModelAssetTypeID = 0x5354U;

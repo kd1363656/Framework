@@ -17,6 +17,28 @@ FWK::Converter::BinaryFileConverterBase::~BinaryFileConverterBase()
 	DestroyMemoryMappedFile();
 }
 
+bool FWK::Converter::BinaryFileConverterBase::IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const
+{
+	std::error_code l_sourceErrorCode = {};
+	std::error_code l_binaryErrorCode = {};
+
+	// 元ファイルとバイナリーファイルの最終更新時刻を取得する。
+	const auto l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
+	const auto l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
+
+	if (l_sourceErrorCode)  { return false; }
+	if (l_binaryErrorCode)  { return false; }
+
+	// バイナリーファイルの更新時間が元ファイルの更新時間より速ければ
+	// ファイルの更新が発生したということ
+	return l_binaryLastWriteTime <= l_sourceLastWriteTime;
+}
+
+std::filesystem::path FWK::Converter::BinaryFileConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
+{
+	return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);
+}
+
 bool FWK::Converter::BinaryFileConverterBase::CreateReadMemoryMappedFile(const std::filesystem::path& a_filePath)
 {
 	// 既に別のファイルを開いていた場合に備えて前のマッピングを破棄する

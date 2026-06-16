@@ -21,6 +21,10 @@ namespace FWK::Converter
 
 	protected:
 
+		bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
+
+		std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath) const;
+
 		bool CreateReadMemoryMappedFile (const std::filesystem::path& a_filePath);
 		bool CreateWriteMemoryMappedFile(const std::filesystem::path& a_filePath, const std::uint64_t& a_fileSize);
 

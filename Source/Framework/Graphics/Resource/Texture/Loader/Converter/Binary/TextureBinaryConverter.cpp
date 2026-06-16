@@ -6,7 +6,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	// 読み込めなければ.pngから再生成する
 	if (!CanLoadTextureAsset(a_filePath)) { return false; }
 
-	const auto& l_textureAssetFilePath = CreateTextureAssetFilePath(a_filePath);
+	const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
 
 	// .assetを読み込み専用のMemoryMappedFileとして開く
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFile作成に失敗しており。バイナリーファイルの読み込みに失敗しました", false);
@@ -206,7 +206,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
 	// PNGと同じ場所・同じ名前で拡張子だけ.assetにしたパスを作る
-	const auto& l_textureAssetFilePath = CreateTextureAssetFilePath   (a_filePath);
+	const auto& l_textureAssetFilePath = CreateAssetFilePath		  (a_filePath);
 	const auto& l_textureAssetFileSize = CalculateTextureAssetFileSize(a_scratchImage);
 
 	// 書き込み用メモリマップドファイルの作成
@@ -281,28 +281,15 @@ bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::file
 	// まず元のPNGが存在していて、拡張子も.pngか確認する
 	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
 
-	// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
-	const auto& l_textureAssetFilePath = CreateTextureAssetFilePath(a_filePath);
+	// もし元ファイルが更新されていたらバイナリーファイルも更新する
+	if (// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
+		const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
+		IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) 
+	{
+		return false; 
+	}
 
-	std::error_code l_sourceErrorCode = {};
-	std::error_code l_assetErrorCode  = {};
-
-	// PNGと.assetの最終更新時刻を取得する。
-	// これにより「PNGを更新したのに古い.assetを読んでしまう」問題を防ぐ。
-	const auto l_sourceLastWriteTime = std::filesystem::last_write_time(a_filePath,			    l_sourceErrorCode);
-	const auto l_assetLastWriteTime  = std::filesystem::last_write_time(l_textureAssetFilePath, l_assetErrorCode);
-
-	if (l_sourceErrorCode) { return false; }
-	if (l_assetErrorCode)  { return false; }
-
-	// .assetがPNGより古い場合は、PNGの内容が更新されている可能性がある。
-	// そのため、.assetがPNGと同じか新しい場合だけキャッシュとして扱う
-	return l_assetLastWriteTime >= l_sourceLastWriteTime;
-}
-
-std::filesystem::path FWK::Converter::TextureBinaryConverter::CreateTextureAssetFilePath(const std::filesystem::path& a_filePath) const
-{
-	return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);
+	return true;
 }
 
 FWK::Converter::TextureBinaryConverter::TextureBinaryHeader FWK::Converter::TextureBinaryConverter::CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_fileSize) const

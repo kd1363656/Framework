@@ -14,8 +14,8 @@ namespace FWK::Graphics
 	private:
 
 		bool ExtractModelData          (const ufbx_scene*    a_fbxScene,		  Struct::StaticModelData&		        a_staticModelData)									         const;
-		bool ExtractModelMeshList      (const ufbx_mesh*     a_fbxMesh,			  std::vector<Struct::StaticModelMesh>& a_staticModelMeshList)								         const;
-		bool ExtractModelMeshByMaterial(const ufbx_mesh*     a_fbxMesh,     const std::size_t&					        a_materialIndex, Struct::StaticModelMesh& a_staticModelMesh) const;
+		bool ExtractModelMeshList      (const ufbx_node*     a_fbxNode,			  std::vector<Struct::StaticModelMesh>& a_staticModelMeshList)								         const;
+		bool ExtractModelMeshByMaterial(const ufbx_node*     a_fbxNode,     const std::size_t&					        a_materialIndex, Struct::StaticModelMesh& a_staticModelMesh) const;
 		void ExtractModelMaterial      (const ufbx_material* a_fbxMaterial,		  Struct::ModelMaterialAssetData&       a_modelMaterialAssetData)						             const;
 
 		TypeAlias::Math::Color FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const;
@@ -27,5 +27,7 @@ namespace FWK::Graphics
 
 		static constexpr std::size_t k_invalidMaterialIndex = std::numeric_limits<std::size_t>::max();
 		static constexpr std::size_t k_emptyStringLength    = 0ULL;
+
+		Converter::StaticModelBinaryConverter m_binaryConverter = {};
 	};
 }

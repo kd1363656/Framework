@@ -217,6 +217,12 @@
 #include "Graphics/Render/Camera/Definition/Struct/CBCameraPassStruct.h"
 #include "Graphics/Render/Camera/Camera.h"
 
+// ライト
+#include "Graphics/Render/Light/Definition/Constant/LightSystemConstant.h"
+#include "Graphics/Render/Light/Definition/Struct/LightSystemStruct.h"
+#include "Graphics/Render/Light/Definition/Struct/CBLightStruct.h"
+#include "Graphics/Render/Light/LightSystem.h"
+
 // レンダーグラフ
 // 描画リクエスト(共通パス)
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
