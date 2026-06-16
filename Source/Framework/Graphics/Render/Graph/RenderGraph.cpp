@@ -327,7 +327,7 @@ bool FWK::Graphics::RenderGraph::SetupRenderTargetPassTextureRenderTarget(const 
 	const auto& l_renderArea        = a_renderer.GetREFRenderArea			   ();
 
 	l_directCommandList.SetupRenderArea  (l_renderArea);
-	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool,  l_renderTargetTexture.GetVALRTVDescriptorIndex());
+	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_renderTargetTexture.GetVALRTVDescriptorIndex());
 	
 	return true;
 }

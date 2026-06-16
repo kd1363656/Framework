@@ -7,7 +7,6 @@ namespace FWK::Enum
 		Invalid,
 		SpriteScreen,
 		FinalColor,
-		FinalPresent,
 		Count,
 	};
 
@@ -17,7 +16,6 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Invalid),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::SpriteScreen),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::FinalColor),
-		FWK_JSON_ENUM_VALUE(PipelineStateType::FinalPresent),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
 	)
 }

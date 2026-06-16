@@ -407,12 +407,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\DrawRequestRenderTargetPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct\CBFinalColorRenderTargetPassStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Definition\Struct\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\FinalColorRenderTargetPassConstantBufferUploader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\FinalPresentRenderTargetPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\SpriteScreenPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h" />
@@ -550,7 +547,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp" />
@@ -626,7 +622,6 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Final\FinalColorShader.hlsli" />
-    <None Include="Asset\Shader\Final\FinalPresentShader.hlsli" />
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreenShader.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -641,18 +636,6 @@ if "$(Configuration)"=="Debug" (
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Final\FinalPresent_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Final\FinalPresent_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
     </DXCTask>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
