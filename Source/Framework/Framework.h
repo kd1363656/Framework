@@ -168,7 +168,10 @@
 #include "Graphics/Resource/Texture/Texture.h"
 
 // モデル(Static)
+#include "Graphics/Resource/Model/FBXLoader/Definition/Constant/FBXModelLoaderBaseConstant.h"
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
+
+#include "Graphics/Resource/Model/Static/FBXLoader/StaticFBXModelLoader.h"
 
 // アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
@@ -202,6 +205,10 @@
 #include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/RenderGraphFrameResource.h"
 #include "Graphics/Render/Frame/FrameResource.h"
+
+// カメラ
+#include "Graphics/Render/Camera/Definition/Struct/CBCameraPassStruct.h"
+#include "Graphics/Render/Camera/Camera.h"
 
 // レンダーグラフ
 // 描画リクエスト(共通パス)

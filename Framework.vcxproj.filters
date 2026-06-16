@@ -838,6 +838,36 @@
     <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory">
       <UniqueIdentifier>{5139df37-8520-42e8-ae2c-fb13bd1e7f6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Camera">
+      <UniqueIdentifier>{11eea834-848c-4dbc-a298-c3f644a622ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Camera\Definition">
+      <UniqueIdentifier>{6d9c7e35-6cb7-4485-828b-09872564386d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Camera\Definition\Struct">
+      <UniqueIdentifier>{ea0a844b-f331-4c0a-bedb-98e143813a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library">
+      <UniqueIdentifier>{4700f641-8e9c-493a-ad52-9c572cb6bce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\UFBX">
+      <UniqueIdentifier>{0e355f7a-e277-4b9c-9865-dfd13f0bc2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition">
+      <UniqueIdentifier>{a30b3b6a-305f-44fe-a19c-a65db78fa17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant">
+      <UniqueIdentifier>{a5a7dc53-9f31-4975-8ba5-4820b70218f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static">
+      <UniqueIdentifier>{dc9eee76-c914-40bd-8ad3-c7d6a08293fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader">
+      <UniqueIdentifier>{40f97cb7-3b85-4af4-95d5-cd3ae78e02a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record">
+      <UniqueIdentifier>{8251d4fc-3685-4dc9-b211-465a5320867e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1365,6 +1395,24 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Camera\Camera.h">
+      <Filter>Source\Framework\Graphics\Render\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Camera\Definition\Struct\CBCameraPassStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Camera\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\UFBX\ufbx.h">
+      <Filter>Library\UFBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1592,7 +1640,7 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoader.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp">
@@ -1615,6 +1663,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Camera\Camera.cpp">
+      <Filter>Source\Framework\Graphics\Render\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\UFBX\ufbx.cpp">
+      <Filter>Library\UFBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
