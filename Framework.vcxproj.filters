@@ -877,6 +877,18 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant">
       <UniqueIdentifier>{7443edeb-5879-46d7-8eed-4462421a9121}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition">
+      <UniqueIdentifier>{a2146bf1-8eec-4e9e-bc0d-52e4fbc77ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant">
+      <UniqueIdentifier>{54d5e5dd-2e3e-418a-b595-112416d7bd31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary">
+      <UniqueIdentifier>{fe70c577-0be0-4eb9-8b92-4e8a0f4bcef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter">
+      <UniqueIdentifier>{6e25525f-8968-458a-b303-61dcc32be154}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1422,17 +1434,23 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelConstant.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelRecordConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelStruct.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelRecordStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1691,11 +1709,14 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,14 +17,14 @@ namespace FWK::Graphics
 
 		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 
-		void SetModelData(Struct::ModelData&& a_set) { m_modelData = std::move(a_set); }
+		void SetModelData(Struct::StaticModelData&& a_set) { m_modelData = std::move(a_set); }
 
-		Struct::ModelData& GetREFModelData() { return m_modelData; }
+		Struct::StaticModelData& GetREFModelData() { return m_modelData; }
 
-		const Struct::ModelData& GetREFModelData() const { return m_modelData; }
+		const Struct::StaticModelData& GetREFModelData() const { return m_modelData; }
 
 	private:
 
-		Struct::ModelData m_modelData = {};
+		Struct::StaticModelData m_modelData = {};
 	};
 }

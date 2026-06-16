@@ -172,10 +172,12 @@
 // モデル(Static)
 #include "Graphics/Resource/Model/FBXLoader/Definition/Constant/FBXModelLoaderBaseConstant.h"
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
-
-#include "Graphics/Resource/Model/Static/Record/Definition/Constant/StaticModelConstant.h"
-#include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelStruct.h"
+#include "Graphics/Resource/Model/Static/Record/Definition/Constant/StaticModelRecordConstant.h"
+#include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelRecordStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
+#include "Graphics/Resource/Model/Static/FBXLoader/Definition/Constant/StaticModelFBXLoaderConstant.h"
+#include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/StaticModelBinaryConverter.h"
+#include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 
 // アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"

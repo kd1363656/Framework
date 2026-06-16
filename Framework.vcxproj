@@ -448,9 +448,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelConstant.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelRecordConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelRecordStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h" />
@@ -575,7 +577,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp" />
