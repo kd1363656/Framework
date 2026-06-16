@@ -8,6 +8,24 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseGPUResourceRec
 	return true;
 }
 
+bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseStructuredBufferResourceRecord(Struct::StructuredBufferResourceReleaseRecord&& a_releaseRecord)
+{
+	auto& l_structuredBuffer = a_releaseRecord.m_structuredBufferResource;
+	auto& l_gpuResource      = l_structuredBuffer.m_bufferGPUResource;
+
+	// GPUリソースリリースレコードを配列に追加
+	Struct::GPUResourceReleaseRecord&& l_gpuResourceReleaseRecord = { a_releaseRecord.m_retiredFenceValue, std::move(l_gpuResource) };
+
+	ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord));
+
+	// SRVDescriptorIndexリソースリリースレコードを配列に追加
+	Struct::DescriptorIndexReleaseRecord&& l_descriptorIndexReleaseRecord = { a_releaseRecord.m_retiredFenceValue, l_structuredBuffer.m_srvDescriptorIndex };
+
+	ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_descriptorIndexReleaseRecord));
+
+	return false;
+}
+
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseRTVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED				  (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "RTV用DescriptorIndexが無効のため、遅延解放予約に失敗しました。", false);

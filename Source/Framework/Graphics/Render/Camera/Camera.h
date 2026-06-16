@@ -24,8 +24,6 @@ namespace FWK::Graphics
 
 		void SetProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 
-		void SyncCameraPassDrawRequest();
-		
 		const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
 		
 	private:

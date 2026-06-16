@@ -868,6 +868,15 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record">
       <UniqueIdentifier>{8251d4fc-3685-4dc9-b211-465a5320867e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition">
+      <UniqueIdentifier>{b6f1ba1e-34a1-4878-93f4-dcba1539741a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct">
+      <UniqueIdentifier>{adb6df28-bae0-4b8c-8e31-91b5699757a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant">
+      <UniqueIdentifier>{7443edeb-5879-46d7-8eed-4462421a9121}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1356,9 +1365,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\EditorManager.h">
       <Filter>Source\Framework\Editor</Filter>
     </ClInclude>
@@ -1404,6 +1410,15 @@
     <ClInclude Include="..\Library\UFBX\ufbx.h">
       <Filter>Library\UFBX</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\StructuredBufferResourceStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\GPUResourceStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant</Filter>
     </ClInclude>
@@ -1412,6 +1427,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1640,9 +1661,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp">
       <Filter>Source\Framework\Editor</Filter>
     </ClCompile>
@@ -1669,6 +1687,9 @@
     </ClCompile>
     <ClCompile Include="..\Library\UFBX\ufbx.cpp">
       <Filter>Library\UFBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticFBXModelLoader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader</Filter>

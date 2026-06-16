@@ -40,7 +40,7 @@ void FWK::Graphics::Camera::SetProjectionMatrix(const float a_aspectRatio,
 												const float a_farClip,
 												const float a_nearClip)
 {
-	FWK_ASSERT_RETURN_IF(a_aspectRatio <= k_invalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。")
+	FWK_ASSERT_RETURN_IF_FAILED(a_aspectRatio <= k_invalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。");
 
 	if (!m_cbCameraPass) { return; }
 
@@ -68,20 +68,6 @@ void FWK::Graphics::Camera::SetProjectionMatrix(const TypeAlias::Math::Matrix& a
 	m_cbCameraPass->m_projectionMatrix = a_projectionMatrix;
 	
 	UpdateViewProjectionMatrix();
-}
-
-void FWK::Graphics::Camera::SyncCameraPassDrawRequest()
-{
-	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-	const auto& l_renderer		  = l_graphicsManager.GetREFRenderer		   ();
-	const auto& l_renderGraph	  = l_renderer.GetREFRenderGraph();
-
-	const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
-
-	if (!l_cameraPassDrawRequest) { return; }
-
-	// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
-	l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);
 }
 
 void FWK::Graphics::Camera::UpdateViewProjectionMatrix()

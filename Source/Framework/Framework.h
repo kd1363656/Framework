@@ -101,8 +101,10 @@
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 #include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
-// 遅延リソースリリースクラス
+//リソースリリースクラス
 #include "Graphics/Resource/ReleaseContext/Definition/Constant/ResourceReleaseContextConstant.h"
+#include "Graphics/Resource/ReleaseContext/Definition/Struct/GPUResourceStruct.h"
+#include "Graphics/Resource/ReleaseContext/Definition/Struct/StructuredBufferResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
@@ -171,7 +173,9 @@
 #include "Graphics/Resource/Model/FBXLoader/Definition/Constant/FBXModelLoaderBaseConstant.h"
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
 
-#include "Graphics/Resource/Model/Static/FBXLoader/StaticFBXModelLoader.h"
+#include "Graphics/Resource/Model/Static/Record/Definition/Constant/StaticModelConstant.h"
+#include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelStruct.h"
+#include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 
 // アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"
