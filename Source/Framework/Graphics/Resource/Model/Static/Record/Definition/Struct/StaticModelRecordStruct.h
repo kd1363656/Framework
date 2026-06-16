@@ -33,7 +33,7 @@ namespace FWK::Struct
 		std::wstring m_roughnessTextureFilePath = {};
 		std::wstring m_metallicTextureFilePath  = {};
 
-		float m_routghnessFactor = Constant::k_defaultModelMaterialRoughnessFactor;
+		float m_roughnessFactor = Constant::k_defaultModelMaterialRoughnessFactor;
 		float m_metallicFactor   = Constant::k_defaultModelMaterialMetallicFactor;
 	};
 

@@ -214,7 +214,7 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 
 	// Rougnessは表面の粗さ。
 	// 0に近いほど鏡のように鋭く反射日、1に近いほどぼやけた反射になる。
-	a_modelMaterialAssetData.m_routghnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Constant::k_defaultModelMaterialRoughnessFactor);
+	a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Constant::k_defaultModelMaterialRoughnessFactor);
 
 	// Metallicは金属度
 	// 0なら非金属、1なら金属としてPBR計算する

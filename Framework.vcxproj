@@ -448,6 +448,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h" />

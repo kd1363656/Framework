@@ -176,6 +176,7 @@
 #include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelRecordStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/Definition/Constant/StaticModelFBXLoaderConstant.h"
+#include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/Definition/Constant/StaticModelBinaryConverterConstant.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 

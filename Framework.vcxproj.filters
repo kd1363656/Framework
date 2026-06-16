@@ -889,6 +889,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter">
       <UniqueIdentifier>{6e25525f-8968-458a-b303-61dcc32be154}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter\Definition">
+      <UniqueIdentifier>{8d1c139b-0882-4c1b-8c4f-89c84f8c848a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter\Definition\Constant">
+      <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1451,6 +1457,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Binary\Converter\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

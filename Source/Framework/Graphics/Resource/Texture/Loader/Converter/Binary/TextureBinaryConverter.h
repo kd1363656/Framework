@@ -9,8 +9,8 @@ namespace FWK::Converter
 		struct TextureBinaryHeader final
 		{
 			std::uint64_t m_fileSize    = Constant::k_emptyAssetFileSize;
-			std::uint16_t m_version     = Constant::k_emptyAssetVersion;
-			std::uint16_t m_assetTypeID = Constant::k_emptyAssetTypeID;
+			std::uint16_t m_version     = k_textureAssetVersion;
+			std::uint16_t m_assetTypeID = k_textureAssetTypeID;
 
 			std::uint64_t m_width            = Constant::k_emptyTextureWidth;
 			std::uint64_t m_height           = Constant::k_emptyTextureHeight;
@@ -46,11 +46,11 @@ namespace FWK::Converter
 		 TextureBinaryConverter()		   = default;
 		~TextureBinaryConverter() override = default;
 
-		TextureBinaryConverter(const TextureBinaryConverter&)	     = delete;
-		TextureBinaryConverter(	  TextureBinaryConverter&&) noexcept = delete;
+		TextureBinaryConverter(const TextureBinaryConverter&)	        = delete;
+		TextureBinaryConverter(	     TextureBinaryConverter&&) noexcept = delete;
 
-		TextureBinaryConverter& operator=(const TextureBinaryConverter&)			= delete;
-		TextureBinaryConverter& operator=(	     TextureBinaryConverter&&) noexcept = delete;
+		TextureBinaryConverter& operator=(const TextureBinaryConverter&)		   = delete;
+		TextureBinaryConverter& operator=(	    TextureBinaryConverter&&) noexcept = delete;
 
 		bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
 
