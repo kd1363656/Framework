@@ -2,7 +2,7 @@
 
 FWK::Graphics::FinalPresentPass::FinalPresentPass()
 {
-	// シーンカラー用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
+	// ファイナルカラーテクスチャ用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
 	ReadResource(Enum::RenderGraphResourceType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
 
 	// BackBufferのリソース状態をRENDER_TARGETにして書き込む
