@@ -14,7 +14,7 @@ namespace FWK::Graphics
 		~TextureSystem() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create	    (const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool Create	    (const Device&		   a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
 		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			            a_device, 
 													        const GPUMemoryAllocator&           a_gpuMemoryAllocator,

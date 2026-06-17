@@ -38,8 +38,9 @@ namespace FWK::Graphics
 		auto& GetMutableREFSRVDescriptorPool() { return m_srvDescriptorPool; }
 		auto& GetMutableREFDSVDescriptorPool() { return m_dsvDescriptorPool; }
 
-		auto& GetMutableREFUploadSystem () { return m_uploadSystem; }
-		auto& GetMutableREFTextureSystem() { return m_textureSystem; }
+		auto& GetMutableREFUploadSystem     () { return m_uploadSystem; }
+		auto& GetMutableREFTextureSystem    () { return m_textureSystem; }
+		auto& GetMutableREFStaticModelSystem() { return m_staticModelSystem; }
 
 		auto& GetMutableREFResourceReleaseContext() { return m_resourceReleaseContext; }
 
@@ -54,7 +55,8 @@ namespace FWK::Graphics
 		GPUMemoryAllocator m_gpuMemoryAllocator = {};
 		UploadSystem       m_uploadSystem       = {};
 
-		TextureSystem m_textureSystem = {};
+		TextureSystem     m_textureSystem     = {};
+		StaticModelSystem m_staticModelSystem = {};
 
 		ResourceReleaseContext m_resourceReleaseContext = {};
 
