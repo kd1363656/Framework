@@ -15,7 +15,7 @@ namespace FWK::Editor
 
 	private:
 
-		ImTextureID FetchVALSceneViewTextureID();
+		ImTextureID FetchVALSceneViewTextureID() const;
 
 		void DrawSceneViewTexture(const ImTextureID& a_textureID, const ImVec2& a_sceneViewSize) const;
 

@@ -28,13 +28,21 @@ bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 																  "レンダラーのデシリアライズ後の処理に失敗しました。",
 																  false);
 
+	// 待機中テクスチャのコピー処理及びテクスチャ登録処理
+	m_resourceContext.ProcessPendingTextureUploads();
+
 	return true;
 }
 
 void FWK::Graphics::GraphicsManager::BeginFrame()
 {
-	m_resourceContext.BeginFrame(m_renderer.GetREFDirectCommandQueue());
-	m_renderer.BeginFrame       (m_resourceContext);
+	// 待機中テクスチャのコピー処理及びテクスチャ登録処理
+	m_resourceContext.ProcessPendingTextureUploads();
+
+	// 不要になったリソースの解放処理
+	m_resourceContext.ReleaseCompletedDeferredResources(m_renderer.GetREFDirectCommandQueue());
+
+	m_renderer.BeginFrame(m_resourceContext);
 }
 void FWK::Graphics::GraphicsManager::Execute()
 {

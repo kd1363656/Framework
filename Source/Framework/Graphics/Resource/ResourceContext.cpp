@@ -28,14 +28,17 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
     return true;
 }
 
-void FWK::Graphics::ResourceContext::BeginFrame(const DirectCommandQueue& a_directCommandQueue)
+void FWK::Graphics::ResourceContext::ProcessPendingTextureUploads()
 {
     // TextureSystemにPending中のテクスチャがあれば、
     // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のTextureResourceへコピーする。
     // コピーが完了した後、TextureRecordをTextureStorageへ正式登録する
     m_uploadSystem.SubmitPendingTextureCopyBatchIfNeededAndWait(m_textureSystem);
     m_textureSystem.RegisterPendingTextures                    ();
+}
 
+void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const DirectCommandQueue & a_directCommandQueue)
+{
     // 参照カウントが0になったRecordからQueueへ積まれたGPUResource/SRVを、
 	// GPUのFence完了後に安全に解放する
     m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue,

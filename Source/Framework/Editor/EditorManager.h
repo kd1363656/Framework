@@ -41,7 +41,7 @@ namespace FWK::Editor
 			// 例 : FWK_ADD_LOG("HP = {}, Name = {}", 100, "Player");
 			// この場合はa_format = "HP = {}, Name = {}" a_args... = 100, "Player"
 			// std::make_format_args(...)はstd::vformatに渡すための「フォーマット用引数リスト」を作成する。
-			// std::forward<Args>(a_args)...は、受け取った可変長引数を1つずつ展開してstdd::make_format_argsに渡している。
+			// a_args...は、受け取った可変長引数を1つずつ展開してstdd::make_format_argsに渡している。
 			// 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
 			const std::string l_message = std::vformat(a_format, std::make_format_args(a_args...));
 
@@ -104,9 +104,9 @@ namespace FWK::Editor
 
 		std::unique_ptr<Editor::LogEditorWindow> m_logEditorWindow = nullptr;
 
-		TypeAlias::SRVDescriptorPool m_imGuiSRVDescriptorPool = {};
-
 		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap = {};
+
+		TypeAlias::SRVDescriptorPool m_imGuiSRVDescriptorPool = {};
 
 		EditorWindowMap m_editorWindowMap = {};
 

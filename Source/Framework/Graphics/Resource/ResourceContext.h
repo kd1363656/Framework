@@ -17,7 +17,8 @@ namespace FWK::Graphics
 		void Deserialize    (const nlohmann::json& a_rootJson);
 		bool PostDeserialize(const Device&		   a_device);
 
-		void BeginFrame(const DirectCommandQueue& a_directCommandQueue);
+		void ProcessPendingTextureUploads     ();
+		void ReleaseCompletedDeferredResources(const DirectCommandQueue& a_directCommandQueue);
 
 		nlohmann::json Serialize() const;
 
