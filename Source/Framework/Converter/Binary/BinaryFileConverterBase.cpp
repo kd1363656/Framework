@@ -34,19 +34,6 @@ bool FWK::Converter::BinaryFileConverterBase::IsUpdatedSourceFile(const std::fil
 	return l_binaryLastWriteTime <= l_sourceLastWriteTime;
 }
 
-bool FWK::Converter::BinaryFileConverterBase::CanReadBinaryData(const std::uint64_t& a_mappedDataSize, const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
-{
-	// 現在の読み込み位置がファイルサイズを超えている場合、
-	// これ以上安全に読み込めない
-	if (a_memoryReadOffset > a_mappedDataSize) { return false; }
-
-	// 残りサイズを計算する
-	const auto& l_remainingDataSize = a_mappedDataSize - a_memoryReadOffset;
-
-	// 読み込みたいサイズが残りサイズ以下なら安全に読める
-	return a_readDataSize <= l_remainingDataSize;
-}
-
 std::filesystem::path FWK::Converter::BinaryFileConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
 {
 	return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);
@@ -331,27 +318,6 @@ void FWK::Converter::BinaryFileConverterBase::DestroyMemoryMappedFile()
 	m_isWritable     = k_isInitialWritable;
 }
 
-void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const
-{
-	if (a_wStringBinaryFileSize == k_emptyReadDataSize)
-	{
-		// 文字列のバイナリサイズが0の場合は、空文字列として扱う
-		a_wString.clear();
-
-		return;
-	}
-
-	// バイナリ上では文字列サイズをバイト数で管理しているため、
-	// wchar_tのサイズで割って、std::wstringとして必要な文字数に戻す
-	const auto& l_stringLength = a_wStringBinaryFileSize / sizeof(wchar_t);
-
-	// 読み込み先のstd::wstringに、読み込む文字列数分の領域を確保する
-	a_wString.resize(l_stringLength);
-
-	// メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
-	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
-	ReadBinaryData(l_stringLength, a_memoryReadOffset, a_wString.data());
-}
 bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::uint64_t & a_memoryReadOffset, std::wstring & a_destinationString) const
 {
 	if (a_wStringBinaryFileSize == k_emptyReadDataSize) 
@@ -371,23 +337,6 @@ bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std
 	ReadWStringBinaryData(a_wStringBinaryFileSize, a_destinationString, a_memoryReadOffset);
 
 	return true;
-}
-void FWK::Converter::BinaryFileConverterBase::ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_string, std::uint64_t& a_memoryReadOffset) const
-{
-	if (a_stringBinaryFileSize == k_emptyReadDataSize)
-	{
-		// 文字列のバイナリサイズが0の場合は、から文字列として扱う
-		a_string.clear();
-
-		return;
-	}
-
-	// std::stringはchar配列なので、保存バイト数をそのまま文字数として扱える
-	a_string.resize(a_stringBinaryFileSize);
-
-	// メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
-	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
-	ReadBinaryData(a_stringBinaryFileSize, a_memoryReadOffset, a_string.data());
 }
 
 void FWK::Converter::BinaryFileConverterBase::WriteWStringBinaryData(const std::wstring & a_wString, std::uint64_t & a_memoryWriteOffset) const
@@ -422,4 +371,56 @@ std::uint64_t FWK::Converter::BinaryFileConverterBase::CalculateStringBinaryFile
 	// std::stringのはchar配列なので、size()がそのまま保存バイト数
 	// 終端文字'\0'は保存しない
 	return a_string.size();
+}
+
+bool FWK::Converter::BinaryFileConverterBase::CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
+{
+	// 現在の読み込み位置がファイルサイズを超えている場合、
+	// これ以上安全に読み込めない
+	if (a_memoryReadOffset > m_mappedDataSize) { return false; }
+
+	// 残りサイズを計算する
+	const auto& l_remainingDataSize = m_mappedDataSize - a_memoryReadOffset;
+
+	// 読み込みたいサイズが残りサイズ以下なら安全に読める
+	return a_readDataSize <= l_remainingDataSize;
+}
+
+void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const
+{
+	if (a_wStringBinaryFileSize == k_emptyReadDataSize)
+	{
+		// 文字列のバイナリサイズが0の場合は、空文字列として扱う
+		a_wString.clear();
+
+		return;
+	}
+
+	// バイナリ上では文字列サイズをバイト数で管理しているため、
+	// wchar_tのサイズで割って、std::wstringとして必要な文字数に戻す
+	const auto& l_stringLength = a_wStringBinaryFileSize / sizeof(wchar_t);
+
+	// 読み込み先のstd::wstringに、読み込む文字列数分の領域を確保する
+	a_wString.resize(l_stringLength);
+
+	// メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
+	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
+	ReadBinaryData(l_stringLength, a_memoryReadOffset, a_wString.data());
+}
+void FWK::Converter::BinaryFileConverterBase::ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_string, std::uint64_t& a_memoryReadOffset) const
+{
+	if (a_stringBinaryFileSize == k_emptyReadDataSize)
+	{
+		// 文字列のバイナリサイズが0の場合は、から文字列として扱う
+		a_string.clear();
+
+		return;
+	}
+
+	// std::stringはchar配列なので、保存バイト数をそのまま文字数として扱える
+	a_string.resize(a_stringBinaryFileSize);
+
+	// メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
+	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
+	ReadBinaryData(a_stringBinaryFileSize, a_memoryReadOffset, a_string.data());
 }
