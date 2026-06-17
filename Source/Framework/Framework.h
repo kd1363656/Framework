@@ -184,6 +184,7 @@
 #include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/Definition/Constant/StaticModelBinaryConverterConstant.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
+#include "Graphics/Resource/Model/Static/MeshOptimizer/StaticModelMeshOptimizer.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 
 // アップロードシステム

@@ -456,6 +456,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\StaticModelMeshOptimizer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelRecordConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelRecordStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h" />
@@ -587,6 +588,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\StaticModelMeshOptimizer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp" />

@@ -913,6 +913,9 @@
     <Filter Include="Source\Framework\Utility\Singleton">
       <UniqueIdentifier>{db1192e0-fcd7-4b78-b176-d6fbf3bb46f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer">
+      <UniqueIdentifier>{88cf0829-91c6-43f9-8c05-ad64320a1151}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1497,6 +1500,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\StaticModelMeshOptimizer.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1771,6 +1777,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\StaticModelMeshOptimizer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
