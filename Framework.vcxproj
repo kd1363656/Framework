@@ -512,7 +512,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Macros\AssertReturnMacros.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
-    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\SingletonUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Stopwatch\Stopwatch.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\Definition\Macros\WindowJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Definition\Constant\WindowConstant.h" />
@@ -612,6 +613,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Stopwatch\Stopwatch.cpp" />
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
     <ClCompile Include="Source\PCH.cpp">

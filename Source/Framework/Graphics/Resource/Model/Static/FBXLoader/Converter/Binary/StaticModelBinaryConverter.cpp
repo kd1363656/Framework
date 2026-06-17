@@ -8,42 +8,29 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // ここでは失敗扱いにして、呼び出し側でFBX読み込みへ進ませる
     if (!CanLoadStaticModelAsset(a_filePath)) { return false; }
 
-    const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
-
     // 読み込み用MemoryMappedFileの作成
-    if (!CreateReadMemoryMappedFile(l_staticModelAssetFilePath)) { return false; }
-
-    const auto* l_mappedData = GetPTRMappedData();
-
-    if (!l_mappedData) 
+    if (const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
+        !CreateReadMemoryMappedFile(l_staticModelAssetFilePath))
     {
-        DestroyMemoryMappedFile();
-
-        return false;
+        return false; 
     }
 
     auto l_memoryReadOffset = GetREFInitialMemoryReadOffset();
 
     StaticModelBinaryHeader l_staticModelBinaryHeader = {};
 
-    if (const auto& l_staticModelBinaryHeaderSize = CalculateBinaryDataSize<StaticModelBinaryHeader>(GetREFSingleBinaryElementCount());
-        !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_staticModelBinaryHeaderSize))
+    // バージョン、メッシュ数などを含むStaticModel全体Headerを読み込む
+    if (!TryReadSingleBinaryData(l_staticModelBinaryHeader, l_memoryReadOffset)) 
     {
-        DestroyMemoryMappedFile();
+        FailLoadStaticModelAsset(a_staticModelData);
 
         return false;
     }
 
-    // バージョン、メッシュ数などを取得
-    ReadBinaryData(GetREFSingleBinaryElementCount(),
-                   l_mappedData,
-                   l_memoryReadOffset,
-                   &l_staticModelBinaryHeader);
-
     // StaticModel用.assetではないなら読まない。
     if (l_staticModelBinaryHeader.m_assetTypeID != k_staticModelAssetTypeID)
     {
-        DestroyMemoryMappedFile();
+        FailLoadStaticModelAsset(a_staticModelData);
 
         return false;
     }
@@ -51,7 +38,15 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // 保存形式が古いなら、FBXから再生成する
     if (l_staticModelBinaryHeader.m_version != k_staticModelAssetVersion)
     {
-        DestroyMemoryMappedFile();
+        FailLoadStaticModelAsset(a_staticModelData);
+
+        return false;
+    }
+
+    // Headerに保存されたファイルサイズと実際の.assetサイズが違う場合は、壊れた.asssetの可能性が高いため読み込まない。
+    if (l_staticModelBinaryHeader.m_fileSize != GetREFMappedDataSize())
+    {
+        FailLoadStaticModelAsset(a_staticModelData);
 
         return false;
     }
@@ -59,7 +54,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // メッシュ数が0ならreturn
     if (l_staticModelBinaryHeader.m_modelMeshCount == Constant::k_emptyModelMeshCount)
     {
-        DestroyMemoryMappedFile();
+        FailLoadStaticModelAsset(a_staticModelData);
 
         return false;
     }
@@ -71,233 +66,138 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     {
         StaticModelMeshBinaryHeader l_staticModelMeshBinaryHeader = {};
 
-        if (const auto& l_staticModelMeshBinaryHeaderSize = CalculateBinaryDataSize<StaticModelMeshBinaryHeader>(GetREFSingleBinaryElementCount());
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_staticModelMeshBinaryHeaderSize))
+        // メッシュ単位Headerを読み込む
+        if (!TryReadSingleBinaryData(l_staticModelMeshBinaryHeader, l_memoryReadOffset))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
-        // 頂点数や、メッシュレット数を読み取る
-        ReadBinaryData(GetREFSingleBinaryElementCount(),
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       &l_staticModelMeshBinaryHeader);
-
-        // 頂点数、インデックス数分リストの容量を確保
-        l_staticModelMesh.m_staticModelVertexList.resize(l_staticModelMeshBinaryHeader.m_vertexCount);
-        l_staticModelMesh.m_indexList.resize            (l_staticModelMeshBinaryHeader.m_indexCount);
-
-        if (const auto& l_vertexListBinarySize = CalculateBinaryDataSize<Struct::StaticModelVertex>(l_staticModelMeshBinaryHeader.m_vertexCount);
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_vertexListBinarySize))
+        // 頂点配列を読み込む
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_vertexCount, l_memoryReadOffset, l_staticModelMesh.m_staticModelVertexList))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
-
-        // 頂点情報を読み取る
-        ReadBinaryData(l_staticModelMeshBinaryHeader.m_vertexCount,
-                       l_mappedData,
-                       l_memoryReadOffset,  
-                       l_staticModelMesh.m_staticModelVertexList.data());
-
-        if (const auto& l_indexListBinarySize = CalculateBinaryDataSize<std::uint32_t>(l_staticModelMeshBinaryHeader.m_indexCount);
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_indexListBinarySize))
+        
+        // インデックス配列を読み込む
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_indexCount, l_memoryReadOffset, l_staticModelMesh.m_indexList))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
-
-        // インデックス情報を読み取る
-        ReadBinaryData(l_staticModelMeshBinaryHeader.m_indexCount,
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       l_staticModelMesh.m_indexList.data());
 
         auto& l_modelMaterialAssetData = l_staticModelMesh.m_modelMaterial.m_modelMaterialAssetData;
-        
-        if (const auto& l_baseColorFactorBinarySize = CalculateBinaryDataSize<TypeAlias::Math::Color>(GetREFSingleBinaryElementCount());
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_baseColorFactorBinarySize))
-        {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
-        }
-
+       
         // ベースカラー係数を読み取る
-        ReadBinaryData(GetREFSingleBinaryElementCount(),
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       &l_modelMaterialAssetData.m_baseColorFactor);
-
-        if (const auto& l_roughnessFactorBinarySize = CalculateBinaryDataSize<float>(GetREFSingleBinaryElementCount());
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_roughnessFactorBinarySize))
+        if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_baseColorFactor, l_memoryReadOffset))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
         // ラフネス係数を読み取る
-        ReadBinaryData(GetREFSingleBinaryElementCount(),
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       &l_modelMaterialAssetData.m_roughnessFactor);
-
-        if (const auto& l_metallicFactorBinarySize = CalculateBinaryDataSize<float>(GetREFSingleBinaryElementCount());
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_metallicFactorBinarySize))
+        if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_roughnessFactor, l_memoryReadOffset))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
         // メタリック係数を読み取る
-        ReadBinaryData(GetREFSingleBinaryElementCount(),
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       &l_modelMaterialAssetData.m_metallicFactor);
-
-        if (!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_staticModelMeshBinaryHeader.m_baseColorTextureFilePathSize))
+        if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_metallicFactor, l_memoryReadOffset))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
+        // マテリアル用テクスチャファイルパスを読み込む
         // ベースカラーテクスチャ用ファイルパスの文字列を読み取る
-        ReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_baseColorTextureFilePathSize,
-                              l_mappedData,
-                              l_modelMaterialAssetData.m_baseColorTextureFilePath,
-                              l_memoryReadOffset);
-
-        if (!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_staticModelMeshBinaryHeader.m_normalTextureFilePathSize))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_baseColorTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_baseColorTextureFilePath))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
          // ノーマルマップテクスチャ用ファイルパスの文字列を読み取る
-        ReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_normalTextureFilePathSize,
-                              l_mappedData,
-                              l_modelMaterialAssetData.m_normalTextureFilePath,
-                              l_memoryReadOffset);
-
-        if (!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_normalTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_normalTextureFilePath))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
          // ラフネステクスチャ用ファイルパスの文字列を読み取る
-        ReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize,
-                              l_mappedData,
-                              l_modelMaterialAssetData.m_roughnessTextureFilePath,
-                              l_memoryReadOffset);
-
-        if (!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_roughnessTextureFilePath))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
          // ラフネステクスチャ用ファイルパスの文字列を読み取る
-        ReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize,
-                              l_mappedData,
-                              l_modelMaterialAssetData.m_roughnessTextureFilePath,
-                              l_memoryReadOffset);
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_metallicTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_metallicTextureFilePath))
+        {
+            FailLoadStaticModelAsset(a_staticModelData);
+
+            return false;
+        }
 
         // Texture本体は.assetに保存しない。
 		// TextureSystem登録時にRuntimeDataへ入れる
+        l_staticModelMesh.m_modelMaterial.m_modelMaterialRuntimeData = {};
+
         auto& l_modelMeshletData = l_staticModelMesh.m_modelMeshletData;
 
-        l_modelMeshletData.m_meshletList.resize          (l_staticModelMeshBinaryHeader.m_meshletCount);
-        l_modelMeshletData.m_uniqueVertexIndexList.resize(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount);
-        l_modelMeshletData.m_primitiveIndexList.resize   (l_staticModelMeshBinaryHeader.m_primitiveIndexCount);
-        l_modelMeshletData.m_meshletBoundsList.resize    (l_staticModelMeshBinaryHeader.m_meshletBoundsCount);
-
-        if (const auto& l_meshletListBinarySize = CalculateBinaryDataSize<Struct::StaticModelMeshlet>(l_staticModelMeshBinaryHeader.m_meshletCount);
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_meshletListBinarySize))
+        // Meshlet関連データ読み込む
+        // メッシュレット情報を読み込む
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletCount, l_memoryReadOffset, l_modelMeshletData.m_meshletList))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
-
-            return false;
-        }
-
-        // メッシュ情報を読み込む
-        ReadBinaryData(l_staticModelMeshBinaryHeader.m_meshletCount,
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       l_modelMeshletData.m_meshletList.data());
-
-        if (const auto& l_uniqueVertexIndexBinarySize = CalculateBinaryDataSize<std::uint32_t>(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount);
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_uniqueVertexIndexBinarySize))
-        {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
         // 頂点インデックス情報を読み込む
-        ReadBinaryData(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount,
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       l_modelMeshletData.m_uniqueVertexIndexList.data());
-
-        if (const auto& l_primitiveIndexBinarySize = CalculateBinaryDataSize<std::uint32_t>(l_staticModelMeshBinaryHeader.m_primitiveIndexCount);
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_primitiveIndexBinarySize))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount, l_memoryReadOffset, l_modelMeshletData.m_uniqueVertexIndexList))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
         // プリミティブインデックス情報を読み込む
-        ReadBinaryData(l_staticModelMeshBinaryHeader.m_primitiveIndexCount,
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       l_modelMeshletData.m_primitiveIndexList.data());
-
-        if (const auto& l_meshletBoundsBinarySize = CalculateBinaryDataSize<std::uint32_t>(l_staticModelMeshBinaryHeader.m_meshletBoundsCount);
-            !CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_meshletBoundsBinarySize))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_primitiveIndexCount, l_memoryReadOffset, l_modelMeshletData.m_primitiveIndexList))
         {
-            a_staticModelData.m_modelMeshList.clear();
-            DestroyMemoryMappedFile                ();
+            FailLoadStaticModelAsset(a_staticModelData);
 
             return false;
         }
 
         // メッシュレットカリング情報を読み込む
-        ReadBinaryData(l_staticModelMeshBinaryHeader.m_meshletBoundsCount,
-                       l_mappedData,
-                       l_memoryReadOffset,
-                       l_modelMeshletData.m_meshletBoundsList.data());
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletBoundsCount, l_memoryReadOffset, l_modelMeshletData.m_meshletBoundsList))
+        {
+            FailLoadStaticModelAsset(a_staticModelData);
+
+            return false;
+        }
     }
 
+    // 現在のオフセット位置がファイルサイズと一致しなければ.assetファイルが壊れている可能性があるのでreturn
     if (l_memoryReadOffset != l_staticModelBinaryHeader.m_fileSize)
     {
-        a_staticModelData.m_modelMeshList.clear();
-        DestroyMemoryMappedFile                ();
+        FailLoadStaticModelAsset(a_staticModelData);
 
         return false;
     }
+
+    DestroyMemoryMappedFile();
 
     return true;
 }
@@ -309,7 +209,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "StaticModelAssetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
     // FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
-    const auto& l_staticModelAsssetFilePath = CreateAssetFilePath(a_filePath);
+    const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
 
     // StaticModelData全体を保存したときのファイルサイズを計算する
     const auto& l_staticModelAssetFileSize = CalculateStaticModelAssetFileSize(a_staticModelData);
@@ -318,16 +218,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticModelAssetFileSize == Constant::k_emptyAssetFileSize, "StaticModelAssetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
 
     // 書き込み用MemoryMappedFileを作成する
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateWriteMemoryMappedFile(l_staticModelAsssetFilePath, l_staticModelAssetFileSize), "StaticModelAssetの書き込み用MemoryMappedfile作成に失敗しました。", false);
-
-    // メモリマップされた書き込み先の先頭アドレスを取得する
-    auto* l_mappedData = GetMutablePTRMappedData();
-
-    if (!l_mappedData)
-    {
-        DestroyMemoryMappedFile();
-        FWK_ASSERT_RETURN_VALUE("StaticModelAssetの書き込み先メモリが無効となっており、バイナリーファイルの保存に失敗しました。", false);
-    }
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateWriteMemoryMappedFile(l_staticModelAssetFilePath, l_staticModelAssetFileSize), "StaticModelAssetの書き込み用MemoryMappedfile作成に失敗しました。", false);
 
     // 現在の書き込み位置
     // ファイル先頭から順番にHeader -> MeshData...と書き込む
@@ -336,10 +227,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
     // StaticModel全体のHeaderを作成して書き込む
     const auto& l_staticModelBinaryHeader = CreateStaticModelBinaryHeader(a_staticModelData, l_staticModelAssetFileSize);
 
-    WriteBinaryData(GetREFSingleBinaryElementCount(),
-                    &l_staticModelBinaryHeader,
-                    l_memoryWriteOffset,
-                    l_mappedData);
+    WriteBinaryData(GetREFSingleBinaryElementCount(), &l_staticModelBinaryHeader, l_memoryWriteOffset);
 
     for (const auto& l_staticModelMesh : a_staticModelData.m_modelMeshList)
     {
@@ -348,78 +236,48 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
         const auto& l_staticModelMeshBinaryHeader = CreateStaticModelMeshBinaryHeader(l_staticModelMesh);
 
         // StaticModelMeshHeaderを書き込む
-        WriteBinaryData(GetREFSingleBinaryElementCount(), 
-                        &l_staticModelMeshBinaryHeader,
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_staticModelMeshBinaryHeader, l_memoryWriteOffset);
 
         // StaticModel配列を書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_vertexCount,
-                        l_staticModelMesh.m_staticModelVertexList.data(),
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_vertexCount, l_staticModelMesh.m_staticModelVertexList.data(), l_memoryWriteOffset);
 
         // 通常Index配列を書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_indexCount,
-                        l_staticModelMesh.m_indexList.data(),
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_indexCount, l_staticModelMesh.m_indexList.data(), l_memoryWriteOffset);
 
         const auto& l_modelMaterialAssetData = l_staticModelMesh.m_modelMaterial.m_modelMaterialAssetData;
 
         // PBRMaterial値を書き込む
         // Texture本体ではなく、.assetに保存できる係数だけを保存する
         // ベースカラー係数
-        WriteBinaryData(GetREFSingleBinaryElementCount(),
-                        &l_modelMaterialAssetData.m_baseColorFactor,
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_modelMaterialAssetData.m_baseColorFactor, l_memoryWriteOffset);
 
         // ラフネス係数
-        WriteBinaryData(GetREFSingleBinaryElementCount(),
-                        &l_modelMaterialAssetData.m_roughnessFactor,
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_modelMaterialAssetData.m_roughnessFactor, l_memoryWriteOffset);
 
         // メタリック係数
-        WriteBinaryData(GetREFSingleBinaryElementCount(),
-                        &l_modelMaterialAssetData.m_metallicFactor,
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_modelMaterialAssetData.m_metallicFactor, l_memoryWriteOffset);
 
         // MaterialTexturePathを書き込む
         // 文字列サイズはStaticModelMeshBinaryHeader側に保存済みなので、
         // ここでは文字列本体だけ書き込む
-        WriteWStringBinaryData(l_modelMaterialAssetData.m_baseColorTextureFilePath, l_memoryWriteOffset, l_mappedData);
-        WriteWStringBinaryData(l_modelMaterialAssetData.m_normalTextureFilePath,    l_memoryWriteOffset, l_mappedData);
-        WriteWStringBinaryData(l_modelMaterialAssetData.m_roughnessTextureFilePath, l_memoryWriteOffset, l_mappedData);
-        WriteWStringBinaryData(l_modelMaterialAssetData.m_metallicTextureFilePath,  l_memoryWriteOffset, l_mappedData);
+        WriteWStringBinaryData(l_modelMaterialAssetData.m_baseColorTextureFilePath, l_memoryWriteOffset);
+        WriteWStringBinaryData(l_modelMaterialAssetData.m_normalTextureFilePath,    l_memoryWriteOffset);
+        WriteWStringBinaryData(l_modelMaterialAssetData.m_roughnessTextureFilePath, l_memoryWriteOffset);
+        WriteWStringBinaryData(l_modelMaterialAssetData.m_metallicTextureFilePath,  l_memoryWriteOffset);
 
         const auto& l_modelMeshletData = l_staticModelMesh.m_modelMeshletData;
 
         // Meshlet本体を書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_meshletCount, 
-                        l_modelMeshletData.m_meshletList.data(), 
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_meshletCount, l_modelMeshletData.m_meshletList.data(), l_memoryWriteOffset);
 
         // Meshlet無いLocalVErtexIndexからStaticModelVertexUIndexへ変換するIndex配列を書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount,
-                        l_modelMeshletData.m_uniqueVertexIndexList.data(),
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount, l_modelMeshletData.m_uniqueVertexIndexList.data(), l_memoryWriteOffset);
 
         // Meshlet内の三角形情報を書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_primitiveIndexCount,
-                        l_modelMeshletData.m_primitiveIndexList.data(),
-                        l_memoryWriteOffset,
-                        l_mappedData);
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_primitiveIndexCount, l_modelMeshletData.m_primitiveIndexList.data(), l_memoryWriteOffset);
 
         // Meshletカリング用Boundsを書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_meshletBoundsCount,
-                        l_modelMeshletData.m_meshletBoundsList.data(),
-                        l_memoryWriteOffset,    
-                        l_mappedData);
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_meshletBoundsCount, l_modelMeshletData.m_meshletBoundsList.data(), l_memoryWriteOffset);
     }
 
     // 計算したファイルサイズと実際に書き込んだサイズが一致するか確認する。
@@ -449,6 +307,15 @@ bool FWK::Converter::StaticModelBinaryConverter::CanLoadStaticModelAsset(const s
     if (IsUpdatedSourceFile(a_filePath, l_staticModelAssetFilePath)) { return false; }
 
     return true;
+}
+
+void FWK::Converter::StaticModelBinaryConverter::FailLoadStaticModelAsset(Struct::StaticModelData& a_staticModelData)
+{
+    // 中途半端に読み込んだModelMeshが残らないように空にする。
+    a_staticModelData.m_modelMeshList.clear();
+
+    // 読み込み途中で失敗した場合も、MemoryMappedFileは必ず閉じる
+    DestroyMemoryMappedFile();
 }
 
 FWK::Converter::StaticModelBinaryConverter::StaticModelBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateStaticModelBinaryHeader(const Struct::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const

@@ -391,9 +391,6 @@
     <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Struct">
       <UniqueIdentifier>{d1f391f8-9321-4623-94e2-fc0c60523847}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Utility">
-      <UniqueIdentifier>{ffdb1479-260e-4b20-a27d-25e868499ea2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Window\Utility">
       <UniqueIdentifier>{4a001993-ee81-46e8-a958-71fcf48e4f23}</UniqueIdentifier>
     </Filter>
@@ -907,6 +904,15 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant">
       <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility">
+      <UniqueIdentifier>{77c8c8ea-e154-4337-a576-64bfdb53efae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Stopwatch">
+      <UniqueIdentifier>{405f0413-d737-4ec9-98e2-fa2457f53025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Singleton">
+      <UniqueIdentifier>{db1192e0-fcd7-4b78-b176-d6fbf3bb46f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1181,9 +1187,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Utility\SingletonUtility.h">
-      <Filter>Source\Framework\TypeINFO\StaticTypeID\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant\DefaultTextureStringUtilityConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\Constant</Filter>
@@ -1485,6 +1488,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h">
+      <Filter>Source\Framework\Utility\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Stopwatch\Stopwatch.h">
+      <Filter>Source\Framework\Utility\Stopwatch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1753,6 +1762,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Stopwatch\Stopwatch.cpp">
+      <Filter>Source\Framework\Utility\Stopwatch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,7 +43,7 @@ namespace FWK::Converter
 			// バイナリーデータサイズを計算してからデータを読み取る
 			const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
 
-			if (!CanReadBinaryData(m_mappedDataSize, a_memoryReadOffet, l_binaryDataSize)) { return false; }
+			if (!CanReadBinaryData(a_memoryReadOffet, l_binaryDataSize)) { return false; }
 
 			ReadBinaryData(a_readDataCount, a_memoryReadOffet, a_destinationData);
 
@@ -87,7 +87,7 @@ namespace FWK::Converter
 			if (l_writeDataSize == k_emptyWriteDataSize) { return; }
 
 			FWK_ASSERT_RETURN_IF_FAILED(!a_sourceData, "書き込み元データがnullptrです。");
-			FWK_ASSERT_RETURN_IF_FAILED(!a_mappedData, "書き込み先データがnullptrです。");
+			FWK_ASSERT_RETURN_IF_FAILED(!m_mappedData, "書き込み先データがnullptrです。");
 
 			// 書き込み先のメモリマップ領域の現在位置へ、
 			// 指定された型と個数分のデータを書き込む

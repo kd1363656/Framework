@@ -1,12 +1,17 @@
 ﻿#pragma once
 
 //===============================================================================
+// Utilityクラス
+//===============================================================================
+#include "Utility/Singleton/SingletonUtility.h"
+#include "Utility/Stopwatch/Stopwatch.h"
+
+//===============================================================================
 // 型情報
 //===============================================================================
 #include "TypeINFO/StaticTypeID/Definition/Type/Alias/StaticTypeIDTypeAlias.h"
 #include "TypeINFO/StaticTypeID/Definition/Macros/AssertReturnMacros.h"
 #include "TypeINFO/StaticTypeID/Definition/Constant/StaticTypeIDConstant.h"
-#include "TypeINFO/StaticTypeID/Utility/SingletonUtility.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
 #include "TypeINFO/Registry/Definition/Struct/StringHashStruct.h"

@@ -331,7 +331,7 @@ bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std
 	if ((a_wStringBinaryFileSize % sizeof(wchar_t)) != 0ULL) { return false; }
 	
 	// 読み込めるバイナリーデータかどうかを検証
-	if (!CanReadBinaryData(m_mappedDataSize, a_memoryReadOffset, a_wStringBinaryFileSize)) { return false; }
+	if (!CanReadBinaryData(a_memoryReadOffset, a_wStringBinaryFileSize)) { return false; }
 
 	// wString情報を読み込む
 	ReadWStringBinaryData(a_wStringBinaryFileSize, a_destinationString, a_memoryReadOffset);

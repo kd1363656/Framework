@@ -2,17 +2,23 @@
 
 bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord)
 {
+	const Utility::Stopwatch& l_stopwatch = {};
+
 	auto& l_modelData = a_staticModelRecord.GetREFModelData();
 
 	// ModelDataはコピー代入禁止のため、保持しているModelMeshリストだけを空にする
 	l_modelData.m_modelMeshList.clear();
 
-	// FBXファイル全体をufbx_sceneとして読み込む
-	auto* l_fbxScene = LoadFBXScene(a_filePath);
-
 	// まず.assetから読み込む
 	// .assetが読み込めなければUFBXで読み込む
-	if (m_binaryConverter.LoadStaticModelAsset(a_filePath, l_modelData)) { return true; }
+	if (m_binaryConverter.LoadStaticModelAsset(a_filePath, l_modelData)) 
+	{
+		
+		return true; 
+	}
+
+	// FBXファイル全体をufbx_sceneとして読み込む
+	auto* l_fbxScene = LoadFBXScene(a_filePath);
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_fbxScene, "FBXシーンの読み込みに失敗したため、StaticModelファイルの読み込みに失敗しました。", false);
 
@@ -52,9 +58,11 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 		if (!l_fbxNode) { continue; }
 
 		// Meshを持っていないNodeはスキップする
-		const auto& l_fbxMesh = l_fbxNode->mesh;
-
-		if (!l_fbxMesh) { continue; }
+		if (const auto& l_fbxMesh = l_fbxNode->mesh;
+			!l_fbxMesh)
+		{
+			continue; 
+		}
 
 		std::vector<Struct::StaticModelMesh> l_staticModelMeshList = {};
 

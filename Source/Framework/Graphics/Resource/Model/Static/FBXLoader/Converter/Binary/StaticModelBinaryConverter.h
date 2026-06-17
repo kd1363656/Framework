@@ -50,6 +50,8 @@ namespace FWK::Converter
 
 		bool CanLoadStaticModelAsset(const std::filesystem::path& a_filePath) const;
 
+		void FailLoadStaticModelAsset(Struct::StaticModelData& a_staticModelData);
+
 		StaticModelBinaryHeader CreateStaticModelBinaryHeader(const Struct::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const;
 
 		StaticModelMeshBinaryHeader CreateStaticModelMeshBinaryHeader(const Struct::StaticModelMesh& a_staticModelMesh) const;

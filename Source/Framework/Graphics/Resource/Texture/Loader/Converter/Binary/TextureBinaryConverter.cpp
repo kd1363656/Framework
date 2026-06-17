@@ -16,23 +16,14 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 
 	TextureBinaryHeader l_textureBinaryHeader = {};
 
-	// Header分のバイト数を安全に読めるかを確認する
-	if (const auto& l_textureBinaryHeaderSize = CalculateBinaryDataSize<TextureBinaryHeader>(GetREFSingleBinaryElementCount());
-		!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_textureBinaryHeaderSize))
+	// Header分のバイト数を安全に読めるかを確認し.asset先頭の内容から読み込む
+	if (!TryReadSingleBinaryData(l_textureBinaryHeader, l_memoryReadOffset))
 	{
 #if defined(_DEBUG)
-		const auto& l_debugLog = std::format("TextureAssetのファイルサイズがHeaderサイズよりも小さいため、PNGから再生成します。AssetFileSize : {}, HeaderSize : {}\n", GetREFMappedDataSize(), l_textureBinaryHeaderSize);
+		const auto& l_debugLog = std::format("TextureAssetのファイルサイズがHeaderサイズよりも小さいため、PNGから再生成します。AssetFileSize : {}\n", GetREFMappedDataSize());
 
 		OutputDebugStringA(l_debugLog.c_str());
 #endif
-		DestroyMemoryMappedFile();
-
-		return false;
-	}
-
-	// .asset先頭からTextureBinaryHeaderを読む
-	if (!TryReadSingleBinaryData(l_textureBinaryHeader, l_memoryReadOffset))
-	{
 		DestroyMemoryMappedFile();
 
 		return false;
@@ -110,14 +101,6 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	// 各サブリソースを順番に読み込む
 	for (std::uint64_t l_imageIndex = 0ULL; l_imageIndex < l_textureBinaryHeader.m_subresourceCount; ++l_imageIndex)
 	{
-		// SubresourceHeaderを読む前に、ファイル範囲内かだけ確認する
-		if (const auto& l_textureBinarySubresourceHeaderSize = CalculateBinaryDataSize<TextureBinarySubresourceHeader>(GetREFSingleBinaryElementCount());
-			!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_textureBinarySubresourceHeaderSize))
-		{
-			DestroyMemoryMappedFile();
-			FWK_ASSERT_RETURN_VALUE("TextureAssetSubresourceHeaderを読み込めるサイズではないため、バイナリーファイルの読み込みに失敗しました。", false);
-		}
-
 		TextureBinarySubresourceHeader l_textureBinarySubresourceHeader = {};
 
 		// MipMap1枚分の情報を読む
@@ -168,19 +151,12 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのSlicePitchがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
-		// ピクセルデータ本体を読む前に、残りサイズを確認する
-		// ピクセルデータ本体を読めるだけの残りサイズがあるか確認する
-		if (!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_textureBinarySubresourceHeader.m_pixelDataSize))
+		// .asset内のピクセルデータを、ScratchImageが確保した画像メモリへコピーする
+		if (!TryReadBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_memoryReadOffset, l_image.pixels))
 		{
 			DestroyMemoryMappedFile();
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのピクセルデータを読み込めるサイズでないため、バイナリーファイルの読み込みに失敗しました。", false);
 		}
-
-		// .asset内のピクセルデータを、ScratchImageが確保した画像メモリへコピーする
-		ReadBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize,
-					   l_mappedData,
-					   l_memoryReadOffset,
-					   l_image.pixels);
 	}
 
 	// 全Subresourceを読み終わった後に、最後の読み込み位置を確認する
@@ -208,15 +184,6 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_textureAssetFileSize == Constant::k_emptyAssetFileSize,	                    "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	    false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
-	// 作成したメモリマップマップドデータを取得
-	auto* l_mappedData = GetMutablePTRMappedData();
-
-	if (!l_mappedData)
-	{
-		DestroyMemoryMappedFile();
-		FWK_ASSERT_RETURN_VALUE("TextureAssetの書き込み先メモリが無効となっており、バイナリーファイルの保存に失敗しました。", false);
-	}
-
 	auto l_memoryWriteOffset = GetREFInitialMemoryWriteOffset();
 
 	// メモリマップドファイル書き込み用テクスチャバイナリヘッダーを作成
@@ -224,10 +191,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 
 	// Headerを書き込む、
 	// WriteBinaryData内で、書き込んだ分だけl_memoryWriteOffsetが進む
-	WriteBinaryData(GetREFSingleBinaryElementCount(),
-					&l_textureBinaryHeader,
-					l_memoryWriteOffset,
-					l_mappedData);
+	WriteBinaryData(GetREFSingleBinaryElementCount(), &l_textureBinaryHeader, l_memoryWriteOffset);
 
 	// ScratchImageからイメージリストを取得
 	const auto* l_imageList = a_scratchImage.GetImages();
@@ -247,16 +211,10 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 		const auto& l_textureBinarySubresourceHeader = CreateTextureBinarySubresourceHeader(l_image);
 
 		// SubresourceHeaderを書き込む
-		WriteBinaryData(GetREFSingleBinaryElementCount(),
-						&l_textureBinarySubresourceHeader,
-						l_memoryWriteOffset,
-						l_mappedData);
+		WriteBinaryData(GetREFSingleBinaryElementCount(), &l_textureBinarySubresourceHeader, l_memoryWriteOffset);
 
 		// ピクセルデータ本体を書き込む
-		WriteBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize,
-						l_image.pixels,
-						l_memoryWriteOffset,
-						l_mappedData);
+		WriteBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_image.pixels, l_memoryWriteOffset);
 	}
 
 	// 計算したファイルサイズと、実際に書き込んだサイズが一致するかを確認する
