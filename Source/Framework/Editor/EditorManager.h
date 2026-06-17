@@ -90,6 +90,8 @@ namespace FWK::Editor
 
 		std::unique_ptr<Editor::LogEditorWindow> m_logEditorWindow = nullptr;
 
+		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
+
 		SRVDescriptorIndexMap m_srvDescriptorIndexMap = {};
 		EditorWindowMap       m_editorWindowMap       = {};
 
