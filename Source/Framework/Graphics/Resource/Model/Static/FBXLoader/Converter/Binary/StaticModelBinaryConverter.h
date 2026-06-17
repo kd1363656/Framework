@@ -60,6 +60,6 @@ namespace FWK::Converter
 		static constexpr std::uint16_t k_staticModelAssetTypeID = 0x5354U;
 
 		// ※ 注意 : Assetとして保存する構造体が変化したらバージョンを上げる
-		static constexpr std::uint16_t k_staticModelAssetVersion = 6U;
+		static constexpr std::uint16_t k_staticModelAssetVersion = 1U;
 	};
 }

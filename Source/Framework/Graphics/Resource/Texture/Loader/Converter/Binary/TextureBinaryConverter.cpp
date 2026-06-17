@@ -26,10 +26,11 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	TextureBinaryHeader l_textureBinaryHeader = {};
 
 	// Header分のバイト数を安全に読めるかを確認する
-	if (GetREFMappedDataSize() < sizeof(TextureBinaryHeader))
+	if (const auto& l_textureBinaryHeaderSize = CalculateBinaryDataSize<TextureBinaryHeader>(GetREFSingleBinaryElementCount());
+		!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_textureBinaryHeaderSize))
 	{
 #if defined(_DEBUG)
-		const auto& l_debugLog = std::format("TextureAssetのファイルサイズがHeaderサイズよりも小さいため、PNGから再生成します。AssetFileSize : {}, HeaderSize : {}\n", GetREFMappedDataSize(), sizeof(TextureBinaryHeader));
+		const auto& l_debugLog = std::format("TextureAssetのファイルサイズがHeaderサイズよりも小さいため、PNGから再生成します。AssetFileSize : {}, HeaderSize : {}\n", GetREFMappedDataSize(), l_textureBinaryHeaderSize);
 
 		OutputDebugStringA(l_debugLog.c_str());
 #endif
@@ -117,8 +118,8 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	for (std::uint64_t l_imageIndex = 0ULL; l_imageIndex < l_textureBinaryHeader.m_subresourceCount; ++l_imageIndex)
 	{
 		// SubresourceHeaderを読む前に、ファイル範囲内かだけ確認する
-		if (l_memoryReadOffset > GetREFMappedDataSize() ||
-			sizeof(TextureBinarySubresourceHeader) > GetREFMappedDataSize() - l_memoryReadOffset)
+		if (const auto& l_textureBinarySubresourceHeaderSize = CalculateBinaryDataSize<TextureBinarySubresourceHeader>(GetREFSingleBinaryElementCount());
+			!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_textureBinarySubresourceHeaderSize))
 		{
 			DestroyMemoryMappedFile();
 			FWK_ASSERT_RETURN_VALUE("TextureAssetSubresourceHeaderを読み込めるサイズではないため、バイナリーファイルの読み込みに失敗しました。", false);
@@ -134,7 +135,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 
 		const auto& l_image = l_imageList[l_imageIndex];
 
-		// pixelDataSizeがScratchIMage側のSlicePitchと違う場合は
+		// pixelDataSizeがScratchImage側のSlicePitchと違う場合は
 		// コピーするとメモリ破壊する可能性があるため、確認する
 		if (l_textureBinarySubresourceHeader.m_pixelDataSize != l_image.slicePitch)
 		{
@@ -172,13 +173,13 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 			DestroyMemoryMappedFile();
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのSlicePitchがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
-		// .assert先頭からTextureBinaryHeaderを読む
+
+		// ピクセルデータ本体を読む前に、残りサイズを確認する
 		// ピクセルデータ本体を読めるだけの残りサイズがあるか確認する
-		if (l_memoryReadOffset > GetREFMappedDataSize() ||
-			l_textureBinarySubresourceHeader.m_pixelDataSize > GetREFMappedDataSize() - l_memoryReadOffset)
+		if (!CanReadBinaryData(GetREFMappedDataSize(), l_memoryReadOffset, l_textureBinarySubresourceHeader.m_pixelDataSize))
 		{
 			DestroyMemoryMappedFile();
-			FWK_ASSERT_RETURN_VALUE("TextureAssetのピクセルデータを読み込めるサイズでないため、バイナリーファイルの読み込みに失敗しました。。", false);
+			FWK_ASSERT_RETURN_VALUE("TextureAssetのピクセルデータを読み込めるサイズでないため、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
 		// .asset内のピクセルデータを、ScratchImageが確保した画像メモリへコピーする
@@ -282,12 +283,13 @@ bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::file
 	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
 
 	// もし元ファイルが更新されていたらバイナリーファイルも更新する
-	if (// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
-		const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
-		IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) 
-	{
-		return false; 
-	}
+	// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
+	const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
+
+	// .assetが存在しないなら、FBXから読み込んで生成する
+	if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
+
+	if(IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
 
 	return true;
 }

@@ -21,7 +21,8 @@ namespace FWK::Converter
 
 	protected:
 
-		bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
+		bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath)										  const;
+		bool CanReadBinaryData  (const std::uint64_t&		  a_mappedDataSize, const std::uint64_t&		 a_memoryReadOffset, const std::uint64_t& a_readDataSize) const;
 
 		std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath) const;
 
@@ -37,10 +38,7 @@ namespace FWK::Converter
 		std::uint8_t* GetMutablePTRMappedData() { return m_mappedData; }
 
 		template <typename Type>
-		void ReadBinaryData(const std::uint64_t& a_readDataCount,
-							const std::uint8_t*  a_mappedData,
-							      std::uint64_t& a_memoryReadOffset,
-								  Type*          a_destinationData) const
+		void ReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
 		{
 			// 読み込むデータの型サイズと個数から、実際にコピーするバイト数を計算する
 			const auto l_readDataSize = sizeof(Type) * a_readDataCount;
@@ -48,22 +46,33 @@ namespace FWK::Converter
 			// 読み込むバイト数が0の場合は、何もせずに終了する
 			if (l_readDataSize == k_emptyReadDataSize) { return; }
 
-			FWK_ASSERT_RETURN_IF_FAILED(!a_mappedData,	    "読み込み元データがnullptrです。");
+			FWK_ASSERT_RETURN_IF_FAILED(!m_mappedData,	    "読み込み元データがnullptrです。");
 			FWK_ASSERT_RETURN_IF_FAILED(!a_destinationData, "読み込み先データがnullptrです。");
 
 			// メモリマップされたバイナリデータの現在位置から、
 			// 指定された型と個数分のデータを読み込み先へコピーする
-			std::memcpy(a_destinationData, a_mappedData + a_memoryReadOffset, l_readDataSize);
+			std::memcpy(a_destinationData, m_mappedData + a_memoryReadOffset, l_readDataSize);
 
 			// 次のデータを続けて読めるように、読み込んだバイト数分だけオフセットを進める
 			a_memoryReadOffset += l_readDataSize;
 		}
 
 		template <typename Type>
-		void WriteBinaryData(const std::uint64_t& a_writeDataCount,
-							 const Type*		  a_sourceData,
-								   std::uint64_t& a_memoryWriteOffset,
-								   std::uint8_t*  a_mappedData) const
+		bool TryReadSingleBinaryData(Type& a_destinationData, std::uint64_t& a_memoryReadOffset) const
+		{
+			if (!m_mappedData) { return false; }
+
+			const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(k_singleBinaryElementCount);
+
+			if (!CanReadBinaryData<Type>(m_mappedDataSize, a_memoryReadOffset, l_binaryDataSize)) { return false; }
+
+			ReadBinaryData(k_singleBinaryElementCount, a_memoryReadOffset, &a_destinationData);
+
+			return true;
+		}
+
+		template <typename Type>
+		void WriteBinaryData(const std::uint64_t& a_writeDataCount, const Type* a_sourceData, std::uint64_t& a_memoryWriteOffset) const
 		{
 			// 書き込みデータの型サイズと個数から、実際にコピーするバイト数を計算する
 			const auto l_writeDataSize = sizeof(Type) * a_writeDataCount;

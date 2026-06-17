@@ -34,6 +34,19 @@ bool FWK::Converter::BinaryFileConverterBase::IsUpdatedSourceFile(const std::fil
 	return l_binaryLastWriteTime <= l_sourceLastWriteTime;
 }
 
+bool FWK::Converter::BinaryFileConverterBase::CanReadBinaryData(const std::uint64_t& a_mappedDataSize, const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
+{
+	// 現在の読み込み位置がファイルサイズを超えている場合、
+	// これ以上安全に読み込めない
+	if (a_memoryReadOffset > a_mappedDataSize) { return false; }
+
+	// 残りサイズを計算する
+	const auto& l_remainingDataSize = a_mappedDataSize - a_memoryReadOffset;
+
+	// 読み込みたいサイズが残りサイズ以下なら安全に読める
+	return a_readDataSize <= l_remainingDataSize;
+}
+
 std::filesystem::path FWK::Converter::BinaryFileConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
 {
 	return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);

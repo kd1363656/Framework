@@ -10,6 +10,10 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 	// FBXファイル全体をufbx_sceneとして読み込む
 	auto* l_fbxScene = LoadFBXScene(a_filePath);
 
+	// まず.assetから読み込む
+	// .assetが読み込めなければUFBXで読み込む
+	if (m_binaryConverter.LoadStaticModelAsset(a_filePath, l_modelData)) { return true; }
+
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_fbxScene, "FBXシーンの読み込みに失敗したため、StaticModelファイルの読み込みに失敗しました。", false);
 
 	// モデルデータをシーンから抽出
