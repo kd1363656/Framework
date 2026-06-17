@@ -3,9 +3,19 @@
 FWK::Editor::SceneViewEditorWindow::SceneViewEditorWindow() = default;
 FWK::Editor::SceneViewEditorWindow::~SceneViewEditorWindow()
 {
-	EditorManager::GetInstance().ReleaseImGuiSRVDescriptorIndex(m_imguiSRVDescriptorIndex);
+	EditorManager::GetInstance().ReleaseImGuiSRVDescriptorIndex(m_imGuiSRVDescriptorIndex);
 
-	m_imguiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
+	m_imGuiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
+}
+
+void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
+{
+	// もし無効なSRVIndexを指し示しているならDescriptorIndexをアロケートする
+	if (m_imGuiSRVDescriptorIndex != Constant::k_invalidDescriptorIndex) { return; }
+
+	auto& l_editorManager = EditorManager::GetInstance();
+
+	m_imGuiSRVDescriptorIndex = l_editorManager.AllocateImGuiSRVDescriptorIndex();
 }
 
 void FWK::Editor::SceneViewEditorWindow::Draw()
@@ -79,17 +89,13 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID()
 
 	auto& l_editorManager = EditorManager::GetInstance();
 
-	if (m_imguiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex)
-	{
-		m_imguiSRVDescriptorIndex = l_editorManager.AllocateImGuiSRVDescriptorIndex();
-
-		if (m_imguiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
-	}
+	// もし無効なDescriptorIndexならreturn
+	if (m_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
 
 	// メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへ更新する
-	if (!l_editorManager.UpdateImGuiSRVDescriptorFromMainSRVDescriptor(l_srvDescriptorIndex, m_imguiSRVDescriptorIndex)) { return k_invalidSceneViewTextureID; }
+	if (!l_editorManager.UpdateImGuiSRVDescriptorFromMainSRVDescriptor(l_srvDescriptorIndex, m_imGuiSRVDescriptorIndex)) { return k_invalidSceneViewTextureID; }
 
-	return l_editorManager.FetchVALImGuiTextureID(m_imguiSRVDescriptorIndex);
+	return l_editorManager.FetchVALImGuiTextureID(m_imGuiSRVDescriptorIndex);
 }
 
 void FWK::Editor::SceneViewEditorWindow::DrawSceneViewTexture(const ImTextureID& a_textureID, const ImVec2& a_sceneViewSize) const

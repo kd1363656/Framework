@@ -9,7 +9,8 @@ namespace FWK::Editor
 				 EditorWindowBase() = default;
 		virtual ~EditorWindowBase() = default;
 
-		virtual void INIT() { /*必要に応じてオーバーライドしてください*/ }
+		virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ }
+
 		virtual void Draw() = 0;
 
 		// EditorManager内に存在するリストに生成していいかどうか

@@ -11,7 +11,6 @@ namespace FWK::Editor
 
 		bool IsAllowCreateInList() const override { return false; }
 
-		void INIT() override;
 		void Draw() override;
 
 		void AddLog(const char* a_format , ...) IM_FMTARGS(2);

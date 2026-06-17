@@ -51,7 +51,7 @@ namespace FWK::Editor
 
 		bool UpdateImGuiSRVDescriptorFromMainSRVDescriptor(const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
 
-		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
@@ -81,7 +81,7 @@ namespace FWK::Editor
 
 		bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
 
-		bool CopySRVDescriptorToImGuiSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+		bool CopySRVDescriptorToImGuiSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		void DrawDockingSpace() const;
 		void DrawEditorWindow() const;
@@ -98,7 +98,7 @@ namespace FWK::Editor
 
 		static constexpr size_t k_logBufferSize = 1024ULL;
 
-		static constexpr TypeAlias::DescriptorIndex k_imguiSRVDescriptorCapacity = 256U;
+		static constexpr TypeAlias::DescriptorIndex k_imguiSRVDescriptorCapacity = 2560U;
 	
 		static constexpr UINT k_copySRVDescriptorCount = 1U;
 

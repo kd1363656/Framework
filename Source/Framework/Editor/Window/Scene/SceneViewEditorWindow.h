@@ -9,6 +9,8 @@ namespace FWK::Editor
 		 SceneViewEditorWindow()	;
 		~SceneViewEditorWindow() override;
 
+		void PostDeserialize() override;
+
 		void Draw() override;
 
 	private:
@@ -28,7 +30,7 @@ namespace FWK::Editor
 
 		static constexpr ImTextureID k_invalidSceneViewTextureID = {};
 
-		TypeAlias::DescriptorIndex m_imguiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_imGuiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
 
 		FWK_DEFINE_TYPE_INFO(SceneViewEditorWindow, EditorWindowBase)
 	};

@@ -36,11 +36,13 @@ void Application::Execute()
 	l_graphicsManager.LoadCONFIG();
 	l_editorManager.LoadCONFIG  ();
 
+
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
-	l_editorManager.PostLoadCONFIG  ();
 
-	l_editorManager.INIT(m_window.GetREFHWND());
+	l_editorManager.INIT		  (m_window.GetREFHWND());
+	l_editorManager.PostLoadCONFIG();
+
 	l_sceneManager.INIT ();
 
 	while (true)

@@ -1,14 +1,5 @@
 ﻿#include "LogEditorWindow.h"
 
-void FWK::Editor::LogEditorWindow::INIT()
-{
-	// 自動スクロールをONにしておきログをすべてクリア
-	m_canAutoScroll     = k_enabelCanAutoScroll;
-	m_canScrollToBottom = k_enabelCanScrollToBottom;
-
-	ClearLog();
-}
-
 void FWK::Editor::LogEditorWindow::Draw()
 {
 	DrawEditorOptions();
