@@ -75,7 +75,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
         // 頂点配列を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_vertexCount, l_memoryReadOffset, l_staticModelMesh.m_staticModelVertexList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_vertexCount, l_memoryReadOffset, l_staticModelMesh.m_modelVertexList))
         {
             FailLoadStaticModelAsset(a_staticModelData);
 
@@ -238,8 +238,8 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
         // StaticModelMeshHeaderを書き込む
         WriteBinaryData(GetREFSingleBinaryElementCount(), &l_staticModelMeshBinaryHeader, l_memoryWriteOffset);
 
-        // StaticModel配列を書き込む
-        WriteBinaryData(l_staticModelMeshBinaryHeader.m_vertexCount, l_staticModelMesh.m_staticModelVertexList.data(), l_memoryWriteOffset);
+        // Model頂点配列を書き込む
+        WriteBinaryData(l_staticModelMeshBinaryHeader.m_vertexCount, l_staticModelMesh.m_modelVertexList.data(), l_memoryWriteOffset);
 
         // 通常Index配列を書き込む
         WriteBinaryData(l_staticModelMeshBinaryHeader.m_indexCount, l_staticModelMesh.m_indexList.data(), l_memoryWriteOffset);
@@ -338,8 +338,8 @@ FWK::Converter::StaticModelBinaryConverter::StaticModelMeshBinaryHeader FWK::Con
     const auto& l_modelMeshletData       = a_staticModelMesh.m_modelMeshletData;
 
     // 頂点・Index数。
-    l_staticModelMeshBinaryHeader.m_vertexCount = a_staticModelMesh.m_staticModelVertexList.size();
-    l_staticModelMeshBinaryHeader.m_indexCount  = a_staticModelMesh.m_indexList.size            ();
+    l_staticModelMeshBinaryHeader.m_vertexCount = a_staticModelMesh.m_modelVertexList.size();
+    l_staticModelMeshBinaryHeader.m_indexCount  = a_staticModelMesh.m_indexList.size      ();
 
     // Materialが参照しているTexturePathのバイナリ保存サイズ。
     // std::wstringは可変長なので、Headerに保存サイズを持たせておく。
@@ -373,8 +373,8 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
         // Mesh単位Header
         l_staticModelAssetFileSize += CalculateBinaryDataSize<StaticModelMeshBinaryHeader>(GetREFSingleBinaryElementCount());
 
-        // StaticModel用頂点配列
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<Struct::StaticModelVertex>(l_staticModelMesh.m_staticModelVertexList.size());
+        // Model用頂点配列
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<Struct::StaticModelVertex>(l_staticModelMesh.m_modelVertexList.size());
 
         // Index配列
         l_staticModelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_staticModelMesh.m_indexList.size());

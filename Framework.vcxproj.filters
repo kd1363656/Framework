@@ -916,6 +916,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer">
       <UniqueIdentifier>{88cf0829-91c6-43f9-8c05-ad64320a1151}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\Builder">
+      <UniqueIdentifier>{3ddda587-e462-47f5-b413-7f41d46c8cb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">

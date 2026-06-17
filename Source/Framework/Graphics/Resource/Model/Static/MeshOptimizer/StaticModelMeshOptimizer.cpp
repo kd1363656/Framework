@@ -17,8 +17,8 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelRecord(Graphics
 
 bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::StaticModelMesh& a_staticModelMesh) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_staticModelVertexList.empty(), "ModelMeshの頂点リストが空のため、StaticModelMeshの最適化に失敗しました。",		     false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_indexList.empty(),			     "ModelMeshのインデックスリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_modelVertexList.empty(), "ModelMeshの頂点リストが空のため、StaticModelMeshの最適化に失敗しました。",		   false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_indexList.empty(),		   "ModelMeshのインデックスリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
 
 	std::vector<std::uint32_t> l_vertexRemapList = {};
 
@@ -34,8 +34,8 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 	const auto& l_optimizedVertexCount = meshopt_generateVertexRemap(l_vertexRemapList.data(),
 																	 a_staticModelMesh.m_indexList.data(),
 																	 a_staticModelMesh.m_indexList.size(),
-																	 a_staticModelMesh.m_staticModelVertexList.data(),
-																	 a_staticModelMesh.m_staticModelVertexList.size(),
+																	 a_staticModelMesh.m_modelVertexList.data(),
+																	 a_staticModelMesh.m_modelVertexList.size(),
 																	 sizeof(Struct::StaticModelVertex));
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_optimizedVertexCount == k_invalidOptimizedVertexCount, "meshopt_generateVertexRemapによる頂点リマップ作成に失敗しました。", false);
@@ -65,8 +65,8 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 	//							 頂点一つ分のバイトサイズ、
 	//							 meshopt_generateVertexRemapで作成した対応表);
 	meshopt_remapVertexBuffer(l_optimizedModelVertexList.data(),
-							  a_staticModelMesh.m_staticModelVertexList.data(),
-							  a_staticModelMesh.m_staticModelVertexList.size(),
+							  a_staticModelMesh.m_modelVertexList.data(),
+							  a_staticModelMesh.m_modelVertexList.size(),
 							  sizeof(Struct::StaticModelVertex),
 							  l_vertexRemapList.data());
 
@@ -93,8 +93,8 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 								l_optimizedModelVertexList.size(),
 								sizeof(Struct::StaticModelVertex));
 
-	a_staticModelMesh.m_staticModelVertexList = std::move(l_optimizedModelVertexList);
-	a_staticModelMesh.m_indexList             = std::move(l_optimizedIndexList);
+	a_staticModelMesh.m_modelVertexList = std::move(l_optimizedModelVertexList);
+	a_staticModelMesh.m_indexList       = std::move(l_optimizedIndexList);
 
 	return true;
 }

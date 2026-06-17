@@ -177,8 +177,8 @@ namespace FWK::Struct
 		StaticModelMesh& operator=(const StaticModelMesh&)			 = delete;
 		StaticModelMesh& operator=(	     StaticModelMesh&&) noexcept = default;
 
-		std::vector<StaticModelVertex> m_staticModelVertexList = {};
-		std::vector<std::uint32_t>     m_indexList	           = {};
+		std::vector<StaticModelVertex> m_modelVertexList = {};
+		std::vector<std::uint32_t>     m_indexList	     = {};
 
 		ModelMaterial m_modelMaterial = {};
 
