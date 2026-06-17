@@ -12,11 +12,11 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData
 
 bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::StaticModelMesh& a_staticModelMesh) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_staticModelVertexList.size() == Constant::k_emptyModelVertexCount, "ModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",			false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_indexList.size()		       == Constant::k_emptyModelIndexCount,  "ModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "StaticModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",			false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_indexList.size()		 == Constant::k_emptyModelIndexCount,  "StaticModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 
 	// インデックスリストの総数を3で割った時に余りが0でないと、三角形を構成するインデックスリストとして不適切
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != k_emptyRemainder, "ModelMeshのインデックス数が三角形単位ではないため、MeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != k_emptyRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
 
 	// メッシュレットデータの初期化
 	auto& l_modelMeshletData = a_staticModelMesh.m_modelMeshletData;
@@ -30,9 +30,9 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 	// meshopt_buildMeshletsBound(インデックス数、
 	//						      Meshlet内の最大頂点数、
 	//							  Meshlet内の最大三角形数);
-	const auto l_maxMeshletCount = meshopt_buildMeshletsBound(a_odelMesh.m_indexList.size(), Constant::k_maxMeshletVertexCount, Constant::k_maxMeshletPrimitiveCount);
+	const auto l_maxMeshletCount = meshopt_buildMeshletsBound(a_staticModelMesh.m_indexList.size(), Constant::k_maxMeshletVertexCount, Constant::k_maxMeshletPrimitiveCount);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_maxMeshletCount == Constant::k_emptyMeshletCount, "Meshletの最大数が0のため、MeshletData作成に失敗しました。", false)
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_maxMeshletCount == Constant::k_emptyMeshletCount, "Meshletの最大数が0のため、StaticModelMeshletData作成に失敗しました。", false);
 
 	std::vector<meshopt_Meshlet> l_meshoptMeshletList		 = {};
 	std::vector<uint8_t>		 l_meshoptPrimitiveIndexList = {};
@@ -53,9 +53,9 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 	// meshoptimizerは頂点座標をfloat*とstrideで受け取る
 	// reinterpret_castでModelVertex全体をfloat*に見せるより、
 	// 先頭頂点のm_position.xを直接渡す方が安全
-	const auto* l_vertexPositionData = &a_modelMesh.m_modelVertexList.front().m_position.x;
+	const auto* l_vertexPositionData = &a_staticModelMesh.m_modelVertexList.front().m_position.x;
 
-	// 最適化済みの頂点とインデックスからMeshShader用のMeshletDataを作成する
+	// 最適化済みの頂点とインデックスからMeshShader用のStaticModelMeshletDataを作成する
 	// meshopt_buildMeshlets(出力Meshlet配列、
 	//						 出力PrimitiveIndex配列、
 	//					     入力Index配列、
@@ -65,20 +65,20 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 	//						 入力頂点1個分のbyteサイズ、
 	//						 Meshlet内の最大頂点数、
 	//						 Meshlet内の最大三角形数、
-	//						 Cone Culling用の重み);
+	//						 ConeCulling用の重み);
 	const auto l_meshletCount = meshopt_buildMeshlets(l_meshoptMeshletList.data(),
 													  l_modelMeshletData.m_uniqueVertexIndexList.data(),
 													  l_meshoptPrimitiveIndexList.data(),
-													  a_modelMesh.m_indexList.data(),
-													  a_modelMesh.m_indexList.size(),
+													  a_staticModelMesh.m_indexList.data(),
+													  a_staticModelMesh.m_indexList.size(),
 													  l_vertexPositionData,
-													  a_modelMesh.m_modelVertexList.size(),
-													  sizeof(Struct::ModelVertex),
+													  a_staticModelMesh.m_modelVertexList.size(),
+													  sizeof(Struct::StaticModelVertex),
 													  Constant::k_maxMeshletVertexCount,
 													  Constant::k_maxMeshletPrimitiveCount,
-													  Constant::k_defaultMeshletConeWeight);
+													  k_defaultMeshletConeWeight);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_meshletCount == Constant::k_emptyMeshletCount, "MeshletData作成結果のMeshlet数が0です。", false)
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_meshletCount == Constant::k_emptyMeshletCount, "MeshletData作成結果のMeshlet数が0です。", false);
 
 	// メッシュレットに必要な分のみ要素を確保
 	l_meshoptMeshletList.resize(l_meshletCount);
@@ -92,7 +92,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 
 	// meshoptimizerのPrimitiveIndex配列は4byte境界にそろえて扱うため、
 	// 最後のMeshletで実際に使用したPrimitiveIndex数を4byte境界へ切り上げる
-	const auto& l_alignedLastMeshletPrimitiveIndexCount = Utility::Math::AlignUp(l_lastMeshletPrimitiveIndexCount, Constant::k_meshletPrimitiveIndexAlignment);
+	const auto& l_alignedLastMeshletPrimitiveIndexCount = Utility::AlignUp(l_lastMeshletPrimitiveIndexCount, k_meshletPrimitiveIndexAlignment);
 
 	const auto& l_usedPrimitiveIndexCount = l_lastMeshlet.triangle_offset + l_alignedLastMeshletPrimitiveIndexCount;
 
@@ -133,8 +133,8 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 																  l_meshoptPrimitiveIndexList.data()				+ l_meshoptMeshlet.triangle_offset,
 																  l_meshoptMeshlet.triangle_count,
 																  l_vertexPositionData,
-																  a_modelMesh.m_modelVertexList.size(),
-																  sizeof(Struct::ModelVertex));
+																  a_staticModelMesh.m_modelVertexList.size(),
+																  sizeof(Struct::StaticModelVertex));
 
 		// メッシュレットカリング用情報を格納
 		auto& l_modelMeshletBounds = l_modelMeshletData.m_meshletBoundsList[l_meshletIndex];
@@ -154,7 +154,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 		l_modelMeshletBounds.m_coneAxis.y = l_meshoptBounds.cone_axis[k_vectorElementIndexY];
 		l_modelMeshletBounds.m_coneAxis.z = l_meshoptBounds.cone_axis[k_vectorElementIndexZ];
 
-		l_modelMeshletBounds.m_padding = Constant::k_defaultMeshletBoundsPadding;
+		l_modelMeshletBounds.m_padding = k_defaultMeshletBoundsPadding;
 	}
 
 	return true;

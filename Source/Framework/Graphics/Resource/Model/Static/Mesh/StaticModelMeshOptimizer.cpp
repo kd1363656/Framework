@@ -93,6 +93,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 								l_optimizedModelVertexList.size(),
 								sizeof(Struct::StaticModelVertex));
 
+	// 最適化後のインデックス、頂点のリストを格納
 	a_staticModelMesh.m_modelVertexList = std::move(l_optimizedModelVertexList);
 	a_staticModelMesh.m_indexList       = std::move(l_optimizedIndexList);
 

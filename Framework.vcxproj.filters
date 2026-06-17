@@ -913,11 +913,17 @@
     <Filter Include="Source\Framework\Utility\Singleton">
       <UniqueIdentifier>{db1192e0-fcd7-4b78-b176-d6fbf3bb46f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet">
+      <UniqueIdentifier>{9339af25-33b6-4b6b-a191-a0347c39b0e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Mesh">
       <UniqueIdentifier>{88cf0829-91c6-43f9-8c05-ad64320a1151}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\Builder">
-      <UniqueIdentifier>{3ddda587-e462-47f5-b413-7f41d46c8cb5}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition">
+      <UniqueIdentifier>{e71f7b6c-8d42-48e1-9dce-47e757c5c029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant">
+      <UniqueIdentifier>{b63b16ae-e913-4fc3-bb97-042dc7f4491b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1503,8 +1509,14 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\StaticModelMeshOptimizer.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant\StaticModelMeshletBuilderConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1781,8 +1793,11 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer\StaticModelMeshOptimizer.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\MeshOptimizer</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
