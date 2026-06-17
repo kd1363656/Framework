@@ -6,8 +6,8 @@ namespace FWK::Editor
 	{
 	private:
 
-		using SRVDescriptorIndexMap = std::unordered_map<UINT64, TypeAlias::DescriptorIndex>;
-		using EditorWindowMap       = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>>;
+		using ImGuiSRVDescriptorIndexMap = std::unordered_map<UINT64, TypeAlias::DescriptorIndex>;
+		using EditorWindowMap			 = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>>;
 
 		friend class SingletonBase<EditorManager>;
 
@@ -45,6 +45,14 @@ namespace FWK::Editor
 									  l_message.c_str());
 		}
 		
+		TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
+
+		void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+
+		bool UpdateImGuiSRVDescriptorFromMainSRVDescriptor(const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+
+		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
 		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
@@ -71,6 +79,10 @@ namespace FWK::Editor
 
 		static void ReleaseSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE a_gpuHandle);
 
+		bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
+
+		bool CopySRVDescriptorToImGuiSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+
 		void DrawDockingSpace() const;
 		void DrawEditorWindow() const;
 
@@ -86,14 +98,19 @@ namespace FWK::Editor
 
 		static constexpr size_t k_logBufferSize = 1024ULL;
 
+		static constexpr TypeAlias::DescriptorIndex k_imguiSRVDescriptorCapacity = 256U;
+	
+		static constexpr UINT k_copySRVDescriptorCount = 1U;
+
 		static constexpr int k_dockingStyleVarPopCount = 2;
 
 		std::unique_ptr<Editor::LogEditorWindow> m_logEditorWindow = nullptr;
 
-		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
+		TypeAlias::SRVDescriptorPool m_imGuiSRVDescriptorPool = {};
 
-		SRVDescriptorIndexMap m_srvDescriptorIndexMap = {};
-		EditorWindowMap       m_editorWindowMap       = {};
+		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap = {};
+
+		EditorWindowMap m_editorWindowMap = {};
 
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList = {};
 
@@ -108,4 +125,5 @@ namespace FWK::Editor
 do																														 \
 {																														 \
 	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), Format __VA_OPT__(,) __VA_ARGS__); \
-} while(false)
+}																														 \
+while(false)

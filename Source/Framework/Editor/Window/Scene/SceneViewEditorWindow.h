@@ -6,16 +6,14 @@ namespace FWK::Editor
 	{
 	public:
 
-		 SceneViewEditorWindow()		  = default;
-		~SceneViewEditorWindow() override = default;
+		 SceneViewEditorWindow()	;
+		~SceneViewEditorWindow() override;
 
 		void Draw() override;
 
 	private:
 
-		ImTextureID FetchVALSceneViewTextureID() const;
-
-		ImTextureID ConvertGPUHandleToImTextureID(const D3D12_GPU_DESCRIPTOR_HANDLE& a_gpuHandle) const;
+		ImTextureID FetchVALSceneViewTextureID();
 
 		void DrawSceneViewTexture(const ImTextureID& a_textureID, const ImVec2& a_sceneViewSize) const;
 
@@ -29,6 +27,8 @@ namespace FWK::Editor
 		static constexpr float k_sceneViewUVMAXY = 1.0F;
 
 		static constexpr ImTextureID k_invalidSceneViewTextureID = {};
+
+		TypeAlias::DescriptorIndex m_imguiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
 
 		FWK_DEFINE_TYPE_INFO(SceneViewEditorWindow, EditorWindowBase)
 	};

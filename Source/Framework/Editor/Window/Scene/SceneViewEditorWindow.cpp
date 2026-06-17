@@ -1,5 +1,13 @@
 ﻿#include "SceneViewEditorWindow.h"
 
+FWK::Editor::SceneViewEditorWindow::SceneViewEditorWindow() = default;
+FWK::Editor::SceneViewEditorWindow::~SceneViewEditorWindow()
+{
+	EditorManager::GetInstance().ReleaseImGuiSRVDescriptorIndex(m_imguiSRVDescriptorIndex);
+
+	m_imguiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
+}
+
 void FWK::Editor::SceneViewEditorWindow::Draw()
 {
 	// SceneView用のImGuiウィンドウを開始する
@@ -38,7 +46,7 @@ void FWK::Editor::SceneViewEditorWindow::Draw()
 	ImGui::End();
 }
 
-ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() const
+ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID()
 {
 	// GraphicsManagerからRendererへアクセスし、現在フレームのRendererGraphリソースを取得する
 	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
@@ -69,19 +77,19 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() con
 
 	if (l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
 
-	// SRVDescriptorPoolからShaderVisibleなGPUDescriptorHandleを取得する
-	// ImGuiのDirectX12バックエンドでは、このGPUHandleをImTextureIDとして渡す
-	const auto& l_resourceContext   = l_graphicsManager.GetREFResourceContext  ();
-	const auto& l_srvDescriptorPool = l_resourceContext.GetREFSRVDescriptorPool();
+	auto& l_editorManager = EditorManager::GetInstance();
 
-	const auto l_gpuHandle = l_srvDescriptorPool.FetchVALGPUDescriptorHandle(l_srvDescriptorIndex);
+	if (m_imguiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex)
+	{
+		m_imguiSRVDescriptorIndex = l_editorManager.AllocateImGuiSRVDescriptorIndex();
 
-	return ConvertGPUHandleToImTextureID(l_gpuHandle);
-}
+		if (m_imguiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
+	}
 
-ImTextureID FWK::Editor::SceneViewEditorWindow::ConvertGPUHandleToImTextureID(const D3D12_GPU_DESCRIPTOR_HANDLE& a_gpuHandle) const
-{
-	return a_gpuHandle.ptr;
+	// メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへ更新する
+	if (!l_editorManager.UpdateImGuiSRVDescriptorFromMainSRVDescriptor(l_srvDescriptorIndex, m_imguiSRVDescriptorIndex)) { return k_invalidSceneViewTextureID; }
+
+	return l_editorManager.FetchVALImGuiTextureID(m_imguiSRVDescriptorIndex);
 }
 
 void FWK::Editor::SceneViewEditorWindow::DrawSceneViewTexture(const ImTextureID& a_textureID, const ImVec2& a_sceneViewSize) const
