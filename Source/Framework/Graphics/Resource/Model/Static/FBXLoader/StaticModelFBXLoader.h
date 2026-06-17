@@ -25,8 +25,14 @@ namespace FWK::Graphics
 		std::wstring FetchTextureFilePath      (const ufbx_material_map& a_materialMap) const;
 		std::wstring ConvertUFBXStringToWString(const ufbx_string&	     a_fbxString)   const;
 
-		void AddStataicModelLoadDebugLog(const std::filesystem::path& a_filePath,			  const Struct::StaticModelData& a_staticModelData, const double& a_elpacesSecond) const;
-		void AddStataicModelLoadDebugLog(const std::uint64_t&         a_staticModelMeshIndex, const Struct::StaticModelMesh& a_staticModelMesh)								   const;
+		void AddStataicModelLoadDebugLog(const Struct::StaticModelData& a_staticModelData, 
+										 const std::filesystem::path&   a_filePath, 
+										 const std::string_view&		a_loadSourceName,
+										 const double&					a_elapsedSecond) const;
+
+		static constexpr std::string_view k_assetLoadSourceDebugText      = "Asset";
+		static constexpr std::string_view k_ufbxLoadSourceDebugText       = "UFBX";
+		static constexpr std::string_view k_emptyTextureFilePathDebugText = "None";
 
 		static constexpr std::size_t k_invalidMaterialIndex = std::numeric_limits<std::size_t>::max();
 		static constexpr std::size_t k_emptyStringLength    = 0ULL;

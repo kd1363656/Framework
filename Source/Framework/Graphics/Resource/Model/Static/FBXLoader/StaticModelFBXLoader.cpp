@@ -2,20 +2,30 @@
 
 bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord)
 {
-	const Utility::Stopwatch& l_stopwatch = {};
-
 	auto& l_modelData = a_staticModelRecord.GetREFModelData();
 
 	// ModelDataはコピー代入禁止のため、保持しているModelMeshリストだけを空にする
 	l_modelData.m_modelMeshList.clear();
 
+	// 読み込み時間計測開始
+	const Utility::Stopwatch& l_assetLoadStopwatch = {};
+
 	// まず.assetから読み込む
 	// .assetが読み込めなければUFBXで読み込む
 	if (m_binaryConverter.LoadStaticModelAsset(a_filePath, l_modelData)) 
 	{
+		const auto& l_assetLoadElapsedSecond = l_assetLoadStopwatch.FetchElapsedSecond();
 		
+		AddStataicModelLoadDebugLog(l_modelData, 
+									a_filePath,
+									k_assetLoadSourceDebugText,
+								    l_assetLoadElapsedSecond);
+
 		return true; 
 	}
+
+	// .assetで読めなかった場合だけ、UFBX読み込み時間を計測する
+	Utility::Stopwatch l_ufbxLoadStopWatch = {};
 
 	// FBXファイル全体をufbx_sceneとして読み込む
 	auto* l_fbxScene = LoadFBXScene(a_filePath);
@@ -33,6 +43,14 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 
 	// 使用し終わったFBXSceneは破棄する
 	DestroyFBXScene(l_fbxScene);
+
+	const auto& l_ufbxLoadElapsedSecond = l_ufbxLoadStopWatch.FetchElapsedSecond();
+
+	// 読み込んだ情報をログに追加
+	AddStataicModelLoadDebugLog(l_modelData,
+								a_filePath,
+								k_ufbxLoadSourceDebugText,
+								l_ufbxLoadElapsedSecond);
 
 	m_binaryConverter.SaveStaticModelAsset(a_filePath, l_modelData);
 
@@ -209,8 +227,8 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const ufbx_
 
 				Struct::StaticModelVertex l_staticModelVertex = {};
 
-				// ufbx_load_optsがわで、+Xright/+YForward/+ZUpとcm->m変換を行っている
-				// ここではさらにNodeTransformをgeometry_tow_worldで反映する
+				// ufbx_load_opts側で、+XRight/+YForward/+Z Upとcm->m変換を行っている。
+				// ここではさらにNodeTransformをgeometry_to_worldで反映する。
 				l_staticModelVertex.m_position = FetchWorldVertexPosition(a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
 				l_staticModelVertex.m_uv	   = FetchVertexUV           (l_fbxMesh, l_fbxVertexIndex);
 				l_staticModelVertex.m_normal   = FetchWorldVertexNormal  (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
@@ -236,7 +254,7 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 	a_modelMaterialAssetData.m_baseColorFactor = FetchBaseColorFactor(a_fbxMaterial->pbr.base_color);
 
 	// Roughnessは表面の粗さ。
-	// 0に近いほど鏡のように鋭く反射日、1に近いほどぼやけた反射になる。
+	// 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる。
 	a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Constant::k_defaultModelMaterialRoughnessFactor);
 
 	// Metallicは金属度
@@ -346,4 +364,41 @@ std::wstring FWK::Graphics::StaticModelFBXLoader::ConvertUFBXStringToWString(con
 	l_string.assign(a_fbxString.data, a_fbxString.length);
 
 	return std::filesystem::path(l_string).wstring();
+}
+
+void FWK::Graphics::StaticModelFBXLoader::AddStataicModelLoadDebugLog(const Struct::StaticModelData& a_staticModelData, 
+																      const std::filesystem::path&   a_filePath, 
+																	  const std::string_view&		 a_loadSourceName, 
+																	  const double&					 a_elapsedSecond) const
+{
+	auto l_totalVertexCount   = Constant::k_emptyModelVertexCount;
+	auto l_totalIndexCount    = Constant::k_emptyModelIndexCount;
+	auto l_totalMaterialCount = 0U;
+
+	for (const auto& l_staticModelMesh : a_staticModelData.m_modelMeshList)
+	{
+		// メッシュ単体の頂点数を加算していく
+		l_totalVertexCount += l_staticModelMesh.m_staticModelVertexList.size();
+
+		// メッシュ単体のインデックス数を加算していく
+		l_totalIndexCount += l_staticModelMesh.m_indexList.size();
+
+		// StaticModelMesh一つがMaterial一つ分の描画単位
+		l_totalMaterialCount++;
+	}
+
+	FWK_ADD_LOG("[StaticModel][{} Load]\n"
+				"FilePath         : {}\n"
+				"ElapsedSecond    : {:.6f}\n"
+				"MeshCount        : {}\n"
+				"MaterialCount    : {}\n"
+				"TotalVertexCount : {}\n"
+				"TotalIndexCount  : {}",
+				a_loadSourceName,
+				a_filePath.string(),
+				a_elapsedSecond,
+				a_staticModelData.m_modelMeshList.size(),
+				l_totalMaterialCount,
+				l_totalVertexCount,
+				l_totalIndexCount);
 }
