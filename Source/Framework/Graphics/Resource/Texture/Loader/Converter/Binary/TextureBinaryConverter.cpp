@@ -11,15 +11,6 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	// .assetを読み込み専用のMemoryMappedFileとして開く
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFile作成に失敗しており。バイナリーファイルの読み込みに失敗しました", false);
 
-	// MemoryMappedFileの先頭アドレスを取得する
-	const auto* l_mappedData = GetPTRMappedData();
-
-	if (!l_mappedData)
-	{
-		DestroyMemoryMappedFile();
-		FWK_ASSERT_RETURN_VALUE("TextureAssetの読み込み元メモリが無効になっており、バイナリーファイルの読み込みに失敗しました。", false);
-	}
-
 	// 現在の読み込み位置、ファイルの先頭なので0からスタート
 	auto l_memoryReadOffset = GetREFInitialMemoryReadOffset();
 
@@ -40,10 +31,12 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	}
 
 	// .asset先頭からTextureBinaryHeaderを読む
-	ReadBinaryData(GetREFSingleBinaryElementCount(),	
-				   l_mappedData,
-				   l_memoryReadOffset,	
-				   &l_textureBinaryHeader);
+	if (!TryReadSingleBinaryData(l_textureBinaryHeader, l_memoryReadOffset))
+	{
+		DestroyMemoryMappedFile();
+
+		return false;
+	}
 
 	// Texture用.assetかどうか確認する
 	if (l_textureBinaryHeader.m_assetTypeID != k_textureAssetTypeID)
@@ -128,10 +121,11 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		TextureBinarySubresourceHeader l_textureBinarySubresourceHeader = {};
 
 		// MipMap1枚分の情報を読む
-		ReadBinaryData(GetREFSingleBinaryElementCount(),
-					   l_mappedData,
-					   l_memoryReadOffset,
-					   &l_textureBinarySubresourceHeader);
+		if (!TryReadSingleBinaryData(l_textureBinarySubresourceHeader, l_memoryReadOffset))
+		{
+			DestroyMemoryMappedFile();
+			FWK_ASSERT_RETURN_VALUE("TextureAssetSubresourceHeaderを読み込めるサイズではないため、バイナリーファイルの読み込みに失敗しました。", false);
+		}
 
 		const auto& l_image = l_imageList[l_imageIndex];
 

@@ -331,10 +331,7 @@ void FWK::Converter::BinaryFileConverterBase::DestroyMemoryMappedFile()
 	m_isWritable     = k_isInitialWritable;
 }
 
-void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, 
-																	const std::uint8_t*  a_readData,
-																		  std::wstring&  a_wString,
-																		  std::uint64_t& a_memoryReadOffset) const
+void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const
 {
 	if (a_wStringBinaryFileSize == k_emptyReadDataSize)
 	{
@@ -343,8 +340,6 @@ void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::u
 
 		return;
 	}
-
-	FWK_ASSERT_RETURN_IF_FAILED(!a_readData, "std::wstringの読み込み元データが無効になっており文字列データを取得できませんでした。");
 
 	// バイナリ上では文字列サイズをバイト数で管理しているため、
 	// wchar_tのサイズで割って、std::wstringとして必要な文字数に戻す
@@ -355,31 +350,29 @@ void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::u
 
 	// メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
 	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
-	ReadBinaryData(l_stringLength,
-				   a_readData, 
-				   a_memoryReadOffset,
-				   a_wString.data());
+	ReadBinaryData(l_stringLength, a_memoryReadOffset, a_wString.data());
 }
-void FWK::Converter::BinaryFileConverterBase::WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const
+bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::uint64_t & a_memoryReadOffset, std::wstring & a_destinationString) const
 {
-	if (a_wString.empty()) { return; }
+	if (a_wStringBinaryFileSize == k_emptyReadDataSize) 
+	{
+		a_destinationString.clear();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!a_writeData, "std::stringの書き込み元データが無効になっており文字列データを書き込めませんでした。");
+		return true;
+	}
 
-	// std::wstringの文字データだけを書き込む
-	// 文字列のサイズ自体はここでは書き込まないため、
-	// 呼び出し側で先にヘッダーなどへCalculateWStringBinaryFileSize()の結果を保存しておく
-	// WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
-	WriteBinaryData(a_wString.size(), 
-				    a_wString.data(), 
-					a_memoryWriteOffset,
-					a_writeData);
+	// wchar_t単位で保存しているため、バイト数がwchar_tサイズで割り切れない場合は破損扱い。
+	if ((a_wStringBinaryFileSize % sizeof(wchar_t)) != 0ULL) { return false; }
+	
+	// 読み込めるバイナリーデータかどうかを検証
+	if (!CanReadBinaryData(m_mappedDataSize, a_memoryReadOffset, a_wStringBinaryFileSize)) { return false; }
+
+	// wString情報を読み込む
+	ReadWStringBinaryData(a_wStringBinaryFileSize, a_destinationString, a_memoryReadOffset);
+
+	return true;
 }
-
-void FWK::Converter::BinaryFileConverterBase::ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize,
-																   const std::uint8_t*  a_readData, 
-																		 std::string&   a_string, 
-																		 std::uint64_t& a_memoryReadOffset) const
+void FWK::Converter::BinaryFileConverterBase::ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_string, std::uint64_t& a_memoryReadOffset) const
 {
 	if (a_stringBinaryFileSize == k_emptyReadDataSize)
 	{
@@ -389,32 +382,33 @@ void FWK::Converter::BinaryFileConverterBase::ReadStringBinaryData(const std::ui
 		return;
 	}
 
-	FWK_ASSERT_RETURN_IF_FAILED(!a_readData, "std::stringの読み込み元データが無効になっており文字列データを取得できませんでした。");
-
 	// std::stringはchar配列なので、保存バイト数をそのまま文字数として扱える
 	a_string.resize(a_stringBinaryFileSize);
 
 	// メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
 	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
-	ReadBinaryData(a_stringBinaryFileSize,
-				   a_readData, 
-				   a_memoryReadOffset,
-				   a_string.data());
+	ReadBinaryData(a_stringBinaryFileSize, a_memoryReadOffset, a_string.data());
 }
-void FWK::Converter::BinaryFileConverterBase::WriteStringBinaryData(const std::string& a_string, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const
-{
-	if (a_string.empty()) { return; }
 
-	FWK_ASSERT_RETURN_IF_FAILED(!a_writeData, "std::wstringの書き込み元データが無効になっており文字列データを書き込めませんでした。");
+void FWK::Converter::BinaryFileConverterBase::WriteWStringBinaryData(const std::wstring & a_wString, std::uint64_t & a_memoryWriteOffset) const
+{
+	if (a_wString.empty()) { return; }
 
 	// std::wstringの文字データだけを書き込む
 	// 文字列のサイズ自体はここでは書き込まないため、
 	// 呼び出し側で先にヘッダーなどへCalculateWStringBinaryFileSize()の結果を保存しておく
 	// WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
-	WriteBinaryData(a_string.size(), 
-				    a_string.data(), 
-					a_memoryWriteOffset,
-					a_writeData);
+	WriteBinaryData(a_wString.size(), a_wString.data(), a_memoryWriteOffset);
+}
+void FWK::Converter::BinaryFileConverterBase::WriteStringBinaryData(const std::string & a_string, std::uint64_t & a_memoryWriteOffset) const
+{
+	if (a_string.empty()) { return; }
+
+	// std::wstringの文字データだけを書き込む
+	// 文字列のサイズ自体はここでは書き込まないため、
+	// 呼び出し側で先にヘッダーなどへCalculateWStringBinaryFileSize()の結果を保存しておく
+	// WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
+	WriteBinaryData(a_string.size(), a_string.data(), a_memoryWriteOffset);
 }
 
 std::uint64_t FWK::Converter::BinaryFileConverterBase::CalculateWStringBinaryFileSize(const std::wstring& a_wString) const

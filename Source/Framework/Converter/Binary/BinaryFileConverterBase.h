@@ -41,7 +41,7 @@ namespace FWK::Converter
 		void ReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
 		{
 			// 読み込むデータの型サイズと個数から、実際にコピーするバイト数を計算する
-			const auto l_readDataSize = sizeof(Type) * a_readDataCount;
+			const auto l_readDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
 
 			// 読み込むバイト数が0の場合は、何もせずに終了する
 			if (l_readDataSize == k_emptyReadDataSize) { return; }
@@ -58,24 +58,55 @@ namespace FWK::Converter
 		}
 
 		template <typename Type>
-		bool TryReadSingleBinaryData(Type& a_destinationData, std::uint64_t& a_memoryReadOffset) const
+		bool TryReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffet, Type* a_destinationData) const
 		{
-			if (!m_mappedData) { return false; }
+			if (a_readDataCount == k_emptyReadDataSize) { return true; }
 
-			const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(k_singleBinaryElementCount);
+			if (!m_mappedData)      { return false; }
+			if (!a_destinationData) { return false; }
 
-			if (!CanReadBinaryData<Type>(m_mappedDataSize, a_memoryReadOffset, l_binaryDataSize)) { return false; }
+			// バイナリーデータサイズを計算してからデータを読み取る
+			const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
 
-			ReadBinaryData(k_singleBinaryElementCount, a_memoryReadOffset, &a_destinationData);
+			if (!CanReadBinaryData(m_mappedDataSize, a_memoryReadOffet, l_binaryDataSize)) { return false; }
+
+			ReadBinaryData(a_readDataCount, a_memoryReadOffet, a_destinationData);
 
 			return true;
+		}
+
+		template <typename Type>
+		bool TryReadBinaryDataList(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, std::vector<Type>& a_destinationDataList) const
+		{
+			// 前読み込んでたデータがあればデータに不都合が生じる可能性があるためクリア処理
+			a_destinationDataList.clear();
+
+			if (a_readDataCount == k_emptyReadDataSize) { return true; }
+
+			// 読み込むサイズ分リストを確保
+			a_destinationDataList.resize(a_readDataCount);
+
+			if (!TryReadBinaryData(a_readDataCount, a_memoryReadOffset, a_destinationDataList.data())) 
+			{
+				a_destinationDataList.clear();
+
+				return false;
+			}
+
+			return true;
+		}
+
+		template <typename Type>
+		bool TryReadSingleBinaryData(Type& a_destinationData, std::uint64_t& a_memoryReadOffset) const
+		{
+			return TryReadBinaryData(k_singleBinaryElementCount, a_memoryReadOffset, &a_destinationData);
 		}
 
 		template <typename Type>
 		void WriteBinaryData(const std::uint64_t& a_writeDataCount, const Type* a_sourceData, std::uint64_t& a_memoryWriteOffset) const
 		{
 			// 書き込みデータの型サイズと個数から、実際にコピーするバイト数を計算する
-			const auto l_writeDataSize = sizeof(Type) * a_writeDataCount;
+			const auto l_writeDataSize = CalculateBinaryDataSize<Type>(a_writeDataCount);
 
 			// 書き込むバイト数が0の場合は、何もせずに終了する
 			if (l_writeDataSize == k_emptyWriteDataSize) { return; }
@@ -85,25 +116,18 @@ namespace FWK::Converter
 
 			// 書き込み先のメモリマップ領域の現在位置へ、
 			// 指定された型と個数分のデータを書き込む
-			std::memcpy(a_mappedData + a_memoryWriteOffset, a_sourceData, l_writeDataSize);
+			std::memcpy(m_mappedData + a_memoryWriteOffset, a_sourceData, l_writeDataSize);
 
 			// 次のデータを続けて書けるように、書き込んだバイト数分だけオフセットを進める
 			a_memoryWriteOffset += l_writeDataSize;
 		}
 
-		void ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize,
-								   const std::uint8_t*  a_readData,
-										 std::wstring&  a_wString,
-										 std::uint64_t& a_memoryReadOffset) const;
+		void ReadWStringBinaryData   (const std::uint64_t& a_wStringBinaryFileSize, std::wstring&  a_wString,          std::uint64_t& a_memoryReadOffset) const;
+		bool TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::uint64_t& a_memoryReadOffset, std::wstring& a_destinationString) const;
+		void ReadStringBinaryData    (const std::uint64_t& a_stringBinaryFileSize,  std::string&   a_string,		   std::uint64_t& a_memoryReadOffset) const;
 
-		void WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const;
-
-		void ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize,
-								  const std::uint8_t*  a_readData,
-										std::string&   a_string,
-										std::uint64_t& a_memoryReadOffset) const;
-
-		void WriteStringBinaryData(const std::string& a_string, std::uint64_t& a_memoryWriteOffset, std::uint8_t* a_writeData) const;
+		void WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const;
+		void WriteStringBinaryData (const std::string&  a_string, std::uint64_t&  a_memoryWriteOffset) const;
 
 		template <typename Type>
 		std::uint64_t CalculateBinaryDataSize(const std::uint64_t& a_dataCount) const
