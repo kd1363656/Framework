@@ -110,11 +110,8 @@ void FWK::Editor::EditorManager::PostLoadCONFIG() const
 	}
 }
 
-void FWK::Editor::EditorManager::DrawEdtor() const
+void FWK::Editor::EditorManager::DrawEdtor()
 {
-	// ログウィンドウがインスタンス化されていなければ実行しない
-	if (!m_logEditorWindow) { return; }
-
 	const auto& l_graphicsManager    = Graphics::GraphicsManager::GetInstance ();
 	const auto& l_renderer			 = l_graphicsManager.GetREFRenderer		  ();
 	const auto& l_directCommandList  = l_renderer.GetREFDirectCommandList	  ();
@@ -127,6 +124,25 @@ void FWK::Editor::EditorManager::DrawEdtor() const
 
 	// ImGuiのフレーム開始
 	ImGui::NewFrame();
+
+	if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_D, false)) 
+	{
+		m_disableDrawEditor = m_disableDrawEditor ? false : true;
+
+		ImGui::EndFrame();
+
+		return; 
+	}
+
+	// ログウィンドウがインスタンス化されていないか
+	// 描画が無効化されているなら描画しない
+	if (!m_logEditorWindow ||
+		m_disableDrawEditor)
+	{
+		ImGui::EndFrame();
+
+		return;
+	}
 
 	DrawDockingSpace();
 	DrawEditorWindow();
@@ -150,6 +166,34 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
+bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_imGuiSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
+
+	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
+	const auto& l_deviceWrapper   = l_graphicsManager.GetREFDevice		  ();
+	const auto& l_device		  = l_deviceWrapper.GetREFDevice			  ();
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
+
+	// コピー元のディスクリプタヒープハンドルとコピー先のディスクリプタヒープハンドルを取得
+	const auto l_sourceCPUDescriptorHandle      = a_sourceSRVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
+	const auto l_destinationCPUDescriptorHandle = m_imGuiSRVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
+
+	// SRVDescriptorだけをコピー
+	l_device->CopyDescriptorsSimple(k_copySRVDescriptorCount,
+									l_destinationCPUDescriptorHandle,
+									l_sourceCPUDescriptorHandle,
+									D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	// ImGui描画ではShaderVisible側のHeapを使うため、
+	// CPU側へコピーしたDescriptorをShaderVisible側にも反映する
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_imGuiSRVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(l_deviceWrapper, a_imGuiSRVDescriptorIndex), "ImGui用SRVDescriptorのShaderVisibleHeapへの反映に失敗しました。", false);
+
+	return true;
+}
+
 FWK::TypeAlias::DescriptorIndex FWK::Editor::EditorManager::AllocateImGuiSRVDescriptorIndex()
 {
 	const auto l_imGuiSRVDescriptorIndex = m_imGuiSRVDescriptorPool.Allocate();
@@ -164,15 +208,6 @@ void FWK::Editor::EditorManager::ReleaseImGuiSRVDescriptorIndex(const TypeAlias:
 	if (a_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
 
 	m_imGuiSRVDescriptorPool.Release(a_imGuiSRVDescriptorIndex);
-}
-
-bool FWK::Editor::EditorManager::UpdateImGuiSRVDescriptorFromMainSRVDescriptor(const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex)
-{
-	const auto& l_graphicsManager   = Graphics::GraphicsManager::GetInstance   ();
-	const auto& l_resourceContext   = l_graphicsManager.GetREFResourceContext  ();
-	const auto& l_srvDescriptorPool = l_resourceContext.GetREFSRVDescriptorPool();
-
-	return CopySRVDescriptorToImGuiSRVDescriptor(l_srvDescriptorPool, a_sourceSRVDescriptorIndex, a_imGuiSRVDescriptorIndex);
 }
 
 ImTextureID FWK::Editor::EditorManager::FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
@@ -235,6 +270,8 @@ void FWK::Editor::EditorManager::ReleaseSRVDescriptor(ImGui_ImplDX12_InitInfo * 
 
 	if (l_itr == l_editorManager->m_imGuiSRVDescriptorIndexMap.end()) { return; }
 
+	// SRVDescriptorのインデックスを解放してから
+	// マップからも開放する
 	l_editorManager->m_imGuiSRVDescriptorPool.Release  (l_itr->second);
 	l_editorManager->m_imGuiSRVDescriptorIndexMap.erase(l_itr);
 }
@@ -243,36 +280,10 @@ bool FWK::Editor::EditorManager::CreateImGuiSRVDescriptorPool(const Graphics::De
 {
 	auto& l_descriptorIndexAllocator = m_imGuiSRVDescriptorPool.GetMutableREFDescriptorIndexAllocator();
 
+	// 格納できるSRVの最大Index値を決める
 	l_descriptorIndexAllocator.SetIndexCapacity(k_imguiSRVDescriptorCapacity);
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_imGuiSRVDescriptorPool.Create(a_device), "ImGui用SRVDescriptorPoolの作成に失敗しました。", false);
-
-	return true;
-}
-
-bool FWK::Editor::EditorManager::CopySRVDescriptorToImGuiSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
-{
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorの更新に失敗しました。",       false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_imGuiSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorの更新に失敗しました。", false);
-
-	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
-	const auto& l_deviceWrapper   = l_graphicsManager.GetREFDevice		  ();
-	const auto& l_device		  = l_deviceWrapper.GetREFDevice			  ();
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorの更新に失敗しました。", false);
-
-	const auto l_sourceCPUDescriptorHandle      = a_sourceSRVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
-	const auto l_destinationCPUDescriptorHandle = m_imGuiSRVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
-
-	// SRVDescriptorだけをコピー
-	l_device->CopyDescriptorsSimple(k_copySRVDescriptorCount,
-									l_destinationCPUDescriptorHandle,
-									l_sourceCPUDescriptorHandle,
-									D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-	// ImGui描画ではShaderVisible側のHeapを使うため、
-	// CPU側へコピーしたDescriptorをShaderVisible側にも反映する
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_imGuiSRVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(l_deviceWrapper, a_imGuiSRVDescriptorIndex), "ImGui用SRVDescriptorのShaderVisibleHeapへの反映に失敗しました。", false);
 
 	return true;
 }

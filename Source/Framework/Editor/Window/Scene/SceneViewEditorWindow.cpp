@@ -87,13 +87,19 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID()
 
 	if (l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
 
-	auto& l_editorManager = EditorManager::GetInstance();
+	const auto& l_editorManager = EditorManager::GetInstance();
 
 	// もし無効なDescriptorIndexならreturn
 	if (m_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
 
-	// メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへ更新する
-	if (!l_editorManager.UpdateImGuiSRVDescriptorFromMainSRVDescriptor(l_srvDescriptorIndex, m_imGuiSRVDescriptorIndex)) { return k_invalidSceneViewTextureID; }
+	const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext();
+	
+	// メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへコピーする
+	if (const auto& l_srvDescriptorPool = l_resourceContext.GetREFSRVDescriptorPool();
+		!l_editorManager.CopyGraphicsSRVDescriptor(l_srvDescriptorPool, l_srvDescriptorIndex, m_imGuiSRVDescriptorIndex)) 
+	{
+		return k_invalidSceneViewTextureID; 
+	}
 
 	return l_editorManager.FetchVALImGuiTextureID(m_imGuiSRVDescriptorIndex);
 }

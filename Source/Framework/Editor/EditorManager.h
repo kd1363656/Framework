@@ -20,9 +20,17 @@ namespace FWK::Editor
 		void LoadCONFIG    ();
 		void PostLoadCONFIG() const;
 
-		void DrawEdtor() const;
+		void DrawEdtor();
 		
 		void SaveCONFIG() const;
+	
+		bool CopyGraphicsSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
+
+		TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
+
+		void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+
+		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		template <class... Args>
 		void AddLog(const std::source_location& a_location, const std::string_view& a_format, Args&&... a_args)
@@ -44,15 +52,7 @@ namespace FWK::Editor
 									  a_location.function_name(),
 									  l_message.c_str());
 		}
-		
-		TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
-
-		void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
-
-		bool UpdateImGuiSRVDescriptorFromMainSRVDescriptor(const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
-
-		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
-
+	
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
 		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
@@ -80,8 +80,6 @@ namespace FWK::Editor
 		static void ReleaseSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE a_gpuHandle);
 
 		bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
-
-		bool CopySRVDescriptorToImGuiSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		void DrawDockingSpace() const;
 		void DrawEditorWindow() const;
@@ -116,7 +114,7 @@ namespace FWK::Editor
 
 		Converter::EditorManagerJsonConverter m_jsonConverter = {};
 
-		bool m_isValidEditor = false;
+		bool m_disableDrawEditor = false;
 	};
 }
 
