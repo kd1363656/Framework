@@ -41,40 +41,13 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 		// .assetが読み込めなければテクスチャをロードする、失敗したらassert
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。。", {});
 
+		CreateMaterialTexture(a_filePath, *l_staticModelRecord);
+
 		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelBinaryConverter.SaveStaticModelAsset(a_filePath, *l_staticModelRecord), "TextureAssetの保存に失敗しました", {});
 	}
 
-	// ランタイムパラメータを作成していく
-	for (auto& l_modelMesh : l_staticModelRecord->GetMutableREFModelData().m_modelMeshList)
-	{
-		const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-			  auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
-
-		// ベースカラーテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_baseColorTexture = CreateMaterialTexture(a_filePath, 
-																			  l_modelMaterialAssetData.m_baseColorTextureFilePath, 
-																			  Enum::TextureLoadType::BaseColor, 
-																			  Enum::DefaultTextureType::BaseColor);
-
-		// ノーマルテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
-																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		   Enum::TextureLoadType::Normal, 
-																		   Enum::DefaultTextureType::Normal);
-
-		// メタリックテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
-																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		   Enum::TextureLoadType::Metallic, 
-																		   Enum::DefaultTextureType::BaseColor);
-
-		// ラフネステクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
-																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		   Enum::TextureLoadType::Roughness, 
-																		   Enum::DefaultTextureType::BaseColor);
-	}
+	CreateMaterialTexture(a_filePath, *l_staticModelRecord);
 
 	return l_staticModelLoadResult;
 }
@@ -97,10 +70,44 @@ bool FWK::Graphics::StaticModelSystem::SubtractStaticModelReferenceCount(const s
 	return true;
 }
 
-std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesystem::path&   a_modelFilePath, 
-																								const std::wstring&            a_textureFilePath,
-																								const Enum::TextureLoadType    a_textureLoadType,
-																								const Enum::DefaultTextureType a_defaultTextureType) const
+void FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const
+{
+	// ランタイムパラメータを作成していく
+	for (auto& l_modelMesh : a_staticModelRecord.GetMutableREFModelData().m_modelMeshList)
+	{
+		const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
+			  auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
+
+		// ベースカラーテクスチャの読み込み
+		l_modelMaterialRuntimeData.m_baseColorTexture = CreateMaterialTexture(a_filePath, 
+																			  l_modelMaterialAssetData.m_baseColorTextureFilePath, 
+																			  Enum::TextureLoadColorSpace::SRGB, 
+																			  Enum::DefaultTextureType::BaseColor);
+
+		// ノーマルテクスチャの読み込み
+		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
+																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		   Enum::TextureLoadColorSpace::Linear,
+																		   Enum::DefaultTextureType::Normal);
+
+		// メタリックテクスチャの読み込み
+		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
+																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		   Enum::TextureLoadColorSpace::Linear,
+																		   Enum::DefaultTextureType::BaseColor);
+
+		// ラフネステクスチャの読み込み
+		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
+																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		   Enum::TextureLoadColorSpace::Linear,
+																		   Enum::DefaultTextureType::BaseColor);
+	}	
+}
+
+std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesystem::path&      a_modelFilePath,
+																								const std::wstring&               a_textureFilePath,
+																								const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+																								const Enum::DefaultTextureType    a_defaultTextureType) const
 {
 	auto l_texture = std::make_shared<Texture>();
 
@@ -113,7 +120,7 @@ std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::Create
 		l_textureFilePath = a_modelFilePath.parent_path() / l_textureFilePath;
 	}
 
-	l_texture->Load(l_textureFilePath, a_textureLoadType, a_defaultTextureType);
+	l_texture->Load(l_textureFilePath, a_textureLoadColorSpace, a_defaultTextureType);
 
 	return l_texture;
 }

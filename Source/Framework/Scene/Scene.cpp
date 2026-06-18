@@ -13,7 +13,7 @@ void FWK::Scene::INIT()
 	}
 
 	// テクスチャ
-	const bool l_isLoadSuccess = m_texture->Load("Asset/Texture/Te.png", Enum::TextureLoadType::BaseColor);
+	const bool l_isLoadSuccess = m_texture->Load("Asset/Texture/Te.png", Enum::TextureLoadColorSpace::SRGB);
 
 	m_spriteDrawRequestData->m_scale         = { 1.0F, 1.0F };
 	m_spriteDrawRequestData->m_textureRecord = m_texture->GetREFTextureRecord();

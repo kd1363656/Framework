@@ -15,13 +15,13 @@ namespace FWK::Graphics
 		TextureLoader& operator=(const TextureLoader&)			 = delete;
 		TextureLoader& operator=(	   TextureLoader&&) noexcept = delete;
 
-		bool LoadTextureFile(const std::filesystem::path& a_filePath,
-							 const Enum::TextureLoadType  a_textureLoadType,
-								   DirectX::ScratchImage& a_scratchImage, 
-								   DirectX::TexMetadata&  a_texMetadata) const;
+		bool LoadTextureFile(const std::filesystem::path&	   a_filePath,
+							 const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+								   DirectX::ScratchImage&      a_scratchImage, 
+								   DirectX::TexMetadata&       a_texMetadata) const;
 
 	private:
 
-		DirectX::WIC_FLAGS CreateWICFlags(const Enum::TextureLoadType a_textureLoadType) const;
+		DirectX::WIC_FLAGS CreateWICFlags(const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
 	};
 }

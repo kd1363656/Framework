@@ -56,7 +56,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(Texture&& a_other) noe
 	return *this;
 }
 
-bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum::TextureLoadType a_loadType, const Enum::DefaultTextureType a_defaultTextureType)
+bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace, const Enum::DefaultTextureType a_defaultTextureType)
 {
 	// 既に別のStorageIDを持っている場合は先に参照を外す
 	SubtractTextureReferenceCount();
@@ -75,7 +75,7 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum:
 	const auto& l_textureLoadResult = l_textureSystem.LoadTextureForBatchUpload(l_device,
 																				l_gpuMemoryAllocator,
 																				a_filePath,
-																				a_loadType,
+																				a_textureLoadColorSpace,
 																				a_defaultTextureType,
 																				l_srvDescriptorPool);
 

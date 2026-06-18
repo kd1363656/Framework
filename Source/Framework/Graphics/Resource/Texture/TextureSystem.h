@@ -19,7 +19,7 @@ namespace FWK::Graphics
 		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			            a_device, 
 													        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
 													        const std::filesystem::path&		a_filePath,
-															const Enum::TextureLoadType			a_loadType,
+															const Enum::TextureLoadColorSpace   a_textureLoadColorSpace,
 															const Enum::DefaultTextureType      a_defaultTextureType,
 																  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 

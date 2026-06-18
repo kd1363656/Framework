@@ -1,13 +1,13 @@
 ﻿#include "TextureLoader.h"
 
-bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& a_filePath, 
-												   const Enum::TextureLoadType  a_textureLoadType, 
-														 DirectX::ScratchImage& a_scratchImage, 
-														 DirectX::TexMetadata&  a_texMetadata) const
+bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path&      a_filePath, 
+												   const Enum::TextureLoadColorSpace a_textureLoadColorSpace, 
+														 DirectX::ScratchImage&      a_scratchImage, 
+														 DirectX::TexMetadata&       a_texMetadata) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
 
-	const auto l_wicFlags = CreateWICFlags(a_textureLoadType);
+	const auto l_wicFlags = CreateWICFlags(a_textureLoadColorSpace);
 
 	// PNGなどの標準的な画像から情報を取得する関数
 	// LoadFromWICFile(読み込み画像ファイルパス、
@@ -24,19 +24,17 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 	return true;
 }
 
-DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::TextureLoadType a_textureLoadType) const
+DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const
 {
-	switch (a_textureLoadType)
+	switch (a_textureLoadColorSpace)
 	{
-		case Enum::TextureLoadType::BaseColor:
+		case Enum::TextureLoadColorSpace::SRGB:
 		{
 			return DirectX::WIC_FLAGS_FORCE_SRGB;
 		}
 		break;
 
-		case Enum::TextureLoadType::Normal:
-		case Enum::TextureLoadType::Metallic:
-		case Enum::TextureLoadType::Roughness:
+		case Enum::TextureLoadColorSpace::Linear:
 		{
 			//  2D画像/Normal/Metallic/Roughness/AOなどは色ではなく数値データ。
 			// sRGB補正が入ると値が壊れるため、Linear扱いにする
@@ -44,7 +42,7 @@ DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::Text
 		}
 		break;
 
-		case Enum::TextureLoadType::Auto:
+		case Enum::TextureLoadColorSpace::Auto:
 		default:
 		{
 			// WIC/DirectXTex側の標準判定に任せる

@@ -32,10 +32,12 @@ namespace FWK::Graphics
 
 	private:
 
-		std::shared_ptr<Texture> CreateMaterialTexture(const std::filesystem::path&   a_modelFilePath, 
-													   const std::wstring&			  a_textureFilePath,
-													   const Enum::TextureLoadType	  a_textureLoadType,
-													   const Enum::DefaultTextureType a_defaultTextureType) const;
+		void CreateMaterialTexture(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const;
+
+		std::shared_ptr<Texture> CreateMaterialTexture(const std::filesystem::path&      a_modelFilePath, 
+													   const std::wstring&			     a_textureFilePath,
+													   const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+													   const Enum::DefaultTextureType    a_defaultTextureType) const;
 
 		bool TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult);
 

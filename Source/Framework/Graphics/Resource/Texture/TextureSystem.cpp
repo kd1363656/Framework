@@ -20,7 +20,7 @@ bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemor
 FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					       a_device, 
 																					   const GPUMemoryAllocator&		   a_gpuMemoryAllocator,
 																					   const std::filesystem::path&		   a_filePath, 
-																					   const Enum::TextureLoadType		   a_loadType,
+																					   const Enum::TextureLoadColorSpace   a_textureLoadColorSpace,
 																					   const Enum::DefaultTextureType      a_defaultTextureType,
 																							 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
@@ -48,7 +48,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 	{
 		// .assetが読み込めなければテクスチャをロードする、失敗したらassert
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadTextureFile(a_filePath, 
-																	a_loadType, 
+																	a_textureLoadColorSpace, 
 																	l_scratchImage,
 																	l_texMetadata),
 																	"PNGテクスチャ読み込みに失敗したため、バッチテクスチャ登録に失敗しました。", 
