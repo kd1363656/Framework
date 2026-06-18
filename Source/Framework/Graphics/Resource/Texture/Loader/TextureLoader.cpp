@@ -28,14 +28,15 @@ DirectX::WIC_FLAGS FWK::Graphics::TextureLoader::CreateWICFlags(const Enum::Text
 {
 	switch (a_textureLoadType)
 	{
-		case Enum::TextureLoadType::Color:
+		case Enum::TextureLoadType::BaseColor:
 		{
 			return DirectX::WIC_FLAGS_FORCE_SRGB;
 		}
 		break;
 
 		case Enum::TextureLoadType::Normal:
-		case Enum::TextureLoadType::Data:
+		case Enum::TextureLoadType::Metallic:
+		case Enum::TextureLoadType::Roughness:
 		{
 			//  2D画像/Normal/Metallic/Roughness/AOなどは色ではなく数値データ。
 			// sRGB補正が入ると値が壊れるため、Linear扱いにする

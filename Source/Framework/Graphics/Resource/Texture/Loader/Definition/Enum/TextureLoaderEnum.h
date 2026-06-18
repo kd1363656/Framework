@@ -5,8 +5,9 @@ namespace FWK::Enum
 	enum class TextureLoadType
 	{
 		Auto,
-		Color,
+		BaseColor,
 		Normal,
-		Data,
+		Metallic,
+		Roughness,
 	};
 }

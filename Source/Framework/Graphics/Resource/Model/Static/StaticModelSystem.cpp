@@ -45,6 +45,37 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelBinaryConverter.SaveStaticModelAsset(a_filePath, *l_staticModelRecord), "TextureAssetの保存に失敗しました", {});
 	}
 
+	// ランタイムパラメータを作成していく
+	for (auto& l_modelMesh : l_staticModelRecord->GetMutableREFModelData().m_modelMeshList)
+	{
+		const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
+			  auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
+
+		// ベースカラーテクスチャの読み込み
+		l_modelMaterialRuntimeData.m_baseColorTexture = CreateMaterialTexture(a_filePath, 
+																			  l_modelMaterialAssetData.m_baseColorTextureFilePath, 
+																			  Enum::TextureLoadType::BaseColor, 
+																			  Enum::DefaultTextureType::BaseColor);
+
+		// ノーマルテクスチャの読み込み
+		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
+																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		   Enum::TextureLoadType::Normal, 
+																		   Enum::DefaultTextureType::Normal);
+
+		// メタリックテクスチャの読み込み
+		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
+																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		   Enum::TextureLoadType::Metallic, 
+																		   Enum::DefaultTextureType::BaseColor);
+
+		// ラフネステクスチャの読み込み
+		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
+																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		   Enum::TextureLoadType::Roughness, 
+																		   Enum::DefaultTextureType::BaseColor);
+	}
+
 	return l_staticModelLoadResult;
 }
 
@@ -64,6 +95,27 @@ bool FWK::Graphics::StaticModelSystem::SubtractStaticModelReferenceCount(const s
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelStorage.SubtractReferenceCount(a_staticModelRecord, a_directCommandQueue, a_resourceReleaseContext), "AssetStorageでの参照数減算に失敗したため、StaticModel参照数減算に失敗しました。", false);
 
 	return true;
+}
+
+std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesystem::path&   a_modelFilePath, 
+																								const std::wstring&            a_textureFilePath,
+																								const Enum::TextureLoadType    a_textureLoadType,
+																								const Enum::DefaultTextureType a_defaultTextureType) const
+{
+	auto l_texture = std::make_shared<Texture>();
+
+	std::filesystem::path l_textureFilePath = a_textureFilePath;
+
+	// FBXから取得したTextureFilePathが相対パスの場合
+	// ModelFilePathの親フォルダからの相対パスとして解決する
+	if (l_textureFilePath.is_relative())
+	{
+		l_textureFilePath = a_modelFilePath.parent_path() / l_textureFilePath;
+	}
+
+	l_texture->Load(l_textureFilePath, a_textureLoadType, a_defaultTextureType);
+
+	return l_texture;
 }
 
 bool FWK::Graphics::StaticModelSystem::TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult)
