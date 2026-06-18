@@ -462,7 +462,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant\StaticModelMeshletBuilderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\ModelMaterialConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelRecordConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\ModelMaterialStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelRecordStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.h" />

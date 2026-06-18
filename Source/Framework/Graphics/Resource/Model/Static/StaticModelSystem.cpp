@@ -27,9 +27,6 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
 	auto l_staticModelRecord = std::make_shared<Graphics::StaticModelRecord>();
 
-	// 読み込み時間計測開始
-	const Utility::Stopwatch& l_assetLoadStopwatch = {};
-
 	// .assetが存在していて、FBXより更新が古くなければ.assetを優先して読み込む
 	if (!m_staticModelBinaryConverter.LoadStaticModelAsset(a_filePath, *l_staticModelRecord))
 	{

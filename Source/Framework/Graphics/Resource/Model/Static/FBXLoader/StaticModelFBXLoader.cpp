@@ -150,8 +150,8 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const ufbx_
 									  "face_material数とFace数が一致しないため、Material別StaticModelMeshの抽出に失敗しました。",
 									  false);
 
-	// ufbx_triangulate_face()は、三角形化した頂点インデックスを配列へ書き込む
-	// 1三角形は3頂点なので、最大三角形数 * 3の作業用配列を用意する
+	// max_face_traianglesは1つのFaceを三角形化したときに必要になる最大三角形数
+	// 1三角形は3頂点なので、最大三角形数 * 3の頂点インデックス配列を用意する
 	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Constant::k_triangleVertexCount;
 
 	std::vector<std::uint32_t> l_triangleIndexList = {};

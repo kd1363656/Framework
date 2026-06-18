@@ -1533,6 +1533,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\BufferUploadStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Definition\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\ModelMaterialStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\ModelMaterialConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

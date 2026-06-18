@@ -177,7 +177,9 @@
 // モデル(Static)
 #include "Graphics/Resource/Model/FBXLoader/Definition/Constant/FBXModelLoaderBaseConstant.h"
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
+#include "Graphics/Resource/Model/Static/Record/Definition/Constant/ModelMaterialConstant.h"
 #include "Graphics/Resource/Model/Static/Record/Definition/Constant/StaticModelRecordConstant.h"
+#include "Graphics/Resource/Model/Static/Record/Definition/Struct/ModelMaterialStruct.h"
 #include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelRecordStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/Definition/Constant/StaticModelFBXLoaderConstant.h"
