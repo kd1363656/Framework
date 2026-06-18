@@ -21,9 +21,9 @@ namespace FWK::Graphics
 
 		void SetSRVDescriptorIndex(const TypeAlias::StorageID a_set) { m_srvDescriptorIndex = a_set; }
 
-		const Struct::GPUResource& GetREFGPUResource() const { return m_gpuResource; }
+		const auto& GetREFGPUResource() const { return m_gpuResource; }
 
-		TypeAlias::StorageID GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
+		auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
 	private:
 

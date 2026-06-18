@@ -2,7 +2,7 @@
 
 bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData(Graphics::StaticModelRecord& a_staticModelRecord) const
 {
-	for (auto& l_modelMesh : a_staticModelRecord.GetREFModelData().m_modelMeshList)
+	for (auto& l_modelMesh : a_staticModelRecord.GetMutableREFModelData().m_modelMeshList)
 	{
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!BuildModelMeshletData(l_modelMesh), "StaticModelMeshのStaticMeshletData作成に失敗しました。", false);
 	}

@@ -2,7 +2,7 @@
 
 bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelRecord(Graphics::StaticModelRecord& a_staticModelRecord) const
 {
-	auto& l_modelData = a_staticModelRecord.GetREFModelData();
+	auto& l_modelData = a_staticModelRecord.GetMutableREFModelData();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_modelData.m_modelMeshList.empty(), "ModelDataのMeshリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
 

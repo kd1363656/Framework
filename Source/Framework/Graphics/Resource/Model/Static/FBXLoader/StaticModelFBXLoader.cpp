@@ -2,15 +2,12 @@
 
 bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord)
 {
-	auto& l_modelData = a_staticModelRecord.GetREFModelData();
+	auto& l_modelData = a_staticModelRecord.GetMutableREFModelData();
 
 	// ModelDataはコピー代入禁止のため、保持しているModelMeshリストだけを空にする
 	l_modelData.m_modelMeshList.clear();
 
-	// 読み込み時間計測開始
-	const Utility::Stopwatch& l_assetLoadStopwatch = {};
-
-	// .assetで読めなかった場合だけ、UFBX読み込み時間を計測する
+	// UFBX読み込み時間を計測する
 	Utility::Stopwatch l_ufbxLoadStopWatch = {};
 
 	// FBXファイル全体をufbx_sceneとして読み込む

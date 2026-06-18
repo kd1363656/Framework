@@ -6,6 +6,7 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 														 DirectX::TexMetadata&  a_texMetadata) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
+
 	const auto l_wicFlags = CreateWICFlags(a_textureLoadType);
 
 	// PNGなどの標準的な画像から情報を取得する関数

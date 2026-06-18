@@ -454,6 +454,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\StaticModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant\StaticModelMeshletBuilderConstant.h" />

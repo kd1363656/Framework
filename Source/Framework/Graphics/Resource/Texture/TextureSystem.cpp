@@ -62,7 +62,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 	DirectX::ScratchImage l_scratchImage = {};
 	DirectX::TexMetadata  l_texMetadata  = {};
 
-	// .assetが存在していて、PNGより古くなければ.assetを優先して読み込む
+	// .assetが存在していて、PNGより更新が古くなければ.assetを優先して読み込む
 	if (!m_binaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
 	{
 		// .assetが読み込めなければテクスチャをロードする、失敗したらassert

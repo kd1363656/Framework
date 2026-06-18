@@ -19,9 +19,9 @@ namespace FWK::Graphics
 
 		void SetModelData(Struct::StaticModelData&& a_set) { m_modelData = std::move(a_set); }
 
-		Struct::StaticModelData& GetREFModelData() { return m_modelData; }
+		const auto& GetREFModelData() const { return m_modelData; }
 
-		const Struct::StaticModelData& GetREFModelData() const { return m_modelData; }
+		auto& GetMutableREFModelData() { return m_modelData; }
 
 	private:
 

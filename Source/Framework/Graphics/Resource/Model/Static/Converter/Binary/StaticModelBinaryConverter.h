@@ -42,9 +42,9 @@ namespace FWK::Converter
 		StaticModelBinaryConverter& operator=(const StaticModelBinaryConverter&)		   = delete;
 		StaticModelBinaryConverter& operator=(	    StaticModelBinaryConverter&&) noexcept = delete;
 
-		bool LoadStaticModelAsset(const std::filesystem::path& a_filePath, Struct::StaticModelData& a_staticModelData);
+		bool LoadStaticModelAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
 
-		bool SaveStaticModelAsset(const std::filesystem::path& a_filePath, const Struct::StaticModelData& a_staticModelData);
+		bool SaveStaticModelAsset(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord);
 
 	private:
 

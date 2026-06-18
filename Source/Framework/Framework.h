@@ -161,7 +161,6 @@
 #include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
-#include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
 #include "Graphics/Resource/Texture/Default/Definition/Enum/DefaultTextureEnum.h"
 #include "Graphics/Resource/Texture/Default/Utility/String/Definition/Constant/DefaultTextureStringUtilityConstant.h"
@@ -171,6 +170,7 @@
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"
 #include "Graphics/Resource/Texture/RenderTarget/Definition/Constant/RenderTargetTextureConstant.h"
 #include "Graphics/Resource/Texture/RenderTarget/RenderTargetTexture.h"
+#include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
@@ -186,6 +186,7 @@
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
 #include "Graphics/Resource/Model/Static/Meshlet/Definition/Constant/StaticModelMeshletBuilderConstant.h"
+#include "Graphics/Resource/Model/Static/Definition/Struct/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 
 // アップロードシステム

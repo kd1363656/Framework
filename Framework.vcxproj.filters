@@ -922,6 +922,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant">
       <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Definition">
+      <UniqueIdentifier>{38c8173a-7786-4c82-928e-7a2825ef9c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct">
+      <UniqueIdentifier>{eeb431d7-1b54-484b-8758-fdd061dc4700}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1514,6 +1520,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\StaticModelSystemStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

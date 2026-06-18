@@ -9,10 +9,10 @@ namespace FWK::Graphics
 		 StaticModelSystem() = default;
 		~StaticModelSystem() = default;
 
-		void LoadStaticModelForBatchUpload(const Device&			           a_device, 
-										   const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-										   const std::filesystem::path&        a_filePath, 
-										   	     TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		Struct::StaticModelResult LoadStaticModelForBatchUpload(const Device&			            a_device,
+																const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
+																const std::filesystem::path&        a_filePath, 
+																	  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
 
 	private:

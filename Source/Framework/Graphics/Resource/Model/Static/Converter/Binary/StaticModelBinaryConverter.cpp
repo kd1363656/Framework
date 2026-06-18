@@ -1,8 +1,10 @@
 ﻿#include "StaticModelBinaryConverter.h"
 
-bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std::filesystem::path& a_filePath, Struct::StaticModelData& a_staticModelData)
+bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord)
 {
-    a_staticModelData.m_modelMeshList.clear();
+    auto& l_staticModelData = a_staticModelRecord.GetMutableREFModelData();
+
+    l_staticModelData.m_modelMeshList.clear();
 
     // .assetが存在しない/FBXより古い/音FBXが存在しない場合は、
     // ここでは失敗扱いにして、呼び出し側でFBX読み込みへ進ませる
@@ -22,7 +24,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // バージョン、メッシュ数などを含むStaticModel全体Headerを読み込む
     if (!TryReadSingleBinaryData(l_staticModelBinaryHeader, l_memoryReadOffset)) 
     {
-        FailLoadStaticModelAsset(a_staticModelData);
+        FailLoadStaticModelAsset(l_staticModelData);
 
         return false;
     }
@@ -30,7 +32,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // StaticModel用.assetではないなら読まない。
     if (l_staticModelBinaryHeader.m_assetTypeID != k_staticModelAssetTypeID)
     {
-        FailLoadStaticModelAsset(a_staticModelData);
+        FailLoadStaticModelAsset(l_staticModelData);
 
         return false;
     }
@@ -38,7 +40,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // 保存形式が古いなら、FBXから再生成する
     if (l_staticModelBinaryHeader.m_version != k_staticModelAssetVersion)
     {
-        FailLoadStaticModelAsset(a_staticModelData);
+        FailLoadStaticModelAsset(l_staticModelData);
 
         return false;
     }
@@ -46,7 +48,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // Headerに保存されたファイルサイズと実際の.assetサイズが違う場合は、壊れた.asssetの可能性が高いため読み込まない。
     if (l_staticModelBinaryHeader.m_fileSize != GetREFMappedDataSize())
     {
-        FailLoadStaticModelAsset(a_staticModelData);
+        FailLoadStaticModelAsset(l_staticModelData);
 
         return false;
     }
@@ -54,22 +56,22 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // メッシュ数が0ならreturn
     if (l_staticModelBinaryHeader.m_modelMeshCount == Constant::k_emptyModelMeshCount)
     {
-        FailLoadStaticModelAsset(a_staticModelData);
+        FailLoadStaticModelAsset(l_staticModelData);
 
         return false;
     }
 
     // メッシュ数分リストをリサイズ
-    a_staticModelData.m_modelMeshList.resize(l_staticModelBinaryHeader.m_modelMeshCount);
+    l_staticModelData.m_modelMeshList.resize(l_staticModelBinaryHeader.m_modelMeshCount);
 
-    for (auto& l_staticModelMesh : a_staticModelData.m_modelMeshList)
+    for (auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)
     {
         StaticModelMeshBinaryHeader l_staticModelMeshBinaryHeader = {};
 
         // メッシュ単位Headerを読み込む
         if (!TryReadSingleBinaryData(l_staticModelMeshBinaryHeader, l_memoryReadOffset))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -77,7 +79,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // 頂点配列を読み込む
         if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_vertexCount, l_memoryReadOffset, l_staticModelMesh.m_modelVertexList))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -85,7 +87,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // インデックス配列を読み込む
         if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_indexCount, l_memoryReadOffset, l_staticModelMesh.m_indexList))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -95,7 +97,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // ベースカラー係数を読み取る
         if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_baseColorFactor, l_memoryReadOffset))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -103,7 +105,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // ラフネス係数を読み取る
         if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_roughnessFactor, l_memoryReadOffset))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -111,7 +113,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // メタリック係数を読み取る
         if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_metallicFactor, l_memoryReadOffset))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -120,7 +122,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // ベースカラーテクスチャ用ファイルパスの文字列を読み取る
         if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_baseColorTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_baseColorTextureFilePath))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -128,7 +130,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
          // ノーマルマップテクスチャ用ファイルパスの文字列を読み取る
         if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_normalTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_normalTextureFilePath))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -136,7 +138,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
          // ラフネステクスチャ用ファイルパスの文字列を読み取る
         if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_roughnessTextureFilePath))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -144,7 +146,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
          // ラフネステクスチャ用ファイルパスの文字列を読み取る
         if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_metallicTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_metallicTextureFilePath))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -159,7 +161,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // メッシュレット情報を読み込む
         if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletCount, l_memoryReadOffset, l_modelMeshletData.m_meshletList))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -167,7 +169,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // 頂点インデックス情報を読み込む
         if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount, l_memoryReadOffset, l_modelMeshletData.m_uniqueVertexIndexList))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -175,7 +177,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // プリミティブインデックス情報を読み込む
         if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_primitiveIndexCount, l_memoryReadOffset, l_modelMeshletData.m_primitiveIndexList))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -183,7 +185,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         // メッシュレットカリング情報を読み込む
         if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletBoundsCount, l_memoryReadOffset, l_modelMeshletData.m_meshletBoundsList))
         {
-            FailLoadStaticModelAsset(a_staticModelData);
+            FailLoadStaticModelAsset(l_staticModelData);
 
             return false;
         }
@@ -192,7 +194,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     // 現在のオフセット位置がファイルサイズと一致しなければ.assetファイルが壊れている可能性があるのでreturn
     if (l_memoryReadOffset != l_staticModelBinaryHeader.m_fileSize)
     {
-        FailLoadStaticModelAsset(a_staticModelData);
+        FailLoadStaticModelAsset(l_staticModelData);
 
         return false;
     }
@@ -202,8 +204,10 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     return true;
 }
 
-bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std::filesystem::path& a_filePath, const Struct::StaticModelData& a_staticModelData)
+bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord)
 {
+    auto& l_staticModelData = a_staticModelRecord.GetREFModelData();
+
     // StaticModelAssetの元になるFBXが存在しない場合、
     // 何から生成された.assetなのか判断できないため保存しない
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "StaticModelAssetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
@@ -212,7 +216,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
     const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
 
     // StaticModelData全体を保存したときのファイルサイズを計算する
-    const auto& l_staticModelAssetFileSize = CalculateStaticModelAssetFileSize(a_staticModelData);
+    const auto& l_staticModelAssetFileSize = CalculateStaticModelAssetFileSize(l_staticModelData);
 
     // Meshが一つもない、または保存できるデータがない場合は.asset化しない
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticModelAssetFileSize == Constant::k_emptyAssetFileSize, "StaticModelAssetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
@@ -225,11 +229,11 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const std:
     auto l_memoryWriteOffset = GetREFInitialMemoryWriteOffset();
 
     // StaticModel全体のHeaderを作成して書き込む
-    const auto& l_staticModelBinaryHeader = CreateStaticModelBinaryHeader(a_staticModelData, l_staticModelAssetFileSize);
+    const auto& l_staticModelBinaryHeader = CreateStaticModelBinaryHeader(l_staticModelData, l_staticModelAssetFileSize);
 
     WriteBinaryData(GetREFSingleBinaryElementCount(), &l_staticModelBinaryHeader, l_memoryWriteOffset);
 
-    for (const auto& l_staticModelMesh : a_staticModelData.m_modelMeshList)
+    for (const auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)
     {
         // Mesh単位のHeaderを作成して書き込む
         // このHeaderにはVertex数/Index数/TexturePathサイズ/Meshlet数などが入る
