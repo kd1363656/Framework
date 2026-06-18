@@ -23,7 +23,7 @@ bool FWK::Graphics::UploadSystem::Create(const Device& a_device)
 	return true;
 }
 
-void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(TextureSystem& a_textureSystem)
+void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(const TextureSystem& a_textureSystem)
 {
 	const auto& l_pendingTextureBatchUploadRecordMap = a_textureSystem.GetREFPendingTextureBatchUploadRecordMap();
 
@@ -33,9 +33,8 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(T
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、バッチテクスチャコピー送信処理に失敗しました。");
 
-	// 命令を格納できるようにするためリセット
-	l_copyCommandAllocator->Reset();
-	m_copyCommandList.Reset      (*l_copyCommandAllocator);
+	// コマンドリストなどのリセットなどを行う
+	BeforSubmitResourceProcess(*l_copyCommandAllocator);
 
 	// UploadBuffer内に配置した各サブリソースの画像データを
 	// D3D12_PLACED_SUBRESOURCE_FOOTPRINTの配置情報に従って、DEFAULTヒープ上のテクスチャリソースへコピーする
@@ -51,14 +50,35 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(T
 		RecordTextureCopy(l_textureUploadRecord.m_layoutList, l_textureRecord->GetREFGPUResource().m_resource, l_textureUploadRecord.m_uploadBuffer.GetREFUploadBuffer());
 	}
 
-	m_copyCommandList.Close				  ();
-	m_copyCommandQueue.ExecuteCommandLists(m_copyCommandList);
+	// コマンドリストの実行などを行う
+	AfterSubmitResourceProcess(*l_copyCommandAllocator);
+}
+void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(const StaticModelSystem& a_staticModelSystem)
+{
+	const auto& l_pendingStaticModelBatchUploadRecordMap = a_staticModelSystem.GetREFPendingStaticModelBatchUploadRecordMap();
 
-	m_copyCommandQueue.SignalAndTrackAllocator(*l_copyCommandAllocator);
+	if (l_pendingStaticModelBatchUploadRecordMap.empty()) { return; }
 
-	// Batch + Wait方式なので、ここでGPUコピー完了まで待つ
-	// この関数を抜けた後はUploadBufferを保持し続ける必要がない
-	m_copyCommandQueue.EnsureAllocatorAvailable(*l_copyCommandAllocator);
+	const auto& l_copyCommandAllocator = FetchMutablePTRCopyCommandAllocator().lock();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、StaticModel用BufferResourceのバッチコピーに失敗しました。");
+
+	// コマンドリストなどのリセットなどを行う
+	BeforSubmitResourceProcess(*l_copyCommandAllocator);
+
+	for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : l_pendingStaticModelBatchUploadRecordMap)
+	{
+		FWK_ASSERT_RETURN_IF_FAILED(l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList.empty(), "StaticModel用BufferUploadCommandListが空のため、StaticModel用BufferResourceのバッチコピーに失敗しました。");
+
+		// バッファーをコピーしていく
+		for (const auto& l_bufferUploadCommand : l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList)
+		{
+			RecordBufferCopy(l_bufferUploadCommand);
+		}
+	}
+
+	// コマンドリストの実行などを行う
+	AfterSubmitResourceProcess(*l_copyCommandAllocator);
 }
 
 nlohmann::json FWK::Graphics::UploadSystem::Serialize() const
@@ -71,6 +91,24 @@ void FWK::Graphics::UploadSystem::AddCommandAllocator(const std::shared_ptr<Copy
 	FWK_ASSERT_RETURN_IF_FAILED(!a_copyCommandAllocator, "無効なコピーコマンドアロケーターです、コピーコマンドアロケーター追加処理に失敗しました。");
 
 	m_copyCommandAllocatorList.emplace_back(a_copyCommandAllocator);
+}
+
+void FWK::Graphics::UploadSystem::BeforSubmitResourceProcess(const CopyCommandAllocator& a_copyCommandAllocator)
+{
+	// 命令を格納できるようにするためリセット
+	a_copyCommandAllocator.Reset();
+	m_copyCommandList.Reset(a_copyCommandAllocator);
+}
+void FWK::Graphics::UploadSystem::AfterSubmitResourceProcess(CopyCommandAllocator& a_copyCommandAllocator)
+{
+	m_copyCommandList.Close				  ();
+	m_copyCommandQueue.ExecuteCommandLists(m_copyCommandList);
+
+	m_copyCommandQueue.SignalAndTrackAllocator(a_copyCommandAllocator);
+
+	// Batch + Wait方式なので、ここでGPUコピー完了まで待つ
+	// この関数を抜けた後はUploadBufferを保持し続ける必要がない
+	m_copyCommandQueue.EnsureAllocatorAvailable(a_copyCommandAllocator);	
 }
 
 void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList, const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const
@@ -100,6 +138,27 @@ void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLAC
 											k_defaultTextureCopyDestinationY,
 											k_defaultTextureCopyDestinationZ);
 	}
+}
+
+void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCommand& a_bufferUploadCommand) const
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_bufferUploadCommand.m_destinationBufferResource, "コピー先BufferResourceが無効のため、バッファコピー処理に失敗しました。");
+
+	const auto& l_uploadBuffer = a_bufferUploadCommand.m_bufferUploadRecord.m_uploadBuffer.GetREFUploadBuffer();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_uploadBuffer,																		      "コピー元UploadBufferが無効のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(a_bufferUploadCommand.m_bufferUploadRecord.m_bufferSize == Constant::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
+	
+	// コピー先とコピー元のリソースを取得
+	auto& l_destinationBufferResource = *a_bufferUploadCommand.m_destinationBufferResource.Get();
+	auto& l_sourceBufferResource      = *l_uploadBuffer.Get									  ();
+
+	// UPLOADヒープ上にあるバッファをDEFAULTヒープ上にあるバッファにコピー
+	m_copyCommandList.CopyBufferRegion(k_bufferCopyDestinationOffset,
+									   k_bufferCopySourceOffset,
+									   a_bufferUploadCommand.m_bufferUploadRecord.m_bufferSize,
+									   l_destinationBufferResource,
+									   l_sourceBufferResource);
 }
 
 std::weak_ptr<FWK::Graphics::CopyCommandAllocator> FWK::Graphics::UploadSystem::FetchMutablePTRCopyCommandAllocator()

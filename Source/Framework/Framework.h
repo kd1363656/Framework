@@ -189,10 +189,8 @@
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
 #include "Graphics/Resource/Model/Static/Meshlet/Definition/Constant/StaticModelMeshletBuilderConstant.h"
 #include "Graphics/Resource/Model/Static/Meshlet/StaticModelMeshletBuilder.h"
-
 #include "Graphics/Resource/Model/Static/Builder/Definition/Struct/BufferUploadStruct.h"
 #include "Graphics/Resource/Model/Static/Builder/StaticModelBatchUploadRecordBuilder.h"
-
 #include "Graphics/Resource/Model/Static/Definition/Struct/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"

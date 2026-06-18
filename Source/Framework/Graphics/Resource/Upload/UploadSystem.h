@@ -2,11 +2,6 @@
 
 namespace FWK::Graphics
 {
-	class TextureSystem;
-}
-
-namespace FWK::Graphics
-{
 	class UploadSystem
 	{
 	public:
@@ -17,7 +12,8 @@ namespace FWK::Graphics
 		void Deserialize(const nlohmann::json& a_rootJson);
 		bool Create     (const Device&		   a_device);
 
-		void SubmitPendingTextureCopyBatchIfNeededAndWait(TextureSystem& a_textureSystem);
+		void SubmitPendingTextureCopyBatchIfNeededAndWait(const TextureSystem&     a_textureSystem);
+		void SubmitPendingStaticModelBatchIfNeededAndWait(const StaticModelSystem& a_staticModelSystem);
 
 		nlohmann::json Serialize() const;
 
@@ -27,12 +23,19 @@ namespace FWK::Graphics
 
 	private:
 
+		void BeforSubmitResourceProcess(const CopyCommandAllocator& a_copyCommandAllocator);
+		void AfterSubmitResourceProcess(	  CopyCommandAllocator& a_copyCommandAllocator);
+
 		void RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList, const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const;
+		void RecordBufferCopy (const Struct::BufferUploadCommand&					  a_bufferUploadCommand)																											   const;
 
 		std::weak_ptr<CopyCommandAllocator> FetchMutablePTRCopyCommandAllocator();
 
 		static constexpr std::size_t k_initialCurrentCopyCommandAllocatorIndex = 0ULL;
 		static constexpr std::size_t k_copyCommandAllocatorIndexIncrement      = 1ULL;
+
+		static constexpr UINT64 k_bufferCopyDestinationOffset = 0ULL;
+		static constexpr UINT64 k_bufferCopySourceOffset      = 0ULL;
 
 		static constexpr UINT k_defaultTextureCopyDestinationX = 0U;
 		static constexpr UINT k_defaultTextureCopyDestinationY = 0U;

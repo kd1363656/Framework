@@ -35,3 +35,26 @@ void FWK::Graphics::CopyCommandList::CopyTextureRegion(const D3D12_TEXTURE_COPY_
 										 &a_source,
 										 a_sourceBox);
 }
+
+void FWK::Graphics::CopyCommandList::CopyBufferRegion(const UINT64&			 a_destinationOffset, 
+												      const UINT64&			 a_sourceOffset,
+													  const UINT64&			 a_bufferSize,
+	                                                        ID3D12Resource2& a_destinationBuffer,
+	                                                        ID3D12Resource2& a_sourceBuffer) const
+{
+	const auto& l_copyCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_copyCommandList,						       "コピーコマンドリストが作成されておらず、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(a_bufferSize == Constant::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
+
+	// CopyBufferRegion(コピー先BufferResource、
+	//					コピー先BufferResource内の書き込み開始Offset、
+	//					コピー元UploadBuffer、
+	//					コピー元UploadBuffer内の読み取り開始Offset、
+	//					コピーするByteSize);
+	l_copyCommandList->CopyBufferRegion(&a_destinationBuffer,
+										a_destinationOffset,
+										&a_sourceBuffer,
+										a_sourceOffset,
+										a_bufferSize);
+}

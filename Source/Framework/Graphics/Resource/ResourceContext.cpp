@@ -19,9 +19,9 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_uploadSystem.Create(a_device),       "UploadSystemの作成処理に失敗しました。", false);
 
     // 作成したGPUMemoryAllocatorとUploadSystemを使用する
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_srvDescriptorPool), "TextureSystemの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_srvDescriptorPool), "TextureSystemの作成処理に失敗しました。",     false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelSystem.Create(),                                                "StaticModelSystemの作成処理に失敗しました。", false);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelSystem.Create(), "StaticModelSystemの作成処理に失敗しました。", false);
 
     // デフォルトテクスチャの登録をここで行う
     m_uploadSystem.SubmitPendingTextureCopyBatchIfNeededAndWait(m_textureSystem);
@@ -37,6 +37,14 @@ void FWK::Graphics::ResourceContext::ProcessPendingTextureUploads()
     // コピーが完了した後、TextureRecordをTextureStorageへ正式登録する
     m_uploadSystem.SubmitPendingTextureCopyBatchIfNeededAndWait(m_textureSystem);
     m_textureSystem.RegisterPendingTextures                    ();
+}
+void FWK::Graphics::ResourceContext::ProcessPendingStaticModelUploads()
+{
+    // StaticModelSystemにPending中のスタティックモデルがあれば、
+    // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のBufferResourceへコピーする。
+    // コピーが完了した後、StaticModelRecordをStaticModelStorageへ正式登録する
+    m_uploadSystem.SubmitPendingStaticModelBatchIfNeededAndWait(m_staticModelSystem);
+    m_staticModelSystem.RegisterPendingStaticModels            ();
 }
 
 void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const DirectCommandQueue & a_directCommandQueue)

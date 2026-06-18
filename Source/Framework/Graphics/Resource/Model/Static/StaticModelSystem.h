@@ -23,8 +23,14 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
+		// ※ 注意
+		// UploadSystem側でスタティックモデルのバッファーのコピーが終わっていること前提
+		void RegisterPendingStaticModels();
+
 		bool AddStaticModelReferenceCount     (const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord);
 		bool SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
+
+		const auto& GetREFPendingStaticModelBatchUploadRecordMap() const { return m_pendingStaticModelBatchUploadRecordMap; }
 
 		const auto& GetREFStaticModelStorage() const { return m_staticModelStorage; }
 

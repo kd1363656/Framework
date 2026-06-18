@@ -74,6 +74,20 @@ nlohmann::json FWK::Graphics::StaticModelSystem::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
+void FWK::Graphics::StaticModelSystem::RegisterPendingStaticModels()
+{
+	for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : m_pendingStaticModelBatchUploadRecordMap)
+	{
+		auto& l_staticModelRecord = l_pendingStaticModelBatchUploadRecord.m_staticModelRecord;
+
+		FWK_ASSERT_RETURN_IF_FAILED(!l_staticModelRecord,											       "TextureRecordが無効のため、バッチスタティックモデル登録に失敗しました。");
+		FWK_ASSERT_RETURN_IF_FAILED(!m_staticModelStorage.RegisterRecord(l_staticModelRecord, l_filePath), "TextureRecordの登録に失敗したため、バッチスタティックモデル登録に失敗しました。");
+	}
+
+	// そのフレーム内でロードすべきテクスチャをすべてロードし終えた状態なのでクリア
+	m_pendingStaticModelBatchUploadRecordMap.clear();
+}
+
 bool FWK::Graphics::StaticModelSystem::AddStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelStorage.AddReferenceCount(a_staticModelRecord), "AssetStorageでの参照数加算に失敗したため、StaticModel参照数加算に失敗しました。", false);
