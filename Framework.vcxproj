@@ -398,6 +398,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct\CBStaticModelPerObjectStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct\StaticModelStandardPerObjectDrawRequestDataStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Constant\SpriteScreenPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Struct\CBSpritePerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Struct\SpriteRECTStruct.h" />
@@ -577,6 +581,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.cpp" />

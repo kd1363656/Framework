@@ -946,6 +946,33 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer">
       <UniqueIdentifier>{ca155f5f-0e63-492e-b57a-b52783d69d94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model">
+      <UniqueIdentifier>{29172820-0b4f-46da-a890-32dbdbd8c922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static">
+      <UniqueIdentifier>{a6d02665-0c34-4959-b349-8bec9f18f60c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard">
+      <UniqueIdentifier>{9d85be56-3738-47f0-85a0-b04053c4e772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit">
+      <UniqueIdentifier>{8ae568bb-599a-498f-9f2a-452bb212585e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition">
+      <UniqueIdentifier>{d0c90591-456e-48a9-a28e-f9efea65af56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct">
+      <UniqueIdentifier>{c74f5f7d-e470-40b2-ad83-11701a11490c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer">
+      <UniqueIdentifier>{c2390a35-7a13-4b8e-965d-c5914eb9cd47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition">
+      <UniqueIdentifier>{996abd9b-4531-4ce4-b0f9-141eba5b034b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct">
+      <UniqueIdentifier>{8cceab1b-ead2-4ca4-a9b8-91f789bf0bb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1566,6 +1593,18 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\CameraPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct\StaticModelStandardPerObjectDrawRequestDataStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct\CBStaticModelPerObjectStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1855,6 +1894,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

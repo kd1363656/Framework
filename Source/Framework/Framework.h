@@ -247,7 +247,6 @@
 #include "Graphics/Render/Graph/Request/Pass/Definition/Type/Alias/Factory/Shared/DrawRequestPassSharedFactory.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/Buffer/SpriteScreenPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
-
 #include "Graphics/Render/Graph/Request/Pass/Camera/Buffer/CameraPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Camera/CameraPassDrawRequest.h"
 
@@ -263,13 +262,16 @@
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectList.h"
 #include "Graphics/Render/Graph/Request/Object/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Graphics/Render/Graph/Request/Object/Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
-
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Constant/SpriteScreenPerObjectConstantBufferUploaderConstant.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Struct/SpriteRECTStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Struct/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Definition/Struct/StaticModelStandardPerObjectDrawRequestDataStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/Definition/Struct/CBStaticModelPerObjectStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 
 // 描画リクエスト制御パス
 #include "Graphics/Render/Graph/Pass/Definition/Enum/RenderGraphPassEnum.h"
