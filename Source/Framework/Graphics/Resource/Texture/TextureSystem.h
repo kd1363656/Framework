@@ -19,8 +19,9 @@ namespace FWK::Graphics
 		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			            a_device, 
 													        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
 													        const std::filesystem::path&		a_filePath,
-																  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-															const Enum::TextureLoadType			a_loadType = Enum::TextureLoadType::Auto);
+															const Enum::TextureLoadType			a_loadType,
+															const Enum::DefaultTextureType      a_defaultTextureType,
+																  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
 		nlohmann::json Serialize() const;
 
@@ -58,6 +59,8 @@ namespace FWK::Graphics
 														  	    Struct::TextureLoadResult&    a_textureLoadResult);
 
 		bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult);
+
+		void ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, Struct::TextureLoadResult& a_textureLoadResult) const;
 
 		static constexpr std::size_t k_defaultTextureTypeCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
 

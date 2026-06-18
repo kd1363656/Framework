@@ -20,13 +20,22 @@ bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemor
 FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					       a_device, 
 																					   const GPUMemoryAllocator&		   a_gpuMemoryAllocator,
 																					   const std::filesystem::path&		   a_filePath, 
-																							 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
-																					   const Enum::TextureLoadType		   a_loadType)
+																					   const Enum::TextureLoadType		   a_loadType,
+																					   const Enum::DefaultTextureType      a_defaultTextureType,
+																							 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
 	Struct::TextureLoadResult l_textureLoadResult = {};
 
 	// 読み込めるファイルかどうかを確認
-	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return l_textureLoadResult; }
+	// 読み込めるファイル出ない場合デフォルトテクスチャを返す
+	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) 
+	{
+		ApplyDefaultTextureToLoadResult(a_defaultTextureType, l_textureLoadResult);
+
+		l_textureLoadResult.m_isLoadSuccess = false;
+
+		return l_textureLoadResult;
+	}
 
 	// 成功したらキャッシュ内容が入っているのでreturn
 	if (TryResolveCachedTextureResult(a_filePath, l_textureLoadResult)) { return l_textureLoadResult; }
@@ -218,6 +227,7 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 
 	a_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
 	a_textureLoadResult.m_textureRecord = l_textureRecord;
+	a_textureLoadResult.m_isLoadSuccess = true;
 
 	// 作成し終えたTextureBatchUploadRecordをリストに格納する
 	m_pendingTextureBatchUploadRecordMap.try_emplace(a_filePath, std::move(l_textureBatchUploadRecord));
@@ -252,9 +262,28 @@ bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::file
 
 		a_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
 		a_textureLoadResult.m_textureRecord = l_textureRecord;
+		a_textureLoadResult.m_isLoadSuccess = true;
 
 		return true;
 	}
 
 	return false;
+}
+
+void FWK::Graphics::TextureSystem::ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, Struct::TextureLoadResult& a_textureLoadResult) const
+{
+	const auto& l_defaultRecordTextureWeak = FetchVALDefaultTextureRecord   (a_defaultTextureType);
+	const auto& l_defaultRecordTexture     = l_defaultRecordTextureWeak.lock	();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_defaultRecordTexture, "デフォルトテクスチャが作成されていなかったため、バッチテクスチャ登録に失敗しました。");
+
+	// デフォルトテクスチャは消す必要がないため参照数の管理は気にしなくてもよいが
+	// 一応参照数を加算しておく
+	l_defaultRecordTexture->AddReferenceCount();
+
+	a_textureLoadResult.m_storageID     = l_defaultRecordTexture->GetVALStorageID();
+	a_textureLoadResult.m_textureRecord = l_defaultRecordTextureWeak;
+
+	// テクスチャをロードできずデフォルトテクスチャをコピーしているため
+	a_textureLoadResult.m_isLoadSuccess = false;
 }

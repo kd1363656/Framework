@@ -75,37 +75,21 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum:
 	const auto& l_textureLoadResult = l_textureSystem.LoadTextureForBatchUpload(l_device,
 																				l_gpuMemoryAllocator,
 																				a_filePath,
-																				l_srvDescriptorPool,
-																				a_loadType);
+																				a_loadType,
+																				a_defaultTextureType,
+																				l_srvDescriptorPool);
 
 	// テクスチャの登録がデフォルトテクスチャをセットしてreturn
 	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID ||
 		l_textureLoadResult.m_textureRecord.expired())
 	{
-		SetupDefauldtTexture(a_defaultTextureType);
 		return false; 
 	}
 	
 	m_storageID     = l_textureLoadResult.m_storageID;
 	m_textureRecord = l_textureLoadResult.m_textureRecord;
 
-	return true;
-}
-
-void FWK::Graphics::Texture::SetupDefauldtTexture(const Enum::DefaultTextureType a_defaultTextureType)
-{
-	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-	const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext    ();
-	const auto& l_textureSystem   = l_resourceContext.GetREFTextureSystem      ();
-	
-	const auto& l_defaultTextureRecord = l_textureSystem.FetchVALDefaultTextureRecord(a_defaultTextureType);
-	const auto& l_teextureRecord       = l_defaultTextureRecord.lock				 ();
-	
-	FWK_ASSERT_RETURN_IF_FAILED(!l_teextureRecord, "DefaultTextureRecordが無効のため、デフォルトテクスチャ設定に失敗しました。");
-
-	// デフォルトテクスチャはAssetStorage管理ではないため、StorageIDは無効値のままにする
-	m_storageID     = l_teextureRecord->GetVALStorageID();
-	m_textureRecord = l_defaultTextureRecord;
+	return l_textureLoadResult.m_isLoadSuccess;
 }
 
 void FWK::Graphics::Texture::AddTextureReferenceCount() const
@@ -124,6 +108,7 @@ void FWK::Graphics::Texture::SubtractTextureReferenceCount()
 	if (m_storageID == Constant::k_invalidStorageID) 
 	{
 		m_textureRecord.reset();
+
 		return; 
 	}
 
