@@ -57,6 +57,8 @@ namespace FWK::Graphics
 														  	    TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
 														  	    Struct::TextureLoadResult&    a_textureLoadResult);
 
+		bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult);
+
 		static constexpr std::size_t k_defaultTextureTypeCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
 
 		PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
@@ -68,7 +70,7 @@ namespace FWK::Graphics
 		TextureLoader					m_loader				   = {};
 		TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
-		Converter::TextureBinaryConverter     m_binaryConverter = {};
-		Converter::TextureSystemJsonConverter m_jsonConverter   = {};
+		Converter::TextureSystemJsonConverter m_jsonConverter		   = {};
+		Converter::TextureBinaryConverter     m_textureBinaryConverter = {};
 	};
 }

@@ -928,6 +928,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct">
       <UniqueIdentifier>{eeb431d7-1b54-484b-8758-fdd061dc4700}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json">
+      <UniqueIdentifier>{5189b1f0-9733-4ea4-8892-783c2ceb0500}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1524,6 +1527,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\StaticModelSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Definition\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json\StaticModelSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\BufferUploadStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Definition\Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1804,6 +1813,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json\StaticModelSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

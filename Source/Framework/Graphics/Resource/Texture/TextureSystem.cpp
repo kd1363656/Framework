@@ -28,42 +28,14 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 	// 読み込めるファイルかどうかを確認
 	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return l_textureLoadResult; }
 
-	const auto& l_filePath = a_filePath.wstring();
-
-	// 既に登録済みのテクスチャなら再度ロード申請する必要がないのでreturn
-	if (const auto& l_record = m_textureStorage.FindVALRecord(l_filePath).lock())
-	{
-		// 参照数を加算
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!AddTextureReferenceCount(l_record), "登録済みテクスチャの参照数加算に失敗したため、バッチテクスチャ登録に失敗しました。", l_textureLoadResult);
-
-		l_textureLoadResult.m_storageID     = l_record->GetVALStorageID();
-		l_textureLoadResult.m_textureRecord = l_record;
-
-		return l_textureLoadResult;
-	}
-
-	// 現在のフレームで登録しようとしているパスが既に登録されているなら登録する必要がないためreturn
-	if (const auto& l_itr = m_pendingTextureBatchUploadRecordMap.find(l_filePath);
-		l_itr != m_pendingTextureBatchUploadRecordMap.end())
-	{
-		const auto& l_textureRecord = l_itr->second.m_textureRecord;
-
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_textureRecord, "該当するStorageIDのテクスチャーレコードが無効のため、バッチテクスチャ登録に失敗しました。", l_textureLoadResult);
-
-		// すでに登録予約済みのテクスチャが再度登録されたら参照カウントを増やす
-		l_textureRecord->AddReferenceCount();
-
-		l_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
-		l_textureLoadResult.m_textureRecord = l_textureRecord;
-
-		return l_textureLoadResult;
-	}
+	// 成功したらキャッシュ内容が入っているのでreturn
+	if (TryResolveCachedTextureResult(a_filePath, l_textureLoadResult)) { return l_textureLoadResult; }
 
 	DirectX::ScratchImage l_scratchImage = {};
 	DirectX::TexMetadata  l_texMetadata  = {};
 
 	// .assetが存在していて、PNGより更新が古くなければ.assetを優先して読み込む
-	if (!m_binaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
+	if (!m_textureBinaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
 	{
 		// .assetが読み込めなければテクスチャをロードする、失敗したらassert
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadTextureFile(a_filePath, 
@@ -83,7 +55,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 													 l_textureLoadResult);
 
 		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_binaryConverter.SaveTextureAsset(l_scratchImage, a_filePath), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureBinaryConverter.SaveTextureAsset(l_scratchImage, a_filePath), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
 
 		return l_textureLoadResult;
 	}
@@ -127,7 +99,7 @@ bool FWK::Graphics::TextureSystem::AddTextureReferenceCount(const std::weak_ptr<
 }
 bool FWK::Graphics::TextureSystem::SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureStorage.SubtractReferenceCount(a_textureRecord, a_directCommandQueue, a_resourceReleaseContext), "AssetStorageでの参照数減算に失敗したため、テクスチャ解放予約に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureStorage.SubtractReferenceCount(a_textureRecord, a_directCommandQueue, a_resourceReleaseContext), "AssetStorageでの参照数減算に失敗したため、テクスチャ参照数減算に失敗しました。", false);
 
 	return true;
 }
@@ -249,4 +221,40 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 
 	// 作成し終えたTextureBatchUploadRecordをリストに格納する
 	m_pendingTextureBatchUploadRecordMap.try_emplace(a_filePath, std::move(l_textureBatchUploadRecord));
+}
+
+bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult)
+{
+	const auto& l_filePath = a_filePath.wstring();
+
+	// 既に登録済みのテクスチャなら再度ロード申請する必要がないのでreturn
+	if (const auto& l_record = m_textureStorage.FindVALRecord(l_filePath).lock())
+	{
+		// 参照数を加算
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!AddTextureReferenceCount(l_record), "登録済みテクスチャの参照数加算に失敗したため、バッチテクスチャ登録に失敗しました。", false);
+
+		a_textureLoadResult.m_storageID     = l_record->GetVALStorageID();
+		a_textureLoadResult.m_textureRecord = l_record;
+
+		return true;
+	}
+
+	// 現在のフレームで登録しようとしているパスが既に登録されているなら登録する必要がないためreturn
+	if (const auto& l_itr = m_pendingTextureBatchUploadRecordMap.find(l_filePath);
+		l_itr != m_pendingTextureBatchUploadRecordMap.end())
+	{
+		const auto& l_textureRecord = l_itr->second.m_textureRecord;
+
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_textureRecord, "該当するStorageIDのテクスチャーレコードが無効のため、バッチテクスチャ登録に失敗しました。", false);
+
+		// すでに登録予約済みのテクスチャが再度登録されたら参照カウントを増やす
+		l_textureRecord->AddReferenceCount();
+
+		a_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
+		a_textureLoadResult.m_textureRecord = l_textureRecord;
+
+		return true;
+	}
+
+	return false;
 }

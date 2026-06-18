@@ -516,6 +516,13 @@
                 "DescriptorHeapIndexAllocatorCapacity": 10000
             }
         },
+        "StaticModelSystem": {
+            "StaticModelStorage": {
+                "StorageIDAllocator": {
+                    "StorageIDAllocatorCapacity": 10000
+                }
+            }
+        },
         "TextureSystem": {
             "DefaultTextureList": [
                 {

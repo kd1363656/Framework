@@ -454,6 +454,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json\StaticModelSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\BufferUploadStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\StaticModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h" />
@@ -590,6 +592,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json\StaticModelSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.cpp" />

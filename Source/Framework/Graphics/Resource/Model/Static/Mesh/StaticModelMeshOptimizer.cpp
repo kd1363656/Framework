@@ -24,7 +24,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 
 	l_vertexRemapList.resize(a_staticModelMesh.m_modelVertexList.size());
 
-	// 同じposition / uvを持つ頂点をまとめるための対応表を作成する
+	// 同じ情報を持つ頂点をまとめるための対応表を作成する
 	// meshopt_generateVertexRemap(古い頂点番号から新しい頂点番号への対応表を書き込む配列、
 	//						       現在のインデックス配列、	
 	//							   現在のインデックス数、
@@ -44,7 +44,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 
 	l_optimizedIndexList.resize(a_staticModelMesh.m_indexList.size());
 
-	// 古い頂点番号を、重複削除後の新しい頂点番号へ変換する
+	// 現在のIndexListを、Remap情報に従って新しい頂点番号へ変換する
 	// meshopt_remapIndexBuffer(最適化後のインデックス配列の書き込み先、
 	//							現在のインデックス配列、
 	//							現在のインデックス数、
@@ -85,6 +85,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 	//							   最適化後のインデックス配列、
 	//							   インデックス数、
 	//							   現在の頂点配列、
+	//							   現在の頂点数、
 	//							   頂点一つ分のバイトサイズ);
 	meshopt_optimizeVertexFetch(l_optimizedModelVertexList.data(),
 								l_optimizedIndexList.data(),
