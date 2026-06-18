@@ -25,7 +25,15 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 	// 成功したらキャッシュ内容が入っているのでreturn
 	if (TryResolveCachedStaticModelResult(a_filePath, l_staticModelLoadResult)) { return l_staticModelLoadResult; }
 
+	const auto l_allocateStorageID = m_staticModelStorage.AllocateStorageID();
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、StaticModel読み込み処理に失敗しました。", l_staticModelLoadResult);
+
 	auto l_staticModelRecord = std::make_shared<Graphics::StaticModelRecord>();
+
+	l_staticModelRecord->SetFilePath      (a_filePath.wstring());
+	l_staticModelRecord->SetStorageID     (l_allocateStorageID);
+	l_staticModelRecord->SetReferenceCount(Constant::k_defaultAssetReferenceCount);
 
 	// .assetが存在していて、FBXより更新が古くなければ.assetを優先して読み込む
 	if (!m_staticModelBinaryConverter.LoadStaticModelAsset(a_filePath, *l_staticModelRecord))

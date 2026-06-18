@@ -1,18 +1,18 @@
 ﻿#include "Texture.h"
 
 FWK::Graphics::Texture::Texture() : 
-	m_storageID    (Constant::k_invalidStorageID),
-	m_textureRecord({})
+	m_textureRecord({}),
+	m_storageID    (Constant::k_invalidStorageID)
 {}
 FWK::Graphics::Texture::Texture(const Texture & a_other) : 
-	m_storageID    (a_other.m_storageID),
-	m_textureRecord(a_other.m_textureRecord)
+	m_textureRecord(a_other.m_textureRecord),
+	m_storageID    (a_other.m_storageID)
 {
 	AddTextureReferenceCount();
 }
 FWK::Graphics::Texture::Texture(Texture&& a_other) noexcept : 
-	m_storageID    (a_other.m_storageID),
-	m_textureRecord(std::move(a_other.m_textureRecord))
+	m_textureRecord(std::move(a_other.m_textureRecord)),
+	m_storageID    (a_other.m_storageID)
 {
 	a_other.m_storageID = Constant::k_invalidStorageID;
 	a_other.m_textureRecord.reset();
@@ -56,7 +56,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(Texture&& a_other) noe
 	return *this;
 }
 
-void FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum::TextureLoadType a_loadType)
+void FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum::TextureLoadType a_loadType, const Enum::DefaultTextureType a_defaultTextureType)
 {
 	// 既に別のStorageIDを持っている場合は先に参照を外す
 	SubtractTextureReferenceCount();
@@ -78,12 +78,31 @@ void FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, Enum:
 																				l_srvDescriptorPool,
 																				a_loadType);
 
-	// テクスチャの登録がうまくいかなければreturn
-	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID) { return; }
-	if (l_textureLoadResult.m_textureRecord.expired())					 { return; }
-
+	// テクスチャの登録がデフォルトテクスチャをセットしてreturn
+	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID ||
+		l_textureLoadResult.m_textureRecord.expired())
+	{
+		SetupDefauldtTexture(a_defaultTextureType);
+		return; 
+	}
+	
 	m_storageID     = l_textureLoadResult.m_storageID;
 	m_textureRecord = l_textureLoadResult.m_textureRecord;
+}
+
+void FWK::Graphics::Texture::SetupDefauldtTexture(const Enum::DefaultTextureType a_defaultTextureType)
+{
+	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+	const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext    ();
+	const auto& l_textureSystem   = l_resourceContext.GetREFTextureSystem      ();
+	
+	const auto& l_defaultTextureRecord = l_textureSystem.FetchVALDefaultTextureRecord(a_defaultTextureType);
+
+	FWK_ASSERT_RETURN_IF_FAILED(l_defaultTextureRecord.expired(), "DefaultTextureRecordが無効のため、デフォルトテクスチャ設定に失敗しました。");
+
+	// デフォルトテクスチャはAssetStorage管理ではないため、StorageIDは無効値のままにする
+	m_storageID     = Constant::k_invalidStorageID;
+	m_textureRecord = l_defaultTextureRecord;
 }
 
 void FWK::Graphics::Texture::AddTextureReferenceCount() const

@@ -8,7 +8,9 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelRecord(Graphics
 
 	for (auto& l_modelMesh : l_modelData.m_modelMeshList)
 	{
-		// Mesh単位で最適化する
+		// StaticModelDataはMaterial単位などで複数のStaticModelMeshを持つ。
+		// meshoptimizerはMesh単位のVertexList/IndexListに対して適用するため、
+		// StaticModelMeshごとに個別に最適化する
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!OptimizeStaticModelMesh(l_modelMesh), "ModelMeshの最適化に失敗しました。", false);
 	}
 
@@ -22,9 +24,11 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 
 	std::vector<std::uint32_t> l_vertexRemapList = {};
 
+	// Remap表は「古い頂点番号 -> 新しい頂点番号」の対応表。
+	// そのため、Index数ではなく、元の頂点数と同じ要素数を確保する。
 	l_vertexRemapList.resize(a_staticModelMesh.m_modelVertexList.size());
 
-	// 同じ情報を持つ頂点をまとめるための対応表を作成する
+	// 重複している頂点をまとめるためのRemap表を作成する。
 	// meshopt_generateVertexRemap(古い頂点番号から新しい頂点番号への対応表を書き込む配列、
 	//						       現在のインデックス配列、	
 	//							   現在のインデックス数、
@@ -44,7 +48,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 
 	l_optimizedIndexList.resize(a_staticModelMesh.m_indexList.size());
 
-	// 現在のIndexListを、Remap情報に従って新しい頂点番号へ変換する
+	// 現在のIndexListを、Remap表に従って新しい頂点番号へ変換する
 	// meshopt_remapIndexBuffer(最適化後のインデックス配列の書き込み先、
 	//							現在のインデックス配列、
 	//							現在のインデックス数、
@@ -58,7 +62,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 
 	l_optimizedModelVertexList.resize(l_optimizedVertexCount);
 
-	// 重複している頂点を削除し、必要な頂点だけを新しい頂点配列へ詰めなおす
+	// Remap表に従って、重複を取り除いた新しいVertexListを作成する
 	// meshopt_remapVertexBuffer(最適化後の頂点配列の書き込み先、
 	//							 現在の頂点配列、
 	//							 現在の頂点数、
@@ -70,7 +74,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 							  sizeof(Struct::StaticModelVertex),
 							  l_vertexRemapList.data());
 
-	// GPUの頂点キャッシュに乗りやすい順番へインデックスを並べ替える
+	// GPUの頂点キャッシュに乗りやすいように、IndexListの順番を並べ替える
 	// meshopt_optimizeVertexCache(最適化後のインデックス配列の書き込み先、
 	//							   現在のインデックス配列、
 	//							   現在のインデックス、
@@ -80,7 +84,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 								l_optimizedIndexList.size(),
 								l_optimizedModelVertexList.size());
 
-	// インデックスから参照される順番に頂点を並び替え、GPUが頂点を読みやすい配置にする
+	// IndexListから参照される順番に合わせて、VErtexListのメモリ配置を並び替える。
 	// meshopt_optimizeVertexFetch(最適化後の頂点配列の書き込み先、
 	//							   最適化後のインデックス配列、
 	//							   インデックス数、

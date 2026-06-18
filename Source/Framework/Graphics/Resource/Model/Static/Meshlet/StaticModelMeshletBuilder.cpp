@@ -19,6 +19,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != k_emptyRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
 
 	// メッシュレットデータの初期化
+	// 前回読み込んでいたモデルのメッシュレット情報が残るのを防ぐため
 	auto& l_modelMeshletData = a_staticModelMesh.m_modelMeshletData;
 
 	l_modelMeshletData.m_meshletList.clear          ();
