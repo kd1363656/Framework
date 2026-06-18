@@ -1551,6 +1551,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct\BufferUploadStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1834,6 +1837,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Builder\StaticModelBatchUploadRecordBuilder.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

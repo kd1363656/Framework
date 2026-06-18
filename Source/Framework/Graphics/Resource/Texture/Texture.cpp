@@ -8,7 +8,7 @@ FWK::Graphics::Texture::Texture(const Texture & a_other) :
 	m_textureRecord(a_other.m_textureRecord),
 	m_storageID    (a_other.m_storageID)
 {
-	AddTextureReferenceCount();
+	AddReferenceCount();
 }
 FWK::Graphics::Texture::Texture(Texture&& a_other) noexcept : 
 	m_textureRecord(std::move(a_other.m_textureRecord)),
@@ -19,7 +19,7 @@ FWK::Graphics::Texture::Texture(Texture&& a_other) noexcept :
 }
 FWK::Graphics::Texture::~Texture()
 {
-	SubtractTextureReferenceCount();;
+	SubtractReferenceCount();;
 }
 
 FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(const Texture& a_other)
@@ -27,14 +27,14 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(const Texture& a_other
 	if (this == &a_other) { return *this; }
 
 	// 所持しているテクスチャを破棄
-	SubtractTextureReferenceCount();;
+	SubtractReferenceCount();;
 
 	// コピー元と同じTextureRecordを参照する
 	m_storageID     = a_other.m_storageID;
 	m_textureRecord = a_other.m_textureRecord;
 
 	// 参照数の加算
-	AddTextureReferenceCount();
+	AddReferenceCount();
 
 	return *this;
 }
@@ -43,7 +43,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(Texture&& a_other) noe
 	if (this == &a_other) { return *this; }
 
 	// 所持しているテクスチャを破棄
-	SubtractTextureReferenceCount();
+	SubtractReferenceCount();
 
 	// ムーブでは参照数を増やさず、参照先だけ移す
 	m_storageID     = a_other.m_storageID;
@@ -59,7 +59,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(Texture&& a_other) noe
 bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace, const Enum::DefaultTextureType a_defaultTextureType)
 {
 	// 既に別のStorageIDを持っている場合は先に参照を外す
-	SubtractTextureReferenceCount();
+	SubtractReferenceCount();
 
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 
@@ -92,7 +92,7 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 	return l_textureLoadResult.m_isLoadSuccess;
 }
 
-void FWK::Graphics::Texture::AddTextureReferenceCount() const
+void FWK::Graphics::Texture::AddReferenceCount() const
 {
 	if (m_storageID == Constant::k_invalidStorageID) { return; }
 
@@ -103,7 +103,7 @@ void FWK::Graphics::Texture::AddTextureReferenceCount() const
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_textureSystem.AddTextureReferenceCount(m_textureRecord), "テクスチャ参照数加算に失敗しました。");
 }
-void FWK::Graphics::Texture::SubtractTextureReferenceCount()
+void FWK::Graphics::Texture::SubtractReferenceCount()
 {
 	if (m_storageID == Constant::k_invalidStorageID) 
 	{
@@ -117,12 +117,11 @@ void FWK::Graphics::Texture::SubtractTextureReferenceCount()
 	const auto& l_renderer		     = l_graphicsManager.GetREFRenderer   ();
 	const auto& l_directCommandQueue = l_renderer.GetREFDirectCommandQueue();
 
-	auto& l_resourceContext = l_graphicsManager.GetMutableREFResourceContext();
-	auto& l_textureSystem   = l_resourceContext.GetMutableREFTextureSystem  ();
+	auto& l_resourceContext        = l_graphicsManager.GetMutableREFResourceContext       ();
+	auto& l_textureSystem          = l_resourceContext.GetMutableREFTextureSystem         ();
+	auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
 	
 	// 参照カウントを減らす
-	auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
-
 	FWK_ASSERT_RETURN_IF_FAILED(!l_textureSystem.SubtractTextureReferenceCount(m_textureRecord, l_directCommandQueue, l_resourceReleaseContext), "テクスチャ参照数解放に失敗しました。");
 
 	m_storageID = Constant::k_invalidStorageID;

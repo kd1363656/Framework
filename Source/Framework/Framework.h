@@ -194,6 +194,7 @@
 #include "Graphics/Resource/Model/Static/Definition/Struct/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
+#include "Graphics/Resource/Model/Static/StaticModel.h"
 
 // アップロードシステム
 #include "Graphics/Resource/Upload/Command/Allocator/Definition/Constant/CopyCommandAllocatorConstant.h"

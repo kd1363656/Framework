@@ -22,9 +22,9 @@ namespace FWK::Graphics
 
 	private:
 
-		void AddTextureReferenceCount() const;
+		void AddReferenceCount() const;
 
-		void SubtractTextureReferenceCount();
+		void SubtractReferenceCount();
 
 		std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 

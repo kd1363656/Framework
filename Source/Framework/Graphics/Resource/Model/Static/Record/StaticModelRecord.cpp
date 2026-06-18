@@ -14,11 +14,11 @@ bool FWK::Graphics::StaticModelRecord::ReserveRelease(const UINT64& a_retiredFen
 		Struct::StructuredBufferResourceReleaseRecord l_primitiveIndexBuffer    = { a_retiredFenceValue, std::move(l_modelMeshRuntimeData.m_primitiveIndexBuffer) };
 		Struct::StructuredBufferResourceReleaseRecord l_meshletBoundsBuffer     = { a_retiredFenceValue, std::move(l_modelMeshRuntimeData.m_meshletBoundsBuffer) };
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(std::move(l_vertexBuffer)),			    "StaticModelRecordのVertexBufferを遅延解放Queueへ登録できませんでした。",            false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(std::move(l_meshletBuffer)),           "StaticModelRecordのMeshletBufferを遅延解放Queueへ登録できませんでした。",           false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(std::move(l_uniqueVertexIndexBuffer)), "StaticModelRecordのUniqueVertexIndexBufferを遅延解放Queueへ登録できませんでした。", false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(std::move(l_primitiveIndexBuffer)),    "StaticModelRecordのPrimitiveIndexBufferを遅延解放Queueへ登録できませんでした。",    false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(std::move(l_meshletBoundsBuffer)),     "StaticModelRecordのMeshletBoundsBufferを遅延解放Queueへ登録できませんでした。",     false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(l_vertexBuffer),			 "StaticModelRecordのVertexBufferを遅延解放Queueへ登録できませんでした。",            false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(l_meshletBuffer),           "StaticModelRecordのMeshletBufferを遅延解放Queueへ登録できませんでした。",           false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(l_uniqueVertexIndexBuffer), "StaticModelRecordのUniqueVertexIndexBufferを遅延解放Queueへ登録できませんでした。", false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(l_primitiveIndexBuffer),    "StaticModelRecordのPrimitiveIndexBufferを遅延解放Queueへ登録できませんでした。",    false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseStructuredBufferResourceRecord(l_meshletBoundsBuffer),     "StaticModelRecordのMeshletBoundsBufferを遅延解放Queueへ登録できませんでした。",     false);
 	}
 
 	return true;

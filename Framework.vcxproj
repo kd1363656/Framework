@@ -468,6 +468,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\ModelMaterialStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelRecordStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h" />
@@ -600,6 +601,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp" />

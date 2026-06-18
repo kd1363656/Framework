@@ -12,6 +12,11 @@ void FWK::Scene::INIT()
 		m_spriteDrawRequestData = std::make_shared<Struct::SpriteScreenPerObjectDrawRequestData>();
 	}
 
+	if (!m_staticModel)
+	{
+		m_staticModel = std::make_shared<Graphics::StaticModel>();
+	}
+
 	// テクスチャ
 	const bool l_isLoadSuccess = m_texture->Load("Asset/Texture/Te.png", Enum::TextureLoadColorSpace::SRGB);
 
@@ -34,19 +39,7 @@ void FWK::Scene::INIT()
 	l_spriteScreenPerObjectDrawRequest->AddDrawRequestPerObject(m_spriteDrawRequestData);
 
 	// モデル
-	const auto& l_device = l_graphicsManager.GetREFDevice();
-
-		  auto& l_resourceContext    = l_graphicsManager.GetMutableREFResourceContext  ();
-	const auto& l_gpuMemoryAllocator = l_resourceContext.GetREFGPUMemoryAllocator      ();
-		  auto& l_staticModelLoader  = l_resourceContext.GetMutableREFStaticModelSystem();
-	      auto& l_srvDescriptorPool  = l_resourceContext.GetMutableREFSRVDescriptorPool();
-
-	const std::filesystem::path& l_filePath = "Asset/Model/Antike.fbx";
-	
-	l_staticModelLoader.LoadStaticModelForBatchUpload(l_device, 
-												      l_gpuMemoryAllocator,
-													  l_filePath, 
-													  l_srvDescriptorPool);
+	m_staticModel->Load("Asset/Model/Antike.fbx");
 }
 
 void FWK::Scene::Update()
@@ -55,5 +48,10 @@ void FWK::Scene::Update()
 	{
 		m_texture			    = nullptr;
 		m_spriteDrawRequestData = nullptr;
+	}
+
+	if (GetAsyncKeyState('A'))
+	{
+		m_staticModel = nullptr;
 	}
 }
