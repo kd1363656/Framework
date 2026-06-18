@@ -1733,9 +1733,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen</Filter>
     </ClCompile>

@@ -9,7 +9,7 @@ namespace FWK::Graphics
 		 ScreenSpritePass();
 		~ScreenSpritePass() override;
 
-		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+		void Execute(Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
 	private:
 

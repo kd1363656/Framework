@@ -21,7 +21,7 @@ namespace FWK::Graphics
 		RenderGraphPassBase& operator=(const RenderGraphPassBase&)  = delete;
 		RenderGraphPassBase& operator=(	     RenderGraphPassBase&&) = delete;
 
-		virtual void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) = 0;
+		virtual void Execute(Renderer& a_renderer, RenderGraph& a_renderGraph) = 0;
 
 		const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
 

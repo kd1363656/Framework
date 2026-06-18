@@ -152,7 +152,7 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 		// PassのWriteResourceを見て、RenderGraph側でRTVを自動セットする
 		SetupPassRenderTarget(a_resourceContext, *l_pass, a_renderer);
 
-		l_pass->Execute(a_resourceContext, a_renderer, *this);
+		l_pass->Execute(a_renderer, *this);
 	}
 }
 void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const

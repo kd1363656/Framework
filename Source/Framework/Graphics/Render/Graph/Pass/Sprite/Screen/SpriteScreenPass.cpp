@@ -7,7 +7,7 @@ FWK::Graphics::ScreenSpritePass::ScreenSpritePass()
 }
 FWK::Graphics::ScreenSpritePass::~ScreenSpritePass() = default;
 
-void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::ScreenSpritePass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
@@ -24,8 +24,5 @@ void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext& a_resourceC
 	FWK_ASSERT_RETURN_IF_FAILED(!l_spritePassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "スプライト定数の設定が出来ておらず、ScreenSpritePassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_spriteScreenPerObjectDrawRequest,																				   "SpriteScreenPerObjectDrawRequestが無効のため、ScreenSpritePassの実行に失敗しました。");
 
-	l_spriteScreenPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_resourceContext, 
-																	 a_renderer,
-																	 *l_rootSignature,
-																     *l_currentFrameResource);
+	l_spriteScreenPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer, *l_rootSignature, *l_currentFrameResource);
 }

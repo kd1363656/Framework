@@ -12,11 +12,17 @@ void FWK::Scene::INIT()
 		m_spriteDrawRequestData = std::make_shared<Struct::SpriteScreenPerObjectDrawRequestData>();
 	}
 
-	// テクスチャ
-	m_texture->Load("Asset/Texture/Test.png", Enum::TextureLoadType::Color);
-
 	m_spriteDrawRequestData->m_textureRecord = m_texture->GetREFTextureRecord();
 	m_spriteDrawRequestData->m_sourceRECT    = { 0U, 0U, 256U, 256U };
+	m_spriteDrawRequestData->m_scale         = { 1.0F, 1.0F };
+	
+	// テクスチャ
+	bool l_isSuccessLoad = m_texture->Load("Asset/Texture/Te.png", Enum::TextureLoadType::Color);
+
+	if (l_isSuccessLoad)
+	{
+		m_spriteDrawRequestData->m_scale = { 256.0F, 256.0F };
+	}
 
 		  auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderGraph     = l_graphicsManager.GetREFRenderer      ().GetREFRenderGraph();
@@ -26,8 +32,6 @@ void FWK::Scene::INIT()
 	if (!l_spriteScreenPerObjectDrawRequest) { return; }
 
 	l_spriteScreenPerObjectDrawRequest->AddDrawRequestPerObject(m_spriteDrawRequestData);
-
-
 
 	// モデル
 	const auto& l_device = l_graphicsManager.GetREFDevice();

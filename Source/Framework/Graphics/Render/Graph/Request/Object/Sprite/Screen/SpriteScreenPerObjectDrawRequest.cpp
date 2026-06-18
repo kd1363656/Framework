@@ -6,14 +6,9 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 	m_drawRequestPerObjectList.BeginFrame();
 }
 
-void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const ResourceContext& a_resourceContext, 
-																				   const Renderer&		  a_renderer,
-																				   const RootSignature&   a_rootSignature, 
-																				   const FrameResource&   a_frameResource)
+void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
-
-	const auto& l_textureSystem = a_resourceContext.GetREFTextureSystem();
 
 	for (const auto& l_drawRequest : m_drawRequestPerObjectList.GetREFDrawRequestPerObjectRecordList())
 	{
@@ -24,26 +19,19 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 		Struct::CBSpritePerObject l_cbSpritePerObject = {};
 
 		// TextureRecordが存在しなければデフォルトテクスチャを使用するため問題ない
-		const auto& l_textureRecord   = l_drawRequestPerObject->m_textureRecord.lock();
-		const auto  l_textureSRVIndex = FetchVALTextureSRVDescriptorIndex(l_textureRecord, l_textureSystem, Enum::DefaultTextureType::BaseColor);
+		const auto& l_textureRecord = l_drawRequestPerObject->m_textureRecord.lock();
+
+		if (!l_textureRecord) { continue; }
+
+		const auto l_textureSRVIndex = l_textureRecord->GetVALSRVDescriptorIndex();
 
 		FWK_ASSERT_RETURN_IF_FAILED(l_textureSRVIndex == Constant::k_invalidDescriptorIndex, "BaseColorTextureのDescriptorIndexが無効になっており、Sprite描画申請処理に失敗しました。");
 
 		l_cbSpritePerObject.m_baseColorTextureSRVIndex = l_textureSRVIndex;
 
-		// もしTextureRecordがnullptrだったら、使用されるテクスチャは必ずデフォルトテクスチャになるので
-		// フォールバックテクスチャとしてわかりやすいように256 * 256のスケールになるように拡大率を調整
-		if (!l_textureRecord)
-		{
-			l_cbSpritePerObject.m_scale = k_defaultTextureScale;
-		}
-		else
-		{
-			l_cbSpritePerObject.m_scale = l_drawRequestPerObject->m_scale;
-		}
-
 		l_cbSpritePerObject.m_color		 = l_drawRequestPerObject->m_color;
 		l_cbSpritePerObject.m_position	 = l_drawRequestPerObject->m_position;
+		l_cbSpritePerObject.m_scale      = l_drawRequestPerObject->m_scale;
 		l_cbSpritePerObject.m_pivot		 = l_drawRequestPerObject->m_pivot;
 		l_cbSpritePerObject.m_sourceRECT = l_drawRequestPerObject->m_sourceRECT;
 
