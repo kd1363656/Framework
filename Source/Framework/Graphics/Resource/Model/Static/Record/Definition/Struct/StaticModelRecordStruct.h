@@ -22,13 +22,13 @@ namespace FWK::Struct
 		// MeshShaderでは、このOffsetからm_vertexCount個分の元頂点Indexを読む
 		std::uint32_t m_vertexOffset = Constant::k_initialMeshletVertexOffset;
 
-		// m_primitiveIndexListの開始位置
-		// MeshShader側では、このOffsetからm_triangleCount個分の三角形情報を読む
-		std::uint32_t m_triangleOffset = Constant::k_initialMeshletTriangleOffset;
-
 		// このMeshletで使用するユニーク頂点数
 		// MeshShaderのSetMeshOutputCounts()で出力頂点数として使用する
 		std::uint32_t m_vertexCount = Constant::k_initialMeshletVertexCount;
+
+		// m_primitiveIndexListの開始位置
+		// MeshShader側では、このOffsetからm_triangleCount個分の三角形情報を読む
+		std::uint32_t m_triangleOffset = Constant::k_initialMeshletTriangleOffset;
 
 		// このMeshletに含まれる三角形数
 		std::uint32_t m_triangleCount = Constant::k_initialMeshletTriangleCount;

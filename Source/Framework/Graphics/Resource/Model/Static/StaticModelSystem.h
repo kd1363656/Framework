@@ -32,12 +32,29 @@ namespace FWK::Graphics
 
 	private:
 
-		void CreateMaterialTexture(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const;
+		bool BuildStaticModelAssetData(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord);
 
-		std::shared_ptr<Texture> CreateMaterialTexture(const std::filesystem::path&      a_modelFilePath, 
-													   const std::wstring&			     a_textureFilePath,
-													   const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
-													   const Enum::DefaultTextureType    a_defaultTextureType) const;
+		void BuildMaterialRuntimeTextures(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const;
+
+		void BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>&   a_staticModelRecord,
+										 const Device&			                     a_device,
+										 const GPUMemoryAllocator&                   a_gpuMemoryAllocator,
+										 const TypeAlias::StorageID				     a_storageID,
+										 const std::filesystem::path&				 a_filePath,
+											   TypeAlias::SRVDescriptorPool&         a_srvDescriptorPool,
+											   Struct::StaticModelLoadResult&        a_staticModelLoadResult);
+
+		std::shared_ptr<Texture> CreateSingleMaterialTexture(const std::filesystem::path&      a_modelFilePath, 
+													         const std::wstring&			   a_textureFilePath,
+													         const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+													         const Enum::DefaultTextureType    a_defaultTextureType) const;
+
+		bool CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
+										   const Device&							   a_device, 
+										   const GPUMemoryAllocator&				   a_gpuMemoryAllocator, 
+										   	     TypeAlias::SRVDescriptorPool&	       a_srvDescriptorPool,
+												 Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const;
+
 
 		bool TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult);
 
@@ -45,7 +62,10 @@ namespace FWK::Graphics
 		
 		AssetStorage<Graphics::StaticModelRecord> m_staticModelStorage = {};
 
-		StaticModelFBXLoader m_loader = {};
+		StaticModelFBXLoader				m_loader				   = {};
+		StaticModelMeshOptimizer			m_meshOptimizer			   = {};
+		StaticModelMeshletBuilder			m_meshletBuilder		   = {};
+		StaticModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
 		Converter::StaticModelSystemJsonConverter m_jsonConverter			   = {};
 		Converter::StaticModelBinaryConverter     m_staticModelBinaryConverter = {};

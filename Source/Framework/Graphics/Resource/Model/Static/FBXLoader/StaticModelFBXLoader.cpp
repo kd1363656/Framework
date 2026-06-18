@@ -145,17 +145,19 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const ufbx_
 	// これが0の場合、三角形化できるFaceがない
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
+	// マテリアルで絞り込むだけ、
+	// FaceごとのMaterial番号が入っている配列の数と現在のMeshのFace数が一致しているかどうかを確認
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_materialIndex				 != k_invalidMaterialIndex &&
 									  l_fbxMesh->face_material.count != l_fbxMesh->faces.count,
 									  "face_material数とFace数が一致しないため、Material別StaticModelMeshの抽出に失敗しました。",
 									  false);
 
 	// max_face_traianglesは1つのFaceを三角形化したときに必要になる最大三角形数
-	// 1三角形は3頂点なので、最大三角形数 * 3の頂点インデックス配列を用意する
 	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Constant::k_triangleVertexCount;
 
 	std::vector<std::uint32_t> l_triangleIndexList = {};
 
+	// 1三角形は3頂点なので、最大三角形数 * 3の頂点インデックス配列を用意する
 	l_triangleIndexList.resize(l_triangleIndexListSize);
 
 	for (auto l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)

@@ -29,25 +29,42 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、StaticModel読み込み処理に失敗しました。", l_staticModelLoadResult);
 
-	auto l_staticModelRecord = std::make_shared<Graphics::StaticModelRecord>();
+	auto l_staticModelRecord = std::make_shared<StaticModelRecord>();
 
 	l_staticModelRecord->SetFilePath      (a_filePath.wstring());
 	l_staticModelRecord->SetStorageID     (l_allocateStorageID);
 	l_staticModelRecord->SetReferenceCount(Constant::k_defaultAssetReferenceCount);
 
 	// .assetが存在していて、FBXより更新が古くなければ.assetを優先して読み込む
+	// 失敗したらUFBXから読み込む
 	if (!m_staticModelBinaryConverter.LoadStaticModelAsset(a_filePath, *l_staticModelRecord))
 	{
-		// .assetが読み込めなければテクスチャをロードする、失敗したらassert
+		// .assetが読み込めなければFBXモデルをロードする、失敗したらassert
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。。", {});
 
-		CreateMaterialTexture(a_filePath, *l_staticModelRecord);
+		// モデルのメッシュレット生成などを行う
+		BuildStaticModelAssetData(a_filePath, *l_staticModelRecord);
 
-		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelBinaryConverter.SaveStaticModelAsset(a_filePath, *l_staticModelRecord), "TextureAssetの保存に失敗しました", {});
+		// 実行時に決まる情報を作成
+		BuildStaticModelRuntimeData(l_staticModelRecord,
+									a_device,
+									a_gpuMemoryAllocator,
+									l_allocateStorageID,
+									a_filePath,
+									a_srvDescriptorPool,
+									l_staticModelLoadResult);
+
+		return l_staticModelLoadResult;
 	}
 
-	CreateMaterialTexture(a_filePath, *l_staticModelRecord);
+	// 実行時に決まる情報を作成
+	BuildStaticModelRuntimeData(l_staticModelRecord, 
+								a_device,
+								a_gpuMemoryAllocator,
+								l_allocateStorageID,
+								a_filePath,
+								a_srvDescriptorPool,
+								l_staticModelLoadResult);
 
 	return l_staticModelLoadResult;
 }
@@ -70,7 +87,20 @@ bool FWK::Graphics::StaticModelSystem::SubtractStaticModelReferenceCount(const s
 	return true;
 }
 
-void FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const
+bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord)
+{
+	// meshoptimizerを使用して頂点とインデックスをGPUで扱いやすい配置へ最適化
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_meshOptimizer.OptimizeStaticModelRecord(a_staticModelRecord), "StaticModelMeshの最適化に失敗しました。", false);
+
+	// MeshShaderで扱うため、最適化済みの頂点とインデックスからMeshletDataを作成
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_meshletBuilder.BuildStaticModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
+
+	// 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelBinaryConverter.SaveStaticModelAsset(a_filePath, a_staticModelRecord), "TextureAssetの保存に失敗しました", false);
+
+	return true;
+}
+void FWK::Graphics::StaticModelSystem::BuildMaterialRuntimeTextures(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const
 {
 	// ランタイムパラメータを作成していく
 	for (auto& l_modelMesh : a_staticModelRecord.GetMutableREFModelData().m_modelMeshList)
@@ -79,35 +109,71 @@ void FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesyst
 			  auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
 
 		// ベースカラーテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_baseColorTexture = CreateMaterialTexture(a_filePath, 
-																			  l_modelMaterialAssetData.m_baseColorTextureFilePath, 
-																			  Enum::TextureLoadColorSpace::SRGB, 
-																			  Enum::DefaultTextureType::BaseColor);
+		l_modelMaterialRuntimeData.m_baseColorTexture = CreateSingleMaterialTexture(a_filePath, 
+																			        l_modelMaterialAssetData.m_baseColorTextureFilePath, 
+																			        Enum::TextureLoadColorSpace::SRGB, 
+																			        Enum::DefaultTextureType::BaseColor);
 
 		// ノーマルテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
-																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		   Enum::TextureLoadColorSpace::Linear,
-																		   Enum::DefaultTextureType::Normal);
+		l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath, 
+																		         l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		         Enum::TextureLoadColorSpace::Linear,
+																		         Enum::DefaultTextureType::Normal);
 
 		// メタリックテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
-																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		   Enum::TextureLoadColorSpace::Linear,
-																		   Enum::DefaultTextureType::BaseColor);
+		l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath, 
+																		         l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		         Enum::TextureLoadColorSpace::Linear,
+																		         Enum::DefaultTextureType::BaseColor);
 
 		// ラフネステクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateMaterialTexture(a_filePath, 
-																		   l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		   Enum::TextureLoadColorSpace::Linear,
-																		   Enum::DefaultTextureType::BaseColor);
-	}	
+		l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath, 
+																		         l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		         Enum::TextureLoadColorSpace::Linear,
+																		         Enum::DefaultTextureType::BaseColor);
+	}
 }
 
-std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::CreateMaterialTexture(const std::filesystem::path&      a_modelFilePath,
-																								const std::wstring&               a_textureFilePath,
-																								const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
-																								const Enum::DefaultTextureType    a_defaultTextureType) const
+void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord, 
+																   const Device&			                 a_device,
+																   const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+																   const TypeAlias::StorageID				 a_storageID,
+																   const std::filesystem::path&				 a_filePath,
+																   	     TypeAlias::SRVDescriptorPool&       a_srvDescriptorPool,
+																   	     Struct::StaticModelLoadResult&      a_staticModelLoadResult)
+{
+
+	FWK_ASSERT_RETURN_IF_FAILED(!a_staticModelRecord, "StaticModelRecordが無効なため、RuntimeData構築処理処理に失敗しました。");
+
+	Struct::StaticModelBatchUploadRecord l_staticModelBatchUploadRecord = {};
+
+	// マテリアルで使用するテクスチャを読み込む
+	BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
+
+
+	// バッチアップロード用情報の作成
+	if (!CreateStaticBatchUploadRecord(a_staticModelRecord,
+									   a_device,
+									   a_gpuMemoryAllocator,
+									   a_srvDescriptorPool,
+									   l_staticModelBatchUploadRecord))
+	{
+		m_staticModelStorage.ReleaseStorageID(a_storageID);
+
+		FWK_ASSERT_RETURN("バッチ情報の作成に失敗しており、RuntimeData構築処理処理に失敗しました。");
+	}
+
+	a_staticModelLoadResult.m_storageID			= a_staticModelRecord->GetVALStorageID();
+	a_staticModelLoadResult.m_staticModelRecord = a_staticModelRecord;
+
+	// バッチアップロード情報をマップに格納
+	m_pendingStaticModelBatchUploadRecordMap.try_emplace(a_filePath.wstring(), std::move(l_staticModelBatchUploadRecord));
+}
+
+std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::CreateSingleMaterialTexture(const std::filesystem::path&      a_modelFilePath,
+																								      const std::wstring&               a_textureFilePath,
+																								      const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+																								      const Enum::DefaultTextureType    a_defaultTextureType) const
 {
 	auto l_texture = std::make_shared<Texture>();
 
@@ -123,6 +189,28 @@ std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::Create
 	l_texture->Load(l_textureFilePath, a_textureLoadColorSpace, a_defaultTextureType);
 
 	return l_texture;
+}
+bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>   a_staticModelRecord, 
+																	const Device&							    a_device, 
+																	const GPUMemoryAllocator&				    a_gpuMemoryAllocator, 
+																		  TypeAlias::SRVDescriptorPool&         a_srvDescriptorPool,
+																		  Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_staticModelRecord, "StaticModelRecordが無効になっており、モデルのバッチアップロードレコードの作成に失敗しました。", false);
+
+	a_staticModelBatchUploadRecord.m_staticModelRecord = a_staticModelRecord;
+
+	// モデルのバッチアップロード用情報の作成
+	if (!m_batchUploadRecordBuilder.CreateStaticModelBatchUploadRecord(a_device,
+																	   a_gpuMemoryAllocator,
+																	   a_staticModelBatchUploadRecord.m_bufferUploadCommandList,
+																	   a_srvDescriptorPool,
+																	   *a_staticModelRecord))
+	{
+		FWK_ASSERT_RETURN_VALUE("StaticModel用BufferUploadCommandの作成に失敗しました。", false);
+	}
+
+	return true;
 }
 
 bool FWK::Graphics::StaticModelSystem::TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult)

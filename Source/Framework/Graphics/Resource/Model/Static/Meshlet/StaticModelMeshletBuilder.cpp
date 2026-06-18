@@ -4,7 +4,9 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData
 {
 	for (auto& l_modelMesh : a_staticModelRecord.GetMutableREFModelData().m_modelMeshList)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!BuildModelMeshletData(l_modelMesh), "StaticModelMeshのStaticMeshletData作成に失敗しました。", false);
+		// StaticModelRecord内の全StaticModelMeshに対して、
+		// MeshShader用のStaticModelMeshletDataを作成する
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!BuildModelMeshletData(l_modelMesh), "StaticModelMeshのStaticModelMeshletData作成に失敗しました。", false);
 	}
 
 	return true;
@@ -12,6 +14,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData
 
 bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::StaticModelMesh& a_staticModelMesh) const
 {
+	// 頂点数とインデックス数のチェック
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "StaticModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",			false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_indexList.size()		 == Constant::k_emptyModelIndexCount,  "StaticModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 
@@ -108,9 +111,11 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 		l_modelMeshletData.m_primitiveIndexList[l_primitiveIndex] = static_cast<std::uint32_t>(l_meshoptPrimitiveIndexList[l_primitiveIndex]);
 	}
 
+	// 最後にメッシュレット数とメッシュレットカリング用リストのリサイズを行い、オーバーヘッドが出ないようにする
 	l_modelMeshletData.m_meshletList.resize		 (l_meshletCount);
 	l_modelMeshletData.m_meshletBoundsList.resize(l_meshletCount);
 
+	// メッシュレットの頂点情報、インデックス情報取得用パラメータやカリング用パラメータを格納
 	for (std::size_t l_meshletIndex = 0ULL; l_meshletIndex < l_meshletCount; ++l_meshletIndex)
 	{
 		const auto& l_meshoptMeshlet = l_meshoptMeshletList[l_meshletIndex];
@@ -123,7 +128,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 		l_modelMeshlet.m_vertexCount    = l_meshoptMeshlet.vertex_count;
 		l_modelMeshlet.m_triangleCount  = l_meshoptMeshlet.triangle_count;
 
-		// Meshlet単位のFrustum CullingやBackface Cone Cullingに使用する境界情報を作成する
+		// Meshlet単位のFrustum CullingやBackfaceConeCullingに使用する境界情報を作成する
 		// meshopt_computeMeshletBounds(入力UniqueVertexIndex、
 		//								入力PrimitiveIndex配列、
 		//								Meshlet内の三角形数、
@@ -140,22 +145,36 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 		// メッシュレットカリング用情報を格納
 		auto& l_modelMeshletBounds = l_modelMeshletData.m_meshletBoundsList[l_meshletIndex];
 
+		// Meshletを囲むBoundingSphereの中心座標。
+		// 個の中心座標と半径を使うことで、Meshlet単位でFrustumCullingを行える
 		l_modelMeshletBounds.m_center.x = l_meshoptBounds.center[k_vectorElementIndexX];
 		l_modelMeshletBounds.m_center.y = l_meshoptBounds.center[k_vectorElementIndexY];
 		l_modelMeshletBounds.m_center.z = l_meshoptBounds.center[k_vectorElementIndexZ];
-		l_modelMeshletBounds.m_radius   = l_meshoptBounds.radius;
 
+		// Meshletを囲むBoundingSphereの半径。
+		// m_centerを中心とした球の半径
+		// FrustumCullingではcenter + radiusを使って、Meshletがカメラに映る可能性があるかを判定する
+		l_modelMeshletBounds.m_radius   = l_meshoptBounds.radius;
+		
+		// BackfaceConeCulling用のConeの頂点位置
+		// Meshlet内の三角形群が作る「おおよその向き」をConeとして表すときの起点。
+		// ConeCullingではCone情報を使って、Meshlet全体がカメラから見てどうかを判定する
 		l_modelMeshletBounds.m_coneApex.x = l_meshoptBounds.cone_apex[k_vectorElementIndexX];
 		l_modelMeshletBounds.m_coneApex.y = l_meshoptBounds.cone_apex[k_vectorElementIndexY];
 		l_modelMeshletBounds.m_coneApex.z = l_meshoptBounds.cone_apex[k_vectorElementIndexZ];
 
+		// BackfaceConeCulling用のしきい値
+		// coneAxisと視線方向の内積を使って、このMeshletがカメラから見て裏向きかどうかを判定するための値
+		// この値を使うことで、Meshlet内の三角形が全て裏向きと判断できる場合に、
+		// MeshShaderやPixelShaderの処理を省略できる
 		l_modelMeshletBounds.m_coneCutoff = l_meshoptBounds.cone_cutoff;
 
+		// Meshlet内の三角形群が、おおよそどちらを向いているかを表す方向ベクトル
+		// カメラ方向とこの方向を比較して、Meshlet全体が裏向きなら描画をスキップするために使う
+		// Normal単体ではなく、Meshlet内の複数三角形の向きをまとめた代表方向
 		l_modelMeshletBounds.m_coneAxis.x = l_meshoptBounds.cone_axis[k_vectorElementIndexX];
 		l_modelMeshletBounds.m_coneAxis.y = l_meshoptBounds.cone_axis[k_vectorElementIndexY];
 		l_modelMeshletBounds.m_coneAxis.z = l_meshoptBounds.cone_axis[k_vectorElementIndexZ];
-
-		l_modelMeshletBounds.m_padding = k_defaultMeshletBoundsPadding;
 	}
 
 	return true;
