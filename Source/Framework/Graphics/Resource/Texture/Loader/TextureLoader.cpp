@@ -3,14 +3,9 @@
 bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& a_filePath, 
 												   const Enum::TextureLoadType  a_textureLoadType, 
 														 DirectX::ScratchImage& a_scratchImage, 
-														 DirectX::TexMetadata&  a_texMetadata)
+														 DirectX::TexMetadata&  a_texMetadata) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
-
-	// .assetが存在していて、PNGより古くなければ.assetを優先して読み込む
-	// これにより、2回目以降はPNGのデコード処理を省略できる
-	if (m_binaryConverter.LoadTextureAsset(a_filePath, a_scratchImage, a_texMetadata)) { return true; }
-
 	const auto l_wicFlags = CreateWICFlags(a_textureLoadType);
 
 	// PNGなどの標準的な画像から情報を取得する関数
@@ -23,9 +18,8 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 											   &a_texMetadata,
 											   a_scratchImage);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr),													   "PNGファイルからテクスチャを読み込めませんでした。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_binaryConverter.SaveTextureAsset(a_filePath, a_scratchImage), "TextureAssetの保存に失敗しました",					false);
-
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "PNGファイルからテクスチャを読み込めませんでした。", false);
+	
 	return true;
 }
 

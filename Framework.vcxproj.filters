@@ -202,18 +202,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Command\Queue">
       <UniqueIdentifier>{7e00ef36-367e-47c5-9ceb-e930254ec329}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter">
-      <UniqueIdentifier>{69b828bf-24f1-4bbc-b0c7-ce3b9d6d44d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary">
-      <UniqueIdentifier>{761acab9-6914-47a5-8122-47f4dbf6a0e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition">
-      <UniqueIdentifier>{a0637984-b7e9-4846-9492-cab2154aefa3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant">
-      <UniqueIdentifier>{3ee8127a-5f0b-45bd-9a10-6fd1d64197f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition">
       <UniqueIdentifier>{0fa03b3b-0def-4b88-9670-93a54a14e561}</UniqueIdentifier>
     </Filter>
@@ -333,9 +321,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter">
       <UniqueIdentifier>{529f3c12-4721-49d2-b712-eb45190c947a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json">
-      <UniqueIdentifier>{9005080d-2f0d-4991-8330-b6ecc1193343}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Memory">
       <UniqueIdentifier>{41e88ae4-7706-4493-9634-378bd06aced9}</UniqueIdentifier>
@@ -892,18 +877,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Light\Definition\Constant">
       <UniqueIdentifier>{22fab198-0d75-494a-b752-ca12f46820d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter">
-      <UniqueIdentifier>{6e25525f-8968-458a-b303-61dcc32be154}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary">
-      <UniqueIdentifier>{fe70c577-0be0-4eb9-8b92-4e8a0f4bcef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition">
-      <UniqueIdentifier>{8d1c139b-0882-4c1b-8c4f-89c84f8c848a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant">
-      <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility">
       <UniqueIdentifier>{77c8c8ea-e154-4337-a576-64bfdb53efae}</UniqueIdentifier>
     </Filter>
@@ -924,6 +897,30 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant">
       <UniqueIdentifier>{b63b16ae-e913-4fc3-bb97-042dc7f4491b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json">
+      <UniqueIdentifier>{9005080d-2f0d-4991-8330-b6ecc1193343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary">
+      <UniqueIdentifier>{761acab9-6914-47a5-8122-47f4dbf6a0e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary\Definition">
+      <UniqueIdentifier>{a0637984-b7e9-4846-9492-cab2154aefa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary\Definition\Constant">
+      <UniqueIdentifier>{3ee8127a-5f0b-45bd-9a10-6fd1d64197f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter">
+      <UniqueIdentifier>{6e25525f-8968-458a-b303-61dcc32be154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary">
+      <UniqueIdentifier>{fe70c577-0be0-4eb9-8b92-4e8a0f4bcef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition">
+      <UniqueIdentifier>{8d1c139b-0882-4c1b-8c4f-89c84f8c848a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant">
+      <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1050,12 +1047,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.h">
       <Filter>Source\Framework\Graphics\Render\Command\Queue</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum</Filter>
     </ClInclude>
@@ -1130,9 +1121,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\AssetStorage.h">
       <Filter>Source\Framework\Graphics\Resource\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\TextureBatchUploadRecordBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Builder</Filter>
@@ -1482,9 +1470,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h">
       <Filter>Source\Framework\Graphics\Render\Light</Filter>
     </ClInclude>
@@ -1496,9 +1481,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h">
       <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h">
       <Filter>Source\Framework\Utility\Singleton</Filter>
@@ -1517,6 +1499,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary\Definition\Constant\TextureBinaryConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Binary\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary\TextureBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1606,9 +1603,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.cpp">
       <Filter>Source\Framework\Graphics\Render\Command\Queue</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary\TextureBinaryConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Converter\Binary</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Scene.cpp">
       <Filter>Source\Framework\Scene</Filter>
@@ -1784,9 +1778,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Light\LightSystem.cpp">
       <Filter>Source\Framework\Graphics\Render\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary\StaticModelBinaryConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Converter\Binary</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Stopwatch\Stopwatch.cpp">
       <Filter>Source\Framework\Utility\Stopwatch</Filter>
     </ClCompile>
@@ -1798,6 +1789,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary\TextureBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

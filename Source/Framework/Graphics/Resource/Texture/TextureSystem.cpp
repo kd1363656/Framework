@@ -62,13 +62,20 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 	DirectX::ScratchImage l_scratchImage = {};
 	DirectX::TexMetadata  l_texMetadata  = {};
 
-	// まずはテクスチャをロードしてする、失敗したらassert
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadTextureFile(a_filePath, 
-																a_loadType, 
-																l_scratchImage,
-																l_texMetadata),
-																"PNGテクスチャ読み込みに失敗したため、バッチテクスチャ登録に失敗しました。。", 
-																l_textureLoadResult);
+	// .assetが存在していて、PNGより古くなければ.assetを優先して読み込む
+	if (!m_binaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
+	{
+		// .assetが読み込めなければテクスチャをロードする、失敗したらassert
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadTextureFile(a_filePath, 
+																	a_loadType, 
+																	l_scratchImage,
+																	l_texMetadata),
+																	"PNGテクスチャ読み込みに失敗したため、バッチテクスチャ登録に失敗しました。。", 
+																	l_textureLoadResult);
+
+		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_binaryConverter.SaveTextureAsset(a_filePath, l_scratchImage), "TextureAssetの保存に失敗しました", l_textureLoadResult);
+	}
 
 	Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
 
@@ -91,7 +98,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 
 		FWK_ASSERT_RETURN_VALUE("テクスチャアップロード情報の作成に失敗したため、バッチテクスチャ登録に失敗しました。", l_textureLoadResult);
 	}
-
+	
 	const auto& l_textureRecord = l_textureBatchUploadRecord.m_textureRecord;
 
 	if (!l_textureRecord)

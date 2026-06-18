@@ -18,12 +18,10 @@ namespace FWK::Graphics
 		bool LoadTextureFile(const std::filesystem::path& a_filePath,
 							 const Enum::TextureLoadType  a_textureLoadType,
 								   DirectX::ScratchImage& a_scratchImage, 
-								   DirectX::TexMetadata&  a_texMetadata);
+								   DirectX::TexMetadata&  a_texMetadata) const;
 
 	private:
 
 		DirectX::WIC_FLAGS CreateWICFlags(const Enum::TextureLoadType a_textureLoadType) const;
-
-		Converter::TextureBinaryConverter m_binaryConverter = {};
 	};
 }

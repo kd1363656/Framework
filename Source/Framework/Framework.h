@@ -155,9 +155,9 @@
 
 // テクスチャ
 #include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
-#include "Graphics/Resource/Texture/Loader/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
-#include "Graphics/Resource/Texture/Loader/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
+#include "Graphics/Resource/Texture/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
+#include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
@@ -181,8 +181,8 @@
 #include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelRecordStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/Definition/Constant/StaticModelFBXLoaderConstant.h"
-#include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/Definition/Constant/StaticModelBinaryConverterConstant.h"
-#include "Graphics/Resource/Model/Static/FBXLoader/Converter/Binary/StaticModelBinaryConverter.h"
+#include "Graphics/Resource/Model/Static/Converter/Binary/Definition/Constant/StaticModelBinaryConverterConstant.h"
+#include "Graphics/Resource/Model/Static/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
 #include "Graphics/Resource/Model/Static/Meshlet/Definition/Constant/StaticModelMeshletBuilderConstant.h"

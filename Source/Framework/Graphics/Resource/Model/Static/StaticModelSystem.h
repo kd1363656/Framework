@@ -20,5 +20,7 @@ namespace FWK::Graphics
 		AssetStorage<Graphics::StaticModelRecord> m_staticModelStorage = {};
 
 		StaticModelFBXLoader m_loader = {};
+
+		Converter::StaticModelBinaryConverter m_binaryConverter = {};
 	};
 }

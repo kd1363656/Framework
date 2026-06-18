@@ -10,20 +10,6 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 	// 読み込み時間計測開始
 	const Utility::Stopwatch& l_assetLoadStopwatch = {};
 
-	// まず.assetから読み込む
-	// .assetが読み込めなければUFBXで読み込む
-	if (m_binaryConverter.LoadStaticModelAsset(a_filePath, l_modelData)) 
-	{
-		const auto& l_assetLoadElapsedSecond = l_assetLoadStopwatch.FetchElapsedSecond();
-		
-		AddStataicModelLoadDebugLog(l_modelData, 
-									a_filePath,
-									k_assetLoadSourceDebugText,
-								    l_assetLoadElapsedSecond);
-
-		return true; 
-	}
-
 	// .assetで読めなかった場合だけ、UFBX読み込み時間を計測する
 	Utility::Stopwatch l_ufbxLoadStopWatch = {};
 
@@ -51,8 +37,6 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 								a_filePath,
 								k_ufbxLoadSourceDebugText,
 								l_ufbxLoadElapsedSecond);
-
-	m_binaryConverter.SaveStaticModelAsset(a_filePath, l_modelData);
 
 	return true;
 }
