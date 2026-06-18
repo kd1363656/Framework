@@ -940,6 +940,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct">
       <UniqueIdentifier>{cd100c3c-6cec-450c-a7a6-0e814994de05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera">
+      <UniqueIdentifier>{2a0ffb7b-7638-430f-a412-ec742156d4b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer">
+      <UniqueIdentifier>{ca155f5f-0e63-492e-b57a-b52783d69d94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1554,6 +1560,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\CameraPassConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1840,6 +1852,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
