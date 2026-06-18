@@ -1,14 +1,11 @@
 ﻿#include "StaticModelFBXLoader.h"
 
-bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord)
+bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord) const
 {
 	auto& l_modelData = a_staticModelRecord.GetMutableREFModelData();
 
 	// ModelDataはコピー代入禁止のため、保持しているModelMeshリストだけを空にする
 	l_modelData.m_modelMeshList.clear();
-
-	// UFBX読み込み時間を計測する
-	Utility::Stopwatch l_ufbxLoadStopWatch = {};
 
 	// FBXファイル全体をufbx_sceneとして読み込む
 	auto* l_fbxScene = LoadFBXScene(a_filePath);
@@ -26,14 +23,6 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 
 	// 使用し終わったFBXSceneは破棄する
 	DestroyFBXScene(l_fbxScene);
-
-	const auto& l_ufbxLoadElapsedSecond = l_ufbxLoadStopWatch.FetchElapsedSecond();
-
-	// 読み込んだ情報をログに追加
-	AddStataicModelLoadDebugLog(l_modelData,
-								a_filePath,
-								k_ufbxLoadSourceDebugText,
-								l_ufbxLoadElapsedSecond);
 
 	return true;
 }
@@ -345,41 +334,4 @@ std::wstring FWK::Graphics::StaticModelFBXLoader::ConvertUFBXStringToWString(con
 	l_string.assign(a_fbxString.data, a_fbxString.length);
 
 	return std::filesystem::path(l_string).wstring();
-}
-
-void FWK::Graphics::StaticModelFBXLoader::AddStataicModelLoadDebugLog(const Struct::StaticModelData& a_staticModelData, 
-																      const std::filesystem::path&   a_filePath, 
-																	  const std::string_view&		 a_loadSourceName, 
-																	  const double&					 a_elapsedSecond) const
-{
-	auto l_totalVertexCount   = Constant::k_emptyModelVertexCount;
-	auto l_totalIndexCount    = Constant::k_emptyModelIndexCount;
-	auto l_totalMaterialCount = 0U;
-
-	for (const auto& l_staticModelMesh : a_staticModelData.m_modelMeshList)
-	{
-		// メッシュ単体の頂点数を加算していく
-		l_totalVertexCount += l_staticModelMesh.m_modelVertexList.size();
-
-		// メッシュ単体のインデックス数を加算していく
-		l_totalIndexCount += l_staticModelMesh.m_indexList.size();
-
-		// StaticModelMesh一つがMaterial一つ分の描画単位
-		l_totalMaterialCount++;
-	}
-
-	FWK_ADD_LOG("[StaticModel][{} Load]\n"
-				"FilePath         : {}\n"
-				"ElapsedSecond    : {:.6f}\n"
-				"MeshCount        : {}\n"
-				"MaterialCount    : {}\n"
-				"TotalVertexCount : {}\n"
-				"TotalIndexCount  : {}",
-				a_loadSourceName,
-				a_filePath.string(),
-				a_elapsedSecond,
-				a_staticModelData.m_modelMeshList.size(),
-				l_totalMaterialCount,
-				l_totalVertexCount,
-				l_totalIndexCount);
 }

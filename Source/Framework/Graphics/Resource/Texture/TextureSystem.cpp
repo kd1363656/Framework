@@ -70,50 +70,32 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 																	a_loadType, 
 																	l_scratchImage,
 																	l_texMetadata),
-																	"PNGテクスチャ読み込みに失敗したため、バッチテクスチャ登録に失敗しました。。", 
+																	"PNGテクスチャ読み込みに失敗したため、バッチテクスチャ登録に失敗しました。", 
 																	l_textureLoadResult);
+		
+		// テクスチャの管理、アップロードを行うための情報を作成
+		CreateAndRegisterPendingTextureForBachUpload(l_scratchImage,
+													 l_texMetadata,
+													 a_device,
+													 a_gpuMemoryAllocator,
+													 a_filePath,
+													 a_srvDescriptorPool,
+													 l_textureLoadResult);
 
 		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_binaryConverter.SaveTextureAsset(a_filePath, l_scratchImage), "TextureAssetの保存に失敗しました", l_textureLoadResult);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_binaryConverter.SaveTextureAsset(l_scratchImage, a_filePath), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
+
+		return l_textureLoadResult;
 	}
 
-	Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
-
-	const auto l_allocatedStorageID = m_textureStorage.AllocateStorageID();
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_allocatedStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、バッチテクスチャ登録に失敗しました。", l_textureLoadResult);
-
-	// テクスチャを作成、管理するのに必要な情報すべてを作成(SRVDescriptorIndexなど)
-	if (!m_batchUploadRecordBuilder.CreateTextureBatchUploadRecord(l_scratchImage,
-																   l_texMetadata,
-																   a_device,
-																   a_gpuMemoryAllocator,
-																   a_filePath,
-																   l_allocatedStorageID,
-																   a_srvDescriptorPool,
-																   l_textureBatchUploadRecord))
-	{
-		// テクスチャのアップロード処理に失敗したなら、StorageIDを解放しておく
-		m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
-
-		FWK_ASSERT_RETURN_VALUE("テクスチャアップロード情報の作成に失敗したため、バッチテクスチャ登録に失敗しました。", l_textureLoadResult);
-	}
-	
-	const auto& l_textureRecord = l_textureBatchUploadRecord.m_textureRecord;
-
-	if (!l_textureRecord)
-	{
-		// Allocate済みのStorageIDなので、失敗時は返却しておく
-		m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
-
-		FWK_ASSERT_RETURN_VALUE("TextureRecordが無効のため、バッチテクスチャ登録に失敗しました。", l_textureLoadResult);
-	}
-
-	l_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
-	l_textureLoadResult.m_textureRecord = l_textureRecord;
-
-	// 作成し終えたTextureBatchUploadRecordをリストに格納する
-	m_pendingTextureBatchUploadRecordMap.try_emplace(l_filePath, std::move(l_textureBatchUploadRecord));
+	// テクスチャの管理、アップロードを行うための情報を作成
+	CreateAndRegisterPendingTextureForBachUpload(l_scratchImage,
+												 l_texMetadata,
+												 a_device,
+												 a_gpuMemoryAllocator,
+												 a_filePath,
+												 a_srvDescriptorPool,
+												 l_textureLoadResult);
 
 	return l_textureLoadResult;
 }
@@ -219,4 +201,52 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 	}
 
 	return true;
+}
+
+void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&        a_scratchImage, 
+																				const DirectX::TexMetadata&         a_texMetadata,
+																				const Device&				        a_device, 
+																				const GPUMemoryAllocator&	        a_gpuMemoryAllocator,
+																				const std::filesystem::path&        a_filePath, 
+																					  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
+																					  Struct::TextureLoadResult&    a_textureLoadResult)
+{
+
+	Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
+
+	const auto l_allocatedStorageID = m_textureStorage.AllocateStorageID();
+
+	FWK_ASSERT_RETURN_IF_FAILED(l_allocatedStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、バッチテクスチャ登録に失敗しました。");
+
+	// テクスチャを作成、管理するのに必要な情報すべてを作成(SRVDescriptorIndexなど)
+	if (!m_batchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
+																   a_gpuMemoryAllocator,
+																   a_scratchImage,
+																   a_texMetadata,
+																   a_filePath,
+																   l_allocatedStorageID,
+																   a_srvDescriptorPool,
+																   l_textureBatchUploadRecord))
+	{
+		// テクスチャのアップロード処理に失敗したなら、StorageIDを解放しておく
+		m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
+
+		FWK_ASSERT_RETURN("テクスチャアップロード情報の作成に失敗したため、バッチテクスチャ登録に失敗しました。");
+	}
+	
+	const auto& l_textureRecord = l_textureBatchUploadRecord.m_textureRecord;
+
+	if (!l_textureRecord)
+	{
+		// Allocate済みのStorageIDなので、失敗時は返却しておく
+		m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
+
+		FWK_ASSERT_RETURN("TextureRecordが無効のため、バッチテクスチャ登録に失敗しました。");
+	}
+
+	a_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();
+	a_textureLoadResult.m_textureRecord = l_textureRecord;
+
+	// 作成し終えたTextureBatchUploadRecordをリストに格納する
+	m_pendingTextureBatchUploadRecordMap.try_emplace(a_filePath, std::move(l_textureBatchUploadRecord));
 }

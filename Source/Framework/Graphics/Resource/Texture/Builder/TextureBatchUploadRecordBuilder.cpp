@@ -1,9 +1,9 @@
 ﻿#include "TextureBatchUploadRecordBuilder.h"
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRecord(const DirectX::ScratchImage&			a_scratchImage, 
-																				    const DirectX::TexMetadata&				a_texMetadata, 
-																					const Device&							a_device, 
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRecord(const Device&							a_device, 
 																					const GPUMemoryAllocator&				a_gpuMemoryAllocator, 
+																					const DirectX::ScratchImage&			a_scratchImage, 
+																				    const DirectX::TexMetadata&				a_texMetadata, 
 																					const std::wstring&						a_filePath, 
 																					const TypeAlias::StorageID				a_storageID, 
 																						  TypeAlias::SRVDescriptorPool&		a_srvDescriptorPool, 
@@ -19,15 +19,15 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 	}
 
 	// まずはGPU側用のテクスチャリソースのヒープ領域を確保
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateTextureResource(a_texMetadata, a_gpuMemoryAllocator, *l_textureRecord), "TextureResource作成処理に失敗したため、テクスチャバッチアップロード情報作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateTextureResource(a_gpuMemoryAllocator, a_texMetadata, *l_textureRecord), "TextureResource作成処理に失敗したため、テクスチャバッチアップロード情報作成処理に失敗しました。", false);
 
 	// ScratchImageの画像データをUploadBufferへ書き込み、UploadSystemへ渡すコピー情報を作成する
 	// ここではCopyCommandQueueへ送信しない(バッチ処理を行うため)
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateTextureUploadRecord(a_scratchImage, a_device, a_textureBatchUploadRecord), "テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateTextureUploadRecord(a_device, a_scratchImage, a_textureBatchUploadRecord), "テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
 
 	// 作成したTextureResourceをシェーダーから参照できるように、CPUOnly側のDescriptorHeapへSRVを作成する
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateTextureSRV(a_texMetadata,
-														a_device,
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateTextureSRV(a_device,
+														a_texMetadata,
 														a_srvDescriptorPool,
 														*a_textureBatchUploadRecord.m_textureRecord),
 														"TextureSRV作成に失敗したため、テクスチャアップロード情報作成処理に失敗しました。",
@@ -43,7 +43,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 	return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const DirectX::TexMetadata& a_texMetadata, const GPUMemoryAllocator& a_gpuMemoryAllocator, Graphics::TextureRecord& a_textureRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const DirectX::TexMetadata& a_texMetadata, Graphics::TextureRecord& a_textureRecord) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_texMetadata.format	  == DXGI_FORMAT_UNKNOWN,			   "テクスチャフォーマットが無効のため、TextureResource作成処理に失敗しました。",				  false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_texMetadata.dimension != DirectX::TEX_DIMENSION_TEXTURE2D, "TextureResource作成処理はTexture2Dのみ対応しており、TextureResource作成処理に失敗しました。", false);
@@ -76,7 +76,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 	return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const DirectX::ScratchImage& a_scratchImage, const Device& a_device, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
 {
 	const auto& l_device = a_device.GetREFDevice();
 
@@ -194,8 +194,8 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 	return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const DirectX::TexMetadata&         a_texMetadata, 
-																	  const Device&				          a_device, 
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Device&				          a_device, 
+																	  const DirectX::TexMetadata&         a_texMetadata, 
 																		    TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
 																			Graphics::TextureRecord&	  a_textureRecord) const
 {

@@ -22,7 +22,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 
 	std::vector<std::uint32_t> l_vertexRemapList = {};
 
-	l_vertexRemapList.resize(a_staticModelMesh.m_indexList.size());
+	l_vertexRemapList.resize(a_staticModelMesh.m_modelVertexList.size());
 
 	// 同じposition / uvを持つ頂点をまとめるための対応表を作成する
 	// meshopt_generateVertexRemap(古い頂点番号から新しい頂点番号への対応表を書き込む配列、

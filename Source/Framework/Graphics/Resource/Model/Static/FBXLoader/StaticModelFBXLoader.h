@@ -9,7 +9,7 @@ namespace FWK::Graphics
 		 StaticModelFBXLoader()			 = default;
 		~StaticModelFBXLoader() override = default;
 
-		bool LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
+		bool LoadStaticModelFile(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord) const;
 
 	private:
 
@@ -24,11 +24,6 @@ namespace FWK::Graphics
 
 		std::wstring FetchTextureFilePath      (const ufbx_material_map& a_materialMap) const;
 		std::wstring ConvertUFBXStringToWString(const ufbx_string&	     a_fbxString)   const;
-
-		void AddStataicModelLoadDebugLog(const Struct::StaticModelData& a_staticModelData, 
-										 const std::filesystem::path&   a_filePath, 
-										 const std::string_view&		a_loadSourceName,
-										 const double&					a_elapsedSecond) const;
 
 		static constexpr std::string_view k_assetLoadSourceDebugText      = "Asset";
 		static constexpr std::string_view k_ufbxLoadSourceDebugText       = "UFBX";

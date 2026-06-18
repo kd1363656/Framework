@@ -171,7 +171,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	return true;
 }
 
-bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage)
+bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath)
 {
 	// 保存元のPNGが存在するかどうか、DirectXTexで読み込んだScratchImageが正常かを確認する
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);

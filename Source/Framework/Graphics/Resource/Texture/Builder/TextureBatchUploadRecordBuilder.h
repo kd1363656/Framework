@@ -9,10 +9,10 @@ namespace FWK::Graphics
 		 TextureBatchUploadRecordBuilder() = default;
 		~TextureBatchUploadRecordBuilder() = default;
 
-		bool CreateTextureBatchUploadRecord(const DirectX::ScratchImage&             a_scratchImage,
-											const DirectX::TexMetadata&              a_texMetadata,
-											const Device&                            a_device,
+		bool CreateTextureBatchUploadRecord(const Device&                            a_device,
 											const GPUMemoryAllocator&                a_gpuMemoryAllocator,
+											const DirectX::ScratchImage&             a_scratchImage,
+											const DirectX::TexMetadata&              a_texMetadata,
 											const std::wstring&						 a_filePath,
 											const TypeAlias::StorageID				 a_storageID,
 												  TypeAlias::SRVDescriptorPool&		 a_srvDescriptorPool,
@@ -20,12 +20,12 @@ namespace FWK::Graphics
 
 	private:
 
-		bool CreateTextureResource(const DirectX::TexMetadata& a_texMetadata, const GPUMemoryAllocator& a_gpuMemoryAllocator, Graphics::TextureRecord& a_textureRecord) const;
+		bool CreateTextureResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const DirectX::TexMetadata& a_texMetadata, Graphics::TextureRecord& a_textureRecord) const;
 
-		bool CreateTextureUploadRecord(const DirectX::ScratchImage& a_scratchImage, const Device& a_device, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
+		bool CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
 
-		bool CreateTextureSRV(const DirectX::TexMetadata&         a_texMetadata,
-							  const Device&                       a_device,
+		bool CreateTextureSRV(const Device&                       a_device,
+							  const DirectX::TexMetadata&         a_texMetadata,
 									TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
 									Graphics::TextureRecord&	  a_textureRecord) const;
 
