@@ -6,13 +6,20 @@ namespace FWK::Struct
 	{
 		TypeAlias::Math::Matrix m_worldMatrix = TypeAlias::Math::Matrix::Identity;
 
-		TypeAlias::StorageID m_baseColorTextureSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
-		TypeAlias::StorageID m_normalTextureSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
-		TypeAlias::StorageID m_vertexBufferSRVDescriptorIndex     = Constant::k_invalidDescriptorIndex;
-		TypeAlias::StorageID m_meshletBufferSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
+		TypeAlias::Math::Color m_baseColorFactor = Constant::k_colorLess;
 
-		TypeAlias::StorageID	 m_uniqueVertexIndexBufferSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
-		TypeAlias::StorageID	 m_primitiveIndexBufferSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
-		TypeAlias::Math::Vector2 m_padding								     = {};
+		float				       m_roughnessFactor = Constant::k_defaultModelMaterialRoughnessFactor;
+		float					   m_metallicFactor					     = Constant::k_defaultModelMaterialMetallicFactor;
+		TypeAlias::DescriptorIndex m_baseColorTextureSRVDescriptorIndex  = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_normalTextureSRVDescriptorIndex     = Constant::k_invalidDescriptorIndex;
+
+		TypeAlias::DescriptorIndex m_metallicTextureSRVDescriptorIndex   = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_roughnessTextureSRVDescriptorIndex  = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_vertexBufferSRVDescriptorIndex      = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_meshletBufferSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
+
+		TypeAlias::DescriptorIndex m_uniqueVertexIndexBufferSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_primitiveIndexBufferSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
+		TypeAlias::Math::Vector2   m_padding								   = {};
 	};
 }

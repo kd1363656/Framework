@@ -1898,6 +1898,9 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">

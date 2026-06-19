@@ -18,14 +18,8 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 
 		Struct::CBSpritePerObject l_cbSpritePerObject = {};
 
-		// TextureRecordが存在しなければデフォルトテクスチャを使用するため問題ない
-		const auto& l_textureRecord = l_drawRequestPerObject->m_textureRecord.lock();
-
-		if (!l_textureRecord) { continue; }
-
-		const auto l_textureSRVIndex = l_textureRecord->GetVALSRVDescriptorIndex();
-
-		FWK_ASSERT_RETURN_IF_FAILED(l_textureSRVIndex == Constant::k_invalidDescriptorIndex, "BaseColorTextureのDescriptorIndexが無効になっており、Sprite描画申請処理に失敗しました。");
+		// TextureRecordからテクスチャのSRVIndexを取得
+		const auto l_textureSRVIndex = FetchTextureSRVDescriptorIndex(l_drawRequestPerObject->m_textureRecord);
 
 		l_cbSpritePerObject.m_baseColorTextureSRVIndex = l_textureSRVIndex;
 

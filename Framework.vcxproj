@@ -581,6 +581,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp" />
