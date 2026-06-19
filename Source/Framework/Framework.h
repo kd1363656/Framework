@@ -230,6 +230,7 @@
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // カメラ
+#include "Graphics/Render/Camera/Definition/Constant/CameraConstant.h"
 #include "Graphics/Render/Camera/Definition/Struct/CBCameraPassStruct.h"
 #include "Graphics/Render/Camera/Camera.h"
 

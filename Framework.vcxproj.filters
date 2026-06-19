@@ -991,6 +991,9 @@
     <Filter Include="Asset\Shader\Model\Static\Standard\UnLit">
       <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Camera\Definition\Constant">
+      <UniqueIdentifier>{f61b7a0d-54ee-4b54-9012-df62315d30d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1626,6 +1629,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\StaticModelStandardUnLitPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Camera\Definition\Constant\CameraConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Camera\Definition\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1949,6 +1955,9 @@
     </None>
     <None Include="Asset\Model\Static\Standard\StaticModelStandardCommon.hlsli">
       <Filter>Asset\Shader\Model\Static\Standard</Filter>
+    </None>
+    <None Include="Asset\Model\ModelShader.hlsli">
+      <Filter>Asset\Shader\Model</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
