@@ -693,7 +693,7 @@
                             "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
                             "RegisterSpace": 0,
                             "ShaderRegister": 0,
-                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_MESH"
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_ALL"
                         },
                         {
                             "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",

@@ -21,7 +21,8 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 
 		FWK_ASSERT_RETURN_IF_FAILED(!l_staticModelRecord, "StaticModelRecordのポインタが無効です。");
 
-		const auto& l_modelData = l_staticModelRecord->GetREFModelData();
+		const auto& l_modelData     = l_staticModelRecord->GetREFModelData();
+		const float l_worldMaxScale = CalculateWorldMaxScale				  (l_drawRequestPerObject->m_worldMatrix);
 
 		for(const auto& l_modelMesh : l_modelData.m_modelMeshList)
 		{
@@ -37,6 +38,9 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 
 			// モデル1体ごとのワールド行列
 			l_cbStaticModelPerObject.m_worldMatrix = l_drawRequestPerObject->m_worldMatrix;
+
+			// MehsletBoundsのradiusをWorld空間へ変換するための最大スケール
+			l_cbStaticModelPerObject.m_worldMaxScale = l_worldMaxScale;
 
 			// Material係数
 			l_cbStaticModelPerObject.m_baseColorFactor = l_modelMaterialAssetData.m_baseColorFactor;
@@ -56,20 +60,20 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == Constant::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == Constant::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
 
-			const auto l_baseColorTextureSRVIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
-			const auto l_normalTextureSRVIndex     = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
-			const auto l_metallicTextureSRVIndex   = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
-			const auto l_roughenessTextureSRVIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
+			const auto l_baseColorTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
+			const auto l_normalTextureSRVDescriptorIndex    = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
+			const auto l_metallicTextureSRVDescriptorIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
+			const auto l_roughnessTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
 
-			FWK_ASSERT_RETURN_IF_FAILED(l_baseColorTextureSRVIndex  == Constant::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
-			FWK_ASSERT_RETURN_IF_FAILED(l_normalTextureSRVIndex     == Constant::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
-			FWK_ASSERT_RETURN_IF_FAILED(l_metallicTextureSRVIndex   == Constant::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
-			FWK_ASSERT_RETURN_IF_FAILED(l_roughenessTextureSRVIndex == Constant::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
+			FWK_ASSERT_RETURN_IF_FAILED(l_baseColorTextureSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
+			FWK_ASSERT_RETURN_IF_FAILED(l_normalTextureSRVDescriptorIndex    == Constant::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
+			FWK_ASSERT_RETURN_IF_FAILED(l_metallicTextureSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "MetallicTextureのSRVDescriptorIndexが無効です。");
+			FWK_ASSERT_RETURN_IF_FAILED(l_roughnessTextureSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "RoughnessのSRVDescriptorIndexが無効です。");
 
-			l_cbStaticModelPerObject.m_baseColorTextureSRVDescriptorIndex = l_baseColorTextureSRVIndex;
-			l_cbStaticModelPerObject.m_normalTextureSRVDescriptorIndex    = l_normalTextureSRVIndex;
-			l_cbStaticModelPerObject.m_metallicTextureSRVDescriptorIndex  = l_metallicTextureSRVIndex;
-			l_cbStaticModelPerObject.m_roughnessTextureSRVDescriptorIndex = l_roughenessTextureSRVIndex;
+			l_cbStaticModelPerObject.m_baseColorTextureSRVDescriptorIndex = l_baseColorTextureSRVDescriptorIndex;
+			l_cbStaticModelPerObject.m_normalTextureSRVDescriptorIndex    = l_normalTextureSRVDescriptorIndex;
+			l_cbStaticModelPerObject.m_metallicTextureSRVDescriptorIndex  = l_metallicTextureSRVDescriptorIndex;
+			l_cbStaticModelPerObject.m_roughnessTextureSRVDescriptorIndex = l_roughnessTextureSRVDescriptorIndex;
 
 			// モデル描画用定数のセット
 			SetupConstantBuffer<StaticModelPerObjectConstantBufferUploader>(a_rootSignature, 
@@ -101,4 +105,20 @@ bool FWK::Graphics::StaticModelStandardPerObjectDrawRequest::DispatchModelMesh(c
 	a_directCommandList.DispatchMesh(l_meshletCount, Constant::k_defaultDispatchMeshThreadGroupCountY, Constant::k_defaultDispatchMeshThreadGroupCountZ);
 
 	return true;
+}
+
+float FWK::Graphics::StaticModelStandardPerObjectDrawRequest::CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix) const
+{
+	// MeshletBoundsは球なので、非均一スケールでも安全になるように最大スケールを使う
+	const float l_scaleXSquared = a_worldMatrix._11 * a_worldMatrix._11 + a_worldMatrix._12 * a_worldMatrix._12 + a_worldMatrix._13 * a_worldMatrix._13;
+	const float l_scaleYSquared = a_worldMatrix._21 * a_worldMatrix._21 + a_worldMatrix._22 * a_worldMatrix._22 + a_worldMatrix._23 * a_worldMatrix._23;
+	const float l_scaleZSquared = a_worldMatrix._31 * a_worldMatrix._31 + a_worldMatrix._32 * a_worldMatrix._32 + a_worldMatrix._33 * a_worldMatrix._33;
+
+	float l_maxScaleSquared = std::max(l_scaleXSquared, l_scaleYSquared);
+	
+	l_maxScaleSquared = std::max(l_maxScaleSquared, l_scaleZSquared);
+
+	// sqrtは最後に一回だけ行う
+	// Math::Vector3::Lengthを3回呼ぶより無駄が少ない
+	return std::sqrt(l_maxScaleSquared);
 }

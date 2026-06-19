@@ -31,10 +31,10 @@ cbuffer CBStaticModelPerObject : register(b1)
     uint g_vertexBufferSRVDescriptorIndex;
     uint g_meshletBufferSRVDescriptorIndex;
     
-    uint g_uniqueVertexIndexBufferSRVDescriptorIndex;
-    uint g_primitiveIndexBufferSRVDescriptorIndex;
-    uint g_meshletBoundsBufferSRVDescriptorIndex;
-    uint g_padding;
+    uint  g_uniqueVertexIndexBufferSRVDescriptorIndex;
+    uint  g_primitiveIndexBufferSRVDescriptorIndex;
+    uint  g_meshletBoundsBufferSRVDescriptorIndex;
+    float g_worldMaxScale;
 };
 
 static const uint k_staticModelTriangleVertexCount = 3U;

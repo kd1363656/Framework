@@ -33,6 +33,8 @@ namespace FWK::Graphics
 		static constexpr float k_defaultFOVYDegree  = 60.0F;
 		static constexpr float k_invalidAspectRatio = 0.0F;
 
+		static constexpr float k_halfFOVScale = 0.5F;
+
 		std::shared_ptr<Struct::CBCameraPass> m_cbCameraPass = nullptr;
 		
 		TypeAlias::Math::Matrix m_cameraMatrix = TypeAlias::Math::Matrix::Identity;

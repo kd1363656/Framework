@@ -48,15 +48,23 @@ void FWK::Graphics::Camera::SetProjectionMatrix(const float a_aspectRatio,
 	// 度数法で指定された視野角を、DirectXMathが扱うラジアンへ変換する
 	const float l_fovYRadian = DirectX::XMConvertToRadians(a_fovYDegree);
 
+	// DirectX12で扱いやすい左手系のProjectionMatrixを作成する
 	// CreatePerspectiveFieldOfView(縦方向の視野角、
 	//								画面の横縦比、
 	//							    近クリップ、
 	//								遠クリップ);
-	// DirectX12で扱いやすい左手系のProjectionMatrixを作成する
  	m_cbCameraPass->m_projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(l_fovYRadian,
 																		   a_aspectRatio,
 																		   a_nearClip,
 																		   a_farClip);
+
+	m_cbCameraPass->m_nearClip = a_nearClip;
+	m_cbCameraPass->m_farClip  = a_farClip;
+
+	const float l_halfFOVYRadian = l_fovYRadian * k_halfFOVScale;
+
+	m_cbCameraPass->m_tanHalfFOVY = std::tan(l_halfFOVYRadian);
+	m_cbCameraPass->m_tanHalfFOVX = m_cbCameraPass->m_tanHalfFOVY * a_aspectRatio;
 
 	UpdateViewProjectionMatrix();
 }

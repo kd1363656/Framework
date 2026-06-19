@@ -994,6 +994,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Camera\Definition\Constant">
       <UniqueIdentifier>{f61b7a0d-54ee-4b54-9012-df62315d30d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant">
+      <UniqueIdentifier>{9da59668-64f6-44a1-b1c5-f31ec127f20f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1632,6 +1635,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Camera\Definition\Constant\CameraConstant.h">
       <Filter>Source\Framework\Graphics\Render\Camera\Definition\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1953,11 +1959,11 @@
     <None Include="Asset\Shader\Final\FinalColorShader.hlsli">
       <Filter>Asset\Shader\Final</Filter>
     </None>
-    <None Include="Asset\Model\Static\Standard\StaticModelStandardCommon.hlsli">
-      <Filter>Asset\Shader\Model\Static\Standard</Filter>
-    </None>
-    <None Include="Asset\Model\ModelShader.hlsli">
+    <None Include="Asset\Shader\Model\ModelShader.hlsli">
       <Filter>Asset\Shader\Model</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Static\Standard\StaticModelStandardCommon.hlsli">
+      <Filter>Asset\Shader\Model\Static\Standard</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1973,13 +1979,13 @@
     <DXCTask Include="Asset\Shader\Final\FinalColor_PS.hlsl">
       <Filter>Asset\Shader\Final</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Model\Static\Standard\UnLit\StaticModelStandardUnLit_AS.hlsl">
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_AS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
   </ItemGroup>

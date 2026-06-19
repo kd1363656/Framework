@@ -270,6 +270,7 @@
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Definition/Struct/StaticModelStandardPerObjectDrawRequestDataStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/Definition/Constant/StaticModelPerObjectConstantBufferUploaderConstant.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/Definition/Struct/CBStaticModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequest.h"
