@@ -15,7 +15,7 @@ namespace FWK::Graphics
 
 		static constexpr UINT64 k_bufferTypeSize = sizeof(Struct::CBStaticModelPerObject);
 
-		FWK_DEFINE_TYPE_INFO(ModelPerObjectConstantBufferUploader, ConstantBufferUploaderBase)
+		FWK_DEFINE_TYPE_INFO(StaticModelPerObjectConstantBufferUploader, ConstantBufferUploaderBase)
 	};
 }
 

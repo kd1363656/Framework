@@ -6,21 +6,12 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::BeginFrame()
 	m_forwardDrawRequestPerObjectDataList.BeginFrame();
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-	m_forwardDrawRequestPerObjectDataList.AddDrawRequestPerObject(a_drawRequestData);
-}
-
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupModelMeshConstantBuffer(const RootSignature&																   a_rootSignature,
-																							  const DirectCommandList&															   a_directCommandList,
-																							  const FrameResource&																   a_frameResource,
-																							  const DrawRequestPerObjectList<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestDataList,
-																							  const TextureSystem&																   a_textureSystem)
-{
 	// 描画処理を行うための定数バッファを送信していく
-	for (const auto& l_drawRequest : a_drawRequestDataList.GetREFDrawRequestPerObjectRecordList())
+	for (const auto& l_drawRequest : m_forwardDrawRequestPerObjectDataList.GetREFDrawRequestPerObjectRecordList())
 	{
 		const auto& l_drawRequestPerObject = l_drawRequest.m_drawRequestPerObject.lock();
 
@@ -80,16 +71,23 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupModelMeshC
 
 			// モデル描画用定数のセット
 			SetupConstantBuffer<StaticModelPerObjectConstantBufferUploader>(a_rootSignature, 
-																			a_directCommandList,
+																			l_directCommandList,
 																			a_frameResource,
 																			l_cbStaticModelPerObject,
 																			Enum::RootParameterType::CBStaticModelPerObject);	
 
-			const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(a_directCommandList, l_modelMesh);
+			const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_modelMesh);
 
 			FWK_ASSERT_RETURN_IF_FAILED(!l_isDispatchModelMeshSuccess, "StaticModelのMeshlet描画に失敗しました。");
 		}
 	}
+}
+
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
+
+	m_forwardDrawRequestPerObjectDataList.AddDrawRequestPerObject(a_drawRequestData);
 }
 
 bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const

@@ -116,7 +116,11 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<P
 	// SetGraphicsRootSignature(描画パイプラインで使用するルートシグネチャのポインタ);
 	// ルートシグネチャは、シェーダーにどのリソースをどう渡すかを表す設定情報
 	// これを先に設定しておかないと、後続の描画で使用するリソースの結び付けルールが決まらない
-	l_directCommandList->SetGraphicsRootSignature(l_d3dRootSignature.Get());
+	// 同じルートシグネチャの場合はセットしない(ルートシグネチャのセットは重いから)
+	if (!IsSameWeakOwner(m_currentRootSignature, l_pipelineState->GetREFUseRootSignature()))
+	{
+		l_directCommandList->SetGraphicsRootSignature(l_d3dRootSignature.Get());
+	}
 
 	// コマンドリストにパイプラインステートをセットする関数
 	// SetPipelineState(パイプラインステートのポインタ)
@@ -125,7 +129,11 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<P
 	// どうラスタライズするか
 	// 深度テストを使うか、など
 	// 描画パイプラインの重要な設定がまとめて入っている
-	l_directCommandList->SetPipelineState(l_d3dPipelineState.Get());
+	// 同じパイプラインステートの場合はセットしない(パイプラインステートのセットは重いから)
+	if (!IsSameWeakOwner(m_currentPipelineState, a_pipelineState))
+	{
+		l_directCommandList->SetPipelineState(l_d3dPipelineState.Get());
+	}
 }
 
 void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const

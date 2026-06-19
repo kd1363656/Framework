@@ -11,17 +11,11 @@ namespace FWK::Graphics
 
 		void BeginFrame() override;
 
-		virtual void RequestForwardDraw (const TextureSystem& a_textureSystem, Renderer& a_renderer) = 0;
+		void SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource) override;
 		
 		void AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData);
 
 	protected:
-
-		void SetupModelMeshConstantBuffer(const RootSignature&																   a_rootSignature,
-										  const DirectCommandList&															   a_directCommandList,
-										  const FrameResource&																   a_frameResource,
-										  const DrawRequestPerObjectList<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestDataList,
-										  const TextureSystem&																   a_textureSystem);
 
 		bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const;
 

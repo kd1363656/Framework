@@ -50,6 +50,13 @@ namespace FWK::Graphics
 
 	private:
 
+		template <typename Type>
+		bool IsSameWeakOwner(const std::weak_ptr<Type>& a_left, const std::weak_ptr<Type>& a_right) const
+		{
+			return !a_left.owner_before (a_right) &&
+				   !a_right.owner_before(a_left);
+		}
+
 		static constexpr UINT k_singleSetupBarrierNUM      = 1U;
 		static constexpr UINT k_singleSetupRenderTargetNUM = 1U;
 		static constexpr UINT k_allRECTClear			   = 0U;
@@ -58,5 +65,8 @@ namespace FWK::Graphics
 		static constexpr UINT k_setScissorRectNUM    = 1U;
 
 		static constexpr UINT k_setDescriptorHeapNUM = 1U;
+
+		std::weak_ptr<RootSignature> m_currentRootSignature = {};
+		std::weak_ptr<PipelineState> m_currentPipelineState = {};
 	};
 }
