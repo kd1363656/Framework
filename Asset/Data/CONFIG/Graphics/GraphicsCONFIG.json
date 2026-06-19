@@ -399,15 +399,15 @@
                         "IndependentBlendEnable": 0,
                         "RenderTarget": [
                             {
-                                "BlendEnable": 1,
+                                "BlendEnable": 0,
                                 "BlendOp": "D3D12_BLEND_OP_ADD",
                                 "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
-                                "DestBlend": "D3D12_BLEND_INV_SRC_ALPHA",
+                                "DestBlend": "D3D12_BLEND_ZERO",
                                 "DestBlendAlpha": "D3D12_BLEND_ZERO",
                                 "LogicOp": "D3D12_LOGIC_OP_NOOP",
                                 "LogicOpEnable": 0,
                                 "RenderTargetWriteMask": 15,
-                                "SrcBlend": "D3D12_BLEND_SRC_ALPHA",
+                                "SrcBlend": "D3D12_BLEND_ONE",
                                 "SrcBlendAlpha": "D3D12_BLEND_ONE"
                             },
                             {

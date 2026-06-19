@@ -979,6 +979,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard">
       <UniqueIdentifier>{3ffadedb-388c-4588-a7e1-79493c725103}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Model">
+      <UniqueIdentifier>{fa93691e-67d7-4ba6-883c-37bdd3dff222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static">
+      <UniqueIdentifier>{f2128ef8-d2a6-435d-9316-60a1e6389aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard">
+      <UniqueIdentifier>{74093fb8-2dcb-4d7a-a2c7-36c3619bc1da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard\UnLit">
+      <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1935,6 +1947,9 @@
     <None Include="Asset\Shader\Final\FinalColorShader.hlsli">
       <Filter>Asset\Shader\Final</Filter>
     </None>
+    <None Include="Asset\Model\Static\Standard\StaticModelStandardCommon.hlsli">
+      <Filter>Asset\Shader\Model\Static\Standard</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -1948,6 +1963,15 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Final\FinalColor_PS.hlsl">
       <Filter>Asset\Shader\Final</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Model\Static\Standard\UnLit\StaticModelStandardUnLit_AS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

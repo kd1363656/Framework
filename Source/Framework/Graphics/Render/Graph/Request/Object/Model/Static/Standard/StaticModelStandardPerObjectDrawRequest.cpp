@@ -8,7 +8,7 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::BeginFrame()
 
 void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
-		const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	// 描画処理を行うための定数バッファを送信していく
 	for (const auto& l_drawRequest : m_forwardDrawRequestPerObjectDataList.GetREFDrawRequestPerObjectRecordList())
@@ -48,11 +48,13 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 			l_cbStaticModelPerObject.m_meshletBufferSRVDescriptorIndex           = l_modelMeshRuntimeData.m_meshletBuffer.m_srvDescriptorIndex;
 			l_cbStaticModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer.m_srvDescriptorIndex;
 			l_cbStaticModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_modelMeshRuntimeData.m_primitiveIndexBuffer.m_srvDescriptorIndex;
+			l_cbStaticModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_modelMeshRuntimeData.m_meshletBoundsBuffer.m_srvDescriptorIndex;
 
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_vertexBufferSRVDescriptorIndex		     == Constant::k_invalidDescriptorIndex, "VertexBufferのSRVDescriptorIndexが無効です。");
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_meshletBufferSRVDescriptorIndex		     == Constant::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。");
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == Constant::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
+			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == Constant::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
 
 			const auto l_baseColorTextureSRVIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
 			const auto l_normalTextureSRVIndex     = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);

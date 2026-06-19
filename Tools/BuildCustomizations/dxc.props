@@ -4,7 +4,7 @@
   <ItemDefinitionGroup>
     <DXCTask>
       <!--Enter Defaults Here-->
-      <ObjectFileOutput>$(OutDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput>%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
       <HeaderFileOutput>$(OutDir)%(Filename).inc</HeaderFileOutput>
       <AdditionalOptions></AdditionalOptions>
       <EntryPointName>main</EntryPointName>
