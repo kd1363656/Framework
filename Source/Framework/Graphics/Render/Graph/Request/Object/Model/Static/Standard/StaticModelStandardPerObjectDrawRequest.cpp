@@ -1,14 +1,14 @@
-﻿#include "StaticModelStandardPerObjectDrawRequestBase.h"
+﻿#include "StaticModelStandardPerObjectDrawRequest.h"
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::BeginFrame()
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::BeginFrame()
 {
 	// 参照が途切れているstd::weak_ptrを削除する
 	m_forwardDrawRequestPerObjectDataList.BeginFrame();
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+		const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	// 描画処理を行うための定数バッファを送信していく
 	for (const auto& l_drawRequest : m_forwardDrawRequestPerObjectDataList.GetREFDrawRequestPerObjectRecordList())
@@ -83,14 +83,14 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 	}
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
 	m_forwardDrawRequestPerObjectDataList.AddDrawRequestPerObject(a_drawRequestData);
 }
 
-bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
+bool FWK::Graphics::StaticModelStandardPerObjectDrawRequest::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
 {
 	const auto l_meshletCount = static_cast<UINT>(a_modelMesh.m_modelMeshletData.m_meshletList.size());
 

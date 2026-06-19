@@ -955,9 +955,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard">
       <UniqueIdentifier>{9d85be56-3738-47f0-85a0-b04053c4e772}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit">
-      <UniqueIdentifier>{8ae568bb-599a-498f-9f2a-452bb212585e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition">
       <UniqueIdentifier>{d0c90591-456e-48a9-a28e-f9efea65af56}</UniqueIdentifier>
     </Filter>
@@ -972,6 +969,15 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct">
       <UniqueIdentifier>{8cceab1b-ead2-4ca4-a9b8-91f789bf0bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model">
+      <UniqueIdentifier>{805bea86-8a5c-43a8-97a3-772353ed55f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static">
+      <UniqueIdentifier>{cae599b9-94e8-4a01-af6c-e16375bcb567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard">
+      <UniqueIdentifier>{3ffadedb-388c-4588-a7e1-79493c725103}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1593,7 +1599,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\CameraPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct\StaticModelStandardPerObjectDrawRequestDataStruct.h">
@@ -1604,6 +1610,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\StaticModelStandardUnLitPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1895,11 +1904,14 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\StaticModelStandardUnLitPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

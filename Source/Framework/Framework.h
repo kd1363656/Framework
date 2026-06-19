@@ -271,7 +271,7 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Definition/Struct/StaticModelStandardPerObjectDrawRequestDataStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/Definition/Struct/CBStaticModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Graphics/Render/Graph/Pass/Definition/Enum/RenderGraphPassEnum.h"

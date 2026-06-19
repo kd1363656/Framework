@@ -2,17 +2,17 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelStandardPerObjectDrawRequestBase : public DrawRequestPerObjectBase
+	class StaticModelStandardPerObjectDrawRequest : public DrawRequestPerObjectBase
 	{
 	public:
 
-		 StaticModelStandardPerObjectDrawRequestBase()			= default;
-		~StaticModelStandardPerObjectDrawRequestBase() override = default;
+		 StaticModelStandardPerObjectDrawRequest()			= default;
+		~StaticModelStandardPerObjectDrawRequest() override = default;
 
 		void BeginFrame() override;
 
 		void SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource) override;
-		
+
 		void AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData);
 
 	protected:
@@ -25,6 +25,6 @@ namespace FWK::Graphics
 
 		DrawRequestPerObjectList<Struct::StaticModelStandardPerObjectDrawRequestData> m_forwardDrawRequestPerObjectDataList  = {};
 		
-		FWK_DEFINE_TYPE_INFO(StaticModelStandardPerObjectDrawRequestBase, DrawRequestPerObjectBase)
+		FWK_DEFINE_TYPE_INFO(StaticModelStandardPerObjectDrawRequest, DrawRequestPerObjectBase)
 	};
 }
