@@ -4,27 +4,6 @@
     float2 uv       : TEXCOORD0;
 };
 
-cbuffer CBSpritePass : register(b0)
-{
-    row_major matrix g_projectionMatrix;
-}
-
-cbuffer CBSpritePerObject : register(b1)
-{
-    float4 g_color;
-    
-    float2 g_position;
-    float2 g_scale;
-    
-    float2 g_pivot;
-    float2 g_firstPadding;
-    
-    uint4 g_sourceRECT;
-    
-    uint   g_baseColorTextureSRVIndex;
-    float3 g_secondPadding;
-}
-
 static const float k_spriteUVMIN = 0.0F;
 static const float k_spriteUVMAX = 1.0F;
 
@@ -55,5 +34,26 @@ static const uint  k_spritePrimitiveVertexIndexZero  = 0U;
 static const uint  k_spritePrimitiveVertexIndexOne   = 1U;
 static const uint  k_spritePrimitiveVertexIndexTwo   = 2U;
 static const uint  k_spritePrimitiveVertexIndexThree = 3U;
+
+cbuffer CBSpritePass : register(b0)
+{
+    row_major matrix g_projectionMatrix;
+}
+
+cbuffer CBSpritePerObject : register(b1)
+{
+    float4 g_color;
+    
+    float2 g_position;
+    float2 g_scale;
+    
+    float2 g_pivot;
+    float2 g_firstPadding;
+    
+    uint4 g_sourceRECT;
+    
+    uint   g_baseColorTextureSRVIndex;
+    float3 g_secondPadding;
+}
 
 SamplerState g_baseColorSampler : register(s0);

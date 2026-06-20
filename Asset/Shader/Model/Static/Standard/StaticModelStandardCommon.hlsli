@@ -8,6 +8,8 @@ struct StaticModelVertex
     float2 uv;
 };
 
+static const uint k_staticModelTriangleVertexCount = 3U;
+
 cbuffer CBStaticModelPerObject : register(b1)
 {
     row_major matrix g_worldMatrix;
@@ -29,8 +31,6 @@ cbuffer CBStaticModelPerObject : register(b1)
     uint  g_meshletBoundsBufferSRVDescriptorIndex;
     float g_worldMaxScale;
 };
-
-static const uint k_staticModelTriangleVertexCount = 3U;
 
 SamplerState g_baseColorSampler : register(s0);
 

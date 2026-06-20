@@ -128,6 +128,36 @@ FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 	};
 }
 
+std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(const ufbx_material_map& a_materialMap) const
+{
+	const auto* l_fbxTexture = a_materialMap.texture;
+
+	if (!l_fbxTexture) { return {}; }
+
+	std::filesystem::path l_textureFilePath = {};
+
+	if (l_fbxTexture->type != UFBX_TEXTURE_FILE) { return {}; }
+
+	// ufbx_texture_typeがUFBX_TEXTURE_FILEの場合、
+	// filename / relative_filenameに画像ファイルパスが入っている
+	if (l_fbxTexture->relative_filename.length != k_emptyStringLength)
+	{
+		l_textureFilePath = ConvertUFBXStringToWString(l_fbxTexture->relative_filename);
+	}
+	else if (l_fbxTexture->filename.length != k_emptyStringLength)
+	{
+		l_textureFilePath = ConvertUFBXStringToWString(l_fbxTexture->filename);
+	}
+
+	if (l_textureFilePath.empty()) { return {}; }
+
+	// 現在のTextureSystemはPNG読み込み方針なので、
+	// FBX内のpng等の参照をエンジンで使うpngパスへ変換する
+	l_textureFilePath.replace_extension(Constant::k_lowerPNGExtension);
+
+	return l_textureFilePath.wstring();
+}
+
 FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::ConvertUFBXVector3ToVector3(const ufbx_vec3& a_fbxVector) const
 {
 	// ufbx_vec3はdouble系の値を持つため、自作フレームワークのVector3で使うfloatへ変換する
@@ -146,6 +176,21 @@ FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::ConvertUFBXVect
 		static_cast<float>(a_fbxVector.x),
 		static_cast<float>(a_fbxVector.y)
 	);
+}
+
+std::wstring FWK::Graphics::FBXModelLoaderBase::ConvertUFBXStringToWString(const ufbx_string& a_fbxString) const
+{
+	if (!a_fbxString.data ||
+		a_fbxString.length == k_emptyStringLength)
+	{
+		return {};
+	}
+
+	std::string l_string = {};
+
+	l_string.assign(a_fbxString.data, a_fbxString.length);
+
+	return std::filesystem::path(l_string).wstring();
 }
 
 ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const

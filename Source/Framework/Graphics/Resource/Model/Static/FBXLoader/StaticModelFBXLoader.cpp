@@ -239,11 +239,11 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 		auto& l_textureFilePath = a_modelMaterialAssetData.m_baseColorTextureFilePath;
 
 		// 通常のFBXMaterialならfbx.diffuse_colorに入っていることが多い
-		l_textureFilePath = FetchTextureFilePath(a_fbxMaterial->pbr.base_color);
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.base_color);
 
 		if (l_textureFilePath.empty())
 		{
-			l_textureFilePath = FetchTextureFilePath(a_fbxMaterial->fbx.diffuse_color);
+			l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.diffuse_color);
 		}
 	}
 
@@ -251,11 +251,11 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 	{
 		auto& l_textureFilePath = a_modelMaterialAssetData.m_normalTextureFilePath;
 
-		l_textureFilePath = FetchTextureFilePath(a_fbxMaterial->pbr.normal_map);
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.normal_map);
 
 		if (l_textureFilePath.empty())
 		{
-			l_textureFilePath = FetchTextureFilePath(a_fbxMaterial->fbx.normal_map);
+			l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.normal_map);
 		}
 	}
 
@@ -263,14 +263,14 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 	{
 		auto& l_textureFilePath = a_modelMaterialAssetData.m_roughnessTextureFilePath;
 
-		l_textureFilePath = FetchTextureFilePath(a_fbxMaterial->pbr.roughness);
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.roughness);
 	}
 
 	// Metallicテクスチャ
 	{
 		auto& l_textureFilePath = a_modelMaterialAssetData.m_metallicTextureFilePath;
 
-		l_textureFilePath = FetchTextureFilePath(a_fbxMaterial->pbr.metalness);
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.metalness);
 	}
 }
 
@@ -292,48 +292,4 @@ float FWK::Graphics::StaticModelFBXLoader::FetchMaterialFactor(const ufbx_materi
 	if (!a_materialMap.has_value) { return a_defaultValue; }
 
 	return static_cast<float>(a_materialMap.value_real);
-}
-
-std::wstring FWK::Graphics::StaticModelFBXLoader::FetchTextureFilePath(const ufbx_material_map & a_materialMap) const
-{
-	const auto* l_fbxTexture = a_materialMap.texture;
-
-	if (!l_fbxTexture) { return {}; }
-
-	std::filesystem::path l_textureFilePath = {};
-
-	if (l_fbxTexture->type != UFBX_TEXTURE_FILE) { return {}; }
-
-	// ufbx_texture_typeがUFBX_TEXTURE_FILEの場合、
-	// filename / relative_filenameに画像ファイルパスが入っている
-	if (l_fbxTexture->relative_filename.length != k_emptyStringLength)
-	{
-		l_textureFilePath = ConvertUFBXStringToWString(l_fbxTexture->relative_filename);
-	}
-	else if (l_fbxTexture->filename.length != k_emptyStringLength)
-	{
-		l_textureFilePath = ConvertUFBXStringToWString(l_fbxTexture->filename);
-	}
-
-	if (l_textureFilePath.empty()) { return {}; }
-
-	// 現在のTextureSystemはPNG読み込み方針なので、
-	// FBX内のpng等の参照をエンジンで使うpngパスへ変換する
-	l_textureFilePath.replace_extension(Constant::k_lowerPNGExtension);
-
-	return l_textureFilePath.wstring();
-}
-std::wstring FWK::Graphics::StaticModelFBXLoader::ConvertUFBXStringToWString(const ufbx_string& a_fbxString) const
-{
-	if (!a_fbxString.data ||
-		a_fbxString.length == k_emptyStringLength) 
-	{
-		return {}; 
-	}
-
-	std::string l_string = {};
-
-	l_string.assign(a_fbxString.data, a_fbxString.length);
-
-	return std::filesystem::path(l_string).wstring();
 }
