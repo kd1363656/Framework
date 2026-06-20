@@ -30,7 +30,7 @@ private:																														  \
 																																  \
 		RegisterTypeINFO()																										  \
 		{																														  \
-			FWK::TypeINFORegistry::GetInstance().Register(GetREFTypeINFO());													  \
+			FWK::TypeINFORegistry::GetInstance().Register(GetREFTypeINFO());													      \
 		}																														  \
 		~RegisterTypeINFO() = default;																							  \
 	};																															  \
@@ -38,7 +38,7 @@ private:																														  \
 	inline static const RegisterTypeINFO k_autoRegister = {};
 
 // 型情報登録マクロ(派生)
-#define FWK_DEFINE_TYPE_INFO(Type, BaseType)																										  \
+#define FWK_DEFINE_TYPE_INFO(Type, BaseType)																										      \
 public:																																				  \
 																																					  \
 	static const auto& GetREFTypeINFO()																												  \
@@ -48,7 +48,7 @@ public:																																				  \
 		return l_typeINFO;																															  \
 	}																																				  \
 																																					  \
-	const FWK::Struct::TypeINFO& GetREFRuntimeTypeINFO() const override { return GetREFTypeINFO(); }												  \
+	const FWK::Struct::TypeINFO& GetREFRuntimeTypeINFO() const override { return GetREFTypeINFO(); }												      \
 																																					  \
 private:																																			  \
 																																					  \
@@ -58,7 +58,7 @@ private:																																			  \
 																																					  \
 		RegisterTypeINFO()																															  \
 		{																																			  \
-			FWK::TypeINFORegistry::GetInstance().Register(GetREFTypeINFO());																		  \
+			FWK::TypeINFORegistry::GetInstance().Register(GetREFTypeINFO());																		      \
 		}																																			  \
 		~RegisterTypeINFO() = default;																												  \
 	};																																				  \

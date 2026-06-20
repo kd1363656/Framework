@@ -7,6 +7,7 @@
 do								   \
 {								   \
 	assert(false && Message);	   \
+								   \
 	return;						   \
 }								   \
 while (false)
@@ -15,6 +16,7 @@ while (false)
 do													  \
 {													  \
 	assert(false && Message);						  \
+													  \
 	return ReturnValue;							      \
 }													  \
 while (false)
@@ -25,6 +27,7 @@ do														 \
 	if (Conditions)								         \
 	{												     \
 		assert(false && Message);					     \
+													     \
 		return;										     \
 	}													 \
 }														 \
@@ -36,6 +39,7 @@ do																		    \
 	if (Conditions)														    \
 	{																	    \
 		assert(false && Message);										    \
+																		    \
 		return ReturnValue;												    \
 	}																		\
 }																			\
