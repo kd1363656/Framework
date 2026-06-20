@@ -136,13 +136,13 @@ void FWK::Graphics::StaticModelSystem::BuildMaterialRuntimeTextures(const std::f
 
 		// メタリックテクスチャの読み込み
 		l_modelMaterialRuntimeData.m_metallicTexture = CreateSingleMaterialTexture(a_filePath, 
-																		           l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		           l_modelMaterialAssetData.m_metallicTextureFilePath, 
 																		           Enum::TextureLoadColorSpace::Linear,
 																		           Enum::DefaultTextureType::Metallic);
 
 		// ラフネステクスチャの読み込み
 		l_modelMaterialRuntimeData.m_roughnessTexture = CreateSingleMaterialTexture(a_filePath, 
-																		            l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		            l_modelMaterialAssetData.m_roughnessTextureFilePath, 
 																		            Enum::TextureLoadColorSpace::Linear,
 																		            Enum::DefaultTextureType::Roughness);
 	}
