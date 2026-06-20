@@ -79,17 +79,23 @@ namespace FWK::Graphics
 		void ClearCurrentFrameRenderTargetPassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer)														const;
 		bool ClearRenderTargetPassTexture                (const ResourceContext& a_resourceContext, const Renderer& a_renderer, RenderTargetPassTexture& a_renderTargetPassTexture) const;
 
+		void ClearCurrentFrameDepthStencilPassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer)														const;
+		bool ClearDepthStencilPassTexture                (const ResourceContext& a_resourceContext, const Renderer& a_renderer, DepthStencilPassTexture& a_depthStencilPassTexture) const;
+
 		bool SetupBackBufferRenderTarget             (const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 		bool SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 		void SetupPassRenderTarget                   (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)		  const;
+		bool SetupPassRenderTargetAndDepthStencil	 (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)       const;
 
 		bool IsWriteRenderTargetAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+		bool IsWriteDepthStencilAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 
 		void TransitionPassResource                   (const RenderGraphPassBase&				a_pass,		               Renderer&		     a_renderer)									 const;
 		bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess,          Renderer&		     a_renderer)									 const;
 		void TransitionBackBufferResource			  (const DirectCommandList&					a_directCommandList, const D3D12_RESOURCE_STATES a_afterState, Struct::BackBuffer& a_backBuffer) const;
 		bool TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,	 const Renderer&			 a_renderer)									 const;
-		
+		bool TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,	 const Renderer&			 a_renderer)                                     const;
+
 		D3D12_RESOURCE_STATES ConvertVALD3D12ResourceState(const Enum::RenderGraphResourceUsage a_usage) const;
 
 		void RemoveExpiredPassList();

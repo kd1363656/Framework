@@ -291,6 +291,7 @@
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"
 #include "Graphics/Render/Graph/Pass/Final/FinalColorPass.h"
 #include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
+#include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 
 #include "Graphics/Render/Graph/Converter/Json/RenderGraphJsonConverter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"

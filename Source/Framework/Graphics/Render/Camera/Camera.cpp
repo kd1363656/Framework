@@ -19,6 +19,9 @@ void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_ca
 						a_fovYDegree,
 						a_farClip,
 						a_nearClip);
+
+	// 定数バッファ側に変更を反映するためのポインタを持たせる
+	SyncCameraPassDrawRequest();
 }
 
 void FWK::Graphics::Camera::SetCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
@@ -90,4 +93,18 @@ void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
 	if (!m_cbCameraPass) { return; }
 
 	m_cbCameraPass->m_viewProjectionMatrix = m_cbCameraPass->m_viewMatrix * m_cbCameraPass->m_projectionMatrix;
+}
+
+void FWK::Graphics::Camera::SyncCameraPassDrawRequest()
+{
+	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+	const auto& l_renderer		  = l_graphicsManager.GetREFRenderer		   ();
+	const auto& l_renderGraph	  = l_renderer.GetREFRenderGraph();
+
+	const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
+
+	if (!l_cameraPassDrawRequest) { return; }
+
+	// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
+	l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);	
 }

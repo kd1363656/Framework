@@ -79,9 +79,9 @@ void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const Ty
 	FWK_ASSERT_RETURN_IF_FAILED(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
-	const auto& l_diectCommandList = GetREFCommandList();
+	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_diectCommandList, "DirectCommandListが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "DirectCommandListが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
 	const auto l_rtvHandle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
 	const auto l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
@@ -91,24 +91,24 @@ void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const Ty
 	//					  レンダーターゲットディスクリプタ配列の先頭アドレス、
 	//					  ディスクリプタ連続配置かどうか、
 	//					  深度ステンシルビューのアドレス);
-	l_diectCommandList->OMSetRenderTargets(k_singleSetupRenderTargetNUM,
-										   &l_rtvHandle,
-										   FALSE,
-										   &l_dsvHandle);
+	l_directCommandList->OMSetRenderTargets(k_singleSetupRenderTargetNUM,
+										    &l_rtvHandle,
+										    FALSE,
+										    &l_dsvHandle);
 }
 
 void FWK::Graphics::DirectCommandList::ClearDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, 
 														 const FLOAT						 a_depthClearValue, 
-														 const TypeAlias::DescriptorIndex	 a_dsvDescirptorIndex, 
+														 const TypeAlias::DescriptorIndex	 a_dsvDescriptorIndex, 
 														 const UINT8						 a_stencilClearValue) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_dsvDescirptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilのClearに失敗しました。");
 
 	const auto& l_directCommandList = GetREFCommandList();
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "DirectCommandListが無効のため、DepthStencilのClearに失敗しました。");
 
-	const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescirptorIndex);
+	const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
 
 	// ClearDepthStencilView(クリアするDSV,
 	//						 クリア対象フラグ、

@@ -66,7 +66,6 @@ void FWK::Scene::INIT()
 
 	// カメラ
 	m_camera->SetupPerspective(TypeAlias::Math::Matrix::CreateTranslation(0.0F, 1.0F, -1.15F), l_aspectRatio);
-
 }
 
 void FWK::Scene::Update()

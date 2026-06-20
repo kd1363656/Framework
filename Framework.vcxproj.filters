@@ -1030,6 +1030,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Utility">
       <UniqueIdentifier>{2c2955b6-b164-4460-84dd-e31eee48e5c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit">
+      <UniqueIdentifier>{c53997df-065d-45ce-a257-91e63e84c745}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1650,9 +1653,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\StaticModelStandardUnLitPass.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Camera\Definition\Constant\CameraConstant.h">
       <Filter>Source\Framework\Graphics\Render\Camera\Definition\Constant</Filter>
     </ClInclude>
@@ -1697,6 +1697,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Utility\FetchVALPassTextureSizeElementUtility.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1988,9 +1991,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\StaticModelStandardUnLitPass.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil</Filter>
     </ClCompile>
@@ -2005,6 +2005,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

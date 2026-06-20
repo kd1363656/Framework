@@ -508,7 +508,7 @@
                             }
                         ]
                     },
-                    "DSVFormat": "DXGI_FORMAT_UNKNOWN",
+                    "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
                     "DepthStencilDesc": {
                         "BackFace": {
                             "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
@@ -516,9 +516,9 @@
                             "StencilFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
                             "StencilPassOp": "D3D12_STENCIL_OP_KEEP"
                         },
-                        "DepthEnable": 0,
-                        "DepthFunc": "D3D12_COMPARISON_FUNC_ALWAYS",
-                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ZERO",
+                        "DepthEnable": 1,
+                        "DepthFunc": "D3D12_COMPARISON_FUNC_LESS_EQUAL",
+                        "DepthWriteMask": "D3D12_DEPTH_WRITE_MASK_ALL",
                         "FrontFace": {
                             "StencilDepthFailOp": "D3D12_STENCIL_OP_KEEP",
                             "StencilFailOp": "D3D12_STENCIL_OP_KEEP",

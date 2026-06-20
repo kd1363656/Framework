@@ -21,7 +21,7 @@ namespace FWK::Graphics
 
 		void ClearDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
 							   const FLOAT						   a_depthClearValue,
-							   const TypeAlias::DescriptorIndex	   a_dsvDescirptorIndex,
+							   const TypeAlias::DescriptorIndex	   a_dsvDescriptorIndex,
 							   const UINT8						   a_stencilClearValue) const;
 
 		void SetupRenderArea(const RenderArea& a_renderArea) const;

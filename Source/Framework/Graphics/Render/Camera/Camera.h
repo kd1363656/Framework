@@ -30,6 +30,8 @@ namespace FWK::Graphics
 
 		void UpdateViewProjectionMatrix();
 
+		void SyncCameraPassDrawRequest();
+
 		static constexpr float k_defaultFOVYDegree  = 60.0F;
 		static constexpr float k_invalidAspectRatio = 0.0F;
 

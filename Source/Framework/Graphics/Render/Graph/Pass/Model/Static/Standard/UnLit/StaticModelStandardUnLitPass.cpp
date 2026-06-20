@@ -5,6 +5,10 @@ FWK::Graphics::StaticModelStandardUnLitPass::StaticModelStandardUnLitPass()
 	// シーンカラー用レンダーターゲットテクスチャのリソース状態をRENDER_TARGETに遷移してから
 	// シーンカラーテクスチャに書き込む
 	WriteResource(Enum::RenderGraphResourceType::SceneColor, Enum::RenderGraphResourceUsage::RenderTarget);
+
+	// シーン深度用デプスステンシルテクスチャのリソース状態をDEPTH_WRITEにしてから
+	// シーン深度へDepthを書き込む
+	WriteResource(Enum::RenderGraphResourceType::SceneDepth, Enum::RenderGraphResourceUsage::DepthWrite);
 }
 FWK::Graphics::StaticModelStandardUnLitPass::~StaticModelStandardUnLitPass() = default;
 
