@@ -5,10 +5,10 @@ bool FWK::Graphics::SpriteScreenPassDrawRequest::SetupPassConstantBuffer(const R
 	// 定数バッファの更新
 	UpdateConstantBuffer();
 
-	SetupConstantBuffer<SpriteScreenPassConstantBufferUploader>(a_rootSignature,
+	SetupConstantBuffer<SpriteScreenPassConstantBufferUploader>(GetREFConstantBuffer(),
+																a_rootSignature,
 																a_directCommandList,
 																a_frameResource,
-																GetREFConstantBuffer(),
 																Enum::RootParameterType::CBSpritePass);
 
 	return true;

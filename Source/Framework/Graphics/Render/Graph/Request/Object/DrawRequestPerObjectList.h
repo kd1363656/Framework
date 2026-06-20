@@ -9,9 +9,9 @@ namespace FWK::Graphics
 
 		struct DrawRequestPerObjectRecord final
 		{
-			std::weak_ptr<DrawRequestPerObjectType> m_drawRequestPerObject = {};
-
 			const DrawRequestPerObjectType* m_drawRequestPerObjectAddress = nullptr;
+
+			std::weak_ptr<DrawRequestPerObjectType> m_drawRequestPerObject = {};
 		};
 
 	public:

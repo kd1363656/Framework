@@ -14,10 +14,10 @@ bool FWK::Graphics::FinalColorRenderTargetPassDrawRequest::SetupPassConstantBuff
 	l_finalColorConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
 	// 定数バッファをセット
-	SetupConstantBuffer<FinalColorRenderTargetPassConstantBufferUploader>(a_rootSignature,
+	SetupConstantBuffer<FinalColorRenderTargetPassConstantBufferUploader>(l_finalColorConstantBuffer, 
+																		  a_rootSignature,
 																		  a_directCommandList,
 																		  a_frameResource,
-																		  l_finalColorConstantBuffer,
 																		  Enum::RootParameterType::CBFinalColorPass);
 
 	return true;

@@ -13,9 +13,5 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DrawRequestPerObjectBase::FetchTe
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_texture, "Textureが無効なため、TextureSRVDescriptorIndexの取得に失敗しました。", Constant::k_invalidDescriptorIndex);
 
-	const auto& l_textureRecord = a_texture->GetREFTextureRecord().lock();
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_textureRecord, "TextureRecordが無効なため、TextureSRVDescriptorIndexの取得に失敗しました。", Constant::k_invalidDescriptorIndex);
-
-	return l_textureRecord->GetVALSRVDescriptorIndex();
+	return FetchTextureSRVDescriptorIndex(a_texture->GetREFTextureRecord());
 }

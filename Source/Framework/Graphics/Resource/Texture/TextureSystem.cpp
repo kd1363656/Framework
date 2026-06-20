@@ -55,28 +55,28 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 																	l_textureLoadResult);
 		
 		// テクスチャの管理、アップロードを行うための情報を作成
-		CreateAndRegisterPendingTextureForBachUpload(l_scratchImage,
-													 l_texMetadata,
-													 a_device,
+		CreateAndRegisterPendingTextureForBachUpload(a_device,
 													 a_gpuMemoryAllocator,
 													 a_filePath,
+													 l_scratchImage,
+													 l_texMetadata,
 													 a_srvDescriptorPool,
 													 l_textureLoadResult);
 
 		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureBinaryConverter.SaveTextureAsset(l_scratchImage, a_filePath), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_textureBinaryConverter.SaveTextureAsset(a_filePath, l_scratchImage), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
 
 		return l_textureLoadResult;
 	}
 
 	// テクスチャの管理、アップロードを行うための情報を作成
-	CreateAndRegisterPendingTextureForBachUpload(l_scratchImage,
-												 l_texMetadata,
-												 a_device,
+	CreateAndRegisterPendingTextureForBachUpload(a_device,
 												 a_gpuMemoryAllocator,
 												 a_filePath,
+												 l_scratchImage,
+												 l_texMetadata,
 												 a_srvDescriptorPool,
-												 l_textureLoadResult);
+											     l_textureLoadResult);
 
 	return l_textureLoadResult;
 }
@@ -172,8 +172,7 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 		{
 			// 作成失敗時はStorageIDを使わないので返却する
 			m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
-
-			FWK_ASSERT_RETURN_VALUE("DefaultTexture用TextureBatchUploadRecord作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE          ("DefaultTexture用TextureBatchUploadRecord作成に失敗しました。", false);
 		}
 
 		// UploadSystemでまとめてDEFAULTヒープへコピーするため、PendingMapへ登録する
@@ -184,11 +183,11 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 	return true;
 }
 
-void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&        a_scratchImage, 
-																				const DirectX::TexMetadata&         a_texMetadata,
-																				const Device&				        a_device, 
+void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(const Device&				        a_device, 
 																				const GPUMemoryAllocator&	        a_gpuMemoryAllocator,
 																				const std::filesystem::path&        a_filePath, 
+																				const DirectX::ScratchImage&        a_scratchImage, 
+																				const DirectX::TexMetadata&         a_texMetadata,
 																					  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
 																					  Struct::TextureLoadResult&    a_textureLoadResult)
 {
@@ -202,17 +201,16 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 	// テクスチャを作成、管理するのに必要な情報すべてを作成(SRVDescriptorIndexなど)
 	if (!m_batchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
 																   a_gpuMemoryAllocator,
+																   a_filePath,
 																   a_scratchImage,
 																   a_texMetadata,
-																   a_filePath,
 																   l_allocatedStorageID,
 																   a_srvDescriptorPool,
 																   l_textureBatchUploadRecord))
 	{
 		// テクスチャのアップロード処理に失敗したなら、StorageIDを解放しておく
 		m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
-
-		FWK_ASSERT_RETURN("テクスチャアップロード情報の作成に失敗したため、バッチテクスチャ登録に失敗しました。");
+		FWK_ASSERT_RETURN                 ("テクスチャアップロード情報の作成に失敗したため、バッチテクスチャ登録に失敗しました。");
 	}
 	
 	const auto& l_textureRecord = l_textureBatchUploadRecord.m_textureRecord;
@@ -221,8 +219,7 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 	{
 		// Allocate済みのStorageIDなので、失敗時は返却しておく
 		m_textureStorage.ReleaseStorageID(l_allocatedStorageID);
-
-		FWK_ASSERT_RETURN("TextureRecordが無効のため、バッチテクスチャ登録に失敗しました。");
+		FWK_ASSERT_RETURN				 ("TextureRecordが無効のため、バッチテクスチャ登録に失敗しました。");
 	}
 
 	a_textureLoadResult.m_storageID     = l_textureRecord->GetVALStorageID();

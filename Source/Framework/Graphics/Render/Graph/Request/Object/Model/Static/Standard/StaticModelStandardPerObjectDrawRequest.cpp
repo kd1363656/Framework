@@ -76,10 +76,10 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 			l_cbStaticModelPerObject.m_roughnessTextureSRVDescriptorIndex = l_roughnessTextureSRVDescriptorIndex;
 
 			// モデル描画用定数のセット
-			SetupConstantBuffer<StaticModelPerObjectConstantBufferUploader>(a_rootSignature, 
+			SetupConstantBuffer<StaticModelPerObjectConstantBufferUploader>(l_cbStaticModelPerObject,
+																			a_rootSignature,
 																			l_directCommandList,
 																			a_frameResource,
-																			l_cbStaticModelPerObject,
 																			Enum::RootParameterType::CBStaticModelPerObject);	
 
 			const bool l_isDispatchModelMeshSuccess = DispatchModelMesh(l_directCommandList, l_modelMesh);

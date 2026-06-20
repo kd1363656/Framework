@@ -29,10 +29,10 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 		l_cbSpritePerObject.m_pivot		 = l_drawRequestPerObject->m_pivot;
 		l_cbSpritePerObject.m_sourceRECT = l_drawRequestPerObject->m_sourceRECT;
 
-		SetupConstantBuffer<SpriteScreenPerObjectConstantBufferUploader>(a_rootSignature,
+		SetupConstantBuffer<SpriteScreenPerObjectConstantBufferUploader>(l_cbSpritePerObject, 
+																		 a_rootSignature,
 																		 l_directCommandList,
 																		 a_frameResource,
-																		 l_cbSpritePerObject,
 																		 Enum::RootParameterType::CBSpritePerObject);
 
 		// MeshShaderを1グループ実行して、画面スプライト用の四角形を描画する。

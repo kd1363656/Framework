@@ -56,7 +56,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT a_width, const UINT a_height);
+		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT						   a_width, const UINT a_height);
 		bool CreateRTV        (const Device&			 a_device,					 TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 		bool CreateSRV        (const Device&			 a_device,					 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 

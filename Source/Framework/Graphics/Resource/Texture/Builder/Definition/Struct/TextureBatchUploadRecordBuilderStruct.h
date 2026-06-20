@@ -31,7 +31,8 @@ namespace FWK::Struct
 		TextureBatchUploadRecord& operator=(const TextureBatchUploadRecord&)		   = delete;
 		TextureBatchUploadRecord& operator=(	  TextureBatchUploadRecord&&) noexcept = default;
 
-		std::shared_ptr<Graphics::TextureRecord> m_textureRecord       = nullptr;
-		Struct::TextureUploadRecord			     m_textureUploadRecord = {};
+		std::shared_ptr<Graphics::TextureRecord> m_textureRecord = nullptr;
+
+		Struct::TextureUploadRecord m_textureUploadRecord = {};
 	};
 }

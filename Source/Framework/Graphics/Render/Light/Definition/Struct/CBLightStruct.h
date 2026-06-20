@@ -6,7 +6,7 @@ namespace FWK::Struct
 	struct CBLightPass final
 	{
 		Struct::DirectionalLight m_directionalLight = {};
-		float					 m_padding		    = 0.0F;
+		float					 m_padding		    = {};
 
 		Struct::AmbientLight m_ambientLight = {};
 	};

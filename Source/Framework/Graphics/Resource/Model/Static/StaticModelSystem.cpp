@@ -40,7 +40,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 	if (!m_staticModelBinaryConverter.LoadStaticModelAsset(a_filePath, *l_staticModelRecord))
 	{
 		// .assetが読み込めなければFBXモデルをロードする、失敗したらassert
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。。", {});
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。", {});
 
 		// モデルのメッシュレット生成などを行う
 		BuildStaticModelAssetData(a_filePath, *l_staticModelRecord);
@@ -49,8 +49,8 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 		BuildStaticModelRuntimeData(l_staticModelRecord,
 									a_device,
 									a_gpuMemoryAllocator,
-									l_allocateStorageID,
 									a_filePath,
+									l_allocateStorageID,
 									a_srvDescriptorPool,
 									l_staticModelLoadResult);
 
@@ -61,8 +61,8 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 	BuildStaticModelRuntimeData(l_staticModelRecord, 
 								a_device,
 								a_gpuMemoryAllocator,
-								l_allocateStorageID,
 								a_filePath,
+								l_allocateStorageID,
 								a_srvDescriptorPool,
 								l_staticModelLoadResult);
 
@@ -151,8 +151,8 @@ void FWK::Graphics::StaticModelSystem::BuildMaterialRuntimeTextures(const std::f
 void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord, 
 																   const Device&			                 a_device,
 																   const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-																   const TypeAlias::StorageID				 a_storageID,
 																   const std::filesystem::path&				 a_filePath,
+																   const TypeAlias::StorageID				 a_storageID,
 																   	     TypeAlias::SRVDescriptorPool&       a_srvDescriptorPool,
 																   	     Struct::StaticModelLoadResult&      a_staticModelLoadResult)
 {

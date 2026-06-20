@@ -22,10 +22,10 @@ namespace FWK::Graphics
 
 		// 定数バッファの上書き禁止(定数バッファのインデックスを進めて新しい定数バッファに書き込む方式)
 		template <Concept::IsDerivedConstantBufferUploaderBaseConcept ConstantBufferUploaderType, typename ConstantBufferType>
-		void SetupConstantBuffer(const RootSignature&	       a_rootSignature,
+		void SetupConstantBuffer(const ConstantBufferType&	   a_constantBuffer, 
+								 const RootSignature&	       a_rootSignature,
 								 const DirectCommandList&      a_directCommandList,
 								 const FrameResource&	       a_frameResource,
-								 const ConstantBufferType&     a_constantBuffer,
 								 const Enum::RootParameterType a_rootParameterType)
 		{
 			auto l_constantBufferUploader = a_frameResource.FindPTRConstantBufferUploader<ConstantBufferUploaderType>().lock();

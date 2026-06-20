@@ -51,7 +51,7 @@ namespace FWK::Converter
 		}
 
 		template <typename Type>
-		bool TryReadBinaryDataList(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, std::vector<Type>& a_destinationDataList) const
+		bool TryReadBinaryDataList(const std::uint64_t& a_readDataCount, std::vector<Type>& a_destinationDataList, std::uint64_t& a_memoryReadOffset) const
 		{
 			// 前読み込んでたデータがあればデータに不都合が生じる可能性があるためクリア処理
 			a_destinationDataList.clear();
@@ -97,10 +97,10 @@ namespace FWK::Converter
 			a_memoryWriteOffset += l_writeDataSize;
 		}
 
-		bool TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::uint64_t& a_memoryReadOffset, std::wstring& a_destinationString) const;
+		bool TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t& a_memoryReadOffset) const;
 		
 		void WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const;
-		void WriteStringBinaryData (const std::string&  a_string, std::uint64_t&  a_memoryWriteOffset) const;
+		void WriteStringBinaryData (const std::string&  a_string,  std::uint64_t& a_memoryWriteOffset) const;
 
 		template <typename Type>
 		std::uint64_t CalculateBinaryDataSize(const std::uint64_t& a_dataCount) const

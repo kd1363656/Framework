@@ -28,8 +28,8 @@ namespace FWK::Graphics
 
 		void SubtractReferenceCount();
 
-		TypeAlias::StorageID m_storageID;
-
 		std::weak_ptr<Graphics::StaticModelRecord> m_staticModelRecord;
+
+		TypeAlias::StorageID m_storageID;
 	};
 }

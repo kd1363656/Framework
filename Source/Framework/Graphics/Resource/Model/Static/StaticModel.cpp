@@ -1,18 +1,18 @@
 ﻿#include "StaticModel.h"
 
 FWK::Graphics::StaticModel::StaticModel() : 
-	m_storageID        (Constant::k_invalidStorageID),
-	m_staticModelRecord({})
+	m_staticModelRecord({}),
+	m_storageID        (Constant::k_invalidStorageID)
 {}
 FWK::Graphics::StaticModel::StaticModel(const StaticModel & a_other) : 
-	m_storageID		   (a_other.m_storageID),
-	m_staticModelRecord(a_other.m_staticModelRecord)
+	m_staticModelRecord(a_other.m_staticModelRecord),
+	m_storageID		   (a_other.m_storageID)
 {
 	AddReferenceCount();
 }
 FWK::Graphics::StaticModel::StaticModel(StaticModel&& a_other) noexcept :
-	m_storageID		   (a_other.m_storageID),
-	m_staticModelRecord(std::move(a_other.m_staticModelRecord))
+	m_staticModelRecord(std::move(a_other.m_staticModelRecord)),
+	m_storageID		   (a_other.m_storageID)
 {
 	a_other.m_storageID = Constant::k_invalidStorageID;
 	a_other.m_staticModelRecord.reset();

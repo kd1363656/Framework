@@ -50,11 +50,11 @@ namespace FWK::Graphics
 
 		bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
-		void CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&        a_scratchImage,
-														  const DirectX::TexMetadata&         a_texMetadata,
-														  const Device&				          a_device,
+		void CreateAndRegisterPendingTextureForBachUpload(const Device&				          a_device,
 														  const GPUMemoryAllocator&           a_gpuMemoryAllocator,
 														  const std::filesystem::path&        a_filePath,
+														  const DirectX::ScratchImage&        a_scratchImage,
+														  const DirectX::TexMetadata&         a_texMetadata,
 														  	    TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
 														  	    Struct::TextureLoadResult&    a_textureLoadResult);
 

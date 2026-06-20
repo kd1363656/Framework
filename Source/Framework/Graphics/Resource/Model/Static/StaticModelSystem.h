@@ -42,13 +42,13 @@ namespace FWK::Graphics
 
 		void BuildMaterialRuntimeTextures(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const;
 
-		void BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>&   a_staticModelRecord,
-										 const Device&			                     a_device,
-										 const GPUMemoryAllocator&                   a_gpuMemoryAllocator,
-										 const TypeAlias::StorageID				     a_storageID,
-										 const std::filesystem::path&				 a_filePath,
-											   TypeAlias::SRVDescriptorPool&         a_srvDescriptorPool,
-											   Struct::StaticModelLoadResult&        a_staticModelLoadResult);
+		void BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
+										 const Device&			                   a_device,
+										 const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+										 const std::filesystem::path&			   a_filePath,
+										 const TypeAlias::StorageID				   a_storageID,
+											   TypeAlias::SRVDescriptorPool&       a_srvDescriptorPool,
+											   Struct::StaticModelLoadResult&      a_staticModelLoadResult);
 
 		std::shared_ptr<Texture> CreateSingleMaterialTexture(const std::filesystem::path&      a_modelFilePath, 
 													         const std::wstring&			   a_textureFilePath,

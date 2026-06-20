@@ -318,7 +318,7 @@ void FWK::Converter::BinaryFileConverterBase::DestroyMemoryMappedFile()
 	m_isWritable     = k_isInitialWritable;
 }
 
-bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::uint64_t & a_memoryReadOffset, std::wstring & a_destinationString) const
+bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t & a_memoryReadOffset) const
 {
 	if (a_wStringBinaryFileSize == k_emptyReadDataSize) 
 	{

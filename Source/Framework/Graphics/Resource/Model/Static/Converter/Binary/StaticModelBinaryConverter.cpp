@@ -77,7 +77,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
         // 頂点配列を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_vertexCount, l_memoryReadOffset, l_staticModelMesh.m_modelVertexList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_vertexCount, l_staticModelMesh.m_modelVertexList, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -85,7 +85,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
         
         // インデックス配列を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_indexCount, l_memoryReadOffset, l_staticModelMesh.m_indexList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_indexCount, l_staticModelMesh.m_indexList, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -120,7 +120,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
 
         // マテリアル用テクスチャファイルパスを読み込む
         // ベースカラーテクスチャ用ファイルパスの文字列を読み取る
-        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_baseColorTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_baseColorTextureFilePath))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_baseColorTextureFilePathSize, l_modelMaterialAssetData.m_baseColorTextureFilePath, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -128,7 +128,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
          // ノーマルマップテクスチャ用ファイルパスの文字列を読み取る
-        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_normalTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_normalTextureFilePath))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_normalTextureFilePathSize, l_modelMaterialAssetData.m_normalTextureFilePath, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -136,7 +136,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
          // ラフネステクスチャ用ファイルパスの文字列を読み取る
-        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_roughnessTextureFilePath))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_roughnessTextureFilePathSize, l_modelMaterialAssetData.m_roughnessTextureFilePath, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -144,7 +144,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
          // ラフネステクスチャ用ファイルパスの文字列を読み取る
-        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_metallicTextureFilePathSize, l_memoryReadOffset, l_modelMaterialAssetData.m_metallicTextureFilePath))
+        if (!TryReadWStringBinaryData(l_staticModelMeshBinaryHeader.m_metallicTextureFilePathSize, l_modelMaterialAssetData.m_metallicTextureFilePath, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -159,7 +159,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
 
         // Meshlet関連データ読み込む
         // メッシュレット情報を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletCount, l_memoryReadOffset, l_modelMeshletData.m_meshletList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletCount, l_modelMeshletData.m_meshletList, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -167,7 +167,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
         // 頂点インデックス情報を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount, l_memoryReadOffset, l_modelMeshletData.m_uniqueVertexIndexList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_uniqueVertexIndexCount, l_modelMeshletData.m_uniqueVertexIndexList, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -175,7 +175,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
         // プリミティブインデックス情報を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_primitiveIndexCount, l_memoryReadOffset, l_modelMeshletData.m_primitiveIndexList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_primitiveIndexCount, l_modelMeshletData.m_primitiveIndexList, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 
@@ -183,7 +183,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         }
 
         // メッシュレットカリング情報を読み込む
-        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletBoundsCount, l_memoryReadOffset, l_modelMeshletData.m_meshletBoundsList))
+        if (!TryReadBinaryDataList(l_staticModelMeshBinaryHeader.m_meshletBoundsCount, l_modelMeshletData.m_meshletBoundsList, l_memoryReadOffset))
         {
             FailLoadStaticModelAsset(l_staticModelData);
 

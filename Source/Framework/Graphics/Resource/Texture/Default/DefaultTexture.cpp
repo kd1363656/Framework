@@ -34,9 +34,9 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
     // ここではまだCopyCommandQueueへ送らず、TextureSystemのPendingMapへ登録するためのRecordを作るだけ
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
                                                                                                         a_gpuMemoryAllocator,
+                                                                                                        m_textureName,
                                                                                                         l_scratchImage,
                                                                                                         l_texMetadata,
-                                                                                                        m_textureName,
                                                                                                         a_storageID,
                                                                                                         a_srvDescriptorPool,
                                                                                                         a_textureBatchUploadRecord),
