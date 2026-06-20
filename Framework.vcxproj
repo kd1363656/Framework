@@ -515,6 +515,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Definition\Constant\RenderTargetTextureConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsSameTextureSizeUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Texture.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.h" />

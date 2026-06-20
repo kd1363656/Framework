@@ -9,8 +9,8 @@ bool FWK::Graphics::RenderTargetTexture::Create(const Device&					    a_device,
 													  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 													  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!IsValidTextureSize(a_width, a_height), "RenderTargetTextureのサイズがになっており、作成処理に失敗しました。",     false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_format == DXGI_FORMAT_UNKNOWN,        "RenderTargetTextureのFormatが無効になっており、作成方法に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのサイズがになっており、作成処理に失敗しました。",     false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_format == DXGI_FORMAT_UNKNOWN,                 "RenderTargetTextureのFormatが無効になっており、作成方法に失敗しました。", false);
 
 	m_format     = a_format;
 	m_clearColor = a_clearColor;
@@ -23,22 +23,6 @@ bool FWK::Graphics::RenderTargetTexture::Create(const Device&					    a_device,
 
 	return true;
 }
-bool FWK::Graphics::RenderTargetTexture::Create(const Device&			            a_device, 
-												const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-											    const UINT							a_width,
-												const UINT							a_height,
-													  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
-													  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
-{
-	return Create(a_device,
-				  a_gpuMemoryAllocator,
-				  Constant::k_defaultRenderTargetTextureFormat,
-				  a_width,
-				  a_height,
-				  Constant::k_defaultBackBufferClearColor,
-				  a_rtvDescriptorPool,
-				  a_srvDescriptorPool);
-}
 bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						a_device,
 												const GPUMemoryAllocator&			a_gpuMemoryAllocator,
 												const UINT64&						a_retiredFenceValue,
@@ -49,9 +33,15 @@ bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						a_device,
 													  ResourceReleaseContext&	    a_resourceReleaseContext)
 {
 	// 同じサイズならリサイズ処理をする必要がないからreturn
-	if (IsSameSize(a_width, a_height)) { return true; }
+	if (Utility::IsSameSize(a_width, 
+							a_height,
+							m_width,
+							m_height))
+	{
+		return true; 
+	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!IsValidTextureSize(a_width, a_height), "RenderTargetTextureのリサイズ後のサイズが無効になっており、リサイズ処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのリサイズ後のサイズが無効になっており、リサイズ処理に失敗しました。", false);
 
 	RenderTargetTexture l_newRenderTargetTexture = {};
 
@@ -98,7 +88,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc, 
 																				 &l_clearValue, 
-																				 k_defaultResourceState,
+																				 k_initialResourceState,
 																				 m_gpuResource),
 																				 "RenderTargetTexture用TextureResourceの作成に失敗しました。",
 																				 false);
@@ -221,28 +211,7 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	m_width  = Constant::k_emptyTextureWidth;
 	m_height = Constant::k_emptyTextureHeight;
 
-	m_currentResourceState = k_defaultResourceState;
-
-	return true;
-}
-
-bool FWK::Graphics::RenderTargetTexture::IsValidTextureSize(const UINT a_width, const UINT a_height) const
-{
-	if (a_width  == Constant::k_emptyTextureWidth ||
-		a_height == Constant::k_emptyTextureHeight) 
-	{
-		return false; 
-	}
-	
-	return true;
-}
-bool FWK::Graphics::RenderTargetTexture::IsSameSize(const UINT a_width, const UINT a_height) const
-{
-	if (m_width  != a_width ||
-		m_height != a_height)
-	{
-		return false;
-	}
+	m_currentResourceState = k_initialResourceState;
 
 	return true;
 }

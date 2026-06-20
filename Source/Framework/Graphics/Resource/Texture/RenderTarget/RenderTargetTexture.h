@@ -24,13 +24,6 @@ namespace FWK::Graphics
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 
-		bool Create(const Device&					    a_device,
-				    const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
-					const UINT							a_width,
-					const UINT							a_height,
-						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
-
 		bool Resize(const Device&						a_device,
 					const GPUMemoryAllocator&			a_gpuMemoryAllocator,
 					const UINT64&						a_retiredFenceValue,
@@ -62,10 +55,7 @@ namespace FWK::Graphics
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		bool IsValidTextureSize(const UINT a_width, const UINT a_height) const;
-		bool IsSameSize		   (const UINT a_width, const UINT a_height) const;
-
-		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
+		static constexpr D3D12_RESOURCE_STATES k_initialResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
 
 		static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
 
@@ -81,7 +71,7 @@ namespace FWK::Graphics
 
 		Struct::GPUResource m_gpuResource = {};
 
-		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
+		D3D12_RESOURCE_STATES m_currentResourceState = k_initialResourceState;
 
 		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
 

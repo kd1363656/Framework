@@ -170,6 +170,8 @@
 #include "Graphics/Resource/Texture/Default/Converter/Json/DefaultTextureJsonConverter.h"
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"
 #include "Graphics/Resource/Texture/RenderTarget/Definition/Constant/RenderTargetTextureConstant.h"
+#include "Graphics/Resource/Texture/RenderTarget/Utility/IsSameTextureSizeUtility.h"
+#include "Graphics/Resource/Texture/RenderTarget/Utility/IsValidTextureUtility.h"
 #include "Graphics/Resource/Texture/RenderTarget/RenderTargetTexture.h"
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/DepthStencil/Definition/Constant/DepthStencilTextureConstant.h"

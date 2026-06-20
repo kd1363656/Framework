@@ -1009,6 +1009,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\Definition\Constant">
       <UniqueIdentifier>{04fb4542-b559-411f-9b49-13bf15f0dd3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility">
+      <UniqueIdentifier>{4fcb0441-3a86-40ad-ae57-133119ed3e82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1658,6 +1661,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsSameTextureSizeUtility.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsValidTextureUtility.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
