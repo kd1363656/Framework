@@ -1000,6 +1000,15 @@
     <Filter Include="Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant">
       <UniqueIdentifier>{be31a2aa-c46e-4904-b337-e686f079b0b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\DepthStencil">
+      <UniqueIdentifier>{245da9b5-36e9-4adb-8518-cb10e0e401c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\Definition">
+      <UniqueIdentifier>{9509828f-accb-4e4d-be40-c68f59e3a88a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\Definition\Constant">
+      <UniqueIdentifier>{04fb4542-b559-411f-9b49-13bf15f0dd3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1644,6 +1653,12 @@
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant\FenceConstant.h">
       <Filter>Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\Definition\Constant\DepthStencilTextureConstant.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.h">
+      <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1942,6 +1957,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\StaticModelStandardUnLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -508,6 +508,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\DefaultTextureStringUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\TextureSystemStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\WStringHashStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\Definition\Constant\DepthStencilTextureConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.h" />
@@ -630,6 +632,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.cpp" />
