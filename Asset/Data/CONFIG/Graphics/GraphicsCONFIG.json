@@ -36,6 +36,18 @@
                     }
                 ],
                 "RenderGraphFrameResource": {
+                    "DepthStencilPassTextureList": [
+                        {
+                            "DepthClearValue": 1.0,
+                            "Format": "DXGI_FORMAT_D32_FLOAT",
+                            "Height": 0,
+                            "IsFixedSize": false,
+                            "IsSkipClearOnBeginFrame": false,
+                            "RenderGraphResourceType": "RenderGraphResourceType::SceneDepth",
+                            "StencilClearValue": 0,
+                            "Width": 0
+                        }
+                    ],
                     "RenderTargetPassTextureList": [
                         {
                             "ClearColor": {

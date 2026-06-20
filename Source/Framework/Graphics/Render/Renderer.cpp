@@ -18,8 +18,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator      ();
 	const auto& l_shaderCompiler     = a_resourceContext.GetREFShaderCompiler          ();
 		  auto& l_rtvDescriptorPool  = a_resourceContext.GetMutableREFRTVDescriptorPool();
-		  auto& l_srvDescriptorPool  = a_resourceContext.GetMutableREFSRVDescriptorPool();
-
+		  
 	for (const auto& l_frameResource : m_frameResourceList)
 	{
 		if (!l_frameResource) { continue; }
@@ -27,8 +26,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_frameResource->Create(a_device,
 																   l_gpuMemoryAllocator,
 																   a_clientSize,
-																   l_rtvDescriptorPool,
-																   l_srvDescriptorPool), 
+																   a_resourceContext), 
 																   "フレームリソースの作成処理に失敗しました。", 
 																   false);
 	}
@@ -142,8 +140,7 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Clien
 	const auto& l_gpuMemoryAllocator     = a_resourceContext.GetREFGPUMemoryAllocator           ();
 		  auto& l_resourceReleaseContext = a_resourceContext.GetMutableREFResourceReleaseContext();
 		  auto& l_rtvDescriptorPool      = a_resourceContext.GetMutableREFRTVDescriptorPool     ();
-		  auto& l_srvDescriptorPool      = a_resourceContext.GetMutableREFSRVDescriptorPool     ();
-
+		  
 	// バックバッファのリサイズを行う
 	FWK_ASSERT_RETURN_IF_FAILED(!m_swapChain.Resize(a_device,
 													l_resourceReleaseContext, 
@@ -164,9 +161,7 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Clien
 															 l_gpuMemoryAllocator,
 															 a_clientSize,
 															 l_retiredFenceValue,
-															 l_rtvDescriptorPool,
-															 l_srvDescriptorPool,
-															 l_resourceReleaseContext),
+															 a_resourceContext),
 															 "フレームリソースのリサイズ処理に失敗しており、リサイズ処理に失敗しました。");
 	}
 }

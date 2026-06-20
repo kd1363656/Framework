@@ -8,7 +8,7 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 
 	const auto l_depthClearValue = a_rootJson.value(k_depthClearValueJsonKey, Constant::k_defaultDepthClearValue);
 
-	const auto l_staticClearValue = a_rootJson.value(k_stencilClearValueJsonKey, Constant::k_defaultStencilClearValue);
+	const auto l_stencilClearValue = a_rootJson.value(k_stencilClearValueJsonKey, Constant::k_defaultStencilClearValue);
 
 	const auto l_renderGraphResourceType = a_rootJson.value(k_renderGraphResourceTypeJsonKey, Enum::RenderGraphResourceType::Invalid);
 
@@ -22,7 +22,7 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 
 	a_depthStencilPassTexture.SetDepthClearValue(l_depthClearValue);
 
-	a_depthStencilPassTexture.SetStencilClearValue(l_staticClearValue);
+	a_depthStencilPassTexture.SetStencilClearValue(l_stencilClearValue);
 
 	a_depthStencilPassTexture.SetRenderGraphResourceType(l_renderGraphResourceType);
 
@@ -42,6 +42,7 @@ nlohmann::json FWK::Converter::DepthStencilPassTextureJsonConverter::Serialize(c
 	l_rootJson[k_stencilClearValueJsonKey]       = a_depthStencilPassTexture.GetVALStencilClearValue      ();
 	l_rootJson[k_renderGraphResourceTypeJsonKey] = a_depthStencilPassTexture.GetVALRenderGraphResourceType();
 	l_rootJson[k_widthJsonKey]					 = a_depthStencilPassTexture.GetVALWidth					  ();
+	l_rootJson[k_heightJsonKey]					 = a_depthStencilPassTexture.GetVALHeight			      ();
 	l_rootJson[k_isFixedSizeJsonKey]			 = a_depthStencilPassTexture.GetVALIsFixedSize			  ();
 	l_rootJson[k_isSkipClearOnBeginFrameJsonKey] = a_depthStencilPassTexture.GetVALIsSkipClearOnBeginFrame();
 

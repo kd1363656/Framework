@@ -7,11 +7,10 @@ void FWK::Graphics::FrameResource::INIT()
 		m_directCommandAllocator = std::make_shared<DirectCommandAllocator>();
 	}
 }
-bool FWK::Graphics::FrameResource::Create(const Device&			              a_device, 
-										  const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-										  const Struct::ClientSize&           a_clientSize, 
-											    TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
-												TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+bool FWK::Graphics::FrameResource::Create(const Device&			    a_device, 
+										  const GPUMemoryAllocator& a_gpuMemoryAllocator,
+										  const Struct::ClientSize& a_clientSize, 
+											    ResourceContext&    a_resourceContext)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator,				       "ダイレクトコマンドアロケータが無効です。",				 false);
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
@@ -27,28 +26,23 @@ bool FWK::Graphics::FrameResource::Create(const Device&			              a_device
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderGraphFrameResource.Create(a_device,
 																		 a_gpuMemoryAllocator,
 																		 a_clientSize,	
-																		 a_rtvDescriptorPool,
-																		 a_srvDescriptorPool),
+																		 a_resourceContext),
 																		 "RenderGraphFrameResourceの作成処理に失敗しました。",
 																	     false);
 
 	return true;
 }
-bool FWK::Graphics::FrameResource::Resize(const Device&			              a_device, 
-										  const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-										  const Struct::ClientSize&           a_clientSize,
-										  const UINT64&				          a_retiredFenceValue,
-										        TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
-										        TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
-										  	    ResourceReleaseContext&		  a_resourceReleaseContext) const
+bool FWK::Graphics::FrameResource::Resize(const Device&			    a_device, 
+										  const GPUMemoryAllocator& a_gpuMemoryAllocator, 
+										  const Struct::ClientSize& a_clientSize,
+										  const UINT64&				a_retiredFenceValue,
+												ResourceContext&    a_resourceContext) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderGraphFrameResource.Resize(a_device,
 																		 a_gpuMemoryAllocator,
 																		 a_clientSize,
 																		 a_retiredFenceValue,
-																		 a_rtvDescriptorPool,
-																		 a_srvDescriptorPool,
-																		 a_resourceReleaseContext),
+																		 a_resourceContext),
 																		 "RenderGraphFrameResourceのリサイズ処理に失敗しました。",
 																		 false);
 

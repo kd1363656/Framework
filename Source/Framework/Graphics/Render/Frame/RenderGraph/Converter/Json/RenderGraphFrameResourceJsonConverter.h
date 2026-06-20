@@ -21,9 +21,12 @@ namespace FWK::Converter
 	private:
 
 		void DeserializeRenderTargetPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+		void DeserializeDepthStencilPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
 		nlohmann::json SerializeRenderTargetPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+		nlohmann::json SerializeDepthStencilPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
 		static constexpr std::string_view k_renderTargetPassTextureListJsonKey = "RenderTargetPassTextureList";
+		static constexpr std::string_view k_depthStencilPassTextureListJsonKey = "DepthStencilPassTextureList";
 	};
 }
