@@ -1021,6 +1021,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil">
       <UniqueIdentifier>{42bc3934-d686-4be5-a8d7-153168758c18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter">
+      <UniqueIdentifier>{c9a74355-4f2c-4528-b92f-6f93e833a4db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json">
+      <UniqueIdentifier>{df9bf24e-caba-4082-90b2-a5e25f848230}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1683,6 +1689,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1987,6 +1996,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

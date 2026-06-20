@@ -42,8 +42,7 @@ namespace FWK::Graphics
 		void SetWidth (const UINT a_set) { m_width  = a_set; }
 		void SetHeight(const UINT a_set) { m_height = a_set; }
 
-		void SetIsFixedSize(const bool a_set) { m_isFixedSize = a_set; }
-
+		void SetIsFixedSize			   (const bool a_set) { m_isFixedSize			  = a_set; }
 		void SetIsSkipClearOnBeginFrame(const bool a_set) { m_isSkipClearOnBeginFrame = a_set; }
 
 		const auto& GetREFDepthStencilTexture() const { return m_depthStencilTexture; }
@@ -59,17 +58,16 @@ namespace FWK::Graphics
 		auto GetVALRenderGraphResourceType() const { return m_renderGraphResourceType; }
 
 		auto GetVALWidth () const { return m_width; }
-		auto GetVALheight() const { return m_height; }
+		auto GetVALHeight() const { return m_height; }
 
-		bool GetVALIsFixedSize		    () const { return m_isFixedSize; }
-		bool GetVALSkipClearOnBeginFrame() const { return m_isSkipClearOnBeginFrame; }
+		bool GetVALIsFixedSize		      () const { return m_isFixedSize; }
+		bool GetVALIsSkipClearOnBeginFrame() const { return m_isSkipClearOnBeginFrame; }
 
 	private:
 
-		UINT FetchVALTextureWidth (const UINT a_clientWidth)  const;
-		UINT FetchVALTextureHeight(const UINT a_clientHeight) const;
-
 		DepthStencilTexture m_depthStencilTexture = {};
+
+		Converter::DepthStencilPassTextureJsonConverter m_jsonConverter = {};
 
 		DXGI_FORMAT m_format = Constant::k_defaultDepthStencilTextureFormat;
 
