@@ -24,6 +24,7 @@ namespace FWK::Enum
 		Invalid,
 		RenderTarget,
 		PixelShaderResource,
+		DepthWrite,
 		Present,
 		Count,
 	};
@@ -34,6 +35,7 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Invalid),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::RenderTarget),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::PixelShaderResource),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::DepthWrite),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Present),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Count)
 	)

@@ -14,6 +14,16 @@ namespace FWK::Graphics
 		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)																					   const;
 		void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = Constant::k_defaultBackBufferClearColor) const;
 
+		void SetupRenderTargetAndDepthStencil(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
+											  const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
+											  const TypeAlias::DescriptorIndex	  a_rtvDescriptorIndex,
+											  const TypeAlias::DescriptorIndex	  a_dsvDescriptorIndex) const;
+
+		void ClearDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
+							   const FLOAT						   a_depthClearValue,
+							   const TypeAlias::DescriptorIndex	   a_dsvDescirptorIndex,
+							   const UINT8						   a_stencilClearValue) const;
+
 		void SetupRenderArea(const RenderArea& a_renderArea) const;
 
 		template <D3D12_DESCRIPTOR_HEAP_TYPE Type>
