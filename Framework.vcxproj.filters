@@ -1027,6 +1027,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json">
       <UniqueIdentifier>{df9bf24e-caba-4082-90b2-a5e25f848230}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Utility">
+      <UniqueIdentifier>{2c2955b6-b164-4460-84dd-e31eee48e5c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1691,6 +1694,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Utility\FetchVALPassTextureSizeElementUtility.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

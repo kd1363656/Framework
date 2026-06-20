@@ -64,9 +64,6 @@ namespace FWK::Graphics
 
 	private:
 
-		UINT FetchVALTextureWidth (const UINT a_width)  const;
-		UINT FetchVALTextureHeight(const UINT a_height) const;
-
 		RenderTargetTexture m_renderTargetTexture = {};
 
 		Converter::RenderTargetPassTextureJsonConverter m_jsonConverter = {};

@@ -7,6 +7,7 @@ namespace FWK::Enum
 		Invalid,
 		BackBuffer,
 		SceneColor,
+		SceneDepth,
 		FinalColor,
 		Count,
 	};
@@ -17,6 +18,7 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceType::Invalid),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceType::BackBuffer),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceType::SceneColor),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceType::SceneDepth),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceType::FinalColor),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceType::Count)
 	)
