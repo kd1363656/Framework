@@ -135,16 +135,16 @@ void FWK::Graphics::StaticModelSystem::BuildMaterialRuntimeTextures(const std::f
 																		         Enum::DefaultTextureType::Normal);
 
 		// メタリックテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath, 
-																		         l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		         Enum::TextureLoadColorSpace::Linear,
-																		         Enum::DefaultTextureType::BaseColor);
+		l_modelMaterialRuntimeData.m_metallicTexture = CreateSingleMaterialTexture(a_filePath, 
+																		           l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		           Enum::TextureLoadColorSpace::Linear,
+																		           Enum::DefaultTextureType::Metallic);
 
 		// ラフネステクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath, 
-																		         l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		         Enum::TextureLoadColorSpace::Linear,
-																		         Enum::DefaultTextureType::BaseColor);
+		l_modelMaterialRuntimeData.m_roughnessTexture = CreateSingleMaterialTexture(a_filePath, 
+																		            l_modelMaterialAssetData.m_normalTextureFilePath, 
+																		            Enum::TextureLoadColorSpace::Linear,
+																		            Enum::DefaultTextureType::Roughness);
 	}
 }
 
@@ -163,7 +163,6 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
 
 	// マテリアルで使用するテクスチャを読み込む
 	BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
-
 
 	// バッチアップロード用情報の作成
 	if (!CreateStaticBatchUploadRecord(a_staticModelRecord,
@@ -204,11 +203,11 @@ std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::Create
 
 	return l_texture;
 }
-bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>   a_staticModelRecord, 
-																	const Device&							    a_device, 
-																	const GPUMemoryAllocator&				    a_gpuMemoryAllocator, 
-																		  TypeAlias::SRVDescriptorPool&         a_srvDescriptorPool,
-																		  Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const
+bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord, 
+																	 const Device&							     a_device, 
+																	 const GPUMemoryAllocator&				     a_gpuMemoryAllocator, 
+																	 	   TypeAlias::SRVDescriptorPool&         a_srvDescriptorPool,
+																	 	   Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_staticModelRecord, "StaticModelRecordが無効になっており、モデルのバッチアップロードレコードの作成に失敗しました。", false);
 

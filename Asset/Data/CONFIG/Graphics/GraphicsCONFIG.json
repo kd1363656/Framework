@@ -780,6 +780,32 @@
                         "TextureName": "DefaultNormalTexture"
                     },
                     "DefaultTextureType": "DefaultTextureType::Normal"
+                },
+                {
+                    "DefaultTexture": {
+                        "TextureColor": {
+                            "A": 255,
+                            "B": 0,
+                            "G": 0,
+                            "R": 0
+                        },
+                        "TextureFormat": "DXGI_FORMAT_R8G8B8A8_UNORM",
+                        "TextureName": "DefaultMetallicTexture"
+                    },
+                    "DefaultTextureType": "DefaultTextureType::Metallic"
+                },
+                {
+                    "DefaultTexture": {
+                        "TextureColor": {
+                            "A": 255,
+                            "B": 255,
+                            "G": 255,
+                            "R": 255
+                        },
+                        "TextureFormat": "DXGI_FORMAT_R8G8B8A8_UNORM",
+                        "TextureName": "DefaultRoughnessTexture"
+                    },
+                    "DefaultTextureType": "DefaultTextureType::Roughness"
                 }
             ],
             "TextureStorage": {

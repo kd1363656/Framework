@@ -6,6 +6,8 @@ namespace FWK::Enum
 	{
 		BaseColor,
 		Normal,
+		Metallic,
+		Roughness,
 		Count,
 	};
 
@@ -14,6 +16,8 @@ namespace FWK::Enum
 		DefaultTextureType,
 		FWK_JSON_ENUM_VALUE(DefaultTextureType::BaseColor),
 		FWK_JSON_ENUM_VALUE(DefaultTextureType::Normal),
+		FWK_JSON_ENUM_VALUE(DefaultTextureType::Metallic),
+		FWK_JSON_ENUM_VALUE(DefaultTextureType::Roughness),
 		FWK_JSON_ENUM_VALUE(DefaultTextureType::Count)
 	)
 

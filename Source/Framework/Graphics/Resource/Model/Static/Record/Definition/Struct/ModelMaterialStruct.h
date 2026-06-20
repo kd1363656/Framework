@@ -35,6 +35,7 @@ namespace FWK::Struct
 		ModelMaterialRuntimeData& operator=(const ModelMaterialRuntimeData&)		   = delete;
 		ModelMaterialRuntimeData& operator=(	  ModelMaterialRuntimeData&&) noexcept = default;
 
+		// 全てのテクスチャをインスタンス化する前提だが、メモリ共有を行うためstd::shared_ptrで保持する
 		std::shared_ptr<Graphics::Texture> m_baseColorTexture = nullptr;
 		std::shared_ptr<Graphics::Texture> m_normalTexture	  = nullptr;
 		std::shared_ptr<Graphics::Texture> m_roughnessTexture = nullptr;
