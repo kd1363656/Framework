@@ -9,9 +9,9 @@ namespace FWK::Graphics
 
 		struct DrawRequestPerObjectRecord final
 		{
-			const DrawRequestPerObjectType* m_drawRequestPerObjectAddress = nullptr;
-
 			std::weak_ptr<DrawRequestPerObjectType> m_drawRequestPerObject = {};
+
+			const DrawRequestPerObjectType* m_drawRequestPerObjectAddress = nullptr;
 		};
 
 	public:
@@ -84,7 +84,7 @@ namespace FWK::Graphics
 
 	private:
 
-		static  constexpr std::size_t k_emptyElementCount = 0U;
+		static constexpr std::size_t k_emptyElementCount = 0U;
 
 		std::unordered_set<const DrawRequestPerObjectType*> m_registeredAddressSet = {};
 

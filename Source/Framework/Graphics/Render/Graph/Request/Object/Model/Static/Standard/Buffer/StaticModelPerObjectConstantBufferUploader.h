@@ -11,10 +11,6 @@ namespace FWK::Graphics
 		 StaticModelPerObjectConstantBufferUploader()          = default;
 		~StaticModelPerObjectConstantBufferUploader() override = default;
 
-	private:
-
-		static constexpr UINT64 k_bufferTypeSize = sizeof(Struct::CBStaticModelPerObject);
-
 		FWK_DEFINE_TYPE_INFO(StaticModelPerObjectConstantBufferUploader, ConstantBufferUploaderBase)
 	};
 }

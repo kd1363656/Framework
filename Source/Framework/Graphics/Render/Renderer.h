@@ -20,7 +20,7 @@ namespace FWK::Graphics
 							 const Window&			   a_window,
 							 const Factory&			   a_factory,
 							 const Struct::ClientSize& a_clientSize,
-								    ResourceContext&   a_resourceContext);
+								   ResourceContext&    a_resourceContext);
 		
 		void BeginFrame(const ResourceContext& a_resourceContext);
 		void Execute   (const ResourceContext& a_resourceContext);

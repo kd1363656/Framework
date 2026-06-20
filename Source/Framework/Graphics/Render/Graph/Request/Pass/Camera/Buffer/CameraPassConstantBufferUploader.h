@@ -9,10 +9,6 @@ namespace FWK::Graphics
 		 CameraPassConstantBufferUploader()          = default;
 		~CameraPassConstantBufferUploader() override = default;
 
-	private:
-
-		static constexpr UINT64  k_bufferTypeSize = sizeof(Struct::CBCameraPass);
-
 		FWK_DEFINE_TYPE_INFO(CameraPassConstantBufferUploader, ConstantBufferUploaderBase)
 	};
 }

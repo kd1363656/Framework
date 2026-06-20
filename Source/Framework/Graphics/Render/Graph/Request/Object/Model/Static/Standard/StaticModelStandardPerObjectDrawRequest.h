@@ -15,16 +15,12 @@ namespace FWK::Graphics
 
 		void AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData);
 
-	protected:
+	private:
 
 		bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const;
 
-		const auto& GetREFForwardDrawRequestPerObjectDataList () const { return m_forwardDrawRequestPerObjectDataList; }
-		
-	private:
-
 		float CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix) const;
-
+	
 		DrawRequestPerObjectList<Struct::StaticModelStandardPerObjectDrawRequestData> m_forwardDrawRequestPerObjectDataList  = {};
 		
 		FWK_DEFINE_TYPE_INFO(StaticModelStandardPerObjectDrawRequest, DrawRequestPerObjectBase)
