@@ -30,9 +30,9 @@ namespace FWK::Graphics
 
 		void SetDSVFormat(const DXGI_FORMAT a_set) { m_dsvFormat = a_set; }
 
-		void SetSampleMask(const UINT a_set) { m_sampleMask = a_set; }
-
 		void SetUseRootSignatureType(const Enum::RootSignatureType a_set) { m_useRootSignatureType = a_set; }
+
+		void SetSampleMask(const UINT a_set) { m_sampleMask = a_set; }
 
 		const auto& GetREFRTVFormatList() const { return m_rtvFormatList; }
 
@@ -57,9 +57,9 @@ namespace FWK::Graphics
 
 		auto GetVALDSVFormat() const { return m_dsvFormat; }
 
-		auto GetVALSampleMask() const { return m_sampleMask; }
-
 		auto GetVALUseRootSignatureType() const { return m_useRootSignatureType; }
+
+		auto GetVALSampleMask() const { return m_sampleMask; }
 
 	private:
 
@@ -89,8 +89,8 @@ namespace FWK::Graphics
 
 		DXGI_FORMAT m_dsvFormat = DXGI_FORMAT_UNKNOWN;
 
-		UINT m_sampleMask = k_initialSampleMask;
-
 		Enum::RootSignatureType m_useRootSignatureType = Enum::RootSignatureType::Invalid;
+
+		UINT m_sampleMask = k_initialSampleMask;
 	};
 }

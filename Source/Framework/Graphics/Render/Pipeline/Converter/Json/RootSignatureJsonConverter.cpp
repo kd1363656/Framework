@@ -334,6 +334,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(
 		// 明示的にディスクリプタテーブルを使用しないように初期値を格納
 		a_rootParameterRecord.m_rootParameter.DescriptorTable.NumDescriptorRanges = k_invalidNUMDescriptorRange;
 		a_rootParameterRecord.m_rootParameter.DescriptorTable.pDescriptorRanges   = nullptr;
+
 		return; 
 	}
 
@@ -342,6 +343,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(
 		// 明示的にディスクリプタテーブルを使用しないように初期値を格納
 		a_rootParameterRecord.m_rootParameter.DescriptorTable.NumDescriptorRanges = k_invalidNUMDescriptorRange;
 		a_rootParameterRecord.m_rootParameter.DescriptorTable.pDescriptorRanges   = nullptr;
+
 		return; 
 	}
 

@@ -1311,7 +1311,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\RootSignatureJsonUtility.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\IsArrayJsonUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">

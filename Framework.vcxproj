@@ -432,7 +432,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\RootSignatureJsonUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\IsArrayJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant\RootSignatureConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h" />

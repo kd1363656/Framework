@@ -66,14 +66,14 @@ void FWK::Converter::PipelineStateJsonConverter::Deserialize(const nlohmann::jso
 		DeserializeSampleDesc(l_json, a_pipelineState);
 	}
 
+	const auto l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 	const auto l_dsvFormat			   = a_rootJson.value(k_dsvFormatJsonKey,			  DXGI_FORMAT_UNKNOWN);
 	const auto l_useRootSignatureType  = a_rootJson.value(k_useRootSignatureTypeJsonKey,  Enum::RootSignatureType::Invalid);
-	const auto l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
 	const auto l_sampleMask			   = a_rootJson.value(k_sampleMaskJsonKey,		      UINT_MAX);
 
+	a_pipelineState.SetPrimitiveTopologyType(l_primitiveTopologyType);
 	a_pipelineState.SetDSVFormat			(l_dsvFormat);
 	a_pipelineState.SetUseRootSignatureType (l_useRootSignatureType);
-	a_pipelineState.SetPrimitiveTopologyType(l_primitiveTopologyType);
 	a_pipelineState.SetSampleMask		    (l_sampleMask);
 }
 nlohmann::json FWK::Converter::PipelineStateJsonConverter::Serialize(const Graphics::PipelineState & a_pipelineState) const
@@ -197,6 +197,7 @@ void FWK::Converter::PipelineStateJsonConverter::DeserializeBlendDesc(const nloh
 			if (l_renderTargetIndex >= D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT)
 			{
 				assert(false && "BlendDescのRenderTarget配列数がDirectX12の上限を超えています。");
+
 				break;
 			}
 
@@ -488,6 +489,7 @@ void FWK::Converter::PipelineStateJsonConverter::DeserializeDepthStencilOpDesc(c
 		a_depthStencilOPDesc.StencilDepthFailOp = D3D12_STENCIL_OP_KEEP;
 		a_depthStencilOPDesc.StencilPassOp      = D3D12_STENCIL_OP_KEEP;
 		a_depthStencilOPDesc.StencilFunc        = D3D12_COMPARISON_FUNC_ALWAYS;
+
 		return;
 	}
 	
@@ -507,5 +509,6 @@ void FWK::Converter::PipelineStateJsonConverter::EnsureShader(std::shared_ptr<Gr
 {
 	// 既にインスタンス化されていたら"return"
 	if (a_shader) { return; }
+
 	a_shader = std::make_shared<Graphics::Shader>();
 }
