@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
-{
-	class TextureRecord;
-}
-
 namespace FWK::Struct
 {
 	struct TextureLoadResult final

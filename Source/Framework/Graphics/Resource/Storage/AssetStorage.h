@@ -17,6 +17,7 @@ namespace FWK::Graphics
 		void Deserialize(const nlohmann::json& a_rootJson)
 		{
 			if (a_rootJson.is_null()) { return; }
+
 			m_jsonConverter.Deserialize(a_rootJson, *this);
 		}
 		bool Create()
@@ -70,7 +71,7 @@ namespace FWK::Graphics
 		{
 			const auto& l_record = a_record.lock();
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_record,						   "指定されたStorageIDのRecordが見つからないため、解放予約に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_record,						       "指定されたStorageIDのRecordが見つからないため、解放予約に失敗しました。", false);
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_record->SubtractReferenceCount(), "Recordの参照数減算に失敗ており、解放予約に失敗しました。",				  false);
 
 			// まだ利用者が残っているなら何もしない

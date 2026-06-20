@@ -29,9 +29,9 @@ namespace FWK::Graphics
 		static constexpr LONG k_defaultScissorRECTLeft = 0L;
 		static constexpr LONG k_defaultScissorRECTTop  = 0L;
 
+		std::shared_ptr<Struct::CBSpritePass> m_cbSpritePass = nullptr;
+
 		D3D12_VIEWPORT m_viewport    = {};
 		D3D12_RECT     m_scissorRECT = {};
-
-		std::shared_ptr<Struct::CBSpritePass> m_cbSpritePass = nullptr;
 	};
 }

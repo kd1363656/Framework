@@ -103,6 +103,7 @@ void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableGPUResources(const U
 		if (m_gpuResourceReleaseRecordList[l_index].m_retiredFenceValue > a_completedFenceValue)
 		{
 			++l_index;
+
 			continue;
 		}
 

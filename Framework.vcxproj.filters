@@ -229,9 +229,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct">
       <UniqueIdentifier>{3729dcf6-253b-4ad3-91f5-4bc5e1e5fbd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant">
-      <UniqueIdentifier>{be31a2aa-c46e-4904-b337-e686f079b0b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Upload">
       <UniqueIdentifier>{a36c349b-e75b-43a2-91ae-a86b6f0ab8ce}</UniqueIdentifier>
     </Filter>
@@ -997,6 +994,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant">
       <UniqueIdentifier>{9da59668-64f6-44a1-b1c5-f31ec127f20f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue\Fence\Definition">
+      <UniqueIdentifier>{44d26435-76f4-4abe-8066-2896b1a342c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant">
+      <UniqueIdentifier>{be31a2aa-c46e-4904-b337-e686f079b0b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1139,9 +1142,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant\ResourceReleaseContextConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant\CopyCommandAllocatorConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant</Filter>
@@ -1640,6 +1640,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Utility\JsonLoadAndSaveFileUtility.h">
       <Filter>Source\Framework\Window\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant\FenceConstant.h">
+      <Filter>Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,7 @@ namespace FWK::Graphics
 				if (a_releaseRecordList[l_index].m_retiredFenceValue > a_completedFenceValue)
 				{
 					++l_index;
+
 					continue;
 				}
 

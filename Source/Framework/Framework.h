@@ -90,6 +90,7 @@
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
 #include "Graphics/Command/List/CommandListBase.h"
+#include "Graphics/Command/Queue/Fence/Definition/Constant/FenceConstant.h"
 #include "Graphics/Command/Queue/Fence/Fence.h"
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 
@@ -108,7 +109,6 @@
 #include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 //リソースリリースクラス
-#include "Graphics/Resource/ReleaseContext/Definition/Constant/ResourceReleaseContextConstant.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/GPUResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/StructuredBufferResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
@@ -118,9 +118,8 @@
 #include "Graphics/Resource/Record/Definition/Type/Alias/StorageIDTypeAlias.h"
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
-#include "Graphics/Resource/Texture/Record/TextureRecord.h"
 
-// ストレージクラス
+// ストレージIDアロケータークラス
 #include "Graphics/Resource/Storage/Allocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
 #include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
 
@@ -159,6 +158,7 @@
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Graphics/Resource/Texture/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
+#include "Graphics/Resource/Texture/Record/TextureRecord.h"
 #include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"

@@ -354,6 +354,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocatorBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueueBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Definition\Constant\FenceConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.h" />
     <ClInclude Include="Source\Framework\Graphics\Converter\Json\GraphicsManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\GraphicsManager.h" />
@@ -483,7 +484,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias\StorageIDTypeAlias.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Constant\ResourceReleaseContextConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\StructuredBufferResourceStruct.h" />
