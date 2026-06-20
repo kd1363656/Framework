@@ -22,7 +22,7 @@ namespace FWK::Graphics
 			const auto l_descriptorNUM = m_descriptorIndexAllocator.GetVALIndexCapacity();
 
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_descriptorNUM == Constant::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効になっており、DescriptorPoolの作成に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_descriptorNUM == Constant::k_emptyDescriptorNUM,	 "DescriptorHeapIndexAllocatorの管理数が0のため、DescriptorPoolの作成に失敗しました。",			 false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_descriptorNUM == Constant::k_emptyDescriptorNUM,	     "DescriptorHeapIndexAllocatorの管理数が0のため、DescriptorPoolの作成に失敗しました。",			 false);
 
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_cpuDescriptorHeap.Create(a_device,
 																		  HeapType, 
@@ -121,9 +121,13 @@ namespace FWK::Graphics
 
 		static constexpr bool IsShaderVisibleSupportedDescriptorHeapType()
 		{
-			if		constexpr (HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) { return true; }
-			else if constexpr (HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER)     { return true; }
-			else																   { return false; }
+			if constexpr (HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV ||
+					      HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER) 
+			{
+				return true; 
+			}
+			
+			return false;
 		}
 
 		static constexpr UINT k_copyOnceDescriptorCount = 1U;

@@ -9,8 +9,8 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Deserialize(const nlohmann::js
 
 bool FWK::Graphics::DescriptorHeapIndexAllocator::Create()
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_indexCapacity == Constant::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_indexCapacity == Constant::k_emptyDescriptorNUM,     "無効なIndexを割り当てようとしており作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_indexCapacity == Constant::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",     false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_indexCapacity == Constant::k_emptyDescriptorNUM,     "ディスクリプタの作成数が0となっており、作成処理に失敗しました。", false);
     
     m_nextAllocateIndex = k_initialNextAllocateIndex;
 
@@ -37,6 +37,7 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::Descr
 	FWK_ASSERT_RETURN_IF_FAILED(!m_isAllocatedList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");
 
     m_isAllocatedList[a_index] = false;
+
     m_reusableIndexQueue.push(a_index);
 }
 

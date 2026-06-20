@@ -57,15 +57,18 @@ bool FWK::Graphics::DescriptorHeap::IsShaderVisible() const
 }
 bool FWK::Graphics::DescriptorHeap::IsValidDescriptorIndex(const TypeAlias::DescriptorIndex a_descriptorIndex) const
 {
-	if (a_descriptorIndex == Constant::k_invalidDescriptorIndex) { return false; }
-	if (a_descriptorIndex >= m_descriptorNUM)					 { return false; }
-
+	if (a_descriptorIndex == Constant::k_invalidDescriptorIndex ||
+		a_descriptorIndex >= m_descriptorNUM)
+	{
+		return false; 
+	}
+	
 	return true;
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE FWK::Graphics::DescriptorHeap::FetchVALCPUDescriptorHandle(const TypeAlias::DescriptorIndex a_descriptorIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_descriptorHeap,						  "DescriptorHeapが作成されておらず、CPUDescriptorHandleの取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_descriptorHeap,						      "DescriptorHeapが作成されておらず、CPUDescriptorHandleの取得に失敗しました。", {});
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!IsValidDescriptorIndex(a_descriptorIndex), "DescriptorIndexが範囲外のため、CPUDescriptorHandleの取得に失敗しました。",    {});
 
 	// ディスクリプタヒープの先頭CPUHandleからa_descriptorIndex個分だけ進めたCPUHandleを作ってくれる
@@ -73,7 +76,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE FWK::Graphics::DescriptorHeap::FetchVALCPUDescriptor
 }
 D3D12_GPU_DESCRIPTOR_HANDLE FWK::Graphics::DescriptorHeap::FetchVALGPUDescriptorHandle(const TypeAlias::DescriptorIndex a_descriptorIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_descriptorHeap,						  "DescriptorHeapが作成されておらず、GPUDescriptorHandleの取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_descriptorHeap,						      "DescriptorHeapが作成されておらず、GPUDescriptorHandleの取得に失敗しました。", {});
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!IsValidDescriptorIndex(a_descriptorIndex), "DescriptorIndexが範囲外のため、GPUDescriptorHandleの取得に失敗しました。",    {});
 
 	// RTV/DSVのようなShaderVisibleではないDescriptorHeapは、GPUDescriptorHandleを使えないためチェックをしておく
