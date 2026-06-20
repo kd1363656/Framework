@@ -88,7 +88,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc, 
 																				 &l_clearValue, 
-																				 k_initialResourceState,
+																				 k_defaultResourceState,
 																				 m_gpuResource),
 																				 "RenderTargetTexture用TextureResourceの作成に失敗しました。",
 																				 false);
@@ -211,7 +211,7 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	m_width  = Constant::k_emptyTextureWidth;
 	m_height = Constant::k_emptyTextureHeight;
 
-	m_currentResourceState = k_initialResourceState;
+	m_currentResourceState = k_defaultResourceState;
 
 	return true;
 }

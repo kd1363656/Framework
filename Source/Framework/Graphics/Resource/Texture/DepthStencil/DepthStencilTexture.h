@@ -56,11 +56,11 @@ namespace FWK::Graphics
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		static constexpr D3D12_RESOURCE_STATES k_initialResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
 		Struct::GPUResource m_gpuResource = {};
 
-		D3D12_RESOURCE_STATES m_currentResourceState = k_initialResourceState;
+		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
 		DXGI_FORMAT m_format = Constant::k_defaultDepthStencilTextureFormat;
 

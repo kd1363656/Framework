@@ -55,7 +55,7 @@ namespace FWK::Graphics
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		static constexpr D3D12_RESOURCE_STATES k_initialResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
+		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
 
 		static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
 
@@ -71,7 +71,7 @@ namespace FWK::Graphics
 
 		Struct::GPUResource m_gpuResource = {};
 
-		D3D12_RESOURCE_STATES m_currentResourceState = k_initialResourceState;
+		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
 		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
 
