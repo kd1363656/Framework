@@ -8,13 +8,6 @@ struct StaticModelVertex
     float2 uv;
 };
 
-cbuffer CBCameraPass : register(b0)
-{
-    row_major matrix g_viewMatrix;
-    row_major matrix g_projectionMatrix;
-    row_major matrix g_viewProjectionMatrix;
-};
-
 cbuffer CBStaticModelPerObject : register(b1)
 {
     row_major matrix g_worldMatrix;
@@ -40,3 +33,16 @@ cbuffer CBStaticModelPerObject : register(b1)
 static const uint k_staticModelTriangleVertexCount = 3U;
 
 SamplerState g_baseColorSampler : register(s0);
+
+// StaticModelのLocal座標をWorld座標へ変換する
+float3 TransformStaticModelLocalPositionToWorld(const float3 a_localPosition)
+{
+    return mul(float4(a_localPosition, k_modelPositionVectorElementW), g_worldMatrix).xyz;
+}
+
+// StaticModelのLocal方向ベクトルをWorld方向ベクトルへ変換する
+// 方向ベクトルなのでwは0.0にする、これにより、移動成分の影響を受けない
+float3 TransformStaticModelLocalDirectionToWorld(const float3 a_localDirection)
+{
+    return normalize(mul(float4(a_localDirection, k_modelDirectionVectorElementW), g_worldMatrix).xyz);
+}

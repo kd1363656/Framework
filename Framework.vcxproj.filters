@@ -1979,9 +1979,6 @@
     <DXCTask Include="Asset\Shader\Final\FinalColor_PS.hlsl">
       <Filter>Asset\Shader\Final</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_AS.hlsl">
-      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
-    </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
