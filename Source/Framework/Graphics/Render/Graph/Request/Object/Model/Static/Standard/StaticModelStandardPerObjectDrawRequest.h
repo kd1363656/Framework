@@ -30,3 +30,5 @@ namespace FWK::Graphics
 		FWK_DEFINE_TYPE_INFO(StaticModelStandardPerObjectDrawRequest, DrawRequestPerObjectBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DrawRequestPerObjectSharedFactory, FWK::Graphics::StaticModelStandardPerObjectDrawRequest)
