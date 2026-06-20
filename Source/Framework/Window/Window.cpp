@@ -392,11 +392,13 @@ void FWK::Window::ApplyWindowStyle()
 	if (m_windowStyle == Enum::WindowStyle::Normal)
 	{
 		ApplyNormalWindowStyle();
+
 		return;
 	}
 	else if (m_windowStyle == Enum::WindowStyle::BorderlessFullScreen)
 	{
 		ApplyBorderlessFullScreenWindowStyle();
+
 		return;
 	}
 	else if (m_windowStyle == Enum::WindowStyle::None)
@@ -519,9 +521,12 @@ HINSTANCE FWK::Window::FetchVALInstanceHandle() const
 DWORD FWK::Window::FetchVALWindowStyle() const
 {
 	// 持っているタグから返すウィンドウスタイルを判定する
-	if      (m_windowStyle == Enum::WindowStyle::Normal)		       { return k_generalWindowStyle; }
+	if      (m_windowStyle == Enum::WindowStyle::Normal)		           { return k_generalWindowStyle; }
 	else if	(m_windowStyle == Enum::WindowStyle::BorderlessFullScreen) { return k_borderlessFullScreenWindowStyle; }
-	else if (m_windowStyle == Enum::WindowStyle::None)				   { FWK_ASSERT_RETURN_VALUE("ウィンドウスタイルが無効値です。取得に失敗しました。", k_generalWindowStyle); }
+	else if (m_windowStyle == Enum::WindowStyle::None)				   
+	{
+		FWK_ASSERT_RETURN_VALUE("ウィンドウスタイルが無効値です。取得に失敗しました。", k_generalWindowStyle); 
+	}
 
 	FWK_ASSERT_RETURN_VALUE("ウィンドウスタイルの取得に失敗しました。", k_generalWindowStyle);
 }

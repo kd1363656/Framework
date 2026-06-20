@@ -1284,13 +1284,13 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\WindowFileUtility.h">
+    <ClInclude Include="Source\Framework\Window\Utility\CanLoadFileUtility.h">
       <Filter>Source\Framework\Window\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Utility\WindowStringUtility.h">
       <Filter>Source\Framework\Window\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowFileUtilityConstant.h">
+    <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\JsonLoadAndSaveFileUtilityConstant.h">
       <Filter>Source\Framework\Window\Utility\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Utility\Definition\Constant\WindowStringUtilityConstant.h">
@@ -1637,6 +1637,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Window\Utility\JsonLoadAndSaveFileUtility.h">
+      <Filter>Source\Framework\Window\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
