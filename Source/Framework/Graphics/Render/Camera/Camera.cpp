@@ -61,9 +61,16 @@ void FWK::Graphics::Camera::SetProjectionMatrix(const float a_aspectRatio,
 	m_cbCameraPass->m_nearClip = a_nearClip;
 	m_cbCameraPass->m_farClip  = a_farClip;
 
+	// 縦方向FOVの角度を算出する
+	// FOVYは画面上端から画面下端までの全体角度なので、
+	// 画面中央から上端までの片側角度にするために半分にする
 	const float l_halfFOVYRadian = l_fovYRadian * k_halfFOVScale;
 
+	// Z = 1.0の位置で、画面中央から上端までの高さを求める
 	m_cbCameraPass->m_tanHalfFOVY = std::tan(l_halfFOVYRadian);
+
+	// Z = 1.0の位置で、画面中央から右端までの幅を求める
+	// 横方向の広さは、縦方向の半分の高さに描画画面ののアスペクト比を掛けることで求まる
 	m_cbCameraPass->m_tanHalfFOVX = m_cbCameraPass->m_tanHalfFOVY * a_aspectRatio;
 
 	UpdateViewProjectionMatrix();

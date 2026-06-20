@@ -693,8 +693,14 @@ if "$(Configuration)"=="Debug" (
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl" />
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl" />
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
