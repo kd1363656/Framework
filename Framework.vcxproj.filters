@@ -664,12 +664,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture">
       <UniqueIdentifier>{69aea790-c6a9-4dcf-8b75-7d98d33206b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter">
-      <UniqueIdentifier>{65aa115b-4360-4662-b5cb-e3c626754f6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json">
-      <UniqueIdentifier>{f84a831e-a8d4-4df2-b5ab-eb4d22c5434d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
       <UniqueIdentifier>{17f6924d-3d46-45ba-acb7-e4c4b9dbce7b}</UniqueIdentifier>
     </Filter>
@@ -687,12 +681,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias">
       <UniqueIdentifier>{d04c25fa-ec2c-4bb0-8a63-0bd9c38ac7ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition">
-      <UniqueIdentifier>{d2f1d955-0c29-4d3d-a779-15fc431f13b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum">
-      <UniqueIdentifier>{e6972d1e-afaa-43bc-8b36-a069ebae1c8d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter">
       <UniqueIdentifier>{d4675052-3549-4c50-aeee-e7e86bc7a35d}</UniqueIdentifier>
@@ -1011,6 +999,27 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility">
       <UniqueIdentifier>{4fcb0441-3a86-40ad-ae57-133119ed3e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget">
+      <UniqueIdentifier>{e76d2125-bcc7-4cc6-9e69-0b1880b16370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition">
+      <UniqueIdentifier>{d2f1d955-0c29-4d3d-a779-15fc431f13b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition\Enum">
+      <UniqueIdentifier>{e6972d1e-afaa-43bc-8b36-a069ebae1c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter">
+      <UniqueIdentifier>{65aa115b-4360-4662-b5cb-e3c626754f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json">
+      <UniqueIdentifier>{f84a831e-a8d4-4df2-b5ab-eb4d22c5434d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\Utility">
+      <UniqueIdentifier>{7be15b07-e817-4b21-9420-f75b90077967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil">
+      <UniqueIdentifier>{42bc3934-d686-4be5-a8d7-153168758c18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1419,12 +1428,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Definition\Constant\RenderTargetTextureConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\RenderTargetPassTextureJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json\Utility</Filter>
     </ClInclude>
@@ -1436,9 +1439,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum\RenderGraphPassTextureEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
@@ -1668,6 +1668,21 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsValidTextureUtility.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\RenderTargetPassTexture.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition\Enum\RenderGraphPassTextureEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\RenderTargetPassTextureJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\Utility\ColorJsonUtility.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1874,12 +1889,6 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTargetPassTexture.cpp">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\RenderTargetPassTextureJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
     </ClCompile>
@@ -1969,6 +1978,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\RenderTargetPassTexture.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\RenderTargetPassTextureJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

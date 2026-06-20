@@ -226,10 +226,13 @@
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
-#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Definition/Enum/RenderGraphPassTextureEnum.h"
-#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Converter/Json/Utility/RenderTargetPassTextureJsonUtility.h"
-#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/Converter/Json/RenderTargetPassTextureJsonConverter.h"
-#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTargetPassTexture.h"
+#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Definition/Enum/RenderGraphPassTextureEnum.h"
+#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/Utility/ColorJsonUtility.h"
+#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/RenderTargetPassTextureJsonConverter.h"
+#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/RenderTargetPassTexture.h"
+
+#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/DepthStencilPassTexture.h"
+
 #include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/RenderGraphFrameResource.h"
 #include "Graphics/Render/Frame/FrameResource.h"
