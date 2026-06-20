@@ -71,13 +71,13 @@ void FWK::Scene::INIT()
 
 void FWK::Scene::Update()
 {
-	if (GetAsyncKeyState('B'))
+	if (GetAsyncKeyState('1'))
 	{
 		m_texture			    = nullptr;
 		m_spriteDrawRequestData = nullptr;
 	}
 
-	if (GetAsyncKeyState('A'))
+	if (GetAsyncKeyState('2'))
 	{
 		m_staticModel					 = nullptr;
 		m_staticModelStandardDrawRequest = nullptr;

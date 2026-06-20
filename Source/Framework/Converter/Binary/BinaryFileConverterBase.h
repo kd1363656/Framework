@@ -21,7 +21,7 @@ namespace FWK::Converter
 
 	protected:
 
-		bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath)										  const;
+		bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
 		
 		std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath) const;
 
@@ -143,6 +143,9 @@ namespace FWK::Converter
 		void ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const;
 		void ReadStringBinaryData (const std::uint64_t& a_stringBinaryFileSize,  std::string&  a_string,  std::uint64_t& a_memoryReadOffset) const;
 
+		static constexpr SIZE_T k_mapEntireFileSize   = 0ULL;
+		static constexpr SIZE_T k_flushEntireViewSize = 0ULL;
+
 		static constexpr std::uint64_t k_initialMemoryReadOffset  = 0ULL;
 		static constexpr std::uint64_t k_initialMemoryWriteOffset = 0ULL;
 
@@ -154,26 +157,23 @@ namespace FWK::Converter
 
 		static constexpr std::uint64_t k_singleBinaryElementCount = 1ULL;
 
-		static constexpr SIZE_T k_mapEntireFileSize   = 0ULL;
-		static constexpr SIZE_T k_flushEntireViewSize = 0ULL;
-		
-		static constexpr std::uint32_t k_highDWORDShiftBitCount = 32U;
-
 		static constexpr DWORD k_fileSizeHigh				   = 0UL;
 		static constexpr DWORD k_mappingMaxSizeHighUseFileSize = 0UL;
 		static constexpr DWORD k_mappingMaxSizeLowUseFileSize  = 0UL;
 		static constexpr DWORD k_viewFileOffsetHighFromBegin   = 0UL;
 		static constexpr DWORD k_viewFileOffsetLowFromBegin    = 0UL;
-		static constexpr DWORD k_noFileShareMode			   = 0UL;
+		static constexpr DWORD k_noFileShareMode			       = 0UL;
+
+		static constexpr std::uint32_t k_highDWORDShiftBitCount = 32U;
 
 		static constexpr bool k_isInitialWritable    = false;
 		static constexpr bool k_isReadOnlyMappedFile = false;
 		static constexpr bool k_isWriteMappedFile    = true;
 
-		std::uint8_t* m_mappedData;
-
 		HANDLE m_fileHandle;
 		HANDLE m_fileMappingHandle;
+
+		std::uint8_t* m_mappedData;
 
 		std::uint64_t m_mappedDataSize;
 
