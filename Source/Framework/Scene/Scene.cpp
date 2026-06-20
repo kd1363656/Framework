@@ -52,6 +52,8 @@ void FWK::Scene::INIT()
 	// モデル
 	m_staticModel->Load("Asset/Model/Antike.fbx");
 
+	m_staticModelStandardDrawRequest->m_worldMatrix = TypeAlias::Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90.0F));
+
 	m_staticModelStandardDrawRequest->m_staticModelRecord = m_staticModel->GetREFStaticModelRecord();
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardPerObjectDrawRequest>().lock();

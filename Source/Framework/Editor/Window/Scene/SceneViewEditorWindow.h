@@ -30,7 +30,7 @@ namespace FWK::Editor
 
 		static constexpr ImTextureID k_invalidSceneViewTextureID = {};
 
-		TypeAlias::DescriptorIndex m_imGuiSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList = {};
 
 		FWK_DEFINE_TYPE_INFO(SceneViewEditorWindow, EditorWindowBase)
 	};

@@ -51,6 +51,8 @@ namespace FWK::Graphics
 		const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
 		const auto& GetREFDirectCommandList () const { return m_directCommandList; }
 
+		const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
+
 		auto& GetMutableREFSwapChain  () { return m_swapChain; }
 		auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 		

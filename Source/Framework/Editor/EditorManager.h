@@ -20,7 +20,7 @@ namespace FWK::Editor
 		void LoadCONFIG    ();
 		void PostLoadCONFIG() const;
 
-		void DrawEdtor();
+		void DrawEditor();
 		
 		void SaveCONFIG() const;
 	

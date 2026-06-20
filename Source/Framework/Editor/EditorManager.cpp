@@ -110,7 +110,7 @@ void FWK::Editor::EditorManager::PostLoadCONFIG() const
 	}
 }
 
-void FWK::Editor::EditorManager::DrawEdtor()
+void FWK::Editor::EditorManager::DrawEditor()
 {
 	const auto& l_graphicsManager    = Graphics::GraphicsManager::GetInstance ();
 	const auto& l_renderer			 = l_graphicsManager.GetREFRenderer		  ();
