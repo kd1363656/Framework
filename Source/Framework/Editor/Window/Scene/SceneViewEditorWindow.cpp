@@ -28,7 +28,7 @@ void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
 		// (実際にバックバッファに描画する際に使用するガンマ補正などを適用したレンダーターゲットテクスチャ)
 		const auto& l_renderTargetPassTexture = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(Enum::RenderGraphRenderTargetType::FinalColor).lock();
 
-		FWK_ASSERT_RETURN_IF_FAILED(!l_frameResource, "レンダーターゲットパステクスチャの取得に失敗しており、PostDeserialize処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF_FAILED(!l_renderTargetPassTexture, "レンダーターゲットパステクスチャの取得に失敗しており、PostDeserialize処理に失敗しました。");
 
 		// RenderTargetTexture本体を取得する
 		const auto& l_renderTargetTexture = l_renderTargetPassTexture->GetREFRenderTargetTexture();

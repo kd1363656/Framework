@@ -87,8 +87,9 @@ namespace FWK::Graphics
 		void SetupPassRenderTarget                   (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)		  const;
 		bool SetupPassRenderTargetAndDepthStencil	 (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)       const;
 
-		bool IsWriteRenderTargetAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-		bool IsWriteDepthStencilAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+		bool IsWriteBackBufferAccess			     (const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+		bool IsWriteRenderTargetPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
+		bool IsWriteDepthStencilPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 
 		void TransitionPassResource                   (const RenderGraphPassBase&				a_pass,		               Renderer&		     a_renderer)									 const;
 		bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess,          Renderer&		     a_renderer)									 const;

@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	template <typename ConstantBufferType, Enum::RenderGraphResourceType ResourceType>
+	template <typename ConstantBufferType, Enum::RenderGraphRenderTargetType RenderTarget>
 	class DrawRequestRenderTargetPassBase : public DrawRequestPassBase
 	{
 	public:
@@ -13,7 +13,7 @@ namespace FWK::Graphics
 		std::weak_ptr<RenderTargetPassTexture> FetchVALRenderTargetPassTexture(const FrameResource& a_frameResource) const
 		{
 			const auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource           ();
-			const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(ResourceType);
+			const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(RenderTarget);
 
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_renderTargetPassTexture.expired(), "レンダーグラフフレームリソースのレンダーターゲットパステクスチャが無効になっており、レンダーターゲットパステクスチャの取得に失敗しました。", {});
 

@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class FinalColorRenderTargetPassDrawRequest final : public DrawRequestRenderTargetPassBase<Struct::CBFinalColorRenderTargetPass, Enum::RenderGraphResourceType::SceneColor>
+	class FinalColorRenderTargetPassDrawRequest final : public DrawRequestRenderTargetPassBase<Struct::CBFinalColorRenderTargetPass, Enum::RenderGraphRenderTargetType::SceneColor>
 	{
 	public:
 
