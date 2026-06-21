@@ -1701,6 +1701,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2008,6 +2011,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
