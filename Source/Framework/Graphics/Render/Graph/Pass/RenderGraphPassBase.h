@@ -27,13 +27,13 @@ namespace FWK::Graphics
 
 	protected:
 
-		void WriteBackBuffer(const Enum::RenderGraphResourceUsage a_usage);
+		void WriteBackBuffer(const Enum::RenderGraphResourceUsage a_beforUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
-		void ReadRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_usage);
-		void ReadDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_usage);
+		void ReadRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
+		void ReadDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
-		void WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_usage);
-		void WriteRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_usage);
+		void WriteRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
+		void WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
 		std::weak_ptr<RootSignature> SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
 
@@ -43,7 +43,8 @@ namespace FWK::Graphics
 							   const Enum::RenderGraphRenderTargetType a_renderTargetType,
 							   const Enum::RenderGraphDepthStencilType a_depthStencilType,
 							   const Enum::RenderGraphAccessType       a_accessType,
-							   const Enum::RenderGraphResourceUsage    a_usage);
+							   const Enum::RenderGraphResourceUsage    a_beforeUsage,
+							   const Enum::RenderGraphResourceUsage    a_afterUsage);
 
 		std::vector<Struct::RenderGraphResourceAccess> m_resourceAccessList = {};
 

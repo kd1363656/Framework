@@ -22,6 +22,7 @@ namespace FWK::Enum
 	enum class RenderGraphResourceUsage
 	{
 		Invalid,
+		None,
 		RenderTarget,
 		PixelShaderResource,
 		DepthWrite,
@@ -33,6 +34,7 @@ namespace FWK::Enum
 	(
 		RenderGraphResourceUsage,
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Invalid),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::None),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::RenderTarget),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::PixelShaderResource),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::DepthWrite),

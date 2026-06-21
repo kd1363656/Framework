@@ -149,13 +149,16 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 	{
 		if (!l_pass) { continue; }
 		
-		// Passが宣言しているResourceAccessListを見て、実行直前に必要な状態へ自動遷移する
-		TransitionPassResource(*l_pass, a_renderer);
+		// Pass実行前に、ResourceAccessのbeforeUsageへ遷移する
+		TransitionPassResourceBefore(*l_pass, a_renderer);
 
 		// PassのWriteResourceを見て、RenderGraph側でRTVを自動セットする
 		SetupPassRenderTarget(a_resourceContext, *l_pass, a_renderer);
 
 		l_pass->Execute(a_renderer, *this);
+
+		// Pass実行後に、ResourceAccessのafterUsageへ遷移する
+		TransitionPassResourceAfter(*l_pass, a_renderer);
 	}
 }
 void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
@@ -471,9 +474,9 @@ bool FWK::Graphics::RenderGraph::SetupPassRenderTargetAndDepthStencil(const Reso
 
 bool FWK::Graphics::RenderGraph::IsWriteBackBufferAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-	if (!a_resourceAccess.m_isBackBuffer									||
-		a_resourceAccess.m_accessType != Enum::RenderGraphAccessType::Write ||
-		a_resourceAccess.m_usage      != Enum::RenderGraphResourceUsage::RenderTarget) 
+	if (!a_resourceAccess.m_isBackBuffer									 ||
+		a_resourceAccess.m_accessType  != Enum::RenderGraphAccessType::Write ||
+		a_resourceAccess.m_beforeUsage != Enum::RenderGraphResourceUsage::RenderTarget) 
 	{
 		return false;
 	}
@@ -485,7 +488,7 @@ bool FWK::Graphics::RenderGraph::IsWriteRenderTargetPassTextureAccess(const Stru
 	if (a_resourceAccess.m_isBackBuffer												   ||
 		a_resourceAccess.m_renderTargetType == Enum::RenderGraphRenderTargetType::None ||
 		a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write	   ||
-		a_resourceAccess.m_usage            != Enum::RenderGraphResourceUsage::RenderTarget)	
+		a_resourceAccess.m_beforeUsage      != Enum::RenderGraphResourceUsage::RenderTarget)
 	{
 		return false; 
 	}
@@ -495,13 +498,24 @@ bool FWK::Graphics::RenderGraph::IsWriteRenderTargetPassTextureAccess(const Stru
 bool FWK::Graphics::RenderGraph::IsWriteDepthStencilPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
 	if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None ||
-		a_resourceAccess.m_accessType      != Enum::RenderGraphAccessType::Write       ||
-		a_resourceAccess.m_usage           != Enum::RenderGraphResourceUsage::DepthWrite)
+		a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write       ||
+		a_resourceAccess.m_beforeUsage      != Enum::RenderGraphResourceUsage::DepthWrite)
 	{
 		return false;
 	}
 
 	return true;
+}
+
+void FWK::Graphics::RenderGraph::TransitionPassResourceBefore(const RenderGraphPassBase& a_pass, Renderer& a_renderer) const
+{}
+
+void FWK::Graphics::RenderGraph::TransitionPassResourceAfter(const RenderGraphPassBase & a_pass, Renderer & a_renderer) const
+{}
+
+bool FWK::Graphics::RenderGraph::TransitionBackBufferResource(const Struct::RenderGraphResourceAccess & a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, Renderer & a_renderer) const
+{
+	return false;
 }
 
 void FWK::Graphics::RenderGraph::TransitionPassResource(const RenderGraphPassBase& a_pass, Renderer& a_renderer) const
@@ -547,6 +561,14 @@ void FWK::Graphics::RenderGraph::TransitionBackBufferResource(const DirectComman
 
 	// 状態遷移後の状態を格納
 	a_backBuffer.m_currentResourceState = a_afterState;
+}
+bool FWK::Graphics::RenderGraph::TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, const Renderer& a_renderer)
+{
+	return false;
+}
+bool FWK::Graphics::RenderGraph::TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, const Renderer& a_renderer)
+{
+	return false;
 }
 bool FWK::Graphics::RenderGraph::TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Renderer& a_renderer) const
 {
