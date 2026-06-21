@@ -27,7 +27,7 @@ void FWK::Scene::INIT()
 		m_staticModelStandardDrawRequest = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>();
 	}
 
-		  auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
+	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
 	const auto& l_renderGraph     = l_renderer.GetREFRenderGraph		  ();
 
@@ -51,8 +51,6 @@ void FWK::Scene::INIT()
 
 	// モデル
 	m_staticModel->Load("Asset/Model/Antike.fbx");
-
-	m_staticModelStandardDrawRequest->m_worldMatrix = TypeAlias::Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90.0F));
 
 	m_staticModelStandardDrawRequest->m_staticModelRecord = m_staticModel->GetREFStaticModelRecord();
 

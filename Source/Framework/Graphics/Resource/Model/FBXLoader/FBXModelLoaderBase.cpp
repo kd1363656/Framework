@@ -210,17 +210,10 @@ ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const
 	// ライティング計算では長さ1の法線を前提にするため、読み込み時点で正規化しておく
 	l_loadOptions.normalize_normals = true;
 
-	// use_root_transform;
-	// trueにするとufbx側でroot_transformが適用される
-	// 今回は自作エンジン側で頂点 / 法線 / 接線 / Node / Boneを同じ変換規則で揃えるためfalseにする
-	l_loadOptions.use_root_transform = false;
-
-	// 座標系変換
-	// +X = 右
-	// +Y = Forward
-	// +Z = Up
-	// ufbxのfrontはforwardの逆なのでfront = -Y
-	l_loadOptions.target_axes = { UFBX_COORDINATE_AXIS_POSITIVE_X, UFBX_COORDINATE_AXIS_POSITIVE_Z, UFBX_COORDINATE_AXIS_NEGATIVE_Y };
+	// normalize_tangetns
+	// これを true にしておくと、NormalMapを使ったPBRライティングで
+	// 接線の長さが原因のライティング崩れを防ぎやすくなる。
+	l_loadOptions.normalize_tangents = true;
 
 	// 単位変換
 	// 変換後は1.0 = 1mとして扱う
@@ -234,9 +227,6 @@ ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const
 	// FBXのGeometryTransformもGeometry側へ反映する
 	// これにより、FBX特有の「Geometryだけに聞くTransform」を扱いやすくする
 	l_loadOptions.geometry_transform_handling = UFBX_GEOMETRY_TRANSFORM_HANDLING_MODIFY_GEOMETRY;
-
-	// root_transformを自前で指定する方式は使わない
-	l_loadOptions.use_root_transform = false;
 
 	return l_loadOptions;
 }
