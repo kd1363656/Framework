@@ -76,12 +76,6 @@ namespace FWK::Graphics
 
 		void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
 
-		void ClearCurrentFrameRenderTargetPassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer)														const;
-		bool ClearRenderTargetPassTexture                (const ResourceContext& a_resourceContext, const Renderer& a_renderer, RenderTargetPassTexture& a_renderTargetPassTexture) const;
-
-		void ClearCurrentFrameDepthStencilPassTextureList(const ResourceContext& a_resourceContext, const Renderer& a_renderer)														const;
-		bool ClearDepthStencilPassTexture                (const ResourceContext& a_resourceContext, const Renderer& a_renderer, DepthStencilPassTexture& a_depthStencilPassTexture) const;
-
 		bool SetupBackBufferRenderTarget             (const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 		bool SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
 		void SetupPassRenderTarget                   (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)		  const;
@@ -130,6 +124,8 @@ namespace FWK::Graphics
 
 		std::vector<std::shared_ptr<DrawRequestPassBase>>      m_drawRequestPassList      = {};
 		std::vector<std::shared_ptr<DrawRequestPerObjectBase>> m_drawRequestPerObjectList = {};
+
+		RenderGraphResourceClearer m_resourceClearer = {};
 
 		Converter::RenderGraphJsonConverter m_jsonConverter = {};
 	};
