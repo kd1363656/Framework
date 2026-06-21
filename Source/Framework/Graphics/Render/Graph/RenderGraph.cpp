@@ -249,11 +249,7 @@ void FWK::Graphics::RenderGraph::ClearCurrentFrameRenderTargetPassTextureList(co
 
 	for (const auto& l_renderTargetPassTexture : l_renderGraphFrameResource.GetREFRenderTargetPassTextureList())
 	{
-		FWK_ASSERT_RETURN_IF_FAILED(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderTargetPassTextureのClearに失敗しました。");
-
-		// クリアを毎フレームすべきでないレンダーターゲットテクスチャはクリアしない
-		if (l_renderTargetPassTexture->GetVALIsSkipClearOnBeginFrame()) { continue; }
-
+		FWK_ASSERT_RETURN_IF_FAILED(!l_renderTargetPassTexture,																  "RenderTargetPassTextureが無効のため、RenderTargetPassTextureのClearに失敗しました。");
 		FWK_ASSERT_RETURN_IF_FAILED(!ClearRenderTargetPassTexture(a_resourceContext, a_renderer, *l_renderTargetPassTexture), "RenderTargetPassTextureのClearに失敗しました。");
 	}
 }
@@ -294,12 +290,7 @@ void FWK::Graphics::RenderGraph::ClearCurrentFrameDepthStencilPassTextureList(co
 
 	for (const auto& l_depthStencilPassTexture : l_renderGraphFrameResource.GetREFDepthStencilPassTextureList())
 	{
-		FWK_ASSERT_RETURN_IF_FAILED(!l_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、DepthStencilPassTextureのClearに失敗しました。");
-
-		// Clearをスキップする設定なら何もしない
-		// SceneDepthは基本的に毎フレームClearするので、GraphicsCONFIG.jsonではfalseのままでOK
-		if (l_depthStencilPassTexture->GetVALIsSkipClearOnBeginFrame()) { continue; }
-
+		FWK_ASSERT_RETURN_IF_FAILED(!l_depthStencilPassTexture,																  "DepthStencilPassTextureが無効のため、DepthStencilPassTextureのClearに失敗しました。");
 		FWK_ASSERT_RETURN_IF_FAILED(!ClearDepthStencilPassTexture(a_resourceContext, a_renderer, *l_depthStencilPassTexture), "DepthStencilPassTextureのClearに失敗しました。");
 	}
 }

@@ -29,8 +29,7 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 	a_depthStencilPassTexture.SetWidth (l_width);
 	a_depthStencilPassTexture.SetHeight(l_height);
 
-	a_depthStencilPassTexture.SetIsFixedSize			(l_isFixedSize);
-	a_depthStencilPassTexture.SetIsSkipClearOnBeginFrame(l_isSkipClearOnBeginFrame);
+	a_depthStencilPassTexture.SetIsFixedSize(l_isFixedSize);
 }
 
 nlohmann::json FWK::Converter::DepthStencilPassTextureJsonConverter::Serialize(const Graphics::DepthStencilPassTexture & a_depthStencilPassTexture) const
@@ -44,7 +43,6 @@ nlohmann::json FWK::Converter::DepthStencilPassTextureJsonConverter::Serialize(c
 	l_rootJson[k_widthJsonKey]					 = a_depthStencilPassTexture.GetVALWidth					  ();
 	l_rootJson[k_heightJsonKey]					 = a_depthStencilPassTexture.GetVALHeight			      ();
 	l_rootJson[k_isFixedSizeJsonKey]			 = a_depthStencilPassTexture.GetVALIsFixedSize			  ();
-	l_rootJson[k_isSkipClearOnBeginFrameJsonKey] = a_depthStencilPassTexture.GetVALIsSkipClearOnBeginFrame();
-
+	
 	return l_rootJson;
 }

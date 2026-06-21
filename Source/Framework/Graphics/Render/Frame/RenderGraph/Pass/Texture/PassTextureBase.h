@@ -2,12 +2,12 @@
 
 namespace FWK::Graphics
 {
-	class PassTextureBase final
+	class PassTextureBase
 	{
 	public:
 
-		 PassTextureBase() = default;
-		~PassTextureBase() = default;
+				 PassTextureBase() = default;
+		virtual ~PassTextureBase() = default;
 
 		PassTextureBase(const PassTextureBase&)			  = delete;
 		PassTextureBase(	  PassTextureBase&&) noexcept = default;
@@ -32,8 +32,9 @@ namespace FWK::Graphics
 		
 	protected:
 
-
-
+		UINT FetchVALPassTextureWidth (const UINT a_clientWidth)  const;
+		UINT FetchVALPassTextureHeight(const UINT a_clientHeight) const;
+		
 	private:
 
 		Enum::RenderGraphResourceType m_renderGraphResourceType = Enum::RenderGraphResourceType::Invalid;

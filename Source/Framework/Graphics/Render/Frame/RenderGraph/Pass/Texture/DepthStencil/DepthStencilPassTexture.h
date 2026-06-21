@@ -2,12 +2,12 @@
 
 namespace FWK::Graphics
 {
-	class DepthStencilPassTexture final
+	class DepthStencilPassTexture final : public PassTextureBase
 	{
 	public:
 
-		 DepthStencilPassTexture() = default;
-		~DepthStencilPassTexture() = default;
+		 DepthStencilPassTexture()          = default;
+		~DepthStencilPassTexture() override = default;
 
 		DepthStencilPassTexture(const DepthStencilPassTexture&)			  = delete;
 		DepthStencilPassTexture(	  DepthStencilPassTexture&&) noexcept = default;
@@ -37,14 +37,6 @@ namespace FWK::Graphics
 
 		void SetStencilClearValue(const UINT8 a_set) { m_stencilClearValue = a_set; }
 
-		void SetRenderGraphResourceType(const Enum::RenderGraphResourceType a_set) { m_renderGraphResourceType = a_set; }
-
-		void SetWidth (const UINT a_set) { m_width  = a_set; }
-		void SetHeight(const UINT a_set) { m_height = a_set; }
-
-		void SetIsFixedSize			   (const bool a_set) { m_isFixedSize			  = a_set; }
-		void SetIsSkipClearOnBeginFrame(const bool a_set) { m_isSkipClearOnBeginFrame = a_set; }
-
 		const auto& GetREFDepthStencilTexture() const { return m_depthStencilTexture; }
 
 		auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
@@ -54,14 +46,6 @@ namespace FWK::Graphics
 		auto GetVALDepthClearValue() const { return m_depthClearValue; }
 
 		auto GetVALStencilClearValue() const { return m_stencilClearValue; }
-
-		auto GetVALRenderGraphResourceType() const { return m_renderGraphResourceType; }
-
-		auto GetVALWidth () const { return m_width; }
-		auto GetVALHeight() const { return m_height; }
-
-		bool GetVALIsFixedSize		      () const { return m_isFixedSize; }
-		bool GetVALIsSkipClearOnBeginFrame() const { return m_isSkipClearOnBeginFrame; }
 
 	private:
 
@@ -74,13 +58,5 @@ namespace FWK::Graphics
 		FLOAT m_depthClearValue = Constant::k_defaultDepthClearValue;
 
 		UINT8 m_stencilClearValue = Constant::k_defaultStencilClearValue;
-
-		Enum::RenderGraphResourceType m_renderGraphResourceType = Enum::RenderGraphResourceType::Invalid;
-
-		UINT m_width  = Constant::k_emptyTextureWidth;
-		UINT m_height = Constant::k_emptyTextureHeight;
-
-		bool m_isFixedSize			   = false;
-		bool m_isSkipClearOnBeginFrame = false;
 	};
 }

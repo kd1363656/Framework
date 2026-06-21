@@ -2,12 +2,12 @@
 
 namespace FWK::Graphics
 {
-	class RenderTargetPassTexture final
+	class RenderTargetPassTexture final : public PassTextureBase
 	{
 	public:
 
-		 RenderTargetPassTexture() = default;
-		~RenderTargetPassTexture() = default;
+		 RenderTargetPassTexture()		    = default;
+		~RenderTargetPassTexture() override = default;
 
 		RenderTargetPassTexture(const RenderTargetPassTexture&)			  = delete;
 		RenderTargetPassTexture(	  RenderTargetPassTexture&&) noexcept = default;
@@ -37,15 +37,6 @@ namespace FWK::Graphics
 
 		void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
 
-		void SetRenderGraphResourceType(const Enum::RenderGraphResourceType a_set) { m_renderGraphResourceType = a_set; }
-
-		void SetWidth (const UINT a_set) { m_width  = a_set; }
-		void SetHeight(const UINT a_set) { m_height = a_set; }
-
-		void SetIsFixedSize(const bool a_set) { m_isFixedSize = a_set; }
-
-		void SetIsSkipClearOnBeginFrame(const bool a_set) { m_isSkipClearOnBeginFrame = a_set; }
-
 		const auto& GetREFRenderTargetTexture() const { return m_renderTargetTexture; }
 
 		const auto& GetREFClearColor() const { return m_clearColor; }
@@ -53,14 +44,6 @@ namespace FWK::Graphics
 		auto& GetMutableREFRenderTargetTexture() { return m_renderTargetTexture; }
 
 		auto GetVALFormat() const { return m_format; }
-
-		auto GetVALRenderGraphResourceType() const { return m_renderGraphResourceType; }
-
-		auto GetVALWidth () const { return m_width; }
-		auto GetVALHeight() const { return m_height; }
-
-		bool GetVALIsFixedSize		      () const { return m_isFixedSize; }
-		bool GetVALIsSkipClearOnBeginFrame() const { return m_isSkipClearOnBeginFrame; }
 
 	private:
 
@@ -71,13 +54,5 @@ namespace FWK::Graphics
 		TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
 
 		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
-
-		Enum::RenderGraphResourceType m_renderGraphResourceType = Enum::RenderGraphResourceType::Invalid;
-
-		UINT m_width  = Constant::k_emptyTextureWidth;
-		UINT m_height = Constant::k_emptyTextureHeight;
-
-		bool m_isFixedSize             = false;
-		bool m_isSkipClearOnBeginFrame = false;
 	};
 }
