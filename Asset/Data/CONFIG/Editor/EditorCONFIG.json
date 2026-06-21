@@ -3,5 +3,6 @@
         {
             "EditorWindow": "SceneViewEditorWindow"
         }
-    ]
+    ],
+    "IsDisableDrawEditor": true
 }

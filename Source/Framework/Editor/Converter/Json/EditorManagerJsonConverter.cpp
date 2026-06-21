@@ -8,6 +8,10 @@ void FWK::Converter::EditorManagerJsonConverter::Deserialize(const nlohmann::jso
 	{
 		DeserializeEditorWindow(a_rootJson[k_editorWindowListJsonKey], a_editorManager);
 	}
+
+	const bool l_isDisableDrawEditor = a_rootJson.value("IsDisableDrawEditor", false);
+
+	a_editorManager.SetIsDisableDrawEditor(l_isDisableDrawEditor);
 }
 
 nlohmann::json FWK::Converter::EditorManagerJsonConverter::Serialize(const Editor::EditorManager& a_editorManager) const
@@ -15,6 +19,8 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::Serialize(const Edito
 	nlohmann::json l_rootJson = {};
 
 	l_rootJson[k_editorWindowListJsonKey] = SerializeEditorWindow(a_editorManager);
+
+	l_rootJson[k_isDisableDrawEditorJsonKey] = a_editorManager.GetVALIsDisableDrawEditor();
 
 	return l_rootJson;
 }

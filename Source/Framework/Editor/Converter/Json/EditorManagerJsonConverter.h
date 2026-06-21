@@ -26,5 +26,7 @@ namespace FWK::Converter
 
 		static constexpr std::string_view k_editorWindowListJsonKey = "EditorWindowList";
 		static constexpr std::string_view k_editorWindowJsonKey     = "EditorWindow";
+
+		static constexpr std::string_view k_isDisableDrawEditorJsonKey = "IsDisableDrawEditor";
 	};
 }

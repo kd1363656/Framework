@@ -71,7 +71,11 @@ namespace FWK::Editor
 			return std::static_pointer_cast<WindowType>(l_editorWindow);
 		}
 
+		void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
+
 		const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
+
+		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
 	private:
 
@@ -114,7 +118,7 @@ namespace FWK::Editor
 
 		Converter::EditorManagerJsonConverter m_jsonConverter = {};
 
-		bool m_disableDrawEditor = false;
+		bool m_isDisableDrawEditor = false;
 	};
 }
 

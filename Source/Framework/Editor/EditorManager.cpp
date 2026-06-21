@@ -127,7 +127,7 @@ void FWK::Editor::EditorManager::DrawEditor()
 
 	if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_D, false)) 
 	{
-		m_disableDrawEditor = m_disableDrawEditor ? false : true;
+		m_isDisableDrawEditor = m_isDisableDrawEditor ? false : true;
 
 		ImGui::EndFrame();
 
@@ -137,7 +137,7 @@ void FWK::Editor::EditorManager::DrawEditor()
 	// ログウィンドウがインスタンス化されていないか
 	// 描画が無効化されているなら描画しない
 	if (!m_logEditorWindow ||
-		m_disableDrawEditor)
+		m_isDisableDrawEditor)
 	{
 		ImGui::EndFrame();
 
