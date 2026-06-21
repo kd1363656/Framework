@@ -1036,6 +1036,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum">
       <UniqueIdentifier>{19d7d51e-3f7d-4f4e-aad8-8107793a9072}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Clearer">
+      <UniqueIdentifier>{82c1c472-f305-4b46-8a67-62ca2f6c52ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1707,6 +1710,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum\DepthStencilPassTextureEnum.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Clearer\RenderGraphResourceClearer.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Clearer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2017,6 +2023,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Clearer\RenderGraphResourceClearer.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Clearer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
