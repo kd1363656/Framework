@@ -36,12 +36,6 @@ namespace FWK::Converter
 		 StaticModelBinaryConverter()		   = default;
 		~StaticModelBinaryConverter() override = default;
 
-		StaticModelBinaryConverter(const StaticModelBinaryConverter&)		    = delete;
-		StaticModelBinaryConverter(	     StaticModelBinaryConverter&&) noexcept = delete;
-
-		StaticModelBinaryConverter& operator=(const StaticModelBinaryConverter&)		   = delete;
-		StaticModelBinaryConverter& operator=(	    StaticModelBinaryConverter&&) noexcept = delete;
-
 		bool LoadStaticModelAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
 
 		bool SaveStaticModelAsset(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord);

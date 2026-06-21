@@ -11,12 +11,6 @@ namespace FWK::Graphics
 				 DefaultTexture() = default;
 		virtual ~DefaultTexture() = default;
 
-		DefaultTexture(const DefaultTexture&)			= delete;
-		DefaultTexture(	     DefaultTexture&&) noexcept = default;
-
-		DefaultTexture& operator=(const DefaultTexture&)		   = delete;
-		DefaultTexture& operator=(	    DefaultTexture&&) noexcept = default;
-
 		void Deserialize(const nlohmann::json& a_rootJson);
 
 		nlohmann::json Serialize() const;

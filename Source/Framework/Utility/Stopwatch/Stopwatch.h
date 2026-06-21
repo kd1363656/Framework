@@ -9,12 +9,6 @@ namespace FWK::Utility
 		 Stopwatch();
 		~Stopwatch();
 
-		Stopwatch(const Stopwatch&)			  = delete;
-		Stopwatch(	    Stopwatch&&) noexcept = delete;
-
-		Stopwatch& operator=(const Stopwatch&)			 = delete;
-		Stopwatch& operator=(	   Stopwatch&&) noexcept = delete;
-
 		double FetchElapsedSecond() const;
 
 	private:

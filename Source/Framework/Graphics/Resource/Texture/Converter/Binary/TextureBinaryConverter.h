@@ -46,12 +46,6 @@ namespace FWK::Converter
 		 TextureBinaryConverter()		   = default;
 		~TextureBinaryConverter() override = default;
 
-		TextureBinaryConverter(const TextureBinaryConverter&)	        = delete;
-		TextureBinaryConverter(	     TextureBinaryConverter&&) noexcept = delete;
-
-		TextureBinaryConverter& operator=(const TextureBinaryConverter&)		   = delete;
-		TextureBinaryConverter& operator=(	    TextureBinaryConverter&&) noexcept = delete;
-
 		bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
 
 		bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);

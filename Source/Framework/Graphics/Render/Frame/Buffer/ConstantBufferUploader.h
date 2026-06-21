@@ -12,12 +12,6 @@ namespace FWK::Graphics
 		{}
 		~ConstantBufferUploader() override = default;
 
-		ConstantBufferUploader(const ConstantBufferUploader&)  = delete;
-		ConstantBufferUploader(		 ConstantBufferUploader&&) = delete;
-
-		ConstantBufferUploader& operator=(const ConstantBufferUploader&)  = delete;
-		ConstantBufferUploader& operator=(	    ConstantBufferUploader&&) = delete;
-
 		D3D12_GPU_VIRTUAL_ADDRESS WritePerObject(const ConstantBufferType& a_constantBuffer)
 		{
 			return ConstantBufferUploaderBase::WritePerObject(a_constantBuffer);
