@@ -384,6 +384,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum\DepthStencilPassTextureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\RenderTargetPassTextureJsonConverter.h" />

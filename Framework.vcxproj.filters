@@ -1030,6 +1030,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit">
       <UniqueIdentifier>{c53997df-065d-45ce-a257-91e63e84c745}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition">
+      <UniqueIdentifier>{4c2b144c-19db-4e90-a1cd-59e6d9f8a130}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum">
+      <UniqueIdentifier>{19d7d51e-3f7d-4f4e-aad8-8107793a9072}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1697,6 +1703,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum\DepthStencilPassTextureEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
