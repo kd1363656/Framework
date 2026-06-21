@@ -325,7 +325,7 @@ bool FWK::Graphics::RenderGraph::ClearDepthStencilPassTexture(const ResourceCont
 
 bool FWK::Graphics::RenderGraph::SetupBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-	if (a_resourceAccess.m_resourceType != Enum::RenderGraphResourceType::BackBuffer) { return false; }
+	if (!a_resourceAccess.m_isBackBuffer) { return false; }
 
 	const auto& l_swapChain         = a_renderer.GetREFSwapChain        ();
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
@@ -351,12 +351,14 @@ bool FWK::Graphics::RenderGraph::SetupBackBufferRenderTarget(const ResourceConte
 }
 bool FWK::Graphics::RenderGraph::SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
+	if (a_resourceAccess.m_renderTargetType == Enum::RenderGraphRenderTargetType::None) { return false; }
+
 	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_currentFrameResource, "現在のFrameResourceが無効のため、RenderTargetPassTextureの描画先設定に失敗しました。", false);
 
 	const auto& l_renderGraphFrameResource = l_currentFrameResource->GetREFRenderGraphFrameResource   ();
-	const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(a_resourceAccess.m_resourceType).lock();
+	const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(a_resourceAccess.m_renderTargetType).lock();
 
 	if (!l_renderTargetPassTexture) { return false; }
 

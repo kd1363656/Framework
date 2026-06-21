@@ -37,6 +37,8 @@ namespace FWK::Graphics
 
 		void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
 
+		void SetRenderGraphRenderTargetType(const Enum::RenderGraphRenderTargetType a_set) { m_renderGraphRenderTargetType = a_set; }
+
 		const auto& GetREFRenderTargetTexture() const { return m_renderTargetTexture; }
 
 		const auto& GetREFClearColor() const { return m_clearColor; }
@@ -44,6 +46,8 @@ namespace FWK::Graphics
 		auto& GetMutableREFRenderTargetTexture() { return m_renderTargetTexture; }
 
 		auto GetVALFormat() const { return m_format; }
+
+		auto GetVALRenderGraphRenderTargetType() const { return m_renderGraphRenderTargetType; }
 
 	private:
 
@@ -54,5 +58,7 @@ namespace FWK::Graphics
 		TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
 
 		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
+
+		Enum::RenderGraphRenderTargetType m_renderGraphRenderTargetType = Enum::RenderGraphRenderTargetType::Invalid;
 	};
 }

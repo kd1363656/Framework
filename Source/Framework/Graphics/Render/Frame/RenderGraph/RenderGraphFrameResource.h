@@ -6,8 +6,8 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using RenderTargetPassTextureMap = std::unordered_map<Enum::RenderGraphResourceType, std::weak_ptr<RenderTargetPassTexture>>;
-		using DepthStencilPassTextureMap = std::unordered_map<Enum::RenderGraphResourceType, std::weak_ptr<DepthStencilPassTexture>>;
+		using RenderTargetPassTextureMap = std::unordered_map<Enum::RenderGraphRenderTargetType, std::weak_ptr<RenderTargetPassTexture>>;
+		using DepthStencilPassTextureMap = std::unordered_map<Enum::RenderGraphDepthStencilType, std::weak_ptr<DepthStencilPassTexture>>;
 
 	public:
 
@@ -38,8 +38,8 @@ namespace FWK::Graphics
 		void AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture);
 		void AddDepthStencilPassTexture(const std::shared_ptr<DepthStencilPassTexture>& a_depthStencilPassTexture);
 
-		std::weak_ptr<RenderTargetPassTexture> FindVALRenderTargetPassTexture(const Enum::RenderGraphResourceType a_renderGraphResourceType) const;
-		std::weak_ptr<DepthStencilPassTexture> FindVALDepthStencilPassTexture(const Enum::RenderGraphResourceType a_renderGraphResourceType) const;
+		std::weak_ptr<RenderTargetPassTexture> FindVALRenderTargetPassTexture(const Enum::RenderGraphRenderTargetType a_renderGraphRenderTargetType) const;
+		std::weak_ptr<DepthStencilPassTexture> FindVALDepthStencilPassTexture(const Enum::RenderGraphDepthStencilType a_renderGraphDepthStencilType) const;
 
 		const auto& GetREFRenderTargetPassTextureList() const { return m_renderTargetPassTextureList; }
 		const auto& GetREFDepthStencilPassTextureList() const { return m_depthStencilPassTextureList; }

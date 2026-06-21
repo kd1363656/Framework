@@ -3,10 +3,10 @@
 FWK::Graphics::FinalColorPass::FinalColorPass()
 {
 	// SceneColorはLinear色として読む
-	ReadResource(Enum::RenderGraphResourceType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
+	ReadRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
 
 	// FinalColorには、画面表示用にガンマ補正済みの色を書き込む
-	WriteResource(Enum::RenderGraphResourceType::FinalColor, Enum::RenderGraphResourceUsage::RenderTarget);
+	WriteRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::RenderTarget);
 }
 FWK::Graphics::FinalColorPass::~FinalColorPass() = default;
 
