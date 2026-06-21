@@ -39,7 +39,9 @@ bool FWK::Graphics::RenderGraphResourceClearer::ClearRenderTargetPassTexture(con
 	// RenderTargetをClearするにはD3D12_RESOURCE_STATE_RENDER_TARGET状態である必要がある。
 	// 現在の状態が違う場合だけResourceBarrierを張る。
 	
+	return true;
 }
 bool FWK::Graphics::RenderGraphResourceClearer::ClearDepthStencilPassTexture(const ResourceContext& a_resourceContext, const Renderer& a_renderer, DepthStencilPassTexture& a_depthStencilPassTexture) const
 {
+	return true;
 }

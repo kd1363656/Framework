@@ -3,7 +3,7 @@
 FWK::Graphics::FinalColorPass::FinalColorPass()
 {
 	// SceneColorはLinear色として読む
-	ReadRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
+	ReadRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
 
 	// FinalColorには、画面表示用にガンマ補正済みの色を書き込む
 	WriteRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::RenderTarget);

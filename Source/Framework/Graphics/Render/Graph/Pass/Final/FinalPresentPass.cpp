@@ -3,9 +3,10 @@
 FWK::Graphics::FinalPresentPass::FinalPresentPass()
 {
 	// ファイナルカラーテクスチャ用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
-	ReadRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
+	ReadRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
 
 	// BackBufferのリソース状態をRENDER_TARGETにして書き込む
+	// ImGuiとの兼ね合いもあるのでここではPresent状態に戻さない
 	WriteBackBuffer(Enum::RenderGraphResourceUsage::RenderTarget);
 }
 FWK::Graphics::FinalPresentPass::~FinalPresentPass() = default;
