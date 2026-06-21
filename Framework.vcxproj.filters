@@ -1036,8 +1036,17 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum">
       <UniqueIdentifier>{19d7d51e-3f7d-4f4e-aad8-8107793a9072}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Clearer">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Resource">
+      <UniqueIdentifier>{e12371c8-df9d-42e2-b78b-0cdd4281010e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer">
       <UniqueIdentifier>{82c1c472-f305-4b46-8a67-62ca2f6c52ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner">
+      <UniqueIdentifier>{c878aa93-ef64-4e76-91b4-f29d1664e722}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Resource\Binder">
+      <UniqueIdentifier>{8a432544-f669-4c72-a6a9-b993ad0fc9d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1710,8 +1719,14 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum\DepthStencilPassTextureEnum.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Clearer\RenderGraphResourceClearer.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Clearer</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource\Clearer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource\Transitioner</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2024,8 +2039,14 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Clearer\RenderGraphResourceClearer.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Clearer</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource\Clearer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource\Transitioner</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

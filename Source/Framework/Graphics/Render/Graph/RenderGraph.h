@@ -76,24 +76,6 @@ namespace FWK::Graphics
 
 		void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
 
-		bool SetupBackBufferRenderTarget             (const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-		bool SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer&			   a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-		void SetupPassRenderTarget                   (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)		  const;
-		bool SetupPassRenderTargetAndDepthStencil	 (const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass,	   const Renderer&						    a_renderer)       const;
-
-		bool IsWriteBackBufferAccess			     (const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-		bool IsWriteRenderTargetPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-		bool IsWriteDepthStencilPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-
-		void TransitionPassResourceBefore             (const RenderGraphPassBase&			    a_pass,					   Renderer&					  a_renderer)									        const;
-		void TransitionPassResourceAfter              (const RenderGraphPassBase&			    a_pass,					   Renderer&					  a_renderer)									        const;
-		bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess,    const Enum::RenderGraphResourceUsage a_usage,            Renderer&		      a_renderer)   const;
-		void TransitionBackBufferResource             (const DirectCommandList&				    a_directCommandList, const D3D12_RESOURCE_STATES		  a_afterState,       Struct::BackBuffer& a_backBuffer) const;
-		bool TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,    const Enum::RenderGraphResourceUsage a_usage,      const Renderer&			  a_renderer)   const;
-		bool TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess,    const Enum::RenderGraphResourceUsage a_usage,      const Renderer&			  a_renderer)   const;
-
-		D3D12_RESOURCE_STATES ConvertVALD3D12ResourceState(const Enum::RenderGraphResourceUsage a_usage) const;
-
 		void RemoveExpiredPassList();
 		
 		void AddPassResourceDependencyEdge(const std::size_t&							a_beforePassIndex, 
@@ -125,7 +107,9 @@ namespace FWK::Graphics
 		std::vector<std::shared_ptr<DrawRequestPassBase>>      m_drawRequestPassList      = {};
 		std::vector<std::shared_ptr<DrawRequestPerObjectBase>> m_drawRequestPerObjectList = {};
 
-		RenderGraphResourceClearer m_resourceClearer = {};
+		RenderGraphResourceClearer      m_resourceClearer      = {};
+		RenderGraphResourceTransitioner m_resourceTransitioner = {};
+		RenderGraphResourceBinder		m_resourceBinder	   = {};
 
 		Converter::RenderGraphJsonConverter m_jsonConverter = {};
 	};

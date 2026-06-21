@@ -295,7 +295,9 @@
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 
 #include "Graphics/Render/Graph/Converter/Json/RenderGraphJsonConverter.h"
-#include "Graphics/Render/Graph/Clearer/RenderGraphResourceClearer.h"
+#include "Graphics/Render/Graph/Resource/Clearer/RenderGraphResourceClearer.h"
+#include "Graphics/Render/Graph/Resource/Transitioner/RenderGraphResourceTransitioner.h"
+#include "Graphics/Render/Graph/Resource/Binder/RenderGraphResourceBinder.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
 
 // レンダーラー
