@@ -405,7 +405,7 @@
                 "PipelineState": {
                     "AmplificationShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Model/Model_AS.cso",
+                        "FilePath": "Asset/Shader/Model/Static/StaticModel_AS.cso",
                         "ShaderModelVersionName": "as_6_6"
                     },
                     "BlendDesc": {

@@ -2094,8 +2094,8 @@
     <None Include="Asset\Shader\Model\ModelShader.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
-    <None Include="Asset\Shader\Model\Static\Standard\StaticModelStandardCommon.hlsli">
-      <Filter>Asset\Shader\Model\Static\Standard</Filter>
+    <None Include="Asset\Shader\Model\Static\StaticModel.hlsli">
+      <Filter>Asset\Shader\Model\Static</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2117,8 +2117,8 @@
     <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Model_AS.hlsl">
-      <Filter>Asset\Shader\Model</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\StaticModelAS.hlsl">
+      <Filter>Asset\Shader\Model\Static</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

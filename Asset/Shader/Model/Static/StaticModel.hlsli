@@ -1,4 +1,4 @@
-﻿#include "../../ModelShader.hlsli"
+﻿#include "../ModelShader.hlsli"
 
 struct StaticModelVertex
 {
@@ -7,8 +7,6 @@ struct StaticModelVertex
     float4 tangent;
     float2 uv;
 };
-
-static const uint k_staticModelTriangleVertexCount = 3U;
 
 cbuffer CBStaticModelPerObject : register(b1)
 {

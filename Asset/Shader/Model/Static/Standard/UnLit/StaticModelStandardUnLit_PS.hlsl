@@ -1,4 +1,4 @@
-﻿#include "../StaticModelStandardCommon.hlsli"
+﻿#include "../../StaticModel.hlsli"
 
 float4 main(const ModelMeshOutput a_input) : SV_Target0
 {

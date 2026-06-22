@@ -1,4 +1,4 @@
-﻿#include "../StaticModelStandardCommon.hlsli"
+﻿#include "../../StaticModel.hlsli"
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
