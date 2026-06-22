@@ -58,10 +58,11 @@ namespace FWK::Enum
 	FWK_JSON_SERIALIZE_ENUM
 	(
 		RenderGraphPassExecutionLayer,
-		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Invalid),
-		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Model),
-		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Sprite),
-		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::PostEffect),
-		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Count)
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Invalid),
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Model),
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Sprite),
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::PostEffect),
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::FinalPresent),
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Count)
 	)
 }

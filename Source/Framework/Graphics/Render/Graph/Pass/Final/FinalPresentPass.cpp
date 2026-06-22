@@ -2,6 +2,8 @@
 
 FWK::Graphics::FinalPresentPass::FinalPresentPass()
 {
+	SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::FinalPresent);
+
 	// ファイナルカラーテクスチャ用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
 	ReadRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
 

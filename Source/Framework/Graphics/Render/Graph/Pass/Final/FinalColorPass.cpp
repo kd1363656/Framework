@@ -2,6 +2,8 @@
 
 FWK::Graphics::FinalColorPass::FinalColorPass()
 {
+	SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::PostEffect);
+
 	// SceneColorはLinear色として読む
 	ReadRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
 

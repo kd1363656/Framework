@@ -48,7 +48,7 @@ std::vector<std::size_t> FWK::Utility::TopologicalSorter::Sort(const std::vector
 	while (!l_visitQueue.empty())
 	{
 		// 現在実行順に追加できるノードIndexを取り出す
-		const auto& l_currentNodeIndex = l_visitQueue.front();
+		const auto l_currentNodeIndex = l_visitQueue.front();
 
 		l_visitQueue.pop();
 

@@ -77,25 +77,8 @@ namespace FWK::Graphics
 		void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
 
 		void RemoveExpiredPassList();
-		
-		void AddPassResourceDependencyEdge(const std::size_t&							a_beforePassIndex, 
-										   const std::size_t&							a_afterPassIndex, 
-												 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
-												 std::vector<std::size_t>&				a_passInDegreeList);
 
-		void AddPassDependencyEdge(const std::size_t&							a_beforePassIndex,
-								   const std::size_t&							a_afterPassIndex,
-										 std::vector<std::vector<std::size_t>>& a_passDependencyList, 
-										 std::vector<std::size_t>&				a_passInDegreeList) const;
 
-		bool IsSameRenderGraphResource(const Struct::RenderGraphResourceAccess& a_lhs, const Struct::RenderGraphResourceAccess& a_rhs) const;
-
-		bool IsReadResourceAccess (const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-		bool IsWriteResourceAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
-
-		static constexpr std::size_t k_minPassCountToResolveExecutionOrder = 2ULL;
-
-		static constexpr std::size_t k_nextPassIndexOffset = 1ULL;
 
 		DrawRequestPassMap      m_drawRequestPassMap      = {};
 		DrawRequestPerObjectMap m_drawRequestPerObjectMap = {};
@@ -108,6 +91,7 @@ namespace FWK::Graphics
 		RenderGraphResourceClearer      m_resourceClearer      = {};
 		RenderGraphResourceTransitioner m_resourceTransitioner = {};
 		RenderGraphResourceBinder		m_resourceBinder	   = {};
+		RenderGraphPassSorter			m_passSorter		   = {};
 
 		Converter::RenderGraphJsonConverter m_jsonConverter = {};
 	};

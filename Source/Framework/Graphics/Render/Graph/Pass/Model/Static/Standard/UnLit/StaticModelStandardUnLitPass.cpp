@@ -2,6 +2,8 @@
 
 FWK::Graphics::StaticModelStandardUnLitPass::StaticModelStandardUnLitPass()
 {
+	SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::Model);
+
 	// シーンカラー用レンダーターゲットテクスチャのリソース状態をRENDER_TARGETに遷移してから
 	// シーンカラーテクスチャに書き込む
 	WriteRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::RenderTarget);

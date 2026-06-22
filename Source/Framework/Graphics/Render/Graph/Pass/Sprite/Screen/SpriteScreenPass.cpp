@@ -2,6 +2,10 @@
 
 FWK::Graphics::ScreenSpritePass::ScreenSpritePass()
 {
+	// このPassは画面スプライト描画なのでSpriteレイヤーにする
+	// Modelより後、PostEffectより前に実行される。
+	SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::Sprite);
+
 	// シーンカラー用レンダーターゲットテクスチャのリソース状態をRENDER_TARGETに遷移してから
 	// シーンカラーテクスチャに書き込む
 	WriteRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::RenderTarget);
