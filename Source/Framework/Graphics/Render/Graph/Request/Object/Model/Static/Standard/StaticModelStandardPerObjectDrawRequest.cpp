@@ -39,9 +39,12 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 			// モデル1体ごとのワールド行列
 			l_cbStaticModelPerObject.m_worldMatrix = l_drawRequestPerObject->m_worldMatrix;
 
+			
 			// BackfaceConeCullingでconeAxisをWorld空間へ変換するための行列
 			// coneAxisは位置ではなく向きなので、法線と同じく逆行列の転置で変換する
-			l_cbStaticModelPerObject.m_worldInverseTransposeMatrix = l_drawRequestPerObject->m_worldMatrix.Invert();
+			const auto& l_worldInverseMatrix = l_drawRequestPerObject->m_worldMatrix.Invert();
+
+			l_cbStaticModelPerObject.m_worldInverseTransposeMatrix = l_worldInverseMatrix.Transpose();
 
 			// MehsletBoundsのradiusをWorld空間へ変換するための最大スケール
 			l_cbStaticModelPerObject.m_worldMaxScale = l_worldMaxScale;

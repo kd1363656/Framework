@@ -80,19 +80,19 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
     
     // coneAxisはLocal空間の方向
     // 方向なのでw = 0.0F
-    // さらに法線系の向きなのdえ、非均一スケールを考えて逆行列の転置でWorld空間へ変換する
+    // さらに法線系の向きなので、非均一スケールを考えて逆行列の転置でWorld空間へ変換する
     const float4 l_localConeAxis = float4(l_meshletBounds.coneAxis, k_modelDirectionElementW);
     const float4 l_worldConeAxis = mul   (l_localConeAxis,          g_worldInverseTransposeMatrix);
 
     // View行列はカメラ空間への変換
     // 方向なのでw = 0.0Fとして平行移動の影響を受けないようにする
-    const float4 l_viewConeAxis = mul(float4(normalize(l_worldConeApex.xyz), k_modelDirectionElementW), g_viewMatrix);
+    const float4 l_viewConeAxis = mul(float4(normalize(l_worldConeAxis.xyz), k_modelDirectionElementW), g_viewMatrix);
 
     const float l_viewConeApexLength = length(l_viewConeApex.xyz);
     const float l_viewConeAxisLength = length(l_viewConeAxis.xyz);
 
-    // noirmalize(0)をよける
-    // 込ん子場合は安全側に倒して見える可能性ありとする
+    // normalize(0)をよける
+    // この場合は安全側に倒して見える可能性ありとする
     if (l_viewConeApexLength <= k_modelMeshletCullingEpsilon ||
         l_viewConeAxisLength <= k_modelMeshletCullingEpsilon)
     {
@@ -112,10 +112,10 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
 
 // FrustumCulling / BackfaceConeCullingを実行してどちらの条件にも一致しなければ
 // 描画するようにする
-bool ShouldDispatchStaticModelMeshlet(const uint a_messhletIndex)
+bool ShouldDispatchStaticModelMeshlet(const uint a_meshletIndex)
 {
-    if (!IsVisibleStaticModelMeshletByFrustum(a_messhletIndex) ||
-        IsBackfaceStaticModelMeshletByCone   (a_messhletIndex))
+    if (!IsVisibleStaticModelMeshletByFrustum(a_meshletIndex) ||
+        IsBackfaceStaticModelMeshletByCone   (a_meshletIndex))
     {
         return false;
     }
@@ -133,11 +133,10 @@ void main(uint3 a_groupID : SV_GroupID)
     // ASのa_groupID.xはそのままMeshletIndexとして使える。
     const uint l_meshletIndex = a_groupID.x;
     
-    // Frustum外なら、このMeshletのMeshShaderを起動しない
-    // ここでreturnすると、このASグループは何も描画せずに終了する
+    // Frustum外またはカメラから見て完全に裏向きなら、このMeshletのMeshShaderを起動しない
     const bool l_isVisible = ShouldDispatchStaticModelMeshlet(l_meshletIndex);
     
-    // 見えているMeshletだけMeshSahderにMeshletIndexを渡す
+    // 見えているMeshletだけMeshShaderにMeshletIndexを渡す
     l_payload.meshletIndex = l_meshletIndex;
     
     const uint l_dispatchMeshGroupCountX = l_isVisible ? k_modelAmplificationDispatchMeshGroupCountX : k_modelAmplificationDispatchMeshCulledGroupCountX;
