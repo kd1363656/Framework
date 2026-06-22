@@ -33,6 +33,14 @@ static const uint k_modelMeshShaderThreadCountX = 1U;
 static const uint k_modelMeshShaderThreadCountY = 1U;
 static const uint k_modelMeshShaderThreadCountZ = 1U;
 
+static const uint k_modelAmplificationShaderThreadCountX = 1U;
+static const uint k_modelAmplificationShaderThreadCountY = 1U;
+static const uint k_modelAmplificationShaderThreadCountZ = 1U;
+
+static const uint k_modelAmplificationDispatchMeshGroupCountX = 1U;
+static const uint k_modelAmplificationDispatchMeshGroupCountY = 1U;
+static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
+
 static const uint k_modelSecondPrimitiveVertexOffset = 1U;
 static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
 

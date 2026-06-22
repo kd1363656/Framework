@@ -12,7 +12,7 @@ void main(in    payload  ModelAmplificationPayload a_payload,
     StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
     StructuredBuffer<uint>              l_primitiveIndexBuffer    = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
     
-    // メッシュレットインデックスはメッシュシェーダー起動回数
+    // ASからPayload経由で渡されたMeshletIndexを使う
     const uint         l_meshletIndex = a_payload.meshletIndex;
     const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
     
