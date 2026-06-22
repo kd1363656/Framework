@@ -41,4 +41,27 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Present),
 		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Count)
 	)
+
+	// ※ 注意
+	// このEnumは必ず大まかな種類で分けること(SquarePolygon,Effectなど)
+	// PlayerModelかどうかなどで分けないという意味
+	enum class RenderGraphPassExecutionLayer
+	{
+		Invalid,
+		Model,
+		Sprite,
+		PostEffect,
+		FinalPresent,
+		Count
+	};
+
+	FWK_JSON_SERIALIZE_ENUM
+	(
+		RenderGraphPassExecutionLayer,
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Invalid),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Model),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Sprite),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::PostEffect),
+		FWK_JSON_ENUM_VALUE(RenderGraphResourceUsage::Count)
+	)
 }
