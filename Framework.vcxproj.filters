@@ -1057,6 +1057,9 @@
     <Filter Include="Source\Framework\Utility\Sorter\Topologycal">
       <UniqueIdentifier>{41c48eb4-b70c-4506-ad12-5de1d288cb02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant">
+      <UniqueIdentifier>{d8c46e50-2578-4ee9-aff9-28d0e969d773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1742,6 +1745,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h">
       <Filter>Source\Framework\Utility\Sorter\Topologycal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant\StaticModelStandardPerObjectDrawRequestDataConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

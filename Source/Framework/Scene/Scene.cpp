@@ -52,7 +52,10 @@ void FWK::Scene::INIT()
 	// モデル
 	m_staticModel->Load("Asset/Model/Antike.fbx");
 
-	m_staticModelStandardDrawRequest->m_staticModelRecord = m_staticModel->GetREFStaticModelRecord();
+	// 本来はUpdateなどで更新する
+	m_staticModelStandardDrawRequest->m_staticModelRecord           = m_staticModel->GetREFStaticModelRecord();
+	m_staticModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
+	m_staticModelStandardDrawRequest->m_worldInverseTransposeMatrix = TypeAlias::Math::Matrix::Identity.Transpose();
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardPerObjectDrawRequest>().lock();
 

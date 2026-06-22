@@ -410,6 +410,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct\CBStaticModelPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant\StaticModelStandardPerObjectDrawRequestDataConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct\StaticModelStandardPerObjectDrawRequestDataStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Constant\SpriteScreenPerObjectConstantBufferUploaderConstant.h" />
