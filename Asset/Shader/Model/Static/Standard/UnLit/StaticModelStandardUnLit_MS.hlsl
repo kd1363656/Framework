@@ -2,9 +2,10 @@
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
-void main(uint3 a_groupID : SV_GroupID,
-          out   vertices ModelMeshOutput a_vertexList   [k_modelMaxMeshletVertexCount],
-          out   indices  uint3           a_primitiveList[k_modelMaxMeshletPrimitiveCount])
+void main(in    payload  ModelAmplificationPayload a_payload,
+          out   vertices ModelMeshOutput           a_vertexList   [k_modelMaxMeshletVertexCount],
+          out   indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
+                         uint3                     a_groupID : SV_GroupID)
 {
     StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
@@ -12,7 +13,7 @@ void main(uint3 a_groupID : SV_GroupID,
     StructuredBuffer<uint>              l_primitiveIndexBuffer    = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
     
     // メッシュレットインデックスはメッシュシェーダー起動回数
-    const uint         l_meshletIndex = a_groupID.x;
+    const uint         l_meshletIndex = a_payload.meshletIndex;
     const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
     
     // 出力頂点数、三角形数を設定

@@ -403,6 +403,11 @@
             },
             {
                 "PipelineState": {
+                    "AmplificationShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Asset/Shader/Model/Model_AS.cso",
+                        "ShaderModelVersionName": "as_6_6"
+                    },
                     "BlendDesc": {
                         "AlphaToCoverageEnable": 0,
                         "IndependentBlendEnable": 0,

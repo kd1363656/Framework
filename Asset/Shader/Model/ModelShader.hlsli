@@ -16,6 +16,14 @@ struct ModelMeshOutput
     float2 uv            : TEXCOORD0;
 };
 
+// AmplificationShaderからMeshShaderへ渡すPayload
+// AS1グループ = Meshlet1個なので
+// MeshShaderへ渡す情報は描画するMeshletIndexだけでよい
+struct ModelAmplificationPayload
+{
+    uint meshletIndex;
+};
+
 static const uint k_modelTriangleVertexCount = 3U;
 
 static const uint k_modelMaxMeshletVertexCount    = 64U;

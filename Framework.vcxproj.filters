@@ -2117,5 +2117,8 @@
     <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Model_AS.hlsl">
+      <Filter>Asset\Shader\Model</Filter>
+    </DXCTask>
   </ItemGroup>
 </Project>
