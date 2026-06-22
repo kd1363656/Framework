@@ -27,9 +27,18 @@ struct ModelMeshletBounds
     // Local空間の半径なので、World空間ではg_worldMaxScaleを掛ける
     float radius;
     
+    // BackfaceConeCulling用のコーン頂点位置
+    // BackfaceConeCullingはカメラから見てMeshletの三角形が
+    // 全部裏向きなら描画しないというカリング
+    // その裏向き判定に使う基準位置
     float3 coneApex;
-    float  coneCutoff;
     
+    // BackfaceConeCullin用のしきい値
+    // coneAxisとconeApexからカメラへ向かう方向の内積と比較して使う
+    float coneCutoff;
+    
+    // BackfaceConeCulling用のコーン方向
+    // Meshlet内の三角形群がおおよそどちらを向いているかを表す方向ベクトル
     float3 coneAxis;
     float  padding;
 };
@@ -59,6 +68,8 @@ static const uint k_modelAmplificationDispatchMeshGroupCountX = 1U;
 static const uint k_modelAmplificationDispatchMeshGroupCountY = 1U;
 static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
 
+static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
+
 static const uint k_modelSecondPrimitiveVertexOffset = 1U;
 static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
 
@@ -75,41 +86,3 @@ cbuffer CBCameraPass : register(b0)
     float g_tanHalfFOVX;
     float g_tanHalfFOVY;
 };
-
-// View空間のBoundingSphereがカメラのFrustumに入っているか判定する。
-// 完全に外ならfalse
-// 少しでも重なっているならtrue
-bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_worldRadius)
-{
-    // DirectXの左手系座標ではカメラ前方が+Z
-    // Sphere全体がNearより手前に、Farより奥にあるなら見えない
-    if (a_viewCenter.z + a_worldRadius < g_nearClip ||
-        a_viewCenter.z - a_worldRadius > g_farClip)
-    {
-        return false;
-    }
-
-    // View空間のZ位置における、画面右端までの距離
-    // Zが大きいほど、見える横幅は広がる
-    const float l_halfViewWidth = a_viewCenter.z * g_tanHalfFOVX;
-    
-    // Sphere全体が左外側、右外側にあるなら見えない。
-    if (a_viewCenter.x + a_worldRadius < -l_halfViewWidth ||
-        a_viewCenter.x - a_worldRadius >  l_halfViewWidth)
-    {
-        return false;
-    }
-    
-    // View空間のz位置における、画面上端までの距離。
-    // Zが大きいほど、みえる縦幅は広がる
-    const float l_halfViewHeight = a_viewCenter.z * g_tanHalfFOVY;
-    
-    // Sphere全体が下外側、上外側にあるなら見えない
-    if (a_viewCenter.y + a_worldRadius < -l_halfViewHeight ||
-        a_viewCenter.y - a_worldRadius > l_halfViewHeight)
-    {
-        return false;
-    }
-    
-    return true;
-}
