@@ -562,7 +562,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Library\UFBX\ufbx.cpp" />
+    <ClCompile Include="..\Library\UFBX\ufbx.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)$(Platform)\Library\$(Configuration)\UFBX\%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Platform)\Library\$(Configuration)\UFBX\%(Filename).obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />

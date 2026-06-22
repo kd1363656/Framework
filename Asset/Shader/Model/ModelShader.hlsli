@@ -17,6 +17,8 @@ struct ModelMeshOutput
 };
 
 // ModelのMeshlet1個分のカリング用境界情報
+// もし背面法によるアウトラインなどのシェーダーを実装したければ
+// バックフェースコーンカリング用のフラグを持たせること
 struct ModelMeshletBounds
 {
     // Meshletを囲むBoundingSphereの中心。
@@ -33,7 +35,7 @@ struct ModelMeshletBounds
     // その裏向き判定に使う基準位置
     float3 coneApex;
     
-    // BackfaceConeCullin用のしきい値
+    // BackfaceConeCulling用のしきい値
     // coneAxisとconeApexからカメラへ向かう方向の内積と比較して使う
     float coneCutoff;
     
@@ -73,7 +75,12 @@ static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
 static const uint k_modelSecondPrimitiveVertexOffset = 1U;
 static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
 
-static const float k_modelPositionElementW = 1.0F;
+static const float k_modelPositionElementW  = 1.0F;
+static const float k_modelDirectionElementW = 0.0F;
+
+// normaliaze前に長さ0付近のベクトルを避けるための値。
+// カメラがconeApexのほぼ同位置にある場合などを安全側に倒す。
+static const float k_modelMeshletCullingEpsilon = 0.000001F;
 
 cbuffer CBCameraPass : register(b0)
 {

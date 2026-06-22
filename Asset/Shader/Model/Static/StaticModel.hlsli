@@ -12,6 +12,8 @@ cbuffer CBStaticModelPerObject : register(b1)
 {
     row_major matrix g_worldMatrix;
     
+    row_major matrix g_worldInverseTransposeMatrix;
+    
     float4 g_baseColorFactor;
     
     float g_roughnessFactor;

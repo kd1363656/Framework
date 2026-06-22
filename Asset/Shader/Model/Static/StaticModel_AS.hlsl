@@ -65,6 +65,64 @@ bool IsVisibleStaticModelMeshletByFrustum(const uint a_meshletIndex)
 
 }
 
+// 指定したMeshletがカメラから見て完全に裏向きかを判定する
+bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
+{
+    StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
+    
+    const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
+    
+    // coneApexはLocal空間の位置
+    // 位置なのでw = 1.0FとしてWorld空間へ変換し、さらにView空間へ変換する
+    const float4 l_localConeApex = float4(l_meshletBounds.coneApex, k_modelPositionElementW);
+    const float4 l_worldConeApex = mul   (l_localConeApex, g_worldMatrix);
+    const float4 l_viewConeApex  = mul   (l_worldConeApex, g_viewMatrix);
+    
+    // coneAxisはLocal空間の方向
+    // 方向なのでw = 0.0F
+    // さらに法線系の向きなのdえ、非均一スケールを考えて逆行列の転置でWorld空間へ変換する
+    const float4 l_localConeAxis = float4(l_meshletBounds.coneAxis, k_modelDirectionElementW);
+    const float4 l_worldConeAxis = mul   (l_localConeAxis,          g_worldInverseTransposeMatrix);
+
+    // View行列はカメラ空間への変換
+    // 方向なのでw = 0.0Fとして平行移動の影響を受けないようにする
+    const float4 l_viewConeAxis = mul(float4(normalize(l_worldConeApex.xyz), k_modelDirectionElementW), g_viewMatrix);
+
+    const float l_viewConeApexLength = length(l_viewConeApex.xyz);
+    const float l_viewConeAxisLength = length(l_viewConeAxis.xyz);
+
+    // noirmalize(0)をよける
+    // 込ん子場合は安全側に倒して見える可能性ありとする
+    if (l_viewConeApexLength <= k_modelMeshletCullingEpsilon ||
+        l_viewConeAxisLength <= k_modelMeshletCullingEpsilon)
+    {
+        return false;
+    }
+    
+    // View空間ではカメラ位置が原点なので、
+    // normalize(cone_apex - camera_position)はnormalize(l_viewConeApex.xyz)でよい
+    const float3 l_cameraToConeApexDirection = l_viewConeApex.xyz / l_viewConeApexLength;
+    const float3 l_viewConeAxisDirection     = l_viewConeAxis.xyz / l_viewConeAxisLength;
+    
+    // meshoptimizerのPerspective用判定式
+    // dot(normalize(cone_apex - camera_position), cone_axis) >= cone_cutoff
+    // これを満たすなら、このMeshlet内の三角形群はカメラから見て裏向きと判断できる
+    return dot(l_cameraToConeApexDirection, l_viewConeAxisDirection) >= l_meshletBounds.coneCutoff;
+}
+
+// FrustumCulling / BackfaceConeCullingを実行してどちらの条件にも一致しなければ
+// 描画するようにする
+bool ShouldDispatchStaticModelMeshlet(const uint a_messhletIndex)
+{
+    if (!IsVisibleStaticModelMeshletByFrustum(a_messhletIndex) ||
+        IsBackfaceStaticModelMeshletByCone   (a_messhletIndex))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 // Model共通のAmplificationShader
 [numthreads(k_modelAmplificationShaderThreadCountX, k_modelAmplificationShaderThreadCountY, k_modelAmplificationShaderThreadCountZ)]
 void main(uint3 a_groupID : SV_GroupID)
@@ -77,7 +135,7 @@ void main(uint3 a_groupID : SV_GroupID)
     
     // Frustum外なら、このMeshletのMeshShaderを起動しない
     // ここでreturnすると、このASグループは何も描画せずに終了する
-    const bool l_isVisible = IsVisibleStaticModelMeshletByFrustum(l_meshletIndex);
+    const bool l_isVisible = ShouldDispatchStaticModelMeshlet(l_meshletIndex);
     
     // 見えているMeshletだけMeshSahderにMeshletIndexを渡す
     l_payload.meshletIndex = l_meshletIndex;

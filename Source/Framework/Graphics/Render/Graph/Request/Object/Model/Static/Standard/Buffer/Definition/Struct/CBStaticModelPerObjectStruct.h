@@ -6,6 +6,8 @@ namespace FWK::Struct
 	{
 		TypeAlias::Math::Matrix m_worldMatrix = TypeAlias::Math::Matrix::Identity;
 
+		TypeAlias::Math::Matrix m_worldInverseTransposeMatrix = TypeAlias::Math::Matrix::Identity;
+
 		TypeAlias::Math::Color m_baseColorFactor = Constant::k_colorLess;
 
 		float				       m_roughnessFactor = Constant::k_defaultModelMaterialRoughnessFactor;
