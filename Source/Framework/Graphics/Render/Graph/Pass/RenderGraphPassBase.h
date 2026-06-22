@@ -25,6 +25,8 @@ namespace FWK::Graphics
 
 		const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
 
+		auto GetVALExecutionLayer() const { return m_executionLayer; }
+
 	protected:
 
 		void WriteBackBuffer(const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
@@ -37,6 +39,8 @@ namespace FWK::Graphics
 
 		std::weak_ptr<RootSignature> SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
 
+		void SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer);
+
 	private:
 
 		void AddResourceAccess(const bool						       a_isBackBuffer,
@@ -47,6 +51,8 @@ namespace FWK::Graphics
 							   const Enum::RenderGraphResourceUsage    a_afterUsage);
 
 		std::vector<Struct::RenderGraphResourceAccess> m_resourceAccessList = {};
+
+		Enum::RenderGraphPassExecutionLayer m_executionLayer = Enum::RenderGraphPassExecutionLayer::Invalid;
 
 		FWK_DEFINE_TYPE_INFO_ROOT(RenderGraphPassBase)
 	};

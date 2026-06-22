@@ -95,8 +95,6 @@ namespace FWK::Graphics
 
 		static constexpr std::size_t k_minPassCountToResolveExecutionOrder = 2ULL;
 
-		static constexpr std::size_t k_emptyPassInDegree = 0ULL;
-
 		static constexpr std::size_t k_nextPassIndexOffset = 1ULL;
 
 		DrawRequestPassMap      m_drawRequestPassMap      = {};

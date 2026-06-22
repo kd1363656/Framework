@@ -63,6 +63,15 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::
 	return l_pipelineState->GetREFUseRootSignature();
 }
 
+void FWK::Graphics::RenderGraphPassBase::SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer)
+{
+	FWK_ASSERT_RETURN_IF_FAILED(a_executionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
+								a_executionLayer == Enum::RenderGraphPassExecutionLayer::Count,
+								"RenderGraphPassExecutionLayerが無効となっており、RenderGraphPassExecutionLayerのセットに失敗しました。");
+
+	m_executionLayer = a_executionLayer;
+}
+
 void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const bool						       a_isBackBuffer,
 														   const Enum::RenderGraphRenderTargetType a_renderTargetType,
 														   const Enum::RenderGraphDepthStencilType a_depthStencilType,
