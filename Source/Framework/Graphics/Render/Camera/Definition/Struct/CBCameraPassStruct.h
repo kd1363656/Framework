@@ -12,5 +12,9 @@ namespace FWK::Struct
 		float m_farClip     = Constant::k_defaultFarClip;
 		float m_tanHalfFOVX = Constant::k_defaultTangentHalfFOVX;
 		float m_tanHalfFOVY = Constant::k_defaultTangentHalfFOVY;
+
+		TypeAlias::Math::Vector3 m_cameraWorldPosition = TypeAlias::Math::Vector3::Zero;
+
+		float m_padding = 0.0F;
 	};
 }

@@ -76,7 +76,7 @@ static const uint k_modelSecondPrimitiveVertexOffset = 1U;
 static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
 
 static const uint k_modelPackedPrimitiveIndexByteCount = 4U;
-static const uint k_modelPackedPrimitiveIndexPerUnit   = 4U;
+static const uint k_modelPrimitiveIndexPerUnit         = 4U;
 static const uint k_modelPackedPrimitiveIndexBitCount  = 8U;
 static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
 
@@ -97,4 +97,7 @@ cbuffer CBCameraPass : register(b0)
     float g_farClip;
     float g_tanHalfFOVX;
     float g_tanHalfFOVY;
+    
+    float3 g_cameraWorldPosition;
+    float  g_cameraPassPadding;
 };

@@ -10,4 +10,6 @@ bool FWK::Graphics::LightPassDrawRequest::SetupPassConstantBuffer(const RootSign
 														  a_directCommandList,
 														  a_frameResource,
 														  Enum::RootParameterType::CBCameraPass);
+
+	return true;
 }
