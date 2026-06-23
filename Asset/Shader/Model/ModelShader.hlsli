@@ -83,21 +83,19 @@ static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
 
 static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
 
+static const uint k_modelFirstPrimitiveVertexOffset  = 0U;
 static const uint k_modelSecondPrimitiveVertexOffset = 1U;
 static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
 
-static const uint k_modelPackedPrimitiveIndexByteCount = 4U;
-static const uint k_modelPrimitiveIndexPerUnit         = 4U;
-static const uint k_modelPackedPrimitiveIndexBitCount  = 8U;
+static const uint k_modelPackedPrimitiveIndexBitCount = 8U;
+
+// uint32_tからuint8_t相当のPrimitiveIndexだけを取り出すためのMask。
+// 0xFFU = 下位8bitだけを残す。
 static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
 
-// 次のPack済みuint32_tを読むためのOffset。
-// PrimitiveIndexはuint8_t 4個をuint32_t 1個へPackしている。
-static const uint k_modelNextPackedPrimitiveIndexOffset = 1U;
-
-// 異常時や初期化用の無効PrimitiveIndex。
-// Meshletの最大頂点数は64なので、0xFFFFFFFFは通常のPrimitiveIndexとしては使われない。
-static const uint k_modelInvalidPrimitiveIndex = 0xFFFFFFFFU;
+static const uint k_modelFirstPackedPrimitiveIndexShiftBit  = k_modelFirstPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
+static const uint k_modelSecondPackedPrimitiveIndexShiftBit = k_modelSecondPrimitiveVertexOffset * k_modelPackedPrimitiveIndexBitCount;
+static const uint k_modelThirdPackedPrimitiveIndexShiftBit  = k_modelThirdPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
 
 cbuffer CBCameraPass : register(b0)
 {

@@ -24,11 +24,15 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_vectorElementIndexY = 1ULL;
 		static constexpr std::size_t k_vectorElementIndexZ = 2ULL;
 
-		static constexpr std::size_t k_meshletPrimitiveIndexAlignment = 4ULL;
-
-		static constexpr std::size_t k_packedPrimitiveIndexByteCount = 4ULL;
+		static constexpr std::uint32_t k_firstPrimitiveVertexOffset  = 0U;
+		static constexpr std::uint32_t k_secondPrimitiveVertexOffset = 1U;
+		static constexpr std::uint32_t k_thirdPrimitiveVertexOffset  = 2U;
 
 		static constexpr std::uint32_t k_packedPrimitiveIndexBitCount = 8U;
+
+		static constexpr std::uint32_t k_firstPackedPrimitiveIndexShiftBit  = k_firstPrimitiveVertexOffset  * k_packedPrimitiveIndexBitCount;
+		static constexpr std::uint32_t k_secondPackedPrimitiveIndexShiftBit = k_secondPrimitiveVertexOffset * k_packedPrimitiveIndexBitCount;
+		static constexpr std::uint32_t k_thirdPackedPrimitiveIndexShiftBit  = k_thirdPrimitiveVertexOffset  * k_packedPrimitiveIndexBitCount;
 
 		static constexpr std::uint32_t k_emptyRemainder	= 0U;
 	};

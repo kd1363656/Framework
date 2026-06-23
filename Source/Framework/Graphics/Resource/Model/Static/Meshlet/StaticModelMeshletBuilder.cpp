@@ -96,8 +96,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 
 	// meshoptimizerのPrimitiveIndex配列は4byte境界にそろえて扱うため、
 	// 最後のMeshletで実際に使用したPrimitiveIndex数を4byte境界へ切り上げる
-	const auto& l_alignedLastMeshletPrimitiveIndexCount = Utility::AlignUp(l_lastMeshletPrimitiveIndexCount, k_meshletPrimitiveIndexAlignment);
-	const auto& l_usedPrimitiveIndexCount               = l_lastMeshlet.triangle_offset + l_alignedLastMeshletPrimitiveIndexCount;
+	const auto& l_usedPrimitiveIndexCount = l_lastMeshlet.triangle_offset + l_lastMeshletPrimitiveIndexCount;
 
 	// プリミティブインデックスリストに必要な分のみ要素を確保
 	l_meshoptPrimitiveIndexList.resize(l_usedPrimitiveIndexCount);
@@ -118,11 +117,19 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 
 		auto& l_modelMeshlet = l_modelMeshletData.m_meshletList[l_meshletIndex];
 
+
 		// 頂点情報を格納
-		l_modelMeshlet.m_vertexOffset   = l_meshoptMeshlet.vertex_offset;
-		l_modelMeshlet.m_triangleOffset = l_meshoptMeshlet.triangle_offset;
-		l_modelMeshlet.m_vertexCount    = l_meshoptMeshlet.vertex_count;
-		l_modelMeshlet.m_triangleCount  = l_meshoptMeshlet.triangle_count;
+		l_modelMeshlet.m_vertexOffset = l_meshoptMeshlet.vertex_offset;
+
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED((l_meshoptMeshlet.triangle_offset % Constant::k_triangleVertexCount) != k_emptyRemainder, "Meshletのtriangle_offsetが三角形単位ではありません。", false);
+
+		// 3個Pack方式では、uint32_t1個が三角形1個分のPrimitiveIndexを持つ
+		// meshoptimizerのtriangle_offsetはPack前PrimitiveIndex配列上のIndexなので、
+		// 3で割ってPack済みPrimitiveIndexBuffer乗の開始Indexへ変換する
+		l_modelMeshlet.m_triangleOffset = l_meshoptMeshlet.triangle_offset / Constant::k_triangleVertexCount;
+
+		l_modelMeshlet.m_vertexCount   = l_meshoptMeshlet.vertex_count;
+		l_modelMeshlet.m_triangleCount = l_meshoptMeshlet.triangle_count;
 
 		// Meshlet単位のFrustum CullingやBackfaceConeCullingに使用する境界情報を作成する
 		// meshopt_computeMeshletBounds(入力UniqueVertexIndex、
@@ -178,44 +185,38 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 
 bool FWK::Graphics::StaticModelMeshletBuilder::PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount, "Pack対象のPrimitiveIndexListサイズが不足しています。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount,					     "Pack対象のPrimitiveIndexListサイズが不足しています。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED((a_usedPrimitiveIndexCount % Constant::k_triangleVertexCount) != k_emptyRemainder, "PrimitiveIndexListの使用数が三角形単位ではありません。", false);
 
-	// 4個のuint8_tを1個のuint32_tにPackするため、
-	// 必要なuint32_t数を求める
-	const auto& l_alignedPrimitiveIndexCount = Utility::AlignUp(a_usedPrimitiveIndexCount, k_packedPrimitiveIndexByteCount);
-	const auto& l_packedPrimitiveIndexCount = l_alignedPrimitiveIndexCount / k_packedPrimitiveIndexByteCount;
-
-	// 何のためPrimitiveIndexListをクリアしておき、4バイト分の要素数を配列側が確保しておく
+	// 三角形1個につきPrimitiveIndexは3個
+	// 3個Pack方式では、三角形1個をuint32_t1個にPackする
+	const auto l_packedPrimitiveIndexCount = a_usedPrimitiveIndexCount / Constant::k_triangleVertexCount;
+	
 	a_packedPrimitiveIndexList.clear ();
 	a_packedPrimitiveIndexList.resize(l_packedPrimitiveIndexCount);
 
-	for (std::size_t l_packedPrimitiveIndex = 0ULL; l_packedPrimitiveIndex < l_packedPrimitiveIndexCount; ++l_packedPrimitiveIndex)
+	for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_packedPrimitiveIndexCount; ++l_triangleIndex)
 	{
 		// Pack元のuint8_t配列における開始位置。
-		// uint32_t1個にuint8_t4個を入れるため、4倍する
-		const auto l_sourcePrimitiveIndex = l_packedPrimitiveIndex * k_packedPrimitiveIndexByteCount;
+		// uint32_t1個にuint8_t3個を入れるため、3倍する
+		const auto l_sourcePrimitiveIndex = l_triangleIndex * Constant::k_triangleVertexCount;
 
-		std::uint32_t l_packedValue = 0U;
+		const auto l_firstPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_firstPrimitiveVertexOffset];
+		const auto l_secondPrimitiveIndex = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_secondPrimitiveVertexOffset];
+		const auto l_thirdPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_thirdPrimitiveVertexOffset];
 
-		// std::uint32_tは32ビットで、std::uint8_tは8ビット
-		// 0 ~ 255の値なので、ビットシフトで四かい値を詰めることができる
-		for (std::uint32_t l_byteIndex = 0U; l_byteIndex < k_packedPrimitiveIndexByteCount; ++l_byteIndex)
-		{
-			const auto l_readPrimitiveIndex = l_sourcePrimitiveIndex + l_byteIndex;
-
-			//　もし読み取るプリミティブインデックスが使用するプリミティブインデックス数を超えていたらcontinue
-			if (l_readPrimitiveIndex >= a_usedPrimitiveIndexCount) { continue; }
-
-			const auto l_primitiveIndexValue = static_cast<std::uint32_t>(a_sourcePrimitiveIndexList[l_readPrimitiveIndex]);
-
-			// byteIndex = 0, 1, 2, 3で0bit, 8bit 16bit, 24bit目へ入れる
-			const auto l_shiftBit = l_byteIndex * k_packedPrimitiveIndexBitCount;
-
-			l_packedValue |= l_primitiveIndexValue << l_shiftBit;
-		}
-
+		// uint32_t1個に、三角形1個分のPrimitiveIndex3個をPackする。
+		// bits 0  : 1個目
+		// bits 8  : 2個目
+		// bits 16 : 3個目
+		// bits 24 : 未使用(詰めることはできるがシェーダーで扱いにくいため詰めない)
+		
 		// PrimitiveIndexが4個入ったリストとして扱う
-		a_packedPrimitiveIndexList[l_packedPrimitiveIndex] = l_packedValue;
+		const auto l_packedValue = (l_firstPrimitiveIndex  << k_firstPackedPrimitiveIndexShiftBit)  |
+								   (l_secondPrimitiveIndex << k_secondPackedPrimitiveIndexShiftBit) |
+							       (l_thirdPrimitiveIndex  << k_thirdPackedPrimitiveIndexShiftBit);
+
+		a_packedPrimitiveIndexList[l_triangleIndex] = l_packedValue;
 	}
 
 	return true;

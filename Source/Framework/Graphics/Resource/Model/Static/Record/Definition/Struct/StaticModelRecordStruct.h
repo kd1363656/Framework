@@ -78,7 +78,7 @@ namespace FWK::Struct
 		// Meshlet内の三角形情報
 		// meshoptimizerが出力するPrimitiveIndexはuint8_t
 		// そのままuint32_tに1個ずつ拡張するとGPUBufferが大きくなるため、
-		// 4個のuint8_tのPrimitiveIndexListを1個のuint32_tへPackして保存する
+		// 3個のuint8_tのPrimitiveIndexListを1個のuint32_tへPackして保存する
 		std::vector<std::uint32_t> m_primitiveIndexList = {};
 
 		// Meshletごとのカリング用境界情報

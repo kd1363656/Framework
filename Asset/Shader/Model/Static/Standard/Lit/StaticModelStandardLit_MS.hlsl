@@ -45,19 +45,12 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     
     for (uint l_triangleIndex = 0U; l_triangleIndex < l_modelMeshlet.triangleCount; ++l_triangleIndex)
     {
-        // m_triangleOffsetの値はPack後のuint32_t配列Indexではなく、
-        // Pack前のuint8_tのPrimitiveIndex配列上のbyteOffsetとして扱う。
-        // 1三角形は3つのPrimitiveIndexを使うため、
-        // triangleIndex * 3で、この三角形の先頭byteOffsetを求める
-        const uint l_primitiveByteIndex = l_modelMeshlet.triangleOffset + l_triangleIndex * k_modelTriangleVertexCount;
+        // 3個Pack方式では、uint32_t1個が三角形1個分のPrimitiveIndexを持つ
+        // そのため、triangleOffsetはPack済みかPrimitiveIndexBuffer上の開始Indexとして扱う
+        const uint l_packedPrimitiveIndex = l_modelMeshlet.triangleOffset + l_triangleIndex;
         
         // Packされたuint32_tから、元のuint8_tのPrimitiveIndexを3個取り出し、
         // MeshShaderの三角形Indexとしてuint3へ戻す   
-        a_primitiveList[l_triangleIndex] = uint3
-        (
-            FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex),
-            FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex + k_modelSecondPrimitiveVertexOffset),
-            FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex + k_modelThirdPrimitiveVertexOffset)
-        );
+        a_primitiveList[l_triangleIndex] = FetchStaticModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
     }
 }

@@ -46,60 +46,28 @@ cbuffer CBLightPass : register(b2)
 
 SamplerState g_textureSampler : register(s0);
 
-// Pack済みuint32_tから、指定byte位置のPrimitiveIndexを1個取り出す。
-uint ExtractStaticModelPrimitiveIndexFromPackedValue(const uint a_packedValue, const uint a_byteIndex)
-{
-    // uint32_tの中で、何bit右へずらせば目的のByteが下位8bitに来るかを求める
-    // byte0なら0bit, byte1なら8bit,byte2なら16bit,byte3なら24bit
-    const uint l_shiftBit = a_byteIndex * k_modelPackedPrimitiveIndexBitCount;
-    
-    // 右シフト後、0xFFで下位8bitだけ取り出す
-    return (a_packedValue >> l_shiftBit) & k_modelPackedPrimitiveIndexValueMask;
-}
-
 // 三角形1個分のPrimitiveIndexをuint3で取得する
-// 戻り値のuit3は、もとVertexBufferのIndexではなく、
-// MeshShaderが出力したa_vertexListの何番目を使うかを表す
-uint3 FetchStaticModelPackedPrimitiveIndex(const uint a_primitiveByteIndex)
+// 3個Pack方式では、uint32_t1個に三角形1個分のPrimitiveIndexを入れている
+// bit配置
+// 0  : 1個目のPrimitiveIndex
+// 8  : 2個目のPrimitiveIndex
+// 16 : 3個目のPrimitiveIndex
+// 24 : 未使用
+// 戻り値のuint3は、元VertexBufferのIndexではなく、
+// MeshShaderが出力したa_vertexListの何番目を使うかを表す。
+uint3 FetchStaticModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
 {
     StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
     
-    // PrimitiveIndexはPack前のuint8_t配列上のbyteIndexで扱う
-    // uint32_t1個に4このuint8_tが入っているため、
-    // 4で割ってPack済みuint32_t配列のIndexを求める
-    const uint l_packedPrimitiveIndex = a_primitiveByteIndex / k_modelPrimitiveIndexPerUnit;
+    // 3個数Pack方式では、uint23_t1個が三角形1個分のPrimitiveIndexを持つ。
+    // そのため、a_packedPrimitiveIndexはPack済みPrimitiveIndexBuffer上のIndex。
+    const uint l_packedValue = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
     
-    // 4の余りでuint32_t内の何byte目から読むかを求める
-    const uint l_byteIndex = a_primitiveByteIndex % k_modelPrimitiveIndexPerUnit;
-    
-    const uint l_packedValue = l_packedPrimitiveIndexBuffer[l_packedPrimitiveIndex];
-    
-    // 三角形1個はPrimitiveIndexを3個使う
-    // 開始byteが0または1なら、3個すべてが同じuint32_t内に収まる
-    const uint l_modelMaxTrianggleStartByteIndexInSinglePackedValue = k_modelPrimitiveIndexPerUnit - k_modelTriangleVertexCount;
-    
-    // byteIndexが0,1を超える値ならその位置から三つ分のプリミティブインデックスを返す
-    if (l_byteIndex <= l_modelMaxTrianggleStartByteIndexInSinglePackedValue)
-    {
-        return uint3
-        (
-            ExtractStaticModelPrimitiveIndexFromPackedValue(l_packedValue, l_byteIndex),
-            ExtractStaticModelPrimitiveIndexFromPackedValue(l_packedValue, l_byteIndex + k_modelSecondPrimitiveVertexOffset),
-            ExtractStaticModelPrimitiveIndexFromPackedValue(l_packedValue, l_byteIndex + k_modelThirdPrimitiveVertexOffset),
-        );
-    }
-    
-    // ここに来るのは、三角形1個分の3byteが次のuint32_tへまたがる場合。
-    // 例 : 
-    // byte 2開始 -> 2,3,次のuint32_tの0
-    // byte 3開始 -> 次のuint32_tの0、次のuint32_tの1
-    const uint l_nextPackedValue = l_packedPrimitiveIndexBuffer[l_packedPrimitiveIndex + k_modelNextPackedPrimitiveIndexOffset];
-
-    uint3 l_primitiveIndex = uint3
+    return uint3
     (
-        k_modelInvalidPrimitiveIndex,
-        k_modelInvalidPrimitiveIndex,
-        k_modelInvalidPrimitiveIndex
+        (l_packedValue >> k_modelFirstPackedPrimitiveIndexShiftBit)  & k_modelPackedPrimitiveIndexValueMask,
+        (l_packedValue >> k_modelSecondPackedPrimitiveIndexShiftBit) & k_modelPackedPrimitiveIndexValueMask,
+        (l_packedValue >> k_modelThirdPackedPrimitiveIndexShiftBit)  & k_modelPackedPrimitiveIndexValueMask
     );
 }
 
