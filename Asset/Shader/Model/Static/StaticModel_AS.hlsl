@@ -75,8 +75,8 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
     // coneApexはLocal空間の位置
     // 位置なのでw = 1.0FとしてWorld空間へ変換し、さらにView空間へ変換する
     const float4 l_localConeApex = float4(l_meshletBounds.coneApex, k_modelPositionElementW);
-    const float4 l_worldConeApex = mul   (l_localConeApex, g_worldMatrix);
-    const float4 l_viewConeApex  = mul   (l_worldConeApex, g_viewMatrix);
+    const float4 l_worldConeApex = mul   (l_localConeApex,          g_worldMatrix);
+    const float4 l_viewConeApex  = mul   (l_worldConeApex,          g_viewMatrix);
     
     // coneAxisはLocal空間の方向
     // 方向なのでw = 0.0F
@@ -115,7 +115,7 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
 bool ShouldDispatchStaticModelMeshlet(const uint a_meshletIndex)
 {
     if (!IsVisibleStaticModelMeshletByFrustum(a_meshletIndex) ||
-        IsBackfaceStaticModelMeshletByCone   (a_meshletIndex))
+         IsBackfaceStaticModelMeshletByCone  (a_meshletIndex))
     {
         return false;
     }

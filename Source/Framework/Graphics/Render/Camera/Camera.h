@@ -39,6 +39,7 @@ namespace FWK::Graphics
 
 		std::shared_ptr<Struct::CBCameraPass> m_cbCameraPass = nullptr;
 		
-		TypeAlias::Math::Matrix m_cameraMatrix = TypeAlias::Math::Matrix::Identity;
+		TypeAlias::Math::Matrix m_cameraMatrix      = TypeAlias::Math::Matrix::Identity;
+		TypeAlias::Math::Matrix m_debugCameraMatrix = TypeAlias::Math::Matrix::Identity;
 	};
 }
