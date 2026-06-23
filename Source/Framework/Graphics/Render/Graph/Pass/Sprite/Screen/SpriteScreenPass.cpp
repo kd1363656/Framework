@@ -20,6 +20,7 @@ void FWK::Graphics::ScreenSpritePass::Execute(Renderer& a_renderer, RenderGraph&
 	const auto& l_rootSignature		   = SetupRenderPipeline				  (a_renderer, Enum::PipelineStateType::SpriteScreen).lock();
 	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock												  ();
 
+	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature,        "ルートシグネチャの取得に失敗しており、ScreenSpritePassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、ScreenSpritePassの実行に失敗しました。");
 
 	const auto& l_spritePassDrawRequest			   = a_renderGraph.FindVALDrawRequestPass<SpriteScreenPassDrawRequest>          ().lock();

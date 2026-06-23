@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class LightPassDrawRequest final : public CachedPassConstantBufferDrawRequestBase<Struct::CBCameraPass>
+	class LightPassDrawRequest final : public CachedPassConstantBufferDrawRequestBase<Struct::CBLightPass>
 	{
 	public:
 

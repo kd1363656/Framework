@@ -22,6 +22,7 @@ void FWK::Graphics::StaticModelStandardUnLitPass::Execute(Renderer & a_renderer,
 	const auto& l_rootSignature		   = SetupRenderPipeline				  (a_renderer, Enum::PipelineStateType::StaticModelUnLit).lock();
 	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock												      ();
 
+	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature,		 "ルートシグネチャの取得に失敗しており、StaticModelStandardUnLitPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、StaticModelStandardUnLitPassの実行に失敗しました。");
 
 	const auto& l_cameraPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>					      ().lock();

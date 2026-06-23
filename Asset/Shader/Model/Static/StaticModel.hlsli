@@ -32,6 +32,18 @@ cbuffer CBStaticModelPerObject : register(b1)
     float g_worldMaxScale;
 };
 
+cbuffer CBLightPass : register(b2)
+{
+    float3 g_directionalLightDirection;
+    float  g_directionalLightIntensity;
+    
+    float3 g_directionalLightColor;
+    float  g_lightPassPadding;
+    
+    float3 g_ambientLightColor;
+    float  g_ambientLightIntensity;
+};
+
 SamplerState g_baseColorSampler : register(s0);
 
 uint FetchStaticModelPackedPrimitiveIndex(const uint a_primitiveByteIndex)
@@ -51,12 +63,34 @@ uint FetchStaticModelPackedPrimitiveIndex(const uint a_primitiveByteIndex)
     return (l_packedValue >> l_shiftBit) & k_modelPackedPrimitiveIndexValueMask;
 }
 
-// StaticModelのLocal座標をWorld座標へ変換する
-float4 TransformStaticModelLocalPositionToViewProjection(const float3 a_localPosition)
+// StaticMoidelのLocal座標をWorld座標へ変換する
+// PBRではライト方向やカメラ方向をWorld空間で計算するため、worldPositionが必要
+float3 TransformStaticModelLocalPositionToWorld(const float3 a_localPosition)
 {
-    const float4 l_localPosition          = float4(a_localPosition, k_modelPositionElementW);
-    const float4 l_worldPosition          = mul   (l_localPosition, g_worldMatrix);
-    const float4 l_viewProjectionPosition = mul   (l_worldPosition, g_viewProjectionMatrix);
+    const float4 l_localPosition = float4(a_localPosition, k_modelPositionElementW);
+    const float4 l_worldPosition = mul   (l_localPosition, g_worldMatrix);
+
+    return l_worldPosition.xyz;
+}
+
+// StaticModelのLocal法線をWorld空間へ変換する
+// 法線は位置ではなく方向なのでw = 0
+// 非均一スケールでも法線方向が壊れにくいようにWorldInverseTransposeMatrixを使う。
+float3 TransformStaticModelLocalNormalToWorld(const float3 a_localNormal)
+{
+    const float4 l_localNormal = float4(a_localNormal, k_modelDirectionElementW);
+    const float4 l_worldNormal = mul   (l_localNormal, g_worldInverseTransposeMatrix);
     
-    return l_viewProjectionPosition;
+    return normalize(l_worldNormal.xyz);
+}
+
+// StaticModelのLocalTangentをWorld空間へ変換する
+// Tangentは方向なのでw = 0。
+// tangent.wはNormalMap用の向き補正なので維持する
+float4 TransformStaticModelLocalTangentToWorld(const float4 a_localTangent)
+{
+    const float4 l_localTangent = float4(a_localTangent.xyz, k_modelDirectionElementW);
+    const float4 l_worldTangent = mul   (l_localTangent,     g_worldMatrix);
+
+    return float4(normalize(l_worldTangent.xyz), a_localTangent.w);
 }

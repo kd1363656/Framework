@@ -30,16 +30,11 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // 取得した頂点番号から頂点情報を取得
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
         
-        const float3 l_worldPosition           = TransformStaticModelLocalPositionToWorld(l_staticModelVertex.position);
-        const float3 l_worldNormal             = TransformStaticModelLocalNormalToWorld  (l_staticModelVertex.normal);
-        const float3 l_worldTangent            = TransformStaticModelLocalTangentToWorld (l_staticModelVertex.tangent);
-        const float4 l_viewProjectionPosition  = mul                                     (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
-
-        a_vertexList[l_vertexIndex].position      = l_viewProjectionPosition;
-        a_vertexList[l_vertexIndex].worldPosition = l_worldPosition;
-        a_vertexList[l_vertexIndex].worldNormal   = l_worldNormal;
-        a_vertexList[l_vertexIndex].worldTangent  = l_worldTangent;
-        a_vertexList[l_vertexIndex].uv            = l_staticModelVertex.uv;
+        const float4 l_worldPosition          = TransformStaticModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float4 l_viewProjectionPosition = mul                                     (l_worldPosition, g_viewProjectionMatrix);
+        
+        a_vertexList[l_vertexIndex].position = l_viewProjectionPosition;
+        a_vertexList[l_vertexIndex].uv       = l_staticModelVertex.uv;
     }
     
     for (uint l_triangleIndex = 0U; l_triangleIndex < l_modelMeshlet.triangleCount; ++l_triangleIndex)

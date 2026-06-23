@@ -7,6 +7,7 @@ namespace FWK::Enum
 		Invalid,
 		SpriteScreen,
 		StaticModelUnLit,
+		StaticModelLit,
 		FinalColor,
 		Count,
 	};
@@ -17,6 +18,7 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Invalid),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::SpriteScreen),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::StaticModelUnLit),
+		FWK_JSON_ENUM_VALUE(PipelineStateType::StaticModelLit),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::FinalColor),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
 	)
