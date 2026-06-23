@@ -14,9 +14,6 @@ namespace FWK
 
 	private:
 
-		std::shared_ptr<Graphics::Texture>							  m_texture				  = nullptr;
-		std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData> m_spriteDrawRequestData = nullptr;
-
 		std::shared_ptr<Graphics::Camera>									 m_camera						  = nullptr;
 		std::shared_ptr<Graphics::StaticModel>								 m_staticModel					  = nullptr;
 		std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData> m_staticModelStandardDrawRequest = nullptr;
