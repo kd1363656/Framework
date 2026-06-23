@@ -88,9 +88,6 @@ cbuffer CBCameraPass : register(b0)
     row_major matrix g_projectionMatrix;
     row_major matrix g_viewProjectionMatrix;
     
-    row_major matrix g_debugViewMatrix;
-    row_major matrix g_debugViewProjectionMatrix;
-    
     float g_nearClip;
     float g_farClip;
     float g_tanHalfFOVX;

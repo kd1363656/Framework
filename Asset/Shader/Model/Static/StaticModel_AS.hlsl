@@ -52,7 +52,7 @@ bool IsVisibleStaticModelMeshletByFrustum(const uint a_meshletIndex)
     const float4 l_worldCenter = mul(l_localCenter, g_worldMatrix);
     
     // World空間からView空間へ変換する。
-    const float4 l_viewCenter = mul(l_worldCenter, g_debugViewMatrix);
+    const float4 l_viewCenter = mul(l_worldCenter, g_viewMatrix);
     
     // BoundingSphereの半径もWorld空間に合わせる
     // MeshletBoundsのradiusはLocal空間の半径
@@ -76,7 +76,7 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
     // 位置なのでw = 1.0FとしてWorld空間へ変換し、さらにView空間へ変換する
     const float4 l_localConeApex = float4(l_meshletBounds.coneApex, k_modelPositionElementW);
     const float4 l_worldConeApex = mul   (l_localConeApex,          g_worldMatrix);
-    const float4 l_viewConeApex  = mul   (l_worldConeApex,          g_debugViewMatrix);
+    const float4 l_viewConeApex  = mul   (l_worldConeApex,          g_viewMatrix);
     
     // coneAxisはLocal空間の方向
     // 方向なのでw = 0.0F
@@ -86,7 +86,7 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
 
     // View行列はカメラ空間への変換
     // 方向なのでw = 0.0Fとして平行移動の影響を受けないようにする
-    const float4 l_viewConeAxis = mul(float4(normalize(l_worldConeAxis.xyz), k_modelDirectionElementW), g_debugViewMatrix);
+    const float4 l_viewConeAxis = mul(float4(normalize(l_worldConeAxis.xyz), k_modelDirectionElementW), g_viewMatrix);
 
     const float l_viewConeApexLength = length(l_viewConeApex.xyz);
     const float l_viewConeAxisLength = length(l_viewConeAxis.xyz);

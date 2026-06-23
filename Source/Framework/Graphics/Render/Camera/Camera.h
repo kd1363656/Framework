@@ -15,9 +15,8 @@ namespace FWK::Graphics
 							  const float					 a_farClip     = Constant::k_defaultFarClip,
 							  const float					 a_nearClip    = Constant::k_defaultNearClip);
 
-		void SetCameraMatrix     (const TypeAlias::Math::Matrix& a_cameraMatrix);
-		void SetDebugCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
-
+		void SetCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
+		
 		void SetProjectionMatrix(const float a_aspectRatio,
 								 const float a_fovYDegree  = k_defaultFOVYDegree,
 								 const float a_farClip     = Constant::k_defaultFarClip,

@@ -86,8 +86,7 @@ void FWK::Scene::Update()
 	}
 
 	// テスト実装カメラ(絶対に後で消す)
-	static TypeAlias::Math::Vector3 l_cameraPos      = { 0.0F, 1.0F, -1.15F };
-	static TypeAlias::Math::Vector3 l_debugCameraPos = { 0.0F, 1.0F, -1.15F };
+	static TypeAlias::Math::Vector3 l_cameraPos = { 0.0F, 1.0F, -1.15F };
 	static float					l_rot		= 0.0F;
 
 	if (GetAsyncKeyState(VK_SHIFT))
@@ -119,35 +118,14 @@ void FWK::Scene::Update()
 		l_cameraPos.x += 0.01F;
 	}
 
-	if (GetAsyncKeyState(VK_SHIFT))
+	if (GetAsyncKeyState('Q'))
 	{
-		if (GetAsyncKeyState('I'))
-		{
-			l_debugCameraPos.y += 0.01F;
-		}
-		else if (GetAsyncKeyState('K'))
-		{
-			l_debugCameraPos.y -= 0.01F;
-		}
+		l_rot -= 1.0F;
 	}
-	else if (GetAsyncKeyState('I'))
+	else if (GetAsyncKeyState('E'))
 	{
-		l_debugCameraPos.z += 0.01F;
-	}
-	else if (GetAsyncKeyState('K'))
-	{
-		l_debugCameraPos.z -= 0.01F;
+		l_rot += 1.0F;
 	}
 
-	if (GetAsyncKeyState('J'))
-	{
-		l_debugCameraPos.x -= 0.01F;
-	}
-	else if (GetAsyncKeyState('L'))
-	{
-		l_debugCameraPos.x += 0.01F;
-	}
-
-	m_camera->SetCameraMatrix     (TypeAlias::Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(45.0F)) * TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(45.0F)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
-	m_camera->SetDebugCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_debugCameraPos));
+	m_camera->SetCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
 }
