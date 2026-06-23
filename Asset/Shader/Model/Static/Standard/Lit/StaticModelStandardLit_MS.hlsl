@@ -30,6 +30,7 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // 取得した頂点番号から頂点情報を取得
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
         
+        // ワールド座標、法線、接線、ビュー座標を計算する
         const float3 l_worldPosition           = TransformStaticModelLocalPositionToWorld(l_staticModelVertex.position);
         const float3 l_worldNormal             = TransformStaticModelLocalNormalToWorld  (l_staticModelVertex.normal);
         const float4 l_worldTangent            = TransformStaticModelLocalTangentToWorld (l_staticModelVertex.tangent);
@@ -50,8 +51,8 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // triangleIndex * 3で、この三角形の先頭byteOffsetを求める
         const uint l_primitiveByteIndex = l_modelMeshlet.triangleOffset + l_triangleIndex * k_modelTriangleVertexCount;
         
-        // Packされたuint32_tから、元のuint8_tのPrimitvieIndexを3個取り出し、
-        // MeshShaderの三角形INdexとしてuint3へ戻す
+        // Packされたuint32_tから、元のuint8_tのPrimitiveIndexを3個取り出し、
+        // MeshShaderの三角形Indexとしてuint3へ戻す   
         a_primitiveList[l_triangleIndex] = uint3
         (
             FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex),

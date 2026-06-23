@@ -1,9 +1,9 @@
 ﻿#include "StaticModel.hlsli"
 
 // Frustum側面PlaneでBoundingSphere判定するときの半径補正を計算する
-float CalculateStaticModelFrustumPlaneRadius(const float a_worldRaidus, const float a_tanHalfFOV)
+float CalculateStaticModelFrustumPlaneRadius(const float a_worldRadius, const float a_tanHalfFOV)
 {
-    return a_worldRaidus * sqrt(k_modelFrustumPlaneNormalBaseLength + a_tanHalfFOV * a_tanHalfFOV);
+    return a_worldRadius * sqrt(k_modelFrustumPlaneNormalBaseLength + a_tanHalfFOV * a_tanHalfFOV);
 }
 
 // View空間のBoundingSphereがカメラのFrustumに入っているか判定する。
@@ -54,6 +54,23 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
     return true;
 }
 
+// カメラがMeshletのBoundingSphere内に入っているか判定する。
+bool IsCameraInsideStaticModelMeshletBoundingSphere(const ModelMeshletBounds a_meshletBounds)
+{
+    // Meshletの中心座標はLocal空間なのでWorld空間へ変換する
+    const float3 l_worldCenter = TransformStaticModelLocalPositionToWorld(a_meshletBounds.center);
+    
+    // Meshletの半径はLocal空間なので、World最大スケールを掛けてWorld空間の半径にする
+    const float l_worldRadius = a_meshletBounds.radius * g_worldMaxScale;
+    
+    // カメラ位置とMeshlet中心の距離を求める
+    const float l_cameraDistance = length(l_worldCenter - g_cameraWorldPosition);
+    
+    // カメラがBoundingSphere内にいるならtrue
+    // epsilonを足しているのは、境界付近の誤差でカリングが暴れないようにするため。
+    return l_cameraDistance <= l_worldRadius + k_modelMeshletCullingEpsilon;
+}
+
 // 指定したMeshletがFrustum内にあるか判定する
 bool IsVisibleStaticModelMeshletByFrustum(const uint a_meshletIndex)
 {
@@ -61,6 +78,10 @@ bool IsVisibleStaticModelMeshletByFrustum(const uint a_meshletIndex)
     StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
 
     const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
+    
+    // カメラがMeshletのBoundingSphere内にいる場合、
+    // NearPlaneやFrustum側面で誤カリングされやすいのでFrustum内として扱う
+    if (IsCameraInsideStaticModelMeshletBoundingSphere(l_meshletBounds)) { return true; }
     
     // MeshletBoundsのcenterはLocal空間。
     // まずWorld空間へ変換する
@@ -78,13 +99,12 @@ bool IsVisibleStaticModelMeshletByFrustum(const uint a_meshletIndex)
     const float l_worldRadius = l_meshletBounds.radius * g_worldMaxScale;
     
     return IsVisibleViewSpaceBoundingSphere(l_viewCenter.xyz, l_worldRadius);
-
 }
 
-// カメラがMeshletのBoundingSphere内に入っているか判定する。
-// 入っている場合は、BackfaceConeCullingは安全ではないので無効化する
-
 // 指定したMeshletがカメラから見て完全に裏向きかを判定する
+// バックフェースコーンカリングはラスタライザーのCullBackを行っている
+// しかし描画する前から決めれる、ラスタライザーは描画し終わってからカリングするといった都合上
+// バックフェースコーンカリングを増幅シェーダーで行ったほうが効率的である
 bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
 {
     StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
@@ -107,6 +127,8 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
     // 方向なのでw = 0.0Fとして平行移動の影響を受けないようにする
     const float4 l_viewConeAxis = mul(float4(normalize(l_worldConeAxis.xyz), k_modelDirectionElementW), g_viewMatrix);
 
+    // ビュー行列ではカメラが(0.0F, 0.0F, 0.0F)原点になるので
+    // わざわざコーン位置を引く必要がないためLengthでベクトルを算出
     const float l_viewConeApexLength = length(l_viewConeApex.xyz);
     const float l_viewConeAxisLength = length(l_viewConeAxis.xyz);
 
@@ -120,6 +142,7 @@ bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
     
     // View空間ではカメラ位置が原点なので、
     // normalize(cone_apex - camera_position)はnormalize(l_viewConeApex.xyz)でよい
+    // 位置からベクトルと長さを持つLengthを割ることで方向ベクトルを取得する
     const float3 l_cameraToConeApexDirection = l_viewConeApex.xyz / l_viewConeApexLength;
     const float3 l_viewConeAxisDirection     = l_viewConeAxis.xyz / l_viewConeAxisLength;
     

@@ -91,6 +91,14 @@ static const uint k_modelPrimitiveIndexPerUnit         = 4U;
 static const uint k_modelPackedPrimitiveIndexBitCount  = 8U;
 static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
 
+// 次のPack済みuint32_tを読むためのOffset。
+// PrimitiveIndexはuint8_t 4個をuint32_t 1個へPackしている。
+static const uint k_modelNextPackedPrimitiveIndexOffset = 1U;
+
+// 異常時や初期化用の無効PrimitiveIndex。
+// Meshletの最大頂点数は64なので、0xFFFFFFFFは通常のPrimitiveIndexとしては使われない。
+static const uint k_modelInvalidPrimitiveIndex = 0xFFFFFFFFU;
+
 cbuffer CBCameraPass : register(b0)
 {
     row_major matrix g_viewMatrix;
