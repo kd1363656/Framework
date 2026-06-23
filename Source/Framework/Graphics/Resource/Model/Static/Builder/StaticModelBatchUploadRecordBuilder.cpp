@@ -107,12 +107,12 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 								   l_uniqueVertexIndexBuffer);
 
 	// プリミティブインデックスバッファー用SRVの作成
-	auto& l_primitiveIndedxBuffer = l_modelMeshRuntimeData.m_primitiveIndexBuffer;
+	auto& l_primitiveIndexBuffer = l_modelMeshRuntimeData.m_primitiveIndexBuffer;
 
 	CreateStructuredBufferResource(l_modelMeshletData.m_primitiveIndexList,
 								   a_device,
 								   a_srvDescriptorPool,
-								   l_primitiveIndedxBuffer);
+								   l_primitiveIndexBuffer);
 
 	// メッシュレットカリング用SRVの作成
 	auto& l_meshletBoundsBuffer = l_modelMeshRuntimeData.m_meshletBoundsBuffer;

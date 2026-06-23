@@ -44,7 +44,7 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // triangleIndex * 3で、この三角形の先頭byteOffsetを求める
         const uint l_primitiveByteIndex = l_modelMeshlet.triangleOffset + l_triangleIndex * k_modelTriangleVertexCount;
         
-        // Packされたuint32_tから、元のuint8_tPrimitvieIndexを3個取り出し、
+        // Packされたuint32_tから、元のuint8_tのPrimitvieIndexを3個取り出し、
         // MeshShaderの三角形INdexとしてuint3へ戻す
         a_primitiveList[l_triangleIndex] = uint3
         (
