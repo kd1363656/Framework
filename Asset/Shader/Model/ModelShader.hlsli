@@ -53,6 +53,17 @@ struct ModelAmplificationPayload
     uint meshletIndex;
 };
 
+static const float k_modelPositionElementW = 1.0F;
+static const float k_modelDirectionElementW = 0.0F;
+
+// normaliaze前に長さ0付近のベクトルを避けるための値。
+// カメラがconeApexのほぼ同位置にある場合などを安全側に倒す。
+static const float k_modelMeshletCullingEpsilon = 0.000001F;
+
+// Frustumの側面Planeに対するSphere半径補正で使う
+// sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
+static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
+
 static const uint k_modelTriangleVertexCount = 3U;
 
 static const uint k_modelMaxMeshletVertexCount    = 64U;
@@ -79,13 +90,6 @@ static const uint k_modelPackedPrimitiveIndexByteCount = 4U;
 static const uint k_modelPrimitiveIndexPerUnit         = 4U;
 static const uint k_modelPackedPrimitiveIndexBitCount  = 8U;
 static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
-
-static const float k_modelPositionElementW  = 1.0F;
-static const float k_modelDirectionElementW = 0.0F;
-
-// normaliaze前に長さ0付近のベクトルを避けるための値。
-// カメラがconeApexのほぼ同位置にある場合などを安全側に倒す。
-static const float k_modelMeshletCullingEpsilon = 0.000001F;
 
 cbuffer CBCameraPass : register(b0)
 {

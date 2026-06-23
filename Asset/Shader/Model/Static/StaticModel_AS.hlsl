@@ -1,5 +1,11 @@
 ﻿#include "StaticModel.hlsli"
 
+// Frustum側面PlaneでBoundingSphere判定するときの半径補正を計算する
+float CalculateStaticModelFrustumPlaneRadius(const float a_worldRaidus, const float a_tanHalfFOV)
+{
+    return a_worldRaidus * sqrt(k_modelFrustumPlaneNormalBaseLength + a_tanHalfFOV * a_tanHalfFOV);
+}
+
 // View空間のBoundingSphereがカメラのFrustumに入っているか判定する。
 // 完全に外ならfalse
 // 少しでも重なっているならtrue
@@ -13,24 +19,34 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
         return false;
     }
 
+    // カメラに近すぎるMeshletでは、center.zがnearClipより小さくなることがある
+    // そのままcenter.z * tanFovを使うと、見える範囲が小さすぎて誤カリングする。
+    // そこで、横幅・縦幅の判定に使うZは最低でもnearClipにする
+    // これは近距離では安全側に倒して消しすぎない為の処理
+    const float l_frustumTestDepth = max(a_viewCenter.z, g_nearClip);
+    
     // View空間のZ位置における、画面右端までの距離
     // Zが大きいほど、見える横幅は広がる
-    const float l_halfViewWidth = a_viewCenter.z * g_tanHalfFOVX;
+    const float l_halfViewWidth = l_frustumTestDepth * g_tanHalfFOVX;
+    
+    // Frustum側面は斜めのPlaneなのでSphere半径を少し補正する
+    const float l_horizontalPlaneRadius = CalculateStaticModelFrustumPlaneRadius(a_worldRadius, g_tanHalfFOVX);
     
     // Sphere全体が左外側、右外側にあるなら見えない。
-    if (a_viewCenter.x + a_worldRadius < -l_halfViewWidth ||
-        a_viewCenter.x - a_worldRadius >  l_halfViewWidth)
+    if (a_viewCenter.x + l_horizontalPlaneRadius < -l_halfViewWidth ||
+        a_viewCenter.x - l_horizontalPlaneRadius >  l_halfViewWidth)
     {
         return false;
     }
     
     // View空間のz位置における、画面上端までの距離。
     // Zが大きいほど、みえる縦幅は広がる
-    const float l_halfViewHeight = a_viewCenter.z * g_tanHalfFOVY;
+    const float l_halfViewHeight      = l_frustumTestDepth * g_tanHalfFOVY;
+    const float l_verticalPlaneRadius = CalculateStaticModelFrustumPlaneRadius(a_worldRadius, g_tanHalfFOVY);
     
     // Sphere全体が下外側、上外側にあるなら見えない
-    if (a_viewCenter.y + a_worldRadius < -l_halfViewHeight ||
-        a_viewCenter.y - a_worldRadius > l_halfViewHeight)
+    if (a_viewCenter.y + l_verticalPlaneRadius < -l_halfViewHeight ||
+        a_viewCenter.y - l_verticalPlaneRadius >  l_halfViewHeight)
     {
         return false;
     }
@@ -64,6 +80,9 @@ bool IsVisibleStaticModelMeshletByFrustum(const uint a_meshletIndex)
     return IsVisibleViewSpaceBoundingSphere(l_viewCenter.xyz, l_worldRadius);
 
 }
+
+// カメラがMeshletのBoundingSphere内に入っているか判定する。
+// 入っている場合は、BackfaceConeCullingは安全ではないので無効化する
 
 // 指定したMeshletがカメラから見て完全に裏向きかを判定する
 bool IsBackfaceStaticModelMeshletByCone(const uint a_meshletIndex)
