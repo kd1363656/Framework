@@ -2,10 +2,10 @@
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
-void main(in    payload  ModelAmplificationPayload a_payload,
-          out   vertices ModelMeshOutput           a_vertexList   [k_modelMaxMeshletVertexCount],
-          out   indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
-                         uint3                     a_groupID : SV_GroupID)
+void main(in  payload  ModelAmplificationPayload a_payload,
+          out vertices ModelMeshOutput           a_vertexList   [k_modelMaxMeshletVertexCount],
+          out indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
+                       uint3                     a_groupID : SV_GroupID)
 {
     StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];

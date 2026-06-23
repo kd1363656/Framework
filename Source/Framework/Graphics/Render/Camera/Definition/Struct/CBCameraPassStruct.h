@@ -9,7 +9,6 @@ namespace FWK::Struct
 		TypeAlias::Math::Matrix m_viewProjectionMatrix = TypeAlias::Math::Matrix::Identity;
 
 		TypeAlias::Math::Matrix m_debugViewMatrix	        = TypeAlias::Math::Matrix::Identity;
-		TypeAlias::Math::Matrix m_debugProjectionMatrix     = TypeAlias::Math::Matrix::Identity;
 		TypeAlias::Math::Matrix m_debugViewProjectionMatrix = TypeAlias::Math::Matrix::Identity;
 
 		float m_nearClip    = Constant::k_defaultNearClip;

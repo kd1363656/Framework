@@ -14,7 +14,7 @@ void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_ca
 
 	// カメラ行列と射影行列をセット
 	SetCameraMatrix(a_cameraMatrix);
-
+	
 	SetProjectionMatrix(a_aspectRatio,
 						a_fovYDegree,
 						a_farClip,
@@ -34,6 +34,20 @@ void FWK::Graphics::Camera::SetCameraMatrix(const TypeAlias::Math::Matrix& a_cam
 	// CameraMatrix : カメラのWorldMatrix
 	// ViewMatrix   : World空間をカメラ空間へ変換する行列
 	m_cbCameraPass->m_viewMatrix = m_cameraMatrix.Invert();
+
+	UpdateViewProjectionMatrix();
+}
+
+void FWK::Graphics::Camera::SetDebugCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
+{
+	if (!m_cbCameraPass) { return; }
+
+	m_debugCameraMatrix = a_cameraMatrix;
+
+	// カメラ行列の逆行列をViewMatrixとして作成する
+	// CameraMatrix : カメラのWorldMatrix
+	// ViewMatrix   : World空間をカメラ空間へ変換する行列
+	m_cbCameraPass->m_debugViewMatrix = m_debugCameraMatrix.Invert();
 
 	UpdateViewProjectionMatrix();
 }
@@ -92,7 +106,8 @@ void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
 {
 	if (!m_cbCameraPass) { return; }
 
-	m_cbCameraPass->m_viewProjectionMatrix = m_cbCameraPass->m_viewMatrix * m_cbCameraPass->m_projectionMatrix;
+	m_cbCameraPass->m_viewProjectionMatrix		= m_cbCameraPass->m_viewMatrix      * m_cbCameraPass->m_projectionMatrix;
+	m_cbCameraPass->m_debugViewProjectionMatrix = m_cbCameraPass->m_debugViewMatrix * m_cbCameraPass->m_debugViewProjectionMatrix;
 }
 
 void FWK::Graphics::Camera::SyncCameraPassDrawRequest()
