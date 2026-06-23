@@ -97,19 +97,15 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 	// meshoptimizerのPrimitiveIndex配列は4byte境界にそろえて扱うため、
 	// 最後のMeshletで実際に使用したPrimitiveIndex数を4byte境界へ切り上げる
 	const auto& l_alignedLastMeshletPrimitiveIndexCount = Utility::AlignUp(l_lastMeshletPrimitiveIndexCount, k_meshletPrimitiveIndexAlignment);
-
-	const auto& l_usedPrimitiveIndexCount = l_lastMeshlet.triangle_offset + l_alignedLastMeshletPrimitiveIndexCount;
+	const auto& l_usedPrimitiveIndexCount               = l_lastMeshlet.triangle_offset + l_alignedLastMeshletPrimitiveIndexCount;
 
 	// プリミティブインデックスリストに必要な分のみ要素を確保
-	l_meshoptPrimitiveIndexList.resize            (l_usedPrimitiveIndexCount);
-	l_modelMeshletData.m_primitiveIndexList.resize(l_usedPrimitiveIndexCount);
-
-	// meshoptimizerが出力したPrimitiveIndexListを、
-	// プロジェクト側で保存するMeshletDataのPrimitiveIndexListへコピーする
-	for (size_t l_primitiveIndex = 0ULL; l_primitiveIndex < l_usedPrimitiveIndexCount; ++l_primitiveIndex)
-	{
-		l_modelMeshletData.m_primitiveIndexList[l_primitiveIndex] = static_cast<std::uint32_t>(l_meshoptPrimitiveIndexList[l_primitiveIndex]);
-	}
+	l_meshoptPrimitiveIndexList.resize(l_usedPrimitiveIndexCount);
+	
+	// meshoptimizerが出力したuint8_tのPrimitiveIndexListを、
+	// 4個ずつuint32_tへPackして保存する。
+	// これによりGPUへ送るPrimitiveIndexBufferのサイズを約1/4にできる
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!PackPrimitiveIndexList(l_meshoptPrimitiveIndexList, l_usedPrimitiveIndexCount, l_modelMeshletData.m_primitiveIndexList), "PrimitiveIndexListのPack化に失敗しました。", false);
 
 	// 最後にメッシュレット数とメッシュレットカリング用リストのリサイズを行い、オーバーヘッドが出ないようにする
 	l_modelMeshletData.m_meshletList.resize		 (l_meshletCount);
@@ -175,6 +171,51 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 		l_modelMeshletBounds.m_coneAxis.x = l_meshoptBounds.cone_axis[k_vectorElementIndexX];
 		l_modelMeshletBounds.m_coneAxis.y = l_meshoptBounds.cone_axis[k_vectorElementIndexY];
 		l_modelMeshletBounds.m_coneAxis.z = l_meshoptBounds.cone_axis[k_vectorElementIndexZ];
+	}
+
+	return true;
+}
+
+bool FWK::Graphics::StaticModelMeshletBuilder::PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount, "Pack対象のPrimitiveIndexListサイズが不足しています。", false);
+
+	// 4個のuint8_tを1個のuint32_tにPackするため、
+	// 必要なuint32_t数を求める
+	const auto& l_alignedPrimitiveIndexCount = Utility::AlignUp(a_usedPrimitiveIndexCount, k_packedPrimitiveIndexByteCount);
+	const auto& l_packedPrimitiveIndexCount = l_alignedPrimitiveIndexCount / k_packedPrimitiveIndexByteCount;
+
+	// 何のためPrimitiveIndexListをクリアしておき、4バイト分の要素数を配列側が確保しておく
+	a_packedPrimitiveIndexList.clear ();
+	a_packedPrimitiveIndexList.resize(l_packedPrimitiveIndexCount);
+
+	for (std::size_t l_packedPrimitiveIndex = 0ULL; l_packedPrimitiveIndex < l_packedPrimitiveIndexCount; ++l_packedPrimitiveIndex)
+	{
+		// Pack元のuint8_t配列における開始位置。
+		// uint32_t1個にuint8_t4個を入れるため、4倍する
+		const auto l_sourcePrimitiveIndex = l_packedPrimitiveIndex * k_packedPrimitiveIndexByteCount;
+
+		std::uint32_t l_packedValue = 0U;
+
+		// std::uint32_tは32ビットで、std::uint8_tは8ビット
+		// 0 ~ 255の値なので、ビットシフトで四かい値を詰めることができる
+		for (std::uint32_t l_byteIndex = 0U; l_byteIndex < k_packedPrimitiveIndexByteCount; ++l_byteIndex)
+		{
+			const auto l_readPrimitiveIndex = l_sourcePrimitiveIndex + l_byteIndex;
+
+			//　もし読み取るプリミティブインデックスが使用するプリミティブインデックス数を超えていたらcontinue
+			if (l_readPrimitiveIndex >= a_usedPrimitiveIndexCount) { continue; }
+
+			const auto l_primitiveIndexValue = static_cast<std::uint32_t>(a_sourcePrimitiveIndexList[l_readPrimitiveIndex]);
+
+			// byteIndex = 0, 1, 2, 3で0bit, 8bit 16bit, 24bit目へ入れる
+			const auto l_shiftBit = l_byteIndex * k_packedPrimitiveIndexBitCount;
+
+			l_packedValue |= l_primitiveIndexValue << l_shiftBit;
+		}
+
+		// PrimitiveIndexが4個入ったリストとして扱う
+		a_packedPrimitiveIndexList[l_packedPrimitiveIndex] = l_packedValue;
 	}
 
 	return true;

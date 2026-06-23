@@ -10,7 +10,6 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
     StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
-    StructuredBuffer<uint>              l_primitiveIndexBuffer    = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
     
     // ASからPayload経由で渡されたMeshletIndexを使う
     const uint         l_meshletIndex = a_payload.meshletIndex;
@@ -39,16 +38,19 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     
     for (uint l_triangleIndex = 0U; l_triangleIndex < l_modelMeshlet.triangleCount; ++l_triangleIndex)
     {
-        // 三角形一つが三頂点を使用するためIndex * 3を行う
-        // 例 : l_modelMeshlet.triangleOffset = 0, l_triangleIndex = 1の場合
-        // l_primitiveIndexOfsfetは3になりa_primitiveListはl_primitiveIndexBufferの3,4,5の配列にアクセスしてその値を格納する
-        const uint l_primitiveIndexOffset = l_modelMeshlet.triangleOffset + l_triangleIndex * k_modelTriangleVertexCount;
+        // m_triangleOffsetの値はPack後のuint32_t配列Indexではなく、
+        // Pack前のuint8_tのPrimitiveIndex配列上のbyteOffsetとして扱う。
+        // 1三角形は3つのPrimitiveIndexを使うため、
+        // triangleIndex * 3で、この三角形の先頭byteOffsetを求める
+        const uint l_primitiveByteIndex = l_modelMeshlet.triangleOffset + l_triangleIndex * k_modelTriangleVertexCount;
         
+        // Packされたuint32_tから、元のuint8_tPrimitvieIndexを3個取り出し、
+        // MeshShaderの三角形INdexとしてuint3へ戻す
         a_primitiveList[l_triangleIndex] = uint3
         (
-            l_primitiveIndexBuffer[l_primitiveIndexOffset],
-            l_primitiveIndexBuffer[l_primitiveIndexOffset + k_modelSecondPrimitiveVertexOffset],
-            l_primitiveIndexBuffer[l_primitiveIndexOffset + k_modelThirdPrimitiveVertexOffset]
+            FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex),
+            FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex + k_modelSecondPrimitiveVertexOffset),
+            FetchStaticModelPackedPrimitiveIndex(l_primitiveByteIndex + k_modelThirdPrimitiveVertexOffset)
         );
     }
 }

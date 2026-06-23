@@ -75,6 +75,11 @@ static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
 static const uint k_modelSecondPrimitiveVertexOffset = 1U;
 static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
 
+static const uint k_modelPackedPrimitiveIndexByteCount = 4U;
+static const uint k_modelPackedPrimitiveIndexPerUnit   = 4U;
+static const uint k_modelPackedPrimitiveIndexBitCount  = 8U;
+static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
+
 static const float k_modelPositionElementW  = 1.0F;
 static const float k_modelDirectionElementW = 0.0F;
 

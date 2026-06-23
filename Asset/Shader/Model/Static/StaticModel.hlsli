@@ -34,6 +34,23 @@ cbuffer CBStaticModelPerObject : register(b1)
 
 SamplerState g_baseColorSampler : register(s0);
 
+uint FetchStaticModelPackedPrimitiveIndex(const uint a_primitiveByteIndex)
+{
+    StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
+    
+    // 4個のuint8_tを1このuint32_tにPackしているため、
+    // byteIndexを4で割るとPack済みuint32_t配列のIndexになる
+    // 例 : 6番目を読み取りたいなら6/4でl_packedPrimitiveIndexで1とあらわすことができる
+    const uint l_packedPrimitiveIndex = a_primitiveByteIndex / k_modelPackedPrimitiveIndexPerUnit;
+    
+    // 4で割った余りを求めることで、余りが、uint32_tの中の何byte目かを読むかになる
+    const uint l_byteIndex   = a_primitiveByteIndex % k_modelPackedPrimitiveIndexPerUnit;
+    const uint l_packedValue = l_packedPrimitiveIndexBuffer[l_packedPrimitiveIndex];
+    const uint l_shiftBit    = l_byteIndex * k_modelPackedPrimitiveIndexBitCount;
+    
+    return (l_packedValue >> l_shiftBit) & k_modelPackedPrimitiveIndexValueMask;
+}
+
 // StaticModelのLocal座標をWorld座標へ変換する
 float4 TransformStaticModelLocalPositionToViewProjection(const float3 a_localPosition)
 {

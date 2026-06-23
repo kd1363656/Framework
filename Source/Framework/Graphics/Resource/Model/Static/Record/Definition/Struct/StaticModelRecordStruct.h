@@ -76,8 +76,9 @@ namespace FWK::Struct
 		std::vector<std::uint32_t> m_uniqueVertexIndexList = {};
 
 		// Meshlet内の三角形情報
-		// 1三角形につき3つのLocalVertexIndexを持つ
-		// HLSL側のStructuredBuffer<uint>と要素サイズを合わせるためstd::uint32_tで保持する
+		// meshoptimizerが出力するPrimitiveIndexはuint8_t
+		// そのままuint32_tに1個ずつ拡張するとGPUBufferが大きくなるため、
+		// 4個のuint8_tのPrimitiveIndexListを1個のuint32_tへPackして保存する
 		std::vector<std::uint32_t> m_primitiveIndexList = {};
 
 		// Meshletごとのカリング用境界情報
