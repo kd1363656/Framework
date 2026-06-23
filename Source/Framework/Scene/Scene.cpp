@@ -54,8 +54,9 @@ void FWK::Scene::INIT()
 
 	// 本来はUpdateなどで更新する
 	m_staticModelStandardDrawRequest->m_staticModelRecord           = m_staticModel->GetREFStaticModelRecord();
+	m_staticModelStandardDrawRequest->m_worldMatrix					= TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0F));
 	m_staticModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
-	m_staticModelStandardDrawRequest->m_worldInverseTransposeMatrix = TypeAlias::Math::Matrix::Identity.Transpose();
+	m_staticModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_staticModelStandardDrawRequest->m_worldMatrix.Transpose();
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 

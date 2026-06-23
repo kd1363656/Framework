@@ -44,7 +44,7 @@ cbuffer CBLightPass : register(b2)
     float  g_ambientLightIntensity;
 };
 
-SamplerState g_baseColorSampler : register(s0);
+SamplerState g_textureSampler : register(s0);
 
 uint FetchStaticModelPackedPrimitiveIndex(const uint a_primitiveByteIndex)
 {
