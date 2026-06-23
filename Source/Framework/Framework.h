@@ -259,6 +259,8 @@
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Pass/Camera/Buffer/CameraPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Camera/CameraPassDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Pass/Light/Buffer/LightPassConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Pass/Light/LightPassDrawRequest.h"
 
 // 描画リクエスト(レンダーターゲット共通パス)
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/DrawRequestRenderTargetPassBase.h"
