@@ -57,7 +57,7 @@ void FWK::Scene::INIT()
 	m_staticModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
 	m_staticModelStandardDrawRequest->m_worldInverseTransposeMatrix = TypeAlias::Math::Matrix::Identity.Transpose();
 
-	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardPerObjectDrawRequest>().lock();
+	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 
 	if (!l_staticModelStandardPerObjectDrawRequest) { return; }
 

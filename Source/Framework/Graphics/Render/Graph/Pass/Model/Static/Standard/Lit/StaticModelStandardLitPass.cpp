@@ -25,9 +25,9 @@ void FWK::Graphics::StaticModelStandardLitPass::Execute(Renderer & a_renderer, R
 	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature,        "ロートシグネチャの取得に失敗しており、StaticModelStandardLitPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、StaticModelStandardLitPassの実行に失敗しました。");
 
-	const auto& l_cameraPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>					      ().lock();
-	const auto& l_lightPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<LightPassDrawRequest>					      ().lock();
-	const auto& l_staticModelStandardPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardPerObjectDrawRequest>().lock();
+	const auto& l_cameraPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>					         ().lock();
+	const auto& l_lightPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<LightPassDrawRequest>					         ().lock();
+	const auto& l_staticModelStandardPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardLitPerObjectDrawRequest>().lock();
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_cameraPassDrawRequest,																						   "カメラパスのポインタが無効になっており、StaticModelStandardLitPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_lightPassDrawRequest,																						       "ライトパスのポインタが無効になっており、StaticModelStandardLitPassの実行に失敗しました。");

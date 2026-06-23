@@ -1072,6 +1072,12 @@
     <Filter Include="Asset\Shader\Model\Static\Standard\Lit">
       <UniqueIdentifier>{711af9fe-3ac6-4658-ae4c-1d97d8cb9d54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit">
+      <UniqueIdentifier>{96a6bdae-7a91-4759-8dd7-aef35c5f3c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit">
+      <UniqueIdentifier>{cabc13ab-3665-44aa-880b-1c61419dc20d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1680,7 +1686,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\CameraPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequest.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Struct\StaticModelStandardPerObjectDrawRequestDataStruct.h">
@@ -1769,6 +1775,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\LightPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2054,7 +2066,7 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequest.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp">

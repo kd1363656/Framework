@@ -25,8 +25,8 @@ void FWK::Graphics::StaticModelStandardUnLitPass::Execute(Renderer & a_renderer,
 	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature,		 "ルートシグネチャの取得に失敗しており、StaticModelStandardUnLitPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、StaticModelStandardUnLitPassの実行に失敗しました。");
 
-	const auto& l_cameraPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>					      ().lock();
-	const auto& l_staticModelStandardPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardPerObjectDrawRequest>().lock();
+	const auto& l_cameraPassDrawRequest			          = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>					           ().lock();
+	const auto& l_staticModelStandardPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardUnLitPerObjectDrawRequest>().lock();
 
 	FWK_ASSERT_RETURN_IF_FAILED(!l_cameraPassDrawRequest,																						   "カメラパスのポインタが無効になっており、StaticModelStandardUnLitPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "カメラ定数の設定が出来ておらず、StaticModelStandardUnLitPassの実行に失敗しました。");

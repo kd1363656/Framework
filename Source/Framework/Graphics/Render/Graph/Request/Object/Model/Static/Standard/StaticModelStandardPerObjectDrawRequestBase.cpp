@@ -1,12 +1,12 @@
-﻿#include "StaticModelStandardPerObjectDrawRequest.h"
+﻿#include "StaticModelStandardPerObjectDrawRequestBase.h"
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::BeginFrame()
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::BeginFrame()
 {
 	// 参照が途切れているstd::weak_ptrを削除する
 	m_forwardDrawRequestPerObjectDataList.BeginFrame();
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
@@ -93,14 +93,14 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::SetupPerObjectConst
 	}
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequest::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
 	m_forwardDrawRequestPerObjectDataList.AddDrawRequestPerObject(a_drawRequestData);
 }
 
-bool FWK::Graphics::StaticModelStandardPerObjectDrawRequest::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
+bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
 {
 	const auto l_meshletCount = static_cast<UINT>(a_modelMesh.m_modelMeshletData.m_meshletList.size());
 
@@ -111,7 +111,7 @@ bool FWK::Graphics::StaticModelStandardPerObjectDrawRequest::DispatchModelMesh(c
 	return true;
 }
 
-float FWK::Graphics::StaticModelStandardPerObjectDrawRequest::CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix) const
+float FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix) const
 {
 	// MeshletBoundsは球なので、非均一スケールでも安全になるように最大スケールを使う
 	const float l_scaleXSquared = a_worldMatrix._11 * a_worldMatrix._11 + a_worldMatrix._12 * a_worldMatrix._12 + a_worldMatrix._13 * a_worldMatrix._13;
