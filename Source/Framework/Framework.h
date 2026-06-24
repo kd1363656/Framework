@@ -318,6 +318,11 @@
 #include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 
 #include "Graphics/GraphicsManager.h"
 
+// 当たり判定
+#include "Physics/Definition/Enum/PhysicsLayerEnum.h"
+#include "Physics/Definition/Constant/PhysicsLayerConstant.h"
+#include "Physics/Layer/PhysicsLayerSetting.h"
+
 // エディター
 #include "Editor/Style/EditorStyle.h"
 #include "Editor/Window/EditorWindowBase.h"

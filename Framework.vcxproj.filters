@@ -1078,6 +1078,21 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit">
       <UniqueIdentifier>{cabc13ab-3665-44aa-880b-1c61419dc20d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics">
+      <UniqueIdentifier>{ea178a29-69a8-499e-b256-e8245bd1fade}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Definition">
+      <UniqueIdentifier>{f6a76614-0f54-4b5f-a3e0-b8bb61bb60ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Definition\Enum">
+      <UniqueIdentifier>{7c3163c4-881c-4412-972a-7a77d3b21fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Definition\Constant">
+      <UniqueIdentifier>{ba96fe27-d0de-4857-8542-790a3b6b5ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Layer">
+      <UniqueIdentifier>{efbc6977-6d65-4dbe-b5c5-162561c100ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1782,6 +1797,15 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Definition\Enum\PhysicsLayerEnum.h">
+      <Filter>Source\Framework\Physics\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Definition\Constant\PhysicsLayerConstant.h">
+      <Filter>Source\Framework\Physics\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h">
+      <Filter>Source\Framework\Physics\Layer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2113,6 +2137,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\LightPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp">
+      <Filter>Source\Framework\Physics\Layer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

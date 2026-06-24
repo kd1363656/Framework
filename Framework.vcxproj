@@ -208,7 +208,7 @@ if "$(Configuration)"=="Debug" (
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;..\Library\JoltPhysics\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:preprocessor /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
@@ -219,8 +219,8 @@ if "$(Configuration)"=="Debug" (
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
@@ -274,7 +274,7 @@ if "$(Configuration)"=="Debug" (
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;..\Library\JoltPhysics\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:preprocessor /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
@@ -285,8 +285,8 @@ if "$(Configuration)"=="Debug" (
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
@@ -540,6 +540,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
+    <ClInclude Include="Source\Framework\Physics\Definition\Constant\PhysicsLayerConstant.h" />
+    <ClInclude Include="Source\Framework\Physics\Definition\Enum\PhysicsLayerEnum.h" />
+    <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
@@ -673,6 +676,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
