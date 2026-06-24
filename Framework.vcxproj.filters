@@ -1087,9 +1087,6 @@
     <Filter Include="Source\Framework\Physics\Definition\Enum">
       <UniqueIdentifier>{7c3163c4-881c-4412-972a-7a77d3b21fa3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Physics\Definition\Constant">
-      <UniqueIdentifier>{ba96fe27-d0de-4857-8542-790a3b6b5ef6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Physics\Layer">
       <UniqueIdentifier>{efbc6977-6d65-4dbe-b5c5-162561c100ce}</UniqueIdentifier>
     </Filter>
@@ -1799,9 +1796,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Definition\Enum\PhysicsLayerEnum.h">
       <Filter>Source\Framework\Physics\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Definition\Constant\PhysicsLayerConstant.h">
-      <Filter>Source\Framework\Physics\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h">
       <Filter>Source\Framework\Physics\Layer</Filter>
