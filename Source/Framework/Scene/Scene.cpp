@@ -2,39 +2,36 @@
 
 void FWK::Scene::INIT()
 {
-	if (!m_camera) 
-	{
-		m_camera = std::make_shared<Graphics::Camera>();
-	}
-
-	if (!m_staticModel)
-	{
-		m_staticModel = std::make_shared<Graphics::StaticModel>();
-	}
-
-	if (!m_staticModelStandardDrawRequest)
-	{
-		m_staticModelStandardDrawRequest = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>();
-	}
+	m_camera                                = std::make_shared<Graphics::Camera>								   ();
+	m_staticModel                           = std::make_shared<Graphics::StaticModel>							   ();
+	m_staticGraoundModel                    = std::make_shared<Graphics::StaticModel>							   ();
+	m_staticModelStandardDrawRequest        = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>();
+	m_staticGraoundModelStandardDrawRequest = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>();
 
 	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
 	const auto& l_renderGraph     = l_renderer.GetREFRenderGraph		  ();
 
 	// モデル
-	m_staticModel->Load("Asset/Model/Antike.fbx");
+	m_staticModel->Load       ("Asset/Model/Antike.fbx");
+	m_staticGraoundModel->Load("Asset/Model/Terrain/Terrain.fbx");
 
 	// 本来はUpdateなどで更新する
 	m_staticModelStandardDrawRequest->m_staticModelRecord           = m_staticModel->GetREFStaticModelRecord();
-	m_staticModelStandardDrawRequest->m_worldMatrix					= TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0F));
+	m_staticModelStandardDrawRequest->m_worldMatrix					= TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0.0F));
 	m_staticModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
 	m_staticModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_staticModelStandardDrawRequest->m_worldMatrix.Transpose();
+
+	m_staticGraoundModelStandardDrawRequest->m_staticModelRecord           = m_staticGraoundModel->GetREFStaticModelRecord();
+	m_staticGraoundModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
+	m_staticGraoundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_staticGraoundModelStandardDrawRequest->m_worldMatrix.Transpose();
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 
 	if (!l_staticModelStandardPerObjectDrawRequest) { return; }
 
 	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_staticModelStandardDrawRequest);
+	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_staticGraoundModelStandardDrawRequest);
 
 	const auto& l_viewport = l_renderer.GetREFRenderArea().GetREFViewport();
 
