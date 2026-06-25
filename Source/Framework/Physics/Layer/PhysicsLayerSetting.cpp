@@ -3,6 +3,11 @@
 FWK::Physics::PhysicsLayerSetting::PhysicsLayerSetting() : 
 	m_broadPhaseLayerInterface(static_cast<JPH::uint>(Enum::PhysicsObjectLayerType::Count), static_cast<JPH::uint>(Enum::PhysicsBroadPhaseLayerType::Count)),
 	m_objectLayerPairFilter   (static_cast<JPH::uint>(Enum::PhysicsObjectLayerType::Count))
+{}
+
+FWK::Physics::PhysicsLayerSetting::~PhysicsLayerSetting() = default;
+
+void FWK::Physics::PhysicsLayerSetting::INIT()
 {
 	// ObjectLayerをBroadPhaseLayerへ対応付ける
 	SetupBroadPhaseLayerMapping();
@@ -12,7 +17,7 @@ FWK::Physics::PhysicsLayerSetting::PhysicsLayerSetting() :
 
 	// ObjectLayerVSBroadPhaseLayerのFilterを作る
 	// このFilterは上2つの設定を元に作るため、必ず最後に生成する
-	SetupObjectVSBroadPhaseLayerFilter();
+	SetupObjectVSBroadPhaseLayerFilter();	
 }
 
 JPH::ObjectLayer FWK::Physics::PhysicsLayerSetting::FetchVALObjectLayer(const Enum::PhysicsObjectLayerType a_objectLayerType) const

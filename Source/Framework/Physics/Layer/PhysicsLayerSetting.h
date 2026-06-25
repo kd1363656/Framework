@@ -7,7 +7,9 @@ namespace FWK::Physics
 	public:
 
 		 PhysicsLayerSetting();
-		~PhysicsLayerSetting() = default;
+		~PhysicsLayerSetting();
+
+		void INIT();
 
 		const auto& GetREFBroadPhaseLayerInterface     () const { return m_broadPhaseLayerInterface; }
 		const auto& GetREFObjectVSBroadPhaseLayerFilter() const { return m_objectVsBroadPhaseLayerFilter; }

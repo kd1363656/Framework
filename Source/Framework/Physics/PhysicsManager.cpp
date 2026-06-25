@@ -7,7 +7,7 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_jobSystem(nullptr),
 
-	m_physicsLayerSetting(),
+	m_physicsLayerSetting(nullptr),
 
 	m_physicsSystem(),
 
@@ -66,7 +66,7 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 
 	// JoltのBroadPhase空間分割を最適化する。
 	// 毎フレーム呼ぶものではなく、
-	// ステージ読み込み後など、多量のStaticObjectを追加した後に呼ぶ
+	// ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
 	m_physicsSystem.OptimizeBroadPhase();
 }
 
@@ -78,12 +78,16 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 	// Joltの機能を使う前に必要
 	JPH::RegisterDefaultAllocator();
 
+#if defined(_DEBUG)
+	SetupJoltDebugCallback();
+#endif
+
 	m_factory = std::make_unique<JPH::Factory>();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory, "JPH::Factoryの作成に失敗しました。", false);
 
-	// Jolt内部はFactoryをstaticなrawPointerとして要求する。
-	// ただし、、所有権はm_factoryのstd::unique_ptrが持つ
+	// Jolt内部はFactoryをstaticなraw pointerとして要求する。
+	// ただし、所有権はm_factoryのstd::unique_ptrが持つ
 	JPH::Factory::sInstance = m_factory.get();
 
 	// Joltの標準Shapeや内部型をFactoryへ登録する
@@ -116,7 +120,16 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 
 bool FWK::Physics::PhysicsManager::SetupPhysicsSystem()
 {
-	const auto& l_objectVsBroadPhaseLayerFilter = m_physicsLayerSetting.GetREFObjectVSBroadPhaseLayerFilter();
+	// PhysicsLayerSettingはJoltのTable系クラスを作成する
+	// その内部でJoltのAllocatorを使用するため、RegisterDefaultAllocator()が終わった後で生成する必要がある
+	if (!m_physicsLayerSetting)
+	{
+		m_physicsLayerSetting = std::make_unique<PhysicsLayerSetting>();
+	}
+
+	m_physicsLayerSetting->INIT();
+
+	const auto& l_objectVsBroadPhaseLayerFilter = m_physicsLayerSetting->GetREFObjectVSBroadPhaseLayerFilter();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_objectVsBroadPhaseLayerFilter, "ObjectVSBroadPhaseLayerFilterがnullptrです。", false);
 
@@ -128,17 +141,75 @@ bool FWK::Physics::PhysicsManager::SetupPhysicsSystem()
 	//							接触拘束の最大数、
 	//							ObjectLayerをBroadPhaseLayerへ変換する表、
 	//							あるObjectLayerがどのBroadPhaseLayerを探索するべきかを決めるFilter,
-	//							ObjectLayer同氏が衝突して良いか決めるFilter);
+	//							ObjectLayer同士が衝突して良いか決めるFilter
 	m_physicsSystem.Init(k_maxBodyCount,
 						 k_bodyMutexCount,
 						 k_maxBodyPairCount,
 						 k_maxContactConstraintCount,
-						 m_physicsLayerSetting.GetREFBroadPhaseLayerInterface(),
+						 m_physicsLayerSetting->GetREFBroadPhaseLayerInterface(),
 						 *l_objectVsBroadPhaseLayerFilter,
-						 m_physicsLayerSetting.GetREFObjectLayerPairFilter());
+						 m_physicsLayerSetting->GetREFObjectLayerPairFilter());
 
 	return true;
 }
+
+#if defined(_DEBUG)
+void FWK::Physics::PhysicsManager::TraceJoltMessage(const char* a_format, ...)
+{
+	if (!a_format) { return; }
+
+	char l_buffer[k_joltTraceBufferSize] = {};
+
+	va_list l_argumentList;
+
+	va_start(l_argumentList, a_format);
+
+	vsnprintf_s(l_buffer,
+				k_joltTraceBufferSize,
+				_TRUNCATE,
+				a_format,
+				l_argumentList);
+
+	va_end(l_argumentList);
+
+	OutputDebugStringA("[Jolt]");
+	OutputDebugStringA(l_buffer);
+	OutputDebugStringA("\n");
+}
+
+void FWK::Physics::PhysicsManager::SetupJoltDebugCallback() const
+{
+	// JoltのTrace出力先を用意した関数に差し替える
+	// これを設定しないと、Jolt内部のDummyTrace()がよばれ、IssueReporting.cpp内のJPH_ASSERT(false)で止まる
+	JPH::Trace = TraceJoltMessage;
+
+#ifdef JPH_ENABLE_ASSERTS
+
+	// JoltのAssert内容をVisualStudioの出力ウィンドウに流す
+	// VersionのMismatchの原因となっているdefineを確認するために使う
+	JPH::AssertFailed = HandleJoltAssertFailed;
+#endif
+}
+
+#ifdef JPH_ENABLE_ASSERTS
+bool FWK::Physics::PhysicsManager::HandleJoltAssertFailed(const char* a_expression, const char* a_message, const char* a_file, const JPH::uint a_line)
+{
+	char l_buffer[k_joltTraceBufferSize] = {};
+
+	snprintf(l_buffer, 
+			 k_joltTraceBufferSize,
+			 "(Jolt Assert) File : %s Line : %u Expression : %s Message : %s\n", 
+			 a_file ? a_file : "Unknown",
+			 a_line,
+			 a_expression ? a_expression : "Unknown",
+			 a_message ? a_message : "");
+
+	OutputDebugStringA(l_buffer);
+
+	return false;
+}
+#endif
+#endif
 
 void FWK::Physics::PhysicsManager::Release()
 {

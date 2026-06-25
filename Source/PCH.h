@@ -83,6 +83,7 @@
 
 #include <Jolt/RegisterTypes.h>
 
+#include <Jolt/Core/IssueReporting.h>
 #include <Jolt/Core/Factory.h>
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Core/Memory.h>

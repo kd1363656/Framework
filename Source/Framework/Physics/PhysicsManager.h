@@ -24,6 +24,23 @@ namespace FWK::Physics
 		bool SetupJoltCore     ();
 		bool SetupPhysicsSystem();
 
+#if defined(_DEBUG)
+		static void TraceJoltMessage(const char* a_format, ...);
+
+		void SetupJoltDebugCallback() const;
+		
+		static constexpr size_t k_joltTraceBufferSize = 2048U;
+
+#ifdef JPH_ENABLE_ASSERTS
+
+		static bool HandleJoltAssertFailed(const char*     a_expression,
+										   const char*     a_message,
+										   const char*     a_file,
+										   const JPH::uint a_line);
+#endif
+
+#endif
+
 		void Release();
 
 		static constexpr JPH::uint k_maxBodyCount = 1024U;
@@ -53,7 +70,7 @@ namespace FWK::Physics
 
 		std::unique_ptr<JPH::JobSystemThreadPool> m_jobSystem;
 
-		PhysicsLayerSetting m_physicsLayerSetting;
+		std::unique_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
 
 		JPH::PhysicsSystem m_physicsSystem;
 
