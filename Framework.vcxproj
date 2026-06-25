@@ -456,6 +456,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootParameterStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Struct\CBSpritePassStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
@@ -636,6 +637,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Renderer.cpp" />

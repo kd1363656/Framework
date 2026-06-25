@@ -81,6 +81,7 @@
 #include "Graphics/Render/Pipeline/Definition/Enum/PipelineStateEnum.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Definition/Macros/PipelineStateJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/PipelineStateJsonConverter.h"
+#include "Graphics/Render/Pipeline/PipelineStateBase.h"
 #include "Graphics/Render/Pipeline/PipelineState.h"
 
 // アップロードバッファークラス

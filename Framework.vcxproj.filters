@@ -1824,6 +1824,9 @@
     <ClInclude Include="Source\Framework\Physics\Body\Utility\PhysicsBodyCreatorUitlity.h">
       <Filter>Source\Framework\Physics\Body\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2164,6 +2167,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp">
       <Filter>Source\Framework\Physics\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
