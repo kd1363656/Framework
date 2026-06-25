@@ -11,6 +11,8 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsSystem(),
 
+	m_bodyCreator(),
+
 	m_isInitialized(false),
 
 	m_isJoltTypeRegistered(false),
@@ -68,6 +70,28 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 	// 毎フレーム呼ぶものではなく、
 	// ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
 	m_physicsSystem.OptimizeBroadPhase();
+}
+
+FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticBoxBodyの作成に失敗しました。",     {});
+
+	return m_bodyCreator.CreateStaticBoxBody(*m_physicsLayerSetting, 
+											 a_worldPosition,
+											 a_halfExtent,
+											 m_physicsSystem);
+
+}
+FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicSphereBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicSphereBodyの作成に失敗しました。",     {});
+
+	return m_bodyCreator.CreateDynamicSphereBody(*m_physicsLayerSetting, 
+												 a_worldPosition,
+												 a_radius,
+												 m_physicsSystem);
 }
 
 bool FWK::Physics::PhysicsManager::SetupJoltCore()

@@ -5,7 +5,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticBox
 																					 const TypeAlias::Math::Vector3& a_halfExtent, 
 																						   JPH::PhysicsSystem&       a_physicsSystem) const
 {
-	// X,Y,Zどれ一つでもHlfExtentが0以下の場合アサート
+	// X,Y,Zどれ一つでもHalfExtentが0以下の場合アサート
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_halfExtent.x <= k_minValidBoxHalfExtentLength ||
 									  a_halfExtent.y <= k_minValidBoxHalfExtentLength ||
 									  a_halfExtent.z <= k_minValidBoxHalfExtentLength,

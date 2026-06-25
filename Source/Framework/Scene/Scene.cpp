@@ -45,6 +45,20 @@ void FWK::Scene::INIT()
 
 	// ライト
 	m_lightSystem.ApplyDefaultSettings();
+
+	// JoltPhysicsBody作成テスト
+	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
+
+	const TypeAlias::Math::Vector3& l_floorWorldPosition = { 0.0F, -0.1F, 0.0F };
+	const TypeAlias::Math::Vector3& l_floorHalfExtent    = { 5.0F,  0.1F, 5.0F };
+
+	m_staticFloorBodyHandle = l_physicsManager.CreateStaticBoxBody(l_floorWorldPosition, l_floorHalfExtent);
+
+	const TypeAlias::Math::Vector3& l_sphereWorldPosition = { 0.0F, 2.0F, 0.0F };
+
+	m_dynamicSphereBodyHandle = l_physicsManager.CreateDynamicSphereBody(l_sphereWorldPosition, 0.25F);
+
+	l_physicsManager.OptimizeBroadPhase();
 }
 
 void FWK::Scene::Update()

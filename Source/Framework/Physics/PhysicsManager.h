@@ -19,6 +19,9 @@ namespace FWK::Physics
 
 		void OptimizeBroadPhase();
 
+		Struct::PhysicsBodyHandle CreateStaticBoxBody    (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
+		Struct::PhysicsBodyHandle CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_radius);
+
 	private:
 
 		bool SetupJoltCore     ();
@@ -73,6 +76,8 @@ namespace FWK::Physics
 		std::unique_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
 
 		JPH::PhysicsSystem m_physicsSystem;
+
+		PhysicsBodyCreator m_bodyCreator;
 
 		bool m_isInitialized;
 
