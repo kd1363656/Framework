@@ -19,6 +19,8 @@ namespace FWK::Physics
 
 		void OptimizeBroadPhase();
 
+		void ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle);
+
 		// スフィアボディ
 		Struct::PhysicsBodyHandle CreateStaticSphereBody (const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
 		Struct::PhysicsBodyHandle CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
@@ -59,7 +61,17 @@ namespace FWK::Physics
 
 #endif
 
+		void RegisterActiveBodyID(const Struct::PhysicsBodyHandle& a_bodyHandle);
+
+		void UnregisterActiveBodyID(const JPH::BodyID& a_bodyID);
+
+		void ReleaseAllBodies();
+
 		void Release();
+
+		std::uint32_t FetchVALBodyIDKey(const JPH::BodyID& a_bodyID) const;
+
+		static constexpr std::size_t k_lastElementIndexOffset = 1ULL;
 
 		static constexpr JPH::uint k_maxBodyCount = 1024U;
 
@@ -84,6 +96,10 @@ namespace FWK::Physics
 		static constexpr int k_fallbackWorkerThreadCount = 1;
 		
 		static constexpr int k_collisionStepCount = 1;
+
+		std::unordered_map<std::uint32_t, std::size_t> m_activeBodyIDIndexMap;
+
+		std::vector<JPH::BodyID> m_activeBodyIDList;
 
 		std::unique_ptr<JPH::Factory> m_factory;
 
