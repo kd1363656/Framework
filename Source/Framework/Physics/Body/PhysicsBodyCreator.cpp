@@ -12,7 +12,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticSph
 							JPH::EActivation::DontActivate,
 							Enum::PhysicsObjectLayerType::StaticObject,
 						    a_radius,
-							k_isLinearCastEnableFalse,
+							k_linearCastDisabled,
 							a_physicsSystem);
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicSphereBody(const PhysicsLayerSetting&      a_physicsLayerSetting,
@@ -26,7 +26,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicSp
 							JPH::EActivation::Activate,
 							Enum::PhysicsObjectLayerType::DynamicObject,
 						    a_radius,
-							k_isLinearCastEnableTrue,
+							k_linearCastEnable,
 							a_physicsSystem);
 }
 
@@ -42,7 +42,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticBox
 						 JPH::EMotionType::Static,
 						 JPH::EActivation::DontActivate,
 						 Enum::PhysicsObjectLayerType::StaticObject,
-						 k_isLinearCastEnableFalse,
+						 k_linearCastDisabled,
 						 a_physicsSystem);
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicBoxBody(const PhysicsLayerSetting&      a_physicsLayerSetting, 
@@ -56,7 +56,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicBo
 						 JPH::EMotionType::Dynamic,
 						 JPH::EActivation::Activate,
 						 Enum::PhysicsObjectLayerType::DynamicObject,
-						 k_isLinearCastEnableTrue,
+						 k_linearCastEnable,
 						 a_physicsSystem);
 }
 
@@ -73,7 +73,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticCap
 						     Enum::PhysicsObjectLayerType::StaticObject,
 						     a_halfHeightOfCylinder,
 						     a_radius,
-						     k_isLinearCastEnableFalse,
+							 k_linearCastDisabled,
 						     a_physicsSystem);
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicCapsuleBody(const PhysicsLayerSetting&      a_physicsLayerSetting, 
@@ -89,7 +89,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicCa
 						     Enum::PhysicsObjectLayerType::DynamicObject,
 						     a_halfHeightOfCylinder,
 						     a_radius,
-						     k_isLinearCastEnableTrue,
+						     k_linearCastEnable,
 						     a_physicsSystem);
 }
 
@@ -106,9 +106,9 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateSphereBod
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_radius <= k_minValidSphereRadius, "SphereBodyのRadiusが0以下のため、作成に失敗しました。", {});
 
 	// 半径がどれぐらいの球を作るのかを伝える設定
-	JPH::SphereShapeSettings l_sphereShapeSettings(a_radius);
+	const JPH::SphereShapeSettings l_sphereShapeSettings{ a_radius };
 
-	const auto l_shapeResult = l_sphereShapeSettings.Create();
+	const auto& l_shapeResult = l_sphereShapeSettings.Create();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_shapeResult.HasError(), "SphereBody用のSphereShapeの作成に失敗しました。", {});
 
@@ -116,7 +116,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateSphereBod
 
 	// スフィアボディの設定を作成
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													ConvertToJoltVector3(a_worldPosition),
+													JPH::Vec3{ a_worldPosition },
 													JPH::Quat::sIdentity(),
 													a_motionType,
 													a_physicsLayerSetting.FetchVALObjectLayer(a_objectLayerType) };
@@ -132,6 +132,8 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateSphereBod
 
 	// ボディの作成
 	const auto l_bodyID = l_bodyInterface.CreateAndAddBody(l_bodyCreateSettings, a_activationType);
+
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_bodyID.IsInvalid(), "SphereBodyの作成に失敗しました。", {});
 
 	Struct::PhysicsBodyHandle l_bodyHandle = {};
 
@@ -159,13 +161,13 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateBoxBody(c
 									  "BoxBodyのHalfExtentが0以下のため、作成に失敗しました。",
 									  {});
 
-	const JPH::Vec3 l_halfExtent = ConvertToJoltVector3(a_halfExtent);
+	const JPH::Vec3& l_halfExtent = { a_halfExtent.x, a_halfExtent.y, a_halfExtent.z };
 
 	// BoxのShape設定を作成
-	JPH::BoxShapeSettings l_boxShapeSettings(l_halfExtent);
+	JPH::BoxShapeSettings l_boxShapeSettings{ l_halfExtent };
 
 	// ShapeSettingsから実際のShapeを作成する
-	const auto l_shapeResult = l_boxShapeSettings.Create();
+	const auto& l_shapeResult = l_boxShapeSettings.Create();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_shapeResult.HasError(), "BoxBody用のBoxShapeの作成に失敗しました。", {});
 
@@ -173,7 +175,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateBoxBody(c
 
 	// ボックスボディの設定を作成
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-												    ConvertToJoltVector3(a_worldPosition),
+													JPH::Vec3{ a_worldPosition },
 												    JPH::Quat::sIdentity(),
 												    a_motionType,
 												    a_physicsLayerSetting.FetchVALObjectLayer(a_objectLayerType) };
@@ -210,23 +212,23 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateCapsuleBo
 																			       const bool						  a_isLinearCastEnabled, 
 																			       	     JPH::PhysicsSystem&		  a_physicsSystem) const
 {
-	// Capsuleは絵んちゅ部分 + 上下の半球でできている
+	// Capsuleは円柱部分 + 上下の半球でできている
 	// a_halfHeightOfCylinderは円柱部分の半分の高さ
-	// JoltではHalfHeightOfCylinder == 0の場合、SphereShapeとして作られらるが
+	// JoltではhalfHeightOfCylinder == 0の場合、SphereShapeとして作られるが
 	// この関数はカプセル判定を作る関数なので0以下は失敗扱いとする
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_halfHeightOfCylinder <= k_minValidCapsuleHalfHeightOfCylinder, "CapsuleBodyのHalfHeightOfCylinderが0以下のため、作成に失敗しました。", {});
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_radius <= k_minValidCapsuleRadius,							   "CapsuleBodyのRadiusが0以下のため、作成に失敗しました。",			   {});
 
-	JPH::CapsuleShapeSettings l_capsuleShapeSettings(a_halfHeightOfCylinder, a_radius);
+	JPH::CapsuleShapeSettings l_capsuleShapeSettings{ a_halfHeightOfCylinder, a_radius };
 
-	const auto l_shapeResult = l_capsuleShapeSettings.Create();
+	const auto& l_shapeResult = l_capsuleShapeSettings.Create();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_shapeResult.HasError(), "CapsuleBody用のCapsuleShape作成に失敗しました。", {});
 
-	const auto l_shape = l_shapeResult.Get();
+	const auto& l_shape = l_shapeResult.Get();
 
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													ConvertToJoltVector3(a_worldPosition),
+													JPH::Vec3(a_worldPosition),
 													JPH::Quat::sIdentity(),
 													a_motionType,
 													a_physicsLayerSetting.FetchVALObjectLayer(a_objectLayerType) };
@@ -250,10 +252,4 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateCapsuleBo
 	l_bodyHandle.m_isValid = !l_bodyID.IsInvalid();
 
 	return l_bodyHandle;
-}
-
-JPH::Vec3 FWK::Physics::PhysicsBodyCreator::ConvertToJoltVector3(const TypeAlias::Math::Vector3& a_vector) const
-{
-	// NowProject側のVector3をJolt側のVec3へ変換する
-	return JPH::Vec3{ a_vector.x, a_vector.y, a_vector.z };
 }

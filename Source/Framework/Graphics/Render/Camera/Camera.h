@@ -15,14 +15,14 @@ namespace FWK::Graphics
 				   const float					  a_farClip     = Constant::k_defaultFarClip,
 				   const float					  a_nearClip    = Constant::k_defaultNearClip);
 
-		void SetupCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
+		void ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
 		
-		void SetupProjectionMatrix(const float a_aspectRatio,
-								 const float a_fovYDegree  = k_defaultFOVYDegree,
-								 const float a_farClip     = Constant::k_defaultFarClip,
-								 const float a_nearClip    = Constant::k_defaultNearClip);
+		void ApplyProjectionMatrix(const float a_aspectRatio,
+								   const float a_fovYDegree  = k_defaultFOVYDegree,
+								   const float a_farClip     = Constant::k_defaultFarClip,
+								   const float a_nearClip    = Constant::k_defaultNearClip);
 
-		void SetupProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
+		void ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 
 		const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
 		

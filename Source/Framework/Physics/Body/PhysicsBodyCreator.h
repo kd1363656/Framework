@@ -77,17 +77,15 @@ namespace FWK::Physics
 												    const bool						   a_isLinearCastEnabled,
 													      JPH::PhysicsSystem&		   a_physicsSystem) const;
 
-		JPH::Vec3 ConvertToJoltVector3(const TypeAlias::Math::Vector3& a_vector) const;
-
 		static constexpr float k_minValidBoxHalfExtentLength = 0.0F;
 		static constexpr float k_minValidSphereRadius		 = 0.0F;
 
-		// JoltのCapsuleShapeSettings事態はhalfHeightOfCylinder == 0.0Fを許可する
+		// JoltのCapsuleShapeSettings自体はhalfHeightOfCylinder == 0.0Fを許可する
 		// ただし、その場合はカプセルではなくSphereShapeとして作られる
 		static constexpr float k_minValidCapsuleHalfHeightOfCylinder = 0.0F;
 		static constexpr float k_minValidCapsuleRadius			     = 0.0F;
 
-		static const bool k_isLinearCastEnableTrue  = true;
-		static const bool k_isLinearCastEnableFalse = false;
+		static const bool k_linearCastEnable   = true;
+		static const bool k_linearCastDisabled = false;
 	};
 }

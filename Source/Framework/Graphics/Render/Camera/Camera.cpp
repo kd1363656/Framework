@@ -17,7 +17,7 @@ void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
 	RegisterCameraPassConstantBufferSource();
 }
 
-void FWK::Graphics::Camera::SetupCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
+void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
 {
 	if (!m_cbCameraPass) { return; }
 
@@ -34,7 +34,7 @@ void FWK::Graphics::Camera::SetupCameraMatrix(const TypeAlias::Math::Matrix& a_c
 	UpdateViewProjectionMatrix();
 }
 
-void FWK::Graphics::Camera::SetupProjectionMatrix(const float a_aspectRatio,
+void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
 												const float a_fovYDegree,
 												const float a_farClip,
 												const float a_nearClip)
@@ -75,7 +75,7 @@ void FWK::Graphics::Camera::SetupProjectionMatrix(const float a_aspectRatio,
 	UpdateViewProjectionMatrix();
 }
 
-void FWK::Graphics::Camera::SetupProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix)
+void FWK::Graphics::Camera::ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix)
 {
 	if (!m_cbCameraPass) { return; }
 
@@ -97,9 +97,9 @@ void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_ca
 	}
 
 	// カメラ行列と射影行列をセット
-	SetupCameraMatrix(a_cameraMatrix);
+	ApplyCameraMatrix(a_cameraMatrix);
 	
-	SetupProjectionMatrix(a_aspectRatio,
+	ApplyProjectionMatrix(a_aspectRatio,
 						  a_fovYDegree,
 						  a_farClip,
 						  a_nearClip);
