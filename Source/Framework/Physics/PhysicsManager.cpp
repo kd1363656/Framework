@@ -229,9 +229,10 @@ void FWK::Physics::PhysicsManager::Release()
 		JPH::Factory::sInstance = nullptr;
 	}
 
-	m_jobSystem     = nullptr;
-	m_tempAllocator = nullptr;
-	m_factory		= nullptr;
+	m_factory		      = nullptr;
+	m_tempAllocator       = nullptr;
+	m_jobSystem           = nullptr;
+	m_physicsLayerSetting = nullptr;
 
 	m_isInitialized = false;
 }

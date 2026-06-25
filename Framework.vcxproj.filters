@@ -1090,6 +1090,15 @@
     <Filter Include="Source\Framework\Physics\Layer">
       <UniqueIdentifier>{efbc6977-6d65-4dbe-b5c5-162561c100ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body">
+      <UniqueIdentifier>{dc1d185e-ccbc-46d9-a199-cbfcbdef610e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Definition">
+      <UniqueIdentifier>{ce6de271-54f7-4d31-a15e-f3be490dda44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Definition\Struct">
+      <UniqueIdentifier>{73d9477a-8f31-4be3-9e69-dca2197cae48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1803,6 +1812,12 @@
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h">
       <Filter>Source\Framework\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Definition\Struct\PhysicsBodyCreatorStruct.h">
+      <Filter>Source\Framework\Physics\Body\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h">
+      <Filter>Source\Framework\Physics\Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2140,6 +2155,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp">
       <Filter>Source\Framework\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp">
+      <Filter>Source\Framework\Physics\Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
