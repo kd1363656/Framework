@@ -85,7 +85,7 @@ namespace FWK::Physics
 		static constexpr float k_minValidCapsuleHalfHeightOfCylinder = 0.0F;
 		static constexpr float k_minValidCapsuleRadius			     = 0.0F;
 
-		static const bool k_linearCastEnable   = true;
+		static const bool k_linearCastEnabled  = true;
 		static const bool k_linearCastDisabled = false;
 	};
 }

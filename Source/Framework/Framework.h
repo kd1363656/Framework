@@ -322,6 +322,7 @@
 #include "Physics/Definition/Enum/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Physics/Body/Definition/Struct/PhysicsBodyCreatorStruct.h"
+#include "Physics/Body/Utility/PhysicsBodyCreatorUitlity.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
 #include "Physics/PhysicsManager.h"
 

@@ -1099,6 +1099,9 @@
     <Filter Include="Source\Framework\Physics\Body\Definition\Struct">
       <UniqueIdentifier>{73d9477a-8f31-4be3-9e69-dca2197cae48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Utility">
+      <UniqueIdentifier>{6212d940-f3c4-4d5b-ae92-86af9ed7acac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1817,6 +1820,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h">
       <Filter>Source\Framework\Physics\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Utility\PhysicsBodyCreatorUitlity.h">
+      <Filter>Source\Framework\Physics\Body\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicSp
 							JPH::EActivation::Activate,
 							Enum::PhysicsObjectLayerType::DynamicObject,
 						    a_radius,
-							k_linearCastEnable,
+							k_linearCastEnabled,
 							a_physicsSystem);
 }
 
@@ -56,7 +56,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicBo
 						 JPH::EMotionType::Dynamic,
 						 JPH::EActivation::Activate,
 						 Enum::PhysicsObjectLayerType::DynamicObject,
-						 k_linearCastEnable,
+						 k_linearCastEnabled,
 						 a_physicsSystem);
 }
 
@@ -89,7 +89,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateDynamicCa
 						     Enum::PhysicsObjectLayerType::DynamicObject,
 						     a_halfHeightOfCylinder,
 						     a_radius,
-						     k_linearCastEnable,
+						     k_linearCastEnabled,
 						     a_physicsSystem);
 }
 
@@ -116,7 +116,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateSphereBod
 
 	// スフィアボディの設定を作成
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													JPH::Vec3{ a_worldPosition },
+													Utility::ConvertToJoltVector3(a_worldPosition),
 													JPH::Quat::sIdentity(),
 													a_motionType,
 													a_physicsLayerSetting.FetchVALObjectLayer(a_objectLayerType) };
@@ -175,7 +175,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateBoxBody(c
 
 	// ボックスボディの設定を作成
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													JPH::Vec3{ a_worldPosition },
+													Utility::ConvertToJoltVector3(a_worldPosition),
 												    JPH::Quat::sIdentity(),
 												    a_motionType,
 												    a_physicsLayerSetting.FetchVALObjectLayer(a_objectLayerType) };
@@ -228,7 +228,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateCapsuleBo
 	const auto& l_shape = l_shapeResult.Get();
 
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													JPH::Vec3(a_worldPosition),
+													Utility::ConvertToJoltVector3(a_worldPosition),
 													JPH::Quat::sIdentity(),
 													a_motionType,
 													a_physicsLayerSetting.FetchVALObjectLayer(a_objectLayerType) };

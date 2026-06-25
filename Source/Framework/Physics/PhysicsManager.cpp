@@ -146,7 +146,7 @@ void FWK::Physics::PhysicsManager::ApplyBodyLinearVelocity(const Struct::Physics
 	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
 
 	// Bodyに速度を設定する
-	l_bodyInterface.SetLinearVelocity(a_bodyHandle.m_bodyID, JPH::Vec3{ a_linearVelocity });
+	l_bodyInterface.SetLinearVelocity(a_bodyHandle.m_bodyID, Utility::ConvertToJoltVector3(a_linearVelocity));
 	
 	// BodyがSleep状態だと、速度を設定してもすぐに動かない可能性がある
 	// 入力で動かしたいBodyは、速度を設定したタイミングで起こしておく

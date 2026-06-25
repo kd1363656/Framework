@@ -544,6 +544,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Definition\Struct\PhysicsBodyCreatorStruct.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h" />
+    <ClInclude Include="Source\Framework\Physics\Body\Utility\PhysicsBodyCreatorUitlity.h" />
     <ClInclude Include="Source\Framework\Physics\Definition\Enum\PhysicsLayerEnum.h" />
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
