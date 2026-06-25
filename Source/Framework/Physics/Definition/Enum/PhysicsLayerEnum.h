@@ -8,7 +8,12 @@ namespace FWK::Enum
 	{
 		Invalid,
 
+		// 動かないオブジェクトに使用、
+		// マップ、壁、床、など重力を当てる必要がなく基本的に動かないものに付与
 		StaticObject,
+
+		// 物理で動く箱、落下物、押されるオブジェクト、重力あり、なしで切り替え可能
+		// 基本的に動くオブジェクトに適用
 		DynamicObject,
 
 		Count,
@@ -19,7 +24,10 @@ namespace FWK::Enum
 	{
 		Invalid,
 
+		// 基本的に動かない、重力がかからないものに適用
 		Static,
+
+		// 基本的に動く、重力がかかるものに適用
 		Dynamic,
 
 		Count
