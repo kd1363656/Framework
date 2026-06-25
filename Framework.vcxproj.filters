@@ -1102,6 +1102,21 @@
     <Filter Include="Source\Framework\Physics\Body\Utility">
       <UniqueIdentifier>{6212d940-f3c4-4d5b-ae92-86af9ed7acac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Mesh">
+      <UniqueIdentifier>{2470d4ca-7616-498e-8895-aed658c83dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Standard">
+      <UniqueIdentifier>{48ec73ec-9552-4521-adb7-7e27f9e767de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh">
+      <UniqueIdentifier>{874d090d-b895-49e9-836c-2a9a3e015126}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard">
+      <UniqueIdentifier>{741de08e-f9e1-48f8-88c3-7471a6fe1f45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility">
+      <UniqueIdentifier>{a60ec51e-11d0-4644-8519-8142cc4a3f13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1404,26 +1419,14 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootParameterStruct.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootSignatureStruct.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant\RootSignatureConstant.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\IsArrayJsonUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
@@ -1827,8 +1830,29 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Mesh\MeshShaderPipelineState.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateBaseEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Standard\StandardPipelineState.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Standard</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh\MeshShaderPipelineStateJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\StandardPipelineStateJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\StandardPipelineStateJsonConverterUtility.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2000,15 +2024,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json</Filter>
     </ClCompile>
@@ -2174,8 +2189,23 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Mesh\MeshShaderPipelineState.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Standard\StandardPipelineState.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Standard</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh\MeshShaderPipelineStateJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\StandardPipelineStateJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

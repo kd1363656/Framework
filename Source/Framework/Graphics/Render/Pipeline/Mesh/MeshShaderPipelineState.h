@@ -2,17 +2,17 @@
 
 namespace FWK::Graphics
 {
-	class PipelineState final
+	class MeshShaderPipelineState final : public PipelineStateBase
 	{
 	public:
 
-		 PipelineState() = default;
-		~PipelineState() = default;
+		 MeshShaderPipelineState()          = default;
+		~MeshShaderPipelineState() override = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create     (const Device&         a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer);
+		void Deserialize(const nlohmann::json& a_rootJson)																	 override;
+		bool Create     (const Device&         a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer) override;
 
-		nlohmann::json Serialize() const;
+		nlohmann::json Serialize() const override;
 
 		const auto& GetREFAmplificationShader() const { return m_amplificationShader; }
 		const auto& GetREFMeshShader         () const { return m_meshShader; }
@@ -29,6 +29,6 @@ namespace FWK::Graphics
 
 		Shader m_meshShader = {};
 
-		Converter::PipelineStateJsonConverter m_jsonConverter = {};
+		Converter::MeshShaderPipelineStateJsonConverter m_jsonConverter = {};
 	};
 }

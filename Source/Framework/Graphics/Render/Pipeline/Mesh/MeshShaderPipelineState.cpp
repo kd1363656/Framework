@@ -1,33 +1,37 @@
-﻿#include "PipelineState.h"
+﻿#include "MeshShaderPipelineState.h"
 
-void FWK::Graphics::PipelineState::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::Graphics::MeshShaderPipelineState::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-bool FWK::Graphics::PipelineState::Create(const Device & a_device, const ShaderCompiler & a_shaderCompiler, const Renderer & a_renderer)
+
+bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer)
 {
 	const auto& l_device = a_device.GetREFDevice().Get();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
-	const auto& l_useRootSignature = a_renderer.FindVALRootSignature(m_useRootSignatureType).lock();
+	const auto& l_useRootSignatureWeak = a_renderer.FindVALRootSignature(GetVALUseRootSignatureType());
+	const auto& l_useRootSignature     = l_useRootSignatureWeak.lock								   ();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_useRootSignature, "対象となるルートシグネチャの取得に失敗し、パイプラインステートの作成処理に失敗しました。", false);
 
 	// このパイプラインステートが使用するルートシグネチャを他のクラスが知らなくていいようにキャッシュする
-	m_useRootSignature = l_useRootSignature;
+	SetUseRootSignature(l_useRootSignatureWeak);
 
 	const auto& l_rootSignature = l_useRootSignature->GetREFRootSignature();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
+	const auto& l_rtvFormatList = GetREFRTVFormatList();
+
 	// RTVFormatListが空ならreturn
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
 
 	// RTVFormatListの要素数がレンダーターゲットの要素数を超えていたらreturn
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
 
 	// 使用するシェーダーをコンパイルする
 	// AmplificationShaderとPixelShaderは任意なので、
@@ -85,7 +89,7 @@ bool FWK::Graphics::PipelineState::Create(const Device & a_device, const ShaderC
 	// ForcedSampleCount     : 強制サンプル数(通常は0)
 	// ConservativeRaster    : 保守的ラスタライズを使うか
 	// ラスタライザ設定を指定する
-	l_pipelineStateDesc.RasterizerState = m_rasterizerDesc;
+	l_pipelineStateDesc.RasterizerState = GetREFRasterizerDesc();
 
 	// D3D12_BLEND_DESCについての説明
 	// AlphaToCoverageEnable  : MSAA使用時にalpha値からサンプル被覆率を作るか
@@ -105,7 +109,7 @@ bool FWK::Graphics::PipelineState::Create(const Device & a_device, const ShaderC
 	// ブレンド設定を指定する
 	// ここでは基本的な既定設定を使用する
 	// 透明合成などをしたい場合は後でここを変更する
-	l_pipelineStateDesc.BlendState = m_blendDesc;
+	l_pipelineStateDesc.BlendState = GetREFBlendDesc();
 
 	// 対象となるGPUのノードマスク
 	l_pipelineStateDesc.NodeMask = Constant::k_defaultGPUNodeMask;
@@ -119,31 +123,31 @@ bool FWK::Graphics::PipelineState::Create(const Device & a_device, const ShaderC
 	// StencilWriteMask : ステンシル値を書き込むときのビットマスク
 	// FrontFace        : 前面ポリゴンに対するステンシル動作
 	// BackFace         : 背面ポリゴンに対するステンシル動作
-	l_pipelineStateDesc.DepthStencilState = m_depthStencilDesc;
+	l_pipelineStateDesc.DepthStencilState = GetREFDepthStencilDesc();
 
 	// サンプルマスクを設定する
 	// 通常はUINT_MAXで全サンプル有効
-	l_pipelineStateDesc.SampleMask = m_sampleMask;
+	l_pipelineStateDesc.SampleMask = GetVALSampleMask();
 
 	// RenderTargetの枚数を指定する
-	l_pipelineStateDesc.NumRenderTargets = static_cast<UINT>(m_rtvFormatList.size());
+	l_pipelineStateDesc.NumRenderTargets = static_cast<UINT>(l_rtvFormatList.size());
 
 	// RTVFormatListの内容をPSO作成用の固定長RTVFormats配列へコピーする
-	std::copy(m_rtvFormatList.begin(), m_rtvFormatList.end(), l_pipelineStateDesc.RTVFormats);
+	std::copy(l_rtvFormatList.begin(), l_rtvFormatList.end(), l_pipelineStateDesc.RTVFormats);
 	
 	// 深度ステンシルビューのフォーマットを設定する
 	// 深度を使うPSOでは、実際にOMへセットするDSVと同じフォーマットを指定する必要がある
-	l_pipelineStateDesc.DSVFormat = m_dsvFormat;
+	l_pipelineStateDesc.DSVFormat = GetVALDSVFormat();
 
 	// DXGI_SAMPLE_DESCについての説明
 	// Count : 1ピクセル当たりのサンプル数(1なら通常描画、4なら4x MSAAのように複数回サンプリングする)
 	// Quality : サンプル品質レベル(通常は0を使うことが多い、利用可能な値はデバイス / フォーマットごとに確認が必要)
 	// MSAAなどのサンプル設定を指定する
 	// Count = 1なら通常の非MSAA描画
-	l_pipelineStateDesc.SampleDesc = m_sampleDesc;
+	l_pipelineStateDesc.SampleDesc = GetREFSampleDesc();
 
 	// このPSOが使うプリミティブ種類を指定する
-	l_pipelineStateDesc.PrimitiveTopologyType = m_primitiveTopologyType;
+	l_pipelineStateDesc.PrimitiveTopologyType = GetVALPrimitiveTopologyType();
 
 	// 上で設定したPSO情報をストリーム形式へまとめる
 	auto l_psoStream = CD3DX12_PIPELINE_MESH_STATE_STREAM{ l_pipelineStateDesc };
@@ -156,18 +160,20 @@ bool FWK::Graphics::PipelineState::Create(const Device & a_device, const ShaderC
 	// ストリーム全体のサイズ
 	l_streamDesc.SizeInBytes = sizeof(l_psoStream);
 
+	auto& l_pipelineState = GetMutableREFPipelineState();
+
 	// パイプラインステートを実際に作成する
 	// CreatePipelineState(パイプライン設定ストリーム、
 	//					   受け取りたいCOMインターフェース型のID、
 	//					   作成結果のポインタを書き込むアドレス);
-	auto l_hr = l_device->CreatePipelineState(&l_streamDesc, IID_PPV_ARGS(m_pipelineState.ReleaseAndGetAddressOf()));
+	auto l_hr = l_device->CreatePipelineState(&l_streamDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "パイプラインステート作成処理に失敗しました。", false);
 
 	return true;
 }
 
-nlohmann::json FWK::Graphics::PipelineState::Serialize() const
+nlohmann::json FWK::Graphics::MeshShaderPipelineState::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }

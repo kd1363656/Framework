@@ -53,10 +53,16 @@ namespace FWK::Graphics
 
 		auto GetVALSampleMask() const { return m_sampleMask; }
 
-	private:
-		
+	protected:
+
+		void SetUseRootSignature(const std::weak_ptr<RootSignature>& a_set) { m_useRootSignature = a_set; }
+
 		D3D12_SHADER_BYTECODE FetchShaderByteCode(const Shader& a_shader) const;
 
+		auto& GetMutableREFPipelineState() { return m_pipelineState; }
+
+	private:
+		
 		static constexpr UINT k_initialSampleMask = UINT_MAX;
 
 		std::vector<DXGI_FORMAT> m_rtvFormatList = {};
