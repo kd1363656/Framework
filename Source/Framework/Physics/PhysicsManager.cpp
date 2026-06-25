@@ -94,6 +94,23 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicSphere
 												 m_physicsSystem);
 }
 
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Bodyの座標取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Bodyの座標取得に失敗しました。",          {});
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
+
+	// JoltのBodyInterfaceを取得する
+	// BodyInterfaceは、BodyIDを使ってBodyの位置・回転。速度などを捜査する入口。
+	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
+
+	// Jolt側の現在座標を取得する
+	// GetPosition()はBodyのワールド座標を返す
+	const auto l_bodyPosition = l_bodyInterface.GetPosition(a_bodyHandle.m_bodyID);
+
+	return TypeAlias::Math::Vector3{ l_bodyPosition.GetX(), l_bodyPosition.GetY(), l_bodyPosition.GetZ() };
+}
+
 bool FWK::Physics::PhysicsManager::SetupJoltCore()
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(JPH::Factory::sInstance, "JPH::Factory::sInstanceが既に存在しており、コア設定に失敗しました。", false);

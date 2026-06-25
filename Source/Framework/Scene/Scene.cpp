@@ -51,9 +51,9 @@ void FWK::Scene::INIT()
 
 	m_staticFloorBodyHandle = l_physicsManager.CreateStaticBoxBody(l_floorWorldPosition, l_floorHalfExtent);
 
-	const TypeAlias::Math::Vector3& l_sphereWorldPosition = { 0.0F, 2.0F, 0.0F };
+	const TypeAlias::Math::Vector3& l_sphereWorldPosition = { 0.0F, 1.0F, 0.0F };
 
-	m_dynamicSphereBodyHandle = l_physicsManager.CreateDynamicSphereBody(l_sphereWorldPosition, 0.25F);
+	m_dynamicSphereBodyHandle = l_physicsManager.CreateDynamicSphereBody(l_sphereWorldPosition, 0.2F);
 
 	l_physicsManager.OptimizeBroadPhase();
 }
@@ -74,29 +74,29 @@ void FWK::Scene::Update()
 	{
 		if (GetAsyncKeyState('W'))
 		{
-			l_cameraPos.y += 0.01F;
+			l_cameraPos.y += 0.1F;
 		}
 		else if (GetAsyncKeyState('S'))
 		{
-			l_cameraPos.y -= 0.01F;
+			l_cameraPos.y -= 0.1F;
 		}
 	}
 	else if (GetAsyncKeyState('W'))
 	{
-		l_cameraPos.z += 0.01F;
+		l_cameraPos.z += 0.1F;
 	}
 	else if (GetAsyncKeyState('S'))
 	{
-		l_cameraPos.z -= 0.01F;
+		l_cameraPos.z -= 0.1F;
 	}
 
 	if (GetAsyncKeyState('A'))
 	{
-		l_cameraPos.x -= 0.01F;
+		l_cameraPos.x -= 0.1F;
 	}
 	else if (GetAsyncKeyState('D'))
 	{
-		l_cameraPos.x += 0.01F;
+		l_cameraPos.x += 0.1F;
 	}
 
 	if (GetAsyncKeyState('Q'))
@@ -109,4 +109,19 @@ void FWK::Scene::Update()
 	}
 
 	m_camera->SetupCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
+
+	// 物理BOdyの座標を描画モデルへ反映
+	// ここではDynamicSphereBodyの現在座標を取得する
+	if (m_staticModelStandardDrawRequest    && 
+		m_dynamicSphereBodyHandle.m_isValid)
+	{
+		const auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
+
+		const auto l_bodyWorldPosition     = l_physicsManager.FetchVALBodyWorldPosition(m_dynamicSphereBodyHandle);
+		const auto l_modelTransitionMatrix = TypeAlias::Math::Matrix::CreateTranslation(l_bodyWorldPosition);
+
+		m_staticModelStandardDrawRequest->m_worldMatrix = l_modelTransitionMatrix;
+
+		m_staticModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_staticModelStandardDrawRequest->m_worldMatrix.Transpose();
+	}
 }

@@ -9,7 +9,8 @@ namespace FWK
 		 FPSController() = default;
 		~FPSController() = default;
 
-		void LoadCONFIG();
+		void LoadCONFIG    ();
+		void PostLoadCONFIG();
 
 		void BeginFrame();
 		void EndFrame  ();

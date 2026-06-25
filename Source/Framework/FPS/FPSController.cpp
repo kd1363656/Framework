@@ -9,6 +9,17 @@ void FWK::FPSController::LoadCONFIG()
 	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
 
+void FWK::FPSController::PostLoadCONFIG()
+{
+	const auto& l_currentTime = std::chrono::steady_clock::now();
+
+	m_previousTime   = l_currentTime;
+	m_frameBeginTime = l_currentTime;
+
+	m_deltaTime       = 0.0F;
+	m_scaledDeltaTime = 0.0F;
+}
+
 void FWK::FPSController::BeginFrame()
 {
 	// 現在のフレームでの時間

@@ -47,6 +47,9 @@ void Application::Execute()
 
 	l_sceneManager.INIT ();
 
+	// while分に入る前にもう一度計測時間をリセットしておく
+	m_fpsController.PostLoadCONFIG();
+
 	while (true)
 	{
 		// ウィンドウメッセージやアプリケーションを終了するかの処理をしているので

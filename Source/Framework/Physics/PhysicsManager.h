@@ -22,6 +22,8 @@ namespace FWK::Physics
 		Struct::PhysicsBodyHandle CreateStaticBoxBody    (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
 		Struct::PhysicsBodyHandle CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_radius);
 
+		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const;
+
 	private:
 
 		bool SetupJoltCore     ();
