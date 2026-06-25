@@ -448,6 +448,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\IsArrayJsonUtility.h" />
@@ -634,6 +635,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Light\LightSystem.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineState.cpp" />

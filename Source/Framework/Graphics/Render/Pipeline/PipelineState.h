@@ -15,7 +15,7 @@ namespace FWK::Graphics
 		~PipelineState() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create     (const Device		 & a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer);
+		bool Create     (const Device&         a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer);
 
 		nlohmann::json Serialize() const;
 

@@ -1827,6 +1827,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2170,6 +2173,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
