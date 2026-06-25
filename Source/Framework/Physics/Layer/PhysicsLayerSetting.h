@@ -26,10 +26,13 @@ namespace FWK::Physics
 		JPH::ObjectLayer     ConvertToJoltObjectLayer    (const Enum::PhysicsObjectLayerType     a_objectLayerType)     const;
 		JPH::BroadPhaseLayer ConvertToJoltBroadPhaseLayer(const Enum::PhysicsBroadPhaseLayerType a_broadPhaseLayerType) const;
 
+		// ObjectLayerをBroadPhaseLayerに変換する表
 		JPH::BroadPhaseLayerInterfaceTable m_broadPhaseLayerInterface;
 
+		// ObjectLayer同士が衝突してよいかを決める表
 		JPH::ObjectLayerPairFilterTable m_objectLayerPairFilter;
 
+		// ObjectLayerがどのBroadPhaseLayerを調べる必要があるかを決めるFilter
 		std::unique_ptr<JPH::ObjectVsBroadPhaseLayerFilterTable> m_objectVsBroadPhaseLayerFilter;
 	};
 }

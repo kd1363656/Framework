@@ -20,6 +20,8 @@ namespace FWK
 
 		static constexpr float GetVALDefaultFPS() { return k_defaultFPS; }
 
+		float GetVALScaledDeltaTime() const { return m_scaledDeltaTime; }
+
 		float GetVALCurrentFPS() const { return m_currentFPS; }
 		float GetVALTargetFPS () const { return m_targetFPS; }
 

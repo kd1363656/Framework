@@ -1,4 +1,4 @@
-﻿#include "SpriteScreenShader.hlsli"
+﻿#include "SpriteScreen.hlsli"
 
 float4 main(MeshOutput a_input) : SV_Target0
 {

@@ -29,6 +29,7 @@ void Application::Execute()
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
 	auto& l_sceneManager    = FWK::SceneManager::GetInstance			     ();
+	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
 
 	l_graphicsManager.INIT();
 
@@ -36,9 +37,10 @@ void Application::Execute()
 	l_graphicsManager.LoadCONFIG();
 	l_editorManager.LoadCONFIG  ();
 
-
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
+
+	l_physicsManager.INIT();
 
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
@@ -68,6 +70,9 @@ void Application::Execute()
 
 		// 更新
 		l_sceneManager.Update();
+
+		// 当たり判定の更新
+		l_physicsManager.Update(m_fpsController.GetVALScaledDeltaTime());
 
 		// 描画処理
 		l_graphicsManager.BeginFrame();

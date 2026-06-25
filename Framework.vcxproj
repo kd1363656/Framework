@@ -542,6 +542,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Definition\Enum\PhysicsLayerEnum.h" />
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
+    <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Definition\Constant\TypeINFOConstant.h" />
@@ -676,6 +677,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
+    <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
@@ -714,9 +716,9 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Final\FinalColorShader.hlsli" />
-    <None Include="Asset\Shader\Model\ModelShader.hlsli" />
+    <None Include="Asset\Shader\Model\Model.hlsli" />
     <None Include="Asset\Shader\Model\Static\StaticModel.hlsli" />
-    <None Include="Asset\Shader\Sprite\Screen\SpriteScreenShader.hlsli" />
+    <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Final\FinalColor_MS.hlsl">

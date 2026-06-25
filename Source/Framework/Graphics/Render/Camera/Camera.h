@@ -9,28 +9,34 @@ namespace FWK::Graphics
 		 Camera() = default;
 		~Camera() = default;
 
+		void Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
+				   const float					  a_aspectRatio,
+				   const float					  a_fovYDegree  = k_defaultFOVYDegree,
+				   const float					  a_farClip     = Constant::k_defaultFarClip,
+				   const float					  a_nearClip    = Constant::k_defaultNearClip);
+
+		void SetupCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
+		
+		void SetupProjectionMatrix(const float a_aspectRatio,
+								 const float a_fovYDegree  = k_defaultFOVYDegree,
+								 const float a_farClip     = Constant::k_defaultFarClip,
+								 const float a_nearClip    = Constant::k_defaultNearClip);
+
+		void SetupProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
+
+		const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
+		
+	private:
+
 		void SetupPerspective(const TypeAlias::Math::Matrix& a_cameraMatrix,
 							  const float					 a_aspectRatio,
 							  const float					 a_fovYDegree  = k_defaultFOVYDegree,
 							  const float					 a_farClip     = Constant::k_defaultFarClip,
 							  const float					 a_nearClip    = Constant::k_defaultNearClip);
 
-		void SetCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
-		
-		void SetProjectionMatrix(const float a_aspectRatio,
-								 const float a_fovYDegree  = k_defaultFOVYDegree,
-								 const float a_farClip     = Constant::k_defaultFarClip,
-								 const float a_nearClip    = Constant::k_defaultNearClip);
-
-		void SetProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
-
-		const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
-		
-	private:
-
 		void UpdateViewProjectionMatrix();
 
-		void SyncCameraPassDrawRequest();
+		void RegisterCameraPassConstantBufferSource();
 
 		static constexpr float k_defaultFOVYDegree  = 60.0F;
 		static constexpr float k_invalidAspectRatio = 0.0F;

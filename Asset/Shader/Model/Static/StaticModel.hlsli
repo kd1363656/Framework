@@ -1,4 +1,4 @@
-﻿#include "../ModelShader.hlsli"
+﻿#include "../Model.hlsli"
 
 struct StaticModelVertex
 {

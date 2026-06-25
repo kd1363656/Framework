@@ -1800,6 +1800,9 @@
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h">
       <Filter>Source\Framework\Physics\Layer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\PhysicsManager.h">
+      <Filter>Source\Framework\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2135,6 +2138,9 @@
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp">
       <Filter>Source\Framework\Physics\Layer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp">
+      <Filter>Source\Framework\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -2151,13 +2157,13 @@
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
-    <None Include="Asset\Shader\Sprite\Screen\SpriteScreenShader.hlsli">
+    <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
     </None>
     <None Include="Asset\Shader\Final\FinalColorShader.hlsli">
       <Filter>Asset\Shader\Final</Filter>
     </None>
-    <None Include="Asset\Shader\Model\ModelShader.hlsli">
+    <None Include="Asset\Shader\Model\Model.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
     <None Include="Asset\Shader\Model\Static\StaticModel.hlsli">

@@ -41,7 +41,10 @@ void FWK::Scene::INIT()
 	const auto l_aspectRatio = l_viewport.Width / l_viewport.Height;
 
 	// カメラ
-	m_camera->SetupPerspective(TypeAlias::Math::Matrix::CreateTranslation(0.0F, 1.0F, -1.15F), l_aspectRatio);
+	m_camera->Setup(TypeAlias::Math::Matrix::CreateTranslation(0.0F, 1.0F, -1.15F), l_aspectRatio);
+
+	// ライト
+	m_lightSystem.ApplyDefaultSettings();
 }
 
 void FWK::Scene::Update()
@@ -94,5 +97,5 @@ void FWK::Scene::Update()
 		l_rot += 1.0F;
 	}
 
-	m_camera->SetCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
+	m_camera->SetupCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
 }

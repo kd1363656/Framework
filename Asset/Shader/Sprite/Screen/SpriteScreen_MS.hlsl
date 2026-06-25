@@ -1,4 +1,4 @@
-﻿#include "SpriteScreenShader.hlsli"
+﻿#include "SpriteScreen.hlsli"
 
 // 三角形2枚でポリゴン出力用四角形を出力
 [outputtopology("triangle")]

@@ -1,30 +1,23 @@
 ﻿#include "Camera.h"
 
-void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_cameraMatrix,
-											 const float					a_aspectRatio,
-											 const float					a_fovYDegree, 
-										     const float					a_farClip, 
-											 const float					a_nearClip)
+void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix, 
+								  const float					 a_aspectRatio,
+								  const float					 a_fovYDegree, 
+								  const float					 a_farClip,
+								  const float					 a_nearClip)
 {
-	// SetupPerspectiveは、を最初に絶対にしてほしいためここで定数バッファのポインタのインスタンスを作成する
-	if (!m_cbCameraPass)
-	{
-		m_cbCameraPass = std::make_shared<Struct::CBCameraPass>();
-	}
+	// ビュー行列の作成
+	SetupPerspective(a_cameraMatrix,
+					 a_aspectRatio,
+					 a_fovYDegree,
+				     a_farClip,
+					 a_nearClip);
 
-	// カメラ行列と射影行列をセット
-	SetCameraMatrix(a_cameraMatrix);
-	
-	SetProjectionMatrix(a_aspectRatio,
-						a_fovYDegree,
-						a_farClip,
-						a_nearClip);
-
-	// 定数バッファ側に変更を反映するためのポインタを持たせる
-	SyncCameraPassDrawRequest();
+	// 定数バッファの登録
+	RegisterCameraPassConstantBufferSource();
 }
 
-void FWK::Graphics::Camera::SetCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
+void FWK::Graphics::Camera::SetupCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
 {
 	if (!m_cbCameraPass) { return; }
 
@@ -41,7 +34,7 @@ void FWK::Graphics::Camera::SetCameraMatrix(const TypeAlias::Math::Matrix& a_cam
 	UpdateViewProjectionMatrix();
 }
 
-void FWK::Graphics::Camera::SetProjectionMatrix(const float a_aspectRatio,
+void FWK::Graphics::Camera::SetupProjectionMatrix(const float a_aspectRatio,
 												const float a_fovYDegree,
 												const float a_farClip,
 												const float a_nearClip)
@@ -82,13 +75,37 @@ void FWK::Graphics::Camera::SetProjectionMatrix(const float a_aspectRatio,
 	UpdateViewProjectionMatrix();
 }
 
-void FWK::Graphics::Camera::SetProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix)
+void FWK::Graphics::Camera::SetupProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix)
 {
 	if (!m_cbCameraPass) { return; }
 
 	m_cbCameraPass->m_projectionMatrix = a_projectionMatrix;
 	
 	UpdateViewProjectionMatrix();
+}
+
+void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_cameraMatrix,
+											 const float					a_aspectRatio,
+											 const float					a_fovYDegree, 
+										     const float					a_farClip, 
+											 const float					a_nearClip)
+{
+	// SetupPerspectiveは、を最初に絶対にしてほしいためここで定数バッファのポインタのインスタンスを作成する
+	if (!m_cbCameraPass)
+	{
+		m_cbCameraPass = std::make_shared<Struct::CBCameraPass>();
+	}
+
+	// カメラ行列と射影行列をセット
+	SetupCameraMatrix(a_cameraMatrix);
+	
+	SetupProjectionMatrix(a_aspectRatio,
+						  a_fovYDegree,
+						  a_farClip,
+						  a_nearClip);
+
+	// 定数バッファ側に変更を反映するためのポインタを持たせる
+	RegisterCameraPassConstantBufferSource();
 }
 
 void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
@@ -98,11 +115,11 @@ void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
 	m_cbCameraPass->m_viewProjectionMatrix = m_cbCameraPass->m_viewMatrix * m_cbCameraPass->m_projectionMatrix;
 }
 
-void FWK::Graphics::Camera::SyncCameraPassDrawRequest()
+void FWK::Graphics::Camera::RegisterCameraPassConstantBufferSource()
 {
 	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer		  = l_graphicsManager.GetREFRenderer		   ();
-	const auto& l_renderGraph	  = l_renderer.GetREFRenderGraph();
+	const auto& l_renderGraph	  = l_renderer.GetREFRenderGraph			   ();
 
 	const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
 

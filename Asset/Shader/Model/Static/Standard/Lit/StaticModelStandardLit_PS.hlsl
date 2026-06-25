@@ -392,8 +392,7 @@ float4 main(const ModelMeshOutput a_input) : SV_Target0
     // さらに、金属は拡散反射しないので、metallicが高いほどDiffuseを減らす
     const float3 l_diffuseRatio = (float3(k_fresnelMaxReflectance, k_fresnelMaxReflectance, k_fresnelMaxReflectance) - l_specularRatio) * (k_fresnelMaxReflectance - l_metallic);
     
-   // DirectionalLightの放射輝度の簡易表現
-    // 現段階では、ライト色 * ライト強度として扱う
+    // DirectionalLightの放射輝度の簡易表現
     const float3 l_radiance = g_directionalLightColor * g_directionalLightIntensity;
     
     // 直接光

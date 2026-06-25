@@ -321,6 +321,7 @@
 // 当たり判定
 #include "Physics/Definition/Enum/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
+#include "Physics/PhysicsManager.h"
 
 // エディター
 #include "Editor/Style/EditorStyle.h"

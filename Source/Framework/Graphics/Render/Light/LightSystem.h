@@ -13,6 +13,8 @@ namespace FWK::Graphics
 
 	private:
 
+		void RegisterLightPassConstantBufferSource();
+
 		std::shared_ptr<Struct::CBLightPass> m_cbLightPass = nullptr;
 	};
 }

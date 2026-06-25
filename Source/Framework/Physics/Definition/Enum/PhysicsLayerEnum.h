@@ -9,6 +9,8 @@ namespace FWK::Enum
 		Invalid,
 
 		StaticObject,
+		DynamicObject,
+
 		Count,
 	};
 
@@ -18,6 +20,8 @@ namespace FWK::Enum
 		Invalid,
 
 		Static,
+		Dynamic,
+
 		Count
 	};
 }

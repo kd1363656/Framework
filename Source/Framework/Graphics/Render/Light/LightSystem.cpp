@@ -23,4 +23,20 @@ void FWK::Graphics::LightSystem::ApplyDefaultSettings()
 
 	l_ambientLight.m_color	   = Constant::k_defaultAmbientLightColor;
 	l_ambientLight.m_intensity = Constant::k_defaultAmbientLightIntensity;
+
+	RegisterLightPassConstantBufferSource();
+}
+
+void FWK::Graphics::LightSystem::RegisterLightPassConstantBufferSource()
+{
+	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+	const auto& l_renderer		  = l_graphicsManager.GetREFRenderer		   ();
+	const auto& l_renderGraph	  = l_renderer.GetREFRenderGraph               ();
+
+	const auto& l_lightPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<LightPassDrawRequest>().lock();
+
+	if (!l_lightPassDrawRequest) { return; }
+
+	// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
+	l_lightPassDrawRequest->SetSourceConstantBuffer(m_cbLightPass);
 }
