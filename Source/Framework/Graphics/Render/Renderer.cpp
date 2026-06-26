@@ -179,7 +179,7 @@ void FWK::Graphics::Renderer::AddRootSignature(const std::shared_ptr<RootSignatu
 
 	m_rootSignatureMap.try_emplace(a_rootSignatureType, a_rootSignature);	
 }
-void FWK::Graphics::Renderer::AddPipelineState(const std::shared_ptr<PipelineState>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType)
+void FWK::Graphics::Renderer::AddPipelineState(const std::shared_ptr<PipelineStateBase>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType)
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!a_pipelineState,										 "PipelineStateが無効のため、PipelineStateMapへの登録に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(a_pipelineStateType == Enum::PipelineStateType::Invalid, "PipelineStateが無効な種類のため、PipelineStateMapへの登録に失敗しました。");
@@ -195,7 +195,7 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRoot
 
 	return l_itr->second;
 }
-std::weak_ptr<FWK::Graphics::PipelineState> FWK::Graphics::Renderer::FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
+std::weak_ptr<FWK::Graphics::PipelineStateBase> FWK::Graphics::Renderer::FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
 {
 	const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
 

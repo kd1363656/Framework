@@ -132,11 +132,16 @@ void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nl
 			continue; 
 		}
 		
-		// パイプラインステートを作成してレンダラー側に追加
-		const auto& l_pipelineState = std::make_shared<Graphics::PipelineState>();
+		std::shared_ptr<Graphics::PipelineStateBase> l_pipelineState = nullptr;
+
+		// PipelineStateClassNameから派生クラスを作成する
+		Utility::DeserializeInstanceType<TypeAlias::PipelineStateSharedFactory>(l_json, k_pipelineStateClassNameJsonKey, l_pipelineState);
+
+		// 既存JSONにはPipelineStateClassNameがない可能性があるその場合はcontinue
+		if (!l_pipelineState) { continue; }
 
 		l_pipelineState->Deserialize(l_json[k_pipelineStateJsonKey]);
-		
+
 		a_renderer.AddPipelineState(l_pipelineState, l_pipelineStateType);
 	}
 }
@@ -204,7 +209,11 @@ nlohmann::json FWK::Converter::RendererJsonConverter::SerializePipelineStateMap(
 		nlohmann::json l_json = {};
 
 		l_json[k_pipelineStateTypeJsonKey] = l_type;
-		l_json[k_pipelineStateJsonKey]     = l_pipelineState->Serialize();
+
+		// 実体の派生クラスの名前を保存する
+		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_pipelineState, k_pipelineStateClassNameJsonKey));
+
+		l_json[k_pipelineStateJsonKey] = l_pipelineState->Serialize();
 
 		l_rootJsonArray.emplace_back(l_json);
 	}

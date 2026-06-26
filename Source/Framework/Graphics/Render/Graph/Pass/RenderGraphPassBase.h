@@ -37,7 +37,7 @@ namespace FWK::Graphics
 		void WriteRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 		void WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
-		std::weak_ptr<RootSignature> SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
+		std::weak_ptr<RootSignature> SetupRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
 
 		void SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer);
 

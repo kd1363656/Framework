@@ -48,16 +48,16 @@ void FWK::Graphics::RenderGraphPassBase::WriteRenderTarget(const Enum::RenderGra
 					  a_afterUsage);
 }
 
-std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupRenderPipeline(const Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
+std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
 {
 	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState(a_pipelineStateType);
 	const auto& l_pipelineState     = l_pipelineStateWeak.lock       ();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており、レンダーパイプラインのセットに失敗しました。", {});
 
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+	auto& l_directCommandList = a_renderer.GetMutableREFDirectCommandList();
 
-	l_directCommandList.SetupRenderPipeline(l_pipelineState);
+	l_directCommandList.SetupRenderPipeline(l_pipelineStateWeak);
 
 	// 使用するルートシグネチャを戻り値にセット
 	return l_pipelineState->GetREFUseRootSignature();

@@ -143,7 +143,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderArea(const RenderArea& a_rende
 	l_directCommandList->RSSetScissorRects(k_setScissorRectNUM, &a_renderArea.GetREFScissorRECT());
 }
 
-void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<PipelineState>& a_pipelineState) const
+void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<PipelineStateBase>& a_pipelineState)
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
@@ -173,6 +173,8 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<P
 	if (!IsSameWeakOwner(m_currentRootSignature, l_pipelineState->GetREFUseRootSignature()))
 	{
 		l_directCommandList->SetGraphicsRootSignature(l_d3dRootSignature.Get());
+
+		m_currentRootSignature = l_pipelineState->GetREFUseRootSignature();
 	}
 
 	// コマンドリストにパイプラインステートをセットする関数
@@ -186,6 +188,8 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<P
 	if (!IsSameWeakOwner(m_currentPipelineState, a_pipelineState))
 	{
 		l_directCommandList->SetPipelineState(l_d3dPipelineState.Get());
+
+		m_currentPipelineState = a_pipelineState;
 	}
 }
 
@@ -193,7 +197,7 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ルートシグネチャが作成されておらず、定数バッファビュー設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
 
 	const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
@@ -204,6 +208,34 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 	// SetGraphicsRootConstantBufferView(ルートパラメータ番号、
 	//									 CBVとして参照させるGPU仮想アドレス);
 	l_directCommandList->SetGraphicsRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);
+}
+
+void FWK::Graphics::DirectCommandList::SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、プリミティブトポロジーの設定に失敗しました。");
+
+	// InputAssemblerに、これから描画する頂点をどの形として扱うかを設定する
+	// SpriteScreenは三角形2毎のシ角形なのでTRIANGLELISTを使う
+	l_directCommandList->IASetPrimitiveTopology(a_primitiveTopology);
+}
+
+void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount, 
+													 const UINT a_instanceCount, 
+													 const UINT a_startVertexLocation,
+													 const UINT a_startInstanceLocation) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DrawInstanceの実行に失敗しました。");
+
+	// 通常のVS/PSパイプラインで描画する
+	// SpriteScreenではVertexBufferを使わず、VSがわのSV_VertexIDから6頂点を生成する
+	l_directCommandList->DrawInstanced(a_vertexCount,
+									   a_instanceCount,
+									   a_startVertexLocation,
+									   a_startInstanceLocation);
 }
 
 void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const

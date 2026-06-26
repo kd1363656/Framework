@@ -244,6 +244,7 @@
                     "SampleMask": 4294967295,
                     "UseRootSignatureType": "RootSignatureType::SpriteScreen"
                 },
+                "PipelineStateClassName": "MeshShaderPipelineState",
                 "PipelineStateType": "PipelineStateType::SpriteScreen"
             },
             {
@@ -405,6 +406,7 @@
                     "SampleMask": 4294967295,
                     "UseRootSignatureType": "RootSignatureType::FinalColor"
                 },
+                "PipelineStateClassName": "MeshShaderPipelineState",
                 "PipelineStateType": "PipelineStateType::FinalColor"
             },
             {
@@ -571,6 +573,7 @@
                     "SampleMask": 4294967295,
                     "UseRootSignatureType": "RootSignatureType::StaticModelStandard"
                 },
+                "PipelineStateClassName": "MeshShaderPipelineState",
                 "PipelineStateType": "PipelineStateType::StaticModelUnLit"
             },
             {
@@ -737,6 +740,7 @@
                     "SampleMask": 4294967295,
                     "UseRootSignatureType": "RootSignatureType::StaticModelStandard"
                 },
+                "PipelineStateClassName": "MeshShaderPipelineState",
                 "PipelineStateType": "PipelineStateType::StaticModelLit"
             }
         ],

@@ -52,9 +52,16 @@ namespace FWK::Graphics
 			l_directCommandList->SetDescriptorHeaps(k_setDescriptorHeapNUM, l_descriptorHeapList);
 		}
 
-		void SetupRenderPipeline(const std::weak_ptr<PipelineState>& a_pipelineState) const;
+		void SetupRenderPipeline(const std::weak_ptr<PipelineStateBase>& a_pipelineState);
 
 		void SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const;
+
+		void SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const;
+
+		void DrawInstanced(const UINT a_vertexCount,
+						   const UINT a_instanceCount,
+						   const UINT a_startVertexLocation,
+					       const UINT a_startInstanceLocation) const;
 
 		void DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const;
 
@@ -76,7 +83,7 @@ namespace FWK::Graphics
 
 		static constexpr UINT k_setDescriptorHeapNUM = 1U;
 
-		std::weak_ptr<RootSignature> m_currentRootSignature = {};
-		std::weak_ptr<PipelineState> m_currentPipelineState = {};
+		std::weak_ptr<RootSignature>     m_currentRootSignature = {};
+		std::weak_ptr<PipelineStateBase> m_currentPipelineState = {};
 	};
 }
