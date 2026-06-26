@@ -1144,12 +1144,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured">
       <UniqueIdentifier>{e318b75e-1ba2-4995-9509-d3e86d51fad8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition">
-      <UniqueIdentifier>{c3bb66ac-09e3-46bd-b6f2-376b5da30b4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct">
-      <UniqueIdentifier>{085c7233-81ee-4070-8eb4-33da65d8a4f6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1899,8 +1893,8 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Structured</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct\GPUResourceStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\GPUResourceStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

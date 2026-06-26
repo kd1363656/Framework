@@ -118,14 +118,14 @@
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 #include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
-// ストラクチャードバッファー
-#include "Graphics/Resource/Buffer/Structured/Definition/Struct/GPUResourceStruct.h"
-#include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
-
 //リソースリリースクラス
+#include "Graphics/Resource/ReleaseContext/Definition/Struct/GPUResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/StructuredBufferResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
+
+// ストラクチャードバッファー
+#include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
 
 // レコードクラス
 #include "Graphics/Resource/Record/Definition/Type/Alias/StorageIDTypeAlias.h"
