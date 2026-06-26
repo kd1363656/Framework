@@ -72,7 +72,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 		l_pipelineStateDesc.PS = FetchShaderByteCode(*m_pixelShader);
 	}
 
-		// このPSOで使用するルートシグネチャを設定する
+	// このPSOで使用するルートシグネチャを設定する
 	// ルートシグネチャは「シェーダーへどのリソースをどう渡すか」のルール
 	l_pipelineStateDesc.pRootSignature = l_rootSignature.Get();
 	

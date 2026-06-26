@@ -14,17 +14,26 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const override;
 
-		const auto& GetREFVertexShader() const { return m_vertexShader; }
-		const auto& GetREFPixelShader () const { return m_pixelShader; }
+		const auto& GetREFVertexShader  () const { return m_vertexShader; }
+		const auto& GetREFHullShader    () const { return m_hullShader; }
+		const auto& GetREFDomainShader  () const { return m_domainShader; }
+		const auto& GetREFGeometryShader() const { return m_geometryShader; }
+		const auto& GetREFPixelShader   () const { return m_pixelShader; }
 
-		auto& GetMutableREFVertexShader() { return m_vertexShader; }
-		auto& GetMutableREFPixelShader () { return m_pixelShader; }
+		auto& GetMutableREFVertexShader  () { return m_vertexShader; }
+		auto& GetMutableREFHullShader    () { return m_hullShader; }
+		auto& GetMutableREFDomainShader  () { return m_domainShader; }
+		auto& GetMutableREFGeometryShader() { return m_geometryShader; }
+		auto& GetMutableREFPixelShader   () { return m_pixelShader; }
 
 	private:
 
 		Shader m_vertexShader = {};
 
-		std::shared_ptr<Shader> m_pixelShader = nullptr;
+		std::shared_ptr<Shader> m_hullShader     = nullptr;
+		std::shared_ptr<Shader> m_domainShader   = nullptr;
+		std::shared_ptr<Shader> m_geometryShader = nullptr;
+		std::shared_ptr<Shader> m_pixelShader    = nullptr;
 
 		Converter::StandardPipelineStateJsonConverter m_jsonConverter = {};
 
