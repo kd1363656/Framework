@@ -475,6 +475,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct\SwapChainStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant\UploadBufferConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct\GPUResourceStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Converter\Json\DescriptorPoolJsonConverter.h" />
@@ -510,7 +512,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias\StorageIDTypeAlias.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\StructuredBufferResourceStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h" />
@@ -654,6 +655,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Renderer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\Converter\Json\DescriptorHeapIndexAllocatorJsonConverter.cpp" />
