@@ -119,7 +119,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterList(co
 			case D3D12_ROOT_PARAMETER_TYPE_SRV:
 			case D3D12_ROOT_PARAMETER_TYPE_UAV:
 			{
-				// b / t/ u 番号
+				// b / t / u 番号
 				l_rootParameterRecord.Descriptor.ShaderRegister = l_json.value(k_shaderRegisterJsonKey, k_defaultShaderRegister);
 
 				// レジスタ空間

@@ -73,7 +73,7 @@ nlohmann::json FWK::Converter::PipelineStateBaseJsonConverter::Serialize(const G
 	l_rootJson[k_sampleDescJsonKey] = SerializeSampleDesc(a_pipelineStateBase);
 
 	// 使用するルートシグネチャタイプのをシリアライズ
-	l_rootJson[k_useRootSignatureTypeJsonKey] = a_pipelineStateBase.GetVALUseRootSignatureType  ();
+	l_rootJson[k_useRootSignatureTypeJsonKey]  = a_pipelineStateBase.GetVALUseRootSignatureType ();
 	l_rootJson[k_primitiveTopologyTypeJsonKey] = a_pipelineStateBase.GetVALPrimitiveTopologyType();
 	l_rootJson[k_sampleMaskJsonKey]            = a_pipelineStateBase.GetVALSampleMask           ();
 

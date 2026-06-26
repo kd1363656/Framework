@@ -455,10 +455,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct\StandardShaderPipelineStateJsonConverterStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\StandardPipelineStateJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\StandardPipelineStateJsonConverterUtility.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\DeserializeOptionalShaderUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\IsArrayJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Constant\RootSignatureConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateBaseEnum.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootParameterEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootSignatureStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />

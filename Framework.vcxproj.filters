@@ -1866,7 +1866,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\StandardPipelineStateJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\StandardPipelineStateJsonConverterUtility.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\DeserializeOptionalShaderUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h">
@@ -1892,6 +1892,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct\BufferUploadStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootParameterEnum.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

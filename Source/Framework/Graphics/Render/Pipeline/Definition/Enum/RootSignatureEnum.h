@@ -22,31 +22,4 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
 	)
-
-	enum class RootParameterType
-	{
-		Invalid,
-		CBSpritePass,
-		CBSpritePerObject,
-		CBCameraPass,
-		CBLightPass,
-		CBStaticModelPerObject,
-		CBFinalColorPass,
-		CBFinalPresentPass,
-		Count,
-	};
-
-	FWK_JSON_SERIALIZE_ENUM
-	(
-		RootParameterType,
-		FWK_JSON_ENUM_VALUE(RootParameterType::Invalid),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBSpritePass),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBSpritePerObject),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBCameraPass),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBLightPass),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBStaticModelPerObject),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalColorPass),
-		FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalPresentPass),
-		FWK_JSON_ENUM_VALUE(RootParameterType::Count),
-	)
 }
