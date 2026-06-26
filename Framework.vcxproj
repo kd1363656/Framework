@@ -475,6 +475,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Definition\Struct\SwapChainStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Definition\Constant\UploadBufferConstant.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct\BufferUploadStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
@@ -489,7 +490,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct\BufferUploadStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\StaticModelBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.h" />

@@ -16,7 +16,11 @@ namespace FWK::Graphics
 		StructuredBuffer& operator=(	  StructuredBuffer&& a_other) noexcept;
 
 		template <typename Type>
-		void CreateStructuredBufferSRV(const std::vector<Type>& a_bufferList, const Device& a_device, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+		void Create(const std::vector<Type>&                        a_bufferList, 
+					const Device&                                   a_device,
+					const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
+						  std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
+						  TypeAlias::SRVDescriptorPool&             a_srvDescriptorPool)
 		{
 			const auto& l_device = a_device.GetREFDevice();
 
@@ -83,6 +87,46 @@ namespace FWK::Graphics
 		auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
 	private:
+
+		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT64& a_bufferSize, Struct::GPUResource& a_bufferGPUResource) const
+		{
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_buffeSize == Constant::k_invalidBufferSize, "StructuredBuffer用GPUResourceの作製サイズが0です。", false);
+
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateBufferResource(a_bufferSize, D3D12_RESOURCE_STATE_COMMON, a_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
+
+			return true;
+		}
+
+		template <typename Type>
+		bool CreateBufferUploadCommand(const std::vector<Type>&           a_bufferList, 
+									   const Device&                      a_device,
+									   const Struct::GPUResource&         a_bufferGPUResource,
+									   const UINT64&					  a_bufferSize,
+									   	     Struct::BufferUploadCommand& a_bufferUploadCommand)
+		{
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bufferGPUResource.m_resource,               "StructuredBuffer用GPUResourceが無効のため、UploadCommandの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bufferList.empty(),			                 "BufferListが空のため、UploadCommandの作成に失敗しました。",					   false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferSize == Constant::k_invalidBufferSize, "BufferSizeが0のため、UploadCommandの作成に失敗しました。",					       false);
+
+			a_bufferUploadCommand.m_destinationnBufferResource = a_bufferGPUResource.m_resource;
+
+			auto& l_bufferUploadRecord = a_bufferUploadCommand.m_bufferUploadRecord;
+
+			l_bufferUploadRecord.m_bufferSize = a_bufferSize;
+
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_bufferUploadRecord.m_uploadBuffer.Create(a_device, a_bufferSize), "StructuredBuffer用UploadBufferの作成に失敗しました。", false);
+
+			auto* l_mappedData = l_bufferUploadRecord.m_uploadBuffer.FetchPTRMappedData();
+
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_mappedData, "StructuredBuffer用UploadBufferのMap済みデータ取得に失敗しました。", false);
+
+			// マップデータにバッファーリストのデータを転送
+			std::memcpy(l_mappedData, a_bufferList.data(), a_bufferSize);
+
+			return true;
+		}
+
+
 
 		void MoveFrom(StructuredBuffer&& a_other) noexcept;
 

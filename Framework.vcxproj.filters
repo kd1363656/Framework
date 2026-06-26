@@ -919,12 +919,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Builder">
       <UniqueIdentifier>{d5139305-3afe-480f-a050-aabfcb2fcdb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Builder\Definition">
-      <UniqueIdentifier>{fa329987-5a45-403f-942f-419f0ab9397b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct">
-      <UniqueIdentifier>{cd100c3c-6cec-450c-a7a6-0e814994de05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera">
       <UniqueIdentifier>{2a0ffb7b-7638-430f-a412-ec742156d4b7}</UniqueIdentifier>
     </Filter>
@@ -1143,6 +1137,12 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured">
       <UniqueIdentifier>{e318b75e-1ba2-4995-9509-d3e86d51fad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition">
+      <UniqueIdentifier>{fa329987-5a45-403f-942f-419f0ab9397b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct">
+      <UniqueIdentifier>{cd100c3c-6cec-450c-a7a6-0e814994de05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1719,9 +1719,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\StaticModelBatchUploadRecordBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Builder</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct\BufferUploadStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Builder\Definition\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModel.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
     </ClInclude>
@@ -1892,6 +1889,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\GPUResourceStruct.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct\BufferUploadStruct.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

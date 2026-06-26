@@ -123,9 +123,6 @@
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
-// ストラクチャードバッファー
-#include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
-
 // レコードクラス
 #include "Graphics/Resource/Record/Definition/Type/Alias/StorageIDTypeAlias.h"
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
@@ -164,6 +161,10 @@
 
 // メモリアロケータクラス
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
+
+// ストラクチャードバッファー
+#include "Graphics/Resource/Buffer/Structured/Definition/Struct/BufferUploadStruct.h"
+#include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
 
 // テクスチャ
 #include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
@@ -206,7 +207,6 @@
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
 #include "Graphics/Resource/Model/Static/Meshlet/Definition/Constant/StaticModelMeshletBuilderConstant.h"
 #include "Graphics/Resource/Model/Static/Meshlet/StaticModelMeshletBuilder.h"
-#include "Graphics/Resource/Model/Static/Builder/Definition/Struct/BufferUploadStruct.h"
 #include "Graphics/Resource/Model/Static/Builder/StaticModelBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Model/Static/Definition/Struct/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
