@@ -26,8 +26,6 @@ namespace FWK::Graphics
 		const auto& GetREFGeometryShader() const { return m_geometryShader; }
 		const auto& GetREFPixelShader   () const { return m_pixelShader; }
 
-		auto& GetMutableREFInputElementDescList() { return m_inputElementDescList; }
-
 		auto& GetMutableREFVertexShader  () { return m_vertexShader; }
 		auto& GetMutableREFHullShader    () { return m_hullShader; }
 		auto& GetMutableREFDomainShader  () { return m_domainShader; }
@@ -35,6 +33,8 @@ namespace FWK::Graphics
 		auto& GetMutableREFPixelShader   () { return m_pixelShader; }
 
 	private:
+
+		void BuildInputElementDescList();
 
 		Shader m_vertexShader = {};
 

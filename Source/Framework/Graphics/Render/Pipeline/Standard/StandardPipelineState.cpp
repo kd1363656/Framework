@@ -11,6 +11,9 @@ void FWK::Graphics::StandardPipelineState::Deserialize(const nlohmann::json& a_r
 
 bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer)
 {
+	// 作成前にD3D12_INPUT_ELEMENT_DESCの情報を構築
+	BuildInputElementDescList();
+
 	// 使用するルートシグネチャを探すなどの処理を行う
 	PrepareCommonPipelineStateCreate(a_device, a_renderer);
 
@@ -67,6 +70,10 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_hullShader &&  m_domainShader, "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC l_pipelineStateDesc = {};
+
+	// このPSOで使用するルートシグネチャを設定する
+	// ルートシグネチャは「シェーダーへどのリソースをどう渡すか」のルール
+	l_pipelineStateDesc.pRootSignature = l_rootSignature.Get();
 
 	// 各シェーダーをセット
 	l_pipelineStateDesc.VS = FetchShaderByteCode(m_vertexShader);
@@ -140,6 +147,22 @@ void FWK::Graphics::StandardPipelineState::AddInputElementDesc(const Struct::Sta
 	if (a_inputElement.m_semanticName.empty()) { return; }
 
 	m_inputElementList.emplace_back(a_inputElement);
+}
 
+void FWK::Graphics::StandardPipelineState::BuildInputElementDescList()
+{
+	m_inputElementDescList.clear();
 
+	// 内部でconst char*を使っているため要素の再確保が生じたときにnullptrにならないようにreserve()する
+	m_inputElementDescList.reserve(m_inputElementList.size());
+
+	// l_inputElementの情報をコピーしてデスク情報を作成
+	for (auto& l_inputElement : m_inputElementList)
+	{
+		auto& l_inputElementDesc = l_inputElement.m_inputElementDesc;
+
+		l_inputElementDesc.SemanticName = l_inputElement.m_semanticName.c_str();
+
+		m_inputElementDescList.emplace_back(l_inputElementDesc);
+	}
 }

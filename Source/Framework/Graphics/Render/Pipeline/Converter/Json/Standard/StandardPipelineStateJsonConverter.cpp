@@ -66,25 +66,25 @@ nlohmann::json FWK::Converter::StandardPipelineStateJsonConverter::Serialize(con
 
 	l_rootJson[k_vertexShaderJsonKey] = l_vertexShader.Serialize();
 
-	// ハルシェーダーのデシリアライズ
+	// ハルシェーダーのシリアライズ
 	if (const auto& l_hullShader = a_standardPipelineState.GetREFHullShader())
 	{
 		l_rootJson[k_hullShaderJsonKey] = l_hullShader->Serialize();
 	}
 
-	// ドメインシェーダーのデシリアライズ
+	// ドメインシェーダーのシリアライズ
 	if (const auto& l_domainShader = a_standardPipelineState.GetREFDomainShader())
 	{
 		l_rootJson[k_domainShaderJsonKey] = l_domainShader->Serialize();
 	}
 
-	// ジオメトリシェーダーのデシリアライズ
+	// ジオメトリシェーダーのシリアライズ
 	if (const auto& l_geometryShader = a_standardPipelineState.GetREFGeometryShader())
 	{
 		l_rootJson[k_geometryShaderJsonKey] = l_geometryShader->Serialize();
 	}
 
-	// ピクセルシェーダーのデシリアライズ
+	// ピクセルシェーダーのシリアライズ
 	if (const auto& l_pixelShader = a_standardPipelineState.GetREFPixelShader())
 	{
 		l_rootJson[k_pixelShaderJsonKey] = l_pixelShader->Serialize();
@@ -104,9 +104,6 @@ void FWK::Converter::StandardPipelineStateJsonConverter::DeserializeInputLayout(
 	// まずはInput関係の配列のリセット
 	a_standardPipelineState.ClearInputLayout();
 
-		  auto& l_inputElementDescList = a_standardPipelineState.GetMutableREFInputElementDescList();
-	const auto& l_inputElementList     = a_standardPipelineState.GetREFInputElementList           ();
-
 	for (const auto& l_json : a_rootJson)
 	{
 		const auto l_semanticName = l_json.value(k_semanticNameJsonKey, std::string());
@@ -118,26 +115,14 @@ void FWK::Converter::StandardPipelineStateJsonConverter::DeserializeInputLayout(
 		l_inputElement.m_semanticName = l_semanticName;
 
 		l_inputElement.m_inputElementDesc.SemanticName         = nullptr;
-		l_inputElement.m_inputElementDesc.SemanticIndex        = l_json.value(k_semanticIndexJsonKey,        0U);
+		l_inputElement.m_inputElementDesc.SemanticIndex        = l_json.value(k_semanticIndexJsonKey,        k_defaultInputElementSemanticIndex);
 		l_inputElement.m_inputElementDesc.Format               = l_json.value(k_formatJsonKey,               DXGI_FORMAT_UNKNOWN);
-		l_inputElement.m_inputElementDesc.InputSlot            = l_json.value(k_inputSlotJsonKey,            0U);
+		l_inputElement.m_inputElementDesc.InputSlot            = l_json.value(k_inputSlotJsonKey,            k_defaultInputElementInputSlot);
 		l_inputElement.m_inputElementDesc.AlignedByteOffset    = l_json.value(k_alignedByteOffsetJsonKey,    D3D12_APPEND_ALIGNED_ELEMENT);
 		l_inputElement.m_inputElementDesc.InputSlotClass       = l_json.value(k_inputSlotClassJsonKey,       D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA);
-		l_inputElement.m_inputElementDesc.InstanceDataStepRate = l_json.value(k_instanceDataStepRateJsonKey, 0U);
+		l_inputElement.m_inputElementDesc.InstanceDataStepRate = l_json.value(k_instanceDataStepRateJsonKey, k_defaultInputElementInstanceDataStepRate);
 
 		a_standardPipelineState.AddInputElementDesc(l_inputElement);
-	}
-
-	// 内部でconst char*を使っているため要素の再確保が生じたときにnullptrにならないようにreserve()する
-	l_inputElementDescList.reserve(l_inputElementList.size());
-
-	for (auto& l_inputElement : l_inputElementList)
-	{
-		auto l_inputElementDesc = l_inputElement.m_inputElementDesc;
-
-		l_inputElementDesc.SemanticName = l_inputElement.m_semanticName.c_str();
-
-		l_inputElementDescList.emplace_back(l_inputElementDesc);
 	}
 }
 

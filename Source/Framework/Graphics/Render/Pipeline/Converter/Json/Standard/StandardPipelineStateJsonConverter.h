@@ -39,5 +39,9 @@ namespace FWK::Converter
 		static constexpr std::string_view k_alignedByteOffsetJsonKey    = "AlignedByteOffset";
 		static constexpr std::string_view k_inputSlotClassJsonKey       = "InputSlotClass";
 		static constexpr std::string_view k_instanceDataStepRateJsonKey = "InstanceDataStepRate";
+
+		static constexpr UINT k_defaultInputElementSemanticIndex        = 0U;
+		static constexpr UINT k_defaultInputElementInputSlot            = 0U;
+		static constexpr UINT k_defaultInputElementInstanceDataStepRate = 0U;
 	};
 }
