@@ -49,8 +49,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool CreateSwapChain(const Window& a_window, const Factory& a_factory, const DirectCommandQueue& a_directCommandQueue);
-
+		bool CreateSwapChain     (const Window& a_window, const Factory&				    a_factory, const DirectCommandQueue& a_directCommandQueue);
 		bool CreateBackBufferList(const Device& a_device, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
 		bool IsValidBackBufferSize(const Struct::ClientSize& a_clientSize) const;

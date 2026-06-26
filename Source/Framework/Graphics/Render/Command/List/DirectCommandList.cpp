@@ -237,7 +237,6 @@ void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
 									   a_startVertexLocation,
 									   a_startInstanceLocation);
 }
-
 void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const
 {
 	const auto& l_directCommandList = GetREFCommandList();

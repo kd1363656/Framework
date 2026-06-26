@@ -55,7 +55,7 @@ namespace FWK::Graphics
 
 				// 解放順は不要なので、末尾要素を移動してpop_backする(要素削除時に動作が速いため)
 				// 要素を進めないことでswap後の末尾の要素も確認できるため。
-				std::swap(a_releaseRecordList[l_index], a_releaseRecordList.back());
+				std::swap				    (a_releaseRecordList[l_index], a_releaseRecordList.back());
 				a_releaseRecordList.pop_back();
 			}
 		}
