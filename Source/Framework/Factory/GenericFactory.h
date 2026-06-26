@@ -14,6 +14,14 @@ namespace FWK
 		// std::shared_ptr<Base> / std::unique_ptr<Base>が管理している実体型Baseを取り出す
 		using BaseType = typename Type::element_type;
 
+		//=========================
+		// シングルトン
+		//=========================
+		friend class Utility::SingletonBase<GenericFactory<Type>>;
+
+		 GenericFactory()          = default;
+		~GenericFactory() override = default;
+
 	public:
 
 		// "DerivedClass"をファクトリーに登録
@@ -59,13 +67,5 @@ namespace FWK
 	private:
 
 		FactoryMap m_factoryMap = {};
-
-		//=========================
-		// シングルトン
-		//=========================
-		friend class Utility::SingletonBase<GenericFactory<Type>>;
-
-		 GenericFactory()          = default;
-		~GenericFactory() override = default;
 	};
 }
