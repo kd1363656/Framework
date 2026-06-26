@@ -15,10 +15,10 @@ namespace FWK::Graphics
 		~RenderGraphFrameResource() = default;
 
 		RenderGraphFrameResource(const RenderGraphFrameResource&)			= delete;
-		RenderGraphFrameResource(	  RenderGraphFrameResource&&) noexcept = default;
+		RenderGraphFrameResource(	   RenderGraphFrameResource&&) noexcept = default;
 		
-		RenderGraphFrameResource& operator=(const RenderGraphFrameResource&)			  = delete;
-		RenderGraphFrameResource& operator=(		 RenderGraphFrameResource&&) noexcept = default;
+		RenderGraphFrameResource& operator=(const RenderGraphFrameResource&)		   = delete;
+		RenderGraphFrameResource& operator=(      RenderGraphFrameResource&&) noexcept = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 

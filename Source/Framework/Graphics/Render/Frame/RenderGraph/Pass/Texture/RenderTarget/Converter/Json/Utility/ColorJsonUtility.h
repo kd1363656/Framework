@@ -2,7 +2,7 @@
 
 namespace FWK::Utility
 {
-	inline TypeAlias::Math::Color DeserializeColor(const nlohmann::json& a_json , const std::string_view a_key)
+	inline TypeAlias::Math::Color DeserializeColor(const nlohmann::json& a_json , const std::string_view& a_key)
 	{
 		// "json"を読み込めるか確認、読み込めなければ"return"
 		const auto& l_json = a_json.value(a_key, nlohmann::json{});
@@ -18,7 +18,7 @@ namespace FWK::Utility
 		};
 	}
 
-	inline nlohmann::json SerializeColor(const TypeAlias::Math::Color& a_color , const std::string_view a_key)
+	inline nlohmann::json SerializeColor(const TypeAlias::Math::Color& a_color , const std::string_view& a_key)
 	{
 		// キーとなる文字列がなければ空の"json"を返す
 		if (a_key.empty()) { return {}; }
