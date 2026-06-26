@@ -17,10 +17,10 @@ namespace FWK::Graphics
 
 		bool Create(const Device&					    a_device,
 				    const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
+					const TypeAlias::Math::Color&		a_clearColor,
 					const DXGI_FORMAT					a_format,
 					const UINT							a_width,
 					const UINT							a_height,
-					const TypeAlias::Math::Color&		a_clearColor,
 						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
 

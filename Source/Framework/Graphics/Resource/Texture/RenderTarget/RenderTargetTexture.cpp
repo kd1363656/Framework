@@ -2,10 +2,10 @@
 
 bool FWK::Graphics::RenderTargetTexture::Create(const Device&					    a_device,
 												const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
+												const TypeAlias::Math::Color&		a_clearColor,
 												const DXGI_FORMAT					a_format,
 											    const UINT							a_width,
 											    const UINT							a_height,
-												const TypeAlias::Math::Color&		a_clearColor,
 													  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 													  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
@@ -47,10 +47,10 @@ bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						a_device,
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_newRenderTargetTexture.Create(a_device,
 																	   a_gpuMemoryAllocator,
+																	   m_clearColor,
 																	   m_format,
 																	   a_width,
 																	   a_height,
-																	   m_clearColor,
 																	   a_rtvDescriptorPool,
 																	   a_srvDescriptorPool),
 																	   "リサイズ後のRenderTargetTextureの作成に失敗しており、リサイズ処理に失敗しました。",
@@ -170,7 +170,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 	{
 		a_srvDescriptorPool.Release(l_srvDescriptorIndex);
 
-		FWK_ASSERT_RETURN_VALUE("CPUOnlySRVからShadervisibleSRVへのコピーに失敗したため、RenderTargetTexture用SRVの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE("CPUOnlySRVからShaderVisibleSRVへのコピーに失敗したため、RenderTargetTexture用SRVの作成に失敗しました。", false);
 	}
 
 	m_srvDescriptorIndex = l_srvDescriptorIndex;

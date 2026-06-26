@@ -25,8 +25,7 @@ nlohmann::json FWK::Converter::TextureSystemJsonConverter::Serialize(const Graph
 
 	const auto& l_textureStorage = a_textureSystem.GetREFTextureStorage();
 
-	l_rootJson[k_textureStorageJsonKey] = l_textureStorage.Serialize();
-	
+	l_rootJson[k_textureStorageJsonKey]     = l_textureStorage.Serialize ();
 	l_rootJson[k_defaultTextureListJsonKey] = SerializeDefaultTextureList(a_textureSystem);
 
 	return l_rootJson;
@@ -48,7 +47,6 @@ void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(c
 		if (l_defaultTextureJson.is_null()) { continue; }
 
 		const auto& l_defaultTextureType = l_json.value(k_defaultTextureTypeJsonKey, Enum::DefaultTextureType::Count);
-
 
 		// デフォルトテクスチャタイプの値がDefaultTextureTypeのCountを超えていればreturn;
 		if (static_cast<std::size_t>(l_defaultTextureType) >= Graphics::TextureSystem::GetREFDefaultTextureTypeCount()) { continue; }

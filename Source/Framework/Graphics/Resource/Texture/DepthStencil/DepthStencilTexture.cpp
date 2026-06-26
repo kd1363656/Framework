@@ -3,9 +3,9 @@
 bool FWK::Graphics::DepthStencilTexture::Create(const Device&                       a_device, 
                                                 const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
                                                 const DXGI_FORMAT                   a_format, 
+                                                const FLOAT                         a_depthClearValue,
                                                 const UINT                          a_width,
                                                 const UINT                          a_height,
-                                                const FLOAT                         a_depthClearValue,
                                                 const UINT8                         a_stencilClearValue,
                                                       TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
 {
@@ -47,9 +47,9 @@ bool FWK::Graphics::DepthStencilTexture::Resize(const Device&                   
     FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_newDepthStencilTexture.Create(a_device,
                                                                        a_gpuMemoryAllocator,    
                                                                        m_format,
+                                                                       m_depthClearValue,
                                                                        a_width, 
                                                                        a_height,
-                                                                       m_depthClearValue,
                                                                        m_stencilClearValue,
                                                                        a_dsvDescriptorPool),
                                                                        "リサイズ後のDepthStencilTexture作成に失敗しました。",

@@ -45,7 +45,7 @@ namespace FWK::Graphics
 		bool RegisterRecord(const std::shared_ptr<RecordType>& a_record, const std::wstring& a_filePath)
 		{
 			// レコード情報が無効じゃないか、無効なストレージIDでないかをチェック
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_record,												   "レコードのインスタンス化がされておらず、Recordの登録に失敗しました。",			 false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_record,												       "レコードのインスタンス化がされておらず、Recordの登録に失敗しました。",			 false);
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_filePath.empty(),										   "ファイルパスが空のため、Recordの登録に失敗しました。",							 false);
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_record->GetVALStorageID() == Constant::k_invalidStorageID, "StorageIDが無効のため、Recordの登録に失敗しました。",							 false);
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_recordMap.contains(a_filePath),							   "同じファイルパスのRecordが既に登録されているため、Recordの登録に失敗しました。", false);

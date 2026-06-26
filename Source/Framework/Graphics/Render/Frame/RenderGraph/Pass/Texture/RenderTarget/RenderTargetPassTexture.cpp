@@ -26,10 +26,10 @@ bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			            
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderTargetTexture.Create(a_device,
 																    a_gpuMemoryAllocator,
+																    m_clearColor,
 																    m_format,
 																    l_width,
 																    l_height,
-																    m_clearColor,
 																    a_rtvDescriptorPool,
 																    a_srvDescriptorPool),
 																    "RenderTargetPassTexture内部のRenderTargetTexture作成処理に失敗しました。",

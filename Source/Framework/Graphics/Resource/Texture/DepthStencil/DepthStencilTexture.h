@@ -18,9 +18,9 @@ namespace FWK::Graphics
 		bool Create(const Device&					    a_device,
 					const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
 					const DXGI_FORMAT				    a_format,
+					const FLOAT						    a_depthClearValue,
 					const UINT						    a_width,
 					const UINT						    a_height,
-					const FLOAT						    a_depthClearValue,
 					const UINT8						    a_stencilClearValue,
 						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
 
