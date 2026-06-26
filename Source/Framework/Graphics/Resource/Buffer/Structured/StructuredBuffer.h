@@ -16,7 +16,7 @@ namespace FWK::Graphics
 		StructuredBuffer& operator=(	  StructuredBuffer&& a_other) noexcept;
 
 		template <typename Type>
-		void CreateStructuredBufferSRV(const std::vector<Type>& a_bufferList, const Device& a_device, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool) const
+		void CreateStructuredBufferSRV(const std::vector<Type>& a_bufferList, const Device& a_device, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 		{
 			const auto& l_device = a_device.GetREFDevice();
 
