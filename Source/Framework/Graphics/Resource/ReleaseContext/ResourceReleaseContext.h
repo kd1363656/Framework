@@ -13,8 +13,6 @@ namespace FWK::Graphics
 
 		bool ReserveDeferredReleaseGPUResourceRecord(Struct::GPUResourceReleaseRecord&& a_releaseRecord);
 
-		bool ReserveDeferredReleaseStructuredBufferResourceRecord(Struct::StructuredBufferResourceReleaseRecord& a_releaseRecord);
-
 		bool ReserveDeferredReleaseRTVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 		bool ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 		bool ReserveDeferredReleaseDSVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);

@@ -98,19 +98,19 @@ namespace FWK::Struct
 		StaticModelMeshRuntimeData& operator=(      StaticModelMeshRuntimeData&&) noexcept = default;
 
 		// MeshShaderで頂点情報を参照するためのStructuredBuffer
-		Struct::StructuredBufferResource m_vertexBuffer = {};
+		Graphics::StructuredBuffer m_vertexBuffer = {};
 
 		// MeshShaderで参照するMeshlet情報用StructuredBuffer
-		Struct::StructuredBufferResource m_meshletBuffer = {};
+		Graphics::StructuredBuffer m_meshletBuffer = {};
 
 		// Meshlet内LocalVertexIndexからModelVertexIndexへ変換するStructuredBuffer
-		Struct::StructuredBufferResource m_uniqueVertexIndexBuffer = {};
+		Graphics::StructuredBuffer m_uniqueVertexIndexBuffer = {};
 
 		// Meshlet内の三角形を組み立てるためのStructuredBuffer
-		Struct::StructuredBufferResource m_primitiveIndexBuffer = {};
+		Graphics::StructuredBuffer m_primitiveIndexBuffer = {};
 
 		// Meshlet単位のカリング情報を参照するStructuredBuffer
-		Struct::StructuredBufferResource m_meshletBoundsBuffer = {};
+		Graphics::StructuredBuffer m_meshletBoundsBuffer = {};
 	};
 
 	struct StaticModelMesh final

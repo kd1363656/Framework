@@ -16,9 +16,4 @@ namespace FWK::Struct
 	{
 		Struct::GPUResource m_gpuResource = {};
 	};
-
-	struct StructuredBufferResourceReleaseRecord final : public DeferredResourceReleaseRecordBase
-	{
-		Struct::StructuredBufferResource m_structuredBufferResource = {};
-	};
 }

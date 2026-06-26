@@ -8,24 +8,6 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseGPUResourceRec
 	return true;
 }
 
-bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseStructuredBufferResourceRecord(Struct::StructuredBufferResourceReleaseRecord& a_releaseRecord)
-{
-	auto& l_structuredBuffer = a_releaseRecord.m_structuredBufferResource;
-	auto& l_gpuResource      = l_structuredBuffer.m_bufferGPUResource;
-
-	// GPUリソースリリースレコードを配列に追加
-	Struct::GPUResourceReleaseRecord&& l_gpuResourceReleaseRecord = { a_releaseRecord.m_retiredFenceValue, std::move(l_gpuResource) };
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)), "GPUResourceRecordの解放に失敗しており、StructuredBufferの遅延解放登録に失敗しました。", false);
-
-	// SRVDescriptorIndexリソースリリースレコードを配列に追加
-	Struct::DescriptorIndexReleaseRecord&& l_descriptorIndexReleaseRecord = { a_releaseRecord.m_retiredFenceValue, l_structuredBuffer.m_srvDescriptorIndex };
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_descriptorIndexReleaseRecord)), "SRVDescriptorIndexの解放に失敗しており、StructuredBufferの遅延解放登録に失敗しました。", false);
-
-	return true;
-}
-
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseRTVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED				  (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "RTV用DescriptorIndexが無効のため、RTV用DescriptorIndexの遅延解放登録に失敗しました。", false);

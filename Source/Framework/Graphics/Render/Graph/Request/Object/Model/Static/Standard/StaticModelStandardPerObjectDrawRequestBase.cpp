@@ -52,11 +52,11 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 			l_cbStaticModelPerObject.m_roughnessFactor = l_modelMaterialAssetData.m_roughnessFactor;
 
 			// MeshShaderで参照するStructuredBufferのSRV番号
-			l_cbStaticModelPerObject.m_vertexBufferSRVDescriptorIndex            = l_modelMeshRuntimeData.m_vertexBuffer.m_srvDescriptorIndex;
-			l_cbStaticModelPerObject.m_meshletBufferSRVDescriptorIndex           = l_modelMeshRuntimeData.m_meshletBuffer.m_srvDescriptorIndex;
-			l_cbStaticModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer.m_srvDescriptorIndex;
-			l_cbStaticModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_modelMeshRuntimeData.m_primitiveIndexBuffer.m_srvDescriptorIndex;
-			l_cbStaticModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_modelMeshRuntimeData.m_meshletBoundsBuffer.m_srvDescriptorIndex;
+			l_cbStaticModelPerObject.m_vertexBufferSRVDescriptorIndex            = l_modelMeshRuntimeData.m_vertexBuffer.GetVALSRVDescriptorIndex           ();
+			l_cbStaticModelPerObject.m_meshletBufferSRVDescriptorIndex           = l_modelMeshRuntimeData.m_meshletBuffer.GetVALSRVDescriptorIndex          ();
+			l_cbStaticModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();
+			l_cbStaticModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_modelMeshRuntimeData.m_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
+			l_cbStaticModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_modelMeshRuntimeData.m_meshletBoundsBuffer.GetVALSRVDescriptorIndex    ();
 
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_vertexBufferSRVDescriptorIndex		     == Constant::k_invalidDescriptorIndex, "VertexBufferのSRVDescriptorIndexが無効です。");
 			FWK_ASSERT_RETURN_IF_FAILED(l_cbStaticModelPerObject.m_meshletBufferSRVDescriptorIndex		     == Constant::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");

@@ -60,7 +60,7 @@ namespace FWK::Graphics
 			{
 				a_srvDescriptorPool.Release(l_srvDescriptorIndex);
 
-				FWK_ASSERT_RETURN_VALUE("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+				FWK_ASSERT_RETURN("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StructuredBuffer用SRVの作成に失敗しました。");
 			}
 
 			if (l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex)
@@ -86,7 +86,8 @@ namespace FWK::Graphics
 
 		void MoveFrom(StructuredBuffer&& a_other) noexcept;
 
-		static constexpr UINT64 k_firstStructuredBufferElement = 0ULL;
+		static constexpr UINT64 k_firstStructuredBufferElement    = 0ULL;
+		static constexpr UINT64 k_maxStructuredBufferElementCount = std::numeric_limits<UINT>::max();
 
 		Struct::GPUResource m_bufferGPUResource;
 

@@ -120,7 +120,6 @@
 
 //リソースリリースクラス
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/GPUResourceStruct.h"
-#include "Graphics/Resource/ReleaseContext/Definition/Struct/StructuredBufferResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 

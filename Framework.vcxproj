@@ -513,7 +513,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\StructuredBufferResourceStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\ResourceContext.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Compiler\ShaderCompiler.h" />

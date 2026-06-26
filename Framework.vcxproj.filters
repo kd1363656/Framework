@@ -1638,9 +1638,6 @@
     <ClInclude Include="..\Library\UFBX\ufbx.h">
       <Filter>Library\UFBX</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\StructuredBufferResourceStruct.h">
-      <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClInclude>
