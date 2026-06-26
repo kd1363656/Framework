@@ -56,8 +56,24 @@ bool FWK::Graphics::StructuredBuffer::ReserveRelease(const UINT64& a_retiredFenc
 	return true;
 }
 
+void FWK::Graphics::StructuredBuffer::ReleaseImmediatelySRVDescriptorIndex(TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+{
+	if (m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
+
+	a_srvDescriptorPool.Release(m_srvDescriptorIndex);
+
+	m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+}
+
 void FWK::Graphics::StructuredBuffer::Release()
 {
+	// 既に解放するものがなければreturn;
+	if (!m_bufferGPUResource.m_resource &&
+		m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex)
+	{
+		return;
+	}
+
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 
 	const auto& l_renderer           = l_graphicsManager.GetREFRenderer   ();
