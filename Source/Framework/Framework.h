@@ -84,6 +84,8 @@
 #include "Graphics/Render/Pipeline/PipelineStateBase.h"
 #include "Graphics/Render/Pipeline/Definition/Type/Alias/Factory/Shared/PipelineStateSharedFactory.h"
 
+#include "Graphics/Render/Pipeline/Converter/Json/Standard/Definition/Macros/StandardShaderPipelineStateJsonConverterMacros.h"
+#include "Graphics/Render/Pipeline/Converter/Json/Standard/Definition/Struct/StandardShaderPipelineStateJsonConverterStruct.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Standard/Utility/StandardPipelineStateJsonConverterUtility.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Standard/StandardPipelineStateJsonConverter.h"
 #include "Graphics/Render/Pipeline/Standard/StandardPipelineState.h"

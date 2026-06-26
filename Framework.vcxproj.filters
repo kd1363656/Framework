@@ -1129,6 +1129,15 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared">
       <UniqueIdentifier>{59040ce8-3308-4ea1-b738-dfa48769316a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition">
+      <UniqueIdentifier>{296ce901-e6aa-4af6-b50a-1016b1e66cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros">
+      <UniqueIdentifier>{5fa9c290-1ae1-4c4a-a9dd-12123699c629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct">
+      <UniqueIdentifier>{91bd6d28-150b-4efa-ba9c-9c4922239cd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1441,9 +1450,6 @@
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Converter\Json\Definition\Macros\WindowJsonConverterMacros.h">
@@ -1868,6 +1874,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros\StandardShaderPipelineStateJsonConverterMacros.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\PipelineStateJsonConverterMacros.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct\StandardShaderPipelineStateJsonConverterStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

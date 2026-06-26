@@ -91,9 +91,10 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 		l_pipelineStateDesc.PS = FetchShaderByteCode(*m_pixelShader);
 	}
 
-	// 必要なパラメータをセット
-	l_pipelineStateDesc.InputLayout = {};
+	l_pipelineStateDesc.InputLayout.pInputElementDescs = m_inputElementDescList.empty() ? nullptr : m_inputElementDescList.data();
+	l_pipelineStateDesc.InputLayout.NumElements        = static_cast<UINT>           (m_inputElementDescList.size());
 
+	// ラスタライザーやブレンドステートのセット
 	l_pipelineStateDesc.RasterizerState   = GetREFRasterizerDesc  ();
 	l_pipelineStateDesc.BlendState        = GetREFBlendDesc       ();
 	l_pipelineStateDesc.DepthStencilState = GetREFDepthStencilDesc();
@@ -126,4 +127,19 @@ nlohmann::json FWK::Graphics::StandardPipelineState::Serialize() const
 	Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
 
 	return l_rootJson;
+}
+
+void FWK::Graphics::StandardPipelineState::ClearInputLayout()
+{
+	m_inputElementList.clear    ();
+	m_inputElementDescList.clear();
+}
+
+void FWK::Graphics::StandardPipelineState::AddInputElementDesc(const Struct::StandardPipelineInputElement& a_inputElement)
+{
+	if (a_inputElement.m_semanticName.empty()) { return; }
+
+	m_inputElementList.emplace_back(a_inputElement);
+
+
 }

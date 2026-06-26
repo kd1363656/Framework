@@ -14,11 +14,19 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const override;
 
+		void ClearInputLayout();
+
+		void AddInputElementDesc(const Struct::StandardPipelineInputElement& a_inputElement);
+
+		const auto& GetREFInputElementList    () const { return m_inputElementList; }
+
 		const auto& GetREFVertexShader  () const { return m_vertexShader; }
 		const auto& GetREFHullShader    () const { return m_hullShader; }
 		const auto& GetREFDomainShader  () const { return m_domainShader; }
 		const auto& GetREFGeometryShader() const { return m_geometryShader; }
 		const auto& GetREFPixelShader   () const { return m_pixelShader; }
+
+		auto& GetMutableREFInputElementDescList() { return m_inputElementDescList; }
 
 		auto& GetMutableREFVertexShader  () { return m_vertexShader; }
 		auto& GetMutableREFHullShader    () { return m_hullShader; }
@@ -29,6 +37,9 @@ namespace FWK::Graphics
 	private:
 
 		Shader m_vertexShader = {};
+
+		std::vector<D3D12_INPUT_ELEMENT_DESC>			  m_inputElementDescList = {};
+		std::vector<Struct::StandardPipelineInputElement> m_inputElementList     = {};
 
 		std::shared_ptr<Shader> m_hullShader     = nullptr;
 		std::shared_ptr<Shader> m_domainShader   = nullptr;

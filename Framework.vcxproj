@@ -451,6 +451,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh\MeshShaderPipelineStateJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros\StandardShaderPipelineStateJsonConverterMacros.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct\StandardShaderPipelineStateJsonConverterStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\StandardPipelineStateJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\StandardPipelineStateJsonConverterUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Utility\IsArrayJsonUtility.h" />
