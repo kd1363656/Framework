@@ -84,7 +84,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 								l_optimizedIndexList.size(),
 								l_optimizedModelVertexList.size());
 
-	// IndexListから参照される順番に合わせて、VErtexListのメモリ配置を並び替える。
+	// IndexListから参照される順番に合わせて、VertexListのメモリ配置を並び替える。
 	// meshopt_optimizeVertexFetch(最適化後の頂点配列の書き込み先、
 	//							   最適化後のインデックス配列、
 	//							   インデックス数、

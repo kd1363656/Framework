@@ -16,10 +16,10 @@ namespace FWK::Graphics
 							   const UINT						  a_destinationY,
 							   const UINT						  a_destinationZ) const;
 
-		void CopyBufferRegion(const UINT64&	   a_destinationOffset,
-							  const UINT64&	   a_sourceOffset,
-							  const UINT64&	   a_bufferSize,
-							  ID3D12Resource2& a_destinationBuffer,
-							  ID3D12Resource2& a_sourceBuffer) const;
+		void CopyBufferRegion(const UINT64&	         a_destinationOffset,
+							  const UINT64&	         a_sourceOffset,
+							  const UINT64&	         a_bufferSize,
+							        ID3D12Resource2& a_destinationBuffer,
+							        ID3D12Resource2& a_sourceBuffer) const;
 	};
 }

@@ -87,7 +87,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 	{
 		Struct::StaticModelMesh l_staticModelMesh = {};
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshByMaterial(a_fbxNode, k_invalidMaterialIndex, l_staticModelMesh), "MaterialなしStaticModelMeshの抽出に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshByMaterial(k_invalidMaterialIndex, a_fbxNode, l_staticModelMesh), "MaterialなしStaticModelMeshの抽出に失敗しました。", false);
 
 		if (!l_staticModelMesh.m_modelVertexList.empty() &&
 			!l_staticModelMesh.m_indexList.empty())
@@ -106,7 +106,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 		Struct::StaticModelMesh l_staticModelMesh = {};
 
 		// 現在のMaterialIndexを使用しているFaceだけを集めて、1つのModelMeshにする
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshByMaterial(a_fbxNode, l_materialIndex, l_staticModelMesh), "Material別StaticModelMeshの抽出に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, l_staticModelMesh), "Material別StaticModelMeshの抽出に失敗しました。", false);
 
 		// このMaterialを使用しているFaceがなければ描画対象にしない
 		if (l_staticModelMesh.m_modelVertexList.empty()) { continue; }
@@ -125,7 +125,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 
 	return true;
 }
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const ufbx_node* a_fbxNode, const std::size_t& a_materialIndex, Struct::StaticModelMesh& a_staticModelMesh) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t& a_materialIndex, const ufbx_node* a_fbxNode, Struct::StaticModelMesh& a_staticModelMesh) const
 {
 	// モデルメッシュの初期化
 	a_staticModelMesh.m_modelVertexList.clear();

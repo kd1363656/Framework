@@ -40,7 +40,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 	if (!m_staticModelBinaryConverter.LoadStaticModelAsset(a_filePath, *l_staticModelRecord))
 	{
 		// .assetが読み込めなければFBXモデルをロードする、失敗したらassert
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。", {});
+		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。", l_staticModelLoadResult);
 
 		// モデルのメッシュレット生成などを行う
 		BuildStaticModelAssetData(a_filePath, *l_staticModelRecord);
@@ -110,7 +110,7 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_meshletBuilder.BuildStaticModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
 	// 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelBinaryConverter.SaveStaticModelAsset(a_filePath, a_staticModelRecord), "TextureAssetの保存に失敗しました", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_staticModelBinaryConverter.SaveStaticModelAsset(a_staticModelRecord, a_filePath), "TextureAssetの保存に失敗しました", false);
 
 	return true;
 }
