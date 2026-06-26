@@ -37,7 +37,7 @@ void FWK::Graphics::PipelineStateBase::PrepareCommonPipelineStateCreate(const De
 
 D3D12_SHADER_BYTECODE FWK::Graphics::PipelineStateBase::FetchShaderByteCode(const Shader& a_shader) const
 {
-	const auto& l_blob = a_shader.GetDXCBlob();
+	const auto& l_blob = a_shader.GetREFDXCBlob();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_blob, "シェーダーバイトコードの取得に失敗しました。", {});
 

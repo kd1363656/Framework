@@ -18,11 +18,11 @@ namespace FWK::Graphics
 		void SetEntryPointName        (const std::string&			a_set) { m_entryPointName         = a_set; }
 		void SetShaderModelVersionName(const std::string&			a_set) { m_shaderModelVersionName = a_set; }
 
-		const auto& GetDXCBlob() const { return m_dxcBlob; }
+		const auto& GetREFDXCBlob() const { return m_dxcBlob; }
 
-		const auto& GetFilePath              () const { return m_filePath; }
-		const auto& GetEntryPointName        () const { return m_entryPointName; }
-		const auto& GetShaderModelVersionName() const { return m_shaderModelVersionName; }
+		const auto& GetREFFilePath              () const { return m_filePath; }
+		const auto& GetREFEntryPointName        () const { return m_entryPointName; }
+		const auto& GetREFShaderModelVersionName() const { return m_shaderModelVersionName; }
 
 	private:
 
