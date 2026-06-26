@@ -1458,7 +1458,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros\RootSignatureJsonConverterMacros.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Definition\Macros</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Converter\Json\Definition\Macros\WindowJsonConverterMacros.h">
+    <ClInclude Include="Source\Framework\Window\Converter\Json\Definition\Macros\JsonSerializeEnumMacros.h">
       <Filter>Source\Framework\Window\Converter\Json\Definition\Macros</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h">
