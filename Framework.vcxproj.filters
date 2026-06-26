@@ -1138,6 +1138,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct">
       <UniqueIdentifier>{91bd6d28-150b-4efa-ba9c-9c4922239cd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant">
+      <UniqueIdentifier>{5b3af2ae-beac-4fea-b81d-6e99a60868bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1883,6 +1886,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct\StandardShaderPipelineStateJsonConverterStruct.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant\SpriteScreenConstant.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

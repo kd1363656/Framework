@@ -285,6 +285,7 @@
 #include "Graphics/Render/Graph/Request/Object/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Graphics/Render/Graph/Request/Object/Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Constant/SpriteScreenPerObjectConstantBufferUploaderConstant.h"
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Constant/SpriteScreenConstant.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Struct/SpriteRECTStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Struct/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
