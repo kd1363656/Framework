@@ -30,5 +30,9 @@ namespace FWK::Graphics
 		Shader m_meshShader = {};
 
 		Converter::MeshShaderPipelineStateJsonConverter m_jsonConverter = {};
+
+		FWK_DEFINE_TYPE_INFO(MeshShaderPipelineState, PipelineStateBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::PipelineStateSharedFactory, FWK::Graphics::MeshShaderPipelineState)

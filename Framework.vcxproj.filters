@@ -1117,6 +1117,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility">
       <UniqueIdentifier>{a60ec51e-11d0-4644-8519-8142cc4a3f13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type">
+      <UniqueIdentifier>{fe1facb3-1675-40ac-a315-a85785e720d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias">
+      <UniqueIdentifier>{43ca6c44-cc21-46c1-ad27-e3f241baad68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory">
+      <UniqueIdentifier>{4df5d20e-571d-44fa-9440-57c0257102d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared">
+      <UniqueIdentifier>{59040ce8-3308-4ea1-b738-dfa48769316a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1853,6 +1865,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\StandardPipelineStateJsonConverterUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

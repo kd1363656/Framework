@@ -55,6 +55,8 @@ namespace FWK::Graphics
 
 	protected:
 
+		void PrepareCommonPipelineStateCreate(const Device& a_device, const Renderer& a_renderer);
+
 		void SetUseRootSignature(const std::weak_ptr<RootSignature>& a_set) { m_useRootSignature = a_set; }
 
 		D3D12_SHADER_BYTECODE FetchShaderByteCode(const Shader& a_shader) const;
@@ -85,5 +87,7 @@ namespace FWK::Graphics
 		Enum::RootSignatureType m_useRootSignatureType = Enum::RootSignatureType::Invalid;
 
 		UINT m_sampleMask = k_initialSampleMask;
+
+		FWK_DEFINE_TYPE_INFO_ROOT(PipelineStateBase)
 	};
 }

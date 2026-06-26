@@ -35,7 +35,7 @@ void FWK::Converter::EditorManagerJsonConverter::DeserializeEditorWindow(const n
 	{
 		std::shared_ptr<Editor::EditorWindowBase> l_editorWindow = nullptr;
 		
-		Utility::DeserializeInstanceType<TypeAlias::SharedFactoryEditorWindow>(l_json, k_editorWindowJsonKey, l_editorWindow);
+		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_editorWindowJsonKey, l_editorWindow);
 
 		if (!l_editorWindow) { continue; }
 

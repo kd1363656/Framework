@@ -36,4 +36,4 @@ namespace FWK::Editor
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::SharedFactoryEditorWindow, FWK::Editor::SceneViewEditorWindow)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::SceneViewEditorWindow)

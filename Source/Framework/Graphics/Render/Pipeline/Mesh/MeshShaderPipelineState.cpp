@@ -4,22 +4,22 @@ void FWK::Graphics::MeshShaderPipelineState::Deserialize(const nlohmann::json& a
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.Deserialize(a_rootJson, *this);
+	PipelineStateBase::Deserialize(a_rootJson);
+	m_jsonConverter.Deserialize   (a_rootJson, *this);
 }
 
 bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer)
 {
+	// 使用するルートシグネチャを探すなどの処理を行う
+	PrepareCommonPipelineStateCreate(a_device, a_renderer);
+
 	const auto& l_device = a_device.GetREFDevice().Get();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
-	const auto& l_useRootSignatureWeak = a_renderer.FindVALRootSignature(GetVALUseRootSignatureType());
-	const auto& l_useRootSignature     = l_useRootSignatureWeak.lock								   ();
+	const auto& l_useRootSignature = GetREFUseRootSignature().lock();
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_useRootSignature, "対象となるルートシグネチャの取得に失敗し、パイプラインステートの作成処理に失敗しました。", false);
-
-	// このパイプラインステートが使用するルートシグネチャを他のクラスが知らなくていいようにキャッシュする
-	SetUseRootSignature(l_useRootSignatureWeak);
 
 	const auto& l_rootSignature = l_useRootSignature->GetREFRootSignature();
 
@@ -175,5 +175,9 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 
 nlohmann::json FWK::Graphics::MeshShaderPipelineState::Serialize() const
 {
-	return m_jsonConverter.Serialize(*this);
+	auto l_rootJson = PipelineStateBase::Serialize();
+
+	Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
+
+	return l_rootJson;
 }

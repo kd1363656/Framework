@@ -458,6 +458,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateBaseEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootSignatureStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Mesh\MeshShaderPipelineState.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h" />
