@@ -19,6 +19,21 @@
 #include "TypeINFO/Registry/Definition/Macros/TypeINFORegistryMacros.h"
 
 //===============================================================================
+// エディター
+//===============================================================================
+#include "Graphics/Render/Rasterizer/Defitnition/Type/Alias/DirectXSimpleMathTypeAlias.h"
+#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
+#include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
+#include "Editor/Style/EditorStyle.h"
+#include "Editor/Window/EditorWindowBase.h"
+#include "Editor/Window/Log/Definition/Type/Alias/Factory/EditorWindowSharedFactory.h"
+#include "Editor/Window/Log/LogEditorWindow.h"
+#include "Editor/Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
+#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
+
+#include "Editor/EditorManager.h"
+
+//===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
 #include "Factory/Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
@@ -27,6 +42,8 @@
 #include "Factory/Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
 #include "Factory/GenericFactory.h"
 #include "Factory/Definition/Macros/FactoryMacros.h"
+
+#include "Editor/Window/Scene/SceneViewEditorWindow.h"
 
 //===============================================================================
 // バイナリーファイル化基底クラス
@@ -104,8 +121,6 @@
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 
 // ディスクリプタヒープ
-#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
-#include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 
 // ディスクリプタヒープアロケーター
@@ -145,7 +160,6 @@
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
-#include "Graphics/Render/Rasterizer/Defitnition/Type/Alias/DirectXSimpleMathTypeAlias.h"
 #include "Graphics/Render/Rasterizer/Defitnition/Struct/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
@@ -337,16 +351,6 @@
 #include "Physics/Body/Utility/PhysicsBodyCreatorUitlity.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
 #include "Physics/PhysicsManager.h"
-
-// エディター
-#include "Editor/Style/EditorStyle.h"
-#include "Editor/Window/EditorWindowBase.h"
-#include "Editor/Window/Log/Definition/Type/Alias/Factory/EditorWindowSharedFactory.h"
-#include "Editor/Window/Log/LogEditorWindow.h"
-#include "Editor/Window/Scene/SceneViewEditorWindow.h"
-#include "Editor/Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
-#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
-#include "Editor/EditorManager.h"
 
 // シーン
 #include "Scene/Scene.h"

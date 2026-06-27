@@ -44,5 +44,3 @@ namespace FWK::Editor
 		FWK_DEFINE_TYPE_INFO(LogEditorWindow, EditorWindowBase)
 	};
 }
-
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::LogEditorWindow)
