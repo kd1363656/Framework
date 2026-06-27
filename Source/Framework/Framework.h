@@ -45,7 +45,7 @@
 //===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
-#include "Factory/Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
+#include "Definition/Enum/TypeTraitPTREnum.h"
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Factory/Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Factory/GenericFactory.h"
@@ -63,7 +63,7 @@
 // ウィンドウクラス
 //===============================================================================
 #include "Definition/Macros/JsonSerializeEnumMacros.h"
-#include "Window/Definition/Enum/WindowEnum.h"
+#include "Definition/Enum/WindowStyleEnum.h"
 #include "Window/Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
@@ -90,8 +90,8 @@
 #include "Graphics/Resource/Shader/Shader.h"
 
 // ルートシグネチャ
-#include "Graphics/Render/Pipeline/Definition/Enum/RootSignatureEnum.h"
-#include "Graphics/Render/Pipeline/Definition/Enum/RootParameterEnum.h"
+#include "Definition/Enum/RootSignatureEnum.h"
+#include "Definition/Enum/RootParameterEnum.h"
 #include "Graphics/Render/Pipeline/Definition/Constant/RootSignatureConstant.h"
 #include "Graphics/Render/Pipeline/Definition/Struct/RootSignatureStruct.h"
 #include "Definition/Macros/RootSignatureJsonConverterMacros.h"
@@ -100,7 +100,7 @@
 #include "Graphics/Render/Pipeline/RootSignature.h"
 
 // パイプラインステート
-#include "Graphics/Render/Pipeline/Definition/Enum/PipelineStateBaseEnum.h"
+#include "Definition/Enum/PipelineStateBaseEnum.h"
 #include "Definition/Macros/PipelineStateJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/PipelineStateBaseJsonConverter.h"
 #include "Graphics/Render/Pipeline/PipelineStateBase.h"
@@ -172,7 +172,7 @@
 #include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
 
 // テクスチャ
-#include "Graphics/Resource/Texture/Loader/Definition/Enum/TextureLoaderEnum.h"
+#include "Definition/Enum/TextureLoadColorSpaceEnum.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Graphics/Resource/Texture/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
@@ -181,7 +181,7 @@
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
-#include "Graphics/Resource/Texture/Default/Definition/Enum/DefaultTextureEnum.h"
+#include "Definition/Enum/DefaultTextureEnum.h"
 #include "Graphics/Resource/Texture/Default/Utility/String/Definition/Constant/DefaultTextureStringUtilityConstant.h"
 #include "Graphics/Resource/Texture/Default/Utility/String/Definition/DefaultTextureStringUtility.h"
 #include "Graphics/Resource/Texture/Default/Definition/Constant/DefaultTextureConstant.h"
@@ -244,11 +244,11 @@
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Graphics/Render/Frame/Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/PassTextureBase.h"
-#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Definition/Enum/RenderGraphPassTextureEnum.h"
+#include "Definition/Enum/RenderGraphPassTextureEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/Utility/ColorJsonUtility.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/RenderTargetPassTexture.h"
-#include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/Definition/Enum/DepthStencilPassTextureEnum.h"
+#include "Definition/Enum/DepthStencilPassTextureEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/Converter/Json/DepthStencilPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/DepthStencilPassTexture.h"
 #include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"
@@ -308,7 +308,7 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
-#include "Graphics/Render/Graph/Pass/Definition/Enum/RenderGraphPassEnum.h"
+#include "Definition/Enum/RenderGraphPassEnum.h"
 #include "Graphics/Render/Graph/Pass/Definition/Struct/RenderGraphPassStruct.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Definition/Type/Alias/Factory/Shared/RenderGraphPassUniqueFactory.h"
@@ -337,7 +337,7 @@
 #include "Graphics/GraphicsManager.h"
 
 // 当たり判定
-#include "Physics/Definition/Enum/PhysicsLayerEnum.h"
+#include "Definition/Enum/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Physics/Body/Definition/Struct/PhysicsBodyCreatorStruct.h"
 #include "Physics/Body/Utility/PhysicsBodyCreatorUitlity.h"

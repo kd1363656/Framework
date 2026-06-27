@@ -169,9 +169,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph">
       <UniqueIdentifier>{ec4b0f48-d3a0-44df-8865-cfb617ac6a74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Window\Definition\Enum">
-      <UniqueIdentifier>{d6b0b557-7c82-415b-b06a-55ed0286ecc1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Factory">
       <UniqueIdentifier>{4d88026e-0e11-4364-9644-f8eec155a2e3}</UniqueIdentifier>
     </Filter>
@@ -198,12 +195,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Command\Queue">
       <UniqueIdentifier>{7e00ef36-367e-47c5-9ceb-e930254ec329}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition">
-      <UniqueIdentifier>{0fa03b3b-0def-4b88-9670-93a54a14e561}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum">
-      <UniqueIdentifier>{84a60b0d-309b-45b1-9bd9-adee781cbc49}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Scene">
       <UniqueIdentifier>{2b8094c8-9c6f-4866-9fc9-c9c80866ec38}</UniqueIdentifier>
@@ -352,9 +343,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition">
       <UniqueIdentifier>{be46a1a4-1dc7-4567-9702-520deca1eb07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum">
-      <UniqueIdentifier>{da0a97d5-70e4-4490-96d4-dbb70857d959}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Converter">
       <UniqueIdentifier>{7757946e-fc1c-495f-8b61-ace1e313cf69}</UniqueIdentifier>
     </Filter>
@@ -402,9 +390,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition">
       <UniqueIdentifier>{672a6bbc-09a4-445e-a578-027eafde3284}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum">
-      <UniqueIdentifier>{a3712585-89ff-40ff-920d-50abd9ec2cfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct">
       <UniqueIdentifier>{8b33060b-9741-47b8-99d4-587fca07ec8b}</UniqueIdentifier>
@@ -618,9 +603,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant">
       <UniqueIdentifier>{4b792c9b-e257-4b7a-8a1b-a49383c42054}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum">
-      <UniqueIdentifier>{f9cb2205-c110-41ae-9066-a7b55f7b0725}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct">
       <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
@@ -850,12 +832,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget">
       <UniqueIdentifier>{e76d2125-bcc7-4cc6-9e69-0b1880b16370}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition">
-      <UniqueIdentifier>{d2f1d955-0c29-4d3d-a779-15fc431f13b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition\Enum">
-      <UniqueIdentifier>{e6972d1e-afaa-43bc-8b36-a069ebae1c8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter">
       <UniqueIdentifier>{65aa115b-4360-4662-b5cb-e3c626754f6b}</UniqueIdentifier>
     </Filter>
@@ -876,12 +852,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit">
       <UniqueIdentifier>{c53997df-065d-45ce-a257-91e63e84c745}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition">
-      <UniqueIdentifier>{4c2b144c-19db-4e90-a1cd-59e6d9f8a130}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum">
-      <UniqueIdentifier>{19d7d51e-3f7d-4f4e-aad8-8107793a9072}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Resource">
       <UniqueIdentifier>{e12371c8-df9d-42e2-b78b-0cdd4281010e}</UniqueIdentifier>
@@ -927,12 +897,6 @@
     </Filter>
     <Filter Include="Source\Framework\Physics">
       <UniqueIdentifier>{ea178a29-69a8-499e-b256-e8245bd1fade}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Definition">
-      <UniqueIdentifier>{f6a76614-0f54-4b5f-a3e0-b8bb61bb60ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Definition\Enum">
-      <UniqueIdentifier>{7c3163c4-881c-4412-972a-7a77d3b21fa3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Physics\Layer">
       <UniqueIdentifier>{efbc6977-6d65-4dbe-b5c5-162561c100ce}</UniqueIdentifier>
@@ -1003,20 +967,11 @@
     <Filter Include="Source\Framework\Definition\Type\Trait\PTR">
       <UniqueIdentifier>{421ea550-e3ed-40a6-8d52-fdecde1c5846}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum">
-      <UniqueIdentifier>{ff84f9ae-a1b6-4268-aa54-68e3b26c411e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum\Type">
-      <UniqueIdentifier>{7f1ae24e-6ce6-49a4-82a7-111b211bc75f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait">
-      <UniqueIdentifier>{998df127-319a-42cc-8385-7a38f9e21e40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR">
-      <UniqueIdentifier>{3d3c3dd1-6fd7-4517-b1e6-acf9dbbf211c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Macros">
       <UniqueIdentifier>{b5c0da3e-9b92-4f77-bcdf-e473e994d00e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum">
+      <UniqueIdentifier>{7b144e04-0581-4533-89bc-b4ec8a4c0d9e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1122,9 +1077,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h">
       <Filter>Source\Framework\Graphics\Render\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Definition\Enum\WindowEnum.h">
-      <Filter>Source\Framework\Window\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h">
       <Filter>Source\Framework\Factory</Filter>
     </ClInclude>
@@ -1142,9 +1094,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Command\Queue\DirectCommandQueue.h">
       <Filter>Source\Framework\Graphics\Render\Command\Queue</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum\TextureLoaderEnum.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Loader\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Scene.h">
       <Filter>Source\Framework\Scene</Filter>
@@ -1245,9 +1194,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Texture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum\DefaultTextureEnum.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\DefaultTexture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default</Filter>
     </ClInclude>
@@ -1289,9 +1235,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootSignatureEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Struct\RootSignatureStruct.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Struct</Filter>
@@ -1406,9 +1349,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum\RenderGraphPassEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct</Filter>
@@ -1584,9 +1524,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\RenderTargetPassTexture.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition\Enum\RenderGraphPassTextureEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\RenderTargetPassTextureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json</Filter>
     </ClInclude>
@@ -1604,9 +1541,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum\DepthStencilPassTextureEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Resource\Clearer</Filter>
@@ -1641,9 +1575,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Definition\Enum\PhysicsLayerEnum.h">
-      <Filter>Source\Framework\Physics\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h">
       <Filter>Source\Framework\Physics\Layer</Filter>
     </ClInclude>
@@ -1664,9 +1595,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Mesh\MeshShaderPipelineState.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\PipelineStateBaseEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Standard\StandardPipelineState.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Standard</Filter>
@@ -1700,9 +1628,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct\BufferUploadStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootParameterEnum.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Struct\CBSpritePassStruct.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Struct</Filter>
@@ -1743,9 +1668,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
-      <Filter>Source\Framework\Factory\Definition\Enum\Type\Trait\PTR</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
       <Filter>Source\Framework\Definition\Type\Trait\PTR</Filter>
     </ClInclude>
@@ -1769,6 +1691,39 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\StandardShaderPipelineStateJsonConverterMacros.h">
       <Filter>Source\Framework\Definition\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\TypeTraitPTREnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\WindowStyleEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\PipelineStateBaseEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\RootParameterEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\RootSignatureEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\TextureLoadColorSpaceEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\DefaultTextureEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\RenderGraphPassTextureEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\DepthStencilPassTextureEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\RenderGraphPassEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\PhysicsLayerEnum.h">
+      <Filter>Source\Framework\Definition\Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
