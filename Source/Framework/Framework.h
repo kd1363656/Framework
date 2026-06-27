@@ -13,8 +13,8 @@
 #include "Definition/Macros/AssertReturnMacros.h"
 #include "Definition/Constant/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
-#include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
-#include "TypeINFO/Registry/Definition/Struct/StringHashStruct.h"
+#include "Definition/Struct/TypeINFOStruct.h"
+#include "Definition/Struct/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
 #include "Definition/Macros/TypeINFORegistryMacros.h"
 
@@ -65,7 +65,7 @@
 #include "Definition/Macros/JsonSerializeEnumMacros.h"
 #include "Definition/Enum/WindowStyleEnum.h"
 #include "Definition/Constant/WindowConstant.h"
-#include "Window/Definition/Struct/WindowStruct.h"
+#include "Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
 #include "Definition/Constant/WindowStringUtilityConstant.h"
 #include "Window/Utility/WindowStringUtility.h"
@@ -93,7 +93,7 @@
 #include "Definition/Enum/RootSignatureEnum.h"
 #include "Definition/Enum/RootParameterEnum.h"
 #include "Definition/Constant/RootSignatureConstant.h"
-#include "Graphics/Render/Pipeline/Definition/Struct/RootSignatureStruct.h"
+#include "Definition/Struct/RootSignatureStruct.h"
 #include "Definition/Macros/RootSignatureJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Utility/IsArrayJsonUtility.h"
 #include "Graphics/Render/Pipeline/Converter/Json/RootSignatureJsonConverter.h"
@@ -106,9 +106,9 @@
 #include "Graphics/Render/Pipeline/PipelineStateBase.h"
 #include "Definition/Type/Alias/Factory/Shared/PipelineStateSharedFactory.h"
 #include "Definition/Macros/StandardShaderPipelineStateJsonConverterMacros.h"
-#include "Graphics/Render/Pipeline/Converter/Json/Standard/Definition/Struct/StandardShaderPipelineStateJsonConverterStruct.h"
-#include "Graphics/Render/Pipeline/Converter/Json/Standard/Utility/DeserializeOptionalShaderUtility.h"
-#include "Graphics/Render/Pipeline/Converter/Json/Standard/StandardPipelineStateJsonConverter.h"
+#include "Definition/Struct/StandardShaderPipelineStateJsonConverterStruct.h"
+#include "Graphics/Render/Pipeline/Standard/Converter/Json/Utility/DeserializeOptionalShaderUtility.h"
+#include "Graphics/Render/Pipeline/Standard/Converter/Json/StandardPipelineStateJsonConverter.h"
 #include "Graphics/Render/Pipeline/Standard/StandardPipelineState.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Mesh/MeshShaderPipelineStateJsonConverter.h"
 #include "Graphics/Render/Pipeline/Mesh/MeshShaderPipelineState.h"
@@ -125,8 +125,8 @@
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 
 //リソースリリースクラス
-#include "Graphics/Resource/ReleaseContext/Definition/Struct/GPUResourceStruct.h"
-#include "Graphics/Resource/ReleaseContext/Definition/Struct/ResourceReleaseContextStruct.h"
+#include "Definition/Struct/GPUResourceStruct.h"
+#include "Definition/Struct/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // レコードクラス
@@ -147,12 +147,12 @@
 
 // スワップチェイン
 #include "Definition/Constant/SwapChainConstant.h"
-#include "Graphics/Render/SwapChain/Definition/Struct/SwapChainStruct.h"
+#include "Definition/Struct/SwapChainStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
-#include "Graphics/Render/Rasterizer/Definition/Struct/CBSpritePassStruct.h"
+#include "Definition/Struct/ConstantBuffer/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
 // ダイレクトコマンドリスト
@@ -168,7 +168,7 @@
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
 
 // ストラクチャードバッファー
-#include "Graphics/Resource/Buffer/Structured/Definition/Struct/BufferUploadStruct.h"
+#include "Definition/Struct/BufferUploadStruct.h"
 #include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
 
 // テクスチャ
@@ -177,10 +177,10 @@
 #include "Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
-#include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
+#include "Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
-#include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
+#include "Definition/Struct/WStringHashStruct.h"
 #include "Definition/Enum/DefaultTextureEnum.h"
 #include "Definition/Constant/WStringUtilityConstant.h"
 #include "Graphics/Resource/Texture/Default/Utility/String/Definition/DefaultTextureStringUtility.h"
@@ -191,7 +191,7 @@
 #include "Graphics/Resource/Texture/RenderTarget/Utility/IsSameTextureSizeUtility.h"
 #include "Graphics/Resource/Texture/RenderTarget/Utility/IsValidTextureUtility.h"
 #include "Graphics/Resource/Texture/RenderTarget/RenderTargetTexture.h"
-#include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
+#include "Definition/Struct/TextureSystemStruct.h"
 #include "Definition/Constant/DepthStencilTextureConstant.h"
 #include "Graphics/Resource/Texture/DepthStencil/DepthStencilTexture.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
@@ -202,8 +202,8 @@
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
 #include "Definition/Constant/ModelMaterialConstant.h"
 #include "Definition/Constant/StaticModelRecordConstant.h"
-#include "Graphics/Resource/Model/Static/Record/Definition/Struct/ModelMaterialStruct.h"
-#include "Graphics/Resource/Model/Static/Record/Definition/Struct/StaticModelRecordStruct.h"
+#include "Definition/Struct/ModelMaterialStruct.h"
+#include "Definition/Struct/StaticModelRecordStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Definition/Constant/StaticModelFBXLoaderConstant.h"
 #include "Definition/Constant/StaticModelBinaryConverterConstant.h"
@@ -213,7 +213,7 @@
 #include "Definition/Constant/StaticModelMeshletBuilderConstant.h"
 #include "Graphics/Resource/Model/Static/Meshlet/StaticModelMeshletBuilder.h"
 #include "Graphics/Resource/Model/Static/Builder/StaticModelBatchUploadRecordBuilder.h"
-#include "Graphics/Resource/Model/Static/Definition/Struct/StaticModelSystemStruct.h"
+#include "Definition/Struct/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 #include "Graphics/Resource/Model/Static/StaticModel.h"
@@ -257,13 +257,13 @@
 
 // カメラ
 #include "Definition/Constant/CameraConstant.h"
-#include "Graphics/Render/Camera/Definition/Struct/CBCameraPassStruct.h"
+#include "Definition/Struct/ConstantBuffer/CBCameraPassStruct.h"
 #include "Graphics/Render/Camera/Camera.h"
 
 // ライト
 #include "Definition/Constant/LightSystemConstant.h"
-#include "Graphics/Render/Light/Definition/Struct/LightSystemStruct.h"
-#include "Graphics/Render/Light/Definition/Struct/CBLightStruct.h"
+#include "Definition/Struct/LightSystemStruct.h"
+#include "Definition/Struct/ConstantBuffer/CBLightStruct.h"
 #include "Graphics/Render/Light/LightSystem.h"
 
 // レンダーグラフ
@@ -282,7 +282,7 @@
 // 描画リクエスト(レンダーターゲット共通パス)
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/DrawRequestRenderTargetPassBase.h"
 #include "Definition/Constant/FinalPresentRenderTargetPassDrawRequestConstant.h"
-#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Definition/Struct/CBFinalColorRenderTargetPassStruct.h"
+#include "Definition/Struct/ConstantBuffer/CBFinalColorRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalColorRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalColorRenderTargetPassDrawRequest.h"
 
@@ -293,15 +293,15 @@
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Definition/Constant/SpriteScreenPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Constant/SpriteScreenConstant.h"
-#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Struct/SpriteRECTStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Struct/CBSpritePerObjectStruct.h"
+#include "Definition/Struct/SpriteRECTStruct.h"
+#include "Definition/Struct/ConstantBuffer/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
-#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Struct/SpriteScreenPerObjectDrawRequestStruct.h"
+#include "Definition/Struct/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Definition/Constant/StaticModelStandardPerObjectDrawRequestDataConstant.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Definition/Struct/StaticModelStandardPerObjectDrawRequestDataStruct.h"
+#include "Definition/Struct/StaticModelStandardPerObjectDrawRequestDataStruct.h"
 #include "Definition/Constant/StaticModelPerObjectConstantBufferUploaderConstant.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/Definition/Struct/CBStaticModelPerObjectStruct.h"
+#include "Definition/Struct/ConstantBuffer/CBStaticModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
@@ -309,7 +309,7 @@
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/RenderGraphPassEnum.h"
-#include "Graphics/Render/Graph/Pass/Definition/Struct/RenderGraphPassStruct.h"
+#include "Definition/Struct/RenderGraphPassStruct.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Definition/Type/Alias/Factory/Shared/RenderGraphPassUniqueFactory.h"
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"
@@ -339,7 +339,7 @@
 // 当たり判定
 #include "Definition/Enum/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
-#include "Physics/Body/Definition/Struct/PhysicsBodyCreatorStruct.h"
+#include "Definition/Struct/PhysicsBodyCreatorStruct.h"
 #include "Physics/Body/Utility/PhysicsBodyCreatorUitlity.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
 #include "Physics/PhysicsManager.h"
