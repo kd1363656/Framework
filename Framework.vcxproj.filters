@@ -205,12 +205,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator">
       <UniqueIdentifier>{39acd6a6-c73a-494c-9ff3-4a0f99a75939}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition">
-      <UniqueIdentifier>{b1f03871-b7f1-4393-9548-ad7b1956e1b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant">
-      <UniqueIdentifier>{0d00df9b-6895-4fde-be0f-e7b92e324ce1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\List">
       <UniqueIdentifier>{be2cbfea-f887-46f9-bb82-aa82a301df95}</UniqueIdentifier>
     </Filter>
@@ -355,12 +349,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility">
       <UniqueIdentifier>{6cf4169c-6e74-44c9-bc55-abb92a3eaf09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition">
-      <UniqueIdentifier>{4443508f-63fc-49bb-bf8f-1fcf61c98b6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant">
-      <UniqueIdentifier>{50352152-4b0a-4d48-8695-d3389b4ed4a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
     </Filter>
@@ -439,20 +427,11 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility">
       <UniqueIdentifier>{6529c890-fcf5-44c4-99f3-9e3f858a8da8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition">
-      <UniqueIdentifier>{f6007a81-a153-49a8-b98e-4ebef2b158ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant">
-      <UniqueIdentifier>{3c772842-0ba5-4a72-b721-ee2bdab0692f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition">
       <UniqueIdentifier>{da848ceb-d46a-435b-a99b-6cac44c344ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Struct">
       <UniqueIdentifier>{d9929b51-f5c8-421d-92b1-e31f5b490b5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Constant">
-      <UniqueIdentifier>{0ba6968e-21c7-4af4-a9b3-928a93df6f51}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition">
       <UniqueIdentifier>{fce60c91-4888-4c72-8ef8-a63fce21f497}</UniqueIdentifier>
@@ -486,12 +465,6 @@
     </Filter>
     <Filter Include="Asset\Shader\Final">
       <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition">
-      <UniqueIdentifier>{f5fa8e7e-e5ad-4175-9cfe-6a5eee9f1661}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant">
-      <UniqueIdentifier>{4b792c9b-e257-4b7a-8a1b-a49383c42054}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct">
       <UniqueIdentifier>{c187f06d-a950-4f90-a82f-4aba74174922}</UniqueIdentifier>
@@ -538,12 +511,6 @@
     <Filter Include="Library\UFBX">
       <UniqueIdentifier>{0e355f7a-e277-4b9c-9865-dfd13f0bc2d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition">
-      <UniqueIdentifier>{a30b3b6a-305f-44fe-a19c-a65db78fa17f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant">
-      <UniqueIdentifier>{a5a7dc53-9f31-4975-8ba5-4820b70218f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static">
       <UniqueIdentifier>{dc9eee76-c914-40bd-8ad3-c7d6a08293fd}</UniqueIdentifier>
     </Filter>
@@ -559,15 +526,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct">
       <UniqueIdentifier>{adb6df28-bae0-4b8c-8e31-91b5699757a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant">
-      <UniqueIdentifier>{7443edeb-5879-46d7-8eed-4462421a9121}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition">
-      <UniqueIdentifier>{a2146bf1-8eec-4e9e-bc0d-52e4fbc77ca3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant">
-      <UniqueIdentifier>{54d5e5dd-2e3e-418a-b595-112416d7bd31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Light">
       <UniqueIdentifier>{e511c7bc-15d9-48c5-8b09-63bad146d696}</UniqueIdentifier>
     </Filter>
@@ -576,9 +534,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Light\Definition\Struct">
       <UniqueIdentifier>{3068ec18-052d-4864-9548-db300b11434a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Light\Definition\Constant">
-      <UniqueIdentifier>{22fab198-0d75-494a-b752-ca12f46820d4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility">
       <UniqueIdentifier>{77c8c8ea-e154-4337-a576-64bfdb53efae}</UniqueIdentifier>
@@ -595,12 +550,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Mesh">
       <UniqueIdentifier>{88cf0829-91c6-43f9-8c05-ad64320a1151}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition">
-      <UniqueIdentifier>{e71f7b6c-8d42-48e1-9dce-47e757c5c029}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant">
-      <UniqueIdentifier>{b63b16ae-e913-4fc3-bb97-042dc7f4491b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json">
       <UniqueIdentifier>{9005080d-2f0d-4991-8330-b6ecc1193343}</UniqueIdentifier>
     </Filter>
@@ -612,12 +561,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary">
       <UniqueIdentifier>{fe70c577-0be0-4eb9-8b92-4e8a0f4bcef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition">
-      <UniqueIdentifier>{8d1c139b-0882-4c1b-8c4f-89c84f8c848a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant">
-      <UniqueIdentifier>{76559e0b-1ee5-442e-b72f-101f8175db87}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Definition">
       <UniqueIdentifier>{38c8173a-7786-4c82-928e-7a2825ef9c36}</UniqueIdentifier>
@@ -682,12 +625,6 @@
     <Filter Include="Asset\Shader\Model\Static\Standard\UnLit">
       <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Camera\Definition\Constant">
-      <UniqueIdentifier>{f61b7a0d-54ee-4b54-9012-df62315d30d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant">
-      <UniqueIdentifier>{9da59668-64f6-44a1-b1c5-f31ec127f20f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\DepthStencil">
       <UniqueIdentifier>{245da9b5-36e9-4adb-8518-cb10e0e401c7}</UniqueIdentifier>
     </Filter>
@@ -738,9 +675,6 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\Sorter\Topologycal">
       <UniqueIdentifier>{41c48eb4-b70c-4506-ad12-5de1d288cb02}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant">
-      <UniqueIdentifier>{d8c46e50-2578-4ee9-aff9-28d0e969d773}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit">
       <UniqueIdentifier>{df4dcb10-f203-4f1d-b623-c25697315d2e}</UniqueIdentifier>
@@ -798,9 +732,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct">
       <UniqueIdentifier>{91bd6d28-150b-4efa-ba9c-9c4922239cd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant">
-      <UniqueIdentifier>{5b3af2ae-beac-4fea-b81d-6e99a60868bc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured">
       <UniqueIdentifier>{e318b75e-1ba2-4995-9509-d3e86d51fad8}</UniqueIdentifier>
@@ -978,9 +909,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant\CopyCommandAllocatorConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator</Filter>
     </ClInclude>
@@ -1095,9 +1023,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
     </ClInclude>
@@ -1143,12 +1068,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\SpriteScreenPerObjectConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant\RenderTargetPassTextureJsonConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Constant\SpriteScreenPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Struct\CBSpritePerObjectStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Definition\Struct</Filter>
     </ClInclude>
@@ -1166,9 +1085,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct\TextureBatchUploadRecordBuilderStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Builder\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct</Filter>
@@ -1215,32 +1131,20 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant\FBXModelLoaderBaseConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\StaticModelFBXLoader.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\StaticModelRecord.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\StaticModelRecordConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\StaticModelRecordStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant\StaticModelFBXLoaderConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\FBXLoader\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h">
       <Filter>Source\Framework\Graphics\Render\Light</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\LightSystemStruct.h">
       <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Constant\LightSystemConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Light\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h">
       <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
@@ -1257,9 +1161,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant\StaticModelMeshletBuilderConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
     </ClInclude>
@@ -1272,9 +1173,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant\StaticModelBinaryConverterConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Definition\Struct\StaticModelSystemStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Definition\Struct</Filter>
     </ClInclude>
@@ -1283,9 +1181,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct\ModelMaterialStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant\ModelMaterialConstant.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Record\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\StaticModelBatchUploadRecordBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static\Builder</Filter>
@@ -1310,12 +1205,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Camera\Definition\Constant\CameraConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Camera\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Window\Utility\JsonLoadAndSaveFileUtility.h">
       <Filter>Source\Framework\Window\Utility</Filter>
@@ -1364,9 +1253,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h">
       <Filter>Source\Framework\Utility\Sorter\Topologycal</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant\StaticModelStandardPerObjectDrawRequestDataConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit</Filter>
@@ -1424,9 +1310,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct\StandardShaderPipelineStateJsonConverterStruct.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant\SpriteScreenConstant.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Structured</Filter>
@@ -1603,6 +1486,54 @@
       <Filter>Source\Framework\Definition\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\DepthStencilTextureConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\FBXModelLoaderBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\ModelMaterialConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelRecordConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelFBXLoaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelBinaryConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelMeshletBuilderConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\CopyCommandAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\RenderTargetPassTextureJsonConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\CameraConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\LightSystemConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\SpriteScreenPerObjectConstantBufferUploaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\SpriteScreenConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelStandardPerObjectDrawRequestDataConstant.h">
+      <Filter>Source\Framework\Definition\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h">
       <Filter>Source\Framework\Definition\Constant</Filter>
     </ClInclude>
   </ItemGroup>
