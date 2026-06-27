@@ -340,8 +340,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\ComPTRTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\DescriptorIndexTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\DescriptorPoolTypeAlias.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
@@ -379,7 +383,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Command\Allocator\Definition\Constant\DirectCommandAllocatorConstant.h" />
@@ -403,7 +406,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Enum\RenderGraphPassEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Struct\RenderGraphPassStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h" />
@@ -413,7 +415,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPerObjectBaseConcept.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h" />
@@ -435,7 +436,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\CameraPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\LightPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\LightPassDrawRequest.h" />
