@@ -172,9 +172,6 @@
     <Filter Include="Source\Framework\Factory">
       <UniqueIdentifier>{4d88026e-0e11-4364-9644-f8eec155a2e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Factory\Definition">
-      <UniqueIdentifier>{f26899e3-1aa4-456a-9ef1-7a3b39d32457}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture">
       <UniqueIdentifier>{424550c7-e4f4-446b-a428-079cbb33cc4c}</UniqueIdentifier>
     </Filter>
@@ -280,12 +277,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Constant">
       <UniqueIdentifier>{062bce1b-ffa4-412d-9f53-df9722181fee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Concept">
-      <UniqueIdentifier>{e8da98f5-4c75-458e-aff6-56e16f30c24b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{03dd95ed-f60b-4601-b763-603f33572a4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Record">
       <UniqueIdentifier>{b9e9deb4-3964-4a2d-ae2b-a3ad24c31d7d}</UniqueIdentifier>
     </Filter>
@@ -306,12 +297,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant">
       <UniqueIdentifier>{70a1b45f-983b-4fca-ad26-ab903688d55c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Concept">
-      <UniqueIdentifier>{9a4e5147-bb33-4fa8-8c61-9197792b8d02}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR">
-      <UniqueIdentifier>{acac3ee7-bd52-42d4-ad62-ccc6f1b65717}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition">
       <UniqueIdentifier>{14bcb1ce-fb26-414a-8dd6-3f9655076cc1}</UniqueIdentifier>
@@ -439,15 +424,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\Definition\Constant">
       <UniqueIdentifier>{50352152-4b0a-4d48-8695-d3389b4ed4a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition">
-      <UniqueIdentifier>{50b45e03-7f46-4a5c-ba93-e8679fe90349}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Concept">
-      <UniqueIdentifier>{98d6dec6-be4f-4e09-aa52-44699048c8d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{bc38eeaf-9c7a-4bfa-93bb-015ed685b40a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
     </Filter>
@@ -466,29 +442,11 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Converter\Json">
       <UniqueIdentifier>{91a69565-1610-4842-a62f-c3d4dcb8bcd1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition">
-      <UniqueIdentifier>{df06c45e-22fe-4966-a285-90c4f3cebb79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite">
       <UniqueIdentifier>{0ea4ee48-6820-41eb-8c02-1dc04374068f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept">
-      <UniqueIdentifier>{597229e5-08f8-479b-8ba4-be0b67935723}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{d44fe811-f53b-4eb5-8fd3-5ef926d0ed6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object">
       <UniqueIdentifier>{0d52aa74-c8e6-46e2-90fe-022e8d290333}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition">
-      <UniqueIdentifier>{9a9fe84a-1f95-4e98-897f-eba5cb4a1246}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept">
-      <UniqueIdentifier>{1e1b5cb6-67b2-4fc8-8721-97d0758b5eac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase">
-      <UniqueIdentifier>{75e23154-b2e9-46bd-8e11-db1b05c80017}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite">
       <UniqueIdentifier>{19e434eb-6b3a-430c-bdec-bbad4ff0a3f6}</UniqueIdentifier>
@@ -627,12 +585,6 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Converter\Json">
       <UniqueIdentifier>{50121c4f-ec3b-4082-ae04-381e988aebfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Definition">
-      <UniqueIdentifier>{6dd0e412-b8d4-4322-996a-8e593f9eb425}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Definition\Concept">
-      <UniqueIdentifier>{e15edeac-429f-4f94-88f3-b5325400e00a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Scene">
       <UniqueIdentifier>{82e77f6e-1eb2-449f-978d-1b26b4d8943b}</UniqueIdentifier>
@@ -973,6 +925,15 @@
     <Filter Include="Source\Framework\Definition\Enum">
       <UniqueIdentifier>{7b144e04-0581-4533-89bc-b4ec8a4c0d9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Concept">
+      <UniqueIdentifier>{796911c2-941d-4e57-9104-708c5b6b0a25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase">
+      <UniqueIdentifier>{9c72d820-1487-4800-bbe2-1cde11ff6363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsSmartPTR">
+      <UniqueIdentifier>{989f7644-3065-45ab-b871-e9ffaafcf516}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1149,9 +1110,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Record\Definition\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h">
-      <Filter>Source\Framework\Graphics\Resource\Record\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Record\TextureRecord.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Record</Filter>
     </ClInclude>
@@ -1169,9 +1127,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant\DirectCommandListConstant.h">
       <Filter>Source\Framework\Graphics\Render\Command\List\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
-      <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Constant\StaticTypeIDConstant.h">
       <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Constant</Filter>
@@ -1272,23 +1227,14 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\DrawRequestPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase\IsDerivedConstantBufferUploaderBaseConcept.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\CachedPassConstantBufferDrawRequestBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPerObjectBaseConcept.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Definition\Concept\IsDerivedBase</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
@@ -1364,9 +1310,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h">
       <Filter>Source\Framework\Editor\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Definition\Concept\IsDerivedEditorWindowBaseConcept.h">
-      <Filter>Source\Framework\Editor\Definition\Concept</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Scene</Filter>
@@ -1724,6 +1667,27 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\PhysicsLayerEnum.h">
       <Filter>Source\Framework\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsSmartPTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedConstantBufferUploaderBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPerObjectBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedEditorWindowBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

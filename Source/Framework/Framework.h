@@ -38,8 +38,8 @@
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 #include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
-#include "Factory/Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
-#include "Editor/Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
+#include "Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
@@ -47,7 +47,7 @@
 //===============================================================================
 #include "Definition/Enum/TypeTraitPTREnum.h"
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
-#include "Factory/Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
+#include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Factory/GenericFactory.h"
 #include "Definition/Macros/FactoryMacros.h"
 
@@ -160,7 +160,7 @@
 #include "Graphics/Render/Command/List/DirectCommandList.h"
 
 // Storageクラス
-#include "Graphics/Resource/Record/Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
 #include "Graphics/Resource/Storage/Converter/Json/AssetStorageJsonConverter.h"
 #include "Graphics/Resource/Storage/AssetStorage.h"
 
@@ -242,7 +242,7 @@
 #include "Graphics/Render/Frame/Converter/Json/Utility/Definition/Constant/RenderTargetPassTextureJsonConstant.h"
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
-#include "Graphics/Render/Frame/Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/PassTextureBase.h"
 #include "Definition/Enum/RenderGraphPassTextureEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/Utility/ColorJsonUtility.h"
@@ -270,7 +270,7 @@
 // 描画リクエスト(共通パス)
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/CachedPassConstantBufferDrawRequestBase.h"
-#include "Graphics/Render/Graph/Request/Pass/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPassBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPassBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPassSharedFactory.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/Buffer/SpriteScreenPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
@@ -289,7 +289,7 @@
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectList.h"
-#include "Graphics/Render/Graph/Request/Object/Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Definition/Constant/SpriteScreenPerObjectConstantBufferUploaderConstant.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Definition/Constant/SpriteScreenConstant.h"
