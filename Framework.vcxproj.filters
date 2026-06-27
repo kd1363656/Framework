@@ -1039,6 +1039,9 @@
     <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR">
       <UniqueIdentifier>{3d3c3dd1-6fd7-4517-b1e6-acf9dbbf211c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Macros">
+      <UniqueIdentifier>{b5c0da3e-9b92-4f77-bcdf-e473e994d00e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
