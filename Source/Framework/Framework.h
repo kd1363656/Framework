@@ -21,7 +21,7 @@
 //===============================================================================
 // エディター
 //===============================================================================
-#include "Graphics/Render/Rasterizer/Defitnition/Type/Alias/DirectXSimpleMathTypeAlias.h"
+#include "Graphics/Render/Rasterizer/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Editor/Style/EditorStyle.h"
@@ -152,7 +152,7 @@
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
-#include "Graphics/Render/Rasterizer/Defitnition/Struct/CBSpritePassStruct.h"
+#include "Graphics/Render/Rasterizer/Definition/Struct/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
 // ダイレクトコマンドリスト

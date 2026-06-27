@@ -1542,12 +1542,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
       <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Struct\CBSpritePassStruct.h">
-      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
     </ClInclude>
@@ -1895,6 +1889,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Enum\RootParameterEnum.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Struct\CBSpritePassStruct.h">
+      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
+      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

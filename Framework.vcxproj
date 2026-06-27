@@ -467,8 +467,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Standard\StandardPipelineState.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Struct\CBSpritePassStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Defitnition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Struct\CBSpritePassStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h" />
