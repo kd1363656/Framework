@@ -11,7 +11,7 @@
 //===============================================================================
 #include "Definition/Type/Alias/StaticTypeIDTypeAlias.h"
 #include "Definition/Macros/AssertReturnMacros.h"
-#include "TypeINFO/StaticTypeID/Definition/Constant/StaticTypeIDConstant.h"
+#include "Definition/Constant/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "TypeINFO/Definition/Struct/TypeINFOStruct.h"
 #include "TypeINFO/Registry/Definition/Struct/StringHashStruct.h"
@@ -23,7 +23,7 @@
 //===============================================================================
 #include "Definition/Type/Alias/MathTypeAlias.h"
 #include "Definition/Type/Alias/DescriptorIndexTypeAlias.h"
-#include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
+#include "Definition/Constant/DescriptorHeapConstant.h"
 #include "Editor/Style/EditorStyle.h"
 #include "Editor/Window/EditorWindowBase.h"
 #include "Editor/Window/Log/LogEditorWindow.h"
@@ -39,7 +39,7 @@
 #include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 #include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
-#include "Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedEditorWindowBaseConcept.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
@@ -64,13 +64,13 @@
 //===============================================================================
 #include "Definition/Macros/JsonSerializeEnumMacros.h"
 #include "Definition/Enum/WindowStyleEnum.h"
-#include "Window/Definition/Constant/WindowConstant.h"
+#include "Definition/Constant/WindowConstant.h"
 #include "Window/Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
-#include "Window/Utility/Definition/Constant/WindowStringUtilityConstant.h"
+#include "Definition/Constant/WindowStringUtilityConstant.h"
 #include "Window/Utility/WindowStringUtility.h"
 #include "Window/Utility/CanLoadFileUtility.h"
-#include "Window/Utility/Definition/Constant/JsonLoadAndSaveFileUtilityConstant.h"
+#include "Definition/Constant/JsonLoadAndSaveFileUtilityConstant.h"
 #include "Window/Utility/JsonLoadAndSaveFileUtility.h"
 #include "Window/Window.h"
 
@@ -92,7 +92,7 @@
 // ルートシグネチャ
 #include "Definition/Enum/RootSignatureEnum.h"
 #include "Definition/Enum/RootParameterEnum.h"
-#include "Graphics/Render/Pipeline/Definition/Constant/RootSignatureConstant.h"
+#include "Definition/Constant/RootSignatureConstant.h"
 #include "Graphics/Render/Pipeline/Definition/Struct/RootSignatureStruct.h"
 #include "Definition/Macros/RootSignatureJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Utility/IsArrayJsonUtility.h"
@@ -114,13 +114,13 @@
 #include "Graphics/Render/Pipeline/Mesh/MeshShaderPipelineState.h"
 
 // アップロードバッファークラス
-#include "Graphics/Resource/Buffer/Definition/Constant/UploadBufferConstant.h"
+#include "Definition/Constant/UploadBufferConstant.h"
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocatorBase.h"
 #include "Graphics/Command/List/CommandListBase.h"
-#include "Graphics/Command/Queue/Fence/Definition/Constant/FenceConstant.h"
+#include "Definition/Constant/FenceConstant.h"
 #include "Graphics/Command/Queue/Fence/Fence.h"
 #include "Graphics/Command/Queue/CommandQueueBase.h"
 
@@ -131,7 +131,7 @@
 
 // レコードクラス
 #include "Definition/Type/Alias/StorageIDTypeAlias.h"
-#include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
+#include "Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 
 // ストレージIDアロケータークラス
@@ -139,14 +139,14 @@
 #include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
 
 // ダイレクトコマンドアロケータ
-#include "Graphics/Render/Frame/Command/Allocator/Definition/Constant/DirectCommandAllocatorConstant.h"
+#include "Definition/Constant/DirectCommandAllocatorConstant.h"
 #include "Graphics/Render/Frame/Command/Allocator/DirectCommandAllocator.h"
 
 // ダイレクトコマンドキュー
 #include "Graphics/Render/Command/Queue/DirectCommandQueue.h"
 
 // スワップチェイン
-#include "Graphics/Render/SwapChain/Definition/Constant/SwapChainConstant.h"
+#include "Definition/Constant/SwapChainConstant.h"
 #include "Graphics/Render/SwapChain/Definition/Struct/SwapChainStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
@@ -156,7 +156,7 @@
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
 // ダイレクトコマンドリスト
-#include "Graphics/Render/Command/List/Definition/Constant/DirectCommandListConstant.h"
+#include "Definition/Constant/DirectCommandListConstant.h"
 #include "Graphics/Render/Command/List/DirectCommandList.h"
 
 // Storageクラス
@@ -174,7 +174,7 @@
 // テクスチャ
 #include "Definition/Enum/TextureLoadColorSpaceEnum.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
-#include "Graphics/Resource/Texture/Converter/Binary/Definition/Constant/TextureBinaryConstant.h"
+#include "Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
 #include "Graphics/Resource/Texture/Builder/Definition/Struct/TextureBatchUploadRecordBuilderStruct.h"
@@ -182,17 +182,17 @@
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Graphics/Resource/Texture/Definition/Struct/WStringHashStruct.h"
 #include "Definition/Enum/DefaultTextureEnum.h"
-#include "Graphics/Resource/Texture/Default/Utility/String/Definition/Constant/DefaultTextureStringUtilityConstant.h"
+#include "Definition/Constant/WStringUtilityConstant.h"
 #include "Graphics/Resource/Texture/Default/Utility/String/Definition/DefaultTextureStringUtility.h"
-#include "Graphics/Resource/Texture/Default/Definition/Constant/DefaultTextureConstant.h"
+#include "Definition/Constant/DefaultTextureConstant.h"
 #include "Graphics/Resource/Texture/Default/Converter/Json/DefaultTextureJsonConverter.h"
 #include "Graphics/Resource/Texture/Default/DefaultTexture.h"
-#include "Graphics/Resource/Texture/RenderTarget/Definition/Constant/RenderTargetTextureConstant.h"
+#include "Definition/Constant/RenderTargetTextureConstant.h"
 #include "Graphics/Resource/Texture/RenderTarget/Utility/IsSameTextureSizeUtility.h"
 #include "Graphics/Resource/Texture/RenderTarget/Utility/IsValidTextureUtility.h"
 #include "Graphics/Resource/Texture/RenderTarget/RenderTargetTexture.h"
 #include "Graphics/Resource/Texture/Definition/Struct/TextureSystemStruct.h"
-#include "Graphics/Resource/Texture/DepthStencil/Definition/Constant/DepthStencilTextureConstant.h"
+#include "Definition/Constant/DepthStencilTextureConstant.h"
 #include "Graphics/Resource/Texture/DepthStencil/DepthStencilTexture.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
