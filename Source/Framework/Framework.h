@@ -9,7 +9,7 @@
 //===============================================================================
 // 型情報
 //===============================================================================
-#include "TypeINFO/StaticTypeID/Definition/Type/Alias/StaticTypeIDTypeAlias.h"
+#include "Definition/Type/Alias/StaticTypeIDTypeAlias.h"
 #include "TypeINFO/StaticTypeID/Definition/Macros/AssertReturnMacros.h"
 #include "TypeINFO/StaticTypeID/Definition/Constant/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"

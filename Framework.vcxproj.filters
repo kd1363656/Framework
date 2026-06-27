@@ -376,12 +376,6 @@
     <Filter Include="Source\Framework\Window\Utility">
       <UniqueIdentifier>{4a001993-ee81-46e8-a958-71fcf48e4f23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type">
-      <UniqueIdentifier>{4bf0c0be-df32-4101-aa3b-c4eb0b6c2ec6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias">
-      <UniqueIdentifier>{623c78fc-df27-4159-a9ae-3efab7351365}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\TypeINFO\Registry\Definition\Macros">
       <UniqueIdentifier>{7562f8c2-dd4d-4d77-bc99-63ecca56053f}</UniqueIdentifier>
     </Filter>
@@ -1144,6 +1138,21 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured\Definition\Struct">
       <UniqueIdentifier>{cd100c3c-6cec-450c-a7a6-0e814994de05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition">
+      <UniqueIdentifier>{d38ea340-6370-484a-84ac-5f9b31982e85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type">
+      <UniqueIdentifier>{812f0d45-8472-4e62-9b27-7aa9151e5cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Alias">
+      <UniqueIdentifier>{f7f6f35e-1ef2-4780-ad61-a841038fce59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros">
+      <UniqueIdentifier>{c5182d22-6cb0-4b0b-a0f6-4177ad1df7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant">
+      <UniqueIdentifier>{a9b393bb-519b-429b-a2c1-0cad82d6d2f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1364,9 +1373,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias\StaticTypeIDTypeAlias.h">
-      <Filter>Source\Framework\TypeINFO\StaticTypeID\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Macros\TypeINFORegistryMacros.h">
       <Filter>Source\Framework\TypeINFO\Registry\Definition\Macros</Filter>
@@ -1895,6 +1901,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
