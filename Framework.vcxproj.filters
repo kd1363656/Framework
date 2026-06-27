@@ -730,6 +730,12 @@
     <Filter Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer">
       <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Window">
+      <UniqueIdentifier>{05f8ffc8-152c-41a7-aaad-1ee956297c1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\TypeINFO">
+      <UniqueIdentifier>{ca3f3422-a193-4a88-8ed4-7bfb315fc15c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1212,89 +1218,11 @@
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsSmartPTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\StringHashStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\TypeINFOStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\WindowStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\RootSignatureStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\StandardShaderPipelineStateJsonConverterStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json\StandardPipelineStateJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json\Utility\DeserializeOptionalShaderUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\GPUResourceStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ResourceReleaseContextStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\SwapChainStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBSpritePassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\BufferUploadStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\TextureBatchUploadRecordBuilderStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\TextureSystemStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\WStringHashStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ModelMaterialStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\StaticModelRecordStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\StaticModelSystemStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBCameraPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBLightStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\LightSystemStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBFinalColorRenderTargetPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBSpritePerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\SpriteRECTStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\SpriteScreenPerObjectDrawRequestStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\StaticModelStandardPerObjectDrawRequestDataStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBStaticModelPerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\RenderGraphPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h">
       <Filter>Source\Framework\Definition\Macros\TypeINFO</Filter>
@@ -1496,6 +1424,87 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBCameraPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBFinalColorRenderTargetPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBLightStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBSpritePassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBSpritePerObjectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBStaticModelPerObjectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\StringHashStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFOStruct.h">
+      <Filter>Source\Framework\Definition\Struct\TypeINFO</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\BufferUploadStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMaterialStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\PhysicsBodyCreatorStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ResourceReleaseContextStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RootSignatureStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteScreenPerObjectDrawRequestStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StandardShaderPipelineStateJsonConverterStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelRecordStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelStandardPerObjectDrawRequestDataStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SwapChainStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureBatchUploadRecordBuilderStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
