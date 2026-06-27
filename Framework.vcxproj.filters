@@ -226,9 +226,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Memory">
       <UniqueIdentifier>{41e88ae4-7706-4493-9634-378bd06aced9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Window\Utility">
-      <UniqueIdentifier>{4a001993-ee81-46e8-a958-71fcf48e4f23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Hardware\Device">
       <UniqueIdentifier>{22c79050-0709-4ea2-bafe-ad74800f2059}</UniqueIdentifier>
     </Filter>
@@ -243,12 +240,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json">
       <UniqueIdentifier>{08626815-cb62-47b0-b7fc-8e64b173c5d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility">
-      <UniqueIdentifier>{0216dc59-40fd-4d36-ad14-2d7d56a96562}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String">
-      <UniqueIdentifier>{b4ff2a3e-7183-4aea-a547-acaa03d3936d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer">
       <UniqueIdentifier>{c1438785-7921-403f-83c3-8696cf44f961}</UniqueIdentifier>
@@ -300,9 +291,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json">
       <UniqueIdentifier>{73ca42a0-c11d-4d18-8502-b83e9af83abe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility">
-      <UniqueIdentifier>{6cf4169c-6e74-44c9-bc55-abb92a3eaf09}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
@@ -529,9 +517,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Texture\DepthStencil">
       <UniqueIdentifier>{245da9b5-36e9-4adb-8518-cb10e0e401c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility">
-      <UniqueIdentifier>{4fcb0441-3a86-40ad-ae57-133119ed3e82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget">
       <UniqueIdentifier>{e76d2125-bcc7-4cc6-9e69-0b1880b16370}</UniqueIdentifier>
     </Filter>
@@ -540,9 +525,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json">
       <UniqueIdentifier>{f84a831e-a8d4-4df2-b5ab-eb4d22c5434d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\Utility">
-      <UniqueIdentifier>{7be15b07-e817-4b21-9420-f75b90077967}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil">
       <UniqueIdentifier>{42bc3934-d686-4be5-a8d7-153168758c18}</UniqueIdentifier>
@@ -603,9 +585,6 @@
     </Filter>
     <Filter Include="Source\Framework\Physics\Body">
       <UniqueIdentifier>{dc1d185e-ccbc-46d9-a199-cbfcbdef610e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Utility">
-      <UniqueIdentifier>{6212d940-f3c4-4d5b-ae92-86af9ed7acac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Mesh">
       <UniqueIdentifier>{2470d4ca-7616-498e-8895-aed658c83dd4}</UniqueIdentifier>
@@ -670,9 +649,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json\Utility">
       <UniqueIdentifier>{a60ec51e-11d0-4644-8519-8142cc4a3f13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\ConstantBuffer">
-      <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Macros\Assert">
       <UniqueIdentifier>{9ffe16bd-5624-41f1-a0a3-67ceafca355f}</UniqueIdentifier>
     </Filter>
@@ -702,6 +678,57 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor">
       <UniqueIdentifier>{0487bce6-b94d-46d6-be2c-9a26323c2afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File">
+      <UniqueIdentifier>{4f64cc80-ea3c-4e7e-ba91-ed7044d263c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\String">
+      <UniqueIdentifier>{4b798dfd-0cfb-4f11-8f9e-89609d9a745a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File\Json">
+      <UniqueIdentifier>{88c19cae-a47a-410e-9c4d-6339d0bcb772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Graphics">
+      <UniqueIdentifier>{5d6d9fb9-b26b-4815-9272-8d8a75ec1df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Math">
+      <UniqueIdentifier>{fe1bd40b-3adc-4f8f-92a8-cc46bc40bfd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Physics">
+      <UniqueIdentifier>{c0ac89bc-90d4-4b17-b893-75c8b34f4893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility">
+      <UniqueIdentifier>{349e0598-756c-4d21-9d71-0f218c40d598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Math">
+      <UniqueIdentifier>{88c41f8f-952e-41d4-837a-ca6e0ab1de58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\String">
+      <UniqueIdentifier>{e5c40700-4251-4be6-b9e8-8ec700207673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Window">
+      <UniqueIdentifier>{43c392d2-11f5-4fac-a175-30ccd771fffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\File">
+      <UniqueIdentifier>{c977cbcf-57e1-4811-959d-201c305dc5ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\File\Json">
+      <UniqueIdentifier>{16a8fb03-b0fb-4510-b08e-82470578bddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Graphics">
+      <UniqueIdentifier>{31aaf6a2-0a9c-4788-9ee1-14e129a5e88f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility">
+      <UniqueIdentifier>{128fc987-b379-4733-a683-efca65bef003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility\String">
+      <UniqueIdentifier>{d2863de1-cc42-4bba-b76e-6036520b867b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Graphics">
+      <UniqueIdentifier>{77b69804-1a01-4fb3-87be-370d2dcabdd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer">
+      <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -873,9 +900,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Converter\Json\DefaultTextureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Default\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Default\Utility\String\Definition\DefaultTextureStringUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\Default\Utility\String</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\RenderArea.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer</Filter>
     </ClInclude>
@@ -887,12 +911,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Shader\Converter\Json\ShaderJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Shader\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\CanLoadFileUtility.h">
-      <Filter>Source\Framework\Window\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\WindowStringUtility.h">
-      <Filter>Source\Framework\Window\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\RootSignature.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
@@ -914,9 +932,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Utility\ConstantBufferUploaderAlignUpUtility.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
@@ -1071,26 +1086,14 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Window\Utility\JsonLoadAndSaveFileUtility.h">
-      <Filter>Source\Framework\Window\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\DepthStencil\DepthStencilTexture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\DepthStencil</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsSameTextureSizeUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility\IsValidTextureUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\RenderTargetPassTexture.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\RenderTargetPassTextureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\Utility\ColorJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\RenderTarget\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil</Filter>
@@ -1142,9 +1145,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h">
       <Filter>Source\Framework\Physics\Body</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Utility\PhysicsBodyCreatorUitlity.h">
-      <Filter>Source\Framework\Physics\Body\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
@@ -1212,105 +1212,6 @@
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsSmartPTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticTypeIDConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\DescriptorHeapConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\WindowConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\JsonLoadAndSaveFileUtilityConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\WindowStringUtilityConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\RootSignatureConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\UploadBufferConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\FenceConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\RecordBaseConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\DirectCommandAllocatorConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\SwapChainConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\DirectCommandListConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\TextureBinaryConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\WStringUtilityConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\DefaultTextureConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\RenderTargetTextureConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\DepthStencilTextureConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\FBXModelLoaderBaseConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\ModelMaterialConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelRecordConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelFBXLoaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelBinaryConverterConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelMeshletBuilderConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\CopyCommandAllocatorConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\ConstantBufferUploaderAlignUpUtilityConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\RenderTargetPassTextureJsonConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\CameraConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\LightSystemConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\FinalPresentRenderTargetPassDrawRequestConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\SpriteScreenPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\SpriteScreenConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelStandardPerObjectDrawRequestDataConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\StaticModelPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\StringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct</Filter>
     </ClInclude>
@@ -1342,7 +1243,7 @@
       <Filter>Source\Framework\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBSpritePassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\ConstantBuffer</Filter>
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\BufferUploadStruct.h">
       <Filter>Source\Framework\Definition\Struct</Filter>
@@ -1366,19 +1267,19 @@
       <Filter>Source\Framework\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBCameraPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\ConstantBuffer</Filter>
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBLightStruct.h">
-      <Filter>Source\Framework\Definition\Struct\ConstantBuffer</Filter>
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\LightSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBFinalColorRenderTargetPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\ConstantBuffer</Filter>
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBSpritePerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\ConstantBuffer</Filter>
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\SpriteRECTStruct.h">
       <Filter>Source\Framework\Definition\Struct</Filter>
@@ -1390,7 +1291,7 @@
       <Filter>Source\Framework\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\ConstantBuffer\CBStaticModelPerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\ConstantBuffer</Filter>
+      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Definition\Struct</Filter>
@@ -1463,6 +1364,138 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\String\StringUtility.h">
+      <Filter>Source\Framework\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h">
+      <Filter>Source\Framework\Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h">
+      <Filter>Source\Framework\Utility\File\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\Json\IsArrayJsonUtility.h">
+      <Filter>Source\Framework\Utility\File\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\String\WStringUtility.h">
+      <Filter>Source\Framework\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h">
+      <Filter>Source\Framework\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\ColorJsonUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConevrtVec3Uitlity.h">
+      <Filter>Source\Framework\Utility\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\File\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CopyCommandAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalPresentRenderTargetPassDrawRequestConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMaterialConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RecordBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetPassTextureJsonConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetTextureConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RootSignatureConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenPerObjectConstantBufferUploaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelBinaryConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelFBXLoaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelMeshletBuilderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelRecordConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardPerObjectDrawRequestDataConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticTypeIDConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
