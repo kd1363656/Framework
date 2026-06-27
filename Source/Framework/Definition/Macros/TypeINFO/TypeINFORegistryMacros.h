@@ -7,8 +7,6 @@
 // テンプレートクラスにする前の基底クラスをテンプレートクラスの派生クラスでFWK_DEFINE_TYPE_INFO
 // のBaseTypeとして扱う本来BaseTypeはそのクラスの継承する一つ前のクラス
 
-// このマクロだけVisualStudio側で関数とみなされ定義がないのでエラーが出るためセミコロンを書かない
-
 // 型情報登録マクロ(基底)
 #define FWK_DEFINE_TYPE_INFO_ROOT(Type)																							  \
 public:																															  \

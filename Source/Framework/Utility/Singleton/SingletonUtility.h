@@ -6,6 +6,11 @@ namespace FWK::Utility
 	template <typename Type>
 	class SingletonBase
 	{
+	protected:
+
+				 SingletonBase() = default;
+		virtual ~SingletonBase() = default;
+
 	public:
 
 		static Type& GetInstance()
@@ -14,11 +19,6 @@ namespace FWK::Utility
 
 			return l_instance;
 		}
-
-	protected:
-
-				 SingletonBase() = default;
-		virtual ~SingletonBase() = default;
 
 	private:
 
