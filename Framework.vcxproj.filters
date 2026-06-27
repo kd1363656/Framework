@@ -211,15 +211,6 @@
     <Filter Include="Source\Framework\Scene">
       <UniqueIdentifier>{2b8094c8-9c6f-4866-9fc9-c9c80866ec38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition">
-      <UniqueIdentifier>{4d3ab3ea-dbf9-454e-a812-3e92ebebe922}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type">
-      <UniqueIdentifier>{11448cc4-6504-4fbc-aa7b-34204a7b48a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias">
-      <UniqueIdentifier>{08b29e4e-a279-45a4-bcec-6559fc2ec225}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\ReleaseContext">
       <UniqueIdentifier>{82c41d81-8406-49d3-9aac-5d0fad9adefc}</UniqueIdentifier>
     </Filter>
@@ -297,12 +288,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Record\Definition">
       <UniqueIdentifier>{f77aa271-5be7-40e9-8f02-391e04272196}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Type">
-      <UniqueIdentifier>{d3cadae9-4705-4e16-9010-608405460dee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias">
-      <UniqueIdentifier>{d83a002b-417e-4279-a43d-0d784fa2b8dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Record\Definition\Constant">
       <UniqueIdentifier>{062bce1b-ffa4-412d-9f53-df9722181fee}</UniqueIdentifier>
@@ -387,15 +372,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Hardware\Factory">
       <UniqueIdentifier>{f0982185-0c0c-4e6c-9387-6e796219bdc5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition">
-      <UniqueIdentifier>{7c24d2c1-c351-4fd9-80ad-cf37f088390c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type">
-      <UniqueIdentifier>{9a174042-8cf8-4eca-b560-3bed6013bd86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias">
-      <UniqueIdentifier>{acaaf4e9-04d8-452a-b1b9-58dcb7398e74}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\SwapChain\Definition\Constant">
       <UniqueIdentifier>{19345fcf-8f24-42df-9c9d-2fe820ac4393}</UniqueIdentifier>
@@ -658,23 +634,11 @@
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture">
       <UniqueIdentifier>{69aea790-c6a9-4dcf-8b75-7d98d33206b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type">
-      <UniqueIdentifier>{17f6924d-3d46-45ba-acb7-e4c4b9dbce7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias">
-      <UniqueIdentifier>{75ead113-91ad-4b99-a0f1-797fe7b862c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition">
       <UniqueIdentifier>{2ea5ae27-98a5-4f71-aa7e-24d78909920e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Struct">
       <UniqueIdentifier>{33aac190-2a5a-43f1-bbec-bb769c99867b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type">
-      <UniqueIdentifier>{dfbec4bd-90d1-4190-b554-f041f8203ac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias">
-      <UniqueIdentifier>{d04c25fa-ec2c-4bb0-8a63-0bd9c38ac7ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter">
       <UniqueIdentifier>{d4675052-3549-4c50-aeee-e7e86bc7a35d}</UniqueIdentifier>
@@ -786,18 +750,6 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Log">
       <UniqueIdentifier>{637420e2-2114-41f2-bdb2-5c4e678f583d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Log\Definition">
-      <UniqueIdentifier>{afc12d64-63fc-44f4-8ea2-321cfc13471a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type">
-      <UniqueIdentifier>{027d0a62-34ef-4e09-98dc-572cf73c10cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias">
-      <UniqueIdentifier>{74836bf1-e013-4320-95db-9060560d84c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory">
-      <UniqueIdentifier>{5139df37-8520-42e8-ae2c-fb13bd1e7f6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Camera">
       <UniqueIdentifier>{11eea834-848c-4dbc-a298-c3f644a622ff}</UniqueIdentifier>
@@ -1105,18 +1057,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility">
       <UniqueIdentifier>{a60ec51e-11d0-4644-8519-8142cc4a3f13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type">
-      <UniqueIdentifier>{fe1facb3-1675-40ac-a315-a85785e720d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias">
-      <UniqueIdentifier>{43ca6c44-cc21-46c1-ad27-e3f241baad68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory">
-      <UniqueIdentifier>{4df5d20e-571d-44fa-9440-57c0257102d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared">
-      <UniqueIdentifier>{59040ce8-3308-4ea1-b738-dfa48769316a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition">
       <UniqueIdentifier>{296ce901-e6aa-4af6-b50a-1016b1e66cd8}</UniqueIdentifier>
     </Filter>
@@ -1147,11 +1087,11 @@
     <Filter Include="Source\Framework\Definition\Type\Alias">
       <UniqueIdentifier>{f7f6f35e-1ef2-4780-ad61-a841038fce59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Macros">
-      <UniqueIdentifier>{c5182d22-6cb0-4b0b-a0f6-4177ad1df7b2}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Definition\Type\Alias\Factory">
+      <UniqueIdentifier>{71f06bc6-b068-4f81-a589-364e8d46a0ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant">
-      <UniqueIdentifier>{a9b393bb-519b-429b-a2c1-0cad82d6d2f4}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Definition\Type\Alias\Factory\Shared">
+      <UniqueIdentifier>{fd902c3a-57e7-428d-a873-4ff23d90219a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1287,9 +1227,6 @@
     <ClInclude Include="Source\Framework\Scene\SceneManager.h">
       <Filter>Source\Framework\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Descriptor\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct\ResourceReleaseContextStruct.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext\Definition\Struct</Filter>
     </ClInclude>
@@ -1334,9 +1271,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\AssetRecordBase.h">
       <Filter>Source\Framework\Graphics\Resource\Record</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Type\Alias\StorageIDTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Record\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Record\Definition\Constant\RecordBaseConstant.h">
       <Filter>Source\Framework\Graphics\Resource\Record\Definition\Constant</Filter>
@@ -1394,9 +1328,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\TypeINFO\Registry\Definition\Struct\StringHashStruct.h">
       <Filter>Source\Framework\TypeINFO\Registry\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias\ComPTRTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Hardware\Factory\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Definition\Struct\WStringHashStruct.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Definition\Struct</Filter>
@@ -1545,9 +1476,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias\DescriptorHeapTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Resource\Descriptor\Heap\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
     </ClInclude>
@@ -1613,9 +1541,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory\EditorWindowSharedFactory.h">
-      <Filter>Source\Framework\Editor\Window\Log\Definition\Type\Alias\Factory</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Final</Filter>
@@ -1869,9 +1794,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility\DeserializeOptionalShaderUtility.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Definition\Type\Alias\Factory\Shared</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros\StandardShaderPipelineStateJsonConverterMacros.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Standard\Definition\Macros</Filter>
     </ClInclude>
@@ -1899,10 +1821,28 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Struct\CBSpritePassStruct.h">
       <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias\DirectXSimpleMathTypeAlias.h">
-      <Filter>Source\Framework\Graphics\Render\Rasterizer\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\DescriptorIndexTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\ComPTRTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>

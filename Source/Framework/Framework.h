@@ -21,14 +21,14 @@
 //===============================================================================
 // エディター
 //===============================================================================
-#include "Graphics/Render/Rasterizer/Definition/Type/Alias/DirectXSimpleMathTypeAlias.h"
-#include "Graphics/Resource/Descriptor/Heap/Definition/Type/Alias/DescriptorHeapTypeAlias.h"
+#include "Definition/Type/Alias/MathTypeAlias.h"
+#include "Definition/Type/Alias/DescriptorIndexTypeAlias.h"
 #include "Graphics/Resource/Descriptor/Heap/Definition/Constant/DescriptorHeapConstant.h"
 #include "Editor/Style/EditorStyle.h"
 #include "Editor/Window/EditorWindowBase.h"
 #include "Editor/Window/Log/LogEditorWindow.h"
 #include "Editor/Converter/Json/EditorManagerJsonConverter.h"
-#include "Graphics/Hardware/Factory/Definition/Type/Alias/ComPTRTypeAlias.h"
+#include "Definition/Type/Alias/ComPTRTypeAlias.h"
 #include "Graphics/Hardware/Factory/Factory.h"
 #include "Graphics/Hardware/Device/Device.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
@@ -36,7 +36,7 @@
 #include "Graphics/Resource/Descriptor/Heap/Allocator/DescriptorHeapIndexAllocator.h"
 #include "Graphics/Resource/Descriptor/Converter/Json/DescriptorPoolJsonConverter.h"
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
-#include "Graphics/Resource/Descriptor/Definition/Type/Alias/DescriptorPoolTypeAlias.h"
+#include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 #include "Factory/Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
 #include "Editor/Definition/Concept/IsDerivedEditorWindowBaseConcept.h"
@@ -51,7 +51,7 @@
 #include "Factory/GenericFactory.h"
 #include "Factory/Definition/Macros/FactoryMacros.h"
 
-#include "Editor/Window/Log/Definition/Type/Alias/Factory/EditorWindowSharedFactory.h"
+#include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
 #include "Editor/Window/Scene/SceneViewEditorWindow.h"
 
 //===============================================================================
@@ -104,7 +104,7 @@
 #include "Graphics/Render/Pipeline/Converter/Json/Definition/Macros/PipelineStateJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/PipelineStateBaseJsonConverter.h"
 #include "Graphics/Render/Pipeline/PipelineStateBase.h"
-#include "Graphics/Render/Pipeline/Definition/Type/Alias/Factory/Shared/PipelineStateSharedFactory.h"
+#include "Definition/Type/Alias/Factory/Shared/PipelineStateSharedFactory.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Standard/Definition/Macros/StandardShaderPipelineStateJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Standard/Definition/Struct/StandardShaderPipelineStateJsonConverterStruct.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Standard/Utility/DeserializeOptionalShaderUtility.h"
