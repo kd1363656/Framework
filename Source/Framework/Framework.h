@@ -46,7 +46,7 @@
 // 凡庸ファクトリー
 //===============================================================================
 #include "Factory/Definition/Enum/Type/Trait/PTR/TypeTraitPTREnum.h"
-#include "Factory/Definition/Type/Trait/PTR/TypeTraitPTR.h"
+#include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Factory/Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Factory/GenericFactory.h"
 #include "Factory/Definition/Macros/FactoryMacros.h"

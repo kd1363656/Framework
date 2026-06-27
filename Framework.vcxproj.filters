@@ -319,27 +319,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Command\List\Definition\Constant">
       <UniqueIdentifier>{70a1b45f-983b-4fca-ad26-ab903688d55c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Type">
-      <UniqueIdentifier>{59b226ef-c473-4d4f-82f5-3f954df1c281}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Type\Trait">
-      <UniqueIdentifier>{b8a4b0a2-81ce-412b-b147-47e6650fbd38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Type\Trait\PTR">
-      <UniqueIdentifier>{31a7f7ea-5759-4d84-af3a-4fe957dcf413}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum">
-      <UniqueIdentifier>{ce42cb59-5fbd-4d27-8666-353dd0a320a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum\Type">
-      <UniqueIdentifier>{77ecbc91-20e7-4e97-8e4d-059aaafc9374}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait">
-      <UniqueIdentifier>{2db6c4de-871d-4a55-b3c4-b2a1ff80ac23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR">
-      <UniqueIdentifier>{26a3fbca-dcb7-4253-94dc-9d88f1ed41d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Factory\Definition\Concept">
       <UniqueIdentifier>{9a4e5147-bb33-4fa8-8c61-9197792b8d02}</UniqueIdentifier>
     </Filter>
@@ -1042,6 +1021,24 @@
     <Filter Include="Source\Framework\Definition\Type\Alias\Factory\Shared">
       <UniqueIdentifier>{fd902c3a-57e7-428d-a873-4ff23d90219a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Trait">
+      <UniqueIdentifier>{33d2c3ad-61ad-43c6-958e-39476ec3f73f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Trait\PTR">
+      <UniqueIdentifier>{421ea550-e3ed-40a6-8d52-fdecde1c5846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum">
+      <UniqueIdentifier>{ff84f9ae-a1b6-4268-aa54-68e3b26c411e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum\Type">
+      <UniqueIdentifier>{7f1ae24e-6ce6-49a4-82a7-111b211bc75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait">
+      <UniqueIdentifier>{998df127-319a-42cc-8385-7a38f9e21e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR">
+      <UniqueIdentifier>{3d3c3dd1-6fd7-4517-b1e6-acf9dbbf211c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1247,12 +1244,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Definition\Macros\FactoryMacros.h">
       <Filter>Source\Framework\Factory\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Factory\Definition\Type\Trait\PTR\TypeTraitPTR.h">
-      <Filter>Source\Framework\Factory\Definition\Type\Trait\PTR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
-      <Filter>Source\Framework\Factory\Definition\Enum\Type\Trait\PTR</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Factory\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Factory\Definition\Concept\IsSmartPTR</Filter>
@@ -1793,6 +1784,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Factory\Definition\Enum\Type\Trait\PTR\TypeTraitPTREnum.h">
+      <Filter>Source\Framework\Factory\Definition\Enum\Type\Trait\PTR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
+      <Filter>Source\Framework\Definition\Type\Trait\PTR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
