@@ -10,13 +10,13 @@
 // 型情報
 //===============================================================================
 #include "Definition/Type/Alias/StaticTypeIDTypeAlias.h"
-#include "Definition/Macros/AssertReturnMacros.h"
+#include "Definition/Macros/Assert/AssertReturnMacros.h"
 #include "Definition/Constant/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "Definition/Struct/TypeINFOStruct.h"
 #include "Definition/Struct/StringHashStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
-#include "Definition/Macros/TypeINFORegistryMacros.h"
+#include "Definition/Macros/TypeINFO/TypeINFORegistryMacros.h"
 
 //===============================================================================
 // エディター
@@ -49,7 +49,7 @@
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Factory/GenericFactory.h"
-#include "Definition/Macros/FactoryMacros.h"
+#include "Definition/Macros/Factory/FactoryMacros.h"
 
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
 #include "Editor/Window/Scene/SceneViewEditorWindow.h"
@@ -62,7 +62,7 @@
 //===============================================================================
 // ウィンドウクラス
 //===============================================================================
-#include "Definition/Macros/JsonSerializeEnumMacros.h"
+#include "Definition/Macros/Json/JsonSerializeEnumMacros.h"
 #include "Definition/Enum/WindowStyleEnum.h"
 #include "Definition/Constant/WindowConstant.h"
 #include "Definition/Struct/WindowStruct.h"
@@ -94,18 +94,18 @@
 #include "Definition/Enum/RootParameterEnum.h"
 #include "Definition/Constant/RootSignatureConstant.h"
 #include "Definition/Struct/RootSignatureStruct.h"
-#include "Definition/Macros/RootSignatureJsonConverterMacros.h"
+#include "Definition/Macros/Json/RootSignatureJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/Utility/IsArrayJsonUtility.h"
 #include "Graphics/Render/Pipeline/Converter/Json/RootSignatureJsonConverter.h"
 #include "Graphics/Render/Pipeline/RootSignature.h"
 
 // パイプラインステート
 #include "Definition/Enum/PipelineStateBaseEnum.h"
-#include "Definition/Macros/PipelineStateJsonConverterMacros.h"
+#include "Definition/Macros/Json/PipelineStateJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/PipelineStateBaseJsonConverter.h"
 #include "Graphics/Render/Pipeline/PipelineStateBase.h"
 #include "Definition/Type/Alias/Factory/Shared/PipelineStateSharedFactory.h"
-#include "Definition/Macros/StandardShaderPipelineStateJsonConverterMacros.h"
+#include "Definition/Macros/Json/StandardShaderPipelineStateJsonConverterMacros.h"
 #include "Definition/Struct/StandardShaderPipelineStateJsonConverterStruct.h"
 #include "Graphics/Render/Pipeline/Standard/Converter/Json/Utility/DeserializeOptionalShaderUtility.h"
 #include "Graphics/Render/Pipeline/Standard/Converter/Json/StandardPipelineStateJsonConverter.h"

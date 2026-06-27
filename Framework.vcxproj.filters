@@ -673,6 +673,18 @@
     <Filter Include="Source\Framework\Definition\Struct\ConstantBuffer">
       <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\Assert">
+      <UniqueIdentifier>{9ffe16bd-5624-41f1-a0a3-67ceafca355f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\Json">
+      <UniqueIdentifier>{50b042bf-422d-4980-8c86-cae8cfb81847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\TypeINFO">
+      <UniqueIdentifier>{7f85d51a-411a-4ae4-9934-82096a8cf379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\Factory">
+      <UniqueIdentifier>{bd4fbfc0-2389-4774-94a3-524245f8a8da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1176,27 +1188,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
       <Filter>Source\Framework\Definition\Type\Trait\PTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\AssertReturnMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\TypeINFORegistryMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\FactoryMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\JsonSerializeEnumMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\PipelineStateJsonConverterMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\RootSignatureJsonConverterMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\StandardShaderPipelineStateJsonConverterMacros.h">
-      <Filter>Source\Framework\Definition\Macros</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\TypeTraitPTREnum.h">
       <Filter>Source\Framework\Definition\Enum</Filter>
     </ClInclude>
@@ -1433,6 +1424,27 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Definition\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\TypeINFO</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Json\JsonSerializeEnumMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Json\PipelineStateJsonConverterMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Json\RootSignatureJsonConverterMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Assert</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Factory\FactoryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Factory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
