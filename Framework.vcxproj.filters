@@ -685,6 +685,24 @@
     <Filter Include="Source\Framework\Definition\Macros\Factory">
       <UniqueIdentifier>{bd4fbfc0-2389-4774-94a3-524245f8a8da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Physics">
+      <UniqueIdentifier>{adb87d2c-959e-4864-8aaa-cc02986d4b8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Window">
+      <UniqueIdentifier>{43d87013-3921-41c1-80e2-7be205412c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Graphics">
+      <UniqueIdentifier>{705b6838-8de0-4d66-a589-14390849e5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\TypeTrait">
+      <UniqueIdentifier>{a529149c-d671-4797-94d3-be313c62511e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics">
+      <UniqueIdentifier>{f0542dca-c208-49c1-9a1d-182abd8a6d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor">
+      <UniqueIdentifier>{0487bce6-b94d-46d6-be2c-9a26323c2afc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1188,59 +1206,11 @@
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
       <Filter>Source\Framework\Definition\Type\Trait\PTR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\TypeTraitPTREnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\WindowStyleEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\PipelineStateBaseEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\RootParameterEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\RootSignatureEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\TextureLoadColorSpaceEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\DefaultTextureEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\RenderGraphPassTextureEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\DepthStencilPassTextureEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\RenderGraphPassEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\PhysicsLayerEnum.h">
-      <Filter>Source\Framework\Definition\Enum</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsSmartPTR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedAssetRecordBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedConstantBufferUploaderBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPassBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedDrawRequestPerObjectBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedEditorWindowBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\StaticTypeIDConstant.h">
       <Filter>Source\Framework\Definition\Constant</Filter>
@@ -1445,6 +1415,54 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Macros\Factory\FactoryMacros.h">
       <Filter>Source\Framework\Definition\Macros\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsLayerEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowStyleEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DepthStencilPassTextureEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderGraphPassTextureEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\TextureLoadColorSpaceEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\PipelineStateBaseEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderGraphPassEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootParameterEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootSignatureEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\TypeTrait\TypeTraitPTREnum.h">
+      <Filter>Source\Framework\Definition\Enum\TypeTrait</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedAssetRecordBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedConstantBufferUploaderBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDrawRequestPassBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDrawRequestPerObjectBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

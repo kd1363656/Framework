@@ -39,13 +39,13 @@
 #include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 #include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
-#include "Definition/Concept/IsDerivedBase/IsDerivedEditorWindowBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorWindowBaseConcept.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
-#include "Definition/Enum/TypeTraitPTREnum.h"
+#include "Definition/Enum/TypeTrait/TypeTraitPTREnum.h"
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Factory/GenericFactory.h"
@@ -63,7 +63,7 @@
 // ウィンドウクラス
 //===============================================================================
 #include "Definition/Macros/Json/JsonSerializeEnumMacros.h"
-#include "Definition/Enum/WindowStyleEnum.h"
+#include "Definition/Enum/Window/WindowStyleEnum.h"
 #include "Definition/Constant/WindowConstant.h"
 #include "Definition/Struct/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
@@ -90,8 +90,8 @@
 #include "Graphics/Resource/Shader/Shader.h"
 
 // ルートシグネチャ
-#include "Definition/Enum/RootSignatureEnum.h"
-#include "Definition/Enum/RootParameterEnum.h"
+#include "Definition/Enum/Graphics/RootSignatureEnum.h"
+#include "Definition/Enum/Graphics/RootParameterEnum.h"
 #include "Definition/Constant/RootSignatureConstant.h"
 #include "Definition/Struct/RootSignatureStruct.h"
 #include "Definition/Macros/Json/RootSignatureJsonConverterMacros.h"
@@ -100,7 +100,7 @@
 #include "Graphics/Render/Pipeline/RootSignature.h"
 
 // パイプラインステート
-#include "Definition/Enum/PipelineStateBaseEnum.h"
+#include "Definition/Enum/Graphics/PipelineStateBaseEnum.h"
 #include "Definition/Macros/Json/PipelineStateJsonConverterMacros.h"
 #include "Graphics/Render/Pipeline/Converter/Json/PipelineStateBaseJsonConverter.h"
 #include "Graphics/Render/Pipeline/PipelineStateBase.h"
@@ -160,7 +160,7 @@
 #include "Graphics/Render/Command/List/DirectCommandList.h"
 
 // Storageクラス
-#include "Definition/Concept/IsDerivedBase/IsDerivedAssetRecordBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
 #include "Graphics/Resource/Storage/Converter/Json/AssetStorageJsonConverter.h"
 #include "Graphics/Resource/Storage/AssetStorage.h"
 
@@ -172,7 +172,7 @@
 #include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
 
 // テクスチャ
-#include "Definition/Enum/TextureLoadColorSpaceEnum.h"
+#include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
 #include "Definition/Constant/TextureBinaryConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
@@ -181,7 +181,7 @@
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Definition/Struct/WStringHashStruct.h"
-#include "Definition/Enum/DefaultTextureEnum.h"
+#include "Definition/Enum/Graphics/DefaultTextureEnum.h"
 #include "Definition/Constant/WStringUtilityConstant.h"
 #include "Graphics/Resource/Texture/Default/Utility/String/Definition/DefaultTextureStringUtility.h"
 #include "Definition/Constant/DefaultTextureConstant.h"
@@ -242,13 +242,13 @@
 #include "Definition/Constant/RenderTargetPassTextureJsonConstant.h"
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
-#include "Definition/Concept/IsDerivedBase/IsDerivedConstantBufferUploaderBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedConstantBufferUploaderBaseConcept.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/PassTextureBase.h"
-#include "Definition/Enum/RenderGraphPassTextureEnum.h"
+#include "Definition/Enum/Graphics/RenderGraphPassTextureEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/Utility/ColorJsonUtility.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/RenderTargetPassTexture.h"
-#include "Definition/Enum/DepthStencilPassTextureEnum.h"
+#include "Definition/Enum/Graphics/DepthStencilPassTextureEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/Converter/Json/DepthStencilPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/DepthStencilPassTexture.h"
 #include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"
@@ -270,7 +270,7 @@
 // 描画リクエスト(共通パス)
 #include "Graphics/Render/Graph/Request/Pass/DrawRequestPassBase.h"
 #include "Graphics/Render/Graph/Request/Pass/CachedPassConstantBufferDrawRequestBase.h"
-#include "Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPassBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPassBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPassSharedFactory.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/Buffer/SpriteScreenPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
@@ -289,7 +289,7 @@
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectList.h"
-#include "Definition/Concept/IsDerivedBase/IsDerivedDrawRequestPerObjectBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Definition/Constant/SpriteScreenPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Constant/SpriteScreenConstant.h"
@@ -308,7 +308,7 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
-#include "Definition/Enum/RenderGraphPassEnum.h"
+#include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
 #include "Definition/Struct/RenderGraphPassStruct.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Definition/Type/Alias/Factory/Shared/RenderGraphPassUniqueFactory.h"
@@ -337,7 +337,7 @@
 #include "Graphics/GraphicsManager.h"
 
 // 当たり判定
-#include "Definition/Enum/PhysicsLayerEnum.h"
+#include "Definition/Enum/Physics/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Definition/Struct/PhysicsBodyCreatorStruct.h"
 #include "Physics/Body/Utility/PhysicsBodyCreatorUitlity.h"
