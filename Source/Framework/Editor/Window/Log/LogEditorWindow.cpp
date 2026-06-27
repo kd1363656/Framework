@@ -1,5 +1,19 @@
 ﻿#include "LogEditorWindow.h"
 
+FWK::Editor::LogEditorWindow::LogEditorWindow() : 
+	m_textBuffer(),
+
+	m_textFilter(),
+
+	m_textLineOffsets(),
+
+	m_canAutoScroll    (k_enabelCanAutoScroll),
+	m_canScrollToBottom(k_enabelCanScrollToBottom)
+{
+	ClearLog();
+}
+FWK::Editor::LogEditorWindow::~LogEditorWindow() = default;
+
 void FWK::Editor::LogEditorWindow::Draw()
 {
 	DrawEditorOptions();

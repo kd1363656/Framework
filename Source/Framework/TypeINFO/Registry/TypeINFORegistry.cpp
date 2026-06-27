@@ -2,9 +2,11 @@
 
 void FWK::TypeINFORegistry::Register(const Struct::TypeINFO& a_typeINFO)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_typeINFO.k_staticTypeID == Constant::k_invalidStaticTypeID, "無効なIDを検出しており、型情報の登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(a_typeINFO.k_staticTypeID == Constant::k_invalidStaticTypeID, "無効なStaticTypeIDを検出しており、型情報の登録に失敗しました。");
 	FWK_ASSERT_RETURN_IF_FAILED(a_typeINFO.k_name.empty(),									  "文字列が空になっており、型情報の登録に失敗しました。");
 
+	FWK_ADD_LOG("Name : {}\nStaticTypeID : {}\n型情報の登録に成功しました。\n", a_typeINFO.k_name.data(), a_typeINFO.k_staticTypeID);
+	
 	m_typeINFONameMap.try_emplace        (a_typeINFO.k_name,         &a_typeINFO);
 	m_typeINFOStaticTypeIDMap.try_emplace(a_typeINFO.k_staticTypeID, &a_typeINFO);
 }

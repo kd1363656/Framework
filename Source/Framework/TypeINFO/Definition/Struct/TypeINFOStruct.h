@@ -12,6 +12,12 @@ namespace FWK::Struct
 		{}
 		~TypeINFO() = default;
 
+		TypeINFO(const TypeINFO&)  = delete;
+		TypeINFO(	   TypeINFO&&) = delete;
+
+		TypeINFO& operator=(const TypeINFO&)  = delete;
+		TypeINFO& operator=(	  TypeINFO&&) = delete;
+
 		const TypeINFO* const         k_baseINFO;
 		const std::string_view        k_name;
 		const TypeAlias::StaticTypeID k_staticTypeID;

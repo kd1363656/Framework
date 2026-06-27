@@ -35,22 +35,20 @@ namespace FWK::Editor
 		template <class... Args>
 		void AddLog(const std::source_location& a_location, const std::string_view& a_format, Args&&... a_args)
 		{
-			if (!m_logEditorWindow) { return; }
-
 			// a_formatとa_args...を使って、ログ本文の文字列を作成する
 			// 例 : FWK_ADD_LOG("HP = {}, Name = {}", 100, "Player");
 			// この場合はa_format = "HP = {}, Name = {}" a_args... = 100, "Player"
 			// std::make_format_args(...)はstd::vformatに渡すための「フォーマット用引数リスト」を作成する。
-			// a_args...は、受け取った可変長引数を1つずつ展開してstdd::make_format_argsに渡している。
+			// a_args...は、受け取った可変長引数を1つずつ展開してstd::make_format_argsに渡している。
 			// 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
 			const std::string l_message = std::vformat(a_format, std::make_format_args(a_args...));
 
 			// 呼びだし元情報をつけてログ本文を記述
-			m_logEditorWindow->AddLog("[%s : %u][%s]\n%s\n",
-									  a_location.file_name(),
-									  a_location.line(),
-									  a_location.function_name(),
-									  l_message.c_str());
+			m_logEditorWindow.AddLog("[%s : %u][%s]\n%s\n",
+									 a_location.file_name(),
+									 a_location.line(),
+									 a_location.function_name(),
+									 l_message.c_str());
 		}
 	
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
@@ -86,7 +84,7 @@ namespace FWK::Editor
 		bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
 
 		void DrawDockingSpace() const;
-		void DrawEditorWindow() const;
+		void DrawEditorWindow();
 
 		void Release();
 
@@ -106,19 +104,20 @@ namespace FWK::Editor
 
 		static constexpr int k_dockingStyleVarPopCount = 2;
 
-		std::unique_ptr<Editor::LogEditorWindow> m_logEditorWindow = nullptr;
+		TypeAlias::SRVDescriptorPool m_imGuiSRVDescriptorPool;
 
-		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap = {};
+		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
 
-		TypeAlias::SRVDescriptorPool m_imGuiSRVDescriptorPool = {};
+		EditorWindowMap m_editorWindowMap;
 
-		EditorWindowMap m_editorWindowMap = {};
+		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
-		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList = {};
+		Editor::LogEditorWindow m_logEditorWindow;
 
-		Converter::EditorManagerJsonConverter m_jsonConverter = {};
+		Converter::EditorManagerJsonConverter m_jsonConverter;
 
-		bool m_isDisableDrawEditor = false;
+		bool m_isInitialized;
+		bool m_isDisableDrawEditor;
 	};
 }
 

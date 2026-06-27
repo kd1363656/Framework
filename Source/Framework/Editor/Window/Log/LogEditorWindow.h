@@ -6,8 +6,8 @@ namespace FWK::Editor
 	{
 	public:
 
-		 LogEditorWindow()          = default;
-		~LogEditorWindow() override = default;
+		 LogEditorWindow();
+		~LogEditorWindow() override;
 
 		bool IsAllowCreateInList() const override { return false; }
 
@@ -34,12 +34,12 @@ namespace FWK::Editor
 		static constexpr bool k_enabelCanAutoScroll     = true;
 		static constexpr bool k_enabelCanScrollToBottom = true;
 
-		ImGuiTextBuffer m_textBuffer        = {};
-		ImGuiTextFilter m_textFilter        = {};
-		ImVector<int>   m_textLineOffsets   = {};
+		ImGuiTextBuffer m_textBuffer;
+		ImGuiTextFilter m_textFilter;
+		ImVector<int>   m_textLineOffsets;
 
-		bool m_canAutoScroll     = k_enabelCanAutoScroll;
-		bool m_canScrollToBottom = k_enabelCanScrollToBottom;
+		bool m_canAutoScroll;
+		bool m_canScrollToBottom;
 
 		FWK_DEFINE_TYPE_INFO(LogEditorWindow, EditorWindowBase)
 	};

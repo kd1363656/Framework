@@ -1,6 +1,21 @@
 ﻿#include "EditorManager.h"
 
-FWK::Editor::EditorManager::EditorManager() = default;
+FWK::Editor::EditorManager::EditorManager() : 
+	m_imGuiSRVDescriptorIndexMap(),
+
+	m_editorWindowMap(),
+
+	m_editorWindowList(),
+
+	m_logEditorWindow(),
+
+	m_imGuiSRVDescriptorPool(),
+
+	m_jsonConverter(),
+
+	m_isInitialized      (false),
+	m_isDisableDrawEditor(false)
+{}
 FWK::Editor::EditorManager::~EditorManager()
 {
 	Release();
@@ -8,8 +23,8 @@ FWK::Editor::EditorManager::~EditorManager()
 
 void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 {
-	// ログウィンドウがインスタンス化されていたら実行しない
-	if (m_logEditorWindow) { return; }
+	// 一度だけ初期化されているなら再度初期化しない
+	if (m_isInitialized) { return; }
 
 	const auto& l_graphicsManager= Graphics::GraphicsManager::GetInstance ();
 	const auto& l_deviceWrapper	 = l_graphicsManager.GetREFDevice		  ();
@@ -26,7 +41,7 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 
 	const auto& l_imGuiShaderVisibleDescriptorHeap = m_imGuiSRVDescriptorPool.GetREFShaderVisibleDescriptorHeap();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_imGuiShaderVisibleDescriptorHeap, "ImGui用SRVDescriptorHeapのShaderVisibleなHeapラッパーが無効のため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!l_imGuiShaderVisibleDescriptorHeap, "ImGui用SRVDescriptorHeapのShaderVisibleなHeapのラッパークラスが無効のため、ImGuiの初期化処理に失敗しました。");
 
 	const auto& l_imGuiDescriptorHeap = l_imGuiShaderVisibleDescriptorHeap->GetREFDescriptorHeap();
 
@@ -80,16 +95,13 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 
 	// WIN32用ImGuiバックエンドを初期化する
 	// ImGui_ImplWin32_Init(入力を受け取る対象ウィンドウハンドル);
-	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplWin32_Init(a_hwnd),      "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理にに失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplWin32_Init(a_hwnd),      "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理に失敗しました。");
 
 	// DirectX12用ImGuiバックエンドを初期化する
 	// ImGui_ImplDX12_Init(DirectX12用初期化情報);
-	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplDX12_Init (&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理にに失敗しました。");
+	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplDX12_Init (&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理に失敗しました。");
 
-	if (!m_logEditorWindow)
-	{
-		m_logEditorWindow = std::make_unique<Editor::LogEditorWindow>();
-	}
+	m_isInitialized = true;
 }
 void FWK::Editor::EditorManager::LoadCONFIG()
 {
@@ -134,10 +146,8 @@ void FWK::Editor::EditorManager::DrawEditor()
 		return; 
 	}
 
-	// ログウィンドウがインスタンス化されていないか
 	// 描画が無効化されているなら描画しない
-	if (!m_logEditorWindow ||
-		m_isDisableDrawEditor)
+	if (m_isDisableDrawEditor)
 	{
 		ImGui::EndFrame();
 
@@ -328,7 +338,7 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
 	ImGui::DockSpace(l_dockSpaceID, l_size, ImGuiDockNodeFlags_None);
 	ImGui::End      ();
 }
-void FWK::Editor::EditorManager::DrawEditorWindow() const
+void FWK::Editor::EditorManager::DrawEditorWindow()
 {
 	for (const auto& l_editorWindow : m_editorWindowList)
 	{
@@ -337,17 +347,14 @@ void FWK::Editor::EditorManager::DrawEditorWindow() const
 		l_editorWindow->Draw();
 	}
 
-	if (m_logEditorWindow)
-	{
-		m_logEditorWindow->Draw();
-	}
+	m_logEditorWindow.Draw();
 }
 
 void FWK::Editor::EditorManager::Release()
 {
-	// ログウィンドウがインスタンス化されていなければ実行しない
-	if (!m_logEditorWindow) { return; }
-	
+	// 初期化されていなければ実行しない
+	if (!m_isInitialized) { return; }
+
 	ImGui_ImplDX12_Shutdown ();
 	ImGui_ImplWin32_Shutdown();
 
@@ -356,12 +363,5 @@ void FWK::Editor::EditorManager::Release()
 		ImGui::DestroyContext();
 	}
 
-	for (const auto& [l_gpuHandle, l_descriptorIndex] : m_imGuiSRVDescriptorIndexMap)
-	{
-		m_imGuiSRVDescriptorPool.Release(l_descriptorIndex);
-	}
-	
 	m_imGuiSRVDescriptorIndexMap.clear();
-
-	m_logEditorWindow.reset();
 }

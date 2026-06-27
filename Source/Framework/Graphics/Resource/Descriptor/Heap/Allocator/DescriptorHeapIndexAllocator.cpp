@@ -33,9 +33,12 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::Descr
     // 範囲外Indexの解放は不正
     FWK_ASSERT_RETURN_IF_FAILED(!IsValidIndex(a_index), "解放しようとしたIndexが確保範囲外となっており、解放処理に失敗しました。。");
 
+    // アロケートリストの容量を超えていたらreturn
+    if (a_index > m_isAllocatedList.size()) { return; }
+    
 	// 未使用スロットの二重解放を防ぐ
-	FWK_ASSERT_RETURN_IF_FAILED(!m_isAllocatedList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");
-
+    FWK_ASSERT_RETURN_IF_FAILED(!m_isAllocatedList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");
+    
     m_isAllocatedList[a_index] = false;
 
     m_reusableIndexQueue.push(a_index);
@@ -43,6 +46,8 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::Descr
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::Allocate()
 {
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_isAllocatedList.empty(), "m_isAllocatedListの容量を超えており、DescriptorIndexのAllocateに失敗しました。", Constant::k_invalidDescriptorIndex);
+
     // 解放済みスロットがあればそれを優先再利用する
     if (!m_reusableIndexQueue.empty())
     {
