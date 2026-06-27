@@ -130,7 +130,7 @@
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // レコードクラス
-#include "Graphics/Resource/Record/Definition/Type/Alias/StorageIDTypeAlias.h"
+#include "Definition/Type/Alias/StorageIDTypeAlias.h"
 #include "Graphics/Resource/Record/Definition/Constant/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 
