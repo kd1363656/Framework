@@ -7,13 +7,13 @@ FWK::Graphics::DirectCommandList::~DirectCommandList() = default;
 
 void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_resource,	 "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_resource, "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
 
 	if (a_beforeState == a_afterState) { return; }
 
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、リソースの遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、リソースの遷移に失敗しました。");
 
 	// D3D12_RESOURCE_BARRIER構造体についての説明(CD3DX12_RESOURCE_BARRIER::Transition内部で使用)
 	// Type                   : このバリアがどういうバリアであるかを指定
@@ -32,11 +32,11 @@ void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias
 
 void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "ディスクリプタヒープインデックスが無効な値のため、レンダーターゲットの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "ディスクリプタヒープインデックスが無効な値のため、レンダーターゲットの設定に失敗しました。");
 	
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、レンダーターゲットの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、レンダーターゲットの設定に失敗しました。");
 
 	const auto& l_handle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
 
@@ -52,11 +52,11 @@ void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDes
 }
 void FWK::Graphics::DirectCommandList::ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "デスクリプタヒープインデックスが無効な値のため、レンダーターゲットのクリアに失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "デスクリプタヒープインデックスが無効な値のため、レンダーターゲットのクリアに失敗しました。");
 
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、レンダーターゲットのクリアに失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、レンダーターゲットのクリアに失敗しました。");
 
 	const auto& l_handle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
 
@@ -76,12 +76,12 @@ void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const Ty
 																	    const TypeAlias::DescriptorIndex	a_rtvDescriptorIndex, 
 																	    const TypeAlias::DescriptorIndex	a_dsvDescriptorIndex) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "DirectCommandListが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "DirectCommandListが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
 	const auto l_rtvHandle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
 	const auto l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
@@ -102,11 +102,11 @@ void FWK::Graphics::DirectCommandList::ClearDepthStencil(const TypeAlias::DSVDes
 														 const TypeAlias::DescriptorIndex	 a_dsvDescriptorIndex, 
 														 const UINT8						 a_stencilClearValue) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilのClearに失敗しました。");
 
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "DirectCommandListが無効のため、DepthStencilのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "DirectCommandListが無効のため、DepthStencilのClearに失敗しました。");
 
 	const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
 
@@ -128,7 +128,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderArea(const RenderArea& a_rende
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ビューポートとシザー矩形の設定が出来ませんでした。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ビューポートとシザー矩形の設定が出来ませんでした。");
 
 	// Viewportは頂点変換後の座標(NDC -1.0F ~ 1.0F)を、実際の画面上のどこに描くかを決める設定
 	// Viewportをコマンドリストへ設定する関数
@@ -147,23 +147,23 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<P
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、パイプラインの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、パイプラインの設定に失敗しました。");
 
 	const auto& l_pipelineState = a_pipelineState.lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_pipelineState, "パイプラインステートが無効なため、パイプラインの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_pipelineState, "パイプラインステートが無効なため、パイプラインの設定に失敗しました。");
 
 	const auto& l_rootSignature = l_pipelineState->GetREFUseRootSignature().lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_rootSignature, "パイプラインステートで使用するルートシグネチャが無効なため、パイプラインの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_rootSignature, "パイプラインステートで使用するルートシグネチャが無効なため、パイプラインの設定に失敗しました。");
 
 	const auto& l_d3dRootSignature = l_rootSignature->GetREFRootSignature();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_d3dRootSignature, "ルートシグネチャが作成されておらず、パイプラインの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_d3dRootSignature, "ルートシグネチャが作成されておらず、パイプラインの設定に失敗しました。");
 
 	const auto& l_d3dPipelineState = l_pipelineState->GetREFPipelineState();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_d3dPipelineState, "パイプラインステートが作成されておらず、パイプラインの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_d3dPipelineState, "パイプラインステートが作成されておらず、パイプラインの設定に失敗しました。");
 	
 	// コマンドリストにルートシグネチャを設定する関数
 	// SetGraphicsRootSignature(描画パイプラインで使用するルートシグネチャのポインタ);
@@ -197,11 +197,11 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
 
 	const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
 
 	// RootSignature側でD3D12_ROOT_PARAMETER_TYPE_CBVにした場所へ、
 	// UploadBuffer上の定数バッファ位置を直接結びつける
@@ -214,7 +214,7 @@ void FWK::Graphics::DirectCommandList::SetupPrimitiveTopology(const D3D12_PRIMIT
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、プリミティブトポロジーの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、プリミティブトポロジーの設定に失敗しました。");
 
 	// InputAssemblerに、これから描画する頂点をどの形として扱うかを設定する
 	// SpriteScreenは三角形2毎のシ角形なのでTRIANGLELISTを使う
@@ -228,7 +228,7 @@ void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DrawInstanceの実行に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DrawInstanceの実行に失敗しました。");
 
 	// 通常のVS/PSパイプラインで描画する
 	// SpriteScreenではVertexBufferを使わず、VSがわのSV_VertexIDから6頂点を生成する
@@ -241,7 +241,7 @@ void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGrou
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DispatchMesh処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DispatchMesh処理に失敗しました。");
 
 	// メッシュシェーダーを実行するための関数
 	// DispatchMesh(X方向のグループ数、

@@ -12,23 +12,23 @@ bool FWK::Graphics::FrameResource::Create(const Device&			    a_device,
 										  const Struct::ClientSize& a_clientSize, 
 											    ResourceContext&    a_resourceContext)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator,				       "ダイレクトコマンドアロケータが無効です。",				 false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator,				    "ダイレクトコマンドアロケータが無効です。",				  false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
 
 	// 定数バッファの作成
 	for (const auto& l_constantBuffer : m_constantBufferUploaderList)
 	{
 		if (!l_constantBuffer) { continue; }
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_constantBuffer->Create(a_device), "定数バッファ作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_constantBuffer->Create(a_device), "定数バッファ作成処理に失敗しました。", false);
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderGraphFrameResource.Create(a_device,
-																		 a_gpuMemoryAllocator,
-																		 a_clientSize,	
-																		 a_resourceContext),
-																		 "RenderGraphFrameResourceの作成処理に失敗しました。",
-																	     false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_renderGraphFrameResource.Create(a_device,
+																  a_gpuMemoryAllocator,
+																  a_clientSize,	
+																  a_resourceContext),
+																  "RenderGraphFrameResourceの作成処理に失敗しました。",
+																  false);
 
 	return true;
 }
@@ -38,13 +38,13 @@ bool FWK::Graphics::FrameResource::Resize(const Device&			    a_device,
 										  const UINT64&				a_retiredFenceValue,
 												ResourceContext&    a_resourceContext) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_renderGraphFrameResource.Resize(a_device,
-																		 a_gpuMemoryAllocator,
-																		 a_clientSize,
-																		 a_retiredFenceValue,
-																		 a_resourceContext),
-																		 "RenderGraphFrameResourceのリサイズ処理に失敗しました。",
-																		 false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_renderGraphFrameResource.Resize(a_device,
+																  a_gpuMemoryAllocator,
+																  a_clientSize,
+																  a_retiredFenceValue,
+																  a_resourceContext),
+																  "RenderGraphFrameResourceのリサイズ処理に失敗しました。",
+																  false);
 
 	return true;
 }
@@ -76,7 +76,7 @@ nlohmann::json FWK::Graphics::FrameResource::Serialize() const
 
 void FWK::Graphics::FrameResource::AddConstantBufferUploader(const std::shared_ptr<ConstantBufferUploaderBase>& a_constantBufferUploader)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_constantBufferUploader, "ConstantBufferUploaderが無効のため、追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_constantBufferUploader, "ConstantBufferUploaderが無効のため、追加に失敗しました。");
 
 	const auto l_staticTypeID = a_constantBufferUploader->GetREFRuntimeTypeINFO().k_staticTypeID;
 

@@ -5,7 +5,7 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 	// ファクトリーが未作成ならGPU列挙ができないのでreturn
 	const auto& l_factory = a_factory.GetREFFactory();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_factory, "ファクトリーの作成ができておらず、デバイスの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_factory, "ファクトリーの作成ができておらず、デバイスの作成に失敗しました。", false);
 
 	const auto l_preferredFeatureLevelList = std::to_array<D3D_FEATURE_LEVEL>
 	({
@@ -107,7 +107,7 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 	}
 
 	// 使用可能なGPUが一つも見つからなかった場合は失敗
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_isFound, "対応するGPUが見つかっておらず、デバイスの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_isFound, "対応するGPUが見つかっておらず、デバイスの作成に失敗しました。", false);
 
 
 #if defined(_DEBUG)
@@ -126,7 +126,7 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 	auto l_hr = D3D12CreateDevice(l_selectedAdapter.Get(), l_selectedFeatureLevel, IID_PPV_ARGS(m_device.ReleaseAndGetAddressOf()));
 
 	// 作成が失敗した場合はエラー
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "デバイスの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "デバイスの作成に失敗しました。", false);
 
 	// デバイス作成に成功した際のアダプタを格納
 	m_adapter = l_selectedAdapter;

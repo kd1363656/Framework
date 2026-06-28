@@ -18,7 +18,7 @@ bool FWK::Graphics::Factory::Create()
 	//					  作成結果のポインタを書き込むアドレス);
 	auto l_hr = CreateDXGIFactory2(l_flags, IID_PPV_ARGS(m_factory.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "ファクトリーの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "ファクトリーの作成に失敗しました。", false);
 
 	return true;
 }

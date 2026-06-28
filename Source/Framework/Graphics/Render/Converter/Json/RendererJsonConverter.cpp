@@ -77,7 +77,7 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 	const auto& l_frameResourceCount		= a_rootJson.value(k_frameResourceCountJsonKey,    k_defaultFrameResourceListCount);
 	const auto& l_frameResourceTemplateJson = a_rootJson.value(k_frameResourceTemplateJsonKey, nlohmann::json());
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_frameResourceCount == k_emptyFrameResourceListCount, "フレームリソースの作成数が0となっており、デシリアライズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_frameResourceCount == k_emptyFrameResourceListCount, "フレームリソースの作成数が0となっており、デシリアライズ処理に失敗しました。");
 
 	for (std::size_t l_i = 0ULL; l_i < l_frameResourceCount; ++l_i)
 	{

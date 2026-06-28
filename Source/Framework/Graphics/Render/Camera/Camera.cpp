@@ -39,7 +39,7 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
 												const float a_farClip,
 												const float a_nearClip)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_aspectRatio <= k_invalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_aspectRatio <= k_invalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。");
 
 	if (!m_cbCameraPass) { return; }
 
