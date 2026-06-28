@@ -7,7 +7,10 @@ void FWK::TypeINFORegistry::Register(const Struct::TypeINFO& a_typeINFO)
 
 	FWK_ADD_LOG("[型情報登録]\nName : {}\nStaticTypeID : {}\n型情報の登録に成功しました。\n", a_typeINFO.k_name.data(), a_typeINFO.k_staticTypeID);
 	
-	m_typeINFONameMap.try_emplace        (a_typeINFO.k_name,         &a_typeINFO);
+	const bool l_isFailedRegister = m_typeINFONameMap.try_emplace(a_typeINFO.k_name, &a_typeINFO).second;
+
+	FWK_ASSERT_RETURN_IF(!l_isFailedRegister, "型情報の登録が重複しており、型情報の登録に失敗しました。");
+
 	m_typeINFOStaticTypeIDMap.try_emplace(a_typeINFO.k_staticTypeID, &a_typeINFO);
 }
 
