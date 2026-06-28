@@ -2,16 +2,14 @@
 
 namespace FWK::Editor
 {
-	class LogEditorWindow final : public EditorWindowBase
+	class LogEditorWindow final
 	{
 	public:
 
 		 LogEditorWindow();
-		~LogEditorWindow() override;
+		~LogEditorWindow();
 
-		bool IsAllowCreateInList() const override { return false; }
-
-		void Draw() override;
+		void Draw();
 
 		void AddLog(const char* a_format , ...) IM_FMTARGS(2);
 
@@ -40,7 +38,5 @@ namespace FWK::Editor
 
 		bool m_canAutoScroll;
 		bool m_canScrollToBottom;
-
-		FWK_DEFINE_TYPE_INFO(LogEditorWindow, EditorWindowBase)
 	};
 }

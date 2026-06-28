@@ -233,9 +233,6 @@ void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWin
 {
 	FWK_ASSERT_RETURN_IF_FAILED(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");
 
-	// リスト内に保持してはいけないウィンドウを保持しない
-	if (!a_editorWindow->IsAllowCreateInList()) { return; }
-
 	const auto& l_staticID = a_editorWindow->GetREFRuntimeTypeINFO().k_staticTypeID;
 
 	// 既に作成されているならばreturn

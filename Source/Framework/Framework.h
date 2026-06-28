@@ -18,18 +18,13 @@
 #include "Definition/Macros/TypeINFO/TypeINFORegistryMacros.h"
 
 //===============================================================================
-// エディター
+// グラフィックス(エディターに必要な定義だけここで済ませる)
 //===============================================================================
-#include "Definition/Type/Alias/MathTypeAlias.h"
-#include "Definition/Type/Alias/DescriptorIndexTypeAlias.h"
-#include "Definition/Constant/Graphics/DescriptorHeapConstant.h"
-#include "Editor/Style/EditorStyle.h"
-#include "Editor/Window/EditorWindowBase.h"
-#include "Editor/Window/Log/LogEditorWindow.h"
-#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
 #include "Definition/Type/Alias/ComPTRTypeAlias.h"
 #include "Graphics/Hardware/Factory/Factory.h"
 #include "Graphics/Hardware/Device/Device.h"
+#include "Definition/Type/Alias/DescriptorIndexTypeAlias.h"
+#include "Definition/Constant/Graphics/DescriptorHeapConstant.h"
 #include "Graphics/Resource/Descriptor/Heap/DescriptorHeap.h"
 #include "Graphics/Resource/Descriptor/Heap/Allocator/Converter/Json/DescriptorHeapIndexAllocatorJsonConverter.h"
 #include "Graphics/Resource/Descriptor/Heap/Allocator/DescriptorHeapIndexAllocator.h"
@@ -37,6 +32,15 @@
 #include "Graphics/Resource/Descriptor/DescriptorPool.h"
 #include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
+//===============================================================================
+// エディター
+//===============================================================================
+#include "Definition/Type/Alias/MathTypeAlias.h"
+#include "Editor/Style/EditorStyle.h"
+#include "Editor/Window/Log/LogEditorWindow.h"
+#include "Editor/Window/EditorWindowBase.h"
+
+#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
 #include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
 #include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorWindowBaseConcept.h"
 #include "Editor/EditorManager.h"

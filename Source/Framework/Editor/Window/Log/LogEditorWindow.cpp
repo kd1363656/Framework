@@ -35,7 +35,7 @@ void FWK::Editor::LogEditorWindow::AddLog(const char* a_format, ...)
 
 	va_end(l_args);
 
-	// 新たに追加されて部分を走査し、改行文字がある位置を次の行の開始位置として記録
+	// 新たに追加された部分を走査し、改行文字がある位置を次の行の開始位置として記録
 	for (int l_newSize = m_textBuffer.size(); l_oldSize < l_newSize; l_oldSize++)
 	{
 		// 改行を検出したら、次の行の先頭インデックスを記録
@@ -146,6 +146,7 @@ void FWK::Editor::LogEditorWindow::DrawLog()
 		}
 		l_clipper.End();
 	}
+
 	ImGui::PopStyleVar();
 
 	if (m_canScrollToBottom)
@@ -163,6 +164,6 @@ void FWK::Editor::LogEditorWindow::ClearLog()
 	m_textBuffer.clear     ();
 	m_textLineOffsets.clear();
 
-	// 一行目の開始位置を保証するために"push_back"
+	// 一行目の開始位置を保証するためにpush_back
 	m_textLineOffsets.push_back(k_ensureFirstLine);
 }

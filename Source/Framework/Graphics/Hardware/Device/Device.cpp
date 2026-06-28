@@ -58,7 +58,6 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 
 		// 現在のGPUアダプターの情報を取得する関数
 		// GetDesc3(取得したGPU情報を書き込む構造体のアドレス);
-
 		auto l_getDescResult = l_adapter->GetDesc3(&l_desc);
 
 		if (FAILED(l_getDescResult)) 
@@ -81,7 +80,7 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
 		{
 			// 指定したGPUとフィーチャーレベルでDirectX12デバイスが作成できるかを確認する
 			// 第四引数にnullptrを渡しているため実際にデバイスを受け取るのではなく
-			// 「この条件でデバイス作成が可能かどうかのテスト」だけを行っている
+			// この条件でデバイス作成が可能かどうかのテストだけを行っている
 			auto l_createDeviceResult = D3D12CreateDevice(l_adapter.Get(),
 														  l_level,
 														  __uuidof(ID3D12Device),	
