@@ -353,6 +353,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalColorPassConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalPresentRenderTargetPassDrawRequestConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMaterialConstant.h" />
@@ -742,6 +743,8 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Model\Model.hlsli" />
     <None Include="Asset\Shader\Model\Static\StaticModel.hlsli" />
+    <None Include="Asset\Shader\RenderTarget\Final\FinalColorShader.hlsli" />
+    <None Include="Asset\Shader\RenderTarget\FullScreenTriangleShader.hlsli" />
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -768,6 +771,18 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\RenderTarget\FullScreenTriangle_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>

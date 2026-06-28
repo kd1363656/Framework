@@ -1,4 +1,19 @@
-﻿// StaticModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
+﻿cbuffer CBCameraPass : register(b0)
+{
+    row_major matrix g_viewMatrix;
+    row_major matrix g_projectionMatrix;
+    row_major matrix g_viewProjectionMatrix;
+    
+    float g_nearClip;
+    float g_farClip;
+    float g_tanHalfFOVX;
+    float g_tanHalfFOVY;
+    
+    float3 g_cameraWorldPosition;
+    float  g_cameraPassPadding;
+};
+
+// StaticModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
 struct MSOutput
 {
     float4 position      : SV_Position;
@@ -96,18 +111,3 @@ static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
 static const uint k_modelFirstPackedPrimitiveIndexShiftBit  = k_modelFirstPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
 static const uint k_modelSecondPackedPrimitiveIndexShiftBit = k_modelSecondPrimitiveVertexOffset * k_modelPackedPrimitiveIndexBitCount;
 static const uint k_modelThirdPackedPrimitiveIndexShiftBit  = k_modelThirdPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
-
-cbuffer CBCameraPass : register(b0)
-{
-    row_major matrix g_viewMatrix;
-    row_major matrix g_projectionMatrix;
-    row_major matrix g_viewProjectionMatrix;
-    
-    float g_nearClip;
-    float g_farClip;
-    float g_tanHalfFOVX;
-    float g_tanHalfFOVY;
-    
-    float3 g_cameraWorldPosition;
-    float  g_cameraPassPadding;
-};

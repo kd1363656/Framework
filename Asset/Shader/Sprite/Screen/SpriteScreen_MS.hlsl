@@ -2,17 +2,17 @@
 
 // 三角形2枚でポリゴン出力用四角形を出力
 [outputtopology("triangle")]
-[numthreads(k_spriteMeshShaderThreadCountX, k_spriteMeshShaderThreadCountY, k_spriteMeshShaderThreadCountZ)]
-void main(out vertices MSOutput a_vertexList   [k_spriteVertexCount],
-		  out indices  uint3    a_primitiveList[k_spritePrimitiveCount])
+[numthreads(k_threadCountX, k_threadCountY, k_threadCountZ)]
+void main(out vertices MSOutput a_vertexList   [k_vertexCount],
+		  out indices  uint3    a_primitiveList[k_primitiveCount])
 {
 	// SetMeshOutputCounts(出力頂点数、
 	//					   出力プリミティブ数);
-	SetMeshOutputCounts(k_spriteVertexCount, k_spritePrimitiveCount);
+	SetMeshOutputCounts(k_vertexCount, k_primitiveCount);
 
-    uint l_textureWidth  = k_spriteTextureDefaultWidth;
-    uint l_textureHeight = k_spriteTextureDefaultHeight;
-	
+    uint l_textureWidth  = k_textureDefaultWidth;
+    uint l_textureHeight = k_textureDefaultHeight;
+
     Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[g_baseColorTextureSRVIndex];
 	
 	// GetDimensions(テクスチャの横幅、
@@ -36,7 +36,7 @@ void main(out vertices MSOutput a_vertexList   [k_spriteVertexCount],
     const float l_bottom =  l_top          - l_spriteSize.y;
 	
     // 左下、左上、右下、右上の座標を持つ配列を作成
-    const float2 l_localPositionList[k_spriteVertexCount] =
+    const float2 l_localPositionList[k_vertexCount] =
     {
         float2(l_left,  l_bottom),
 		float2(l_left,  l_top),
@@ -49,20 +49,20 @@ void main(out vertices MSOutput a_vertexList   [k_spriteVertexCount],
     const float2 l_uvMAX = float2((float)g_sourceRECT.x + g_sourceRECT.z, (float)g_sourceRECT.y + g_sourceRECT.w) / l_textureSize;
 	
 	[unroll]
-    for (uint l_i = 0U; l_i < k_spriteVertexCount; ++l_i)
+    for (uint l_i = 0U; l_i < k_vertexCount; ++l_i)
     {
         const float2 l_worldPosition = l_localPositionList[l_i] + g_position;
 		
 		// ピクセル座標を正射影行列でクリップ座標へ変換する
         // 例 : 画面中央基準の座標を、X/Yが-1.0F = +1.0Fの範囲へ変換する
-        a_vertexList[l_i].position = mul(float4(l_worldPosition, k_spritePositionZ, k_spritePositionW), g_projectionMatrix);
+        a_vertexList[l_i].position = mul(float4(l_worldPosition, k_positionZ, k_positionW), g_projectionMatrix);
     }
 	
-    a_vertexList[k_spritePrimitiveVertexIndexZero].uv  = float2(l_uvMIN.x, l_uvMAX.y);
-    a_vertexList[k_spritePrimitiveVertexIndexOne].uv   = float2(l_uvMIN.x, l_uvMIN.y);
-    a_vertexList[k_spritePrimitiveVertexIndexTwo].uv   = float2(l_uvMAX.x, l_uvMAX.y);
-    a_vertexList[k_spritePrimitiveVertexIndexThree].uv = float2(l_uvMAX.x, l_uvMIN.y);
+    a_vertexList[k_primitiveVertexIndexZero].uv  = float2(l_uvMIN.x, l_uvMAX.y);
+    a_vertexList[k_primitiveVertexIndexOne].uv   = float2(l_uvMIN.x, l_uvMIN.y);
+    a_vertexList[k_primitiveVertexIndexTwo].uv   = float2(l_uvMAX.x, l_uvMAX.y);
+    a_vertexList[k_primitiveVertexIndexThree].uv = float2(l_uvMAX.x, l_uvMIN.y);
 
-    a_primitiveList[k_spriteFirstPrimitiveIndex]  = uint3(k_spritePrimitiveVertexIndexZero, k_spritePrimitiveVertexIndexOne, k_spritePrimitiveVertexIndexTwo);
-    a_primitiveList[k_spriteSecondPrimitiveIndex] = uint3(k_spritePrimitiveVertexIndexTwo,  k_spritePrimitiveVertexIndexOne, k_spritePrimitiveVertexIndexThree);
+    a_primitiveList[k_firstPrimitiveIndex]  = uint3(k_primitiveVertexIndexZero, k_primitiveVertexIndexOne, k_primitiveVertexIndexTwo);
+    a_primitiveList[k_secondPrimitiveIndex] = uint3(k_primitiveVertexIndexTwo,  k_primitiveVertexIndexOne, k_primitiveVertexIndexThree);
 }

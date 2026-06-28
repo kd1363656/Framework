@@ -1503,6 +1503,9 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalColorPassConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1881,6 +1884,12 @@
     <None Include="Asset\Shader\Model\Static\StaticModel.hlsli">
       <Filter>Asset\Shader\Model\Static</Filter>
     </None>
+    <None Include="Asset\Shader\RenderTarget\FullScreenTriangleShader.hlsli">
+      <Filter>Asset\Shader\RenderTarget</Filter>
+    </None>
+    <None Include="Asset\Shader\RenderTarget\Final\FinalColorShader.hlsli">
+      <Filter>Asset\Shader\RenderTarget\Final</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -1903,6 +1912,12 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_PS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\Lit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\RenderTarget\FullScreenTriangle_VS.hlsl">
+      <Filter>Asset\Shader\RenderTarget</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
+      <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

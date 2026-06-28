@@ -4,36 +4,28 @@
     float2 uv       : TEXCOORD0;
 };
 
-static const float k_spriteUVMIN = 0.0F;
-static const float k_spriteUVMAX = 1.0F;
-
-static const float k_spritePositionZ = 0.0F;
-static const float k_spritePositionW = 1.0F;
+static const float k_positionZ = 0.0F;
+static const float k_positionW = 1.0F;
 
 static const float k_needDiscardWriteAlpha = 0.1F;
 
-static const uint  k_spriteMeshShaderThreadCountX = 1U;
-static const uint  k_spriteMeshShaderThreadCountY = 1U;
-static const uint  k_spriteMeshShaderThreadCountZ = 1U;
+static const uint k_threadCountX = 1U;
+static const uint k_threadCountY = 1U;
+static const uint k_threadCountZ = 1U;
 
-static const uint  k_spriteVertexCount    = 4U;
-static const uint  k_spritePrimitiveCount = 2U;
+static const uint  k_vertexCount    = 4U;
+static const uint  k_primitiveCount = 2U;
 
-static const uint  k_spriteTextureDefaultWidth  = 0U;
-static const uint  k_spriteTextureDefaultHeight = 0U;
+static const uint  k_textureDefaultWidth  = 0U;
+static const uint  k_textureDefaultHeight = 0U;
 
-static const uint  k_spriteLeftBottomVertexIndex  = 0U;
-static const uint  k_spriteLeftTopVertexIndex     = 1U;
-static const uint  k_spriteRightBottomVertexIndex = 2U;
-static const uint  k_spriteRightTopVertexIndex    = 3U;
+static const uint  k_firstPrimitiveIndex  = 0U;
+static const uint  k_secondPrimitiveIndex = 1U;
 
-static const uint  k_spriteFirstPrimitiveIndex  = 0U;
-static const uint  k_spriteSecondPrimitiveIndex = 1U;
-
-static const uint  k_spritePrimitiveVertexIndexZero  = 0U;
-static const uint  k_spritePrimitiveVertexIndexOne   = 1U;
-static const uint  k_spritePrimitiveVertexIndexTwo   = 2U;
-static const uint  k_spritePrimitiveVertexIndexThree = 3U;
+static const uint  k_primitiveVertexIndexZero  = 0U;
+static const uint  k_primitiveVertexIndexOne   = 1U;
+static const uint  k_primitiveVertexIndexTwo   = 2U;
+static const uint  k_primitiveVertexIndexThree = 3U;
 
 cbuffer CBSpritePass : register(b0)
 {

@@ -1,0 +1,13 @@
+﻿#include "FinalColorShader.hlsli"
+
+float4 main(VSOuput a_input) : SV_Target0
+{
+    Texture2D<float4> l_sceneColorTexture = ResourceDescriptorHeap[g_sceneColorTextureSRVIndex];
+    
+    const float4 l_linearColor = l_sceneColorTexture.Sample(g_sceneColorSampler, a_input.uv)
+
+    const float3 l_outputColorRGB = ConvertLinearColorToSimpleSRGB(l_linearColor.rgb);
+    const float  l_outputAlpha    = ConvertFianlColorAlpha(l_linearColor.a);
+    
+    return float4(l_outputColorRGB, l_outputAlpha);
+}
