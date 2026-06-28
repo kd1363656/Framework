@@ -353,7 +353,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalColorPassConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalPresentRenderTargetPassDrawRequestConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMaterialConstant.h" />

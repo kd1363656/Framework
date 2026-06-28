@@ -287,6 +287,7 @@
 #include "Definition/Constant/Graphics/FinalPresentRenderTargetPassDrawRequestConstant.h"
 #include "Definition/Struct/Graphics/ConstantBuffer/CBFinalColorRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalColorRenderTargetPassConstantBufferUploader.h"
+#include "Definition/Constant/Graphics/RenderTargetFullScreenTriangleDrawConstant.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalColorRenderTargetPassDrawRequest.h"
 
 // 描画リクエスト(共通していないパス)

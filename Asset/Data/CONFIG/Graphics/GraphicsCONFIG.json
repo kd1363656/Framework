@@ -259,11 +259,11 @@
                                 "BlendOpAlpha": "D3D12_BLEND_OP_ADD",
                                 "DestBlend": "D3D12_BLEND_ZERO",
                                 "DestBlendAlpha": "D3D12_BLEND_ZERO",
-                                "LogicOp": "D3D12_LOGIC_OP_NOOP",
+                                "LogicOp": "D3D12_LOGIC_OP_CLEAR",
                                 "LogicOpEnable": 0,
                                 "RenderTargetWriteMask": 15,
-                                "SrcBlend": "D3D12_BLEND_ONE",
-                                "SrcBlendAlpha": "D3D12_BLEND_ONE"
+                                "SrcBlend": "D3D12_BLEND_ZERO",
+                                "SrcBlendAlpha": "D3D12_BLEND_ZERO"
                             },
                             {
                                 "BlendEnable": 0,
@@ -372,14 +372,10 @@
                         "StencilReadMask": 255,
                         "StencilWriteMask": 255
                     },
-                    "MeshShader": {
-                        "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Final/FinalColor_MS.cso",
-                        "ShaderModelVersionName": "ms_6_6"
-                    },
+                    "InputLayout": [],
                     "PixelShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Final/FinalColor_PS.cso",
+                        "FilePath": "Asset/Shader/RenderTarget/Final/FinalColor_PS.cso",
                         "ShaderModelVersionName": "ps_6_6"
                     },
                     "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
@@ -389,7 +385,7 @@
                     "RasterizerDesc": {
                         "AntialiasedLineEnable": 0,
                         "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
-                        "CullMode": "D3D12_CULL_MODE_NONE",
+                        "CullMode": "D3D12_CULL_MODE_BACK",
                         "DepthBias": 0,
                         "DepthBiasClamp": 0.0,
                         "DepthClipEnable": 1,
@@ -404,9 +400,14 @@
                         "Quality": 0
                     },
                     "SampleMask": 4294967295,
-                    "UseRootSignatureType": "RootSignatureType::FinalColor"
+                    "UseRootSignatureType": "RootSignatureType::FinalColor",
+                    "VertexShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Asset/Shader/RenderTarget/FullScreenTriangle_VS.cso",
+                        "ShaderModelVersionName": "vs_6_6"
+                    }
                 },
-                "PipelineStateClassName": "MeshShaderPipelineState",
+                "PipelineStateClassName": "StandardPipelineState",
                 "PipelineStateType": "PipelineStateType::FinalColor"
             },
             {

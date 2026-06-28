@@ -1503,7 +1503,7 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalColorPassConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

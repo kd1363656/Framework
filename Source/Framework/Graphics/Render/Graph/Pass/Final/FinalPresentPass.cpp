@@ -30,7 +30,4 @@ void FWK::Graphics::FinalPresentPass::Execute(Renderer& a_renderer, RenderGraph&
 
 	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest,																						    "FinalColorRenderTargetPassDrawRequestが無効のため、FinalPresentPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalColorPass定数バッファの設定に失敗しました。");
-
-	// 全画面に三角形を1枚描画する
-	l_directCommandList.DispatchMesh(Constant::k_defaultDispatchMeshThreadGroupCountX, Constant::k_defaultDispatchMeshThreadGroupCountY, Constant::k_defaultDispatchMeshThreadGroupCountZ);
 }

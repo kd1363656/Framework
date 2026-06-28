@@ -20,5 +20,14 @@ bool FWK::Graphics::FinalColorRenderTargetPassDrawRequest::SetupPassConstantBuff
 																		  a_frameResource,
 																		  Enum::RootParameterType::CBFinalColorPass);
 
+	// 定数バッファーをセットしたらPrimitiveTopologyを設定して描画申請
+	a_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// SceneColor全体を読み、FinalColorへ全画面描画する
+	a_directCommandList.DrawInstanced(Constant::k_triangleVertexCount,
+									  Constant::k_defaultTriangleInstanceCount,
+									  Constant::k_defaultTriangleStartVertexLocation,
+									  Constant::k_defaultTriangleStartInstanceLocation);
+
 	return true;
 }

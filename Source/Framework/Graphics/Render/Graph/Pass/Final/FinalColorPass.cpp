@@ -25,9 +25,6 @@ void FWK::Graphics::FinalColorPass::Execute(Renderer & a_renderer, RenderGraph &
 
 	const auto& l_finalColorDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalColorRenderTargetPassDrawRequest>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest,																						   "FinalColorRenderTargetPassDrawRequestが無効のため、FinalColorPassの実行に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest,																						    "FinalColorRenderTargetPassDrawRequestが無効のため、FinalColorPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalColorPass定数バッファの設定に失敗しました。");
-
-	// SceneColor全体を読み、FinalColorへ全画面描画する
-	l_directCommandList.DispatchMesh(Constant::k_defaultDispatchMeshThreadGroupCountX, Constant::k_defaultDispatchMeshThreadGroupCountY, Constant::k_defaultDispatchMeshThreadGroupCountZ);
 }

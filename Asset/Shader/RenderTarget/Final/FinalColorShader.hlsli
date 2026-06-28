@@ -14,14 +14,14 @@ static const float k_finalColorMAXValue = 1.0F;
 static const float k_finalColorGammaBase = 2.2F;
 static const float k_finalColorGamma     = 1.0F / k_finalColorGammaBase;
 
-float3 ConvertLinearColorToSimpleSRGB(const float3 a_linerColor)
+float3 ConvertLinearColorToSimpleSRGB(const float3 a_linearColor)
 {
-    const float3 l_clampedLinearColor = saturate(a_linerColor);
+    const float3 l_clampedLinearColor = saturate(a_linearColor);
     
     return pow(l_clampedLinearColor, k_finalColorGamma);
 }
 
-float ConvertFianlColorAlpha(const float a_alpha)
+float ConvertFinalColorAlpha(const float a_alpha)
 {
     return saturate(a_alpha);
 }
