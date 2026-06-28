@@ -10,7 +10,7 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 	// FBXファイル全体をufbx_sceneとして読み込む
 	auto* l_fbxScene = LoadFBXScene(a_filePath);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_fbxScene, "FBXシーンの読み込みに失敗したため、StaticModelファイルの読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxScene, "FBXシーンの読み込みに失敗したため、StaticModelファイルの読み込みに失敗しました。", false);
 
 	// モデルデータをシーンから抽出
 	if (!ExtractModelData(l_fbxScene, l_modelData))
@@ -29,13 +29,13 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 
 bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, Struct::StaticModelData& a_staticModelData) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxScene, "ufbx_sceneが無効のため、StaticModelDataの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene, "ufbx_sceneが無効のため、StaticModelDataの抽出に失敗しました。", false);
 
 	// StaticModelではufbx_node::geometry_to_worldを使って
 	// NodeTransformを頂点へ焼きこむ。
 	// ただし、Camera/Light/BoneなどMeshを持たない要素を除外するため、
 	// Nodeを走査してMeshが接続されているNodeだけを処理する
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、StaticModelDataの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、StaticModelDataの抽出に失敗しました。", false);
 
 	for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
 	{
@@ -56,7 +56,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 
 		// ufbx_mesh 1つを、自作フレームワーク側のModelMeshへ変換する
 		// 1つのufbx_meshに複数のMaterialがある場合、MaterialごとにModelMeshを分割する
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshList(l_fbxNode, l_staticModelMeshList), "ufbx_nodeからStaticModelMeshリストの抽出に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_fbxNode, l_staticModelMeshList), "ufbx_nodeからStaticModelMeshリストの抽出に失敗しました。", false);
 
 		for (auto& l_staticModelMesh : l_staticModelMeshList)
 		{
@@ -67,7 +67,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 		}
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelData.m_modelMeshList.empty(), "有効なStaticModelMeshが存在しないため、StaticModelDataの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelData.m_modelMeshList.empty(), "有効なStaticModelMeshが存在しないため、StaticModelDataの抽出に失敗しました。", false);
 
 	return true;
 }
@@ -76,18 +76,18 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 	// もし前回モデルを読み込んでいたらそのモデルのメッシュ情報が残ってしまうのでリストをクリア
 	a_staticModelMeshList.clear();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、StaticModelMeshリストの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、StaticModelMeshリストの抽出に失敗しました。", false);
 
 	const auto* l_fbxMesh = a_fbxNode->mesh;
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_fbxMesh, "ufbx_nodeにMeshが存在しないため、StaticModelMeshリストの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxMesh, "ufbx_nodeにMeshが存在しないため、StaticModelMeshリストの抽出に失敗しました。", false);
 
 	// MaterialがないMeshの場合は、MaterialなしのModelMeshとして1つだけ作成する
 	if (l_fbxMesh->materials.count == Constant::k_emptyModelMeshCount)
 	{
 		Struct::StaticModelMesh l_staticModelMesh = {};
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshByMaterial(k_invalidMaterialIndex, a_fbxNode, l_staticModelMesh), "MaterialなしStaticModelMeshの抽出に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(k_invalidMaterialIndex, a_fbxNode, l_staticModelMesh), "MaterialなしStaticModelMeshの抽出に失敗しました。", false);
 
 		if (!l_staticModelMesh.m_modelVertexList.empty() &&
 			!l_staticModelMesh.m_indexList.empty())
@@ -106,7 +106,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 		Struct::StaticModelMesh l_staticModelMesh = {};
 
 		// 現在のMaterialIndexを使用しているFaceだけを集めて、1つのModelMeshにする
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, l_staticModelMesh), "Material別StaticModelMeshの抽出に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, l_staticModelMesh), "Material別StaticModelMeshの抽出に失敗しました。", false);
 
 		// このMaterialを使用しているFaceがなければ描画対象にしない
 		if (l_staticModelMesh.m_modelVertexList.empty()) { continue; }
@@ -131,26 +131,26 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 	a_staticModelMesh.m_modelVertexList.clear();
 	a_staticModelMesh.m_indexList.clear	     ();
 	
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、Material別StaticModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
 	const auto* l_fbxMesh = a_fbxNode->mesh;
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_fbxMesh, "ufbx_nodeにMeshが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxMesh, "ufbx_nodeにMeshが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
 	// Faceはポリゴン面のこと
 	// Faceが存在しないMeshは、三角形へ変換する元データがないため失敗扱いにする
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_fbxMesh->faces.count == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
 	// max_face_trianglesは、1つのFaceを三角形化したときに必要になる最大三角形数
 	// これが0の場合、三角形化できるFaceがない
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
 	// マテリアルで絞り込むだけ、
 	// FaceごとのMaterial番号が入っている配列の数と現在のMeshのFace数が一致しているかどうかを確認
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_materialIndex				 != k_invalidMaterialIndex &&
-									  l_fbxMesh->face_material.count != l_fbxMesh->faces.count,
-									  "face_material数とFace数が一致しないため、Material別StaticModelMeshの抽出に失敗しました。",
-									  false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_materialIndex				  != k_invalidMaterialIndex &&
+							   l_fbxMesh->face_material.count != l_fbxMesh->faces.count,
+							   "face_material数とFace数が一致しないため、Material別StaticModelMeshの抽出に失敗しました。",
+							   false);
 
 	// max_face_traianglesは1つのFaceを三角形化したときに必要になる最大三角形数
 	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Constant::k_triangleVertexCount;

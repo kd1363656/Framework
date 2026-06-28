@@ -2,7 +2,7 @@
 
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseGPUResourceRecord(Struct::GPUResourceReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED		   (!IsValidGPUResourceReleaseRecord(a_releaseRecord), "GPUResourceRecordが無効のため、GPUResourceRecordの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF                 (!IsValidGPUResourceReleaseRecord(a_releaseRecord), "GPUResourceRecordが無効のため、GPUResourceRecordの遅延解放登録に失敗しました。", false);
 	m_gpuResourceReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
 	return true;
@@ -10,21 +10,21 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseGPUResourceRec
 
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseRTVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED				  (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "RTV用DescriptorIndexが無効のため、RTV用DescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "RTV用DescriptorIndexが無効のため、RTV用DescriptorIndexの遅延解放登録に失敗しました。", false);
 	m_rtvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
 	return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED				  (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "SRV用DescriptorIndexが無効のため、SRV用DescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "SRV用DescriptorIndexが無効のため、SRV用DescriptorIndexの遅延解放登録に失敗しました。", false);
 	m_srvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
 	return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseDSVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED				  (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "DSV用DescriptorIndexが無効のため、DSV用DescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "DSV用DescriptorIndexが無効のため、DSV用DescriptorIndexの遅延解放登録に失敗しました。", false);
 	m_dsvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
 	return true;
@@ -62,15 +62,15 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::ResourceReleaseContext::ReleaseRe
 
 bool FWK::Graphics::ResourceReleaseContext::IsValidGPUResourceReleaseRecord(const Struct::GPUResourceReleaseRecord& a_releaseRecord) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_releaseRecord.m_gpuResource.m_resource,						       "無効なリソースを解放しようとしています。",													 false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_releaseRecord.m_gpuResource.m_resource,                           "無効なリソースを解放しようとしています。",                                                   false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
 	return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::IsValidDescriptorIndexReleaseRecord(const Struct::DescriptorIndexReleaseRecord& a_releaseRecord) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_releaseRecord.m_descriptorIndex   == Constant::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",								   false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue,       "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_descriptorIndex   == Constant::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",                                 false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue,       "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
 	return true;
 }

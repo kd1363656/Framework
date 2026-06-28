@@ -8,7 +8,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 {
 	auto& l_modelMeshList = a_staticModelRecord.GetMutableREFModelData().m_modelMeshList;
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_modelMeshList.empty(), "ModelMeshListが空のため、StaticModelBatchUploadの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelMeshListが空のため、StaticModelBatchUploadの作成に失敗しました。", false);
 
 	for (auto& l_modelMesh : l_modelMeshList)
 	{
@@ -19,7 +19,8 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 										  l_modelMesh))
 		{
 			ReleaseCreatedStaticModelStructuredBufferSRV(l_modelMeshList, a_srvDescriptorPool);
-			FWK_ASSERT_RETURN_VALUE					    ("ModelMesh用BatchUploadRecordの作成に失敗したため、StaticModelBatchUploadRecordの作成に失敗しました。", false);
+
+			FWK_ASSERT_RETURN_VALUE("ModelMesh用BatchUploadRecordの作成に失敗したため、StaticModelBatchUploadRecordの作成に失敗しました。", false);
 		}
 	}
 
@@ -42,7 +43,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 	auto& l_meshletBoundsBuffer     = l_modelMeshRuntimeData.m_meshletBoundsBuffer;
 
 	// 頂点バッファーストラクチャードバッファーの作成
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_vertexBuffer.Create(a_staticModelMesh.m_modelVertexList,
+	FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_staticModelMesh.m_modelVertexList,
 															 a_device,
 															 a_gpuMemoryAllocator,
 															 a_bufferUploadCommandList,
@@ -51,7 +52,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 															 false);
 
 	// メッシュレットストラクチャードバッファーの作成
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_meshletBuffer.Create(l_modelMeshletData.m_meshletList,
+	FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBuffer.Create(l_modelMeshletData.m_meshletList,
 															  a_device,
 															  a_gpuMemoryAllocator,
 															  a_bufferUploadCommandList,
@@ -61,7 +62,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 
 
 	// ユニーク頂点インデックスストラクチャードバッファーの作成
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_uniqueVertexIndexBuffer.Create(l_modelMeshletData.m_uniqueVertexIndexList,
+	FWK_ASSERT_RETURN_VALUE_IF(!l_uniqueVertexIndexBuffer.Create(l_modelMeshletData.m_uniqueVertexIndexList,
 																	    a_device,
 																	    a_gpuMemoryAllocator,
 																	    a_bufferUploadCommandList,
@@ -70,7 +71,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 																	    false);
 
 	// プリミティブインデックスバッファストラクチャードバッファーの作成
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_primitiveIndexBuffer.Create(l_modelMeshletData.m_primitiveIndexList,
+	FWK_ASSERT_RETURN_VALUE_IF(!l_primitiveIndexBuffer.Create(l_modelMeshletData.m_primitiveIndexList,
 																	 a_device,
 																	 a_gpuMemoryAllocator,
 																	 a_bufferUploadCommandList,
@@ -79,7 +80,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 																	 false);
 
 	// メッシュレットカリングストラクチャードバッファーの作成
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_meshletBoundsBuffer.Create(l_modelMeshletData.m_meshletBoundsList,
+	FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create(l_modelMeshletData.m_meshletBoundsList,
 																    a_device,
 																    a_gpuMemoryAllocator,
 																    a_bufferUploadCommandList,

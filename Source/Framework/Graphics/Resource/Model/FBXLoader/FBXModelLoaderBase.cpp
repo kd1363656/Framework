@@ -4,7 +4,7 @@ ufbx_scene* FWK::Graphics::FBXModelLoaderBase::LoadFBXScene(const std::filesyste
 {
 	// FBXファイルとして読み込めるパスか確認する
 	// 存在しないファイルや.fbx以外のファイルをufbxへ渡さないための事前チェック
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "FBXファイルが読み込める形式ではありません、FBXシーンの読み込みに失敗しました。", nullptr);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "FBXファイルが読み込める形式ではありません、FBXシーンの読み込みに失敗しました。", nullptr);
 
 	// ufbx_load_optsは、ufbxでFBXを読み込むときの設定
 	const auto& l_loadOptions = CreateFBXLoadOptions();
@@ -51,8 +51,8 @@ void FWK::Graphics::FBXModelLoaderBase::DestroyFBXScene(ufbx_scene* a_fbxScene) 
 
 FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
 
 	const auto& l_localPosition = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_position, a_vertexIndex);
 
@@ -64,7 +64,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 }
 FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、UVの取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、UVの取得に失敗しました。", {});
 
 	// FBXによってはUVが入っていない場合がある
 	// その場合は今は空のVector2を返し、読み込み自体は続行する
@@ -84,8 +84,8 @@ FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(c
 }
 FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexNormal(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
 
 	if (!a_fbxMesh->vertex_normal.exists) { return {}; }
 
@@ -103,8 +103,8 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 }
 FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexTangent(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
 
 	ufbx_vec3 l_localTangent = { k_defaultTangentX, k_defaultTangentY, k_defaultTangentZ };
 

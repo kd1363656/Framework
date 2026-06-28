@@ -210,7 +210,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
 
     // StaticModelAssetの元になるFBXが存在しない場合、
     // 何から生成された.assetなのか判断できないため保存しない
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "StaticModelAssetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "StaticModelAssetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
     // FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
     const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
@@ -219,10 +219,10 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
     const auto& l_staticModelAssetFileSize = CalculateStaticModelAssetFileSize(l_staticModelData);
 
     // Meshが一つもない、または保存できるデータがない場合は.asset化しない
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticModelAssetFileSize == Constant::k_emptyAssetFileSize, "StaticModelAssetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_staticModelAssetFileSize == Constant::k_emptyAssetFileSize, "StaticModelAssetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
 
     // 書き込み用MemoryMappedFileを作成する
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateWriteMemoryMappedFile(l_staticModelAssetFilePath, l_staticModelAssetFileSize), "StaticModelAssetの書き込み用MemoryMappedfile作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_staticModelAssetFilePath, l_staticModelAssetFileSize), "StaticModelAssetの書き込み用MemoryMappedfile作成に失敗しました。", false);
 
     // 現在の書き込み位置
     // ファイル先頭から順番にHeader -> MeshData...と書き込む

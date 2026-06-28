@@ -4,14 +4,14 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelRecord(Graphics
 {
 	auto& l_modelData = a_staticModelRecord.GetMutableREFModelData();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_modelData.m_modelMeshList.empty(), "ModelDataのMeshリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_modelData.m_modelMeshList.empty(), "ModelDataのMeshリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
 
 	for (auto& l_modelMesh : l_modelData.m_modelMeshList)
 	{
 		// StaticModelDataはMaterial単位などで複数のStaticModelMeshを持つ。
 		// meshoptimizerはMesh単位のVertexList/IndexListに対して適用するため、
 		// StaticModelMeshごとに個別に最適化する
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!OptimizeStaticModelMesh(l_modelMesh), "ModelMeshの最適化に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!OptimizeStaticModelMesh(l_modelMesh), "ModelMeshの最適化に失敗しました。", false);
 	}
 
 	return true;
@@ -19,8 +19,8 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelRecord(Graphics
 
 bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::StaticModelMesh& a_staticModelMesh) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_modelVertexList.empty(), "ModelMeshの頂点リストが空のため、StaticModelMeshの最適化に失敗しました。",		   false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_staticModelMesh.m_indexList.empty(),		   "ModelMeshのインデックスリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_modelVertexList.empty(), "ModelMeshの頂点リストが空のため、StaticModelMeshの最適化に失敗しました。",		    false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_indexList.empty(),		"ModelMeshのインデックスリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
 
 	std::vector<std::uint32_t> l_vertexRemapList = {};
 
@@ -42,7 +42,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 																	 a_staticModelMesh.m_modelVertexList.size(),
 																	 sizeof(Struct::StaticModelVertex));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_optimizedVertexCount == k_invalidOptimizedVertexCount, "meshopt_generateVertexRemapによる頂点リマップ作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_optimizedVertexCount == k_invalidOptimizedVertexCount, "meshopt_generateVertexRemapによる頂点リマップ作成に失敗しました。", false);
 
 	std::vector<std::uint32_t> l_optimizedIndexList = {};
 

@@ -73,8 +73,8 @@ bool FWK::Graphics::StaticModel::Load(const std::filesystem::path& a_filePath)
 																							a_filePath,
 																							l_srvDescriptorPool);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticModelLoadResult.m_storageID == Constant::k_invalidStorageID, "StaticModelの読み込みに失敗しました。",								   false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_staticModelLoadResult.m_staticModelRecord.expired(),				   "StaticModelRecordが無効のため、StaticModelの読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_storageID == Constant::k_invalidStorageID, "StaticModelの読み込みに失敗しました。",                                false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_staticModelRecord.expired(),               "StaticModelRecordが無効のため、StaticModelの読み込みに失敗しました。", false);
 
 	m_storageID         = l_staticModelLoadResult.m_storageID;
 	m_staticModelRecord = l_staticModelLoadResult.m_staticModelRecord;
@@ -98,7 +98,7 @@ void FWK::Graphics::StaticModel::AddReferenceCount() const
 	auto& l_resourceContext   = l_graphicsManager.GetMutableREFResourceContext  ();
 	auto& l_staticModelSystem = l_resourceContext.GetMutableREFStaticModelSystem();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_staticModelSystem.AddStaticModelReferenceCount(m_staticModelRecord), "StaticModelの参照数加算に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_staticModelSystem.AddStaticModelReferenceCount(m_staticModelRecord), "StaticModelの参照数加算に失敗しました。");
 }
 
 void FWK::Graphics::StaticModel::SubtractReferenceCount()
@@ -117,7 +117,7 @@ void FWK::Graphics::StaticModel::SubtractReferenceCount()
 	auto& l_staticModelSystem	   = l_resourceContext.GetMutableREFStaticModelSystem     ();
 	auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_staticModelSystem.SubtractStaticModelReferenceCount(m_staticModelRecord, l_directCommandQueue, l_resourceReleaseContext), "StaticModelの参照数減算に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_staticModelSystem.SubtractStaticModelReferenceCount(m_staticModelRecord, l_directCommandQueue, l_resourceReleaseContext), "StaticModelの参照数減算に失敗しました。");
 
 	m_storageID = Constant::k_invalidStorageID;
 	m_staticModelRecord.reset();

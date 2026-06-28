@@ -4,11 +4,11 @@ bool FWK::Graphics::GPUMemoryAllocator::Create(const Device& a_device)
 {
     const auto& l_device = a_device.GetREFDevice();
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスが作成されておらず、GPUメモリアロケータの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、GPUメモリアロケータの作成に失敗しました。", false);
 
     const auto& l_adapter = a_device.GetREFAdapter();
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_adapter, "GPUアダプターが保存されておらず、GPUメモリアロケータの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_adapter, "GPUアダプターが保存されておらず、GPUメモリアロケータの作成に失敗しました。", false);
 
     D3D12MA::ALLOCATOR_DESC l_allocatorDesc = {};
 
@@ -22,7 +22,7 @@ bool FWK::Graphics::GPUMemoryAllocator::Create(const Device& a_device)
     //                          作成されたD3D12MAアロケータの受け取り先);
     const auto l_hr = D3D12MA::CreateAllocator(&l_allocatorDesc, m_allocator.ReleaseAndGetAddressOf());
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "D3D12MAアロケータの作成に失敗しており、、GPUメモリアロケータの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAアロケータの作成に失敗しており、、GPUメモリアロケータの作成に失敗しました。", false);
 
     return true;
 }
@@ -31,7 +31,7 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOUR
                                                               const D3D12_RESOURCE_STATES a_initialResourceState, 
                                                                     Struct::GPUResource&  a_gpuResource) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_allocator, "D3D12MAアロケータが作成されておらず、TextureResourceの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_allocator, "D3D12MAアロケータが作成されておらず、TextureResourceの作成に失敗しました。", false);
 
     D3D12MA::ALLOCATION_DESC l_allocationDesc = {};
 
@@ -54,14 +54,14 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOUR
                                                   a_gpuResource.m_allocation.ReleaseAndGetAddressOf(),
                                                   IID_PPV_ARGS(a_gpuResource.m_resource.ReleaseAndGetAddressOf()));
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "D3D12MAによるTextureResourceの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAによるTextureResourceの作成に失敗しました。", false);
 
     return true;
 }
 bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64& a_bufferSize, const D3D12_RESOURCE_STATES a_initialResourceState, Struct::GPUResource& a_gpuResource) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_allocator,                                  "D3D12MAアロケータが作成されておらず、BufferResourceの作成に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferSize == Constant::k_invalidBufferSize, "BufferResourceの作成サイズが0のため、BufferResourceの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_allocator,                                  "D3D12MAアロケータが作成されておらず、BufferResourceの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize, "BufferResourceの作成サイズが0のため、BufferResourceの作成に失敗しました。", false);
 
     D3D12MA::ALLOCATION_DESC l_allocationDesc = {};
 
@@ -88,7 +88,7 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64& a_buf
                                                   a_gpuResource.m_allocation.ReleaseAndGetAddressOf(),
                                                   IID_PPV_ARGS(a_gpuResource.m_resource.ReleaseAndGetAddressOf()));
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "D3D12MAによるBufferResourceの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAによるBufferResourceの作成に失敗しました。", false);
 
     return true;
 }
