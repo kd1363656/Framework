@@ -86,8 +86,8 @@ namespace FWK::Converter
 			// 書き込むバイト数が0の場合は、何もせずに終了する
 			if (l_writeDataSize == k_emptyWriteDataSize) { return; }
 
-			FWK_ASSERT_RETURN_IF_FAILED(!a_sourceData, "書き込み元データがnullptrです。");
-			FWK_ASSERT_RETURN_IF_FAILED(!m_mappedData, "書き込み先データがnullptrです。");
+			FWK_ASSERT_RETURN_IF(!a_sourceData, "書き込み元データがnullptrです。");
+			FWK_ASSERT_RETURN_IF(!m_mappedData, "書き込み先データがnullptrです。");
 
 			// 書き込み先のメモリマップ領域の現在位置へ、
 			// 指定された型と個数分のデータを書き込む
@@ -129,8 +129,8 @@ namespace FWK::Converter
 			// 読み込むバイト数が0の場合は、何もせずに終了する
 			if (l_readDataSize == k_emptyReadDataSize) { return; }
 
-			FWK_ASSERT_RETURN_IF_FAILED(!m_mappedData,	    "読み込み元データがnullptrです。");
-			FWK_ASSERT_RETURN_IF_FAILED(!a_destinationData, "読み込み先データがnullptrです。");
+			FWK_ASSERT_RETURN_IF(!m_mappedData,	    "読み込み元データがnullptrです。");
+			FWK_ASSERT_RETURN_IF(!a_destinationData, "読み込み先データがnullptrです。");
 
 			// メモリマップされたバイナリデータの現在位置から、
 			// 指定された型と個数分のデータを読み込み先へコピーする

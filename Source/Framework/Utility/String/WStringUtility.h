@@ -28,7 +28,7 @@ namespace FWK::Utility
 											   nullptr,
 											   nullptr);
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_size == Constant::k_invalidConvertedMultiByteSize, "WideCharToMultiByte(UTF-16からUTF-8への変換)に失敗しました。", {});
+		FWK_ASSERT_RETURN_VALUE_IF(l_size == Constant::k_invalidConvertedMultiByteSize, "WideCharToMultiByte(UTF-16からUTF-8への変換)に失敗しました。", {});
 
 		// 変換後のUTF-8文字列を格納するためのバッファを確保する
 		// l_sizeには必要な文字数が入っているため、そのサイズ分だけstd::stringを作成する

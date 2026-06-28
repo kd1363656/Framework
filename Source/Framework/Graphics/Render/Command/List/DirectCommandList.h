@@ -31,15 +31,15 @@ namespace FWK::Graphics
 		{
 			const auto& l_directCommandList = GetREFCommandList();
 
-			FWK_ASSERT_RETURN_IF_FAILED(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ディスクリプタヒープの設定ができませんでした。");
+			FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ディスクリプタヒープの設定ができませんでした。");
 
 			const auto& l_shaderVisibleDescriptorHeap = a_descriptorPool.GetREFShaderVisibleDescriptorHeap();
 
-			FWK_ASSERT_RETURN_IF_FAILED(!l_shaderVisibleDescriptorHeap, "ShaderVisibleなディストラクタヒープが無効になっており、ディスクリプタヒープの設定ができませんでした。");
+			FWK_ASSERT_RETURN_IF(!l_shaderVisibleDescriptorHeap, "ShaderVisibleなディストラクタヒープが無効になっており、ディスクリプタヒープの設定ができませんでした。");
 
 			const auto& l_descriptorHeap = l_shaderVisibleDescriptorHeap->GetREFDescriptorHeap();
 
-			FWK_ASSERT_RETURN_IF_FAILED(!l_descriptorHeap, "ShaderVisibleなディスクリプタヒープが作成されておらず、ディスクリプタヒープの設定ができませんでした。");
+			FWK_ASSERT_RETURN_IF(!l_descriptorHeap, "ShaderVisibleなディスクリプタヒープが作成されておらず、ディスクリプタヒープの設定ができませんでした。");
 
 			ID3D12DescriptorHeap* l_descriptorHeapList[] =
 			{

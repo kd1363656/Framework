@@ -24,7 +24,7 @@ namespace FWK::Utility
 											   nullptr,
 											   Constant::k_multiByteToWCharQueryBufferSize);
 		
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_size == Constant::k_invalidConvertedWCharSize, "MultiByteToWideChar(UTF-8からUTF-16への変換)に失敗しました。", {});
+		FWK_ASSERT_RETURN_VALUE_IF(l_size == Constant::k_invalidConvertedWCharSize, "MultiByteToWideChar(UTF-8からUTF-16への変換)に失敗しました。", {});
 
 		// 出力バッファを確保しヌル文字で初期化
 		std::wstring l_result(l_size, Constant::k_wNullCharacter);

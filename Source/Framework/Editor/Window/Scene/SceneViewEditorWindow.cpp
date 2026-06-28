@@ -19,7 +19,7 @@ void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
 
 	for (const auto& l_frameResource : l_renderer.GetREFFrameResourceList())
 	{
-		FWK_ASSERT_RETURN_IF_FAILED(!l_frameResource, "フレームリソースの取得に失敗しており、PostDeserialize処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!l_frameResource, "フレームリソースの取得に失敗しており、PostDeserialize処理に失敗しました。");
 
 		// フレームリソースで管理されている、レンダーグラフフレームリソースを取得
 		const auto& l_renderGraphFrameResource = l_frameResource->GetREFRenderGraphFrameResource();
@@ -28,7 +28,7 @@ void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
 		// (実際にバックバッファに描画する際に使用するガンマ補正などを適用したレンダーターゲットテクスチャ)
 		const auto& l_renderTargetPassTexture = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(Enum::RenderGraphRenderTargetType::FinalColor).lock();
 
-		FWK_ASSERT_RETURN_IF_FAILED(!l_renderTargetPassTexture, "レンダーターゲットパステクスチャの取得に失敗しており、PostDeserialize処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!l_renderTargetPassTexture, "レンダーターゲットパステクスチャの取得に失敗しており、PostDeserialize処理に失敗しました。");
 
 		// RenderTargetTexture本体を取得する
 		const auto& l_renderTargetTexture = l_renderTargetPassTexture->GetREFRenderTargetTexture();
@@ -39,11 +39,11 @@ void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
 		// ここではRenderTargetTextureに割り当てられているSRVのDescriptorIndexを取得する
 		const auto l_srvDescriptorIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
-		FWK_ASSERT_RETURN_IF_FAILED(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexが無効値になっており、PostDeserialize処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexが無効値になっており、PostDeserialize処理に失敗しました。");
 
 		auto& l_editorManager = EditorManager::GetInstance();
 
-		// SRVDescritproIndexをアロケート
+		// SRVDescriptorIndexをアロケート
 		m_imGuiSRVDescriptorIndexList.emplace_back(l_editorManager.AllocateImGuiSRVDescriptorIndex());
 
 		const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext();
@@ -51,7 +51,7 @@ void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
 		// メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへコピーする
 		const auto& l_srvDescriptorPool = l_resourceContext.GetREFSRVDescriptorPool();
 
-		FWK_ASSERT_RETURN_IF_FAILED(!l_editorManager.CopyGraphicsSRVDescriptor(l_srvDescriptorPool, l_srvDescriptorIndex, m_imGuiSRVDescriptorIndexList.back()), "SRVDescriptorのコピー処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!l_editorManager.CopyGraphicsSRVDescriptor(l_srvDescriptorPool, l_srvDescriptorIndex, m_imGuiSRVDescriptorIndexList.back()), "SRVDescriptorのコピー処理に失敗しました。");
 	}
 }
 
@@ -103,7 +103,7 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() con
 	const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
 
 	// レンダーラーから現在のFrameResourceのインデックスを取得
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えています", k_invalidSceneViewTextureID);
+	FWK_ASSERT_RETURN_VALUE_IF(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えています", k_invalidSceneViewTextureID);
 
 	// もし無効なDescriptorIndexならreturn
 	if (m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex] == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }

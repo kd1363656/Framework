@@ -45,7 +45,7 @@ bool FWK::Converter::BinaryFileConverterBase::CreateReadMemoryMappedFile(const s
 	DestroyMemoryMappedFile();
 
 	// ファイルを読み込めるかを確認
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath), "BinaryFileの読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath), "BinaryFileの読み込みに失敗しました。", false);
 
 	// ファイルを開く
 	// CreateFileW(開くファイルパス、
@@ -153,8 +153,8 @@ bool FWK::Converter::BinaryFileConverterBase::CreateWriteMemoryMappedFile(const 
 	// 既に別のファイルを開いていた場合に備えて前のマッピングを破棄する
 	DestroyMemoryMappedFile();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_filePath.empty(),				  "BinaryFileの書き込み用ファイルパスが空です。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_fileSize == k_emptyWriteFileSize, "BinaryFileの書き込みサイズが0です。",		      false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(),				  "BinaryFileの書き込み用ファイルパスが空です。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_fileSize == k_emptyWriteFileSize, "BinaryFileの書き込みサイズが0です。",		  false);
 
 	// createFileWは存在しない親フォルダまでは作成してくれないため、
 	// 書き込み先ファイルの親フォルダが指定されている場合は、

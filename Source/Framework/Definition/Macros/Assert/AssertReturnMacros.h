@@ -20,26 +20,26 @@ do													  \
 }													  \
 while (false)
 
-#define FWK_ASSERT_RETURN_IF_FAILED(Conditions, Message) \
-do														 \
-{														 \
-	if (Conditions)								         \
-	{												     \
-		assert(false && Message);					     \
-													     \
-		return;										     \
-	}													 \
-}														 \
+#define FWK_ASSERT_RETURN_IF(Conditions, Message) \
+do												  \
+{												  \
+	if (Conditions)								  \
+	{											  \
+		assert(false && Message);				  \
+												  \
+		return;									  \
+	}											  \
+}												  \
 while (false)
 
-#define FWK_ASSERT_RETURN_VALUE_IF_FAILED(Conditions, Message, ReturnValue) \
-do																		    \
-{																		    \
-	if (Conditions)														    \
-	{																	    \
-		assert(false && Message);										    \
-																		    \
-		return ReturnValue;												    \
-	}																		\
-}																			\
+#define FWK_ASSERT_RETURN_VALUE_IF(Conditions, Message, ReturnValue) \
+do																	 \
+{																	 \
+	if (Conditions)													 \
+	{																 \
+		assert(false && Message);									 \
+																	 \
+		return ReturnValue;											 \
+	}																 \
+}																	 \
 while (false)																	

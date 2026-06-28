@@ -11,7 +11,7 @@ bool FWK::Graphics::CommandListBase::Create(const Device& a_device)
 {
 	const auto& l_device = a_device.GetREFDevice();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスの作成に失敗しており、コマンドリストの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスの作成に失敗しており、コマンドリストの作成に失敗しました。", false);
 
 	// 閉じた状態のコマンドリストを作成する関数(命令を書き込む前にResetして記録可能状態にする必要がある)
 	// CreateCommandList(このコマンドリストを作成するGPUノード指定値、
@@ -24,21 +24,21 @@ bool FWK::Graphics::CommandListBase::Create(const Device& a_device)
 											 D3D12_COMMAND_LIST_FLAG_NONE,
 											 IID_PPV_ARGS(m_commandList.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "コマンドリストの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "コマンドリストの作成に失敗しました。", false);
 
 	return true;
 }
 
 void FWK::Graphics::CommandListBase::Reset(const CommandAllocatorBase& a_commandAllocator)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!m_commandList, "コマンドリストの作成に失敗しており、コマンドリストのリセットに失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_commandList, "コマンドリストの作成に失敗しており、コマンドリストのリセットに失敗しました。");
 
 	// 自身のコマンドリストタイプと一致しなければreturn
-	FWK_ASSERT_RETURN_IF_FAILED(a_commandAllocator.GetVALCreateCommandListType() != k_createCommandListType, "コマンドアロケータのコマンドリストタイプと一致しないため、コマンドリストのリセットに失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_commandAllocator.GetVALCreateCommandListType() != k_createCommandListType, "コマンドアロケータのコマンドリストタイプと一致しないため、コマンドリストのリセットに失敗しました。");
 
 	const auto& l_d3dCommandAllocator = a_commandAllocator.GetREFCommandAllocator();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_d3dCommandAllocator, "コマンドアロケータの作成に失敗しており、コマンドリストのリセットに失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_d3dCommandAllocator, "コマンドアロケータの作成に失敗しており、コマンドリストのリセットに失敗しました。");
 
 	// コマンドリストを再び記録できる状態に戻す関数
 	// Reset(使用していたコマンドアロケータ、
@@ -48,7 +48,7 @@ void FWK::Graphics::CommandListBase::Reset(const CommandAllocatorBase& a_command
 
 void FWK::Graphics::CommandListBase::Close() const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!m_commandList, "コマンドリストの作成に失敗しており、コマンドリストのクローズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_commandList, "コマンドリストの作成に失敗しており、コマンドリストのクローズ処理に失敗しました。");
 
 	// コマンドリストへの命令記録を終了するクラス
 	// ※注意 : もしCloseをしなければコマンドキューのExecute処理を行うことができない

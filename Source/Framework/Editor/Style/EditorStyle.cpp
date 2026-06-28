@@ -226,7 +226,7 @@ void FWK::Editor::EditorStyle::ApplyFont()
 {
 	ImGuiIO& l_io = ImGui::GetIO();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_io.Fonts, "フォントが無効です、フォントの適用に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_io.Fonts, "フォントが無効です、フォントの適用に失敗しました。");
 
 	// 日本語グリフを含むフォントを読み込む。
 	// ImGuiの標準フォントは日本語を持っていないため、

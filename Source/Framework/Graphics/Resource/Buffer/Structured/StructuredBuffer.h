@@ -23,27 +23,27 @@ namespace FWK::Graphics
 						  TypeAlias::SRVDescriptorPool&             a_srvDescriptorPool)
 		{
 			// ストラクチャードバッファーを作成するための条件がそろっているのかどうかを確認する
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferList.empty(),                                       "BufferListが空のため、StructuredBufferの作成に失敗しました。",                                    false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferList.size() > k_maxStructuredBufferElementCount,    "StructuredBufferの要素数がUINTの最大値を超えたため、StructuredBufferの作成に失敗しました。",      false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(sizeof(Type) > std::numeric_limits<UINT>::max(),            "StructuredBufferの1要素サイズがUINTの最大値を超えたため、StructuredBufferの作成に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_bufferGPUResource.m_resource,			                  "StructuredBufferは既にGPUResourceを保持しているため、再作成できません。",                         false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_srvDescriptorIndex != Constant::k_invalidDescriptorIndex, "StructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。",                  false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                                       "BufferListが空のため、StructuredBufferの作成に失敗しました。",                                    false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStructuredBufferElementCount,    "StructuredBufferの要素数がUINTの最大値を超えたため、StructuredBufferの作成に失敗しました。",      false);
+			FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),            "StructuredBufferの1要素サイズがUINTの最大値を超えたため、StructuredBufferの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_bufferGPUResource.m_resource,			                   "StructuredBufferは既にGPUResourceを保持しているため、再作成できません。",                         false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex != Constant::k_invalidDescriptorIndex, "StructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。",                  false);
 
 			const auto& l_bufferSize = static_cast<UINT64>(sizeof(Type)) * static_cast<UINT64>(a_bufferList.size());
 
 			// バッファーサイズがUINTが保持できる上限値を超えているかどうかを確認する
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_bufferSize == Constant::k_invalidBufferSize, "StructuredBufferの作成サイズが0のため、StructuredBufferの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == Constant::k_invalidBufferSize, "StructuredBufferの作成サイズが0のため、StructuredBufferの作成に失敗しました。", false);
 
 			// 失敗しても、このStructuredBufferが中途半端な状態にならないように、まずはローカル変数で作る
 			Struct::GPUResource l_bufferGPUResource = {};
 
 			// リソース作成のためのメモリ領域を確保
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateBufferGPUResource(a_gpuMemoryAllocator, l_bufferSize, l_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!CreateBufferGPUResource(a_gpuMemoryAllocator, l_bufferSize, l_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
 
 			Struct::BufferUploadCommand l_bufferUploadCommand = {};
 
 			// バッファーのアップロード先のデフォルトヒープにリソースを作成
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateBufferUploadCommand(a_bufferList,
+			FWK_ASSERT_RETURN_VALUE_IF(!CreateBufferUploadCommand(a_bufferList,
 																		 a_device,
 																		 l_bufferGPUResource,
 																		 l_bufferSize,
@@ -57,7 +57,7 @@ namespace FWK::Graphics
 																			  l_bufferGPUResource,
 																			  a_srvDescriptorPool);
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "StructuredBuffer用SRVの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "StructuredBuffer用SRVの作成に失敗しました。", false);
 
 			// 作成内容をメンバに反映
 			m_bufferGPUResource  = std::move(l_bufferGPUResource);
@@ -80,8 +80,8 @@ namespace FWK::Graphics
 
 		bool CreateBufferGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT64& a_bufferSize, Struct::GPUResource& a_bufferGPUResource) const
 		{
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferSize == Constant::k_invalidBufferSize,																  "StructuredBuffer用GPUResourceの作製サイズが0です。",  false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateBufferResource(a_bufferSize, D3D12_RESOURCE_STATE_COMMON, a_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize,															   "StructuredBuffer用GPUResourceの作成サイズが0です。",  false);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(a_bufferSize, D3D12_RESOURCE_STATE_COMMON, a_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
 
 			return true;
 		}
@@ -93,9 +93,9 @@ namespace FWK::Graphics
 									   const UINT64&					  a_bufferSize,
 									   	     Struct::BufferUploadCommand& a_bufferUploadCommand)
 		{
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bufferGPUResource.m_resource,               "StructuredBuffer用GPUResourceが無効のため、UploadCommandの作成に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferList.empty(),			                 "BufferListが空のため、UploadCommandの作成に失敗しました。",					   false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferSize == Constant::k_invalidBufferSize, "BufferSizeが0のため、UploadCommandの作成に失敗しました。",					       false);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,               "StructuredBuffer用GPUResourceが無効のため、UploadCommandの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                          "BufferListが空のため、UploadCommandの作成に失敗しました。",					    false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize, "BufferSizeが0のため、UploadCommandの作成に失敗しました。",					    false);
 
 			// 作成し終わったデフォルトヒープ上にあるリソースをコピー先として扱う
 			a_bufferUploadCommand.m_destinationBufferResource = a_bufferGPUResource.m_resource;
@@ -105,11 +105,11 @@ namespace FWK::Graphics
 			l_bufferUploadRecord.m_bufferSize = a_bufferSize;
 
 			// デフォルトヒープにコピーするためのアップロードヒープを作成する
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_bufferUploadRecord.m_uploadBuffer.Create(a_device, a_bufferSize), "StructuredBuffer用UploadBufferの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_bufferUploadRecord.m_uploadBuffer.Create(a_device, a_bufferSize), "StructuredBuffer用UploadBufferの作成に失敗しました。", false);
 
 			auto* l_mappedData = l_bufferUploadRecord.m_uploadBuffer.FetchPTRMappedData();
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_mappedData, "StructuredBuffer用UploadBufferのMap済みデータ取得に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "StructuredBuffer用UploadBufferのMap済みデータ取得に失敗しました。", false);
 
 			// デフォルトヒープコピー用のアップロードヒープにデータを送信
 			std::memcpy(l_mappedData, a_bufferList.data(), a_bufferSize);
@@ -125,14 +125,14 @@ namespace FWK::Graphics
 		{
 			const auto& l_device = a_device.GetREFDevice();
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device,												   "デバイスが作成されておらず、StructuredBuffer用SRVの作成に失敗しました。",                         Constant::k_invalidDescriptorIndex);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bufferGPUResource.m_resource,						   "BufferResourceが無効のため、StructuredBuffer用SRVの作成に失敗しました。",                         Constant::k_invalidDescriptorIndex);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferList.empty(),									   "BufferListが空のため、StructuredBuffer用SRVの作成に失敗しました。",                               Constant::k_invalidDescriptorIndex);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bufferList.size() > k_maxStructuredBufferElementCount, "StructuredBufferの要素数がUINTの最大値を超えたため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_device,												"デバイスが作成されておらず、StructuredBuffer用SRVの作成に失敗しました。",                         Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,						    "BufferResourceが無効のため、StructuredBuffer用SRVの作成に失敗しました。",                         Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),									    "BufferListが空のため、StructuredBuffer用SRVの作成に失敗しました。",                               Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStructuredBufferElementCount, "StructuredBufferの要素数がUINTの最大値を超えたため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 
 			const auto l_srvDescriptorIndex = a_srvDescriptorPool.Allocate();
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StructuredBuffer用のSRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StructuredBuffer用のSRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 
 			D3D12_SHADER_RESOURCE_VIEW_DESC l_srvDesc = {};
 

@@ -59,12 +59,12 @@ namespace FWK::Graphics
 		{
 			const auto l_alignedConstantBufferSize = Utility::AlignUp(sizeof(ConstantBufferType), k_constantBufferAlignment);
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_alignedConstantBufferSize != Utility::AlignUp(m_constantBufferTypeSize, k_constantBufferAlignment), "ConstantBufferUploaderの型サイズが一致しておらず、定数バッファ書き込み処理に失敗しました。", {});
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_writeIndex >= m_createConstantBufferCount,															"ConstantBufferUploaderの容量を超えており、定数バッファ書き込み処理に失敗しました。",		  {});
+			FWK_ASSERT_RETURN_VALUE_IF(l_alignedConstantBufferSize != Utility::AlignUp(m_constantBufferTypeSize, k_constantBufferAlignment), "ConstantBufferUploaderの型サイズが一致しておらず、定数バッファ書き込み処理に失敗しました。", {});
+			FWK_ASSERT_RETURN_VALUE_IF(a_writeIndex >= m_createConstantBufferCount,															 "ConstantBufferUploaderの容量を超えており、定数バッファ書き込み処理に失敗しました。",		   {});
 
 			auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
 
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_mappedData, "ConstantBufferUploaderの書き込み先取得に失敗しており、定数バッファ書き込み処理に失敗しました。", {});
+			FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "ConstantBufferUploaderの書き込み先取得に失敗しており、定数バッファ書き込み処理に失敗しました。", {});
 
 			// 書き込み先のインデックスとサイズ分のオフセットを計算
 			const auto l_writeOffset = a_writeIndex * l_alignedConstantBufferSize;

@@ -31,26 +31,26 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 	const auto& l_device		 = l_deviceWrapper.GetREFDevice			  ();
 	const auto& l_renderer		 = l_graphicsManager.GetREFRenderer		  ();
 	
-	FWK_ASSERT_RETURN_IF_FAILED(!l_device, "Deviceが無効のため、ImGuiの初期化処理にに失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_device, "Deviceが無効のため、ImGuiの初期化処理にに失敗しました。");
 
 	const auto& l_directCommandQueue = l_renderer.GetREFDirectCommandQueue    ();
 	const auto& l_commandQueue       = l_directCommandQueue.GetREFCommandQueue();
 
 	// ImGui用SRVDescriptorPoolの作成
-	FWK_ASSERT_RETURN_IF_FAILED(!CreateImGuiSRVDescriptorPool(l_deviceWrapper), "ImGui用SRVDescriptorPoolの作成に失敗したため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!CreateImGuiSRVDescriptorPool(l_deviceWrapper), "ImGui用SRVDescriptorPoolの作成に失敗したため、ImGuiの初期化処理に失敗しました。");
 
 	const auto& l_imGuiShaderVisibleDescriptorHeap = m_imGuiSRVDescriptorPool.GetREFShaderVisibleDescriptorHeap();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_imGuiShaderVisibleDescriptorHeap, "ImGui用SRVDescriptorHeapのShaderVisibleなHeapのラッパークラスが無効のため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_imGuiShaderVisibleDescriptorHeap, "ImGui用SRVDescriptorHeapのShaderVisibleなHeapのラッパークラスが無効のため、ImGuiの初期化処理に失敗しました。");
 
 	const auto& l_imGuiDescriptorHeap = l_imGuiShaderVisibleDescriptorHeap->GetREFDescriptorHeap();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_imGuiDescriptorHeap, "ImGui用SRVDescriptorHeapが無効のため、ImGuiの初期化処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!l_commandQueue,        "コマンドキューが無効のため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_imGuiDescriptorHeap, "ImGui用SRVDescriptorHeapが無効のため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_commandQueue,        "コマンドキューが無効のため、ImGuiの初期化処理に失敗しました。");
 
 	const auto& l_frameResourceList = l_renderer.GetREFFrameResourceList();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_frameResourceList.empty(), "フレームリソースリストが空のため、ImGuiの初期化処理にに失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_frameResourceList.empty(), "フレームリソースリストが空のため、ImGuiの初期化処理にに失敗しました。");
 
 	// ImGuiのバージョンをチェックして、ImGuiContextを作成する
 	IMGUI_CHECKVERSION  ();
@@ -95,11 +95,11 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 
 	// WIN32用ImGuiバックエンドを初期化する
 	// ImGui_ImplWin32_Init(入力を受け取る対象ウィンドウハンドル);
-	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplWin32_Init(a_hwnd),      "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!ImGui_ImplWin32_Init(a_hwnd),      "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理に失敗しました。");
 
 	// DirectX12用ImGuiバックエンドを初期化する
 	// ImGui_ImplDX12_Init(DirectX12用初期化情報);
-	FWK_ASSERT_RETURN_IF_FAILED(!ImGui_ImplDX12_Init (&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!ImGui_ImplDX12_Init (&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理に失敗しました。");
 
 	m_isInitialized = true;
 }
@@ -178,14 +178,14 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
 
 bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_imGuiSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_imGuiSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 
 	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_deviceWrapper   = l_graphicsManager.GetREFDevice		  ();
 	const auto& l_device		  = l_deviceWrapper.GetREFDevice			  ();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 
 	// コピー元のディスクリプタヒープハンドルとコピー先のディスクリプタヒープハンドルを取得
 	const auto l_sourceCPUDescriptorHandle      = a_sourceSRVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
@@ -199,7 +199,7 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::SRVD
 
 	// ImGui描画ではShaderVisible側のHeapを使うため、
 	// CPU側へコピーしたDescriptorをShaderVisible側にも反映する
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_imGuiSRVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(l_deviceWrapper, a_imGuiSRVDescriptorIndex), "ImGui用SRVDescriptorのShaderVisibleHeapへの反映に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_imGuiSRVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(l_deviceWrapper, a_imGuiSRVDescriptorIndex), "ImGui用SRVDescriptorのShaderVisibleHeapへの反映に失敗しました。", false);
 
 	return true;
 }
@@ -208,7 +208,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Editor::EditorManager::AllocateImGuiSRVDesc
 {
 	const auto l_imGuiSRVDescriptorIndex = m_imGuiSRVDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndexの確保に失敗しました。", Constant::k_invalidDescriptorIndex);
+	FWK_ASSERT_RETURN_VALUE_IF(l_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndexの確保に失敗しました。", Constant::k_invalidDescriptorIndex);
 
 	return l_imGuiSRVDescriptorIndex;
 }
@@ -231,7 +231,7 @@ ImTextureID FWK::Editor::EditorManager::FetchVALImGuiTextureID(const TypeAlias::
 
 void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");
+	FWK_ASSERT_RETURN_IF(!a_editorWindow, "作成しようとしているEditorWindowが無効になっており、追加処理を行えませんでした。");
 
 	const auto& l_staticID = a_editorWindow->GetREFRuntimeTypeINFO().k_staticTypeID;
 
@@ -244,18 +244,18 @@ void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWin
 
 void FWK::Editor::EditorManager::AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo * a_info, D3D12_CPU_DESCRIPTOR_HANDLE * a_outCPUHandle, D3D12_GPU_DESCRIPTOR_HANDLE * a_outGPUHandle)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_info         ||
-								!a_outCPUHandle ||
-							    !a_outGPUHandle,
-								"ImGui用のSRVDescriptorIndexの確保に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_info         ||
+						 !a_outCPUHandle ||
+						 !a_outGPUHandle,
+						 "ImGui用のSRVDescriptorIndexの確保に失敗しました。");
 
 	auto* const l_editorManager = static_cast<EditorManager*>(a_info->UserData);
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_editorManager, "EditorManagerが無効のため、ImGui用SRVDescriptorIndexの確保に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_editorManager, "EditorManagerが無効のため、ImGui用SRVDescriptorIndexの確保に失敗しました。");
 
 	const auto l_imGuiSRVDescriptorIndex = l_editorManager->m_imGuiSRVDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndex確保に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndex確保に失敗しました。");
 
 	*a_outCPUHandle = l_editorManager->m_imGuiSRVDescriptorPool.FetchVALShaderVisibleCPUDescriptorHandle(l_imGuiSRVDescriptorIndex);
 	*a_outGPUHandle = l_editorManager->m_imGuiSRVDescriptorPool.FetchVALGPUDescriptorHandle			    (l_imGuiSRVDescriptorIndex);
@@ -290,7 +290,7 @@ bool FWK::Editor::EditorManager::CreateImGuiSRVDescriptorPool(const Graphics::De
 	// 格納できるSRVの最大Index値を決める
 	l_descriptorIndexAllocator.SetCapacity(k_imguiSRVDescriptorCapacity);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_imGuiSRVDescriptorPool.Create(a_device), "ImGui用SRVDescriptorPoolの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_imGuiSRVDescriptorPool.Create(a_device), "ImGui用SRVDescriptorPoolの作成に失敗しました。", false);
 
 	return true;
 }
