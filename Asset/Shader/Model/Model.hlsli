@@ -1,19 +1,19 @@
-﻿struct ModelMeshlet
-{
-    uint vertexOffset;
-    uint vertexCount;
-    uint triangleOffset;
-    uint triangleCount;
-};
-
-// StaticModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
-struct ModelMeshOutput
+﻿// StaticModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
+struct MSOutput
 {
     float4 position      : SV_Position;
     float3 worldPosition : POSITION0;
     float3 worldNormal   : NORMAL0;
     float4 worldTangent  : TANGENT0;
     float2 uv            : TEXCOORD0;
+};
+
+struct ModelMeshlet
+{
+    uint vertexOffset;
+    uint vertexCount;
+    uint triangleOffset;
+    uint triangleCount;
 };
 
 // ModelのMeshlet1個分のカリング用境界情報

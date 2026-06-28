@@ -373,9 +373,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Final">
       <UniqueIdentifier>{7413ddfa-7403-4099-a979-53704f8697b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Shader\Final">
-      <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model">
       <UniqueIdentifier>{0066fa26-f44e-4fcb-8262-0ae6ae47636b}</UniqueIdentifier>
     </Filter>
@@ -732,6 +729,12 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Struct\TypeINFO">
       <UniqueIdentifier>{ca3f3422-a193-4a88-8ed4-7bfb315fc15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\RenderTarget">
+      <UniqueIdentifier>{f26372d4-c2d7-4c7b-98ab-c104ab20452e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\RenderTarget\Final">
+      <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1872,9 +1875,6 @@
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
     </None>
-    <None Include="Asset\Shader\Final\FinalColorShader.hlsli">
-      <Filter>Asset\Shader\Final</Filter>
-    </None>
     <None Include="Asset\Shader\Model\Model.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
@@ -1888,12 +1888,6 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Final\FinalColor_MS.hlsl">
-      <Filter>Asset\Shader\Final</Filter>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Final\FinalColor_PS.hlsl">
-      <Filter>Asset\Shader\Final</Filter>
     </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>

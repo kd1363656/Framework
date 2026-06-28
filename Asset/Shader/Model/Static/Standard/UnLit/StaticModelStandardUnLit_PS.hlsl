@@ -1,6 +1,6 @@
 ﻿#include "../../StaticModel.hlsli"
 
-float4 main(const ModelMeshOutput a_input) : SV_Target0
+float4 main(const MSOutput a_input) : SV_Target0
 {
     Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[g_baseColorTextureSRVDescriptorIndex];
     

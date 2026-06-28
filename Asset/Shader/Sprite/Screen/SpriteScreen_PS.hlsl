@@ -1,6 +1,6 @@
 ﻿#include "SpriteScreen.hlsli"
 
-float4 main(MeshOutput a_input) : SV_Target0
+float4 main(MSOutput a_input) : SV_Target0
 {
     // Alpha値が0.1以下ならピクセルを破棄
     if (g_color.a < k_needDiscardWriteAlpha) { discard; }

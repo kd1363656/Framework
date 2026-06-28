@@ -3,8 +3,8 @@
 // 三角形2枚でポリゴン出力用四角形を出力
 [outputtopology("triangle")]
 [numthreads(k_spriteMeshShaderThreadCountX, k_spriteMeshShaderThreadCountY, k_spriteMeshShaderThreadCountZ)]
-void main(out vertices MeshOutput a_vertexList   [k_spriteVertexCount],
-		  out indices  uint3      a_primitiveList[k_spritePrimitiveCount])
+void main(out vertices MSOutput a_vertexList   [k_spriteVertexCount],
+		  out indices  uint3    a_primitiveList[k_spritePrimitiveCount])
 {
 	// SetMeshOutputCounts(出力頂点数、
 	//					   出力プリミティブ数);
