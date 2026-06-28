@@ -33,7 +33,7 @@ bool FWK::Graphics::StructuredBuffer::ReserveRelease(const UINT64& a_retiredFenc
 		return true;
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_retiredFenceValue == Constant::k_unusedFenceValue, "FenceValueが無効のため、StructuredBufferの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Constant::k_unusedFenceValue, "FenceValueが無効のため、StructuredBufferの遅延解放登録に失敗しました。", false);
 
 	// GPUリソース、ディスクリプタインデックスの適切なタイミングでの解放を予約
 	Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
@@ -46,8 +46,8 @@ bool FWK::Graphics::StructuredBuffer::ReserveRelease(const UINT64& a_retiredFenc
 	l_srvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_srvDescriptorIndex;
 	l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),         "StructuredBufferのGPUResourceを遅延解放Queueへ登録できませんでした。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "StructuredBufferのSRVDescriptorIndexを遅延解放Queueへ登録できませんでした。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),         "StructuredBufferのGPUResourceを遅延解放Queueへ登録できませんでした。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "StructuredBufferのSRVDescriptorIndexを遅延解放Queueへ登録できませんでした。", false);
 
 	// もう一度開放処理が走らないように初期化
 	m_bufferGPUResource  = {};
@@ -85,7 +85,7 @@ void FWK::Graphics::StructuredBuffer::Release()
 	const auto& l_retiredFenceValue = l_directCommandQueue.FetchREFLastSignaledFenceValue();
 
 	// リソースの解放予約を行う
-	FWK_ASSERT_RETURN_IF_FAILED(!ReserveRelease(l_retiredFenceValue, l_resourceReleaseContext), "StructuredBufferの自動遅延解放登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!ReserveRelease(l_retiredFenceValue, l_resourceReleaseContext), "StructuredBufferの自動遅延解放登録に失敗しました。");
 }
 
 void FWK::Graphics::StructuredBuffer::MoveFrom(StructuredBuffer&& a_other) noexcept

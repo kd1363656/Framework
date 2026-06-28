@@ -4,24 +4,24 @@ bool FWK::Graphics::RenderArea::SetupRenderArea(const SwapChain& a_swapChain)
 {
 	const auto& l_swapChain = a_swapChain.GetREFSwapChain();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_swapChain, "スワップチェインが作成されておらず、ビューポート及びシザー矩形の作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_swapChain, "スワップチェインが作成されておらず、ビューポート及びシザー矩形の作成に失敗しました。", false);
 
 	const auto& l_backBufferList = a_swapChain.GetREFBackBufferList();
 	
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_backBufferList.empty(), "バックバッファーの要素が空になっており、ビューポート及びシザー矩形の作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(), "バックバッファーの要素が空になっており、ビューポート及びシザー矩形の作成に失敗しました。", false);
 
 	// 先頭のバックバッファを取得
 	// Viewport生成時に、このバックバッファの幅と高さを利用する
 	const auto& l_firstBackBuffer = l_backBufferList.begin()->m_backBufferResource.Get();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_firstBackBuffer, "バックバッファー作成ができておらず、ビューポート及びシザー矩形の作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_firstBackBuffer, "バックバッファー作成ができておらず、ビューポート及びシザー矩形の作成に失敗しました。", false);
 
 	DXGI_SWAP_CHAIN_DESC1 l_desc = {};
 
 	// スワップチェインからパラメータを取得し縦幅と横幅を取得
 	auto l_hr = l_swapChain->GetDesc1(&l_desc);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "スワップチェインのパラメーターの取得に失敗しており、ビューポート及びシザー矩形の作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインのパラメーターの取得に失敗しており、ビューポート及びシザー矩形の作成に失敗しました。", false);
 
 	// D3D12_VIEWPORT構造体について説明
 	// TopLeftX : 描画開始位置の左端X座標

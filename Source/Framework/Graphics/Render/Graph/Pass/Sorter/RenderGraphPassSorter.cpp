@@ -42,7 +42,7 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<std::unique_
 	// 実行順Indexリストを作る。
 	const auto& l_sortedPassIndexList = l_topologicalSorter.Sort(l_passDependencyList);
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_sortedPassIndexList.size() != l_passCount, "RenderGraphPassの実行順解決に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_sortedPassIndexList.size() != l_passCount, "RenderGraphPassの実行順解決に失敗しました。");
 
 	// 解決した順番に従って、新しいPassListを作る
 	std::vector<std::unique_ptr<RenderGraphPassBase>> l_sortedPassList = {};
@@ -51,7 +51,7 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<std::unique_
 
 	for (const auto l_sortedPassIndex : l_sortedPassIndexList)
 	{
-		FWK_ASSERT_RETURN_IF_FAILED(l_sortedPassIndex >= a_passList.size(), "RenderGraphPassの並び替えIndexが範囲外となっており、RenderGraphPassの実行順解決に失敗しました。");
+		FWK_ASSERT_RETURN_IF(l_sortedPassIndex >= a_passList.size(), "RenderGraphPassの並び替えIndexが範囲外となっており、RenderGraphPassの実行順解決に失敗しました。");
 
 		l_sortedPassList.emplace_back(std::move(a_passList[l_sortedPassIndex]));
 	}
@@ -65,26 +65,26 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassExecutionLayerDependencyEdge(c
 																			   const std::size_t&										a_afterPassIndex, 
 																					 std::vector<std::vector<std::size_t>>&				a_passDependencyList) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_beforePassIndex >= a_passList.size() ||
-								a_afterPassIndex  >= a_passList.size(),
-								"Before,AfterのPassIndexが範囲外となっており、ExecutionLayer依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_beforePassIndex >= a_passList.size() ||
+						 a_afterPassIndex  >= a_passList.size(),
+						 "Before,AfterのPassIndexが範囲外となっており、ExecutionLayer依存関係の作成に失敗しました。");
 
 	const auto& l_beforePass = a_passList[a_beforePassIndex];
 	const auto& l_afterPass  = a_passList[a_afterPassIndex];
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_beforePass, "BeforePassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!l_afterPass,  "AfterPassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_beforePass, "BeforePassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_afterPass,  "AfterPassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
 
 	const auto l_beforeExecutionLayer = l_beforePass->GetVALExecutionLayer();
 	const auto l_afterExecutionLayer  = l_afterPass->GetVALExecutionLayer ();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_beforeExecutionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
-								l_beforeExecutionLayer == Enum::RenderGraphPassExecutionLayer::Count,
-								"BeforePassのRenderGraphPassExecutionLayerが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_beforeExecutionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
+						 l_beforeExecutionLayer == Enum::RenderGraphPassExecutionLayer::Count,
+						 "BeforePassのRenderGraphPassExecutionLayerが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_afterExecutionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
-								l_afterExecutionLayer == Enum::RenderGraphPassExecutionLayer::Count,
-								"AfterPassのRenderGraphPassExecutionLayerが無効です、ExecutionLayer依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_afterExecutionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
+						 l_afterExecutionLayer == Enum::RenderGraphPassExecutionLayer::Count,
+						 "AfterPassのRenderGraphPassExecutionLayerが無効です、ExecutionLayer依存関係の作成に失敗しました。");
 
 	// 同じExecutionLayer同士は、Layerだけでは依存辺を作らない
 	if (l_beforeExecutionLayer == l_afterExecutionLayer) { return; }
@@ -107,15 +107,15 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const s
 																		 const std::size_t&										  a_afterPassIndex,
 																			   std::vector<std::vector<std::size_t>>&			  a_passDependencyList) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_beforePassIndex >= a_passList.size() ||
-								a_afterPassIndex  >= a_passList.size(),
-								"Before,AfterのPassIndexが範囲外となっており、ResourceAccess依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_beforePassIndex >= a_passList.size() ||
+						 a_afterPassIndex  >= a_passList.size(),
+						 "Before,AfterのPassIndexが範囲外となっており、ResourceAccess依存関係の作成に失敗しました。");
 
 	const auto& l_beforePass = a_passList[a_beforePassIndex];
 	const auto& l_afterPass  = a_passList[a_afterPassIndex];
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_beforePass, "BeforePassが無効となっており、ResourceAccess依存関係の作成に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!l_afterPass,  "AfterPassが無効となっており、ResourceAccess依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_beforePass, "BeforePassが無効となっており、ResourceAccess依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_afterPass,  "AfterPassが無効となっており、ResourceAccess依存関係の作成に失敗しました。");
 
 	const auto& l_beforeResourceAccessList = l_beforePass->GetREFResourceAccessList();
 	const auto& l_afterResourceAccessList  = l_afterPass->GetREFResourceAccessList ();
@@ -172,9 +172,9 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassDependencyEdge(const std::size
 	// 自分自身への依存は意味がないため追加しない
 	if (a_beforePassIndex == a_afterPassIndex) { return; }
 
-	FWK_ASSERT_RETURN_IF_FAILED(a_beforePassIndex >= a_passDependencyList.size() ||
-								a_afterPassIndex  >= a_passDependencyList.size(),
-								"RenderGraphPassの依存Indexが範囲外となっており、依存関係の作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_beforePassIndex >= a_passDependencyList.size() ||
+						 a_afterPassIndex  >= a_passDependencyList.size(),
+						 "RenderGraphPassの依存Indexが範囲外となっており、依存関係の作成に失敗しました。");
 
 	// 同じ依存辺をに順位追加しない。
 	// ResourceAccessの組み合わせによっては、

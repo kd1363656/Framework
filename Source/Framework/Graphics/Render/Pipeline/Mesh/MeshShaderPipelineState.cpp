@@ -15,23 +15,23 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 
 	const auto& l_device = a_device.GetREFDevice().Get();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_useRootSignature = GetREFUseRootSignature().lock();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_useRootSignature, "対象となるルートシグネチャの取得に失敗し、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_useRootSignature, "対象となるルートシグネチャの取得に失敗し、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_rootSignature = l_useRootSignature->GetREFRootSignature();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_rtvFormatList = GetREFRTVFormatList();
 
 	// RTVFormatListが空ならreturn
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
 
 	// RTVFormatListの要素数がレンダーターゲットの要素数を超えていたらreturn
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
 
 	// 使用するシェーダーをコンパイルする
 	// AmplificationShaderとPixelShaderは任意なので、
@@ -39,14 +39,14 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 	// MeshShaderはこのPSOで必須なので必ずコンパイルする
 	if (m_amplificationShader)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_amplificationShader->CreateFromFile(a_shaderCompiler), "AmplificationShaderの作成に失敗したため、パイプラインステートの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_amplificationShader->CreateFromFile(a_shaderCompiler), "AmplificationShaderの作成に失敗したため、パイプラインステートの作成処理に失敗しました。", false);
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_meshShader.CreateFromFile(a_shaderCompiler), "MeshShaderの作成に失敗したため、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_meshShader.CreateFromFile(a_shaderCompiler), "MeshShaderの作成に失敗したため、パイプラインステートの作成処理に失敗しました。", false);
 
 	if (m_pixelShader)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_pixelShader->CreateFromFile(a_shaderCompiler), "PixelShaderの作成に失敗したため、パイプラインステートの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_pixelShader->CreateFromFile(a_shaderCompiler), "PixelShaderの作成に失敗したため、パイプラインステートの作成処理に失敗しました。", false);
 	}
 
 	// メッシュシェーダー用パイプラインステート設定構造体
@@ -168,7 +168,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 	//					   作成結果のポインタを書き込むアドレス);
 	auto l_hr = l_device->CreatePipelineState(&l_streamDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "パイプラインステート作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "パイプラインステート作成処理に失敗しました。", false);
 
 	return true;
 }

@@ -19,55 +19,55 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 
 	const auto& l_device = a_device.GetREFDevice().Get();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_useRootSignature = GetREFUseRootSignature().lock();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_useRootSignature, "対象となるルートシグネチャの取得に失敗し、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_useRootSignature, "対象となるルートシグネチャの取得に失敗し、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_rootSignature = l_useRootSignature->GetREFRootSignature();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_rtvFormatList = GetREFRTVFormatList();
 
 	// RTVFormatListが空ならreturn
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
 
 	// RTVFormatListの要素数がレンダーターゲットの要素数を超えていたらreturn
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
 
 	// バーテックスシェーダーのコンパイル
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_vertexShader.CreateFromFile(a_shaderCompiler), "VertexShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_vertexShader.CreateFromFile(a_shaderCompiler), "VertexShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
 
 	// ハルシェーダーのコンパイル
 	if (m_hullShader)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_hullShader->CreateFromFile(a_shaderCompiler), "HullShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader->CreateFromFile(a_shaderCompiler), "HullShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
 	}
 
 	// ドメインシェーダーのコンパイル
 	if (m_domainShader)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_domainShader->CreateFromFile(a_shaderCompiler), "DomainShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_domainShader->CreateFromFile(a_shaderCompiler), "DomainShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
 	}
 
 	// ジオメトリシェーダーのコンパイル
 	if (m_geometryShader)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_geometryShader->CreateFromFile(a_shaderCompiler), "GeometryShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_geometryShader->CreateFromFile(a_shaderCompiler), "GeometryShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
 	}
 
 	// ピクセルシェーダーのコンパイル
 	if (m_pixelShader)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_pixelShader->CreateFromFile(a_shaderCompiler), "PixelShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_pixelShader->CreateFromFile(a_shaderCompiler), "PixelShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
 	}
 
 	// HullShaderとDomainShaderは基本的にセットで使う。
 	// 片方だけ設定されている場合は、テッセレーションPipelineとして不完全。
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED( m_hullShader && !m_domainShader, "HullShaderが設定されていますがDomainShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_hullShader &&  m_domainShader, "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF( m_hullShader && !m_domainShader, "HullShaderが設定されていますがDomainShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader &&  m_domainShader, "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC l_pipelineStateDesc = {};
 
@@ -122,7 +122,7 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 	// パイプラインステートの作成
 	const auto l_hr = l_device->CreateGraphicsPipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "StandardPipelineStateの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "StandardPipelineStateの作成処理に失敗しました。", false);
 
 	return true;
 }

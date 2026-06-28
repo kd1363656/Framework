@@ -240,7 +240,7 @@ void FWK::Converter::PipelineStateBaseJsonConverter::DeserializeRTVFormatList(co
 	if (!Utility::IsArray(a_rootJson)) { return; }
 
 	// レンダーターゲット数がDirectX12の上限を超えていないかどうかを確認
-	FWK_ASSERT_RETURN_IF_FAILED(a_rootJson.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えおり、RTVFormatListのデシリアライズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_rootJson.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えおり、RTVFormatListのデシリアライズ処理に失敗しました。");
 
 	for (const auto& l_json : a_rootJson)
 	{

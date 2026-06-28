@@ -23,27 +23,27 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&			   a_device
 
 	for (const auto& l_renderTargetPassTexture : m_renderTargetPassTextureList)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceの作成に失敗しました。", false);
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_renderTargetPassTexture->Create(a_device,
-																			 a_gpuMemoryAllocator,
-																			 a_clientSize,
-																			 l_rtvDescriptorPool,
-																			 l_srvDescriptorPool),	
-																			 "RenderTargetTextureの作成に失敗しました。",
-																			 false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_renderTargetPassTexture->Create(a_device,
+																	  a_gpuMemoryAllocator,
+																	  a_clientSize,
+																	  l_rtvDescriptorPool,
+																	  l_srvDescriptorPool),	
+																	  "RenderTargetTextureの作成に失敗しました。",
+																	  false);
 	}
 
 	for (const auto& l_depthStencilPassTexture : m_depthStencilPassTextureList)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceの作成に失敗しました。", false);
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_depthStencilPassTexture->Create(a_device,
-																			 a_gpuMemoryAllocator,
-																			 a_clientSize,
-																			 l_dsvDescriptorPool),
-																			 "DepthStencilTextureの作成に失敗しました。",
-																			 false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_depthStencilPassTexture->Create(a_device,
+																	  a_gpuMemoryAllocator,
+																	  a_clientSize,
+																	  l_dsvDescriptorPool),
+																	  "DepthStencilTextureの作成に失敗しました。",
+																	  false);
 	}
 
 	return true;
@@ -62,31 +62,31 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&				a_device,
 
 	for (const auto& l_renderTargetPassTexture : m_renderTargetPassTextureList)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceのリサイズ処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceのリサイズ処理に失敗しました。", false);
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_renderTargetPassTexture->Resize(a_device,
-																			 a_gpuMemoryAllocator,
-																			 a_clientSize,
-																		     a_retiredFenceValue,
-																			 l_rtvDescriptorPool,
-																			 l_srvDescriptorPool,
-																			 l_resourceReleaseContext),	
-																			 "RenderTargetTextureのリサイズに失敗しました。",
-																			 false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_renderTargetPassTexture->Resize(a_device,
+																	  a_gpuMemoryAllocator,
+																	  a_clientSize,
+																	  a_retiredFenceValue,
+																	  l_rtvDescriptorPool,
+																	  l_srvDescriptorPool,
+																	  l_resourceReleaseContext),	
+																	  "RenderTargetTextureのリサイズに失敗しました。",
+																	  false);
 	}
 
 	for (const auto& l_depthStencilPassTexture : m_depthStencilPassTextureList)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceのリサイズ処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceのリサイズ処理に失敗しました。", false);
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_depthStencilPassTexture->Resize(a_device,
-																			 a_gpuMemoryAllocator,
-																			 a_clientSize,
-																			 a_retiredFenceValue,
-																			 l_dsvDescriptorPool,
-																			 l_resourceReleaseContext),
-																			 "DepthStencilTextureのリサイズに失敗しました。",
-																			 false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_depthStencilPassTexture->Resize(a_device,
+																	  a_gpuMemoryAllocator,
+																	  a_clientSize,
+																	  a_retiredFenceValue,
+																	  l_dsvDescriptorPool,
+																	  l_resourceReleaseContext),
+																	  "DepthStencilTextureのリサイズに失敗しました。",
+																	  false);
 	}
 
 	return true;
@@ -94,12 +94,12 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&				a_device,
 
 void FWK::Graphics::RenderGraphFrameResource::AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
 
 	const auto l_renderTargetType = a_renderTargetPassTexture->GetVALRenderGraphRenderTargetType();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid, "RenderTargetPassTextureのRenderGraphRenderTargetTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(m_renderTargetPassTextureMap.contains(l_renderTargetType),        "同じRenderGraphRenderTargetTypeのRenderTargetPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid, "RenderTargetPassTextureのRenderGraphRenderTargetTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(m_renderTargetPassTextureMap.contains(l_renderTargetType),        "同じRenderGraphRenderTargetTypeのRenderTargetPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
 
 	m_renderTargetPassTextureList.emplace_back(a_renderTargetPassTexture);
 	m_renderTargetPassTextureMap.try_emplace  (l_renderTargetType, a_renderTargetPassTexture);
@@ -107,12 +107,12 @@ void FWK::Graphics::RenderGraphFrameResource::AddRenderTargetPassTexture(const s
 
 void FWK::Graphics::RenderGraphFrameResource::AddDepthStencilPassTexture(const std::shared_ptr<DepthStencilPassTexture>& a_depthStencilPassTexture)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
 
 	const auto l_depthStencilType = a_depthStencilPassTexture->GetVALRenderGraphDepthStencilType();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid, "DepthStencilPassTextureのRenderGraphDepthStencilTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(m_depthStencilPassTextureMap.contains(l_depthStencilType),        "同じRenderGraphDepthStencilTypeのDepthStencilPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid, "DepthStencilPassTextureのRenderGraphDepthStencilTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(m_depthStencilPassTextureMap.contains(l_depthStencilType),        "同じRenderGraphDepthStencilTypeのDepthStencilPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
 
 	m_depthStencilPassTextureList.emplace_back(a_depthStencilPassTexture);
 	m_depthStencilPassTextureMap.try_emplace  (l_depthStencilType, a_depthStencilPassTexture);

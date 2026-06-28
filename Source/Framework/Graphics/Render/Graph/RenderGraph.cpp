@@ -19,7 +19,7 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 	
 	for (const auto& l_drawRequestPerObject : m_drawRequestPerObjectList)
 	{
-		FWK_ASSERT_RETURN_IF_FAILED       (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF              (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
 		l_drawRequestPerObject->BeginFrame();
 	}
 
@@ -61,12 +61,12 @@ void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
 	const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
 		  auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList	  ();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_backBufferList.empty(),										 "BackBufferListが空のため、BackBufferのPresent遷移に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferのPresent遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBufferList.empty(),										  "BackBufferListが空のため、BackBufferのPresent遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferのPresent遷移に失敗しました。");
 
 	auto& l_backBuffer = l_backBufferList[l_backBufferIndex];
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのPresent遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのPresent遷移に失敗しました。");
 
 	// BackBufferをRENDERTARGET -> PRESENTへ遷移
 	// ImGuiとの連携の関係上明示的にリソース遷移を行う
@@ -80,18 +80,18 @@ nlohmann::json FWK::Graphics::RenderGraph::Serialize() const
 
 void FWK::Graphics::RenderGraph::AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_pass, "RenderGraphPassが無効のため、PassListへの登録処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_pass, "RenderGraphPassが無効のため、PassListへの登録処理に失敗しました。");
 
 	m_passList.emplace_back(std::move(a_pass));
 }
 
 void FWK::Graphics::RenderGraph::AddDrawRequestPass(const std::shared_ptr<DrawRequestPassBase>& a_drawRequestPass)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestPass, "DrawRequestPassが無効のため、DrawRequestPassListへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_drawRequestPass, "DrawRequestPassが無効のため、DrawRequestPassListへの登録に失敗しました。");
 
 	const auto l_staticTypeID = a_drawRequestPass->GetREFRuntimeTypeINFO().k_staticTypeID;
 
-	FWK_ASSERT_RETURN_IF_FAILED(m_drawRequestPassMap.contains(l_staticTypeID), "同じ型のDrawRequestPassを二重登録しようとしており、DrawRequestPassMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(m_drawRequestPassMap.contains(l_staticTypeID), "同じ型のDrawRequestPassを二重登録しようとしており、DrawRequestPassMapへの登録に失敗しました。");
 
 	m_drawRequestPassList.emplace_back(a_drawRequestPass);
 	m_drawRequestPassMap.try_emplace  (l_staticTypeID, a_drawRequestPass);
@@ -99,11 +99,11 @@ void FWK::Graphics::RenderGraph::AddDrawRequestPass(const std::shared_ptr<DrawRe
 
 void FWK::Graphics::RenderGraph::AddDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectBase>& a_drawRequestPerObject)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestPerObject, "DrawRequestPerObjectsが無効のため、DrawRequestPerObjectListへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_drawRequestPerObject, "DrawRequestPerObjectsが無効のため、DrawRequestPerObjectListへの登録に失敗しました。");
 
 	const auto l_staticTypeID = a_drawRequestPerObject->GetREFRuntimeTypeINFO().k_staticTypeID;
 
-	FWK_ASSERT_RETURN_IF_FAILED(m_drawRequestPerObjectMap.contains(l_staticTypeID), "同じ型のDrawRequestPerObjectを二重登録しようとしており、DrawRequestPerObjectMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(m_drawRequestPerObjectMap.contains(l_staticTypeID), "同じ型のDrawRequestPerObjectを二重登録しようとしており、DrawRequestPerObjectMapへの登録に失敗しました。");
 
 	m_drawRequestPerObjectList.emplace_back(a_drawRequestPerObject);
 	m_drawRequestPerObjectMap.try_emplace  (l_staticTypeID, a_drawRequestPerObject);
@@ -118,12 +118,12 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
 	const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
 		  auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList	  ();
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_backBufferList.empty(), "BackBufferListが空のため、BackBufferのClearに失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBufferList.empty(), "BackBufferListが空のため、BackBufferのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferのClearに失敗しました。");
 
 	auto& l_backBuffer = l_backBufferList[l_backBufferIndex];
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのClearに失敗しました。");
 
 	// BackBufferをPRESENT -> RENDERTARGETに明示的に遷移
 	m_resourceTransitioner.TransitionBackBufferResource(l_directCommandList, D3D12_RESOURCE_STATE_RENDER_TARGET, l_backBuffer);

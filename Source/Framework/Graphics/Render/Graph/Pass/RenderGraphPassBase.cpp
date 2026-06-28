@@ -53,7 +53,7 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::
 	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState(a_pipelineStateType);
 	const auto& l_pipelineState     = l_pipelineStateWeak.lock       ();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており、レンダーパイプラインのセットに失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており、レンダーパイプラインのセットに失敗しました。", {});
 
 	auto& l_directCommandList = a_renderer.GetMutableREFDirectCommandList();
 
@@ -65,9 +65,9 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::
 
 void FWK::Graphics::RenderGraphPassBase::SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_executionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
-								a_executionLayer == Enum::RenderGraphPassExecutionLayer::Count,
-								"RenderGraphPassExecutionLayerが無効となっており、RenderGraphPassExecutionLayerのセットに失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_executionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
+						 a_executionLayer == Enum::RenderGraphPassExecutionLayer::Count,
+						 "RenderGraphPassExecutionLayerが無効となっており、RenderGraphPassExecutionLayerのセットに失敗しました。");
 
 	m_executionLayer = a_executionLayer;
 }
@@ -79,30 +79,30 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const bool						     
 														   const Enum::RenderGraphResourceUsage    a_beforeUsage,
 														   const Enum::RenderGraphResourceUsage    a_afterUsage)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(a_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid ||
-								a_renderTargetType == Enum::RenderGraphRenderTargetType::Count,
-								"RenderGraphRenderTargetTypeが無効です、ResourceAccessの追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid ||
+						 a_renderTargetType == Enum::RenderGraphRenderTargetType::Count,
+						 "RenderGraphRenderTargetTypeが無効です、ResourceAccessの追加に失敗しました。");
 
-	FWK_ASSERT_RETURN_IF_FAILED(a_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid ||
-								a_depthStencilType == Enum::RenderGraphDepthStencilType::Count,
-								"RenderDepthStencilTypeが無効です、ResourceAccessの追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid ||
+						 a_depthStencilType == Enum::RenderGraphDepthStencilType::Count,
+						 "RenderDepthStencilTypeが無効です、ResourceAccessの追加に失敗しました。");
 
 
-	FWK_ASSERT_RETURN_IF_FAILED(a_accessType == Enum::RenderGraphAccessType::Invalid ||
-								a_accessType == Enum::RenderGraphAccessType::Count,
-								"RenderGraphAccessTypeが無効です、ResourceAccessの追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_accessType == Enum::RenderGraphAccessType::Invalid ||
+						 a_accessType == Enum::RenderGraphAccessType::Count,
+						 "RenderGraphAccessTypeが無効です、ResourceAccessの追加に失敗しました。");
 
 	// beforeUsageはPass実行前に必ず使うStateなので、Noneは禁止
-	FWK_ASSERT_RETURN_IF_FAILED(a_beforeUsage == Enum::RenderGraphResourceUsage::Invalid ||
-								a_beforeUsage == Enum::RenderGraphResourceUsage::None   ||
-								a_beforeUsage == Enum::RenderGraphResourceUsage::Count,
-								"BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_beforeUsage == Enum::RenderGraphResourceUsage::Invalid ||
+						 a_beforeUsage == Enum::RenderGraphResourceUsage::None   ||
+						 a_beforeUsage == Enum::RenderGraphResourceUsage::Count,
+						 "BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
 
 	// afterUsageはNoneを許可する
 	// Noneは「Pass実行後は状態遷移しない」という意味。
-	FWK_ASSERT_RETURN_IF_FAILED(a_afterUsage == Enum::RenderGraphResourceUsage::Invalid ||
-								a_afterUsage == Enum::RenderGraphResourceUsage::Count,
-								"AfterUsageが無効です、ResourceAccessの追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_afterUsage == Enum::RenderGraphResourceUsage::Invalid ||
+						 a_afterUsage == Enum::RenderGraphResourceUsage::Count,
+						 "AfterUsageが無効です、ResourceAccessの追加に失敗しました。");
 
 	Struct::RenderGraphResourceAccess l_resourceAccess = {};
 

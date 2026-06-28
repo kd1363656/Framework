@@ -33,12 +33,12 @@ namespace FWK::Graphics
 
 		void AddDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectType>& a_drawRequestPerObject)
 		{
-			FWK_ASSERT_RETURN_IF_FAILED(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録に失敗しました。");
+			FWK_ASSERT_RETURN_IF(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録に失敗しました。");
 
 			const auto& l_drawRequestPerObjectAddress = a_drawRequestPerObject.get();
 
 			// unordered_setにアドレスが存在するか確認するため、平均O(1)で重複確認ができる
-			FWK_ASSERT_RETURN_IF_FAILED(m_registeredAddressSet.contains(l_drawRequestPerObjectAddress), "同じDrawRequestPerObjectを二重登録しようとしており、DrawRequestPerObjectの登録に失敗しました。");
+			FWK_ASSERT_RETURN_IF(m_registeredAddressSet.contains(l_drawRequestPerObjectAddress), "同じDrawRequestPerObjectを二重登録しようとしており、DrawRequestPerObjectの登録に失敗しました。");
 
 			DrawRequestPerObjectRecord l_drawRequestPerObjectRecord = {};
 
@@ -51,7 +51,7 @@ namespace FWK::Graphics
 
 		bool ContainsDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectType>& a_drawRequestPerObject) const
 		{
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録確認に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録確認に失敗しました。", false);
 
 			const auto& l_drawRequestPerObjectAddress = a_drawRequestPerObject.get();
 
@@ -60,7 +60,7 @@ namespace FWK::Graphics
 
 		bool RemoveDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectType>& a_drawRequestPerObject)
 		{
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録解除に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録解除に失敗しました。", false);
 
 			const auto& l_drawRequestPerObjectAddress = a_drawRequestPerObject.get();
 

@@ -13,7 +13,7 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 													ResourceContext&    a_resourceContext)
 {
 	// フレームリソースがないとコマンドアロケーターを使えないため"return"
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
 
 	const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator      ();
 	const auto& l_shaderCompiler     = a_resourceContext.GetREFShaderCompiler          ();
@@ -23,37 +23,37 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	{
 		if (!l_frameResource) { continue; }
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_frameResource->Create(a_device,
-																   l_gpuMemoryAllocator,
-																   a_clientSize,
-																   a_resourceContext), 
-																   "フレームリソースの作成処理に失敗しました。", 
-																   false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_frameResource->Create(a_device,
+															l_gpuMemoryAllocator,
+															a_clientSize,
+															a_resourceContext), 
+															"フレームリソースの作成処理に失敗しました。", 
+															false);
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandQueue.Create(a_device), "ダイレクトコマンドキューの作成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_directCommandList.Create(a_device),  "ダイレクトコマンドリストの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandQueue.Create(a_device), "ダイレクトコマンドキューの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandList.Create(a_device),  "ダイレクトコマンドリストの作成処理に失敗しました。", false);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_swapChain.Create(a_window,
-														  a_device,
-														  a_factory, 
-														  m_directCommandQueue, 
-														  l_rtvDescriptorPool), 
-														  "ダイレクトコマンドリストの作成処理に失敗しました。",
-														  false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_swapChain.Create(a_window,
+												   a_device,
+												   a_factory, 
+												   m_directCommandQueue, 
+												   l_rtvDescriptorPool), 
+												   "ダイレクトコマンドリストの作成処理に失敗しました。",
+												   false);
 
 	// ルートシグネチャの作成処理
 	for (const auto& [l_type, l_rootSignature] : m_rootSignatureMap)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature,					  "RootSignatureが無効のため、RootSignatureの作成に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_rootSignature->Create(a_device), "RootSignatureの作成処理に失敗しました。",						    false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature,					  "RootSignatureが無効のため、RootSignatureの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature->Create(a_device), "RootSignatureの作成処理に失敗しました。",						false);
 	}
 
 	// パイプラインステートの作成処理
 	for (const auto& [l_type, l_pipelineState] : m_pipelineStateMap)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState,											   "PipelineStateが無効のため、PipelineStateの作成に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_pipelineState->Create(a_device, l_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState,											   "PipelineStateが無効のため、PipelineStateの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState->Create(a_device, l_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
 	}
 
 	// 画面解像度に合ったビューポート、シザー矩形を作成する
@@ -79,7 +79,7 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
 	// 現在のフレームリソースの定数バッファのインデックスの初期化
 	const auto& l_currentFrameResource = m_currentFrameResource.lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
 
 	ResetCommandObjects(*l_currentFrameResource);
 
@@ -94,7 +94,7 @@ void FWK::Graphics::Renderer::Execute(const ResourceContext& a_resourceContext)
 {
 	const auto& l_currentFrameResource = m_currentFrameResource.lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
 
 	m_renderGraph.Execute(a_resourceContext, *this);
 }
@@ -102,11 +102,11 @@ void FWK::Graphics::Renderer::EndFrame()
 {
 	const auto& l_currentFrameResource = m_currentFrameResource.lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画終了処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画終了処理に失敗しました。");
 
 	const auto& l_commandAllocator = l_currentFrameResource->GetREFDirectCommandAllocator();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
 
 	// スワップチェインのリソース状態遷移(RENDER_TARGET -> PRESENT)
 	m_renderGraph.EndFrame(*this);
@@ -142,11 +142,11 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Clien
 		  auto& l_rtvDescriptorPool      = a_resourceContext.GetMutableREFRTVDescriptorPool     ();
 		  
 	// バックバッファのリサイズを行う
-	FWK_ASSERT_RETURN_IF_FAILED(!m_swapChain.Resize(a_device,
-													l_resourceReleaseContext, 
-													a_clientSize, 
-													l_rtvDescriptorPool), 
-													"バックバッファのリサイズ処理に失敗しており、リサイズ処理に失敗しました");
+	FWK_ASSERT_RETURN_IF(!m_swapChain.Resize(a_device,
+											 l_resourceReleaseContext, 
+											 a_clientSize, 
+											 l_rtvDescriptorPool), 
+											 "バックバッファのリサイズ処理に失敗しており、リサイズ処理に失敗しました");
 
 	// スワップチェインリサイズ後にレンダーエリアを作成
 	m_renderArea.SetupRenderArea(m_swapChain);
@@ -157,32 +157,32 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Clien
 	{
 		if (!l_frameResource) { continue; }
 
-		FWK_ASSERT_RETURN_IF_FAILED(!l_frameResource->Resize(a_device,
-															 l_gpuMemoryAllocator,
-															 a_clientSize,
-															 l_retiredFenceValue,
-															 a_resourceContext),
-															 "フレームリソースのリサイズ処理に失敗しており、リサイズ処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!l_frameResource->Resize(a_device,
+													  l_gpuMemoryAllocator,
+													  a_clientSize,
+													  l_retiredFenceValue,
+													  a_resourceContext),
+													  "フレームリソースのリサイズ処理に失敗しており、リサイズ処理に失敗しました。");
 	}
 }
 
 void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
 
 	m_frameResourceList.emplace_back(a_frameResource);
 }
 void FWK::Graphics::Renderer::AddRootSignature(const std::shared_ptr<RootSignature>& a_rootSignature, const Enum::RootSignatureType a_rootSignatureType)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_rootSignature,										 "RootSignatureが無効のため、RootSignatureMapへの登録に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_rootSignatureType == Enum::RootSignatureType::Invalid, "RootSignatureが無効な種類のため、RootSignatureMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_rootSignature,										  "RootSignatureが無効のため、RootSignatureMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_rootSignatureType == Enum::RootSignatureType::Invalid, "RootSignatureが無効な種類のため、RootSignatureMapへの登録に失敗しました。");
 
 	m_rootSignatureMap.try_emplace(a_rootSignatureType, a_rootSignature);	
 }
 void FWK::Graphics::Renderer::AddPipelineState(const std::shared_ptr<PipelineStateBase>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_pipelineState,										 "PipelineStateが無効のため、PipelineStateMapへの登録に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_pipelineStateType == Enum::PipelineStateType::Invalid, "PipelineStateが無効な種類のため、PipelineStateMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_pipelineState,										  "PipelineStateが無効のため、PipelineStateMapへの登録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_pipelineStateType == Enum::PipelineStateType::Invalid, "PipelineStateが無効な種類のため、PipelineStateMapへの登録に失敗しました。");
 
 	m_pipelineStateMap.try_emplace(a_pipelineStateType, a_pipelineState);
 }
@@ -208,7 +208,7 @@ void FWK::Graphics::Renderer::ResetCommandObjects(const FrameResource& a_frameRe
 {
 	const auto& l_commandAllocator = a_frameResource.GetREFDirectCommandAllocator();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
 
 	// コマンドアロケータからGPU処理が終わっているかどうかを確かめGPUの処理が終わっていればWait
 	m_directCommandQueue.EnsureAllocatorAvailable(*l_commandAllocator);
@@ -242,7 +242,7 @@ bool FWK::Graphics::Renderer::PrepareForSwapChainResize()
 
 		const auto& l_commandAllocator = l_frameResource->GetREFDirectCommandAllocator();
 
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_commandAllocator, "ダイレクトコマンドアロケータが無効のため、スワップチェインリサイズ前処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効のため、スワップチェインリサイズ前処理に失敗しました。", false);
 
 		// コマンドアロケータをリセット
 		// コマンドアロケータは、コマンドリストに記録した命令のメモリを管理するもの
@@ -252,11 +252,11 @@ bool FWK::Graphics::Renderer::PrepareForSwapChainResize()
 
 	const auto& l_currentFrameResource = m_currentFrameResource.lock();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_currentFrameResource, "フレームリソースの取得に失敗しており、スワップチェインリサイズ前処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、スワップチェインリサイズ前処理に失敗しました。", false);
 
 	const auto& l_commandAllocator = l_currentFrameResource->GetREFDirectCommandAllocator();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、スワップチェインリサイズ前処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、スワップチェインリサイズ前処理に失敗しました。", false);
 
 	// DirectCommandListをリセット
 	// これにより、前フレームで記録したBackBufferへのResourceBarrierなどの参照を外す。

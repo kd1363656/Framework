@@ -10,7 +10,7 @@ bool FWK::Graphics::RootSignature::Create(const Device & a_device)
 {
 	const auto& l_device = a_device.GetREFDevice();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device, "デバイスが作成されておらず、ルートシグネチャの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスが作成されておらず、ルートシグネチャの作成に失敗しました。", false);
 
 	// ルートパラメータのみを格納するリストを作成
 	std::vector<D3D12_ROOT_PARAMETER> l_rootParameterList = {};
@@ -85,7 +85,7 @@ bool FWK::Graphics::RootSignature::Create(const Device & a_device)
 										 l_serializedBlob->GetBufferSize(),
 										 IID_PPV_ARGS(m_rootSignature.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "ルートシグネチャの作成に失敗しており、ルートシグネチャの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "ルートシグネチャの作成に失敗しており、ルートシグネチャの作成に失敗しました。", false);
 
 	return true;
 }

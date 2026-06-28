@@ -23,8 +23,8 @@ namespace FWK::Graphics
 		{
 			auto l_constantBufferUploader = a_frameResource.FindPTRConstantBufferUploader<ConstantBufferUploaderType>().lock();
 
-			FWK_ASSERT_RETURN_IF_FAILED(!l_constantBufferUploader,																"共通パス定数バッファアップローダーが取得できないため、定数バッファのセットに失敗しました。");
-			FWK_ASSERT_RETURN_IF_FAILED(l_constantBufferUploader->GetREFConstantBufferTypeSize() != sizeof(ConstantBufferType), "取得した定数バッファアップローダーの型サイズとGPU転送予定の定数バッファが一致しないため、定数バッファのセットに失敗しました。");
+			FWK_ASSERT_RETURN_IF(!l_constantBufferUploader,																 "共通パス定数バッファアップローダーが取得できないため、定数バッファのセットに失敗しました。");
+			FWK_ASSERT_RETURN_IF(l_constantBufferUploader->GetREFConstantBufferTypeSize() != sizeof(ConstantBufferType), "取得した定数バッファアップローダーの型サイズとGPU転送予定の定数バッファが一致しないため、定数バッファのセットに失敗しました。");
 
 			const auto& l_gpuVirtualAddress = l_constantBufferUploader->WriteCommonPass(a_constantBuffer);
 
