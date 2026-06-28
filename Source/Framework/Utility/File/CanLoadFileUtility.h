@@ -12,7 +12,7 @@ namespace FWK::Utility
 		return true;
 	}
 
-	// ファイルが読み込める形式かどうか拡張子が一致しているかどうかを確認する
+	// ファイルが読み込める形式かどうか、拡張子が一致しているかどうかを確認する
 	inline bool CanLoadFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_extension)
 	{
 		if (!CanLoadFilePath(a_filePath))		   { return false; }

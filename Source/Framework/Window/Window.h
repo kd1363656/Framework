@@ -20,16 +20,16 @@ namespace FWK
 
 		bool IsMinimized() const;
 
-		void SetupWindowStyle(const Enum::WindowStyle a_windowStyle);
+		void SetupStyle(const Enum::WindowStyle a_style);
 
-		void SetWindowStyle(const Enum::WindowStyle a_set) { m_windowStyle = a_set; }
+		void SetStyle(const Enum::WindowStyle a_set) { m_style = a_set; }
 
 		const auto& GetREFHWND() const { return m_hwnd; }
 
 		const auto& GetREFClientSize   () const { return m_clientSize; }
 		const auto& GetREFResizeRequest() const { return m_resizeRequest; }
 
-		auto GetVALWindowStyle() const { return m_windowStyle; }
+		auto GetVALStyle() const { return m_style; }
 
 	private:
 
@@ -69,8 +69,6 @@ namespace FWK
 
 		FWK::Struct::ClientSize FetchVALCurrentClientSize() const;
 
-		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Window/WindowCONFIG.json";
-
 		// ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
 		static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
 
@@ -103,7 +101,7 @@ namespace FWK
 
 		static constexpr int k_quitExitCode = 0;
 
-		HWND m_hwnd;
+		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Window/WindowCONFIG.json";
 
 		Converter::WindowJsonConverter m_jsonConverter = {};
 
@@ -112,6 +110,8 @@ namespace FWK
 		Struct::ClientSize			m_clientSize;
 		Struct::WindowResizeRequest m_resizeRequest;
 
-		Enum::WindowStyle m_windowStyle;
+		HWND m_hwnd;
+
+		Enum::WindowStyle m_style;
 	};
 }

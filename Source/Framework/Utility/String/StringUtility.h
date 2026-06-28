@@ -14,7 +14,7 @@ namespace FWK::Utility
 		//		文字列の先頭ポインタ、
 		//		文字列のバイト数、
 		//		出力用に格納するワイド文字列の先頭アドレス（nullptr = サイズ問い合わせ）、
-		//		出力用ワイド文字列のサイズ				  （0       = サイズ取得モード）
+		//		出力用ワイド文字列のサイズ（0 = サイズ取得モード）
 		// )
 		// UTF-8文字列をUTF-16(std::wstring)へ変換
 		const int l_size = MultiByteToWideChar(CP_UTF8, 

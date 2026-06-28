@@ -20,6 +20,6 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_windowStyleTagJsonKey = "WindowStyleTag";
+		static constexpr std::string_view k_styleTagJsonKey = "StyleTag";
 	};
 }

@@ -11,14 +11,16 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND,
 															 LPARAM);
 
 FWK::Window::Window() : 
-	m_hwnd(nullptr),
+	m_jsonConverter(),
 
 	m_normalWindowRECT(),
 
 	m_clientSize   (),
 	m_resizeRequest(),
 
-	m_windowStyle(Enum::WindowStyle::None)
+	m_hwnd(nullptr),
+
+	m_style(Enum::WindowStyle::None)
 {}
 FWK::Window::~Window()
 {
@@ -101,18 +103,18 @@ bool FWK::Window::IsMinimized() const
 	return m_resizeRequest.m_isMinimized;
 }
 
-void FWK::Window::SetupWindowStyle(const Enum::WindowStyle a_windowStyle)
+void FWK::Window::SetupStyle(const Enum::WindowStyle a_style)
 {
-	if (m_windowStyle == a_windowStyle) { return; }
+	if (m_style == a_style) { return; }
 
 	// 現在のウィンドウが通常ウィンドウならウィンドウ形式を切り替える前に
 	// 元の位置とサイズを保存しておく
-	if (m_windowStyle == Enum::WindowStyle::Normal)
+	if (m_style == Enum::WindowStyle::Normal)
 	{
 		StoreNormalWindowRECT();
 	}
 
-	m_windowStyle = a_windowStyle;
+	m_style = a_style;
 
 	// CONFIG読み込み中など、まだウィンドウが作られていない場合はここで終了
 	if (!m_hwnd) { return; }
@@ -320,7 +322,7 @@ void FWK::Window::SetupNormalWindowClientSize()
 	// まだウィンドウが作成されていないなら何もしない
 	if (!m_hwnd) { return; }
 
-	if (m_windowStyle != Enum::WindowStyle::Normal) { return; }
+	if (m_style != Enum::WindowStyle::Normal) { return; }
 
 	RECT l_clientRECT =
 	{
@@ -389,19 +391,19 @@ void FWK::Window::ApplyWindowStyle()
 {
 	if (!m_hwnd) { return; }
 
-	if (m_windowStyle == Enum::WindowStyle::Normal)
+	if (m_style == Enum::WindowStyle::Normal)
 	{
 		ApplyNormalWindowStyle();
 
 		return;
 	}
-	else if (m_windowStyle == Enum::WindowStyle::BorderlessFullScreen)
+	else if (m_style == Enum::WindowStyle::BorderlessFullScreen)
 	{
 		ApplyBorderlessFullScreenWindowStyle();
 
 		return;
 	}
-	else if (m_windowStyle == Enum::WindowStyle::None)
+	else if (m_style == Enum::WindowStyle::None)
 	{
 		FWK_ASSERT_RETURN("ウィンドウスタイルタグが指定されていません、ウィンドウスタイルの適応に失敗しました。");
 	}
@@ -489,7 +491,7 @@ void FWK::Window::StoreNormalWindowRECT()
 	if (!m_hwnd) { return; }
 
 	// すでにボーダーレスフルスクリーン状態なら保存しない。
-	if (m_windowStyle != Enum::WindowStyle::BorderlessFullScreen) { return; }
+	if (m_style != Enum::WindowStyle::BorderlessFullScreen) { return; }
 
 	RECT l_windowRECT = {};
 
@@ -521,9 +523,9 @@ HINSTANCE FWK::Window::FetchVALInstanceHandle() const
 DWORD FWK::Window::FetchVALWindowStyle() const
 {
 	// 持っているタグから返すウィンドウスタイルを判定する
-	if      (m_windowStyle == Enum::WindowStyle::Normal)		           { return k_generalWindowStyle; }
-	else if	(m_windowStyle == Enum::WindowStyle::BorderlessFullScreen) { return k_borderlessFullScreenWindowStyle; }
-	else if (m_windowStyle == Enum::WindowStyle::None)				   
+	if      (m_style == Enum::WindowStyle::Normal)               { return k_generalWindowStyle; }
+	else if	(m_style == Enum::WindowStyle::BorderlessFullScreen) { return k_borderlessFullScreenWindowStyle; }
+	else if (m_style == Enum::WindowStyle::None)				   
 	{
 		FWK_ASSERT_RETURN_VALUE("ウィンドウスタイルが無効値です。取得に失敗しました。", k_generalWindowStyle); 
 	}
