@@ -19,7 +19,7 @@ std::vector<std::size_t> FWK::Utility::TopologicalSorter::Sort(const std::vector
 	{
 		for (const auto l_nextNodeIndex : a_dependencyList[l_nodeIndex])
 		{
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_nextNodeIndex >= l_nodeCount, "トポロジカルソートの依存先Indexが範囲外です。", {});
+			FWK_ASSERT_RETURN_VALUE_IF(l_nextNodeIndex >= l_nodeCount, "トポロジカルソートの依存先Indexが範囲外です。", {});
 
 			// l_nodeIndex -> l_nextNodeIndexという依存関係があるため、
 			// l_nextNodeIndexはl_nodeIndexが終わるまで実行できない
@@ -59,7 +59,7 @@ std::vector<std::size_t> FWK::Utility::TopologicalSorter::Sort(const std::vector
 		for (const auto& l_nextNodeIndex : a_dependencyList[l_currentNodeIndex])
 		{
 			// 入次数が既に0の場合、ここでさらに減らすとstd::size_tがアンダーフローする
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_inDegreeList[l_nextNodeIndex] == k_emptyInDegree, "トポロジカルソートの入次数が不正です。", {});
+			FWK_ASSERT_RETURN_VALUE_IF(l_inDegreeList[l_nextNodeIndex] == k_emptyInDegree, "トポロジカルソートの入次数が不正です。", {});
 
 			// l_currentNodeIndexが実行済み扱いになったので、
 			// l_nextNodeIndexが持つべきノード数を一つ減らす
@@ -74,7 +74,7 @@ std::vector<std::size_t> FWK::Utility::TopologicalSorter::Sort(const std::vector
 	}
 
 	// 全てのノードを結果に入れられなかった場合は循環依存。
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_sortedIndexList.size() != l_nodeCount, "トポロジカルソートに失敗しました。循環依存があります。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(l_sortedIndexList.size() != l_nodeCount, "トポロジカルソートに失敗しました。循環依存があります。", {});
 
 	return l_sortedIndexList;
 }

@@ -8,17 +8,17 @@ void FWK::Graphics::UploadSystem::Deserialize(const nlohmann::json& a_rootJson)
 }
 bool FWK::Graphics::UploadSystem::Create(const Device& a_device)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_copyCommandQueue.Create(a_device), "コピーコマンドキュー作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_copyCommandQueue.Create(a_device), "コピーコマンドキュー作成処理に失敗しました。", false);
 
 	// Deserializeでコピーコマンドアロケータの数を設定している、もしコマンドアロケータ数が0なら
 	// リストが空の場合は、UploadSystemJsonConverterのDeserialize処理を確認すること
 	for (const auto& l_copyCommandAllocator : m_copyCommandAllocatorList)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_copyCommandAllocator,				     "コマンドアロケーターが無効のため、作成処理に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_copyCommandAllocator->Create(a_device), "コピーコマンドアロケータ作成処理に失敗しました。",		       false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_copyCommandAllocator,                   "コマンドアロケーターが無効のため、作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_copyCommandAllocator->Create(a_device), "コピーコマンドアロケータ作成処理に失敗しました。",           false);
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_copyCommandList.Create(a_device), "コピーコマンドリスト作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_copyCommandList.Create(a_device), "コピーコマンドリスト作成処理に失敗しました。", false);
 
 	return true;
 }
@@ -31,7 +31,7 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(c
 
 	const auto& l_copyCommandAllocator = FetchMutablePTRCopyCommandAllocator().lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、バッチテクスチャコピー送信処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、バッチテクスチャコピー送信処理に失敗しました。");
 
 	// コマンドリストなどのリセットなどを行う
 	BeforSubmitResourceProcess(*l_copyCommandAllocator);
@@ -42,7 +42,7 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(c
 	{
 		const auto& l_textureRecord = l_pendingTextureBatchUploadRecord.m_textureRecord;
 
-		FWK_ASSERT_RETURN_IF_FAILED(!l_textureRecord, "TextureRecordが無効になっており、テクスチャコピー処理ができませんでした。");
+		FWK_ASSERT_RETURN_IF(!l_textureRecord, "TextureRecordが無効になっており、テクスチャコピー処理ができませんでした。");
 
 		const auto& l_textureUploadRecord = l_pendingTextureBatchUploadRecord.m_textureUploadRecord;
  
@@ -61,14 +61,14 @@ void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(c
 
 	const auto& l_copyCommandAllocator = FetchMutablePTRCopyCommandAllocator().lock();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、StaticModel用BufferResourceのバッチコピーに失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、StaticModel用BufferResourceのバッチコピーに失敗しました。");
 
 	// コマンドリストなどのリセットなどを行う
 	BeforSubmitResourceProcess(*l_copyCommandAllocator);
 
 	for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : l_pendingStaticModelBatchUploadRecordMap)
 	{
-		FWK_ASSERT_RETURN_IF_FAILED(l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList.empty(), "StaticModel用BufferUploadCommandListが空のため、StaticModel用BufferResourceのバッチコピーに失敗しました。");
+		FWK_ASSERT_RETURN_IF(l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList.empty(), "StaticModel用BufferUploadCommandListが空のため、StaticModel用BufferResourceのバッチコピーに失敗しました。");
 
 		// バッファーをコピーしていく
 		for (const auto& l_bufferUploadCommand : l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList)
@@ -88,7 +88,7 @@ nlohmann::json FWK::Graphics::UploadSystem::Serialize() const
 
 void FWK::Graphics::UploadSystem::AddCommandAllocator(const std::shared_ptr<CopyCommandAllocator>& a_copyCommandAllocator)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_copyCommandAllocator, "無効なコピーコマンドアロケーターです、コピーコマンドアロケーター追加処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_copyCommandAllocator, "無効なコピーコマンドアロケーターです、コピーコマンドアロケーター追加処理に失敗しました。");
 
 	m_copyCommandAllocatorList.emplace_back(a_copyCommandAllocator);
 }
@@ -113,9 +113,9 @@ void FWK::Graphics::UploadSystem::AfterSubmitResourceProcess(CopyCommandAllocato
 
 void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList, const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_textureResource,   "コピー先TextureResourceが無効のため、テクスチャコピー記録に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!a_uploadBuffer,      "コピー元UploadBufferが無効のため、テクスチャコピー記録に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_layoutList.empty(), "サブリソース配置情報が空のため、テクスチャコピー記録処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_textureResource,   "コピー先TextureResourceが無効のため、テクスチャコピー記録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_uploadBuffer,      "コピー元UploadBufferが無効のため、テクスチャコピー記録に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_layoutList.empty(), "サブリソース配置情報が空のため、テクスチャコピー記録処理に失敗しました。");
 
 	for (auto l_subresourceIndex = 0U; l_subresourceIndex < static_cast<UINT>(a_layoutList.size()); ++l_subresourceIndex)
 	{
@@ -142,12 +142,12 @@ void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLAC
 
 void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCommand& a_bufferUploadCommand) const
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!a_bufferUploadCommand.m_destinationBufferResource, "コピー先BufferResourceが無効のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_bufferUploadCommand.m_destinationBufferResource, "コピー先BufferResourceが無効のため、バッファコピー処理に失敗しました。");
 
 	const auto& l_uploadBuffer = a_bufferUploadCommand.m_bufferUploadRecord.m_uploadBuffer.GetREFUploadBuffer();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_uploadBuffer,																		      "コピー元UploadBufferが無効のため、バッファコピー処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_bufferUploadCommand.m_bufferUploadRecord.m_bufferSize == Constant::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_uploadBuffer,                                                                          "コピー元UploadBufferが無効のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_bufferUploadCommand.m_bufferUploadRecord.m_bufferSize == Constant::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
 	
 	// コピー先とコピー元のリソースを取得
 	auto& l_destinationBufferResource = *a_bufferUploadCommand.m_destinationBufferResource.Get();
@@ -163,12 +163,12 @@ void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCom
 
 std::weak_ptr<FWK::Graphics::CopyCommandAllocator> FWK::Graphics::UploadSystem::FetchMutablePTRCopyCommandAllocator()
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_copyCommandAllocatorList.empty(),									"コピーコマンドアロケータリストが空のため、コピーコマンドアロケータ取得処理に失敗しました。",					       {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_currentCopyCommandAllocatorIndex >= m_copyCommandAllocatorList.size(), "コピーコマンドアロケータリストの容量を超えたインデックスのため、コピーコマンドアロケータ取得処理に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_copyCommandAllocatorList.empty(),                                      "コピーコマンドアロケータリストが空のため、コピーコマンドアロケータ取得処理に失敗しました。",					       {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_currentCopyCommandAllocatorIndex >= m_copyCommandAllocatorList.size(), "コピーコマンドアロケータリストの容量を超えたインデックスのため、コピーコマンドアロケータ取得処理に失敗しました。", {});
 
 	const auto& l_copyCommandAllocator = m_copyCommandAllocatorList[m_currentCopyCommandAllocatorIndex];
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_copyCommandAllocator, "コピーコマンドアロケータが無効のため、コピーコマンドアロケータ取得処理に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!l_copyCommandAllocator, "コピーコマンドアロケータが無効のため、コピーコマンドアロケータ取得処理に失敗しました。", {});
 
 	// もしWaitが必要なコマンドアロケータならWaitする
 	m_copyCommandQueue.EnsureAllocatorAvailable(*l_copyCommandAllocator);

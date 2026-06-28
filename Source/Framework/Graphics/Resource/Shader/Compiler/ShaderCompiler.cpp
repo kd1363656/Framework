@@ -11,23 +11,22 @@ bool FWK::Graphics::ShaderCompiler::Create()
 	//					 作成結果のポインタを書き込むアドレス);
 	auto l_hr = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(m_dxcUtils.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "DxcUtilsの作成に失敗しており、作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DxcUtilsの作成に失敗しており、作成処理に失敗しました。", false);
 
 	// DXC本体のコンパイラオブジェクトを作成する
 	// CLSID_DxcCompilerは「シェーダーをコンパイルする本体」を表す識別子。
 	// これを作成することで、HLSLコードをDXILへコンパイルできるようになる。
 	l_hr = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(m_dxcCompiler.ReleaseAndGetAddressOf()));
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "DxcCompilerの作成に失敗しており、作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DxcCompilerの作成に失敗しており、作成処理に失敗しました。", false);
 
 	return true;
 }
 
 FWK::TypeAlias::ComPtr<IDxcBlob> FWK::Graphics::ShaderCompiler::LoadBinaryFromFile(const std::wstring& a_filePath) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_dxcUtils, "DxcUtilsの作成がされておらず、シェーダーバイナリファイルの読み込みに失敗しました。", nullptr);
-
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_filePath.empty(), "ファイルパスが空文字列のため、シェーダーバイナリファイルの読み込みに失敗しました。", nullptr);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_dxcUtils,        "DxcUtilsの作成がされておらず、シェーダーバイナリファイルの読み込みに失敗しました。", nullptr);
+	FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(), "ファイルパスが空文字列のため、シェーダーバイナリファイルの読み込みに失敗しました。", nullptr);
 
 	TypeAlias::ComPtr<IDxcBlobEncoding> l_binaryBlob = nullptr;
 
@@ -52,7 +51,7 @@ FWK::TypeAlias::ComPtr<IDxcBlob> FWK::Graphics::ShaderCompiler::LoadBinaryFromFi
 	// PSO作成で使うD3D12_SHADER_BYTECODE用のIDxcBlobとして扱えるように変換する。
 	l_hr = l_binaryBlob.As(&l_dxcBlob);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "IDxcBlobEncodingからIDxcBlobへの変換に失敗しており、バイナリファイルの読み込みに失敗しました。", nullptr);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "IDxcBlobEncodingからIDxcBlobへの変換に失敗しており、バイナリファイルの読み込みに失敗しました。", nullptr);
 
 	return l_dxcBlob;
 }

@@ -5,7 +5,7 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 														 DirectX::ScratchImage&      a_scratchImage, 
 														 DirectX::TexMetadata&       a_texMetadata) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
 
 	const auto l_wicFlags = CreateWICFlags(a_textureLoadColorSpace);
 
@@ -19,7 +19,7 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 											   &a_texMetadata,
 											   a_scratchImage);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "PNGファイルからテクスチャを読み込めませんでした。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "PNGファイルからテクスチャを読み込めませんでした。", false);
 	
 	return true;
 }

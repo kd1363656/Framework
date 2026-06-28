@@ -36,7 +36,7 @@ void FWK::Window::LoadCONFIG()
 }
 void FWK::Window::PostLoadCONFIG(const std::wstring& a_windowClassName, const std::string& a_titleName)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!CreateWindowInstance(a_windowClassName, a_titleName), "ウィンドウインスタンスの作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!CreateWindowInstance(a_windowClassName, a_titleName), "ウィンドウインスタンスの作成に失敗しました。");
 
 	// CONFIGから読み込んだ表示形態を、実際のウィンドウに反映する
 	ApplyWindowStyle();
@@ -332,7 +332,7 @@ void FWK::Window::SetupNormalWindowClientSize()
 
 	// 通常ウィンドウはタイトルバーや枠があるため、
 	// 欲しいクライアント領域からウィンドウ全体サイズを逆算する
-	FWK_ASSERT_RETURN_IF_FAILED(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
 
 	const auto l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
 	const auto l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
@@ -462,7 +462,7 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
 	
 	l_monitorINFO.cbSize = sizeof(MONITORINFO);
 
-	FWK_ASSERT_RETURN_IF_FAILED(!GetMonitorInfo(l_monitor, &l_monitorINFO), "モニター情報の取得に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!GetMonitorInfo(l_monitor, &l_monitorINFO), "モニター情報の取得に失敗しました。");
 
 	const RECT& l_monitorRECT = l_monitorINFO.rcMonitor;
 

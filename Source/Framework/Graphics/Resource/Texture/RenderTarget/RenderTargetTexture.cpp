@@ -9,15 +9,15 @@ bool FWK::Graphics::RenderTargetTexture::Create(const Device&					    a_device,
 													  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 													  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのサイズがになっており、作成処理に失敗しました。",     false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_format == DXGI_FORMAT_UNKNOWN,                 "RenderTargetTextureのFormatが無効になっており、作成方法に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのサイズがになっており、作成処理に失敗しました。",     false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_format == DXGI_FORMAT_UNKNOWN,                 "RenderTargetTextureのFormatが無効になっており、作成方法に失敗しました。", false);
 
 	m_format     = a_format;
 	m_clearColor = a_clearColor;
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateGPUResource(a_gpuMemoryAllocator, a_width, a_height), "RenderTargetTexture用GPUResourceの作成に失敗しており、作成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateRTV(a_device, a_rtvDescriptorPool),				       "RenderTarget用RTVの作成に失敗しており、作成処理に失敗しました。",				 false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateSRV(a_device, a_srvDescriptorPool),				       "RenderTarget用SRVの作成に失敗しており、作成処理に失敗しました。",				 false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateGPUResource(a_gpuMemoryAllocator, a_width, a_height), "RenderTargetTexture用GPUResourceの作成に失敗しており、作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateRTV(a_device, a_rtvDescriptorPool),                   "RenderTarget用RTVの作成に失敗しており、作成処理に失敗しました。",                false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateSRV(a_device, a_srvDescriptorPool),                   "RenderTarget用SRVの作成に失敗しており、作成処理に失敗しました。",                false);
 
 	m_currentResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
 
@@ -41,22 +41,22 @@ bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						a_device,
 		return true; 
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのリサイズ後のサイズが無効になっており、リサイズ処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのリサイズ後のサイズが無効になっており、リサイズ処理に失敗しました。", false);
 
 	RenderTargetTexture l_newRenderTargetTexture = {};
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_newRenderTargetTexture.Create(a_device,
-																	   a_gpuMemoryAllocator,
-																	   m_clearColor,
-																	   m_format,
-																	   a_width,
-																	   a_height,
-																	   a_rtvDescriptorPool,
-																	   a_srvDescriptorPool),
-																	   "リサイズ後のRenderTargetTextureの作成に失敗しており、リサイズ処理に失敗しました。",
-																	   false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_newRenderTargetTexture.Create(a_device,
+																a_gpuMemoryAllocator,
+																m_clearColor,
+																m_format,
+																a_width,
+																a_height,
+																a_rtvDescriptorPool,
+																a_srvDescriptorPool),
+																"リサイズ後のRenderTargetTextureの作成に失敗しており、リサイズ処理に失敗しました。",
+																false);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!ReserveReleaseCurrentResource(a_retiredFenceValue, a_resourceReleaseContext), "古いRenderTargetTextureの遅延解放登録に失敗しており、リサイズ処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!ReserveReleaseCurrentResource(a_retiredFenceValue, a_resourceReleaseContext), "古いRenderTargetTextureの遅延解放登録に失敗しており、リサイズ処理に失敗しました。", false);
 
 	m_width  = a_width;
 	m_height = a_height;
@@ -86,12 +86,12 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
 															 Constant::k_defaultSampleQuality,
 															 D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc, 
-																				 &l_clearValue, 
-																				 k_defaultResourceState,
-																				 m_gpuResource),
-																				 "RenderTargetTexture用TextureResourceの作成に失敗しました。",
-																				 false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc, 
+																		   &l_clearValue, 
+																		   k_defaultResourceState,
+																		   m_gpuResource),
+																		   "RenderTargetTexture用TextureResourceの作成に失敗しました。",
+																		   false);
 
 	m_width  = a_width;
 	m_height = a_height;
@@ -102,12 +102,12 @@ bool FWK::Graphics::RenderTargetTexture::CreateRTV(const Device& a_device, TypeA
 {
 	const auto& l_device = a_device.GetREFDevice();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device,					 "デバイスが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。",    false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device,				  "デバイスが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。",    false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。", false);
 
 	const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
 
 	// D3D12_RENDER_TARGET_VIEW_DESCについて
 	// Format		 : RTVとしてみるときのフォーマット
@@ -132,12 +132,12 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 {
 	const auto& l_device = a_device.GetREFDevice();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_device,					 "デバイスが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。",    false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_device,				  "デバイスが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。",    false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。", false);
 
 	const auto l_srvDescriptorIndex = a_srvDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
 
 	// D3D12_SHADER_RESOURCE_VIEW_DESCについて
 	// Shader4ComponentMapping : Shader側でRGBA成分をどう読むか
@@ -180,10 +180,10 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 
 bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_gpuResource.m_resource,									  "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_retiredFenceValue  == Constant::k_unusedFenceValue,		  "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",		   false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,								   "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,		   "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",		    false);
 
 	Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
@@ -200,9 +200,9 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	l_srvDescriptorIndexReleaseRecord.m_descriptorIndex	  = m_srvDescriptorIndex;
 	l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),		    "RenderTargetTextureのGPUResourceの遅延解放登録に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseRTVDescriptorIndex(std::move(l_rtvDescriptorIndexReleaseRecord)), "RenderTargetTextureのRTVDescriptorIndexの遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_resourceReleaseContext.ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "RenderTargetTextureのSRVDescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),		     "RenderTargetTextureのGPUResourceの遅延解放登録に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseRTVDescriptorIndex(std::move(l_rtvDescriptorIndexReleaseRecord)), "RenderTargetTextureのRTVDescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "RenderTargetTextureのSRVDescriptorIndexの遅延解放登録に失敗しました。", false);
 
 	// 二重開放を防ぐため、DescriptorIndexは無効化する
 	m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;

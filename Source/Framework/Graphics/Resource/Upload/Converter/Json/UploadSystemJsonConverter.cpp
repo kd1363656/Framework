@@ -24,7 +24,7 @@ void FWK::Converter::UploadSystemJsonConverter::DeserializeCopyCommandAllocator(
 {
 	auto l_copyCommandAllocatorCount = a_rootJson.value(k_copyCommandAllocatorListCountJsonKey, k_defaultCopyCommandAllocatorListCount);
 
-	FWK_ASSERT_RETURN_IF_FAILED(l_copyCommandAllocatorCount == k_emptyCopyCommandAllocatorListCount, "コピーコマンドアロケータの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_copyCommandAllocatorCount == k_emptyCopyCommandAllocatorListCount, "コピーコマンドアロケータの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
 	
 	for (std::size_t l_i = 0ULL; l_i < l_copyCommandAllocatorCount; ++l_i)
 	{

@@ -101,7 +101,7 @@ void FWK::Graphics::Texture::AddReferenceCount() const
 	auto& l_resourceContext = l_graphicsManager.GetMutableREFResourceContext();
 	auto& l_textureSystem   = l_resourceContext.GetMutableREFTextureSystem  ();
 
-	FWK_ASSERT_RETURN_IF_FAILED(!l_textureSystem.AddTextureReferenceCount(m_textureRecord), "テクスチャ参照数加算に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_textureSystem.AddTextureReferenceCount(m_textureRecord), "テクスチャ参照数加算に失敗しました。");
 }
 void FWK::Graphics::Texture::SubtractReferenceCount()
 {
@@ -122,7 +122,7 @@ void FWK::Graphics::Texture::SubtractReferenceCount()
 	auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
 	
 	// 参照カウントを減らす
-	FWK_ASSERT_RETURN_IF_FAILED(!l_textureSystem.SubtractTextureReferenceCount(m_textureRecord, l_directCommandQueue, l_resourceReleaseContext), "テクスチャ参照数解放に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_textureSystem.SubtractTextureReferenceCount(m_textureRecord, l_directCommandQueue, l_resourceReleaseContext), "テクスチャ参照数解放に失敗しました。");
 
 	m_storageID = Constant::k_invalidStorageID;
 	m_textureRecord.reset();

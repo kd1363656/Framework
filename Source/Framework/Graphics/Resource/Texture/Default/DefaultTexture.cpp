@@ -19,31 +19,31 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
                                                                          TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool, 
                                                                          Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord)
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_format == DXGI_FORMAT_UNKNOWN,             "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_storageID == Constant::k_invalidStorageID, "DefaultTexture用StorageIDが無効のため、DefaultTexture作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN,             "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_storageID == Constant::k_invalidStorageID, "DefaultTexture用StorageIDが無効のため、DefaultTexture作成処理に失敗しました。", false);
 
     DirectX::ScratchImage l_scratchImage = {};
 
     // Jsonから読み込んだ色をもとに、1x1の画像データをCPU側に作成する
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateScratchImage(l_scratchImage), "DefaultTexture用ScratchImage作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateScratchImage(l_scratchImage), "DefaultTexture用ScratchImage作成に失敗しました。", false);
 
     const auto& l_texMetadata = l_scratchImage.GetMetadata();
 
     // ScratchImageからGPUTextureResource,UploadBuffer、SRVを作る
     // ここではまだCopyCommandQueueへ送らず、TextureSystemのPendingMapへ登録するためのRecordを作るだけ
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
-                                                                                                        a_gpuMemoryAllocator,
-                                                                                                        m_textureName,
-                                                                                                        l_scratchImage,
-                                                                                                        l_texMetadata,
-                                                                                                        a_storageID,
-                                                                                                        a_srvDescriptorPool,
-                                                                                                        a_textureBatchUploadRecord),
-                                                                                                        "DefaultTexture用TextureBatchUploadRecord作成に失敗しました。",
-                                                                                                        false);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
+                                                                                                 a_gpuMemoryAllocator,
+                                                                                                 m_textureName,
+                                                                                                 l_scratchImage,
+                                                                                                 l_texMetadata,
+                                                                                                 a_storageID,
+                                                                                                 a_srvDescriptorPool,
+                                                                                                 a_textureBatchUploadRecord),
+                                                                                                 "DefaultTexture用TextureBatchUploadRecord作成に失敗しました。",
+                                                                                                 false);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_textureBatchUploadRecord.m_textureRecord, "DefaultTexture用TextureRecordが無効のため、DefaultTexture作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_textureBatchUploadRecord.m_textureRecord, "DefaultTexture用TextureRecordが無効のため、DefaultTexture作成処理に失敗しました。", false);
 
     m_textureRecord = a_textureBatchUploadRecord.m_textureRecord;
 
@@ -54,7 +54,7 @@ void FWK::Graphics::DefaultTexture::ApplyColorChannel(const Enum::DefaultTexture
 {
     const auto l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
-    FWK_ASSERT_RETURN_IF_FAILED(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。");
+    FWK_ASSERT_RETURN_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。");
 
     m_color[l_colorChannelIndex] = a_colorValue;
 }
@@ -63,7 +63,7 @@ std::uint8_t FWK::Graphics::DefaultTexture::FetchVALColorChannel(const Enum::Def
 {
     const auto l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Constant::k_maxDefaultTextureColorChannelValue);
+    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Constant::k_maxDefaultTextureColorChannelValue);
 
     return m_color[l_colorChannelIndex];
 }
@@ -82,13 +82,13 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
                                                   Constant::k_defaultTexture2DArraySize,
                                                   Constant::k_defaultTexture2DMipLevels);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
 
     // 作成したScratchImageから、実際のピクセルデータを書き込むためのImageを取得する
     const auto* l_image = a_scratchImage.GetImage(k_defaultTextureMipIndex, k_defaultTextureItemIndex, k_defaultTextureSliceIndex);
 
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_image,         "DefaultTexture用Imageの取得に失敗しました。",     false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_image->pixels, "DefaultTexture用Pixel領域の取得に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_image,         "DefaultTexture用Imageの取得に失敗しました。",     false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_image->pixels, "DefaultTexture用Pixel領域の取得に失敗しました。", false);
 
     // R8G8B8A8_UNORM / R8G8B8A8_UNORM_SRGB は、
     // 1チャンネル8bit、合計4byteのRGBAピクセルとして扱える

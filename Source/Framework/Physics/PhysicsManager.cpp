@@ -30,7 +30,7 @@ FWK::Physics::PhysicsManager::~PhysicsManager()
 
 void FWK::Physics::PhysicsManager::INIT()
 {
-	FWK_ASSERT_RETURN_IF_FAILED(m_isInitialized, "既に初期化されているのにもう一度初期化しようとしました。");
+	FWK_ASSERT_RETURN_IF(m_isInitialized, "既に初期化されているのにもう一度初期化しようとしました。");
 
 	// Joltのメモリアロケータ登録やFactoryの作成などを行う
 	if (!SetupJoltCore())
@@ -51,9 +51,9 @@ void FWK::Physics::PhysicsManager::INIT()
 
 void FWK::Physics::PhysicsManager::Update(const float a_deltaTime)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!m_isInitialized, "初期化されていないのに更新処理を実行しようとしました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!m_tempAllocator, "TempAllocatorがnullptrのため、更新処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!m_jobSystem,     "JobSystemがnullptrのため、更新処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_isInitialized, "初期化されていないのに更新処理を実行しようとしました。");
+	FWK_ASSERT_RETURN_IF(!m_tempAllocator, "TempAllocatorがnullptrのため、更新処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_jobSystem,     "JobSystemがnullptrのため、更新処理に失敗しました。");
 
 	// Joltの物理ワールドを1フレーム分進める。
 	// JPH::PhysicsSystem(前フレームからの経過時間、
@@ -78,9 +78,9 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body解放に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body解放に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body解放に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body解放に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body解放に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body解放に失敗しました。");
 
 	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
 
@@ -106,8 +106,8 @@ void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_body
 
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticSphereBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticSphereBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticSphereBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticSphereBodyの作成に失敗しました。",     {});
 
 	const auto l_bodyHandle = m_bodyCreator.CreateStaticSphereBody(*m_physicsLayerSetting,
 																   a_worldPosition,
@@ -120,8 +120,8 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereB
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicSphereBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicSphereBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicSphereBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicSphereBodyの作成に失敗しました。",     {});
 
 	const auto l_bodyHandle = m_bodyCreator.CreateDynamicSphereBody(*m_physicsLayerSetting,
 												                    a_worldPosition,
@@ -135,8 +135,8 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicSphere
 
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticBoxBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticBoxBodyの作成に失敗しました。",     {});
 
 	const auto l_bodyHandle = m_bodyCreator.CreateStaticBoxBody(*m_physicsLayerSetting,
 															    a_worldPosition,
@@ -149,8 +149,8 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicBoxBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicBoxBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicBoxBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicBoxBodyの作成に失敗しました。",     {});
 
 	const auto l_bodyHandle = m_bodyCreator.CreateDynamicBoxBody(*m_physicsLayerSetting,
 																 a_worldPosition,
@@ -164,8 +164,8 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicBoxBod
 
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticCapsuleBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticCapsuleBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticCapsuleBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticCapsuleBodyの作成に失敗しました。",     {});
 
 	const auto l_bodyHandle = m_bodyCreator.CreateStaticCapsuleBody(*m_physicsLayerSetting,
 												                    a_worldPosition,
@@ -179,8 +179,8 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsule
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicCapsuleBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicCapsuleBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicCapsuleBodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicCapsuleBodyの作成に失敗しました。",     {});
 
 	const auto l_bodyHandle = m_bodyCreator.CreateDynamicCapsuleBody(*m_physicsLayerSetting,
 																	 a_worldPosition,
@@ -195,9 +195,9 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicCapsul
 
 void FWK::Physics::PhysicsManager::ApplyBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle, const TypeAlias::Math::Vector3& a_linearVelocity)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body速度の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body速度の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body速度の設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body速度の設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body速度の設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body速度の設定に失敗しました。");
 
 	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
 
@@ -210,9 +210,9 @@ void FWK::Physics::PhysicsManager::ApplyBodyLinearVelocity(const Struct::Physics
 }
 void FWK::Physics::PhysicsManager::ApplyBodyGravityEnabled(const Struct::PhysicsBodyHandle & a_bodyHandle, const bool a_isEnabled)
 {
-	FWK_ASSERT_RETURN_IF_FAILED(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body重力の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body重力の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF_FAILED(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body重力の設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body重力の設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body重力の設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body重力の設定に失敗しました。");
 
 	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
 
@@ -227,9 +227,9 @@ void FWK::Physics::PhysicsManager::ApplyBodyGravityEnabled(const Struct::Physics
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Bodyの座標取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Bodyの座標取得に失敗しました。",          {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Bodyの座標取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Bodyの座標取得に失敗しました。",          {});
+	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
 
 	// JoltのBodyInterfaceを取得する
 	// BodyInterfaceは、BodyIDを使ってBodyの位置・回転。速度などを捜査する入口。
@@ -243,9 +243,9 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPos
 }
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body速度の取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body速度の取得に失敗しました。",          {});
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body速度の取得に失敗しました。",                     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body速度の取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body速度の取得に失敗しました。",          {});
+	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body速度の取得に失敗しました。",                     {});
 
 	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
 
@@ -258,7 +258,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyLinearVe
 
 bool FWK::Physics::PhysicsManager::SetupJoltCore()
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(JPH::Factory::sInstance, "JPH::Factory::sInstanceが既に存在しており、コア設定に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(JPH::Factory::sInstance, "JPH::Factory::sInstanceが既に存在しており、コア設定に失敗しました。", false);
 
 	// Joltのメモリアロケータを登録する。
 	// Joltの機能を使う前に必要
@@ -270,7 +270,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 
 	m_factory = std::make_unique<JPH::Factory>();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_factory, "JPH::Factoryの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_factory, "JPH::Factoryの作成に失敗しました。", false);
 
 	// Jolt内部はFactoryをstaticなraw pointerとして要求する。
 	// ただし、所有権はm_factoryのstd::unique_ptrが持つ
@@ -287,7 +287,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 	// Joltの一時作業用メモリの作成
 	m_tempAllocator = std::make_unique<JPH::TempAllocatorImpl>(l_tempAllocatorSize);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_tempAllocator, "JPH::TempAllocatorImplの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_tempAllocator, "JPH::TempAllocatorImplの作成に失敗しました。", false);
 
 	// CPUの論理スレッド数を取得する
 	// JoltのJobSystemThreadPoolで、物理計算用のワーカースレッド数を決めるために使う
@@ -299,7 +299,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 	// JoltのJobSystemを作成する(Joltの物理計算を複数スレッドで実行するための仕組み)
 	m_jobSystem = std::make_unique<JPH::JobSystemThreadPool>(k_maxPhysicsJobCount, k_maxPhysicsBarrierCount, l_workerThreadCount);
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_jobSystem, "JPH::JobSystemThreadPoolの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_jobSystem, "JPH::JobSystemThreadPoolの作成に失敗しました。", false);
 
 	return true;
 }
@@ -317,7 +317,7 @@ bool FWK::Physics::PhysicsManager::SetupPhysicsSystem()
 
 	const auto& l_objectVsBroadPhaseLayerFilter = m_physicsLayerSetting->GetREFObjectVSBroadPhaseLayerFilter();
 
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!l_objectVsBroadPhaseLayerFilter, "ObjectVSBroadPhaseLayerFilterがnullptrです。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_objectVsBroadPhaseLayerFilter, "ObjectVSBroadPhaseLayerFilterがnullptrです。", false);
 
 	// ここでJoltのPhysicsSystemを初期化する
 	// この時点で、JoltのBroadPhase空間分割も使える状態になる

@@ -9,7 +9,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
 
 	// .assetを読み込み専用のMemoryMappedFileとして開く
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFile作成に失敗しており。バイナリーファイルの読み込みに失敗しました", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFile作成に失敗しており。バイナリーファイルの読み込みに失敗しました", false);
 
 	// 現在の読み込み位置、ファイルの先頭なので0からスタート
 	auto l_memoryReadOffset = GetREFInitialMemoryReadOffset();
@@ -78,6 +78,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	if (FAILED(l_hr))
 	{
 		DestroyMemoryMappedFile();
+
 		FWK_ASSERT_RETURN_VALUE("TextureAssetからScratchImageの初期化に失敗しており、バイナリーファイルの読み込みに失敗しました。", false);
 	}
 
@@ -87,6 +88,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	if (!l_imageList)
 	{
 		DestroyMemoryMappedFile();
+
 		FWK_ASSERT_RETURN_VALUE("TextureAssetの読み込み先Image配列が無効となっており、バイナリーファイルの読み込みに失敗しました。", false);
 	}
 
@@ -95,6 +97,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	if (a_scratchImage.GetImageCount() != l_textureBinaryHeader.m_subresourceCount)
 	{
 		DestroyMemoryMappedFile();
+
 		FWK_ASSERT_RETURN_VALUE("TextureAssetのサブリソース数がScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 	}
 
@@ -107,6 +110,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (!TryReadSingleBinaryData(l_textureBinarySubresourceHeader, l_memoryReadOffset))
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetSubresourceHeaderを読み込めるサイズではないため、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
@@ -117,6 +121,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (l_textureBinarySubresourceHeader.m_pixelDataSize != l_image.slicePitch)
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのPixelDataSizeがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
@@ -124,6 +129,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (l_textureBinarySubresourceHeader.m_width != l_image.width)
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetの幅がScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
@@ -131,6 +137,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (l_textureBinarySubresourceHeader.m_height != l_image.height)
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetの高さがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
@@ -140,6 +147,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (l_textureBinarySubresourceHeader.m_rowPitch != l_image.rowPitch)
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのRowPitchがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
@@ -148,6 +156,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (l_textureBinarySubresourceHeader.m_slicePitch != l_image.slicePitch)
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのSlicePitchがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 
@@ -155,6 +164,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 		if (!TryReadBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_memoryReadOffset, l_image.pixels))
 		{
 			DestroyMemoryMappedFile();
+
 			FWK_ASSERT_RETURN_VALUE("TextureAssetのピクセルデータを読み込めるサイズでないため、バイナリーファイルの読み込みに失敗しました。", false);
 		}
 	}
@@ -163,6 +173,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	if (l_memoryReadOffset != l_textureBinaryHeader.m_fileSize)
 	{
 		DestroyMemoryMappedFile();
+
 		FWK_ASSERT_RETURN_VALUE("TextureAssetの読み込みサイズがヘッダーのファイルサイズと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
 	}
 
@@ -174,15 +185,15 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage)
 {
 	// 保存元のPNGが存在するかどうか、DirectXTexで読み込んだScratchImageが正常かを確認する
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
 	// PNGと同じ場所・同じ名前で拡張子だけ.assetにしたパスを作る
 	const auto& l_textureAssetFilePath = CreateAssetFilePath		  (a_filePath);
 	const auto& l_textureAssetFileSize = CalculateTextureAssetFileSize(a_scratchImage);
 
 	// 書き込み用メモリマップドファイルの作成
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_textureAssetFileSize == Constant::k_emptyAssetFileSize,	                    "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	    false);
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == Constant::k_emptyAssetFileSize,	                     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	     false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
 	auto l_memoryWriteOffset = GetREFInitialMemoryWriteOffset();
 
@@ -199,6 +210,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	if (!l_imageList)
 	{
 		DestroyMemoryMappedFile();
+
 		FWK_ASSERT_RETURN_VALUE("TextureAssetへ保存するImage配列が無効となっており、バイナリーファイルの保存に失敗しました。", false);
 	}
 
@@ -221,6 +233,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	if (l_memoryWriteOffset != l_textureAssetFileSize)
 	{
 		DestroyMemoryMappedFile();
+
 		FWK_ASSERT_RETURN_VALUE("TextureAssetの書き込みサイズが計算したファイルサイズと一致せず、バイナリーファイルの保存に失敗しました。", false);
 	}
 
