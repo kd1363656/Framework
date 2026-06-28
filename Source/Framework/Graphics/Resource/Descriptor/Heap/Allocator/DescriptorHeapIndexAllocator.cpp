@@ -9,13 +9,13 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Deserialize(const nlohmann::js
 
 bool FWK::Graphics::DescriptorHeapIndexAllocator::Create()
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_indexCapacity == Constant::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",        false);
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_indexCapacity == Constant::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_capacity == Constant::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",        false);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_capacity == Constant::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
     
-    m_nextAllocateIndex = k_initialNextAllocateIndex;
+    m_nextIndex = k_initialNextIndex;
 
     // 全スロットを未使用状態で初期化する
-    m_isAllocatedList.assign(m_indexCapacity, false);
+    m_isAllocatedIndexList.assign(m_capacity, false);
 
     // キューも何も保持していない状態にする
     m_reusableIndexQueue = {};
@@ -30,23 +30,23 @@ nlohmann::json FWK::Graphics::DescriptorHeapIndexAllocator::Serialize() const
 
 void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::DescriptorIndex a_index)
 {
-    // 範囲外Indexの解放は不正
-    FWK_ASSERT_RETURN_IF_FAILED(!IsValidIndex(a_index), "解放しようとしたIndexが確保範囲外となっており、解放処理に失敗しました。。");
+    // 無効なIndexの解放は不正とみなす
+    FWK_ASSERT_RETURN_IF_FAILED(IsInValidIndex(a_index), "解放しようとしたIndexが確保範囲外となっており、解放処理に失敗しました。。");
 
     // アロケートリストの容量を超えていたらreturn
-    if (a_index > m_isAllocatedList.size()) { return; }
+    if (a_index > m_isAllocatedIndexList.size()) { return; }
     
 	// 未使用スロットの二重解放を防ぐ
-    FWK_ASSERT_RETURN_IF_FAILED(!m_isAllocatedList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");
+    FWK_ASSERT_RETURN_IF_FAILED(!m_isAllocatedIndexList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");
     
-    m_isAllocatedList[a_index] = false;
+    m_isAllocatedIndexList[a_index] = false;
 
     m_reusableIndexQueue.push(a_index);
 }
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::Allocate()
 {
-    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_isAllocatedList.empty(), "m_isAllocatedListの容量を超えており、DescriptorIndexのAllocateに失敗しました。", Constant::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(m_isAllocatedIndexList.empty(), "m_isAllocatedListの容量を超えており、DescriptorIndexのAllocateに失敗しました。", Constant::k_invalidDescriptorIndex);
 
     // 解放済みスロットがあればそれを優先再利用する
     if (!m_reusableIndexQueue.empty())
@@ -56,37 +56,35 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::All
         m_reusableIndexQueue.pop();
 
         // 有効なインデックスかどうかを確認
-        FWK_ASSERT_RETURN_VALUE_IF_FAILED(!IsValidIndex(l_reusableIndex), "再利用しようとしたIndexが確保範囲外で、Indexの確保に失敗しました。", Constant::k_invalidDescriptorIndex);
+        FWK_ASSERT_RETURN_VALUE_IF_FAILED(IsInValidIndex(l_reusableIndex), "再利用しようとしたIndexが確保範囲外で、Indexの確保に失敗しました。", Constant::k_invalidDescriptorIndex);
 
-        m_isAllocatedList[l_reusableIndex] = true;
+        m_isAllocatedIndexList[l_reusableIndex] = true;
 
         return l_reusableIndex;
     }
 
+    // 無効なインデックスならassert
+    FWK_ASSERT_RETURN_VALUE_IF_FAILED(IsInValidIndex(m_nextIndex), "Indexの空きがなくなり、割り当てに失敗しました。", Constant::k_invalidDescriptorIndex);
+
     // 未使用領域が残っているなら新規払い出しする
-    if (IsValidIndex(m_nextAllocateIndex))
-    {
-        const auto l_allocateIndex = m_nextAllocateIndex;
+    const auto l_allocatedIndex = m_nextIndex;
 
-        ++m_nextAllocateIndex;
+    ++m_nextIndex;
 
-        // 新規払い出しするインデックス番号は割り当て済みとして扱う
-        m_isAllocatedList[l_allocateIndex] = true;
+    // 新規払い出しするインデックス番号は割り当て済みとして扱う
+    m_isAllocatedIndexList[l_allocatedIndex] = true;
 
-        return l_allocateIndex;
-    }
-
-    FWK_ASSERT_RETURN_VALUE("Indexの空きがなくなり、割り当てに失敗しました。", Constant::k_invalidDescriptorIndex);
+    return l_allocatedIndex;
 }
 
-bool FWK::Graphics::DescriptorHeapIndexAllocator::IsValidIndex(const TypeAlias::DescriptorIndex a_index) const
+bool FWK::Graphics::DescriptorHeapIndexAllocator::IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const
 {
     // 範囲外インデックスを指し示すならfalseを返す
-    if (a_index >= m_indexCapacity ||
-        a_index >= static_cast<TypeAlias::DescriptorIndex>(m_isAllocatedList.size())) 
+    if (a_index >= m_capacity ||
+        a_index >= static_cast<TypeAlias::DescriptorIndex>(m_isAllocatedIndexList.size())) 
     {
-        return false; 
+        return true; 
     }
 
-    return true;
+    return false;
 }

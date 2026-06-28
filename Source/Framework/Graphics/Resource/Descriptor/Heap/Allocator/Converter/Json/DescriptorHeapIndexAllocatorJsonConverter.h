@@ -20,6 +20,6 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_descriptorHeapIndexAllocatorCapacityJsonKey = "DescriptorHeapIndexAllocatorCapacity";
+		static constexpr std::string_view k_capacityJsonKey = "Capacity";
 	};
 }

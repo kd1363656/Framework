@@ -288,7 +288,7 @@ bool FWK::Editor::EditorManager::CreateImGuiSRVDescriptorPool(const Graphics::De
 	auto& l_descriptorIndexAllocator = m_imGuiSRVDescriptorPool.GetMutableREFDescriptorIndexAllocator();
 
 	// 格納できるSRVの最大Index値を決める
-	l_descriptorIndexAllocator.SetIndexCapacity(k_imguiSRVDescriptorCapacity);
+	l_descriptorIndexAllocator.SetCapacity(k_imguiSRVDescriptorCapacity);
 
 	FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_imGuiSRVDescriptorPool.Create(a_device), "ImGui用SRVDescriptorPoolの作成に失敗しました。", false);
 

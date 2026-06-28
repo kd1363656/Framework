@@ -942,17 +942,17 @@
     "ResourceContext": {
         "DSVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
-                "DescriptorHeapIndexAllocatorCapacity": 10000
+                "Capacity": 10000
             }
         },
         "RTVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
-                "DescriptorHeapIndexAllocatorCapacity": 10000
+                "Capacity": 10000
             }
         },
         "SRVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
-                "DescriptorHeapIndexAllocatorCapacity": 10000
+                "Capacity": 10000
             }
         },
         "StaticModelSystem": {

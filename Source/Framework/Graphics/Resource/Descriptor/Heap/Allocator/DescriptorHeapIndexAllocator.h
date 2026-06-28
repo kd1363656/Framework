@@ -18,26 +18,26 @@ namespace FWK::Graphics
 
 		TypeAlias::DescriptorIndex Allocate();
 
-		void SetIndexCapacity(TypeAlias::DescriptorIndex a_set) { m_indexCapacity = a_set; }
+		void SetCapacity(TypeAlias::DescriptorIndex a_set) { m_capacity = a_set; }
 
-		static constexpr auto GetVALDefaultIndexCapacity() { return k_defaultIndexCapacity; }
+		static constexpr auto GetVALDefaultCapacity() { return k_defaultCapacity; }
 
-		auto GetVALIndexCapacity() const { return m_indexCapacity; }
+		auto GetVALCapacity() const { return m_capacity; }
 
 	private:
 
-		bool IsValidIndex(const TypeAlias::DescriptorIndex a_index) const;
+		bool IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const;
 
-		static constexpr TypeAlias::DescriptorIndex k_defaultIndexCapacity     = 10000U;
-		static constexpr TypeAlias::DescriptorIndex k_initialNextAllocateIndex = 0U;
+		static constexpr TypeAlias::DescriptorIndex k_defaultCapacity  = 10000U;
+		static constexpr TypeAlias::DescriptorIndex k_initialNextIndex = 0U;
 
-		std::vector<bool> m_isAllocatedList = {};
+		std::vector<bool> m_isAllocatedIndexList = {};
 
 		std::queue<TypeAlias::DescriptorIndex> m_reusableIndexQueue = {};
 
 		Converter::DescriptorHeapIndexAllocatorJsonConverter m_jsonConverter = {};
 
-		TypeAlias::DescriptorIndex m_indexCapacity     = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_nextAllocateIndex = k_initialNextAllocateIndex; 
+		TypeAlias::DescriptorIndex m_capacity  = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_nextIndex = k_initialNextIndex; 
 	};
 }
