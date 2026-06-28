@@ -22,7 +22,7 @@ namespace FWK::Graphics
 			const auto l_descriptorNUM = m_descriptorIndexAllocator.GetVALIndexCapacity();
 
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_descriptorNUM == Constant::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効になっており、DescriptorPoolの作成に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_descriptorNUM == Constant::k_emptyDescriptorNUM,	     "DescriptorHeapIndexAllocatorの管理数が0のため、DescriptorPoolの作成に失敗しました。",			 false);
+			FWK_ASSERT_RETURN_VALUE_IF_FAILED(l_descriptorNUM == Constant::k_invalidDescriptorNUM,	 "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。",		 false);
 
 			FWK_ASSERT_RETURN_VALUE_IF_FAILED(!m_cpuDescriptorHeap.Create(a_device,
 																		  HeapType, 

@@ -36,7 +36,7 @@ namespace FWK::Graphics
 		D3D12_DESCRIPTOR_HEAP_TYPE  m_descriptorHeapType  = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		D3D12_DESCRIPTOR_HEAP_FLAGS m_descriptorHeapFlags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-		UINT m_descriptorNUM  = Constant::k_emptyDescriptorNUM;
+		UINT m_descriptorNUM  = Constant::k_invalidDescriptorNUM;
 		UINT m_descriptorSize = k_emptyDescriptorSize;
 	};
 }

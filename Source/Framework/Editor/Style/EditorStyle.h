@@ -16,7 +16,7 @@ namespace FWK::Editor
 
 		static ImVec4 ConvertEditorColorToIMVEC4(const TypeAlias::Math::Color&a_color);
 
-		static constexpr const char* k_japaneseFontPath = "C:/Windows/Fonts/meiryo.ttc";
+		static constexpr const char* k_fontPath = "Asset/Data/Font/Cica/Cica-Regular.ttf";
 
 		static constexpr float k_editorGlobalScale = 1.0F;
 
@@ -46,7 +46,7 @@ namespace FWK::Editor
 		static constexpr float k_indentSpacing = 18.0F;
 		static constexpr float k_scrollbarSize = 14.0F;
 
-		static constexpr float k_editorFontSize = 16.0F;
+		static constexpr float k_editorFontSize = 13.0F;
 
 		static constexpr TypeAlias::Math::Color k_clearColor =
 		{

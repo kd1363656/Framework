@@ -237,7 +237,7 @@ void FWK::Editor::EditorStyle::ApplyFont()
 	l_fontConfig.OversampleV = 1;
 	l_fontConfig.PixelSnapH  = true;
 	
-	const ImFont* const l_japaneseFont = l_io.Fonts->AddFontFromFileTTF(k_japaneseFontPath,
+	const ImFont* const l_japaneseFont = l_io.Fonts->AddFontFromFileTTF(k_fontPath,
 																		k_editorFontSize,
 																		&l_fontConfig,
 																		l_io.Fonts->GetGlyphRangesJapanese());

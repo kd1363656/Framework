@@ -5,7 +5,7 @@ bool FWK::Graphics::DescriptorHeap::Create(const Device&					 a_device,
 										   const D3D12_DESCRIPTOR_HEAP_FLAGS a_descriptorHeapFlags, 
 										   const UINT						 a_descriptorNUM)
 {
-	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_descriptorNUM == Constant::k_emptyDescriptorNUM, "DescriptorHeapのDescriptor数が0のため、DescriptorHeapの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF_FAILED(a_descriptorNUM == Constant::k_invalidDescriptorNUM, "DescriptorHeapのDescriptor数が無効のため、DescriptorHeapの作成に失敗しました。", false);
 
 	const auto& l_device = a_device.GetREFDevice();
 
