@@ -7,8 +7,8 @@ FWK::Editor::LogEditorWindow::LogEditorWindow() :
 
 	m_textLineOffsets(),
 
-	m_canAutoScroll    (k_enabelCanAutoScroll),
-	m_canScrollToBottom(k_enabelCanScrollToBottom)
+	m_canAutoScroll    (k_enableCanAutoScroll),
+	m_canScrollToBottom(k_enableCanScrollToBottom)
 {
 	ClearLog();
 }

@@ -46,6 +46,9 @@ namespace FWK::Editor
 		static constexpr float k_indentSpacing = 18.0F;
 		static constexpr float k_scrollbarSize = 14.0F;
 
+		static constexpr int k_fontHorizontalOversample = 3;
+		static constexpr int k_fontVerticalOversample   = 1;
+
 		static constexpr float k_editorFontSize = 13.0F;
 
 		static constexpr TypeAlias::Math::Color k_clearColor =

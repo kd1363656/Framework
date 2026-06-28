@@ -29,8 +29,8 @@ namespace FWK::Editor
 
 		static constexpr std::size_t k_ensureFirstLine = 0ULL;
 
-		static constexpr bool k_enabelCanAutoScroll     = true;
-		static constexpr bool k_enabelCanScrollToBottom = true;
+		static constexpr bool k_enableCanAutoScroll     = true;
+		static constexpr bool k_enableCanScrollToBottom = true;
 
 		ImGuiTextBuffer m_textBuffer;
 		ImGuiTextFilter m_textFilter;

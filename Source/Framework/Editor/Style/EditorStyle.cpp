@@ -233,8 +233,8 @@ void FWK::Editor::EditorStyle::ApplyFont()
 	// UTF-8文字列が正しくても日本語部分が'?'で表示される
 	ImFontConfig l_fontConfig = {};
 
-	l_fontConfig.OversampleH = 3;
-	l_fontConfig.OversampleV = 1;
+	l_fontConfig.OversampleH = k_fontHorizontalOversample;
+	l_fontConfig.OversampleV = k_fontVerticalOversample;
 	l_fontConfig.PixelSnapH  = true;
 	
 	const ImFont* const l_japaneseFont = l_io.Fonts->AddFontFromFileTTF(k_fontPath,
