@@ -24,6 +24,8 @@ namespace FWK::Editor
 		
 		void SaveCONFIG() const;
 	
+		void ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest);
+
 		bool CopyGraphicsSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
@@ -56,7 +58,7 @@ namespace FWK::Editor
 		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
 		std::weak_ptr<WindowType> FetchWindowEditor() const
 		{
-			const TypeAlias::StaticTypeID l_staticTypeID = WindowType::GetTypeINFO().k_staticTypeID;
+			const auto l_staticTypeID = WindowType::GetREFTypeINFO().k_staticTypeID;
 
 			const auto& l_itr = m_editorWindowMap.find(l_staticTypeID);
 

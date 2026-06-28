@@ -19,15 +19,15 @@ namespace FWK::Graphics
 		bool Create(const Device& a_device)
 		{
 			// DescriptorHeapの作成数はDescriptorHeapIndexAllocatorの管理数に依存させる
-			const auto l_descriptorNUM = m_descriptorIndexAllocator.GetVALCapacity();
+			const auto l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_descriptorNUM == Constant::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効になっており、DescriptorPoolの作成に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF(l_descriptorNUM == Constant::k_invalidDescriptorNUM,	  "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。",		  false);
+			// 容量が0ならassert
+			FWK_ASSERT_RETURN_VALUE_IF(l_capacity == Constant::k_invalidDescriptorNUM, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);
 
 			FWK_ASSERT_RETURN_VALUE_IF(!m_cpuDescriptorHeap.Create(a_device,
 																   HeapType, 
 																   D3D12_DESCRIPTOR_HEAP_FLAG_NONE, 
-																   l_descriptorNUM), 
+																   l_capacity), 
 																   "CPUDescriptorHeapの生成に失敗しました。",
 																   false);
 
@@ -38,11 +38,11 @@ namespace FWK::Graphics
 				m_shaderVisibleDescriptorHeap = std::make_shared<DescriptorHeap>();
 
 				FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap->Create(a_device,
-																				         HeapType,
-																						 D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE,
-																						 l_descriptorNUM),
-																						 "ShaderVisibleDescriptorHeap",
-																						 false);
+																				  HeapType,
+																				  D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE,
+																				  l_capacity),
+																				  "ShaderVisibleDescriptorHeapでないためShaderVisibleDescriptorHeapの生成に失敗しました",
+																				  false);
 			}
 
 			FWK_ASSERT_RETURN_VALUE_IF(!m_descriptorIndexAllocator.Create(), "DescriptorHeapIndexAllocatorの作成に失敗しました。", false);

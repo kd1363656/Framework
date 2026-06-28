@@ -176,6 +176,24 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
+void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest)
+{
+	// window側でサイズ変更が起きていない場合は、何もしない
+	if (!a_windowResizeRequest.m_isRequested ||
+		a_windowResizeRequest.m_isMinimized) 
+	{
+		return; 
+	}
+
+	const auto& l_sceneViewEditorWindow = FetchWindowEditor<SceneViewEditorWindow>().lock();
+
+	if (!l_sceneViewEditorWindow) { return; }
+
+	// シーンビューウィンドウ用テクスチャのでスクリプタのコピーをし直す
+	// (レンダーターゲットテクスチャがウィンドウのリサイズ後の解像度に合わせて作られるため)
+	l_sceneViewEditorWindow->SetupSceneViewTextureDescriptors();
+}
+
 bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);

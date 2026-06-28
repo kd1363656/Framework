@@ -13,6 +13,8 @@ namespace FWK::Editor
 
 		void Draw() override;
 
+		void SetupSceneViewTextureDescriptors();
+
 	private:
 
 		ImTextureID FetchVALSceneViewTextureID() const;

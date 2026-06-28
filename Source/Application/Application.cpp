@@ -58,6 +58,7 @@ void Application::Execute()
 
 		// ウィンドウのリサイズ通知が来ていたらリサイズ処理を行う
 		l_graphicsManager.ProcessWindowResizeRequest(m_window.GetREFResizeRequest());
+		l_editorManager.ProcessWindowResizeRequest  (m_window.GetREFResizeRequest());
 
 		// リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
 		ClearWindowResizeRequest();
