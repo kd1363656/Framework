@@ -7,9 +7,7 @@ void FWK::Scene::INIT()
 	m_groundModel                    = std::make_shared<Graphics::StaticModel>							    ();
 	m_charaModelStandardDrawRequest  = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>();
 	m_groundModelStandardDrawRequest = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>();
-	m_texture						 = std::make_shared<Graphics::Texture>									();
-	m_spriteDrawRequest              = std::make_shared<Struct::SpriteScreenPerObjectDrawRequestData>		();
-
+	
 	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
 	const auto& l_renderGraph     = l_renderer.GetREFRenderGraph		  ();
@@ -17,11 +15,6 @@ void FWK::Scene::INIT()
 	// モデル
 	m_charaModel->Load ("Asset/Model/Antike.fbx");
 	m_groundModel->Load("Asset/Model/Terrain/Terrain.fbx");
-
-	/*m_texture->Load("Asset/Texture/Test.png");
-
-	m_spriteDrawRequest->m_sourceRECT    = { 256, 256 };
-	m_spriteDrawRequest->m_textureRecord = m_texture->GetREFTextureRecord();*/
 
 	// 本来はUpdateなどで更新する
 	m_charaModelStandardDrawRequest->m_staticModelRecord           = m_charaModel->GetREFStaticModelRecord();
@@ -34,14 +27,11 @@ void FWK::Scene::INIT()
 	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Transpose();
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
-	const auto& l_spriteScreenPerObjectDrawRequest        = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SpriteScreenPerObjectDrawRequest>		   ().lock();
-
+	
 	if (!l_staticModelStandardPerObjectDrawRequest) { return; }
 
 	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_charaModelStandardDrawRequest);
 	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_groundModelStandardDrawRequest);
-
-	l_spriteScreenPerObjectDrawRequest->AddDrawRequestPerObject(m_spriteDrawRequest);
 
 	const auto& l_viewport = l_renderer.GetREFRenderArea().GetREFViewport();
 

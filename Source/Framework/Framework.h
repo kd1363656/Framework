@@ -348,6 +348,12 @@
 #include "Physics/Body/PhysicsBodyCreator.h"
 #include "Physics/PhysicsManager.h"
 
+// コンポーネント
+#include "Component/ComponentBase.h"
+
+// ゲームオブジェクト
+#include "GameObject/GameObject.h"
+
 // シーン
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"

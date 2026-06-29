@@ -736,6 +736,12 @@
     <Filter Include="Asset\Shader\RenderTarget\Final">
       <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject">
+      <UniqueIdentifier>{d89b2d13-ea76-4683-99fa-453db638096d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component">
+      <UniqueIdentifier>{998b25b3-53bc-4357-b8e6-5b3d38ef69f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1506,6 +1512,12 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\GameObject.h">
+      <Filter>Source\Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\ComponentBase.h">
+      <Filter>Source\Framework\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1858,6 +1870,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json\StandardPipelineStateJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\GameObject.cpp">
+      <Filter>Source\Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\ComponentBase.cpp">
+      <Filter>Source\Framework\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -24,9 +24,6 @@ namespace FWK
 		std::shared_ptr<Graphics::StaticModel>								 m_groundModel                    = nullptr;
 		std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData> m_groundModelStandardDrawRequest = nullptr;
 
-		std::shared_ptr<Graphics::Texture>							  m_texture           = nullptr;
-		std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData> m_spriteDrawRequest = nullptr;
-
 		Struct::PhysicsBodyHandle m_staticFloorBodyHandle    = {};
 		Struct::PhysicsBodyHandle m_staticWallBodyHandle     = {};
 		Struct::PhysicsBodyHandle m_dynamicCapsuleBodyHandle = {};
