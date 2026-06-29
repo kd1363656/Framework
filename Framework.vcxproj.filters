@@ -1895,9 +1895,6 @@
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_MS.hlsl">
-      <Filter>Asset\Shader\Sprite\Screen</Filter>
-    </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
       <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
@@ -1918,6 +1915,9 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
       <Filter>Asset\Shader\RenderTarget\Final</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_VS.hlsl">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>
