@@ -23,7 +23,7 @@ namespace FWK::Constant
 	inline constexpr UINT k_spriteIndexCount = k_spritePrimitiveCount * k_triangleVertexCount;
 
 	inline constexpr UINT k_spriteDrawInstanceCount     = 1U;
-	inline constexpr UINT k_spriteStartIndexLocation    = 0U;
+	inline constexpr UINT k_spriteStartVertexLocation   = 0U;
 	inline constexpr UINT k_spriteStartInstanceLocation = 0U;
 
 	inline constexpr std::uint16_t k_spriteLeftBottomVertexIndex  = 0U;

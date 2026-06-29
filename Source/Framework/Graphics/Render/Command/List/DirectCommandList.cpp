@@ -217,7 +217,7 @@ void FWK::Graphics::DirectCommandList::SetupPrimitiveTopology(const D3D12_PRIMIT
 	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、プリミティブトポロジーの設定に失敗しました。");
 
 	// InputAssemblerに、これから描画する頂点をどの形として扱うかを設定する
-	// SpriteScreenは三角形2毎のシ角形なのでTRIANGLELISTを使う
+	// SpriteScreenはTriangleStripで四角形を描画する。
 	l_directCommandList->IASetPrimitiveTopology(a_primitiveTopology);
 }
 
@@ -231,7 +231,7 @@ void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
 	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DrawInstanceの実行に失敗しました。");
 
 	// 通常のVS/PSパイプラインで描画する
-	// SpriteScreenではVertexBufferを使わず、VSがわのSV_VertexIDから6頂点を生成する
+	// SpriteScreenではVertexBufferを使わず、VS側のSV_VertexIDから4頂点を生成する。
 	l_directCommandList->DrawInstanced(a_vertexCount,
 									   a_instanceCount,
 									   a_startVertexLocation,

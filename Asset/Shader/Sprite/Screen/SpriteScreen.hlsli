@@ -1,31 +1,4 @@
-﻿struct MSOutput
-{
-    float4 position : SV_Position;
-    float2 uv       : TEXCOORD0;
-};
-
-static const float k_positionZ = 0.0F;
-static const float k_positionW = 1.0F;
-
-static const float k_needDiscardWriteAlpha = 0.1F;
-
-static const uint k_threadCountX = 1U;
-static const uint k_threadCountY = 1U;
-static const uint k_threadCountZ = 1U;
-
-static const uint  k_vertexCount    = 4U;
-static const uint  k_primitiveCount = 2U;
-
-static const uint  k_textureDefaultWidth  = 0U;
-static const uint  k_textureDefaultHeight = 0U;
-
-static const uint  k_firstPrimitiveIndex  = 0U;
-static const uint  k_secondPrimitiveIndex = 1U;
-
-static const uint  k_primitiveVertexIndexZero  = 0U;
-static const uint  k_primitiveVertexIndexOne   = 1U;
-static const uint  k_primitiveVertexIndexTwo   = 2U;
-static const uint  k_primitiveVertexIndexThree = 3U;
+﻿SamplerState g_baseColorSampler : register(s0);
 
 cbuffer CBSpritePass : register(b0)
 {
@@ -48,4 +21,36 @@ cbuffer CBSpritePerObject : register(b1)
     float3 g_secondPadding;
 }
 
-SamplerState g_baseColorSampler : register(s0);
+struct VSOutput
+{
+    float4 position : SV_Position;
+    float2 uv       : TEXCOORD0;
+};
+
+static const float k_positionZ = 0.0F;
+static const float k_positionW = 1.0F;
+
+static const float k_needDiscardWriteAlpha = 0.1F;
+
+static const float k_rectMIN = 0.0F;
+static const float k_rectMAX = 1.0F;
+
+static const uint k_vertexCount = 4U;
+
+static const uint k_invalidSourceRECTSize = 0U;
+
+static const float2 k_spriteScreenPositionRateList[k_vertexCount] =
+{
+	float2(k_rectMIN, k_rectMIN),
+	float2(k_rectMAX, k_rectMIN),
+	float2(k_rectMIN, k_rectMAX),
+	float2(k_rectMAX, k_rectMAX),
+};
+
+static const float2 k_spriteScreenUVRateList[k_vertexCount] =
+{
+	float2(k_rectMIN, k_rectMIN),
+	float2(k_rectMAX, k_rectMIN),
+	float2(k_rectMIN, k_rectMAX),
+	float2(k_rectMAX, k_rectMAX),
+};

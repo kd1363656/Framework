@@ -10,6 +10,9 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
+	// PrimitiveTopologyTypeをセット
+	l_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
 	for (const auto& l_drawRequest : m_drawRequestPerObjectList.GetREFDrawRequestPerObjectRecordList())
 	{
 		const auto& l_drawRequestPerObject = l_drawRequest.m_drawRequestPerObject.lock();
@@ -35,8 +38,10 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 																		 a_frameResource,
 																		 Enum::RootParameterType::CBSpritePerObject);
 
-		// MeshShaderを1グループ実行して、画面スプライト用の四角形を描画する。
-		l_directCommandList.DispatchMesh(Constant::k_defaultDispatchMeshThreadGroupCountX, Constant::k_defaultDispatchMeshThreadGroupCountY, Constant::k_defaultDispatchMeshThreadGroupCountZ);
+		l_directCommandList.DrawInstanced(Constant::k_spriteVertexCount,
+										  Constant::k_spriteDrawInstanceCount,
+										  Constant::k_spriteStartVertexLocation,
+										  Constant::k_spriteStartInstanceLocation);
 	}
 }
 
