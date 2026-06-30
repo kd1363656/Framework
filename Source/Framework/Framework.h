@@ -236,10 +236,10 @@
 // 定数バッファークラス
 #include "Definition/Constant/Utility/Math/MathAlignUpUtilityConstant.h"
 #include "Utility/Math/MathAlignUpUtility.h"
-#include "Graphics/Render/Frame/Buffer/Converter/Json/ConstantBufferUploaderJsonConverter.h"
-#include "Graphics/Render/Frame/Buffer/ConstantBufferUploaderBase.h"
+#include "Graphics/Resource/Buffer/Constant/Converter/Json/ConstantBufferUploaderJsonConverter.h"
+#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
 #include "Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
-#include "Graphics/Render/Frame/Buffer/ConstantBufferUploader.h"
+#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploader.h"
 
 // フレームリソース
 #include "Definition/Constant/Graphics/RenderTargetPassTextureJsonConstant.h"

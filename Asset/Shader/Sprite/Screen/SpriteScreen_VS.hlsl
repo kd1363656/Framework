@@ -32,12 +32,13 @@ VSOutput main(uint a_vertexID : SV_VertexID)
 	const float2 l_uvMin = { (float)l_sourceX  / (float)l_textureWidth,					 (float)l_sourceY  / (float)l_textureHeight, };
 	const float2 l_uvMax = { (float)(l_sourceX + l_sourceWidth) / (float)l_textureWidth, (float)(l_sourceY + l_sourceHeight) / (float)l_textureHeight, };
 
-	const float2 l_positionRate = k_spriteScreenPositionRateList[a_vertexID];
-	const float2 l_uvRate       = k_spriteScreenUVRateList      [a_vertexID];
+	const float2 l_positionRate = k_positionRateList[a_vertexID];
+	const float2 l_uvRate       = k_uvRateList      [a_vertexID];
 
 	const float2 l_position = lerp(l_positionLeftTop, l_positionRightBottom, l_positionRate);
 	const float2 l_uv       = lerp(l_uvMin,           l_uvMax,              l_uvRate);
 
+	// 投影行列を掛けてNDC座標に戻す
 	l_output.position = mul(float4(l_position, k_positionZ, k_positionW), g_projectionMatrix);
 	l_output.uv       = l_uv;
 

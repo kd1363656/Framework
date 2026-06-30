@@ -39,7 +39,7 @@ static const uint k_vertexCount = 4U;
 
 static const uint k_invalidSourceRECTSize = 0U;
 
-static const float2 k_spriteScreenPositionRateList[k_vertexCount] =
+static const float2 k_positionRateList[k_vertexCount] =
 {
 	float2(k_rectMIN, k_rectMIN),
 	float2(k_rectMAX, k_rectMIN),
@@ -47,7 +47,7 @@ static const float2 k_spriteScreenPositionRateList[k_vertexCount] =
 	float2(k_rectMAX, k_rectMAX),
 };
 
-static const float2 k_spriteScreenUVRateList[k_vertexCount] =
+static const float2 k_uvRateList[k_vertexCount] =
 {
 	float2(k_rectMIN, k_rectMIN),
 	float2(k_rectMAX, k_rectMIN),

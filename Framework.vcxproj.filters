@@ -268,15 +268,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Converter\Json\Utility">
       <UniqueIdentifier>{85c8c18a-805c-495b-abd9-d2098e5ed2bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer">
-      <UniqueIdentifier>{ea744299-9455-4300-a9e6-5b025d3efdb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter">
-      <UniqueIdentifier>{3f4054c6-79a9-4f21-8502-5be95900a75c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json">
-      <UniqueIdentifier>{73ca42a0-c11d-4d18-8502-b83e9af83abe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass">
       <UniqueIdentifier>{491b2cdb-b74d-4c2d-b958-19691304212e}</UniqueIdentifier>
     </Filter>
@@ -736,6 +727,15 @@
     <Filter Include="Source\Framework\Graphics\Command\Queue\Direct">
       <UniqueIdentifier>{66b0acb0-7459-495c-a951-4f2708f947d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant">
+      <UniqueIdentifier>{8729393f-811b-4779-86c3-402af0076ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter">
+      <UniqueIdentifier>{3f4054c6-79a9-4f21-8502-5be95900a75c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json">
+      <UniqueIdentifier>{73ca42a0-c11d-4d18-8502-b83e9af83abe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -920,15 +920,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h">
       <Filter>Source\Framework\Graphics\Resource\Converter\Json\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploaderBase.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
@@ -1512,6 +1503,15 @@
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.h">
       <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1675,12 +1675,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Frame\Buffer\ConstantBufferUploaderBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json\ConstantBufferUploaderJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Frame\Buffer\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
@@ -1870,6 +1864,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.cpp">
       <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
