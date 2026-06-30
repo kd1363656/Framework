@@ -6,7 +6,7 @@ namespace FWK::Graphics
 	{
 	public:
 
-		explicit DynamicBufferUploaderBase(const UINT64& a_bufferTypeSize);
+		explicit DynamicBufferUploaderBase(const UINT64& a_typeSize);
 		virtual ~DynamicBufferUploaderBase();
 
 		void		 Deserialize(const nlohmann::json& a_rootJson);
@@ -26,15 +26,36 @@ namespace FWK::Graphics
 
 	protected:
 
-		bool CreateUploadBuffer(const Device& a_device, const UINT64& a_alignedSize);
+		bool CreateUploadBuffer(const Device& a_device, const UINT64& a_alignment);
 
 		UINT64 AllocateElementRange(const UINT64& a_elementCount);
+
+		template <typename Type>
+		D3D12_GPU_VIRTUAL_ADDRESS WriteElementAndAdvance(const Type& a_data)
+		{
+			const auto& l_startElementIndex = AllocateElementRange(k_singleElementCount);
+
+			return WriteElementAt(a_data, l_startElementIndex);
+		}
+
+		template <typename Type>
+		D3D12_GPU_VIRTUAL_ADDRESS WriteElementAt(const Type& a_data, const UINT64& a_elementIndex)
+		{
+			auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
+			const auto& l_byteOffset = a_elementIndex * m_elementStrideSize;
+
+			std::memcpy(l_mappedData + l_byteOffset, &a_data, sizeof(Type));
+
+			return m_uploadBuffer.FetchVALGPUVirtualAddress() + l_byteOffset;
+		}
 
 	private:
 
 		static constexpr UINT64 k_invalidCreateCount        = 0ULL;
 		static constexpr UINT64 k_initialElementBufferIndex = 0ULL;
-		static constexpr UINT64 k_invalidElementBufferIndex = std::numeric_limits<UINT>::max();
+		static constexpr UINT64 k_initialElementStrideSize  = 0ULL;
+		static constexpr UINT64 k_invalidElementBufferIndex = std::numeric_limits<UINT64>::max();
+		static constexpr UINT64 k_singleElementCount		= 1ULL;
 
 		const UINT64 k_typeSize;
 
@@ -45,6 +66,7 @@ namespace FWK::Graphics
 		UINT64 m_createCount;
 
 		UINT64 m_currentElementIndex;
+		UINT64 m_elementStrideSize;
 
 		FWK_DEFINE_TYPE_INFO_ROOT(DynamicBufferUploaderBase)
 	};

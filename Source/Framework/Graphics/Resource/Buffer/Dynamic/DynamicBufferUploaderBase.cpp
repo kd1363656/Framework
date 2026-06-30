@@ -1,13 +1,14 @@
 ﻿#include "DynamicBufferUploaderBase.h"
 
-FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(const UINT64& a_bufferTypeSize) : 
-	k_typeSize(a_bufferTypeSize),
+FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(const UINT64& a_typeSize) : 
+	k_typeSize(a_typeSize),
 
 	m_uploadBuffer(),
 
 	m_createCount(k_invalidCreateCount),
 
-	m_currentElementIndex(k_initialElementBufferIndex)
+	m_currentElementIndex(k_initialElementBufferIndex),
+	m_elementStrideSize  (k_initialElementStrideSize)
 {}
 FWK::Graphics::DynamicBufferUploaderBase::~DynamicBufferUploaderBase() = default;
 
@@ -32,12 +33,17 @@ bool FWK::Graphics::DynamicBufferUploaderBase::CreateUploadBuffer(const Device& 
 {
 	FWK_ASSERT_RETURN_VALUE_IF(m_createCount == k_invalidCreateCount, "バッファの作成個数が0のため、作成処理に失敗しました。", false);
 	
-	// 送る定数バッファの型サイズを256バイトにアライメントする
+	// 送るバッファの型サイズを所定のバイト数にアライメントする
 	const auto& l_alignedTypeSize = Utility::AlignUp(k_typeSize, a_alignment);
-	const auto& l_totalSize       = m_createCount * l_alignedTypeSize;
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_alignedTypeSize == k_initialElementStrideSize, "アライメント後の値が無効となっており、作成処理に失敗しました。", false);
+
+	m_elementStrideSize = l_alignedTypeSize;
+
+	const auto& l_totalSize = m_createCount * l_alignedTypeSize;
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_totalSize == Constant::k_invalidBufferSize,  "作成バッファーサイズが0のためバッファの生成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer.Create(a_device, l_totalSize), "バッファの生成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer.Create(a_device, l_totalSize), "バッファの生成処理に失敗しました。",                              false);
 
 	return true;
 }
