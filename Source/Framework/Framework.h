@@ -234,8 +234,13 @@
 #include "Graphics/Resource/ResourceContext.h"
 
 // 定数バッファークラス
+#include "Graphics/Resource/Buffer/Dynamic/Converter/Json/DynamicBufferUploaderJsonConverter.h"
+#include "Graphics/Resource/Buffer/Dynamic/DynamicBufferUploaderBase.h"
+
 #include "Definition/Constant/Utility/Math/MathAlignUpUtilityConstant.h"
 #include "Utility/Math/MathAlignUpUtility.h"
+
+
 #include "Graphics/Resource/Buffer/Constant/Converter/Json/ConstantBufferUploaderJsonConverter.h"
 #include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
 #include "Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"

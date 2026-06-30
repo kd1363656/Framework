@@ -524,6 +524,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
@@ -665,6 +667,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.cpp" />

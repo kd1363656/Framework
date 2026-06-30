@@ -736,6 +736,15 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json">
       <UniqueIdentifier>{73ca42a0-c11d-4d18-8502-b83e9af83abe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic">
+      <UniqueIdentifier>{a10a3968-cfaa-4682-b40f-ecda01387ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter">
+      <UniqueIdentifier>{bc7fa3d0-6630-4194-9b1a-45f88112abcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json">
+      <UniqueIdentifier>{c29f170e-2d80-4d7c-ad29-a94b644b65a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1512,6 +1521,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1870,6 +1885,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
