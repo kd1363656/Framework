@@ -38,7 +38,8 @@ namespace FWK::Graphics
 			Struct::GPUResource l_bufferGPUResource = {};
 
 			// リソース作成のためのメモリ領域を確保
-			FWK_ASSERT_RETURN_VALUE_IF(!CreateBufferGPUResource(a_gpuMemoryAllocator, l_bufferSize, l_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(l_bufferSize, D3D12_RESOURCE_STATE_COMMON, l_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
+
 
 			Struct::BufferUploadCommand l_bufferUploadCommand = {};
 
@@ -77,14 +78,6 @@ namespace FWK::Graphics
 		auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
 	private:
-
-		bool CreateBufferGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT64& a_bufferSize, Struct::GPUResource& a_bufferGPUResource) const
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize,															   "StructuredBuffer用GPUResourceの作成サイズが0です。",  false);
-			FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(a_bufferSize, D3D12_RESOURCE_STATE_COMMON, a_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
-
-			return true;
-		}
 
 		template <typename Type>
 		bool CreateBufferUploadCommand(const std::vector<Type>&           a_bufferList, 

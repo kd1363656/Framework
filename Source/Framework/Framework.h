@@ -344,7 +344,7 @@
 #include "Definition/Enum/Physics/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Definition/Struct/Graphics/PhysicsBodyCreatorStruct.h"
-#include "Utility/Physics/PhysicsConevrtVec3Uitlity.h"
+#include "Utility/Physics/PhysicsConvertVec3Utility.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
 #include "Physics/PhysicsManager.h"
 

@@ -584,7 +584,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConevrtVec3Uitlity.h" />
+    <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h" />
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h" />
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />

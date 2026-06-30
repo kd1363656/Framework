@@ -1302,7 +1302,7 @@
     <ClInclude Include="Source\Framework\Utility\Graphics\ColorJsonUtility.h">
       <Filter>Source\Framework\Utility\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConevrtVec3Uitlity.h">
+    <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h">
       <Filter>Source\Framework\Utility\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h">
