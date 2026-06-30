@@ -143,10 +143,10 @@
 
 // ダイレクトコマンドアロケータ
 #include "Definition/Constant/Graphics/DirectCommandAllocatorConstant.h"
-#include "Graphics/Render/Frame/Command/Allocator/DirectCommandAllocator.h"
+#include "Graphics/Command/Allocator/Direct/DirectCommandAllocator.h"
 
 // ダイレクトコマンドキュー
-#include "Graphics/Render/Command/Queue/DirectCommandQueue.h"
+#include "Graphics/Command/Queue/Direct/DirectCommandQueue.h"
 
 // スワップチェイン
 #include "Definition/Constant/Graphics/SwapChainConstant.h"
@@ -160,7 +160,7 @@
 
 // ダイレクトコマンドリスト
 #include "Definition/Constant/Graphics/DirectCommandListConstant.h"
-#include "Graphics/Render/Command/List/DirectCommandList.h"
+#include "Graphics/Command/List/Direct/DirectCommandList.h"
 
 // Storageクラス
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
