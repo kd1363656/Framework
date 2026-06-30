@@ -40,23 +40,22 @@ namespace FWK::Graphics
 			// リソース作成のためのメモリ領域を確保
 			FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(l_bufferSize, D3D12_RESOURCE_STATE_COMMON, l_bufferGPUResource), "StructuredBuffer用GPUResourceの作成に失敗しました。", false);
 
-
 			Struct::BufferUploadCommand l_bufferUploadCommand = {};
 
 			// バッファーのアップロード先のデフォルトヒープにリソースを作成
 			FWK_ASSERT_RETURN_VALUE_IF(!CreateBufferUploadCommand(a_bufferList,
-																		 a_device,
-																		 l_bufferGPUResource,
-																		 l_bufferSize,
-																		 l_bufferUploadCommand),
-																		 "StructuredBuffer用UploadCommandの作成に失敗しました。",
-																		 false);
+																  a_device,
+																  l_bufferGPUResource,
+																  l_bufferSize,
+																  l_bufferUploadCommand),
+																  "StructuredBuffer用UploadCommandの作成に失敗しました。",
+																  false);
 
 			// ストラクチャードバッファー用のSRVを作成
-			const auto l_srvDescriptorIndex = CreateStructuredBufferSRV<Type>(a_bufferList,
-																			  a_device,
-																			  l_bufferGPUResource,
-																			  a_srvDescriptorPool);
+			const auto l_srvDescriptorIndex = CreateStructuredBufferSRV(a_bufferList,
+																		a_device,
+																		l_bufferGPUResource,
+																		a_srvDescriptorPool);
 
 			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "StructuredBuffer用SRVの作成に失敗しました。", false);
 
