@@ -50,6 +50,9 @@ bool FWK::Graphics::DynamicBufferUploaderBase::CreateUploadBuffer(const Device& 
 
 UINT64 FWK::Graphics::DynamicBufferUploaderBase::AllocateElementRange(const UINT64& a_elementCount)
 {
+	FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == Constant::k_invalidBufferSize, "確保Element数が0のため、Allocate処理に失敗しました。",                  k_invalidElementBufferIndex);
+	FWK_ASSERT_RETURN_VALUE_IF(a_elementCount > m_createCount,                  "確保Element数が作成個数を超えているため、Allocate処理に失敗しました。", k_invalidElementBufferIndex);
+
 	const auto l_startElementIndex = m_currentElementIndex;
 
 	m_currentElementIndex += a_elementCount;

@@ -4,15 +4,15 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelPerObjectConstantBufferUploader final : public ConstantBufferUploader<Struct::CBStaticModelPerObject>
+	class StaticModelPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBStaticModelPerObject>
 	{
 	public:
 
-		 StaticModelPerObjectConstantBufferUploader()          = default;
-		~StaticModelPerObjectConstantBufferUploader() override = default;
+		 StaticModelPerObjectDynamicConstantBufferUploader()          = default;
+		~StaticModelPerObjectDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(StaticModelPerObjectConstantBufferUploader, ConstantBufferUploaderBase)
+		FWK_DEFINE_TYPE_INFO(StaticModelPerObjectDynamicConstantBufferUploader, DynamicBufferUploaderBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ConstantBufferSharedFactory, FWK::Graphics::StaticModelPerObjectConstantBufferUploader)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::StaticModelPerObjectDynamicConstantBufferUploader)

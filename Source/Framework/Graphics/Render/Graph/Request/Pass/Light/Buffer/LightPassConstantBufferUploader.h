@@ -2,15 +2,15 @@
 
 namespace FWK::Graphics
 {
-	class LightPassConstantBufferUploader final : public ConstantBufferUploader<Struct::CBLightPass>
+	class LightPassDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBLightPass>
 	{
 	public:
 
-		 LightPassConstantBufferUploader()          = default;
-		~LightPassConstantBufferUploader() override = default;
+		 LightPassDynamicConstantBufferUploader()          = default;
+		~LightPassDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(LightPassConstantBufferUploader, ConstantBufferUploaderBase)
+		FWK_DEFINE_TYPE_INFO(LightPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ConstantBufferSharedFactory, FWK::Graphics::LightPassConstantBufferUploader)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::LightPassDynamicConstantBufferUploader)

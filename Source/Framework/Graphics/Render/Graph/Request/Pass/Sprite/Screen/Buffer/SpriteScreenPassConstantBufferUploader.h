@@ -2,15 +2,15 @@
 
 namespace FWK::Graphics
 {
-	class SpriteScreenPassConstantBufferUploader final : public ConstantBufferUploader<Struct::CBSpritePass>
+	class SpriteScreenPassDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBSpritePass>
 	{
 	public:
 
-		 SpriteScreenPassConstantBufferUploader()          = default;
-		~SpriteScreenPassConstantBufferUploader() override = default;
+		 SpriteScreenPassDynamicConstantBufferUploader()          = default;
+		~SpriteScreenPassDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(SpriteScreenPassConstantBufferUploader, ConstantBufferUploaderBase)
+		FWK_DEFINE_TYPE_INFO(SpriteScreenPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ConstantBufferSharedFactory, FWK::Graphics::SpriteScreenPassConstantBufferUploader)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::SpriteScreenPassDynamicConstantBufferUploader)

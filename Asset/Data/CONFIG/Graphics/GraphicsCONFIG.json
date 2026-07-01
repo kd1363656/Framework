@@ -3,42 +3,42 @@
         "FrameResourceList": {
             "Count": 3,
             "Template": {
-                "ConstantBufferUploaderList": [
+                "DynamicBufferUploaderList": [
                     {
-                        "ConstantBufferUploader": {
-                            "CreateConstantBufferCount": 1
+                        "DynamicBufferUploader": {
+                            "CreateCount": 1
                         },
-                        "ConstantBufferUploaderTypeName": "SpriteScreenPassConstantBufferUploader"
+                        "DynamicBufferUploaderTypeName": "SpriteScreenPassDynamicConstantBufferUploader"
                     },
                     {
-                        "ConstantBufferUploader": {
-                            "CreateConstantBufferCount": 4096
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4096
                         },
-                        "ConstantBufferUploaderTypeName": "SpriteScreenPerObjectConstantBufferUploader"
+                        "DynamicBufferUploaderTypeName": "SpriteScreenPerObjectDynamicConstantBufferUploader"
                     },
                     {
-                        "ConstantBufferUploader": {
-                            "CreateConstantBufferCount": 1
+                        "DynamicBufferUploader": {
+                            "CreateCount": 1
                         },
-                        "ConstantBufferUploaderTypeName": "FinalColorRenderTargetPassConstantBufferUploader"
+                        "DynamicBufferUploaderTypeName": "FinalColorRenderTargetPassDynamicConstantBufferUploader"
                     },
                     {
-                        "ConstantBufferUploader": {
-                            "CreateConstantBufferCount": 1
+                        "DynamicBufferUploader": {
+                            "CreateCount": 1
                         },
-                        "ConstantBufferUploaderTypeName": "CameraPassConstantBufferUploader"
+                        "DynamicBufferUploaderTypeName": "CameraPassDynamicConstantBufferUploader"
                     },
                     {
-                        "ConstantBufferUploader": {
-                            "CreateConstantBufferCount": 4096
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4096
                         },
-                        "ConstantBufferUploaderTypeName": "StaticModelPerObjectConstantBufferUploader"
+                        "DynamicBufferUploaderTypeName": "StaticModelPerObjectDynamicConstantBufferUploader"
                     },
                     {
-                        "ConstantBufferUploader": {
-                            "CreateConstantBufferCount": 1
+                        "DynamicBufferUploader": {
+                            "CreateCount": 1
                         },
-                        "ConstantBufferUploaderTypeName": "LightPassConstantBufferUploader"
+                        "DynamicBufferUploaderTypeName": "LightPassDynamicConstantBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {

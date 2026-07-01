@@ -5,10 +5,10 @@ void FWK::Converter::FrameResourceJsonConverter::Deserialize(const nlohmann::jso
 	if (a_rootJson.is_null()) { return; }
 
 	// 定数バッファのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_constantBufferUploaderListJsonKey, nlohmann::json::array());
+	if (const auto& l_json = a_rootJson.value(k_dynamicBufferUploaderListJsonKey, nlohmann::json::array());
 		!l_json.is_null())
 	{
-		DeserializeConstantBuffer(l_json, a_frameResource);
+		DeserializeDynamicBuffer(l_json, a_frameResource);
 	}
 
 	// レンダーグラフ用レンダーターゲットテクスチャのデシリアライズ
@@ -28,7 +28,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::Serialize(const Graph
 	auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource();
 
 	// 定数バッファのシリアライズ
-	l_rootJson[k_constantBufferUploaderListJsonKey] = SerializeConstantBuffer(a_frameResource);
+	l_rootJson[k_dynamicBufferUploaderListJsonKey] = SerializeDynamicBuffer(a_frameResource);
 
 	// レンダーグラフ用レンダーターゲットテクスチャのシリアライズ
 	l_rootJson[k_renderGraphFrameResourceJsonkey] = l_renderGraphFrameResource.Serialize();
@@ -36,47 +36,47 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::Serialize(const Graph
 	return l_rootJson;
 }
 
-void FWK::Converter::FrameResourceJsonConverter::DeserializeConstantBuffer(const nlohmann::json& a_rootJson, Graphics::FrameResource& a_frameResource) const
+void FWK::Converter::FrameResourceJsonConverter::DeserializeDynamicBuffer(const nlohmann::json& a_rootJson, Graphics::FrameResource& a_frameResource) const
 {
 	if (a_rootJson.is_null())		   { return; }
 	if (!Utility::IsArray(a_rootJson)) { return; }
 	
 	for (const auto& l_json : a_rootJson)
 	{
-		std::shared_ptr<Graphics::ConstantBufferUploaderBase> l_constantBufferUploader = nullptr;
+		std::shared_ptr<Graphics::DynamicBufferUploaderBase> l_dynamicBufferUploader = nullptr;
 
-		// 定数バッファクラスをデシリアライズ
-		Utility::DeserializeInstanceType<TypeAlias::ConstantBufferSharedFactory>(l_json, k_constantBufferUploaderTypeNameJsonKey, l_constantBufferUploader);
+		// ダイナミックバッファクラスをデシリアライズ
+		Utility::DeserializeInstanceType<TypeAlias::DynamicBufferSharedFactory>(l_json, k_dynamicBufferUploaderTypeNameJsonKey, l_dynamicBufferUploader);
 
 		// 作製に成功していれば中身にポインタがしっかり入っているので初期化とデシリアライズを行う
-		if (!l_constantBufferUploader) { continue; }
+		if (!l_dynamicBufferUploader) { continue; }
 		
-		if (l_json.contains(k_constantBufferUploaderJsonKey))
+		if (l_json.contains(k_dynamicBufferUploaderJsonKey))
 		{
-			l_constantBufferUploader->Deserialize(l_json[k_constantBufferUploaderJsonKey]);
+			l_dynamicBufferUploader->Deserialize(l_json[k_dynamicBufferUploaderJsonKey]);
 		}
 
-		a_frameResource.AddConstantBufferUploader(l_constantBufferUploader);
-	}
+		a_frameResource.AddDynamicBufferUploader(l_dynamicBufferUploader);
+	}	
 }
 
-nlohmann::json FWK::Converter::FrameResourceJsonConverter::SerializeConstantBuffer(const Graphics::FrameResource & a_frameResource) const
+nlohmann::json FWK::Converter::FrameResourceJsonConverter::SerializeDynamicBuffer(const Graphics::FrameResource & a_frameResource) const
 {
 	nlohmann::json l_rootJsonArray = {};
 	
-	const auto& l_constantBufferUploaderList = a_frameResource.GetREFConstantBufferUploaderList();
+	const auto& l_dynamicBufferUploaderList = a_frameResource.GetREFConstantBufferUploaderList();
 	
 	// 生成する定数バッファの名前とその定数バッファに必要な情報をSerialize
-	for (const auto& l_constantBufferUploader : l_constantBufferUploaderList)
+	for (const auto& l_dynamicBufferUploader : l_dynamicBufferUploaderList)
 	{
-		if (!l_constantBufferUploader) { continue; }
+		if (!l_dynamicBufferUploader) { continue; }
 
 		nlohmann::json l_json = {};
 
 		// インスタンスを復元できるようにシリアライズ
-		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_constantBufferUploader, k_constantBufferUploaderTypeNameJsonKey));
+		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_dynamicBufferUploader, k_dynamicBufferUploaderTypeNameJsonKey));
 
-		l_json[k_constantBufferUploaderJsonKey] = l_constantBufferUploader->Serialize();
+		l_json[k_dynamicBufferUploaderJsonKey] = l_dynamicBufferUploader->Serialize();
 
 		l_rootJsonArray.emplace_back(l_json);
 	}

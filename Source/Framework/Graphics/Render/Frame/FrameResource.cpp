@@ -16,11 +16,11 @@ bool FWK::Graphics::FrameResource::Create(const Device&			    a_device,
 	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
 
 	// 定数バッファの作成
-	for (const auto& l_constantBuffer : m_constantBufferUploaderList)
+	for (const auto& l_dynamicBuffer : m_dynamicBufferUploaderList)
 	{
-		if (!l_constantBuffer) { continue; }
+		if (!l_dynamicBuffer) { continue; }
 
-		FWK_ASSERT_RETURN_VALUE_IF(!l_constantBuffer->Create(a_device), "定数バッファ作成処理に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_dynamicBuffer->Create(a_device), "定数バッファ作成処理に失敗しました。", false);
 	}
 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_renderGraphFrameResource.Create(a_device,
@@ -61,11 +61,11 @@ void FWK::Graphics::FrameResource::BeginFrame()
 	RemoveExpiredConstantBufferUploaderMap ();
 
 	// 定数バッファのインデックスのリセット処理などを行う
-	for (const auto& l_constantBuffer : m_constantBufferUploaderList)
+	for (const auto& l_dynamicBuffer : m_dynamicBufferUploaderList)
 	{
-		if (!l_constantBuffer) { continue; }
+		if (!l_dynamicBuffer) { continue; }
 
-		l_constantBuffer->BeginFrame();
+		l_dynamicBuffer->BeginFrame();
 	}
 }
 
@@ -74,41 +74,41 @@ nlohmann::json FWK::Graphics::FrameResource::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::FrameResource::AddConstantBufferUploader(const std::shared_ptr<ConstantBufferUploaderBase>& a_constantBufferUploader)
+void FWK::Graphics::FrameResource::AddDynamicBufferUploader(const std::shared_ptr<DynamicBufferUploaderBase>& a_dynamicBufferUploader)
 {
-	FWK_ASSERT_RETURN_IF(!a_constantBufferUploader, "ConstantBufferUploaderが無効のため、追加に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!a_dynamicBufferUploader, "ConstantBufferUploaderが無効のため、追加に失敗しました。");
 
-	const auto l_staticTypeID = a_constantBufferUploader->GetREFRuntimeTypeINFO().k_staticTypeID;
+	const auto l_staticTypeID = a_dynamicBufferUploader->GetREFRuntimeTypeINFO().k_staticTypeID;
 
 	// すでに同じ型のUploaderが登録されている場合は再度追加しない
-	if (m_constantBufferUploaderMap.contains(l_staticTypeID)) { return; }
+	if (m_dynamicBufferUploaderMap.contains(l_staticTypeID)) { return; }
 
-	m_constantBufferUploaderList.emplace_back(a_constantBufferUploader);
-	m_constantBufferUploaderMap.try_emplace  (l_staticTypeID, a_constantBufferUploader);
+	m_dynamicBufferUploaderList.emplace_back(a_dynamicBufferUploader);
+	m_dynamicBufferUploaderMap.try_emplace  (l_staticTypeID, a_dynamicBufferUploader);
 }
 
 void FWK::Graphics::FrameResource::RemoveExpiredConstantBufferUploaderList()
 {
 	std::size_t l_index = 0ULL;
 
-	while (l_index < m_constantBufferUploaderList.size())
+	while (l_index < m_dynamicBufferUploaderList.size())
 	{
-		if (m_constantBufferUploaderList[l_index]) 
+		if (m_dynamicBufferUploaderList[l_index]) 
 		{
 			++l_index;
 			continue;
 		}
 
 		// 解放順は考慮しなくてよいのでpop_backする
-		std::swap							 (m_constantBufferUploaderList[l_index], m_constantBufferUploaderList.back());
-		m_constantBufferUploaderList.pop_back();
+		std::swap							(m_dynamicBufferUploaderList[l_index], m_dynamicBufferUploaderList.back());
+		m_dynamicBufferUploaderList.pop_back();
 	}
 }
 void FWK::Graphics::FrameResource::RemoveExpiredConstantBufferUploaderMap()
 {
-	auto l_itr = m_constantBufferUploaderMap.begin();
+	auto l_itr = m_dynamicBufferUploaderMap.begin();
 
-	while (l_itr != m_constantBufferUploaderMap.end())
+	while (l_itr != m_dynamicBufferUploaderMap.end())
 	{
 		if (!l_itr->second.expired())
 		{
@@ -116,6 +116,6 @@ void FWK::Graphics::FrameResource::RemoveExpiredConstantBufferUploaderMap()
 			continue;
 		}
 
-		l_itr = m_constantBufferUploaderMap.erase(l_itr);
+		l_itr = m_dynamicBufferUploaderMap.erase(l_itr);
 	}
 }

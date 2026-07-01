@@ -565,9 +565,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh">
       <UniqueIdentifier>{874d090d-b895-49e9-836c-2a9a3e015126}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Structured">
-      <UniqueIdentifier>{e318b75e-1ba2-4995-9509-d3e86d51fad8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition">
       <UniqueIdentifier>{d38ea340-6370-484a-84ac-5f9b31982e85}</UniqueIdentifier>
     </Filter>
@@ -727,15 +724,6 @@
     <Filter Include="Source\Framework\Graphics\Command\Queue\Direct">
       <UniqueIdentifier>{66b0acb0-7459-495c-a951-4f2708f947d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant">
-      <UniqueIdentifier>{8729393f-811b-4779-86c3-402af0076ce2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter">
-      <UniqueIdentifier>{3f4054c6-79a9-4f21-8502-5be95900a75c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json">
-      <UniqueIdentifier>{73ca42a0-c11d-4d18-8502-b83e9af83abe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic">
       <UniqueIdentifier>{a10a3968-cfaa-4682-b40f-ecda01387ffc}</UniqueIdentifier>
     </Filter>
@@ -744,6 +732,21 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json">
       <UniqueIdentifier>{c29f170e-2d80-4d7c-ad29-a94b644b65a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Static">
+      <UniqueIdentifier>{3de1ca50-7397-46b0-a266-4f7895404557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured">
+      <UniqueIdentifier>{e318b75e-1ba2-4995-9509-d3e86d51fad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index">
+      <UniqueIdentifier>{fdcb4021-88d5-414f-8a77-ebf6f1586380}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex">
+      <UniqueIdentifier>{9a89fb5e-6a32-415d-b234-253d46a0a80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant">
+      <UniqueIdentifier>{8729393f-811b-4779-86c3-402af0076ce2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1158,9 +1161,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh\MeshShaderPipelineStateJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Structured</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
@@ -1185,7 +1185,7 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ConstantBufferSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DynamicBufferSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RenderGraphPassUniqueFactory.h">
@@ -1269,7 +1269,7 @@
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedAssetRecordBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedConstantBufferUploaderBaseConcept.h">
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDynamicBufferUploaderBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDrawRequestPassBaseConcept.h">
@@ -1512,20 +1512,23 @@
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.h">
       <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1859,9 +1862,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh\MeshShaderPipelineStateJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Structured\StructuredBuffer.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Structured</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json\StandardPipelineStateJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Standard\Converter\Json</Filter>
     </ClCompile>
@@ -1880,17 +1880,17 @@
     <ClCompile Include="Source\Framework\Graphics\Command\Queue\Direct\DirectCommandQueue.cpp">
       <Filter>Source\Framework\Graphics\Command\Queue\Direct</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json\ConstantBufferUploaderJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Constant\ConstantBufferUploaderBase.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Constant</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

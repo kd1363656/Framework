@@ -2,15 +2,15 @@
 
 namespace FWK::Graphics
 {
-	class CameraPassConstantBufferUploader final : public ConstantBufferUploader<Struct::CBCameraPass>
+	class CameraPassDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBCameraPass>
 	{
 	public:
 
-		 CameraPassConstantBufferUploader()          = default;
-		~CameraPassConstantBufferUploader() override = default;
+		 CameraPassDynamicConstantBufferUploader()          = default;
+		~CameraPassDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(CameraPassConstantBufferUploader, ConstantBufferUploaderBase)
+		FWK_DEFINE_TYPE_INFO(CameraPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ConstantBufferSharedFactory, FWK::Graphics::CameraPassConstantBufferUploader)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::CameraPassDynamicConstantBufferUploader)

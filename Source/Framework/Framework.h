@@ -172,7 +172,7 @@
 
 // ストラクチャードバッファー
 #include "Definition/Struct/Graphics/BufferUploadStruct.h"
-#include "Graphics/Resource/Buffer/Structured/StructuredBuffer.h"
+#include "Graphics/Resource/Buffer/Static/Structured/StructuredBuffer.h"
 
 // テクスチャ
 #include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"
@@ -236,21 +236,16 @@
 // 定数バッファークラス
 #include "Graphics/Resource/Buffer/Dynamic/Converter/Json/DynamicBufferUploaderJsonConverter.h"
 #include "Graphics/Resource/Buffer/Dynamic/DynamicBufferUploaderBase.h"
-
 #include "Definition/Constant/Utility/Math/MathAlignUpUtilityConstant.h"
 #include "Utility/Math/MathAlignUpUtility.h"
-
-
-#include "Graphics/Resource/Buffer/Constant/Converter/Json/ConstantBufferUploaderJsonConverter.h"
-#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploaderBase.h"
-#include "Definition/Type/Alias/Factory/Shared/ConstantBufferSharedFactory.h"
-#include "Graphics/Resource/Buffer/Constant/ConstantBufferUploader.h"
+#include "Graphics/Resource/Buffer/Dynamic/Constant/DynamicConstantBufferUploaderBase.h"
+#include "Definition/Type/Alias/Factory/Shared/DynamicBufferSharedFactory.h"
 
 // フレームリソース
 #include "Definition/Constant/Graphics/RenderTargetPassTextureJsonConstant.h"
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
-#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedConstantBufferUploaderBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDynamicBufferUploaderBaseConcept.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/PassTextureBase.h"
 #include "Definition/Enum/Graphics/RenderGraphPassTextureEnum.h"
 #include "Utility/Graphics/ColorJsonUtility.h"

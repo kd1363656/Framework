@@ -44,49 +44,49 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 
 	// 頂点バッファーストラクチャードバッファーの作成
 	FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_staticModelMesh.m_modelVertexList,
-															 a_device,
-															 a_gpuMemoryAllocator,
-															 a_bufferUploadCommandList,
-															 a_srvDescriptorPool),
-															 "ModelVertexBuffer用StructuredBufferの作成に失敗しました。",
-															 false);
+													  a_device,
+													  a_gpuMemoryAllocator,
+													  a_bufferUploadCommandList,
+													  a_srvDescriptorPool),
+													  "ModelVertexBuffer用StructuredBufferの作成に失敗しました。",
+													  false);
 
 	// メッシュレットストラクチャードバッファーの作成
 	FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBuffer.Create(l_modelMeshletData.m_meshletList,
-															  a_device,
-															  a_gpuMemoryAllocator,
-															  a_bufferUploadCommandList,
-															  a_srvDescriptorPool),
-															  "MeshletBuffer用StructuredBufferの作成に失敗しました。",
-															  false);
+													   a_device,
+													   a_gpuMemoryAllocator,
+													   a_bufferUploadCommandList,
+													   a_srvDescriptorPool),
+													   "MeshletBuffer用StructuredBufferの作成に失敗しました。",
+													   false);
 
 
 	// ユニーク頂点インデックスストラクチャードバッファーの作成
 	FWK_ASSERT_RETURN_VALUE_IF(!l_uniqueVertexIndexBuffer.Create(l_modelMeshletData.m_uniqueVertexIndexList,
-																	    a_device,
-																	    a_gpuMemoryAllocator,
-																	    a_bufferUploadCommandList,
-																	    a_srvDescriptorPool),
-																	    "UniqueVertexIndexBuffer用StructuredBufferの作成に失敗しました。",
-																	    false);
+																 a_device,
+																 a_gpuMemoryAllocator,
+																 a_bufferUploadCommandList,
+																 a_srvDescriptorPool),
+																 "UniqueVertexIndexBuffer用StructuredBufferの作成に失敗しました。",
+																 false);
 
 	// プリミティブインデックスバッファストラクチャードバッファーの作成
 	FWK_ASSERT_RETURN_VALUE_IF(!l_primitiveIndexBuffer.Create(l_modelMeshletData.m_primitiveIndexList,
-																	 a_device,
-																	 a_gpuMemoryAllocator,
-																	 a_bufferUploadCommandList,
-																	 a_srvDescriptorPool),
-																	 "PrimitiveIndexBuffer用StructuredBufferの作成に失敗しました。",
-																	 false);
+															  a_device,
+															  a_gpuMemoryAllocator,
+															  a_bufferUploadCommandList,
+															  a_srvDescriptorPool),
+															  "PrimitiveIndexBuffer用StructuredBufferの作成に失敗しました。",
+															  false);
 
 	// メッシュレットカリングストラクチャードバッファーの作成
 	FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create(l_modelMeshletData.m_meshletBoundsList,
-																    a_device,
-																    a_gpuMemoryAllocator,
-																    a_bufferUploadCommandList,
-																    a_srvDescriptorPool),
-																    "MeshletBoundsBuffer用StructuredBufferの作成に失敗しました。",
-																    false);
+															 a_device,
+															 a_gpuMemoryAllocator,
+															 a_bufferUploadCommandList,
+															 a_srvDescriptorPool),
+															 "MeshletBoundsBuffer用StructuredBufferの作成に失敗しました。",
+															 false);
 
 	return true;
 }

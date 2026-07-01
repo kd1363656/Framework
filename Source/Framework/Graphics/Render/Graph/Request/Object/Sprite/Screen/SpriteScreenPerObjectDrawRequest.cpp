@@ -32,11 +32,11 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 		l_cbSpritePerObject.m_pivot		 = l_drawRequestPerObject->m_pivot;
 		l_cbSpritePerObject.m_sourceRECT = l_drawRequestPerObject->m_sourceRECT;
 
-		SetupConstantBuffer<SpriteScreenPerObjectConstantBufferUploader>(l_cbSpritePerObject, 
-																		 a_rootSignature,
-																		 l_directCommandList,
-																		 a_frameResource,
-																		 Enum::RootParameterType::CBSpritePerObject);
+		SetupConstantBuffer<SpriteScreenPerObjectDynamicConstantBufferUploader>(l_cbSpritePerObject,
+																		        a_rootSignature,
+																		        l_directCommandList,
+																		        a_frameResource,
+																		        Enum::RootParameterType::CBSpritePerObject);
 
 		l_directCommandList.DrawInstanced(Constant::k_spriteVertexCount,
 										  Constant::k_spriteDrawInstanceCount,

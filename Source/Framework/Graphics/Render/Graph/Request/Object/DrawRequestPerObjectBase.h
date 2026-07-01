@@ -21,17 +21,17 @@ namespace FWK::Graphics
 	protected:
 
 		// 定数バッファの上書き禁止(定数バッファのインデックスを進めて新しい定数バッファに書き込む方式)
-		template <Concept::IsDerivedConstantBufferUploaderBaseConcept ConstantBufferUploaderType, typename ConstantBufferType>
+		template <Concept::IsDerivedDynamicBufferUploaderBaseConcept ConstantBufferUploaderType, typename ConstantBufferType>
 		void SetupConstantBuffer(const ConstantBufferType&	   a_constantBuffer, 
 								 const RootSignature&	       a_rootSignature,
 								 const DirectCommandList&      a_directCommandList,
 								 const FrameResource&	       a_frameResource,
 								 const Enum::RootParameterType a_rootParameterType)
 		{
-			auto l_constantBufferUploader = a_frameResource.FindPTRConstantBufferUploader<ConstantBufferUploaderType>().lock();
+			auto l_constantBufferUploader = a_frameResource.FindPTRDynamicBufferUploader<ConstantBufferUploaderType>().lock();
 
-			FWK_ASSERT_RETURN_IF(!l_constantBufferUploader,																 "PerObject定数バッファアップローダーが取得できないため、定数バッファのセットに失敗しました。");
-			FWK_ASSERT_RETURN_IF(l_constantBufferUploader->GetREFConstantBufferTypeSize() != sizeof(ConstantBufferType), "取得した定数バッファアップローダーの型サイズとGPU転送予定の定数バッファが一致しないため、定数バッファのセットに失敗しました。");
+			FWK_ASSERT_RETURN_IF(!l_constantBufferUploader,												   "PerObject定数バッファアップローダーが取得できないため、定数バッファのセットに失敗しました。");
+			FWK_ASSERT_RETURN_IF(l_constantBufferUploader->GetREFTypeSize() != sizeof(ConstantBufferType), "取得した定数バッファアップローダーの型サイズとGPU転送予定の定数バッファが一致しないため、定数バッファのセットに失敗しました。");
 
 			const auto& l_gpuVirtualAddress = l_constantBufferUploader->WritePerObject(a_constantBuffer);
 

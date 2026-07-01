@@ -6,7 +6,7 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using ConstantBufferUploaderMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<ConstantBufferUploaderBase>>;
+		using DynamicBufferUploaderMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DynamicBufferUploaderBase>>;
 
 	public:
 
@@ -32,23 +32,23 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		void AddConstantBufferUploader(const std::shared_ptr<ConstantBufferUploaderBase>& a_constantBufferUploader);
+		void AddDynamicBufferUploader(const std::shared_ptr<DynamicBufferUploaderBase>& a_dynamicBufferUploader);
 
-		template <Concept::IsDerivedConstantBufferUploaderBaseConcept ConstantBufferType>
-		std::weak_ptr<ConstantBufferType> FindPTRConstantBufferUploader() const
+		template <Concept::IsDerivedDynamicBufferUploaderBaseConcept Type>
+		std::weak_ptr<Type> FindPTRDynamicBufferUploader() const
 		{
-			const auto& l_itr = m_constantBufferUploaderMap.find(ConstantBufferType::GetREFTypeINFO().k_staticTypeID);
+			const auto& l_itr = m_dynamicBufferUploaderMap.find(Type::GetREFTypeINFO().k_staticTypeID);
 
-			if (l_itr == m_constantBufferUploaderMap.end()) { return std::weak_ptr<ConstantBufferType>(); }
+			if (l_itr == m_dynamicBufferUploaderMap.end()) { return std::weak_ptr<Type>(); }
 
-			const auto l_constantBufferUploader = l_itr->second.lock();
+			const auto l_dynamicBufferUploader = l_itr->second.lock();
 
-			if (!l_constantBufferUploader) { return std::weak_ptr<ConstantBufferType>(); }
+			if (!l_dynamicBufferUploader) { return std::weak_ptr<Type>(); }
 
-			return std::static_pointer_cast<ConstantBufferType>(l_constantBufferUploader);
+			return std::static_pointer_cast<Type>(l_dynamicBufferUploader);
 		}
 
-		const auto& GetREFConstantBufferUploaderList() const { return m_constantBufferUploaderList; }
+		const auto& GetREFConstantBufferUploaderList() const { return m_dynamicBufferUploaderList; }
 
 		const auto& GetREFDirectCommandAllocator() const { return m_directCommandAllocator; }
 		
@@ -61,9 +61,9 @@ namespace FWK::Graphics
 		void RemoveExpiredConstantBufferUploaderList();
 		void RemoveExpiredConstantBufferUploaderMap ();
 
-		ConstantBufferUploaderMap m_constantBufferUploaderMap = {};
+		DynamicBufferUploaderMap m_dynamicBufferUploaderMap = {};
 
-		std::vector<std::shared_ptr<ConstantBufferUploaderBase>> m_constantBufferUploaderList = {};
+		std::vector<std::shared_ptr<DynamicBufferUploaderBase>> m_dynamicBufferUploaderList = {};
 
 		std::shared_ptr<DirectCommandAllocator> m_directCommandAllocator = nullptr;
 

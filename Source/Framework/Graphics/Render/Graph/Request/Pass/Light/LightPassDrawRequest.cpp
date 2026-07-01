@@ -5,11 +5,11 @@ bool FWK::Graphics::LightPassDrawRequest::SetupPassConstantBuffer(const RootSign
 	// 定数バッファの更新
 	UpdateConstantBuffer();
 
-	SetupConstantBuffer<LightPassConstantBufferUploader>(GetREFConstantBuffer(), 
-														 a_rootSignature,
-														 a_directCommandList,
-														 a_frameResource,
-														 Enum::RootParameterType::CBLightPass);
+	SetupConstantBuffer<LightPassDynamicConstantBufferUploader>(GetREFConstantBuffer(),
+														        a_rootSignature,
+														        a_directCommandList,
+														        a_frameResource,
+														        Enum::RootParameterType::CBLightPass);
 
 	return true;
 }

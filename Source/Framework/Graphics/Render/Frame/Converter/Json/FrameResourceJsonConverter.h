@@ -20,13 +20,13 @@ namespace FWK::Converter
 
 	private:
 
-		void DeserializeConstantBuffer(const nlohmann::json& a_rootJson, Graphics::FrameResource& a_frameResource) const;
+		void DeserializeDynamicBuffer(const nlohmann::json& a_rootJson, Graphics::FrameResource& a_frameResource) const;
 
-		nlohmann::json SerializeConstantBuffer(const Graphics::FrameResource& a_frameResource) const;
+		nlohmann::json SerializeDynamicBuffer(const Graphics::FrameResource& a_frameResource) const;
 
-		static constexpr std::string_view k_constantBufferUploaderListJsonKey	    = "ConstantBufferUploaderList";
-		static constexpr std::string_view k_constantBufferUploaderTypeNameJsonKey   = "ConstantBufferUploaderTypeName";
-		static constexpr std::string_view k_constantBufferUploaderJsonKey		    = "ConstantBufferUploader";
+		static constexpr std::string_view k_dynamicBufferUploaderListJsonKey	 = "DynamicBufferUploaderList";
+		static constexpr std::string_view k_dynamicBufferUploaderTypeNameJsonKey = "DynamicBufferUploaderTypeName";
+		static constexpr std::string_view k_dynamicBufferUploaderJsonKey		 = "DynamicBufferUploader";
 
 		static constexpr std::string_view k_renderGraphFrameResourceJsonkey = "RenderGraphFrameResource";
 	};
