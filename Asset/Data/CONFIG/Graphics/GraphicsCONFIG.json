@@ -1,4 +1,4 @@
-{
+﻿{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -39,6 +39,18 @@
                             "CreateCount": 1
                         },
                         "DynamicBufferUploaderTypeName": "LightPassDynamicConstantBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 10000
+                        },
+                        "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicVertexBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 10000
+                        },
+                        "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicIndexBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {
@@ -759,6 +771,9 @@
                 },
                 {
                     "DrawRequestPassTypeName": "FinalColorRenderTargetPassDrawRequest"
+                },
+                {
+                    "DrawRequestPassTypeName": "FinalPresentRenderTargetPassDrawRequest"
                 }
             ],
             "DrawRequestPerObjectList": [
@@ -784,6 +799,9 @@
                 },
                 {
                     "RenderGraphPassTypeName": "FinalColorPass"
+                },
+                {
+                    "RenderGraphPassTypeName": "PhysicsDebugPass"
                 },
                 {
                     "RenderGraphPassTypeName": "FinalPresentPass"

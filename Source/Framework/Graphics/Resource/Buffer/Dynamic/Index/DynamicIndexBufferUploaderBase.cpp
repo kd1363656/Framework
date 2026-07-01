@@ -7,7 +7,7 @@ FWK::Graphics::DynamicIndexBufferUploaderBase::DynamicIndexBufferUploaderBase() 
 FWK::Graphics::DynamicIndexBufferUploaderBase::~DynamicIndexBufferUploaderBase()
 {}
 
-bool FWK::Graphics::DynamicIndexBufferUploaderBase::Create(const Device & a_device)
+bool FWK::Graphics::DynamicIndexBufferUploaderBase::Create(const Device& a_device)
 {
 	// 頂点バッファのAlignmentは特に制約がない
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateUploadBuffer(a_device, sizeof(std::uint32_t)), "DynamicIndexBufferUploader用UploadBufferの作成に失敗しました。", false);
@@ -21,7 +21,7 @@ D3D12_INDEX_BUFFER_VIEW FWK::Graphics::DynamicIndexBufferUploaderBase::WriteInde
 	
 	const auto& l_gpuVirtualAddress = WriteContiguousElementListAndAdvance(a_indexList);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == GetREFInvalidGPUVirtualAddress(), "IndexListの書き込みに失敗したため、IndexBufferViewの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == Constant::k_invalidGPUVirtualAddress, "IndexListの書き込みに失敗したため、IndexBufferViewの作成に失敗しました。", {});
 
 	const auto l_indexBufferSize = sizeof(std::uint32_t) * a_indexList.size();
 

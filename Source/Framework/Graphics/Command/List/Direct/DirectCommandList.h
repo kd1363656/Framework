@@ -58,6 +58,15 @@ namespace FWK::Graphics
 
 		void SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const;
 
+		void SetupVertexBufferView(const D3D12_VERTEX_BUFFER_VIEW& a_vertexBufferView) const;
+		void SetupIndexBufferView (const D3D12_INDEX_BUFFER_VIEW&  a_indexBufferView)  const;
+
+		void DrawIndexedInstanced(const UINT a_indexCount, 
+								  const UINT a_instanceCount,
+								  const UINT a_startIndexLocation,
+								  const UINT a_startInstanceLocation,
+								  const INT  a_baseVertexLocation);
+
 		void DrawInstanced(const UINT a_vertexCount,
 						   const UINT a_instanceCount,
 						   const UINT a_startVertexLocation,
@@ -82,6 +91,13 @@ namespace FWK::Graphics
 		static constexpr UINT k_setScissorRectNUM    = 1U;
 
 		static constexpr UINT k_setDescriptorHeapNUM = 1U;
+
+		static constexpr UINT k_invalidSizeInBytes		  = 0U;
+		static constexpr UINT k_vertexBufferViewStartSlot = 0U;
+		static constexpr UINT k_vertexBufferViewCount     = 1U;
+
+		static constexpr UINT k_invalidIndexCount    = 0U;
+		static constexpr UINT k_invalidInstanceCount = 0U;
 
 		std::weak_ptr<RootSignature>     m_currentRootSignature = {};
 		std::weak_ptr<PipelineStateBase> m_currentPipelineState = {};

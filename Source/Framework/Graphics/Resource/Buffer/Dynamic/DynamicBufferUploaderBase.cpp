@@ -57,7 +57,5 @@ UINT64 FWK::Graphics::DynamicBufferUploaderBase::AllocateElementRange(const UINT
 
 	m_currentElementIndex += a_elementCount;
 
-	FWK_ASSERT_RETURN_VALUE_IF(m_createCount < m_currentElementIndex, "要素範囲を超えており、Allocate処理に失敗しました。", k_invalidElementBufferIndex);
-
 	return l_startElementIndex;
 }

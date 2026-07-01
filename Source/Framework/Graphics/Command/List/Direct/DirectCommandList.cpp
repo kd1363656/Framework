@@ -221,7 +221,48 @@ void FWK::Graphics::DirectCommandList::SetupPrimitiveTopology(const D3D12_PRIMIT
 	l_directCommandList->IASetPrimitiveTopology(a_primitiveTopology);
 }
 
-void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount, 
+void FWK::Graphics::DirectCommandList::SetupVertexBufferView(const D3D12_VERTEX_BUFFER_VIEW& a_vertexBufferView) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF(!l_directCommandList,													    "ダイレクトコマンドリストが作成されておらず、VertexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_vertexBufferView.SizeInBytes    == k_invalidSizeInBytes,					"VertexBufferViewのSizeInBytes無効のため、VertexBufferViewの設定に失敗しました。");
+	
+	l_directCommandList->IASetVertexBuffers(k_vertexBufferViewStartSlot, k_vertexBufferViewCount, &a_vertexBufferView);
+}
+void FWK::Graphics::DirectCommandList::SetupIndexBufferView(const D3D12_INDEX_BUFFER_VIEW & a_indexBufferView) const
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF(!l_directCommandList,													   "ダイレクトコマンドリストが作成されておらず、IndexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_indexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "IndexBufferViewのGPU仮想アドレスが無効のため、IndexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_indexBufferView.SizeInBytes    == k_invalidSizeInBytes,                 "IndexBufferViewのSizeInBytesが無効のため、IndexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_indexBufferView.Format         == DXGI_FORMAT_UNKNOWN,                  "IndexBufferViewのFormatが無効のため、IndexBufferViewの設定に失敗しました。");
+	
+	l_directCommandList->IASetIndexBuffer(&a_indexBufferView);
+}
+
+void FWK::Graphics::DirectCommandList::DrawIndexedInstanced(const UINT a_indexCount, 
+															const UINT a_instanceCount,
+															const UINT a_startIndexLocation, 
+															const UINT a_startInstanceLocation, 
+															const INT  a_baseVertexLocation)
+{
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF(!l_directCommandList,					    "ダイレクトコマンドリストが作成されておらず、DrawIndexedInstancedの実行に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_indexCount    == k_invalidIndexCount,    "Index数が0のため、DrawIndexedInstancedの実行に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_instanceCount == k_invalidInstanceCount, "Instance数が0のため、DrawIndexedInstancedの実行に失敗しました。");
+
+	l_directCommandList->DrawIndexedInstanced(a_indexCount,
+											  a_instanceCount,
+											  a_startIndexLocation,
+											  a_baseVertexLocation,
+											  a_startInstanceLocation);
+}
+
+void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
 													 const UINT a_instanceCount, 
 													 const UINT a_startVertexLocation,
 													 const UINT a_startInstanceLocation) const

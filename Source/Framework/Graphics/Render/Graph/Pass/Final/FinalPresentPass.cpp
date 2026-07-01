@@ -18,15 +18,15 @@ void FWK::Graphics::FinalPresentPass::Execute(Renderer& a_renderer, RenderGraph&
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	// FinalPresent用のPSO/RootSignatureをセットする。
-	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::FinalColor).lock();
+	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::FinalPresent).lock();
 
-	FWK_ASSERT_RETURN_IF(!l_rootSignature, "FinalColorPass用RootSignatureが無効のため、FinalPresentPassの実行に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_rootSignature, "FinalPresent用RootSignatureが無効のため、FinalPresentPassの実行に失敗しました。");
 
 	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在のFrameResourceが無効のため、FinalPresentPassの実行に失敗しました。");
 
-	const auto& l_finalColorDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalColorRenderTargetPassDrawRequest>().lock();
+	const auto& l_finalColorDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalPresentRenderTargetPassDrawRequest>().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest,																						    "FinalColorRenderTargetPassDrawRequestが無効のため、FinalPresentPassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_finalColorDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalColorPass定数バッファの設定に失敗しました。");

@@ -352,6 +352,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h" />
@@ -398,12 +399,13 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\BufferUploadStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBCameraPassStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBFinalColorRenderTargetPassStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBLightStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBSpritePassStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBSpritePerObjectStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBStaticModelPerObjectStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBStaticModelPerObjectStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMaterialStruct.h" />
@@ -477,6 +479,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h" />
@@ -499,6 +502,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\DrawRequestRenderTargetPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\FinalColorRenderTargetPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\SpriteScreenPassConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.h" />
@@ -525,7 +529,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug\PhysicsDebugDynamicIndexBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug\PhysicsDebugDynamicVertexBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
@@ -638,6 +644,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
@@ -648,6 +655,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\LightPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalColorRenderTargetPassDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.cpp" />
@@ -780,6 +788,12 @@ if "$(Configuration)"=="Debug" (
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
     </DXCTask>
     <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

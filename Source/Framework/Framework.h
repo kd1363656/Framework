@@ -155,7 +155,7 @@
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
-#include "Definition/Struct/Graphics/ConstantBuffer/CBSpritePassStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
 // ダイレクトコマンドリスト
@@ -235,6 +235,7 @@
 
 // 定数バッファークラス
 #include "Graphics/Resource/Buffer/Dynamic/Converter/Json/DynamicBufferUploaderJsonConverter.h"
+#include "Definition/Constant/Graphics/DynamicBufferUploaderConstant.h"
 #include "Graphics/Resource/Buffer/Dynamic/DynamicBufferUploaderBase.h"
 #include "Definition/Constant/Utility/Math/MathAlignUpUtilityConstant.h"
 #include "Utility/Math/MathAlignUpUtility.h"
@@ -260,13 +261,13 @@
 
 // カメラ
 #include "Definition/Constant/Graphics/CameraConstant.h"
-#include "Definition/Struct/Graphics/ConstantBuffer/CBCameraPassStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBCameraPassStruct.h"
 #include "Graphics/Render/Camera/Camera.h"
 
 // ライト
 #include "Definition/Constant/Graphics/LightSystemConstant.h"
 #include "Definition/Struct/Graphics/LightSystemStruct.h"
-#include "Definition/Struct/Graphics/ConstantBuffer/CBLightStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBLightStruct.h"
 #include "Graphics/Render/Light/LightSystem.h"
 
 // レンダーグラフ
@@ -285,10 +286,11 @@
 // 描画リクエスト(レンダーターゲット共通パス)
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/DrawRequestRenderTargetPassBase.h"
 #include "Definition/Constant/Graphics/FinalPresentRenderTargetPassDrawRequestConstant.h"
-#include "Definition/Struct/Graphics/ConstantBuffer/CBFinalColorRenderTargetPassStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBFinalColorRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalColorRenderTargetPassConstantBufferUploader.h"
 #include "Definition/Constant/Graphics/RenderTargetFullScreenTriangleDrawConstant.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalColorRenderTargetPassDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
 
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
@@ -298,14 +300,14 @@
 #include "Definition/Constant/Graphics/SpriteScreenPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Constant/Graphics/SpriteScreenConstant.h"
 #include "Definition/Struct/Graphics/SpriteRECTStruct.h"
-#include "Definition/Struct/Graphics/ConstantBuffer/CBSpritePerObjectStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
 #include "Definition/Struct/Graphics/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Definition/Constant/Graphics/StaticModelStandardPerObjectDrawRequestDataConstant.h"
 #include "Definition/Struct/Graphics/StaticModelStandardPerObjectDrawRequestDataStruct.h"
 #include "Definition/Constant/Graphics/StaticModelPerObjectConstantBufferUploaderConstant.h"
-#include "Definition/Struct/Graphics/ConstantBuffer/CBStaticModelPerObjectStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBStaticModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
@@ -357,3 +359,12 @@
 // シーン
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
+
+// バーテックスバッファー
+#include "Graphics/Resource/Buffer/Dynamic/Vertex/DynamicVertexBufferUploaderBase.h"
+#include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
+#include "Graphics/Resource/Buffer/Dynamic/Vertex/PhysicsDebug/PhysicsDebugDynamicVertexBufferUploader.h"
+
+// インデックスバッファー
+#include "Graphics/Resource/Buffer/Dynamic/Index/DynamicIndexBufferUploaderBase.h"
+#include "Graphics/Resource/Buffer/Dynamic/Index/PhysicsDebug/PhysicsDebugDynamicIndexBufferUploader.h"

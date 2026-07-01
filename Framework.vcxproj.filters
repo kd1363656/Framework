@@ -694,9 +694,6 @@
     <Filter Include="Source\Framework\Definition\Struct\Graphics">
       <UniqueIdentifier>{77b69804-1a01-4fb3-87be-370d2dcabdd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer">
-      <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Window">
       <UniqueIdentifier>{05f8ffc8-152c-41a7-aaad-1ee956297c1b}</UniqueIdentifier>
     </Filter>
@@ -747,6 +744,24 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant">
       <UniqueIdentifier>{8729393f-811b-4779-86c3-402af0076ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug">
+      <UniqueIdentifier>{df1f0fcc-2fbb-43bb-a32a-bb25f96a92fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer">
+      <UniqueIdentifier>{a8c022f1-6e6a-4a80-9851-e7345da36d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex">
+      <UniqueIdentifier>{de8713a1-281a-4f29-8dfe-5bbdbd049cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant">
+      <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug">
+      <UniqueIdentifier>{f9cc98d0-6633-4bbe-9cd5-8d27514d0f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug">
+      <UniqueIdentifier>{ccbfcb87-3a65-4d27-aeb8-400c45a6bccb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1413,24 +1428,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBCameraPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBFinalColorRenderTargetPassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBLightStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBSpritePassStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBSpritePerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ConstantBuffer\CBStaticModelPerObjectStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\ConstantBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\StringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
     </ClInclude>
@@ -1529,6 +1526,42 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug\PhysicsDebugDynamicVertexBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBStaticModelPerObjectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug\PhysicsDebugDynamicIndexBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1892,6 +1925,12 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -1951,6 +1990,9 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_VS.hlsl">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
+      <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>
