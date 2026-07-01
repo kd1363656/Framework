@@ -13,8 +13,17 @@ namespace FWK
 
 	public:
 
-		void INIT  ();
-		void Update();
+		void INIT	      ();
+		void LoadScene    ();
+		void PostLoadScene() const;
+
+		void EarlyUpdate();
+		void PreUpdate  ();
+		void Update     ();
+		void LateUpdate () const;
+		void FixMatrix  ();
+		
+		void SaveScene () const;
 
 	private:
 
