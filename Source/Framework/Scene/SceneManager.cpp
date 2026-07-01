@@ -6,6 +6,7 @@ void FWK::SceneManager::INIT()
 }
 void FWK::SceneManager::LoadScene()
 {
+
 }
 void FWK::SceneManager::PostLoadScene() const
 {

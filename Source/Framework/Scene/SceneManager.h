@@ -6,6 +6,9 @@ namespace FWK
 	{
 	private:
 
+		using SceneName     = std::string;
+		using SceneFilePath = std::string;
+
 		friend class SingletonBase<SceneManager>;
 
 		 SceneManager()          = default;
@@ -27,6 +30,10 @@ namespace FWK
 
 	private:
 
+		std::unordered_map<SceneName, SceneFilePath> m_sceneShiftSet = {};
+
 		Scene m_scene = {};
+
+		SceneName m_nextSceneName = {};
 	};
 }
