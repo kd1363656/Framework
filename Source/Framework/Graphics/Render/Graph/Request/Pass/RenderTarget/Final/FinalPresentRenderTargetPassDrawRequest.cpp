@@ -14,11 +14,11 @@ bool FWK::Graphics::FinalPresentRenderTargetPassDrawRequest::SetupPassConstantBu
 	l_finalColorConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
 	// 定数バッファをセット
-	SetupConstantBuffer<FinalColorRenderTargetPassDynamicConstantBufferUploader>(l_finalColorConstantBuffer,
-																		         a_rootSignature,
-																		         a_directCommandList,
-																		         a_frameResource,
-																		         Enum::RootParameterType::CBFinalColorPass);
+	SetupConstantBuffer<FinalPresentRenderTargetPassDynamicConstantBufferUploader>(l_finalColorConstantBuffer,
+																		           a_rootSignature,
+																		           a_directCommandList,
+																		           a_frameResource,
+																		           Enum::RootParameterType::CBFinalColorPass);
 
 	// 定数バッファーをセットしたらPrimitiveTopologyを設定して描画申請
 	a_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

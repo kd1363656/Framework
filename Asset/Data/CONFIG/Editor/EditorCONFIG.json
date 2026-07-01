@@ -4,5 +4,5 @@
             "EditorWindow": "SceneViewEditorWindow"
         }
     ],
-    "IsDisableDrawEditor": false
+    "IsDisableDrawEditor": true
 }
