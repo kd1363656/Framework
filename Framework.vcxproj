@@ -583,6 +583,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.h" />
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
+    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
@@ -724,6 +725,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.cpp" />
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />

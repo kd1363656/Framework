@@ -8,6 +8,7 @@ namespace FWK
 
 		using SceneName     = std::string;
 		using SceneFilePath = std::string;
+		using SceneShiftMap = std::unordered_map<SceneName, SceneFilePath, Struct::StringHash, std::equal_to<>>;
 
 		friend class SingletonBase<SceneManager>;
 
@@ -17,7 +18,7 @@ namespace FWK
 	public:
 
 		void INIT	      ();
-		void LoadScene    ();
+		void LoadScene    (const std::string_view& a_sceneFilePath);
 		void PostLoadScene() const;
 
 		void EarlyUpdate();
@@ -30,10 +31,13 @@ namespace FWK
 
 	private:
 
-		std::unordered_map<SceneName, SceneFilePath> m_sceneShiftSet = {};
+		SceneShiftMap m_sceneShiftMap = {};
 
 		Scene m_scene = {};
 
-		SceneName m_nextSceneName = {};
+		Converter::SceneManagerJsonConverter m_jsonConverter = {};
+
+		SceneName     m_nextSceneName        = {};
+		SceneFilePath m_currentSceneFilePath = {};
 	};
 }

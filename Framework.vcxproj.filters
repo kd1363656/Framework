@@ -766,6 +766,12 @@
     <Filter Include="Source\Framework\Physics\DebugDraw">
       <UniqueIdentifier>{2701bf92-44bb-48b2-b0e1-aff21c3daac0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Scene\Converter">
+      <UniqueIdentifier>{85ac21f3-de49-4810-84a9-176a8cface04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Converter\Json">
+      <UniqueIdentifier>{2ab1272b-ca63-49a2-b772-f5af36cfb8e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1575,6 +1581,9 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\VBPhysicsDebugConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h">
+      <Filter>Source\Framework\Scene\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1945,6 +1954,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.cpp">
       <Filter>Source\Framework\Physics\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp">
+      <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

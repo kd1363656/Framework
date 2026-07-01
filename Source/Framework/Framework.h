@@ -369,4 +369,5 @@
 
 // シーン
 #include "Scene/Scene.h"
+#include "Scene/Converter/Json/SceneManagerJsonConveter.h"
 #include "Scene/SceneManager.h"
