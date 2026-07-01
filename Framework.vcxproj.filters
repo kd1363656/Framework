@@ -763,6 +763,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug">
       <UniqueIdentifier>{ccbfcb87-3a65-4d27-aeb8-400c45a6bccb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\DebugDraw">
+      <UniqueIdentifier>{2701bf92-44bb-48b2-b0e1-aff21c3daac0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1383,9 +1386,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RecordBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetPassTextureJsonConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetTextureConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -1568,6 +1568,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.h">
+      <Filter>Source\Framework\Physics\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\VBPhysicsDebugConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1936,6 +1942,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.cpp">
+      <Filter>Source\Framework\Physics\DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

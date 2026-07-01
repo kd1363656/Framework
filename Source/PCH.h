@@ -93,6 +93,11 @@
 #include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayer.h>
 #include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayerInterfaceTable.h>
 #include <Jolt/Physics/Collision/BroadPhase/ObjectVsBroadPhaseLayerFilterTable.h>
+//#include <Jolt/Renderer/DebugRenderer.h>
+//#include <Jolt/Core/Core.h>
+//#include <Jolt/Geometry/AABox.h>
+//#include <Jolt/Math/Mat44.h>
+//#include <Jolt/Physics/Body/BodyManager.h>
 
 // Body関係
 #include <Jolt/Physics/Body/BodyID.h>

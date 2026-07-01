@@ -16,6 +16,13 @@ public:
 	static constexpr int GetVALExitCodeSuccess			  () { return k_exitCodeSuccess; }
 	static constexpr int GetVALExitCodeCOMInitializeFailed() { return k_exitCodeCOMInitializeFailed; }
 
+	struct AS
+	{
+		int a_a;
+	};
+
+	void A(AS a_a, AS b_b, AS* c_c, AS& a_c, AS& a_s);
+
 private:
 
 	void LoadCONFIG    ();

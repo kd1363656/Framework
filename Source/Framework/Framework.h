@@ -242,8 +242,17 @@
 #include "Graphics/Resource/Buffer/Dynamic/Constant/DynamicConstantBufferUploaderBase.h"
 #include "Definition/Type/Alias/Factory/Shared/DynamicBufferSharedFactory.h"
 
+// バーテックスバッファー
+#include "Graphics/Resource/Buffer/Dynamic/Vertex/DynamicVertexBufferUploaderBase.h"
+#include "Definition/Constant/Graphics/VBPhysicsDebugConstant.h"
+#include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
+#include "Graphics/Resource/Buffer/Dynamic/Vertex/PhysicsDebug/PhysicsDebugDynamicVertexBufferUploader.h"
+
+// インデックスバッファー
+#include "Graphics/Resource/Buffer/Dynamic/Index/DynamicIndexBufferUploaderBase.h"
+#include "Graphics/Resource/Buffer/Dynamic/Index/PhysicsDebug/PhysicsDebugDynamicIndexBufferUploader.h"
+
 // フレームリソース
-#include "Definition/Constant/Graphics/RenderTargetPassTextureJsonConstant.h"
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDynamicBufferUploaderBaseConcept.h"
@@ -361,12 +370,3 @@
 // シーン
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
-
-// バーテックスバッファー
-#include "Graphics/Resource/Buffer/Dynamic/Vertex/DynamicVertexBufferUploaderBase.h"
-#include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
-#include "Graphics/Resource/Buffer/Dynamic/Vertex/PhysicsDebug/PhysicsDebugDynamicVertexBufferUploader.h"
-
-// インデックスバッファー
-#include "Graphics/Resource/Buffer/Dynamic/Index/DynamicIndexBufferUploaderBase.h"
-#include "Graphics/Resource/Buffer/Dynamic/Index/PhysicsDebug/PhysicsDebugDynamicIndexBufferUploader.h"
