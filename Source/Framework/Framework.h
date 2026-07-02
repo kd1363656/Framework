@@ -360,10 +360,8 @@
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
 
-#if defined(JPH_DEBUG_RENDERER)
 #include "Physics/DebugDraw/Queue/PhysicsDebugDrawQueue.h"
 #include "Physics/DebugDraw/PhysicsDebugRenderer.h"
-#endif
 
 #include "Physics/PhysicsManager.h"
 

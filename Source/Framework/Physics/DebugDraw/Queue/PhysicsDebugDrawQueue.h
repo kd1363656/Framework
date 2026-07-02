@@ -11,6 +11,8 @@ namespace FWK::Physics
 
 		void ClearFrame();
 
+		void ReserveLineVertexCount(const std::size_t& a_lineVertexCount);;
+
 		void AddLine(const TypeAlias::Math::Vector3& a_startPosition, const TypeAlias::Math::Vector3& a_endPosition, const TypeAlias::Math::Color& a_color);
 
 		void AddTriangleWire(const TypeAlias::Math::Vector3& a_vertexZero,
@@ -68,10 +70,12 @@ namespace FWK::Physics
 			AABBEdgeIndex{ 1ULL, 2ULL },
 			AABBEdgeIndex{ 2ULL, 3ULL },
 			AABBEdgeIndex{ 3ULL, 0ULL },
+
 			AABBEdgeIndex{ 4ULL, 5ULL },
 			AABBEdgeIndex{ 5ULL, 6ULL },
 			AABBEdgeIndex{ 6ULL, 7ULL },
 			AABBEdgeIndex{ 7ULL, 4ULL },
+
 			AABBEdgeIndex{ 0ULL, 4ULL },
 			AABBEdgeIndex{ 1ULL, 5ULL },
 			AABBEdgeIndex{ 2ULL, 6ULL },

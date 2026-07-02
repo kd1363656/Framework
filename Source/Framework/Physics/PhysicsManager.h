@@ -19,6 +19,8 @@ namespace FWK::Physics
 
 		void OptimizeBroadPhase();
 
+		void CollectPhysicsDebugDrawCommands();
+
 		void ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle);
 
 		// スフィアボディ
@@ -111,7 +113,8 @@ namespace FWK::Physics
 
 		JPH::PhysicsSystem m_physicsSystem;
 
-		PhysicsBodyCreator m_bodyCreator;
+		PhysicsBodyCreator   m_bodyCreator;
+		PhysicsDebugRenderer m_debugRenderer;
 
 		bool m_isInitialized;
 

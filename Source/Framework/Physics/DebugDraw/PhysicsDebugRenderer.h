@@ -1,21 +1,25 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
+namespace FWK::Physics
 {
-	class JoltPhysicDebugRenderer final : public JPH::DebugRenderer
+	class PhysicsDebugRenderer final : public JPH::DebugRenderer
 	{
 	public:
 
-		 JoltPhysicDebugRenderer();
-		~JoltPhysicDebugRenderer() override;
+		 PhysicsDebugRenderer();
+		~PhysicsDebugRenderer() override;
 
-		void DrawLine(JPH::RVec3Arg a_from, JPH::RVec3Arg a_to, JPH::ColorArg a_inColor) override;
+		void ClearFrame();
+
+		void ReserveLineVertexCount();
+
+		void DrawLine(JPH::RVec3Arg a_from, JPH::RVec3Arg a_to, JPH::ColorArg a_color) override;
 
 		void DrawTriangle(JPH::RVec3Arg                   a_vertexZero, 
 						  JPH::RVec3Arg                   a_vertexOne, 
 						  JPH::RVec3Arg                   a_vertexTwo, 
 						  JPH::ColorArg                   a_color,
-						  JPH::DebugRenderer::ECastShadow a_castShadow) override;
+						  JPH::DebugRenderer::ECastShadow) override;
 
 		JPH::DebugRenderer::Batch CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangle, const int a_triangleCount) override;
 
@@ -56,5 +60,9 @@ namespace FWK::Graphics
 		void AddWorldSpaceAABB(const JPH::AABox& a_worldSpaceBounds, JPH::ColorArg a_color);
 
 		static constexpr float k_colorMAXChannelValue = 255.0F;
+
+		static constexpr std::size_t k_defaultPhysicsDebugLineVertexCapacity = 200000ULL;
+
+		PhysicsDebugDrawQueue m_debugDrawQueue;
 	};
 }

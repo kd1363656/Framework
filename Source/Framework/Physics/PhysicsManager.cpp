@@ -15,7 +15,8 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsSystem(),
 
-	m_bodyCreator(),
+	m_bodyCreator  (),
+	m_debugRenderer(),
 
 	m_isInitialized(false),
 
@@ -46,6 +47,8 @@ void FWK::Physics::PhysicsManager::INIT()
 		FWK_ASSERT_RETURN("Joltの物理システムの設定に失敗しており、初期化に失敗しました");
 	}
 
+	m_debugRenderer.ReserveLineVertexCount();
+
 	m_isInitialized = true;
 }
 
@@ -74,6 +77,24 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 	// 毎フレーム呼ぶものではなく、
 	// ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
 	m_physicsSystem.OptimizeBroadPhase();
+}
+
+void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
+{
+	if (!m_isInitialized)     { return; }
+	if (m_isDisableDebugDraw) { return; }
+
+	m_debugRenderer.ClearFrame();
+
+	JPH::BodyManager::DrawSettings l_drawSettings = {};
+
+	l_drawSettings.mDrawShape		   = true;
+	l_drawSettings.mDrawShapeWireframe = true;
+	l_drawSettings.mDrawBoundingBox    = false;
+
+	m_physicsSystem.DrawBodies(l_drawSettings, &m_debugRenderer);
+
+	m_debugRenderer.NextFrame();
 }
 
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)

@@ -5,6 +5,11 @@ void FWK::Physics::PhysicsDebugDrawQueue::ClearFrame()
 	m_lineVertexList.clear();
 }
 
+void FWK::Physics::PhysicsDebugDrawQueue::ReserveLineVertexCount(const std::size_t& a_lineVertexCount)
+{
+	m_lineVertexList.reserve(a_lineVertexCount);
+}
+
 void FWK::Physics::PhysicsDebugDrawQueue::AddLine(const TypeAlias::Math::Vector3& a_startPosition, const TypeAlias::Math::Vector3& a_endPosition, const TypeAlias::Math::Color& a_color)
 {
 	AddLineVertex(a_startPosition, a_color);
@@ -25,9 +30,9 @@ void FWK::Physics::PhysicsDebugDrawQueue::AddAABB(const TypeAlias::Math::Vector3
 {
 	std::array<TypeAlias::Math::Vector3, k_aabbCornerCount> l_cornerList = {};
 
-	for (std::size_t l_cornderIndex = 0ULL; l_cornderIndex < k_aabbCornerCount; ++l_cornderIndex)
+	for (std::size_t l_cornerIndex = 0ULL; l_cornerIndex < k_aabbCornerCount; ++l_cornerIndex)
 	{
-		l_cornerList[l_cornderIndex] = CreateAABBCorner(a_minPosition, a_maxPosition, k_aabbCornerSelectorList[l_cornderIndex]);
+		l_cornerList[l_cornerIndex] = CreateAABBCorner(a_minPosition, a_maxPosition, k_aabbCornerSelectorList[l_cornerIndex]);
 	}
 
 	for (const auto& l_edgeIndex : k_aabbEdgeIndexList)
