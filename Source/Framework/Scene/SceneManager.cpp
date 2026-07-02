@@ -12,19 +12,16 @@ void FWK::SceneManager::LoadScene(const std::string_view& a_sceneFilePath)
 	const auto& l_json = Utility::LoadJsonFile(a_sceneFilePath);
 
 	m_jsonConverter.Deserialize(l_json, *this);
-}
-void FWK::SceneManager::PostLoadScene() const
-{
-	
+
+	// シーンをロードしてデシリアライズした後の処理
+	m_scene.PostDeserialize();
 }
 
 void FWK::SceneManager::EarlyUpdate()
 {
+	SceneShiftIfNeeded();
 
-}
-void FWK::SceneManager::PreUpdate()
-{
-
+	m_scene.EarlyUpdate();
 }
 void FWK::SceneManager::Update()
 {
@@ -32,9 +29,7 @@ void FWK::SceneManager::Update()
 }
 void FWK::SceneManager::LateUpdate() const
 {
-}
-void FWK::SceneManager::FixMatrix()
-{
+	m_scene.LateUpdate();
 }
 
 void FWK::SceneManager::SaveScene() const
@@ -91,6 +86,8 @@ void FWK::SceneManager::SceneShiftIfNeeded()
 		return;
 	}
 
+	// シーンマネージャーのシーン遷移情報をクリアして
+	// シーン遷移情報及びシーンを読み込む
 	LoadScene(l_nextSceneFilePath);
 }
 

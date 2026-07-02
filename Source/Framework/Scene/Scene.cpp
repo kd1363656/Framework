@@ -84,7 +84,25 @@ void FWK::Scene::INIT()
 	// 毎フレーム呼ぶものではなく、ステージ読み込み後などに呼ぶ。
 	l_physicsManager.OptimizeBroadPhase();
 }
+void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) 
+	{
+		FWK_ADD_LOG("jsonの中身が空となっておりシーンのデシリアライズ処理に失敗しました。");
+		return; 
+	}
 
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+void FWK::Scene::PostDeserialize() const
+{
+
+}
+
+void FWK::Scene::EarlyUpdate()
+{
+
+}
 void FWK::Scene::Update()
 {
 	// テスト実装カメラ(絶対に後で消す)
@@ -202,4 +220,17 @@ void FWK::Scene::Update()
 				m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
 		}
 	}
+}
+void FWK::Scene::LateUpdate() const
+{
+
+}
+void FWK::Scene::FixMatrix()
+{
+
+}
+
+nlohmann::json FWK::Scene::Serialize() const
+{
+	return m_jsonConverter.Serialize(*this);
 }

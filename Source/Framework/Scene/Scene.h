@@ -9,12 +9,20 @@ namespace FWK
 		 Scene() = default;
 		~Scene() = default;
 
-		void INIT  ();
-		void Update();
+		void INIT		    ();
+		void Deserialize    (const nlohmann::json& a_rootJson);
+
+		// デシリアライズ後のポインタの紐づけなどを行う
+		void PostDeserialize() const;
+
+		void EarlyUpdate();
+		void Update     ();
+		void LateUpdate () const;
+		void FixMatrix  ();
+		
+		nlohmann::json Serialize() const;
 
 	private:
-
-		Graphics::LightSystem m_lightSystem = {};
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 
@@ -27,5 +35,9 @@ namespace FWK
 		Struct::PhysicsBodyHandle m_staticFloorBodyHandle    = {};
 		Struct::PhysicsBodyHandle m_staticWallBodyHandle     = {};
 		Struct::PhysicsBodyHandle m_dynamicCapsuleBodyHandle = {};
+
+		Converter::SceneJsonConverter m_jsonConverter = {};
+
+		Graphics::LightSystem m_lightSystem = {};
 	};
 }

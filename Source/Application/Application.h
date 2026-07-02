@@ -32,11 +32,13 @@ private:
 
 	void UpdateWindowTitleBar() const;
 
-	const std::wstring k_windowClassName = L"Window";
-	const std::string  k_titleName       = "MRI_FRAMEWORK";
+	static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Test/TestScene.json";
 
 	static constexpr int k_exitCodeSuccess			   =  0;
 	static constexpr int k_exitCodeCOMInitializeFailed = -1;
+
+	const std::wstring k_windowClassName = L"Window";
+	const std::string  k_titleName       = "MRI_FRAMEWORK";
 
 	FWK::Window		   m_window		   = {};
 	FWK::FPSController m_fpsController = {};

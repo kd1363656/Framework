@@ -46,7 +46,7 @@ void Application::Execute()
 	l_editorManager.PostLoadCONFIG();
 
 	// ダミー読み込み
-	l_sceneManager.LoadScene("Dummy");
+	l_sceneManager.LoadScene(k_firstLoadSceneFilepath);
 
 	// while分に入る前にもう一度計測時間をリセットしておく
 	m_fpsController.PostLoadCONFIG();
@@ -74,7 +74,9 @@ void Application::Execute()
 		}
 
 		// 更新
-		l_sceneManager.Update();
+		l_sceneManager.EarlyUpdate();
+		l_sceneManager.Update     ();
+		l_sceneManager.LateUpdate ();
 
 		// 当たり判定の更新
 		l_physicsManager.Update(m_fpsController.GetVALScaledDeltaTime());
@@ -96,6 +98,8 @@ void Application::Execute()
 	SaveCONFIG					();
 	l_graphicsManager.SaveCONFIG();
 	l_editorManager.SaveCONFIG  ();
+
+	l_sceneManager.SaveScene();
 }
 
 void Application::LoadCONFIG()

@@ -372,6 +372,7 @@
 #include "GameObject/GameObject.h"
 
 // シーン
+#include "Scene/Converter/Json/SceneJsonConveter.h"
 #include "Scene/Scene.h"
 #include "Scene/Converter/Json/SceneManagerJsonConveter.h"
 #include "Scene/SceneManager.h"

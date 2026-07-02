@@ -1590,6 +1590,9 @@
     <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.h">
       <Filter>Source\Framework\Physics\DebugDraw</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
+      <Filter>Source\Framework\Scene\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1966,6 +1969,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.cpp">
       <Filter>Source\Framework\Physics\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp">
+      <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

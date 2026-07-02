@@ -21,14 +21,18 @@ namespace FWK
 		void PostLoadScene() const;
 
 		void EarlyUpdate();
-		void PreUpdate  ();
 		void Update     ();
 		void LateUpdate () const;
-		void FixMatrix  ();
 		
-		void SaveScene () const;
+		void SaveScene() const;
 
 		void AddSceneShiftMap(const SceneName& a_sceneName, const SceneFilePath& a_sceneFilePath);
+
+		const auto& GetREFSceneShiftMap() const { return m_sceneShiftMap; }
+
+		const auto& GetREFScene() const { return m_scene; }
+
+		auto& GetMutableREFScene() { return m_scene; }
 
 	private:
 
