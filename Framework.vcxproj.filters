@@ -775,6 +775,9 @@
     <Filter Include="Source\Framework\Physics\DebugDraw\Queue">
       <UniqueIdentifier>{e3508ee0-0c34-4c8f-87f7-56973e512cb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\PhysicsDebug">
+      <UniqueIdentifier>{d0b6fda1-6399-4986-afd6-bd80746e2af9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2004,6 +2007,9 @@
     <None Include="Asset\Shader\RenderTarget\Final\FinalColorShader.hlsli">
       <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </None>
+    <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli">
+      <Filter>Asset\Shader\PhysicsDebug</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -2035,6 +2041,12 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
       <Filter>Asset\Shader\RenderTarget\Final</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_VS.hlsl">
+      <Filter>Asset\Shader\PhysicsDebug</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
+      <Filter>Asset\Shader\PhysicsDebug</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

@@ -50,7 +50,10 @@ void FWK::Physics::PhysicsDebugDrawQueue::AddLineVertex(const TypeAlias::Math::V
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsDebugDrawQueue::CreateAABBCorner(const TypeAlias::Math::Vector3& a_minPosition, const TypeAlias::Math::Vector3& a_maxPosition, const AABBCornerSelector a_cornerSelector) const
 {
-	return TypeAlias::Math::Vector3{ a_cornerSelector.m_useMAXX ? a_maxPosition.x : a_minPosition.x,
-									 a_cornerSelector.m_useMAXY ? a_maxPosition.y : a_minPosition.y, 
-									 a_cornerSelector.m_useMAXZ ? a_maxPosition.z : a_minPosition.z, };
+	return TypeAlias::Math::Vector3
+	{
+		a_cornerSelector.m_useMAXX ? a_maxPosition.x : a_minPosition.x,
+		a_cornerSelector.m_useMAXY ? a_maxPosition.y : a_minPosition.y, 
+		a_cornerSelector.m_useMAXZ ? a_maxPosition.z : a_minPosition.z,
+	};
 }

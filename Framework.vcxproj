@@ -767,6 +767,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Model\Model.hlsli" />
     <None Include="Asset\Shader\Model\Static\StaticModel.hlsli" />
+    <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli" />
     <None Include="Asset\Shader\RenderTarget\Final\FinalColorShader.hlsli" />
     <None Include="Asset\Shader\RenderTarget\FullScreenTriangleShader.hlsli" />
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
@@ -795,6 +796,18 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
     <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

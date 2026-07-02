@@ -334,6 +334,7 @@
 #include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
+#include "Graphics/Render/Graph/Pass/PhysicsDebug/PhysicsDebugPass.h"
 
 // トポロジカルソート便利クラス
 #include "Utility/Sorter/Topologycal/TopologicalSorter.h"

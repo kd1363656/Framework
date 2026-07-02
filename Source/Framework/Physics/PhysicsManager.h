@@ -41,6 +41,8 @@ namespace FWK::Physics
 		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition (const Struct::PhysicsBodyHandle& a_bodyHandle) const;
 		TypeAlias::Math::Vector3 FetchVALBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle) const;
 
+		const auto& GetREFDebugRenderer() const { return m_debugRenderer; }
+
 	private:
 
 		bool SetupJoltCore     ();
@@ -114,7 +116,7 @@ namespace FWK::Physics
 
 		JPH::PhysicsSystem m_physicsSystem;
 
-		PhysicsBodyCreator   m_bodyCreator;
+		PhysicsBodyCreator m_bodyCreator;
 
 		bool m_isInitialized;
 

@@ -9,6 +9,7 @@ namespace FWK::Enum
 		StaticModelUnLit,
 		StaticModelLit,
 		FinalColor,
+		PhysicsDebug,
 		FinalPresent,
 		Count,
 	};
@@ -21,6 +22,7 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(PipelineStateType::StaticModelUnLit),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::StaticModelLit),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::FinalColor),
+		FWK_JSON_ENUM_VALUE(PipelineStateType::PhysicsDebug),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::FinalPresent),
 		FWK_JSON_ENUM_VALUE(PipelineStateType::Count)
 	)
