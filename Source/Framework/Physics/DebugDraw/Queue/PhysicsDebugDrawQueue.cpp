@@ -30,11 +30,13 @@ void FWK::Physics::PhysicsDebugDrawQueue::AddAABB(const TypeAlias::Math::Vector3
 {
 	std::array<TypeAlias::Math::Vector3, k_aabbCornerCount> l_cornerList = {};
 
+	// 8個の角を作成
 	for (std::size_t l_cornerIndex = 0ULL; l_cornerIndex < k_aabbCornerCount; ++l_cornerIndex)
 	{
 		l_cornerList[l_cornerIndex] = CreateAABBCorner(a_minPosition, a_maxPosition, k_aabbCornerSelectorList[l_cornerIndex]);
 	}
 
+	// 12本の辺を作成
 	for (const auto& l_edgeIndex : k_aabbEdgeIndexList)
 	{
 		AddLine(l_cornerList[l_edgeIndex.m_startCornerIndex], l_cornerList[l_edgeIndex.m_endCornerIndex], a_color);

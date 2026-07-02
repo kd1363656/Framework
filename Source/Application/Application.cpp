@@ -45,7 +45,8 @@ void Application::Execute()
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
 
-	l_sceneManager.INIT ();
+	// ダミー読み込み
+	l_sceneManager.LoadScene("Dummy");
 
 	// while分に入る前にもう一度計測時間をリセットしておく
 	m_fpsController.PostLoadCONFIG();

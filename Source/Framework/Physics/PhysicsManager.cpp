@@ -13,10 +13,11 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsLayerSetting(nullptr),
 
+	m_debugRenderer(nullptr),
+
 	m_physicsSystem(),
 
 	m_bodyCreator  (),
-	m_debugRenderer(),
 
 	m_isInitialized(false),
 
@@ -47,7 +48,12 @@ void FWK::Physics::PhysicsManager::INIT()
 		FWK_ASSERT_RETURN("Joltの物理システムの設定に失敗しており、初期化に失敗しました");
 	}
 
-	m_debugRenderer.ReserveLineVertexCount();
+	if (!m_debugRenderer)
+	{
+		m_debugRenderer = std::make_unique<FWK::Physics::PhysicsDebugRenderer>();
+	}
+
+	m_debugRenderer->ReserveLineVertexCount();
 
 	m_isInitialized = true;
 }
@@ -83,8 +89,9 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 {
 	if (!m_isInitialized)     { return; }
 	if (m_isDisableDebugDraw) { return; }
+	if (!m_debugRenderer)     { return; }
 
-	m_debugRenderer.ClearFrame();
+	m_debugRenderer->ClearFrame();
 
 	JPH::BodyManager::DrawSettings l_drawSettings = {};
 
@@ -92,9 +99,9 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	l_drawSettings.mDrawShapeWireframe = true;
 	l_drawSettings.mDrawBoundingBox    = false;
 
-	m_physicsSystem.DrawBodies(l_drawSettings, &m_debugRenderer);
+	m_physicsSystem.DrawBodies(l_drawSettings, m_debugRenderer.get());
 
-	m_debugRenderer.NextFrame();
+	m_debugRenderer->NextFrame();
 }
 
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)

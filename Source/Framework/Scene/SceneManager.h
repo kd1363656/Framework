@@ -17,7 +17,6 @@ namespace FWK
 
 	public:
 
-		void INIT	      ();
 		void LoadScene    (const std::string_view& a_sceneFilePath);
 		void PostLoadScene() const;
 
@@ -29,7 +28,15 @@ namespace FWK
 		
 		void SaveScene () const;
 
+		void AddSceneShiftMap(const SceneName& a_sceneName, const SceneFilePath& a_sceneFilePath);
+
 	private:
+
+		void INIT();
+
+		void SceneShiftIfNeeded();
+
+		std::string FindSceneShiftFilePath(const std::string_view& a_sceneName) const;
 
 		SceneShiftMap m_sceneShiftMap = {};
 

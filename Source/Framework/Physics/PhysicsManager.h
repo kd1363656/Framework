@@ -110,11 +110,12 @@ namespace FWK::Physics
 		std::unique_ptr<JPH::JobSystemThreadPool> m_jobSystem;
 
 		std::unique_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
+		
+		std::unique_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
 		JPH::PhysicsSystem m_physicsSystem;
 
 		PhysicsBodyCreator   m_bodyCreator;
-		PhysicsDebugRenderer m_debugRenderer;
 
 		bool m_isInitialized;
 

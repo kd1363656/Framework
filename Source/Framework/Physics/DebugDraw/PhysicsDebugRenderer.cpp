@@ -3,7 +3,7 @@
 FWK::Physics::PhysicsDebugRenderer::PhysicsDebugRenderer() : 
 	m_debugDrawQueue()
 {
-	// JoltのDebugRendererは、派生クラスのコンストラクタでInitialize(9を呼ぶ必要がある。
+	// JoltのDebugRendererは、派生クラスのコンストラクタでInitialize()を呼ぶ必要がある。
 	// これによりJoltの内部のDebugRenderer::sInstanceなどが準備される
 	Initialize();
 }

@@ -52,6 +52,7 @@ namespace FWK::Physics
 		static constexpr bool k_useMINSide = false;
 		static constexpr bool k_useMAXSide = true;
 
+		// 8個の角を作るために必要
 		static constexpr std::array<AABBCornerSelector, k_aabbCornerCount> k_aabbCornerSelectorList =
 		{
 			AABBCornerSelector{ k_useMINSide, k_useMINSide, k_useMINSide },
