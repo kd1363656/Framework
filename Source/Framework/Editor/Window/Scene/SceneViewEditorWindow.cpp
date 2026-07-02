@@ -24,7 +24,12 @@ void FWK::Editor::SceneViewEditorWindow::Draw()
 		ImGui::End();
 		return; 
 	}
-	
+
+	// SceneView画像より先にツールバーを書く。
+	// これにより画面へ重ならず、SceneView上部へ工程表示される
+	m_sceneViewToolbar.Draw();
+	ImGui::Separator	   ();
+
 	// 現在のSceneViewウィンドウ内で、実際に画像を表示できる領域サイズを取得する
 	// Dockingでウィンドウサイズが変わると、この値も変わる
 	const ImVec2& l_sceneViewSize = ImGui::GetContentRegionAvail();

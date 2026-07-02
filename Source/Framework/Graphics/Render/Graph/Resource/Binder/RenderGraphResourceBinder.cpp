@@ -179,7 +179,7 @@ bool FWK::Graphics::RenderGraphResourceBinder::IsWriteRenderTargetPassTextureAcc
 }
 bool FWK::Graphics::RenderGraphResourceBinder::IsWriteDepthStencilPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-	if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None ||
+	if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None  ||
 		a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write       ||
 		a_resourceAccess.m_beforeUsage      != Enum::RenderGraphResourceUsage::DepthWrite)
 	{

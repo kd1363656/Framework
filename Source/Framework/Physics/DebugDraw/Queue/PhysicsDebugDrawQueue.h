@@ -11,7 +11,7 @@ namespace FWK::Physics
 
 		void ClearFrame();
 
-		void ReserveLineVertexCount(const std::size_t& a_lineVertexCount);;
+		void ReserveLineVertexCount(const std::size_t& a_lineVertexCount);
 
 		void AddLine(const TypeAlias::Math::Vector3& a_startPosition, const TypeAlias::Math::Vector3& a_endPosition, const TypeAlias::Math::Color& a_color);
 

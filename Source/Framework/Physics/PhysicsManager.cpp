@@ -17,7 +17,7 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsSystem(),
 
-	m_bodyCreator  (),
+	m_bodyCreator(),
 
 	m_isInitialized(false),
 
@@ -50,7 +50,7 @@ void FWK::Physics::PhysicsManager::INIT()
 
 	if (!m_debugRenderer)
 	{
-		m_debugRenderer = std::make_unique<FWK::Physics::PhysicsDebugRenderer>();
+		m_debugRenderer = std::make_shared<FWK::Physics::PhysicsDebugRenderer>();
 	}
 
 	m_debugRenderer->ReserveLineVertexCount();
@@ -87,9 +87,8 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 
 void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 {
-	if (!m_isInitialized)     { return; }
-	if (m_isDisableDebugDraw) { return; }
-	if (!m_debugRenderer)     { return; }
+	if (!m_isInitialized) { return; }
+	if (!m_debugRenderer) { return; }
 
 	// まず前フレームのデバック描画情報を消す
 	// デバック描画を無効化している場合でも、古い線が残らないように先に消す
@@ -136,6 +135,11 @@ void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_body
 	// 呼び出し側が削除済みBodyIDを持ち続けないようにする。
 	a_bodyHandle.m_bodyID  = JPH::BodyID();
 	a_bodyHandle.m_isValid = false;
+}
+
+void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
+{
+	m_isDisableDebugDraw = m_isDisableDebugDraw ? false : true;
 }
 
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)

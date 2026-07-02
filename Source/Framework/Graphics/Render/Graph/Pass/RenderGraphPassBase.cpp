@@ -94,7 +94,7 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const bool						     
 
 	// beforeUsageはPass実行前に必ず使うStateなので、Noneは禁止
 	FWK_ASSERT_RETURN_IF(a_beforeUsage == Enum::RenderGraphResourceUsage::Invalid ||
-						 a_beforeUsage == Enum::RenderGraphResourceUsage::None   ||
+						 a_beforeUsage == Enum::RenderGraphResourceUsage::None    ||
 						 a_beforeUsage == Enum::RenderGraphResourceUsage::Count,
 						 "BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
 

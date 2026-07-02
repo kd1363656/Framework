@@ -6,7 +6,7 @@ namespace FWK::Editor
 	{
 	public:
 
-		 SceneViewEditorWindow()	;
+		 SceneViewEditorWindow();
 		~SceneViewEditorWindow() override;
 
 		void PostDeserialize() override;
@@ -33,6 +33,8 @@ namespace FWK::Editor
 		static constexpr ImTextureID k_invalidSceneViewTextureID = {};
 
 		std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList = {};
+
+		SceneViewToolbar m_sceneViewToolbar = {};
 
 		FWK_DEFINE_TYPE_INFO(SceneViewEditorWindow, EditorWindowBase)
 	};

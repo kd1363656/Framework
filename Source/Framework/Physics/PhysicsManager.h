@@ -23,6 +23,8 @@ namespace FWK::Physics
 
 		void ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle);
 
+		void TogglePhysicsDebugDraw();
+
 		// スフィアボディ
 		Struct::PhysicsBodyHandle CreateStaticSphereBody (const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
 		Struct::PhysicsBodyHandle CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
@@ -41,7 +43,9 @@ namespace FWK::Physics
 		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition (const Struct::PhysicsBodyHandle& a_bodyHandle) const;
 		TypeAlias::Math::Vector3 FetchVALBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle) const;
 
-		const auto& GetREFDebugRenderer() const { return m_debugRenderer; }
+		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
+
+		bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
 
 	private:
 
@@ -112,7 +116,7 @@ namespace FWK::Physics
 
 		std::unique_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
 		
-		std::unique_ptr<PhysicsDebugRenderer> m_debugRenderer;
+		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
 		JPH::PhysicsSystem m_physicsSystem;
 

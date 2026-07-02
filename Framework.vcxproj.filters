@@ -778,6 +778,9 @@
     <Filter Include="Asset\Shader\PhysicsDebug">
       <UniqueIdentifier>{d0b6fda1-6399-4986-afd6-bd80746e2af9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Scene\ToolBar">
+      <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1596,6 +1599,9 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Scene\ToolBar\SceneViewToolBar.h">
+      <Filter>Source\Framework\Editor\Window\Scene\ToolBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1975,6 +1981,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Scene\ToolBar\SceneViewToolBar.cpp">
+      <Filter>Source\Framework\Editor\Window\Scene\ToolBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

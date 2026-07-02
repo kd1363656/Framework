@@ -33,12 +33,25 @@
 #include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 //===============================================================================
+// エディター
+//===============================================================================
+#include "Definition/Constant/Window/WindowConstant.h"
+#include "Definition/Struct/Window/WindowStruct.h"
+#include "Definition/Type/Alias/MathTypeAlias.h"
+#include "Editor/Style/EditorStyle.h"
+#include "Editor/Window/Log/LogEditorWindow.h"
+#include "Editor/Window/EditorWindowBase.h"
+#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
+#include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
+#include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorWindowBaseConcept.h"
+#include "Editor/Window/Scene/ToolBar/SceneViewToolBar.h"
+#include "Editor/EditorManager.h"
+
+//===============================================================================
 // ウィンドウクラス
 //===============================================================================
 #include "Definition/Macros/Json/JsonSerializeEnumMacros.h"
 #include "Definition/Enum/Window/WindowStyleEnum.h"
-#include "Definition/Constant/Window/WindowConstant.h"
-#include "Definition/Struct/Window/WindowStruct.h"
 #include "Window/Converter/Json/WindowJsonConverter.h"
 #include "Definition/Constant/Utility/String/StringUtilityConstant.h"
 #include "Utility/String/StringUtility.h"
@@ -46,19 +59,6 @@
 #include "Definition/Constant/Utility/File/Json/JsonLoadAndSaveFileUtilityConstant.h"
 #include "Utility/File/Json/JsonLoadAndSaveFileUtility.h"
 #include "Window/Window.h"
-
-//===============================================================================
-// エディター
-//===============================================================================
-#include "Definition/Type/Alias/MathTypeAlias.h"
-#include "Editor/Style/EditorStyle.h"
-#include "Editor/Window/Log/LogEditorWindow.h"
-#include "Editor/Window/EditorWindowBase.h"
-
-#include "Editor/Converter/Json/EditorManagerJsonConverter.h"
-#include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
-#include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorWindowBaseConcept.h"
-#include "Editor/EditorManager.h"
 
 //===============================================================================
 // 凡庸ファクトリー
@@ -69,6 +69,9 @@
 #include "Factory/GenericFactory.h"
 #include "Definition/Macros/Factory/FactoryMacros.h"
 
+//===============================================================================
+// エディター(ファクトリーを介さないといけないもの)
+//===============================================================================
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
 #include "Editor/Window/Scene/SceneViewEditorWindow.h"
 

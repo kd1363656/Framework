@@ -18,8 +18,12 @@ FWK::Graphics::PhysicsDebugPass::~PhysicsDebugPass() = default;
 
 void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
-	const auto& l_physicsManager           = Physics::PhysicsManager::GetInstance();
-	const auto& l_physicsDebugDrawRenderer = l_physicsManager.GetREFDebugRenderer();
+	const auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
+
+	// 描画しないならreturn;
+	if (l_physicsManager.GetVALIsDisableDebugDraw()) { return; }
+
+	const auto& l_physicsDebugDrawRenderer = l_physicsManager.GetVALDebugRenderer().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_physicsDebugDrawRenderer, "PhysicsDebugDrawRendererが生成されておらず、PhysicsDebugPassの実行に失敗しました。");
 

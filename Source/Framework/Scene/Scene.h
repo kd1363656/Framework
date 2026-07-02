@@ -24,6 +24,8 @@ namespace FWK
 
 	private:
 
+		std::list<GameObject> m_gameObjectList = {};
+
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 
 		std::shared_ptr<Graphics::StaticModel>								 m_charaModel					 = nullptr;
