@@ -12,6 +12,8 @@ namespace FWK
 		void INIT  ();
 		void Update();
 
+		void A();
+
 	private:
 
 		Graphics::LightSystem m_lightSystem = {};

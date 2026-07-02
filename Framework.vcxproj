@@ -221,7 +221,6 @@ if "$(Configuration)"=="Debug" (
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
-      <AdditionalOptions>/VERBOSE:LIB %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
@@ -580,7 +579,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h" />
-    <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.h" />
+    <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.h" />
+    <ClInclude Include="Source\Framework\Physics\DebugDraw\Queue\PhysicsDebugDrawQueue.h" />
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h" />
@@ -722,7 +722,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp" />
-    <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugDrawQueue.cpp" />
+    <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.cpp" />
+    <ClCompile Include="Source\Framework\Physics\DebugDraw\Queue\PhysicsDebugDrawQueue.cpp" />
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp" />
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp" />
