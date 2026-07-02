@@ -34,8 +34,10 @@ void FWK::Physics::PhysicsDebugRenderer::DrawTriangle(JPH::RVec3Arg             
 													  JPH::RVec3Arg                   a_vertexOne,
 													  JPH::RVec3Arg                   a_vertexTwo,
 													  JPH::ColorArg                   a_color,
-													  JPH::DebugRenderer::ECastShadow)
+													  JPH::DebugRenderer::ECastShadow a_castShadow)
 {
+	(void)a_castShadow;
+
 	// 3辺のLineListとして描画する
 	m_debugDrawQueue.AddTriangleWire(ConvertVALVector3(a_vertexZero), 
 									 ConvertVALVector3(a_vertexOne),
@@ -45,6 +47,10 @@ void FWK::Physics::PhysicsDebugRenderer::DrawTriangle(JPH::RVec3Arg             
 
 JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugRenderer::CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangle, const int a_triangleCount)
 {
+	(void)a_triangle;
+	(void)a_triangleCount;
+
+
 	return JPH::DebugRenderer::Batch();
 }
 
@@ -53,6 +59,11 @@ JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugRenderer::CreateTriangleBatc
 																				  const JPH::uint32*				a_indexList,
 																				  const int						    a_indexCount)
 {
+	(void)a_vertexList;
+	(void)a_vertexCount;
+	(void)a_indexList;
+	(void)a_indexCount;
+
 	return JPH::DebugRenderer::Batch();
 }
 
@@ -65,6 +76,13 @@ void FWK::Physics::PhysicsDebugRenderer::DrawGeometry(		JPH::RMat44Arg          
 														    JPH::DebugRenderer::ECastShadow  a_castShadow, 
 															JPH::DebugRenderer::EDrawMode    a_drawMode)
 {
+	(void)a_loadScaleSQ;
+	(void)a_modelColor;
+	(void)a_gometryREF;
+	(void)a_cullMode;
+	(void)a_castShadow;
+	(void)a_drawMode;
+
 	AddWorldSpaceAABB(a_worldSpaceBounds, a_modelColor);
 }
 
@@ -73,10 +91,13 @@ void FWK::Physics::PhysicsDebugRenderer::DrawText3D(	  JPH::RVec3Arg     a_posit
 														  JPH::ColorArg	    a_color, 
 												    const float			    a_height)
 {
-
+	(void)a_position;
+	(void)a_string;
+	(void)a_color;
+	(void)a_height;
 }
 
-FWK::TypeAlias::Math::Color FWK::Physics::PhysicsDebugRenderer::ConvertVALColor(JPH::ColorArg& a_color) const
+FWK::TypeAlias::Math::Color FWK::Physics::PhysicsDebugRenderer::ConvertVALColor(JPH::ColorArg a_color) const
 {
 	return TypeAlias::Math::Color
 	{

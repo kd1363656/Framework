@@ -28,7 +28,7 @@ void Application::Execute()
 {
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
-	auto& l_sceneManager    = FWK::SceneManager::GetInstance			     ();
+	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
 	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
 
 	l_graphicsManager.INIT();
@@ -45,7 +45,7 @@ void Application::Execute()
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
 
-	// ダミー読み込み
+	// 最初に読み込むべきシーンを読み込む
 	l_sceneManager.LoadScene(k_firstLoadSceneFilepath);
 
 	// while分に入る前にもう一度計測時間をリセットしておく
@@ -80,6 +80,10 @@ void Application::Execute()
 
 		// 当たり判定の更新
 		l_physicsManager.Update(m_fpsController.GetVALScaledDeltaTime());
+
+		// JoltPhysicsのデバック命令をこのフレーム用のQueueへ集める
+		// ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
+		l_physicsManager.CollectPhysicsDebugDrawCommands();
 
 		// 描画処理
 		l_graphicsManager.BeginFrame();

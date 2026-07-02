@@ -91,7 +91,12 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	if (m_isDisableDebugDraw) { return; }
 	if (!m_debugRenderer)     { return; }
 
+	// まず前フレームのデバック描画情報を消す
+	// デバック描画を無効化している場合でも、古い線が残らないように先に消す
 	m_debugRenderer->ClearFrame();
+
+	// デバック描画が無効化されているならしない
+	if (m_isDisableDebugDraw) { return; }
 
 	JPH::BodyManager::DrawSettings l_drawSettings = {};
 
@@ -103,6 +108,7 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 
 	m_debugRenderer->NextFrame();
 }
+
 
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)
 {

@@ -79,10 +79,6 @@ void FWK::Scene::INIT()
 	m_dynamicCapsuleBodyHandle = l_physicsManager.CreateDynamicCapsuleBody(l_capsuleWorldPosition,
 																		   l_capsuleHalfHeightOfCylinder,
 																		   l_capsuleRadius);
-	
-	// StaticBodyをまとめて追加した後なので、BroadPhaseを最適化しておく。
-	// 毎フレーム呼ぶものではなく、ステージ読み込み後などに呼ぶ。
-	l_physicsManager.OptimizeBroadPhase();
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -96,7 +92,11 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 }
 void FWK::Scene::PostDeserialize() const
 {
+	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
 
+	// StaticBodyをまとめて追加した後なので、BroadPhaseを最適化しておく。
+	// 毎フレーム呼ぶものではなく、ステージ読み込み後などに呼ぶ。
+	l_physicsManager.OptimizeBroadPhase();
 }
 
 void FWK::Scene::EarlyUpdate()

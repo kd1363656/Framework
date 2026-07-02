@@ -62,7 +62,6 @@ namespace FWK::Physics
 #endif
 
 #endif
-
 		void RegisterActiveBodyID(const Struct::PhysicsBodyHandle& a_bodyHandle);
 
 		void UnregisterActiveBodyID(const JPH::BodyID& a_bodyID);

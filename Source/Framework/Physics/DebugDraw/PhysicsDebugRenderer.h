@@ -19,7 +19,7 @@ namespace FWK::Physics
 						  JPH::RVec3Arg                   a_vertexOne, 
 						  JPH::RVec3Arg                   a_vertexTwo, 
 						  JPH::ColorArg                   a_color,
-						  JPH::DebugRenderer::ECastShadow) override;
+						  JPH::DebugRenderer::ECastShadow a_castShadow) override;
 
 		JPH::DebugRenderer::Batch CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangle, const int a_triangleCount) override;
 
@@ -42,6 +42,8 @@ namespace FWK::Physics
 							  JPH::ColorArg		a_color,
 					    const float			    a_height) override;
 
+		const auto& GetREFFPhysicsDebugDrawQueue() const { return m_debugDrawQueue; }
+
 	private:
 
 		template <typename JoltVectorType>
@@ -55,7 +57,7 @@ namespace FWK::Physics
 			};
 		}
 
-		TypeAlias::Math::Color ConvertVALColor(JPH::ColorArg& a_color) const;
+		TypeAlias::Math::Color ConvertVALColor(JPH::ColorArg a_color) const;
 
 		void AddWorldSpaceAABB(const JPH::AABox& a_worldSpaceBounds, JPH::ColorArg a_color);
 

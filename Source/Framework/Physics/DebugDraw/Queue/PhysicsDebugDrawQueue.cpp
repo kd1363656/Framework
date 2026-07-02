@@ -45,9 +45,7 @@ void FWK::Physics::PhysicsDebugDrawQueue::AddAABB(const TypeAlias::Math::Vector3
 
 void FWK::Physics::PhysicsDebugDrawQueue::AddLineVertex(const TypeAlias::Math::Vector3& a_position, const TypeAlias::Math::Color& a_color)
 {
-	Struct::VBPhysicsDebug l_vbPhysicsDebug = { a_position, a_color };
-
-	m_lineVertexList.emplace_back(std::move(l_vbPhysicsDebug));
+	 m_lineVertexList.emplace_back(a_position, a_color);
 }
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsDebugDrawQueue::CreateAABBCorner(const TypeAlias::Math::Vector3& a_minPosition, const TypeAlias::Math::Vector3& a_maxPosition, const AABBCornerSelector a_cornerSelector) const
