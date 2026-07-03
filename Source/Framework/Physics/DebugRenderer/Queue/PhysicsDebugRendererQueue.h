@@ -2,12 +2,12 @@
 
 namespace FWK::Physics
 {
-	class PhysicsDebugDrawQueue final
+	class PhysicsDebugRendererQueue final
 	{
 	public:
 
-		 PhysicsDebugDrawQueue() = default;
-		~PhysicsDebugDrawQueue() = default;
+		 PhysicsDebugRendererQueue() = default;
+		~PhysicsDebugRendererQueue() = default;
 
 		void ClearFrame();
 

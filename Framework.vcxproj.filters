@@ -1620,17 +1620,8 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\DebugDraw\Queue\PhysicsDebugDrawQueue.h">
-      <Filter>Source\Framework\Physics\DebugDraw\Queue</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.h">
-      <Filter>Source\Framework\Physics\DebugDraw</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.h">
-      <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h">
       <Filter>Source\Framework\Definition\Struct\Scene</Filter>
@@ -1661,6 +1652,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.h">
+      <Filter>Source\Framework\Physics\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.h">
+      <Filter>Source\Framework\Physics\DebugDraw\Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h">
+      <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2033,17 +2033,8 @@
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\DebugDraw\Queue\PhysicsDebugDrawQueue.cpp">
-      <Filter>Source\Framework\Physics\DebugDraw\Queue</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.cpp">
-      <Filter>Source\Framework\Physics\DebugDraw</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.cpp">
-      <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp">
       <Filter>Source\Framework\Editor\Window\Scene\Toolbar</Filter>
@@ -2056,6 +2047,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp">
       <Filter>Source\Framework\Editor\MainMenu\File</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.cpp">
+      <Filter>Source\Framework\Physics\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.cpp">
+      <Filter>Source\Framework\Physics\DebugDraw\Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp">
+      <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

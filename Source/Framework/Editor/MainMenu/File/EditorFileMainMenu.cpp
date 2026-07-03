@@ -1,22 +1,37 @@
 ﻿#include "FileMainMenuEditor.h"
 
-void FWK::Editor::FileMainMenuEditor::Init()
-{
-}
-
 void FWK::Editor::FileMainMenuEditor::Draw()
 {
+	DrawMenuFile     ();
+	UpdateShortCutKey();
 }
 
-void FWK::Editor::FileMainMenuEditor::DrawMenuFile()
+void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
 {
+	if (ImGui::BeginMenu("File"))
+	{
+		if (ImGui::MenuItem("Save", "Ctrl+S"))
+		{
+			// すべてのシーン情報をセーブ
+			const auto& l_sceneManager = SceneManager::GetInstance();
 
+			l_sceneManager.SaveScene();
+
+			FWK_ADD_LOG("シーンのセーブが完了しました。");
+		}
+
+		ImGui::EndMenu();
+	}
 }
-void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey()
+void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
 {
+	if (ImGui::IsKeyDown(ImGuiMod_Ctrl) && ImGui::IsKeyPressed(ImGuiKey_S))
+	{
+		// すべてのシーン情報をセーブ
+		const auto& l_sceneManager = SceneManager::GetInstance();
 
-}
-void FWK::Editor::FileMainMenuEditor::DrawPopUp()
-{
+		l_sceneManager.SaveScene();
 
+		FWK_ADD_LOG("シーンのセーブが完了しました。");
+	}
 }

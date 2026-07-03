@@ -27,11 +27,11 @@ void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph&
 
 	FWK_ASSERT_RETURN_IF(!l_physicsDebugDrawRenderer, "PhysicsDebugDrawRendererが生成されておらず、PhysicsDebugPassの実行に失敗しました。");
 
-	const auto& l_physicsDebugDrawQueue = l_physicsDebugDrawRenderer->GetREFPhysicsDebugDrawQueue();
+	const auto& l_physicsDebugRendererQueue = l_physicsDebugDrawRenderer->GetREFPhysicsDebugRendererQueue();
 
-	if (!l_physicsDebugDrawQueue.HasLineVertex()) { return; }
+	if (!l_physicsDebugRendererQueue.HasLineVertex()) { return; }
 
-	const auto& l_lineVertexList = l_physicsDebugDrawQueue.GetREFLineVertexList();
+	const auto& l_lineVertexList = l_physicsDebugRendererQueue.GetREFLineVertexList();
 
 	FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > static_cast<std::size_t>(std::numeric_limits<UINT>::max()), "PhysicsDebugのLineVertex数がDrawInstancedで描画できる上限を超えており、PhysicsDebugPassの実行に失敗しました。");
 

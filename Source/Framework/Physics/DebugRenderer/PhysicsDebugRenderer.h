@@ -42,7 +42,7 @@ namespace FWK::Physics
 							  JPH::ColorArg		a_color,
 					    const float			    a_height) override;
 
-		const auto& GetREFPhysicsDebugDrawQueue() const { return m_debugDrawQueue; }
+		const auto& GetREFPhysicsDebugRendererQueue() const { return m_debugRendererQueue; }
 
 	private:
 
@@ -69,6 +69,6 @@ namespace FWK::Physics
 		static constexpr std::size_t k_triangleVertexOneIndex  = 1ULL;
 		static constexpr std::size_t k_triangleVertexTwoIndex  = 2ULL;
 
-		PhysicsDebugDrawQueue m_debugDrawQueue;
+		PhysicsDebugRendererQueue m_debugRendererQueue;
 	};
 }

@@ -1,34 +1,27 @@
 ﻿#include "PhysicsDebugRenderer.h"
 
 FWK::Physics::PhysicsDebugRenderer::PhysicsDebugRenderer() : 
-	m_debugDrawQueue()
+	m_debugRendererQueue()
 {
 	// JoltのDebugRendererは、派生クラスのコンストラクタでInitialize()を呼ぶ必要がある。
 	// これによりJoltの内部のDebugRenderer::sInstanceなどが準備される
 	Initialize();
 }
-FWK::Physics::PhysicsDebugRenderer::~PhysicsDebugRenderer()
-{
-	// Jolt側のDebugRenderer::sInstanceは生ポインタのため
-	// 破棄時に自身を示している場合だけnullptrへ戻す
-	if (JPH::DebugRenderer::sInstance != this) { return; }
-
-	JPH::DebugRenderer::sInstance = nullptr;
-}
+FWK::Physics::PhysicsDebugRenderer::~PhysicsDebugRenderer() = default;
 
 void FWK::Physics::PhysicsDebugRenderer::ClearFrame()
 {
-	m_debugDrawQueue.ClearFrame();
+	m_debugRendererQueue.ClearFrame();
 }
 
 void FWK::Physics::PhysicsDebugRenderer::ReserveLineVertexCount()
 {
-	m_debugDrawQueue.ReserveLineVertexCount(k_defaultPhysicsDebugLineVertexCapacity);
+	m_debugRendererQueue.ReserveLineVertexCount(k_defaultPhysicsDebugLineVertexCapacity);
 }
 
 void FWK::Physics::PhysicsDebugRenderer::DrawLine(JPH::RVec3Arg a_from, JPH::RVec3Arg a_to, JPH::ColorArg a_color)
 {
-	m_debugDrawQueue.AddLine(ConvertVALVector3(a_from), ConvertVALVector3(a_to), ConvertVALColor(a_color));
+	m_debugRendererQueue.AddLine(ConvertVALVector3(a_from), ConvertVALVector3(a_to), ConvertVALColor(a_color));
 }
 void FWK::Physics::PhysicsDebugRenderer::DrawTriangle(JPH::RVec3Arg                   a_vertexZero, 
 													  JPH::RVec3Arg                   a_vertexOne,
@@ -39,10 +32,10 @@ void FWK::Physics::PhysicsDebugRenderer::DrawTriangle(JPH::RVec3Arg             
 	(void)a_castShadow;
 
 	// 3辺のLineListとして描画する
-	m_debugDrawQueue.AddTriangleWire(ConvertVALVector3(a_vertexZero), 
-									 ConvertVALVector3(a_vertexOne),
-									 ConvertVALVector3(a_vertexTwo), 
-									 ConvertVALColor(a_color));
+	m_debugRendererQueue.AddTriangleWire(ConvertVALVector3(a_vertexZero),
+									     ConvertVALVector3(a_vertexOne),
+									     ConvertVALVector3(a_vertexTwo), 
+									     ConvertVALColor(a_color));
 }
 
 JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugRenderer::CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangleList, const int a_triangleCount)
@@ -96,10 +89,10 @@ void FWK::Physics::PhysicsDebugRenderer::DrawGeometry(		JPH::RMat44Arg          
 		// Joltのモデル色とBach側の頂点色を乗算する
 		const JPH::Color l_triangleColor = a_modelColor * l_triangle.mV[k_triangleVertexZeroIndex].mColor;
 
-		m_debugDrawQueue.AddTriangleWire(ConvertVALVector3(l_vertexZero),
-										 ConvertVALVector3(l_vertexOne),
-										 ConvertVALVector3(l_vertexTwo),
-										 ConvertVALColor(l_triangleColor));
+		m_debugRendererQueue.AddTriangleWire(ConvertVALVector3(l_vertexZero),
+										     ConvertVALVector3(l_vertexOne),
+										     ConvertVALVector3(l_vertexTwo),
+										     ConvertVALColor(l_triangleColor));
 	}
 }
 
@@ -127,5 +120,5 @@ FWK::TypeAlias::Math::Color FWK::Physics::PhysicsDebugRenderer::ConvertVALColor(
 
 void FWK::Physics::PhysicsDebugRenderer::AddWorldSpaceAABB(const JPH::AABox& a_worldSpaceBounds, JPH::ColorArg a_color)
 {
-	m_debugDrawQueue.AddAABB(ConvertVALVector3(a_worldSpaceBounds.mMin), ConvertVALVector3(a_worldSpaceBounds.mMax), ConvertVALColor(a_color));
+	m_debugRendererQueue.AddAABB(ConvertVALVector3(a_worldSpaceBounds.mMin), ConvertVALVector3(a_worldSpaceBounds.mMax), ConvertVALColor(a_color));
 }

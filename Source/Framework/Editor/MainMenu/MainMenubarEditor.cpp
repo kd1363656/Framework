@@ -9,6 +9,8 @@ void FWK::Editor::MainMenubarEditor::Deserialize(const nlohmann::json& a_rootJso
 
 void FWK::Editor::MainMenubarEditor::Draw() const
 {
+	if (!ImGui::BeginMainMenuBar()) { return; }
+
 	const auto& l_editorMainMenuDataList = m_editorMainMenuList.GetREFArrayElementDataList();
 
 	for (const auto& l_editorMainMenuData : l_editorMainMenuDataList)
@@ -19,6 +21,8 @@ void FWK::Editor::MainMenubarEditor::Draw() const
 
 		l_editorMainMenu->Draw();
 	}
+
+	ImGui::EndMainMenuBar();
 }
 
 nlohmann::json FWK::Editor::MainMenubarEditor::Serialize() const

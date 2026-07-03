@@ -9,15 +9,13 @@ namespace FWK::Editor
 		 FileMainMenuEditor()          = default;
 		~FileMainMenuEditor() override = default;
 
-		void Init() override;
 		void Draw() override;
 
 	private:
 
-		void DrawMenuFile     ();
-		void UpdateShortCutKey();
-		void DrawPopUp        ();
-
+		void DrawMenuFile     () const;
+		void UpdateShortCutKey() const;
+		
 		FWK_DEFINE_TYPE_INFO(FileMainMenuEditor, EditorMainMenuBase)
 	};
 }
