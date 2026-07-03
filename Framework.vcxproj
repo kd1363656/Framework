@@ -424,6 +424,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFOStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\Array\Vector\VectorArrayStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h" />
@@ -592,6 +593,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
+    <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\IsArrayJsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />

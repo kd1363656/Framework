@@ -308,7 +308,12 @@
 
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
+
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectList.h"
+
+#include "Definition/Struct/Utility/Array/Vector/VectorArrayStruct.h"
+#include "Utility/Array/VectorArray.h"
+
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Definition/Constant/Graphics/SpriteScreenPerObjectConstantBufferUploaderConstant.h"

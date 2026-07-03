@@ -7,6 +7,7 @@ namespace FWK::Enum
 		None,
 		Raw,
 		Shared,
+		Weak,
 		Unique
 	};
 }

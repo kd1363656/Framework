@@ -9,7 +9,11 @@ namespace FWK::Concept
 	template<typename Type>
 	concept IsUniquePTRConcept = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique;
 
+	template<typename Type>
+	concept IsWeakPTRConcept = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
+
 	template <typename Type>
 	concept IsSmartPTRConcept = IsSharedPTRConcept<Type> || 
+								IsWeakPTRConcept  <Type> ||
 								IsUniquePTRConcept<Type>;
 }

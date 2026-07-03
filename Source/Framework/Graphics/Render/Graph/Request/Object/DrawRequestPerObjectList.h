@@ -49,15 +49,6 @@ namespace FWK::Graphics
 			m_registeredAddressSet.emplace				 (l_drawRequestPerObjectAddress);
 		}
 
-		bool ContainsDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectType>& a_drawRequestPerObject) const
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(!a_drawRequestPerObject, "DrawRequestPerObjectが無効のため、DrawRequestPerObjectの登録確認に失敗しました。", false);
-
-			const auto& l_drawRequestPerObjectAddress = a_drawRequestPerObject.get();
-
-			return m_registeredAddressSet.contains(l_drawRequestPerObjectAddress);
-		}
-
 		const auto& GetREFDrawRequestPerObjectRecordList() const { return m_drawRequestPerObjectRecordList; }
 
 	private:

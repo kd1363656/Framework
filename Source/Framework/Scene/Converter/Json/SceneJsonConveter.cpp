@@ -21,9 +21,15 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(const Scene& a_scen
 
 void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
-	if (a_rootJson.is_null()) { return; }
-
+	if (a_rootJson.is_null())		   { return; }
+	if (!Utility::IsArray(a_rootJson)) { return; }
 	
+	for (const auto& l_json : a_rootJson)
+	{
+		auto l_gameObject = std::make_shared<GameObject>();
+
+		a_scene.AddGameObject(l_gameObject);
+	}
 }
 
 nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const Scene& a_scene) const
@@ -40,6 +46,8 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 		}
 
 		nlohmann::json l_json = {};
+
+		l_rootJsonArray.emplace_back(l_json);
 	}
 
 	return l_rootJsonArray;

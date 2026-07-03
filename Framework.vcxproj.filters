@@ -787,6 +787,15 @@
     <Filter Include="Source\Framework\Definition\Struct\Scene">
       <UniqueIdentifier>{2297f7a2-17dd-4d21-a23a-f6df84ae6d06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\Array">
+      <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility\Array">
+      <UniqueIdentifier>{57228562-1b94-4255-904a-fe7141e7a119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility\Array\Vector">
+      <UniqueIdentifier>{e6c5e87f-5127-41d9-ac07-5a1703a5cd36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1613,6 +1622,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h">
       <Filter>Source\Framework\Definition\Struct\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h">
+      <Filter>Source\Framework\Utility\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\Array\Vector\VectorArrayStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Utility\Array\Vector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

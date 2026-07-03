@@ -22,6 +22,11 @@ namespace FWK
 		 GenericFactory()          = default;
 		~GenericFactory() override = default;
 
+		static constexpr bool k_isSupportedPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared ||
+												 TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique;
+
+		static_assert(k_isSupportedPTR, "GenericFactoryはstd::shared_ptrまたはstd::unique_ptrだけに対応しています");
+
 	public:
 
 		// "DerivedClass"をファクトリーに登録
@@ -29,29 +34,12 @@ namespace FWK
 			requires Concept::IsDerivedBaseConcept<DerivedType, BaseType>
 		void Register(const std::string& a_typeName)
 		{
-			std::function<Type()> l_factoryMethod = {};
-
-			// もしシェアードポインタ型ならシェアードポインタ型を
-			// そうでないかつユニークポインタ型ならユニークポインタ型を
-			// どちらにも該当しないなら"nullptr"を作るファクトリーを保存
-			// "C++20"以降の"return"文は右辺値なら"RVO"が強制的に実行されるため所有権のコピーが発生しない
-			if constexpr (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared)
+			// 作成処理の登録もしTypeがstd::sahred_ptrならstd::shared_ptr番のCreateInstanceが、
+			// そうでないならstd::uinque_ptr番のCreateInstanceがコンパイル時に選択される
+			m_factoryMap.try_emplace(a_typeName, []() -> Type 
 			{
-				l_factoryMethod = []()
-				{
-					return std::make_shared<DerivedType>();
-				};
-			}
-			else if constexpr (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique)
-			{
-				l_factoryMethod = []()
-				{
-					return std::make_unique<DerivedType>();
-				};
-			}
-
-			// 登録
-			m_factoryMap.try_emplace(a_typeName, l_factoryMethod);
+				return CreateInstance<DerivedType>();
+			});
 		}
 
 		Type Create(const std::string& a_className) const 
@@ -59,12 +47,28 @@ namespace FWK
 			// マップから登録されているファクトリーメソッドを取得
 			auto l_itr = m_factoryMap.find(a_className);
 
-			if (l_itr == m_factoryMap.end()) { return nullptr; }
+			if (l_itr == m_factoryMap.end()) { return {}; }
 	
 			return l_itr->second();
 		}
 
 	private:
+
+		// Typeがshared_ptrの場合にだけ使用可能になる。
+		template <typename DerivedType>
+			requires (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared)
+		static Type CreateInstance()
+		{
+			return std::make_shared<DerivedType>();
+		}
+
+		// Typeがunique_ptrの場合にだけ使用可能になる。
+		template <typename DerivedType>
+			requires (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique)
+		static Type CreateInstance()
+		{
+			return std::make_unique<DerivedType>();
+		}
 
 		FactoryMap m_factoryMap = {};
 	};

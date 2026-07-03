@@ -101,7 +101,14 @@ void FWK::Scene::PostDeserialize() const
 
 void FWK::Scene::EarlyUpdate()
 {
+	std::erase_if(m_gameObjectList, [this](const auto& a_gameObjectData) 
+	{
+		if (!a_gameObjectData.m_gameObject) { return false; }
 
+		m_registeredGameObjectSet.erase(a_gameObjectData.m_gameObjectAddress);
+
+		return true;
+	});
 }
 void FWK::Scene::Update()
 {
@@ -213,11 +220,9 @@ void FWK::Scene::Update()
 		{
 			const auto l_bodyWorldPosition = l_physicsManager.FetchVALBodyWorldPosition(m_dynamicCapsuleBodyHandle);
 	
-			m_charaModelStandardDrawRequest->m_worldMatrix =
-				TypeAlias::Math::Matrix::CreateTranslation(l_bodyWorldPosition);
+			m_charaModelStandardDrawRequest->m_worldMatrix = TypeAlias::Math::Matrix::CreateTranslation(l_bodyWorldPosition);
 	
-			m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix =
-				m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
+			m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
 		}
 	}
 }
@@ -246,5 +251,6 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 	// 既に登録されているアドレスを持つゲームオブジェクトなら追加しない
 	if (m_registeredGameObjectSet.contains(a_gameObject.get())) { return; }
 
-	m_gameObjectList.emplace_back(a_gameObject, a_gameObject.get());
+	m_gameObjectList.emplace_back    (a_gameObject, a_gameObject.get());
+	m_registeredGameObjectSet.emplace(a_gameObject.get());
 }
