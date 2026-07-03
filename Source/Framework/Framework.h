@@ -363,8 +363,8 @@
 #include "Definition/Struct/Graphics/PhysicsBodyCreatorStruct.h"
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
-
 #include "Physics/DebugDraw/Queue/PhysicsDebugDrawQueue.h"
+#include "Physics/DebugDraw/Batch/PhysicsDebugTriangleBatch.h"
 #include "Physics/DebugDraw/PhysicsDebugRenderer.h"
 
 #include "Physics/PhysicsManager.h"

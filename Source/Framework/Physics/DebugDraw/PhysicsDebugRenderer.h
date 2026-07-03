@@ -21,7 +21,7 @@ namespace FWK::Physics
 						  JPH::ColorArg                   a_color,
 						  JPH::DebugRenderer::ECastShadow a_castShadow) override;
 
-		JPH::DebugRenderer::Batch CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangle, const int a_triangleCount) override;
+		JPH::DebugRenderer::Batch CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangleList, const int a_triangleCount) override;
 
 		JPH::DebugRenderer::Batch CreateTriangleBatch(const JPH::DebugRenderer::Vertex* a_vertexList, 
 													  const int							a_vertexCount,
@@ -30,9 +30,9 @@ namespace FWK::Physics
 
 		void DrawGeometry(		JPH::RMat44Arg				     a_modelMatrix,
 						  const JPH::AABox&					     a_worldSpaceBounds,
-						  const float						     a_loadScaleSQ,
+						  const float						     a_lodScaleSQ,
 								JPH::ColorArg				     a_modelColor,
-						  const JPH::DebugRenderer::GeometryRef& a_gometryREF,
+						  const JPH::DebugRenderer::GeometryRef& a_geometryREF,
 							    JPH::DebugRenderer::ECullMode    a_cullMode,
 								JPH::DebugRenderer::ECastShadow  a_castShadow,
 								JPH::DebugRenderer::EDrawMode    a_drawMode) override;
@@ -64,6 +64,10 @@ namespace FWK::Physics
 		static constexpr float k_colorMAXChannelValue = 255.0F;
 
 		static constexpr std::size_t k_defaultPhysicsDebugLineVertexCapacity = 200000ULL;
+
+		static constexpr std::size_t k_triangleVertexZeroIndex = 0ULL;
+		static constexpr std::size_t k_triangleVertexOneIndex  = 1ULL;
+		static constexpr std::size_t k_triangleVertexTwoIndex  = 2ULL;
 
 		PhysicsDebugDrawQueue m_debugDrawQueue;
 	};

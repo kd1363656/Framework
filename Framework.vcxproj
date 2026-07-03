@@ -580,6 +580,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h" />
+    <ClInclude Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.h" />
     <ClInclude Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.h" />
     <ClInclude Include="Source\Framework\Physics\DebugDraw\Queue\PhysicsDebugDrawQueue.h" />
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
@@ -725,6 +726,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp" />
+    <ClCompile Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugDraw\PhysicsDebugRenderer.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugDraw\Queue\PhysicsDebugDrawQueue.cpp" />
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />

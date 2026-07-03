@@ -17,5 +17,14 @@ namespace FWK::Converter
 		void Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene) const;
 
 		nlohmann::json Serialize(const Scene& a_scene) const;
+
+	private:
+
+		void DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const;
+
+		nlohmann::json SerializeGameObjectList(const Scene& a_scene) const;
+
+		std::string_view k_gameObjectListJsonKey = "GameObjectList";
+		std::string_view k_gameObjecJsonKey      = "GameObject";
 	};
 }

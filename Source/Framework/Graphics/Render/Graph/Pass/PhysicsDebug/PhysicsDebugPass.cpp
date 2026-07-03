@@ -28,9 +28,12 @@ void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph&
 	FWK_ASSERT_RETURN_IF(!l_physicsDebugDrawRenderer, "PhysicsDebugDrawRendererが生成されておらず、PhysicsDebugPassの実行に失敗しました。");
 
 	const auto& l_physicsDebugDrawQueue = l_physicsDebugDrawRenderer->GetREFPhysicsDebugDrawQueue();
-	const auto& l_lineVertexList        = l_physicsDebugDrawQueue.GetREFLineVertexList			 ();
 
-	FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > std::numeric_limits<std::size_t>::max(), "PhysicsDebugのLineVertex数がDrawInstancedで描画できる上限を超えており、PhysicsDebugPassの実行に失敗しました。");
+	if (!l_physicsDebugDrawQueue.HasLineVertex()) { return; }
+
+	const auto& l_lineVertexList = l_physicsDebugDrawQueue.GetREFLineVertexList();
+
+	FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > static_cast<std::size_t>(std::numeric_limits<UINT>::max()), "PhysicsDebugのLineVertex数がDrawInstancedで描画できる上限を超えており、PhysicsDebugPassの実行に失敗しました。");
 
 	const auto& l_rootSignature = SetupRenderPipeline(a_renderer, Enum::PipelineStateType::PhysicsDebug).lock();
 
@@ -49,9 +52,13 @@ void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph&
 
 	FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "PhysicsDebugPassでCameraPass定数バッファの設定に失敗しており、PhysicsDebugPassの実行に失敗しました。");
 
+	// 頂点バッファーアップローダーを取得
 	const auto& l_physicsDebugVertexBufferUploader = l_currentFrameResource->FindPTRDynamicBufferUploader<PhysicsDebugDynamicVertexBufferUploader>().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_physicsDebugVertexBufferUploader, "PhysicsDebugDynamicVertexBufferUploaderが無効のため、PhysicsDebugPassの実行に失敗しました。");
+
+	// 頂点リストの数がバッファーアップローダーの作成数を超えていないかどうかを確認する
+	FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > static_cast<std::size_t>(l_physicsDebugVertexBufferUploader->GetREFCreateCount()), "PhysicsDebugの頂点数がPhysicsDebugDynamicVertexBufferUploaderの容量を超えています。");
 
 	// バッファービューを取得
 	const auto l_vertexBufferView = l_physicsDebugVertexBufferUploader->WriteVertexList(l_lineVertexList);

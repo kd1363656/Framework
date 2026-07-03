@@ -12,6 +12,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 
 	for (auto& l_modelMesh : l_modelMeshList)
 	{
+		// モデルに必要なバッファーをアップロードヒープにデータを渡しデフォルトヒープを作成し、コピー可能な状態にする
 		if (!CreateModelBatchUploadRecord(a_device,
 										  a_gpuMemoryAllocator,
 										  a_bufferUploadCommandList,

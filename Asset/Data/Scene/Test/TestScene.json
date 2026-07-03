@@ -1,4 +1,6 @@
 {
-    "Scene": null,
+    "Scene": {
+        "GameObjectList": []
+    },
     "SceneShiftMap": []
 }

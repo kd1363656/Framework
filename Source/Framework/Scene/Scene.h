@@ -9,9 +9,9 @@ namespace FWK
 		 Scene() = default;
 		~Scene() = default;
 
-		void INIT		    ();
-		void Deserialize    (const nlohmann::json& a_rootJson);
-
+		void INIT		();
+		void Deserialize(const nlohmann::json& a_rootJson);
+		
 		// デシリアライズ後のポインタの紐づけなどを行う
 		void PostDeserialize() const;
 
@@ -22,9 +22,11 @@ namespace FWK
 		
 		nlohmann::json Serialize() const;
 
+		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
+
 	private:
 
-		std::list<GameObject> m_gameObjectList = {};
+		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 

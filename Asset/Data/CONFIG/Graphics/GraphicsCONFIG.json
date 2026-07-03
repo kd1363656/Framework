@@ -48,13 +48,13 @@
                     },
                     {
                         "DynamicBufferUploader": {
-                            "CreateCount": 30000
+                            "CreateCount": 300000
                         },
                         "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicVertexBufferUploader"
                     },
                     {
                         "DynamicBufferUploader": {
-                            "CreateCount": 30000
+                            "CreateCount": 300000
                         },
                         "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicIndexBufferUploader"
                     }

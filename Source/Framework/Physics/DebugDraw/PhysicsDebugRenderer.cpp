@@ -45,45 +45,62 @@ void FWK::Physics::PhysicsDebugRenderer::DrawTriangle(JPH::RVec3Arg             
 									 ConvertVALColor(a_color));
 }
 
-JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugRenderer::CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangle, const int a_triangleCount)
+JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugRenderer::CreateTriangleBatch(const JPH::DebugRenderer::Triangle* a_triangleList, const int a_triangleCount)
 {
-	(void)a_triangle;
-	(void)a_triangleCount;
-
-
-	return JPH::DebugRenderer::Batch();
+	return PhysicsDebugTriangleBatch::Create(a_triangleList, a_triangleCount);
 }
-
 JPH::DebugRenderer::Batch FWK::Physics::PhysicsDebugRenderer::CreateTriangleBatch(const JPH::DebugRenderer::Vertex* a_vertexList, 
 																				  const int					        a_vertexCount, 
 																				  const JPH::uint32*				a_indexList,
 																				  const int						    a_indexCount)
 {
-	(void)a_vertexList;
-	(void)a_vertexCount;
-	(void)a_indexList;
-	(void)a_indexCount;
-
-	return JPH::DebugRenderer::Batch();
+	return PhysicsDebugTriangleBatch::Create(a_vertexList,
+											 a_vertexCount,
+											 a_indexList,
+											 a_indexCount);
 }
 
 void FWK::Physics::PhysicsDebugRenderer::DrawGeometry(		JPH::RMat44Arg                   a_modelMatrix, 
 													  const JPH::AABox&	                     a_worldSpaceBounds, 
-													  const float		                     a_loadScaleSQ, 
+													  const float		                     a_lodScaleSQ, 
 														    JPH::ColorArg                    a_modelColor,
-													  const JPH::DebugRenderer::GeometryRef& a_gometryREF, 
+													  const JPH::DebugRenderer::GeometryRef& a_geometryREF, 
 														    JPH::DebugRenderer::ECullMode    a_cullMode, 
 														    JPH::DebugRenderer::ECastShadow  a_castShadow, 
 															JPH::DebugRenderer::EDrawMode    a_drawMode)
 {
-	(void)a_loadScaleSQ;
-	(void)a_modelColor;
-	(void)a_gometryREF;
+	(void)a_worldSpaceBounds;
+	(void)a_lodScaleSQ;
 	(void)a_cullMode;
 	(void)a_castShadow;
 	(void)a_drawMode;
 
-	AddWorldSpaceAABB(a_worldSpaceBounds, a_modelColor);
+	FWK_ASSERT_RETURN_IF(!a_geometryREF.GetPtr(),      "PhysicsDebug用Geometryが無効なため、DrawGeometryに失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_geometryREF->mLODs.empty(), "PhysicsDebug用GeometryにLODが存在しません。");
+
+	// 最も表際なLODを使用する。
+	const auto& l_lod = a_geometryREF->mLODs.back();
+
+	FWK_ASSERT_RETURN_IF(!l_lod.mTriangleBatch.GetPtr(), "PhysicsDebug用TriangleBacthが無効です。");
+
+	const auto& l_triangleBatch = static_cast<const PhysicsDebugTriangleBatch&>(*l_lod.mTriangleBatch.GetPtr());
+
+	for (const auto& l_triangle : l_triangleBatch.GetREFTriangleList())
+	{
+		// Bach内の頂点はShapwのローカル座標なので、
+		// Joltから渡されたModelMatrixでワールド座標へ変換する
+		const JPH::RVec3 l_vertexZero = a_modelMatrix * JPH::Vec3(l_triangle.mV[k_triangleVertexZeroIndex].mPosition);
+		const JPH::RVec3 l_vertexOne  = a_modelMatrix * JPH::Vec3(l_triangle.mV[k_triangleVertexOneIndex].mPosition);
+		const JPH::RVec3 l_vertexTwo  = a_modelMatrix * JPH::Vec3(l_triangle.mV[k_triangleVertexTwoIndex].mPosition);
+
+		// Joltのモデル色とBach側の頂点色を乗算する
+		const JPH::Color l_triangleColor = a_modelColor * l_triangle.mV[k_triangleVertexZeroIndex].mColor;
+
+		m_debugDrawQueue.AddTriangleWire(ConvertVALVector3(l_vertexZero),
+										 ConvertVALVector3(l_vertexOne),
+										 ConvertVALVector3(l_vertexTwo),
+										 ConvertVALColor(l_triangleColor));
+	}
 }
 
 void FWK::Physics::PhysicsDebugRenderer::DrawText3D(	  JPH::RVec3Arg     a_position, 

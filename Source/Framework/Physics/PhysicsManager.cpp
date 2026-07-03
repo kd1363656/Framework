@@ -270,7 +270,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPos
 	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
 
 	// JoltのBodyInterfaceを取得する
-	// BodyInterfaceは、BodyIDを使ってBodyの位置・回転。速度などを捜査する入口。
+	// BodyInterfaceは、BodyIDを使ってBodyの位置・回転。速度などを操作する入口。
 	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
 
 	// Jolt側の現在座標を取得する
@@ -404,7 +404,7 @@ void FWK::Physics::PhysicsManager::TraceJoltMessage(const char* a_format, ...)
 void FWK::Physics::PhysicsManager::SetupJoltDebugCallback() const
 {
 	// JoltのTrace出力先を用意した関数に差し替える
-	// これを設定しないと、Jolt内部のDummyTrace()がよばれ、IssueReporting.cpp内のJPH_ASSERT(false)で止まる
+	// これを設定しないと、Jolt内部のDummyTrace()が呼ばれ、IssueReporting.cpp内のJPH_ASSERT(false)で止まる
 	JPH::Trace = TraceJoltMessage;
 
 #ifdef JPH_ENABLE_ASSERTS
@@ -462,7 +462,7 @@ void FWK::Physics::PhysicsManager::UnregisterActiveBodyID(const JPH::BodyID & a_
 	const auto  l_removeBodyIDKey = FetchVALBodyIDKey		   (a_bodyID);
 	const auto& l_itr             = m_activeBodyIDIndexMap.find(l_removeBodyIDKey);
 
-	// マップ内に泣ければreturn
+	// マップ内になければreturn
 	if (l_itr == m_activeBodyIDIndexMap.end()) { return; }
 
 	// リストから削除したいインデックスをマップから取得
@@ -519,11 +519,15 @@ void FWK::Physics::PhysicsManager::ReleaseAllBodies()
 
 void FWK::Physics::PhysicsManager::Release()
 {
+	// JoltのDebuigRendererと、それが参照するGeometry / Batchを
+	// Joltの型登録解除より前に破棄する
+	m_debugRenderer = nullptr;
+
 	// Joltの型登録を解除する前に、作成済みBodyをすべて破棄する
 	ReleaseAllBodies();
 
 	// Joltの型登録を解除する
-	// RegisterTypes()を読んだ場合だけUnregisterTypes()を呼ぶ
+	// RegisterTypes()を呼んだ場合だけUnregisterTypes()を呼ぶ
 	if (m_isJoltTypeRegistered)
 	{
 		JPH::UnregisterTypes();
