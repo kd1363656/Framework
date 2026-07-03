@@ -4,12 +4,23 @@ void FWK::Converter::EditorManagerJsonConverter::Deserialize(const nlohmann::jso
 {
 	if (a_rootJson.is_null()) { return; }
 
-	if (a_rootJson.contains(k_editorWindowListJsonKey))
+	// エディターウィンドウリストのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_windowListJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		DeserializeEditorWindow(a_rootJson[k_editorWindowListJsonKey], a_editorManager);
+		DeserializeWindow(l_json, a_editorManager);
 	}
 
-	const bool l_isDisableDrawEditor = a_rootJson.value("IsDisableDrawEditor", false);
+	// メインメニューバーのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_mainMenubarJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_mainMenubar = a_editorManager.GetMutableREFMainMenubar();
+
+		l_mainMenubar.Deserialize(l_json);
+	}
+
+	const bool l_isDisableDrawEditor = a_rootJson.value(k_isDisableDrawJsonKey, false);
 
 	a_editorManager.SetIsDisableDrawEditor(l_isDisableDrawEditor);
 }
@@ -18,24 +29,30 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::Serialize(const Edito
 {
 	nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_editorWindowListJsonKey] = SerializeEditorWindow(a_editorManager);
+	const auto& l_mainMenubar = a_editorManager.GetREFMainMenubar();
 
-	l_rootJson[k_isDisableDrawEditorJsonKey] = a_editorManager.GetVALIsDisableDrawEditor();
+	// エディターウィンドウリストのシリアライズ
+	l_rootJson[k_windowListJsonKey] = SerializeWindow(a_editorManager);
+
+	// メインメニューバーのシリアライズ
+	l_rootJson[k_mainMenubarJsonKey] = l_mainMenubar.Serialize();
+
+	l_rootJson[k_isDisableDrawJsonKey] = a_editorManager.GetVALIsDisableDrawEditor();
 
 	return l_rootJson;
 }
 
-void FWK::Converter::EditorManagerJsonConverter::DeserializeEditorWindow(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const
+void FWK::Converter::EditorManagerJsonConverter::DeserializeWindow(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	// jsonファイルに保存されていたエディターを復元
 	for (const auto& l_json : a_rootJson)
 	{
 		std::shared_ptr<Editor::EditorWindowBase> l_editorWindow = nullptr;
 		
-		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_editorWindowJsonKey, l_editorWindow);
+		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_windowJsonKey, l_editorWindow);
 
 		if (!l_editorWindow) { continue; }
 
@@ -43,7 +60,7 @@ void FWK::Converter::EditorManagerJsonConverter::DeserializeEditorWindow(const n
 	}
 }
 
-nlohmann::json FWK::Converter::EditorManagerJsonConverter::SerializeEditorWindow(const Editor::EditorManager& a_editorManager) const
+nlohmann::json FWK::Converter::EditorManagerJsonConverter::SerializeWindow(const Editor::EditorManager& a_editorManager) const
 {
 	auto l_rootJsonArray = nlohmann::json::array();
 
@@ -52,7 +69,7 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::SerializeEditorWindow
 	{
 		if (!l_editorWindow) { continue; }
 
-		l_rootJsonArray.emplace_back(Utility::SerializeInstanceType(l_editorWindow, k_editorWindowJsonKey));
+		l_rootJsonArray.emplace_back(Utility::SerializeInstanceType(l_editorWindow, k_windowJsonKey));
 	}
 
 	return l_rootJsonArray;

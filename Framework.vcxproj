@@ -337,7 +337,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMenuBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDynamicBufferUploaderBaseConcept.h" />
@@ -438,20 +438,22 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RenderGraphPassUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
-    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBar.h" />
-    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBase.h" />
-    <ClInclude Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.h" />
+    <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h" />
+    <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
+    <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Scene\ToolBar\SceneViewToolBar.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.h" />
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h" />
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
@@ -598,7 +600,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
     <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\File\Json\IsArrayJsonUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\File\Json\IsJsonArrayUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\ColorJsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
@@ -624,12 +626,13 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
-    <ClCompile Include="Source\Framework\Editor\MenuBar\EditorMenuBar.cpp" />
-    <ClCompile Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Scene\ToolBar\SceneViewToolBar.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
@@ -774,6 +777,7 @@ if "$(Configuration)"=="Debug" (
     <Text Include="Documents\CodingConventions.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json" />
     <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />

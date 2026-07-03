@@ -3,7 +3,7 @@
 namespace FWK::Utility
 {
 	// 読み込んだjsonが配列かどうかを確認
-	inline bool IsArray(const nlohmann::json& a_json, const std::string_view& a_key = {})
+	inline bool IsJsonArray(const nlohmann::json& a_json, const std::string_view& a_key = {})
 	{
 		// jsonが空ならreturn
 		if (a_json.is_null()) { return false; }

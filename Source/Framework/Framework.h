@@ -4,12 +4,17 @@
 // Utilityクラス
 //===============================================================================
 #include "Utility/Singleton/SingletonUtility.h"
+#include "Definition/Enum/TypeTrait/TypeTraitPTREnum.h"
+#include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
+#include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
+#include "Definition/Macros/Assert/AssertReturnMacros.h"
+#include "Definition/Struct/Utility/Array/Vector/VectorArrayStruct.h"
+#include "Utility/Array/VectorArray.h"
 
 //===============================================================================
 // 型情報
 //===============================================================================
 #include "Definition/Type/Alias/StaticTypeIDTypeAlias.h"
-#include "Definition/Macros/Assert/AssertReturnMacros.h"
 #include "Definition/Constant/Graphics/StaticTypeIDConstant.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "Definition/Struct/TypeINFO/TypeINFOStruct.h"
@@ -44,10 +49,11 @@
 #include "Editor/Converter/Json/EditorManagerJsonConverter.h"
 #include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
 #include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorWindowBaseConcept.h"
-#include "Editor/Window/Scene/ToolBar/SceneViewToolBar.h"
-#include "Editor/MenuBar/EditorMenuBase.h"
-#include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorMenuBaseConcept.h"
-#include "Editor/MenuBar/EditorMenuBar.h"
+#include "Editor/Window/Scene/Toolbar/SceneViewToolbar.h"
+#include "Editor/MainMenu/EditorMainMenuBase.h"
+#include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorMainMenuBaseConcept.h"
+#include "Editor/MainMenu/Converter/Json/MainMenubarEditorJsonConverter.h"
+#include "Editor/MainMenu/MainMenubarEditor.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
@@ -66,9 +72,6 @@
 //===============================================================================
 // 凡庸ファクトリー
 //===============================================================================
-#include "Definition/Enum/TypeTrait/TypeTraitPTREnum.h"
-#include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
-#include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Factory/GenericFactory.h"
 #include "Definition/Macros/Factory/FactoryMacros.h"
 
@@ -76,7 +79,10 @@
 // エディター(ファクトリーを介さないといけないもの)
 //===============================================================================
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
+#include "Utility/File/Json/IsJsonArrayUtility.h"
 #include "Editor/Window/Scene/SceneViewEditorWindow.h"
+#include "Definition/Type/Alias/Factory/Unique/EditorMainMenuUniqueFactory.h"
+#include "Editor/MainMenu/File/FileMainMenuEditor.h"
 
 //===============================================================================
 // バイナリーファイル化基底クラス
@@ -104,7 +110,6 @@
 #include "Definition/Constant/Graphics/RootSignatureConstant.h"
 #include "Definition/Struct/Graphics/RootSignatureStruct.h"
 #include "Definition/Macros/Json/RootSignatureJsonConverterMacros.h"
-#include "Utility/File/Json/IsArrayJsonUtility.h"
 #include "Graphics/Render/Pipeline/Converter/Json/RootSignatureJsonConverter.h"
 #include "Graphics/Render/Pipeline/RootSignature.h"
 
@@ -311,8 +316,6 @@
 
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
-#include "Definition/Struct/Utility/Array/Vector/VectorArrayStruct.h"
-#include "Utility/Array/VectorArray.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPerObjectBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/DrawRequestPerObjectSharedFactory.h"
 #include "Definition/Constant/Graphics/SpriteScreenPerObjectConstantBufferUploaderConstant.h"

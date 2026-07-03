@@ -21,8 +21,8 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(const Scene& a_scen
 
 void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 	
 	for (const auto& l_json : a_rootJson)
 	{

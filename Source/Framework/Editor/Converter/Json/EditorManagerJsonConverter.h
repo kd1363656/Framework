@@ -20,13 +20,15 @@ namespace FWK::Converter
 
 	private:
 
-		void DeserializeEditorWindow(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const;
+		void DeserializeWindow(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const;
 
-		nlohmann::json SerializeEditorWindow(const Editor::EditorManager& a_editorManager) const;
+		nlohmann::json SerializeWindow(const Editor::EditorManager& a_editorManager) const;
 
-		static constexpr std::string_view k_editorWindowListJsonKey = "EditorWindowList";
-		static constexpr std::string_view k_editorWindowJsonKey     = "EditorWindow";
+		static constexpr std::string_view k_windowListJsonKey = "WindowList";
+		static constexpr std::string_view k_windowJsonKey     = "Window";
 
-		static constexpr std::string_view k_isDisableDrawEditorJsonKey = "IsDisableDrawEditor";
+		static constexpr std::string_view k_mainMenubarJsonKey = "MainMenubar";
+
+		static constexpr std::string_view k_isDisableDrawJsonKey = "IsDisableEditor";
 	};
 }

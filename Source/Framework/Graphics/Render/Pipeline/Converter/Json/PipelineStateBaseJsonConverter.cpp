@@ -134,7 +134,7 @@ void FWK::Converter::PipelineStateBaseJsonConverter::DeserializeBlendDesc(const 
 	l_blendDesc.IndependentBlendEnable = a_rootJson.value(k_independentBlendEnableJsonKey, FALSE);
 
 	// RenderTarget : 各RenderTargetごとのブレンド設定配列
-	if (Utility::IsArray(a_rootJson, k_renderTargetJsonKey))
+	if (Utility::IsJsonArray(a_rootJson, k_renderTargetJsonKey))
 	{
 		const auto& l_jsonArray = a_rootJson[k_renderTargetJsonKey];
 
@@ -236,8 +236,8 @@ void FWK::Converter::PipelineStateBaseJsonConverter::DeserializeDepthStencilDesc
 }
 void FWK::Converter::PipelineStateBaseJsonConverter::DeserializeRTVFormatList(const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineStateBase) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	// レンダーターゲット数がDirectX12の上限を超えていないかどうかを確認
 	FWK_ASSERT_RETURN_IF(a_rootJson.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えおり、RTVFormatListのデシリアライズ処理に失敗しました。");

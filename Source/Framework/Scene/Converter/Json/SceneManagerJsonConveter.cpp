@@ -38,7 +38,8 @@ nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(const SceneM
 
 void FWK::Converter::SceneManagerJsonConverter::DeserializeSceneShiftMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const
 {
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())			   { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{

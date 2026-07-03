@@ -75,6 +75,10 @@ namespace FWK::Editor
 
 		const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
 
+		const auto& GetREFMainMenubar() const { return m_mainMenubar; }
+
+		auto& GetMutableREFMainMenubar() { return m_mainMenubar; }
+
 		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
 	private:
@@ -114,7 +118,8 @@ namespace FWK::Editor
 
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
-		Editor::LogEditorWindow m_logEditorWindow;
+		Editor::MainMenubarEditor m_mainMenubar;
+		Editor::LogEditorWindow   m_logEditorWindow;
 
 		Converter::EditorManagerJsonConverter m_jsonConverter;
 

@@ -33,8 +33,8 @@ nlohmann::json FWK::Converter::TextureSystemJsonConverter::Serialize(const Graph
 
 void FWK::Converter::TextureSystemJsonConverter::DeserializeDefaultTextureList(const nlohmann::json& a_rootJson, Graphics::TextureSystem& a_textureSystem) const
 {
-	if (a_rootJson.is_null())          { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())              { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (std::size_t l_i = 0ULL; l_i < a_rootJson.size(); ++l_i)
 	{

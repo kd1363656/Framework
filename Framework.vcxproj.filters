@@ -778,9 +778,6 @@
     <Filter Include="Asset\Shader\PhysicsDebug">
       <UniqueIdentifier>{d0b6fda1-6399-4986-afd6-bd80746e2af9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Scene\ToolBar">
-      <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Physics\DebugDraw\Batch">
       <UniqueIdentifier>{a5af2d25-0569-4ad7-9839-0149c3d9a767}</UniqueIdentifier>
     </Filter>
@@ -796,11 +793,26 @@
     <Filter Include="Source\Framework\Definition\Struct\Utility\Array\Vector">
       <UniqueIdentifier>{e6c5e87f-5127-41d9-ac07-5a1703a5cd36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\MenuBar">
+    <Filter Include="Source\Framework\Editor\Window\Scene\Toolbar">
+      <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\MainMenu">
       <UniqueIdentifier>{184fcadd-9b45-42f8-9601-0469ed2de2df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\MenuBar\File">
+    <Filter Include="Source\Framework\Editor\MainMenu\File">
       <UniqueIdentifier>{3cbab06a-17ff-4fcb-92cb-3a174253ea80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\MainMenu\Converter">
+      <UniqueIdentifier>{bb04fed5-08a6-48e2-be19-c7c6668ac99e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\MainMenu\Converter\Json">
+      <UniqueIdentifier>{829b63a3-e42b-4965-8cef-866c3ee517af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Type\Alias\Factory\Unique">
+      <UniqueIdentifier>{9e6ed652-c6e5-4ae6-8f8d-1bd9bdcd68b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG\Editor">
+      <UniqueIdentifier>{4651bebf-f37c-4851-9cf8-3d0846a43aba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1341,7 +1353,7 @@
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h">
       <Filter>Source\Framework\Utility\File\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Json\IsArrayJsonUtility.h">
+    <ClInclude Include="Source\Framework\Utility\File\Json\IsJsonArrayUtility.h">
       <Filter>Source\Framework\Utility\File\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h">
@@ -1617,9 +1629,6 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Scene\ToolBar\SceneViewToolBar.h">
-      <Filter>Source\Framework\Editor\Window\Scene\ToolBar</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.h">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClInclude>
@@ -1632,17 +1641,26 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\Array\Vector\VectorArrayStruct.h">
       <Filter>Source\Framework\Definition\Struct\Utility\Array\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBar.h">
-      <Filter>Source\Framework\Editor\MenuBar</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBase.h">
-      <Filter>Source\Framework\Editor\MenuBar</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMenuBaseConcept.h">
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.h">
-      <Filter>Source\Framework\Editor\MenuBar\File</Filter>
+    <ClInclude Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.h">
+      <Filter>Source\Framework\Editor\Window\Scene\Toolbar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.h">
+      <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h">
+      <Filter>Source\Framework\Editor\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h">
+      <Filter>Source\Framework\Editor\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h">
+      <Filter>Source\Framework\Editor\MainMenu\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2024,17 +2042,20 @@
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Scene\ToolBar\SceneViewToolBar.cpp">
-      <Filter>Source\Framework\Editor\Window\Scene\ToolBar</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.cpp">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\MenuBar\EditorMenuBar.cpp">
-      <Filter>Source\Framework\Editor\MenuBar</Filter>
+    <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp">
+      <Filter>Source\Framework\Editor\Window\Scene\Toolbar</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.cpp">
-      <Filter>Source\Framework\Editor\MenuBar\File</Filter>
+    <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp">
+      <Filter>Source\Framework\Editor\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp">
+      <Filter>Source\Framework\Editor\MainMenu\File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2069,6 +2090,9 @@
     </None>
     <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli">
       <Filter>Asset\Shader\PhysicsDebug</Filter>
+    </None>
+    <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json">
+      <Filter>Asset\Data\CONFIG\Editor</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

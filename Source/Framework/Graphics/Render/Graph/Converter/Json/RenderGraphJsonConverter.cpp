@@ -44,8 +44,8 @@ nlohmann::json FWK::Converter::RenderGraphJsonConverter::Serialize(const Graphic
 
 void FWK::Converter::RenderGraphJsonConverter::DeserializePassList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{
@@ -64,8 +64,8 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializePassList(const nlohman
 }
 void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPassList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{
@@ -85,8 +85,8 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPassList(co
 }
 void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPerObjectList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 	
 	for (const auto& l_json : a_rootJson)
 	{

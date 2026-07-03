@@ -2,16 +2,17 @@
 
 namespace FWK::Editor
 {
-	class EditorMenuBase
+	class EditorMainMenuBase
 	{
 	public:
 
-				 EditorMenuBase() = default;
-		virtual ~EditorMenuBase() = default;
+				 EditorMainMenuBase() = default;
+		virtual ~EditorMainMenuBase() = default;
 
 		virtual void Init() { /*必要に応じてオーバーライドしてください*/ }
+
 		virtual void Draw() = 0;
 
-		FWK_DEFINE_TYPE_INFO_ROOT(EditorMenuBase)
+		FWK_DEFINE_TYPE_INFO_ROOT(EditorMainMenuBase)
 	};
 }

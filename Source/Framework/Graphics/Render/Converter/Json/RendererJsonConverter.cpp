@@ -96,8 +96,8 @@ void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const n
 }
 void FWK::Converter::RendererJsonConverter::DeserializeRootSignatureMap(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{
@@ -119,8 +119,8 @@ void FWK::Converter::RendererJsonConverter::DeserializeRootSignatureMap(const nl
 }
 void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nlohmann::json & a_rootJson, Graphics::Renderer & a_renderer) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{

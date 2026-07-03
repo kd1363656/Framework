@@ -34,8 +34,8 @@ nlohmann::json FWK::Converter::RenderGraphFrameResourceJsonConverter::Serialize(
 
 void FWK::Converter::RenderGraphFrameResourceJsonConverter::DeserializeRenderTargetPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{
@@ -48,8 +48,8 @@ void FWK::Converter::RenderGraphFrameResourceJsonConverter::DeserializeRenderTar
 }
 void FWK::Converter::RenderGraphFrameResourceJsonConverter::DeserializeDepthStencilPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{

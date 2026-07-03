@@ -6,21 +6,21 @@ void FWK::Converter::RootSignatureJsonConverter::Deserialize(const nlohmann::jso
 
 	// タグに対応したルートパラメータアクセス用インデックスを読み込む
 	if (const auto& l_json = a_rootJson.value(k_rootParameterIndexMapJsonKey, nlohmann::json::array());
-		!l_json.is_null() && Utility::IsArray(l_json))
+		!l_json.is_null())
 	{
 		DeserializeRootParameterIndexMap(l_json, a_rootSignature);
 	}
 
 	// ルートパラメータを読み込む
 	if (const auto& l_json = a_rootJson.value(k_rootParameterListJsonKey, nlohmann::json::array());
-		!l_json.is_null() && Utility::IsArray(l_json))
+		!l_json.is_null())
 	{
 		DeserializeRootParameterList(l_json, a_rootSignature);
 	}
 
 	// StaticSamplerDescを読み込む
 	if (const auto& l_json = a_rootJson.value(k_staticSamplerDescListJsonKey, nlohmann::json::array());
-		!l_json.is_null() && Utility::IsArray(l_json))
+		!l_json.is_null())
 	{
 		DeserializeStaticSamplerDescList(l_json, a_rootSignature);
 	}
@@ -52,8 +52,8 @@ nlohmann::json FWK::Converter::RootSignatureJsonConverter::Serialize(const Graph
 
 void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterIndexMap(const nlohmann::json& a_rootJson, Graphics::RootSignature& a_rootSignature) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 	
 	auto& l_rootParameterIndexMap = a_rootSignature.GetMutableREFRootParameterIndexMap();
 
@@ -70,8 +70,8 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterIndexMa
 }
 void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterList(const nlohmann::json& a_rootJson, Graphics::RootSignature& a_rootSignature) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 	
 	const auto& l_jsonArraySize		      = a_rootJson.size								        ();
 		  auto& l_rootParameterRecordList = a_rootSignature.GetMutableREFRootParameterRecordList();
@@ -137,8 +137,8 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterList(co
 }
 void FWK::Converter::RootSignatureJsonConverter::DeserializeStaticSamplerDescList(const nlohmann::json& a_rootJson, Graphics::RootSignature& a_rootSignature) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 	
 	auto& l_staticSamplerDescList = a_rootSignature.GetMutableREFStaticSamplerDescList();
 
@@ -338,7 +338,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(
 		return; 
 	}
 
-	if (!Utility::IsArray(a_rootJson, k_descriptorRangeListJsonKey)) 
+	if (!Utility::IsJsonArray(a_rootJson, k_descriptorRangeListJsonKey)) 
 	{
 		// 明示的にディスクリプタテーブルを使用しないように初期値を格納
 		a_rootParameterRecord.m_rootParameter.DescriptorTable.NumDescriptorRanges = k_invalidNUMDescriptorRange;

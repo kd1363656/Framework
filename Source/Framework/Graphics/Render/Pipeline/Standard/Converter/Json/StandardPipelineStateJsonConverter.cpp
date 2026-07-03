@@ -98,8 +98,8 @@ nlohmann::json FWK::Converter::StandardPipelineStateJsonConverter::Serialize(con
 
 void FWK::Converter::StandardPipelineStateJsonConverter::DeserializeInputLayout(const nlohmann::json& a_rootJson, Graphics::StandardPipelineState& a_standardPipelineState) const
 {
-	if (a_rootJson.is_null())		   { return; }
-	if (!Utility::IsArray(a_rootJson)) { return; }
+	if (a_rootJson.is_null())		       { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	// まずはInput関係の配列のリセット
 	a_standardPipelineState.ClearInputLayout();

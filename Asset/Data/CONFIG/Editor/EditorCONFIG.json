@@ -1,8 +1,11 @@
 {
-    "EditorWindowList": [
+    "IsDisableEditor": true,
+    "MainMenubar": {
+        "MainMenuList": null
+    },
+    "WindowList": [
         {
-            "EditorWindow": "SceneViewEditorWindow"
+            "Window": "SceneViewEditorWindow"
         }
-    ],
-    "IsDisableDrawEditor": false
+    ]
 }

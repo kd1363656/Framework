@@ -155,7 +155,10 @@ void FWK::Editor::EditorManager::DrawEditor()
 	}
 
 	DrawDockingSpace();
-	DrawEditorWindow();
+
+	// メニューバーとウィンドウを描画
+	m_mainMenubar.Draw();
+	DrawEditorWindow  ();
 
 	// ImGuiの描画データを確定する
 	ImGui::Render();
