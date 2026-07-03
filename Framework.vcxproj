@@ -422,6 +422,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SwapChainStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureBatchUploadRecordBuilderStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFOStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h" />

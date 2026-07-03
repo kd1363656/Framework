@@ -78,8 +78,6 @@ namespace FWK::Graphics
 
 		void RemoveExpiredPassList();
 
-
-
 		DrawRequestPassMap      m_drawRequestPassMap      = {};
 		DrawRequestPerObjectMap m_drawRequestPerObjectMap = {};
 

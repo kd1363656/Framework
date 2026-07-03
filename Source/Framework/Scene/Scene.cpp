@@ -234,3 +234,17 @@ nlohmann::json FWK::Scene::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }
+
+void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
+{
+	if (!a_gameObject) 
+	{
+		FWK_ADD_LOG("GameObjectクラスが無効となっており、追加処理に失敗しました。");
+		return; 
+	}
+
+	// 既に登録されているアドレスを持つゲームオブジェクトなら追加しない
+	if (m_registeredGameObjectSet.contains(a_gameObject.get())) { return; }
+
+	m_gameObjectList.emplace_back(a_gameObject, a_gameObject.get());
+}

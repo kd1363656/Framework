@@ -33,7 +33,11 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 	
 	for (const auto& l_gameObject : l_gameObjectList)
 	{
-		if (!l_gameObject) { continue; }
+		if (!l_gameObject.m_gameObject ||
+			!l_gameObject.m_gameObjectAddress) 
+		{
+			continue; 
+		}
 
 		nlohmann::json l_json = {};
 	}

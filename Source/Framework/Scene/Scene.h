@@ -22,11 +22,15 @@ namespace FWK
 		
 		nlohmann::json Serialize() const;
 
+		void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
+
 		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 
 	private:
 
-		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};
+		std::unordered_set<const GameObject*> m_registeredGameObjectSet = {};
+
+		std::list<Struct::GameObjectData> m_gameObjectList = {};
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 

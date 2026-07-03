@@ -784,6 +784,9 @@
     <Filter Include="Source\Framework\Physics\DebugDraw\Batch">
       <UniqueIdentifier>{a5af2d25-0569-4ad7-9839-0149c3d9a767}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Scene">
+      <UniqueIdentifier>{2297f7a2-17dd-4d21-a23a-f6df84ae6d06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1607,6 +1610,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.h">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
