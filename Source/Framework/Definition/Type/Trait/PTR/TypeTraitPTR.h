@@ -26,4 +26,10 @@ namespace FWK::TypeTrait
 	{
 		static constexpr Enum::PTRKind k_kind = Enum::PTRKind::Unique;
 	};
+
+	template <typename Type>
+	struct PTRType<std::weak_ptr<Type>>
+	{
+		static constexpr Enum::PTRKind k_kind = Enum::PTRKind::Weak;
+	};
 }

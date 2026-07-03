@@ -796,6 +796,12 @@
     <Filter Include="Source\Framework\Definition\Struct\Utility\Array\Vector">
       <UniqueIdentifier>{e6c5e87f-5127-41d9-ac07-5a1703a5cd36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\MenuBar">
+      <UniqueIdentifier>{184fcadd-9b45-42f8-9601-0469ed2de2df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\MenuBar\File">
+      <UniqueIdentifier>{3cbab06a-17ff-4fcb-92cb-3a174253ea80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -994,9 +1000,6 @@
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\SpriteScreenPassDrawRequest.h">
@@ -1629,6 +1632,18 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\Array\Vector\VectorArrayStruct.h">
       <Filter>Source\Framework\Definition\Struct\Utility\Array\Vector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBar.h">
+      <Filter>Source\Framework\Editor\MenuBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBase.h">
+      <Filter>Source\Framework\Editor\MenuBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMenuBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.h">
+      <Filter>Source\Framework\Editor\MenuBar\File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2014,6 +2029,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugDraw\Batch\PhysicsDebugTriangleBatch.cpp">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\MenuBar\EditorMenuBar.cpp">
+      <Filter>Source\Framework\Editor\MenuBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.cpp">
+      <Filter>Source\Framework\Editor\MenuBar\File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

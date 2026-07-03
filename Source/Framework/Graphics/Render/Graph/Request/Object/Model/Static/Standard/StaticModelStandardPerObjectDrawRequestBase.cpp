@@ -11,9 +11,9 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	// 描画処理を行うための定数バッファを送信していく
-	for (const auto& l_drawRequest : m_forwardDrawRequestPerObjectDataList.GetREFDrawRequestPerObjectRecordList())
+	for (const auto& l_drawRequest : m_forwardDrawRequestPerObjectDataList.GetREFArrayElementDataList())
 	{
-		const auto& l_drawRequestPerObject = l_drawRequest.m_drawRequestPerObject.lock();
+		const auto& l_drawRequestPerObject = l_drawRequest.m_type.lock();
 
 		if (!l_drawRequestPerObject) { continue; }
 
@@ -97,7 +97,7 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(
 {
 	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
-	m_forwardDrawRequestPerObjectDataList.AddDrawRequestPerObject(a_drawRequestData);
+	m_forwardDrawRequestPerObjectDataList.Add(a_drawRequestData);
 }
 
 bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const

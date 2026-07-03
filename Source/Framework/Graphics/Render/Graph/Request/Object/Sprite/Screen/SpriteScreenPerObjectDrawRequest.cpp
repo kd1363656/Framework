@@ -13,9 +13,9 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 	// PrimitiveTopologyTypeをセット
 	l_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	for (const auto& l_drawRequest : m_drawRequestPerObjectList.GetREFDrawRequestPerObjectRecordList())
+	for (const auto& l_drawRequest : m_drawRequestPerObjectList.GetREFArrayElementDataList())
 	{
-		const auto& l_drawRequestPerObject = l_drawRequest.m_drawRequestPerObject.lock();
+		const auto& l_drawRequestPerObject = l_drawRequest.m_type.lock();
 
 		if (!l_drawRequestPerObject) { continue; }
 
@@ -47,5 +47,5 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::AddDrawRequestPerObject(const std::shared_ptr<Struct::SpriteScreenPerObjectDrawRequestData>&a_drawRequestData)
 {
-	m_drawRequestPerObjectList.AddDrawRequestPerObject(a_drawRequestData);
+	m_drawRequestPerObjectList.Add(a_drawRequestData);
 }

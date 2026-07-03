@@ -9,7 +9,7 @@ void FWK::Graphics::RenderGraph::Deserialize(const nlohmann::json& a_rootJson)
 void FWK::Graphics::RenderGraph::Compile()
 {
 	// Passの依存関係を解決し、実行順に並び替える
-	m_passSorter.SortPassList(m_passList);
+	m_passSorter.SortPassList(m_passList.GetMutableREFArrayElementDataList());
 }
 
 void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceContext, Renderer& a_renderer) 
@@ -37,8 +37,10 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 	// SRVディスクリプタヒープをセット
 	l_directCommandList.SetupDescriptorHeap(l_srvDescriptorPool);
 
-	for (const auto& l_pass : m_passList)
+	for (const auto& l_passData : m_passList.GetMutableREFArrayElementDataList())
 	{
+		auto& l_pass = l_passData.m_type;
+
 		if (!l_pass) { continue; }
 		
 		// Pass実行前に、ResourceAccessのbeforeUsageへ遷移する
@@ -82,7 +84,7 @@ void FWK::Graphics::RenderGraph::AddPass(std::unique_ptr<RenderGraphPassBase>&& 
 {
 	FWK_ASSERT_RETURN_IF(!a_pass, "RenderGraphPassが無効のため、PassListへの登録処理に失敗しました。");
 
-	m_passList.emplace_back(std::move(a_pass));
+	m_passList.Add(std::move(a_pass));
 }
 
 void FWK::Graphics::RenderGraph::AddDrawRequestPass(const std::shared_ptr<DrawRequestPassBase>& a_drawRequestPass)
@@ -139,15 +141,19 @@ void FWK::Graphics::RenderGraph::RemoveExpiredPassList()
 {
 	std::size_t l_index = 0ULL;
 
-	while (l_index < m_passList.size())
+	auto& l_passList = m_passList.GetMutableREFArrayElementDataList();
+
+	while (l_index < l_passList.size())
 	{
-		if (m_passList[l_index]) 
+		const auto& l_pass = l_passList[l_index].m_type;
+
+		if (l_pass)
 		{
 			++l_index;
 			continue;
 		}
 
-		std::swap          (m_passList[l_index], m_passList.back());
-		m_passList.pop_back();
+		std::swap          (l_passList[l_index], l_passList.back());
+		l_passList.pop_back();
 	}
 }

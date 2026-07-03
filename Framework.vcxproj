@@ -337,6 +337,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMenuBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDynamicBufferUploaderBaseConcept.h" />
@@ -443,6 +444,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
+    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBar.h" />
+    <ClInclude Include="Source\Framework\Editor\MenuBar\EditorMenuBase.h" />
+    <ClInclude Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
@@ -488,7 +492,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectList.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\Definition\Struct\CBStaticModelPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h" />
@@ -621,6 +624,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MenuBar\EditorMenuBar.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MenuBar\File\FileMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp" />

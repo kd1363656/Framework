@@ -22,7 +22,7 @@ namespace FWK::Graphics
 
 	private:
 
-		DrawRequestPerObjectList<Struct::SpriteScreenPerObjectDrawRequestData> m_drawRequestPerObjectList = {};
+		Utility::VectorArray<std::weak_ptr<Struct::SpriteScreenPerObjectDrawRequestData>> m_drawRequestPerObjectList = {};
 
 		FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDrawRequest, DrawRequestPerObjectBase)
 	};

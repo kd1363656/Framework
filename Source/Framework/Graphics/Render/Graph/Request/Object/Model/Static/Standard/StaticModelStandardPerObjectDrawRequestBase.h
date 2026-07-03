@@ -21,7 +21,7 @@ namespace FWK::Graphics
 
 		float CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix) const;
 	
-		DrawRequestPerObjectList<Struct::StaticModelStandardPerObjectDrawRequestData> m_forwardDrawRequestPerObjectDataList  = {};
+		Utility::VectorArray<std::weak_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>> m_forwardDrawRequestPerObjectDataList = {};
 		
 		FWK_DEFINE_TYPE_INFO(StaticModelStandardPerObjectDrawRequestBase, DrawRequestPerObjectBase)
 	};
