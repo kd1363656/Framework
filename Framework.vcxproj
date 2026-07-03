@@ -345,6 +345,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDrawRequestPerObjectBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex\VBPhysicsDebugConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CopyCommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureConstant.h" />
@@ -374,7 +375,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\VBPhysicsDebugConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtual\CharacterVirtualConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h" />

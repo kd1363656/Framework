@@ -255,7 +255,7 @@
 
 // バーテックスバッファー
 #include "Graphics/Resource/Buffer/Dynamic/Vertex/DynamicVertexBufferUploaderBase.h"
-#include "Definition/Constant/Graphics/VBPhysicsDebugConstant.h"
+#include "Definition/Constant/Graphics/Buffer/Vertex/VBPhysicsDebugConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
 #include "Graphics/Resource/Buffer/Dynamic/Vertex/PhysicsDebug/PhysicsDebugDynamicVertexBufferUploader.h"
 
