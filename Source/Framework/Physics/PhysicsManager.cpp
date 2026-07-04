@@ -1,7 +1,8 @@
 ﻿#include "PhysicsManager.h"
 
 FWK::Physics::PhysicsManager::PhysicsManager() :
-	m_activeBodyIDIndexMap(),
+	m_characterVirtualRecordMap(),
+	m_activeBodyIDIndexMap     (),
 
 	m_activeBodyIDList(),
 
@@ -66,6 +67,11 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 	m_physicsSystem.OptimizeBroadPhase();
 }
 
+void FWK::Physics::PhysicsManager::UpdateCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
+{
+
+}
+
 void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 {
 	if (!m_isInitialized) { return; }
@@ -88,7 +94,6 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 
 	m_debugRenderer->NextFrame();
 }
-
 
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)
 {
@@ -117,6 +122,10 @@ void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_body
 	a_bodyHandle.m_bodyID  = JPH::BodyID();
 	a_bodyHandle.m_isValid = false;
 }
+void FWK::Physics::PhysicsManager::ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
+{
+
+}
 
 void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
 {
@@ -137,7 +146,6 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereB
 
 	return l_bodyHandle;
 }
-
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
@@ -152,7 +160,6 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody
 
 	return l_bodyHandle;
 }
-
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticCapsuleBodyの作成に失敗しました。", {});
@@ -167,6 +174,23 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsule
 	RegisterActiveBodyID(l_bodyHandle);
 
 	return l_bodyHandle;
+}
+
+FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、CharacterVirtualの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、CharacterVirtualの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下です。", {});
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleRadius <= k_minCharacterVirtualCapsuleRadius, "CharacterVirtualのCapsuleRadiusが0以下です。", {});
+
+	FWK_ASSERT_RETURN_VALUE_IF(
+		a_createSetting.m_maxSlopeAngleRadians <
+		k_minCharacterVirtualMaxSlopeAngleRadians ||
+		a_createSetting.m_maxSlopeAngleRadians >
+		k_maxCharacterVirtualMaxSlopeAngleRadians,
+		"CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外です。",
+		{});
 }
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const
@@ -184,6 +208,19 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPos
 	const auto& l_bodyPosition = l_bodyInterface.GetPosition(a_bodyHandle.m_bodyID);
 
 	return { l_bodyPosition.GetX(), l_bodyPosition.GetY(), l_bodyPosition.GetZ() };
+}
+
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualWorldPosition(const TypeAlias::StorageID a_characterVirtualStorageID) const
+{
+	return TypeAlias::Math::Vector3();
+}
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const
+{
+	return TypeAlias::Math::Vector3();
+}
+bool FWK::Physics::PhysicsManager::FetchVALIsCharacterVirtualOnGrounds(const TypeAlias::StorageID a_characterVirtualStorageID) const
+{
+	return false;
 }
 
 bool FWK::Physics::PhysicsManager::SetupJoltCore()
@@ -369,6 +406,11 @@ void FWK::Physics::PhysicsManager::UnregisterActiveBodyID(const JPH::BodyID & a_
 	m_activeBodyIDIndexMap.erase(l_itr);
 }
 
+void FWK::Physics::PhysicsManager::UpdateCharacterVirtual(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord)
+{
+	
+}
+
 void FWK::Physics::PhysicsManager::ReleaseAllBodies()
 {
 	if (!m_isInitialized)
@@ -395,6 +437,10 @@ void FWK::Physics::PhysicsManager::ReleaseAllBodies()
 
 	m_activeBodyIDList.clear    ();
 	m_activeBodyIDIndexMap.clear();
+}
+void FWK::Physics::PhysicsManager::ReleaseAllCharacterVirtuals()
+{
+
 }
 
 void FWK::Physics::PhysicsManager::Release()

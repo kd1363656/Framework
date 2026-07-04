@@ -6,6 +6,13 @@ namespace FWK::Physics
 	{
 	private:
 
+		struct CharacterVirtualRecord final
+		{
+			JPH::Ref<JPH::CharacterVirtual> m_characterVirtual = nullptr;
+
+			JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings = {};
+		};
+
 		friend class SingletonBase<PhysicsManager>;
 
 		 PhysicsManager();
@@ -17,23 +24,27 @@ namespace FWK::Physics
 
 		void OptimizeBroadPhase();
 
+		void UpdateCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
+
 		void CollectPhysicsDebugDrawCommands();
 
-		void ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle);
+		void ReleaseBody			(	   Struct::PhysicsBodyHandle& a_bodyHandle);
+		void ReleaseCharacterVirtual(const TypeAlias::StorageID	      a_characterVirtualStorageID);
 
 		void TogglePhysicsDebugDraw();
 
-		// スフィアボディ
-		Struct::PhysicsBodyHandle CreateStaticSphereBody (const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
+		Struct::PhysicsBodyHandle CreateStaticSphereBody (const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_radius);
+		Struct::PhysicsBodyHandle CreateStaticBoxBody    (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
+		Struct::PhysicsBodyHandle CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_halfHeightOfCylinder, const float a_radius);
 		
-		// ボックスボディ
-		Struct::PhysicsBodyHandle CreateStaticBoxBody (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
-		
-		// カプセルボディ
-		Struct::PhysicsBodyHandle CreateStaticCapsuleBody (const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius);
-		
+		TypeAlias::StorageID CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting);
+
 		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition (const Struct::PhysicsBodyHandle& a_bodyHandle) const;
 		
+		TypeAlias::Math::Vector3 FetchVALCharacterVirtualWorldPosition (const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		TypeAlias::Math::Vector3 FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		bool					 FetchVALIsCharacterVirtualOnGrounds   (const TypeAlias::StorageID a_characterVirtualStorageID) const;
+
 		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
 		bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
@@ -63,13 +74,25 @@ namespace FWK::Physics
 
 		void UnregisterActiveBodyID(const JPH::BodyID& a_bodyID);
 
-		void ReleaseAllBodies();
+		void UpdateCharacterVirtual(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord);
+
+		void ReleaseAllBodies			();
+		void ReleaseAllCharacterVirtuals();
 
 		void Release();
 
 		std::uint32_t FetchVALBodyIDKey(const JPH::BodyID& a_bodyID) const;
 
-		static constexpr std::size_t k_lastElementIndexOffset = 1ULL;
+		static constexpr float k_minCharacterVirtualDeltaTime				    = 0.0F;
+		static constexpr float k_minCharacterVirtualCapsuleHalfHeightOfCylinder = 0.0F;
+		static constexpr float k_minCharacterVirtualCapsuleRadius				= 0.0F;
+		static constexpr float k_minCharacterVirtualSlopeAngleRadius			= 0.0F;
+		static constexpr float k_minCharacterVirtualMaxSlopeAngleRadians		= 0.0F;
+		static constexpr float k_maxCharacterVirtualMaxSlopeAngleRadians		= DirectX::XM_PIDIV2;
+		static constexpr float k_maxCharacterVirtualJumpSpeed			        = 0.0F;
+
+		static constexpr std::size_t k_lastElementIndexOffset     = 1ULL;
+		static constexpr std::size_t k_emptyCharacterVirtualCount = 0ULL;
 
 		static constexpr JPH::uint k_maxBodyCount = 1024U;
 
@@ -83,12 +106,8 @@ namespace FWK::Physics
 		static constexpr uint32_t k_kiloBytePerMB       = 1024U;
 		static constexpr uint32_t k_bytePerKB           = 1024U;
 
-		static constexpr uint32_t k_maxPhysicsJobCount     = 2048U;
-		static constexpr uint32_t k_maxPhysicsBarrierCount = 8U;
-		static constexpr uint32_t k_mainThreadCount        = 1U;
-		static constexpr uint32_t k_minHardwareThreadCount = 1U;
-
-		std::unordered_map<std::uint32_t, std::size_t> m_activeBodyIDIndexMap;
+		std::unordered_map<std::uint64_t, CharacterVirtualRecord> m_characterVirtualRecordMap;
+		std::unordered_map<std::uint32_t, std::size_t>			  m_activeBodyIDIndexMap;
 
 		std::vector<JPH::BodyID> m_activeBodyIDList;
 

@@ -2,13 +2,6 @@
 
 namespace FWK::Struct
 {
-	struct PhysicsCharacterVirtualHandle final
-	{
-		std::uint64_t m_characterVirtualID = Constant::k_invalidPhysicsCharacterVirtualID;
-
-		bool m_isValid = false;
-	};
-
 	struct PhysicsCharacterVirtualCreateSetting final
 	{
 		TypeAlias::Math::Vector3 m_worldPosition = {};
