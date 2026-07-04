@@ -832,6 +832,12 @@
     <Filter Include="Source\Framework\Utility\StorageAllocator\Converter\Json">
       <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual">
+      <UniqueIdentifier>{127b988e-1d8c-4998-a60e-a1afe5f56988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Registry">
+      <UniqueIdentifier>{3ddb0f74-f64b-4aa3-a083-539369a518b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1692,6 +1698,15 @@
     <ClInclude Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.h">
       <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h">
+      <Filter>Source\Framework\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.h">
+      <Filter>Source\Framework\Physics\Body\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.h">
+      <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2086,6 +2101,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
       <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.cpp">
+      <Filter>Source\Framework\Physics\Body\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.cpp">
+      <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

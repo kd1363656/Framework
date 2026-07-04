@@ -19,8 +19,6 @@ namespace FWK::Graphics
 
 		bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const;
 
-		float CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix) const;
-	
 		Utility::VectorArray<std::weak_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>> m_forwardDrawRequestPerObjectDataList = {};
 		
 		FWK_DEFINE_TYPE_INFO(StaticModelStandardPerObjectDrawRequestBase, DrawRequestPerObjectBase)

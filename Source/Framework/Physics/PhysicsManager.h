@@ -6,15 +6,6 @@ namespace FWK::Physics
 	{
 	private:
 
-		struct CharacterVirtualRecord final
-		{
-			JPH::Ref<JPH::CharacterVirtual> m_characterVirtual = nullptr;
-
-			JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings = {};
-
-			bool m_isReleaseReserved = false;
-		};
-
 		friend class SingletonBase<PhysicsManager>;
 
 		 PhysicsManager();
@@ -26,14 +17,10 @@ namespace FWK::Physics
 
 		void OptimizeBroadPhase();
 
-		void UpdateCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
-
 		void CollectPhysicsDebugDrawCommands();
 
-		void ReleaseReservedCharacterVirtuals();
-
-		void				 ReleaseBody				   (	  Struct::PhysicsBodyHandle& a_bodyHandle);
-		TypeAlias::StorageID ReserveReleaseCharacterVirtual(const TypeAlias::StorageID	     a_characterVirtualStorageID);
+		void				 ReleaseBody		    (	   Struct::PhysicsBodyHandle& a_bodyHandle);
+		TypeAlias::StorageID ReleaseCharacterVirtual(const TypeAlias::StorageID	      a_characterVirtualStorageID);
 
 		void TogglePhysicsDebugDraw();
 
@@ -55,10 +42,9 @@ namespace FWK::Physics
 
 	private:
 
-		bool SetupJoltCore     ();
-		bool SetupPhysicsSystem();
-		bool SetupcharacterVirtualStorage();
-
+		bool SetupJoltCore               ();
+		bool SetupSystem                 ();
+		
 #if defined(_DEBUG)
 		static void TraceJoltMessage(const char* a_format, ...);
 
@@ -75,28 +61,10 @@ namespace FWK::Physics
 #endif
 
 #endif
-		void RegisterActiveBodyID(const Struct::PhysicsBodyHandle& a_bodyHandle);
-
-		void UnregisterActiveBodyID(const JPH::BodyID& a_bodyID);
-
 		void UpdateCharacterVirtual(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord);
-
-		void ReleaseAllBodies			();
-		void ReleaseAllCharacterVirtuals();
 
 		void Release();
 
-		std::uint32_t FetchVALBodyIDKey(const JPH::BodyID& a_bodyID) const;
-
-		static constexpr float k_minCharacterVirtualDeltaTime				    = 0.0F;
-		static constexpr float k_minCharacterVirtualCapsuleHalfHeightOfCylinder = 0.0F;
-		static constexpr float k_minCharacterVirtualCapsuleRadius				= 0.0F;
-		static constexpr float k_minCharacterVirtualSlopeAngleRadius			= 0.0F;
-		static constexpr float k_minCharacterVirtualMaxSlopeAngleRadians		= 0.0F;
-		static constexpr float k_maxCharacterVirtualMaxSlopeAngleRadians		= DirectX::XM_PIDIV2;
-		static constexpr float k_maxCharacterVirtualJumpSpeed			        = 0.0F;
-
-		static constexpr std::size_t k_lastElementIndexOffset     = 1ULL;
 		static constexpr std::size_t k_emptyCharacterVirtualCount = 0ULL;
 
 		static constexpr JPH::uint k_maxBodyCount = 1024U;
@@ -111,24 +79,18 @@ namespace FWK::Physics
 		static constexpr uint32_t k_kiloBytePerMB       = 1024U;
 		static constexpr uint32_t k_bytePerKB           = 1024U;
 
-		std::unordered_map<std::uint64_t, CharacterVirtualRecord> m_characterVirtualRecordMap;
-		std::unordered_map<std::uint32_t, std::size_t>			  m_activeBodyIDIndexMap;
-
-		std::vector<JPH::BodyID> m_activeBodyIDList;
-
 		std::unique_ptr<JPH::Factory> m_factory;
 
-		std::unique_ptr<JPH::TempAllocatorImpl> m_tempAllocator;
+		std::shared_ptr<JPH::TempAllocatorImpl> m_tempAllocator;
 
-		std::unique_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
+		std::shared_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
 		
 		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
-		JPH::PhysicsSystem m_physicsSystem;
+		std::shared_ptr<JPH::PhysicsSystem> m_physicsSystem;
 
-		Utility::StorageIDAllocator m_characterVirtualStorageIDAllocator;
-
-		PhysicsBodyCreator m_bodyCreator;
+		PhysicsBodyRegistry			    m_bodyRegistry;
+		PhysicsCharacterVirtualRegistry m_characterVirtualRegistry;
 
 		bool m_isInitialized;
 

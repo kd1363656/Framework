@@ -1,11 +1,6 @@
 ﻿#include "PhysicsManager.h"
 
 FWK::Physics::PhysicsManager::PhysicsManager() :
-	m_characterVirtualRecordMap(),
-	m_activeBodyIDIndexMap     (),
-
-	m_activeBodyIDList(),
-
 	m_factory(nullptr),
 
 	m_tempAllocator(nullptr),
@@ -16,7 +11,8 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsSystem(),
 
-	m_bodyCreator(),
+	m_bodyRegistry            (),
+	m_characterVirtualRegistry(),
 
 	m_isInitialized(false),
 
@@ -33,18 +29,30 @@ void FWK::Physics::PhysicsManager::INIT()
 {
 	FWK_ASSERT_RETURN_IF(m_isInitialized, "既に初期化されているのにもう一度初期化しようとしました。");
 
-	// Joltのメモリアロケータ登録やFactoryの作成などを行う
+	if (!m_physicsSystem)
+	{
+		m_physicsSystem = std::make_shared<JPH::PhysicsSystem>();
+	}
+
+	// Joltのメモリアロケータ登録やFactoryの作成などのセットアップ
 	if (!SetupJoltCore())
 	{
 		Release          ();
 		FWK_ASSERT_RETURN("Joltのメモリアロケータなどの設定に失敗しており、初期化に失敗しました");
 	}
 
-	// Joltの物理ワールド本体を初期化する
-	if (!SetupPhysicsSystem())
+	// Joltの物理ワールド本体をセットアップ
+	if (!SetupSystem())
 	{
 		Release          ();
 		FWK_ASSERT_RETURN("Joltの物理システムの設定に失敗しており、初期化に失敗しました");
+	}
+
+	// BodyRegistryのセットアップ
+	if (!m_bodyRegistry.Setup(m_physicsSystem, m_physicsLayerSetting))
+	{
+		Release();
+		FWK_ASSERT_RETURN("PhysicsBodyRegistryの設定に失敗しており、初期化に失敗しました");
 	}
 
 	if (!m_debugRenderer)
@@ -60,22 +68,19 @@ void FWK::Physics::PhysicsManager::INIT()
 void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 {
 	if (!m_isInitialized) { return; }
+	if (!m_physicsSystem) { return; }
 
 	// JoltのBroadPhase空間分割を最適化する。
 	// 毎フレーム呼ぶものではなく、
 	// ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
-	m_physicsSystem.OptimizeBroadPhase();
-}
-
-void FWK::Physics::PhysicsManager::UpdateCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
-{
-
+	m_physicsSystem->OptimizeBroadPhase();
 }
 
 void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 {
 	if (!m_isInitialized) { return; }
 	if (!m_debugRenderer) { return; }
+	if (!m_physicsSystem) { return; }
 
 	// まず前フレームのデバック描画情報を消す
 	// デバック描画を無効化している場合でも、古い線が残らないように先に消す
@@ -90,46 +95,18 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	l_drawSettings.mDrawShapeWireframe = true;
 	l_drawSettings.mDrawBoundingBox    = false;
 
-	m_physicsSystem.DrawBodies(l_drawSettings, m_debugRenderer.get());
+	m_physicsSystem->DrawBodies(l_drawSettings, m_debugRenderer.get());
 
 	m_debugRenderer->NextFrame();
 }
 
-void FWK::Physics::PhysicsManager::ReleaseReservedCharacterVirtuals()
-{
-	
-}
-
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)
 {
-	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body解放に失敗しました。");
-	FWK_ASSERT_RETURN_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body解放に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body解放に失敗しました。");
-
-	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
-
-	const auto l_bodyID = a_bodyHandle.m_bodyID;
-
-	// BodyがPhysicsSystemに追加されている場合は、まずPhysicsSystemから外す。
-	// RemoveBodyを呼ぶと、以後このBodyは物理更新・衝突判定の対象外になる。
-	if (l_bodyInterface.IsAdded(l_bodyID))
-	{
-		l_bodyInterface.RemoveBody(l_bodyID);
-	}
-
-	// Body本体を破棄する
-	// RemoveBodyだけでは、Jolt内部にBodyが残るためDestroyBodyも必要
-	l_bodyInterface.DestroyBody(l_bodyID);
-
-	UnregisterActiveBodyID(l_bodyID);
-
-	// 呼び出し側が削除済みBodyIDを持ち続けないようにする。
-	a_bodyHandle.m_bodyID  = JPH::BodyID();
-	a_bodyHandle.m_isValid = false;
+	m_bodyRegistry.ReleaseBody(a_bodyHandle);
 }
-FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::ReserveReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
+FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
 {
-	return Constant::k_invalidStorageID;
+	return TypeAlias::StorageID();
 }
 
 void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
@@ -139,46 +116,21 @@ void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
 
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticSphereBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticSphereBodyの作成に失敗しました。",     {});
-
-	const auto l_bodyHandle = m_bodyCreator.CreateStaticSphereBody(*m_physicsLayerSetting,
-																   a_worldPosition,
-																   a_radius,
-																   m_physicsSystem);
-
-	RegisterActiveBodyID(l_bodyHandle);
-
-	return l_bodyHandle;
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、StaticSphereBodyの作成に失敗しました。", {});
+	
+	return m_bodyRegistry.CreateStaticSphereBody(a_worldPosition, a_radius);
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticBoxBodyの作成に失敗しました。",     {});
-
-	const auto l_bodyHandle = m_bodyCreator.CreateStaticBoxBody(*m_physicsLayerSetting,
-															    a_worldPosition,
-															    a_halfExtent,
-															    m_physicsSystem);
-
-	RegisterActiveBodyID(l_bodyHandle);
-
-	return l_bodyHandle;
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
+	
+	return m_bodyRegistry.CreateStaticBoxBody(a_worldPosition, a_halfExtent);
 }
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、StaticCapsuleBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、StaticCapsuleBodyの作成に失敗しました。",     {});
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、StaticCapsuleBodyの作成に失敗しました。", {});
 
-	const auto l_bodyHandle = m_bodyCreator.CreateStaticCapsuleBody(*m_physicsLayerSetting,
-												                    a_worldPosition,
-												                    a_halfHeightOfCylinder,
-												                    a_radius,
-												                    m_physicsSystem);
-
-	RegisterActiveBodyID(l_bodyHandle);
-
-	return l_bodyHandle;
+	return m_bodyRegistry.CreateStaticCapsuleBody(a_worldPosition, a_halfHeightOfCylinder, a_radius);
 }
 
 FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting)
@@ -204,15 +156,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPos
 	FWK_ASSERT_RETURN_VALUE_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Bodyの座標取得に失敗しました。",          {});
 	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
 
-	// JoltのBodyInterfaceを取得する
-	// BodyInterfaceは、BodyIDを使ってBodyの位置・回転。速度などを操作する入口。
-	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
-
-	// Jolt側の現在座標を取得する
-	// GetPosition()はBodyのワールド座標を返す
-	const auto& l_bodyPosition = l_bodyInterface.GetPosition(a_bodyHandle.m_bodyID);
-
-	return { l_bodyPosition.GetX(), l_bodyPosition.GetY(), l_bodyPosition.GetZ() };
+	return m_bodyRegistry.FetchVALBodyWorldPosition(a_bodyHandle);
 }
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualWorldPosition(const TypeAlias::StorageID a_characterVirtualStorageID) const
@@ -257,20 +201,22 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 	const auto l_tempAllocatorSize = k_tempAllocatorSizeMB * k_kiloBytePerMB * k_bytePerKB;
 
 	// Joltの一時作業用メモリの作成
-	m_tempAllocator = std::make_unique<JPH::TempAllocatorImpl>(l_tempAllocatorSize);
+	m_tempAllocator = std::make_shared<JPH::TempAllocatorImpl>(l_tempAllocatorSize);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_tempAllocator, "JPH::TempAllocatorImplの作成に失敗しました。", false);
 
 	return true;
 }
 
-bool FWK::Physics::PhysicsManager::SetupPhysicsSystem()
+bool FWK::Physics::PhysicsManager::SetupSystem()
 {
+	if (!m_physicsSystem) { return false; }
+
 	// PhysicsLayerSettingはJoltのTable系クラスを作成する
 	// その内部でJoltのAllocatorを使用するため、RegisterDefaultAllocator()が終わった後で生成する必要がある
 	if (!m_physicsLayerSetting)
 	{
-		m_physicsLayerSetting = std::make_unique<PhysicsLayerSetting>();
+		m_physicsLayerSetting = std::make_shared<PhysicsLayerSetting>();
 	}
 
 	m_physicsLayerSetting->INIT();
@@ -288,15 +234,19 @@ bool FWK::Physics::PhysicsManager::SetupPhysicsSystem()
 	//							ObjectLayerをBroadPhaseLayerへ変換する表、
 	//							あるObjectLayerがどのBroadPhaseLayerを探索するべきかを決めるFilter,
 	//							ObjectLayer同士が衝突して良いか決めるFilter
-	m_physicsSystem.Init(k_maxBodyCount,
-						 k_bodyMutexCount,
-						 k_maxBodyPairCount,
-						 k_maxContactConstraintCount,
-						 m_physicsLayerSetting->GetREFBroadPhaseLayerInterface(),
-						 *l_objectVsBroadPhaseLayerFilter,
-						 m_physicsLayerSetting->GetREFObjectLayerPairFilter());
+	m_physicsSystem->Init(k_maxBodyCount,
+						  k_bodyMutexCount,
+						  k_maxBodyPairCount,
+						  k_maxContactConstraintCount,
+						  m_physicsLayerSetting->GetREFBroadPhaseLayerInterface(),
+						  *l_objectVsBroadPhaseLayerFilter,
+						  m_physicsLayerSetting->GetREFObjectLayerPairFilter());
 
 	return true;
+}
+bool FWK::Physics::PhysicsManager::SetupCharacterVirtualStorage()
+{
+	return false;
 }
 
 #if defined(_DEBUG)
@@ -357,92 +307,11 @@ bool FWK::Physics::PhysicsManager::HandleJoltAssertFailed(const char* a_expressi
 #endif
 #endif
 
-void FWK::Physics::PhysicsManager::RegisterActiveBodyID(const Struct::PhysicsBodyHandle& a_bodyHandle)
-{
-	if (!a_bodyHandle.m_isValid ||
-		a_bodyHandle.m_bodyID.IsInvalid()) 
-	{
-		return;
-	}
-
-	const auto l_bodyIDKey = FetchVALBodyIDKey(a_bodyHandle.m_bodyID);
-
-	// すでに登録済みなら何もしない。
-	// unordered_mapなので、登録済み確認が高速
-	if (m_activeBodyIDIndexMap.contains(l_bodyIDKey)) { return; }
-
-	const auto l_bodyIDIndex = m_activeBodyIDList.size();
-
-	m_activeBodyIDList.emplace_back   (a_bodyHandle.m_bodyID);
-	m_activeBodyIDIndexMap.try_emplace(l_bodyIDKey, l_bodyIDIndex);
-}
-
-void FWK::Physics::PhysicsManager::UnregisterActiveBodyID(const JPH::BodyID & a_bodyID)
-{
-	if (a_bodyID.IsInvalid()) { return; }
-
-	const auto  l_removeBodyIDKey = FetchVALBodyIDKey		   (a_bodyID);
-	const auto& l_itr             = m_activeBodyIDIndexMap.find(l_removeBodyIDKey);
-
-	// マップ内になければreturn
-	if (l_itr == m_activeBodyIDIndexMap.end()) { return; }
-
-	// リストから削除したいインデックスをマップから取得
-	const auto l_removeIndex = l_itr->second;
-	
-	if (const auto l_lastIndex = m_activeBodyIDList.size() - k_lastElementIndexOffset;
-		l_removeIndex != l_lastIndex)
-	{
-		// 最後尾のインデックスが持つBodyIDを取得
-		const auto l_lastBodyID    = m_activeBodyIDList[l_lastIndex];
-		const auto l_lastBodyIDKey = FetchVALBodyIDKey(l_lastBodyID);
-
-		// 順番に意味がないので、削除したいBodyIDと最後尾のBodyIDを入れ替える
-		std::swap(m_activeBodyIDList[l_removeIndex], m_activeBodyIDList[l_lastIndex]);
-		
-		// リムーブするIndexと最後尾を入れ替えたので
-		// 最後尾から削除位置へ移動してきたBodyIDのIndexを更新する
-		m_activeBodyIDIndexMap[l_lastBodyIDKey] = l_removeIndex;
-	}
-
-	// Swap後、削除対象BodyIDは最後尾にいる。
-	// そのためpop_backだけで高速に削除できる
-	m_activeBodyIDList.pop_back ();
-	m_activeBodyIDIndexMap.erase(l_itr);
-}
-
 void FWK::Physics::PhysicsManager::UpdateCharacterVirtual(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord)
 {
 	
 }
 
-void FWK::Physics::PhysicsManager::ReleaseAllBodies()
-{
-	if (!m_isInitialized)
-	{
-		m_activeBodyIDList.clear    ();
-		m_activeBodyIDIndexMap.clear();
-
-		return;
-	}
-
-	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
-
-	for (const auto& l_bodyID : m_activeBodyIDList)
-	{
-		if (l_bodyID.IsInvalid()) { continue; }
-
-		if (l_bodyInterface.IsAdded(l_bodyID))
-		{
-			l_bodyInterface.RemoveBody(l_bodyID);
-		}
-
-		l_bodyInterface.DestroyBody(l_bodyID);
-	}
-
-	m_activeBodyIDList.clear    ();
-	m_activeBodyIDIndexMap.clear();
-}
 void FWK::Physics::PhysicsManager::ReleaseAllCharacterVirtuals()
 {
 
@@ -453,9 +322,6 @@ void FWK::Physics::PhysicsManager::Release()
 	// JoltのDebuigRendererと、それが参照するGeometry / Batchを
 	// Joltの型登録解除より前に破棄する
 	m_debugRenderer = nullptr;
-
-	// Joltの型登録を解除する前に、作成済みBodyをすべて破棄する
-	ReleaseAllBodies();
 
 	// Joltの型登録を解除する
 	// RegisterTypes()を呼んだ場合だけUnregisterTypes()を呼ぶ
@@ -478,12 +344,4 @@ void FWK::Physics::PhysicsManager::Release()
 	m_physicsLayerSetting = nullptr;
 
 	m_isInitialized = false;
-}
-
-std::uint32_t FWK::Physics::PhysicsManager::FetchVALBodyIDKey(const JPH::BodyID& a_bodyID) const
-{
-	// BodyIDをunordered_map用のキーに変換する
-	// BodyIDのIndexだけを使うと、Destroy後に同じIndexが再利用されたときに危ない。
-	// GetIndexAndSequenceNumber()はIndex + SequenceNumberを含む値を返す
-	return a_bodyID.GetIndexAndSequenceNumber();
 }

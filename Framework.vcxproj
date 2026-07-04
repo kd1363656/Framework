@@ -589,6 +589,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h" />
+    <ClInclude Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.h" />
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.h" />
@@ -609,6 +611,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h" />
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h" />
@@ -739,6 +742,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.cpp" />
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.cpp" />

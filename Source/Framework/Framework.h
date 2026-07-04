@@ -330,6 +330,7 @@
 #include "Definition/Constant/Graphics/StaticModelPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBStaticModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
+#include "Utility/Math/MathMatrixUtility.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
@@ -371,11 +372,13 @@
 #include "Definition/Struct/Graphics/PhysicsBodyCreatorStruct.h"
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
 #include "Physics/Body/PhysicsBodyCreator.h"
+#include "Physics/Body/Registry/PhysicsBodyRegistry.h"
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"
 #include "Physics/DebugRenderer/PhysicsDebugRenderer.h"
 #include "Definition/Constant/Physics/CharacterVirtualConstant.h"
 #include "Definition/Struct/Physics/PhysicsCharacterVirtualStruct.h"
+#include "Physics/CharacterVirtual/Registry/PhysicsCharacterVirtualRegistry.h"
 #include "Physics/PhysicsManager.h"
 
 // コンポーネント
