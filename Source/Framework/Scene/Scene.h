@@ -42,8 +42,7 @@ namespace FWK
 
 		Struct::PhysicsBodyHandle m_staticFloorBodyHandle    = {};
 		Struct::PhysicsBodyHandle m_staticWallBodyHandle     = {};
-		Struct::PhysicsBodyHandle m_dynamicCapsuleBodyHandle = {};
-
+		
 		Converter::SceneJsonConverter m_jsonConverter = {};
 
 		Graphics::LightSystem m_lightSystem = {};

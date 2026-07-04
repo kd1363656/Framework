@@ -817,14 +817,14 @@
     <Filter Include="Source\Framework\Definition\Constant\Physics">
       <UniqueIdentifier>{8cddf1ab-54c0-4bd4-918a-67bf66fae2e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Physics\CharacterVirtual">
-      <UniqueIdentifier>{e9eb7a4e-b68c-4af3-b5a9-e6ba36400b4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer">
       <UniqueIdentifier>{f20f0139-6cb7-4dba-95aa-a7c866a0ebc8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex">
       <UniqueIdentifier>{705bfbdc-b337-4871-9c1e-1f2a158b2701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Physics">
+      <UniqueIdentifier>{896ec215-c876-4b82-9d97-7dc020efe6e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1671,11 +1671,14 @@
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtual\CharacterVirtualConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Physics\CharacterVirtual</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex\VBPhysicsDebugConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

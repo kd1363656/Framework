@@ -32,25 +32,30 @@ JPH::ObjectLayer FWK::Physics::PhysicsLayerSetting::FetchVALObjectLayer(const En
 
 void FWK::Physics::PhysicsLayerSetting::SetupBroadPhaseLayerMapping()
 {
-	// Invalidは実運用では使わない
-	// ただし、Enum値とJolt側Indexを単純対応させるため、Invalid -> Invalidとして登録しておく
+	// Invalidは実運用では使用しない。
+	// ただし、Enum値とJolt側のLayer番号を
+	// 単純に対応させるため、Invalid同士を登録しておく。
 	m_broadPhaseLayerInterface.MapObjectToBroadPhaseLayer(ConvertToJoltObjectLayer(Enum::PhysicsObjectLayerType::Invalid), ConvertToJoltBroadPhaseLayer(Enum::PhysicsBroadPhaseLayerType::Invalid));
 
-	// StaticObjectは動かない床、壁、地形、ステージ
+	// 床、壁、見えないBoxCollider、MeshColliderなどの
+	// 動かないColliderをStatic BroadPhaseLayerへ登録する。
 	m_broadPhaseLayerInterface.MapObjectToBroadPhaseLayer(ConvertToJoltObjectLayer(Enum::PhysicsObjectLayerType::StaticObject), ConvertToJoltBroadPhaseLayer(Enum::PhysicsBroadPhaseLayerType::Static));
 
-	// DynamicObjectは動く箱、キャラクター、物理で動かすオブジェクト
-	m_broadPhaseLayerInterface.MapObjectToBroadPhaseLayer(ConvertToJoltObjectLayer(Enum::PhysicsObjectLayerType::DynamicObject), ConvertToJoltBroadPhaseLayer(Enum::PhysicsBroadPhaseLayerType::Dynamic));
+	// CharacterObjectはCharacterVirtualが衝突Queryを
+	// 実行するときに使用するObjectLayer。
+	// CharacterVirtual自体をBodyとして登録するわけではないが、
+	// BroadPhaseLayerInterfaceTableではすべてのObjectLayerに
+	// 対応するBroadPhaseLayerを設定する必要があるため、
+	// Static BroadPhaseLayerへ割り当てる。
+	m_broadPhaseLayerInterface.MapObjectToBroadPhaseLayer(ConvertToJoltObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject), ConvertToJoltBroadPhaseLayer(Enum::PhysicsBroadPhaseLayerType::Static));
 }
 void FWK::Physics::PhysicsLayerSetting::SetupObjectLayerCollisionFilter()
 {
-	// ObjectLayerPairFilterTableは初期状態で全ての衝突が無効
-	// そのため、必要な組み合わせだけ明示的に有効化する
-	// 静的なオブジェクトと動くオブジェクトの当たり判定
-	// 例 : 床     : StaticObject, 
-	//		落下物 : DynamicObject
-	// DynamicObject同士の衝突は、今はまだ有効化しない
-	EnableObjectLayerCollision(Enum::PhysicsObjectLayerType::StaticObject, Enum::PhysicsObjectLayerType::DynamicObject);
+	// ObjectLayerPairFilterTableは、
+	// 初期状態ではすべての衝突が無効になっている。
+	// CharacterVirtualの衝突Queryから、
+	// StaticObjectを検出できる組み合わせだけを有効化する。
+	EnableObjectLayerCollision(Enum::PhysicsObjectLayerType::StaticObject, Enum::PhysicsObjectLayerType::CharacterObject);
 }
 void FWK::Physics::PhysicsLayerSetting::SetupObjectVSBroadPhaseLayerFilter()
 {

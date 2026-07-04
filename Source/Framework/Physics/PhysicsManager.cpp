@@ -156,20 +156,6 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereB
 
 	return l_bodyHandle;
 }
-FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)
-{
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicSphereBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicSphereBodyの作成に失敗しました。",     {});
-
-	const auto l_bodyHandle = m_bodyCreator.CreateDynamicSphereBody(*m_physicsLayerSetting,
-												                    a_worldPosition,
-												                    a_radius,
-												                    m_physicsSystem);
-
-	RegisterActiveBodyID(l_bodyHandle);
-
-	return l_bodyHandle;
-}
 
 FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
 {
@@ -180,20 +166,6 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody
 															    a_worldPosition,
 															    a_halfExtent,
 															    m_physicsSystem);
-
-	RegisterActiveBodyID(l_bodyHandle);
-
-	return l_bodyHandle;
-}
-FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
-{
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicBoxBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicBoxBodyの作成に失敗しました。",     {});
-
-	const auto l_bodyHandle = m_bodyCreator.CreateDynamicBoxBody(*m_physicsLayerSetting,
-																 a_worldPosition,
-																 a_halfExtent,
-																 m_physicsSystem);
 
 	RegisterActiveBodyID(l_bodyHandle);
 
@@ -215,53 +187,6 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsule
 
 	return l_bodyHandle;
 }
-FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateDynamicCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius)
-{
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、DynamicCapsuleBodyの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、DynamicCapsuleBodyの作成に失敗しました。",     {});
-
-	const auto l_bodyHandle = m_bodyCreator.CreateDynamicCapsuleBody(*m_physicsLayerSetting,
-																	 a_worldPosition,
-																	 a_halfHeightOfCylinder,
-																	 a_radius,
-																	 m_physicsSystem);
-
-	RegisterActiveBodyID(l_bodyHandle);
-
-	return l_bodyHandle;
-}
-
-void FWK::Physics::PhysicsManager::ApplyBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle, const TypeAlias::Math::Vector3& a_linearVelocity)
-{
-	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body速度の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body速度の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body速度の設定に失敗しました。");
-
-	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
-
-	// Bodyに速度を設定する
-	l_bodyInterface.SetLinearVelocity(a_bodyHandle.m_bodyID, Utility::ConvertToJoltVector3(a_linearVelocity));
-	
-	// BodyがSleep状態だと、速度を設定してもすぐに動かない可能性がある
-	// 入力で動かしたいBodyは、速度を設定したタイミングで起こしておく
-	l_bodyInterface.ActivateBody(a_bodyHandle.m_bodyID);
-}
-void FWK::Physics::PhysicsManager::ApplyBodyGravityEnabled(const Struct::PhysicsBodyHandle & a_bodyHandle, const bool a_isEnabled)
-{
-	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body重力の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body重力の設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body重力の設定に失敗しました。");
-
-	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
-
-	const float l_gravityFactor = a_isEnabled ? k_bodyGravityEnabledFactor : k_bodyGravityDisabledFactor;
-
-	// Staticモデルはそもそも動かないので、主にDynamicBody用
-	l_bodyInterface.SetGravityFactor(a_bodyHandle.m_bodyID, l_gravityFactor);
-
-	// 重力状態を切り替えたBodyを確実に更新対象にする
-	l_bodyInterface.ActivateBody(a_bodyHandle.m_bodyID);
-}
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const
 {
@@ -278,20 +203,6 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPos
 	const auto& l_bodyPosition = l_bodyInterface.GetPosition(a_bodyHandle.m_bodyID);
 
 	return { l_bodyPosition.GetX(), l_bodyPosition.GetY(), l_bodyPosition.GetZ() };
-}
-FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle) const
-{
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body速度の取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Body速度の取得に失敗しました。",          {});
-	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Body速度の取得に失敗しました。",                     {});
-
-	auto& l_bodyInterface = m_physicsSystem.GetBodyInterface();
-
-	// Jolt側に保存されている現在の速度を取得する
-	// 横移動を上書きするときに、Y速度だけ残したい場合などで使う
-	const auto& l_linearVelocity = l_bodyInterface.GetLinearVelocity(a_bodyHandle.m_bodyID);
-
-	return { l_linearVelocity.GetX(), l_linearVelocity.GetY(), l_linearVelocity.GetZ() };
 }
 
 bool FWK::Physics::PhysicsManager::SetupJoltCore()

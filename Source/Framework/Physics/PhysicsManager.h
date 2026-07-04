@@ -27,22 +27,15 @@ namespace FWK::Physics
 
 		// スフィアボディ
 		Struct::PhysicsBodyHandle CreateStaticSphereBody (const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
-		Struct::PhysicsBodyHandle CreateDynamicSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius);
 		
 		// ボックスボディ
 		Struct::PhysicsBodyHandle CreateStaticBoxBody (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
-		Struct::PhysicsBodyHandle CreateDynamicBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
 		
 		// カプセルボディ
 		Struct::PhysicsBodyHandle CreateStaticCapsuleBody (const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius);
-		Struct::PhysicsBodyHandle CreateDynamicCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius);
-
-		void ApplyBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle, const TypeAlias::Math::Vector3& a_linearVelocity);
-		void ApplyBodyGravityEnabled(const Struct::PhysicsBodyHandle& a_bodyHandle, const bool						a_isEnabled);
-
+		
 		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition (const Struct::PhysicsBodyHandle& a_bodyHandle) const;
-		TypeAlias::Math::Vector3 FetchVALBodyLinearVelocity(const Struct::PhysicsBodyHandle& a_bodyHandle) const;
-
+		
 		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
 		bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
@@ -87,9 +80,6 @@ namespace FWK::Physics
 		static constexpr JPH::uint k_maxBodyPairCount = 1024U;
 
 		static constexpr JPH::uint k_maxContactConstraintCount = 1024U;
-
-		static constexpr float k_bodyGravityEnabledFactor  = 1.0F;
-		static constexpr float k_bodyGravityDisabledFactor = 0.0F;
 
 		static constexpr uint32_t k_tempAllocatorSizeMB = 10U;
 		static constexpr uint32_t k_kiloBytePerMB       = 1024U;
