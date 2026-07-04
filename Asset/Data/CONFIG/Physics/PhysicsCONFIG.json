@@ -1,7 +1,0 @@
-{
-    "PhysicsCharacterVirtualRegistry": {
-        "StorageIDAllocator": {
-            "StorageIDAllocatorCapacity": 10000
-        }
-    }
-}

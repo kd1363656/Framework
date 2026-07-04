@@ -814,9 +814,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex">
       <UniqueIdentifier>{705bfbdc-b337-4871-9c1e-1f2a158b2701}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Physics">
-      <UniqueIdentifier>{896ec215-c876-4b82-9d97-7dc020efe6e5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Storage\Converter">
       <UniqueIdentifier>{94493553-279f-4d7a-9f27-c6d76ec4fa34}</UniqueIdentifier>
     </Filter>
@@ -834,27 +831,6 @@
     </Filter>
     <Filter Include="Source\Framework\Physics\CharacterVirtual">
       <UniqueIdentifier>{127b988e-1d8c-4998-a60e-a1afe5f56988}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Registry">
-      <UniqueIdentifier>{3ddb0f74-f64b-4aa3-a083-539369a518b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\CharacterVirtual\Registry">
-      <UniqueIdentifier>{b926edeb-65c2-4fa1-8de1-94bbfed7c5f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter">
-      <UniqueIdentifier>{b760394b-436c-40e5-ba64-3864a25240f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json">
-      <UniqueIdentifier>{6465d6f6-00f3-44d0-94b4-7c30fddd8beb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\Data\CONFIG\Physics">
-      <UniqueIdentifier>{7a2930b0-3248-49af-915a-02431911f602}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Converter">
-      <UniqueIdentifier>{b94ddd34-76a5-43c4-8c98-5affff16cfba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Converter\Json">
-      <UniqueIdentifier>{105081b0-ef8c-483f-b228-0fd75076aff0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1238,9 +1214,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h">
       <Filter>Source\Framework\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h">
-      <Filter>Source\Framework\Physics\Body</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
@@ -1701,12 +1674,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsCharacterVirtualEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Converter\Json\AssetStorageJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Storage\Converter\Json</Filter>
     </ClInclude>
@@ -1718,18 +1685,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h">
       <Filter>Source\Framework\Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.h">
-      <Filter>Source\Framework\Physics\Body\Registry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.h">
-      <Filter>Source\Framework\Physics\CharacterVirtual\Registry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json\PhysicsCharacterVirtualRegistryJsonConverter.h">
-      <Filter>Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.h">
-      <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h">
       <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
@@ -2039,9 +1994,6 @@
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp">
       <Filter>Source\Framework\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp">
-      <Filter>Source\Framework\Physics\Body</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
@@ -2129,18 +2081,6 @@
     <ClCompile Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
       <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.cpp">
-      <Filter>Source\Framework\Physics\Body\Registry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.cpp">
-      <Filter>Source\Framework\Physics\CharacterVirtual\Registry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json\PhysicsCharacterVirtualRegistryJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
     </ClCompile>
@@ -2180,9 +2120,6 @@
     </None>
     <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json">
       <Filter>Asset\Data\CONFIG\Editor</Filter>
-    </None>
-    <None Include="Asset\Data\CONFIG\Physics\PhysicsCONFIG.json">
-      <Filter>Asset\Data\CONFIG\Physics</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -36,8 +36,7 @@ void Application::Execute()
 	LoadCONFIG                  ();
 	l_graphicsManager.LoadCONFIG();
 	l_editorManager.LoadCONFIG  ();
-	l_physicsManager.LoadCONFIG ();
-
+	
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
 
@@ -100,8 +99,7 @@ void Application::Execute()
 	SaveCONFIG					();
 	l_graphicsManager.SaveCONFIG();
 	l_editorManager.SaveCONFIG  ();
-	l_physicsManager.SaveCONFIG ();
-
+	
 	l_sceneManager.SaveScene();
 }
 

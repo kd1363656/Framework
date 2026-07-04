@@ -11,6 +11,11 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsSystem(),
 
+	m_bodyRegistry            (),
+	m_characterVirtualRegistry(),
+
+	m_jsonConverter(),
+
 	m_isInitialized(false),
 
 	m_isJoltTypeRegistered(false),
@@ -45,6 +50,20 @@ void FWK::Physics::PhysicsManager::INIT()
 		FWK_ASSERT_RETURN("Joltの物理システムの設定に失敗しており、初期化に失敗しました");
 	}
 
+	// BodyRegistryのセットアップ
+	if (!m_bodyRegistry.Setup(m_physicsSystem, m_physicsLayerSetting))
+	{
+		Release();
+		FWK_ASSERT_RETURN("PhysicsBodyRegistryの設定に失敗しており、初期化に失敗しました");
+	}
+
+	// CharacterVirtualのセットアップ
+	if(!m_characterVirtualRegistry.Setup(m_physicsSystem, m_physicsLayerSetting, m_tempAllocator))
+	{
+		Release();
+		FWK_ASSERT_RETURN("PhysicsCharacterVirtualRegistryの設定に失敗しており、初期化に失敗しました");
+	}
+
 	if (!m_debugRenderer)
 	{
 		m_debugRenderer = std::make_shared<FWK::Physics::PhysicsDebugRenderer>();
@@ -53,6 +72,15 @@ void FWK::Physics::PhysicsManager::INIT()
 	m_debugRenderer->ReserveLineVertexCount();
 
 	m_isInitialized = true;
+}
+
+void FWK::Physics::PhysicsManager::LoadCONFIG()
+{
+	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
+
+	if (l_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
 
 void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
@@ -64,6 +92,13 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 	// 毎フレーム呼ぶものではなく、
 	// ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
 	m_physicsSystem->OptimizeBroadPhase();
+}
+
+void FWK::Physics::PhysicsManager::UpdateChracterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
+{
+	FWK_ASSERT_RETURN_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、CharacterVirtualの更新に失敗しました。");
+
+	m_characterVirtualRegistry.UpdateCharacterVirtual(a_characterVirtualStorageID, a_updateData, a_deltaTime);
 }
 
 void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
@@ -90,9 +125,83 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	m_debugRenderer->NextFrame();
 }
 
+void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)
+{
+	m_bodyRegistry.ReleaseBody(a_bodyHandle);
+}
+
+FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、CharacterVirtualの解放に失敗しました。", a_characterVirtualStorageID);
+
+	return m_characterVirtualRegistry.ReleaseCharacterVirtual(a_characterVirtualStorageID);
+}
+
+void FWK::Physics::PhysicsManager::SaveCONFIG() const
+{
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
+}
+
 void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
 {
 	m_isDisableDebugDraw = m_isDisableDebugDraw ? false : true;
+}
+
+FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticSphereBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_radius)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、StaticSphereBodyの作成に失敗しました。", {});
+	
+	return m_bodyRegistry.CreateStaticSphereBody(a_worldPosition, a_radius);
+}
+FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticBoxBody(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、StaticBoxBodyの作成に失敗しました。", {});
+	
+	return m_bodyRegistry.CreateStaticBoxBody(a_worldPosition, a_halfExtent);
+}
+FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float a_halfHeightOfCylinder, const float a_radius)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、StaticCapsuleBodyの作成に失敗しました。", {});
+
+	return m_bodyRegistry.CreateStaticCapsuleBody(a_worldPosition, a_halfHeightOfCylinder, a_radius);
+}
+
+FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、CharacterVirtualの作成に失敗しました。", Constant::k_invalidStorageID);
+
+	return m_characterVirtualRegistry.CreateCharacterVirtual(a_createSetting);
+}
+
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Bodyの座標取得に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_bodyHandle.m_isValid,           "PhysicsBodyHandleが無効なため、Bodyの座標取得に失敗しました。",          {});
+	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
+
+	return m_bodyRegistry.FetchVALBodyWorldPosition(a_bodyHandle);
+}
+
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualWorldPosition(const TypeAlias::StorageID a_characterVirtualStorageID) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、CharacterVirtualの座標取得に失敗しました。", {});
+
+	return m_characterVirtualRegistry.FetchVALCharacterVirtualWorldPosition(a_characterVirtualStorageID);
+}
+
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、CharacterVirtualの速度取得に失敗しました。", {});
+
+	return m_characterVirtualRegistry.FetchVALCharacterVirtualLinearVelocity(a_characterVirtualStorageID);
+}
+bool FWK::Physics::PhysicsManager::FetchVALInCharacterVirtualOnGround(const TypeAlias::StorageID a_characterVirtualStorageID) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized, "PhysicsManagerが初期化されていないため、CharacterVirtualの接地状態取得に失敗しました。", false);
+
+	return m_characterVirtualRegistry.FetchVALIsCharacterVirtualOnGround(a_characterVirtualStorageID);
 }
 
 bool FWK::Physics::PhysicsManager::SetupJoltCore()

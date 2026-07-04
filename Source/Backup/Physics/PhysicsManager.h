@@ -13,19 +13,41 @@ namespace FWK::Physics
 
 	public:
 
-		void INIT();
-		
+		void INIT      ();
+		void LoadCONFIG();
+
 		void OptimizeBroadPhase();
 		
+		void UpdateChracterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
+
 		void CollectPhysicsDebugDrawCommands();
 
+		void				 ReleaseBody		    (Struct::PhysicsBodyHandle& a_bodyHandle);
 		TypeAlias::StorageID ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID);
+
+		void SaveCONFIG() const;
 
 		void TogglePhysicsDebugDraw();
 
+		Struct::PhysicsBodyHandle CreateStaticSphereBody (const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_radius);
+		Struct::PhysicsBodyHandle CreateStaticBoxBody    (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
+		Struct::PhysicsBodyHandle CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_halfHeightOfCylinder, const float a_radius);
+		
+		TypeAlias::StorageID CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting);
+
+		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const;
+
+		TypeAlias::Math::Vector3 FetchVALCharacterVirtualWorldPosition (const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		TypeAlias::Math::Vector3 FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		bool					 FetchVALInCharacterVirtualOnGround    (const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		
 		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
 		bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
+
+		const auto& GetREFCharacterVirtualRegistry() const { return m_characterVirtualRegistry; }
+
+		auto& GetMutableREFCharacterVirtualRegistry() { return m_characterVirtualRegistry; }
 
 	private:
 
@@ -46,6 +68,7 @@ namespace FWK::Physics
 										   const char*     a_file,
 										   const JPH::uint a_line);
 #endif
+
 #endif
 		void Release();
 
@@ -74,6 +97,11 @@ namespace FWK::Physics
 		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
 		std::shared_ptr<JPH::PhysicsSystem> m_physicsSystem;
+
+		PhysicsBodyRegistry			    m_bodyRegistry;
+		PhysicsCharacterVirtualRegistry m_characterVirtualRegistry;
+
+		Converter::PhysicsManagerJsonConverter m_jsonConverter;
 
 		bool m_isInitialized;
 
