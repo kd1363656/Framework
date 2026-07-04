@@ -590,6 +590,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyCreator.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.h" />
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json\PhysicsCharacterVirtualRegistryJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.h" />
     <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.h" />
@@ -745,6 +746,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyCreator.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Registry\PhysicsBodyRegistry.cpp" />
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json\PhysicsCharacterVirtualRegistryJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.cpp" />
     <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.cpp" />

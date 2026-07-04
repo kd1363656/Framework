@@ -1731,6 +1731,9 @@
     <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.h">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h">
+      <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2137,6 +2140,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.cpp">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp">
+      <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
