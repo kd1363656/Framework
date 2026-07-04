@@ -14,6 +14,8 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 	m_bodyRegistry            (),
 	m_characterVirtualRegistry(),
 
+	m_jsonConverter(),
+
 	m_isInitialized(false),
 
 	m_isJoltTypeRegistered(false),
@@ -55,6 +57,13 @@ void FWK::Physics::PhysicsManager::INIT()
 		FWK_ASSERT_RETURN("PhysicsBodyRegistryの設定に失敗しており、初期化に失敗しました");
 	}
 
+	// CharacterVirtualのセットアップ
+	if(!m_characterVirtualRegistry.Setup(m_physicsSystem, m_physicsLayerSetting, m_tempAllocator))
+	{
+		Release();
+		FWK_ASSERT_RETURN("PhysicsCharacterVirtualRegistryの設定に失敗しており、初期化に失敗しました");
+	}
+
 	if (!m_debugRenderer)
 	{
 		m_debugRenderer = std::make_shared<FWK::Physics::PhysicsDebugRenderer>();
@@ -63,6 +72,15 @@ void FWK::Physics::PhysicsManager::INIT()
 	m_debugRenderer->ReserveLineVertexCount();
 
 	m_isInitialized = true;
+}
+
+void FWK::Physics::PhysicsManager::LoadCONFIG()
+{
+	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
+
+	if (l_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
 
 void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
@@ -104,9 +122,12 @@ void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_body
 {
 	m_bodyRegistry.ReleaseBody(a_bodyHandle);
 }
-FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
+
+void FWK::Physics::PhysicsManager::SaveCONFIG() const
 {
-	return TypeAlias::StorageID();
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
 void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
@@ -133,23 +154,6 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsManager::CreateStaticCapsule
 	return m_bodyRegistry.CreateStaticCapsuleBody(a_worldPosition, a_halfHeightOfCylinder, a_radius);
 }
 
-FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting)
-{
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,       "PhysicsManagerが初期化されていないため、CharacterVirtualの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(!m_physicsLayerSetting, "PhysicsLayerSettingがnullptrのため、CharacterVirtualの作成に失敗しました。",     {});
-	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下です。", {});
-
-	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleRadius <= k_minCharacterVirtualCapsuleRadius, "CharacterVirtualのCapsuleRadiusが0以下です。", {});
-
-	FWK_ASSERT_RETURN_VALUE_IF(
-		a_createSetting.m_maxSlopeAngleRadians <
-		k_minCharacterVirtualMaxSlopeAngleRadians ||
-		a_createSetting.m_maxSlopeAngleRadians >
-		k_maxCharacterVirtualMaxSlopeAngleRadians,
-		"CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外です。",
-		{});
-}
-
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Bodyの座標取得に失敗しました。", {});
@@ -157,19 +161,6 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALBodyWorldPos
 	FWK_ASSERT_RETURN_VALUE_IF(a_bodyHandle.m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyの座標取得に失敗しました。",                     {});
 
 	return m_bodyRegistry.FetchVALBodyWorldPosition(a_bodyHandle);
-}
-
-FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualWorldPosition(const TypeAlias::StorageID a_characterVirtualStorageID) const
-{
-	return TypeAlias::Math::Vector3();
-}
-FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsManager::FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const
-{
-	return TypeAlias::Math::Vector3();
-}
-bool FWK::Physics::PhysicsManager::FetchVALIsCharacterVirtualOnGrounds(const TypeAlias::StorageID a_characterVirtualStorageID) const
-{
-	return false;
 }
 
 bool FWK::Physics::PhysicsManager::SetupJoltCore()
@@ -244,10 +235,6 @@ bool FWK::Physics::PhysicsManager::SetupSystem()
 
 	return true;
 }
-bool FWK::Physics::PhysicsManager::SetupCharacterVirtualStorage()
-{
-	return false;
-}
 
 #if defined(_DEBUG)
 void FWK::Physics::PhysicsManager::TraceJoltMessage(const char* a_format, ...)
@@ -306,16 +293,6 @@ bool FWK::Physics::PhysicsManager::HandleJoltAssertFailed(const char* a_expressi
 }
 #endif
 #endif
-
-void FWK::Physics::PhysicsManager::UpdateCharacterVirtual(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord)
-{
-	
-}
-
-void FWK::Physics::PhysicsManager::ReleaseAllCharacterVirtuals()
-{
-
-}
 
 void FWK::Physics::PhysicsManager::Release()
 {

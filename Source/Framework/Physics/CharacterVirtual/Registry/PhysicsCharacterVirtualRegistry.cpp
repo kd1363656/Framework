@@ -35,6 +35,13 @@ bool FWK::Physics::PhysicsCharacterVirtualRegistry::Setup(const std::shared_ptr<
 	return true;
 }
 
+void FWK::Physics::PhysicsCharacterVirtualRegistry::Deserialize(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
 {
 	FWK_ASSERT_RETURN_IF(!m_isSetup,												                              "PhysicsCharacterVirtualRegistryが設定されていないため、CharacterVirtualの更新に失敗しました。");
@@ -45,6 +52,11 @@ void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtual(const
 	auto& l_characterVirtualRecord = m_characterVirtualRecordList[a_characterVirtualStorageID];
 
 	UpdateCharacterVirtualRecord(a_updateData, a_deltaTime, l_characterVirtualRecord);
+}
+
+nlohmann::json FWK::Physics::PhysicsCharacterVirtualRegistry::Serialize() const
+{
+	return m_jsonConverter.Serialize(*this);
 }
 
 FWK::TypeAlias::StorageID FWK::Physics::PhysicsCharacterVirtualRegistry::ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
@@ -126,32 +138,64 @@ FWK::TypeAlias::StorageID FWK::Physics::PhysicsCharacterVirtualRegistry::CreateC
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualRegistry::FetchVALCharacterVirtualWorldPosition(const TypeAlias::StorageID a_characterVirtualStorageID) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_characterVirtualStorageID         == Constant::k_invalidStorageID,                     "CharacterVirtualのStorageIDが無効なため、ワールド座標取得に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、ワールド座標取得に失敗しました。",              {});
+	FWK_ASSERT_RETURN_VALUE_IF(a_characterVirtualStorageID         == Constant::k_invalidStorageID,                     "StorageIDが無効なため、ワールド座標取得に失敗しました。",      {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、ワールド座標取得に失敗しました。", {});
 
+	const auto& l_characterVirtual = m_characterVirtualRecordList[a_characterVirtualStorageID].m_characterVirtual;
 
+	return Utility::JoltRVec3ToDirectXMathVector3(l_characterVirtual->GetPosition());
 }
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualRegistry::FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const
 {
-	return TypeAlias::Math::Vector3();
-}
+	FWK_ASSERT_RETURN_VALUE_IF(a_characterVirtualStorageID         == Constant::k_invalidStorageID,                     "StorageIDが無効なため、速度取得に失敗しました。",      {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、速度取得に失敗しました。", {});
 
+	const auto& l_characterVirtual = m_characterVirtualRecordList[a_characterVirtualStorageID].m_characterVirtual;
+
+	return Utility::JoltRVec3ToDirectXMathVector3(l_characterVirtual->GetLinearVelocity());
+}
 bool FWK::Physics::PhysicsCharacterVirtualRegistry::FetchVALIsCharacterVirtualOnGround(const TypeAlias::StorageID a_characterVirtualStorageID) const
 {
-	return false;
+	FWK_ASSERT_RETURN_VALUE_IF(a_characterVirtualStorageID         == Constant::k_invalidStorageID,                     "StorageIDが無効なため、設置状態取得に失敗しました。",      {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、設置状態取得に失敗しました。", {});
+
+	const auto& l_characterVirtual = m_characterVirtualRecordList[a_characterVirtualStorageID].m_characterVirtual;
+
+	return l_characterVirtual->GetGroundState() == JPH::CharacterBase::EGroundState::OnGround;
 }
 
 bool FWK::Physics::PhysicsCharacterVirtualRegistry::SetupStorage()
 {
-	return false;
+	FWK_ASSERT_RETURN_VALUE_IF(!m_storageIDAllocator.Create(), "CharacterVirtual用StorageIDAllocatorの作成に失敗しました。", false);
+
+	m_characterVirtualRecordList.clear();
+
+	// StorageIDをそのまま配列Indexとして使用するため、
+	// reserveではなくresizeを使用する。
+	m_characterVirtualRecordList.resize(static_cast<std::size_t>(m_storageIDAllocator.GetVALStorageIDCapacity()));
+
+	return true;
 }
 
-void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtualRecord(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord)
+void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtualRecord(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, Struct::CharacterVirtualRecord& a_characterVirtualRecord)
 {
 
 }
 
 void FWK::Physics::PhysicsCharacterVirtualRegistry::ReleaseAllCharacterVirtuals()
 {
+	for (std::size_t l_index = 0ULL; l_index < m_characterVirtualRecordList.size(); ++l_index)
+	{
+		auto& l_characterVirtualRecord = m_characterVirtualRecordList[l_index];
 
+		if (!l_characterVirtualRecord.m_characterVirtual) { continue; }
+
+		l_characterVirtualRecord.m_characterVirtual       = nullptr;
+		l_characterVirtualRecord.m_extendedUpdateSettings = {};
+
+		// ストレージIDAllcoatorにIDを再利用可能状態にする
+		m_storageIDAllocator.Release(static_cast<TypeAlias::StorageID>(l_index));
+	}
+
+	m_characterVirtualRecordList.clear();
 }

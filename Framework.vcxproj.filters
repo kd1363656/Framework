@@ -838,6 +838,24 @@
     <Filter Include="Source\Framework\Physics\Body\Registry">
       <UniqueIdentifier>{3ddb0f74-f64b-4aa3-a083-539369a518b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Registry">
+      <UniqueIdentifier>{b926edeb-65c2-4fa1-8de1-94bbfed7c5f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter">
+      <UniqueIdentifier>{b760394b-436c-40e5-ba64-3864a25240f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json">
+      <UniqueIdentifier>{6465d6f6-00f3-44d0-94b4-7c30fddd8beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG\Physics">
+      <UniqueIdentifier>{7a2930b0-3248-49af-915a-02431911f602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Converter">
+      <UniqueIdentifier>{b94ddd34-76a5-43c4-8c98-5affff16cfba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Converter\Json">
+      <UniqueIdentifier>{105081b0-ef8c-483f-b228-0fd75076aff0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1705,7 +1723,13 @@
       <Filter>Source\Framework\Physics\Body\Registry</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.h">
-      <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
+      <Filter>Source\Framework\Physics\CharacterVirtual\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json\PhysicsCharacterVirtualRegistryJsonConverter.h">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.h">
+      <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2106,7 +2130,13 @@
       <Filter>Source\Framework\Physics\Body\Registry</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\PhysicsCharacterVirtualRegistry.cpp">
-      <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
+      <Filter>Source\Framework\Physics\CharacterVirtual\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json\PhysicsCharacterVirtualRegistryJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Registry\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2144,6 +2174,9 @@
     </None>
     <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json">
       <Filter>Asset\Data\CONFIG\Editor</Filter>
+    </None>
+    <None Include="Asset\Data\CONFIG\Physics\PhysicsCONFIG.json">
+      <Filter>Asset\Data\CONFIG\Physics</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

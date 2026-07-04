@@ -13,14 +13,16 @@ namespace FWK::Physics
 
 	public:
 
-		void INIT();
+		void INIT      ();
+		void LoadCONFIG();
 
 		void OptimizeBroadPhase();
 
 		void CollectPhysicsDebugDrawCommands();
 
-		void				 ReleaseBody		    (	   Struct::PhysicsBodyHandle& a_bodyHandle);
-		TypeAlias::StorageID ReleaseCharacterVirtual(const TypeAlias::StorageID	      a_characterVirtualStorageID);
+		void ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle);
+		
+		void SaveCONFIG() const;
 
 		void TogglePhysicsDebugDraw();
 
@@ -28,22 +30,20 @@ namespace FWK::Physics
 		Struct::PhysicsBodyHandle CreateStaticBoxBody    (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
 		Struct::PhysicsBodyHandle CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_halfHeightOfCylinder, const float a_radius);
 		
-		TypeAlias::StorageID CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting);
-
 		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition (const Struct::PhysicsBodyHandle& a_bodyHandle) const;
 		
-		TypeAlias::Math::Vector3 FetchVALCharacterVirtualWorldPosition (const TypeAlias::StorageID a_characterVirtualStorageID) const;
-		TypeAlias::Math::Vector3 FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const;
-		bool					 FetchVALIsCharacterVirtualOnGrounds   (const TypeAlias::StorageID a_characterVirtualStorageID) const;
-
 		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
 		bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
 
+		const auto& GetREFCharacterVirtualRegistry() const { return m_characterVirtualRegistry; }
+
+		auto& GetMutableREFCharacterVirtualRegistry() { return m_characterVirtualRegistry; }
+
 	private:
 
-		bool SetupJoltCore               ();
-		bool SetupSystem                 ();
+		bool SetupJoltCore();
+		bool SetupSystem  ();
 		
 #if defined(_DEBUG)
 		static void TraceJoltMessage(const char* a_format, ...);
@@ -61,8 +61,6 @@ namespace FWK::Physics
 #endif
 
 #endif
-		void UpdateCharacterVirtual(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord);
-
 		void Release();
 
 		static constexpr std::size_t k_emptyCharacterVirtualCount = 0ULL;
@@ -79,6 +77,8 @@ namespace FWK::Physics
 		static constexpr uint32_t k_kiloBytePerMB       = 1024U;
 		static constexpr uint32_t k_bytePerKB           = 1024U;
 
+		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Physics/PhysicsCONFIG.json";
+
 		std::unique_ptr<JPH::Factory> m_factory;
 
 		std::shared_ptr<JPH::TempAllocatorImpl> m_tempAllocator;
@@ -91,6 +91,8 @@ namespace FWK::Physics
 
 		PhysicsBodyRegistry			    m_bodyRegistry;
 		PhysicsCharacterVirtualRegistry m_characterVirtualRegistry;
+
+		Converter::PhysicsManagerJsonConverter m_jsonConverter;
 
 		bool m_isInitialized;
 

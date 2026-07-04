@@ -23,4 +23,13 @@ namespace FWK::Struct
 
 		bool m_isJumpRequested = false;
 	};
+
+	struct CharacterVirtualRecord final
+	{
+		JPH::Ref<JPH::CharacterVirtual> m_characterVirtual = nullptr;
+
+		JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings = {};
+
+		bool m_isReleaseReserved = false;
+	};
 }

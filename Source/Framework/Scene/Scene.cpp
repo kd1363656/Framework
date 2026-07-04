@@ -65,16 +65,7 @@ void FWK::Scene::INIT()
 	const TypeAlias::Math::Vector3& l_wallWorldPosition = { 2.0F, 1.0F, 0.0F };
 	const TypeAlias::Math::Vector3& l_wallHalfExtent    = { 0.25F, 1.0F, 5.0F };
 	
-	m_staticWallBodyHandle = l_physicsManager.CreateStaticBoxBody(l_wallWorldPosition,
-																  l_wallHalfExtent);
-	
-	// プレイヤー仮Body。
-	// 人型キャラクターの当たり判定として、まずはDynamicCapsuleを使う。
-	// Boxだと角が引っかかりやすく、Sphereだと人型として低すぎるため。
-	const TypeAlias::Math::Vector3& l_capsuleWorldPosition = { 0.0F, 3.0F, 0.0F };
-	
-	const float l_capsuleHalfHeightOfCylinder = 0.75F;
-	const float l_capsuleRadius               = 0.35F;
+	m_staticWallBodyHandle = l_physicsManager.CreateStaticBoxBody(l_wallWorldPosition, l_wallHalfExtent);
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -157,41 +148,6 @@ void FWK::Scene::Update()
 	}
 
 	m_camera->ApplyCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
-
-	//=========================================================
-	// DynamicCapsule操作テスト
-	//=========================================================
-	// 描画モデルを直接動かすのではなく、JoltのBodyに速度を設定する。
-	// 実際にどこまで移動できるか、壁に当たったときに止まるかは、
-	// PhysicsManager::Update() 内でJoltが計算する。
-	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
-	
-	static constexpr float k_playerMoveSpeed = 3.0F;
-	static constexpr float k_moveZero        = 0.0F;
-	
-	TypeAlias::Math::Vector3 l_nextVelocity = { k_moveZero, k_moveZero, k_moveZero };
-	
-	if (GetAsyncKeyState(VK_UP))
-	{
-		l_nextVelocity.z += k_playerMoveSpeed;
-	}
-	else if (GetAsyncKeyState(VK_DOWN))
-	{
-		l_nextVelocity.z -= k_playerMoveSpeed;
-	}
-	
-	if (GetAsyncKeyState(VK_LEFT))
-	{
-		l_nextVelocity.x -= k_playerMoveSpeed;
-	}
-	else if (GetAsyncKeyState(VK_RIGHT))
-	{
-		l_nextVelocity.x += k_playerMoveSpeed;
-	}
-	
-	// Gキーを押している間だけ重力OFF。
-	// 離したら重力ON。
-	const bool l_isGravityEnabled = !GetAsyncKeyState('G');
 }
 void FWK::Scene::LateUpdate() const
 {

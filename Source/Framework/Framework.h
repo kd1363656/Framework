@@ -378,7 +378,9 @@
 #include "Physics/DebugRenderer/PhysicsDebugRenderer.h"
 #include "Definition/Constant/Physics/CharacterVirtualConstant.h"
 #include "Definition/Struct/Physics/PhysicsCharacterVirtualStruct.h"
+#include "Physics/CharacterVirtual/Registry/Converter/Json/PhysicsCharacterVirtualRegistryJsonConverter.h"
 #include "Physics/CharacterVirtual/Registry/PhysicsCharacterVirtualRegistry.h"
+#include "Physics/Converter/Json/PhysicsManagerJsonConverter.h"
 #include "Physics/PhysicsManager.h"
 
 // コンポーネント
