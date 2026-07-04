@@ -19,9 +19,11 @@ namespace FWK::Physics
 		
 		void CollectPhysicsDebugDrawCommands();
 
-		TypeAlias::StorageID ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID);
-
 		void TogglePhysicsDebugDraw();
+
+		const auto& GetREFPhysicsSystem() const { return m_physicsSystem; }
+
+		auto& GetMutableREFPhysicsSystem() { return m_physicsSystem; }
 
 		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
@@ -73,7 +75,7 @@ namespace FWK::Physics
 		
 		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
-		std::shared_ptr<JPH::PhysicsSystem> m_physicsSystem;
+		JPH::PhysicsSystem m_physicsSystem;
 
 		bool m_isInitialized;
 

@@ -372,12 +372,13 @@
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
 
 // Body
+#include "Physics/Body/PhysicsBodyBase.h"
 
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"
 #include "Physics/DebugRenderer/PhysicsDebugRenderer.h"
 #include "Definition/Constant/Physics/CharacterVirtualConstant.h"
-
+#include "Definition/Struct/Physics/PhysicsCharacterVirtualStruct.h"
 #include "Physics/PhysicsManager.h"
 
 // コンポーネント

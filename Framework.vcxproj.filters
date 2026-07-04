@@ -832,6 +832,12 @@
     <Filter Include="Source\Framework\Physics\CharacterVirtual">
       <UniqueIdentifier>{127b988e-1d8c-4998-a60e-a1afe5f56988}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Physics">
+      <UniqueIdentifier>{c5956dab-7580-432b-b7ea-68996d71988d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static">
+      <UniqueIdentifier>{562d863b-c5e8-4aff-a229-186803fef10d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1689,6 +1695,15 @@
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h">
       <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyBase.h">
+      <Filter>Source\Framework\Physics\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h">
+      <Filter>Source\Framework\Physics\Body\Static</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2083,6 +2098,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyBase.cpp">
+      <Filter>Source\Framework\Physics\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp">
+      <Filter>Source\Framework\Physics\Body\Static</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

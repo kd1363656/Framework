@@ -26,11 +26,6 @@ void FWK::Physics::PhysicsManager::INIT()
 {
 	FWK_ASSERT_RETURN_IF(m_isInitialized, "既に初期化されているのにもう一度初期化しようとしました。");
 
-	if (!m_physicsSystem)
-	{
-		m_physicsSystem = std::make_shared<JPH::PhysicsSystem>();
-	}
-
 	// Joltのメモリアロケータ登録やFactoryの作成などのセットアップ
 	if (!SetupJoltCore())
 	{
@@ -58,20 +53,18 @@ void FWK::Physics::PhysicsManager::INIT()
 void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 {
 	if (!m_isInitialized) { return; }
-	if (!m_physicsSystem) { return; }
-
+	
 	// JoltのBroadPhase空間分割を最適化する。
 	// 毎フレーム呼ぶものではなく、
 	// ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
-	m_physicsSystem->OptimizeBroadPhase();
+	m_physicsSystem.OptimizeBroadPhase();
 }
 
 void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 {
 	if (!m_isInitialized) { return; }
 	if (!m_debugRenderer) { return; }
-	if (!m_physicsSystem) { return; }
-
+	
 	// まず前フレームのデバック描画情報を消す
 	// デバック描画を無効化している場合でも、古い線が残らないように先に消す
 	m_debugRenderer->ClearFrame();
@@ -85,7 +78,7 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	l_drawSettings.mDrawShapeWireframe = true;
 	l_drawSettings.mDrawBoundingBox    = false;
 
-	m_physicsSystem->DrawBodies(l_drawSettings, m_debugRenderer.get());
+	m_physicsSystem.DrawBodies(l_drawSettings, m_debugRenderer.get());
 
 	m_debugRenderer->NextFrame();
 }
@@ -133,8 +126,6 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 
 bool FWK::Physics::PhysicsManager::SetupSystem()
 {
-	if (!m_physicsSystem) { return false; }
-
 	// PhysicsLayerSettingはJoltのTable系クラスを作成する
 	// その内部でJoltのAllocatorを使用するため、RegisterDefaultAllocator()が終わった後で生成する必要がある
 	if (!m_physicsLayerSetting)
@@ -157,13 +148,13 @@ bool FWK::Physics::PhysicsManager::SetupSystem()
 	//							ObjectLayerをBroadPhaseLayerへ変換する表、
 	//							あるObjectLayerがどのBroadPhaseLayerを探索するべきかを決めるFilter,
 	//							ObjectLayer同士が衝突して良いか決めるFilter
-	m_physicsSystem->Init(k_maxBodyCount,
-						  k_bodyMutexCount,
-						  k_maxBodyPairCount,
-						  k_maxContactConstraintCount,
-						  m_physicsLayerSetting->GetREFBroadPhaseLayerInterface(),
-						  *l_objectVsBroadPhaseLayerFilter,
-						  m_physicsLayerSetting->GetREFObjectLayerPairFilter());
+	m_physicsSystem.Init(k_maxBodyCount,
+						 k_bodyMutexCount,
+						 k_maxBodyPairCount,
+						 k_maxContactConstraintCount,
+						 m_physicsLayerSetting->GetREFBroadPhaseLayerInterface(),
+						 *l_objectVsBroadPhaseLayerFilter,
+						 m_physicsLayerSetting->GetREFObjectLayerPairFilter());
 
 	return true;
 }
