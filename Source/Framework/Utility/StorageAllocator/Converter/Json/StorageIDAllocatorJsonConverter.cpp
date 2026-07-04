@@ -1,6 +1,6 @@
 ﻿#include "StorageIDAllocatorJsonConverter.h"
 
-void FWK::Converter::StorageIDAllocatorJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::StorageIDAllocator& a_storageIDAllocator) const
+void FWK::Converter::StorageIDAllocatorJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Utility::StorageIDAllocator& a_storageIDAllocator) const
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -9,7 +9,7 @@ void FWK::Converter::StorageIDAllocatorJsonConverter::Deserialize(const nlohmann
 	a_storageIDAllocator.SetStorageIDCapacity(l_storageIDCapacity);
 }
 
-nlohmann::json FWK::Converter::StorageIDAllocatorJsonConverter::Serialize(const Graphics::StorageIDAllocator& a_storageIDAllocator) const
+nlohmann::json FWK::Converter::StorageIDAllocatorJsonConverter::Serialize(const Utility::StorageIDAllocator& a_storageIDAllocator) const
 {
 	nlohmann::json l_rootJson = {};
 

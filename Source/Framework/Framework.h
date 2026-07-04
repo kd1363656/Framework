@@ -149,8 +149,8 @@
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 
 // ストレージIDアロケータークラス
-#include "Graphics/Resource/Storage/Allocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
-#include "Graphics/Resource/Storage/Allocator/StorageIDAllocator.h"
+#include "Utility/StorageAllocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
+#include "Utility/StorageAllocator/StorageIDAllocator.h"
 
 // ダイレクトコマンドアロケータ
 #include "Definition/Constant/Graphics/DirectCommandAllocatorConstant.h"

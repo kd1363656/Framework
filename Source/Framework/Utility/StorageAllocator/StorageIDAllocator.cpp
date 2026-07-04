@@ -1,12 +1,12 @@
 ﻿#include "StorageIDAllocator.h"
 
-void FWK::Graphics::StorageIDAllocator::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::Utility::StorageIDAllocator::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 	m_storageAllocatorJsonConverter.Deserialize(a_rootJson, *this);
 }
 
-bool FWK::Graphics::StorageIDAllocator::Create()
+bool FWK::Utility::StorageIDAllocator::Create()
 {
 	// 無効値を容量として指定された場合は作成失敗とする
 	FWK_ASSERT_RETURN_VALUE_IF(m_storageIDCapacity == Constant::k_invalidStorageIDCapacity, "ストレージIDの割り当て可能数が0になっており、作成処理に失敗しました。", false);
@@ -23,12 +23,12 @@ bool FWK::Graphics::StorageIDAllocator::Create()
 	return true;
 }
 
-nlohmann::json FWK::Graphics::StorageIDAllocator::Serialize() const
+nlohmann::json FWK::Utility::StorageIDAllocator::Serialize() const
 {
 	return m_storageAllocatorJsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::StorageIDAllocator::Release(const TypeAlias::StorageID a_storageID)
+void FWK::Utility::StorageIDAllocator::Release(const TypeAlias::StorageID a_storageID)
 {
 	// 範囲外StorageIDの解放は不正
 	FWK_ASSERT_RETURN_IF(!IsValidStorageID(a_storageID), "解放しようとしたStorageIDが確保範囲外となっており、解放処理に失敗しました。");
@@ -40,7 +40,7 @@ void FWK::Graphics::StorageIDAllocator::Release(const TypeAlias::StorageID a_sto
 	m_freeStorageIDQueue.push(a_storageID);
 }
 
-FWK::TypeAlias::StorageID FWK::Graphics::StorageIDAllocator::Allocate()
+FWK::TypeAlias::StorageID FWK::Utility::StorageIDAllocator::Allocate()
 {
 	// 解放済みスロットがあればそれを優先再利用する
 	if (!m_freeStorageIDQueue.empty())
@@ -73,7 +73,7 @@ FWK::TypeAlias::StorageID FWK::Graphics::StorageIDAllocator::Allocate()
 	FWK_ASSERT_RETURN_VALUE_IF(true, "StorageIDの空きがなくなり、アロケート処理に失敗しました。", Constant::k_invalidStorageID);
 }
 
-bool FWK::Graphics::StorageIDAllocator::IsValidStorageID(const TypeAlias::StorageID a_storageID) const
+bool FWK::Utility::StorageIDAllocator::IsValidStorageID(const TypeAlias::StorageID a_storageID) const
 {
 	// 範囲外インデックスを指し示すならfalseを返す
 	FWK_ASSERT_RETURN_VALUE_IF(a_storageID >= m_storageIDCapacity ||

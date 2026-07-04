@@ -11,6 +11,8 @@ namespace FWK::Physics
 			JPH::Ref<JPH::CharacterVirtual> m_characterVirtual = nullptr;
 
 			JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings = {};
+
+			bool m_isReleaseReserved = false;
 		};
 
 		friend class SingletonBase<PhysicsManager>;
@@ -28,8 +30,10 @@ namespace FWK::Physics
 
 		void CollectPhysicsDebugDrawCommands();
 
-		void ReleaseBody			(	   Struct::PhysicsBodyHandle& a_bodyHandle);
-		void ReleaseCharacterVirtual(const TypeAlias::StorageID	      a_characterVirtualStorageID);
+		void ReleaseReservedCharacterVirtuals();
+
+		void				 ReleaseBody				   (	  Struct::PhysicsBodyHandle& a_bodyHandle);
+		TypeAlias::StorageID ReserveReleaseCharacterVirtual(const TypeAlias::StorageID	     a_characterVirtualStorageID);
 
 		void TogglePhysicsDebugDraw();
 
@@ -53,6 +57,7 @@ namespace FWK::Physics
 
 		bool SetupJoltCore     ();
 		bool SetupPhysicsSystem();
+		bool SetupcharacterVirtualStorage();
 
 #if defined(_DEBUG)
 		static void TraceJoltMessage(const char* a_format, ...);
@@ -120,6 +125,8 @@ namespace FWK::Physics
 		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
 		JPH::PhysicsSystem m_physicsSystem;
+
+		Utility::StorageIDAllocator m_characterVirtualStorageIDAllocator;
 
 		PhysicsBodyCreator m_bodyCreator;
 

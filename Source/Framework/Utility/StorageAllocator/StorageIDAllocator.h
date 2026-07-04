@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
+namespace FWK::Utility
 {
 	// ※注意
 	// StorageIDを配列のインデックスとしても使用します

@@ -184,15 +184,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Storage">
       <UniqueIdentifier>{0b95a1bc-aaf6-43d3-9660-b16182ae3a83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator">
-      <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter">
-      <UniqueIdentifier>{c3504afa-553b-4f51-891f-def85748ee79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json">
-      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer">
       <UniqueIdentifier>{e250d46f-1052-47d6-bd20-98fe97822f4b}</UniqueIdentifier>
     </Filter>
@@ -826,6 +817,21 @@
     <Filter Include="Source\Framework\Definition\Struct\Physics">
       <UniqueIdentifier>{896ec215-c876-4b82-9d97-7dc020efe6e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Converter">
+      <UniqueIdentifier>{94493553-279f-4d7a-9f27-c6d76ec4fa34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Storage\Converter\Json">
+      <UniqueIdentifier>{99681e47-f158-49ff-a581-b898c3c33123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\StorageAllocator">
+      <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\StorageAllocator\Converter">
+      <UniqueIdentifier>{c3504afa-553b-4f51-891f-def85748ee79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\StorageAllocator\Converter\Json">
+      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -947,12 +953,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Upload\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.h">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
@@ -1683,6 +1683,15 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsCharacterVirtualEnum.h">
       <Filter>Source\Framework\Definition\Enum\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Converter\Json\AssetStorageJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Storage\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.h">
+      <Filter>Source\Framework\Utility\StorageAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -1789,12 +1798,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Upload\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\StorageIDAllocator.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Storage\Allocator\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
@@ -2077,6 +2080,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.cpp">
+      <Filter>Source\Framework\Utility\StorageAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -131,7 +131,7 @@ namespace FWK::Graphics
 
 		RecordMap m_recordMap = {};
 
-		StorageIDAllocator m_storageIDAllocator = {};
+		Utility::StorageIDAllocator m_storageIDAllocator = {};
 
 		Converter::AssetStorageJsonConverter<RecordType> m_jsonConverter = {};
 	};

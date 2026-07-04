@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
+namespace FWK::Utility
 {
 	class StorageIDAllocator;
 }
@@ -14,9 +14,9 @@ namespace FWK::Converter
 		 StorageIDAllocatorJsonConverter() = default;
 		~StorageIDAllocatorJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::StorageIDAllocator& a_storageIDAllocator) const;
+		void Deserialize(const nlohmann::json& a_rootJson, Utility::StorageIDAllocator& a_storageIDAllocator) const;
 
-		nlohmann::json Serialize(const Graphics::StorageIDAllocator& a_storageIDAllocator) const;
+		nlohmann::json Serialize(const Utility::StorageIDAllocator& a_storageIDAllocator) const;
 
 	private:
 

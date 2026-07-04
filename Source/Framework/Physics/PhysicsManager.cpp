@@ -95,6 +95,11 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	m_debugRenderer->NextFrame();
 }
 
+void FWK::Physics::PhysicsManager::ReleaseReservedCharacterVirtuals()
+{
+	
+}
+
 void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle)
 {
 	FWK_ASSERT_RETURN_IF(!m_isInitialized,                  "PhysicsManagerが初期化されていないため、Body解放に失敗しました。");
@@ -122,9 +127,9 @@ void FWK::Physics::PhysicsManager::ReleaseBody(Struct::PhysicsBodyHandle& a_body
 	a_bodyHandle.m_bodyID  = JPH::BodyID();
 	a_bodyHandle.m_isValid = false;
 }
-void FWK::Physics::PhysicsManager::ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
+FWK::TypeAlias::StorageID FWK::Physics::PhysicsManager::ReserveReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID)
 {
-
+	return Constant::k_invalidStorageID;
 }
 
 void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()
