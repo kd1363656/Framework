@@ -17,12 +17,14 @@ namespace FWK::Struct
 
 		float m_capsuleRadius = Constant::k_defaultCharacterVirtualCapsuleRadius;
 
-		float m_maxSlopeAngleRadians = Constant::k_defaultCharacterVirtualMaxSlopeAngleRadans;
+		float m_maxSlopeAngleRadians = Constant::k_defaultCharacterVirtualMaxSlopeAngleRadians;
+
+		bool m_isEnhancedInternalEdgeRemovalDisabled = false;
 	};
 
 	struct PhysicsCharacterVirtualUpdateData final
 	{
-		TypeAlias::Math::Vector3 m_horizontalVelocity = {};
+		TypeAlias::Math::Vector3 m_desiredVelocity = {};
 
 		float m_jumpSpeed = Constant::k_defaultCharacterVirtualJumpSpeed;
 

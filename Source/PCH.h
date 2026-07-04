@@ -104,6 +104,9 @@
 #include <Jolt/Physics/Collision/Shape/SphereShape.h>
 #include <Jolt/Physics/Collision/Shape/CapsuleShape.h>
 
+// CharacterVirtual関係
+#include <Jolt/Physics/Character/CharacterVirtual.h>
+
 // JoltMath関係
 #include <Jolt/Math/Vec3.h>
 #include <Jolt/Math/Quat.h>

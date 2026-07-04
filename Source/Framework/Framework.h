@@ -366,6 +366,7 @@
 
 // 当たり判定
 #include "Definition/Enum/Physics/PhysicsLayerEnum.h"
+#include "Definition/Enum/Physics/PhysicsCharacterVirtualEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Definition/Struct/Graphics/PhysicsBodyCreatorStruct.h"
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"

@@ -9,8 +9,6 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_tempAllocator(nullptr),
 
-	m_jobSystem(nullptr),
-
 	m_physicsLayerSetting(nullptr),
 
 	m_debugRenderer(nullptr),
@@ -56,23 +54,6 @@ void FWK::Physics::PhysicsManager::INIT()
 	m_debugRenderer->ReserveLineVertexCount();
 
 	m_isInitialized = true;
-}
-
-void FWK::Physics::PhysicsManager::Update(const float a_deltaTime)
-{
-	FWK_ASSERT_RETURN_IF(!m_isInitialized, "初期化されていないのに更新処理を実行しようとしました。");
-	FWK_ASSERT_RETURN_IF(!m_tempAllocator, "TempAllocatorがnullptrのため、更新処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF(!m_jobSystem,     "JobSystemがnullptrのため、更新処理に失敗しました。");
-
-	// Joltの物理ワールドを1フレーム分進める。
-	// JPH::PhysicsSystem(前フレームからの経過時間、
-	//					  1回のUpdate内で物理計算を何分割するか、
-	//					  JoltがこのUpdate中に使う一時作業メモリ、
-	//					  Joltが物理計算を並列実行するためのJobSystem);
-	m_physicsSystem.Update(a_deltaTime, 
-						   k_collisionStepCount,
-						   m_tempAllocator.get(),
-						   m_jobSystem.get());
 }
 
 void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
@@ -237,18 +218,6 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 	m_tempAllocator = std::make_unique<JPH::TempAllocatorImpl>(l_tempAllocatorSize);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_tempAllocator, "JPH::TempAllocatorImplの作成に失敗しました。", false);
-
-	// CPUの論理スレッド数を取得する
-	// JoltのJobSystemThreadPoolで、物理計算用のワーカースレッド数を決めるために使う
-	const auto l_hardwareThreadCount = std::thread::hardware_concurrency();
-
-	// メインスレッド数を一つ残して残りをJoltのワーカースレッドとして扱う
-	const int l_workerThreadCount = l_hardwareThreadCount <= k_minHardwareThreadCount ? k_fallbackWorkerThreadCount : static_cast<int>(l_hardwareThreadCount - k_mainThreadCount);
-
-	// JoltのJobSystemを作成する(Joltの物理計算を複数スレッドで実行するための仕組み)
-	m_jobSystem = std::make_unique<JPH::JobSystemThreadPool>(k_maxPhysicsJobCount, k_maxPhysicsBarrierCount, l_workerThreadCount);
-
-	FWK_ASSERT_RETURN_VALUE_IF(!m_jobSystem, "JPH::JobSystemThreadPoolの作成に失敗しました。", false);
 
 	return true;
 }
@@ -455,7 +424,6 @@ void FWK::Physics::PhysicsManager::Release()
 
 	m_factory		      = nullptr;
 	m_tempAllocator       = nullptr;
-	m_jobSystem           = nullptr;
 	m_physicsLayerSetting = nullptr;
 
 	m_isInitialized = false;

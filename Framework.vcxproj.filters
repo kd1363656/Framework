@@ -1680,6 +1680,9 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h">
       <Filter>Source\Framework\Definition\Struct\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsCharacterVirtualEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

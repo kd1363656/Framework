@@ -389,6 +389,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootParameterEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootSignatureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\TextureLoadColorSpaceEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsCharacterVirtualEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsLayerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\TypeTrait\TypeTraitPTREnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowStyleEnum.h" />

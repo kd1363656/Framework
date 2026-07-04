@@ -22,7 +22,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticSph
 	// Static Bodyは重力や速度によって移動せず、
 	// 衝突対象となる固定Colliderとして使用される。
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													Utility::ConvertToJoltVector3(a_worldPosition),
+													Utility::DirectXMathVector3ToJoltVec3(a_worldPosition),
 													JPH::Quat::sIdentity(),
 													JPH::EMotionType::Static,
 													a_physicsLayerSetting.FetchVALObjectLayer(Enum::PhysicsObjectLayerType::StaticObject) };
@@ -70,7 +70,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticBox
 
 	// ボックスボディの設定を作成
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													Utility::ConvertToJoltVector3(a_worldPosition),
+													Utility::DirectXMathVector3ToJoltVec3(a_worldPosition),
 												    JPH::Quat::sIdentity(),
 												    JPH::EMotionType::Static,
 												    a_physicsLayerSetting.FetchVALObjectLayer(Enum::PhysicsObjectLayerType::StaticObject) };
@@ -112,7 +112,7 @@ FWK::Struct::PhysicsBodyHandle FWK::Physics::PhysicsBodyCreator::CreateStaticCap
 	const auto& l_shape = l_shapeResult.Get();
 
 	JPH::BodyCreationSettings l_bodyCreateSettings{ l_shape,
-													Utility::ConvertToJoltVector3(a_worldPosition),
+													Utility::DirectXMathVector3ToJoltVec3(a_worldPosition),
 													JPH::Quat::sIdentity(),
 													JPH::EMotionType::Static,
 													a_physicsLayerSetting.FetchVALObjectLayer(Enum::PhysicsObjectLayerType::StaticObject) };

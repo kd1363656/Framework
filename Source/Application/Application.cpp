@@ -78,9 +78,6 @@ void Application::Execute()
 		l_sceneManager.Update     ();
 		l_sceneManager.LateUpdate ();
 
-		// 当たり判定の更新
-		l_physicsManager.Update(m_fpsController.GetVALScaledDeltaTime());
-
 		// JoltPhysicsのデバック命令をこのフレーム用のQueueへ集める
 		// ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
 		l_physicsManager.CollectPhysicsDebugDrawCommands();

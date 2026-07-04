@@ -15,8 +15,6 @@ namespace FWK::Physics
 
 		void INIT();
 
-		void Update(const float a_deltaTime);
-
 		void OptimizeBroadPhase();
 
 		void CollectPhysicsDebugDrawCommands();
@@ -90,10 +88,6 @@ namespace FWK::Physics
 		static constexpr uint32_t k_mainThreadCount        = 1U;
 		static constexpr uint32_t k_minHardwareThreadCount = 1U;
 
-		static constexpr int k_fallbackWorkerThreadCount = 1;
-		
-		static constexpr int k_collisionStepCount = 1;
-
 		std::unordered_map<std::uint32_t, std::size_t> m_activeBodyIDIndexMap;
 
 		std::vector<JPH::BodyID> m_activeBodyIDList;
@@ -101,8 +95,6 @@ namespace FWK::Physics
 		std::unique_ptr<JPH::Factory> m_factory;
 
 		std::unique_ptr<JPH::TempAllocatorImpl> m_tempAllocator;
-
-		std::unique_ptr<JPH::JobSystemThreadPool> m_jobSystem;
 
 		std::unique_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
 		
