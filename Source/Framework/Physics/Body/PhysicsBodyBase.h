@@ -7,7 +7,7 @@ namespace FWK::Physics
 	protected:
 
 		// 派生クラスだけがBodyを設定できるようにprotectedにする
-		explicit PhysicsBodyBase(const JPH::BodyID& a_bodyID);
+		explicit PhysicsBodyBase(const JPH::BodyID a_bodyID);
 
 	public:
 

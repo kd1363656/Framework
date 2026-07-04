@@ -838,6 +838,9 @@
     <Filter Include="Source\Framework\Physics\Body\Static">
       <UniqueIdentifier>{562d863b-c5e8-4aff-a229-186803fef10d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Box">
+      <UniqueIdentifier>{5715cb32-59fe-4833-beda-84e96295b96b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1704,6 +1707,9 @@
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h">
       <Filter>Source\Framework\Physics\Body\Static</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.h">
+      <Filter>Source\Framework\Physics\Body\Static\Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2104,6 +2110,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp">
       <Filter>Source\Framework\Physics\Body\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

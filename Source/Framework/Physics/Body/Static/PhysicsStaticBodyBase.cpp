@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticBodyBase.h"
 
-FWK::Physics::PhysicsStaticBodyBase::PhysicsStaticBodyBase(const JPH::BodyID& a_bodyID) : 
+FWK::Physics::PhysicsStaticBodyBase::PhysicsStaticBodyBase(const JPH::BodyID a_bodyID) : 
 	PhysicsBodyBase(a_bodyID)
 {}
 

@@ -6,7 +6,7 @@ namespace FWK::Physics
 	{
 	public:
 
-		explicit PhysicsStaticBodyBase(const JPH::BodyID& a_bodyID);
+		explicit PhysicsStaticBodyBase(const JPH::BodyID a_bodyID);
 
 	public:
 
