@@ -4,6 +4,8 @@ namespace FWK::Struct
 {
 	struct PhysicsCharacterVirtualCreateSetting final
 	{
+		Enum::PhysicsCharacterVirtualType m_characterVirtualType = Enum::PhysicsCharacterVirtualType::AffectedByGravity;
+
 		TypeAlias::Math::Vector3 m_worldPosition = {};
 
 		float m_capsuleHalfHeightOfCylinder = Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder;
@@ -22,14 +24,5 @@ namespace FWK::Struct
 		float m_jumpSpeed = Constant::k_defaultCharacterVirtualJumpSpeed;
 
 		bool m_isJumpRequested = false;
-	};
-
-	struct CharacterVirtualRecord final
-	{
-		JPH::Ref<JPH::CharacterVirtual> m_characterVirtual = nullptr;
-
-		JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings = {};
-
-		bool m_isReleaseReserved = false;
 	};
 }

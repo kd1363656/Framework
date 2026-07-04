@@ -4,6 +4,19 @@ namespace FWK::Physics
 {
 	class PhysicsCharacterVirtualRegistry final
 	{
+	private:
+
+		struct CharacterVirtualRecord final
+		{
+			JPH::Ref<JPH::CharacterVirtual> m_characterVirtual = nullptr;
+
+			JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings = {};
+
+			Enum::PhysicsCharacterVirtualType m_characterVirtualType = Enum::PhysicsCharacterVirtualType::AffectedByGravity;
+
+			bool m_isReleaseReserved = false;
+		};
+
 	public:
 
 		 PhysicsCharacterVirtualRegistry();
@@ -39,20 +52,12 @@ namespace FWK::Physics
 
 		bool SetupStorage();
 
-		void UpdateCharacterVirtualRecord(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, Struct::CharacterVirtualRecord& a_characterVirtualRecord);
+		void UpdateCharacterVirtualRecord(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord);
 
 		void ReleaseAllCharacterVirtuals();
 
-		static constexpr float k_minCharacterVirtualDeltaTime				    = 0.0F;
-		static constexpr float k_minCharacterVirtualCapsuleHalfHeightOfCylinder = 0.0F;
-		static constexpr float k_minCharacterVirtualCapsuleRadius				= 0.0F;
-		static constexpr float k_minCharacterVirtualSlopeAngleRadius			= 0.0F;
-		static constexpr float k_minCharacterVirtualMaxSlopeAngleRadians		= 0.0F;
-		static constexpr float k_maxCharacterVirtualMaxSlopeAngleRadians		= DirectX::XM_PIDIV2;
-		static constexpr float k_maxCharacterVirtualJumpSpeed			        = 0.0F;
-
 		// StorageIDをそのまま配列Indexとして使用する。
-		std::vector<Struct::CharacterVirtualRecord> m_characterVirtualRecordList;
+		std::vector<CharacterVirtualRecord> m_characterVirtualRecordList;
 
 		std::weak_ptr<JPH::PhysicsSystem>     m_physicsSystem;
 		std::weak_ptr<PhysicsLayerSetting>    m_physicsLayerSetting;

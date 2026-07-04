@@ -106,6 +106,8 @@
 
 // CharacterVirtual関係
 #include <Jolt/Physics/Character/CharacterVirtual.h>
+#include <Jolt/Physics/Body/BodyFilter.h>
+#include <Jolt/Physics/Collision/ShapeFilter.h>
 
 // JoltMath関係
 #include <Jolt/Math/Vec3.h>

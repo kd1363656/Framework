@@ -7,7 +7,9 @@ FWK::Physics::PhysicsCharacterVirtualRegistry::PhysicsCharacterVirtualRegistry()
 	m_physicsLayerSetting(),
 	m_tempAllocator      (),
 
-	m_storageIDAllocator()
+	m_storageIDAllocator(),
+
+	m_isSetup(false)
 {}
 FWK::Physics::PhysicsCharacterVirtualRegistry::~PhysicsCharacterVirtualRegistry()
 {
@@ -44,12 +46,14 @@ void FWK::Physics::PhysicsCharacterVirtualRegistry::Deserialize(const nlohmann::
 
 void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
 {
-	FWK_ASSERT_RETURN_IF(!m_isSetup,												                              "PhysicsCharacterVirtualRegistryが設定されていないため、CharacterVirtualの更新に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_characterVirtualStorageID         == Constant::k_invalidStorageID,                     "CharacterVirtualのStorageIDが無効なため、更新に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_deltaTime                         <= k_minCharacterVirtualDeltaTime,                   "DeltaTimeが0以下のため、CharacterVirtualの更新に失敗しました。");
-	FWK_ASSERT_RETURN_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、CharacterVirtualの更新に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!m_isSetup,												          "PhysicsCharacterVirtualRegistryが設定されていないため、CharacterVirtualの更新に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_deltaTime <= Constant::k_minCharacterVirtualDeltaTime,			  "DeltaTimeが0以下のため、CharacterVirtualの更新に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_updateData.m_jumpSpeed < Constant::k_minCharacterVirtualJumpSpeed, "JumpSpeedが0未満のため、CharacterVirtualの更新に失敗しました。");
 
-	auto& l_characterVirtualRecord = m_characterVirtualRecordList[a_characterVirtualStorageID];
+		  auto& l_characterVirtualRecord = m_characterVirtualRecordList[a_characterVirtualStorageID];
+	const auto& l_characterVirtual       = l_characterVirtualRecord.m_characterVirtual;
+
+	FWK_ASSERT_RETURN_IF(!l_characterVirtual, "CharacterVirtualが無効のため、CharacterVirtualの更新に失敗しました。");
 
 	UpdateCharacterVirtualRecord(a_updateData, a_deltaTime, l_characterVirtualRecord);
 }
@@ -63,10 +67,10 @@ FWK::TypeAlias::StorageID FWK::Physics::PhysicsCharacterVirtualRegistry::Release
 {
 	// 解放失敗時は元のStorageIDを返し、
 	// 呼び出し側が有効なIDを失わないようにする。
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isSetup,																				"PhysicsCharacterVirtualRegistryが設定されていないため、CharacterVirtualの解放に失敗しました。", a_characterVirtualStorageID);
-	FWK_ASSERT_RETURN_VALUE_IF(a_characterVirtualStorageID == Constant::k_invalidStorageID,								"CharacterVirtualのStorageIDが無効なため、解放に失敗しました。",                                 a_characterVirtualStorageID);
-	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、解放に失敗しました。",                                              a_characterVirtualStorageID);
-
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isSetup,																				"PhysicsCharacterVirtualRegistryが設定されていないため、CharacterVirtualの解放に失敗しました。", Constant::k_invalidStorageID);
+	FWK_ASSERT_RETURN_VALUE_IF(a_characterVirtualStorageID == Constant::k_invalidStorageID,								"CharacterVirtualのStorageIDが無効なため、解放に失敗しました。",                                 Constant::k_invalidStorageID);
+	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、解放に失敗しました。",                                              Constant::k_invalidStorageID);
+	
 	auto& l_characterVirtualRecord = m_characterVirtualRecordList[a_characterVirtualStorageID];
 
 	// JPH::Refをnullptrで戻すことでCharacterVirtual本体を即時解放する
@@ -82,14 +86,16 @@ FWK::TypeAlias::StorageID FWK::Physics::PhysicsCharacterVirtualRegistry::Release
 
 FWK::TypeAlias::StorageID FWK::Physics::PhysicsCharacterVirtualRegistry::CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_isSetup,                                                                                        "PhysicsCharacterVirtualRegistryが設定されていないため、CreateCharacterVirtual処理に失敗しました。。",          Constant::k_invalidStorageID);
-	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下となっており、CreateCharacterVirtual処理に失敗しました。", Constant::k_invalidStorageID);
-	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下となっており、CreateCharacterVirtual処理に失敗しました。",               Constant::k_invalidStorageID);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_isSetup,																								    "PhysicsCharacterVirtualRegistryが設定されていないため、CreateCharacterVirtual処理に失敗しました。。",          Constant::k_invalidStorageID);
+	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleHalfHeightOfCylinder <= Constant::k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下となっており、CreateCharacterVirtual処理に失敗しました。", Constant::k_invalidStorageID);
+	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_capsuleRadius               <= Constant::k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下となっており、CreateCharacterVirtual処理に失敗しました。",               Constant::k_invalidStorageID);
 
-	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
-		                       a_createSetting.m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians,
+	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_maxSlopeAngleRadians < Constant::k_minCharacterVirtualMaxSlopeAngleRadians ||
+		                       a_createSetting.m_maxSlopeAngleRadians > Constant::k_maxCharacterVirtualMaxSlopeAngleRadians,
 		                       "CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外となっており、CreateCharacterVirtual処理に失敗しました。",
 		                       Constant::k_invalidStorageID);
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_createSetting.m_characterVirtualType == Enum::PhysicsCharacterVirtualType::Invalid, "CharacterVirtualTypeがInvalidのため、CharacterVirtual処理に失敗しました。", Constant::k_invalidStorageID);
 
 	const auto l_physicsSystem = m_physicsSystem.lock();
 
@@ -131,7 +137,22 @@ FWK::TypeAlias::StorageID FWK::Physics::PhysicsCharacterVirtualRegistry::CreateC
 																				   l_physicsSystem.get());
 	
 	l_characterVirtualRecord.m_characterVirtual       = l_characterVirtual;
-	l_characterVirtualRecord.m_extendedUpdateSettings = {};
+	
+	auto& l_extendedUpdateSettings = l_characterVirtualRecord.m_extendedUpdateSettings;
+
+	// 重力がないTypeなら床吸着と階段昇降を無効化
+	if (a_createSetting.m_characterVirtualType == Enum::PhysicsCharacterVirtualType::UnaffectedByGravity)
+	{
+		l_extendedUpdateSettings.mStickToFloorStepDown = JPH::Vec3::sZero();
+		l_extendedUpdateSettings.mWalkStairsStepUp     = JPH::Vec3::sZero();
+	}
+	else
+	{
+		l_extendedUpdateSettings = {};
+	}
+
+	// CharacterVirtualTypeを格納
+	l_characterVirtualRecord.m_characterVirtualType = a_createSetting.m_characterVirtualType;
 
 	return l_characterVirtualStorageID;
 }
@@ -143,6 +164,8 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualRegistry::Fet
 
 	const auto& l_characterVirtual = m_characterVirtualRecordList[a_characterVirtualStorageID].m_characterVirtual;
 
+	FWK_ASSERT_RETURN_VALUE_IF(!l_characterVirtual, "CharacterVirtualが無効となっており、ワールド座標取得に失敗しました。", {});
+
 	return Utility::JoltRVec3ToDirectXMathVector3(l_characterVirtual->GetPosition());
 }
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualRegistry::FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const
@@ -152,7 +175,9 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualRegistry::Fet
 
 	const auto& l_characterVirtual = m_characterVirtualRecordList[a_characterVirtualStorageID].m_characterVirtual;
 
-	return Utility::JoltRVec3ToDirectXMathVector3(l_characterVirtual->GetLinearVelocity());
+	FWK_ASSERT_RETURN_VALUE_IF(!l_characterVirtual, "CharacterVirtualが無効となっており、速度取得に失敗しました。", {});
+
+	return Utility::JoltVec3ToDirectXMathVector3(l_characterVirtual->GetLinearVelocity());
 }
 bool FWK::Physics::PhysicsCharacterVirtualRegistry::FetchVALIsCharacterVirtualOnGround(const TypeAlias::StorageID a_characterVirtualStorageID) const
 {
@@ -160,6 +185,8 @@ bool FWK::Physics::PhysicsCharacterVirtualRegistry::FetchVALIsCharacterVirtualOn
 	FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtualRecordList.size() <= static_cast<size_t>(a_characterVirtualStorageID), "リストのサイズを超えており、設置状態取得に失敗しました。", {});
 
 	const auto& l_characterVirtual = m_characterVirtualRecordList[a_characterVirtualStorageID].m_characterVirtual;
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_characterVirtual, "CharacterVirtualが無効となっており、設置状態取得に失敗しました。", {});
 
 	return l_characterVirtual->GetGroundState() == JPH::CharacterBase::EGroundState::OnGround;
 }
@@ -177,9 +204,28 @@ bool FWK::Physics::PhysicsCharacterVirtualRegistry::SetupStorage()
 	return true;
 }
 
-void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtualRecord(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, Struct::CharacterVirtualRecord& a_characterVirtualRecord)
+void FWK::Physics::PhysicsCharacterVirtualRegistry::UpdateCharacterVirtualRecord(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime, CharacterVirtualRecord& a_characterVirtualRecord)
 {
+	auto& l_characterVirtual = a_characterVirtualRecord.m_characterVirtual;
 
+	FWK_ASSERT_RETURN_IF(!l_characterVirtual, "CharacterVirtualがnullptrのため、更新に失敗しました。");
+
+	const auto& l_physicsSystem       = m_physicsSystem.lock      ();
+	const auto& l_physicsLayerSetting = m_physicsLayerSetting.lock();
+	const auto& l_tempAllocator       = m_tempAllocator.lock      ();
+
+	FWK_ASSERT_RETURN_IF(!l_physicsSystem,       "PhysicsSystemが無効なため、CharacterVirtualの更新に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、CharacterVirtualの更新に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_tempAllocator,       "TempAllocatorが無効なため、CharacterVirtualの更新に失敗しました。");
+
+	const auto  l_characterObjectLayer  = l_physicsLayerSetting->FetchVALObjectLayer      (Enum::PhysicsObjectLayerType::CharacterObject);
+	const auto& l_braodPhaseLayerFilter = l_physicsSystem->GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
+	const auto& l_objectLayerFilter     = l_physicsSystem->GetDefaultLayerFilter          (l_characterObjectLayer);
+
+	const JPH::BodyFilter  l_bodyFilter  = {};
+	const JPH::ShapeFilter l_shapeFilter = {};
+
+	const auto& l_desiredVelocity = Utility::DirectXMathVector3ToJoltVec3(a_updateData.m_desiredVelocity);
 }
 
 void FWK::Physics::PhysicsCharacterVirtualRegistry::ReleaseAllCharacterVirtuals()

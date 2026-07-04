@@ -17,11 +17,14 @@ namespace FWK::Physics
 		void LoadCONFIG();
 
 		void OptimizeBroadPhase();
+		
+		void UpdateChracterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID, const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
 
 		void CollectPhysicsDebugDrawCommands();
 
-		void ReleaseBody(Struct::PhysicsBodyHandle& a_bodyHandle);
-		
+		void				 ReleaseBody		    (Struct::PhysicsBodyHandle& a_bodyHandle);
+		TypeAlias::StorageID ReleaseCharacterVirtual(const TypeAlias::StorageID a_characterVirtualStorageID);
+
 		void SaveCONFIG() const;
 
 		void TogglePhysicsDebugDraw();
@@ -30,7 +33,13 @@ namespace FWK::Physics
 		Struct::PhysicsBodyHandle CreateStaticBoxBody    (const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Vector3& a_halfExtent);
 		Struct::PhysicsBodyHandle CreateStaticCapsuleBody(const TypeAlias::Math::Vector3& a_worldPosition, const float					   a_halfHeightOfCylinder, const float a_radius);
 		
-		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition (const Struct::PhysicsBodyHandle& a_bodyHandle) const;
+		TypeAlias::StorageID CreateCharacterVirtual(const Struct::PhysicsCharacterVirtualCreateSetting& a_createSetting);
+
+		TypeAlias::Math::Vector3 FetchVALBodyWorldPosition(const Struct::PhysicsBodyHandle& a_bodyHandle) const;
+
+		TypeAlias::Math::Vector3 FetchVALCharacterVirtualWorldPosition (const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		TypeAlias::Math::Vector3 FetchVALCharacterVirtualLinearVelocity(const TypeAlias::StorageID a_characterVirtualStorageID) const;
+		bool					 FetchVALInCharacterVirtualOnGround    (const TypeAlias::StorageID a_characterVirtualStorageID) const;
 		
 		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
