@@ -1,17 +1,17 @@
 ﻿#include "PhysicsBodyBase.h"
 
-FWK::Graphics::PhysicsBodyBase::PhysicsBodyBase(const std::shared_ptr<JPH::PhysicsSystem>& a_physicsSystem, const JPH::BodyID& a_bodyID) : 
+FWK::Physics::PhysicsBodyBase::PhysicsBodyBase(const JPH::BodyID& a_bodyID) : 
 	m_bodyID(a_bodyID)
 {}
 
-FWK::Graphics::PhysicsBodyBase::PhysicsBodyBase() = default;
-FWK::Graphics::PhysicsBodyBase::~PhysicsBodyBase()
+FWK::Physics::PhysicsBodyBase::PhysicsBodyBase() = default;
+FWK::Physics::PhysicsBodyBase::~PhysicsBodyBase()
 {
 	// 使用していたBodyIDをPhysicsSystemに返却する
 	ReleaseBody();
 }
 
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::PhysicsBodyBase::FetchVALWorldPosition() const
+FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsBodyBase::FetchVALWorldPosition() const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(m_bodyID.IsInvalid(), "BodyIDが無効なため、Bodyのワールド座標取得に失敗しました。", {});
 
@@ -24,12 +24,12 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::PhysicsBodyBase::FetchVALWorldPosit
 	return Utility::JoltRVec3ToDirectXMathVector3(l_worldPosition);
 }
 
-bool FWK::Graphics::PhysicsBodyBase::FetchVALIsValid() const
+bool FWK::Physics::PhysicsBodyBase::FetchVALIsValid() const
 {
 	return m_bodyID.IsInvalid();
 }
 
-void FWK::Graphics::PhysicsBodyBase::ReleaseBody()
+void FWK::Physics::PhysicsBodyBase::ReleaseBody()
 {
 	// 生成に失敗した、もしくは既に解放済みのBodyでは何もしない
 	if (m_bodyID.IsInvalid()) { return; }

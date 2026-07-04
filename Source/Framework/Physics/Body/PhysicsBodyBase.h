@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
+namespace FWK::Physics
 {
 	class PhysicsBodyBase
 	{
 	protected:
 
 		// 派生クラスだけがBodyを設定できるようにprotectedにする
-		explicit PhysicsBodyBase(const std::shared_ptr<JPH::PhysicsSystem>& a_physicsSystem, const JPH::BodyID& a_bodyID);
+		explicit PhysicsBodyBase(const JPH::BodyID& a_bodyID);
 
 	public:
 
@@ -15,11 +15,11 @@ namespace FWK::Graphics
 		virtual ~PhysicsBodyBase();
 
 		
-		PhysicsBodyBase(const PhysicsBodyBase&)          = delete;
-		PhysicsBodyBase(      PhysicsBodyBase&& a_other) = delete;
+		PhysicsBodyBase(const PhysicsBodyBase&)  = delete;
+		PhysicsBodyBase(      PhysicsBodyBase&&) = delete;
 
-		PhysicsBodyBase& operator=(const PhysicsBodyBase&)          = delete;
-		PhysicsBodyBase& operator=(      PhysicsBodyBase&& a_other) = delete;
+		PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
+		PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
 
 		TypeAlias::Math::Vector3 FetchVALWorldPosition() const;
 

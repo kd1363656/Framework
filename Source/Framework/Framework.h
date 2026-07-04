@@ -373,6 +373,7 @@
 
 // Body
 #include "Physics/Body/PhysicsBodyBase.h"
+#include "Physics/Body/Static/PhysicsStaticBodyBase.h"
 
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"

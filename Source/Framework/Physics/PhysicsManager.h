@@ -21,7 +21,8 @@ namespace FWK::Physics
 
 		void TogglePhysicsDebugDraw();
 
-		const auto& GetREFPhysicsSystem() const { return m_physicsSystem; }
+		const auto& GetREFPhysicsLayerSetting() const { return m_physicsLayerSetting; }
+		const auto& GetREFPhysicsSystem      () const { return m_physicsSystem; }
 
 		auto& GetMutableREFPhysicsSystem() { return m_physicsSystem; }
 
