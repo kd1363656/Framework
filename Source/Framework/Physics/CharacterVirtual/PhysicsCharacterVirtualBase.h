@@ -19,7 +19,7 @@ namespace FWK::Physics
 		PhysicsCharacterVirtualBase& operator=(const PhysicsCharacterVirtualBase&)  = delete;
 		PhysicsCharacterVirtualBase& operator=(      PhysicsCharacterVirtualBase&&) = delete;
 
-		bool CreeateCharacterVirtual();
+		bool CreateCharacterVirtual();
 
 		bool RecreateCharacterVirtual();
 
@@ -34,6 +34,8 @@ namespace FWK::Physics
 
 		bool FetchVALIsOnGround() const;
 
+		void SetWorldCreatePosition(const TypeAlias::Math::Vector3 a_set);
+
 	protected:
 
 		virtual JPH::Vec3 CalculateLinearVelocity(const JPH::Vec3&                                 a_physicsGravity, 
@@ -43,7 +45,7 @@ namespace FWK::Physics
 		
 		virtual JPH::Vec3 FetchVALUpdateGravity(const JPH::Vec3 a_physicsGravity) const = 0;
 
-		virtual void ApplyExtendedUpdateSettings(const JPH::CharacterVirtual& a_characterVirtual, JPH::CharacterVirtual::ExtendedUpdateSettings& a_extendedUpdataSettings);
+		virtual void ApplyExtendedUpdateSettings(const JPH::CharacterVirtual& a_characterVirtual, JPH::CharacterVirtual::ExtendedUpdateSettings& a_extendedUpdateSettings);
 
 	private:
 
@@ -63,6 +65,6 @@ namespace FWK::Physics
 		float m_capsuleRadius;
 		float m_maxSlopeAngleRadians;
 		
-		bool m_isEnhancedInternalEdgeRemovealDisabled;
+		bool m_isEnhancedInternalEdgeRemovalDisabled;
 	};
 }
