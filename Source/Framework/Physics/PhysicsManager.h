@@ -21,6 +21,7 @@ namespace FWK::Physics
 
 		void TogglePhysicsDebugDraw();
 
+		const auto& GetREFTempAllocator      () const { return m_tempAllocator; }
 		const auto& GetREFPhysicsLayerSetting() const { return m_physicsLayerSetting; }
 		const auto& GetREFPhysicsSystem      () const { return m_physicsSystem; }
 
@@ -51,8 +52,6 @@ namespace FWK::Physics
 #endif
 #endif
 		void Release();
-
-		static constexpr std::size_t k_emptyCharacterVirtualCount = 0ULL;
 
 		static constexpr JPH::uint k_maxBodyCount = 1024U;
 

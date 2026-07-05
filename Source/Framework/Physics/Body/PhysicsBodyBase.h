@@ -9,11 +9,6 @@ namespace FWK::Physics
 {
 	class PhysicsBodyBase
 	{
-	private:
-
-		// TODO
-		friend class Scene;
-
 	public:
 
 				 PhysicsBodyBase();

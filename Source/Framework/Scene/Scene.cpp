@@ -48,12 +48,12 @@ void FWK::Scene::INIT()
 	auto l_sphererBody = std::make_unique<Physics::PhysicsStaticSphereBody> ();
 	auto l_capsuleBody = std::make_unique<Physics::PhysicsStaticCapsuleBody>();
 
-	l_boxBody->m_createWorldPosition = { 0.0F, -0.5F, 0.0F };
-	l_boxBody->m_halfExtent			 = { 5.0F,  0.5F, 5.0F };
+	l_boxBody->SetCreateWorldPosition({ 0.0F, -0.5F, 0.0F });
+	l_boxBody->m_halfExtent = { 5.0F,  0.5F, 5.0F };
 
 	l_boxBody->CreateBody();
 
-	l_sphererBody->m_createWorldPosition = { -2.0F, 0.75F, 0.0F };
+	l_sphererBody->SetCreateWorldPosition({ -2.0F, 0.75F, 0.0F });
 
 	l_sphererBody->CreateBody();
 
@@ -61,7 +61,7 @@ void FWK::Scene::INIT()
 	const float l_capsuleRadius               = 0.5F;
 	const float l_capsuleHalfHeight           = l_capsuleHalfHeightOfCylinder + l_capsuleRadius;
 
-	l_capsuleBody->m_createWorldPosition  = { 2.0F, l_capsuleHalfHeight, 0.0F };
+	l_capsuleBody->SetCreateWorldPosition({ 2.0F, l_capsuleHalfHeight, 0.0F });
 	l_capsuleBody->m_halfHeightOfCylinder = l_capsuleHalfHeightOfCylinder;
 	l_capsuleBody->m_radius			      = l_capsuleRadius;
 

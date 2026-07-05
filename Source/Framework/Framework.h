@@ -369,19 +369,17 @@
 #include "Definition/Enum/Physics/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
-
-// Body
 #include "Physics/Body/PhysicsBodyBase.h"
 #include "Physics/Body/Static/PhysicsStaticBodyBase.h"
 #include "Physics/Body/Static/Sphere/PhysicsStaticSphereBody.h"
 #include "Physics/Body/Static/Box/PhysicsStaticBoxBody.h"
 #include "Physics/Body/Static/Capsule/PhysicsStaticCapsuleBody.h"
-
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"
 #include "Physics/DebugRenderer/PhysicsDebugRenderer.h"
 #include "Definition/Constant/Physics/CharacterVirtualConstant.h"
 #include "Definition/Struct/Physics/PhysicsCharacterVirtualStruct.h"
+#include "Physics/CharacterVirtual/PhysicsCharacterVirtualBase.h"
 #include "Physics/PhysicsManager.h"
 
 // コンポーネント

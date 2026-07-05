@@ -26,10 +26,10 @@ int WINAPI WinMain(_In_     HINSTANCE,
 
 void Application::Execute()
 {
+	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
 	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
-	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
 
 	l_graphicsManager.INIT();
 
