@@ -411,7 +411,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMaterialStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\PhysicsBodyCreatorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ResourceReleaseContextStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RootSignatureStruct.h" />
@@ -589,6 +588,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyBase.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.h" />
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h" />
@@ -744,6 +744,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyBase.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp" />

@@ -844,6 +844,9 @@
     <Filter Include="Source\Framework\Physics\Body\Static\Sphere">
       <UniqueIdentifier>{5d03a7ba-80fb-494b-98f1-e618cf4af7d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Capsule">
+      <UniqueIdentifier>{36ec753b-1e00-4bba-8eb9-ececfeedfa05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1518,9 +1521,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMaterialStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\PhysicsBodyCreatorStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
@@ -1715,6 +1715,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.h">
       <Filter>Source\Framework\Physics\Body\Static\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h">
+      <Filter>Source\Framework\Physics\Body\Static\Capsule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2122,6 +2125,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.cpp">
       <Filter>Source\Framework\Physics\Body\Static\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Capsule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

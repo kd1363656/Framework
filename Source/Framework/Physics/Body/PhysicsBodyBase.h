@@ -1,10 +1,21 @@
 ﻿#pragma once
 
+namespace FWK
+{
+	class Scene;
+}
+
 namespace FWK::Physics
 {
 	class PhysicsBodyBase
 	{
+	private:
+
+		// TODO
+		friend class Scene;
+
 	public:
+
 				 PhysicsBodyBase();
 		virtual ~PhysicsBodyBase();
 
@@ -18,8 +29,6 @@ namespace FWK::Physics
 		virtual bool CreateBody() = 0;
 
 		TypeAlias::Math::Vector3 FetchVALWorldPosition() const;
-
-		bool FetchVALIsValid() const;
 
 		void SetCreateWorldPosition(const TypeAlias::Math::Vector3& a_set) { m_createWorldPosition = a_set; }
 
@@ -35,7 +44,11 @@ namespace FWK::Physics
 
 	private:
 
+		virtual JPH::RefConst<JPH::Shape> CreateShape() const = 0;
+
 		void ReleaseBody();
+
+		virtual bool ApplyShapeChange() = 0;
 
 		JPH::BodyID m_bodyID;
 

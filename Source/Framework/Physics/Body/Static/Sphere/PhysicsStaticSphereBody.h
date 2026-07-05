@@ -4,6 +4,11 @@ namespace FWK::Physics
 {
 	class PhysicsStaticSphereBody final : public PhysicsStaticBodyBase
 	{
+	private:
+
+		// TODO
+		friend class Scene;
+
 	public:
 
 		 PhysicsStaticSphereBody()          = default;
@@ -13,9 +18,9 @@ namespace FWK::Physics
 
 	private:
 
-		JPH::RefConst<JPH::Shape> CreateShape() const;
+		JPH::RefConst<JPH::Shape> CreateShape() const override;
 
-		bool ApplyShapeChange();
+		bool ApplyShapeChange() override;
 
 		static constexpr float k_minRadius     = 0.0F;
 		static constexpr float k_defaultRadius = 0.5F;

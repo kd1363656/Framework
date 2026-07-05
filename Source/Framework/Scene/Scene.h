@@ -40,8 +40,9 @@ namespace FWK
 		std::shared_ptr<Graphics::StaticModel>								 m_groundModel                    = nullptr;
 		std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData> m_groundModelStandardDrawRequest = nullptr;
 
-		Struct::PhysicsBodyHandle m_staticFloorBodyHandle    = {};
-		Struct::PhysicsBodyHandle m_staticWallBodyHandle     = {};
+		std::unique_ptr<Physics::PhysicsBodyBase> m_staticBoxBody     = nullptr;
+		std::unique_ptr<Physics::PhysicsBodyBase> m_staticSphereBody  = nullptr;
+		std::unique_ptr<Physics::PhysicsBodyBase> m_staticCapsuleBody = nullptr;
 		
 		Converter::SceneJsonConverter m_jsonConverter = {};
 

@@ -4,6 +4,11 @@ namespace FWK::Physics
 {
 	class PhysicsStaticBoxBody final : public PhysicsStaticBodyBase
 	{
+	private:
+
+		// TODO
+		friend class Scene;
+
 	public:
 
 		 PhysicsStaticBoxBody()          = default;
@@ -13,9 +18,9 @@ namespace FWK::Physics
 
 	private:
 
-		JPH::RefConst<JPH::Shape> CreateShape() const;
+		JPH::RefConst<JPH::Shape> CreateShape() const override;
 
-		bool ApplyShapeChange();
+		bool ApplyShapeChange() override;
 
 		static constexpr float k_minHalfExtentLength     = 0.0;
 		static constexpr float k_defaultHalfExtentLength = 0.5F;

@@ -368,13 +368,14 @@
 // 当たり判定
 #include "Definition/Enum/Physics/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
-#include "Definition/Struct/Graphics/PhysicsBodyCreatorStruct.h"
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
 
 // Body
 #include "Physics/Body/PhysicsBodyBase.h"
 #include "Physics/Body/Static/PhysicsStaticBodyBase.h"
+#include "Physics/Body/Static/Sphere/PhysicsStaticSphereBody.h"
 #include "Physics/Body/Static/Box/PhysicsStaticBoxBody.h"
+#include "Physics/Body/Static/Capsule/PhysicsStaticCapsuleBody.h"
 
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"

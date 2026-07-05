@@ -24,11 +24,6 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsBodyBase::FetchVALWorldPositi
 	return Utility::JoltRVec3ToDirectXMathVector3(l_worldPosition);
 }
 
-bool FWK::Physics::PhysicsBodyBase::FetchVALIsValid() const
-{
-	return m_bodyID.IsInvalid();
-}
-
 bool FWK::Physics::PhysicsBodyBase::ApplyBodyShape(const JPH::RefConst<JPH::Shape>& a_shape, const JPH::EActivation a_activationMode, const bool a_isUpdateMassProperties)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!a_shape,             "変更後のShapeが無効なため、Shapeの変更に失敗しました。",  false);
