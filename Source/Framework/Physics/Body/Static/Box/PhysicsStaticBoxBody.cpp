@@ -19,7 +19,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() cons
                                {});
 
 	const auto& l_halfExtent        = Utility::DirectXMathVector3ToJoltVec3(m_halfExtent);
-	      auto  l_boxShapeSettingss = JPH::BoxShapeSettings{ l_halfExtent };
+	const auto& l_boxShapeSettingss = JPH::BoxShapeSettings{ l_halfExtent };
 
 	const auto& l_shapeResult = l_boxShapeSettingss.Create();
 
