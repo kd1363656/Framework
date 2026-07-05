@@ -14,13 +14,13 @@ namespace FWK::Physics
 		 PhysicsStaticBoxBody()          = default;
 		~PhysicsStaticBoxBody() override = default;
 
-		bool CreateBody() override;
+		bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
 
 	private:
 
-		JPH::RefConst<JPH::Shape> CreateShape() const override;
+		JPH::RefConst<JPH::Shape> CreateShape() const;
 
-		bool ApplyShapeChange() override;
+		bool ApplyShapeChange();
 
 		static constexpr float k_minHalfExtentLength     = 0.0;
 		static constexpr float k_defaultHalfExtentLength = 0.5F;

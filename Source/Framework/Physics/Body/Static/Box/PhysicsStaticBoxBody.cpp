@@ -1,12 +1,12 @@
 ﻿#include "PhysicsStaticBoxBody.h"
 
-bool FWK::Physics::PhysicsStaticBoxBody::CreateBody()
+bool FWK::Physics::PhysicsStaticBoxBody::CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled)
 {
 	const auto& l_shape = CreateShape();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "StaticBoxBody用Shapeが無効なため、Bodyの作成に失敗しました。", false);
 
-	return CreateAndAddStaticBody(l_shape);
+	return CreateAndAddStaticBody(l_shape, a_worldPosition, a_isPushBackEnabled);
 }
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() const
@@ -18,8 +18,8 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() cons
 			                   "StaticBoxBodyのHalfExtentが0以下のため、作成に失敗しました。",
                                {});
 
-	const auto& l_halfExtent        = Utility::DirectXMathVector3ToJoltVec3(m_halfExtent);
-	const auto& l_boxShapeSettingss = JPH::BoxShapeSettings{ l_halfExtent };
+	const auto&                 l_halfExtent = Utility::DirectXMathVector3ToJoltVec3(m_halfExtent);
+	const JPH::BoxShapeSettings l_boxShapeSettingss{ l_halfExtent };
 
 	const auto& l_shapeResult = l_boxShapeSettingss.Create();
 
@@ -30,7 +30,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() cons
 
 bool FWK::Physics::PhysicsStaticBoxBody::ApplyShapeChange()
 {
-	const auto l_shape = +CreateShape();
+	const auto l_shape = CreateShape();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "StaticBoxBody用Shapeが無効なため、Shapeの変更に失敗しました。", false);
 

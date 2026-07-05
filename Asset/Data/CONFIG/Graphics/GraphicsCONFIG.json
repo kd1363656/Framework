@@ -739,7 +739,7 @@
                     "RasterizerDesc": {
                         "AntialiasedLineEnable": 0,
                         "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
-                        "CullMode": "D3D12_CULL_MODE_NONE",
+                        "CullMode": "D3D12_CULL_MODE_BACK",
                         "DepthBias": 0,
                         "DepthBiasClamp": 0.0,
                         "DepthClipEnable": 1,
@@ -906,7 +906,7 @@
                     "RasterizerDesc": {
                         "AntialiasedLineEnable": 0,
                         "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
-                        "CullMode": "D3D12_CULL_MODE_NONE",
+                        "CullMode": "D3D12_CULL_MODE_BACK",
                         "DepthBias": 0,
                         "DepthBiasClamp": 0.0,
                         "DepthClipEnable": 1,

@@ -3,8 +3,6 @@
 FWK::Physics::PhysicsCharacterVirtualBase::PhysicsCharacterVirtualBase() :
     m_characterVirtual(nullptr),
 
-    m_createWorldPosition(TypeAlias::Math::Vector3::Zero),
-
     m_extendedUpdateSettings(),
 
     m_capsuleHalfHeightOfCylinder(Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
@@ -18,7 +16,7 @@ FWK::Physics::PhysicsCharacterVirtualBase::~PhysicsCharacterVirtualBase()
     ReleaseCharacterVirtual();
 }
 
-bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual()
+bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const TypeAlias::Math::Vector3& a_worldPosition)
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                          "CharacterVirtualが既に作成されています。",                                         false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= Constant::k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
@@ -65,11 +63,11 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual()
     //                       Charactervirtualの初期回転、
     //                       アプリケーション側で自由に使用できる64bitのUserData、
     //                       CharacterVirtualが床や壁を検索するときに使用する);
-    m_characterVirtual = new PhysicsCharacterVirtualInstance(&l_characterVirtualSettings,
-                                                             Utility::DirectXMathVector3ToJoltRVec3(m_createWorldPosition),
-                                                             JPH::Quat::sIdentity(),
-                                                             k_defaultUserData,
-                                                             &l_physicsSystem);
+    m_characterVirtual = new PhysicsCharacterVirtualInstance{ &l_characterVirtualSettings,
+                                                              Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition),
+                                                              JPH::Quat::sIdentity(),
+                                                              k_defaultUserData,
+                                                              &l_physicsSystem };
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "Jolt側CharacterVirtualの作成に失敗しました。", false);
     
@@ -79,15 +77,6 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual()
     ApplyExtendedUpdateSettings(*m_characterVirtual, m_extendedUpdateSettings);
 
     return true;
-}
-
-void FWK::Physics::PhysicsCharacterVirtualBase::ReleaseCharacterVirtual()
-{
-    // JPH::Refをnullptrへ戻すことで、このクラスが持っている参照カウントを解放する
-    m_characterVirtual = nullptr;
-
-    // 前回のCharacterVirtual用設定を壊さないように初期化
-    m_extendedUpdateSettings = {};
 }
 
 void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
@@ -177,7 +166,29 @@ void FWK::Physics::PhysicsCharacterVirtualBase::DrawDebug(const JPH::ColorArg a_
                   a_color,
                   false,
                   true);
+
+
 }
+
+void FWK::Physics::PhysicsCharacterVirtualBase::ReleaseCharacterVirtual()
+{
+    // JPH::Refをnullptrへ戻すことで、このクラスが持っている参照カウントを解放する
+    m_characterVirtual = nullptr;
+
+    // 前回のCharacterVirtual用設定を壊さないように初期化
+    m_extendedUpdateSettings = {};
+}
+
+bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyWorldPosition(const TypeAlias::Math::Vector3& a_worldPosition)
+{
+    FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、ワールド座標の反映に失敗しました。", false);
+
+    // 位置とオフセットが計算された状態のものをセットする想定
+    m_characterVirtual->SetPosition(Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition));
+
+    return true;
+}
+
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualBase::FetchVALWorldPosition() const
 {
@@ -197,11 +208,6 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::FetchVALIsOnGround() const
     FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、接地状態取得に失敗しました。", false);
 
     return m_characterVirtual->GetGroundState() == JPH::CharacterBase::EGroundState::OnGround;
-}
-
-void FWK::Physics::PhysicsCharacterVirtualBase::SetWorldCreatePosition(const TypeAlias::Math::Vector3 a_set)
-{
-    m_createWorldPosition = a_set;
 }
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape() const

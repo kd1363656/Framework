@@ -33,20 +33,20 @@ namespace FWK::Physics
 		PhysicsCharacterVirtualBase& operator=(const PhysicsCharacterVirtualBase&)  = delete;
 		PhysicsCharacterVirtualBase& operator=(      PhysicsCharacterVirtualBase&&) = delete;
 
-		bool CreateCharacterVirtual();
-
-		void ReleaseCharacterVirtual();
+		bool CreateCharacterVirtual(const TypeAlias::Math::Vector3& a_worldPosition);
 
 		void Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
 
 		void DrawDebug(const JPH::ColorArg a_color) const;
 
+		void ReleaseCharacterVirtual();
+
+		bool ApplyWorldPosition(const TypeAlias::Math::Vector3& a_worldPosition);
+
 		TypeAlias::Math::Vector3 FetchVALWorldPosition () const;
 		TypeAlias::Math::Vector3 FetchVALLinearVelocity() const;
 
 		bool FetchVALIsOnGround() const;
-
-		void SetWorldCreatePosition(const TypeAlias::Math::Vector3 a_set);
 
 	protected:
 
@@ -68,8 +68,6 @@ namespace FWK::Physics
 		static constexpr JPH::uint64 k_defaultUserData = 0ULL;
 
 		JPH::Ref<PhysicsCharacterVirtualInstance> m_characterVirtual;
-
-		TypeAlias::Math::Vector3 m_createWorldPosition;
 
 		JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings;
 

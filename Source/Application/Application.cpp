@@ -73,13 +73,16 @@ void Application::Execute()
 			continue; 
 		}
 
+		// CharacterVirtualのDraw内容も受け取るため、ここでクリア
+		l_physicsManager.ClearFrame();
+
 		// 更新
 		l_sceneManager.EarlyUpdate();
 		l_sceneManager.Update     ();
 		l_sceneManager.LateUpdate ();
 
 		// JoltPhysicsのデバック命令をこのフレーム用のQueueへ集める
-		// ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
+	    // ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
 		l_physicsManager.CollectPhysicsDebugDrawCommands();
 
 		// 描画処理

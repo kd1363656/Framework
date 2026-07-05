@@ -60,15 +60,21 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 	m_physicsSystem.OptimizeBroadPhase();
 }
 
+void FWK::Physics::PhysicsManager::ClearFrame()
+{
+	if (!m_isInitialized) { return; }
+	if (!m_debugRenderer) { return; }
+
+	// 前フレームのデバック描画情報を消す
+	// デバック描画を無効化している場合でも、古い線が残らないように先に消す
+	m_debugRenderer->ClearFrame();
+}
+
 void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 {
 	if (!m_isInitialized) { return; }
 	if (!m_debugRenderer) { return; }
 	
-	// まず前フレームのデバック描画情報を消す
-	// デバック描画を無効化している場合でも、古い線が残らないように先に消す
-	m_debugRenderer->ClearFrame();
-
 	// デバック描画が無効化されているならしない
 	if (m_isDisableDebugDraw) { return; }
 

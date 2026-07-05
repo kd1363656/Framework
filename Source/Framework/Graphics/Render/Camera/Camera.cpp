@@ -29,7 +29,7 @@ void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_c
 	m_cbCameraPass->m_viewMatrix = m_cameraMatrix.Invert();
 
 	// 行列からワールド座標を取得
-	m_cbCameraPass->m_cameraWorldPosition = TypeAlias::Math::Vector3 { m_cameraMatrix._41, m_cameraMatrix._42, m_cameraMatrix._43 };
+	m_cbCameraPass->m_cameraWorldPosition = m_cameraMatrix.Translation();
 
 	UpdateViewProjectionMatrix();
 }

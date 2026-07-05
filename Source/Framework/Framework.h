@@ -374,6 +374,7 @@
 #include "Physics/Body/Static/Sphere/PhysicsStaticSphereBody.h"
 #include "Physics/Body/Static/Box/PhysicsStaticBoxBody.h"
 #include "Physics/Body/Static/Capsule/PhysicsStaticCapsuleBody.h"
+#include "Physics/Body/Static/Mesh/PhysicsStaticMeshBody.h"
 #include "Physics/DebugRenderer/Queue/PhysicsDebugRendererQueue.h"
 #include "Physics/DebugRenderer/Batch/PhysicsDebugTriangleBatch.h"
 #include "Physics/DebugRenderer/PhysicsDebugRenderer.h"

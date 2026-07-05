@@ -1,14 +1,44 @@
 ﻿#include "PhysicsBodyBase.h"
 
 FWK::Physics::PhysicsBodyBase::PhysicsBodyBase() :
-	m_bodyID(),
-
-	m_createWorldPosition()
+	m_bodyID()
 {}
 FWK::Physics::PhysicsBodyBase::~PhysicsBodyBase()
 {
 	// 使用していたBodyIDをPhysicsSystemに返却する
 	ReleaseBody();
+}
+
+bool FWK::Physics::PhysicsBodyBase::ApplyWorldPosition(const TypeAlias::Math::Vector3& a_worldPosition)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(m_bodyID.IsInvalid(), "Bodyが作成されていないため、WorldPositionの反映に失敗しました。", false);
+
+	auto& l_physicsManager = PhysicsManager::GetInstance                ();
+	auto& l_physicsSystem  = l_physicsManager.GetMutableREFPhysicsSystem();
+	auto& l_bodyInterface  = l_physicsSystem.GetBodyInterface           ();
+
+	// ゲームオブジェクト座標とOffsetを合成足した最終座標を、
+	// そのままJolt側の意Bodyへ反映する
+	l_bodyInterface.SetPositionAndRotationWhenChanged(m_bodyID, 
+													  Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition),
+		                                              JPH::Quat::sIdentity(),
+													  JPH::EActivation::DontActivate);
+
+	return true;
+}
+bool FWK::Physics::PhysicsBodyBase::ApplyIsPushBackEnabled(bool a_isPushBackEnabled)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(m_bodyID.IsInvalid(), "Bodyが作成されていないため、押し戻し設定の反映に失敗しました。", false);
+
+	auto& l_physicsManager = PhysicsManager::GetInstance                ();
+	auto& l_physicsSystem  = l_physicsManager.GetMutableREFPhysicsSystem();
+	auto& l_bodyInterface  = l_physicsSystem.GetBodyInterface           ();
+
+	// JoltではSensorにすると接触判定は行われるが、
+	// 物理的直し戻しは行われなくなる
+	l_bodyInterface.SetIsSensor(m_bodyID, !a_isPushBackEnabled);
+
+	return true;
 }
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsBodyBase::FetchVALWorldPosition() const
@@ -29,9 +59,9 @@ bool FWK::Physics::PhysicsBodyBase::ApplyBodyShape(const JPH::RefConst<JPH::Shap
 	FWK_ASSERT_RETURN_VALUE_IF(!a_shape,             "変更後のShapeが無効なため、Shapeの変更に失敗しました。",  false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_bodyID.IsInvalid(), "Bodyが作成されていないため、Shapeの変更に失敗しました。", false);
 
-	auto& l_physicsManager = PhysicsManager::GetInstance                ();
-	auto& l_physicsSystem  = l_physicsManager.GetMutableREFPhysicsSystem();
-	auto& l_bodyInterface  = l_physicsSystem.GetBodyInterface		    ();
+	const auto& l_physicsManager = PhysicsManager::GetInstance         ();
+	const auto& l_physicsSystem  = l_physicsManager.GetREFPhysicsSystem();
+	const auto& l_bodyInterface  = l_physicsSystem.GetBodyInterface	   ();
 
 	// 同じBodyIDを維持したまま、新しいShapeへ交換する
 	l_bodyInterface.SetShape(GetREFBodyID(),

@@ -21,12 +21,12 @@ void FWK::Scene::INIT()
 	// 本来はUpdateなどで更新する
 	m_charaModelStandardDrawRequest->m_staticModelRecord           = m_charaModel->GetREFStaticModelRecord();
 	m_charaModelStandardDrawRequest->m_worldMatrix				   = TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0.0F));
-	m_charaModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
-	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
+	m_charaModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_charaModelStandardDrawRequest->m_worldMatrix);
+	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
 	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
-	m_groundModelStandardDrawRequest->m_worldMaxScale               = 1.0F;
-	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Transpose();
+	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
+	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 	
@@ -50,24 +50,20 @@ void FWK::Scene::INIT()
 	auto l_sphererBody = std::make_unique<Physics::PhysicsStaticSphereBody> ();
 	auto l_capsuleBody = std::make_unique<Physics::PhysicsStaticCapsuleBody>();
 
-	l_boxBody->SetCreateWorldPosition({ 0.0F, -0.5F, 0.0F });
 	l_boxBody->m_halfExtent = { 5.0F,  0.5F, 5.0F };
 
-	l_boxBody->CreateBody();
+	l_boxBody->CreateBody({ 0.0F, -0.5F, 0.0F }, true);
 
-	l_sphererBody->SetCreateWorldPosition({ -2.0F, 0.75F, 0.0F });
-
-	l_sphererBody->CreateBody();
+	l_sphererBody->CreateBody({ -2.0F, 0.75F, 0.0F }, true);
 
 	const float l_capsuleHalfHeightOfCylinder = 0.75F;
 	const float l_capsuleRadius               = 0.5F;
 	const float l_capsuleHalfHeight           = l_capsuleHalfHeightOfCylinder + l_capsuleRadius;
 
-	l_capsuleBody->SetCreateWorldPosition({ 2.0F, l_capsuleHalfHeight, 0.0F });
 	l_capsuleBody->m_halfHeightOfCylinder = l_capsuleHalfHeightOfCylinder;
 	l_capsuleBody->m_radius			      = l_capsuleRadius;
 
-	l_capsuleBody->CreateBody();
+	l_capsuleBody->CreateBody({ 2.0F, l_capsuleHalfHeight, 0.0F }, false);
 
 	m_staticBoxBody     = std::move(l_boxBody);
 	m_staticSphereBody  = std::move(l_sphererBody);
@@ -75,11 +71,7 @@ void FWK::Scene::INIT()
 
 	auto l_characterVirtual = std::make_unique<Physics::PhysicsCharacterVirtualAffectedByGravity>();
 
-	// CharacterVirtualのPositionは、足元原点Capsuleの足元座標。
-	// Y=2から生成し、重力で床まで落下させる。
-	l_characterVirtual->SetWorldCreatePosition({ 0.0F, 2.0F, 0.0F });
-
-	if (!l_characterVirtual->CreateCharacterVirtual()) { return; }
+	if (!l_characterVirtual->CreateCharacterVirtual({ 0.0F, 2.0F, 0.0F })) { return; }
 
 	m_characterVirtual = std::move(l_characterVirtual);
 
@@ -237,8 +229,9 @@ void FWK::Scene::Update()
 	const auto l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
 
 	m_charaModelStandardDrawRequest->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
-	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
+	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
+	m_characterVirtual->DrawDebug(JPH::ColorArg{ 255U, 255U, 255U, 255U });
 }
 void FWK::Scene::LateUpdate() const
 {

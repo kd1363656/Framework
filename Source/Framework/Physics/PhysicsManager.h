@@ -17,6 +17,7 @@ namespace FWK::Physics
 		
 		void OptimizeBroadPhase();
 		
+		void ClearFrame                     ();
 		void CollectPhysicsDebugDrawCommands();
 
 		void TogglePhysicsDebugDraw();

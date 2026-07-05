@@ -1,28 +1,29 @@
 ﻿#include "PhysicsStaticBodyBase.h"
 
-bool FWK::Physics::PhysicsStaticBodyBase::CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape)
+bool FWK::Physics::PhysicsStaticBodyBase::CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!a_shape, "StaticBody用Shapeが無効なため、Bodyの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_shape,                    "StaticBody用Shapeが無効なため、Bodyの作成に失敗しました。",      false);
+	FWK_ASSERT_RETURN_VALUE_IF(!GetREFBodyID().IsInvalid(), "StaticBodyが既に作成されているため、Bodyの作成に失敗しました。", false);
 
 	      auto& l_physicsManager      = Physics::PhysicsManager::GetInstance       ();
 	const auto& l_physicsLayerSetting = l_physicsManager.GetREFPhysicsLayerSetting ();
 	      auto& l_physicsSystem       = l_physicsManager.GetMutableREFPhysicsSystem();
 	
-	const auto& l_createWorldPosition = GetREFCreateWorldPosition();
-
 	FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、Bodyの作成に失敗しました。", false);
 
-	// StaticBodyは重力や速度では動かず
-	// 床や壁などの固定Colliderとして使用する
 	JPH::BodyCreationSettings l_bodyCreationSettings = { a_shape.GetPtr(),
-														 Utility::DirectXMathVector3ToJoltRVec3(l_createWorldPosition),
-								                         JPH::Quat::sIdentity(),
-								                         JPH::EMotionType::Static,
-								                         l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::StaticObject) };
+	                                                     Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition),
+	                                                     JPH::Quat::sIdentity(),
+														 JPH::EMotionType::Static,
+	                                                     l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::StaticObject) };
+
+	// trueなら通常Collider
+	// falseならSensorとして作成し、押し戻しを行わない
+	l_bodyCreationSettings.mIsSensor = !a_isPushBackEnabled;
 
 	auto& l_bodyInterface = l_physicsSystem.GetBodyInterface();
 
-	const auto l_bodyID = l_bodyInterface.CreateAndAddBody(l_bodyCreationSettings, JPH::EActivation::DontActivate);
+	const auto& l_bodyID = l_bodyInterface.CreateAndAddBody(l_bodyCreationSettings, JPH::EActivation::DontActivate);
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_bodyID.IsInvalid(), "StaticBodyの作成に失敗しました。", false);
 

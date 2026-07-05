@@ -21,11 +21,13 @@ namespace FWK::Physics
 		PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
 		PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
 
-		virtual bool CreateBody() = 0;
+		virtual bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, bool a_isushBackEnabled)                          { return false; };
+		virtual bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, const Struct::StaticModelData& a_staticModelData) { return false; };
+
+		bool ApplyWorldPosition    (const TypeAlias::Math::Vector3& a_worldPosition);
+		bool ApplyIsPushBackEnabled(      bool                      a_isPushBackEnabled);
 
 		TypeAlias::Math::Vector3 FetchVALWorldPosition() const;
-
-		void SetCreateWorldPosition(const TypeAlias::Math::Vector3& a_set) { m_createWorldPosition = a_set; }
 
 	protected:
 
@@ -35,19 +37,11 @@ namespace FWK::Physics
 
 		const auto& GetREFBodyID() const { return m_bodyID; }
 
-		const auto& GetREFCreateWorldPosition() const { return m_createWorldPosition; }
-
 	private:
-
-		virtual JPH::RefConst<JPH::Shape> CreateShape() const = 0;
 
 		void ReleaseBody();
 
-		virtual bool ApplyShapeChange() = 0;
-
 		JPH::BodyID m_bodyID;
-
-		TypeAlias::Math::Vector3 m_createWorldPosition;
 
 		FWK_DEFINE_TYPE_INFO_ROOT(PhysicsBodyBase)
 	};

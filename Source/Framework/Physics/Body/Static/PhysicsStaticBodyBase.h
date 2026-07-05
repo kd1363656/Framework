@@ -11,7 +11,7 @@ namespace FWK::Physics
 
 	protected:
 
-		bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape);
+		bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
 
 		bool ApplyStaticBodyShape(const JPH::RefConst<JPH::Shape>& a_shape);
 

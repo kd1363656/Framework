@@ -856,6 +856,9 @@
     <Filter Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected">
       <UniqueIdentifier>{cb0cfd2d-fc41-4623-b11e-d75e53333d98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Mesh">
+      <UniqueIdentifier>{bd6663cf-1e8d-42f3-bbad-2ebc45e19278}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1734,6 +1737,9 @@
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.h">
       <Filter>Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.h">
+      <Filter>Source\Framework\Physics\Body\Static\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2149,6 +2155,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -15,13 +15,13 @@ namespace FWK::Physics
 		 PhysicsStaticCapsuleBody()          = default;
 		~PhysicsStaticCapsuleBody() override = default;
 
-		bool CreateBody() override;
+		bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
 
 	private:
 
-		JPH::RefConst<JPH::Shape> CreateShape() const override;
+		JPH::RefConst<JPH::Shape> CreateShape() const;
 
-		bool ApplyShapeChange() override;
+		bool ApplyShapeChange();
 
 		static constexpr float k_minHalfHeightOfCylinder     = 0.0F;
 		static constexpr float k_minRadius                   = 0.0F;
