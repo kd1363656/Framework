@@ -1,10 +1,10 @@
 ﻿#include "PhysicsBodyBase.h"
 
-FWK::Physics::PhysicsBodyBase::PhysicsBodyBase(const JPH::BodyID a_bodyID) : 
-	m_bodyID(a_bodyID)
-{}
+FWK::Physics::PhysicsBodyBase::PhysicsBodyBase() :
+	m_bodyID(),
 
-FWK::Physics::PhysicsBodyBase::PhysicsBodyBase() = default;
+	m_createWorldPosition()
+{}
 FWK::Physics::PhysicsBodyBase::~PhysicsBodyBase()
 {
 	// 使用していたBodyIDをPhysicsSystemに返却する
@@ -27,6 +27,24 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsBodyBase::FetchVALWorldPositi
 bool FWK::Physics::PhysicsBodyBase::FetchVALIsValid() const
 {
 	return m_bodyID.IsInvalid();
+}
+
+bool FWK::Physics::PhysicsBodyBase::ApplyBodyShape(const JPH::RefConst<JPH::Shape>& a_shape, const JPH::EActivation a_activationMode, const bool a_isUpdateMassProperties)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!a_shape,             "変更後のShapeが無効なため、Shapeの変更に失敗しました。",  false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_bodyID.IsInvalid(), "Bodyが作成されていないため、Shapeの変更に失敗しました。", false);
+
+	auto& l_physicsManager = PhysicsManager::GetInstance                ();
+	auto& l_physicsSystem  = l_physicsManager.GetMutableREFPhysicsSystem();
+	auto& l_bodyInterface  = l_physicsSystem.GetBodyInterface		    ();
+
+	// 同じBodyIDを維持したまま、新しいShapeへ交換する
+	l_bodyInterface.SetShape(GetREFBodyID(),
+							 a_shape.GetPtr(),
+							 a_isUpdateMassProperties,
+							 a_activationMode);
+
+	return true;
 }
 
 void FWK::Physics::PhysicsBodyBase::ReleaseBody()

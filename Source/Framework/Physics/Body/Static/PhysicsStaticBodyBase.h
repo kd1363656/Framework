@@ -6,15 +6,13 @@ namespace FWK::Physics
 	{
 	public:
 
-		explicit PhysicsStaticBodyBase(const JPH::BodyID a_bodyID);
-
-	public:
-
-		 PhysicsStaticBodyBase();
-		~PhysicsStaticBodyBase() override;
+		 PhysicsStaticBodyBase()          = default;
+		~PhysicsStaticBodyBase() override = default;
 
 	protected:
 
-		static JPH::BodyID CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape, const TypeAlias::Math::Vector3& a_worldPosition);
+		bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape);
+
+		bool ApplyStaticBodyShape(const JPH::RefConst<JPH::Shape>& a_shape);
 	};
 }

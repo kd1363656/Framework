@@ -42,30 +42,6 @@ void FWK::Scene::INIT()
 
 	// ライト
 	m_lightSystem.ApplyDefaultSettings();
-
-	//=========================================================
-	// JoltPhysics 当たり判定テスト
-	//=========================================================
-	// まだTransformComponentは使わない。
-	// 今回はScene側で直接座標を渡し、
-	// StaticBoxの床・壁とDynamicCapsuleの衝突を確認する。
-	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
-	
-	// 床Collider。
-	// 見た目のTerrainとはまだ一致させない。
-	// まずは「平らな床に乗るか」だけ確認する。
-	const TypeAlias::Math::Vector3& l_floorWorldPosition = { 0.0F, -0.5F, 0.0F };
-	const TypeAlias::Math::Vector3& l_floorHalfExtent    = { 5.0F,  0.5F, 5.0F };
-	
-	m_staticFloorBodyHandle = l_physicsManager.CreateStaticBoxBody(l_floorWorldPosition,
-																   l_floorHalfExtent);
-	
-	// 壁Collider。
-	// X方向に移動したときに、Capsuleが壁へ入り込まず止まるか確認するための壁。
-	const TypeAlias::Math::Vector3& l_wallWorldPosition = { 2.0F, 1.0F, 0.0F };
-	const TypeAlias::Math::Vector3& l_wallHalfExtent    = { 0.25F, 1.0F, 5.0F };
-	
-	m_staticWallBodyHandle = l_physicsManager.CreateStaticBoxBody(l_wallWorldPosition, l_wallHalfExtent);
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {

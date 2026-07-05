@@ -1,32 +1,39 @@
 ﻿#include "PhysicsStaticBodyBase.h"
 
-FWK::Physics::PhysicsStaticBodyBase::PhysicsStaticBodyBase(const JPH::BodyID a_bodyID) : 
-	PhysicsBodyBase(a_bodyID)
-{}
-
-FWK::Physics::PhysicsStaticBodyBase::PhysicsStaticBodyBase () = default;
-FWK::Physics::PhysicsStaticBodyBase::~PhysicsStaticBodyBase() = default;
-
-JPH::BodyID FWK::Physics::PhysicsStaticBodyBase::CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape, const TypeAlias::Math::Vector3& a_worldPosition)
+bool FWK::Physics::PhysicsStaticBodyBase::CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!a_shape, "StaticBody用Shapeが無効なため、Bodyの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(!a_shape, "StaticBody用Shapeが無効なため、Bodyの作成に失敗しました。", false);
 
 	      auto& l_physicsManager      = Physics::PhysicsManager::GetInstance       ();
 	const auto& l_physicsLayerSetting = l_physicsManager.GetREFPhysicsLayerSetting ();
 	      auto& l_physicsSystem       = l_physicsManager.GetMutableREFPhysicsSystem();
 	
-	FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、Bodyの作成に失敗しました。", {});
+	const auto& l_createWorldPosition = GetREFCreateWorldPosition();
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、Bodyの作成に失敗しました。", false);
 
 	// StaticBodyは重力や速度では動かず
 	// 床や壁などの固定Colliderとして使用する
 	JPH::BodyCreationSettings l_bodyCreationSettings = { a_shape.GetPtr(),
-								                         Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition),
+														 Utility::DirectXMathVector3ToJoltRVec3(l_createWorldPosition),
 								                         JPH::Quat::sIdentity(),
 								                         JPH::EMotionType::Static,
 								                         l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::StaticObject) };
 
 	auto& l_bodyInterface = l_physicsSystem.GetBodyInterface();
 
-	// StaticBodyは動かないため、作成直後にActivateする必要はない
-	return l_bodyInterface.CreateAndAddBody(l_bodyCreationSettings, JPH::EActivation::DontActivate);
+	const auto l_bodyID = l_bodyInterface.CreateAndAddBody(l_bodyCreationSettings, JPH::EActivation::DontActivate);
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_bodyID.IsInvalid(), "StaticBodyの作成に失敗しました。", false);
+
+	SetBodyID(l_bodyID);
+
+	return true;
+}
+
+bool FWK::Physics::PhysicsStaticBodyBase::ApplyStaticBodyShape(const JPH::RefConst<JPH::Shape>& a_shape)
+{
+	// StaticBodyには質量と歓声を使った移動処理がないため、
+	// Shape交換時の質量再計算は行わない
+	return ApplyBodyShape(a_shape, JPH::EActivation::DontActivate, false);
 }

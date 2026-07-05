@@ -6,13 +6,20 @@ namespace FWK::Physics
 	{
 	public:
 
-		explicit PhysicsStaticBoxBody(const JPH::BodyID a_bodyID);
+		 PhysicsStaticBoxBody()          = default;
+		~PhysicsStaticBoxBody() override = default;
 
-		 PhysicsStaticBoxBody();
-		~PhysicsStaticBoxBody() override;
+		bool CreateBody() override;
 
 	private:
 
-		static constexpr float k_minValidHalfExtentLength = 0.0F;
+		JPH::RefConst<JPH::Shape> CreateShape() const;
+
+		bool ApplyShapeChange();
+
+		static constexpr float k_minHalfExtentLength     = 0.0;
+		static constexpr float k_defaultHalfExtentLength = 0.5F;
+
+		TypeAlias::Math::Vector3 m_halfExtent = { k_defaultHalfExtentLength, k_defaultHalfExtentLength, k_defaultHalfExtentLength };
 	};
 }

@@ -2127,9 +2127,6 @@
     <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json">
       <Filter>Asset\Data\CONFIG\FPS</Filter>
     </None>
-    <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
-      <Filter>Asset\Data\CONFIG\Graphics</Filter>
-    </None>
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
     </None>
@@ -2150,6 +2147,9 @@
     </None>
     <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json">
       <Filter>Asset\Data\CONFIG\Editor</Filter>
+    </None>
+    <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
+      <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
