@@ -591,6 +591,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.h" />
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.h" />
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.h" />
@@ -747,6 +749,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.cpp" />
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.cpp" />
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.cpp" />

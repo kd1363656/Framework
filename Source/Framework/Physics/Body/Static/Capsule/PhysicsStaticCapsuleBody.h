@@ -30,5 +30,7 @@ namespace FWK::Physics
 
 		float m_halfHeightOfCylinder = k_defaultHalfHeightOfCylinder;
 		float m_radius               = k_defaultRadius;
+
+		FWK_DEFINE_TYPE_INFO(PhysicsStaticCapsuleBody, PhysicsStaticBodyBase)
 	};
 }

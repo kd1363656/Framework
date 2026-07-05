@@ -380,6 +380,8 @@
 #include "Definition/Constant/Physics/CharacterVirtualConstant.h"
 #include "Definition/Struct/Physics/PhysicsCharacterVirtualStruct.h"
 #include "Physics/CharacterVirtual/PhysicsCharacterVirtualBase.h"
+#include "Physics/CharacterVirtual/Gravity/Affected/PhysicsCharacterVirtualAffectedByGravity.h"
+#include "Physics/CharacterVirtual/Gravity/Unaffected/PhysicsCharacterVirtualUnaffectedByGravity.h"
 #include "Physics/PhysicsManager.h"
 
 // コンポーネント

@@ -1,5 +1,7 @@
 ﻿#include "Scene.h"
 
+#include "../../Application/Application.h"
+
 void FWK::Scene::INIT()
 {
 	m_camera                         = std::make_shared<Graphics::Camera>								    ();
@@ -70,6 +72,27 @@ void FWK::Scene::INIT()
 	m_staticBoxBody     = std::move(l_boxBody);
 	m_staticSphereBody  = std::move(l_sphererBody);
 	m_staticCapsuleBody = std::move(l_capsuleBody);
+
+	auto l_characterVirtual = std::make_unique<Physics::PhysicsCharacterVirtualAffectedByGravity>();
+
+	// CharacterVirtualのPositionは、足元原点Capsuleの足元座標。
+	// Y=2から生成し、重力で床まで落下させる。
+	l_characterVirtual->SetWorldCreatePosition({ 0.0F, 2.0F, 0.0F });
+
+	if (!l_characterVirtual->CreateCharacterVirtual()) { return; }
+
+	m_characterVirtual = std::move(l_characterVirtual);
+
+	m_characterModelRotationYRadians = 0.0F;
+	m_wasJumpKeyDown = false;
+
+	if (!m_characterVirtual) { return; }
+	if (!m_charaModelStandardDrawRequest) { return; }
+
+	const auto l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
+
+	m_charaModelStandardDrawRequest->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
+	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -152,6 +175,70 @@ void FWK::Scene::Update()
 	}
 
 	m_camera->ApplyCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
+
+	// テスト
+	const auto& l_application = Application::GetInstance();
+	const auto  l_deltaTime = l_application.GetREFFFPSController().GetVALScaledDeltaTime();
+
+	if (!m_characterVirtual) { return; }
+
+	TypeAlias::Math::Vector3 l_moveDirection = {};
+
+	if (GetAsyncKeyState(VK_UP))
+	{
+		l_moveDirection.z += 1.0F;
+	}
+
+	if (GetAsyncKeyState(VK_DOWN))
+	{
+		l_moveDirection.z -= 1.0F;
+	}
+
+	if (GetAsyncKeyState(VK_LEFT))
+	{
+		l_moveDirection.x -= 1.0F;
+	}
+
+	if (GetAsyncKeyState(VK_RIGHT))
+	{
+		l_moveDirection.x += 1.0F;
+	}
+
+	if (l_moveDirection.LengthSquared() > 0.0F)
+	{
+		// 斜め移動時に速度が速くならないよう、方向ベクトルの長さを1にする。
+		l_moveDirection.Normalize();
+
+		// Antikeの見た目だけを移動方向へ向ける。
+		// CapsuleはY軸周りに回転しても形が変わらないため、
+		// CharacterVirtual側の回転は変更しない。
+		m_characterModelRotationYRadians = std::atan2(l_moveDirection.x, l_moveDirection.z) + 0.0F;
+	}
+
+	const bool l_isJumpKeyDown = GetAsyncKeyState(VK_SPACE) != 0;
+
+	Struct::PhysicsCharacterVirtualUpdateData l_updateData = {};
+
+	l_updateData.m_desiredVelocity = l_moveDirection * 3.0F;
+
+	// Spaceを押した瞬間だけジャンプ申請を送る。
+	// 押し続けている間、毎フレーム申請しないようにする。
+	l_updateData.m_isJumpRequested = l_isJumpKeyDown &&
+									!m_wasJumpKeyDown;
+
+	m_wasJumpKeyDown = l_isJumpKeyDown;
+
+	m_characterVirtual->Update(l_updateData, l_deltaTime);
+
+	// 衝突判定後のCharacterVirtual座標をAntikeへ反映する。
+	if (!m_characterVirtual) { return; }
+	if (!m_charaModelStandardDrawRequest) { return; }
+
+	const auto l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
+
+	m_charaModelStandardDrawRequest->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
+	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
+
 }
 void FWK::Scene::LateUpdate() const
 {

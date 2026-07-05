@@ -48,5 +48,7 @@ namespace FWK::Physics
 		JPH::BodyID m_bodyID;
 
 		TypeAlias::Math::Vector3 m_createWorldPosition;
+
+		FWK_DEFINE_TYPE_INFO_ROOT(PhysicsBodyBase)
 	};
 }

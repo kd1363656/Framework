@@ -26,5 +26,7 @@ namespace FWK::Physics
 		static constexpr float k_defaultRadius = 0.5F;
 
 		float m_radius = k_defaultRadius;
+
+		FWK_DEFINE_TYPE_INFO(PhysicsStaticSphereBody, PhysicsStaticBodyBase)
 	};
 }

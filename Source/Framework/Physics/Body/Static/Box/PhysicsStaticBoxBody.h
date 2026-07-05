@@ -26,5 +26,7 @@ namespace FWK::Physics
 		static constexpr float k_defaultHalfExtentLength = 0.5F;
 
 		TypeAlias::Math::Vector3 m_halfExtent = { k_defaultHalfExtentLength, k_defaultHalfExtentLength, k_defaultHalfExtentLength };
+
+		FWK_DEFINE_TYPE_INFO(PhysicsStaticBoxBody, PhysicsStaticBodyBase)
 	};
 }

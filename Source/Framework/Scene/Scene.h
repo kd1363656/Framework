@@ -44,8 +44,14 @@ namespace FWK
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticSphereBody  = nullptr;
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticCapsuleBody = nullptr;
 		
+		std::unique_ptr<Physics::PhysicsCharacterVirtualBase> m_characterVirtual = nullptr;
+
 		Converter::SceneJsonConverter m_jsonConverter = {};
 
 		Graphics::LightSystem m_lightSystem = {};
+
+		float m_characterModelRotationYRadians = 0.0F;
+
+		bool m_wasJumpKeyDown = false;
 	};
 }

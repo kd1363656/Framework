@@ -847,6 +847,15 @@
     <Filter Include="Source\Framework\Physics\Body\Static\Capsule">
       <UniqueIdentifier>{36ec753b-1e00-4bba-8eb9-ececfeedfa05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Gravity">
+      <UniqueIdentifier>{3da01cf8-b903-492e-bbd7-a364aed34ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected">
+      <UniqueIdentifier>{ccf85b89-d004-4e92-a6c8-3a53eb27a80b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected">
+      <UniqueIdentifier>{cb0cfd2d-fc41-4623-b11e-d75e53333d98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1719,6 +1728,12 @@
     <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h">
       <Filter>Source\Framework\Physics\Body\Static\Capsule</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.h">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Gravity\Affected</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.h">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2128,6 +2143,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp">
       <Filter>Source\Framework\Physics\Body\Static\Capsule</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.cpp">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Gravity\Affected</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.cpp">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

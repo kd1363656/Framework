@@ -16,6 +16,8 @@ public:
 	static constexpr int GetVALExitCodeSuccess			  () { return k_exitCodeSuccess; }
 	static constexpr int GetVALExitCodeCOMInitializeFailed() { return k_exitCodeCOMInitializeFailed; }
 
+	const auto& GetREFFFPSController() const { return m_fpsController; }
+
 private:
 
 	void LoadCONFIG    ();
