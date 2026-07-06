@@ -15,11 +15,11 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData
 bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::StaticModelMesh& a_staticModelMesh) const
 {
 	// 頂点数とインデックス数のチェック
-	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "StaticModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",			false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_indexList.size()		 == Constant::k_emptyModelIndexCount,  "StaticModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "StaticModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",			 false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_indexList.size()		  == Constant::k_emptyModelIndexCount,  "StaticModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 
 	// インデックスリストの総数を3で割った時に余りが0でないと、三角形を構成するインデックスリストとして不適切
-	FWK_ASSERT_RETURN_VALUE_IF((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != k_emptyRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
 
 	// メッシュレットデータの初期化
 	// 前回読み込んでいたモデルのメッシュレット情報が残るのを防ぐため
@@ -121,7 +121,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 		// 頂点情報を格納
 		l_modelMeshlet.m_vertexOffset = l_meshoptMeshlet.vertex_offset;
 
-		FWK_ASSERT_RETURN_VALUE_IF((l_meshoptMeshlet.triangle_offset % Constant::k_triangleVertexCount) != k_emptyRemainder, "Meshletのtriangle_offsetが三角形単位ではありません。", false);
+		FWK_ASSERT_RETURN_VALUE_IF((l_meshoptMeshlet.triangle_offset % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "Meshletのtriangle_offsetが三角形単位ではありません。", false);
 
 		// 3個Pack方式では、uint32_t1個が三角形1個分のPrimitiveIndexを持つ
 		// meshoptimizerのtriangle_offsetはPack前PrimitiveIndex配列上のIndexなので、
@@ -185,8 +185,8 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Struct::Sta
 
 bool FWK::Graphics::StaticModelMeshletBuilder::PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount,					  "Pack対象のPrimitiveIndexListサイズが不足しています。",   false);
-	FWK_ASSERT_RETURN_VALUE_IF((a_usedPrimitiveIndexCount % Constant::k_triangleVertexCount) != k_emptyRemainder, "PrimitiveIndexListの使用数が三角形単位ではありません。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount,					         "Pack対象のPrimitiveIndexListサイズが不足しています。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF((a_usedPrimitiveIndexCount % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "PrimitiveIndexListの使用数が三角形単位ではありません。", false);
 
 	// 三角形1個につきPrimitiveIndexは3個
 	// 3個Pack方式では、三角形1個をuint32_t1個にPackする

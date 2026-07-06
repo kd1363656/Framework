@@ -21,11 +21,11 @@ namespace FWK::Physics
 		PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
 		PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
 
-		virtual bool CreateBody(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&, const bool) { return false; }
-		virtual bool CreateBody(const TypeAlias::Math::Matrix&,     const Struct::StaticModelData&)              { return false; }
+		virtual bool CreateBody(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&, const bool)               { return false; }
+		virtual bool CreateBody(const Struct::StaticModelData&,     const bool,                      TypeAlias::Math::Matrix&) { return false; }
 
 		virtual bool ApplyWorldTransform(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&) { return false; }
-		virtual bool ApplyWorldTransform(const TypeAlias::Math::Matrix&)                                      { return false; }
+		virtual bool ApplyWorldTransform(      TypeAlias::Math::Matrix&)                                      { return false; }
 		
 		bool ApplyIsPushBackEnabled(const bool a_isPushBackEnabled) const;
 

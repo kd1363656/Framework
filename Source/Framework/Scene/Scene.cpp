@@ -85,6 +85,17 @@ void FWK::Scene::INIT()
 
 	m_charaModelStandardDrawRequest->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
 	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
+
+
+	const auto& l_groundStaticModelRecord = m_groundModel->GetREFStaticModelRecord().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_groundStaticModelRecord, "Ground用StaticModelRecordが無効なため、StaticMeshBodyの作成に失敗しました。");
+
+	auto l_meshBody = std::make_unique<Physics::PhysicsStaticMeshBody>();
+
+	if (!l_meshBody->CreateBody(l_groundStaticModelRecord->GetREFModelData(), true, m_groundModelStandardDrawRequest->m_worldMatrix)) { return; }
+
+	m_staticMeshBody = std::move(l_meshBody);
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {

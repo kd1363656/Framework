@@ -33,7 +33,5 @@ namespace FWK::Graphics
 		static constexpr std::uint32_t k_firstPackedPrimitiveIndexShiftBit  = k_firstPrimitiveVertexOffset  * k_packedPrimitiveIndexBitCount;
 		static constexpr std::uint32_t k_secondPackedPrimitiveIndexShiftBit = k_secondPrimitiveVertexOffset * k_packedPrimitiveIndexBitCount;
 		static constexpr std::uint32_t k_thirdPackedPrimitiveIndexShiftBit  = k_thirdPrimitiveVertexOffset  * k_packedPrimitiveIndexBitCount;
-
-		static constexpr std::uint32_t k_emptyRemainder	= 0U;
 	};
 }

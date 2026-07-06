@@ -43,7 +43,8 @@ namespace FWK
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticBoxBody     = nullptr;
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticSphereBody  = nullptr;
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticCapsuleBody = nullptr;
-		
+		std::unique_ptr<Physics::PhysicsBodyBase> m_staticMeshBody    = nullptr;
+
 		std::unique_ptr<Physics::PhysicsCharacterVirtualBase> m_characterVirtual = nullptr;
 
 		Converter::SceneJsonConverter m_jsonConverter = {};

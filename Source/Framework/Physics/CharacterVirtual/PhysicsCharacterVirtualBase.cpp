@@ -37,6 +37,8 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
                                "CharacterVirtualのWorldRotationが無効なため、作成に失敗しました。",
 		                       false);
 
+    l_physicsWorldRotation = l_physicsWorldRotation.Normalized();
+
     // 保存されているCapsuleの高さと半径から、
     // CharacterVirtualが衝突判定に使用するShapeを作成する
     const auto l_shape = CreateShape();
