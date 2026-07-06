@@ -21,17 +21,19 @@ namespace FWK::Physics
 		PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
 		PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
 
-		virtual bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, bool a_isushBackEnabled)                          { return false; };
-		virtual bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, const Struct::StaticModelData& a_staticModelData) { return false; };
+		virtual bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, bool a_isPushBackEnabled) { return false; }
+		virtual bool CreateBody(const TypeAlias::Math::Matrix&     a_worldMatrix,   const Struct::StaticModelData&  a_staticModelData)                         { return false; }
 
-		bool ApplyWorldPosition    (const TypeAlias::Math::Vector3& a_worldPosition);
-		bool ApplyIsPushBackEnabled(      bool                      a_isPushBackEnabled);
+		virtual bool ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation) { return false; }
+		virtual bool ApplyWorldTransform(const TypeAlias::Math::Matrix&  a_worldMatrix)                                                       { return false; }
+		
+		bool ApplyIsPushBackEnabled(const bool a_isPushBackEnabled) const;
 
 		TypeAlias::Math::Vector3 FetchVALWorldPosition() const;
 
 	protected:
 
-		bool ApplyBodyShape(const JPH::RefConst<JPH::Shape>& a_shape, const JPH::EActivation a_activationMode, const bool a_isUpdateMassProperties);
+		bool ApplyBodyShape(const JPH::RefConst<JPH::Shape>& a_shape, const JPH::EActivation a_activationMode, const bool a_isUpdateMassProperties) const;
 
 		void SetBodyID(const JPH::BodyID a_set) { m_bodyID = a_set; }
 

@@ -52,9 +52,9 @@ void FWK::Scene::INIT()
 
 	l_boxBody->m_halfExtent = { 5.0F,  0.5F, 5.0F };
 
-	l_boxBody->CreateBody({ 0.0F, -0.5F, 0.0F }, true);
+	l_boxBody->CreateBody(TypeAlias::Math::Quaternion::Identity, { 0.0F, -0.5F, 0.0F }, true);
 
-	l_sphererBody->CreateBody({ -2.0F, 0.75F, 0.0F }, true);
+	l_sphererBody->CreateBody(TypeAlias::Math::Quaternion::Identity, { -2.0F, 0.75F, 0.0F }, true);
 
 	const float l_capsuleHalfHeightOfCylinder = 0.75F;
 	const float l_capsuleRadius               = 0.5F;
@@ -63,7 +63,7 @@ void FWK::Scene::INIT()
 	l_capsuleBody->m_halfHeightOfCylinder = l_capsuleHalfHeightOfCylinder;
 	l_capsuleBody->m_radius			      = l_capsuleRadius;
 
-	l_capsuleBody->CreateBody({ 2.0F, l_capsuleHalfHeight, 0.0F }, false);
+	l_capsuleBody->CreateBody(TypeAlias::Math::Quaternion::Identity, { 2.0F, l_capsuleHalfHeight, 0.0F }, false);
 
 	m_staticBoxBody     = std::move(l_boxBody);
 	m_staticSphereBody  = std::move(l_sphererBody);
@@ -71,7 +71,7 @@ void FWK::Scene::INIT()
 
 	auto l_characterVirtual = std::make_unique<Physics::PhysicsCharacterVirtualAffectedByGravity>();
 
-	if (!l_characterVirtual->CreateCharacterVirtual({ 0.0F, 2.0F, 0.0F })) { return; }
+	if (!l_characterVirtual->CreateCharacterVirtual(TypeAlias::Math::Quaternion::Identity, { 0.0F, 2.0F, 0.0F })) { return; }
 
 	m_characterVirtual = std::move(l_characterVirtual);
 

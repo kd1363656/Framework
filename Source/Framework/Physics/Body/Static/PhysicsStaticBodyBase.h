@@ -11,9 +11,13 @@ namespace FWK::Physics
 
 	protected:
 
-		bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>& a_shape, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
+		bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>&   a_shape, 
+			                        const TypeAlias::Math::Vector3&    a_worldPosition,
+								    const TypeAlias::Math::Quaternion& a_worldRotation, 
+			                        const bool                         a_isPushBackEnabled);
 
-		bool ApplyStaticBodyShape(const JPH::RefConst<JPH::Shape>& a_shape);
+		bool ApplyStaticBodyWorldTransform(const TypeAlias::Math::Vector3&  a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation);
+		bool ApplyStaticBodyShape         (const JPH::RefConst<JPH::Shape>& a_shape);
 
 		FWK_DEFINE_TYPE_INFO(PhysicsStaticBodyBase, PhysicsBodyBase)
 	};

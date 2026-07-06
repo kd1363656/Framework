@@ -15,8 +15,10 @@ namespace FWK::Physics
 		 PhysicsStaticCapsuleBody()          = default;
 		~PhysicsStaticCapsuleBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
+		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, bool a_isPushBackEnabled) override;
 
+		bool ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation) override;
+		
 	private:
 
 		JPH::RefConst<JPH::Shape> CreateShape() const;

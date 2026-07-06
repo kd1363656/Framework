@@ -33,7 +33,7 @@ namespace FWK::Physics
 		PhysicsCharacterVirtualBase& operator=(const PhysicsCharacterVirtualBase&)  = delete;
 		PhysicsCharacterVirtualBase& operator=(      PhysicsCharacterVirtualBase&&) = delete;
 
-		bool CreateCharacterVirtual(const TypeAlias::Math::Vector3& a_worldPosition);
+		bool CreateCharacterVirtual(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition);
 
 		void Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
 
@@ -41,7 +41,7 @@ namespace FWK::Physics
 
 		void ReleaseCharacterVirtual();
 
-		bool ApplyWorldPosition(const TypeAlias::Math::Vector3& a_worldPosition);
+		bool ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation);
 
 		TypeAlias::Math::Vector3 FetchVALWorldPosition () const;
 		TypeAlias::Math::Vector3 FetchVALLinearVelocity() const;

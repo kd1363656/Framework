@@ -16,7 +16,7 @@ FWK::Physics::PhysicsCharacterVirtualBase::~PhysicsCharacterVirtualBase()
     ReleaseCharacterVirtual();
 }
 
-bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const TypeAlias::Math::Vector3& a_worldPosition)
+bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                          "CharacterVirtualが既に作成されています。",                                         false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= Constant::k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
@@ -26,6 +26,16 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
   		                       m_maxSlopeAngleRadians > Constant::k_maxCharacterVirtualMaxSlopeAngleRadians, 
                                "CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外のため、作成に失敗しました。",
                                false);
+
+    JPH::Quat l_physicsWorldRotation = { a_worldRotation.x,
+										 a_worldRotation.y,
+										 a_worldRotation.z,
+										 a_worldRotation.w };
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_physicsWorldRotation.IsNaN() ||
+		                       l_physicsWorldRotation.LengthSq() <= std::numeric_limits<float>::epsilon(),
+                               "CharacterVirtualのWorldRotationが無効なため、作成に失敗しました。",
+		                       false);
 
     // 保存されているCapsuleの高さと半径から、
     // CharacterVirtualが衝突判定に使用するShapeを作成する
@@ -65,7 +75,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
     //                       CharacterVirtualが床や壁を検索するときに使用する);
     m_characterVirtual = new PhysicsCharacterVirtualInstance{ &l_characterVirtualSettings,
                                                               Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition),
-                                                              JPH::Quat::sIdentity(),
+                                                              l_physicsWorldRotation,
                                                               k_defaultUserData,
                                                               &l_physicsSystem };
 
@@ -179,16 +189,28 @@ void FWK::Physics::PhysicsCharacterVirtualBase::ReleaseCharacterVirtual()
     m_extendedUpdateSettings = {};
 }
 
-bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyWorldPosition(const TypeAlias::Math::Vector3& a_worldPosition)
+bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation)
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "CharacterVirtualが作成されていないため、ワールド座標の反映に失敗しました。", false);
 
+    JPH::Quat l_physicsWorldRotation = { a_worldRotation.x,
+                                         a_worldRotation.y,
+                                         a_worldRotation.z,
+                                         a_worldRotation.w };
+
+    FWK_ASSERT_RETURN_VALUE_IF(l_physicsWorldRotation.IsNaN() ||
+                               l_physicsWorldRotation.LengthSq() <= std::numeric_limits<float>::epsilon(), 
+                               "CharacterVirtualのWorldRotationが無効なため、WorldTransformの反映に失敗しました。", 
+                                false);
+
+    l_physicsWorldRotation = l_physicsWorldRotation.Normalized();
+
     // 位置とオフセットが計算された状態のものをセットする想定
     m_characterVirtual->SetPosition(Utility::DirectXMathVector3ToJoltRVec3(a_worldPosition));
+    m_characterVirtual->SetRotation(l_physicsWorldRotation);
 
     return true;
 }
-
 
 FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsCharacterVirtualBase::FetchVALWorldPosition() const
 {
