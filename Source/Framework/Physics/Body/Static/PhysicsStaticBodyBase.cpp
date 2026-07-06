@@ -48,7 +48,7 @@ bool FWK::Physics::PhysicsStaticBodyBase::CreateAndAddStaticBody(const JPH::RefC
 	return true;
 }
 
-bool FWK::Physics::PhysicsStaticBodyBase::ApplyStaticBodyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation)
+bool FWK::Physics::PhysicsStaticBodyBase::ApplyStaticBodyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(GetREFBodyID().IsInvalid(), "StaticBodyが作成されていないため、WorldTransformの反映に失敗しました。", false);
 

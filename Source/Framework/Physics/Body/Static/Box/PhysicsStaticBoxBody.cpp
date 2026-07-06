@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticBoxBody.h"
 
-bool FWK::Physics::PhysicsStaticBoxBody::CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, bool a_isPushBackEnabled)
+bool FWK::Physics::PhysicsStaticBoxBody::CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled)
 {
 	const auto& l_shape = CreateShape();
 
@@ -12,17 +12,17 @@ bool FWK::Physics::PhysicsStaticBoxBody::CreateBody(const TypeAlias::Math::Quate
 		                          a_isPushBackEnabled);
 }
 
-bool FWK::Physics::PhysicsStaticBoxBody::ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation)
+bool FWK::Physics::PhysicsStaticBoxBody::ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
-	return ApplyStaticBodyWorldTransform(a_worldPosition, a_worldRotation);
+	return ApplyStaticBodyWorldTransform(a_worldRotation, a_worldPosition);
 }
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() const
 {
 	// いずれかの軸の半径が0以下ならBoxとして機能しないのでassert;
-	FWK_ASSERT_RETURN_VALUE_IF(m_halfExtent.x <= k_minHalfExtentLength ||
-		                       m_halfExtent.y <= k_minHalfExtentLength ||
-		                       m_halfExtent.z <= k_minHalfExtentLength,
+	FWK_ASSERT_RETURN_VALUE_IF(m_halfExtent.x <= std::numeric_limits<float>::epsilon() ||
+		                       m_halfExtent.y <= std::numeric_limits<float>::epsilon() ||
+		                       m_halfExtent.z <= std::numeric_limits<float>::epsilon(),
 			                   "StaticBoxBodyのHalfExtentが0以下のため、作成に失敗しました。",
                                {});
 

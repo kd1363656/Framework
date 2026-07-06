@@ -14,9 +14,9 @@ namespace FWK::Physics
 		 PhysicsStaticBoxBody()          = default;
 		~PhysicsStaticBoxBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, bool a_isPushBackEnabled) override;
+		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
 
-		bool ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation) override;
+		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 
 	private:
 
@@ -24,7 +24,6 @@ namespace FWK::Physics
 
 		bool ApplyShapeChange();
 
-		static constexpr float k_minHalfExtentLength     = 0.0;
 		static constexpr float k_defaultHalfExtentLength = 0.5F;
 
 		TypeAlias::Math::Vector3 m_halfExtent = { k_defaultHalfExtentLength, k_defaultHalfExtentLength, k_defaultHalfExtentLength };

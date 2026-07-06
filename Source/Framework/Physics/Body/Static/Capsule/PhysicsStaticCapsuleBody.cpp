@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticCapsuleBody.h"
 
-bool FWK::Physics::PhysicsStaticCapsuleBody::CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, bool a_isPushBackEnabled)
+bool FWK::Physics::PhysicsStaticCapsuleBody::CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled)
 {
 	const auto& l_shape = CreateShape();
 
@@ -12,15 +12,15 @@ bool FWK::Physics::PhysicsStaticCapsuleBody::CreateBody(const TypeAlias::Math::Q
 		                          a_isPushBackEnabled);
 }
 
-bool FWK::Physics::PhysicsStaticCapsuleBody::ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation)
+bool FWK::Physics::PhysicsStaticCapsuleBody::ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
-	return ApplyStaticBodyWorldTransform(a_worldPosition, a_worldRotation);
+	return ApplyStaticBodyWorldTransform(a_worldRotation, a_worldPosition);
 }
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticCapsuleBody::CreateShape() const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(m_halfHeightOfCylinder <= k_minHalfHeightOfCylinder, "StaticCapsuleBodyのHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(m_radius <= k_minRadius,                             "StaticCapsuleBodyのRadiusが0以下のため、Shapeの作成に失敗しました。",               {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_halfHeightOfCylinder <= std::numeric_limits<float>::epsilon(), "StaticCapsuleBodyのHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_radius <= std::numeric_limits<float>::epsilon(),               "StaticCapsuleBodyのRadiusが0以下のため、Shapeの作成に失敗しました。",               {});
 
 	const JPH::CapsuleShapeSettings& l_capsuleShapeSettings = { m_halfHeightOfCylinder, m_radius };
 

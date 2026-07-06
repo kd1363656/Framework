@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticSphereBody.h"
 
-bool FWK::Physics::PhysicsStaticSphereBody::CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, bool a_isPushBackEnabled)
+bool FWK::Physics::PhysicsStaticSphereBody::CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled)
 {
 	const auto& l_shape = CreateShape();
 
@@ -12,14 +12,14 @@ bool FWK::Physics::PhysicsStaticSphereBody::CreateBody(const TypeAlias::Math::Qu
 		                          a_isPushBackEnabled);
 }
 
-bool FWK::Physics::PhysicsStaticSphereBody::ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation)
+bool FWK::Physics::PhysicsStaticSphereBody::ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
-	return ApplyStaticBodyWorldTransform(a_worldPosition, a_worldRotation);
+	return ApplyStaticBodyWorldTransform(a_worldRotation, a_worldPosition);
 }
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticSphereBody::CreateShape() const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(m_radius <= k_minRadius, "StaticSphereBodyのRadiusが0以下のため、Shapeの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_radius <= std::numeric_limits<float>::epsilon(), "StaticSphereBodyのRadiusが0以下のため、Shapeの作成に失敗しました。", {});
 
 	const JPH::SphereShapeSettings l_sphereShapeSettings{ m_radius };
 	const auto&                    l_shapeResult = l_sphereShapeSettings.Create();
