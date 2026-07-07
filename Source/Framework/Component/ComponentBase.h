@@ -15,6 +15,18 @@ namespace FWK
 		virtual ~ComponentBase() = default;
 
 		virtual bool IsAllowMultiple() const { return false; }
+		 
+		virtual void INIT		()                      { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Deserialize(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		
+		// デシリアライズ後のポインタの紐づけなどを行う
+		virtual void PostDeserialize() const { /*必要に応じてオーバーライドしてください*/ };
+
+		virtual void EarlyUpdate()       { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Update     ()       { /*必要に応じてオーバーライドしてください*/ };
+		virtual void LateUpdate () const { /*必要に応じてオーバーライドしてください*/ };
+		
+		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
 		void Enable ();
 		void Disable();
