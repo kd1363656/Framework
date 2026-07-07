@@ -140,8 +140,7 @@
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
 #include "Graphics/Command/Allocator/CommandAllocator.h"
 #include "Definition/Type/Alias/CommandAllocatorTypeAlias.h"
-#include "Definition/Constant/Graphics/CommandListConstant.h"
-#include "Graphics/Command/List/CommandList.h"
+#include "Graphics/Command/List/CommandListBase.h"
 #include "Definition/Type/Alias/CommandListTypeAlias.h"
 #include "Definition/Constant/Graphics/FenceConstant.h"
 #include "Graphics/Command/Queue/Fence/Fence.h"
@@ -171,6 +170,10 @@
 // レンダーエリア
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
+
+// ダイレクトコマンドリスト
+#include "Definition/Constant/Graphics/DirectCommandListConstant.h"
+#include "Graphics/Command/List/Direct/DirectCommandList.h"
 
 // Storageクラス
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
@@ -232,6 +235,7 @@
 #include "Graphics/Resource/Model/Static/StaticModel.h"
 
 // アップロードシステム
+#include "Graphics/Command/List/Copy/CopyCommandList.h"
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
@@ -351,6 +355,9 @@
 #include "Graphics/Render/Graph/Resource/Binder/RenderGraphResourceBinder.h"
 #include "Graphics/Render/Graph/Pass/Sorter/RenderGraphPassSorter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
+
+// コンピュートコマンドリスト
+#include "Graphics/Command/List/Compute/ComputeCommandList.h"
 
 // レンダーラー
 #include "Utility/TypeINFO/TypeINFOUtility.h"

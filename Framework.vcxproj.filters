@@ -1401,7 +1401,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandListConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h">
@@ -1731,7 +1731,7 @@
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueue.h">
       <Filter>Source\Framework\Graphics\Command\Queue</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Command\List\CommandList.h">
+    <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h">
       <Filter>Source\Framework\Graphics\Command\List</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h">

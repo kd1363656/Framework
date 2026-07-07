@@ -352,7 +352,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandListConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
@@ -465,7 +465,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Framework.h" />
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
-    <ClInclude Include="Source\Framework\Graphics\Command\List\CommandList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.h" />
     <ClInclude Include="Source\Framework\Graphics\Converter\Json\GraphicsManagerJsonConverter.h" />

@@ -3,7 +3,7 @@
 namespace FWK::Graphics
 {
 	template <D3D12_COMMAND_LIST_TYPE CommandType>
-	class CommandQueue
+	class CommandQueue final
 	{
 	public:
 
@@ -136,7 +136,7 @@ namespace FWK::Graphics
 
 			// このコマンドキューで実行するコマンドリストの種類を指定する
 			// ※注意 : この値は実行するコマンドリストのTypeと一致している必要がある
-			l_desc.Type = k_createCommandListType;
+			l_desc.Type = CommandType;
 
 			// コマンドキューの優先度を指定する
 			l_desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;

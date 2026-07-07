@@ -15,11 +15,11 @@ namespace FWK
 		// デシリアライズ後のポインタの紐づけなどを行う
 		void PostDeserialize() const;
 
-		void EarlyUpdate();
-		void Update     ();
-		void LateUpdate () const;
-		void FixMatrix  ();
-		
+		void EarlyUpdate  ();
+		void Update       ();
+		void LateUpdate   () const;
+		void ConfirmMatrix() const;
+
 		nlohmann::json Serialize() const;
 
 		void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);

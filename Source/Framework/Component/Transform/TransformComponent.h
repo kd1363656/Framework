@@ -11,6 +11,7 @@ namespace FWK
 
 	private:
 
+		Struct::Transform m_transform = {};
 
 		FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
 	};

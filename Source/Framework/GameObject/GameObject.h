@@ -9,9 +9,13 @@ namespace FWK
 		 GameObject() = default;
 		~GameObject() = default;
 
+		void INIT();
+
 	private:
 
 		std::vector<std::shared_ptr<ComponentBase>> m_componentBase = {};
+
+		std::shared_ptr<TransformComponent> m_transformComponent = {};
 
 		UUID m_uuid = GUID_NULL;
 

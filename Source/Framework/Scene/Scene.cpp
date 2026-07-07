@@ -248,7 +248,7 @@ void FWK::Scene::LateUpdate() const
 {
 
 }
-void FWK::Scene::FixMatrix()
+void FWK::Scene::ConfirmMatrix() const
 {
 
 }

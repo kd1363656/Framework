@@ -77,9 +77,10 @@ void Application::Execute()
 		l_physicsManager.ClearFrame();
 
 		// 更新
-		l_sceneManager.EarlyUpdate();
-		l_sceneManager.Update     ();
-		l_sceneManager.LateUpdate ();
+		l_sceneManager.EarlyUpdate  ();
+		l_sceneManager.Update       ();
+		l_sceneManager.LateUpdate   ();
+		l_sceneManager.ConfrimMatrix();
 
 		// JoltPhysicsのデバック命令をこのフレーム用のQueueへ集める
 	    // ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する

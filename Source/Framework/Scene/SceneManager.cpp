@@ -31,6 +31,10 @@ void FWK::SceneManager::LateUpdate() const
 {
 	m_scene.LateUpdate();
 }
+void FWK::SceneManager::ConfrimMatrix()
+{
+	m_scene.ConfirmMatrix();
+}
 
 void FWK::SceneManager::SaveScene() const
 {
