@@ -392,7 +392,12 @@
 // コンポーネント
 #include "Component/ComponentBase.h"
 #include "Definition/Struct/Component/TransformComponentStruct.h"
+#include "Strategy/StrategyBase.h"
 #include "Component/Transform/TransformComponent.h"
+#include "Component/Transform/Strategy/MatrixStrategyBase.h"
+#include "Definition/Type/Alias/Factory/Unique/MatrixStrategyBaseUniqueFactory.h"
+#include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
+#include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
 
 // ゲームオブジェクト
 #include "GameObject/GameObject.h"

@@ -871,6 +871,18 @@
     <Filter Include="Source\Framework\Graphics\Command\List\Direct">
       <UniqueIdentifier>{cb092c29-1312-429e-8c82-783b1ba6cab6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Strategy">
+      <UniqueIdentifier>{0248cbd6-1d00-4952-a2bd-59717530d0b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Strategy">
+      <UniqueIdentifier>{1efc1502-634c-4ff0-9dd9-e1ae58f813ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Strategy\Hierarchical">
+      <UniqueIdentifier>{ec82a122-5748-4dff-b5d7-88d4f0fc783f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Strategy\Standalone">
+      <UniqueIdentifier>{0386c869-5d17-4bf7-a2d3-217b69a2e05a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1767,6 +1779,21 @@
     <ClInclude Include="Source\Framework\Graphics\Command\List\DirectAndComputeCommandListBase.h">
       <Filter>Source\Framework\Graphics\Command\List</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Strategy\StrategyBase.h">
+      <Filter>Source\Framework\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h">
+      <Filter>Source\Framework\Component\Transform\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h">
+      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h">
+      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyBaseUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2182,6 +2209,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp">
       <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp">
+      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp">
+      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

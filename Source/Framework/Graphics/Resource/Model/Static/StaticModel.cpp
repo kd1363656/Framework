@@ -4,7 +4,7 @@ FWK::Graphics::StaticModel::StaticModel() :
 	m_staticModelRecord({}),
 	m_storageID        (Constant::k_invalidStorageID)
 {}
-FWK::Graphics::StaticModel::StaticModel(const StaticModel & a_other) : 
+FWK::Graphics::StaticModel::StaticModel(const StaticModel& a_other) : 
 	m_staticModelRecord(a_other.m_staticModelRecord),
 	m_storageID		   (a_other.m_storageID)
 {
@@ -21,7 +21,6 @@ FWK::Graphics::StaticModel::~StaticModel()
 {
 	SubtractReferenceCount();
 }
-
 FWK::Graphics::StaticModel& FWK::Graphics::StaticModel::operator=(const StaticModel& a_other)
 {
 	if (this == &a_other) { return *this; }

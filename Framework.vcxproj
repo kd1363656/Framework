@@ -336,6 +336,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="..\Library\UFBX\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h" />
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h" />
     <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h" />
@@ -444,6 +447,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyBaseUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
@@ -608,6 +612,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
+    <ClInclude Include="Source\Framework\Strategy\StrategyBase.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
     <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h" />
@@ -639,6 +644,8 @@ if "$(Configuration)"=="Debug" (
     </ClCompile>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp" />
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
