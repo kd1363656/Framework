@@ -15,7 +15,7 @@ FWK::Graphics::FinalColorPass::~FinalColorPass() = default;
 void FWK::Graphics::FinalColorPass::Execute(Renderer & a_renderer, RenderGraph & a_renderGraph)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
-	const auto& l_rootSignature     = SetupRenderPipeline				(a_renderer, Enum::PipelineStateType::FinalColor).lock();
+	const auto& l_rootSignature     = SetupGraphicsRenderPipeline		(a_renderer, Enum::PipelineStateType::FinalColor).lock();
 
 	FWK_ASSERT_RETURN_IF(!l_rootSignature, "FinalColorPass用RootSignatureが無効のため、FinalColorPassの実行に失敗しました。");
 

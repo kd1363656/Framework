@@ -887,7 +887,7 @@
       <UniqueIdentifier>{8964c7c0-1692-42d4-9dc1-fd1bf2d3f2c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\TypeINFO">
-      <UniqueIdentifier>{1796d43a-3e2e-4e89-aa2d-6f4a03efb2a8}</UniqueIdentifier>
+      <UniqueIdentifier>{1d960e7f-1593-430e-9d73-6c413e2023a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

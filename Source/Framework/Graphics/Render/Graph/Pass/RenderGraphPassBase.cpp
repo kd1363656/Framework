@@ -48,10 +48,10 @@ void FWK::Graphics::RenderGraphPassBase::WriteRenderTarget(const Enum::RenderGra
 					  a_afterUsage);
 }
 
-std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
+std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupGraphicsRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
 {
-	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState(a_pipelineStateType);
-	const auto& l_pipelineState     = l_pipelineStateWeak.lock       ();
+	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::GraphicsPipelineStateBase>(a_pipelineStateType);
+	const auto& l_pipelineState     = l_pipelineStateWeak.lock                                            ();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており、レンダーパイプラインのセットに失敗しました。", {});
 

@@ -37,7 +37,7 @@ namespace FWK::Graphics
 		std::weak_ptr<RootSignature> FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const;
 
 		template <Concept::IsDerivedPipelineStateBaseConcept PipelineStateType>
-		std::weak_ptr<PipelineStateBase> FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
+		std::weak_ptr<PipelineStateType> FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
 		{
 			const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
 
