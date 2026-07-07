@@ -349,6 +349,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex\VBPhysicsDebugConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h" />
@@ -432,7 +433,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandAllocatorTypeAlias.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandListTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandQueueTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\ComPTRTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\DescriptorIndexTypeAlias.h" />
@@ -466,6 +466,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\List\DirectAndComputeCommandListBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.h" />
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\CommandQueue.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.h" />
     <ClInclude Include="Source\Framework\Graphics\Converter\Json\GraphicsManagerJsonConverter.h" />
@@ -649,6 +653,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\Queue\Fence\Fence.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Converter\Json\GraphicsManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\GraphicsManager.cpp" />

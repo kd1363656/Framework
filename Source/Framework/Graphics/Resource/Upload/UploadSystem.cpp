@@ -86,20 +86,20 @@ nlohmann::json FWK::Graphics::UploadSystem::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::UploadSystem::AddCommandAllocator(const std::shared_ptr<CopyCommandAllocator>& a_copyCommandAllocator)
+void FWK::Graphics::UploadSystem::AddCommandAllocator(const std::shared_ptr<TypeAlias::CopyCommandAllocator>& a_copyCommandAllocator)
 {
 	FWK_ASSERT_RETURN_IF(!a_copyCommandAllocator, "無効なコピーコマンドアロケーターです、コピーコマンドアロケーター追加処理に失敗しました。");
 
 	m_copyCommandAllocatorList.emplace_back(a_copyCommandAllocator);
 }
 
-void FWK::Graphics::UploadSystem::BeforSubmitResourceProcess(const CopyCommandAllocator& a_copyCommandAllocator)
+void FWK::Graphics::UploadSystem::BeforSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator)
 {
 	// 命令を格納できるようにするためリセット
 	a_copyCommandAllocator.Reset();
 	m_copyCommandList.Reset(a_copyCommandAllocator);
 }
-void FWK::Graphics::UploadSystem::AfterSubmitResourceProcess(CopyCommandAllocator& a_copyCommandAllocator)
+void FWK::Graphics::UploadSystem::AfterSubmitResourceProcess(TypeAlias::CopyCommandAllocator& a_copyCommandAllocator)
 {
 	m_copyCommandList.Close				  ();
 	m_copyCommandQueue.ExecuteCommandLists(m_copyCommandList);
@@ -161,7 +161,7 @@ void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCom
 									   l_sourceBufferResource);
 }
 
-std::weak_ptr<FWK::Graphics::CopyCommandAllocator> FWK::Graphics::UploadSystem::FetchMutablePTRCopyCommandAllocator()
+std::weak_ptr<FWK::TypeAlias::CopyCommandAllocator> FWK::Graphics::UploadSystem::FetchMutablePTRCopyCommandAllocator()
 {
 	FWK_ASSERT_RETURN_VALUE_IF(m_copyCommandAllocatorList.empty(),                                      "コピーコマンドアロケータリストが空のため、コピーコマンドアロケータ取得処理に失敗しました。",					       {});
 	FWK_ASSERT_RETURN_VALUE_IF(m_currentCopyCommandAllocatorIndex >= m_copyCommandAllocatorList.size(), "コピーコマンドアロケータリストの容量を超えたインデックスのため、コピーコマンドアロケータ取得処理に失敗しました。", {});

@@ -28,7 +28,7 @@ void FWK::Converter::UploadSystemJsonConverter::DeserializeCopyCommandAllocator(
 	
 	for (std::size_t l_i = 0ULL; l_i < l_copyCommandAllocatorCount; ++l_i)
 	{
-		const auto& l_copyCommandAllocator = std::make_shared<Graphics::CopyCommandAllocator>();
+		const auto& l_copyCommandAllocator = std::make_shared<TypeAlias::CopyCommandAllocator>();
 
 		a_uploadSystem.AddCommandAllocator(l_copyCommandAllocator);
 	}

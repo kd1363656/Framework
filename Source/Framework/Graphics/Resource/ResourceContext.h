@@ -2,11 +2,6 @@
 
 namespace FWK::Graphics
 {
-	class DirectCommandQueue;
-}
-
-namespace FWK::Graphics
-{
 	class ResourceContext final
 	{
 	public:
@@ -19,7 +14,7 @@ namespace FWK::Graphics
 
 		void ProcessPendingTextureUploads     ();
 		void ProcessPendingStaticModelUploads ();
-		void ReleaseCompletedDeferredResources(const DirectCommandQueue& a_directCommandQueue);
+		void ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue);
 
 		nlohmann::json Serialize() const;
 

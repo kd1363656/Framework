@@ -4,12 +4,12 @@ void FWK::Graphics::FrameResource::INIT()
 {
 	if (!m_directCommandAllocator)
 	{
-		m_directCommandAllocator = std::make_shared<DirectCommandAllocator>();
+		m_directCommandAllocator = std::make_shared<TypeAlias::DirectCommandAllocator>();
 	}
 
 	if (!m_computeCommandAllocator)
 	{
-		m_computeCommandAllocator = std::make_shared<ComputeCommandAllocator>();
+		m_computeCommandAllocator = std::make_shared<TypeAlias::ComputeCommandAllocator>();
 	}
 }
 bool FWK::Graphics::FrameResource::Create(const Device&			    a_device, 

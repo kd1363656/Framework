@@ -17,19 +17,19 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		void AddCommandAllocator(const std::shared_ptr<CopyCommandAllocator>& a_copyCommandAllocator);
+		void AddCommandAllocator(const std::shared_ptr<TypeAlias::CopyCommandAllocator>& a_copyCommandAllocator);
 
 		const auto& GetREFCopyCommandAllocatorList() const { return m_copyCommandAllocatorList; }
 
 	private:
 
-		void BeforSubmitResourceProcess(const CopyCommandAllocator& a_copyCommandAllocator);
-		void AfterSubmitResourceProcess(	  CopyCommandAllocator& a_copyCommandAllocator);
+		void BeforSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
+		void AfterSubmitResourceProcess(	  TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
 
 		void RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList, const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const;
 		void RecordBufferCopy (const Struct::BufferUploadCommand&					  a_bufferUploadCommand)																											   const;
 
-		std::weak_ptr<CopyCommandAllocator> FetchMutablePTRCopyCommandAllocator();
+		std::weak_ptr<TypeAlias::CopyCommandAllocator> FetchMutablePTRCopyCommandAllocator();
 
 		static constexpr std::size_t k_initialCurrentCopyCommandAllocatorIndex = 0ULL;
 		static constexpr std::size_t k_copyCommandAllocatorIndexIncrement      = 1ULL;
@@ -41,10 +41,10 @@ namespace FWK::Graphics
 		static constexpr UINT k_defaultTextureCopyDestinationY = 0U;
 		static constexpr UINT k_defaultTextureCopyDestinationZ = 0U;
 
-		std::vector<std::shared_ptr<CopyCommandAllocator>> m_copyCommandAllocatorList = {};
+		std::vector<std::shared_ptr<TypeAlias::CopyCommandAllocator>> m_copyCommandAllocatorList = {};
 
-		CopyCommandQueue m_copyCommandQueue = {};
-		CopyCommandList  m_copyCommandList  = {};
+		TypeAlias::CopyCommandQueue m_copyCommandQueue = {};
+		CopyCommandList             m_copyCommandList  = {};
 
 		Converter::UploadSystemJsonConverter m_jsonConverter = {};
 

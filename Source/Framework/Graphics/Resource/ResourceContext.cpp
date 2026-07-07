@@ -47,7 +47,7 @@ void FWK::Graphics::ResourceContext::ProcessPendingStaticModelUploads()
     m_staticModelSystem.RegisterPendingStaticModels            ();
 }
 
-void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const DirectCommandQueue & a_directCommandQueue)
+void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue & a_directCommandQueue)
 {
     // 参照カウントが0になったRecordからQueueへ積まれたGPUResource/SRVを、
 	// GPUのFence完了後に安全に解放する

@@ -138,11 +138,12 @@
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
+#include "Definition/Constant/Graphics/CommandAllocatorConstant.h"
+#include "Definition/Constant/Graphics/FenceConstant.h"
 #include "Graphics/Command/Allocator/CommandAllocator.h"
 #include "Definition/Type/Alias/CommandAllocatorTypeAlias.h"
 #include "Graphics/Command/List/CommandListBase.h"
-#include "Definition/Type/Alias/CommandListTypeAlias.h"
-#include "Definition/Constant/Graphics/FenceConstant.h"
+#include "Graphics/Command/List/DirectAndComputeCommandListBase.h"
 #include "Graphics/Command/Queue/Fence/Fence.h"
 #include "Graphics/Command/Queue/CommandQueue.h"
 #include "Definition/Type/Alias/CommandQueueTypeAlias.h"

@@ -6,11 +6,11 @@ void FWK::Graphics::SwapChain::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-bool FWK::Graphics::SwapChain::Create(const Window&						  a_window, 
-									  const Device&						  a_device,	
-									  const Factory&					  a_factory,
-									  const DirectCommandQueue&			  a_directCommandQueue,
-											TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
+bool FWK::Graphics::SwapChain::Create(const Window&						   a_window, 
+									  const Device&						   a_device,	
+									  const Factory&					   a_factory,
+									  const TypeAlias::DirectCommandQueue& a_directCommandQueue,
+											TypeAlias::RTVDescriptorPool&  a_rtvDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateSwapChain(a_window, a_factory, a_directCommandQueue), "スワップチェインの作成に失敗しました。",     false);
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateBackBufferList(a_device, a_rtvDescriptorPool),        "バックバッファリストの作成に失敗しました。", false);
@@ -94,17 +94,12 @@ UINT FWK::Graphics::SwapChain::FetchVALCurrentBackBufferIndex() const
 	return m_swapChain->GetCurrentBackBufferIndex();
 }
 
-bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Factory& a_factory, const DirectCommandQueue& a_directCommandQueue)
+bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Factory& a_factory, const TypeAlias::DirectCommandQueue& a_directCommandQueue)
 {
 	const auto& l_factory = a_factory.GetREFFactory();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_factory, "ファクトリーの作成がされておらず、スワップチェインの作成に失敗しました。", false);
 
-	// スワップチェインは描画結果を表示するための仕組みなので、描画に使う
-	// Directタイプのコマンドキューである必要がある
-	// CopyやCompute用のコマンドキューでは画面表示用のスワップチェインを作ることはできないのでreturn
-	FWK_ASSERT_RETURN_VALUE_IF(a_directCommandQueue.GetVALCreateCommandListType() != D3D12_COMMAND_LIST_TYPE_DIRECT, "コマンドキューのコマンドリストタイプは描画可能なDirectでないといけません、スワップチェインの作成に失敗しました。", false);
-	
 	const auto& l_commandQueue = a_directCommandQueue.GetREFCommandQueue();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_commandQueue, "コマンドキューの作成がされていないためスワップチェインが作成できません、スワップチェインの作成に失敗しました。", false);

@@ -2,11 +2,6 @@
 
 namespace FWK::Graphics
 {
-	class DirectCommandQueue;
-}
-
-namespace FWK::Graphics
-{
 	class ResourceReleaseContext
 	{
 	public:
@@ -17,10 +12,10 @@ namespace FWK::Graphics
 		bool ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 		bool ReserveDeferredReleaseDSVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 
-		void ReleaseAvailableDeferredResources(const DirectCommandQueue&		   a_directCommandQueue, 
-													 TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-													 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-													 TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
+		void ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue, 
+													 TypeAlias::RTVDescriptorPool&  a_rtvDescriptorPool,
+													 TypeAlias::SRVDescriptorPool&  a_srvDescriptorPool,
+													 TypeAlias::DSVDescriptorPool&  a_dsvDescriptorPool);
 
 		// ※ 注意 この関数を呼び出す前に必ずGPUとの同期をとること
 		TypeAlias::DescriptorIndex ReleaseRenderTargetResourceImmediately(const TypeAlias::DescriptorIndex a_rtvDescriptorIndex, TypeAlias::ComPtr<ID3D12Resource2>& a_renderTargetResource, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const;

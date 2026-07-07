@@ -66,8 +66,8 @@ namespace FWK::Graphics
 
 		std::vector<std::shared_ptr<DynamicBufferUploaderBase>> m_dynamicBufferUploaderList = {};
 
-		std::shared_ptr<DirectCommandAllocator>  m_directCommandAllocator  = nullptr;
-		std::shared_ptr<ComputeCommandAllocator> m_computeCommandAllocator = nullptr;
+		std::shared_ptr<TypeAlias::DirectCommandAllocator>  m_directCommandAllocator  = nullptr;
+		std::shared_ptr<TypeAlias::ComputeCommandAllocator> m_computeCommandAllocator = nullptr;
 
 		RenderGraphFrameResource m_renderGraphFrameResource = {};
 

@@ -94,7 +94,7 @@ bool FWK::Graphics::StaticModelSystem::AddStaticModelReferenceCount(const std::w
 
 	return true;
 }
-bool FWK::Graphics::StaticModelSystem::SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
+bool FWK::Graphics::StaticModelSystem::SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelStorage.SubtractReferenceCount(a_staticModelRecord, a_directCommandQueue, a_resourceReleaseContext), "AssetStorageでの参照数減算に失敗したため、StaticModel参照数減算に失敗しました。", false);
 

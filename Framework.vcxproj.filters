@@ -862,6 +862,15 @@
     <Filter Include="Source\Framework\Utility\TypeINFO">
       <UniqueIdentifier>{1d960e7f-1593-430e-9d73-6c413e2023a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List\Copy">
+      <UniqueIdentifier>{71687f15-7d70-4ca1-81b7-6f023df49cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List\Compute">
+      <UniqueIdentifier>{d95ec133-4825-4209-9b5b-babe3b86c7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List\Direct">
+      <UniqueIdentifier>{cb092c29-1312-429e-8c82-783b1ba6cab6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1740,11 +1749,23 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandAllocatorTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandListTypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandQueueTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.h">
+      <Filter>Source\Framework\Graphics\Command\List\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.h">
+      <Filter>Source\Framework\Graphics\Command\List\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.h">
+      <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\DirectAndComputeCommandListBase.h">
+      <Filter>Source\Framework\Graphics\Command\List</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2152,6 +2173,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp">
       <Filter>Source\Framework\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Command\List\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Command\List\Compute</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

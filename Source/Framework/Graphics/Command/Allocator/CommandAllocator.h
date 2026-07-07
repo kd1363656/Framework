@@ -34,7 +34,9 @@ namespace FWK::Graphics
 
 			// コマンドアロケータを再利用できる状態に戻す関数
 			// Reset();
-			m_commandAllocator->Reset();
+			auto l_hr = m_commandAllocator->Reset();
+
+			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドアロケータのリセット処理に失敗しました。");
 		}
 
 		void SetSubmittedFenceValue(const auto& a_set) { m_submittedFenceValue = a_set; }
@@ -42,8 +44,6 @@ namespace FWK::Graphics
 		const auto& GetREFCommandAllocator() const { return m_commandAllocator; }
 
 		const auto& GetREFSubmittedFenceValue() const { return m_submittedFenceValue; }
-
-		auto GetVALCreateCommandListType() const { return k_createCommandListType; }
 
 	private:
 

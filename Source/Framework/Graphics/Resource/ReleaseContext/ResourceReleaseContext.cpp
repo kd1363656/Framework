@@ -30,7 +30,10 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseDSVDescriptorI
 	return true;
 }
 
-void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const DirectCommandQueue& a_directCommandQueue, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
+void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue, 
+	                                                                                TypeAlias::RTVDescriptorPool&  a_rtvDescriptorPool,
+																				    TypeAlias::SRVDescriptorPool&  a_srvDescriptorPool, 
+																					TypeAlias::DSVDescriptorPool&  a_dsvDescriptorPool)
 {
 	const auto& l_completedFenceValue = a_directCommandQueue.FetchVALCompletedFenceValue();
 

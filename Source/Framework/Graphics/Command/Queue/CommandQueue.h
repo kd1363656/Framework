@@ -8,7 +8,10 @@ namespace FWK::Graphics
 	public:
 
 		 CommandQueue() = default;
-		~CommandQueue() = default;
+		~CommandQueue()
+		{
+			WaitForGPUIdleIfNeeded();
+		}
 
 		bool Create(const Device& a_device)
 		{
@@ -55,16 +58,13 @@ namespace FWK::Graphics
 			WaitForFenceValueIfNeeded(a_commandAllocator.GetREFSubmittedFenceValue());
 		}
 
-		void ExecuteCommandLists(const CommandList<CommandType>& a_commandList) const
+		void ExecuteCommandLists(const CommandListBase<CommandType>& a_commandList) const
 		{
 			const auto& l_commandQueue = GetREFCommandQueue             ();
 			const auto& l_commandList  = a_commandList.GetREFCommandList();
 
 			FWK_ASSERT_RETURN_IF(!l_commandQueue, "コマンドキューが作成されておらず、コマンド実行処理に失敗しました。");
 			FWK_ASSERT_RETURN_IF(!l_commandList,  "コマンドリストが作成されておらず、コマンド実行処理に失敗しました。");
-
-			// このキューと違うコマンドリストタイプならreturn
-			FWK_ASSERT_RETURN_IF(k_createCommandListType != a_commandList.GetVALCreateCommandListType(), "コマンドリストとコマンドキューのコマンドリストタイプが違います、コマンド実行処理に失敗しました。");
 
 			// ExecuteCommandLists()はID3D12CommandList*の配列を受け取るため、
 			// 1個だけ実行する場合でも配列にして渡す必要がある
@@ -98,7 +98,9 @@ namespace FWK::Graphics
 
 			// コマンドキュー内でこの位置までの命令が実行完了したら
 			// フェンス値をGetFenceValueに更新する命令をGPUに追加
-			m_commandQueue->Signal(l_fence.Get(), l_updatedFenceValue);
+			auto l_hr = m_commandQueue->Signal(l_fence.Get(), l_updatedFenceValue);
+
+			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "GPUとの同期処理に失敗しました。");
 		}
 
 		bool IsFenceValueCompleted(const UINT64& a_fenceValue) const
@@ -117,9 +119,6 @@ namespace FWK::Graphics
 		}
 
 		const auto& GetREFCommandQueue() const { return m_commandQueue; }
-
-		D3D12_COMMAND_LIST_TYPE GetVALCreateCommandListType() const { return k_createCommandListType; }
-
 
 	private:
 

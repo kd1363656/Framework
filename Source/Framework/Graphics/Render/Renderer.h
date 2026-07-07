@@ -96,10 +96,10 @@ namespace FWK::Graphics
 		SwapChain  m_swapChain  = {};
 		RenderArea m_renderArea = {};
 
-		DirectCommandQueue  m_directCommandQueue  = {};
-		DirectCommandList   m_directCommandList   = {};
-		ComputeCommandQueue m_computeCommandQueue = {};
-		ComputeCommandList  m_computeCommandList  = {};
+		TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
+		DirectCommandList              m_directCommandList   = {};
+		TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
+		ComputeCommandList             m_computeCommandList  = {};
 
 		RenderGraph m_renderGraph = {};
 

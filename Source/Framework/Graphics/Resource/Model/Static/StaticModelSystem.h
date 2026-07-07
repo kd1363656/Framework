@@ -28,7 +28,7 @@ namespace FWK::Graphics
 		void RegisterPendingStaticModels();
 
 		bool AddStaticModelReferenceCount     (const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord);
-		bool SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
+		bool SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
 		const auto& GetREFPendingStaticModelBatchUploadRecordMap() const { return m_pendingStaticModelBatchUploadRecordMap; }
 
