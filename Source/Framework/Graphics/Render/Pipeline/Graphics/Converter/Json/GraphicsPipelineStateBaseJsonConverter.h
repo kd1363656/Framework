@@ -2,37 +2,37 @@
 
 namespace FWK::Graphics
 {
-	class PipelineStateBase;
+	class GraphicsPipelineStateBase;
 }
 
 namespace FWK::Converter
 {
-	class PipelineStateBaseJsonConverter final
+	class GraphicsPipelineStateBaseJsonConverter final
 	{
 	public:
 		
-		 PipelineStateBaseJsonConverter() = default;
-		~PipelineStateBaseJsonConverter() = default;
+		 GraphicsPipelineStateBaseJsonConverter() = default;
+		~GraphicsPipelineStateBaseJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineStateBase) const;
+		void Deserialize(const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
 
-		nlohmann::json Serialize(const Graphics::PipelineStateBase& a_pipelineStateBase) const;
+		nlohmann::json Serialize(const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
 
 	private:
 
-		void DeserializeRasterizerDesc    (const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineState)      const;
-		void DeserializeBlendDesc         (const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineState)      const;
-		void DeserializeDepthStencilDesc  (const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineState)      const;
-		void DeserializeRTVFormatList     (const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineState)      const;
-		void DeserializeSampleDesc        (const nlohmann::json& a_rootJson, Graphics::PipelineStateBase& a_pipelineState)      const;
-		void DeserializeDepthStencilOpDesc(const nlohmann::json& a_rootJson, D3D12_DEPTH_STENCILOP_DESC&  a_depthStencilOPDesc) const;
+		void DeserializeRasterizerDesc    (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		void DeserializeBlendDesc         (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		void DeserializeDepthStencilDesc  (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		void DeserializeRTVFormatList     (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		void DeserializeSampleDesc        (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		void DeserializeDepthStencilOpDesc(const nlohmann::json& a_rootJson, D3D12_DEPTH_STENCILOP_DESC&          a_depthStencilOPDesc) const;
 
-		nlohmann::json SerializeRasterizerDesc    (const Graphics::PipelineStateBase& a_pipelineState)      const;
-		nlohmann::json SerializeBlendDesc         (const Graphics::PipelineStateBase& a_pipelineState)      const;
-		nlohmann::json SerializeDepthStencilDesc  (const Graphics::PipelineStateBase& a_pipelineState)      const;
-		nlohmann::json SerializeDepthStencilOPDesc(const D3D12_DEPTH_STENCILOP_DESC&  a_depthStencilOPDesc) const;
-		nlohmann::json SerializeRTVFormatList     (const Graphics::PipelineStateBase& a_pipelineState)      const;
-		nlohmann::json SerializeSampleDesc        (const Graphics::PipelineStateBase& a_pipelineState)      const;
+		nlohmann::json SerializeRasterizerDesc    (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		nlohmann::json SerializeBlendDesc         (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		nlohmann::json SerializeDepthStencilDesc  (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		nlohmann::json SerializeDepthStencilOPDesc(const D3D12_DEPTH_STENCILOP_DESC&          a_depthStencilOPDesc)        const;
+		nlohmann::json SerializeRTVFormatList     (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
+		nlohmann::json SerializeSampleDesc        (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
 
 		static constexpr std::string_view k_rasterizerDescJsonKey        = "RasterizerDesc";
 		static constexpr std::string_view k_blendDescJsonKey             = "BlendDesc";

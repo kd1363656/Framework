@@ -841,9 +841,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter">
       <UniqueIdentifier>{b0c6cb10-c899-47a6-8693-fb73a2899980}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json">
-      <UniqueIdentifier>{ec3b3b62-ff26-4899-ad23-e7d6f8155f32}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard">
       <UniqueIdentifier>{48ec73ec-9552-4521-adb7-7e27f9e767de}</UniqueIdentifier>
     </Filter>
@@ -852,6 +849,12 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json">
       <UniqueIdentifier>{69006f33-63d0-497c-b7d5-7aabd4de7eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter">
+      <UniqueIdentifier>{c7c6d201-0e30-4f35-b76b-3519d21c08c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json">
+      <UniqueIdentifier>{ec3b3b62-ff26-4899-ad23-e7d6f8155f32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1716,11 +1719,17 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json\StandardPipelineStateJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\GraphicsPipelineStateBase.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json\GraphicsPipelineStateBaseJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2129,11 +2138,17 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json\StandardPipelineStateJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\GraphicsPipelineStateBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\PipelineStateBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json\GraphicsPipelineStateBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
