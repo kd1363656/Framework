@@ -138,11 +138,15 @@
 #include "Graphics/Resource/Buffer/UploadBuffer.h"
 
 // コマンドキュー、リスト、アロケータの基底クラスとフェンスクラス
-#include "Graphics/Command/Allocator/CommandAllocatorBase.h"
-#include "Graphics/Command/List/CommandListBase.h"
+#include "Graphics/Command/Allocator/CommandAllocator.h"
+#include "Definition/Type/Alias/CommandAllocatorTypeAlias.h"
+#include "Definition/Constant/Graphics/CommandListConstant.h"
+#include "Graphics/Command/List/CommandList.h"
+#include "Definition/Type/Alias/CommandListTypeAlias.h"
 #include "Definition/Constant/Graphics/FenceConstant.h"
 #include "Graphics/Command/Queue/Fence/Fence.h"
-#include "Graphics/Command/Queue/CommandQueueBase.h"
+#include "Graphics/Command/Queue/CommandQueue.h"
+#include "Definition/Type/Alias/CommandQueueTypeAlias.h"
 
 //リソースリリースクラス
 #include "Definition/Struct/Graphics/GPUResourceStruct.h"
@@ -158,13 +162,6 @@
 #include "Utility/StorageAllocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
 #include "Utility/StorageAllocator/StorageIDAllocator.h"
 
-// ダイレクトコマンドアロケータ
-#include "Definition/Constant/Graphics/DirectCommandAllocatorConstant.h"
-#include "Graphics/Command/Allocator/Direct/DirectCommandAllocator.h"
-
-// ダイレクトコマンドキュー
-#include "Graphics/Command/Queue/Direct/DirectCommandQueue.h"
-
 // スワップチェイン
 #include "Definition/Constant/Graphics/SwapChainConstant.h"
 #include "Definition/Struct/Graphics/SwapChainStruct.h"
@@ -174,10 +171,6 @@
 // レンダーエリア
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
-
-// ダイレクトコマンドリスト
-#include "Definition/Constant/Graphics/DirectCommandListConstant.h"
-#include "Graphics/Command/List/Direct/DirectCommandList.h"
 
 // Storageクラス
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
@@ -239,10 +232,6 @@
 #include "Graphics/Resource/Model/Static/StaticModel.h"
 
 // アップロードシステム
-#include "Definition/Constant/Graphics/CopyCommandAllocatorConstant.h"
-#include "Graphics/Command/Allocator/Copy/CopyCommandAllocator.h"
-#include "Graphics/Command/List/Copy/CopyCommandList.h"
-#include "Graphics/Command/Queue/Copy/CopyCommandQueue.h"
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
@@ -268,12 +257,6 @@
 // インデックスバッファー
 #include "Graphics/Resource/Buffer/Dynamic/Index/DynamicIndexBufferUploaderBase.h"
 #include "Graphics/Resource/Buffer/Dynamic/Index/PhysicsDebug/PhysicsDebugDynamicIndexBufferUploader.h"
-
-// コンピュート用コマンドリスト、キュー、アロケーター
-#include "Definition/Constant/Graphics/ComputeCommandAllocatorConstant.h"
-#include "Graphics/Command/Allocator/Compute/ComputeCommandAllocator.h"
-#include "Graphics/Command/List/Compute/ComputeCommandList.h"
-#include "Graphics/Command/Queue/Compute/ComputeCommandQueue.h"
 
 // フレームリソース
 #include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
