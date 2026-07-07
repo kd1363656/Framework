@@ -10,7 +10,7 @@ void FWK::Graphics::DirectCommandList::Reset(const CommandAllocatorBase& a_comma
 	CommandListBase::Reset(a_commandAllocator);
 
 	m_currentPipelineState.reset();
-	m_currentPipelineState.reset();
+	m_currentRootSignature.reset();
 }
 
 void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
