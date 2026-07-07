@@ -5,8 +5,8 @@ void FWK::Graphics::StandardPipelineState::Deserialize(const nlohmann::json& a_r
 {
 	if (a_rootJson.is_null()) { return; }
 
-	PipelineStateBase::Deserialize(a_rootJson);
-	m_jsonConverter.Deserialize   (a_rootJson, *this);
+	GraphicsPipelineStateBase::Deserialize(a_rootJson);
+	m_jsonConverter.Deserialize           (a_rootJson, *this);
 }
 
 bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer)
@@ -71,6 +71,7 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC l_pipelineStateDesc = {};
 
+
 	// このPSOで使用するルートシグネチャを設定する
 	// ルートシグネチャは「シェーダーへどのリソースをどう渡すか」のルール
 	l_pipelineStateDesc.pRootSignature = l_rootSignature.Get();
@@ -108,6 +109,8 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 
 	l_pipelineStateDesc.SampleMask = GetVALSampleMask();
 
+	l_pipelineStateDesc.Flags = GetVALPipelineStateFlags();
+
 	l_pipelineStateDesc.PrimitiveTopologyType = GetVALPrimitiveTopologyType();
 
 	l_pipelineStateDesc.NumRenderTargets = static_cast<UINT>(l_rtvFormatList.size());
@@ -129,7 +132,7 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
 
 nlohmann::json FWK::Graphics::StandardPipelineState::Serialize() const
 {
-	auto l_rootJson = PipelineStateBase::Serialize();
+	auto l_rootJson = GraphicsPipelineStateBase::Serialize();
 
 	Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
 

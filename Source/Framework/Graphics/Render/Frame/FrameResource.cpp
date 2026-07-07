@@ -6,14 +6,21 @@ void FWK::Graphics::FrameResource::INIT()
 	{
 		m_directCommandAllocator = std::make_shared<DirectCommandAllocator>();
 	}
+
+	if (!m_computeCommandAllocator)
+	{
+		m_computeCommandAllocator = std::make_shared<ComputeCommandAllocator>();
+	}
 }
 bool FWK::Graphics::FrameResource::Create(const Device&			    a_device, 
 										  const GPUMemoryAllocator& a_gpuMemoryAllocator,
 										  const Struct::ClientSize& a_clientSize, 
 											    ResourceContext&    a_resourceContext)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator,				    "ダイレクトコマンドアロケータが無効です。",				  false);
-	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator->Create(a_device), "ダイレクトコマンドアロケータの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator,				     "ダイレクトコマンドアロケータが無効です。",				     false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator->Create(a_device),  "ダイレクトコマンドアロケータの作成処理に失敗しました。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_computeCommandAllocator,                   "コンピュートコマンドアロケータが無効です。",               false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_computeCommandAllocator->Create(a_device), "コンピュートコマンドアロケータの作成処理に失敗しました。", false);
 
 	// 定数バッファの作成
 	for (const auto& l_dynamicBuffer : m_dynamicBufferUploaderList)

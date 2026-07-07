@@ -31,8 +31,11 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 															false);
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandQueue.Create(a_device), "ダイレクトコマンドキューの作成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandList.Create(a_device),  "ダイレクトコマンドリストの作成処理に失敗しました。", false);
+	// ダイレクトコマンドキュー、リスト、コンピュートキュー、リストの作成処理
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandQueue.Create(a_device),  "ダイレクトコマンドキューの作成処理に失敗しました。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandList.Create(a_device),   "ダイレクトコマンドリストの作成処理に失敗しました。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_computeCommandQueue.Create(a_device), "コンピュートコマンドキューの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_computeCommandList.Create(a_device),  "コンピュートコマンドリストの作成処理に失敗しました。", false);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_swapChain.Create(a_window,
 												   a_device,
@@ -104,21 +107,26 @@ void FWK::Graphics::Renderer::EndFrame()
 
 	FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画終了処理に失敗しました。");
 
-	const auto& l_commandAllocator = l_currentFrameResource->GetREFDirectCommandAllocator();
+	const auto& l_directCommandAllocator  = l_currentFrameResource->GetREFDirectCommandAllocator ();
+	const auto& l_computeCommandAllocator = l_currentFrameResource->GetREFComputeCommandAllocator();
 
-	FWK_ASSERT_RETURN_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandAllocator,  "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_computeCommandAllocator, "コンピュートコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
 
 	// スワップチェインのリソース状態遷移(RENDER_TARGET -> PRESENT)
 	m_renderGraph.EndFrame(*this);
 
 	// コマンドリストへの命令記録を終了
-	m_directCommandList.Close();
+	m_directCommandList.Close ();
+	m_computeCommandList.Close();
 
 	// 描画命令を実行
-	m_directCommandQueue.ExecuteCommandLists(m_directCommandList);
+	m_directCommandQueue.ExecuteCommandLists (m_directCommandList);
+	m_computeCommandQueue.ExecuteCommandLists(m_computeCommandList);
 
 	// フェンス値を更新
-	m_directCommandQueue.SignalAndTrackAllocator(*l_commandAllocator);
+	m_directCommandQueue.SignalAndTrackAllocator (*l_directCommandAllocator);
+	m_computeCommandQueue.SignalAndTrackAllocator(*l_computeCommandAllocator);
 
 	// 画面描画
 	m_swapChain.Present();
@@ -137,9 +145,9 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Clien
 	// スワップチェインのリサイズ前にGPUとの同期をとるなど必要な処理を行う
 	PrepareForSwapChainResize();
 
-	const auto& l_gpuMemoryAllocator     = a_resourceContext.GetREFGPUMemoryAllocator           ();
-		  auto& l_resourceReleaseContext = a_resourceContext.GetMutableREFResourceReleaseContext();
-		  auto& l_rtvDescriptorPool      = a_resourceContext.GetMutableREFRTVDescriptorPool     ();
+	const auto& l_gpuMemoryAllocator     = a_resourceContext.GetREFGPUMemoryAllocator      ();
+	const auto& l_resourceReleaseContext = a_resourceContext.GetREFResourceReleaseContext  ();
+		  auto& l_rtvDescriptorPool      = a_resourceContext.GetMutableREFRTVDescriptorPool();
 		  
 	// バックバッファのリサイズを行う
 	FWK_ASSERT_RETURN_IF(!m_swapChain.Resize(a_device,
@@ -195,27 +203,27 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRoot
 
 	return l_itr->second;
 }
-std::weak_ptr<FWK::Graphics::PipelineStateBase> FWK::Graphics::Renderer::FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
-{
-	const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
-
-	if (l_itr == m_pipelineStateMap.end()) { return {}; }
-
-	return l_itr->second;
-}
 
 void FWK::Graphics::Renderer::ResetCommandObjects(const FrameResource& a_frameResource)
 {
-	const auto& l_commandAllocator = a_frameResource.GetREFDirectCommandAllocator();
+	const auto& l_directCommandAllocator  = a_frameResource.GetREFDirectCommandAllocator ();
 
-	FWK_ASSERT_RETURN_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
+
+	const auto& l_computeCommandAllocator = a_frameResource.GetREFComputeCommandAllocator();
+
+	FWK_ASSERT_RETURN_IF(!l_computeCommandAllocator, "コンピュートコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
 
 	// コマンドアロケータからGPU処理が終わっているかどうかを確かめGPUの処理が終わっていればWait
-	m_directCommandQueue.EnsureAllocatorAvailable(*l_commandAllocator);
+	m_directCommandQueue.EnsureAllocatorAvailable (*l_directCommandAllocator);
+	m_computeCommandQueue.EnsureAllocatorAvailable(*l_computeCommandAllocator);
 
 	// GPU同期処理が終わってからコマンドリスト、アロケータをリセット
-	l_commandAllocator->Reset();
-	m_directCommandList.Reset(*l_commandAllocator);
+	l_directCommandAllocator->Reset ();
+	l_computeCommandAllocator->Reset();
+
+	m_directCommandList.Reset (*l_directCommandAllocator);
+	m_computeCommandList.Reset(*l_computeCommandAllocator);
 }
 
 void FWK::Graphics::Renderer::DecideNextFrameUseFrameResource()

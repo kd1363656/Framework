@@ -4,8 +4,8 @@ void FWK::Graphics::MeshShaderPipelineState::Deserialize(const nlohmann::json& a
 {
 	if (a_rootJson.is_null()) { return; }
 
-	PipelineStateBase::Deserialize(a_rootJson);
-	m_jsonConverter.Deserialize   (a_rootJson, *this);
+	GraphicsPipelineStateBase::Deserialize(a_rootJson);
+	m_jsonConverter.Deserialize           (a_rootJson, *this);
 }
 
 bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, const ShaderCompiler& a_shaderCompiler, const Renderer& a_renderer)
@@ -114,6 +114,8 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 	// 対象となるGPUのノードマスク
 	l_pipelineStateDesc.NodeMask = Constant::k_defaultGPUNodeMask;
 
+	l_pipelineStateDesc.Flags = GetVALPipelineStateFlags();
+
 	// D3D12_DEPTH_STENCIL_DESCについての説明
 	// DepthEnable      : 深度テストを使うかどうか
 	// DepthWriteMask   : 深度値を深度バッファへ書き込むかどうか
@@ -175,7 +177,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 
 nlohmann::json FWK::Graphics::MeshShaderPipelineState::Serialize() const
 {
-	auto l_rootJson = PipelineStateBase::Serialize();
+	auto l_rootJson = GraphicsPipelineStateBase::Serialize();
 
 	Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
 

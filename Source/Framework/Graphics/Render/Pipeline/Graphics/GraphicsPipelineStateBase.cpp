@@ -1,5 +1,21 @@
 ﻿#include "GraphicsPipelineStateBase.h"
 
+void FWK::Graphics::GraphicsPipelineStateBase::Deserialize(const nlohmann::json& a_rootJson)
+{
+	PipelineStateBase::Deserialize(a_rootJson);
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
+nlohmann::json FWK::Graphics::GraphicsPipelineStateBase::Serialize() const
+{
+	auto l_rootJson = PipelineStateBase::Serialize();
+
+	Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
+
+	return l_rootJson;
+}
+
 void FWK::Graphics::GraphicsPipelineStateBase::AddRTVFormat(const DXGI_FORMAT a_format)
 {
 	// もしRTVFormatの要素数を超えてしまっていたらreturn

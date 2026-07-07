@@ -229,6 +229,7 @@
                         "StencilWriteMask": 255
                     },
                     "InputLayout": [],
+                    "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
                         "FilePath": "Asset/Shader/Sprite/Screen/SpriteScreen_PS.cso",
@@ -392,6 +393,7 @@
                         "StencilWriteMask": 255
                     },
                     "InputLayout": [],
+                    "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
                         "FilePath": "Asset/Shader/RenderTarget/Final/FinalColor_PS.cso",
@@ -555,6 +557,7 @@
                         "StencilWriteMask": 255
                     },
                     "InputLayout": [],
+                    "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
                         "FilePath": "Asset/Shader/RenderTarget/Final/FinalPresent_PS.cso",
@@ -727,6 +730,7 @@
                         "FilePath": "Asset/Shader/Model/Static/Standard/UnLit/StaticModelStandardUnLit_MS.cso",
                         "ShaderModelVersionName": "ms_6_6"
                     },
+                    "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
                         "FilePath": "Asset/Shader/Model/Static/Standard/UnLit/StaticModelStandardUnLit_PS.cso",
@@ -894,6 +898,7 @@
                         "FilePath": "Asset/Shader/Model/Static/Standard/Lit/StaticModelStandardLit_MS.cso",
                         "ShaderModelVersionName": "ms_6_6"
                     },
+                    "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
                         "FilePath": "Asset/Shader/Model/Static/Standard/Lit/StaticModelStandardLit_PS.cso",
@@ -1071,6 +1076,7 @@
                             "SemanticName": "COLOR"
                         }
                     ],
+                    "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
                         "FilePath": "Asset/Shader/PhysicsDebug/PhysicsDebug_PS.cso",

@@ -20,6 +20,7 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_useRootSignatureTypeJsonKey  = "UseRootSignatureType";
+		static constexpr std::string_view k_useRootSignatureTypeJsonKey = "UseRootSignatureType";
+		static constexpr std::string_view k_pipelineStateFlagsJsonKey   = "PipelineStateFlags";
 	};
 }

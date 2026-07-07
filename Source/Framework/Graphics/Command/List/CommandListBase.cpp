@@ -55,3 +55,15 @@ void FWK::Graphics::CommandListBase::Close() const
 	// Close();
 	m_commandList->Close();
 }
+
+void FWK::Graphics::CommandListBase::ExecuteResourceBarrier(const D3D12_RESOURCE_BARRIER& a_resourceBarrier) const
+{
+	const auto& l_commandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF(!l_commandList, "ダイレクトコマンドリストが作成されておらず、リソースの遷移に失敗しました。");
+
+	// リソースバリアを転送
+	// ResourceBarrier(送るバリア数、
+	//				   バリア情報の先頭アドレス)
+	l_commandList->ResourceBarrier(k_singleSetupBarrierNUM, &a_resourceBarrier);
+}

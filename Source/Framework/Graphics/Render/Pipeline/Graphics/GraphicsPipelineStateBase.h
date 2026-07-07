@@ -2,13 +2,17 @@
 
 namespace FWK::Graphics
 {
-	class GraphicsPipelineStateBase
+	class GraphicsPipelineStateBase : public PipelineStateBase
 	{
 	public:
 
-		 GraphicsPipelineStateBase() = default;
-		~GraphicsPipelineStateBase() = default;
+		 GraphicsPipelineStateBase()          = default;
+		~GraphicsPipelineStateBase() override = default;
 		
+		void Deserialize(const nlohmann::json& a_rootJson) override;
+
+		nlohmann::json Serialize() const override;
+
 		void AddRTVFormat(const DXGI_FORMAT a_format);
 
 		void SetRasterizerDesc  (const D3D12_RASTERIZER_DESC&	 a_set) { m_rasterizerDesc   = a_set; }
@@ -45,6 +49,8 @@ namespace FWK::Graphics
 
 		std::vector<DXGI_FORMAT> m_rtvFormatList = {};
 
+		Converter::GraphicsPipelineStateBaseJsonConverter m_jsonConverter = {};
+
 		D3D12_RASTERIZER_DESC    m_rasterizerDesc   = {};
 		D3D12_BLEND_DESC         m_blendDesc        = {};
 		D3D12_DEPTH_STENCIL_DESC m_depthStencilDesc = {};
@@ -55,5 +61,7 @@ namespace FWK::Graphics
 		DXGI_FORMAT m_dsvFormat = DXGI_FORMAT_UNKNOWN;
 
 		UINT m_sampleMask = k_initialSampleMask;
+
+		FWK_DEFINE_TYPE_INFO(GraphicsPipelineStateBase, PipelineStateBase)
 	};
 }

@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class StandardPipelineState final : public PipelineStateBase
+	class StandardPipelineState final : public GraphicsPipelineStateBase
 	{
 	public:
 
@@ -48,7 +48,7 @@ namespace FWK::Graphics
 
 		Converter::StandardPipelineStateJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(StandardPipelineState, PipelineStateBase)
+		FWK_DEFINE_TYPE_INFO(StandardPipelineState, GraphicsPipelineStateBase)
 	};
 }
 

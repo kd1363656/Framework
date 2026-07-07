@@ -50,7 +50,8 @@ namespace FWK::Graphics
 
 		const auto& GetREFConstantBufferUploaderList() const { return m_dynamicBufferUploaderList; }
 
-		const auto& GetREFDirectCommandAllocator() const { return m_directCommandAllocator; }
+		const auto& GetREFDirectCommandAllocator () const { return m_directCommandAllocator; }
+		const auto& GetREFComputeCommandAllocator() const { return m_computeCommandAllocator; }
 		
 		const auto& GetREFRenderGraphFrameResource  () const { return m_renderGraphFrameResource; }
 
@@ -65,7 +66,8 @@ namespace FWK::Graphics
 
 		std::vector<std::shared_ptr<DynamicBufferUploaderBase>> m_dynamicBufferUploaderList = {};
 
-		std::shared_ptr<DirectCommandAllocator> m_directCommandAllocator = nullptr;
+		std::shared_ptr<DirectCommandAllocator>  m_directCommandAllocator  = nullptr;
+		std::shared_ptr<ComputeCommandAllocator> m_computeCommandAllocator = nullptr;
 
 		RenderGraphFrameResource m_renderGraphFrameResource = {};
 

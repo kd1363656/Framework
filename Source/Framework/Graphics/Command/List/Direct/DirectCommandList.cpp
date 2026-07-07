@@ -5,15 +5,19 @@ FWK::Graphics::DirectCommandList::DirectCommandList() :
 {}
 FWK::Graphics::DirectCommandList::~DirectCommandList() = default;
 
+void FWK::Graphics::DirectCommandList::Reset(const CommandAllocatorBase& a_commandAllocator)
+{
+	CommandListBase::Reset(a_commandAllocator);
+
+	m_currentPipelineState.reset();
+	m_currentPipelineState.reset();
+}
+
 void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource, const D3D12_RESOURCE_STATES a_beforeState, const D3D12_RESOURCE_STATES a_afterState) const
 {
 	FWK_ASSERT_RETURN_IF(!a_resource, "状態遷移予定のリソースが無効になっているため、リソースの遷移に失敗しました。");
 
 	if (a_beforeState == a_afterState) { return; }
-
-	const auto& l_directCommandList = GetREFCommandList();
-
-	FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、リソースの遷移に失敗しました。");
 
 	// D3D12_RESOURCE_BARRIER構造体についての説明(CD3DX12_RESOURCE_BARRIER::Transition内部で使用)
 	// Type                   : このバリアがどういうバリアであるかを指定
@@ -22,12 +26,9 @@ void FWK::Graphics::DirectCommandList::TransitionResourceBarrier(const TypeAlias
 	// Transition.StateBefore : 切り替える前のリソース状態
 	// Transition.StateAfter  : 切り替えた後のリソース状態
 	// Transition.Subresource : どのサブリソースを遷移対象にするか
-	const auto& l_barrier = CD3DX12_RESOURCE_BARRIER::Transition(a_resource.Get(), a_beforeState, a_afterState);
+	const auto& l_resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(a_resource.Get(), a_beforeState, a_afterState);
 
-	// リソースバリアを転送
-	// ResourceBarrier(送るバリア数、
-	//				   バリア情報の先頭アドレス)
-	l_directCommandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_barrier);
+	ExecuteResourceBarrier(l_resourceBarrier);
 }
 
 void FWK::Graphics::DirectCommandList::SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex) const
@@ -143,7 +144,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderArea(const RenderArea& a_rende
 	l_directCommandList->RSSetScissorRects(k_setScissorRectNUM, &a_renderArea.GetREFScissorRECT());
 }
 
-void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<PipelineStateBase>& a_pipelineState)
+void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<GraphicsPipelineStateBase>& a_pipelineState)
 {
 	const auto& l_directCommandList = GetREFCommandList();
 

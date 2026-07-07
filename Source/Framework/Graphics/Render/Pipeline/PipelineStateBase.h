@@ -21,11 +21,15 @@ namespace FWK::Graphics
 
 		void SetUseRootSignatureType(const Enum::RootSignatureType a_set) { m_useRootSignatureType = a_set; }
 
+		void SetPipelineStateFlags(const D3D12_PIPELINE_STATE_FLAGS a_set) { m_pipelineStateFlags = a_set; }
+
 		const auto& GetREFUseRootSignature() const { return m_useRootSignature; }
 
 		const auto& GetREFPipelineState() const { return m_pipelineState; }
 
 		auto GetVALUseRootSignatureType() const { return m_useRootSignatureType; }
+
+		auto GetVALPipelineStateFlags() const { return m_pipelineStateFlags; }
 
 	protected:
 
@@ -44,6 +48,8 @@ namespace FWK::Graphics
 		std::weak_ptr<RootSignature> m_useRootSignature = {};
 
 		Enum::RootSignatureType m_useRootSignatureType = Enum::RootSignatureType::Invalid;
+
+		D3D12_PIPELINE_STATE_FLAGS m_pipelineStateFlags = D3D12_PIPELINE_STATE_FLAG_NONE;
 
 		Converter::PipelineStateBaseJsonConverter m_jsonConverter = {};
 

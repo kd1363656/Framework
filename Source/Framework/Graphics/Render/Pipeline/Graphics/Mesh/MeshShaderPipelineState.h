@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class MeshShaderPipelineState final : public PipelineStateBase
+	class MeshShaderPipelineState final : public GraphicsPipelineStateBase
 	{
 	public:
 
@@ -31,7 +31,7 @@ namespace FWK::Graphics
 
 		Converter::MeshShaderPipelineStateJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(MeshShaderPipelineState, PipelineStateBase)
+		FWK_DEFINE_TYPE_INFO(MeshShaderPipelineState, GraphicsPipelineStateBase)
 	};
 }
 

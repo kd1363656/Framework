@@ -163,18 +163,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Upload">
       <UniqueIdentifier>{a36c349b-e75b-43a2-91ae-a86b6f0ab8ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command">
-      <UniqueIdentifier>{8999e6fe-cd9b-47e4-94c5-c26251b82308}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator">
-      <UniqueIdentifier>{39acd6a6-c73a-494c-9ff3-4a0f99a75939}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\List">
-      <UniqueIdentifier>{be2cbfea-f887-46f9-bb82-aa82a301df95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Upload\Command\Queue">
-      <UniqueIdentifier>{db842049-15fe-47ee-8c9f-22872e052b50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Upload\Converter">
       <UniqueIdentifier>{2c436a28-fdfa-41fa-8b73-ffae5819b3ce}</UniqueIdentifier>
     </Filter>
@@ -856,6 +844,51 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json">
       <UniqueIdentifier>{ec3b3b62-ff26-4899-ad23-e7d6f8155f32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\Converter">
+      <UniqueIdentifier>{a28d1350-371f-49e6-a910-b0e1aa7845e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\Converter\Json">
+      <UniqueIdentifier>{8c22da84-f2b9-4152-9bc8-881c214242fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Compute">
+      <UniqueIdentifier>{7abad190-1f25-4e60-8b13-2dcbd1ceb691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter">
+      <UniqueIdentifier>{9654757c-3271-4909-8b5c-89147b721d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json">
+      <UniqueIdentifier>{5b9c9a35-b2d4-43aa-aff7-e2bfee367d05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json">
+      <UniqueIdentifier>{715f83cd-c02f-436b-a445-1139272bf252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Allocator\Copy">
+      <UniqueIdentifier>{09a6831b-db00-4f09-9fd3-7c50d1f8f92d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List\Copy">
+      <UniqueIdentifier>{574c94d0-b4e3-40ff-91cd-c1f6daaada66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue\Copy">
+      <UniqueIdentifier>{b16ee743-0862-4409-be86-5347d9685ad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform">
+      <UniqueIdentifier>{ce11bafc-b19a-4f89-be87-540b133756fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Allocator\Compute">
+      <UniqueIdentifier>{6d4e38ae-4eed-4399-bc36-b347363fc944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\List\Compute">
+      <UniqueIdentifier>{b39ae0d2-8210-4653-9136-8ee2be1e234e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Command\Queue\Compute">
+      <UniqueIdentifier>{b280aea7-6854-4aab-8047-a8bbc7cdd7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Component">
+      <UniqueIdentifier>{8964c7c0-1692-42d4-9dc1-fd1bf2d3f2c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\TypeINFO">
+      <UniqueIdentifier>{1796d43a-3e2e-4e89-aa2d-6f4a03efb2a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -962,15 +995,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.h">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\List</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.h">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Queue</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h">
       <Filter>Source\Framework\Graphics\Resource\Upload</Filter>
@@ -1716,9 +1740,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\StandardPipelineState.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json\StandardPipelineStateJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\GraphicsPipelineStateBase.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics</Filter>
     </ClInclude>
@@ -1728,8 +1749,56 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json\StandardPipelineStateJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\MeshShaderPipelineState.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\Converter\Json\MeshShaderPipelineStateJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Compute\ComputePipelineState.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json\ComputePipelineStateJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json\GraphicsPipelineStateBaseJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter</Filter>
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Allocator\Copy\CopyCommandAllocator.h">
+      <Filter>Source\Framework\Graphics\Command\Allocator\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.h">
+      <Filter>Source\Framework\Graphics\Command\List\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Copy\CopyCommandQueue.h">
+      <Filter>Source\Framework\Graphics\Command\Queue\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ComputeCommandAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h">
+      <Filter>Source\Framework\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Allocator\Compute\ComputeCommandAllocator.h">
+      <Filter>Source\Framework\Graphics\Command\Allocator\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.h">
+      <Filter>Source\Framework\Graphics\Command\List\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Command\Queue\Compute\ComputeCommandQueue.h">
+      <Filter>Source\Framework\Graphics\Command\Queue\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\TypeINFO\TypeINFOUtility.h">
+      <Filter>Source\Framework\Utility\TypeINFO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1822,15 +1891,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\ReleaseContext\ResourceReleaseContext.cpp">
       <Filter>Source\Framework\Graphics\Resource\ReleaseContext</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Allocator\CopyCommandAllocator.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Allocator</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\List\CopyCommandList.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\List</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Command\Queue\CopyCommandQueue.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Upload\Command\Queue</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp">
       <Filter>Source\Framework\Graphics\Resource\Upload</Filter>
@@ -2135,9 +2195,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\StandardPipelineState.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json\StandardPipelineStateJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\GraphicsPipelineStateBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics</Filter>
     </ClCompile>
@@ -2147,8 +2204,44 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Converter\Json\RootSignatureJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Converter\Json</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json\StandardPipelineStateJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Standard\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\MeshShaderPipelineState.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\Converter\Json\MeshShaderPipelineStateJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Mesh\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Compute\ComputePipelineState.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Compute</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json\ComputePipelineStateJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json\GraphicsPipelineStateBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter</Filter>
+      <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Allocator\Copy\CopyCommandAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Command\Allocator\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Command\List\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\Copy\CopyCommandQueue.cpp">
+      <Filter>Source\Framework\Graphics\Command\Queue\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp">
+      <Filter>Source\Framework\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Allocator\Compute\ComputeCommandAllocator.cpp">
+      <Filter>Source\Framework\Graphics\Command\Allocator\Compute</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp">
+      <Filter>Source\Framework\Graphics\Command\List\Compute</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Command\Queue\Compute\ComputeCommandQueue.cpp">
+      <Filter>Source\Framework\Graphics\Command\Queue\Compute</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
