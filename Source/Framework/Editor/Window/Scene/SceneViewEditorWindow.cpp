@@ -99,9 +99,9 @@ void FWK::Editor::SceneViewEditorWindow::SetupSceneViewTextureDescriptors()
 		const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext();
 
 		// メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへコピーする
-		const auto& l_srvDescriptorPool = l_resourceContext.GetREFSRVDescriptorPool();
+		const auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetREFCBVSRVUAVDescriptorPool();
 
-		FWK_ASSERT_RETURN_IF(!l_editorManager.CopyGraphicsSRVDescriptor(l_srvDescriptorPool, l_srvDescriptorIndex, m_imGuiSRVDescriptorIndexList.back()), "SRVDescriptorのコピー処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!l_editorManager.CopyGraphicsSRVDescriptor(l_cbvSRVUAVDescriptorPool, l_srvDescriptorIndex, m_imGuiSRVDescriptorIndexList.back()), "SRVDescriptorのコピー処理に失敗しました。");
 	}	
 }
 

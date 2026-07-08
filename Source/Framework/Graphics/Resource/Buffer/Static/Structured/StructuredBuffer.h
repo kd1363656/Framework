@@ -146,23 +146,24 @@ namespace FWK::Graphics
 			l_srvDesc.Buffer.StructureByteStride = sizeof(Type);
 			l_srvDesc.Buffer.Flags				 = D3D12_BUFFER_SRV_FLAG_NONE;
 
-			const auto l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_srvDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex));
+			const auto l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex));
 
 			// CreateShaderResourceView(BufferResource, 
 			//							SRV設定、
 			//							CPUOnlyDescriptorHeap側のCPUHandle);
 			l_device->CreateShaderResourceView(a_bufferGPUResource.m_resource.Get(), &l_srvDesc, l_cpuHandle);
 
-			if (!a_srvDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_srvDescriptorIndex))
+			if (!a_cbvSRVUAVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_srvDescriptorIndex))
 			{
-				a_srvDescriptorPool.Release(l_srvDescriptorIndex);
+				a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
 
 				FWK_ASSERT_RETURN_VALUE("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 			}
 
 			if (l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex)
 			{
-				a_srvDescriptorPool.Release(l_srvDescriptorIndex);
+				a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
+
 				FWK_ASSERT_RETURN_VALUE	   ("StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 			}
 

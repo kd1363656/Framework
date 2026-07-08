@@ -60,17 +60,17 @@ bool FWK::Graphics::StaticModel::Load(const std::filesystem::path& a_filePath)
 	// 既に別のStorageIDを持っている場合は先に参照を外す
 	SubtractReferenceCount();
 
-		  auto& l_graphicsManager    = GraphicsManager::GetInstance                    ();
-		  auto& l_resourceContext    = l_graphicsManager.GetMutableREFResourceContext  ();
-		  auto& l_staticModelSystem  = l_resourceContext.GetMutableREFStaticModelSystem();
-	const auto& l_device		     = l_graphicsManager.GetREFDevice		           ();
-	const auto& l_gpuMemoryAllocator = l_resourceContext.GetREFGPUMemoryAllocator      ();
-		  auto& l_srvDescriptorPool  = l_resourceContext.GetMutableREFSRVDescriptorPool();
+		  auto& l_graphicsManager         = GraphicsManager::GetInstance                          ();
+		  auto& l_resourceContext         = l_graphicsManager.GetMutableREFResourceContext        ();
+		  auto& l_staticModelSystem       = l_resourceContext.GetMutableREFStaticModelSystem      ();
+	const auto& l_device		          = l_graphicsManager.GetREFDevice		                  ();
+	const auto& l_gpuMemoryAllocator      = l_resourceContext.GetREFGPUMemoryAllocator            ();
+		  auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
 
 	const auto& l_staticModelLoadResult = l_staticModelSystem.LoadStaticModelForBatchUpload(l_device, 
 																						    l_gpuMemoryAllocator,
 																							a_filePath,
-																							l_srvDescriptorPool);
+																							l_cbvSRVUAVDescriptorPool);
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_storageID == Constant::k_invalidStorageID, "StaticModelの読み込みに失敗しました。",                                false);
 	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_staticModelRecord.expired(),               "StaticModelRecordが無効のため、StaticModelの読み込みに失敗しました。", false);

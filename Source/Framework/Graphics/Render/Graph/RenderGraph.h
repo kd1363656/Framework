@@ -81,7 +81,7 @@ namespace FWK::Graphics
 		DrawRequestPassMap      m_drawRequestPassMap      = {};
 		DrawRequestPerObjectMap m_drawRequestPerObjectMap = {};
 
-		Utility::VectorArray<std::unique_ptr<RenderGraphPassBase>> m_passList;
+		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList;
 
 		std::vector<std::shared_ptr<DrawRequestPassBase>>      m_drawRequestPassList      = {};
 		std::vector<std::shared_ptr<DrawRequestPerObjectBase>> m_drawRequestPerObjectList = {};

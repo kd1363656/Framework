@@ -8,9 +8,9 @@ namespace FWK::Graphics
 
 		bool ReserveDeferredReleaseGPUResourceRecord(Struct::GPUResourceReleaseRecord&& a_releaseRecord);
 
-		bool ReserveDeferredReleaseRTVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
-		bool ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
-		bool ReserveDeferredReleaseDSVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+		bool ReserveDeferredReleaseRTVDescriptorIndex      (Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+		bool ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+		bool ReserveDeferredReleaseDSVDescriptorIndex      (Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 
 		void ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue&      a_directCommandQueue, 
 													 TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
@@ -57,8 +57,8 @@ namespace FWK::Graphics
 
 		std::vector<Struct::GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
 
-		std::vector<Struct::DescriptorIndexReleaseRecord> m_rtvDescriptorIndexReleaseRecordList = {};
-		std::vector<Struct::DescriptorIndexReleaseRecord> m_srvDescriptorIndexReleaseRecordList = {};
-		std::vector<Struct::DescriptorIndexReleaseRecord> m_dsvDescriptorIndexReleaseRecordList = {};
+		std::vector<Struct::DescriptorIndexReleaseRecord> m_rtvDescriptorIndexReleaseRecordList       = {};
+		std::vector<Struct::DescriptorIndexReleaseRecord> m_cbvSRVUAVDescriptorIndexReleaseRecordList = {};
+		std::vector<Struct::DescriptorIndexReleaseRecord> m_dsvDescriptorIndexReleaseRecordList       = {};
 	};
 }

@@ -11,16 +11,16 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_shaderCompiler.Create(), "ShaderCompilerの作成処理に失敗しました。", false);
 
-    FWK_ASSERT_RETURN_VALUE_IF(!m_rtvDescriptorPool.Create(a_device), "RTVDescriptorPoolの作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_srvDescriptorPool.Create(a_device), "SRVDescriptorPoolの作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_dsvDescriptorPool.Create(a_device), "DSVDescriptorPoolの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_rtvDescriptorPool.Create      (a_device), "RTVDescriptorPoolの作成処理に失敗しました。",       false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_cbvSRVUAVDescriptorPool.Create(a_device), "CBVSRVUAVDescriptorPoolの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_dsvDescriptorPool.Create      (a_device), "DSVDescriptorPoolの作成処理に失敗しました。",       false);
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuMemoryAllocator.Create(a_device), "GPUMemoryAllocatorの作成処理に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_uploadSystem.Create(a_device),       "UploadSystemの作成処理に失敗しました。",       false);
 
     // 作成したGPUMemoryAllocatorとUploadSystemを使用する
-    FWK_ASSERT_RETURN_VALUE_IF(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_srvDescriptorPool), "TextureSystemの作成処理に失敗しました。",     false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelSystem.Create(),                                                "StaticModelSystemの作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_cbvSRVUAVDescriptorPool), "TextureSystemの作成処理に失敗しました。",     false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelSystem.Create(),                                                      "StaticModelSystemの作成処理に失敗しました。", false);
 
 
     // デフォルトテクスチャの登録をここで行う
@@ -53,7 +53,7 @@ void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const Typ
 	// GPUのFence完了後に安全に解放する
     m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue,
                                                                m_rtvDescriptorPool,
-                                                               m_srvDescriptorPool,
+                                                               m_cbvSRVUAVDescriptorPool,
                                                                m_dsvDescriptorPool);
 }
 

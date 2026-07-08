@@ -18,8 +18,8 @@ bool FWK::Graphics::TextureRecord::ReserveRelease(const UINT64& a_retiredFenceVa
 	l_srvDescriptorIndexReleaseRecord.m_descriptorIndex	  = m_srvDescriptorIndex;	
 	l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),		     "TextureRecordのGPUResourceを遅延解放登録できませんでした。",		  false);
-	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "TextureRecordのSRVDescriptorIndexを遅延解放登録できませんでした。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),		       "TextureRecordのGPUResourceを遅延解放登録できませんでした。",		    false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "TextureRecordのSRVDescriptorIndexを遅延解放登録できませんでした。", false);
 
 	// 二解放を防ぐため、Queueへ渡したDescriptorIndexは無効化する
 	m_srvDescriptorIndex = Constant::k_invalidStorageID;

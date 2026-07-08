@@ -109,12 +109,10 @@ nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializePassList(const
 {
 	nlohmann::json l_rootJsonArray = nlohmann::json::array();
 
-	const auto& l_passList = a_renderGraph.GetREFPassList().GetREFArrayElementDataList();
+	const auto& l_passList = a_renderGraph.GetREFPassList();
 
-	for (const auto& l_passData : l_passList)
+	for (const auto& l_pass : l_passList)
 	{
-		auto& l_pass = l_passData.m_type;
-
 		if (!l_pass) { continue; }
 
 		nlohmann::json l_json = {};

@@ -200,9 +200,9 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	l_srvDescriptorIndexReleaseRecord.m_descriptorIndex	  = m_srvDescriptorIndex;
 	l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),		     "RenderTargetTextureのGPUResourceの遅延解放登録に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseRTVDescriptorIndex(std::move(l_rtvDescriptorIndexReleaseRecord)), "RenderTargetTextureのRTVDescriptorIndexの遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseSRVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "RenderTargetTextureのSRVDescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseGPUResourceRecord(std::move(l_gpuResourceReleaseRecord)),		       "RenderTargetTextureのGPUResourceの遅延解放登録に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseRTVDescriptorIndex(std::move(l_rtvDescriptorIndexReleaseRecord)),       "RenderTargetTextureのRTVDescriptorIndexの遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "RenderTargetTextureのSRVDescriptorIndexの遅延解放登録に失敗しました。", false);
 
 	// 二重開放を防ぐため、DescriptorIndexは無効化する
 	m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;

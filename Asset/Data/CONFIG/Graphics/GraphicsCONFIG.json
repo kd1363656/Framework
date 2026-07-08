@@ -1339,17 +1339,17 @@
         }
     },
     "ResourceContext": {
+        "CBVSRVUAVDescriptorPool": {
+            "DescriptorHeapIndexAllocator": {
+                "Capacity": 10000
+            }
+        },
         "DSVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
                 "Capacity": 10000
             }
         },
         "RTVDescriptorPool": {
-            "DescriptorHeapIndexAllocator": {
-                "Capacity": 10000
-            }
-        },
-        "SRVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
                 "Capacity": 10000
             }

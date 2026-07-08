@@ -38,7 +38,7 @@ void FWK::Graphics::ComputeCommandList::SetupConstantBufferView(const D3D12_GPU_
 	l_computeCommandList->SetComputeRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);
 }
 
-void FWK::Graphics::ComputeCommandList::Dispatch(const UINT a_threadGroupCountX, const UINT a_threadGroupCountY, const UINT a_threadGroupCountZ)
+void FWK::Graphics::ComputeCommandList::Dispatch(const UINT a_threadGroupCountX, const UINT a_threadGroupCountY, const UINT a_threadGroupCountZ) const
 {
 	const auto& l_computeCommandList = GetREFCommandList();
 
@@ -56,7 +56,7 @@ void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignat
 																const void*                   a_rootConstantData,
 	                                                            const Enum::RootParameterType a_rootParameterType, 
 	                                                            const UINT                    a_rootConstantCount,
-	                                                            const UINT                    a_destinationOffset)
+	                                                            const UINT                    a_destinationOffset) const
 {
 	FWK_ASSERT_RETURN_IF(!a_rootConstantData,                               "Root32BitConstantsへ設定するデータが無効です。");
 	FWK_ASSERT_RETURN_IF(a_rootConstantCount == k_invalidRootConstantCount, "Root32BitConstantsの設定数が0のため、設定に失敗しました。");
@@ -65,7 +65,6 @@ void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignat
 
 	FWK_ASSERT_RETURN_IF(!l_computeCommandList, "コンピュートコマンドリストが作成されておらず、Root32BitConstantsの設定に失敗しました。");
 
-	const auto& l_pipeline           = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 	const auto  l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
 	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、Root32BitConstantsの設定に失敗しました。");

@@ -17,9 +17,9 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&			   a_device
 													 const Struct::ClientSize& a_clientSize,
 														   ResourceContext&    a_resourceContext) const
 {
-	auto& l_rtvDescriptorPool = a_resourceContext.GetMutableREFRTVDescriptorPool();
-	auto& l_srvDescriptorPool = a_resourceContext.GetMutableREFSRVDescriptorPool();
-	auto& l_dsvDescriptorPool = a_resourceContext.GetMutableREFDSVDescriptorPool();
+	auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
+	auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
+	auto& l_dsvDescriptorPool       = a_resourceContext.GetMutableREFDSVDescriptorPool      ();
 
 	for (const auto& l_renderTargetPassTexture : m_renderTargetPassTextureList)
 	{
@@ -29,7 +29,7 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&			   a_device
 																	  a_gpuMemoryAllocator,
 																	  a_clientSize,
 																	  l_rtvDescriptorPool,
-																	  l_srvDescriptorPool),	
+																	  l_cbvSRVUAVDescriptorPool),	
 																	  "RenderTargetTextureの作成に失敗しました。",
 																	  false);
 	}
@@ -55,10 +55,10 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&				a_device,
 													 const UINT64&				a_retiredFenceValue,
 														    ResourceContext&    a_resourceContext) const
 {
-	auto& l_rtvDescriptorPool      = a_resourceContext.GetMutableREFRTVDescriptorPool     ();
-	auto& l_srvDescriptorPool      = a_resourceContext.GetMutableREFSRVDescriptorPool     ();
-	auto& l_dsvDescriptorPool      = a_resourceContext.GetMutableREFDSVDescriptorPool     ();
-	auto& l_resourceReleaseContext = a_resourceContext.GetMutableREFResourceReleaseContext();
+	auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
+	auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
+	auto& l_dsvDescriptorPool       = a_resourceContext.GetMutableREFDSVDescriptorPool      ();
+	auto& l_resourceReleaseContext  = a_resourceContext.GetMutableREFResourceReleaseContext ();
 
 	for (const auto& l_renderTargetPassTexture : m_renderTargetPassTextureList)
 	{
@@ -69,7 +69,7 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&				a_device,
 																	  a_clientSize,
 																	  a_retiredFenceValue,
 																	  l_rtvDescriptorPool,
-																	  l_srvDescriptorPool,
+																	  l_cbvSRVUAVDescriptorPool,
 																	  l_resourceReleaseContext),	
 																	  "RenderTargetTextureのリサイズに失敗しました。",
 																	  false);

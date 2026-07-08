@@ -65,10 +65,10 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 
 	const auto& l_device = l_graphicsManager.GetREFDevice();
 
-		  auto& l_resourceContext    = l_graphicsManager.GetMutableREFResourceContext  ();
-	const auto& l_gpuMemoryAllocator = l_resourceContext.GetREFGPUMemoryAllocator      ();
-	      auto& l_textureSystem      = l_resourceContext.GetMutableREFTextureSystem    ();
-	      auto& l_srvDescriptorPool  = l_resourceContext.GetMutableREFSRVDescriptorPool();
+		  auto& l_resourceContext         = l_graphicsManager.GetMutableREFResourceContext        ();
+	const auto& l_gpuMemoryAllocator      = l_resourceContext.GetREFGPUMemoryAllocator            ();
+	      auto& l_textureSystem           = l_resourceContext.GetMutableREFTextureSystem          ();
+	      auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
 	
 	// ロードタイプに応じたテクスチャの読み込みを行い
 	// テクスチャのGPUリソース作成の一括登録申請用の処理を行う
@@ -77,7 +77,7 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 																				a_filePath,
 																				a_textureLoadColorSpace,
 																				a_defaultTextureType,
-																				l_srvDescriptorPool);
+																				l_cbvSRVUAVDescriptorPool);
 
 	// デフォルトテクスチャをセットしてreturn
 	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID ||

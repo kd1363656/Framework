@@ -35,21 +35,15 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_IF(!l_fence,		  "フェンスの作成に失敗しておりコマンドアロケータの使用可能かどうかの選定に失敗しました。");
 			FWK_ASSERT_RETURN_IF(!m_commandQueue, "コマンドキューが作成されておらず、GPUとの同期に失敗しました。");
 
-			// 今回の待機用に新しいフェンス値を発行する
-			// 同じ値を使いまわすとどこまでの処理完了を待っているのか分からなくなるため
-			const auto& l_incrementedFenceValue = FetchREFLastSignaledFenceValue() + k_incrementFenceValue;
-
-			m_fence.SetLastSignaledFenceValue(l_incrementedFenceValue);
-
-			// コマンドキューに対して「命令したGPU処理が終わったら、m_fenceの値をl_targetFenceValueに更新してください」と命令をする関数
-			// Signal(更新対象のフェンスオブジェクト、
-			//		  GPU完了時に設定するフェンス値);
-			auto l_hr = m_commandQueue->Signal(l_fence.Get(), l_incrementedFenceValue);
-
+			// Queueの現在位置へSignalを追加する
+			// このSignalより前に登録された全GPU処理が終了すると、
+			// Fenceがl_signaledFenceValueへ更新される
+			const auto& l_signaledFenceValue = SignalFence();
+			
 			// Signal命令に失敗したらreturn
-			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドキューへのフェンスシグナルに失敗しました。");
+			FWK_ASSERT_RETURN_IF(l_signaledFenceValue == Constant::k_unusedFenceValue, "GPU完了待機用のFence Signalに失敗しました。");
 
-			WaitForFenceValueIfNeeded(l_incrementedFenceValue);
+			WaitForFenceValueIfNeeded(l_signaledFenceValue);
 		}
 
 		// このコマンドキューを、別のCommandQueueがSignalしたFence値までGPU上で待機させる
@@ -58,9 +52,9 @@ namespace FWK::Graphics
 		bool Wait(const CommandQueue<WaitCommandType>& a_waitCommandQueue, const UINT64& a_waitFenceValue) const
 		{
 			// 未使用フェンス値なら、待機対象がないことを表す
-			if (a_waitCommandQueue == Constant::k_unusedFenceValue) { return true; }
+			if (a_waitFenceValue == Constant::k_unusedFenceValue) { return true; }
 
-			const auto& l_waitFence = a_waitCommandQueue.GetREFFence().GetREFence();
+			const auto& l_waitFence = a_waitCommandQueue.GetREFFence().GetREFFence();
 
 			FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "待機命令を登録するCommandQueueが作成されていません。", false);
 			FWK_ASSERT_RETURN_VALUE_IF(!l_waitFence,    "待機対象CommandQueueのFenceが作成されていません。",    false);
@@ -69,7 +63,7 @@ namespace FWK::Graphics
 			// DirectQueue.Wait(ComputeQueue, ComputeFenceValue);
 			// ComputeShaderの書き込み完了後に、
 			// DirectQueueの描画処理を開始する
-			// 阪大方向に待機させれば、前回の描画がBufferを読み終えるまで次回のCompute書き込みを開始しないようにできる
+			// 反対方向に待機させれば、前回の描画がBufferを読み終えるまで次回のCompute書き込みを開始しないようにできる
 			const auto l_hr = m_commandQueue->Wait(l_waitFence.Get(), a_waitFenceValue);
 
 			FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueue間のGPU待機命令登録に失敗しました。", false);
@@ -107,26 +101,16 @@ namespace FWK::Graphics
 
 		void SignalAndTrackAllocator(CommandAllocator<CommandType>& a_commandAllocator)
 		{
-			const auto& l_fence = m_fence.GetREFFence();
+			// 実際にSignaleへ成功したFence値を取得する
+			const auto l_signaledFenceValue = SignalFence();
 
-			FWK_ASSERT_RETURN_IF(!l_fence,		  "フェンスが作成されておらず、GPUとの同期処理に失敗しました。");
-			FWK_ASSERT_RETURN_IF(!m_commandQueue, "ダイレクトコマンドキューが作成されておらず、GPUとの同期処理に失敗しました。");
+			FWK_ASSERT_RETURN_VALUE_IF(l_signaledFenceValue == Constant::k_unusedFenceValue, "CommandAllocator追跡用のFenceSignalに処理に失敗しました。", Constant::k_unusedFenceValue);
 
-			const auto& l_updatedFenceValue = FetchREFLastSignaledFenceValue() + k_incrementFenceValue;
+			// Signal成功後にだけ、
+			// このAllocatorを使用したGPU処理の完了値を記録する
+			a_commandAllocator.SetSubmittedFenceValue(l_signaledFenceValue);
 
-			// "FenceValue"を進めて、このフレームの完了目標として保存
-			m_fence.SetLastSignaledFenceValue(l_updatedFenceValue);
-
-			// ※重要
-			// 更新したフェンス値を持たせて置く、こうすることで次のフレームでフェンス値を超えていない場合
-			// GPUとの同期をとらなくていいためCPUとGPUの並列処理性を発揮することができる
-			a_commandAllocator.SetSubmittedFenceValue(l_updatedFenceValue);
-
-			// コマンドキュー内でこの位置までの命令が実行完了したら
-			// フェンス値をGetFenceValueに更新する命令をGPUに追加
-			auto l_hr = m_commandQueue->Signal(l_fence.Get(), l_updatedFenceValue);
-
-			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "GPUとの同期処理に失敗しました。");
+			return l_signaledFenceValue;
 		}
 
 		bool IsFenceValueCompleted(const UINT64& a_fenceValue) const
@@ -187,6 +171,24 @@ namespace FWK::Graphics
 		bool CreateFence(const Device& a_device)
 		{
 			return m_fence.Create(a_device);
+		}
+
+		UINT64 SignalFence()
+		{
+			const auto& l_fence = m_fence.GetREFFence();
+
+			FWK_ASSERT_RETURN_VALUE_IF(!l_fence,        "Fenceが作成されておらず、Fence Signalに失敗しました。",        Constant::k_unusedFenceValue);
+			FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "CommandQueueが作成されておらず、Fence Signalに失敗しました。", Constant::k_unusedFenceValue);
+
+			const auto& l_signaledFenceValue = FetchREFLastSignaledFenceValue() + k_incrementFenceValue;
+			const auto  l_hr                 = m_commandQueue->Signal        (l_fence.Get(), l_signaledFenceValue);
+
+			FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueueへのFence Signalに失敗しました。", Constant::k_unusedFenceValue);
+
+			// 実際にSignaleへ成功してから値を更新する
+			m_fence.SetLastSignaledFenceValue(l_signaledFenceValue);
+
+			return l_signaledFenceValue;
 		}
 
 		static constexpr UINT64 k_incrementFenceValue = 1ULL;

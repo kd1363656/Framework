@@ -13,13 +13,13 @@ void FWK::Converter::ResourceContextJsonConverter::Deserialize(const nlohmann::j
 		l_rtvDescriptorPool.Deserialize(l_json);
 	}
 
-	// SRVDescriptorPoolのデシリアライズ、
-	if (const auto& l_json = a_rootJson.value(k_srvDescriptorPoolJsonKey, nlohmann::json{});
+	// CBVSRVUAVDescriptorPoolのデシリアライズ、
+	if (const auto& l_json = a_rootJson.value(k_cbvSRVUAVDescriptorPoolJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		auto& l_srvDescriptorPool = a_resourceContext.GetMutableREFSRVDescriptorPool();
+		auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
 
-		l_srvDescriptorPool.Deserialize(l_json);
+		l_cbvSRVUAVDescriptorPool.Deserialize(l_json);
 	}
 
 	// DSVDescriptorPoolのデシリアライズ、
@@ -63,9 +63,9 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
-	const auto& l_srvDescriptorPool = a_resourceContext.GetREFSRVDescriptorPool();
-	const auto& l_dsvDescriptorPool = a_resourceContext.GetREFDSVDescriptorPool();
+	const auto& l_rtvDescriptorPool       = a_resourceContext.GetREFRTVDescriptorPool      ();
+	const auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetREFCBVSRVUAVDescriptorPool();
+	const auto& l_dsvDescriptorPool       = a_resourceContext.GetREFDSVDescriptorPool      ();
 
 	const auto& l_uploadSystem      = a_resourceContext.GetREFUploadSystem     ();
 	const auto& l_textureSystem     = a_resourceContext.GetREFTextureSystem    ();
@@ -75,7 +75,7 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 	l_rootJson[k_rtvDescriptorPoolJsonKey] = l_rtvDescriptorPool.Serialize();
 
 	// SRVディスクリプタプールのシリアライズ
-	l_rootJson[k_srvDescriptorPoolJsonKey] = l_srvDescriptorPool.Serialize();
+	l_rootJson[k_cbvSRVUAVDescriptorPoolJsonKey] = l_cbvSRVUAVDescriptorPool.Serialize();
 
 	// DSVディスクリプタプールのシリアライズ
 	l_rootJson[k_dsvDescriptorPoolJsonKey] = l_dsvDescriptorPool.Serialize();

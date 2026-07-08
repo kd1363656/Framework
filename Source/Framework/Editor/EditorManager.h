@@ -110,7 +110,7 @@ namespace FWK::Editor
 
 		static constexpr int k_dockingStyleVarPopCount = 2;
 
-		TypeAlias::SRVDescriptorPool m_imGuiSRVDescriptorPool;
+		TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
 
 		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
 

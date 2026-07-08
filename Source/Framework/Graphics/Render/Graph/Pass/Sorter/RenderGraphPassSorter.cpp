@@ -1,6 +1,6 @@
 ﻿#include "RenderGraphPassSorter.h"
 
-void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<Struct::ArrayElementData<std::unique_ptr<RenderGraphPassBase>>>& a_passList) const
+void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<std::unique_ptr<RenderGraphPassBase>>& a_passList) const
 {
 	// 現在のパス総数を取得する。
 	const auto& l_passCount = a_passList.size();
@@ -16,13 +16,13 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<Struct::Arra
 	// l_beforePassIndexより後ろのPassだけ尾を見ることで、同じ組み合わせを二回比較しない
 	for (std::size_t l_beforePassIndex = 0ULL; l_beforePassIndex < l_passCount; ++l_beforePassIndex)
 	{
-		const auto& l_beforePass = a_passList[l_beforePassIndex].m_type;
+		const auto& l_beforePass = a_passList[l_beforePassIndex];
 
 		if (!l_beforePass) { continue; }
 
 		for (std::size_t l_afterPassIndex = l_beforePassIndex + k_nextPassIndexOffset; l_afterPassIndex < l_passCount; ++l_afterPassIndex)
 		{
-			const auto& l_afterPass = a_passList[l_afterPassIndex].m_type;
+			const auto& l_afterPass = a_passList[l_afterPassIndex];
 
 			if (!l_afterPass) { continue; }
 
@@ -49,7 +49,7 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<Struct::Arra
 	FWK_ASSERT_RETURN_IF(l_sortedPassIndexList.size() != l_passCount, "RenderGraphPassの実行順解決に失敗しました。");
 
 	// 解決した順番に従って、新しいPassListを作る
-	std::vector<Struct::ArrayElementData<std::unique_ptr<RenderGraphPassBase>>> l_sortedPassList = {};
+	std::vector<std::unique_ptr<RenderGraphPassBase>> l_sortedPassList = {};
 
 	l_sortedPassList.reserve(l_passCount);
 
@@ -64,17 +64,17 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<Struct::Arra
 	a_passList = std::move(l_sortedPassList);
 }
 
-void FWK::Graphics::RenderGraphPassSorter::AddPassExecutionLayerDependencyEdge(const std::vector<Struct::ArrayElementData<std::unique_ptr<RenderGraphPassBase>>>& a_passList,
-																			   const std::size_t&																  a_beforePassIndex, 
-																			   const std::size_t&																  a_afterPassIndex, 
-																					 std::vector<std::vector<std::size_t>>&										  a_passDependencyList) const
+void FWK::Graphics::RenderGraphPassSorter::AddPassExecutionLayerDependencyEdge(const std::vector<std::unique_ptr<RenderGraphPassBase>>& a_passList,
+																			   const std::size_t&										a_beforePassIndex, 
+																			   const std::size_t&										a_afterPassIndex, 
+																					 std::vector<std::vector<std::size_t>>&				a_passDependencyList) const
 {
 	FWK_ASSERT_RETURN_IF(a_beforePassIndex >= a_passList.size() ||
 						 a_afterPassIndex  >= a_passList.size(),
 						 "Before,AfterのPassIndexが範囲外となっており、ExecutionLayer依存関係の作成に失敗しました。");
 
-	const auto& l_beforePass = a_passList[a_beforePassIndex].m_type;
-	const auto& l_afterPass  = a_passList[a_afterPassIndex].m_type;
+	const auto& l_beforePass = a_passList[a_beforePassIndex];
+	const auto& l_afterPass  = a_passList[a_afterPassIndex];
 
 	FWK_ASSERT_RETURN_IF(!l_beforePass, "BeforePassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_afterPass,  "AfterPassが無効となっており、ExecutionLayer依存関係の作成に失敗しました。");
@@ -106,17 +106,17 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassExecutionLayerDependencyEdge(c
 
 	AddPassDependencyEdge(l_dependencyBeforePassIndex, l_dependencyAfterPassIndex, a_passDependencyList);
 }
-void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const std::vector<Struct::ArrayElementData<std::unique_ptr<RenderGraphPassBase>>>& a_passList,
-																	     const std::size_t&																	a_beforePassIndex, 
-																		 const std::size_t&																	a_afterPassIndex,
-																			   std::vector<std::vector<std::size_t>>&										a_passDependencyList) const
+void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const std::vector<std::unique_ptr<RenderGraphPassBase>>& a_passList,
+																	     const std::size_t&										  a_beforePassIndex, 
+																		 const std::size_t&										  a_afterPassIndex,
+																			   std::vector<std::vector<std::size_t>>&			  a_passDependencyList) const
 {
 	FWK_ASSERT_RETURN_IF(a_beforePassIndex >= a_passList.size() ||
 						 a_afterPassIndex  >= a_passList.size(),
 						 "Before,AfterのPassIndexが範囲外となっており、ResourceAccess依存関係の作成に失敗しました。");
 
-	const auto& l_beforePass = a_passList[a_beforePassIndex].m_type;
-	const auto& l_afterPass  = a_passList[a_afterPassIndex].m_type;
+	const auto& l_beforePass = a_passList[a_beforePassIndex];
+	const auto& l_afterPass  = a_passList[a_afterPassIndex];
 
 	FWK_ASSERT_RETURN_IF(!l_beforePass, "BeforePassが無効となっており、ResourceAccess依存関係の作成に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_afterPass,  "AfterPassが無効となっており、ResourceAccess依存関係の作成に失敗しました。");

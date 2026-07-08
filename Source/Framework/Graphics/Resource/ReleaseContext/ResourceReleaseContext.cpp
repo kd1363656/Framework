@@ -15,10 +15,10 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseRTVDescriptorI
 
 	return true;
 }
-bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseSRVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
+bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "SRV用DescriptorIndexが無効のため、SRV用DescriptorIndexの遅延解放登録に失敗しました。", false);
-	m_srvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
+	FWK_ASSERT_RETURN_VALUE_IF                              (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "CBV,SRV,UAV用DescriptorIndexが無効のため、DescriptorIndexの遅延解放登録に失敗しました。", false);
+	m_cbvSRVUAVDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
 	return true;
 }
@@ -42,9 +42,9 @@ void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(co
 	ReleaseAvailableGPUResources(l_completedFenceValue);
 
 	// DescriptorのDescriptorIndexを、それぞれ対応するDescriptorPoolへ返す
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_rtvDescriptorIndexReleaseRecordList, a_rtvDescriptorPool);
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_srvDescriptorIndexReleaseRecordList, a_cbvSRVUAVDescriptorPool);
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_dsvDescriptorIndexReleaseRecordList, a_dsvDescriptorPool);
+	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_rtvDescriptorIndexReleaseRecordList,       a_rtvDescriptorPool);
+	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_cbvSRVUAVDescriptorIndexReleaseRecordList, a_cbvSRVUAVDescriptorPool);
+	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_dsvDescriptorIndexReleaseRecordList,       a_dsvDescriptorPool);
 }
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::ResourceReleaseContext::ReleaseRenderTargetResourceImmediately(const TypeAlias::DescriptorIndex a_rtvDescriptorIndex, TypeAlias::ComPtr<ID3D12Resource2>& a_renderTargetResource, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const
