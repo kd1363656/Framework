@@ -13,6 +13,22 @@ namespace FWK::Graphics
 		         DirectAndComputeCommandListBase() = default;
 		virtual ~DirectAndComputeCommandListBase() = default;
 
+		// UAVのResourceStateは変更せず、
+		// 専攻UAVアk巣エスト後続UAVアクセスの実行順を保証する
+		void UAVResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource) const 
+		{
+			FWK_ASSERT_RETURN_IF(!a_resource, "UAVBarrierを設定するGPUResourceが無効です。");
+
+			const auto& l_commandList = this->GetREFCommandList();
+
+			FWK_ASSERT_RETURN_IF(!l_commandList, "CommandListが作成されておらず、UAV Barrierの設定に失敗しました。");
+
+			const auto& l_resourceBarrier = CD3DX12_RESOURCE_BARRIER::UAV(a_resource.Get());
+
+			l_commandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_resourceBarrier);
+		}
+
+
 		template <D3D12_DESCRIPTOR_HEAP_TYPE Type>
 			requires (Type == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV ||
 		              Type == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER)
@@ -41,20 +57,7 @@ namespace FWK::Graphics
 			l_directCommandList->SetDescriptorHeaps(k_setDescriptorHeapNUM, l_descriptorHeapList);
 		}
 
-		// UAVのResourceStateは変更せず、
-		// 専攻UAVアk巣エスト後続UAVアクセスの実行順を保証する
-		void UAVResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource) const 
-		{
-			FWK_ASSERT_RETURN_IF(!a_resource, "UAVBarrierを設定するGPUResourceが無効です。");
-
-			const auto& l_commandList = this->GetREFCommandList();
-
-			FWK_ASSERT_RETURN_IF(!l_commandList, "CommandListが作成されておらず、UAV Barrierの設定に失敗しました。");
-
-			const auto& l_resourceBarrier = CD3DX12_RESOURCE_BARRIER::UAV(a_resource.Get());
-
-			l_commandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_resourceBarrier);
-		}
+		virtual void SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const;
 
 	protected:
 
