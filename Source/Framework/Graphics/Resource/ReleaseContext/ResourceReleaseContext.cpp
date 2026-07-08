@@ -30,10 +30,10 @@ bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseDSVDescriptorI
 	return true;
 }
 
-void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue, 
-	                                                                                TypeAlias::RTVDescriptorPool&  a_rtvDescriptorPool,
-																				    TypeAlias::SRVDescriptorPool&  a_srvDescriptorPool, 
-																					TypeAlias::DSVDescriptorPool&  a_dsvDescriptorPool)
+void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue&      a_directCommandQueue, 
+	                                                                                TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+																				    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+																					TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool)
 {
 	const auto& l_completedFenceValue = a_directCommandQueue.FetchVALCompletedFenceValue();
 
@@ -43,7 +43,7 @@ void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(co
 
 	// DescriptorのDescriptorIndexを、それぞれ対応するDescriptorPoolへ返す
 	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_rtvDescriptorIndexReleaseRecordList, a_rtvDescriptorPool);
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_srvDescriptorIndexReleaseRecordList, a_srvDescriptorPool);
+	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_srvDescriptorIndexReleaseRecordList, a_cbvSRVUAVDescriptorPool);
 	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_dsvDescriptorIndexReleaseRecordList, a_dsvDescriptorPool);
 }
 

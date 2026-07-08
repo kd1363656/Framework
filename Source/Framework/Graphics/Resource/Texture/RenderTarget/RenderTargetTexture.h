@@ -15,23 +15,23 @@ namespace FWK::Graphics
 		RenderTargetTexture& operator=(const RenderTargetTexture&)			 = delete;
 		RenderTargetTexture& operator=(		 RenderTargetTexture&&) noexcept = default;
 
-		bool Create(const Device&					    a_device,
-				    const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
-					const TypeAlias::Math::Color&		a_clearColor,
-					const DXGI_FORMAT					a_format,
-					const UINT							a_width,
-					const UINT							a_height,
-						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool Create(const Device&					          a_device,
+				    const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
+					const TypeAlias::Math::Color&		      a_clearColor,
+					const DXGI_FORMAT					      a_format,
+					const UINT							      a_width,
+					const UINT							      a_height,
+						  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		bool Resize(const Device&						a_device,
-					const GPUMemoryAllocator&			a_gpuMemoryAllocator,
-					const UINT64&						a_retiredFenceValue,
-					const UINT							a_width,
-					const UINT							a_height,
-						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-						  ResourceReleaseContext&	    a_resourceReleaseContext);
+		bool Resize(const Device&						      a_device,
+					const GPUMemoryAllocator&			      a_gpuMemoryAllocator,
+					const UINT64&						      a_retiredFenceValue,
+					const UINT							      a_width,
+					const UINT							      a_height,
+						  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+						  ResourceReleaseContext&	          a_resourceReleaseContext);
 
 		void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
 
@@ -49,9 +49,9 @@ namespace FWK::Graphics
 
 	private:
 
-		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT						   a_width, const UINT a_height);
-		bool CreateRTV        (const Device&			 a_device,					 TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
-		bool CreateSRV        (const Device&			 a_device,					 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT						         a_width, const UINT a_height);
+		bool CreateRTV        (const Device&			 a_device,					 TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool);
+		bool CreateSRV        (const Device&			 a_device,					 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 

@@ -7,22 +7,22 @@ void FWK::Graphics::TextureSystem::Deserialize(const nlohmann::json& a_rootJson)
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_textureStorage.Create(), "AssetStorageの作成に失敗したため、TextureSystemの作成処理に失敗しました。", false);
 
 	// 起動時にまとめてデフォルトテクスチャの作成予約を行う
-	FWK_ASSERT_RETURN_VALUE_IF(!CreateDefaultTexturesForBatchUpload(a_device, a_gpuMemoryAllocator, a_srvDescriptorPool), "デフォルトテクスチャの作成処理に失敗したため、TextureSystemの作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateDefaultTexturesForBatchUpload(a_device, a_gpuMemoryAllocator, a_cbvSRVUAVDescriptorPool), "デフォルトテクスチャの作成処理に失敗したため、TextureSystemの作成処理に失敗しました。", false);
 	
 	return true;
 }
 
-FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					       a_device, 
-																					   const GPUMemoryAllocator&		   a_gpuMemoryAllocator,
-																					   const std::filesystem::path&		   a_filePath, 
-																					   const Enum::TextureLoadColorSpace   a_textureLoadColorSpace,
-																					   const Enum::DefaultTextureType      a_defaultTextureType,
-																							 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					         a_device, 
+																					   const GPUMemoryAllocator&		         a_gpuMemoryAllocator,
+																					   const std::filesystem::path&		         a_filePath, 
+																					   const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
+																					   const Enum::DefaultTextureType            a_defaultTextureType,
+																							 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	Struct::TextureLoadResult l_textureLoadResult = {};
 
@@ -60,7 +60,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 													 a_filePath,
 													 l_scratchImage,
 													 l_texMetadata,
-													 a_srvDescriptorPool,
+													 a_cbvSRVUAVDescriptorPool,
 													 l_textureLoadResult);
 
 		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
@@ -75,7 +75,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 												 a_filePath,
 												 l_scratchImage,
 												 l_texMetadata,
-												 a_srvDescriptorPool,
+												 a_cbvSRVUAVDescriptorPool,
 											     l_textureLoadResult);
 
 	return l_textureLoadResult;
@@ -139,7 +139,7 @@ std::weak_ptr<FWK::Graphics::TextureRecord> FWK::Graphics::TextureSystem::FetchV
 	return l_defaultTexture->GetREFTextureRecord();
 }
 
-bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	for (const auto& l_defaultTexture : m_defaultTextureList)
 	{
@@ -167,7 +167,7 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 															  a_gpuMemoryAllocator, 
 															  m_batchUploadRecordBuilder,
 															  l_allocatedStorageID,
-															  a_srvDescriptorPool,	
+															  a_cbvSRVUAVDescriptorPool,	
 															  l_textureBatchUploadRecord))
 		{
 			// 作成失敗時はStorageIDを使わないので返却する
@@ -183,13 +183,13 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 	return true;
 }
 
-void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(const Device&				        a_device, 
-																				const GPUMemoryAllocator&	        a_gpuMemoryAllocator,
-																				const std::filesystem::path&        a_filePath, 
-																				const DirectX::ScratchImage&        a_scratchImage, 
-																				const DirectX::TexMetadata&         a_texMetadata,
-																					  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-																					  Struct::TextureLoadResult&    a_textureLoadResult)
+void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(const Device&				              a_device, 
+																				const GPUMemoryAllocator&	              a_gpuMemoryAllocator,
+																				const std::filesystem::path&              a_filePath, 
+																				const DirectX::ScratchImage&              a_scratchImage, 
+																				const DirectX::TexMetadata&               a_texMetadata,
+																					  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+																					  Struct::TextureLoadResult&          a_textureLoadResult)
 {
 
 	Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
@@ -205,7 +205,7 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 																   a_scratchImage,
 																   a_texMetadata,
 																   l_allocatedStorageID,
-																   a_srvDescriptorPool,
+																   a_cbvSRVUAVDescriptorPool,
 																   l_textureBatchUploadRecord))
 	{
 		// テクスチャのアップロード処理に失敗したなら、StorageIDを解放しておく

@@ -16,10 +16,10 @@ namespace FWK::Graphics
 		void Deserialize(const nlohmann::json& a_rootJson);
 		bool Create     ();
 
-		Struct::StaticModelLoadResult LoadStaticModelForBatchUpload(const Device&			            a_device,
-																    const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-																    const std::filesystem::path&        a_filePath, 
-																    	  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		Struct::StaticModelLoadResult LoadStaticModelForBatchUpload(const Device&			                  a_device,
+																    const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
+																    const std::filesystem::path&              a_filePath, 
+																    	  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
 		nlohmann::json Serialize() const;
 
@@ -47,7 +47,7 @@ namespace FWK::Graphics
 										 const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
 										 const std::filesystem::path&			   a_filePath,
 										 const TypeAlias::StorageID				   a_storageID,
-											   TypeAlias::SRVDescriptorPool&       a_srvDescriptorPool,
+											   TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
 											   Struct::StaticModelLoadResult&      a_staticModelLoadResult);
 
 		std::shared_ptr<Texture> CreateSingleMaterialTexture(const std::filesystem::path&      a_modelFilePath, 
@@ -58,7 +58,7 @@ namespace FWK::Graphics
 		bool CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
 										   const Device&							   a_device, 
 										   const GPUMemoryAllocator&				   a_gpuMemoryAllocator, 
-										   	     TypeAlias::SRVDescriptorPool&	       a_srvDescriptorPool,
+										   	     TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,
 												 Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const;
 
 

@@ -3,7 +3,7 @@
 bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchUploadRecord(const Device&									 a_device, 
 																							const GPUMemoryAllocator&						 a_gpuMemoryAllocator, 
 																							       std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-																								   TypeAlias::SRVDescriptorPool&			 a_srvDescriptorPool,
+																								   TypeAlias::CBVSRVUAVDescriptorPool&	     a_cbvSRVUAVDescriptorPool,
 																								   Graphics::StaticModelRecord&				 a_staticModelRecord) const
 {
 	auto& l_modelMeshList = a_staticModelRecord.GetMutableREFModelData().m_modelMeshList;
@@ -16,10 +16,10 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 		if (!CreateModelBatchUploadRecord(a_device,
 										  a_gpuMemoryAllocator,
 										  a_bufferUploadCommandList,
-										  a_srvDescriptorPool,
+										  a_cbvSRVUAVDescriptorPool,
 										  l_modelMesh))
 		{
-			ReleaseCreatedStaticModelStructuredBufferSRV(l_modelMeshList, a_srvDescriptorPool);
+			ReleaseCreatedStaticModelStructuredBufferSRV(l_modelMeshList, a_cbvSRVUAVDescriptorPool);
 
 			FWK_ASSERT_RETURN_VALUE("ModelMesh用BatchUploadRecordの作成に失敗したため、StaticModelBatchUploadRecordの作成に失敗しました。", false);
 		}
@@ -31,7 +31,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadRecord(const Device&				                      a_device, 
 																					  const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
 																							std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-																							TypeAlias::SRVDescriptorPool&			  a_srvDescriptorPool,
+																							TypeAlias::CBVSRVUAVDescriptorPool&		  a_cbvSRVUAVDescriptorPool,
 																							Struct::StaticModelMesh&				  a_staticModelMesh) const
 {
 	const auto& l_modelMeshletData     = a_staticModelMesh.m_modelMeshletData;
@@ -48,7 +48,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 													  a_device,
 													  a_gpuMemoryAllocator,
 													  a_bufferUploadCommandList,
-													  a_srvDescriptorPool),
+													  a_cbvSRVUAVDescriptorPool),
 													  "ModelVertexBuffer用StructuredBufferの作成に失敗しました。",
 													  false);
 
@@ -57,7 +57,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 													   a_device,
 													   a_gpuMemoryAllocator,
 													   a_bufferUploadCommandList,
-													   a_srvDescriptorPool),
+													   a_cbvSRVUAVDescriptorPool),
 													   "MeshletBuffer用StructuredBufferの作成に失敗しました。",
 													   false);
 
@@ -67,7 +67,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 																 a_device,
 																 a_gpuMemoryAllocator,
 																 a_bufferUploadCommandList,
-																 a_srvDescriptorPool),
+																 a_cbvSRVUAVDescriptorPool),
 																 "UniqueVertexIndexBuffer用StructuredBufferの作成に失敗しました。",
 																 false);
 
@@ -76,7 +76,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 															  a_device,
 															  a_gpuMemoryAllocator,
 															  a_bufferUploadCommandList,
-															  a_srvDescriptorPool),
+															  a_cbvSRVUAVDescriptorPool),
 															  "PrimitiveIndexBuffer用StructuredBufferの作成に失敗しました。",
 															  false);
 
@@ -85,14 +85,14 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 															 a_device,
 															 a_gpuMemoryAllocator,
 															 a_bufferUploadCommandList,
-															 a_srvDescriptorPool),
+															 a_cbvSRVUAVDescriptorPool),
 															 "MeshletBoundsBuffer用StructuredBufferの作成に失敗しました。",
 															 false);
 
 	return true;
 }
 
-void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<Struct::StaticModelMesh>&a_staticModelMeshList, TypeAlias::SRVDescriptorPool & a_srvDescriptorPool) const
+void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<Struct::StaticModelMesh>&a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 {
 	// StructuredBuffer全てのSRVを解放する
 	for (auto& l_modelMesh : a_staticModelMeshList)
@@ -105,10 +105,10 @@ void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticMod
 		auto& l_primitiveIndexBuffer    = l_modelMeshRuntimeData.m_primitiveIndexBuffer;
 		auto& l_meshletBoundsBuffer     = l_modelMeshRuntimeData.m_meshletBoundsBuffer;
 
-		l_vertexBuffer.ReleaseImmediatelySRVDescriptorIndex           (a_srvDescriptorPool);
-		l_meshletBuffer.ReleaseImmediatelySRVDescriptorIndex          (a_srvDescriptorPool);
-		l_uniqueVertexIndexBuffer.ReleaseImmediatelySRVDescriptorIndex(a_srvDescriptorPool);
-		l_primitiveIndexBuffer.ReleaseImmediatelySRVDescriptorIndex   (a_srvDescriptorPool);
-		l_meshletBoundsBuffer.ReleaseImmediatelySRVDescriptorIndex    (a_srvDescriptorPool);
+		l_vertexBuffer.ReleaseImmediatelySRVDescriptorIndex           (a_cbvSRVUAVDescriptorPool);
+		l_meshletBuffer.ReleaseImmediatelySRVDescriptorIndex          (a_cbvSRVUAVDescriptorPool);
+		l_uniqueVertexIndexBuffer.ReleaseImmediatelySRVDescriptorIndex(a_cbvSRVUAVDescriptorPool);
+		l_primitiveIndexBuffer.ReleaseImmediatelySRVDescriptorIndex   (a_cbvSRVUAVDescriptorPool);
+		l_meshletBoundsBuffer.ReleaseImmediatelySRVDescriptorIndex    (a_cbvSRVUAVDescriptorPool);
 	}
 }

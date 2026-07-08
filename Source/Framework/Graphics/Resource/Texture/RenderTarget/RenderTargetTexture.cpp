@@ -1,13 +1,13 @@
 ﻿#include "RenderTargetTexture.h"
 
-bool FWK::Graphics::RenderTargetTexture::Create(const Device&					    a_device,
-												const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
-												const TypeAlias::Math::Color&		a_clearColor,
-												const DXGI_FORMAT					a_format,
-											    const UINT							a_width,
-											    const UINT							a_height,
-													  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-													  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+bool FWK::Graphics::RenderTargetTexture::Create(const Device&					          a_device,
+												const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
+												const TypeAlias::Math::Color&		      a_clearColor,
+												const DXGI_FORMAT					      a_format,
+											    const UINT							      a_width,
+											    const UINT							      a_height,
+													  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+													  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height), "RenderTargetTextureのサイズがになっており、作成処理に失敗しました。",     false);
 	FWK_ASSERT_RETURN_VALUE_IF(a_format == DXGI_FORMAT_UNKNOWN,                 "RenderTargetTextureのFormatが無効になっており、作成方法に失敗しました。", false);
@@ -17,20 +17,20 @@ bool FWK::Graphics::RenderTargetTexture::Create(const Device&					    a_device,
 
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateGPUResource(a_gpuMemoryAllocator, a_width, a_height), "RenderTargetTexture用GPUResourceの作成に失敗しており、作成処理に失敗しました。", false);
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateRTV(a_device, a_rtvDescriptorPool),                   "RenderTarget用RTVの作成に失敗しており、作成処理に失敗しました。",                false);
-	FWK_ASSERT_RETURN_VALUE_IF(!CreateSRV(a_device, a_srvDescriptorPool),                   "RenderTarget用SRVの作成に失敗しており、作成処理に失敗しました。",                false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateSRV(a_device, a_cbvSRVUAVDescriptorPool),             "RenderTarget用SRVの作成に失敗しており、作成処理に失敗しました。",                false);
 
 	m_currentResourceState = D3D12_RESOURCE_STATE_RENDER_TARGET;
 
 	return true;
 }
-bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						a_device,
-												const GPUMemoryAllocator&			a_gpuMemoryAllocator,
-												const UINT64&						a_retiredFenceValue,
-												const UINT							a_width,
-											    const UINT							a_height,
-													  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
-													  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
-													  ResourceReleaseContext&	    a_resourceReleaseContext)
+bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						      a_device,
+												const GPUMemoryAllocator&			      a_gpuMemoryAllocator,
+												const UINT64&						      a_retiredFenceValue,
+												const UINT							      a_width,
+											    const UINT							      a_height,
+													  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool, 
+													  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+													  ResourceReleaseContext&	          a_resourceReleaseContext)
 {
 	// 同じサイズならリサイズ処理をする必要がないからreturn
 	if (Utility::IsSameSize(a_width, 
@@ -52,7 +52,7 @@ bool FWK::Graphics::RenderTargetTexture::Resize(const Device&						a_device,
 																a_width,
 																a_height,
 																a_rtvDescriptorPool,
-																a_srvDescriptorPool),
+																a_cbvSRVUAVDescriptorPool),
 																"リサイズ後のRenderTargetTextureの作成に失敗しており、リサイズ処理に失敗しました。",
 																false);
 
@@ -128,14 +128,14 @@ bool FWK::Graphics::RenderTargetTexture::CreateRTV(const Device& a_device, TypeA
 
 	return true;
 }
-bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	const auto& l_device = a_device.GetREFDevice();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_device,				  "デバイスが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。",    false);
 	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。", false);
 
-	const auto l_srvDescriptorIndex = a_srvDescriptorPool.Allocate();
+	const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
 
@@ -159,16 +159,16 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 	l_srvDesc.Texture2D.PlaneSlice		    = k_planeSlice;
 	l_srvDesc.Texture2D.ResourceMinLODClamp = k_resourceMINLODClamp;
 
-	const auto l_cpuHandle = a_srvDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex);
+	const auto l_cpuHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex);
 
 	// CreateShaderResourceView(SRVを作りたい対象リソース、
 	//							SRV設定、
 	//							SRVを書き込むCPUディスクリプタハンドル);
 	l_device->CreateShaderResourceView(m_gpuResource.m_resource.Get(), &l_srvDesc, l_cpuHandle);
 
-	if (!a_srvDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_srvDescriptorIndex))
+	if (!a_cbvSRVUAVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_srvDescriptorIndex))
 	{
-		a_srvDescriptorPool.Release(l_srvDescriptorIndex);
+		a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
 
 		FWK_ASSERT_RETURN_VALUE("CPUOnlySRVからShaderVisibleSRVへのコピーに失敗したため、RenderTargetTexture用SRVの作成に失敗しました。", false);
 	}

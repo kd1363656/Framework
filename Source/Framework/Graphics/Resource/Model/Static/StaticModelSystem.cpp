@@ -13,10 +13,10 @@ bool FWK::Graphics::StaticModelSystem::Create()
 	return true;
 }
 
-FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticModelForBatchUpload(const Device&				           a_device,
-																							       const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-																							       const std::filesystem::path&        a_filePath, 
-																							    		 TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticModelForBatchUpload(const Device&				             a_device,
+																							       const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
+																							       const std::filesystem::path&              a_filePath, 
+																							    		 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	Struct::StaticModelLoadResult l_staticModelLoadResult = {};
 
@@ -51,7 +51,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 									a_gpuMemoryAllocator,
 									a_filePath,
 									l_allocateStorageID,
-									a_srvDescriptorPool,
+									a_cbvSRVUAVDescriptorPool,
 									l_staticModelLoadResult);
 
 		return l_staticModelLoadResult;
@@ -63,7 +63,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 								a_gpuMemoryAllocator,
 								a_filePath,
 								l_allocateStorageID,
-								a_srvDescriptorPool,
+								a_cbvSRVUAVDescriptorPool,
 								l_staticModelLoadResult);
 
 	return l_staticModelLoadResult;
@@ -153,7 +153,7 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
 																   const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
 																   const std::filesystem::path&				 a_filePath,
 																   const TypeAlias::StorageID				 a_storageID,
-																   	     TypeAlias::SRVDescriptorPool&       a_srvDescriptorPool,
+																   	     TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
 																   	     Struct::StaticModelLoadResult&      a_staticModelLoadResult)
 {
 
@@ -168,7 +168,7 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
 	if (!CreateStaticBatchUploadRecord(a_staticModelRecord,
 									   a_device,
 									   a_gpuMemoryAllocator,
-									   a_srvDescriptorPool,
+									   a_cbvSRVUAVDescriptorPool,
 									   l_staticModelBatchUploadRecord))
 	{
 		m_staticModelStorage.ReleaseStorageID(a_storageID);
@@ -206,7 +206,7 @@ std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::Create
 bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord, 
 																	 const Device&							     a_device, 
 																	 const GPUMemoryAllocator&				     a_gpuMemoryAllocator, 
-																	 	   TypeAlias::SRVDescriptorPool&         a_srvDescriptorPool,
+																	 	   TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,
 																	 	   Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!a_staticModelRecord, "StaticModelRecordが無効になっており、モデルのバッチアップロードレコードの作成に失敗しました。", false);
@@ -217,7 +217,7 @@ bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::
 	if (!m_batchUploadRecordBuilder.CreateStaticModelBatchUploadRecord(a_device,
 																	   a_gpuMemoryAllocator,
 																	   a_staticModelBatchUploadRecord.m_bufferUploadCommandList,
-																	   a_srvDescriptorPool,
+																	   a_cbvSRVUAVDescriptorPool,
 																	   *a_staticModelRecord))
 	{
 		FWK_ASSERT_RETURN_VALUE("StaticModel用BufferUploadCommandの作成に失敗しました。", false);

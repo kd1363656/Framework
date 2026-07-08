@@ -19,19 +19,19 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		bool Create(const Device&						a_device,
-					const GPUMemoryAllocator&			a_gpuMemoryAllocator,
-					const Struct::ClientSize&			a_clientSize,
-						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool Create(const Device&						      a_device,
+					const GPUMemoryAllocator&			      a_gpuMemoryAllocator,
+					const Struct::ClientSize&			      a_clientSize,
+						  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		bool Resize(const Device&					    a_device,
-					const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
-					const Struct::ClientSize&		    a_clientSize,
-					const UINT64&					    a_retiredFenceValue,
-						  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
-						  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-						  ResourceReleaseContext&		a_resourceReleaseContext);
+		bool Resize(const Device&					          a_device,
+					const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
+					const Struct::ClientSize&		          a_clientSize,
+					const UINT64&					          a_retiredFenceValue,
+						  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+						  ResourceReleaseContext&		      a_resourceReleaseContext);
 
 		void SetClearColor(const TypeAlias::Math::Color& a_set) { m_clearColor = a_set; }
 

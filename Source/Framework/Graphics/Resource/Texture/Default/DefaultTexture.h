@@ -15,12 +15,12 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		bool CreateTextureBatchUploadRecord(const Device&					        a_device,
-											const GPUMemoryAllocator&		        a_gpuMemoryAllocator,
-											const TextureBatchUploadRecordBuilder&  a_textureBatchUploadRecordBuilder,
-											const TypeAlias::StorageID				a_storageID,
-												  TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool,
-												  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord);
+		bool CreateTextureBatchUploadRecord(const Device&					          a_device,
+											const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
+											const TextureBatchUploadRecordBuilder&    a_textureBatchUploadRecordBuilder,
+											const TypeAlias::StorageID				  a_storageID,
+												  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+												  Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord);
 
 		void ApplyColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel, const std::uint8_t a_colorValue);
 

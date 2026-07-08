@@ -14,14 +14,14 @@ namespace FWK::Graphics
 		~TextureSystem() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create	    (const Device&		   a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool Create	    (const Device&		   a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			            a_device, 
-													        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-													        const std::filesystem::path&		a_filePath,
-															const Enum::TextureLoadColorSpace   a_textureLoadColorSpace,
-															const Enum::DefaultTextureType      a_defaultTextureType,
-																  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			                  a_device, 
+													        const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+													        const std::filesystem::path&		      a_filePath,
+															const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
+															const Enum::DefaultTextureType            a_defaultTextureType,
+																  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
 		nlohmann::json Serialize() const;
 
@@ -48,15 +48,15 @@ namespace FWK::Graphics
 
 	private:
 
-		bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		void CreateAndRegisterPendingTextureForBachUpload(const Device&				          a_device,
-														  const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-														  const std::filesystem::path&        a_filePath,
-														  const DirectX::ScratchImage&        a_scratchImage,
-														  const DirectX::TexMetadata&         a_texMetadata,
-														  	    TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-														  	    Struct::TextureLoadResult&    a_textureLoadResult);
+		void CreateAndRegisterPendingTextureForBachUpload(const Device&				                a_device,
+														  const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+														  const std::filesystem::path&              a_filePath,
+														  const DirectX::ScratchImage&              a_scratchImage,
+														  const DirectX::TexMetadata&               a_texMetadata,
+														  	    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+														  	    Struct::TextureLoadResult&          a_textureLoadResult);
 
 		bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult);
 

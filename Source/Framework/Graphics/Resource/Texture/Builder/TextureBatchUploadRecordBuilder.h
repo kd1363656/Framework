@@ -9,14 +9,14 @@ namespace FWK::Graphics
 		 TextureBatchUploadRecordBuilder() = default;
 		~TextureBatchUploadRecordBuilder() = default;
 
-		bool CreateTextureBatchUploadRecord(const Device&                            a_device,
-											const GPUMemoryAllocator&                a_gpuMemoryAllocator,
-										    const std::wstring&						 a_filePath,
-											const DirectX::ScratchImage&             a_scratchImage,
-											const DirectX::TexMetadata&              a_texMetadata,
-											const TypeAlias::StorageID				 a_storageID,
-												  TypeAlias::SRVDescriptorPool&		 a_srvDescriptorPool,
-												  Struct::TextureBatchUploadRecord&  a_textureBatchUploadRecord) const;
+		bool CreateTextureBatchUploadRecord(const Device&                             a_device,
+											const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+										    const std::wstring&						  a_filePath,
+											const DirectX::ScratchImage&              a_scratchImage,
+											const DirectX::TexMetadata&               a_texMetadata,
+											const TypeAlias::StorageID				  a_storageID,
+												  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+												  Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord) const;
 
 	private:
 
@@ -24,10 +24,10 @@ namespace FWK::Graphics
 
 		bool CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
 
-		bool CreateTextureSRV(const Device&                       a_device,
-							  const DirectX::TexMetadata&         a_texMetadata,
-									TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-									Graphics::TextureRecord&	  a_textureRecord) const;
+		bool CreateTextureSRV(const Device&                             a_device,
+							  const DirectX::TexMetadata&               a_texMetadata,
+									TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+									Graphics::TextureRecord&	        a_textureRecord) const;
 
 		static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
 

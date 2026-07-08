@@ -56,11 +56,11 @@ bool FWK::Graphics::StructuredBuffer::ReserveRelease(const UINT64& a_retiredFenc
 	return true;
 }
 
-void FWK::Graphics::StructuredBuffer::ReleaseImmediatelySRVDescriptorIndex(TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+void FWK::Graphics::StructuredBuffer::ReleaseImmediatelySRVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	if (m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
 
-	a_srvDescriptorPool.Release(m_srvDescriptorIndex);
+	a_cbvSRVUAVDescriptorPool.Release(m_srvDescriptorIndex);
 
 	m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
 }

@@ -197,7 +197,7 @@ void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Struct::Window
 	l_sceneViewEditorWindow->SetupSceneViewTextureDescriptors();
 }
 
-bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::SRVDescriptorPool& a_sourceSRVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
+bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);
 	FWK_ASSERT_RETURN_VALUE_IF(a_imGuiSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
@@ -209,8 +209,8 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::SRVD
 	FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 
 	// コピー元のディスクリプタヒープハンドルとコピー先のディスクリプタヒープハンドルを取得
-	const auto l_sourceCPUDescriptorHandle      = a_sourceSRVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
-	const auto l_destinationCPUDescriptorHandle = m_imGuiSRVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
+	const auto l_sourceCPUDescriptorHandle      = a_sourceCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
+	const auto l_destinationCPUDescriptorHandle = m_imGuiSRVDescriptorPool.FetchVALCPUDescriptorHandle       (a_imGuiSRVDescriptorIndex);
 
 	// SRVDescriptorだけをコピー
 	l_device->CopyDescriptorsSimple(k_copySRVDescriptorCount,

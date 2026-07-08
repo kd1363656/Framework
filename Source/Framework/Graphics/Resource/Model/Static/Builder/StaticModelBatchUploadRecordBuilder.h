@@ -12,7 +12,7 @@ namespace FWK::Graphics
 		bool CreateStaticModelBatchUploadRecord(const Device&									a_device,
 												const GPUMemoryAllocator&					    a_gpuMemoryAllocator,
 													  std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-													  TypeAlias::SRVDescriptorPool&		        a_srvDescriptorPool,
+													  TypeAlias::CBVSRVUAVDescriptorPool&		a_cbvSRVUAVDescriptorPool,
 													  Graphics::StaticModelRecord&			    a_staticModelRecord) const;
 
 	private:
@@ -20,9 +20,9 @@ namespace FWK::Graphics
 		bool CreateModelBatchUploadRecord(const Device&									  a_device,
 										  const GPUMemoryAllocator&						  a_gpuMemoryAllocator,
 											    std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-												TypeAlias::SRVDescriptorPool&		      a_srvDescriptorPool,
+												TypeAlias::CBVSRVUAVDescriptorPool&		  a_cbvSRVUAVDescriptorPool,
 												Struct::StaticModelMesh&				  a_staticModelMesh) const;
 
-		void ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<Struct::StaticModelMesh>& a_staticModelMeshList, TypeAlias::SRVDescriptorPool& a_srvDescriptorPool) const;
+		void ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<Struct::StaticModelMesh>& a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
 	};
 }

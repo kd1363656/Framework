@@ -20,7 +20,7 @@ namespace FWK::Graphics
 					const Device&                                   a_device,
 					const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
 						  std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-						  TypeAlias::SRVDescriptorPool&             a_srvDescriptorPool)
+						  TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool)
 		{
 			// ストラクチャードバッファーを作成するための条件がそろっているのかどうかを確認する
 			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                                       "BufferListが空のため、StructuredBufferの作成に失敗しました。",                                    false);
@@ -55,7 +55,7 @@ namespace FWK::Graphics
 			const auto l_srvDescriptorIndex = CreateStructuredBufferSRV(a_bufferList,
 																		a_device,
 																		l_bufferGPUResource,
-																		a_srvDescriptorPool);
+																		a_cbvSRVUAVDescriptorPool);
 
 			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "StructuredBuffer用SRVの作成に失敗しました。", false);
 
@@ -68,8 +68,8 @@ namespace FWK::Graphics
 			return true;
 		}
 		
-		bool ReserveRelease                      (const UINT64&					a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
-		void ReleaseImmediatelySRVDescriptorIndex(TypeAlias::SRVDescriptorPool& a_srvDescriptorPool);
+		bool ReserveRelease                      (const UINT64&					      a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
+		void ReleaseImmediatelySRVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 		void Release();
 
 		const auto& GetREFBufferGPUResource() const { return m_bufferGPUResource; }
@@ -110,10 +110,10 @@ namespace FWK::Graphics
 		}
 
 		template <typename Type>
-		TypeAlias::DescriptorIndex CreateStructuredBufferSRV(const std::vector<Type>&			 a_bufferList,
-															 const Device&						 a_device,
-															 const Struct::GPUResource&			 a_bufferGPUResource,
-																   TypeAlias::SRVDescriptorPool& a_srvDescriptorPool) const
+		TypeAlias::DescriptorIndex CreateStructuredBufferSRV(const std::vector<Type>&			       a_bufferList,
+															 const Device&						       a_device,
+															 const Struct::GPUResource&			       a_bufferGPUResource,
+																   TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 		{
 			const auto& l_device = a_device.GetREFDevice();
 
@@ -122,7 +122,7 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),									    "BufferListが空のため、StructuredBuffer用SRVの作成に失敗しました。",                               Constant::k_invalidDescriptorIndex);
 			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStructuredBufferElementCount, "StructuredBufferの要素数がUINTの最大値を超えたため、StructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 
-			const auto l_srvDescriptorIndex = a_srvDescriptorPool.Allocate();
+			const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
 			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StructuredBuffer用のSRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
 

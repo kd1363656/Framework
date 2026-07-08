@@ -12,12 +12,12 @@ nlohmann::json FWK::Graphics::DefaultTexture::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&                           a_device, 
-                                                                   const GPUMemoryAllocator&               a_gpuMemoryAllocator, 
-                                                                   const TextureBatchUploadRecordBuilder&  a_textureBatchUploadRecordBuilder, 
-                                                                   const TypeAlias::StorageID              a_storageID, 
-                                                                         TypeAlias::SRVDescriptorPool&     a_srvDescriptorPool, 
-                                                                         Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord)
+bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&                             a_device, 
+                                                                   const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
+                                                                   const TextureBatchUploadRecordBuilder&    a_textureBatchUploadRecordBuilder, 
+                                                                   const TypeAlias::StorageID                a_storageID, 
+                                                                         TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                                                                         Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord)
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
     FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN,             "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
@@ -38,7 +38,7 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
                                                                                                  l_scratchImage,
                                                                                                  l_texMetadata,
                                                                                                  a_storageID,
-                                                                                                 a_srvDescriptorPool,
+                                                                                                 a_cbvSRVUAVDescriptorPool,
                                                                                                  a_textureBatchUploadRecord),
                                                                                                  "DefaultTexture用TextureBatchUploadRecord作成に失敗しました。",
                                                                                                  false);

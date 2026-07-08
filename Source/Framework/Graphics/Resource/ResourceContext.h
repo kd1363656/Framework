@@ -20,9 +20,9 @@ namespace FWK::Graphics
 
 		const auto& GetREFShaderCompiler() const { return m_shaderCompiler; }
 
-		const auto& GetREFRTVDescriptorPool() const { return m_rtvDescriptorPool; }
-		const auto& GetREFSRVDescriptorPool() const { return m_srvDescriptorPool; }
-		const auto& GetREFDSVDescriptorPool() const { return m_dsvDescriptorPool; }
+		const auto& GetREFRTVDescriptorPool      () const { return m_rtvDescriptorPool; }
+		const auto& GetREFCBVSRVUAVDescriptorPool() const { return m_cbvSRVUAVDescriptorPool; }
+		const auto& GetREFDSVDescriptorPool      () const { return m_dsvDescriptorPool; }
 
 		const auto& GetREFGPUMemoryAllocator() const { return m_gpuMemoryAllocator; }
 
@@ -32,9 +32,9 @@ namespace FWK::Graphics
 
 		const auto& GetREFResourceReleaseContext() const { return m_resourceReleaseContext; }
 
-		auto& GetMutableREFRTVDescriptorPool() { return m_rtvDescriptorPool; }
-		auto& GetMutableREFSRVDescriptorPool() { return m_srvDescriptorPool; }
-		auto& GetMutableREFDSVDescriptorPool() { return m_dsvDescriptorPool; }
+		auto& GetMutableREFRTVDescriptorPool      () { return m_rtvDescriptorPool; }
+		auto& GetMutableREFCBVSRVUAVDescriptorPool() { return m_cbvSRVUAVDescriptorPool; }
+		auto& GetMutableREFDSVDescriptorPool      () { return m_dsvDescriptorPool; }
 
 		auto& GetMutableREFUploadSystem     () { return m_uploadSystem; }
 		auto& GetMutableREFTextureSystem    () { return m_textureSystem; }
@@ -46,9 +46,9 @@ namespace FWK::Graphics
 
 		ShaderCompiler m_shaderCompiler = {};
 
-		TypeAlias::RTVDescriptorPool m_rtvDescriptorPool = {};
-		TypeAlias::SRVDescriptorPool m_srvDescriptorPool = {};
-		TypeAlias::DSVDescriptorPool m_dsvDescriptorPool = {};
+		TypeAlias::RTVDescriptorPool       m_rtvDescriptorPool       = {};
+		TypeAlias::CBVSRVUAVDescriptorPool m_cbvSRVUAVDescriptorPool = {};
+		TypeAlias::DSVDescriptorPool       m_dsvDescriptorPool       = {};
 
 		GPUMemoryAllocator m_gpuMemoryAllocator = {};
 		UploadSystem       m_uploadSystem       = {};

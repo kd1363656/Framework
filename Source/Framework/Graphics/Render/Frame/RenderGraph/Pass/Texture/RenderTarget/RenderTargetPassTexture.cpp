@@ -11,11 +11,11 @@ nlohmann::json FWK::Graphics::RenderTargetPassTexture::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			            a_device, 
-												    const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-													const Struct::ClientSize&           a_clientSize,
-														  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
-														  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool)
+bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			                  a_device, 
+												    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+													const Struct::ClientSize&                 a_clientSize,
+														  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool, 
+														  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN, "RenderTargetPassTextureのFormatが無効のため、作成処理に失敗しました。", false);
 
@@ -31,20 +31,20 @@ bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			            
 													         l_width,
 													         l_height,
 													         a_rtvDescriptorPool,
-													         a_srvDescriptorPool),
+													         a_cbvSRVUAVDescriptorPool),
 													         "RenderTargetPassTexture内部のRenderTargetTexture作成処理に失敗しました。",
 													         false);
 
 	return true;
 }
 
-bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&			            a_device, 
-												    const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-												    const Struct::ClientSize&           a_clientSize, 
-													const UINT64&			            a_retiredFenceValue, 
-														  TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
-														  TypeAlias::SRVDescriptorPool& a_srvDescriptorPool,
-														  ResourceReleaseContext&       a_resourceReleaseContext)
+bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&			                  a_device, 
+												    const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
+												    const Struct::ClientSize&                 a_clientSize, 
+													const UINT64&			                  a_retiredFenceValue, 
+														  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool, 
+														  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+														  ResourceReleaseContext&             a_resourceReleaseContext)
 {
 	const auto l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
 	const auto l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
@@ -58,7 +58,7 @@ bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&			            
 															 l_width,
 															 l_height,
 															 a_rtvDescriptorPool,
-															 a_srvDescriptorPool,
+															 a_cbvSRVUAVDescriptorPool,
 															 a_resourceReleaseContext),
 															 "RenderTargetPassTexture内部のRenderTargetTextureリサイズ処理に失敗しました。",
 															 false);

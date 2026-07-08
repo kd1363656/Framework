@@ -1,13 +1,13 @@
 ﻿#include "TextureBatchUploadRecordBuilder.h"
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRecord(const Device&							a_device, 
-																					const GPUMemoryAllocator&				a_gpuMemoryAllocator, 
-																					const std::wstring&						a_filePath,
-																					const DirectX::ScratchImage&			a_scratchImage, 
-																				    const DirectX::TexMetadata&				a_texMetadata, 
-																					const TypeAlias::StorageID				a_storageID, 
-																						  TypeAlias::SRVDescriptorPool&		a_srvDescriptorPool, 
-																						  Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRecord(const Device&							  a_device, 
+																					const GPUMemoryAllocator&				  a_gpuMemoryAllocator, 
+																					const std::wstring&						  a_filePath,
+																					const DirectX::ScratchImage&			  a_scratchImage, 
+																				    const DirectX::TexMetadata&				  a_texMetadata, 
+																					const TypeAlias::StorageID				  a_storageID, 
+																						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+																						  Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord) const
 {
 	auto& l_textureRecord = a_textureBatchUploadRecord.m_textureRecord;
 
@@ -28,13 +28,13 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 	// 作成したTextureResourceをシェーダーから参照できるように、CPUOnly側のDescriptorHeapへSRVを作成する
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateTextureSRV(a_device,
 												 a_texMetadata,
-												 a_srvDescriptorPool,
+												 a_cbvSRVUAVDescriptorPool,
 												 *a_textureBatchUploadRecord.m_textureRecord),
 												 "TextureSRV作成に失敗したため、テクスチャアップロード情報作成処理に失敗しました。",
 												 false);
 
 	// CPUOnlyに作成したSRVをShaderVisible側へコピーする
-	FWK_ASSERT_RETURN_VALUE_IF(!a_srvDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_textureRecord->GetVALSRVDescriptorIndex()), "CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、TextureSRV作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_cbvSRVUAVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_textureRecord->GetVALSRVDescriptorIndex()), "CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、TextureSRV作成処理に失敗しました。", false);
 
 	l_textureRecord->SetReferenceCount(Constant::k_defaultAssetReferenceCount);
 	l_textureRecord->SetStorageID     (a_storageID);
@@ -194,10 +194,10 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 	return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Device&				          a_device, 
-																	  const DirectX::TexMetadata&         a_texMetadata, 
-																		    TypeAlias::SRVDescriptorPool& a_srvDescriptorPool, 
-																			Graphics::TextureRecord&	  a_textureRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Device&				                a_device, 
+																	  const DirectX::TexMetadata&               a_texMetadata, 
+																		    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+																			Graphics::TextureRecord&	        a_textureRecord) const
 {
 	const auto& l_textureResource = a_textureRecord.GetREFGPUResource().m_resource;
 
@@ -251,13 +251,13 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
 	}
 
 	// SRVストレージIDを格納
-	const auto l_srvDescriptorIndex = a_srvDescriptorPool.Allocate();
+	const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRV用ストレージIDの確保に失敗したため、TextureSRV作成処理に失敗しました。", false);
 
 	a_textureRecord.SetSRVDescriptorIndex(l_srvDescriptorIndex);
 
-	const auto l_cpuOnlyCPUHandle = a_srvDescriptorPool.FetchVALCPUDescriptorHandle(a_textureRecord.GetVALSRVDescriptorIndex());
+	const auto l_cpuOnlyCPUHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_textureRecord.GetVALSRVDescriptorIndex());
 
 	// 作成したビューを用いてTextureResourceとSRVを結び付ける
 	// CreateShaderResourceView(SRVとして参照したいGPUResource、
