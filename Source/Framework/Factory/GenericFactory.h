@@ -52,6 +52,8 @@ namespace FWK
 			return l_itr->second();
 		}
 
+		const auto& GetREFFactoryMap() const { return m_factoryMap; }
+
 	private:
 
 		// Typeがshared_ptrの場合にだけ使用可能になる。

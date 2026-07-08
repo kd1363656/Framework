@@ -10,5 +10,9 @@ namespace FWK::Graphics
 		~ComputeCommandList() override = default;
 
 		void Reset(const TypeAlias::ComputeCommandAllocator& a_computeCommandAllocator);
+
+	protected:
+
+		void SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature) override;
 	};
 }

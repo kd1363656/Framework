@@ -392,6 +392,7 @@
 #include "Component/ComponentBase.h"
 #include "Strategy/StrategyBase.h"
 #include "Definition/Struct/Component/TransformComponentStruct.h"
+#include "Utility/IMGUI/IMGUIUtility.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"

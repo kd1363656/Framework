@@ -48,6 +48,10 @@ namespace FWK::Graphics
 
 		void DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const;
 
+	protected:
+
+		void SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature) override;
+
 	private:
 
 		static constexpr UINT k_singleSetupRenderTargetNUM = 1U;

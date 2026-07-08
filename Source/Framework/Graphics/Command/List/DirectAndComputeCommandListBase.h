@@ -41,6 +41,21 @@ namespace FWK::Graphics
 			l_directCommandList->SetDescriptorHeaps(k_setDescriptorHeapNUM, l_descriptorHeapList);
 		}
 
+		// UAVのResourceStateは変更せず、
+		// 専攻UAVアk巣エスト後続UAVアクセスの実行順を保証する
+		void UAVResourceBarrier(const TypeAlias::ComPtr<ID3D12Resource2>& a_resource) const 
+		{
+			FWK_ASSERT_RETURN_IF(!a_resource, "UAVBarrierを設定するGPUResourceが無効です。");
+
+			const auto& l_commandList = this->GetREFCommandList();
+
+			FWK_ASSERT_RETURN_IF(!l_commandList, "CommandListが作成されておらず、UAV Barrierの設定に失敗しました。");
+
+			const auto& l_resourceBarrier = CD3DX12_RESOURCE_BARRIER::UAV(a_resource.Get());
+
+			l_commandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_resourceBarrier);
+		}
+
 	protected:
 
 		void Reset(const CommandAllocator<CommandType>& a_commandAllocator) override
@@ -50,6 +65,8 @@ namespace FWK::Graphics
 			m_currentRootSignature.reset();
 			m_currentPipelineState.reset();
 		}
+
+		virtual void SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature) = 0;
 
 		void SetupPipeline(const std::weak_ptr<PipelineStateBase>& a_pipelineState)
 		{
@@ -81,7 +98,7 @@ namespace FWK::Graphics
 			if (m_currentRootSignature.owner_before(l_pipelineState->GetREFUseRootSignature()) ||
 				l_pipelineState->GetREFUseRootSignature().owner_before(m_currentRootSignature))
 			{
-				l_directCommandList->SetGraphicsRootSignature(l_d3dRootSignature.Get());
+				SetupRootSignature(*l_directCommandList.Get(), *l_d3dRootSignature.Get());
 
 				m_currentRootSignature = l_pipelineState->GetREFUseRootSignature();
 			}
@@ -105,7 +122,8 @@ namespace FWK::Graphics
 
 	private:
 
-		static constexpr UINT k_setDescriptorHeapNUM = 1U;
+		static constexpr UINT k_singleSetupBarrierNUM = 1U;
+		static constexpr UINT k_setDescriptorHeapNUM  = 1U;
 
 		std::weak_ptr<RootSignature>     m_currentRootSignature = {};
 		std::weak_ptr<PipelineStateBase> m_currentPipelineState = {};

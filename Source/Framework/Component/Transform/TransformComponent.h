@@ -42,6 +42,7 @@ namespace FWK
 		static constexpr std::string_view k_initialRotationJsonKey       = "InitialRotation";
 		static constexpr std::string_view k_initialPositionJsonKey       = "InitialPosition";
 		static constexpr std::string_view k_initialMatrixStrategyJsonKey = "InitialMatrixStrategy";
+		static constexpr std::string_view k_matrixStrategySelectorLabel  = "MatrixStrategySelector";
 
 		std::weak_ptr<TransformComponent> m_parentTransformComponent;
 

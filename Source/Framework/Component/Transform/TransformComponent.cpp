@@ -45,7 +45,7 @@ void FWK::TransformComponent::ConfrimMatrix()
 
 void FWK::TransformComponent::EditInspector()
 {
-
+	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, m_transform.m_matrixStrategy);
 }
 
 nlohmann::json FWK::TransformComponent::SerializeSpawnData()

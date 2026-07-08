@@ -620,6 +620,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />

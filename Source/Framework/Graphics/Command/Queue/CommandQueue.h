@@ -23,7 +23,8 @@ namespace FWK::Graphics
 
 		void WaitForFenceValueIfNeeded(const UINT64& a_waitFenceValue)
 		{
-			// 待つ必要があればWaitする
+			// CommandAllocatorの再利用や終了処理など、
+			// CPU側がGPUの完了を待つ必要がある場合に使用する
 			m_fence.WaitForFenceValueIfNeeded(a_waitFenceValue);
 		}
 		void WaitForGPUIdleIfNeeded()
@@ -49,6 +50,31 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドキューへのフェンスシグナルに失敗しました。");
 
 			WaitForFenceValueIfNeeded(l_incrementedFenceValue);
+		}
+
+		// このコマンドキューを、別のCommandQueueがSignalしたFence値までGPU上で待機させる
+		// CPUスレッドは停止しない
+		template <D3D12_COMMAND_LIST_TYPE WaitCommandType>
+		bool Wait(const CommandQueue<WaitCommandType>& a_waitCommandQueue, const UINT64& a_waitFenceValue) const
+		{
+			// 未使用フェンス値なら、待機対象がないことを表す
+			if (a_waitCommandQueue == Constant::k_unusedFenceValue) { return true; }
+
+			const auto& l_waitFence = a_waitCommandQueue.GetREFFence().GetREFence();
+
+			FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "待機命令を登録するCommandQueueが作成されていません。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_waitFence,    "待機対象CommandQueueのFenceが作成されていません。",    false);
+
+			// 使用例
+			// DirectQueue.Wait(ComputeQueue, ComputeFenceValue);
+			// ComputeShaderの書き込み完了後に、
+			// DirectQueueの描画処理を開始する
+			// 阪大方向に待機させれば、前回の描画がBufferを読み終えるまで次回のCompute書き込みを開始しないようにできる
+			const auto l_hr = m_commandQueue->Wait(l_waitFence.Get(), a_waitFenceValue);
+
+			FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueue間のGPU待機命令登録に失敗しました。", false);
+
+			return true;
 		}
 
 		void EnsureAllocatorAvailable(const CommandAllocator<CommandType>& a_commandAllocator)
@@ -119,6 +145,8 @@ namespace FWK::Graphics
 		}
 
 		const auto& GetREFCommandQueue() const { return m_commandQueue; }
+
+		const auto& GetREFFence() const { return m_fence; }
 
 	private:
 

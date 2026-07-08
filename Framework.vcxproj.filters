@@ -880,6 +880,9 @@
     <Filter Include="Source\Framework\Definition\Constant\Utility\Json">
       <UniqueIdentifier>{6e1ff8cb-ff30-41c7-b3d6-72687f106bb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI">
+      <UniqueIdentifier>{73ab9938-4b6e-40ec-8ddd-204b1264e06d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1784,6 +1787,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
