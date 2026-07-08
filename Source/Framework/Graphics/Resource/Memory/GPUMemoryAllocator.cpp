@@ -58,7 +58,10 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOUR
 
     return true;
 }
-bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64& a_bufferSize, const D3D12_RESOURCE_STATES a_initialResourceState, Struct::GPUResource& a_gpuResource) const
+bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64&               a_bufferSize, 
+                                                             const D3D12_RESOURCE_FLAGS  a_resourceFlags,
+                                                             const D3D12_RESOURCE_STATES a_initialResourceState, 
+                                                                   Struct::GPUResource&  a_gpuResource) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_allocator,                                  "D3D12MAアロケータが作成されておらず、BufferResourceの作成に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == Constant::k_invalidBufferSize, "BufferResourceの作成サイズが0のため、BufferResourceの作成に失敗しました。", false);
@@ -72,7 +75,7 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64& a_buf
     // D3D12_RESOURCE_DESCについて
     // Buffer(作成するバッファサイズ)
     // VertexBuffer / IndexBuffer / MeshletBufferなどの線形バッファとして扱う
-    const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize);
+    const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize, a_resourceFlags);
 
     // D3D12MA::Allocator::CreateResource(割り当て設定、
     //                                    作成するリソース設定、

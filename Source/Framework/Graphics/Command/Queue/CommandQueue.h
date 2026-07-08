@@ -104,13 +104,11 @@ namespace FWK::Graphics
 			// 実際にSignaleへ成功したFence値を取得する
 			const auto l_signaledFenceValue = SignalFence();
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_signaledFenceValue == Constant::k_unusedFenceValue, "CommandAllocator追跡用のFenceSignalに処理に失敗しました。", Constant::k_unusedFenceValue);
+			FWK_ASSERT_RETURN_IF(l_signaledFenceValue == Constant::k_unusedFenceValue, "CommandAllocator追跡用のFenceSignalに処理に失敗しました。");
 
 			// Signal成功後にだけ、
 			// このAllocatorを使用したGPU処理の完了値を記録する
 			a_commandAllocator.SetSubmittedFenceValue(l_signaledFenceValue);
-
-			return l_signaledFenceValue;
 		}
 
 		bool IsFenceValueCompleted(const UINT64& a_fenceValue) const

@@ -16,7 +16,10 @@ namespace FWK::Graphics
 								   const D3D12_RESOURCE_STATES a_initialResourceState,
 										 Struct::GPUResource&  a_gpuResource) const;
 
-		bool CreateBufferResource(const UINT64& a_bufferSize, const D3D12_RESOURCE_STATES a_initialResourceState, Struct::GPUResource& a_gpuResource) const;
+		bool CreateBufferResource(const UINT64&               a_bufferSize, 
+								  const D3D12_RESOURCE_FLAGS  a_resourceFlags,
+								  const D3D12_RESOURCE_STATES a_initialResourceState, 
+			                            Struct::GPUResource&  a_gpuResource) const;
 
 		const auto& GetREFAllocator() const { return m_allocator; }
 
