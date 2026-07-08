@@ -1791,6 +1791,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBufferBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2211,6 +2214,9 @@
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBufferBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClCompile>
   </ItemGroup>
