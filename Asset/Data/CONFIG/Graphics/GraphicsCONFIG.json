@@ -51,12 +51,6 @@
                             "CreateCount": 300000
                         },
                         "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicVertexBufferUploader"
-                    },
-                    {
-                        "DynamicBufferUploader": {
-                            "CreateCount": 300000
-                        },
-                        "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicIndexBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {

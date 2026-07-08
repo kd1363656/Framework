@@ -676,9 +676,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured">
       <UniqueIdentifier>{e318b75e-1ba2-4995-9509-d3e86d51fad8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index">
-      <UniqueIdentifier>{fdcb4021-88d5-414f-8a77-ebf6f1586380}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex">
       <UniqueIdentifier>{9a89fb5e-6a32-415d-b234-253d46a0a80d}</UniqueIdentifier>
     </Filter>
@@ -696,9 +693,6 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant">
       <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug">
-      <UniqueIdentifier>{f9cc98d0-6633-4bbe-9cd5-8d27514d0f41}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug">
       <UniqueIdentifier>{ccbfcb87-3a65-4d27-aeb8-400c45a6bccb}</UniqueIdentifier>
@@ -1557,9 +1551,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -1586,9 +1577,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug\PhysicsDebugDynamicIndexBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug</Filter>
@@ -1799,6 +1787,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h">
       <Filter>Source\Framework\Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2105,9 +2096,6 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Index</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug</Filter>
     </ClCompile>
@@ -2221,6 +2209,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp">
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

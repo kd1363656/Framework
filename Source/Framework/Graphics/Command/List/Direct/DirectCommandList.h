@@ -33,8 +33,7 @@ namespace FWK::Graphics
 		void SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const;
 
 		void SetupVertexBufferView(const D3D12_VERTEX_BUFFER_VIEW& a_vertexBufferView) const;
-		void SetupIndexBufferView (const D3D12_INDEX_BUFFER_VIEW&  a_indexBufferView)  const;
-
+		
 		void DrawIndexedInstanced(const UINT a_indexCount, 
 								  const UINT a_instanceCount,
 								  const UINT a_startIndexLocation,

@@ -549,10 +549,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\PhysicsDebug\PhysicsDebugDynamicIndexBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug\PhysicsDebugDynamicVertexBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.h" />
@@ -720,7 +719,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Index\DynamicIndexBufferUploaderBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Converter\Json\ResourceContextJsonConverter.cpp" />

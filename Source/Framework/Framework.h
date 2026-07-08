@@ -260,10 +260,6 @@
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
 #include "Graphics/Resource/Buffer/Dynamic/Vertex/PhysicsDebug/PhysicsDebugDynamicVertexBufferUploader.h"
 
-// インデックスバッファー
-#include "Graphics/Resource/Buffer/Dynamic/Index/DynamicIndexBufferUploaderBase.h"
-#include "Graphics/Resource/Buffer/Dynamic/Index/PhysicsDebug/PhysicsDebugDynamicIndexBufferUploader.h"
-
 // フレームリソース
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDynamicBufferUploaderBaseConcept.h"

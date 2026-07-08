@@ -161,17 +161,6 @@ void FWK::Graphics::DirectCommandList::SetupVertexBufferView(const D3D12_VERTEX_
 	
 	l_directCommandList->IASetVertexBuffers(k_vertexBufferViewStartSlot, k_vertexBufferViewCount, &a_vertexBufferView);
 }
-void FWK::Graphics::DirectCommandList::SetupIndexBufferView(const D3D12_INDEX_BUFFER_VIEW & a_indexBufferView) const
-{
-	const auto& l_directCommandList = GetREFCommandList();
-
-	FWK_ASSERT_RETURN_IF(!l_directCommandList,													   "ダイレクトコマンドリストが作成されておらず、IndexBufferViewの設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_indexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "IndexBufferViewのGPU仮想アドレスが無効のため、IndexBufferViewの設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_indexBufferView.SizeInBytes    == k_invalidSizeInBytes,                 "IndexBufferViewのSizeInBytesが無効のため、IndexBufferViewの設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_indexBufferView.Format         == DXGI_FORMAT_UNKNOWN,                  "IndexBufferViewのFormatが無効のため、IndexBufferViewの設定に失敗しました。");
-	
-	l_directCommandList->IASetIndexBuffer(&a_indexBufferView);
-}
 
 void FWK::Graphics::DirectCommandList::DrawIndexedInstanced(const UINT a_indexCount, 
 															const UINT a_instanceCount,
