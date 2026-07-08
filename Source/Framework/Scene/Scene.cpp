@@ -96,6 +96,8 @@ void FWK::Scene::INIT()
 	if (!l_meshBody->CreateBody(l_groundStaticModelRecord->GetREFModelData(), true, m_groundModelStandardDrawRequest->m_worldMatrix)) { return; }
 
 	m_staticMeshBody = std::move(l_meshBody);
+
+	
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -118,11 +120,11 @@ void FWK::Scene::PostDeserialize() const
 
 void FWK::Scene::EarlyUpdate()
 {
-	std::erase_if(m_gameObjectList, [this](const auto& a_gameObjectData) 
+	std::erase_if(m_gameObjectDataList, [this](const auto& a_gameObjectData) 
 	{
 		if (!a_gameObjectData.m_gameObject) { return false; }
 
-		m_registeredGameObjectSet.erase(a_gameObjectData.m_gameObjectAddress);
+		m_registeredGameObjectDataSet.erase(a_gameObjectData.m_gameObjectAddress);
 
 		return true;
 	});
@@ -250,7 +252,14 @@ void FWK::Scene::LateUpdate() const
 }
 void FWK::Scene::ConfirmMatrix() const
 {
+	for (const auto& l_gameDataObject : m_gameObjectDataList)
+	{
+		const auto& l_gameObject = l_gameDataObject.m_gameObject;
+		
+		if (!l_gameObject) { continue; }
 
+		l_gameObject->ConfirmMatrix();
+	}
 }
 
 nlohmann::json FWK::Scene::Serialize() const
@@ -267,8 +276,8 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 	}
 
 	// 既に登録されているアドレスを持つゲームオブジェクトなら追加しない
-	if (m_registeredGameObjectSet.contains(a_gameObject.get())) { return; }
+	if (m_registeredGameObjectDataSet.contains(a_gameObject.get())) { return; }
 
-	m_gameObjectList.emplace_back    (a_gameObject, a_gameObject.get());
-	m_registeredGameObjectSet.emplace(a_gameObject.get());
+	m_gameObjectDataList.emplace_back    (a_gameObject, a_gameObject.get());
+	m_registeredGameObjectDataSet.emplace(a_gameObject.get());
 }

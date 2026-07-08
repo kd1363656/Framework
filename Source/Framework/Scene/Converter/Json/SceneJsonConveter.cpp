@@ -4,7 +4,7 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 {
 	if (!a_rootJson.is_null()) { return; }
 
-	if (const auto& l_json = a_rootJson.value(k_gameObjectListJsonKey, nlohmann::json{});
+	if (const auto& l_json = a_rootJson.value(k_gameObjectDataListJsonKey, nlohmann::json{});
 		l_json.is_null())
 	{
 		DeserializeGameObjectList(a_rootJson, a_scene);
@@ -14,7 +14,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(const Scene& a_scen
 {
 	auto l_rootJson = nlohmann::json{};
 
-	l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList(a_scene);
+	l_rootJson[k_gameObjectDataListJsonKey] = SerializeGameObjectList(a_scene);
 
 	return l_rootJson;
 }
@@ -34,10 +34,10 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 
 nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const Scene& a_scene) const
 {
-		  auto  l_rootJsonArray  = nlohmann::json::array	   ();
-	const auto& l_gameObjectList = a_scene.GetREFGameObjectList();
+		  auto  l_rootJsonArray      = nlohmann::json::array	       ();
+	const auto& l_gameObjectDataList = a_scene.GetREFGameObjectDataList();
 	
-	for (const auto& l_gameObject : l_gameObjectList)
+	for (const auto& l_gameObject : l_gameObjectDataList)
 	{
 		if (!l_gameObject.m_gameObject ||
 			!l_gameObject.m_gameObjectAddress) 

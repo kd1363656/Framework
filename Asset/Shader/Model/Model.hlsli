@@ -68,7 +68,7 @@ struct ModelAmplificationPayload
     uint meshletIndex;
 };
 
-static const float k_modelPositionElementW = 1.0F;
+static const float k_modelPositionElementW  = 1.0F;
 static const float k_modelDirectionElementW = 0.0F;
 
 // normaliaze前に長さ0付近のベクトルを避けるための値。
@@ -84,7 +84,7 @@ static const uint k_modelTriangleVertexCount = 3U;
 static const uint k_modelMaxMeshletVertexCount    = 64U;
 static const uint k_modelMaxMeshletPrimitiveCount = 126U;
 
-static const uint k_modelMeshShaderThreadCountX = 1U;
+static const uint k_modelMeshShaderThreadCountX = 32U;
 static const uint k_modelMeshShaderThreadCountY = 1U;
 static const uint k_modelMeshShaderThreadCountZ = 1U;
 

@@ -24,13 +24,13 @@ namespace FWK
 
 		void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 
-		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
+		const auto& GetREFGameObjectDataList() const { return m_gameObjectDataList; }
 
 	private:
 
-		std::unordered_set<const GameObject*> m_registeredGameObjectSet = {};
+		std::unordered_set<const GameObject*> m_registeredGameObjectDataSet = {};
 
-		std::list<Struct::GameObjectData> m_gameObjectList = {};
+		std::list<Struct::GameObjectData> m_gameObjectDataList = {};
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 

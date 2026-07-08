@@ -1,9 +1,8 @@
 ﻿#include "GameObject.h"
 
-void FWK::GameObject::INIT()
+void FWK::GameObject::ConfirmMatrix()
 {
-	if (!m_transformComponent)
-	{
-		m_transformComponent = std::make_shared<TransformComponent>();
-	}
+	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TransformComponentは必ず存在するべきComponentです。");
+
+	m_transformComponent->ConfrimMatrix();
 }

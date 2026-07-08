@@ -9,7 +9,7 @@ namespace FWK
 		 GameObject() = default;
 		~GameObject() = default;
 
-		void INIT();
+		void ConfirmMatrix();
 
 	private:
 

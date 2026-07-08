@@ -26,7 +26,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(const Texture& a_other
 {
 	if (this == &a_other) { return *this; }
 
-	// 所持しているテクスチャを破棄
+	// 所持しているテクスチャをの参照数を減算
 	SubtractReferenceCount();;
 
 	// コピー元と同じTextureRecordを参照する
@@ -79,7 +79,7 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 																				a_defaultTextureType,
 																				l_srvDescriptorPool);
 
-	// テクスチャの登録がデフォルトテクスチャをセットしてreturn
+	// デフォルトテクスチャをセットしてreturn
 	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID ||
 		l_textureLoadResult.m_textureRecord.expired())
 	{

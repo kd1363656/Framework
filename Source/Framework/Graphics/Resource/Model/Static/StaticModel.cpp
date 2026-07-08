@@ -25,14 +25,14 @@ FWK::Graphics::StaticModel& FWK::Graphics::StaticModel::operator=(const StaticMo
 {
 	if (this == &a_other) { return *this; }
 
-	// 所持しているStaticModelを破棄
+	// 所持しているStaticModelの参照数を減らす
 	SubtractReferenceCount();
 
 	// コピー元と同じStaticModelを参照
 	m_storageID			= a_other.m_storageID;
 	m_staticModelRecord = a_other.m_staticModelRecord;
 
-	// 参照数の加算
+	// 新しいStaticModelの参照数の加算
 	AddReferenceCount();
 
 	return *this;
@@ -41,8 +41,8 @@ FWK::Graphics::StaticModel& FWK::Graphics::StaticModel::operator=(StaticModel&& 
 {
 	if (this == &a_other) { return *this; }
 
-	// 所持しているStaticModelを破棄
-	AddReferenceCount();
+	// 所持しているStaticModelの参照数を減らす
+	SubtractReferenceCount();
 
 	// ムーブでは参照数を増やさず、参照先だけ移す
 	m_storageID			= a_other.m_storageID;

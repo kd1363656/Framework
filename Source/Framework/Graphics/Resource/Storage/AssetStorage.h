@@ -50,7 +50,9 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_VALUE_IF(a_record->GetVALStorageID() == Constant::k_invalidStorageID, "StorageIDが無効のため、Recordの登録に失敗しました。",							  false);
 			FWK_ASSERT_RETURN_VALUE_IF(m_recordMap.contains(a_filePath),							    "同じファイルパスのRecordが既に登録されているため、Recordの登録に失敗しました。", false);
 
-			m_recordMap.try_emplace(a_filePath, a_record);
+			const bool l_isInserted = m_recordMap.try_emplace(a_filePath, a_record).second;
+
+			FWK_ASSERT_RETURN_VALUE_IF(!l_isInserted, "RecordMapへのRecord登録に失敗しました。", false);
 
 			return true;
 		}
