@@ -19,7 +19,7 @@ namespace FWK
 		virtual void DeserializePrefabData(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		virtual void DeserializeSpawnData (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		
-		virtual void PostDeserialize() const { /*必要に応じてオーバーライドしてください*/ };
+		virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual void EarlyUpdate()       { /*必要に応じてオーバーライドしてください*/ };
 		virtual void Update     ()       { /*必要に応じてオーバーライドしてください*/ };

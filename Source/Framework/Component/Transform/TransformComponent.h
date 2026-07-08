@@ -9,9 +9,11 @@ namespace FWK
 		 TransformComponent();
 		~TransformComponent() override;
 
-		virtual void DeserializePrefabData(const nlohmann::json& a_rootJson) override;
-		virtual void DeserializeSpawnData (const nlohmann::json& a_rootJson) override;
+		void DeserializePrefabData(const nlohmann::json& a_rootJson) override;
+		void DeserializeSpawnData (const nlohmann::json& a_rootJson) override;
 
+		void PostDeserialize() override;
+		
 		void ConfrimMatrix();
 
 		void EditInspector() override;
@@ -31,17 +33,15 @@ namespace FWK
 
 	private:
 
-		void DeserializeCommon   (const nlohmann::json& a_rootJson);
-		void DeserializeTransform(const nlohmann::json& a_rootJson, Struct::Transform& a_transform);
-
-		nlohmann::json SerializeCommon() const;
-		
 		void ConfrimMatrixStrategy();
 
-		static constexpr std::string_view k_initialScaleJsonKey          = "InittialScale";
-		static constexpr std::string_view k_initialRotationJsonKey       = "InittialRotation";
-		static constexpr std::string_view k_initialPositionJsonKey       = "InittialPosition";
-		static constexpr std::string_view k_initialMatrixStrategyJsonKey = "InittialPosition";
+		void           Deserialize(const nlohmann::json& a_rootJson);
+		nlohmann::json Serialize  ();
+
+		static constexpr std::string_view k_initialScaleJsonKey          = "InitialScale";
+		static constexpr std::string_view k_initialRotationJsonKey       = "InitialRotation";
+		static constexpr std::string_view k_initialPositionJsonKey       = "InitialPosition";
+		static constexpr std::string_view k_initialMatrixStrategyJsonKey = "InitialMatrixStrategy";
 
 		std::weak_ptr<TransformComponent> m_parentTransformComponent;
 
