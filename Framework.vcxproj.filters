@@ -883,6 +883,9 @@
     <Filter Include="Source\Framework\Utility\IMGUI">
       <UniqueIdentifier>{73ab9938-4b6e-40ec-8ddd-204b1264e06d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\IMGUI">
+      <UniqueIdentifier>{5ac61ca2-0d72-45b3-8ae0-48ca63dc94dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1790,6 +1793,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIUtility.h">
       <Filter>Source\Framework\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h">
+      <Filter>Source\Framework\Definition\Constant\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h">
+      <Filter>Source\Framework\Utility\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,8 @@ void FWK::TransformComponent::DeserializeSpawnData(const nlohmann::json& a_rootJ
 {
 	if (a_rootJson.is_null()) { return; }
 
+	m_initialSettingTransform.m_position = Utility::DeserializeVector3(a_rootJson, k_initialPositionJsonKey);
+
 	Deserialize(a_rootJson);
 }
 
@@ -45,6 +47,31 @@ void FWK::TransformComponent::ConfrimMatrix()
 
 void FWK::TransformComponent::EditInspector()
 {
+	// 初期スポーン位置はエディターでドラッグしたときのみ決まる
+	// 拡大率
+	if (ImGui::DragFloat3("拡大率", &m_transform.m_scale.x, Constant::k_imguiDefaultDragValue))
+	{
+		m_initialSettingTransform.m_scale = m_transform.m_scale;
+	}
+
+	// 回転
+	if (auto l_euler = FWK::Utility::QuaternionToEuler(m_transform.m_rotation);
+		ImGui::DragFloat3("回転", &l_euler.x, Constant::k_imguiDefaultDragValue))
+	{
+		// オイラー角に変換していたクオータニオンを元に戻して格納
+		auto l_dragResult = Utility::EulerToQuaternion(l_euler);
+
+		m_transform.m_rotation               = l_dragResult;
+		m_initialSettingTransform.m_rotation = l_dragResult;
+	}
+
+	// 座標
+	if (ImGui::DragFloat3("座標", &m_transform.m_position.x, Constant::k_imguiDefaultDragValue))
+	{
+		m_initialSettingTransform.m_scale = m_transform.m_scale;
+	}
+
+	// 行列の計算方法を選択することができるラジオボタンリスト
 	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, m_transform.m_matrixStrategy);
 }
 
@@ -79,12 +106,13 @@ void FWK::TransformComponent::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_initialSettingTransform.m_scale    = Utility::DeserializeVector3   (a_rootJson, k_initialScaleJsonKey);
 	m_initialSettingTransform.m_rotation = Utility::DeserializeQuaternion(a_rootJson, k_initialRotationJsonKey);
-	m_initialSettingTransform.m_position = Utility::DeserializeVector3   (a_rootJson, k_initialPositionJsonKey);
-
+	
 	Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_initialMatrixStrategyJsonKey, m_initialSettingTransform.m_matrixStrategy);	
 
 	m_transform.m_scale    = m_initialSettingTransform.m_scale;
 	m_transform.m_rotation = m_initialSettingTransform.m_rotation;
+
+	// 外部でInitialTransform.m_positionはデシリアライズを行う(プレハブは座標データをプレハブとして保持しなくてよいから)
 	m_transform.m_position = m_initialSettingTransform.m_position;
 
 	Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_initialMatrixStrategyJsonKey, m_transform.m_matrixStrategy);

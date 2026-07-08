@@ -89,6 +89,8 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドリストのリセット処理に失敗しました。");
 		}
 
+		static constexpr UINT GetVALSingleSetupBarrierNum() { return k_singleSetupBarrierNUM; }
+
 	private:
 
 		static constexpr UINT k_singleSetupBarrierNUM = 1U;

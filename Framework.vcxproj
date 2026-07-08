@@ -378,6 +378,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
@@ -624,6 +625,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h" />
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h" />
