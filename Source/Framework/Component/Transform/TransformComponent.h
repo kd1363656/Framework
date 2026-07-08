@@ -2,11 +2,6 @@
 
 namespace FWK
 {
-	class MatrixStrategyBase;
-}
-
-namespace FWK
-{
 	class TransformComponent final : public ComponentBase
 	{
 	public:
@@ -14,7 +9,15 @@ namespace FWK
 		 TransformComponent();
 		~TransformComponent() override;
 
+		virtual void DeserializePrefabData(const nlohmann::json& a_rootJson) override;
+		virtual void DeserializeSpawnData (const nlohmann::json& a_rootJson) override;
+
 		void ConfrimMatrix();
+
+		void EditInspector() override;
+
+		nlohmann::json SerializeSpawnData () override;
+		nlohmann::json SerializePrefabData() override;
 
 		TypeAlias::Math::Matrix CalcScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale);    }
 		TypeAlias::Math::Matrix CalcRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
@@ -24,17 +27,28 @@ namespace FWK
 
 		const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
 
-		void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_transform.m_matrix = std::move(a_set); }
+		void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
 
 	private:
 
+		void DeserializeCommon   (const nlohmann::json& a_rootJson);
+		void DeserializeTransform(const nlohmann::json& a_rootJson, Struct::Transform& a_transform);
+
+		nlohmann::json SerializeCommon() const;
+		
 		void ConfrimMatrixStrategy();
+
+		static constexpr std::string_view k_initialScaleJsonKey          = "InittialScale";
+		static constexpr std::string_view k_initialRotationJsonKey       = "InittialRotation";
+		static constexpr std::string_view k_initialPositionJsonKey       = "InittialPosition";
+		static constexpr std::string_view k_initialMatrixStrategyJsonKey = "InittialPosition";
 
 		std::weak_ptr<TransformComponent> m_parentTransformComponent;
 
-		std::unique_ptr<MatrixStrategyBase> m_matrixStrategy;
+		TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
 
 		Struct::Transform m_transform;
+		Struct::Transform m_initialSettingTransform;
 
 		FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
 	};

@@ -15,7 +15,7 @@ namespace FWK
 
 		std::vector<std::shared_ptr<ComponentBase>> m_componentBase = {};
 
-		std::shared_ptr<TransformComponent> m_transformComponent = {};
+		std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
 
 		UUID m_uuid = GUID_NULL;
 

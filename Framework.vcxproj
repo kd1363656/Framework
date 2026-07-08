@@ -350,7 +350,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex\VBPhysicsDebugConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureConstant.h" />
@@ -381,6 +380,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h" />
@@ -445,9 +445,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyBaseUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
@@ -486,7 +486,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\FrameResource.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Converter\Json\RenderGraphFrameResourceJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\Converter\Json\DepthStencilPassTextureJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\DepthStencil\DepthStencilPassTexture.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\PassTextureBase.h" />
@@ -617,12 +616,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
     <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\File\Json\IsJsonArrayUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\Graphics\ColorJsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h" />

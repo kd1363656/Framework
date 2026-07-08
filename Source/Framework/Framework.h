@@ -79,7 +79,8 @@
 // エディター(ファクトリーを介さないといけないもの)
 //===============================================================================
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
-#include "Utility/File/Json/IsJsonArrayUtility.h"
+#include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
+#include "Utility/Json/JsonUtility.h"
 #include "Editor/Window/Scene/SceneViewEditorWindow.h"
 #include "Definition/Type/Alias/Factory/Unique/EditorMainMenuUniqueFactory.h"
 #include "Editor/MainMenu/File/FileMainMenuEditor.h"
@@ -255,7 +256,7 @@
 
 // バーテックスバッファー
 #include "Graphics/Resource/Buffer/Dynamic/Vertex/DynamicVertexBufferUploaderBase.h"
-#include "Definition/Constant/Graphics/Buffer/Vertex/VBPhysicsDebugConstant.h"
+
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
 #include "Graphics/Resource/Buffer/Dynamic/Vertex/PhysicsDebug/PhysicsDebugDynamicVertexBufferUploader.h"
 
@@ -264,12 +265,10 @@
 #include "Graphics/Resource/Buffer/Dynamic/Index/PhysicsDebug/PhysicsDebugDynamicIndexBufferUploader.h"
 
 // フレームリソース
-#include "Graphics/Render/Frame/Converter/Json/Utility/FrameResourceJsonUtility.h"
 #include "Graphics/Render/Frame/Converter/Json/FrameResourceJsonConverter.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDynamicBufferUploaderBaseConcept.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/PassTextureBase.h"
 #include "Definition/Enum/Graphics/RenderGraphPassTextureEnum.h"
-#include "Utility/Graphics/ColorJsonUtility.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/RenderTargetPassTexture.h"
 #include "Definition/Enum/Graphics/DepthStencilPassTextureEnum.h"
@@ -339,7 +338,7 @@
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
 #include "Definition/Struct/Graphics/RenderGraphPassStruct.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
-#include "Definition/Type/Alias/Factory/Shared/RenderGraphPassUniqueFactory.h"
+#include "Definition/Type/Alias/Factory/Unique/RenderGraphPassUniqueFactory.h"
 #include "Graphics/Render/Graph/Pass/Sprite/Screen/SpriteScreenPass.h"
 #include "Graphics/Render/Graph/Pass/Final/FinalColorPass.h"
 #include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
@@ -391,11 +390,11 @@
 
 // コンポーネント
 #include "Component/ComponentBase.h"
-#include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Strategy/StrategyBase.h"
+#include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
-#include "Definition/Type/Alias/Factory/Unique/MatrixStrategyBaseUniqueFactory.h"
+#include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
 

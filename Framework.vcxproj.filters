@@ -304,9 +304,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer">
       <UniqueIdentifier>{e98f0d3d-0089-49c9-8b2b-a75100c5112a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility">
-      <UniqueIdentifier>{6529c890-fcf5-44c4-99f3-9e3f858a8da8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget">
       <UniqueIdentifier>{cb515329-320b-4ad4-9141-5c21aafcc9bd}</UniqueIdentifier>
     </Filter>
@@ -760,12 +757,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Physics">
       <UniqueIdentifier>{8cddf1ab-54c0-4bd4-918a-67bf66fae2e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer">
-      <UniqueIdentifier>{f20f0139-6cb7-4dba-95aa-a7c866a0ebc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex">
-      <UniqueIdentifier>{705bfbdc-b337-4871-9c1e-1f2a158b2701}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Storage\Converter">
       <UniqueIdentifier>{94493553-279f-4d7a-9f27-c6d76ec4fa34}</UniqueIdentifier>
     </Filter>
@@ -882,6 +873,12 @@
     </Filter>
     <Filter Include="Source\Framework\Component\Transform\Strategy\Standalone">
       <UniqueIdentifier>{0386c869-5d17-4bf7-a2d3-217b69a2e05a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Json">
+      <UniqueIdentifier>{ba990d32-9ca5-483d-a056-58a85a44c94c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Json">
+      <UniqueIdentifier>{6e1ff8cb-ff30-41c7-b3d6-72687f106bb4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1067,9 +1064,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\RenderTarget\RenderTargetTexture.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\RenderTarget</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\Pass\Texture\Converter\Json\Utility\RenderTargetPassTextureJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\RenderGraph\RenderGraphFrameResource.h">
       <Filter>Source\Framework\Graphics\Render\Frame\RenderGraph</Filter>
@@ -1275,9 +1269,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DynamicBufferSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RenderGraphPassUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
@@ -1371,9 +1362,6 @@
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h">
       <Filter>Source\Framework\Utility\File\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Json\IsJsonArrayUtility.h">
-      <Filter>Source\Framework\Utility\File\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h">
       <Filter>Source\Framework\Utility\Graphics</Filter>
     </ClInclude>
@@ -1388,9 +1376,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h">
       <Filter>Source\Framework\Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Graphics\ColorJsonUtility.h">
-      <Filter>Source\Framework\Utility\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h">
       <Filter>Source\Framework\Utility\Physics</Filter>
@@ -1420,9 +1405,6 @@
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h">
@@ -1659,9 +1641,6 @@
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Vertex\VBPhysicsDebugConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Vertex</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
@@ -1791,7 +1770,19 @@
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h">
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyBaseUniqueFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
+      <Filter>Source\Framework\Utility\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
   </ItemGroup>

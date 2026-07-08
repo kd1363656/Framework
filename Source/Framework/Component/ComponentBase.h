@@ -16,10 +16,9 @@ namespace FWK
 
 		virtual bool IsAllowMultiple() const { return false; }
 		 
-		virtual void INIT		()                      { /*必要に応じてオーバーライドしてください*/ };
-		virtual void Deserialize(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void DeserializePrefabData(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void DeserializeSpawnData (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		
-		// デシリアライズ後のポインタの紐づけなどを行う
 		virtual void PostDeserialize() const { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual void EarlyUpdate()       { /*必要に応じてオーバーライドしてください*/ };
@@ -27,6 +26,9 @@ namespace FWK
 		virtual void LateUpdate () const { /*必要に応じてオーバーライドしてください*/ };
 		
 		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
+
+		virtual nlohmann::json SerializeSpawnData () { return {}; }
+		virtual nlohmann::json SerializePrefabData() { return {}; }
 
 		void Enable ();
 		void Disable();
