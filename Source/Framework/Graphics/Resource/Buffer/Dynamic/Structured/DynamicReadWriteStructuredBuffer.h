@@ -20,7 +20,7 @@ namespace FWK::Graphics
 		bool Create(const Device&                             a_device,
 					const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
 					const std::size_t&                        a_elementCount,
-					      TypeAlias::CBVSRVUAVDescriptorPool& a_cbbSRVUAVDescriptorPool)
+					      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 		{
 			// DynamicReadWriteStructuredBufferは、
 			// ComputeShaderなどからUAVとして書き込み、
@@ -59,25 +59,47 @@ namespace FWK::Graphics
 														l_bufferGPUResource,
 														l_elementCount,
 														l_structuredByteStride,
-													    a_cbbSRVUAVDescriptorPool);
+													    a_cbvSRVUAVDescriptorPool);
 
 			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DynamicReadWriteStructuredBuffer用SRVの作成に失敗しました。", false);
 
 			// ComputeShaderなどから書き込むためのUAVを作る
-			const auto l_uavDescriptorInde;
+			const auto l_uavDescriptorInde = CreateUAV(a_device,
+													   l_bufferGPUResource,
+													   static_cast<UINT>(l_elementCount),
+													   static_cast<UINT>(l_structuredByteStride),
+													   a_cbvSRVUAVDescriptorPool);
+
+			if (l_uavDescriptorInde == DescriptorHeap::k_invalidDescriptorIndex)
+			{
+				// SRV作成後にUAV作成で失敗した場合、
+				// 既に確保したSRVDescriptorIndexを返却する
+				a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
+
+				FWK_ASSERT_RETURN_VALUE("DynamicReadWriteStructuredBuffer用UAVの作成に失敗しました。", false);
+			}
+
+			// 作成したものをメンバとして格納
+			SetBufferGPUResource (std::move(l_bufferGPUResource));
+			SetSRVDescriptorIndex(l_srvDescriptorIndex);
+
+			m_uavDescriptorIndex   = l_uavDescriptorInde;
+			m_currentResourceState = D3D12_RESOURCE_STATE_COMMON;
+			m_elementCount         = static_cast<UINT>(l_elementCount);
+			m_structureByteStride  = static_cast<UINT>(l_structuredByteStride);
+
+			return true;
 		}
 
 		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 		void Release       ()                                                                                    override;
 
 		void ReleaseImmediatelyUAVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
-		void ReleaseImmediatelyDescriptorIndecies(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+		void ReleaseImmediatelyDescriptorIndices (TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
 		void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
 
 		auto GetVALUAVDescriptorIndex() const { return m_uavDescriptorIndex; }
-
-		auto GetVALUAVDescirptorIndex() const { return m_uavDescriptorIndex; }
 
 		auto GetVALCurrentResourceState() const { return m_currentResourceState; }
 

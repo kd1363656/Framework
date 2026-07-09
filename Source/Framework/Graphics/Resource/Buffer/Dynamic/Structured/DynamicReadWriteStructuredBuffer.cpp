@@ -14,7 +14,16 @@ FWK::Graphics::DynamicReadWriteStructuredBuffer::~DynamicReadWriteStructuredBuff
     Release();
 }
 
-FWK::Graphics::DynamicReadWriteStructuredBuffer::DynamicReadWriteStructuredBuffer(DynamicReadWriteStructuredBuffer && a_other) noexcept
+FWK::Graphics::DynamicReadWriteStructuredBuffer::DynamicReadWriteStructuredBuffer(DynamicReadWriteStructuredBuffer && a_other) noexcept : 
+    StructuredBufferBase(std::move(a_other)),
+
+    m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
+
+    m_currentResourceState(D3D12_RESOURCE_STATE_COMMON),
+
+    m_elementCount(k_invalidElementCount),
+
+    m_structureByteStride(k_invalidStructuredByteStride)
 {
     MoveFrom(std::move(a_other));
 }
@@ -36,7 +45,7 @@ FWK::Graphics::DynamicReadWriteStructuredBuffer& FWK::Graphics::DynamicReadWrite
 bool FWK::Graphics::DynamicReadWriteStructuredBuffer::ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
     // 既に解放するものがなければreturn
-    if (GetREFBufferGPUResource().m_resource && 
+    if (!GetREFBufferGPUResource().m_resource && 
         GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex &&
         m_uavDescriptorIndex       == DescriptorHeap::k_invalidDescriptorIndex)
     {
@@ -71,7 +80,7 @@ bool FWK::Graphics::DynamicReadWriteStructuredBuffer::ReserveRelease(const UINT6
 void FWK::Graphics::DynamicReadWriteStructuredBuffer::Release()
 {
     // 既に解放するものがなければreturn
-    if (GetREFBufferGPUResource().m_resource && 
+    if (!GetREFBufferGPUResource().m_resource && 
         GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex &&
         m_uavDescriptorIndex       == DescriptorHeap::k_invalidDescriptorIndex)
     {
@@ -102,7 +111,7 @@ void FWK::Graphics::DynamicReadWriteStructuredBuffer::ReleaseImmediatelyUAVDescr
     m_uavDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 }
 
-void FWK::Graphics::DynamicReadWriteStructuredBuffer::ReleaseImmediatelyDescriptorIndecies(TypeAlias::CBVSRVUAVDescriptorPool & a_cbvSRVUAVDescriptorPool)
+void FWK::Graphics::DynamicReadWriteStructuredBuffer::ReleaseImmediatelyDescriptorIndices(TypeAlias::CBVSRVUAVDescriptorPool & a_cbvSRVUAVDescriptorPool)
 {
     // SRVは基底クラスが持っているため、基底側の即時解放関数を呼ぶ
     ReleaseImmediatelySRVDescriptorIndex(a_cbvSRVUAVDescriptorPool);
