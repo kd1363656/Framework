@@ -13,7 +13,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool OptimizeStaticModelMesh(Struct::StaticModelMesh& a_staticModelMesh) const;
+		bool OptimizeStaticModelMesh(StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
 
 		static constexpr std::size_t k_invalidOptimizedVertexCount = 0ULL;
 	};

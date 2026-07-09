@@ -17,7 +17,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelRecord(Graphics
 	return true;
 }
 
-bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::StaticModelMesh& a_staticModelMesh) const
+bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(StaticModelRecord::StaticModelMesh& a_staticModelMesh) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_modelVertexList.empty(), "ModelMeshの頂点リストが空のため、StaticModelMeshの最適化に失敗しました。",		    false);
 	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_indexList.empty(),		"ModelMeshのインデックスリストが空のため、StaticModelMeshの最適化に失敗しました。", false);
@@ -40,7 +40,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 																	 a_staticModelMesh.m_indexList.size(),
 																	 a_staticModelMesh.m_modelVertexList.data(),
 																	 a_staticModelMesh.m_modelVertexList.size(),
-																	 sizeof(Struct::StaticModelVertex));
+																	 sizeof(StaticModelRecord::StaticModelVertex));
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_optimizedVertexCount == k_invalidOptimizedVertexCount, "meshopt_generateVertexRemapによる頂点リマップ作成に失敗しました。", false);
 
@@ -58,7 +58,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 							 a_staticModelMesh.m_indexList.size(),
 							 l_vertexRemapList.data());
 
-	std::vector<Struct::StaticModelVertex> l_optimizedModelVertexList = {};
+	std::vector<StaticModelRecord::StaticModelVertex> l_optimizedModelVertexList = {};
 
 	l_optimizedModelVertexList.resize(l_optimizedVertexCount);
 
@@ -71,7 +71,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 	meshopt_remapVertexBuffer(l_optimizedModelVertexList.data(),
 							  a_staticModelMesh.m_modelVertexList.data(),
 							  a_staticModelMesh.m_modelVertexList.size(),
-							  sizeof(Struct::StaticModelVertex),
+							  sizeof(StaticModelRecord::StaticModelVertex),
 							  l_vertexRemapList.data());
 
 	// GPUの頂点キャッシュに乗りやすいように、IndexListの順番を並べ替える
@@ -96,7 +96,7 @@ bool FWK::Graphics::StaticModelMeshOptimizer::OptimizeStaticModelMesh(Struct::St
 								l_optimizedIndexList.size(),
 								l_optimizedModelVertexList.data(),
 								l_optimizedModelVertexList.size(),
-								sizeof(Struct::StaticModelVertex));
+								sizeof(StaticModelRecord::StaticModelVertex));
 
 	// 最適化後のインデックス、頂点のリストを格納
 	a_staticModelMesh.m_modelVertexList = std::move(l_optimizedModelVertexList);

@@ -4,7 +4,7 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto l_format = a_rootJson.value(k_formatJsonKey, Constant::k_defaultDepthStencilTextureFormat);
+	const auto l_format = a_rootJson.value(k_formatJsonKey, Graphics::DepthStencilTexture::k_defaultDepthStencilTextureFormat);
 
 	const auto l_depthClearValue = a_rootJson.value(k_depthClearValueJsonKey, Constant::k_defaultDepthClearValue);
 
@@ -12,8 +12,8 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 
 	const auto l_renderGraphDepthStencilType = a_rootJson.value(k_renderGraphDepthStencilTypeJsonKey, Enum::RenderGraphDepthStencilType::Invalid);
 
-	const auto l_width  = a_rootJson.value(k_widthJsonKey,  Constant::k_emptyTextureWidth);
-	const auto l_height = a_rootJson.value(k_heightJsonKey, Constant::k_emptyTextureHeight);
+	const auto l_width  = a_rootJson.value(k_widthJsonKey,  TextureBinaryConverter::k_emptyTextureWidth);
+	const auto l_height = a_rootJson.value(k_heightJsonKey, TextureBinaryConverter::k_emptyTextureHeight);
 
 	const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
 	

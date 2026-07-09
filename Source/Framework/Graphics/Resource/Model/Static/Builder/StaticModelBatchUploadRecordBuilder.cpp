@@ -32,7 +32,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 																					  const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
 																							std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
 																							TypeAlias::CBVSRVUAVDescriptorPool&		                  a_cbvSRVUAVDescriptorPool,
-																							Struct::StaticModelMesh&				                  a_staticModelMesh) const
+																							StaticModelRecord::StaticModelMesh&				          a_staticModelMesh) const
 {
 	const auto& l_modelMeshletData     = a_staticModelMesh.m_modelMeshletData;
 		  auto& l_modelMeshRuntimeData = a_staticModelMesh.m_modelMeshRuntimeData;
@@ -92,7 +92,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 	return true;
 }
 
-void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<Struct::StaticModelMesh>&a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
+void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<StaticModelRecord::StaticModelMesh>&a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 {
 	// StructuredBuffer全てのSRVを解放する
 	for (auto& l_modelMesh : a_staticModelMeshList)

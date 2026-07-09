@@ -12,12 +12,12 @@ nlohmann::json FWK::Graphics::DefaultTexture::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&                             a_device, 
-                                                                   const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
-                                                                   const TextureBatchUploadRecordBuilder&    a_textureBatchUploadRecordBuilder, 
-                                                                   const TypeAlias::StorageID                a_storageID, 
-                                                                         TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                                                                         Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord)
+bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&                                                    a_device, 
+                                                                   const GPUMemoryAllocator&                                        a_gpuMemoryAllocator, 
+                                                                   const TextureBatchUploadRecordBuilder&                           a_textureBatchUploadRecordBuilder, 
+                                                                   const TypeAlias::StorageID                                       a_storageID, 
+                                                                         TypeAlias::CBVSRVUAVDescriptorPool&                        a_cbvSRVUAVDescriptorPool,
+                                                                         TextureBatchUploadRecordBuilder::TextureBatchUploadRecord& a_textureBatchUploadRecord)
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_textureName.empty(),                              "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
     FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN,                    "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
@@ -63,7 +63,7 @@ std::uint8_t FWK::Graphics::DefaultTexture::FetchVALColorChannel(const Enum::Def
 {
     const auto l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Constant::k_maxDefaultTextureColorChannelValue);
+    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue);
 
     return m_color[l_colorChannelIndex];
 }
@@ -79,8 +79,8 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
     const auto l_hr = a_scratchImage.Initialize2D(m_format,
                                                   k_defaultTextureWidth,
                                                   k_defaultTextureHeight,
-                                                  Constant::k_defaultTexture2DArraySize,
-                                                  Constant::k_defaultTexture2DMipLevels);
+                                                  Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
+                                                  Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
 

@@ -54,7 +54,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
     }
 
     // メッシュ数が0ならreturn
-    if (l_staticModelBinaryHeader.m_modelMeshCount == Constant::k_emptyModelMeshCount)
+    if (l_staticModelBinaryHeader.m_modelMeshCount == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount)
     {
         FailLoadStaticModelAsset(l_staticModelData);
 
@@ -210,7 +210,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
 
     // StaticModelAssetの元になるFBXが存在しない場合、
     // 何から生成された.assetなのか判断できないため保存しない
-    FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "StaticModelAssetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Graphics::FBXModelLoaderBase::k_lowerFBXExtension), "StaticModelAssetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
     // FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
     const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
@@ -219,7 +219,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
     const auto& l_staticModelAssetFileSize = CalculateStaticModelAssetFileSize(l_staticModelData);
 
     // Meshが一つもない、または保存できるデータがない場合は.asset化しない
-    FWK_ASSERT_RETURN_VALUE_IF(l_staticModelAssetFileSize == Constant::k_emptyAssetFileSize, "StaticModelAssetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_staticModelAssetFileSize == BinaryFileConverterBase::k_emptyAssetFileSize, "StaticModelAssetへ保存するStaticModelDataが空のため、バイナリーファイルの保存に失敗しました。", false);
 
     // 書き込み用MemoryMappedFileを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_staticModelAssetFilePath, l_staticModelAssetFileSize), "StaticModelAssetの書き込み用MemoryMappedfile作成に失敗しました。", false);
@@ -300,12 +300,12 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
 bool FWK::Converter::StaticModelBinaryConverter::CanLoadStaticModelAsset(const std::filesystem::path& a_filePath) const
 {
     // 元となるFBXが存在しない場合は、.assetの正当性を判断できないので読み込まない。
-    if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension)) { return false; }
+    if (!Utility::CanLoadFilePath(a_filePath, Graphics::FBXModelLoaderBase::k_lowerFBXExtension)) { return false; }
 
     const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
 
     // .assetが存在しないなら、FBXから読み込んで生成する
-    if (!Utility::CanLoadFilePath(l_staticModelAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
+    if (!Utility::CanLoadFilePath(l_staticModelAssetFilePath, BinaryFileConverterBase::k_lowerAssetExtension)) { return false; }
 
     // FBXと同じ場所・同じ名前で拡張子だけ.assetにしたパスを作る。
     if (IsUpdatedSourceFile(a_filePath, l_staticModelAssetFilePath)) { return false; }
@@ -313,7 +313,7 @@ bool FWK::Converter::StaticModelBinaryConverter::CanLoadStaticModelAsset(const s
     return true;
 }
 
-void FWK::Converter::StaticModelBinaryConverter::FailLoadStaticModelAsset(Struct::StaticModelData& a_staticModelData)
+void FWK::Converter::StaticModelBinaryConverter::FailLoadStaticModelAsset(Graphics::StaticModelRecord::StaticModelData& a_staticModelData)
 {
     // 中途半端に読み込んだModelMeshが残らないように空にする。
     a_staticModelData.m_modelMeshList.clear();
@@ -322,7 +322,7 @@ void FWK::Converter::StaticModelBinaryConverter::FailLoadStaticModelAsset(Struct
     DestroyMemoryMappedFile();
 }
 
-FWK::Converter::StaticModelBinaryConverter::StaticModelBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateStaticModelBinaryHeader(const Struct::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const
+FWK::Converter::StaticModelBinaryConverter::StaticModelBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateStaticModelBinaryHeader(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const
 {
     StaticModelBinaryHeader l_staticModelBinaryHeader = {};
 
@@ -334,7 +334,7 @@ FWK::Converter::StaticModelBinaryConverter::StaticModelBinaryHeader FWK::Convert
     return l_staticModelBinaryHeader;
 }
 
-FWK::Converter::StaticModelBinaryConverter::StaticModelMeshBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateStaticModelMeshBinaryHeader(const Struct::StaticModelMesh& a_staticModelMesh) const
+FWK::Converter::StaticModelBinaryConverter::StaticModelMeshBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateStaticModelMeshBinaryHeader(const Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const
 {
     StaticModelMeshBinaryHeader l_staticModelMeshBinaryHeader = {};
 
@@ -361,10 +361,10 @@ FWK::Converter::StaticModelBinaryConverter::StaticModelMeshBinaryHeader FWK::Con
     return l_staticModelMeshBinaryHeader;
 }
 
-std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAssetFileSize(const Struct::StaticModelData& a_staticModelData) const
+std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAssetFileSize(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData) const
 {
     // Meshが一つもないStaticModelDataは.asset化しない
-    if (a_staticModelData.m_modelMeshList.empty()) { return Constant::k_emptyAssetFileSize; }
+    if (a_staticModelData.m_modelMeshList.empty()) { return BinaryFileConverterBase::k_emptyAssetFileSize; }
 
     // ファイル先頭に置くStaticModel全体Header
     auto l_staticModelAssetFileSize = CalculateBinaryDataSize<StaticModelBinaryHeader>(k_singleBinaryElementCount);
@@ -378,7 +378,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
         l_staticModelAssetFileSize += CalculateBinaryDataSize<StaticModelMeshBinaryHeader>(k_singleBinaryElementCount);
 
         // Model用頂点配列
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<Struct::StaticModelVertex>(l_staticModelMesh.m_modelVertexList.size());
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<Graphics::StaticModelRecord::StaticModelVertex>(l_staticModelMesh.m_modelVertexList.size());
 
         // Index配列
         l_staticModelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_staticModelMesh.m_indexList.size());
@@ -396,7 +396,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
         l_staticModelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_metallicTextureFilePath);
 
         // Meshlet本体
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<Struct::StaticModelMeshlet>(l_modelMeshletData.m_meshletList.size());
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<Graphics::StaticModelRecord::StaticModelMeshlet>(l_modelMeshletData.m_meshletList.size());
 
         // Meshlet内のLocalVertexIndexからStaticModelVertexIndexへ変換するIndex配列
         l_staticModelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMeshletData.m_uniqueVertexIndexList.size());
@@ -405,7 +405,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
         l_staticModelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMeshletData.m_primitiveIndexList.size());
 
         // Meshletカリング用Bounds
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<Struct::StaticModelMeshletBounds>(l_modelMeshletData.m_meshletBoundsList.size());
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<Graphics::StaticModelRecord::StaticModelMeshletBounds>(l_modelMeshletData.m_meshletBoundsList.size());
     }
 
     return l_staticModelAssetFileSize;

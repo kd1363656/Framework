@@ -6,12 +6,12 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 
 	const auto& l_clearColor = Utility::DeserializeColor(a_rootJson, k_clearColorJsonKey);
 
-	const auto l_format = a_rootJson.value(k_formatJsonKey, Constant::k_defaultRenderTargetTextureFormat);
+	const auto l_format = a_rootJson.value(k_formatJsonKey, Graphics::RenderTargetTexture::k_defaultRenderTargetTextureFormat);
 
 	const auto l_renderGraphRenderTargetType = a_rootJson.value(k_renderGraphRenderTargetTypeJsonKey, Enum::RenderGraphRenderTargetType::Invalid);
 
-	const auto l_width  = a_rootJson.value(k_widthJsonKey,  Constant::k_emptyTextureWidth);
-	const auto l_height = a_rootJson.value(k_heightJsonKey, Constant::k_emptyTextureHeight);
+	const auto l_width  = a_rootJson.value(k_widthJsonKey,  TextureBinaryConverter::k_emptyTextureWidth);
+	const auto l_height = a_rootJson.value(k_heightJsonKey, TextureBinaryConverter::k_emptyTextureHeight);
 
 	const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
 	

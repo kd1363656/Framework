@@ -4,9 +4,20 @@ namespace FWK::Graphics
 {
 	class TextureSystem
 	{
+	public:
+
+		struct TextureLoadResult final
+		{
+			std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
+
+			TypeAlias::StorageID m_storageID = Graphics::AssetRecordBase::k_invalidStorageID;
+
+			bool m_isLoadSuccess = false;
+		};
+
 	private:
 
-		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
+		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, TextureBatchUploadRecordBuilder::TextureBatchUploadRecord, Converter::DefaultTextureJsonConverter::WStringHash, std::equal_to<>>;
 		
 	public:
 
@@ -16,12 +27,12 @@ namespace FWK::Graphics
 		void Deserialize(const nlohmann::json& a_rootJson);
 		bool Create	    (const Device&		   a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&			                  a_device, 
-													        const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-													        const std::filesystem::path&		      a_filePath,
-															const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
-															const Enum::DefaultTextureType            a_defaultTextureType,
-																  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+		TextureLoadResult LoadTextureForBatchUpload(const Device&			                  a_device, 
+													const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+													const std::filesystem::path&		      a_filePath,
+													const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
+													const Enum::DefaultTextureType            a_defaultTextureType,
+														  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
 		nlohmann::json Serialize() const;
 
@@ -56,11 +67,11 @@ namespace FWK::Graphics
 														  const DirectX::ScratchImage&              a_scratchImage,
 														  const DirectX::TexMetadata&               a_texMetadata,
 														  	    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-														  	    Struct::TextureLoadResult&          a_textureLoadResult);
+														  	    TextureLoadResult&                  a_textureLoadResult);
 
-		bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult);
+		bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, TextureLoadResult& a_textureLoadResult);
 
-		void ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, Struct::TextureLoadResult& a_textureLoadResult) const;
+		void ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, TextureLoadResult& a_textureLoadResult) const;
 
 		PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
 

@@ -57,7 +57,7 @@ namespace FWK::Graphics
 
 		Converter::DepthStencilPassTextureJsonConverter m_jsonConverter = {};
 
-		DXGI_FORMAT m_format = Constant::k_defaultDepthStencilTextureFormat;
+		DXGI_FORMAT m_format = DepthStencilTexture::k_defaultDepthStencilTextureFormat;
 
 		Enum::RenderGraphDepthStencilType m_renderGraphDepthStencilType = Enum::RenderGraphDepthStencilType::Invalid;
 

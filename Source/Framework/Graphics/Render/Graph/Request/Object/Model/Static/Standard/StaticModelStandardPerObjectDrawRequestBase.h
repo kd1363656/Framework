@@ -17,7 +17,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const;
+		bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::StaticModelMesh& a_modelMesh) const;
 
 		Utility::VectorArray<std::weak_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>> m_forwardDrawRequestPerObjectDataList = {};
 		

@@ -100,7 +100,7 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(
 	m_forwardDrawRequestPerObjectDataList.Add(a_drawRequestData);
 }
 
-bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
+bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::StaticModelMesh& a_modelMesh) const
 {
 	const auto l_meshletCount = static_cast<UINT>(a_modelMesh.m_modelMeshletData.m_meshletList.size());
 

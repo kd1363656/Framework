@@ -8,15 +8,15 @@ namespace FWK::Converter
 
 		struct TextureBinaryHeader final
 		{
-			std::uint64_t m_fileSize    = Constant::k_emptyAssetFileSize;
+			std::uint64_t m_fileSize    = k_emptyAssetFileSize;
 			std::uint16_t m_version     = k_textureAssetVersion;
 			std::uint16_t m_assetTypeID = k_textureAssetTypeID;
 
-			std::uint64_t m_width            = Constant::k_emptyTextureWidth;
-			std::uint64_t m_height           = Constant::k_emptyTextureHeight;
+			std::uint64_t m_width            = k_emptyTextureWidth;
+			std::uint64_t m_height           = k_emptyTextureHeight;
 			std::uint64_t m_depth            = k_emptyTextureDepth;
-			std::uint64_t m_arraySize        = Constant::k_defaultTexture2DArraySize;
-			std::uint64_t m_mipLevels        = Constant::k_defaultTexture2DMipLevels;
+			std::uint64_t m_arraySize        = k_defaultTexture2DArraySize;
+			std::uint64_t m_mipLevels        = k_defaultTexture2DMipLevels;
 			std::uint64_t m_subresourceCount = k_emptyTextureSubresourceCount;
 
 			// フォーマットは本来ならEnumだがAPI側では絶対に変更できないEnumなので
@@ -34,8 +34,8 @@ namespace FWK::Converter
 
 		struct TextureBinarySubresourceHeader final
 		{
-			std::uint64_t m_width         = Constant::k_emptyTextureWidth;
-			std::uint64_t m_height        = Constant::k_emptyTextureHeight;
+			std::uint64_t m_width         = k_emptyTextureWidth;
+			std::uint64_t m_height        = k_emptyTextureHeight;
 			std::uint64_t m_rowPitch      = k_emptyTextureRowPitch;
 			std::uint64_t m_slicePitch    = k_emptyTextureSlicePitch;
 			std::uint64_t m_pixelDataSize = k_emptyTexturePixelDataSize;
@@ -49,6 +49,14 @@ namespace FWK::Converter
 		bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
 
 		bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);
+
+		inline static const std::filesystem::path k_lowerPNGExtension = ".png";
+		
+		static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
+		static constexpr std::uint64_t k_defaultTexture2DMipLevels = 1ULL;
+
+		static constexpr std::uint32_t k_emptyTextureWidth  = 0U;
+		static constexpr std::uint32_t k_emptyTextureHeight = 0U;
 
 	private:
 

@@ -4,7 +4,7 @@ namespace FWK::Graphics
 {
 	class DefaultTexture
 	{
-		using DefaultTextureColor = std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount>;
+		using DefaultTextureColor = std::array<std::uint8_t, Converter::DefaultTextureJsonConverter::k_defaultTextureColorChannelCount>;
 
 	public:
 
@@ -15,12 +15,12 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		bool CreateTextureBatchUploadRecord(const Device&					          a_device,
-											const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
-											const TextureBatchUploadRecordBuilder&    a_textureBatchUploadRecordBuilder,
-											const TypeAlias::StorageID				  a_storageID,
-												  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-												  Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord);
+		bool CreateTextureBatchUploadRecord(const Device&					                                 a_device,
+											const GPUMemoryAllocator&		                                 a_gpuMemoryAllocator,
+											const TextureBatchUploadRecordBuilder&                           a_textureBatchUploadRecordBuilder,
+											const TypeAlias::StorageID				                         a_storageID,
+												  TypeAlias::CBVSRVUAVDescriptorPool&                        a_cbvSRVUAVDescriptorPool,
+												  TextureBatchUploadRecordBuilder::TextureBatchUploadRecord& a_textureBatchUploadRecord);
 
 		void ApplyColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel, const std::uint8_t a_colorValue);
 
@@ -47,12 +47,12 @@ namespace FWK::Graphics
 		static constexpr std::size_t k_defaultTextureItemIndex  = 0ULL;
 		static constexpr std::size_t k_defaultTextureSliceIndex = 0ULL;
 
-		std::array<std::uint8_t, Constant::k_defaultTextureColorChannelCount> m_color = 
+		std::array<std::uint8_t, Converter::DefaultTextureJsonConverter::k_defaultTextureColorChannelCount> m_color =
 		{
-			Constant::k_maxDefaultTextureColorChannelValue,
-			Constant::k_maxDefaultTextureColorChannelValue,
-			Constant::k_maxDefaultTextureColorChannelValue,
-			Constant::k_maxDefaultTextureColorChannelValue
+			Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue,
+			Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue,
+			Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue,
+			Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue
 		};
 
 		std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};

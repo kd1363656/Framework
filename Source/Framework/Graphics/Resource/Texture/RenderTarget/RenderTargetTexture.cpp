@@ -80,8 +80,8 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
 	const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
 															 a_width,
 															 a_height,
-															 Constant::k_defaultTexture2DArraySize,
-															 Constant::k_defaultTexture2DMipLevels,
+															 Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
+															 Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels,
 															 Converter::SwapChainJsonConverter::k_defaultSampleCount,
 															 Converter::SwapChainJsonConverter::k_defaultSampleQuality,
 															 D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -155,7 +155,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 	// PlaneSlice          : 通常カラーTextureなので0
 	// ResourceMINLODCLAMP : 最小LOD制限
 	l_srvDesc.Texture2D.MostDetailedMip     = k_mostDetailedMIP;
-	l_srvDesc.Texture2D.MipLevels           = Constant::k_defaultTexture2DMipLevels;
+	l_srvDesc.Texture2D.MipLevels           = Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels;
 	l_srvDesc.Texture2D.PlaneSlice		    = k_planeSlice;
 	l_srvDesc.Texture2D.ResourceMinLODClamp = k_resourceMINLODClamp;
 
@@ -208,8 +208,8 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	m_rtvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
-	m_width  = Constant::k_emptyTextureWidth;
-	m_height = Constant::k_emptyTextureHeight;
+	m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
+	m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
 
 	m_currentResourceState = k_defaultResourceState;
 

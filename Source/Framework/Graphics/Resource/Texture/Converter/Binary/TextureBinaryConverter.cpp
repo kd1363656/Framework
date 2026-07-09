@@ -185,14 +185,14 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage)
 {
 	// 保存元のPNGが存在するかどうか、DirectXTexで読み込んだScratchImageが正常かを確認する
-	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, TextureBinaryConverter::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
 	// PNGと同じ場所・同じ名前で拡張子だけ.assetにしたパスを作る
 	const auto& l_textureAssetFilePath = CreateAssetFilePath		  (a_filePath);
 	const auto& l_textureAssetFileSize = CalculateTextureAssetFileSize(a_scratchImage);
 
 	// 書き込み用メモリマップドファイルの作成
-	FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == Constant::k_emptyAssetFileSize,	                     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	     false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryFileConverterBase::k_emptyAssetFileSize,	     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	     false);
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
 	auto l_memoryWriteOffset = k_initialMemoryWriteOffset;
@@ -245,14 +245,14 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::filesystem::path& a_filePath) const
 {
 	// まず元のPNGが存在していて、拡張子も.pngか確認する
-	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
+	if (!Utility::CanLoadFilePath(a_filePath, TextureBinaryConverter::k_lowerPNGExtension)) { return false; }
 
 	// もし元ファイルが更新されていたらバイナリーファイルも更新する
 	// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
 	const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
 
 	// .assetが存在しないなら、FBXから読み込んで生成する
-	if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
+	if (!Utility::CanLoadFilePath(l_textureAssetFilePath, TextureBinaryConverter::k_lowerAssetExtension)) { return false; }
 
 	if(IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
 
@@ -321,11 +321,11 @@ std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileS
 
 	const auto* l_imageList = a_scratchImage.GetImages();
 
-	if (!l_imageList) { return Constant::k_emptyAssetFileSize; }
+	if (!l_imageList) { return BinaryFileConverterBase::k_emptyAssetFileSize; }
 
 	const auto& l_imageCount = a_scratchImage.GetImageCount();
 
-	if (l_imageCount == k_emptyTextureSubresourceCount) { return Constant::k_emptyAssetFileSize; }
+	if (l_imageCount == k_emptyTextureSubresourceCount) { return BinaryFileConverterBase::k_emptyAssetFileSize; }
 
 	for (std::uint64_t l_imageIndex = 0ULL; l_imageIndex < l_imageCount; ++l_imageIndex)
 	{

@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticMeshBody.h"
 
-bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Struct::StaticModelData& a_staticModelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
+bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
 {
 	TypeAlias::Math::Vector3    l_worldScale    = TypeAlias::Math::Vector3::Zero;
 	TypeAlias::Math::Quaternion l_worldRotation = TypeAlias::Math::Quaternion::Identity;
@@ -95,7 +95,7 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
 	return ApplyStaticBodyWorldTransform(l_worldRotation, l_worldPosition);
 }
 
-JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Struct::StaticModelData& a_staticModelData) const
+JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
 
@@ -118,16 +118,16 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 	JPH::IndexedTriangleList l_indexedTriangleList = {};
 
 	l_triangleVertexList.reserve (l_totalVertexCount);
-	l_indexedTriangleList.reserve(l_totalIndexCount / Constant::k_triangleVertexCount);
+	l_indexedTriangleList.reserve(l_totalIndexCount / Converter::StaticModelBinaryConverter::k_triangleVertexCount);
 
 	for (const auto& l_modelMesh : a_staticModelData.m_modelMeshList)
 	{
 		const auto& l_modelVertexList = l_modelMesh.m_modelVertexList;
 		const auto& l_modelIndexList  = l_modelMesh.m_indexList;
 
-		FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),                                                              "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
-		FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                               "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
-		FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
+		FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),                                                                                           "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
+		FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                                                            "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
+		FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Converter::StaticModelBinaryConverter::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
 
 		const auto l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
 
@@ -140,7 +140,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 			l_triangleVertexList.emplace_back(l_position.x, l_position.y, l_position.z);
 		}
 
-		for (std::size_t l_indexOffset = 0ULL; l_indexOffset < l_modelIndexList.size(); l_indexOffset += Constant::k_triangleVertexCount)
+		for (std::size_t l_indexOffset = 0ULL; l_indexOffset < l_modelIndexList.size(); l_indexOffset += Converter::StaticModelBinaryConverter::k_triangleVertexCount)
 		{
 			const auto l_localIndexZero = l_modelIndexList[l_indexOffset + k_triangleIndexZeroOffset];
 			      auto l_localIndexOne  = l_modelIndexList[l_indexOffset + k_triangleIndexOneOffset];
@@ -159,7 +159,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 			// JoltのMeshShapeは反時計回りを表面として扱う
 			// モデル法線と幾何法線が逆ならIndex順を反転する
 			const auto& l_faceNormal    = (l_vertexOne.m_position - l_vertexZero.m_position).Cross(l_vertexTwo.m_position - l_vertexZero.m_position);
-			const auto& l_averageNormal = (l_vertexZero.m_normal  + l_vertexOne.m_normal + l_vertexTwo.m_normal) / Constant::k_triangleVertexCount;
+			const auto& l_averageNormal = (l_vertexZero.m_normal  + l_vertexOne.m_normal + l_vertexTwo.m_normal) / Converter::StaticModelBinaryConverter::k_triangleVertexCount;
 
 			// 現在のIndex順から求めた面法線と、
 			// モデル頂点が持つ法線の方向が逆の場合は、

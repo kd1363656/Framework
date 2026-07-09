@@ -20,7 +20,7 @@ namespace FWK::Constant
 
 	// SpriteScreen全体のIndex数
 	// 2Triangle * 3Index = 6Index
-	inline constexpr UINT k_spriteIndexCount = k_spritePrimitiveCount * k_triangleVertexCount;
+	inline constexpr UINT k_spriteIndexCount = k_spritePrimitiveCount * Converter::StaticModelBinaryConverter::k_triangleVertexCount;
 
 	inline constexpr UINT k_spriteDrawInstanceCount     = 1U;
 	inline constexpr UINT k_spriteStartVertexLocation   = 0U;

@@ -17,10 +17,10 @@ void FWK::Converter::DefaultTextureJsonConverter::Deserialize(const nlohmann::js
 	if (const auto& l_json = a_rootJson.value(k_textureColorJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		const auto l_rColor = DeserializeColorChannel(l_json, k_textureColorRJsonKey, Constant::k_maxDefaultTextureColorChannelValue);
-		const auto l_gColor = DeserializeColorChannel(l_json, k_textureColorGJsonKey, Constant::k_maxDefaultTextureColorChannelValue);
-		const auto l_bColor = DeserializeColorChannel(l_json, k_textureColorBJsonKey, Constant::k_maxDefaultTextureColorChannelValue);
-		const auto l_aColor = DeserializeColorChannel(l_json, k_textureColorAJsonKey, Constant::k_maxDefaultTextureColorChannelValue);
+		const auto l_rColor = DeserializeColorChannel(l_json, k_textureColorRJsonKey, k_maxDefaultTextureColorChannelValue);
+		const auto l_gColor = DeserializeColorChannel(l_json, k_textureColorGJsonKey, k_maxDefaultTextureColorChannelValue);
+		const auto l_bColor = DeserializeColorChannel(l_json, k_textureColorBJsonKey, k_maxDefaultTextureColorChannelValue);
+		const auto l_aColor = DeserializeColorChannel(l_json, k_textureColorAJsonKey, k_maxDefaultTextureColorChannelValue);
 
 		a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::R, l_rColor);
 		a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::G, l_gColor);
@@ -51,13 +51,13 @@ nlohmann::json FWK::Converter::DefaultTextureJsonConverter::Serialize(const Grap
 
 std::uint8_t FWK::Converter::DefaultTextureJsonConverter::DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view a_key, const std::uint8_t a_defaultValue) const
 {
-	if (a_json.is_null()) { return Constant::k_maxDefaultTextureColorChannelValue; }
+	if (a_json.is_null()) { return k_maxDefaultTextureColorChannelValue; }
 
 	const auto l_value = a_json.value(a_key, a_defaultValue);
 
-	if (l_value > Constant::k_maxDefaultTextureColorChannelValue)
+	if (l_value > k_maxDefaultTextureColorChannelValue)
 	{
-		return Constant::k_maxDefaultTextureColorChannelValue;
+		return k_maxDefaultTextureColorChannelValue;
 	}
 
 	return l_value;

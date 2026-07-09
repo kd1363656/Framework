@@ -9,6 +9,8 @@ namespace FWK::Graphics
 				 FBXModelLoaderBase() = default;
 		virtual ~FBXModelLoaderBase() = default;
 
+		inline static const std::filesystem::path k_lowerFBXExtension = ".fbx";
+
 	protected:
 
 		ufbx_scene* LoadFBXScene(const std::filesystem::path& a_filePath) const;

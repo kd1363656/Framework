@@ -8,27 +8,27 @@ namespace FWK::Converter
 
 		struct StaticModelBinaryHeader final
 		{
-			std::uint64_t m_fileSize    = Constant::k_emptyAssetFileSize;
+			std::uint64_t m_fileSize    = k_emptyAssetFileSize;
 			std::uint16_t m_version     = k_staticModelAssetVersion;
 			std::uint16_t m_assetTypeID = k_staticModelAssetTypeID;
 
-			std::uint64_t m_modelMeshCount = Constant::k_emptyModelMeshCount;
+			std::uint64_t m_modelMeshCount = k_emptyModelMeshCount;
 		};
 
 		struct StaticModelMeshBinaryHeader final
 		{
-			std::uint64_t m_vertexCount = Constant::k_emptyModelVertexCount;
-			std::uint64_t m_indexCount  = Constant::k_emptyModelIndexCount;
+			std::uint64_t m_vertexCount = k_emptyModelVertexCount;
+			std::uint64_t m_indexCount  = k_emptyModelIndexCount;
 
-			std::uint64_t m_baseColorTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
-			std::uint64_t m_normalTextureFilePathSize    = Constant::k_emptyTextureFilePathSize;
-			std::uint64_t m_roughnessTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
-			std::uint64_t m_metallicTextureFilePathSize  = Constant::k_emptyTextureFilePathSize;
+			std::uint64_t m_baseColorTextureFilePathSize = k_emptyTextureFilePathSize;
+			std::uint64_t m_normalTextureFilePathSize    = k_emptyTextureFilePathSize;
+			std::uint64_t m_roughnessTextureFilePathSize = k_emptyTextureFilePathSize;
+			std::uint64_t m_metallicTextureFilePathSize  = k_emptyTextureFilePathSize;
 
-			std::uint64_t m_meshletCount		   = Constant::k_emptyModelMeshletCount;
-			std::uint64_t m_uniqueVertexIndexCount = Constant::k_emptyModelUniqueVertexIndexCount;
-			std::uint64_t m_primitiveIndexCount    = Constant::k_emptyModelPrimitiveIndexCount;
-			std::uint64_t m_meshletBoundsCount     = Constant::k_emptyModelMeshletBoundsCount;
+			std::uint64_t m_meshletCount		   = k_emptyModelMeshletCount;
+			std::uint64_t m_uniqueVertexIndexCount = k_emptyModelUniqueVertexIndexCount;
+			std::uint64_t m_primitiveIndexCount    = k_emptyModelPrimitiveIndexCount;
+			std::uint64_t m_meshletBoundsCount     = k_emptyModelMeshletBoundsCount;
 		};
 
 	public:
@@ -40,17 +40,29 @@ namespace FWK::Converter
 
 		bool SaveStaticModelAsset(const Graphics::StaticModelRecord& a_staticModelRecord, const std::filesystem::path& a_filePath);
 
+		static constexpr std::size_t k_emptyModelMeshCount = 0ULL;
+
+		static constexpr std::uint32_t k_triangleVertexCount = 3U;
+
+		static constexpr std::uint64_t k_emptyModelVertexCount            = 0ULL;
+		static constexpr std::uint64_t k_emptyModelIndexCount             = 0ULL;
+		static constexpr std::uint64_t k_emptyTextureFilePathSize         = 0ULL;
+		static constexpr std::uint64_t k_emptyModelMeshletCount           = 0ULL;
+		static constexpr std::uint64_t k_emptyModelUniqueVertexIndexCount = 0ULL;
+		static constexpr std::uint64_t k_emptyModelPrimitiveIndexCount    = 0ULL;
+		static constexpr std::uint64_t k_emptyModelMeshletBoundsCount     = 0ULL;
+
 	private:
 
 		bool CanLoadStaticModelAsset(const std::filesystem::path& a_filePath) const;
 
-		void FailLoadStaticModelAsset(Struct::StaticModelData& a_staticModelData);
+		void FailLoadStaticModelAsset(Graphics::StaticModelRecord::StaticModelData& a_staticModelData);
 
-		StaticModelBinaryHeader CreateStaticModelBinaryHeader(const Struct::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const;
+		StaticModelBinaryHeader CreateStaticModelBinaryHeader(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const;
 
-		StaticModelMeshBinaryHeader CreateStaticModelMeshBinaryHeader(const Struct::StaticModelMesh& a_staticModelMesh) const;
+		StaticModelMeshBinaryHeader CreateStaticModelMeshBinaryHeader(const Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
 
-		std::uint64_t CalculateStaticModelAssetFileSize(const Struct::StaticModelData& a_staticModelData) const;
+		std::uint64_t CalculateStaticModelAssetFileSize(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData) const;
 
 		// 'S' = 0x53, 'T' = 0x54のため、0x5354で"ST"を表す
 		static constexpr std::uint16_t k_staticModelAssetTypeID = 0x5354U;

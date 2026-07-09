@@ -7,7 +7,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 																				    const DirectX::TexMetadata&				  a_texMetadata, 
 																					const TypeAlias::StorageID				  a_storageID, 
 																						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-																						  Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord) const
+																						  TextureBatchUploadRecord&           a_textureBatchUploadRecord) const
 {
 	auto& l_textureRecord = a_textureBatchUploadRecord.m_textureRecord;
 
@@ -76,7 +76,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 	return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, TextureBatchUploadRecord& a_textureBatchUploadRecord) const
 {
 	const auto& l_device = a_device.GetREFDevice();
 

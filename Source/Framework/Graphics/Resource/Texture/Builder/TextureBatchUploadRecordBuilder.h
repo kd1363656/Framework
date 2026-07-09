@@ -5,6 +5,42 @@ namespace FWK::Graphics
 	class TextureBatchUploadRecordBuilder final
 	{
 	public:
+
+		struct TextureUploadRecord final
+		{
+			 TextureUploadRecord() = default;
+			~TextureUploadRecord() = default;
+
+			TextureUploadRecord(const TextureUploadRecord&)           = delete;
+			TextureUploadRecord(	  TextureUploadRecord&&) noexcept = default;
+
+			TextureUploadRecord& operator=(const TextureUploadRecord&)			 = delete;
+			TextureUploadRecord& operator=(	     TextureUploadRecord&&) noexcept = default;
+
+			// 各サブリソースの配置情報をまとめたリスト
+			std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT> m_layoutList = {};
+
+			// DEFAULTヒープ上のテクスチャリソースへコピーするための中間バッファ
+			Graphics::UploadBuffer m_uploadBuffer = {};
+		};
+
+		struct TextureBatchUploadRecord final
+		{
+			 TextureBatchUploadRecord() = default;
+			~TextureBatchUploadRecord() = default;
+
+			TextureBatchUploadRecord(const TextureBatchUploadRecord&)           = delete;
+			TextureBatchUploadRecord(	   TextureBatchUploadRecord&&) noexcept = default;
+
+			TextureBatchUploadRecord& operator=(const TextureBatchUploadRecord&)		   = delete;
+			TextureBatchUploadRecord& operator=(	  TextureBatchUploadRecord&&) noexcept = default;
+
+			std::shared_ptr<Graphics::TextureRecord> m_textureRecord = nullptr;
+
+			TextureUploadRecord m_textureUploadRecord = {};
+		};
+
+	public:
 		
 		 TextureBatchUploadRecordBuilder() = default;
 		~TextureBatchUploadRecordBuilder() = default;
@@ -16,13 +52,13 @@ namespace FWK::Graphics
 											const DirectX::TexMetadata&               a_texMetadata,
 											const TypeAlias::StorageID				  a_storageID,
 												  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-												  Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord) const;
+												  TextureBatchUploadRecord&           a_textureBatchUploadRecord) const;
 
 	private:
 
 		bool CreateTextureResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const DirectX::TexMetadata& a_texMetadata, Graphics::TextureRecord& a_textureRecord) const;
 
-		bool CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
+		bool CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, TextureBatchUploadRecord& a_textureBatchUploadRecord) const;
 
 		bool CreateTextureSRV(const Device&                             a_device,
 							  const DirectX::TexMetadata&               a_texMetadata,

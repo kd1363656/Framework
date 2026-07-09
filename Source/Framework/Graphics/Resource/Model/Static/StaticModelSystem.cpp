@@ -20,7 +20,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 {
 	Struct::StaticModelLoadResult l_staticModelLoadResult = {};
 
-	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "StaticModelのFBXファイルが存在しません。", l_staticModelLoadResult);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, FBXModelLoaderBase::k_lowerFBXExtension), "StaticModelのFBXファイルが存在しません。", l_staticModelLoadResult);
 
 	// 成功したらキャッシュ内容が入っているのでreturn
 	if (TryResolveCachedStaticModelResult(a_filePath, l_staticModelLoadResult)) { return l_staticModelLoadResult; }

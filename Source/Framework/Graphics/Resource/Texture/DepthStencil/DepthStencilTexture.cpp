@@ -87,8 +87,8 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
 	const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
 															 a_width,
 															 a_height,
-															 Constant::k_defaultTexture2DArraySize,
-															 Constant::k_defaultTexture2DMipLevels,
+															 Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
+															 Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels,
 															 Converter::SwapChainJsonConverter::k_defaultSampleCount,
 															 Converter::SwapChainJsonConverter::k_defaultSampleQuality,
 															 D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
@@ -163,8 +163,8 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     // 二重開放を防ぐため、DescriptorIndexを無効化する
     m_dsvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
-    m_width  = Constant::k_emptyTextureWidth;
-    m_height = Constant::k_emptyTextureHeight;
+    m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
+    m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
 
     m_currentResourceState = k_defaultResourceState;
 

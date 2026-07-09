@@ -48,6 +48,8 @@ namespace FWK::Graphics
 
 		auto GetVALDSVDescriptorIndex() const { return m_dsvDescriptorIndex; }
 
+		static constexpr DXGI_FORMAT k_defaultDepthStencilTextureFormat = DXGI_FORMAT_D32_FLOAT;
+
 	private:
 
 		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT a_width, const UINT a_height);
@@ -62,12 +64,12 @@ namespace FWK::Graphics
 
 		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
-		DXGI_FORMAT m_format = Constant::k_defaultDepthStencilTextureFormat;
+		DXGI_FORMAT m_format = k_defaultDepthStencilTextureFormat;
 
 		FLOAT m_depthClearValue = Constant::k_defaultDepthClearValue;
 
-		UINT m_width  = Constant::k_emptyTextureWidth;
-		UINT m_height = Constant::k_emptyTextureHeight;
+		UINT m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
+		UINT m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
 
 		UINT8 m_stencilClearValue = Constant::k_defaultStencilClearValue;
 

@@ -27,7 +27,7 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
 	return true;
 }
 
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, Struct::StaticModelData& a_staticModelData) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, StaticModelRecord::StaticModelData& a_staticModelData) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene, "ufbx_sceneが無効のため、StaticModelDataの抽出に失敗しました。", false);
 
@@ -35,7 +35,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 	// NodeTransformを頂点へ焼きこむ。
 	// ただし、Camera/Light/BoneなどMeshを持たない要素を除外するため、
 	// Nodeを走査してMeshが接続されているNodeだけを処理する
-	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、StaticModelDataの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、StaticModelDataの抽出に失敗しました。", false);
 
 	for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
 	{
@@ -52,7 +52,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 			continue; 
 		}
 
-		std::vector<Struct::StaticModelMesh> l_staticModelMeshList = {};
+		std::vector<StaticModelRecord::StaticModelMesh> l_staticModelMeshList = {};
 
 		// ufbx_mesh 1つを、自作フレームワーク側のModelMeshへ変換する
 		// 1つのufbx_meshに複数のMaterialがある場合、MaterialごとにModelMeshを分割する
@@ -71,7 +71,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 
 	return true;
 }
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* a_fbxNode, std::vector<Struct::StaticModelMesh>& a_staticModelMeshList) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* a_fbxNode, std::vector<StaticModelRecord::StaticModelMesh>& a_staticModelMeshList) const
 {
 	// もし前回モデルを読み込んでいたらそのモデルのメッシュ情報が残ってしまうのでリストをクリア
 	a_staticModelMeshList.clear();
@@ -83,9 +83,9 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxMesh, "ufbx_nodeにMeshが存在しないため、StaticModelMeshリストの抽出に失敗しました。", false);
 
 	// MaterialがないMeshの場合は、MaterialなしのModelMeshとして1つだけ作成する
-	if (l_fbxMesh->materials.count == Constant::k_emptyModelMeshCount)
+	if (l_fbxMesh->materials.count == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount)
 	{
-		Struct::StaticModelMesh l_staticModelMesh = {};
+		StaticModelRecord::StaticModelMesh l_staticModelMesh = {};
 
 		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(k_invalidMaterialIndex, a_fbxNode, l_staticModelMesh), "MaterialなしStaticModelMeshの抽出に失敗しました。", false);
 
@@ -103,7 +103,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 
 	for (std::size_t l_materialIndex = 0ULL; l_materialIndex < l_fbxMesh->materials.count; ++l_materialIndex)
 	{
-		Struct::StaticModelMesh l_staticModelMesh = {};
+		StaticModelRecord::StaticModelMesh l_staticModelMesh = {};
 
 		// 現在のMaterialIndexを使用しているFaceだけを集めて、1つのModelMeshにする
 		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, l_staticModelMesh), "Material別StaticModelMeshの抽出に失敗しました。", false);
@@ -125,7 +125,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 
 	return true;
 }
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t& a_materialIndex, const ufbx_node* a_fbxNode, Struct::StaticModelMesh& a_staticModelMesh) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t& a_materialIndex, const ufbx_node* a_fbxNode, StaticModelRecord::StaticModelMesh& a_staticModelMesh) const
 {
 	// モデルメッシュの初期化
 	a_staticModelMesh.m_modelVertexList.clear();
@@ -139,11 +139,11 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 
 	// Faceはポリゴン面のこと
 	// Faceが存在しないMeshは、三角形へ変換する元データがないため失敗扱いにする
-	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
 	// max_face_trianglesは、1つのFaceを三角形化したときに必要になる最大三角形数
 	// これが0の場合、三角形化できるFaceがない
-	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別StaticModelMeshの抽出に失敗しました。", false);
 
 	// マテリアルで絞り込むだけ、
 	// FaceごとのMaterial番号が入っている配列の数と現在のMeshのFace数が一致しているかどうかを確認
@@ -153,7 +153,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 							   false);
 
 	// max_face_traianglesは1つのFaceを三角形化したときに必要になる最大三角形数
-	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Constant::k_triangleVertexCount;
+	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Converter::StaticModelBinaryConverter::k_triangleVertexCount;
 
 	std::vector<std::uint32_t> l_triangleIndexList = {};
 
@@ -187,17 +187,17 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 
 		for (auto l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
 		{
-			for (auto l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
+			for (auto l_vertexIndex = 0U; l_vertexIndex < Converter::StaticModelBinaryConverter::k_triangleVertexCount; ++l_vertexIndex)
 			{
 				// l_triangleIndexListには、三角形化後のufbx側頂点インデックスが入っている
 				// 三角形番号 * 3 + 頂点番号で、現在処理している三角形の頂点インデックスを取り出す
 				// 要するに変換した後の三角形頂点に合わせた座標やuvの変換を行っている
 				// 例 : l_triangleIndex = 0ULL,   l_vertexIndex = 2ならl_indexOffset = 2;
 				// 例 : l_triangleIndex = 100ULL, l_vertexIndex = 2ならl_indexOffset = 302;
-				const auto& l_indexOffset    = (l_triangleIndex * Constant::k_triangleVertexCount) + l_vertexIndex;
+				const auto& l_indexOffset    = (l_triangleIndex * Converter::StaticModelBinaryConverter::k_triangleVertexCount) + l_vertexIndex;
 				const auto  l_fbxVertexIndex = l_triangleIndexList[l_indexOffset];
 
-				Struct::StaticModelVertex l_staticModelVertex = {};
+				StaticModelRecord::StaticModelVertex l_staticModelVertex = {};
 
 				// ufbx_load_opts側で、+XRight/+YForward/+Z Upとcm->m変換を行っている。
 				// ここではさらにNodeTransformをgeometry_to_worldで反映する。
@@ -216,7 +216,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 
 	return true;
 }
-void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_material* a_fbxMaterial, Struct::ModelMaterialAssetData& a_modelMaterialAssetData) const
+void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_material* a_fbxMaterial, StaticModelRecord::ModelMaterialAssetData& a_modelMaterialAssetData) const
 {
 	a_modelMaterialAssetData = {};
 
@@ -227,11 +227,11 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 
 	// Roughnessは表面の粗さ。
 	// 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる。
-	a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Constant::k_defaultModelMaterialRoughnessFactor);
+	a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, StaticModelRecord::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor);
 
 	// Metallicは金属度
 	// 0なら非金属、1なら金属としてPBR計算する
-	a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Constant::k_defaultModelMaterialMetallicFactor);
+	a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, StaticModelRecord::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor);
 
 	// ベースカラー
 	{
@@ -276,7 +276,7 @@ void FWK::Graphics::StaticModelFBXLoader::ExtractModelMaterial(const ufbx_materi
 
 FWK::TypeAlias::Math::Color FWK::Graphics::StaticModelFBXLoader::FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const
 {
-	if (!a_materialMap.has_value) { return Constant::k_defaultModelMaterialBaseColorFactor; }
+	if (!a_materialMap.has_value) { return StaticModelRecord::ModelMaterialAssetData::k_defaultModelMaterialBaseColorFactor; }
 
 	return TypeAlias::Math::Color
 	{

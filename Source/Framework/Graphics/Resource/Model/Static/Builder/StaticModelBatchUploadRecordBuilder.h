@@ -21,8 +21,8 @@ namespace FWK::Graphics
 										  const GPUMemoryAllocator&						                  a_gpuMemoryAllocator,
 											    std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
 												TypeAlias::CBVSRVUAVDescriptorPool&		                  a_cbvSRVUAVDescriptorPool,
-												Struct::StaticModelMesh&				                  a_staticModelMesh) const;
+												StaticModelRecord::StaticModelMesh&				          a_staticModelMesh) const;
 
-		void ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<Struct::StaticModelMesh>& a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
+		void ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<StaticModelRecord::StaticModelMesh>& a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
 	};
 }

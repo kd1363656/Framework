@@ -11,9 +11,17 @@ namespace FWK::Graphics
 
 		bool BuildStaticModelRecordMeshletData(Graphics::StaticModelRecord& a_staticModelRecord) const;
 
+		static constexpr std::size_t k_emptyMeshletCount = 0ULL;
+
+		static constexpr std::uint32_t k_maxMeshletVertexCount = 64U;
+		static constexpr std::uint32_t k_maxMeshletPrimitiveCount = 126U;
+
+		// 余りが0かどうか確かめるときに使用する
+		static constexpr std::uint32_t k_noRemainder = 0U;
+
 	private:
 
-		bool BuildModelMeshletData(Struct::StaticModelMesh& a_staticModelMesh) const;
+		bool BuildModelMeshletData(Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
 
 		bool PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const;
 

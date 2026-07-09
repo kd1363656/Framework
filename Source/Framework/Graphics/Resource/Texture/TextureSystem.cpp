@@ -17,18 +17,18 @@ bool FWK::Graphics::TextureSystem::Create(const Device& a_device, const GPUMemor
 	return true;
 }
 
-FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					         a_device, 
-																					   const GPUMemoryAllocator&		         a_gpuMemoryAllocator,
-																					   const std::filesystem::path&		         a_filePath, 
-																					   const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
-																					   const Enum::DefaultTextureType            a_defaultTextureType,
-																							 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
+FWK::Graphics::TextureSystem::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatchUpload(const Device&					          a_device,
+																					                    const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
+																					                    const std::filesystem::path&		      a_filePath, 
+																					                    const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
+																					                    const Enum::DefaultTextureType            a_defaultTextureType,
+																					                 		  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
-	Struct::TextureLoadResult l_textureLoadResult = {};
+	TextureLoadResult l_textureLoadResult = {};
 
 	// 読み込めるファイルかどうかを確認
 	// 読み込めるファイル出ない場合デフォルトテクスチャを返す
-	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) 
+	if (!Utility::CanLoadFilePath(a_filePath, Converter::TextureBinaryConverter::k_lowerPNGExtension))
 	{
 		ApplyDefaultTextureToLoadResult(a_defaultTextureType, l_textureLoadResult);
 
@@ -160,7 +160,7 @@ bool FWK::Graphics::TextureSystem::CreateDefaultTexturesForBatchUpload(const Dev
 
 		FWK_ASSERT_RETURN_VALUE_IF(l_allocatedStorageID == AssetRecordBase::k_invalidStorageID, "DefaultTexture用StorageIDの割り当てに失敗しました。", false);
 
-		Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
+		TextureBatchUploadRecordBuilder::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
 
 		// DefaultTextureから1x1のScratchImageを作成し、GPUTextureResource/UploadBuffer/SRVDescriptorをまとめたBatchUploadRecordを作る
 		if (!l_defaultTexture->CreateTextureBatchUploadRecord(a_device, 
@@ -189,10 +189,10 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 																				const DirectX::ScratchImage&              a_scratchImage, 
 																				const DirectX::TexMetadata&               a_texMetadata,
 																					  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-																					  Struct::TextureLoadResult&          a_textureLoadResult)
+																					  TextureLoadResult&                  a_textureLoadResult)
 {
 
-	Struct::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
+	TextureBatchUploadRecordBuilder::TextureBatchUploadRecord l_textureBatchUploadRecord = {};
 
 	const auto l_allocatedStorageID = m_textureStorage.AllocateStorageID();
 
@@ -232,7 +232,7 @@ void FWK::Graphics::TextureSystem::CreateAndRegisterPendingTextureForBachUpload(
 	m_pendingTextureBatchUploadRecordMap.try_emplace(a_filePath, std::move(l_textureBatchUploadRecord));
 }
 
-bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult)
+bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, TextureLoadResult& a_textureLoadResult)
 {
 	const auto& l_filePath = a_filePath.wstring();
 
@@ -269,7 +269,7 @@ bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::file
 	return false;
 }
 
-void FWK::Graphics::TextureSystem::ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, Struct::TextureLoadResult& a_textureLoadResult) const
+void FWK::Graphics::TextureSystem::ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, TextureLoadResult& a_textureLoadResult) const
 {
 	const auto& l_defaultRecordTextureWeak = FetchVALDefaultTextureRecord   (a_defaultTextureType);
 	const auto& l_defaultRecordTexture     = l_defaultRecordTextureWeak.lock	();

@@ -57,7 +57,7 @@ namespace FWK::Graphics
 
 		TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
 
-		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
+		DXGI_FORMAT m_format = RenderTargetTexture::k_defaultRenderTargetTextureFormat;
 
 		Enum::RenderGraphRenderTargetType m_renderGraphRenderTargetType = Enum::RenderGraphRenderTargetType::Invalid;
 	};

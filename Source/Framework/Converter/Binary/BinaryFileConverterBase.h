@@ -111,10 +111,14 @@ namespace FWK::Converter
 		std::uint64_t CalculateWStringBinaryFileSize(const std::wstring& a_wString) const;
 		std::uint64_t CalculateStringBinaryFileSize (const std::string&  a_string)   const;
 
+		inline static const std::filesystem::path k_lowerAssetExtension = ".asset";
+
 		static constexpr std::uint64_t k_initialMemoryReadOffset  = 0ULL;
 		static constexpr std::uint64_t k_initialMemoryWriteOffset = 0ULL;
 
 		static constexpr std::uint64_t k_singleBinaryElementCount = 1ULL;
+
+		static constexpr std::uint64_t k_emptyAssetFileSize = 0ULL;
 
 	private:
 
