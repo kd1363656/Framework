@@ -42,8 +42,6 @@ namespace FWK::Converter
 
 		static constexpr std::size_t k_emptyModelMeshCount = 0ULL;
 
-		static constexpr std::uint32_t k_triangleVertexCount = 3U;
-
 		static constexpr std::uint64_t k_emptyModelVertexCount            = 0ULL;
 		static constexpr std::uint64_t k_emptyModelIndexCount             = 0ULL;
 		static constexpr std::uint64_t k_emptyTextureFilePathSize         = 0ULL;

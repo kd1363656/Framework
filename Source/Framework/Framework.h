@@ -192,9 +192,11 @@
 // モデル(Static)
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
+#include "Definition/Constant/Graphics/TriangleVertexCountConstant.h"
 #include "Graphics/Resource/Model/Static/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
+#include "Definition/Constant/Math/NoRemainderConstant.h"
 #include "Graphics/Resource/Model/Static/Meshlet/StaticModelMeshletBuilder.h"
 #include "Graphics/Resource/Model/Static/Builder/StaticModelBatchUploadRecordBuilder.h"
 #include "Definition/Struct/Graphics/StaticModelSystemStruct.h"

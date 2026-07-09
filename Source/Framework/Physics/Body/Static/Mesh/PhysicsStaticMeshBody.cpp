@@ -125,9 +125,9 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 		const auto& l_modelVertexList = l_modelMesh.m_modelVertexList;
 		const auto& l_modelIndexList  = l_modelMesh.m_indexList;
 
-		FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),                                                                                           "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
-		FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                                                            "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
-		FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Converter::StaticModelBinaryConverter::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
+		FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),                                                                                                                      "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
+		FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                                                                                       "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
+		FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Converter::StaticModelBinaryConverter::k_triangleVertexCount) != Graphics::StaticModelMeshletBuilder::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
 
 		const auto l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
 

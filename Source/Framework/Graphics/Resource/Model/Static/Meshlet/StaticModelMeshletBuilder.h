@@ -16,9 +16,6 @@ namespace FWK::Graphics
 		static constexpr std::uint32_t k_maxMeshletVertexCount = 64U;
 		static constexpr std::uint32_t k_maxMeshletPrimitiveCount = 126U;
 
-		// 余りが0かどうか確かめるときに使用する
-		static constexpr std::uint32_t k_noRemainder = 0U;
-
 	private:
 
 		bool BuildModelMeshletData(Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;

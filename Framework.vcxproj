@@ -361,7 +361,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardPerObjectDrawRequestDataConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Math\NoRemainderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />

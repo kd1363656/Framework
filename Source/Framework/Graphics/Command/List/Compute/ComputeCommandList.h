@@ -29,7 +29,7 @@ namespace FWK::Graphics
 			// RootConstantsは32bit単位で設定する。
 			// そのため、構造体サイズが4Byte単位で
 			// 割り切れなければ使用できない。
-			static_assert(sizeof(RootConstantType) % k_root32BitValueByteSize == static_cast<std::size_t>(Constant::k_noRemainder));
+			static_assert(sizeof(RootConstantType) % k_root32BitValueByteSize == static_cast<std::size_t>(StaticModelMeshletBuilder:: k_noRemainder));
 
 			constexpr auto l_rootConstantCount = static_cast<UINT>(sizeof(RootConstantType) / k_root32BitValueByteSize);
 

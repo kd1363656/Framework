@@ -859,6 +859,9 @@
     <Filter Include="Source\Framework\Definition\Constant\IMGUI">
       <UniqueIdentifier>{5ac61ca2-0d72-45b3-8ae0-48ca63dc94dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Math">
+      <UniqueIdentifier>{74681a52-0f73-45b4-9f9d-4507b093caf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1669,6 +1672,12 @@
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Math\NoRemainderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
