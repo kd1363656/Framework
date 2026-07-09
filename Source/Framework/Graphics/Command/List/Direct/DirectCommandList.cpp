@@ -131,7 +131,7 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_V
 
 	const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
 
 	// RootSignature側でD3D12_ROOT_PARAMETER_TYPE_CBVにした場所へ、
 	// UploadBuffer上の定数バッファ位置を直接結びつける

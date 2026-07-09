@@ -154,7 +154,7 @@ namespace FWK::Graphics
 			l_desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 
 			// このコマンドキューをどのGPUノードで使用するかを指定する
-			l_desc.NodeMask = Constant::k_defaultGPUNodeMask;
+			l_desc.NodeMask = UploadBuffer::k_defaultGPUNodeMask;
 
 			// コマンドキューを作成する関数
 			// CreateCommandQueue(コマンドキューの設定内容、

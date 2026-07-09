@@ -12,7 +12,7 @@ nlohmann::json FWK::Graphics::DepthStencilPassTexture::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::DepthStencilPassTexture::Create(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, const Struct::ClientSize& a_clientSize, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
+bool FWK::Graphics::DepthStencilPassTexture::Create(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, const Window::ClientSize& a_clientSize, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN, "DepthStencilPassTextureのFormatが無効のため、作成処理に失敗しました。", false);
 
@@ -37,7 +37,7 @@ bool FWK::Graphics::DepthStencilPassTexture::Create(const Device& a_device, cons
 
 bool FWK::Graphics::DepthStencilPassTexture::Resize(const Device&			            a_device,
 													const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-													const Struct::ClientSize&           a_clientSize, 
+													const Window::ClientSize&           a_clientSize,
 													const UINT64&			            a_retiredFenceValue, 
 														  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, 
 														  ResourceReleaseContext&	    a_resourceReleaseContext)

@@ -16,7 +16,7 @@ namespace FWK::Graphics
 
 		void ClearInputLayout();
 
-		void AddInputElementDesc(const Struct::StandardPipelineInputElement& a_inputElement);
+		void AddInputElementDesc(const Converter::StandardPipelineStateJsonConverter::StandardPipelineInputElement& a_inputElement);
 
 		const auto& GetREFInputElementList    () const { return m_inputElementList; }
 
@@ -38,8 +38,8 @@ namespace FWK::Graphics
 
 		Shader m_vertexShader = {};
 
-		std::vector<D3D12_INPUT_ELEMENT_DESC>			  m_inputElementDescList = {};
-		std::vector<Struct::StandardPipelineInputElement> m_inputElementList     = {};
+		std::vector<D3D12_INPUT_ELEMENT_DESC>	                                                 m_inputElementDescList = {};
+		std::vector<Converter::StandardPipelineStateJsonConverter::StandardPipelineInputElement> m_inputElementList     = {};
 
 		std::shared_ptr<Shader> m_hullShader     = nullptr;
 		std::shared_ptr<Shader> m_domainShader   = nullptr;

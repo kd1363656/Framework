@@ -120,7 +120,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 	//						 サブリソースごとの1行当たりの有効データサイズの受取先
 	//						 必要なUploadBufferサイズの受取先);
 	l_device->GetCopyableFootprints(&l_textureResourceDesc,
-									Constant::k_firstSubresourceIndex,
+									UploadBuffer::k_firstSubresourceIndex,
 									l_subresourceCount,
 									k_uploadBufferBeginOffset,
 									l_layoutList.data(),

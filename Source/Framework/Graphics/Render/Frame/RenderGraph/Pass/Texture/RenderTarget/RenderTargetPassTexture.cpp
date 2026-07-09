@@ -13,7 +13,7 @@ nlohmann::json FWK::Graphics::RenderTargetPassTexture::Serialize() const
 
 bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			                  a_device, 
 												    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-													const Struct::ClientSize&                 a_clientSize,
+													const Window::ClientSize&                 a_clientSize,
 														  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool, 
 														  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
@@ -40,7 +40,7 @@ bool FWK::Graphics::RenderTargetPassTexture::Create(const Device&			            
 
 bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&			                  a_device, 
 												    const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
-												    const Struct::ClientSize&                 a_clientSize, 
+												    const Window::ClientSize&                 a_clientSize,
 													const UINT64&			                  a_retiredFenceValue, 
 														  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool, 
 														  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,

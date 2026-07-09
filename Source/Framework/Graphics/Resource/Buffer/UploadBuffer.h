@@ -25,6 +25,12 @@ namespace FWK::Graphics
 
 		const auto& GetREFUploadBuffer() const { return m_uploadBuffer; }
 
+		static constexpr UINT64 k_invalidBufferSize = 0ULL;
+
+		static constexpr UINT k_firstSubresourceIndex = 0U;
+
+		static constexpr UINT k_defaultGPUNodeMask = 0U;
+
 	private:
 
 		bool Map  ();

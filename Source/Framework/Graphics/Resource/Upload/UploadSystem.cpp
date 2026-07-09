@@ -146,8 +146,8 @@ void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCom
 
 	const auto& l_uploadBuffer = a_bufferUploadCommand.m_bufferUploadRecord.m_uploadBuffer.GetREFUploadBuffer();
 
-	FWK_ASSERT_RETURN_IF(!l_uploadBuffer,                                                                          "コピー元UploadBufferが無効のため、バッファコピー処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_bufferUploadCommand.m_bufferUploadRecord.m_bufferSize == Constant::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_uploadBuffer,                                                                              "コピー元UploadBufferが無効のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_bufferUploadCommand.m_bufferUploadRecord.m_bufferSize == UploadBuffer::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
 	
 	// コピー先とコピー元のリソースを取得
 	auto& l_destinationBufferResource = *a_bufferUploadCommand.m_destinationBufferResource.Get();

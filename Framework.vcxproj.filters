@@ -622,9 +622,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Utility\String">
       <UniqueIdentifier>{e5c40700-4251-4be6-b9e8-8ec700207673}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Window">
-      <UniqueIdentifier>{43c392d2-11f5-4fac-a175-30ccd771fffe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Utility\File">
       <UniqueIdentifier>{c977cbcf-57e1-4811-959d-201c305dc5ed}</UniqueIdentifier>
     </Filter>
@@ -642,9 +639,6 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Graphics">
       <UniqueIdentifier>{77b69804-1a01-4fb3-87be-370d2dcabdd6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Window">
-      <UniqueIdentifier>{05f8ffc8-152c-41a7-aaad-1ee956297c1b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Asset\Shader\RenderTarget">
       <UniqueIdentifier>{f26372d4-c2d7-4c7b-98ab-c104ab20452e}</UniqueIdentifier>
@@ -1353,9 +1347,6 @@
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h">
       <Filter>Source\Framework\Utility\File\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h">
-      <Filter>Source\Framework\Utility\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\String\WStringUtility.h">
       <Filter>Source\Framework\Utility\String</Filter>
     </ClInclude>
@@ -1379,9 +1370,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\String</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Window</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File\Json</Filter>
@@ -1416,9 +1404,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetTextureConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RootSignatureConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -1449,14 +1434,8 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Window</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\BufferUploadStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
@@ -1476,16 +1455,10 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ResourceReleaseContextStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RootSignatureStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteScreenPerObjectDrawRequestStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StandardShaderPipelineStateJsonConverterStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelRecordStruct.h">
@@ -1766,6 +1739,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\StructuredBufferBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h">
+      <Filter>Source\Framework\Utility\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

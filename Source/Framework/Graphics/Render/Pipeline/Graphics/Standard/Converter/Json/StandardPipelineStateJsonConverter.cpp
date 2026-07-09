@@ -110,7 +110,7 @@ void FWK::Converter::StandardPipelineStateJsonConverter::DeserializeInputLayout(
 
 		if (l_semanticName.empty()) { continue; }
 
-		Struct::StandardPipelineInputElement l_inputElement = {};
+		StandardPipelineInputElement l_inputElement = {};
 
 		l_inputElement.m_semanticName = l_semanticName;
 

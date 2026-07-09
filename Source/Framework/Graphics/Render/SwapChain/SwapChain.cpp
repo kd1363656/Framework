@@ -48,7 +48,7 @@ nlohmann::json FWK::Graphics::SwapChain::Serialize() const
 
 bool FWK::Graphics::SwapChain::Resize(const Device&					      a_device,
 									  const ResourceReleaseContext&       a_resourceReleaseContext, 
-									  const Struct::ClientSize&		      a_clientSize,
+									  const Window::ClientSize&		      a_clientSize,
 										    TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_swapChain,							 "スワップチェインが作成されていないため、リサイズ処理に失敗しました。",     false);
@@ -256,10 +256,10 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 	return true;
 }
 
-bool FWK::Graphics::SwapChain::IsValidBackBufferSize(const Struct::ClientSize& a_clientSize) const
+bool FWK::Graphics::SwapChain::IsValidBackBufferSize(const Window::ClientSize& a_clientSize) const
 {
-	if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
-		a_clientSize.m_height == Constant::k_invalidClientHeight)
+	if (a_clientSize.m_width  == Window::k_invalidClientWidth ||
+		a_clientSize.m_height == Window::k_invalidClientHeight)
 	{
 		return false;
 	}

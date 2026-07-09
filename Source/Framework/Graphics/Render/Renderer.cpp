@@ -9,7 +9,7 @@ void FWK::Graphics::Renderer::Deserialize(const nlohmann::json& a_rootJson)
 bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device, 
 											  const Window&			    a_window, 
 											  const Factory&		    a_factory,
-											  const Struct::ClientSize& a_clientSize,
+											  const Window::ClientSize& a_clientSize,
 													ResourceContext&    a_resourceContext)
 {
 	// フレームリソースがないとコマンドアロケーターを使えないため"return"
@@ -140,7 +140,7 @@ nlohmann::json FWK::Graphics::Renderer::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::ClientSize& a_clientSize, ResourceContext& a_resourceContext)
+void FWK::Graphics::Renderer::Resize(const Device& a_device, const Window::ClientSize& a_clientSize, ResourceContext& a_resourceContext)
 {
 	// スワップチェインのリサイズ前にGPUとの同期をとるなど必要な処理を行う
 	PrepareForSwapChainResize();

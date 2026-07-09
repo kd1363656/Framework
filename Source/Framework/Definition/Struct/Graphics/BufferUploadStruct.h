@@ -8,7 +8,7 @@ namespace FWK::Struct
 		Graphics::UploadBuffer m_uploadBuffer = {};
 
 		// コピーするバッファサイズ
-		UINT64 m_bufferSize = Constant::k_invalidBufferSize;
+		UINT64 m_bufferSize = Graphics::UploadBuffer::k_invalidBufferSize;
 	};
 
 	struct BufferUploadCommand final

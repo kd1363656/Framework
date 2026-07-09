@@ -63,7 +63,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterIndexMa
 	for (const auto& l_json : a_rootJson)
 	{
 		const auto l_rootParameterType = l_json.value(k_rootParameterTypeJsonKey, Enum::RootParameterType::Invalid);
-		const auto l_index			   = l_json.value(k_indexJsonKey,			  Constant::k_invalidRootParameterIndex);
+		const auto l_index			   = l_json.value(k_indexJsonKey,			  k_invalidRootParameterIndex);
 
 		l_rootParameterIndexMap.try_emplace(l_rootParameterType, l_index);
 	}
@@ -325,7 +325,7 @@ nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeStaticSample
 	return l_rootJsonArray;
 }
 
-void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(const nlohmann::json& a_rootJson, Struct::RootParameterRecord& a_rootParameterRecord) const
+void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(const nlohmann::json& a_rootJson, RootParameterRecord& a_rootParameterRecord) const
 {
 	// jsonに保存されていなかったということはD3D12_DESCRIPTOR_RANGEは使わなかったということなので
 	// NumDescriptorRangesは0になる
@@ -393,7 +393,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(
 	a_rootParameterRecord.m_rootParameter.DescriptorTable.pDescriptorRanges = l_descriptorRangeList->data();
 }
 
-nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeDescriptorRangeList(const Struct::RootParameterRecord& a_rootParameterRecord) const
+nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeDescriptorRangeList(const RootParameterRecord& a_rootParameterRecord) const
 {
 	// ディスクリプタレンジリストが存在しなければreturn
 	if (!a_rootParameterRecord.m_descriptorRangeList) { return {}; }

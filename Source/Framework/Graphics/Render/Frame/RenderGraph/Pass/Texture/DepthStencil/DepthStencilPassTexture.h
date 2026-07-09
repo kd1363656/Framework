@@ -21,12 +21,12 @@ namespace FWK::Graphics
 
 		bool Create(const Device&                       a_device,
 					const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-					const Struct::ClientSize&           a_clientSize,	
+					const Window::ClientSize&           a_clientSize,
 						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
 
 		bool Resize(const Device&                       a_device,
 					const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-					const Struct::ClientSize&           a_clientSize,	
+					const Window::ClientSize&           a_clientSize,
 					const UINT64&						a_retiredFenceValue,
 						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
 						  ResourceReleaseContext&	    a_resourceReleaseContext);

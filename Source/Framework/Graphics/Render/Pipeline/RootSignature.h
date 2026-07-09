@@ -43,7 +43,7 @@ namespace FWK::Graphics
 
 		// D3D12_ROOT_PARAMETERは、内部にポインタを持つため要素の再確保が発生した場合に
 		// ポインタが無効になる可能性があるのでreserveするかemplace_backした後にポインタを渡す
-		std::vector<Struct::RootParameterRecord> m_rootParameterRecordList = {};
+		std::vector<Converter::RootSignatureJsonConverter::RootParameterRecord> m_rootParameterRecordList = {};
 
 		RootParameterIndexMap m_rootParameterIndexMap = {};
 

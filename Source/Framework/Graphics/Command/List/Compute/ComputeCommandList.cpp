@@ -32,7 +32,7 @@ void FWK::Graphics::ComputeCommandList::SetupConstantBufferView(const D3D12_GPU_
 
 	const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、コンピュート用定数バッファービュー設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、コンピュート用定数バッファービュー設定に失敗しました。");
 
 	// ComputePipeline用のRootCBVを設定する
 	l_computeCommandList->SetComputeRootConstantBufferView(l_rootParameterIndex, a_gpuVirtualAddress);
@@ -67,7 +67,7 @@ void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignat
 
 	const auto  l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
-	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Constant::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、Root32BitConstantsの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、Root32BitConstantsの設定に失敗しました。");
 
 	const auto& l_rootParameterRecordList = a_rootSignature.GetREFRootParameterRecordList();
 

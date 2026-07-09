@@ -37,7 +37,7 @@ bool FWK::Graphics::ComputePipelineState::Create(const Device& a_device, const S
 	l_pipelineStateDesc.CS = FetchShaderByteCode(m_computeShader);
 
 	// ノード数
-	l_pipelineStateDesc.NodeMask = Constant::k_defaultGPUNodeMask;
+	l_pipelineStateDesc.NodeMask = UploadBuffer::k_defaultGPUNodeMask;
 
 	l_pipelineStateDesc.Flags = GetVALPipelineStateFlags();
 

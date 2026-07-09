@@ -10,6 +10,15 @@ namespace FWK::Converter
 	class StandardPipelineStateJsonConverter final
 	{
 	public:
+
+		struct StandardPipelineInputElement
+		{
+			D3D12_INPUT_ELEMENT_DESC m_inputElementDesc = {};
+
+			std::string m_semanticName = {};
+		};
+
+	public:
 		
 		 StandardPipelineStateJsonConverter() = default;
 		~StandardPipelineStateJsonConverter() = default;

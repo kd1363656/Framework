@@ -14,7 +14,7 @@ void FWK::Graphics::FrameResource::INIT()
 }
 bool FWK::Graphics::FrameResource::Create(const Device&			    a_device, 
 										  const GPUMemoryAllocator& a_gpuMemoryAllocator,
-										  const Struct::ClientSize& a_clientSize, 
+										  const Window::ClientSize& a_clientSize,
 											    ResourceContext&    a_resourceContext)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandAllocator,				     "ダイレクトコマンドアロケータが無効です。",				     false);
@@ -41,7 +41,7 @@ bool FWK::Graphics::FrameResource::Create(const Device&			    a_device,
 }
 bool FWK::Graphics::FrameResource::Resize(const Device&			    a_device, 
 										  const GPUMemoryAllocator& a_gpuMemoryAllocator, 
-										  const Struct::ClientSize& a_clientSize,
+										  const Window::ClientSize& a_clientSize,
 										  const UINT64&				a_retiredFenceValue,
 												ResourceContext&    a_resourceContext) const
 {

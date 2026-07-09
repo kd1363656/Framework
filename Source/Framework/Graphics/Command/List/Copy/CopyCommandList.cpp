@@ -45,7 +45,7 @@ void FWK::Graphics::CopyCommandList::CopyBufferRegion(const UINT64&			 a_destina
 	const auto& l_copyCommandList = GetREFCommandList();
 
 	FWK_ASSERT_RETURN_IF(!l_copyCommandList,						        "コピーコマンドリストが作成されておらず、バッファコピー処理に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_bufferSize == Constant::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_bufferSize == UploadBuffer::k_invalidBufferSize, "コピーするBufferサイズが0のため、バッファコピー処理に失敗しました。");
 
 	// CopyBufferRegion(コピー先BufferResource、
 	//					コピー先BufferResource内の書き込み開始Offset、

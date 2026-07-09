@@ -145,7 +145,7 @@ void FWK::Graphics::StandardPipelineState::ClearInputLayout()
 	m_inputElementDescList.clear();
 }
 
-void FWK::Graphics::StandardPipelineState::AddInputElementDesc(const Struct::StandardPipelineInputElement& a_inputElement)
+void FWK::Graphics::StandardPipelineState::AddInputElementDesc(const Converter::StandardPipelineStateJsonConverter::StandardPipelineInputElement& a_inputElement)
 {
 	if (a_inputElement.m_semanticName.empty()) { return; }
 

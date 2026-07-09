@@ -22,7 +22,7 @@ namespace FWK::Graphics
 			//					 コマンドリスト作成時の追加オプション、
 			//					 受け取りたいCOMインターフェース型のID、
 			//					 作成結果のポインタを書き込むアドレス);
-			auto l_hr = l_device->CreateCommandList1(Constant::k_defaultGPUNodeMask,
+			auto l_hr = l_device->CreateCommandList1(UploadBuffer::k_defaultGPUNodeMask,
 													 CommandType,
 													 D3D12_COMMAND_LIST_FLAG_NONE,
 													 IID_PPV_ARGS(m_commandList.ReleaseAndGetAddressOf()));

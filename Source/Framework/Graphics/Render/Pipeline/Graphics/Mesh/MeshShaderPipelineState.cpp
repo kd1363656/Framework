@@ -112,7 +112,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 	l_pipelineStateDesc.BlendState = GetREFBlendDesc();
 
 	// 対象となるGPUのノードマスク
-	l_pipelineStateDesc.NodeMask = Constant::k_defaultGPUNodeMask;
+	l_pipelineStateDesc.NodeMask = UploadBuffer::k_defaultGPUNodeMask;
 
 	l_pipelineStateDesc.Flags = GetVALPipelineStateFlags();
 

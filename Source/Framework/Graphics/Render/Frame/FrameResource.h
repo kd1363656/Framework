@@ -17,12 +17,12 @@ namespace FWK::Graphics
 
 		bool Create(const Device&			  a_device,
 				    const GPUMemoryAllocator& a_gpuMemoryAllocator,
-					const Struct::ClientSize& a_clientSize,
+					const Window::ClientSize& a_clientSize,
 						  ResourceContext&	  a_resourceContext);
 
 		bool Resize(const Device&			  a_device,
 					const GPUMemoryAllocator& a_gpuMemoryAllocator,
-					const Struct::ClientSize& a_clientSize,
+					const Window::ClientSize& a_clientSize,
 					const UINT64&			  a_retiredFenceValue,
 						  ResourceContext&    a_resourceContext) const;
 

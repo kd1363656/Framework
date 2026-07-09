@@ -32,7 +32,7 @@ bool FWK::Graphics::DescriptorHeap::Create(const Device&					     a_device,
 	l_desc.Flags = m_descriptorHeapFlags;
 
 	// どのGPUノードで使用するかを指定する
-	l_desc.NodeMask = Constant::k_defaultGPUNodeMask;
+	l_desc.NodeMask = UploadBuffer::k_defaultGPUNodeMask;
 
 	// ディスクリプタヒープを作成する関数
 	// CreateDescriptorHeap(設定、
