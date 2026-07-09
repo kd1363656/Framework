@@ -187,8 +187,7 @@
 
 // ストラクチャードバッファー
 #include "Definition/Struct/Graphics/BufferUploadStruct.h"
-#include "Graphics/Resource/Buffer/Static/Structured/StructuredBuffer.h"
-#include "Graphics/Resource/Buffer/Static/Structured/ReadWriteStructuredBuffer.h"
+#include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
 
 // テクスチャ
 #include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"

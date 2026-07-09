@@ -1542,7 +1542,7 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StaticStructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferUploaderBase.h">
@@ -1787,12 +1787,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h">
       <Filter>Source\Framework\Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBufferBase.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2096,7 +2090,7 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBuffer.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StaticStructuredBuffer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp">
@@ -2212,12 +2206,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp">
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\ReadWriteStructuredBuffer.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StructuredBufferBase.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
