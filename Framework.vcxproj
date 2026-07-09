@@ -374,7 +374,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelRecordConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardPerObjectDrawRequestDataConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticTypeIDConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h" />
@@ -432,7 +431,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFOStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Utility\Array\Vector\VectorArrayStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h" />

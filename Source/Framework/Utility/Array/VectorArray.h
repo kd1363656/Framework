@@ -6,6 +6,17 @@ namespace FWK::Utility
 		requires Concept::IsSmartPTRConcept<Type>
 	class VectorArray
 	{
+	public:
+
+		struct ArrayElementData final
+		{
+			using ElementType = typename Type::element_type;
+
+			Type m_type = {};
+
+			const ElementType* m_typeAddress = nullptr;
+		};
+
 	private:
 
 		using ElementType = typename Type::element_type;
@@ -35,7 +46,7 @@ namespace FWK::Utility
 			// シェーアードが保持している生ポインタを取得
 			const auto* const l_typeAddress = l_type.get();
 
-			Struct::ArrayElementData<Type> l_arrayElementData = {};
+			ArrayElementData l_arrayElementData = {};
 
 			// ポインタとそのポインタを
 			l_arrayElementData.m_type        = a_type;
@@ -54,7 +65,7 @@ namespace FWK::Utility
 			// ユニークが所持している生ポインタを取得
 			const auto* const l_typeAddress = a_type.get();
 
-			Struct::ArrayElementData<Type> l_arrayElementData = {};
+			ArrayElementData l_arrayElementData = {};
 
 			// ポインタとそのポインタを
 			l_arrayElementData.m_type        = std::move(a_type);
@@ -74,7 +85,7 @@ namespace FWK::Utility
 		void RemoveExpiredElements()
 			requires k_isWeakPTR
 		{
-			std::erase_if(m_arrayElementDataList, [this](const Struct::ArrayElementData<Type>& a_arrayElementData)
+			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
 			{
 				if (!a_arrayElementData.m_type.expired()) { return false; }
 
@@ -90,7 +101,7 @@ namespace FWK::Utility
 		void RemoveExpiredElements()
 			requires k_isUniquePTR
 		{
-			std::erase_if(m_arrayElementDataList, [this](const Struct::ArrayElementData<Type>& a_arrayElementData)
+			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
 			{
 				if (a_arrayElementData.m_type) { return false; }
 
@@ -108,6 +119,6 @@ namespace FWK::Utility
 
 		std::unordered_set<const ElementType*> m_registeredAddressSet = {};
 
-		std::vector<Struct::ArrayElementData<Type>> m_arrayElementDataList = {};
+		std::vector<ArrayElementData> m_arrayElementDataList = {};
 	};
 }
