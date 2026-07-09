@@ -169,7 +169,9 @@
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
 
 // ストラクチャードバッファー
+#include "Graphics/Resource/Buffer/StructuredBufferBase.h"
 #include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
+#include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicReadWriteStructuredBuffer.h"
 
 // テクスチャ
 #include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"

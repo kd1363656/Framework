@@ -856,6 +856,9 @@
     <Filter Include="Source\Framework\Definition\Struct\String">
       <UniqueIdentifier>{d0842a51-c26e-426c-817d-3418748e5167}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured">
+      <UniqueIdentifier>{a965f516-0ab3-4a4c-b739-de8fc8d4986d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1650,6 +1653,9 @@
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\String</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicReadWriteStructuredBuffer.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2071,6 +2077,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\StructuredBufferBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicReadWriteStructuredBuffer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
