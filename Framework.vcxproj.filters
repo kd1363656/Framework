@@ -646,9 +646,6 @@
     <Filter Include="Source\Framework\Definition\Struct\Window">
       <UniqueIdentifier>{05f8ffc8-152c-41a7-aaad-1ee956297c1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\TypeINFO">
-      <UniqueIdentifier>{ca3f3422-a193-4a88-8ed4-7bfb315fc15c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Asset\Shader\RenderTarget">
       <UniqueIdentifier>{f26372d4-c2d7-4c7b-98ab-c104ab20452e}</UniqueIdentifier>
     </Filter>
@@ -1398,9 +1395,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DescriptorHeapConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -1458,17 +1452,11 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UploadBufferConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\StringHashStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h">
       <Filter>Source\Framework\Definition\Struct\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFOStruct.h">
-      <Filter>Source\Framework\Definition\Struct\TypeINFO</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\BufferUploadStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>

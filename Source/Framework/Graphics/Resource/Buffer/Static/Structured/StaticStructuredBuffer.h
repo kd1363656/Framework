@@ -23,11 +23,11 @@ namespace FWK::Graphics
 						  TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool)
 		{
 			// ストラクチャードバッファーを作成するための条件がそろっているのかどうかを確認する
-			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                                          "BufferListが空のため、StaticStructuredBufferの作成に失敗しました。",                                          false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStaticStructuredBufferElementCount, "StaticStructuredBufferの要素数がUINTの最大値を超えたため、StaticStructuredBufferの作成に失敗しました。",      false);
-			FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),               "StaticStructuredBufferの1要素サイズがUINTの最大値を超えたため、StaticStructuredBufferの作成に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_bufferGPUResource.m_resource,			                      "StaticStructuredBufferは既にGPUResourceを保持しているため、再作成できません。",                               false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex != Constant::k_invalidDescriptorIndex,    "StaticStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。",                        false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                                             "BufferListが空のため、StaticStructuredBufferの作成に失敗しました。",                                          false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStaticStructuredBufferElementCount,    "StaticStructuredBufferの要素数がUINTの最大値を超えたため、StaticStructuredBufferの作成に失敗しました。",      false);
+			FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),                  "StaticStructuredBufferの1要素サイズがUINTの最大値を超えたため、StaticStructuredBufferの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_bufferGPUResource.m_resource,			                         "StaticStructuredBufferは既にGPUResourceを保持しているため、再作成できません。",                               false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex != DescriptorHeap::k_invalidDescriptorIndex, "StaticStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。",                        false);
 
 			const auto& l_bufferSize = static_cast<UINT64>(sizeof(Type)) * static_cast<UINT64>(a_bufferList.size());
 
@@ -62,7 +62,7 @@ namespace FWK::Graphics
 																		l_bufferGPUResource,
 																		a_cbvSRVUAVDescriptorPool);
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "StaticStructuredBuffer用SRVの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "StaticStructuredBuffer用SRVの作成に失敗しました。", false);
 
 			// 作成内容をメンバに反映
 			m_bufferGPUResource  = std::move(l_bufferGPUResource);
@@ -122,14 +122,14 @@ namespace FWK::Graphics
 		{
 			const auto& l_device = a_device.GetREFDevice();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_device,												      "デバイスが作成されておらず、StaticStructuredBuffer用SRVの作成に失敗しました。",                               Constant::k_invalidDescriptorIndex);
-			FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,						          "BufferResourceが無効のため、StaticStructuredBuffer用SRVの作成に失敗しました。",                               Constant::k_invalidDescriptorIndex);
-			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),									      "BufferListが空のため、StaticStructuredBuffer用SRVの作成に失敗しました。",                                     Constant::k_invalidDescriptorIndex);
-			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStaticStructuredBufferElementCount, "StaticStructuredBufferの要素数がUINTの最大値を超えたため、StaticStructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_device,												      "デバイスが作成されておらず、StaticStructuredBuffer用SRVの作成に失敗しました。",                               DescriptorHeap::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,						          "BufferResourceが無効のため、StaticStructuredBuffer用SRVの作成に失敗しました。",                               DescriptorHeap::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),									      "BufferListが空のため、StaticStructuredBuffer用SRVの作成に失敗しました。",                                     DescriptorHeap::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.size() > k_maxStaticStructuredBufferElementCount, "StaticStructuredBufferの要素数がUINTの最大値を超えたため、StaticStructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
 			const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StaticStructuredBuffer用のSRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StaticStructuredBuffer用のSRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
 			D3D12_SHADER_RESOURCE_VIEW_DESC l_srvDesc = {};
 
@@ -162,14 +162,14 @@ namespace FWK::Graphics
 			{
 				a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
 
-				FWK_ASSERT_RETURN_VALUE("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StaticStructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+				FWK_ASSERT_RETURN_VALUE("CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、StaticStructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 			}
 
-			if (l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex)
+			if (l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
 			{
 				a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
 
-				FWK_ASSERT_RETURN_VALUE	   ("StaticStructuredBuffer用SRVの作成に失敗しました。", Constant::k_invalidDescriptorIndex);
+				FWK_ASSERT_RETURN_VALUE	   ("StaticStructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 			}
 
 			return l_srvDescriptorIndex;
@@ -182,6 +182,6 @@ namespace FWK::Graphics
 		
 		Struct::GPUResource m_bufferGPUResource;
 
-		TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};
 }

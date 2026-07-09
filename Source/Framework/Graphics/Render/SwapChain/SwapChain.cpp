@@ -234,7 +234,7 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 		// レンダーターゲット用アロケータを進める
 		const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
-		FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "バックバッファ用RTVIndexの確保に失敗しており、バッファーの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "バックバッファ用RTVIndexの確保に失敗しており、バッファーの作成に失敗しました。", false);
 		
 		// l_backBufferIndex番目のバックバッファと紐づいているRTVのStorageIDを格納
 		l_backBuffer.m_rtvDescriptorIndex   = l_rtvDescriptorIndex;

@@ -22,7 +22,7 @@ namespace FWK::Graphics
 			const auto l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
 
 			// 容量が0ならassert
-			FWK_ASSERT_RETURN_VALUE_IF(l_capacity == Constant::k_invalidDescriptorNUM, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(l_capacity == DescriptorHeap::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);
 
 			FWK_ASSERT_RETURN_VALUE_IF(!m_cpuDescriptorHeap.Create(a_device,
 																   HeapType, 
@@ -62,7 +62,7 @@ namespace FWK::Graphics
 
 		void Release(const TypeAlias::DescriptorIndex a_index)
 		{
-			FWK_ASSERT_RETURN_IF(a_index == Constant::k_invalidDescriptorIndex, "無効なDescriptorIndexを解放しようとしており、DescriptorIndexの解放に失敗しました。");
+			FWK_ASSERT_RETURN_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexを解放しようとしており、DescriptorIndexの解放に失敗しました。");
 
 			m_descriptorIndexAllocator.Release(a_index);
 		}
@@ -87,8 +87,8 @@ namespace FWK::Graphics
 
 		bool CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
 		{
-			FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,				  "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました", false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_index == Constant::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
+			FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,				        "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました", false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
 
 			const auto& l_device = a_device.GetREFDevice();
 

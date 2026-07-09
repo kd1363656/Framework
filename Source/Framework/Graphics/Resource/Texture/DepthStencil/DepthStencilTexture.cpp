@@ -115,7 +115,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateDSV(const Device& a_device, TypeA
 
     const auto l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DSVDescriptorIndexの確保に失敗しており、DepthStencilTexture用DSVの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DSVDescriptorIndexの確保に失敗しており、DepthStencilTexture用DSVの作成に失敗しました。", false);
 
     // D3D12_DEPTH_STENCIL_VIEW_DESCについて
     // Format	     : DSVとしてみるときのフォーマット
@@ -143,9 +143,9 @@ bool FWK::Graphics::DepthStencilTexture::CreateDSV(const Device& a_device, TypeA
 
 bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                                  "DepthStencilTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",         false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_dsvDescriptorIndex == Constant::k_invalidDescriptorIndex, "DepthStencilTextureのDSVDesccriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,       "FenceValueが無効のため、遅延解放登録に失敗しました。",                               false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                                        "DepthStencilTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",         false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTextureのDSVDesccriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,             "FenceValueが無効のため、遅延解放登録に失敗しました。",                               false);
 
     Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
@@ -161,7 +161,7 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseDSVDescriptorIndex(std::move(l_dsvDescriptorIndexReleaseRecord)), "DepthStencilTextureのDSVDescriptorIndex遅延解放登録に失敗しました。", false);
 
     // 二重開放を防ぐため、DescriptorIndexを無効化する
-    m_dsvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+    m_dsvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
     m_width  = Constant::k_emptyTextureWidth;
     m_height = Constant::k_emptyTextureHeight;

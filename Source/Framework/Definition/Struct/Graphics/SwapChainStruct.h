@@ -8,6 +8,6 @@ namespace FWK::Struct
 
 		D3D12_RESOURCE_STATES m_currentResourceState = D3D12_RESOURCE_STATE_PRESENT;
 
-		TypeAlias::DescriptorIndex m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_rtvDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 	};
 }

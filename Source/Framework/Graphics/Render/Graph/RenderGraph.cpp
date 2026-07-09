@@ -66,7 +66,7 @@ void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
 
 	auto& l_backBuffer = l_backBufferList[l_backBufferIndex];
 
-	FWK_ASSERT_RETURN_IF(l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのPresent遷移に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBuffer.m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのPresent遷移に失敗しました。");
 
 	// BackBufferをRENDERTARGET -> PRESENTへ遷移
 	// ImGuiとの連携の関係上明示的にリソース遷移を行う
@@ -123,7 +123,7 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
 
 	auto& l_backBuffer = l_backBufferList[l_backBufferIndex];
 
-	FWK_ASSERT_RETURN_IF(l_backBuffer.m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのClearに失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_backBuffer.m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferのClearに失敗しました。");
 
 	// BackBufferをPRESENT -> RENDERTARGETに明示的に遷移
 	m_resourceTransitioner.TransitionBackBufferResource(l_directCommandList, D3D12_RESOURCE_STATE_RENDER_TARGET, l_backBuffer);

@@ -2,7 +2,7 @@
 
 namespace FWK::Utility
 {
-	inline bool IsDerivedFrom(const Struct::TypeINFO& a_typeINFO, const Struct::TypeINFO& a_baseTypeINFO)
+	inline bool IsDerivedFrom(const TypeINFORegistry::TypeINFO& a_typeINFO, const TypeINFORegistry::TypeINFO& a_baseTypeINFO)
 	{
 		const auto* l_currentINFO = &a_typeINFO;
 

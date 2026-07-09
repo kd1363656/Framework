@@ -9,7 +9,7 @@ namespace FWK::Struct
 
 	struct DescriptorIndexReleaseRecord final : public DeferredResourceReleaseRecordBase
 	{
-		TypeAlias::DescriptorIndex m_descriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_descriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 	};
 
 	struct GPUResourceReleaseRecord final : public DeferredResourceReleaseRecordBase

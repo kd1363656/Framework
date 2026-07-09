@@ -8,7 +8,7 @@ namespace FWK
 
 		using SceneName     = std::string;
 		using SceneFilePath = std::string;
-		using SceneShiftMap = std::unordered_map<SceneName, SceneFilePath, Struct::StringHash, std::equal_to<>>;
+		using SceneShiftMap = std::unordered_map<SceneName, SceneFilePath, TypeINFORegistry::StringHash, std::equal_to<>>;
 
 		friend class SingletonBase<SceneManager>;
 

@@ -25,6 +25,10 @@ namespace FWK::Graphics
 		UINT GetVALDescriptorNUM () const { return m_num; }
 		UINT GetVALDescriptorSize() const { return m_size; }
 
+		static constexpr UINT k_invalidDescriptorNUM = 0U;
+
+		static constexpr TypeAlias::DescriptorIndex k_invalidDescriptorIndex = std::numeric_limits<TypeAlias::DescriptorIndex>::max();
+
 	private:
 
 		bool CanUseShaderVisibleFlag(const D3D12_DESCRIPTOR_HEAP_TYPE a_type) const;
@@ -36,7 +40,7 @@ namespace FWK::Graphics
 		D3D12_DESCRIPTOR_HEAP_TYPE  m_descriptorHeapType  = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 		D3D12_DESCRIPTOR_HEAP_FLAGS m_descriptorHeapFlags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-		UINT m_num  = Constant::k_invalidDescriptorNUM;
+		UINT m_num  = k_invalidDescriptorNUM;
 		UINT m_size = k_invalidSize;
 	};
 }

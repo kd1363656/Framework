@@ -12,17 +12,17 @@ namespace FWK::Struct
 
 		float				       m_roughnessFactor					= Constant::k_defaultModelMaterialRoughnessFactor;
 		float					   m_metallicFactor					    = Constant::k_defaultModelMaterialMetallicFactor;
-		TypeAlias::DescriptorIndex m_baseColorTextureSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_normalTextureSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_baseColorTextureSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_normalTextureSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 
-		TypeAlias::DescriptorIndex m_metallicTextureSRVDescriptorIndex  = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_roughnessTextureSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_vertexBufferSRVDescriptorIndex     = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_meshletBufferSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_metallicTextureSRVDescriptorIndex  = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_roughnessTextureSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_vertexBufferSRVDescriptorIndex     = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_meshletBufferSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 
-		TypeAlias::DescriptorIndex m_uniqueVertexIndexBufferSRVDescriptorIndex = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_primitiveIndexBufferSRVDescriptorIndex    = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_meshletBoundsBufferSRVDescriptorIndex     = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_uniqueVertexIndexBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_primitiveIndexBufferSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_meshletBoundsBufferSRVDescriptorIndex     = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		float					   m_worldMaxScale							   = Constant::k_defaultMeshletBoundWorldMaxScale;
 	};
 }

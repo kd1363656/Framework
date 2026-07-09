@@ -17,7 +17,7 @@ namespace FWK::Struct
 
 		Struct::SpriteRECT m_sourceRECT = {};
 
-		TypeAlias::DescriptorIndex m_baseColorTextureSRVIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_baseColorTextureSRVIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::Math::Vector3   m_secondPadding		      = {};
 	};
 }

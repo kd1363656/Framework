@@ -9,8 +9,8 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Deserialize(const nlohmann::js
 
 bool FWK::Graphics::DescriptorHeapIndexAllocator::Create()
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == Constant::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",        false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == Constant::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == DescriptorHeap::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",        false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == DescriptorHeap::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
     
     m_nextIndex = k_initialNextIndex;
 
@@ -46,7 +46,7 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::Descr
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::Allocate()
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedIndexList.empty(), "m_isAllocatedListの容量を超えており、DescriptorIndexのAllocateに失敗しました。", Constant::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedIndexList.empty(), "m_isAllocatedListの容量を超えており、DescriptorIndexのAllocateに失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
     // 解放済みスロットがあればそれを優先再利用する
     if (!m_reusableIndexQueue.empty())
@@ -56,7 +56,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::All
         m_reusableIndexQueue.pop();
 
         // 有効なインデックスかどうかを確認
-        FWK_ASSERT_RETURN_VALUE_IF(IsInValidIndex(l_reusableIndex), "再利用しようとしたIndexが確保範囲外で、Indexの確保に失敗しました。", Constant::k_invalidDescriptorIndex);
+        FWK_ASSERT_RETURN_VALUE_IF(IsInValidIndex(l_reusableIndex), "再利用しようとしたIndexが確保範囲外で、Indexの確保に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
         m_isAllocatedIndexList[l_reusableIndex] = true;
 
@@ -64,7 +64,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DescriptorHeapIndexAllocator::All
     }
 
     // 無効なインデックスならassert
-    FWK_ASSERT_RETURN_VALUE_IF(IsInValidIndex(m_nextIndex), "Indexの空きがなくなり、割り当てに失敗しました。", Constant::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(IsInValidIndex(m_nextIndex), "Indexの空きがなくなり、割り当てに失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
     // 未使用領域が残っているなら新規払い出しする
     const auto l_allocatedIndex = m_nextIndex;

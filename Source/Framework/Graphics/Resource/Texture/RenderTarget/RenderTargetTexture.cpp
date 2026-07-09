@@ -107,7 +107,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateRTV(const Device& a_device, TypeA
 
 	const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
 
 	// D3D12_RENDER_TARGET_VIEW_DESCについて
 	// Format		 : RTVとしてみるときのフォーマット
@@ -137,7 +137,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 
 	const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
 
 	// D3D12_SHADER_RESOURCE_VIEW_DESCについて
 	// Shader4ComponentMapping : Shader側でRGBA成分をどう読むか
@@ -180,10 +180,10 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 
 bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,								   "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,		   "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",		    false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,								         "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,	         "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
 
 	Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
@@ -205,8 +205,8 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "RenderTargetTextureのSRVDescriptorIndexの遅延解放登録に失敗しました。", false);
 
 	// 二重開放を防ぐため、DescriptorIndexは無効化する
-	m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;
-	m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+	m_rtvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+	m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
 	m_width  = Constant::k_emptyTextureWidth;
 	m_height = Constant::k_emptyTextureHeight;

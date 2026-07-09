@@ -37,7 +37,7 @@ namespace FWK::Graphics
 
 		Converter::DescriptorHeapIndexAllocatorJsonConverter m_jsonConverter = {};
 
-		TypeAlias::DescriptorIndex m_capacity  = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_capacity  = DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::DescriptorIndex m_nextIndex = k_initialNextIndex; 
 	};
 }

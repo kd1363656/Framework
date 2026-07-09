@@ -8,7 +8,7 @@ FWK::Graphics::StaticStructuredBuffer::~StaticStructuredBuffer()
 
 FWK::Graphics::StaticStructuredBuffer::StaticStructuredBuffer(StaticStructuredBuffer&& a_other) noexcept : 
 	m_bufferGPUResource(),
-	m_srvDescriptorIndex(Constant::k_invalidDescriptorIndex)
+	m_srvDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex)
 {
 	MoveFrom(std::move(a_other));
 }
@@ -28,7 +28,7 @@ bool FWK::Graphics::StaticStructuredBuffer::ReserveRelease(const UINT64& a_retir
 {
 	// 既に解放するものがなければreturn;
 	if (!m_bufferGPUResource.m_resource && 
-		m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) 
+		m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
 	{
 		return true;
 	}
@@ -51,25 +51,25 @@ bool FWK::Graphics::StaticStructuredBuffer::ReserveRelease(const UINT64& a_retir
 
 	// もう一度開放処理が走らないように初期化
 	m_bufferGPUResource  = {};
-	m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+	m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
 	return true;
 }
 
 void FWK::Graphics::StaticStructuredBuffer::ReleaseImmediatelySRVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
-	if (m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
+	if (m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return; }
 
 	a_cbvSRVUAVDescriptorPool.Release(m_srvDescriptorIndex);
 
-	m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+	m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 }
 
 void FWK::Graphics::StaticStructuredBuffer::Release()
 {
 	// 既に解放するものがなければreturn;
 	if (!m_bufferGPUResource.m_resource &&
-		m_srvDescriptorIndex == Constant::k_invalidDescriptorIndex)
+		m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
 	{
 		return;
 	}
@@ -94,5 +94,5 @@ void FWK::Graphics::StaticStructuredBuffer::MoveFrom(StaticStructuredBuffer&& a_
 	m_srvDescriptorIndex = a_other.m_srvDescriptorIndex;
 
 	a_other.m_bufferGPUResource  = {};
-	a_other.m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+	a_other.m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 }

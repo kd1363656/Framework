@@ -43,7 +43,7 @@ namespace FWK::Graphics
 				}
 
 				// 該当するディスクリプタヒープから解放する
-				if (a_releaseRecordList[l_index].m_descriptorIndex != Constant::k_invalidDescriptorIndex)
+				if (a_releaseRecordList[l_index].m_descriptorIndex != DescriptorHeap::k_invalidDescriptorIndex)
 				{
 					a_descriptorPool.Release(a_releaseRecordList[l_index].m_descriptorIndex);
 				}

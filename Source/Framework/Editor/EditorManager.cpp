@@ -199,8 +199,8 @@ void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Struct::Window
 
 bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_sourceSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_imGuiSRVDescriptorIndex  == Constant::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_sourceSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "コピー元SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_imGuiSRVDescriptorIndex  == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "コピー先ImGui用SRVDescriptorIndexが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 
 	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_deviceWrapper   = l_graphicsManager.GetREFDevice		  ();
@@ -229,21 +229,21 @@ FWK::TypeAlias::DescriptorIndex FWK::Editor::EditorManager::AllocateImGuiSRVDesc
 {
 	const auto l_imGuiSRVDescriptorIndex = m_imGuiCBVSRVUAVDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndexの確保に失敗しました。", Constant::k_invalidDescriptorIndex);
+	FWK_ASSERT_RETURN_VALUE_IF(l_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndexの確保に失敗しました。", Graphics::DescriptorHeap::k_invalidDescriptorIndex);
 
 	return l_imGuiSRVDescriptorIndex;
 }
 
 void FWK::Editor::EditorManager::ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex)
 {
-	if (a_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return; }
+	if (a_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return; }
 
 	m_imGuiCBVSRVUAVDescriptorPool.Release(a_imGuiSRVDescriptorIndex);
 }
 
 ImTextureID FWK::Editor::EditorManager::FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const
 {
-	if (a_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex) { return {}; }
+	if (a_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return {}; }
 
 	const auto l_gpuDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle(a_imGuiSRVDescriptorIndex);
 
@@ -276,7 +276,7 @@ void FWK::Editor::EditorManager::AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo *
 
 	const auto l_imGuiSRVDescriptorIndex = l_editorManager->m_imGuiCBVSRVUAVDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_IF(l_imGuiSRVDescriptorIndex == Constant::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndex確保に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "ImGui用SRVDescriptorIndex確保に失敗しました。");
 
 	*a_outCPUHandle = l_editorManager->m_imGuiCBVSRVUAVDescriptorPool.FetchVALShaderVisibleCPUDescriptorHandle(l_imGuiSRVDescriptorIndex);
 	*a_outGPUHandle = l_editorManager->m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle			  (l_imGuiSRVDescriptorIndex);

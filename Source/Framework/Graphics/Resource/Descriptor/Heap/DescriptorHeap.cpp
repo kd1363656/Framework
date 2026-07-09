@@ -5,7 +5,7 @@ bool FWK::Graphics::DescriptorHeap::Create(const Device&					     a_device,
 										   const D3D12_DESCRIPTOR_HEAP_FLAGS a_flags, 
 										   const UINT						 a_num)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_num == Constant::k_invalidDescriptorNUM, "DescriptorHeapのDescriptor数が無効のため、DescriptorHeapの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_num == k_invalidDescriptorNUM, "DescriptorHeapのDescriptor数が無効のため、DescriptorHeapの作成に失敗しました。", false);
 
 	const auto& l_device = a_device.GetREFDevice();
 
@@ -57,7 +57,7 @@ bool FWK::Graphics::DescriptorHeap::IsShaderVisible() const
 }
 bool FWK::Graphics::DescriptorHeap::IsValidDescriptorIndex(const TypeAlias::DescriptorIndex a_index) const
 {
-	if (a_index == Constant::k_invalidDescriptorIndex ||
+	if (a_index == k_invalidDescriptorIndex ||
 		a_index >= m_num)
 	{
 		return false; 

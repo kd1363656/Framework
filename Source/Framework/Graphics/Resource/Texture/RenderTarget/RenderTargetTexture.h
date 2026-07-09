@@ -78,7 +78,7 @@ namespace FWK::Graphics
 		UINT m_width  = Constant::k_emptyTextureWidth;
 		UINT m_height = Constant::k_emptyTextureHeight;
 
-		TypeAlias::DescriptorIndex m_rtvDescriptorIndex = Constant::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_rtvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};
 }

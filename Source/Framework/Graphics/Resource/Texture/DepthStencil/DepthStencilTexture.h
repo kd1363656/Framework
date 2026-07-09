@@ -71,6 +71,6 @@ namespace FWK::Graphics
 
 		UINT8 m_stencilClearValue = Constant::k_defaultStencilClearValue;
 
-		TypeAlias::DescriptorIndex m_dsvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_dsvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};
 }

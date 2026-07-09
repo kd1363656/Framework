@@ -253,7 +253,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
 	// SRVストレージIDを格納
 	const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRV用ストレージIDの確保に失敗したため、TextureSRV作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRV用ストレージIDの確保に失敗したため、TextureSRV作成処理に失敗しました。", false);
 
 	a_textureRecord.SetSRVDescriptorIndex(l_srvDescriptorIndex);
 

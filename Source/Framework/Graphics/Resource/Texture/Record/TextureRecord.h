@@ -29,6 +29,6 @@ namespace FWK::Graphics
 
 		Struct::GPUResource m_gpuResource = {};
 		
-		TypeAlias::DescriptorIndex m_srvDescriptorIndex = Constant::k_invalidDescriptorIndex;
+		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};
 }

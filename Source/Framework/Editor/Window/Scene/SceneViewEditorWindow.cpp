@@ -83,13 +83,13 @@ void FWK::Editor::SceneViewEditorWindow::SetupSceneViewTextureDescriptors()
 		// RenderTargetTexture本体を取得する
 		const auto& l_renderTargetTexture = l_renderTargetPassTexture->GetREFRenderTargetTexture();
 
-		if (l_renderTargetTexture.GetVALSRVDescriptorIndex() == Constant::k_invalidDescriptorIndex) { return; }
+		if (l_renderTargetTexture.GetVALSRVDescriptorIndex() == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return; }
 
 		// ImGuiでTextureを表示するにはTextureをShaderから読めるSRVが必要になる
 		// ここではRenderTargetTextureに割り当てられているSRVのDescriptorIndexを取得する
 		const auto l_srvDescriptorIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
-		FWK_ASSERT_RETURN_IF(l_srvDescriptorIndex == Constant::k_invalidDescriptorIndex, "SRVDescriptorIndexが無効値になっており、PostDeserialize処理に失敗しました。");
+		FWK_ASSERT_RETURN_IF(l_srvDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexが無効値になっており、PostDeserialize処理に失敗しました。");
 
 		auto& l_editorManager = EditorManager::GetInstance();
 
@@ -118,7 +118,7 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() con
 	FWK_ASSERT_RETURN_VALUE_IF(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えています", k_invalidSceneViewTextureID);
 
 	// もし無効なDescriptorIndexならreturn
-	if (m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex] == Constant::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
+	if (m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex] == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
 
 	return l_editorManager.FetchVALImGuiTextureID(m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex]);
 }
