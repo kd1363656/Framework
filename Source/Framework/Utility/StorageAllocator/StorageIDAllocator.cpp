@@ -9,8 +9,8 @@ void FWK::Utility::StorageIDAllocator::Deserialize(const nlohmann::json& a_rootJ
 bool FWK::Utility::StorageIDAllocator::Create()
 {
 	// 無効値を容量として指定された場合は作成失敗とする
-	FWK_ASSERT_RETURN_VALUE_IF(m_storageIDCapacity == Constant::k_invalidStorageIDCapacity, "ストレージIDの割り当て可能数が0になっており、作成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_storageIDCapacity == Constant::k_invalidStorageID,         "StorageIDの割り当て可能数が無効値です、作成処理に失敗しました。",       false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_storageIDCapacity == Graphics::AssetRecordBase::k_invalidStorageIDCapacity, "ストレージIDの割り当て可能数が0になっており、作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_storageIDCapacity == Graphics::AssetRecordBase::k_invalidStorageID,         "StorageIDの割り当て可能数が無効値です、作成処理に失敗しました。",       false);
 
 	m_nextStorageID = k_initialNextStorageID;
 
@@ -50,7 +50,7 @@ FWK::TypeAlias::StorageID FWK::Utility::StorageIDAllocator::Allocate()
 		m_freeStorageIDQueue.pop();
 
 		// 有効なインデックスかどうかを確認
-		FWK_ASSERT_RETURN_VALUE_IF(!IsValidStorageID(l_reuseStorageID), "再利用しようとしたストレージIDが確保範囲外となっており、アロケート処理に失敗しました。", Constant::k_invalidStorageID);
+		FWK_ASSERT_RETURN_VALUE_IF(!IsValidStorageID(l_reuseStorageID), "再利用しようとしたストレージIDが確保範囲外となっており、アロケート処理に失敗しました。", Graphics::AssetRecordBase::k_invalidStorageID);
 
 		m_isAllocatedList[l_reuseStorageID] = true;
 
@@ -70,7 +70,7 @@ FWK::TypeAlias::StorageID FWK::Utility::StorageIDAllocator::Allocate()
 		return l_allocateStorageID;
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF(true, "StorageIDの空きがなくなり、アロケート処理に失敗しました。", Constant::k_invalidStorageID);
+	FWK_ASSERT_RETURN_VALUE_IF(true, "StorageIDの空きがなくなり、アロケート処理に失敗しました。", Graphics::AssetRecordBase::k_invalidStorageID);
 }
 
 bool FWK::Utility::StorageIDAllocator::IsValidStorageID(const TypeAlias::StorageID a_storageID) const

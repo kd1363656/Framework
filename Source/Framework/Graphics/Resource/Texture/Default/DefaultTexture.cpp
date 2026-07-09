@@ -19,9 +19,9 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                                          Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_textureName.empty(),                       "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
-    FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN,             "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_storageID == Constant::k_invalidStorageID, "DefaultTexture用StorageIDが無効のため、DefaultTexture作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_textureName.empty(),                              "DefaultTextureの名前が空のため、DefaultTextureの作成処理に失敗しました。",      false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN,                    "DefaultTextureのFormatが無効のため、DefaultTextureの作成処理に失敗しました。",  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_storageID == AssetRecordBase::k_invalidStorageID, "DefaultTexture用StorageIDが無効のため、DefaultTexture作成処理に失敗しました。", false);
 
     DirectX::ScratchImage l_scratchImage = {};
 

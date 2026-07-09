@@ -147,12 +147,12 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     FWK_ASSERT_RETURN_VALUE_IF(m_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTextureのDSVDesccriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,             "FenceValueが無効のため、遅延解放登録に失敗しました。",                               false);
 
-    Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
+    ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
     l_gpuResourceReleaseRecord.m_gpuResource       = std::move(m_gpuResource);
     l_gpuResourceReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-    Struct::DescriptorIndexReleaseRecord l_dsvDescriptorIndexReleaseRecord = {};
+    ResourceReleaseContext::DescriptorIndexReleaseRecord l_dsvDescriptorIndexReleaseRecord = {};
 
     l_dsvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_dsvDescriptorIndex;
     l_dsvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;

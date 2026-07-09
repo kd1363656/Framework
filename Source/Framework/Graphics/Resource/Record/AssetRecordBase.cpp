@@ -7,7 +7,7 @@ void FWK::Graphics::AssetRecordBase::AddReferenceCount()
 
 bool FWK::Graphics::AssetRecordBase::SubtractReferenceCount()
 {
-	FWK_ASSERT_RETURN_VALUE_IF(m_referenceCount == Constant::k_emptyAssetReferenceCount, "参照数が0のAssetRecordに対して参照数の減算が行われました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_referenceCount == k_emptyAssetReferenceCount, "参照数が0のAssetRecordに対して参照数の減算が行われました。", false);
 
 	--m_referenceCount;
 
@@ -16,5 +16,5 @@ bool FWK::Graphics::AssetRecordBase::SubtractReferenceCount()
 
 bool FWK::Graphics::AssetRecordBase::IsUnused() const
 {
-	return m_referenceCount == Constant::k_emptyAssetReferenceCount;
+	return m_referenceCount == k_emptyAssetReferenceCount;
 }

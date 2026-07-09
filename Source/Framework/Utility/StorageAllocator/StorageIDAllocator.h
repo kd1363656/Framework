@@ -42,7 +42,7 @@ namespace FWK::Utility
 
 		Converter::StorageIDAllocatorJsonConverter m_storageAllocatorJsonConverter = {};
 
-		TypeAlias::StorageID m_storageIDCapacity = Constant::k_invalidStorageID;
+		TypeAlias::StorageID m_storageIDCapacity = Graphics::AssetRecordBase::k_invalidStorageID;
 		TypeAlias::StorageID m_nextStorageID     = k_initialNextStorageID;
 	};
 }

@@ -17,7 +17,7 @@ namespace FWK::Graphics
 
 		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 		
-		void SetGPUResource(Struct::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
+		void SetGPUResource(ResourceReleaseContext::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
 
 		void SetSRVDescriptorIndex(const TypeAlias::StorageID a_set) { m_srvDescriptorIndex = a_set; }
 
@@ -27,7 +27,7 @@ namespace FWK::Graphics
 
 	private:
 
-		Struct::GPUResource m_gpuResource = {};
+		ResourceReleaseContext::GPUResource m_gpuResource = {};
 		
 		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};

@@ -362,7 +362,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalPresentRenderTargetPassDrawRequestConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMaterialConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RecordBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetTextureConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenPerObjectConstantBufferUploaderConstant.h" />
@@ -409,11 +408,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBStaticModelPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelMaterialStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ResourceReleaseContextStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteScreenPerObjectDrawRequestStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelRecordStruct.h" />

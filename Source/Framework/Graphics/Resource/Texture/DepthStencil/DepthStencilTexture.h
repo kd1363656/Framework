@@ -58,7 +58,7 @@ namespace FWK::Graphics
 
 		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
-		Struct::GPUResource m_gpuResource = {};
+		ResourceReleaseContext::GPUResource m_gpuResource = {};
 
 		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 

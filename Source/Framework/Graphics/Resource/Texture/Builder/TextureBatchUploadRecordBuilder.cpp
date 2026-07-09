@@ -36,7 +36,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 	// CPUOnlyに作成したSRVをShaderVisible側へコピーする
 	FWK_ASSERT_RETURN_VALUE_IF(!a_cbvSRVUAVDescriptorPool.CopyCPUDescriptorToShaderVisibleDescriptor(a_device, l_textureRecord->GetVALSRVDescriptorIndex()), "CPUOnlyからShaderVisibleSRVへのコピーに失敗したため、TextureSRV作成処理に失敗しました。", false);
 
-	l_textureRecord->SetReferenceCount(Constant::k_defaultAssetReferenceCount);
+	l_textureRecord->SetReferenceCount(AssetRecordBase::k_defaultAssetReferenceCount);
 	l_textureRecord->SetStorageID     (a_storageID);
 	l_textureRecord->SetFilePath	  (a_filePath);
 
@@ -48,7 +48,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 	FWK_ASSERT_RETURN_VALUE_IF(a_texMetadata.format	  == DXGI_FORMAT_UNKNOWN,			   "テクスチャフォーマットが無効のため、TextureResource作成処理に失敗しました。",                  false);
 	FWK_ASSERT_RETURN_VALUE_IF(a_texMetadata.dimension != DirectX::TEX_DIMENSION_TEXTURE2D, "TextureResource作成処理はTexture2Dのみ対応しており、TextureResource作成処理に失敗しました。", false);
 
-	Struct::GPUResource l_gpuResource = {};
+	ResourceReleaseContext::GPUResource l_gpuResource = {};
 
 	// Texture2D用のD3D12_RESOURCE_DESCを作成する
 	// Tex2D(フォーマット、

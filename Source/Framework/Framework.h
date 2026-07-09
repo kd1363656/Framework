@@ -138,13 +138,10 @@
 #include "Definition/Type/Alias/CommandQueueTypeAlias.h"
 
 //リソースリリースクラス
-#include "Definition/Struct/Graphics/GPUResourceStruct.h"
-#include "Definition/Struct/Graphics/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // レコードクラス
 #include "Definition/Type/Alias/StorageIDTypeAlias.h"
-#include "Definition/Constant/Graphics/RecordBaseConstant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 
 // ストレージIDアロケータークラス

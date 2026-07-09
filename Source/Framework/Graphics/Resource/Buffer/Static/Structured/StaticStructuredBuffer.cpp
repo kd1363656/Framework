@@ -36,12 +36,12 @@ bool FWK::Graphics::StaticStructuredBuffer::ReserveRelease(const UINT64& a_retir
 	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Constant::k_unusedFenceValue, "FenceValueが無効のため、StaticStructuredBufferの遅延解放登録に失敗しました。", false);
 
 	// GPUリソース、ディスクリプタインデックスの適切なタイミングでの解放を予約
-	Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
+	ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
 	l_gpuResourceReleaseRecord.m_gpuResource       = std::move(m_bufferGPUResource);
 	l_gpuResourceReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-	Struct::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
+	ResourceReleaseContext::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
 
 	l_srvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_srvDescriptorIndex;
 	l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;

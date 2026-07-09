@@ -69,7 +69,7 @@ namespace FWK::Graphics
 
 		TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
 
-		Struct::GPUResource m_gpuResource = {};
+		ResourceReleaseContext::GPUResource m_gpuResource = {};
 
 		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 

@@ -36,12 +36,20 @@ namespace FWK::Graphics
 
 		std::uint32_t GetVALReferenceCount() const { return m_referenceCount; }
 
+		static constexpr UINT k_emptyAssetReferenceCount = 0U;
+
+		static constexpr TypeAlias::StorageID k_invalidStorageID = std::numeric_limits<TypeAlias::StorageID>::max();
+
+		static constexpr TypeAlias::StorageID k_invalidStorageIDCapacity = 0U;
+
+		static constexpr std::uint32_t k_defaultAssetReferenceCount = 1U;
+
 	private:
 
 		std::wstring m_filePath = {};
 
-		TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
+		TypeAlias::StorageID m_storageID = k_invalidStorageID;
 
-		std::uint32_t m_referenceCount = Constant::k_emptyAssetReferenceCount;
+		std::uint32_t m_referenceCount = k_emptyAssetReferenceCount;
 	};
 }

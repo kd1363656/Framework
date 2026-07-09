@@ -45,10 +45,18 @@ namespace FWK::Graphics
 
 		const auto& GetREFSubmittedFenceValue() const { return m_submittedFenceValue; }
 
+		static constexpr D3D12_COMMAND_LIST_TYPE k_createCommandListTypeDirect = D3D12_COMMAND_LIST_TYPE_DIRECT;
+
+		static constexpr float k_defaultDepthClearValue = 1.0F;
+
+		static constexpr UINT8 k_defaultStencilClearValue = 0U;
+
+		static constexpr UINT64 k_unusedFenceValue = 0ULL;
+
 	private:
 
 		TypeAlias::ComPtr<ID3D12CommandAllocator> m_commandAllocator = nullptr;
 
-		UINT64 m_submittedFenceValue = Constant::k_unusedFenceValue;
+		UINT64 m_submittedFenceValue = k_unusedFenceValue;
 	};
 }

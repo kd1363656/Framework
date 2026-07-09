@@ -2,7 +2,7 @@
 
 FWK::Graphics::Texture::Texture() : 
 	m_textureRecord({}),
-	m_storageID    (Constant::k_invalidStorageID)
+	m_storageID    (AssetRecordBase::k_invalidStorageID)
 {}
 FWK::Graphics::Texture::Texture(const Texture & a_other) : 
 	m_textureRecord(a_other.m_textureRecord),
@@ -14,7 +14,7 @@ FWK::Graphics::Texture::Texture(Texture&& a_other) noexcept :
 	m_textureRecord(std::move(a_other.m_textureRecord)),
 	m_storageID    (a_other.m_storageID)
 {
-	a_other.m_storageID = Constant::k_invalidStorageID;
+	a_other.m_storageID = AssetRecordBase::k_invalidStorageID;
 	a_other.m_textureRecord.reset();
 }
 FWK::Graphics::Texture::~Texture()
@@ -50,7 +50,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(Texture&& a_other) noe
 	m_textureRecord = std::move(a_other.m_textureRecord);
 
 	// 参照元のストレージIDを無効化
-	a_other.m_storageID = Constant::k_invalidStorageID;
+	a_other.m_storageID = AssetRecordBase::k_invalidStorageID;
 	a_other.m_textureRecord.reset();
 
 	return *this;
@@ -80,7 +80,7 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 																				l_cbvSRVUAVDescriptorPool);
 
 	// デフォルトテクスチャをセットしてreturn
-	if (l_textureLoadResult.m_storageID == Constant::k_invalidStorageID ||
+	if (l_textureLoadResult.m_storageID == AssetRecordBase::k_invalidStorageID ||
 		l_textureLoadResult.m_textureRecord.expired())
 	{
 		return false; 
@@ -94,7 +94,7 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 
 void FWK::Graphics::Texture::AddReferenceCount() const
 {
-	if (m_storageID == Constant::k_invalidStorageID) { return; }
+	if (m_storageID == AssetRecordBase::k_invalidStorageID) { return; }
 
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 
@@ -105,7 +105,7 @@ void FWK::Graphics::Texture::AddReferenceCount() const
 }
 void FWK::Graphics::Texture::SubtractReferenceCount()
 {
-	if (m_storageID == Constant::k_invalidStorageID) 
+	if (m_storageID == AssetRecordBase::k_invalidStorageID)
 	{
 		m_textureRecord.reset();
 
@@ -124,6 +124,6 @@ void FWK::Graphics::Texture::SubtractReferenceCount()
 	// 参照カウントを減らす
 	FWK_ASSERT_RETURN_IF(!l_textureSystem.SubtractTextureReferenceCount(m_textureRecord, l_directCommandQueue, l_resourceReleaseContext), "テクスチャ参照数解放に失敗しました。");
 
-	m_storageID = Constant::k_invalidStorageID;
+	m_storageID = AssetRecordBase::k_invalidStorageID;
 	m_textureRecord.reset();
 }
