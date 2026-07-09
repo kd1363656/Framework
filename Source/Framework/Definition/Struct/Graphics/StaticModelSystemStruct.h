@@ -15,6 +15,6 @@ namespace FWK::Struct
 		std::shared_ptr<Graphics::StaticModelRecord> m_staticModelRecord = nullptr;
 
 		// StaticModelのBufferResourceへコピーするためのUploadCommand一覧
-		std::vector<Struct::BufferUploadCommand> m_bufferUploadCommandList = {};
+		std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
 	};
 }

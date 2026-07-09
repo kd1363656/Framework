@@ -89,11 +89,10 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドリストのリセット処理に失敗しました。");
 		}
 
-		static constexpr UINT GetVALSingleSetupBarrierNum() { return k_singleSetupBarrierNUM; }
+		static constexpr UINT k_singleSetupBarrierNUM = 1U;
 
 	private:
 
-		static constexpr UINT k_singleSetupBarrierNUM = 1U;
 
 		TypeAlias::ComPtr<ID3D12GraphicsCommandList6> m_commandList = nullptr;
 	};

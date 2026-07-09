@@ -111,10 +111,10 @@ namespace FWK::Converter
 		std::uint64_t CalculateWStringBinaryFileSize(const std::wstring& a_wString) const;
 		std::uint64_t CalculateStringBinaryFileSize (const std::string&  a_string)   const;
 
-		static constexpr auto& GetREFInitialMemoryReadOffset () { return k_initialMemoryReadOffset; }
-		static constexpr auto& GetREFInitialMemoryWriteOffset() { return k_initialMemoryWriteOffset; }
+		static constexpr std::uint64_t k_initialMemoryReadOffset  = 0ULL;
+		static constexpr std::uint64_t k_initialMemoryWriteOffset = 0ULL;
 
-		static constexpr auto GetREFSingleBinaryElementCount() { return k_singleBinaryElementCount; }
+		static constexpr std::uint64_t k_singleBinaryElementCount = 1ULL;
 
 	private:
 
@@ -146,16 +146,11 @@ namespace FWK::Converter
 		static constexpr SIZE_T k_mapEntireFileSize   = 0ULL;
 		static constexpr SIZE_T k_flushEntireViewSize = 0ULL;
 
-		static constexpr std::uint64_t k_initialMemoryReadOffset  = 0ULL;
-		static constexpr std::uint64_t k_initialMemoryWriteOffset = 0ULL;
-
 		static constexpr std::uint64_t k_emptyMappedDataSize = 0ULL;
 		static constexpr std::uint64_t k_emptyWriteFileSize  = 0ULL;
 
 		static constexpr std::uint64_t k_emptyReadDataSize  = 0ULL;
 		static constexpr std::uint64_t k_emptyWriteDataSize = 0ULL;
-
-		static constexpr std::uint64_t k_singleBinaryElementCount = 1ULL;
 
 		static constexpr DWORD k_fileSizeHigh				   = 0UL;
 		static constexpr DWORD k_mappingMaxSizeHighUseFileSize = 0UL;

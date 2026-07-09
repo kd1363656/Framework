@@ -354,7 +354,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DefaultTextureConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DepthStencilTextureConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
@@ -371,7 +370,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelRecordConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardPerObjectDrawRequestDataConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h" />
@@ -399,7 +397,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\BufferUploadStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
@@ -416,7 +413,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelRecordStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelStandardPerObjectDrawRequestDataStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SwapChainStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureBatchUploadRecordBuilderStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />

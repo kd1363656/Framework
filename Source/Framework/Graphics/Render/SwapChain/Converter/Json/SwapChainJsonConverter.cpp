@@ -4,8 +4,8 @@ void FWK::Converter::SwapChainJsonConverter::Deserialize(const nlohmann::json& a
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto& l_backBufferNUM       = a_rootJson.value(k_backBufferNUMJsonKey, static_cast<std::size_t>(Graphics::SwapChain::GetVALDefaultBackBufferNUM()));
-	const auto  l_defaultSyncInterval = a_rootJson.value(k_syncIntervalJsonKey,  Graphics::SwapChain::GetVALDefaultSyncInterval());
+	const auto& l_backBufferNUM       = a_rootJson.value(k_backBufferNUMJsonKey, static_cast<std::size_t>(Graphics::SwapChain::k_defaultBackBufferNUM));
+	const auto  l_defaultSyncInterval = a_rootJson.value(k_syncIntervalJsonKey,  Graphics::SwapChain::k_defaultSyncInterval);
 
 	a_swapChain.ResizeBackBufferList(l_backBufferNUM);
 	a_swapChain.SetSyncInterval     (l_defaultSyncInterval);

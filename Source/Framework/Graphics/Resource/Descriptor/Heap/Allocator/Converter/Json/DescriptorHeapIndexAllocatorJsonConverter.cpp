@@ -4,7 +4,7 @@ void FWK::Converter::DescriptorHeapIndexAllocatorJsonConverter::Deserialize(cons
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto l_capacity = a_rootJson.value(k_capacityJsonKey, Graphics::DescriptorHeapIndexAllocator::GetVALDefaultCapacity());
+	const auto l_capacity = a_rootJson.value(k_capacityJsonKey, Graphics::DescriptorHeapIndexAllocator::k_defaultCapacity);
 
 	a_descriptorHeapIndexAllocator.SetCapacity(l_capacity);
 }

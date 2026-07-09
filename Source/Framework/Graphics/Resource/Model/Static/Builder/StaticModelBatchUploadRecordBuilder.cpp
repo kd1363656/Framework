@@ -1,10 +1,10 @@
 ﻿#include "StaticModelBatchUploadRecordBuilder.h"
 
-bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchUploadRecord(const Device&									 a_device, 
-																							const GPUMemoryAllocator&						 a_gpuMemoryAllocator, 
-																							       std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-																								   TypeAlias::CBVSRVUAVDescriptorPool&	     a_cbvSRVUAVDescriptorPool,
-																								   Graphics::StaticModelRecord&				 a_staticModelRecord) const
+bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchUploadRecord(const Device&									                 a_device, 
+																							const GPUMemoryAllocator&						                 a_gpuMemoryAllocator, 
+																							       std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
+																								   TypeAlias::CBVSRVUAVDescriptorPool&	                     a_cbvSRVUAVDescriptorPool,
+																								   Graphics::StaticModelRecord&				                 a_staticModelRecord) const
 {
 	auto& l_modelMeshList = a_staticModelRecord.GetMutableREFModelData().m_modelMeshList;
 
@@ -28,11 +28,11 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 	return true;
 }
 
-bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadRecord(const Device&				                      a_device, 
-																					  const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
-																							std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
-																							TypeAlias::CBVSRVUAVDescriptorPool&		  a_cbvSRVUAVDescriptorPool,
-																							Struct::StaticModelMesh&				  a_staticModelMesh) const
+bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadRecord(const Device&				                                      a_device, 
+																					  const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
+																							std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
+																							TypeAlias::CBVSRVUAVDescriptorPool&		                  a_cbvSRVUAVDescriptorPool,
+																							Struct::StaticModelMesh&				                  a_staticModelMesh) const
 {
 	const auto& l_modelMeshletData     = a_staticModelMesh.m_modelMeshletData;
 		  auto& l_modelMeshRuntimeData = a_staticModelMesh.m_modelMeshRuntimeData;

@@ -39,10 +39,6 @@ namespace FWK::Graphics
 
 		auto GetVALSampleMask() const { return m_sampleMask; }
 
-	protected:
-
-		
-
 	private:
 
 		static constexpr UINT k_initialSampleMask = UINT_MAX;

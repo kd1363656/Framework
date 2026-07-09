@@ -18,11 +18,11 @@ namespace FWK::Graphics
 		
 		void SetCreateCount(const UINT64& a_set) { m_createCount = a_set; }
 
-		static constexpr auto& GetREFInvalidCreateCount() { return k_invalidCreateCount; }
-		
 		const auto& GetREFTypeSize() const { return k_typeSize; }
 
 		const auto& GetREFCreateCount() const { return m_createCount; }
+
+		static constexpr UINT64 k_invalidCreateCount = 0ULL;
 
 	protected:
 
@@ -74,7 +74,6 @@ namespace FWK::Graphics
 
 	private:
 
-		static constexpr UINT64 k_invalidCreateCount        = 0ULL;
 		static constexpr UINT64 k_initialElementBufferIndex = 0ULL;
 		static constexpr UINT64 k_initialElementStrideSize  = 0ULL;
 		static constexpr UINT64 k_invalidElementBufferIndex = std::numeric_limits<UINT64>::max();

@@ -4,7 +4,7 @@ void FWK::Converter::DynamicBufferUploaderBaseJsonConverter::Deserialize(const n
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto& l_createCount = a_rootJson.value(k_createCountJsonKey, a_dynamicBufferUploaderBase.GetREFInvalidCreateCount());
+	const auto& l_createCount = a_rootJson.value(k_createCountJsonKey, a_dynamicBufferUploaderBase.k_invalidCreateCount);
 
 	a_dynamicBufferUploaderBase.SetCreateCount(l_createCount);
 }

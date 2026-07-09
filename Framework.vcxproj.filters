@@ -1422,17 +1422,11 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardPerObjectDrawRequestDataConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\String\WStringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\Utility\String</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\BufferUploadStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
@@ -1456,9 +1450,6 @@
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SwapChainStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureBatchUploadRecordBuilderStruct.h">
@@ -1703,9 +1694,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
       <Filter>Source\Framework\Utility\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DirectCommandListConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Json</Filter>

@@ -36,9 +36,6 @@ namespace FWK::Graphics
 
 		UINT FetchVALCurrentBackBufferIndex() const;
 
-		static constexpr auto GetVALDefaultBackBufferNUM() { return k_defaultBackBufferNUM; }
-		static constexpr auto GetVALDefaultSyncInterval () { return k_defaultSyncInterval; }
-
 		const auto& GetREFBackBufferList() const { return m_backBufferList; }
 
 		const auto& GetREFSwapChain() const { return m_swapChain; }
@@ -47,6 +44,9 @@ namespace FWK::Graphics
 
 		auto GetVALSyncInterval() const { return m_syncInterval; }
 
+		static constexpr UINT k_defaultBackBufferNUM = 2U;
+		static constexpr UINT k_defaultSyncInterval  = 1U;
+
 	private:
 
 		bool CreateSwapChain     (const Window& a_window, const Factory&				    a_factory, const TypeAlias::DirectCommandQueue& a_directCommandQueue);
@@ -54,15 +54,12 @@ namespace FWK::Graphics
 
 		bool IsValidBackBufferSize(const Window::ClientSize& a_clientSize) const;
 
-		static constexpr UINT k_defaultBackBufferNUM = 2U;
 		static constexpr UINT k_invalidBackBufferNUM = std::numeric_limits<UINT>::max();
-
-		static constexpr UINT k_defaultSyncInterval = 1U;
 
 		static constexpr UINT k_swapChainPresentFlagNone = 0U;
 		static constexpr UINT k_swapChainDescFlags	     = 0U;
 
-		std::vector<Struct::BackBuffer> m_backBufferList = {};
+		std::vector<Converter::SwapChainJsonConverter::BackBuffer> m_backBufferList = {};
 
 		TypeAlias::ComPtr<IDXGISwapChain4> m_swapChain = nullptr;
 

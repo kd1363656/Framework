@@ -140,7 +140,7 @@ void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLAC
 	}
 }
 
-void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCommand& a_bufferUploadCommand) const
+void FWK::Graphics::UploadSystem::RecordBufferCopy(const StaticStructuredBuffer::BufferUploadCommand& a_bufferUploadCommand) const
 {
 	FWK_ASSERT_RETURN_IF(!a_bufferUploadCommand.m_destinationBufferResource, "コピー先BufferResourceが無効のため、バッファコピー処理に失敗しました。");
 

@@ -29,7 +29,7 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceAfter
 		FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行後の自動リソース遷移に失敗しました。");
 	}
 }
-void FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResource(const DirectCommandList& a_directCommandList, D3D12_RESOURCE_STATES a_afterState, Struct::BackBuffer& a_backBuffer) const
+void FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResource(const DirectCommandList& a_directCommandList, D3D12_RESOURCE_STATES a_afterState, Converter::SwapChainJsonConverter::BackBuffer& a_backBuffer) const
 {
 	FWK_ASSERT_RETURN_IF(!a_backBuffer.m_backBufferResource, "バックバッファリソースが無効になっており、バックバッファリソースの状態遷移に失敗しました。");
 

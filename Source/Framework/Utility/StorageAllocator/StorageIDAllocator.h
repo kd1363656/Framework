@@ -24,15 +24,13 @@ namespace FWK::Utility
 
 		void SetStorageIDCapacity(TypeAlias::StorageID a_set) { m_storageIDCapacity = a_set; }
 
-		static constexpr auto GetVALDefaultCreateStorageIDCapacity() { return k_defaultCreateStorageIDCapacity; }
-
 		auto GetVALStorageIDCapacity() const { return m_storageIDCapacity; }
+
+		static constexpr TypeAlias::StorageID k_defaultCreateStorageIDCapacity = 10000U;
 
 	private:
 
 		bool IsValidStorageID(const TypeAlias::StorageID a_storageID) const;
-
-		static constexpr TypeAlias::StorageID k_defaultCreateStorageIDCapacity = 10000U;
 
 		static constexpr TypeAlias::StorageID k_initialNextStorageID = 0U;
 

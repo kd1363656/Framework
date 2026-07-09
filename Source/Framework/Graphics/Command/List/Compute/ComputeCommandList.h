@@ -54,7 +54,8 @@ namespace FWK::Graphics
 			                         const UINT                    a_rootConstantCount,  
 			                         const UINT                    a_destinationOffset) const;
 
-		static constexpr std::size_t k_root32BitValueByteSize = sizeof(std::uint32_t);
+		
+		std::size_t k_root32BitValueByteSize = sizeof(std::uint32_t);
 
 		static constexpr std::size_t k_rootConstantStartOffset = 0U;
 

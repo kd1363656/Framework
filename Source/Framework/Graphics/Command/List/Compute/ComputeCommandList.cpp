@@ -16,7 +16,7 @@ void FWK::Graphics::ComputeCommandList::UAVResourceBarrier(const TypeAlias::ComP
 	// UAV用リソースバリアの作成
 	const auto& l_resourceBarrier = CD3DX12_RESOURCE_BARRIER::UAV(a_resource.Get());
 
-	l_commandList->ResourceBarrier(GetVALSingleSetupBarrierNum(), &l_resourceBarrier);
+	l_commandList->ResourceBarrier(k_singleSetupBarrierNUM, &l_resourceBarrier);
 }
 
 void FWK::Graphics::ComputeCommandList::SetupComputePipeline(const std::weak_ptr<ComputePipelineState>& a_pipelineState)

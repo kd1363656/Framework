@@ -11,8 +11,8 @@ namespace FWK::Graphics
 
 		void Reset(const TypeAlias::DirectCommandAllocator& a_directCommandAllocator);
 		
-		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)																					   const;
-		void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = Constant::k_defaultBackBufferClearColor) const;
+		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)																					            const;
+		void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = DirectCommandList::k_defaultBackBufferClearColor) const;
 
 		void SetupRenderTargetAndDepthStencil(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 											  const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
@@ -46,6 +46,14 @@ namespace FWK::Graphics
 					       const UINT a_startInstanceLocation) const;
 
 		void DispatchMesh(const UINT a_threadCountGroupX, const UINT a_threadCountGroupY, const UINT a_threadCountGroupZ) const;
+
+		static constexpr TypeAlias::Math::Color k_defaultBackBufferClearColor =
+		{
+			1.0F,
+			0.80F,
+			1.0F,
+			1.0F
+		};
 
 	protected:
 

@@ -19,19 +19,17 @@ namespace FWK
 
 		void SetTargetFPS(const float a_set) { m_targetFPS = a_set; }
 
-		static constexpr float GetVALDefaultFPS() { return k_defaultFPS; }
-
 		float GetVALScaledDeltaTime() const { return m_scaledDeltaTime; }
 
 		float GetVALCurrentFPS() const { return m_currentFPS; }
 		float GetVALTargetFPS () const { return m_targetFPS; }
 
+		static constexpr float k_defaultFPS = 60.0F;
+
 	private:
 
 		void LimitFramerate() const;
 		
-		static constexpr float k_defaultFPS = 60.0F;
-
 		static constexpr float k_defaultTimeScale = 1.0F;
 
 		static constexpr float k_second      = 1.0F;

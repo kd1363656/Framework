@@ -12,7 +12,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFile作成に失敗しており。バイナリーファイルの読み込みに失敗しました", false);
 
 	// 現在の読み込み位置、ファイルの先頭なので0からスタート
-	auto l_memoryReadOffset = GetREFInitialMemoryReadOffset();
+	auto l_memoryReadOffset = k_initialMemoryReadOffset;
 
 	TextureBinaryHeader l_textureBinaryHeader = {};
 
@@ -195,14 +195,14 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == Constant::k_emptyAssetFileSize,	                     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	     false);
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
-	auto l_memoryWriteOffset = GetREFInitialMemoryWriteOffset();
+	auto l_memoryWriteOffset = k_initialMemoryWriteOffset;
 
 	// メモリマップドファイル書き込み用テクスチャバイナリヘッダーを作成
 	const auto& l_textureBinaryHeader = CreateTextureBinaryHeader(a_scratchImage, l_textureAssetFileSize);
 
 	// Headerを書き込む、
 	// WriteBinaryData内で、書き込んだ分だけl_memoryWriteOffsetが進む
-	WriteBinaryData(GetREFSingleBinaryElementCount(), &l_textureBinaryHeader, l_memoryWriteOffset);
+	WriteBinaryData(k_singleBinaryElementCount, &l_textureBinaryHeader, l_memoryWriteOffset);
 
 	// ScratchImageからイメージリストを取得
 	const auto* l_imageList = a_scratchImage.GetImages();
@@ -223,7 +223,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 		const auto& l_textureBinarySubresourceHeader = CreateTextureBinarySubresourceHeader(l_image);
 
 		// SubresourceHeaderを書き込む
-		WriteBinaryData(GetREFSingleBinaryElementCount(), &l_textureBinarySubresourceHeader, l_memoryWriteOffset);
+		WriteBinaryData(k_singleBinaryElementCount, &l_textureBinarySubresourceHeader, l_memoryWriteOffset);
 
 		// ピクセルデータ本体を書き込む
 		WriteBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_image.pixels, l_memoryWriteOffset);
@@ -317,7 +317,7 @@ DirectX::TexMetadata FWK::Converter::TextureBinaryConverter::CreateTexMetadata(c
 std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const
 {
 	// TextureBinaryHeader1個分のサイズを足す
-	auto l_textureAssetFileSize = CalculateBinaryDataSize<TextureBinaryHeader>(GetREFSingleBinaryElementCount());
+	auto l_textureAssetFileSize = CalculateBinaryDataSize<TextureBinaryHeader>(k_singleBinaryElementCount);
 
 	const auto* l_imageList = a_scratchImage.GetImages();
 
@@ -332,7 +332,7 @@ std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileS
 		const auto& l_image = l_imageList[l_imageIndex];
 
 		// 各ImageごとにSubresourceHeader1個分のサイズを足す
-		l_textureAssetFileSize += CalculateBinaryDataSize<TextureBinarySubresourceHeader>(GetREFSingleBinaryElementCount());
+		l_textureAssetFileSize += CalculateBinaryDataSize<TextureBinarySubresourceHeader>(k_singleBinaryElementCount);
 		l_textureAssetFileSize += l_image.slicePitch;
 	}
 

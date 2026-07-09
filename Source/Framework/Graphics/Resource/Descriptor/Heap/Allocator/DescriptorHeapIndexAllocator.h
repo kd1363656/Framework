@@ -20,15 +20,14 @@ namespace FWK::Graphics
 
 		void SetCapacity(TypeAlias::DescriptorIndex a_set) { m_capacity = a_set; }
 
-		static constexpr auto GetVALDefaultCapacity() { return k_defaultCapacity; }
-
 		auto GetVALCapacity() const { return m_capacity; }
+
+		static constexpr TypeAlias::DescriptorIndex k_defaultCapacity = 10000U;
 
 	private:
 
 		bool IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const;
 
-		static constexpr TypeAlias::DescriptorIndex k_defaultCapacity  = 10000U;
 		static constexpr TypeAlias::DescriptorIndex k_initialNextIndex = 0U;
 
 		std::vector<bool> m_isAllocatedIndexList = {};

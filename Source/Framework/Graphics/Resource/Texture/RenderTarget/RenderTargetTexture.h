@@ -67,7 +67,7 @@ namespace FWK::Graphics
 		static constexpr UINT  k_mostDetailedMIP = 0U;
 		static constexpr UINT  k_planeSlice      = 0U;
 
-		TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
+		TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
 
 		ResourceReleaseContext::GPUResource m_gpuResource = {};
 

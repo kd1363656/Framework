@@ -82,8 +82,8 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
 															 a_height,
 															 Constant::k_defaultTexture2DArraySize,
 															 Constant::k_defaultTexture2DMipLevels,
-															 Constant::k_defaultSampleCount,
-															 Constant::k_defaultSampleQuality,
+															 Converter::SwapChainJsonConverter::k_defaultSampleCount,
+															 Converter::SwapChainJsonConverter::k_defaultSampleQuality,
 															 D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc, 

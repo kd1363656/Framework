@@ -55,7 +55,7 @@ namespace FWK::Graphics
 
 		Converter::RenderTargetPassTextureJsonConverter m_jsonConverter = {};
 
-		TypeAlias::Math::Color m_clearColor = Constant::k_defaultBackBufferClearColor;
+		TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
 
 		DXGI_FORMAT m_format = Constant::k_defaultRenderTargetTextureFormat;
 

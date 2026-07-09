@@ -149,8 +149,6 @@
 #include "Utility/StorageAllocator/StorageIDAllocator.h"
 
 // スワップチェイン
-#include "Definition/Constant/Graphics/SwapChainConstant.h"
-#include "Definition/Struct/Graphics/SwapChainStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
@@ -159,7 +157,6 @@
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
 // ダイレクトコマンドリスト
-#include "Definition/Constant/Graphics/DirectCommandListConstant.h"
 #include "Graphics/Command/List/Direct/DirectCommandList.h"
 
 // Storageクラス
@@ -171,7 +168,6 @@
 #include "Graphics/Resource/Memory/GPUMemoryAllocator.h"
 
 // ストラクチャードバッファー
-#include "Definition/Struct/Graphics/BufferUploadStruct.h"
 #include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
 
 // テクスチャ

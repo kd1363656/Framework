@@ -17,7 +17,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadStaticModelAsset(const std:
         return false; 
     }
 
-    auto l_memoryReadOffset = GetREFInitialMemoryReadOffset();
+    auto l_memoryReadOffset = k_initialMemoryReadOffset;
 
     StaticModelBinaryHeader l_staticModelBinaryHeader = {};
 
@@ -226,12 +226,12 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
 
     // 現在の書き込み位置
     // ファイル先頭から順番にHeader -> MeshData...と書き込む
-    auto l_memoryWriteOffset = GetREFInitialMemoryWriteOffset();
+    auto l_memoryWriteOffset = k_initialMemoryWriteOffset;
 
     // StaticModel全体のHeaderを作成して書き込む
     const auto& l_staticModelBinaryHeader = CreateStaticModelBinaryHeader(l_staticModelData, l_staticModelAssetFileSize);
 
-    WriteBinaryData(GetREFSingleBinaryElementCount(), &l_staticModelBinaryHeader, l_memoryWriteOffset);
+    WriteBinaryData(k_singleBinaryElementCount, &l_staticModelBinaryHeader, l_memoryWriteOffset);
 
     for (const auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)
     {
@@ -240,7 +240,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
         const auto& l_staticModelMeshBinaryHeader = CreateStaticModelMeshBinaryHeader(l_staticModelMesh);
 
         // StaticModelMeshHeaderを書き込む
-        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_staticModelMeshBinaryHeader, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_staticModelMeshBinaryHeader, l_memoryWriteOffset);
 
         // Model頂点配列を書き込む
         WriteBinaryData(l_staticModelMeshBinaryHeader.m_vertexCount, l_staticModelMesh.m_modelVertexList.data(), l_memoryWriteOffset);
@@ -253,13 +253,13 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveStaticModelAsset(const Grap
         // PBRMaterial値を書き込む
         // Texture本体ではなく、.assetに保存できる係数だけを保存する
         // ベースカラー係数
-        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_modelMaterialAssetData.m_baseColorFactor, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_baseColorFactor, l_memoryWriteOffset);
 
         // ラフネス係数
-        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_modelMaterialAssetData.m_roughnessFactor, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_roughnessFactor, l_memoryWriteOffset);
 
         // メタリック係数
-        WriteBinaryData(GetREFSingleBinaryElementCount(), &l_modelMaterialAssetData.m_metallicFactor, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_metallicFactor, l_memoryWriteOffset);
 
         // MaterialTexturePathを書き込む
         // 文字列サイズはStaticModelMeshBinaryHeader側に保存済みなので、
@@ -367,7 +367,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
     if (a_staticModelData.m_modelMeshList.empty()) { return Constant::k_emptyAssetFileSize; }
 
     // ファイル先頭に置くStaticModel全体Header
-    auto l_staticModelAssetFileSize = CalculateBinaryDataSize<StaticModelBinaryHeader>(GetREFSingleBinaryElementCount());
+    auto l_staticModelAssetFileSize = CalculateBinaryDataSize<StaticModelBinaryHeader>(k_singleBinaryElementCount);
 
     for (const auto& l_staticModelMesh : a_staticModelData.m_modelMeshList)
     {
@@ -375,7 +375,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
         const auto& l_modelMeshletData       = l_staticModelMesh.m_modelMeshletData;
 
         // Mesh単位Header
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<StaticModelMeshBinaryHeader>(GetREFSingleBinaryElementCount());
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<StaticModelMeshBinaryHeader>(k_singleBinaryElementCount);
 
         // Model用頂点配列
         l_staticModelAssetFileSize += CalculateBinaryDataSize<Struct::StaticModelVertex>(l_staticModelMesh.m_modelVertexList.size());
@@ -385,9 +385,9 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateStaticModelAs
 
         // PBRMaterial値
         // Textureではなく、Materialそのものが持つ係数
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<TypeAlias::Math::Color>(GetREFSingleBinaryElementCount());
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<float>                 (GetREFSingleBinaryElementCount());
-        l_staticModelAssetFileSize += CalculateBinaryDataSize<float>                 (GetREFSingleBinaryElementCount());
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<TypeAlias::Math::Color>(k_singleBinaryElementCount);
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<float>                 (k_singleBinaryElementCount);
+        l_staticModelAssetFileSize += CalculateBinaryDataSize<float>                 (k_singleBinaryElementCount);
 
         // MaterialTexturePath
         l_staticModelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_baseColorTextureFilePath);
