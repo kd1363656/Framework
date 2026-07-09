@@ -93,7 +93,7 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 	}
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
 {
 	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
@@ -106,7 +106,7 @@ bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMe
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_meshletCount == StaticModelMeshletBuilder::k_emptyMeshletCount, "Meshletが存在しないため、StaticModelを描画できませんでした。", false);
 
-	a_directCommandList.DispatchMesh(l_meshletCount, Constant::k_defaultDispatchMeshThreadGroupCountY, Constant::k_defaultDispatchMeshThreadGroupCountZ);
+	a_directCommandList.DispatchMesh(l_meshletCount, k_defaultDispatchMeshThreadGroupCountY, k_defaultDispatchMeshThreadGroupCountZ);
 
 	return true;
 }

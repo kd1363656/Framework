@@ -47,8 +47,6 @@ namespace FWK::Physics
 		static constexpr int k_invalidTriangleCount = 0ULL;
 		static constexpr int k_invalidIndexCount    = 0ULL;
 
-		static constexpr int k_emptyRemainder = 0U;
-
 		std::atomic_uint32_t m_referenceCount = k_noReferenceCount;
 
 		std::vector<JPH::DebugRenderer::Triangle> m_triangleList = {};

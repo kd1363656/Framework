@@ -48,6 +48,8 @@ namespace FWK::Physics
 
 		bool FetchVALIsOnGround() const;
 
+		static constexpr float k_characterVirtualMovingTowardsGroundTolerance = 0.1F;
+
 	protected:
 
 		virtual JPH::Vec3 CalculateLinearVelocity(const JPH::Vec3&                                 a_physicsGravity, 
@@ -64,6 +66,19 @@ namespace FWK::Physics
 		JPH::RefConst<JPH::Shape> CreateShape() const;
 
 		bool ApplyShapeChange();
+
+		static constexpr float k_minCharacterVirtualDeltaTime				    = 0.0F;
+		static constexpr float k_minCharacterVirtualCapsuleHalfHeightOfCylinder = 0.0F;
+		static constexpr float k_minCharacterVirtualCapsuleRadius				= 0.0F;
+		static constexpr float k_minCharacterVirtualMaxSlopeAngleRadians        = 0.0F;
+		static constexpr float k_maxCharacterVirtualMaxSlopeAngleRadians        = DirectX::XM_PIDIV2;
+		static constexpr float k_minCharacterVirtualJumpSpeed                   = 0.0F;
+		
+		static constexpr float k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder = 0.75F;
+		static constexpr float k_defaultCharacterVirtualCapsuleRadius			    = 0.35F;
+		static constexpr float k_defaultCharacterVirtualMaxSlopeAngleRadians        = DirectX::XMConvertToRadians(50.0F);
+
+		static constexpr float k_characterVirtualShapeChangePenetrationSlopScale = 1.5F;
 
 		static constexpr JPH::uint64 k_defaultUserData = 0ULL;
 

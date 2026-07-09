@@ -20,7 +20,7 @@ JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::CalculateLinea
     // 床に対してCharacterVirtualが上方向へ離れようとしているかを調べる
     // この値が小さい場合は、床方向へ移動中または由香とほぼ同じ速度である
     const float l_verticalVelocityRelativeToGround = (l_currentVerticalVelocity - l_groundVelocity).Dot(l_up);
-    const bool  l_isMovigTowardsGround             = l_verticalVelocityRelativeToGround < Constant::k_characterVirtualMovingTowardsGroundTolerance;
+    const bool  l_isMovigTowardsGround             = l_verticalVelocityRelativeToGround < PhysicsCharacterVirtualBase::k_characterVirtualMovingTowardsGroundTolerance;
 
     JPH::Vec3 l_nextLinearVelocity = l_currentVerticalVelocity;
 

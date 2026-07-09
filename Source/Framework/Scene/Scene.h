@@ -6,6 +6,15 @@ namespace FWK
 	{
 	public:
 
+		struct GameObjectData
+		{
+			std::shared_ptr<GameObject> m_gameObject = nullptr;
+
+			const GameObject* m_gameObjectAddress = nullptr;
+		};
+
+	public:
+
 		 Scene() = default;
 		~Scene() = default;
 
@@ -30,15 +39,15 @@ namespace FWK
 
 		std::unordered_set<const GameObject*> m_registeredGameObjectDataSet = {};
 
-		std::list<Struct::GameObjectData> m_gameObjectDataList = {};
+		std::list<GameObjectData> m_gameObjectDataList = {};
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 
-		std::shared_ptr<Graphics::StaticModel>								 m_charaModel					 = nullptr;
-		std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData> m_charaModelStandardDrawRequest = nullptr;
+		std::shared_ptr<Graphics::StaticModel>								                                                m_charaModel					= nullptr;
+		std::shared_ptr<Graphics::StaticModelStandardPerObjectDrawRequestBase::StaticModelStandardPerObjectDrawRequestData> m_charaModelStandardDrawRequest = nullptr;
 
-		std::shared_ptr<Graphics::StaticModel>								 m_groundModel                    = nullptr;
-		std::shared_ptr<Struct::StaticModelStandardPerObjectDrawRequestData> m_groundModelStandardDrawRequest = nullptr;
+		std::shared_ptr<Graphics::StaticModel>																				m_groundModel                    = nullptr;
+		std::shared_ptr<Graphics::StaticModelStandardPerObjectDrawRequestBase::StaticModelStandardPerObjectDrawRequestData> m_groundModelStandardDrawRequest = nullptr;
 
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticBoxBody     = nullptr;
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticSphereBody  = nullptr;

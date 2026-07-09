@@ -28,20 +28,10 @@ namespace FWK
 			const TypeAlias::StaticTypeID k_staticTypeID;
 		};
 
-		// 文字列キー用の透過ハッシュ構造体
-		struct StringHash final
-		{
-			// 透過ハッシュであることをSTLに通知するための宣言
-			using is_transparent = void;
-		
-			// 受け取った文字列をstd::string_viewとして扱い、ハッシュ値を計算する
-			std::size_t operator()(const std::string_view& a_key) const { return std::hash<std::string_view>{}(a_key); }
-		};
-
 	private:
 
 		// k_nameは静的寿命であることを前提にstd::string_viewをキーとして使用
-		using TypeINFONameMap         = std::unordered_map<std::string_view,        const TypeINFO* const, StringHash, std::equal_to<>>;
+		using TypeINFONameMap         = std::unordered_map<std::string_view,        const TypeINFO* const, Struct::StringHash, std::equal_to<>>;
 		using TypeINFOStaticTypeIDMap = std::unordered_map<TypeAlias::StaticTypeID, const TypeINFO* const>;
 
 		friend class SingletonBase<FWK::TypeINFORegistry>;

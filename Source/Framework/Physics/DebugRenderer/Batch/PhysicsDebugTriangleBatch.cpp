@@ -80,16 +80,16 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
 	}
 
 	// 3で割った時に余りが0出ないと三角形を構成できるインデックス数ではないためassert
-	FWK_ASSERT_RETURN_IF(a_indexCount % Converter::StaticModelBinaryConverter::k_triangleVertexCount != k_emptyRemainder, "PhysicsDebug用Index数が三角形を構成できない値です。");
+	FWK_ASSERT_RETURN_IF(a_indexCount % Constant::k_triangleVertexCount != static_cast<int>(Constant::k_noRemainder), "PhysicsDebug用Index数が三角形を構成できない値です。");
 
-	const auto l_triangleCount = static_cast<std::size_t>(a_indexCount) / static_cast<std::size_t>(Converter::StaticModelBinaryConverter::k_triangleVertexCount);
+	const auto l_triangleCount = static_cast<std::size_t>(a_indexCount) / static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
 	// 必要な三角形数を一度だけ作成する
 	m_triangleList.resize(l_triangleCount);
 	
 	for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
 	{
-		const auto l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Converter::StaticModelBinaryConverter::k_triangleVertexCount);
+		const auto l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
 		FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexZeroOffset >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");
 		FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexOneOffset  >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");

@@ -2,6 +2,8 @@
 
 namespace FWK::Constant
 {
+	inline constexpr TypeAlias::Math::Vector2 k_defaultSpritePivot = { 0.5F, 0.5F };
+
 	inline constexpr float k_spritePositionRateLeft   = 0.0F;
 	inline constexpr float k_spritePositionRateRight  = 1.0F;
 	inline constexpr float k_spritePositionRateBottom = 0.0F;
@@ -20,7 +22,7 @@ namespace FWK::Constant
 
 	// SpriteScreen全体のIndex数
 	// 2Triangle * 3Index = 6Index
-	inline constexpr UINT k_spriteIndexCount = k_spritePrimitiveCount * Converter::StaticModelBinaryConverter::k_triangleVertexCount;
+	inline constexpr UINT k_spriteIndexCount = k_spritePrimitiveCount * Constant::k_triangleVertexCount;
 
 	inline constexpr UINT k_spriteDrawInstanceCount     = 1U;
 	inline constexpr UINT k_spriteStartVertexLocation   = 0U;

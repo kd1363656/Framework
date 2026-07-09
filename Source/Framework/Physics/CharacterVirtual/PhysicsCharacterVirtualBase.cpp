@@ -5,9 +5,9 @@ FWK::Physics::PhysicsCharacterVirtualBase::PhysicsCharacterVirtualBase() :
 
     m_extendedUpdateSettings(),
 
-    m_capsuleHalfHeightOfCylinder(Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
-    m_capsuleRadius              (Constant::k_defaultCharacterVirtualCapsuleRadius),
-    m_maxSlopeAngleRadians       (Constant::k_defaultCharacterVirtualMaxSlopeAngleRadians),
+    m_capsuleHalfHeightOfCylinder(k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
+    m_capsuleRadius              (k_defaultCharacterVirtualCapsuleRadius),
+    m_maxSlopeAngleRadians       (k_defaultCharacterVirtualMaxSlopeAngleRadians),
 
     m_isEnhancedInternalEdgeRemovalDisabled(false)
 {}
@@ -18,12 +18,12 @@ FWK::Physics::PhysicsCharacterVirtualBase::~PhysicsCharacterVirtualBase()
 
 bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                          "CharacterVirtualが既に作成されています。",                                         false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= Constant::k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius <= Constant:: k_minCharacterVirtualCapsuleRadius,                            "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                "CharacterVirtualが既に作成されています。",                                         false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius <= k_minCharacterVirtualCapsuleRadius,                             "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
 
-	FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < Constant::k_minCharacterVirtualMaxSlopeAngleRadians ||
-  		                       m_maxSlopeAngleRadians > Constant::k_maxCharacterVirtualMaxSlopeAngleRadians, 
+	FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
+  		                       m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians, 
                                "CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外のため、作成に失敗しました。",
                                false);
 
@@ -93,9 +93,9 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 
 void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
 {
-    FWK_ASSERT_RETURN_IF(!m_characterVirtual,                                                 "CharacterVirtualが作成されていないため、更新に失敗しました。");
-    FWK_ASSERT_RETURN_IF(a_deltaTime <= Constant::k_minCharacterVirtualDeltaTime,             "DeltaTimeが0以下のため、CharacterVirtualの更新に失敗しました。");
-    FWK_ASSERT_RETURN_IF(a_updateData.m_jumpSpeed < Constant::k_minCharacterVirtualJumpSpeed, "JumpSpeedが0未満のため、CharacterVirtualの更新に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!m_characterVirtual,                                       "CharacterVirtualが作成されていないため、更新に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_deltaTime <= k_minCharacterVirtualDeltaTime,             "DeltaTimeが0以下のため、CharacterVirtualの更新に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_updateData.m_jumpSpeed < k_minCharacterVirtualJumpSpeed, "JumpSpeedが0未満のため、CharacterVirtualの更新に失敗しました。");
 
     const auto& l_physicsManager = PhysicsManager::GetInstance();
 
@@ -236,8 +236,8 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::FetchVALIsOnGround() const
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape() const
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= Constant::k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CapsuleHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= Constant::k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CapsuleHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
 
     const JPH::CapsuleShapeSettings l_capsuleShapeSettings = { m_capsuleHalfHeightOfCylinder, m_capsuleRadius };
 
@@ -295,7 +295,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
     //                                 特定Bodyの除外フィルター、
     //                                 特定SubShapeの除外Filter、
     //                                 Shape交換時の衝突確認で使用する一時Allocator);
-    if (const float l_maxPenetrationDepth = Constant::k_characterVirtualShapeChangePenetrationSlopScale * l_physicsSystem.GetPhysicsSettings().mPenetrationSlop;
+    if (const float l_maxPenetrationDepth = k_characterVirtualShapeChangePenetrationSlopScale * l_physicsSystem.GetPhysicsSettings().mPenetrationSlop;
         !m_characterVirtual->SetShape(l_shape.GetPtr(),
                                      l_maxPenetrationDepth,
                                      l_broadPhaseLayerFilter,

@@ -24,6 +24,8 @@ namespace FWK::Graphics
 
 		static constexpr UINT64 k_invalidCreateCount = 0ULL;
 
+		static constexpr D3D12_GPU_VIRTUAL_ADDRESS k_invalidGPUVirtualAddress = 0ULL;
+
 	protected:
 
 		bool CreateUploadBuffer(const Device& a_device, const UINT64& a_alignment);
@@ -43,7 +45,7 @@ namespace FWK::Graphics
 		{
 			auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", Constant::k_invalidGPUVirtualAddress);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);
 
 			const auto& l_byteOffset = a_elementIndex * m_elementStrideSize;
 
@@ -55,14 +57,14 @@ namespace FWK::Graphics
 		template <typename Type>
 		D3D12_GPU_VIRTUAL_ADDRESS WriteContiguousElementListAndAdvance(const std::vector<Type>& a_dataList)
 		{
-			FWK_ASSERT_RETURN_VALUE_IF(a_dataList.empty(),                  "DataListが空のため、連続ElementList書き込みに失敗しました。",                        Constant::k_invalidGPUVirtualAddress);
-			FWK_ASSERT_RETURN_VALUE_IF(m_elementStrideSize != sizeof(Type), "ElementSizeとTypeSizeが一致していないため、連続ElementList書き込みに失敗しました。", Constant::k_invalidGPUVirtualAddress);
+			FWK_ASSERT_RETURN_VALUE_IF(a_dataList.empty(),                  "DataListが空のため、連続ElementList書き込みに失敗しました。",                        k_invalidGPUVirtualAddress);
+			FWK_ASSERT_RETURN_VALUE_IF(m_elementStrideSize != sizeof(Type), "ElementSizeとTypeSizeが一致していないため、連続ElementList書き込みに失敗しました。", k_invalidGPUVirtualAddress);
 
 			const auto& l_startElementIndex = AllocateElementRange(a_dataList.size());
 
 			auto* const l_mappedData = m_uploadBuffer.FetchPTRMappedData();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", Constant::k_invalidGPUVirtualAddress);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_mappedData, "Mapデータが無効のため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);
 
 			const auto l_byteOffset = l_startElementIndex * m_elementStrideSize;
 			const auto l_writeSize  = sizeof(Type)        * a_dataList.size();

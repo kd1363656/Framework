@@ -155,9 +155,9 @@ void FWK::Graphics::DirectCommandList::SetupVertexBufferView(const D3D12_VERTEX_
 {
 	const auto& l_directCommandList = GetREFCommandList();
 
-	FWK_ASSERT_RETURN_IF(!l_directCommandList,													    "ダイレクトコマンドリストが作成されておらず、VertexBufferViewの設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
-	FWK_ASSERT_RETURN_IF(a_vertexBufferView.SizeInBytes    == k_invalidSizeInBytes,					"VertexBufferViewのSizeInBytes無効のため、VertexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_directCommandList,                                                                       "ダイレクトコマンドリストが作成されておらず、VertexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_vertexBufferView.BufferLocation == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "VertexBufferViewのGPU仮想アドレスが無効のため、VertexBufferViewの設定に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_vertexBufferView.SizeInBytes    == k_invalidSizeInBytes,                                  "VertexBufferViewのSizeInBytes無効のため、VertexBufferViewの設定に失敗しました。");
 	
 	l_directCommandList->IASetVertexBuffers(k_vertexBufferViewStartSlot, k_vertexBufferViewCount, &a_vertexBufferView);
 }

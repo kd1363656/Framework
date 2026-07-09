@@ -19,7 +19,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_indexList.size()       == Converter::StaticModelBinaryConverter::k_emptyModelIndexCount,  "StaticModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 
 	// インデックスリストの総数を3で割った時に余りが0でないと、三角形を構成するインデックスリストとして不適切
-	FWK_ASSERT_RETURN_VALUE_IF((a_staticModelMesh.m_indexList.size() % Converter::StaticModelBinaryConverter::k_triangleVertexCount) != StaticModelMeshletBuilder::k_noRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
 
 	// メッシュレットデータの初期化
 	// 前回読み込んでいたモデルのメッシュレット情報が残るのを防ぐため
@@ -52,7 +52,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 	// 1つのMeshletが持てる三角形数は最大128個。
 	// 三角形1つにつき頂点インデックスが3個必要なので、
 	// 最大Meshlet数 * 1Meshlet辺りの最大三角形数 * 3個分を確保する
-	l_meshoptPrimitiveIndexList.resize(l_maxMeshletCount * StaticModelMeshletBuilder::k_maxMeshletPrimitiveCount * Converter::StaticModelBinaryConverter::k_triangleVertexCount);
+	l_meshoptPrimitiveIndexList.resize(l_maxMeshletCount * StaticModelMeshletBuilder::k_maxMeshletPrimitiveCount * Constant::k_triangleVertexCount);
 
 	// meshoptimizerは頂点座標をfloat*とstrideで受け取る
 	// reinterpret_castでModelVertex全体をfloat*に見せるより、
@@ -92,7 +92,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 	// 頂点インデックスリストに必要な分のみ要素を確保(最後のメッシュレットのオフセットと頂点数を足した数が必要なサイズ)
 	l_modelMeshletData.m_uniqueVertexIndexList.resize(l_lastMeshlet.vertex_offset + l_lastMeshlet.vertex_count);
 
-	const auto l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Converter::StaticModelBinaryConverter::k_triangleVertexCount;
+	const auto l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Constant::k_triangleVertexCount;
 
 	// meshoptimizerのPrimitiveIndex配列は4byte境界にそろえて扱うため、
 	// 最後のMeshletで実際に使用したPrimitiveIndex数を4byte境界へ切り上げる
@@ -121,12 +121,12 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 		// 頂点情報を格納
 		l_modelMeshlet.m_vertexOffset = l_meshoptMeshlet.vertex_offset;
 
-		FWK_ASSERT_RETURN_VALUE_IF((l_meshoptMeshlet.triangle_offset % Converter::StaticModelBinaryConverter::k_triangleVertexCount) != StaticModelMeshletBuilder::k_noRemainder, "Meshletのtriangle_offsetが三角形単位ではありません。", false);
+		FWK_ASSERT_RETURN_VALUE_IF((l_meshoptMeshlet.triangle_offset % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "Meshletのtriangle_offsetが三角形単位ではありません。", false);
 
 		// 3個Pack方式では、uint32_t1個が三角形1個分のPrimitiveIndexを持つ
 		// meshoptimizerのtriangle_offsetはPack前PrimitiveIndex配列上のIndexなので、
 		// 3で割ってPack済みPrimitiveIndexBuffer乗の開始Indexへ変換する
-		l_modelMeshlet.m_triangleOffset = l_meshoptMeshlet.triangle_offset / Converter::StaticModelBinaryConverter::k_triangleVertexCount;
+		l_modelMeshlet.m_triangleOffset = l_meshoptMeshlet.triangle_offset / Constant::k_triangleVertexCount;
 
 		l_modelMeshlet.m_vertexCount   = l_meshoptMeshlet.vertex_count;
 		l_modelMeshlet.m_triangleCount = l_meshoptMeshlet.triangle_count;
@@ -185,12 +185,12 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 
 bool FWK::Graphics::StaticModelMeshletBuilder::PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount,					                                                       "Pack対象のPrimitiveIndexListサイズが不足しています。",   false);
-	FWK_ASSERT_RETURN_VALUE_IF((a_usedPrimitiveIndexCount % Converter::StaticModelBinaryConverter::k_triangleVertexCount) != StaticModelMeshletBuilder::k_noRemainder, "PrimitiveIndexListの使用数が三角形単位ではありません。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_sourcePrimitiveIndexList.size() < a_usedPrimitiveIndexCount,					         "Pack対象のPrimitiveIndexListサイズが不足しています。",   false);
+	FWK_ASSERT_RETURN_VALUE_IF((a_usedPrimitiveIndexCount % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "PrimitiveIndexListの使用数が三角形単位ではありません。", false);
 
 	// 三角形1個につきPrimitiveIndexは3個
 	// 3個Pack方式では、三角形1個をuint32_t1個にPackする
-	const auto l_packedPrimitiveIndexCount = a_usedPrimitiveIndexCount / Converter::StaticModelBinaryConverter::k_triangleVertexCount;
+	const auto l_packedPrimitiveIndexCount = a_usedPrimitiveIndexCount / Constant::k_triangleVertexCount;
 	
 	a_packedPrimitiveIndexList.clear ();
 	a_packedPrimitiveIndexList.resize(l_packedPrimitiveIndexCount);
@@ -199,7 +199,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::PackPrimitiveIndexList(const std:
 	{
 		// Pack元のuint8_t配列における開始位置。
 		// uint32_t1個にuint8_t3個を入れるため、3倍する
-		const auto l_sourcePrimitiveIndex = l_triangleIndex * Converter::StaticModelBinaryConverter::k_triangleVertexCount;
+		const auto l_sourcePrimitiveIndex = l_triangleIndex * Constant::k_triangleVertexCount;
 
 		const auto l_firstPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_firstPrimitiveVertexOffset];
 		const auto l_secondPrimitiveIndex = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_secondPrimitiveVertexOffset];

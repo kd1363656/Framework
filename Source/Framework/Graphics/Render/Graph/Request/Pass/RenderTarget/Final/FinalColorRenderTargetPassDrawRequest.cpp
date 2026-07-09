@@ -24,7 +24,7 @@ bool FWK::Graphics::FinalColorRenderTargetPassDrawRequest::SetupPassConstantBuff
 	a_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// SceneColor全体を読み、FinalColorへ全画面描画する
-	a_directCommandList.DrawInstanced(Converter::StaticModelBinaryConverter::k_triangleVertexCount,
+	a_directCommandList.DrawInstanced(Constant::k_triangleVertexCount,
 									  Constant::k_defaultTriangleInstanceCount,
 									  Constant::k_defaultTriangleStartVertexLocation,
 									  Constant::k_defaultTriangleStartInstanceLocation);

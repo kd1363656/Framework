@@ -2,8 +2,24 @@
 
 namespace FWK
 {
+	class MatrixStrategyBase;
+}
+
+namespace FWK
+{
 	class TransformComponent final : public ComponentBase
 	{
+	public:
+
+		struct Transform final
+		{
+			TypeAlias::Math::Vector3    m_scale    = TypeAlias::Math::Vector3::One;
+			TypeAlias::Math::Quaternion m_rotation = TypeAlias::Math::Quaternion::Identity;
+			TypeAlias::Math::Vector3    m_position = TypeAlias::Math::Vector3::Zero;
+
+			std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
+		};
+
 	public:
 
 		 TransformComponent();
@@ -48,8 +64,8 @@ namespace FWK
 
 		TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
 
-		Struct::Transform m_transform;
-		Struct::Transform m_initialSettingTransform;
+		Transform m_transform;
+		Transform m_initialSettingTransform;
 
 		FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
 	};

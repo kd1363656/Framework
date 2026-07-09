@@ -700,9 +700,6 @@
     <Filter Include="Source\Framework\Physics\DebugDraw\Batch">
       <UniqueIdentifier>{a5af2d25-0569-4ad7-9839-0149c3d9a767}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Scene">
-      <UniqueIdentifier>{2297f7a2-17dd-4d21-a23a-f6df84ae6d06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\Array">
       <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
     </Filter>
@@ -726,9 +723,6 @@
     </Filter>
     <Filter Include="Asset\Data\CONFIG\Editor">
       <UniqueIdentifier>{4651bebf-f37c-4851-9cf8-3d0846a43aba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Physics">
-      <UniqueIdentifier>{8cddf1ab-54c0-4bd4-918a-67bf66fae2e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Storage\Converter">
       <UniqueIdentifier>{94493553-279f-4d7a-9f27-c6d76ec4fa34}</UniqueIdentifier>
@@ -820,9 +814,6 @@
     <Filter Include="Source\Framework\Component\Transform">
       <UniqueIdentifier>{ce11bafc-b19a-4f89-be87-540b133756fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Component">
-      <UniqueIdentifier>{8964c7c0-1692-42d4-9dc1-fd1bf2d3f2c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\TypeINFO">
       <UniqueIdentifier>{1d960e7f-1593-430e-9d73-6c413e2023a9}</UniqueIdentifier>
     </Filter>
@@ -861,6 +852,9 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Math">
       <UniqueIdentifier>{74681a52-0f73-45b4-9f9d-4507b093caf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\String">
+      <UniqueIdentifier>{d0842a51-c26e-426c-817d-3418748e5167}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1371,25 +1365,10 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FinalPresentRenderTargetPassDrawRequestConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelStandardPerObjectDrawRequestDataConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h">
@@ -1399,9 +1378,6 @@
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteScreenPerObjectDrawRequestStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelStandardPerObjectDrawRequestDataStruct.h">
@@ -1433,9 +1409,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\DynamicBufferUploaderConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug\PhysicsDebugDynamicVertexBufferUploader.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug</Filter>
@@ -1479,9 +1452,6 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h">
       <Filter>Source\Framework\Utility\Array</Filter>
     </ClInclude>
@@ -1514,9 +1484,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\CharacterVirtualConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Converter\Json\AssetStorageJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Storage\Converter\Json</Filter>
@@ -1592,9 +1559,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h">
       <Filter>Source\Framework\Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
@@ -1679,6 +1643,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\String\WStringHashStruct.h">
+      <Filter>Source\Framework\Definition\Struct\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h">
+      <Filter>Source\Framework\Definition\Struct\String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

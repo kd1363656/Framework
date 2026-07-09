@@ -63,7 +63,7 @@ void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph&
 	// バッファービューを取得
 	const auto l_vertexBufferView = l_physicsDebugVertexBufferUploader->WriteVertexList(l_lineVertexList);
 
-	FWK_ASSERT_RETURN_IF(l_vertexBufferView.BufferLocation == Constant::k_invalidGPUVirtualAddress, "PhysicsDebug用VertexBufferViewの作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(l_vertexBufferView.BufferLocation == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "PhysicsDebug用VertexBufferViewの作成に失敗しました。");
 
 	// プリミティブと頂点バッファービューを設定
 	l_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);

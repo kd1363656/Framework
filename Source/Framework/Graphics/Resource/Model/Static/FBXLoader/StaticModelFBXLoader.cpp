@@ -153,7 +153,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 							   false);
 
 	// max_face_traianglesは1つのFaceを三角形化したときに必要になる最大三角形数
-	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Converter::StaticModelBinaryConverter::k_triangleVertexCount;
+	const auto& l_triangleIndexListSize = l_fbxMesh->max_face_triangles * Constant::k_triangleVertexCount;
 
 	std::vector<std::uint32_t> l_triangleIndexList = {};
 
@@ -187,14 +187,14 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 
 		for (auto l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
 		{
-			for (auto l_vertexIndex = 0U; l_vertexIndex < Converter::StaticModelBinaryConverter::k_triangleVertexCount; ++l_vertexIndex)
+			for (auto l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
 			{
 				// l_triangleIndexListには、三角形化後のufbx側頂点インデックスが入っている
 				// 三角形番号 * 3 + 頂点番号で、現在処理している三角形の頂点インデックスを取り出す
 				// 要するに変換した後の三角形頂点に合わせた座標やuvの変換を行っている
 				// 例 : l_triangleIndex = 0ULL,   l_vertexIndex = 2ならl_indexOffset = 2;
 				// 例 : l_triangleIndex = 100ULL, l_vertexIndex = 2ならl_indexOffset = 302;
-				const auto& l_indexOffset    = (l_triangleIndex * Converter::StaticModelBinaryConverter::k_triangleVertexCount) + l_vertexIndex;
+				const auto& l_indexOffset    = (l_triangleIndex * Constant::k_triangleVertexCount) + l_vertexIndex;
 				const auto  l_fbxVertexIndex = l_triangleIndexList[l_indexOffset];
 
 				StaticModelRecord::StaticModelVertex l_staticModelVertex = {};

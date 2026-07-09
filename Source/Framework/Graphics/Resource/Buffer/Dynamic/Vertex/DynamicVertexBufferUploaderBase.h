@@ -27,7 +27,7 @@ namespace FWK::Graphics
 			
 			const auto& l_gpuVirtualAddress = WriteContiguousElementListAndAdvance(a_vertexList);
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == Constant::k_invalidGPUVirtualAddress, "VertexListの書き込みに失敗したため、VertexBufferViewの作成に失敗しました。", {});
+			FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == k_invalidGPUVirtualAddress, "VertexListの書き込みに失敗したため、VertexBufferViewの作成に失敗しました。", {});
 
 			const auto l_vertexBufferSize = sizeof(VertexType) * a_vertexList.size();
 

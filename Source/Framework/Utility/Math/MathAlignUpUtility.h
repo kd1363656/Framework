@@ -10,7 +10,7 @@ namespace FWK::Utility
 
 		// 余りが0なら倍数なのでa_valueをそのまま返す
 		if (const auto& l_remainder = a_value % a_alignment;
-			l_remainder == Constant::k_emptyRemainder)
+			l_remainder == Constant::k_noRemainder)
 		{
 			return a_value;
 		}

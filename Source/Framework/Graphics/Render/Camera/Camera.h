@@ -12,15 +12,15 @@ namespace FWK::Graphics
 		void Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
 				   const float					  a_aspectRatio,
 				   const float					  a_fovYDegree  = k_defaultFOVYDegree,
-				   const float					  a_farClip     = Constant::k_defaultFarClip,
-				   const float					  a_nearClip    = Constant::k_defaultNearClip);
+				   const float					  a_farClip     = Struct::CBCameraPass::k_defaultFarClip,
+				   const float					  a_nearClip    = Struct::CBCameraPass::k_defaultNearClip);
 
 		void ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
 		
 		void ApplyProjectionMatrix(const float a_aspectRatio,
 								   const float a_fovYDegree  = k_defaultFOVYDegree,
-								   const float a_farClip     = Constant::k_defaultFarClip,
-								   const float a_nearClip    = Constant::k_defaultNearClip);
+								   const float a_farClip     = Struct::CBCameraPass::k_defaultFarClip,
+								   const float a_nearClip    = Struct::CBCameraPass::k_defaultNearClip);
 
 		void ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 
@@ -31,8 +31,8 @@ namespace FWK::Graphics
 		void SetupPerspective(const TypeAlias::Math::Matrix& a_cameraMatrix,
 							  const float					 a_aspectRatio,
 							  const float					 a_fovYDegree  = k_defaultFOVYDegree,
-							  const float					 a_farClip     = Constant::k_defaultFarClip,
-							  const float					 a_nearClip    = Constant::k_defaultNearClip);
+							  const float					 a_farClip     = Struct::CBCameraPass::k_defaultFarClip,
+							  const float					 a_nearClip    = Struct::CBCameraPass::k_defaultNearClip);
 
 		void UpdateViewProjectionMatrix();
 
