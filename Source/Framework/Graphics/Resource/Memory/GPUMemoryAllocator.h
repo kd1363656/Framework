@@ -11,15 +11,15 @@ namespace FWK::Graphics
 
 		bool Create(const Device& a_device);
 
-		bool CreateTextureResource(const D3D12_RESOURCE_DESC&                  a_resourceDesc,
-								   const D3D12_CLEAR_VALUE*	                   a_clearValue,
-								   const D3D12_RESOURCE_STATES                 a_initialResourceState,
-										 ResourceReleaseContext::GPUResource&  a_gpuResource) const;
+		bool CreateTextureResource(const D3D12_RESOURCE_DESC&  a_resourceDesc,
+								   const D3D12_CLEAR_VALUE*	   a_clearValue,
+								   const D3D12_RESOURCE_STATES a_initialResourceState,
+										 Struct::GPUResource&  a_gpuResource) const;
 
-		bool CreateBufferResource(const UINT64&                               a_bufferSize, 
-								  const D3D12_RESOURCE_FLAGS                  a_resourceFlags,
-								  const D3D12_RESOURCE_STATES                 a_initialResourceState, 
-			                            ResourceReleaseContext::GPUResource&  a_gpuResource) const;
+		bool CreateBufferResource(const UINT64&               a_bufferSize, 
+								  const D3D12_RESOURCE_FLAGS  a_resourceFlags,
+								  const D3D12_RESOURCE_STATES a_initialResourceState, 
+			                            Struct::GPUResource&  a_gpuResource) const;
 
 		const auto& GetREFAllocator() const { return m_allocator; }
 

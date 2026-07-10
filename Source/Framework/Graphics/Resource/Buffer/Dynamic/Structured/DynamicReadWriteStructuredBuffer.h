@@ -43,7 +43,7 @@ namespace FWK::Graphics
 
 			// 失敗したときに、このクラスが中途半端な状態にならないように、
 			// まずはローカル変数でGPUResourceを作る
-			ResourceReleaseContext::GPUResource l_bufferGPUResource = {};
+			Struct::GPUResource l_bufferGPUResource = {};
 
 			// UAVとして書き込むBufferなので、
 			// D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESSを指定する
@@ -109,11 +109,11 @@ namespace FWK::Graphics
 
 	private:
 
-		TypeAlias::DescriptorIndex CreateUAV(const Device&                              a_device,
-											 const ResourceReleaseContext::GPUResource& a_bufferGPUResource,
-											 const UINT								    a_elementCount,
-											 const UINT									a_structureByteStride,
-											       TypeAlias::CBVSRVUAVDescriptorPool&  a_cbvSRVUAVDescriptorPool) const;
+		TypeAlias::DescriptorIndex CreateUAV(const Device&                            a_device,
+											 const Struct::GPUResource&               a_bufferGPUResource,
+											 const UINT								  a_elementCount,
+											 const UINT								  a_structureByteStride,
+											       TypeAlias::CBVSRVUAVDescriptorPool a_cbvSRVUAVDescriptorPool) const;
 
 		void MoveFrom(DynamicReadWriteStructuredBuffer&& a_other) noexcept;
 

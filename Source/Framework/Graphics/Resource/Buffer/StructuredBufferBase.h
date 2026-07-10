@@ -28,14 +28,14 @@ namespace FWK::Graphics
 	protected:
 
 		TypeAlias::DescriptorIndex CreateSRV(const Device&                              a_device,
-											 const ResourceReleaseContext::GPUResource& a_bufferGPUResource,
+											 const Struct::GPUResource&                 a_bufferGPUResource,
 											 const UINT                                 a_elementCount,
 			                                 const UINT				                    a_structureByteStride,
 			                                       TypeAlias::CBVSRVUAVDescriptorPool&  a_cbvSRVUAVDescriptorPool) const;
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		void SetBufferGPUResource(ResourceReleaseContext::GPUResource&& a_set) { m_bufferGPUResource = std::move(a_set); }
+		void SetBufferGPUResource(Struct::GPUResource&& a_set) { m_bufferGPUResource = std::move(a_set); }
 
 		void SetSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_set) { m_srvDescriptorIndex = a_set; }
 
@@ -50,7 +50,7 @@ namespace FWK::Graphics
 
 		void MoveFrom(StructuredBufferBase&& a_other) noexcept;
 
-		ResourceReleaseContext::GPUResource m_bufferGPUResource = {};
+		Struct::GPUResource m_bufferGPUResource = {};
 
 		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};

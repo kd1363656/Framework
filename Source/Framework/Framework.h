@@ -139,6 +139,7 @@
 #include "Definition/Type/Alias/CommandQueueTypeAlias.h"
 
 //リソースリリースクラス
+#include "Definition/Struct/Graphics/GPUResourceStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // レコードクラス

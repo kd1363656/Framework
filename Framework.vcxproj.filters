@@ -1683,6 +1683,12 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCommonStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

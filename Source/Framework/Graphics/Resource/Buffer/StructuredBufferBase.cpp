@@ -23,11 +23,11 @@ void FWK::Graphics::StructuredBufferBase::ReleaseImmediatelySRVDescriptorIndex(T
 	m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 }
 
-FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(const Device&                              a_device,
-																			   const ResourceReleaseContext::GPUResource& a_bufferGPUResource,
-	                                                                           const UINT                                 a_elementCount, 
-	                                                                           const UINT                                 a_structureByteStride,
-	                                                                                 TypeAlias::CBVSRVUAVDescriptorPool&  a_cbvSRVUAVDescriptorPool) const
+FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(const Device&                             a_device,
+																			   const Struct::GPUResource&                a_bufferGPUResource,
+	                                                                           const UINT                                a_elementCount, 
+	                                                                           const UINT                                a_structureByteStride,
+	                                                                                 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 {
 	const auto& l_device = a_device.GetREFDevice();
 
