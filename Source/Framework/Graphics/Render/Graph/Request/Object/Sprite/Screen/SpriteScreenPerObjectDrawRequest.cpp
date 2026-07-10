@@ -3,7 +3,7 @@
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 {
 	// 前フレームのSprite描画申請を消す
-	m_drawRequestPerObjectList.BeginFrame();
+	m_drawRequestDataList.BeginFrame();
 }
 
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
@@ -13,24 +13,24 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 	// PrimitiveTopologyTypeをセット
 	l_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	for (const auto& l_drawRequest : m_drawRequestPerObjectList.GetREFArrayElementDataList())
+	for (const auto& l_drawRequestData : m_drawRequestDataList.GetREFArrayElementDataList())
 	{
-		const auto& l_drawRequestPerObject = l_drawRequest.m_type.lock();
+		const auto& l_drawRequest = l_drawRequestData.m_type.lock();
 
-		if (!l_drawRequestPerObject) { continue; }
+		if (!l_drawRequest) { continue; }
 
 		Struct::CBSpritePerObject l_cbSpritePerObject = {};
 
 		// TextureRecordからテクスチャのSRVIndexを取得
-		const auto l_textureSRVIndex = FetchTextureSRVDescriptorIndex(l_drawRequestPerObject->m_textureRecord);
+		const auto l_textureSRVIndex = FetchTextureSRVDescriptorIndex(l_drawRequest->m_textureRecord);
 
 		l_cbSpritePerObject.m_baseColorTextureSRVIndex = l_textureSRVIndex;
 
-		l_cbSpritePerObject.m_color		 = l_drawRequestPerObject->m_color;
-		l_cbSpritePerObject.m_position	 = l_drawRequestPerObject->m_position;
-		l_cbSpritePerObject.m_scale      = l_drawRequestPerObject->m_scale;
-		l_cbSpritePerObject.m_pivot		 = l_drawRequestPerObject->m_pivot;
-		l_cbSpritePerObject.m_sourceRECT = l_drawRequestPerObject->m_sourceRECT;
+		l_cbSpritePerObject.m_color		 = l_drawRequest->m_color;
+		l_cbSpritePerObject.m_position	 = l_drawRequest->m_position;
+		l_cbSpritePerObject.m_scale      = l_drawRequest->m_scale;
+		l_cbSpritePerObject.m_pivot		 = l_drawRequest->m_pivot;
+		l_cbSpritePerObject.m_sourceRECT = l_drawRequest->m_sourceRECT;
 
 		SetupConstantBuffer<SpriteScreenPerObjectDynamicConstantBufferUploader>(l_cbSpritePerObject,
 																		        a_rootSignature,
@@ -45,7 +45,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 	}
 }
 
-void FWK::Graphics::SpriteScreenPerObjectDrawRequest::AddDrawRequestPerObject(const std::shared_ptr<SpriteScreenPerObjectDrawRequestData>&a_drawRequestData)
+void FWK::Graphics::SpriteScreenPerObjectDrawRequest::AddDrawRequestPerObject(const std::shared_ptr<DrawRequestData>&a_drawRequestData)
 {
-	m_drawRequestPerObjectList.Add(a_drawRequestData);
+	m_drawRequestDataList.Add(a_drawRequestData);
 }

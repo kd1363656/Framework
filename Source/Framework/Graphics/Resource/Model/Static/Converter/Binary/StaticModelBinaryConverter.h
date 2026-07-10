@@ -6,7 +6,7 @@ namespace FWK::Converter
 	{
 	private:
 
-		struct StaticModelBinaryHeader final
+		struct ModelBinaryHeader final
 		{
 			std::uint64_t m_fileSize    = k_emptyAssetFileSize;
 			std::uint16_t m_version     = k_staticModelAssetVersion;
@@ -15,7 +15,7 @@ namespace FWK::Converter
 			std::uint64_t m_modelMeshCount = k_emptyModelMeshCount;
 		};
 
-		struct StaticModelMeshBinaryHeader final
+		struct ModelMeshBinaryHeader final
 		{
 			std::uint64_t m_vertexCount = k_emptyModelVertexCount;
 			std::uint64_t m_indexCount  = k_emptyModelIndexCount;
@@ -36,9 +36,9 @@ namespace FWK::Converter
 		 StaticModelBinaryConverter()		   = default;
 		~StaticModelBinaryConverter() override = default;
 
-		bool LoadStaticModelAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
+		bool LoadAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
 
-		bool SaveStaticModelAsset(const Graphics::StaticModelRecord& a_staticModelRecord, const std::filesystem::path& a_filePath);
+		bool SaveAsset(const Graphics::StaticModelRecord& a_staticModelRecord, const std::filesystem::path& a_filePath);
 
 		static constexpr std::size_t k_emptyModelMeshCount = 0ULL;
 
@@ -52,15 +52,15 @@ namespace FWK::Converter
 
 	private:
 
-		bool CanLoadStaticModelAsset(const std::filesystem::path& a_filePath) const;
+		bool CanLoadAsset(const std::filesystem::path& a_filePath) const;
 
-		void FailLoadStaticModelAsset(Graphics::StaticModelRecord::StaticModelData& a_staticModelData);
+		void FailLoadAsset(Graphics::StaticModelRecord::StaticModelData& a_staticModelData);
 
-		StaticModelBinaryHeader CreateStaticModelBinaryHeader(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const;
+		ModelBinaryHeader CreateModelBinaryHeader(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData, const std::uint64_t& a_fileSize) const;
 
-		StaticModelMeshBinaryHeader CreateStaticModelMeshBinaryHeader(const Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
+		ModelMeshBinaryHeader CreateModelMeshBinaryHeader(const Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
 
-		std::uint64_t CalculateStaticModelAssetFileSize(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData) const;
+		std::uint64_t CalculateAssetFileSize(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData) const;
 
 		// 'S' = 0x53, 'T' = 0x54のため、0x5354で"ST"を表す
 		static constexpr std::uint16_t k_staticModelAssetTypeID = 0x5354U;

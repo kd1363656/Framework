@@ -871,6 +871,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary">
       <UniqueIdentifier>{42f151fa-1abe-45ab-a47f-a4d86b7ab72f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer">
+      <UniqueIdentifier>{98836a7e-327c-48aa-b9f1-5fb72723c4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant">
+      <UniqueIdentifier>{e0568a0d-e702-4478-a11c-b21cafed1334}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1673,6 +1679,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

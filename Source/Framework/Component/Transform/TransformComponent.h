@@ -37,9 +37,9 @@ namespace FWK
 		nlohmann::json SerializeSpawnData () override;
 		nlohmann::json SerializePrefabData() override;
 
-		TypeAlias::Math::Matrix CalcScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale);    }
-		TypeAlias::Math::Matrix CalcRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
-		TypeAlias::Math::Matrix CalcTranslationMatrix() const { return TypeAlias::Math::Matrix::CreateTranslation   (m_transform.m_position); }
+		TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale);    }
+		TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
+		TypeAlias::Math::Matrix CalculateTranslationMatrix() const { return TypeAlias::Math::Matrix::CreateTranslation   (m_transform.m_position); }
 	
 		void ApplyParentTransformComponent(const std::weak_ptr<TransformComponent>& a_parentTransformComponent);
 

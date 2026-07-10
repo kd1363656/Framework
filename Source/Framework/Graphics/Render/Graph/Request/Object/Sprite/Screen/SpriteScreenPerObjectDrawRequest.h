@@ -11,7 +11,7 @@ namespace FWK::Graphics
 	{
 	public:
 
-		struct SpriteScreenPerObjectDrawRequestData final
+		struct DrawRequestData final
 		{
 			std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 
@@ -33,11 +33,11 @@ namespace FWK::Graphics
 
 		void SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource) override;
 
-		void AddDrawRequestPerObject(const std::shared_ptr<SpriteScreenPerObjectDrawRequestData>& a_drawRequestData);
+		void AddDrawRequestPerObject(const std::shared_ptr<DrawRequestData>& a_drawRequestData);
 
 	private:
 
-		Utility::VectorArray<std::weak_ptr<SpriteScreenPerObjectDrawRequestData>> m_drawRequestPerObjectList = {};
+		Utility::VectorArray<std::weak_ptr<DrawRequestData>> m_drawRequestDataList = {};
 
 		FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDrawRequest, DrawRequestPerObjectBase)
 	};

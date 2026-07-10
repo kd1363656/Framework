@@ -6,17 +6,17 @@ namespace FWK::Graphics
 	{
 	public:
 
-		struct SkeletalAnimationModelBone final
+		struct ModelBone final
 		{
 			std::wstring m_boneName = {};
 
-			TypeAlias::Math::Matrix m_bindPoseLocalMatrix = TypeAlias::Math::Matrix::Identity;
+			TypeAlias::Math::Matrix m_bindPoseLocalMatrix   = TypeAlias::Math::Matrix::Identity;
 			TypeAlias::Math::Matrix m_inverseBindPoseMatrix = TypeAlias::Math::Matrix::Identity;
 
 			std::uint32_t m_parentBoneIndex = k_invalidBoneIndex;
 		};
 
-		struct SkeletalAnimationModelKeyFrame final
+		struct ModelKeyFrame final
 		{
 			TypeAlias::Math::Vector3    m_scale       = TypeAlias::Math::Vector3::One;
 			TypeAlias::Math::Quaternion m_rotation    = TypeAlias::Math::Quaternion::Identity;
@@ -25,16 +25,16 @@ namespace FWK::Graphics
 			float m_timeSecond = k_initialAnimationTimeSecond;
 		};
 
-		struct SkeletalAnimationModelBoneMotionTrack final
+		struct ModelBoneMotionTrack final
 		{
-			std::vector<SkeletalAnimationModelKeyFrame> m_keyFrameList = {};
+			std::vector<ModelKeyFrame> m_keyFrameList = {};
 
 			std::uint32_t m_boneIndex = k_invalidBoneIndex;
 		};
 
-		struct SkeletalAnimationModelMotionSequence final
+		struct ModelMotionSequence final
 		{
-			std::vector<SkeletalAnimationModelBoneMotionTrack> m_boneMotionTrackList = {};
+			std::vector<ModelBoneMotionTrack> m_boneMotionTrackList = {};
 
 			std::wstring m_motionName = {};
 
@@ -43,11 +43,11 @@ namespace FWK::Graphics
 			float m_frameRate = k_defaultAnimationFrameRate;
 		};
 
-		struct SkeletalAnimationModelData final
+		struct ModelData final
 		{
-			std::vector<SkeletalAnimationModelBone> m_boneList = {};
+			std::vector<ModelBone> m_boneList = {};
 
-			std::vector<SkeletalAnimationModelMotionSequence> m_motionSequenceList = {};
+			std::vector<ModelMotionSequence> m_motionSequenceList = {};
 		};
 
 	public:
@@ -57,7 +57,7 @@ namespace FWK::Graphics
 
 		bool ReserveRelease(const UINT64&, ResourceReleaseContext&) override;
 
-		void SetAnimationModelData(SkeletalAnimationModelData&& a_set) { m_animationModelData = std::move(a_set); }
+		void SetAnimationModelData(ModelData&& a_set) { m_animationModelData = std::move(a_set); }
 
 		const auto& GetREFAnimationData() const { return m_animationModelData; }
 
@@ -71,6 +71,6 @@ namespace FWK::Graphics
 
 	private:
 
-		SkeletalAnimationModelData m_animationModelData = {};
+		ModelData m_animationModelData = {};
 	};
 }

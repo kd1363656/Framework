@@ -3,7 +3,7 @@
 void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::BeginFrame()
 {
 	// 参照が途切れているstd::weak_ptrを削除する
-	m_forwardDrawRequestPerObjectDataList.BeginFrame();
+	m_forwardDrawRequestDataList.BeginFrame();
 }
 
 void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
@@ -11,18 +11,18 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
 	// 描画処理を行うための定数バッファを送信していく
-	for (const auto& l_drawRequest : m_forwardDrawRequestPerObjectDataList.GetREFArrayElementDataList())
+	for (const auto& l_drawRequestData : m_forwardDrawRequestDataList.GetREFArrayElementDataList())
 	{
-		const auto& l_drawRequestPerObject = l_drawRequest.m_type.lock();
+		const auto& l_drawRequest = l_drawRequestData.m_type.lock();
 
-		if (!l_drawRequestPerObject) { continue; }
+		if (!l_drawRequest) { continue; }
 
-		const auto& l_staticModelRecord = l_drawRequestPerObject->m_staticModelRecord.lock();
+		const auto& l_staticModelRecord = l_drawRequest->m_staticModelRecord.lock();
 
 		FWK_ASSERT_RETURN_IF(!l_staticModelRecord, "StaticModelRecordのポインタが無効です。");
 
 		const auto& l_modelData     = l_staticModelRecord->GetREFModelData();
-		const float l_worldMaxScale = Utility::CalculateWorldMaxScale     (l_drawRequestPerObject->m_worldMatrix);
+		const float l_worldMaxScale = Utility::CalculateWorldMaxScale     (l_drawRequest->m_worldMatrix);
 
 		for(const auto& l_modelMesh : l_modelData.m_modelMeshList)
 		{
@@ -37,11 +37,11 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 			Struct::CBStaticModelPerObject l_cbStaticModelPerObject = {};
 
 			// モデル1体ごとのワールド行列
-			l_cbStaticModelPerObject.m_worldMatrix = l_drawRequestPerObject->m_worldMatrix;
+			l_cbStaticModelPerObject.m_worldMatrix = l_drawRequest->m_worldMatrix;
 
 			// BackfaceConeCullingでconeAxisをWorld空間へ変換するための行列
 			// coneAxisは位置ではなく向きなので、法線と同じく逆行列の転置で変換する
-			l_cbStaticModelPerObject.m_worldInverseTransposeMatrix = l_drawRequestPerObject->m_worldInverseTransposeMatrix;
+			l_cbStaticModelPerObject.m_worldInverseTransposeMatrix = l_drawRequest->m_worldInverseTransposeMatrix;
 
 			// MehsletBoundsのradiusをWorld空間へ変換するための最大スケール
 			l_cbStaticModelPerObject.m_worldMaxScale = l_worldMaxScale;
@@ -93,11 +93,11 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 	}
 }
 
-void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<StaticModelStandardPerObjectDrawRequestData>& a_drawRequestData)
+void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<DrawRequestData>& a_drawRequestData)
 {
-	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "StaticModelStandardPerObjectDrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
+	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "DrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
-	m_forwardDrawRequestPerObjectDataList.Add(a_drawRequestData);
+	m_forwardDrawRequestDataList.Add(a_drawRequestData);
 }
 
 bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::StaticModelMesh& a_modelMesh) const
