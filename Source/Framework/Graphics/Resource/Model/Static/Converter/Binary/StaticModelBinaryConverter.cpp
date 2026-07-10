@@ -397,7 +397,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateAssetFileSize
         l_modelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_metallicTextureFilePath);
 
         // Meshlet本体
-        l_modelAssetFileSize += CalculateBinaryDataSize<Graphics::StaticModelRecord::ModelMeshlet>(l_modelMeshletData.m_meshletList.size());
+        l_modelAssetFileSize += CalculateBinaryDataSize<Struct::ModelMeshlet>(l_modelMeshletData.m_meshletList.size());
 
         // Meshlet内のLocalVertexIndexからStaticModelVertexIndexへ変換するIndex配列
         l_modelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMeshletData.m_uniqueVertexIndexList.size());
@@ -406,7 +406,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateAssetFileSize
         l_modelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMeshletData.m_primitiveIndexList.size());
 
         // Meshletカリング用Bounds
-        l_modelAssetFileSize += CalculateBinaryDataSize<Graphics::StaticModelRecord::ModelMeshletBounds>(l_modelMeshletData.m_meshletBoundsList.size());
+        l_modelAssetFileSize += CalculateBinaryDataSize<Struct::ModelMeshletBounds>(l_modelMeshletData.m_meshletBoundsList.size());
     }
 
     return l_modelAssetFileSize;

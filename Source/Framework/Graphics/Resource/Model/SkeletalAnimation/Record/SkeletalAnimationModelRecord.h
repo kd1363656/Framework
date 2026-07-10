@@ -6,6 +6,21 @@ namespace FWK::Graphics
 	{
 	public:
 
+		struct ModelVertex final
+		{
+			TypeAlias::Math::Vector3 m_position = {};
+			TypeAlias::Math::Vector3 m_normal   = {};
+			TypeAlias::Math::Vector4 m_tangent  = {};
+			TypeAlias::Math::Vector2 m_uv       = {};
+
+			std::uint32_t m_boneIndex0 = k_invalidBoneIndex;
+			std::uint32_t m_boneIndex1 = k_invalidBoneIndex;
+			std::uint32_t m_boneIndex2 = k_invalidBoneIndex;
+			std::uint32_t m_boneIndex3 = k_invalidBoneIndex;
+
+			TypeAlias::Math::Vector4 m_boneWeight = {};
+		};
+
 		struct ModelBone final
 		{
 			std::wstring m_boneName = {};
