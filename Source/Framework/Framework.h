@@ -171,7 +171,6 @@
 // ストラクチャードバッファー
 #include "Graphics/Resource/Buffer/StructuredBufferBase.h"
 #include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
-#include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicReadWriteStructuredBuffer.h"
 
 // テクスチャ
 #include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"
@@ -207,6 +206,11 @@
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 #include "Graphics/Resource/Model/Static/StaticModel.h"
+
+// モデル(SkeletalAnimation)
+#include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicReadWriteStructuredBuffer.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/Record/SkeletalAnimationModelRecord.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"

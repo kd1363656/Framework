@@ -12,7 +12,7 @@ namespace FWK
 			UINT m_height = k_defaultWindowHeight;
 		};
 
-		struct WindowResizeRequest final
+		struct ResizeRequest final
 		{
 			ClientSize m_clientSize = { k_invalidClientWidth, k_invalidClientHeight };
 
@@ -129,8 +129,8 @@ namespace FWK
 
 		RECT m_normalWindowRECT = {};
 
-		ClientSize			m_clientSize;
-		WindowResizeRequest m_resizeRequest;
+		ClientSize    m_clientSize;
+		ResizeRequest m_resizeRequest;
 
 		HWND m_hwnd;
 

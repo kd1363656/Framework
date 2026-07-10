@@ -23,7 +23,7 @@ namespace FWK::Graphics
 
 		void SaveCONFIG() const;
 
-		void ProcessWindowResizeRequest(const Window::WindowResizeRequest& a_windowResizeRequest);
+		void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest);
 
 		const auto& GetREFDevice() const { return m_device; }
 

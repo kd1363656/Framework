@@ -22,12 +22,6 @@ namespace FWK::Graphics
 			 ModelMaterialAssetData() = default;
 			~ModelMaterialAssetData() = default;
 
-			ModelMaterialAssetData(const ModelMaterialAssetData&)           = default;
-			ModelMaterialAssetData(	     ModelMaterialAssetData&&) noexcept = default;
-
-			ModelMaterialAssetData& operator=(const ModelMaterialAssetData&)		    = default;
-			ModelMaterialAssetData& operator=(	     ModelMaterialAssetData&&) noexcept = default;
-			 
 			TypeAlias::Math::Color m_baseColorFactor = k_defaultModelMaterialBaseColorFactor;
 
 			std::wstring m_baseColorTextureFilePath = {};

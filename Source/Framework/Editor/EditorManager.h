@@ -24,7 +24,7 @@ namespace FWK::Editor
 		
 		void SaveCONFIG() const;
 	
-		void ProcessWindowResizeRequest(const Window::WindowResizeRequest& a_windowResizeRequest);
+		void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest);
 
 		bool CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 

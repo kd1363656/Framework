@@ -859,6 +859,18 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured">
       <UniqueIdentifier>{a965f516-0ab3-4a4c-b739-de8fc8d4986d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation">
+      <UniqueIdentifier>{b14bb783-5c01-4935-8662-03e9b0e1d080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Record">
+      <UniqueIdentifier>{9cbdabde-06cc-4f4a-9f5e-341972ec5a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter">
+      <UniqueIdentifier>{2bdab43a-f7a1-4e7c-baed-5d28a2a8f522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary">
+      <UniqueIdentifier>{42f151fa-1abe-45ab-a47f-a4d86b7ab72f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1656,6 +1668,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicReadWriteStructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2080,6 +2098,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicReadWriteStructuredBuffer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Record</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
