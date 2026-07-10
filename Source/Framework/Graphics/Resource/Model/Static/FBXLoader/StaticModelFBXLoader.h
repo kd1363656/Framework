@@ -13,10 +13,10 @@ namespace FWK::Graphics
 
 	private:
 
-		bool ExtractModelData          (const ufbx_scene*    a_fbxScene,		    StaticModelRecord::StaticModelData&		         a_staticModelData)									               const;
-		bool ExtractModelMeshList      (const ufbx_node*     a_fbxNode,			    std::vector<StaticModelRecord::StaticModelMesh>& a_staticModelMeshList)								               const;
-		bool ExtractModelMeshByMaterial(const std::size_t&   a_materialIndex, const ufbx_node*							             a_fbxNode, StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
-		void ExtractModelMaterial      (const ufbx_material* a_fbxMaterial, StaticModelRecord::ModelMaterialAssetData&               a_modelMaterialAssetData)						                   const;
+		bool ExtractModelData          (const ufbx_scene*    a_fbxScene,		    StaticModelRecord::ModelData&              a_modelData)									         const;
+		bool ExtractModelMeshList      (const ufbx_node*     a_fbxNode,			    std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList)								         const;
+		bool ExtractModelMeshByMaterial(const std::size_t&   a_materialIndex, const ufbx_node*							       a_fbxNode, StaticModelRecord::ModelMesh& a_modelMesh) const;
+		void ExtractModelMaterial      (const ufbx_material* a_fbxMaterial,         Struct::ModelMaterialAssetData&            a_modelMaterialAssetData)						     const;
 
 		TypeAlias::Math::Color FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const;
 

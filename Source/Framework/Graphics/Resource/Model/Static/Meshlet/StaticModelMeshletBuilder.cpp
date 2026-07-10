@@ -6,24 +6,24 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData
 	{
 		// StaticModelRecord内の全StaticModelMeshに対して、
 		// MeshShader用のStaticModelMeshletDataを作成する
-		FWK_ASSERT_RETURN_VALUE_IF(!BuildModelMeshletData(l_modelMesh), "StaticModelMeshのStaticModelMeshletData作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!BuildModelMeshletData(l_modelMesh), "StaticModelMeshのModelMeshletData作成に失敗しました。", false);
 	}
 
 	return true;
 }
 
-bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const
+bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const
 {
-	// 頂点数とインデックス数のチェック
-	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_modelVertexList.size() == Converter::StaticModelBinaryConverter::k_emptyModelVertexCount, "StaticModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",         false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelMesh.m_indexList.size()       == Converter::StaticModelBinaryConverter::k_emptyModelIndexCount,  "StaticModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
+		// 頂点数とインデックス数のチェック
+	FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_modelVertexList.size() == Converter::StaticModelBinaryConverter::k_emptyModelVertexCount, "ModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",         false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.size()       == Converter::StaticModelBinaryConverter::k_emptyModelIndexCount,  "ModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 
 	// インデックスリストの総数を3で割った時に余りが0でないと、三角形を構成するインデックスリストとして不適切
-	FWK_ASSERT_RETURN_VALUE_IF((a_staticModelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのインデックス数が三角形単位ではないため、StaticModelMeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF((a_modelMesh.m_indexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "ModelMeshのインデックス数が三角形単位ではないため、ModelMeshletData作成に失敗しました。", false);
 
 	// メッシュレットデータの初期化
 	// 前回読み込んでいたモデルのメッシュレット情報が残るのを防ぐため
-	auto& l_modelMeshletData = a_staticModelMesh.m_modelMeshletData;
+	auto& l_modelMeshletData = a_modelMesh.m_modelMeshletData;
 
 	l_modelMeshletData.m_meshletList.clear          ();
 	l_modelMeshletData.m_uniqueVertexIndexList.clear();
@@ -34,9 +34,9 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 	// meshopt_buildMeshletsBound(インデックス数、
 	//						      Meshlet内の最大頂点数、
 	//							  Meshlet内の最大三角形数);
-	const auto l_maxMeshletCount = meshopt_buildMeshletsBound(a_staticModelMesh.m_indexList.size(), StaticModelMeshletBuilder::k_maxMeshletVertexCount, StaticModelMeshletBuilder::k_maxMeshletPrimitiveCount);
+	const auto l_maxMeshletCount = meshopt_buildMeshletsBound(a_modelMesh.m_indexList.size(), StaticModelMeshletBuilder::k_maxMeshletVertexCount, StaticModelMeshletBuilder::k_maxMeshletPrimitiveCount);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_maxMeshletCount == StaticModelMeshletBuilder::k_emptyMeshletCount, "Meshletの最大数が0のため、StaticModelMeshletData作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_maxMeshletCount == StaticModelMeshletBuilder::k_emptyMeshletCount, "Meshletの最大数が0のため、ModelMeshletData作成に失敗しました。", false);
 
 	std::vector<meshopt_Meshlet> l_meshoptMeshletList		 = {};
 	std::vector<uint8_t>		 l_meshoptPrimitiveIndexList = {};
@@ -57,7 +57,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 	// meshoptimizerは頂点座標をfloat*とstrideで受け取る
 	// reinterpret_castでModelVertex全体をfloat*に見せるより、
 	// 先頭頂点のm_position.xを直接渡す方が安全
-	const auto* l_vertexPositionData = &a_staticModelMesh.m_modelVertexList.front().m_position.x;
+	const auto* l_vertexPositionData = &a_modelMesh.m_modelVertexList.front().m_position.x;
 
 	// 最適化済みの頂点とインデックスからMeshShader用のStaticModelMeshletDataを作成する
 	// meshopt_buildMeshlets(出力Meshlet配列、
@@ -73,11 +73,11 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 	const auto l_meshletCount = meshopt_buildMeshlets(l_meshoptMeshletList.data(),
 													  l_modelMeshletData.m_uniqueVertexIndexList.data(),
 													  l_meshoptPrimitiveIndexList.data(),
-													  a_staticModelMesh.m_indexList.data(),
-													  a_staticModelMesh.m_indexList.size(),
+													  a_modelMesh.m_indexList.data(),
+													  a_modelMesh.m_indexList.size(),
 													  l_vertexPositionData,
-													  a_staticModelMesh.m_modelVertexList.size(),
-													  sizeof(StaticModelRecord::StaticModelVertex),
+													  a_modelMesh.m_modelVertexList.size(),
+													  sizeof(StaticModelRecord::ModelVertex),
 													  StaticModelMeshletBuilder::k_maxMeshletVertexCount,
 													  StaticModelMeshletBuilder::k_maxMeshletPrimitiveCount,
 													  k_defaultMeshletConeWeight);
@@ -142,8 +142,8 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::S
 																  l_meshoptPrimitiveIndexList.data()				+ l_meshoptMeshlet.triangle_offset,
 																  l_meshoptMeshlet.triangle_count,
 																  l_vertexPositionData,
-																  a_staticModelMesh.m_modelVertexList.size(),
-																  sizeof(StaticModelRecord::StaticModelVertex));
+																  a_modelMesh.m_modelVertexList.size(),
+																  sizeof(StaticModelRecord::ModelVertex));
 
 		// メッシュレットカリング用情報を格納
 		auto& l_modelMeshletBounds = l_modelMeshletData.m_meshletBoundsList[l_meshletIndex];

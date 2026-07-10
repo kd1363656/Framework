@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticMeshBody.h"
 
-bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
+bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
 {
 	TypeAlias::Math::Vector3    l_worldScale    = TypeAlias::Math::Vector3::Zero;
 	TypeAlias::Math::Quaternion l_worldRotation = TypeAlias::Math::Quaternion::Identity;
@@ -16,7 +16,7 @@ bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Graphics::StaticModel
 	FWK_ASSERT_RETURN_VALUE_IF(l_isWorldScaleInvalid, "StaticMeshBodyのWorldScaleに0に近い値が含まれているため、Bodyの作成に失敗しました。", false);
 
 	// StaticModelDataから、Scale未適用のMeshShapeを作成する
-	const auto& l_meshShape = CreateShape(a_staticModelData);
+	const auto& l_meshShape = CreateShape(a_modelData);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_meshShape, "StaticMeshBody用MeshShapeが無効なため、Bodyの作成に失敗しました。", false);
 
@@ -95,16 +95,16 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
 	return ApplyStaticBodyWorldTransform(l_worldRotation, l_worldPosition);
 }
 
-JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Graphics::StaticModelRecord::StaticModelData& a_staticModelData) const
+JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Graphics::StaticModelRecord::ModelData& a_modelData) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_staticModelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
+	FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
 
 	std::size_t l_totalVertexCount = 0ULL;
 	std::size_t l_totalIndexCount  = 0ULL;
 
 	// Material単位などで分割されている複数Meshを、
 	// 1つのJoltMeshShapeへまとめる
-	for (const auto& l_modelMesh : a_staticModelData.m_modelMeshList)
+	for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
 	{
 		l_totalVertexCount += l_modelMesh.m_modelVertexList.size();
 		l_totalIndexCount  += l_modelMesh.m_indexList.size      ();
@@ -120,7 +120,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 	l_triangleVertexList.reserve (l_totalVertexCount);
 	l_indexedTriangleList.reserve(l_totalIndexCount / Constant::k_triangleVertexCount);
 
-	for (const auto& l_modelMesh : a_staticModelData.m_modelMeshList)
+	for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
 	{
 		const auto& l_modelVertexList = l_modelMesh.m_modelVertexList;
 		const auto& l_modelIndexList  = l_modelMesh.m_indexList;

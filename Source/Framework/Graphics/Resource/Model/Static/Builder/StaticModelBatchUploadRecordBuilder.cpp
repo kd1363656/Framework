@@ -32,10 +32,10 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 																					  const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
 																							std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
 																							TypeAlias::CBVSRVUAVDescriptorPool&		                  a_cbvSRVUAVDescriptorPool,
-																							StaticModelRecord::StaticModelMesh&				          a_staticModelMesh) const
+																							StaticModelRecord::ModelMesh&				              a_modelMesh) const
 {
-	const auto& l_modelMeshletData     = a_staticModelMesh.m_modelMeshletData;
-		  auto& l_modelMeshRuntimeData = a_staticModelMesh.m_modelMeshRuntimeData;
+	const auto& l_modelMeshletData     = a_modelMesh.m_modelMeshletData;
+		  auto& l_modelMeshRuntimeData = a_modelMesh.m_modelMeshRuntimeData;
 
 	auto& l_vertexBuffer            = l_modelMeshRuntimeData.m_vertexBuffer;
 	auto& l_meshletBuffer           = l_modelMeshRuntimeData.m_meshletBuffer;
@@ -44,7 +44,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 	auto& l_meshletBoundsBuffer     = l_modelMeshRuntimeData.m_meshletBoundsBuffer;
 
 	// 頂点バッファーストラクチャードバッファーの作成
-	FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_staticModelMesh.m_modelVertexList,
+	FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_modelMesh.m_modelVertexList,
 													  a_device,
 													  a_gpuMemoryAllocator,
 													  a_bufferUploadCommandList,
@@ -92,10 +92,10 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateModelBatchUploadR
 	return true;
 }
 
-void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<StaticModelRecord::StaticModelMesh>&a_staticModelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
+void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 {
 	// StructuredBuffer全てのSRVを解放する
-	for (auto& l_modelMesh : a_staticModelMeshList)
+	for (auto& l_modelMesh : a_modelMeshList)
 	{
 		auto& l_modelMeshRuntimeData = l_modelMesh.m_modelMeshRuntimeData;
 

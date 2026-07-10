@@ -10,8 +10,8 @@ namespace FWK::Struct
 
 		TypeAlias::Math::Color m_baseColorFactor = Constant::k_whiteColor;
 
-		float				       m_roughnessFactor					= Graphics::StaticModelRecord::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor;
-		float					   m_metallicFactor					    = Graphics::StaticModelRecord::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor;
+		float				       m_roughnessFactor					= Struct::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor;
+		float					   m_metallicFactor					    = Struct::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor;
 		TypeAlias::DescriptorIndex m_baseColorTextureSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::DescriptorIndex m_normalTextureSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 

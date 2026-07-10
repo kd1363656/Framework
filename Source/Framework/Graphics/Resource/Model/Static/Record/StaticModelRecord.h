@@ -6,67 +6,7 @@ namespace FWK::Graphics
 	{
 	public:
 
-		struct ModelMaterialAssetData final
-		{
-			static constexpr TypeAlias::Math::Color k_defaultModelMaterialBaseColorFactor =
-			{
-				1.0F,
-				1.0F,
-				1.0F,
-				1.0F
-			};
-
-			static constexpr float k_defaultModelMaterialRoughnessFactor = 1.0F;
-			static constexpr float k_defaultModelMaterialMetallicFactor  = 0.0F;
-
-			 ModelMaterialAssetData() = default;
-			~ModelMaterialAssetData() = default;
-
-			TypeAlias::Math::Color m_baseColorFactor = k_defaultModelMaterialBaseColorFactor;
-
-			std::wstring m_baseColorTextureFilePath = {};
-			std::wstring m_normalTextureFilePath    = {};
-			std::wstring m_roughnessTextureFilePath = {};
-			std::wstring m_metallicTextureFilePath  = {};
-
-			float m_roughnessFactor = k_defaultModelMaterialRoughnessFactor;
-			float m_metallicFactor  = k_defaultModelMaterialMetallicFactor;
-		};
-
-		struct ModelMaterialRuntimeData final
-		{
-			 ModelMaterialRuntimeData() = default;
-			~ModelMaterialRuntimeData() = default;
-
-			ModelMaterialRuntimeData(const ModelMaterialRuntimeData&)			= delete;
-			ModelMaterialRuntimeData(	   ModelMaterialRuntimeData&&) noexcept = default;
-
-			ModelMaterialRuntimeData& operator=(const ModelMaterialRuntimeData&)		   = delete;
-			ModelMaterialRuntimeData& operator=(	  ModelMaterialRuntimeData&&) noexcept = default;
-
-			// 全てのテクスチャをインスタンス化する前提だが、メモリ共有を行うためstd::shared_ptrで保持する
-			std::shared_ptr<Graphics::Texture> m_baseColorTexture = nullptr;
-			std::shared_ptr<Graphics::Texture> m_normalTexture	  = nullptr;
-			std::shared_ptr<Graphics::Texture> m_roughnessTexture = nullptr;
-			std::shared_ptr<Graphics::Texture> m_metallicTexture  = nullptr;
-		};
-
-		struct ModelMaterial final
-		{
-			 ModelMaterial() = default;
-			~ModelMaterial() = default;
-
-			ModelMaterial(const ModelMaterial&)           = delete;
-			ModelMaterial(	    ModelMaterial&&) noexcept = default;
-
-			ModelMaterial& operator=(const ModelMaterial&)			 = delete;
-			ModelMaterial& operator=(	   ModelMaterial&&) noexcept = default;
-
-			ModelMaterialAssetData   m_modelMaterialAssetData   = {};
-			ModelMaterialRuntimeData m_modelMaterialRuntimeData = {};
-		};
-
-		struct StaticModelVertex final
+		struct ModelVertex final
 		{
 			TypeAlias::Math::Vector3 m_position = {};
 			TypeAlias::Math::Vector3 m_normal   = {};
@@ -75,7 +15,7 @@ namespace FWK::Graphics
 		};
 
 		// Meshlet1個分の参照範囲情報
-		struct StaticModelMeshlet final
+		struct ModelMeshlet final
 		{
 			static constexpr std::uint32_t k_initialMeshletVertexOffset   = 0U;
 			static constexpr std::uint32_t k_initialMeshletTriangleOffset = 0U;
@@ -100,7 +40,7 @@ namespace FWK::Graphics
 
 		// Meshlet 1個分のカリング用境界情報
 		// Meshlet単位のFrustumCullingやBackface Cone Cullingで使用する
-		struct StaticModelMeshletBounds final
+		struct ModelMeshletBounds final
 		{
 			static constexpr float k_initialMeshletBoundsRadius     = 0.0F;
 			static constexpr float k_initialMeshletBoundsConeCutoff = 0.0F;
@@ -133,11 +73,11 @@ namespace FWK::Graphics
 
 		// 1つのModelMeshが持つMeshlet関連データ一式
 		// ※ MeshShader描画では、このデータをGPU Buffer化してShader側から参照する
-		struct StaticModelMeshletData final
+		struct ModelMeshletData final
 		{
 			// Meshlet一覧
 			// 1要素がMeshlet1個分の参照範囲情報を表す
-			std::vector<StaticModelMeshlet> m_meshletList = {};
+			std::vector<ModelMeshlet> m_meshletList = {};
 
 			// 各Meshletが使用する元頂点Index一覧
 			// Meshlet内のLocalVertexIndexから、ModelVertexList上の頂点Indexへ変換するために使用
@@ -151,19 +91,19 @@ namespace FWK::Graphics
 
 			// Meshletごとのカリング用境界情報
 			// m_meshletList[i]に対するBoundsはm_meshletBoundsList[i]に入る
-			std::vector<StaticModelMeshletBounds> m_meshletBoundsList = {};
+			std::vector<ModelMeshletBounds> m_meshletBoundsList = {};
 		};
 
-		struct StaticModelMeshRuntimeData final
+		struct ModelMeshRuntimeData final
 		{
-			 StaticModelMeshRuntimeData() = default;
-			~StaticModelMeshRuntimeData() = default;
+			 ModelMeshRuntimeData() = default;
+			~ModelMeshRuntimeData() = default;
 
-			StaticModelMeshRuntimeData(const StaticModelMeshRuntimeData&)			= delete;
-			StaticModelMeshRuntimeData(	     StaticModelMeshRuntimeData&&) noexcept = default;
+			ModelMeshRuntimeData(const ModelMeshRuntimeData&)			= delete;
+			ModelMeshRuntimeData(	   ModelMeshRuntimeData&&) noexcept = default;
 
-			StaticModelMeshRuntimeData& operator=(const StaticModelMeshRuntimeData&)		   = delete;
-			StaticModelMeshRuntimeData& operator=(      StaticModelMeshRuntimeData&&) noexcept = default;
+			ModelMeshRuntimeData& operator=(const ModelMeshRuntimeData&)		   = delete;
+			ModelMeshRuntimeData& operator=(      ModelMeshRuntimeData&&) noexcept = default;
 
 			// MeshShaderで頂点情報を参照するためのStructuredBuffer
 			Graphics::StaticStructuredBuffer m_vertexBuffer = {};
@@ -181,43 +121,43 @@ namespace FWK::Graphics
 			Graphics::StaticStructuredBuffer m_meshletBoundsBuffer = {};
 		};
 
-		struct StaticModelMesh final
+		struct ModelMesh final
 		{
-			 StaticModelMesh() = default;
-			~StaticModelMesh() = default;
+			 ModelMesh() = default;
+			~ModelMesh() = default;
 
-			StaticModelMesh(const StaticModelMesh&)			  = delete;
-			StaticModelMesh(	  StaticModelMesh&&) noexcept = default;
+			ModelMesh(const ModelMesh&)			  = delete;
+			ModelMesh(      ModelMesh&&) noexcept = default;
 
-			StaticModelMesh& operator=(const StaticModelMesh&)			 = delete;
-			StaticModelMesh& operator=(	     StaticModelMesh&&) noexcept = default;
+			ModelMesh& operator=(const ModelMesh&)			 = delete;
+			ModelMesh& operator=(      ModelMesh&&) noexcept = default;
 
-			std::vector<StaticModelVertex> m_modelVertexList = {};
-			std::vector<std::uint32_t>     m_indexList	     = {};
+			std::vector<ModelVertex>   m_modelVertexList = {};
+			std::vector<std::uint32_t> m_indexList	     = {};
 
-			ModelMaterial m_modelMaterial = {};
+			Struct::ModelMaterial m_modelMaterial = {};
 
 			// MeshShaderで描画するためのMeshletData
 			// FBX読み込み後に、meshoptimizerで作成し、.asset保存/読み込み対象にする
-			StaticModelMeshletData m_modelMeshletData = {};
+			ModelMeshletData m_modelMeshletData = {};
 
 			// MeshShader描画時にGPU側で参照するBufferResource群
 			// .asset保存対象ではなく、実行時にModelDataから作成する
-			StaticModelMeshRuntimeData m_modelMeshRuntimeData = {};
+			ModelMeshRuntimeData m_modelMeshRuntimeData = {};
 		};
 
-		struct StaticModelData final
+		struct ModelData final
 		{
-			 StaticModelData() = default;
-			~StaticModelData() = default;
+			 ModelData() = default;
+			~ModelData() = default;
 
-			StaticModelData(const StaticModelData&)			  = delete;
-			StaticModelData(	  StaticModelData&&) noexcept = default;
+			ModelData(const ModelData&)			  = delete;
+			ModelData(      ModelData&&) noexcept = default;
 
-			StaticModelData& operator=(const StaticModelData&)			 = delete;
-			StaticModelData& operator=(	     StaticModelData&&) noexcept = default;
+			ModelData& operator=(const ModelData&)			 = delete;
+			ModelData& operator=(      ModelData&&) noexcept = default;
 
-			std::vector<StaticModelMesh> m_modelMeshList = {};
+			std::vector<ModelMesh> m_modelMeshList = {};
 		};
 
 	public:
@@ -233,7 +173,7 @@ namespace FWK::Graphics
 
 		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 
-		void SetModelData(StaticModelData&& a_set) { m_modelData = std::move(a_set); }
+		void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
 
 		const auto& GetREFModelData() const { return m_modelData; }
 
@@ -241,6 +181,6 @@ namespace FWK::Graphics
 
 	private:
 
-		StaticModelData m_modelData = {};
+		ModelData m_modelData = {};
 	};
 }

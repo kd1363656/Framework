@@ -18,7 +18,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool BuildModelMeshletData(Graphics::StaticModelRecord::StaticModelMesh& a_staticModelMesh) const;
+		bool BuildModelMeshletData(Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const;
 
 		bool PackPrimitiveIndexList(const std::vector<std::uint8_t>& a_sourcePrimitiveIndexList, const std::size_t& a_usedPrimitiveIndexCount, std::vector<std::uint32_t>& a_packedPrimitiveIndexList) const;
 
