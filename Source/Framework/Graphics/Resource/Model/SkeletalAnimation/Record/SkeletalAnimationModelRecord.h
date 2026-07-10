@@ -57,11 +57,11 @@ namespace FWK::Graphics
 
 		bool ReserveRelease(const UINT64&, ResourceReleaseContext&) override;
 
-		void SetAnimationModelData(ModelData&& a_set) { m_animationModelData = std::move(a_set); }
+		void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
 
-		const auto& GetREFAnimationData() const { return m_animationModelData; }
+		const auto& GetREFModelData() const { return m_modelData; }
 
-		auto& GetMutableREFAnimationData() { return m_animationModelData; }
+		auto& GetMutableREFModelData() { return m_modelData; }
 
 		static constexpr float k_initialAnimationTimeSecond     = 0.0F;
 		static constexpr float k_initialAnimationDurationSecond = 0.0F;
@@ -71,6 +71,6 @@ namespace FWK::Graphics
 
 	private:
 
-		ModelData m_animationModelData = {};
+		ModelData m_modelData = {};
 	};
 }
