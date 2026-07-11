@@ -30,6 +30,8 @@ namespace FWK::Graphics
 
 		const auto& GetREFFence() const { return m_fence; }
 
+		static constexpr UINT64 k_unusedFenceValue = 0ULL;
+
 	private:
 
 		TypeAlias::ComPtr<ID3D12Fence1> m_fence;

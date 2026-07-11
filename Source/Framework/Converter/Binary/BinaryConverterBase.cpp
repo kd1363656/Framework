@@ -1,6 +1,6 @@
-﻿#include "BinaryFileConverterBase.h"
+﻿#include "BinaryConverterBase.h"
 
-FWK::Converter::BinaryFileConverterBase::BinaryFileConverterBase() : 
+FWK::Converter::BinaryConverterBase::BinaryConverterBase() : 
 	m_fileHandle       (INVALID_HANDLE_VALUE),
 	m_fileMappingHandle(nullptr),
 
@@ -10,14 +10,14 @@ FWK::Converter::BinaryFileConverterBase::BinaryFileConverterBase() :
 
 	m_isWritable(k_isInitialWritable)
 {}
-FWK::Converter::BinaryFileConverterBase::~BinaryFileConverterBase()
+FWK::Converter::BinaryConverterBase::~BinaryConverterBase()
 {
 	// 最後にクラス自体が破棄されるときにも、
 	// 開いたままのメモリマップ・ハンドル、ファイルハンドルを必ず解放するため
 	DestroyMemoryMappedFile();
 }
 
-bool FWK::Converter::BinaryFileConverterBase::IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const
+bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const
 {
 	std::error_code l_sourceErrorCode = {};
 	std::error_code l_binaryErrorCode = {};
@@ -34,12 +34,12 @@ bool FWK::Converter::BinaryFileConverterBase::IsUpdatedSourceFile(const std::fil
 	return l_binaryLastWriteTime <= l_sourceLastWriteTime;
 }
 
-std::filesystem::path FWK::Converter::BinaryFileConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
+std::filesystem::path FWK::Converter::BinaryConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
 {
 	return Utility::CreateFilePathByReplaceExtension(a_filePath, k_lowerAssetExtension);
 }
 
-bool FWK::Converter::BinaryFileConverterBase::CreateReadMemoryMappedFile(const std::filesystem::path& a_filePath)
+bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::filesystem::path& a_filePath)
 {
 	// 既に別のファイルを開いていた場合に備えて前のマッピングを破棄する
 	DestroyMemoryMappedFile();
@@ -148,7 +148,7 @@ bool FWK::Converter::BinaryFileConverterBase::CreateReadMemoryMappedFile(const s
 
 	return true;
 }
-bool FWK::Converter::BinaryFileConverterBase::CreateWriteMemoryMappedFile(const std::filesystem::path& a_filePath, const std::uint64_t& a_fileSize)
+bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std::filesystem::path& a_filePath, const std::uint64_t& a_fileSize)
 {
 	// 既に別のファイルを開いていた場合に備えて前のマッピングを破棄する
 	DestroyMemoryMappedFile();
@@ -272,7 +272,7 @@ bool FWK::Converter::BinaryFileConverterBase::CreateWriteMemoryMappedFile(const 
 	return true;
 }
 
-void FWK::Converter::BinaryFileConverterBase::DestroyMemoryMappedFile()
+void FWK::Converter::BinaryConverterBase::DestroyMemoryMappedFile()
 {
 	if (m_mappedData)
 	{
@@ -318,7 +318,7 @@ void FWK::Converter::BinaryFileConverterBase::DestroyMemoryMappedFile()
 	m_isWritable     = k_isInitialWritable;
 }
 
-bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t & a_memoryReadOffset) const
+bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t & a_memoryReadOffset) const
 {
 	if (a_wStringBinaryFileSize == k_emptyReadDataSize) 
 	{
@@ -339,7 +339,7 @@ bool FWK::Converter::BinaryFileConverterBase::TryReadWStringBinaryData(const std
 	return true;
 }
 
-void FWK::Converter::BinaryFileConverterBase::WriteWStringBinaryData(const std::wstring & a_wString, std::uint64_t & a_memoryWriteOffset) const
+void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstring & a_wString, std::uint64_t & a_memoryWriteOffset) const
 {
 	if (a_wString.empty()) { return; }
 
@@ -349,7 +349,7 @@ void FWK::Converter::BinaryFileConverterBase::WriteWStringBinaryData(const std::
 	// WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
 	WriteBinaryData(a_wString.size(), a_wString.data(), a_memoryWriteOffset);
 }
-void FWK::Converter::BinaryFileConverterBase::WriteStringBinaryData(const std::string & a_string, std::uint64_t & a_memoryWriteOffset) const
+void FWK::Converter::BinaryConverterBase::WriteStringBinaryData(const std::string & a_string, std::uint64_t & a_memoryWriteOffset) const
 {
 	if (a_string.empty()) { return; }
 
@@ -360,20 +360,20 @@ void FWK::Converter::BinaryFileConverterBase::WriteStringBinaryData(const std::s
 	WriteBinaryData(a_string.size(), a_string.data(), a_memoryWriteOffset);
 }
 
-std::uint64_t FWK::Converter::BinaryFileConverterBase::CalculateWStringBinaryFileSize(const std::wstring& a_wString) const
+std::uint64_t FWK::Converter::BinaryConverterBase::CalculateWStringBinaryFileSize(const std::wstring& a_wString) const
 {
 	// std::wstringの文字数を、バイナリファイルへ書き込むバイト数に変換する
 	// 終端文字は保存しないため、size()分のwchar_tだけをファイルサイズとして計算する
 	return sizeof(wchar_t) * a_wString.size();
 }
-std::uint64_t FWK::Converter::BinaryFileConverterBase::CalculateStringBinaryFileSize(const std::string& a_string) const
+std::uint64_t FWK::Converter::BinaryConverterBase::CalculateStringBinaryFileSize(const std::string& a_string) const
 {
 	// std::stringのはchar配列なので、size()がそのまま保存バイト数
 	// 終端文字'\0'は保存しない
 	return a_string.size();
 }
 
-bool FWK::Converter::BinaryFileConverterBase::CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
+bool FWK::Converter::BinaryConverterBase::CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
 {
 	// 現在の読み込み位置がファイルサイズを超えている場合、
 	// これ以上安全に読み込めない
@@ -386,7 +386,7 @@ bool FWK::Converter::BinaryFileConverterBase::CanReadBinaryData(const std::uint6
 	return a_readDataSize <= l_remainingDataSize;
 }
 
-void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const
+void FWK::Converter::BinaryConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const
 {
 	if (a_wStringBinaryFileSize == k_emptyReadDataSize)
 	{
@@ -407,7 +407,7 @@ void FWK::Converter::BinaryFileConverterBase::ReadWStringBinaryData(const std::u
 	// ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
 	ReadBinaryData(l_stringLength, a_memoryReadOffset, a_wString.data());
 }
-void FWK::Converter::BinaryFileConverterBase::ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_string, std::uint64_t& a_memoryReadOffset) const
+void FWK::Converter::BinaryConverterBase::ReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_string, std::uint64_t& a_memoryReadOffset) const
 {
 	if (a_stringBinaryFileSize == k_emptyReadDataSize)
 	{

@@ -192,7 +192,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 	const auto& l_textureAssetFileSize = CalculateTextureAssetFileSize(a_scratchImage);
 
 	// 書き込み用メモリマップドファイルの作成
-	FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryFileConverterBase::k_emptyAssetFileSize,	     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	     false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryConverterBase::k_emptyAssetFileSize,	         "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",	     false);
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
 	auto l_memoryWriteOffset = k_initialMemoryWriteOffset;
@@ -321,11 +321,11 @@ std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileS
 
 	const auto* l_imageList = a_scratchImage.GetImages();
 
-	if (!l_imageList) { return BinaryFileConverterBase::k_emptyAssetFileSize; }
+	if (!l_imageList) { return BinaryConverterBase::k_emptyAssetFileSize; }
 
 	const auto& l_imageCount = a_scratchImage.GetImageCount();
 
-	if (l_imageCount == k_emptyTextureSubresourceCount) { return BinaryFileConverterBase::k_emptyAssetFileSize; }
+	if (l_imageCount == k_emptyTextureSubresourceCount) { return BinaryConverterBase::k_emptyAssetFileSize; }
 
 	for (std::uint64_t l_imageIndex = 0ULL; l_imageIndex < l_imageCount; ++l_imageIndex)
 	{

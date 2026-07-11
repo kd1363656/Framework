@@ -2,7 +2,7 @@
 
 bool FWK::Graphics::StaticModelRecord::ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Constant::k_unusedFenceValue, "FenceValueが無効のため、StaticModelRecordの遅延解放Queue登録に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Fence::k_unusedFenceValue, "FenceValueが無効のため、StaticModelRecordの遅延解放Queue登録に失敗しました。", false);
 
 	for (auto& l_modelMesh : m_modelData.m_modelMeshList)
 	{

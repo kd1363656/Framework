@@ -9,9 +9,9 @@ void FWK::Graphics::LightSystem::ApplyDefaultSettings()
 
 	auto& l_directionalLight = m_cbLightPass->m_directionalLight;
 
-	l_directionalLight.m_direction = Struct::DirectionalLight::k_defaultDirectionalLightDirection;
-	l_directionalLight.m_color     = Struct::DirectionalLight::k_defaultDirectionalLightColor;
-	l_directionalLight.m_intensity = Struct::DirectionalLight::k_defaultDirectionalLightIntensity;
+	l_directionalLight.m_direction = Constant::k_defaultDirectionalLightDirection;
+	l_directionalLight.m_color     = Constant::k_defaultDirectionalLightColor;
+	l_directionalLight.m_intensity = Constant::k_defaultDirectionalLightIntensity;
 
 	l_directionalLight.m_direction.Normalize();
 
@@ -21,8 +21,8 @@ void FWK::Graphics::LightSystem::ApplyDefaultSettings()
 
 	auto& l_ambientLight = m_cbLightPass->m_ambientLight;
 
-	l_ambientLight.m_color	   = Struct::AmbientLight::k_defaultAmbientLightColor;
-	l_ambientLight.m_intensity = Struct::AmbientLight::k_defaultAmbientLightIntensity;
+	l_ambientLight.m_color	   = Constant::k_defaultAmbientLightColor;
+	l_ambientLight.m_intensity = Constant::k_defaultAmbientLightIntensity;
 
 	RegisterLightPassConstantBufferSource();
 }

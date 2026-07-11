@@ -65,15 +65,15 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::ResourceReleaseContext::ReleaseRe
 
 bool FWK::Graphics::ResourceReleaseContext::IsValidGPUResourceReleaseRecord(const GPUResourceReleaseRecord& a_releaseRecord) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!a_releaseRecord.m_gpuResource.m_resource,                           "無効なリソースを解放しようとしています。",                                                   false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_releaseRecord.m_gpuResource.m_resource,                        "無効なリソースを解放しようとしています。",                                                   false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
 	return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::IsValidDescriptorIndexReleaseRecord(const DescriptorIndexReleaseRecord& a_releaseRecord) const
 {
 	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_descriptorIndex   == DescriptorHeap::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",                                 false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Constant::k_unusedFenceValue,             "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue,                "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
 	return true;
 }

@@ -14,7 +14,7 @@ bool FWK::Graphics::StaticModelMeshletBuilder::BuildStaticModelRecordMeshletData
 
 bool FWK::Graphics::StaticModelMeshletBuilder::BuildModelMeshletData(Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const
 {
-		// 頂点数とインデックス数のチェック
+	// 頂点数とインデックス数のチェック
 	FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "ModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",         false);
 	FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.size()       == Constant::k_emptyModelIndexCount,  "ModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 

@@ -340,7 +340,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h" />
-    <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h" />
+    <ClInclude Include="Source\Framework\Converter\Binary\BinaryConverterBase.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedAssetRecordBaseConcept.h" />
@@ -352,10 +352,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelBinaryConverterConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
@@ -527,6 +527,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.h" />
@@ -615,7 +616,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp" />
-    <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp" />
+    <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
@@ -696,6 +697,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.cpp" />

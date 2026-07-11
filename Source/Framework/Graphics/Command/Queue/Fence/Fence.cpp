@@ -5,7 +5,7 @@ FWK::Graphics::Fence::Fence() :
 
 	m_event(nullptr),
 
-	m_lastSignaledFenceValue(Constant::k_unusedFenceValue)
+	m_lastSignaledFenceValue(k_unusedFenceValue)
 {}
 FWK::Graphics::Fence::~Fence() 
 {
@@ -81,7 +81,7 @@ void FWK::Graphics::Fence::WaitForFenceValueIfNeeded(const UINT64& a_fenceValue)
 bool FWK::Graphics::Fence::IsFenceValueCompleted(const UINT64& a_fenceValue) const
 {
 	// フェンス値が未使用の値なら、フェンス完了確認は不要なのでtrueを返す
-	if (a_fenceValue == Constant::k_unusedFenceValue) { return true; }
+	if (a_fenceValue == k_unusedFenceValue) { return true; }
 
 	// フェンスが存在しなければreturn
 	FWK_ASSERT_RETURN_VALUE_IF(!m_event, "フェンスが作成されておらず、フェンス完了確認処理に失敗しました。", false);
@@ -91,7 +91,7 @@ bool FWK::Graphics::Fence::IsFenceValueCompleted(const UINT64& a_fenceValue) con
 
 UINT64 FWK::Graphics::Fence::FetchVALCompletedFenceValue() const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!m_fence, "フェンスの作成に失敗しており完了フェンス値の取得に失敗しました。", Constant::k_unusedFenceValue);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_fence, "フェンスの作成に失敗しており完了フェンス値の取得に失敗しました。", k_unusedFenceValue);
 
 	return m_fence->GetCompletedValue();
 }

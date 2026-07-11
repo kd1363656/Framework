@@ -86,7 +86,7 @@ bool FWK::Graphics::StructuredBufferBase::ReserveReleaseCurrentResource(const UI
 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_bufferGPUResource.m_resource,                                  "StructuredBufferのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "StructuredBufferのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,             "FenceValueが無効のため、StructuredBufferの遅延解放登録に失敗しました。",         false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Fence::k_unusedFenceValue,                "FenceValueが無効のため、StructuredBufferの遅延解放登録に失敗しました。",         false);
 
 	// GPUリソース、ディスクリプタインデックスの適切なタイミングでの解放を予約
 	ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};

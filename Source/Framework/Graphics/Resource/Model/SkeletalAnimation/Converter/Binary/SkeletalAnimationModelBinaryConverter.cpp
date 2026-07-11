@@ -65,7 +65,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 		return false;
 	}
 
-	// Boneが0このSkeltalAnimationModelは成立しない
+	// Boneが0個のSkeletalAnimationModelは成立しない
 	if (l_modelBinaryHeader.m_boneCount == k_emptyBoneCount)
 	{
 		FailLoadAsset(l_modelData);
@@ -78,120 +78,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
 	for (auto& l_modelMesh : l_modelData.m_modelMeshList)
 	{
-		ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
-
-		if (!TryReadSingleBinaryData(l_modelMeshBinaryHeader, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// 頂点情報を読み込む
-		if (!TryReadBinaryDataList(l_modelMeshBinaryHeader.m_vertexCount, l_modelMesh.m_modelVertexList, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// インデックス情報を読み込む
-		if (!TryReadBinaryDataList(l_modelMeshBinaryHeader.m_indexCount, l_modelMesh.m_indexList, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		auto& l_modelMaterialAssetData = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-
-		// ベースカラー倍率の読み込み
-		if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_baseColorFactor, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// ラフネス倍率の読み込み
-		if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_roughnessFactor, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// メタリック倍率の読み込み
-		if (!TryReadSingleBinaryData(l_modelMaterialAssetData.m_metallicFactor, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// ベースカラーテクスチャファイルパスの読み込み
-		if (!TryReadWStringBinaryData(l_modelMeshBinaryHeader.m_baseColorTextureFilePathSize, l_modelMaterialAssetData.m_baseColorTextureFilePath, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// 法線テクスチャファイルパスの読み込み
-		if (!TryReadWStringBinaryData(l_modelMeshBinaryHeader.m_normalTextureFilePathSize, l_modelMaterialAssetData.m_normalTextureFilePath, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// ラフネステクスチャファイルパスの読み込み
-		if (!TryReadWStringBinaryData(l_modelMeshBinaryHeader.m_roughnessTextureFilePathSize, l_modelMaterialAssetData.m_roughnessTextureFilePath, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// メタリックテクスチャファイルパスの読み込み
-		if (!TryReadWStringBinaryData(l_modelMeshBinaryHeader.m_metallicTextureFilePathSize, l_modelMaterialAssetData.m_metallicTextureFilePath, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// Texture本体は.assetに保存しない
-		l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData = {};
-
-		auto& l_modelMeshletData = l_modelMesh.m_modelMeshletData;
-
-		// メッシュレットリストの読み込み
-		if (!TryReadBinaryDataList(l_modelMeshBinaryHeader.m_meshletCount, l_modelMeshletData.m_meshletList, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// メッシュレットリストの読み込み
-		if (!TryReadBinaryDataList(l_modelMeshBinaryHeader.m_uniqueVertexIndexCount, l_modelMeshletData.m_uniqueVertexIndexList, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// プリミティブインデックスリストの読み込み
-		if (!TryReadBinaryDataList(l_modelMeshBinaryHeader.m_primitiveIndexCount, l_modelMeshletData.m_primitiveIndexList, l_memoryReadOffset))
-		{
-			FailLoadAsset(l_modelData);
-
-			return false;
-		}
-
-		// メッシュレットバウンドリストの読み込み
-		if (!TryReadBinaryDataList(l_modelMeshBinaryHeader.m_meshletBoundsCount, l_modelMeshletData.m_meshletBoundsList, l_memoryReadOffset))
+		if (!TryReadModelMeshBinaryData(l_modelMesh, l_memoryReadOffset))
 		{
 			FailLoadAsset(l_modelData);
 
@@ -296,7 +183,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 	}
 
 	// 最後まで読み込んだ位置がHeaderのファイルサイズと一致しないなら、
-	// 読み込み純化ファイルサイズ計算が間違っている
+	// 読み込み順かファイルサイズ計算が間違っている
 	if (l_memoryReadOffset != l_modelBinaryHeader.m_fileSize)
 	{
 		FailLoadAsset(l_modelData);
@@ -337,31 +224,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
 
 	for (const auto& l_modelMesh : l_modelData.m_modelMeshList)	
 	{
-		const auto& l_modelMeshBinaryHeader = CreateModelMeshBinaryHeader(l_modelMesh);
-
-		WriteBinaryData(k_singleBinaryElementCount,            &l_modelMeshBinaryHeader,              l_memoryWriteOffset);
-		WriteBinaryData(l_modelMeshBinaryHeader.m_vertexCount,  l_modelMesh.m_modelVertexList.data(), l_memoryWriteOffset);
-		WriteBinaryData(l_modelMeshBinaryHeader.m_indexCount,   l_modelMesh.m_indexList.data(),       l_memoryWriteOffset);
-
-		const auto& l_modelMaterialAssetData = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-
-		WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_baseColorFactor, l_memoryWriteOffset);
-		WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_roughnessFactor, l_memoryWriteOffset);
-		WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_metallicFactor,  l_memoryWriteOffset);
-
-		WriteWStringBinaryData(l_modelMaterialAssetData.m_baseColorTextureFilePath, l_memoryWriteOffset);
-		WriteWStringBinaryData(l_modelMaterialAssetData.m_normalTextureFilePath,    l_memoryWriteOffset);
-		WriteWStringBinaryData(l_modelMaterialAssetData.m_roughnessTextureFilePath, l_memoryWriteOffset);
-		WriteWStringBinaryData(l_modelMaterialAssetData.m_metallicTextureFilePath,  l_memoryWriteOffset);
-
-		const auto& l_modelMeshletData = l_modelMesh.m_modelMeshletData;
-
-		WriteBinaryData(l_modelMeshBinaryHeader.m_meshletCount,           l_modelMeshletData.m_meshletList.data          (), l_memoryWriteOffset);
-		WriteBinaryData(l_modelMeshBinaryHeader.m_uniqueVertexIndexCount, l_modelMeshletData.m_uniqueVertexIndexList.data(), l_memoryWriteOffset);
-		WriteBinaryData(l_modelMeshBinaryHeader.m_primitiveIndexCount,    l_modelMeshletData.m_primitiveIndexList.data   (), l_memoryWriteOffset);
-		WriteBinaryData(l_modelMeshBinaryHeader.m_meshletBoundsCount,     l_modelMeshletData.m_meshletBoundsList.data    (), l_memoryWriteOffset);
-
-
+		WriteModelMeshBinaryData(l_modelMesh, l_memoryWriteOffset);
 	}
 
 	// BoneListを書き込む
@@ -419,22 +282,6 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
 	return true;
 }
 
-bool FWK::Converter::SkeletalAnimationModelBinaryConverter::CanLoadAsset(const std::filesystem::path& a_filePath) const
-{
-	// 元となるFBXが存在しない場合は、.assetの正当性を判断できないので読み込まない
-	if (!Utility::CanLoadFilePath(a_filePath, Graphics::FBXModelLoaderBase::k_lowerFBXExtension)) { return false; }
-
-	const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath);
-
-	// .assetが存在しないなら、FBXから読み込んで生成する
-	if (!Utility::CanLoadFilePath(l_modelAssetFilePath, BinaryFileConverterBase::k_lowerAssetExtension)) { return false; }
-
-	// FBXが.assetより新しいなら、古い.assetは使わない
-	if (IsUpdatedSourceFile(a_filePath, l_modelAssetFilePath)) { return false; }
-
-	return true;
-}
-
 void FWK::Converter::SkeletalAnimationModelBinaryConverter::FailLoadAsset(Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData)
 {
 	// 中途半端に読み込んだデータが残らないように空にする
@@ -458,29 +305,6 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBinaryHeader FWK::Co
 	l_modelBinaryHeader.m_motionSequenceCount = a_modelData.m_motionSequenceList.size();
 
 	return l_modelBinaryHeader;
-}
-
-FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelMeshBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelMeshBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
-{
-	ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
-
-	const auto& l_modelMaterialAssetData = a_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-	const auto& l_modelMeshletData       = a_modelMesh.m_modelMeshletData;
-
-	l_modelMeshBinaryHeader.m_vertexCount = a_modelMesh.m_modelVertexList.size();
-	l_modelMeshBinaryHeader.m_indexCount  = a_modelMesh.m_indexList.size      ();
-
-	l_modelMeshBinaryHeader.m_baseColorTextureFilePathSize = CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_baseColorTextureFilePath);
-	l_modelMeshBinaryHeader.m_normalTextureFilePathSize    = CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_normalTextureFilePath);
-	l_modelMeshBinaryHeader.m_roughnessTextureFilePathSize = CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_roughnessTextureFilePath);
-	l_modelMeshBinaryHeader.m_metallicTextureFilePathSize  = CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_metallicTextureFilePath);
-
-	l_modelMeshBinaryHeader.m_meshletCount           = l_modelMeshletData.m_meshletList.size          ();
-	l_modelMeshBinaryHeader.m_uniqueVertexIndexCount = l_modelMeshletData.m_uniqueVertexIndexList.size();
-	l_modelMeshBinaryHeader.m_primitiveIndexCount    = l_modelMeshletData.m_primitiveIndexList.size   ();
-	l_modelMeshBinaryHeader.m_meshletBoundsCount     = l_modelMeshletData.m_meshletBoundsList.size    ();
-
-	return l_modelMeshBinaryHeader;
 }
 
 FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBoneBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBone& a_modelBone) const
@@ -528,31 +352,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 
 	for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
 	{
-		const auto& l_modelMaterialAssetData = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-		const auto& l_modelMeshletData       = l_modelMesh.m_modelMeshletData;
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<ModelMeshBinaryHeader>(k_singleBinaryElementCount);
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<Graphics::SkeletalAnimationModelRecord::ModelVertex>(l_modelMesh.m_modelVertexList.size());
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMesh.m_indexList.size());
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<TypeAlias::Math::Color>(k_singleBinaryElementCount);
-		l_modelAssetFileSize += CalculateBinaryDataSize<float>                 (k_singleBinaryElementCount);
-		l_modelAssetFileSize += CalculateBinaryDataSize<float>                 (k_singleBinaryElementCount);
-	
-		l_modelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_baseColorTextureFilePath);
-		l_modelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_normalTextureFilePath);
-		l_modelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_roughnessTextureFilePath);
-		l_modelAssetFileSize += CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_metallicTextureFilePath);
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<Struct::ModelMeshlet>(l_modelMeshletData.m_meshletList.size());
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMeshletData.m_uniqueVertexIndexList.size());
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<std::uint32_t>(l_modelMeshletData.m_primitiveIndexList.size());
-	
-		l_modelAssetFileSize += CalculateBinaryDataSize<Struct::ModelMeshletBounds>(l_modelMeshletData.m_meshletBoundsList.size());
+		l_modelAssetFileSize += CalculateModelMeshBinaryFileSize(l_modelMesh);
 	}
 
 	for (const auto& l_modelBone : a_modelData.m_boneList)

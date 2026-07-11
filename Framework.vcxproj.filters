@@ -877,6 +877,12 @@
     <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant">
       <UniqueIdentifier>{e0568a0d-e702-4478-a11c-b21cafed1334}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Converter">
+      <UniqueIdentifier>{6ff79857-4ce3-448a-858e-c52628a42143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Converter\Binary">
+      <UniqueIdentifier>{d2b2eed6-0e69-4999-8c05-372faa725648}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -963,7 +969,7 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.h">
+    <ClInclude Include="Source\Framework\Converter\Binary\BinaryConverterBase.h">
       <Filter>Source\Framework\Converter\Binary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Scene.h">
@@ -1656,9 +1662,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FenceConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Math\NoRemainderConstant.h">
       <Filter>Source\Framework\Definition\Constant\Math</Filter>
     </ClInclude>
@@ -1689,7 +1692,13 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCommonStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelBinaryConverterConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelBinaryConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1763,7 +1772,7 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Loader\TextureLoader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Converter\Binary\BinaryFileConverterBase.cpp">
+    <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp">
       <Filter>Source\Framework\Converter\Binary</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Scene.cpp">
@@ -2122,6 +2131,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Converter\Binary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

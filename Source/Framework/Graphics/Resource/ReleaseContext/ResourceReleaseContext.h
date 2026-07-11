@@ -8,12 +8,12 @@ namespace FWK::Graphics
 
 		struct DeferredResourceReleaseRecordBase
 		{
-			UINT64 m_retiredFenceValue = Constant::k_unusedFenceValue;
+			UINT64 m_retiredFenceValue = Fence::k_unusedFenceValue;
 		};
 
 		struct DescriptorIndexReleaseRecord final : public DeferredResourceReleaseRecordBase
 		{
-			TypeAlias::DescriptorIndex m_descriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+			TypeAlias::DescriptorIndex m_descriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 		};
 
 		struct GPUResourceReleaseRecord final : public DeferredResourceReleaseRecordBase

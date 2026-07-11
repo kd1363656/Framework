@@ -6,18 +6,18 @@ namespace FWK::Converter
 	// メモリマップドファイルは通常のファイル読み込みのようなコピーをせず
 	// ファイルを開きメモリ空間にファイル内容を対応付けるため高速
 	// コピーすると同じハンドルと同じマップ済みポインタを複数インスタンスが持つ可能性があるのでコピー、ムーブ禁止
-	class BinaryFileConverterBase
+	class BinaryConverterBase
 	{
 	public:
 
-				 BinaryFileConverterBase();
-		virtual ~BinaryFileConverterBase();
+				 BinaryConverterBase();
+		virtual ~BinaryConverterBase();
 
-		BinaryFileConverterBase(const BinaryFileConverterBase&)			  = delete;
-		BinaryFileConverterBase(	  BinaryFileConverterBase&&) noexcept = delete;
+		BinaryConverterBase(const BinaryConverterBase&)			  = delete;
+		BinaryConverterBase(	  BinaryConverterBase&&) noexcept = delete;
 
-		BinaryFileConverterBase& operator=(const BinaryFileConverterBase&)			 = delete;
-		BinaryFileConverterBase& operator=(	     BinaryFileConverterBase&&) noexcept = delete;
+		BinaryConverterBase& operator=(const BinaryConverterBase&)			 = delete;
+		BinaryConverterBase& operator=(	     BinaryConverterBase&&) noexcept = delete;
 
 	protected:
 

@@ -2,7 +2,7 @@
 
 namespace FWK::Converter
 {
-	class TextureBinaryConverter final : public BinaryFileConverterBase
+	class TextureBinaryConverter final : public BinaryConverterBase
 	{
 	private:
 

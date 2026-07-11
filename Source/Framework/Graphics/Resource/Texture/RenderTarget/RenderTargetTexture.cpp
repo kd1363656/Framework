@@ -183,7 +183,7 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,								         "RenderTargetTextureのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Constant::k_unusedFenceValue,	         "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Fence::k_unusedFenceValue,                "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
 
 	ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 

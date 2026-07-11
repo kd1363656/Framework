@@ -15,7 +15,7 @@ namespace FWK::Struct
 		TypeAlias::Math::Vector2 m_pivot	    = Constant::k_defaultSpritePivot;
 		TypeAlias::Math::Vector2 m_firstPadding = TypeAlias::Math::Vector2::Zero;
 
-		Struct::SpriteRECT m_sourceRECT = {};
+		SpriteRECT m_sourceRECT = {};
 
 		TypeAlias::DescriptorIndex m_baseColorTextureSRVIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::Math::Vector3   m_secondPadding		      = {};
