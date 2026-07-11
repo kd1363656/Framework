@@ -23,7 +23,7 @@ namespace FWK::Converter
 			std::uint64_t m_indexCount  = Constant::k_emptyModelIndexCount;
 
 			std::uint64_t m_baseColorTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
-			std::uint64_t m_notmalTextureFilePathSize    = Constant::k_emptyTextureFilePathSize;
+			std::uint64_t m_normalTextureFilePathSize    = Constant::k_emptyTextureFilePathSize;
 			std::uint64_t m_roughnessTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
 			std::uint64_t m_metallicTextureFilePathSize  = Constant::k_emptyTextureFilePathSize;
 
