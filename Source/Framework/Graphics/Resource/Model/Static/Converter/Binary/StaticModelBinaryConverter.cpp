@@ -54,7 +54,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
     }
 
     // メッシュ数が0ならreturn
-    if (l_modelBinaryHeader.m_modelMeshCount == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount)
+    if (l_modelBinaryHeader.m_modelMeshCount == Constant::k_emptyModelMeshCount)
     {
         FailLoadAsset(l_staticModelData);
 

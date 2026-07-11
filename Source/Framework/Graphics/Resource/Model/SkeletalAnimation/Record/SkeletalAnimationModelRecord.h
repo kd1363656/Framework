@@ -21,6 +21,28 @@ namespace FWK::Graphics
 			TypeAlias::Math::Vector4 m_boneWeight = {};
 		};
 
+		struct ModelMesh final
+		{
+			 ModelMesh() = default;
+			~ModelMesh() = default;
+
+			ModelMesh(const ModelMesh&)           = delete;
+			ModelMesh(      ModelMesh&&) noexcept = default;
+
+			ModelMesh& operator=(const ModelMesh&)           = delete;
+			ModelMesh& operator=(      ModelMesh&&) noexcept = default;
+
+			std::vector<ModelVertex> m_modelVertexList = {};
+
+			std::vector<std::uint32_t> m_indexList = {};
+
+			Struct::ModelMaterial m_modelMaterial = {};
+
+			Struct::ModelMeshletData m_modelMeshletData = {};
+
+			Struct::ModelMeshRuntimeData m_modelMeshRuntimeData = {};
+		};
+
 		struct ModelBone final
 		{
 			std::wstring m_boneName = {};
@@ -60,6 +82,17 @@ namespace FWK::Graphics
 
 		struct ModelData final
 		{
+			 ModelData() = default;
+			~ModelData() = default;
+
+			ModelData(const ModelData&)           = delete;
+			ModelData(      ModelData&&) noexcept = default;
+
+			ModelData& operator=(const ModelData&)           = delete;
+			ModelData& operator=(      ModelData&&) noexcept = default;
+
+			std::vector<ModelMesh> m_modelMeshList = {};
+
 			std::vector<ModelBone> m_boneList = {};
 
 			std::vector<ModelMotionSequence> m_motionSequenceList = {};
@@ -70,7 +103,7 @@ namespace FWK::Graphics
 		 SkeletalAnimationModelRecord()          = default;
 		~SkeletalAnimationModelRecord() override = default;
 
-		bool ReserveRelease(const UINT64&, ResourceReleaseContext&) override;
+		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 
 		void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
 

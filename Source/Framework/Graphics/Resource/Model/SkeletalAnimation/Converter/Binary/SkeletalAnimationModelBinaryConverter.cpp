@@ -5,6 +5,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 	auto& l_modelData = a_skeletalAnimationModelRecord.GetMutableREFModelData();
 
 	// 途中まで読み込んだ古いデータが残らないように、最初に空にする
+	l_modelData.m_modelMeshList.clear     ();
 	l_modelData.m_boneList.clear          ();
 	l_modelData.m_motionSequenceList.clear();
 
@@ -292,6 +293,11 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBinaryHeader FWK::Co
 	l_modelBinaryHeader.m_motionSequenceCount = a_modelData.m_motionSequenceList.size();
 
 	return l_modelBinaryHeader;
+}
+
+FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelMeshBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelMeshBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
+{
+	return ModelMeshBinaryHeader();
 }
 
 FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBoneBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBone& a_modelBone) const

@@ -198,6 +198,7 @@
 #include "Definition/Struct/Graphics/ModelCommonStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Definition/Constant/Graphics/TriangleVertexCountConstant.h"
+#include "Definition/Constant/Graphics/StaticModelBinaryConverterConstant.h"
 #include "Graphics/Resource/Model/Static/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"

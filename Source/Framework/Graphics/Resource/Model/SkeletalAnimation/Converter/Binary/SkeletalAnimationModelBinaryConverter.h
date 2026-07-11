@@ -12,8 +12,25 @@ namespace FWK::Converter
 			std::uint16_t m_version     = k_modelAssetVersion;
 			std::uint16_t m_assetTypeID = k_modelAssetTypeID;
 
+			std::uint64_t m_modelMeshCount      = Constant::k_emptyModelMeshCount;
 			std::uint64_t m_boneCount           = k_emptyBoneCount;
 			std::uint64_t m_motionSequenceCount = k_emptyMotionSequenceCount;
+		};
+
+		struct ModelMeshBinaryHeader final
+		{
+			std::uint64_t m_vertexCount = Constant::k_emptyModelVertexCount;
+			std::uint64_t m_indexCount  = Constant::k_emptyModelIndexCount;
+
+			std::uint64_t m_baseColorTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
+			std::uint64_t m_notmalTextureFilePathSize    = Constant::k_emptyTextureFilePathSize;
+			std::uint64_t m_roughnessTextureFilePathSize = Constant::k_emptyTextureFilePathSize;
+			std::uint64_t m_metallicTextureFilePathSize  = Constant::k_emptyTextureFilePathSize;
+
+			std::uint64_t m_meshletCount           = Constant::k_emptyModelMeshletCount;
+			std::uint64_t m_uniqueVertexIndexCount = Constant::k_emptyModelUniqueVertexIndexCount;
+			std::uint64_t m_primitiveIndexCount    = Constant::k_emptyModelPrimitiveIndexCount;
+			std::uint64_t m_meshletBoundsCount     = Constant::k_emptyModelMeshletBoundsCount;
 		};
 
 		struct ModelBoneBinaryHeader final
@@ -60,6 +77,8 @@ namespace FWK::Converter
 		void FailLoadAsset(Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData);
 
 		ModelBinaryHeader CreateModelBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData, const std::uint64_t& a_fileSize) const;
+
+		ModelMeshBinaryHeader CreateModelMeshBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const;
 
 		ModelBoneBinaryHeader CreateModelBoneBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBone& a_modelBone) const;
 

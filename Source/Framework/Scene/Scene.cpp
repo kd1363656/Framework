@@ -15,7 +15,7 @@ void FWK::Scene::INIT()
 	const auto& l_renderGraph     = l_renderer.GetREFRenderGraph		  ();
 
 	// モデル
-	m_charaModel->Load ("Asset/Model/Antike.fbx");
+	m_charaModel->Load ("Asset/Model/Actor/Antike/Antike.fbx");
 	m_groundModel->Load("Asset/Model/Terrain/Terrain.fbx");
 
 	// 本来はUpdateなどで更新する

@@ -35,7 +35,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 	// NodeTransformを頂点へ焼きこむ。
 	// ただし、Camera/Light/BoneなどMeshを持たない要素を除外するため、
 	// Nodeを走査してMeshが接続されているNodeだけを処理する
-	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
 
 	for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
 	{
@@ -83,7 +83,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxMesh, "ufbx_nodeにMeshが存在しないため、ModelMeshリストの抽出に失敗しました。", false);
 
 	// MaterialがないMeshの場合は、MaterialなしのModelMeshとして1つだけ作成する
-	if (l_fbxMesh->materials.count == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount)
+	if (l_fbxMesh->materials.count == Constant::k_emptyModelMeshCount)
 	{
 		StaticModelRecord::ModelMesh l_modelMesh = {};
 
@@ -139,11 +139,11 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 
 	// Faceはポリゴン面のこと
 	// Faceが存在しないMeshは、三角形へ変換する元データがないため失敗扱いにする
-	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別ModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別ModelMeshの抽出に失敗しました。", false);
 
 	// max_face_trianglesは、1つのFaceを三角形化したときに必要になる最大三角形数
 	// これが0の場合、三角形化できるFaceがない
-	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Converter::StaticModelBinaryConverter::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別ModelMeshの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しないため、Material別ModelMeshの抽出に失敗しました。", false);
 
 	// マテリアルで絞り込むだけ、
 	// FaceごとのMaterial番号が入っている配列の数と現在のMeshのFace数が一致しているかどうかを確認
