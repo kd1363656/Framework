@@ -886,6 +886,15 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader">
       <UniqueIdentifier>{56b5ec13-2e82-42ff-8c99-8e767742ad3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor">
+      <UniqueIdentifier>{e35f148d-7675-413a-978f-269465bfe3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Motion">
+      <UniqueIdentifier>{90752af8-6938-4d80-8b0b-dc73605b0477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\UFBX">
+      <UniqueIdentifier>{06de633f-e40b-49df-9d60-6192c1a5f13c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1707,6 +1716,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.h">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\UFBX\UFBXConvertUtility.h">
+      <Filter>Source\Framework\Utility\UFBX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2143,6 +2158,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Motion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

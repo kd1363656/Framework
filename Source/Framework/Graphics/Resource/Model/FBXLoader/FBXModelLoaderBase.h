@@ -30,9 +30,6 @@ namespace FWK::Graphics
 
 		float FetchMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const;
 
-		TypeAlias::Math::Vector3 ConvertUFBXVector3ToVector3(const ufbx_vec3& a_fbxVector) const;
-		TypeAlias::Math::Vector2 ConvertUFBXVector2ToVector2(const ufbx_vec2& a_fbxVector) const;
-
 		std::wstring ConvertUFBXStringToWString(const ufbx_string& a_fbxString) const;
 
 	private:

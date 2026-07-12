@@ -118,7 +118,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 	// target_axes/target_unit_metersの結果も、ufbx側の変換済み空間として扱う。
 	const auto& l_worldPosition = ufbx_transform_position(&a_fbxNode->geometry_to_world, l_localPosition);
 
-	return ConvertUFBXVector3ToVector3(l_worldPosition);
+	return Utility::ConvertUFBXVector3ToVector3(l_worldPosition);
 }
 FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
@@ -132,7 +132,7 @@ FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(c
 	// ufbx_mesh::vertex_uvには、FBX内のUV座標データが入っている
 	const auto& l_uv = ufbx_get_vertex_vec2(&a_fbxMesh->vertex_uv, a_vertexIndex);
 
-	auto l_convertedUV = ConvertUFBXVector2ToVector2(l_uv);
+	auto l_convertedUV = Utility::ConvertUFBXVector2ToVector2(l_uv);
 
 	// DirectXのUV座標に合わせるため、V座標を反転する
 	// BlenderなどのDCCツールとDirectXでは、テクスチャの上下方向の扱いが異なる場合がある
@@ -157,7 +157,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 
 	l_worldNormal = ufbx_vec3_normalize(l_worldNormal);
 
-	return ConvertUFBXVector3ToVector3(l_worldNormal);
+	return Utility::ConvertUFBXVector3ToVector3(l_worldNormal);
 }
 FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexTangent(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
@@ -234,26 +234,6 @@ float FWK::Graphics::FBXModelLoaderBase::FetchMaterialFactor(const ufbx_material
 	if (!a_materialMap.has_value) { return a_defaultValue; }
 
 	return static_cast<float>(a_materialMap.value_real);
-}
-
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::ConvertUFBXVector3ToVector3(const ufbx_vec3& a_fbxVector) const
-{
-	// ufbx_vec3はdouble系の値を持つため、自作フレームワークのVector3で使うfloatへ変換する
-	return TypeAlias::Math::Vector3
-	(
-		static_cast<float>(a_fbxVector.x),
-		static_cast<float>(a_fbxVector.y),
-		static_cast<float>(a_fbxVector.z)
-	);
-}
-FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::ConvertUFBXVector2ToVector2(const ufbx_vec2& a_fbxVector) const
-{
-	// ufbx_vec2はdouble系の値を持つため、自作フレームワークのVector2で使うfloatへ変換する
-	return TypeAlias::Math::Vector2
-	(
-		static_cast<float>(a_fbxVector.x),
-		static_cast<float>(a_fbxVector.y)
-	);
 }
 
 std::wstring FWK::Graphics::FBXModelLoaderBase::ConvertUFBXStringToWString(const ufbx_string& a_fbxString) const
