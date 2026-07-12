@@ -30,8 +30,6 @@ namespace FWK::Graphics
 
 		float FetchMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const;
 
-		std::wstring ConvertUFBXStringToWString(const ufbx_string& a_fbxString) const;
-
 	private:
 
 		ufbx_load_opts CreateFBXLoadOptions() const;
@@ -48,7 +46,5 @@ namespace FWK::Graphics
 		static constexpr float k_defaultTangentY = 0.0F;
 		static constexpr float k_defaultTangentZ = 0.0F;
 		static constexpr float k_defaultTangentW = 1.0F;
-
-		static constexpr std::size_t k_emptyStringLength = 0ULL;
 	};
 }

@@ -198,13 +198,13 @@ std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(con
 
 	// ufbx_texture_typeがUFBX_TEXTURE_FILEの場合、
 	// filename / relative_filenameに画像ファイルパスが入っている
-	if (l_fbxTexture->relative_filename.length != k_emptyStringLength)
+	if (l_fbxTexture->relative_filename.length != Constant::k_emptyStringLength)
 	{
-		l_textureFilePath = ConvertUFBXStringToWString(l_fbxTexture->relative_filename);
+		l_textureFilePath = Utility::ConvertUFBXStringToWString(l_fbxTexture->relative_filename);
 	}
-	else if (l_fbxTexture->filename.length != k_emptyStringLength)
+	else if (l_fbxTexture->filename.length != Constant::k_emptyStringLength)
 	{
-		l_textureFilePath = ConvertUFBXStringToWString(l_fbxTexture->filename);
+		l_textureFilePath = Utility::ConvertUFBXStringToWString(l_fbxTexture->filename);
 	}
 
 	if (l_textureFilePath.empty()) { return {}; }
@@ -234,21 +234,6 @@ float FWK::Graphics::FBXModelLoaderBase::FetchMaterialFactor(const ufbx_material
 	if (!a_materialMap.has_value) { return a_defaultValue; }
 
 	return static_cast<float>(a_materialMap.value_real);
-}
-
-std::wstring FWK::Graphics::FBXModelLoaderBase::ConvertUFBXStringToWString(const ufbx_string& a_fbxString) const
-{
-	if (!a_fbxString.data ||
-		a_fbxString.length == k_emptyStringLength)
-	{
-		return {};
-	}
-
-	std::string l_string = {};
-
-	l_string.assign(a_fbxString.data, a_fbxString.length);
-
-	return std::filesystem::path(l_string).wstring();
 }
 
 ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const

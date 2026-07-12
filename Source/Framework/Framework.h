@@ -199,7 +199,8 @@
 #include "Definition/Constant/Graphics/TriangleVertexCountConstant.h"
 #include "Definition/Constant/Graphics/ModelBinaryConverterConstant.h"
 #include "Graphics/Resource/Model/Converter/Binary/ModelBinaryConverterBase.h"
-#include "Utility/UFBX/UFBXConvertUtility.h"
+#include "Definition/Constant/Graphics/UFBXConvertUtilityConstant.h"
+#include "Utility/Graphics/UFBXConvertUtility.h"
 #include "Graphics/Resource/Model/Static/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
@@ -215,6 +216,8 @@
 #include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicReadWriteStructuredBuffer.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/Record/SkeletalAnimationModelRecord.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
+#include "Definition/Constant/Graphics/SkeletalAnimationModelFBXMotionExtractorConstant.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Skeleton/SkeletalAnimationModelFBXSkeletonExtractor.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Motion/SkeletalAnimationModelFBXMotionExtractor.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/SkeletalAnimationModelFBXLoader.h"
 
