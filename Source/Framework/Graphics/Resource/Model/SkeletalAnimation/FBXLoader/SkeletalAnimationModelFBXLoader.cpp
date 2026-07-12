@@ -66,8 +66,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::CreateModelBone(const BoneN
 	const auto* l_fbxParentBoneNode = a_fbxBoneNode->parent;
 
 	// SceneRoot直下のBoneは親Boneを持たない
+	// SceneRoot直下のBoneはrootを持たない
 	if (!l_fbxParentBoneNode ||
-		l_fbxParentBoneNode->is_root)
+	     l_fbxParentBoneNode->is_root)
 	{
 		a_modelBone.m_parentBoneIndex = SkeletalAnimationModelRecord::k_invalidBoneIndex;
 
@@ -102,10 +103,13 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
 	const auto& l_fbxSkinVertex = a_fbxSkinDeformer->vertices.data[l_logicalVertexIndex];
 
-	const auto& l_skinWeightEnd = static_cast<std::size_t>(l_fbxSkinVertex.weight_begin + l_fbxSkinVertex.num_weights);
+	// 加算によるOverflowを避けるため、まず開始Indexだけを確認する
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.weight_begin > a_fbxSkinDeformer->weights.count, "SkinWeightの開始Indexが範囲外です。", false);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_skinWeightEnd > a_fbxSkinDeformer->weights.count, "SkinWeight配列の参照範囲が不正です。", false);
+	const auto l_remainingSkinWeightCount = a_fbxSkinDeformer->weights.count - l_fbxSkinVertex.weight_begin;
 
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.num_weights > l_remainingSkinWeightCount, "SkinWeight配列の参照範囲が不正です。", false);
+	
 	a_modelVertex.m_bonePaletteIndex0 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
 	a_modelVertex.m_bonePaletteIndex1 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
 	a_modelVertex.m_bonePaletteIndex2 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
@@ -116,15 +120,14 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
 	for (auto l_skinWeightOffset = 0U; l_skinWeightOffset < l_fbxSkinVertex.num_weights; ++l_skinWeightOffset)
 	{
+		// ModelVertexへ格納するInfluenceはWeightが大きい先頭4件まで
+		if (l_appliedBoneInfluenceCount >= k_maxBoneInfluenceCount) { break; }
+
 		const auto  l_skinWeightIndex = l_fbxSkinVertex.weight_begin + l_skinWeightOffset;
-		const auto& l_fbxSkinWeight   = a_fbxSkinDeformer->weights.data[l_skinWeightIndex];
+		const auto& l_fbxSkinWeight = a_fbxSkinDeformer->weights.data[l_skinWeightIndex];
 
 		// Weightは降順なので0以下になった時点で終了する
-		if (l_appliedBoneInfluenceCount < k_maxBoneInfluenceCount ||
-			l_fbxSkinWeight.weight <= k_emptyBoneWeight)
-		{
-			break; 
-		}
+		if (l_fbxSkinWeight.weight <= k_emptyBoneWeight) { break; }
 
 		FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinWeight.cluster_index >= a_fbxSkinDeformer->clusters.count, "SkinWeightが参照するClusterIndexが範囲外です。", false);
 
@@ -230,63 +233,383 @@ void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, SkeletalAnimationModelRecord::ModelData& a_modelData) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,                                                "ufbx_sceneが無効のため、SkeletalAnimationModelDataの抽出に失敗しました。",            false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、SkeletalAnimationModelDataの抽出に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,                                                "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。",            false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
 
+	a_modelData.m_modelMeshList.clear     ();
+	a_modelData.m_boneList.clear          ();
+	a_modelData.m_motionSequenceList.clear();
 
-	return false;
+	BoneNodeIndexMap l_boneNodeIndexMap = {};
+
+	// Meshより先にBoneIndexを確定する
+	FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelBoneList(a_fbxScene, l_boneNodeIndexMap, a_modelData.m_boneList), "FBXシーンからModelBoneListの抽出に失敗しました。", false);
+
+	for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
+	{
+		const auto* l_fbxNode = a_fbxScene->nodes.data[l_nodeIndex];
+
+		if (!l_fbxNode) { continue; }
+
+		const auto& l_fbxMesh = l_fbxNode->mesh;
+
+		if (!l_fbxMesh) { continue; }
+
+		// SkinDeformerを持たないMeshは対象外
+		if (l_fbxMesh->skin_deformers.count == k_emptyUFBXElementCount) { continue; }
+
+		std::vector<SkeletalAnimationModelRecord::ModelMesh> l_modelMeshList = {};
+
+		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_boneNodeIndexMap, l_fbxNode, l_modelMeshList), "ufbx_nodeからModelMeshListの抽出に失敗しました。", false);
+
+		for (auto& l_modelMesh : l_modelMeshList)
+		{
+			if (l_modelMesh.m_modelVertexList.empty()) { continue; }
+			if (l_modelMesh.m_indexList.empty())       { continue; }
+			if (l_modelMesh.m_bonePaletteList.empty()) { continue; }
+
+			a_modelData.m_modelMeshList.emplace_back(std::move(l_modelMesh));
+		}
+	}
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "有効なSkeletalAnimationModelMeshが存在しません。", false);
+
+	return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const BoneNodeIndexMap& a_boneNodeIndexMap, const ufbx_node* a_fbxNode, const std::size_t& a_materialIndex, SkeletalAnimationModelRecord::ModelMesh& a_modelMesh)
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const BoneNodeIndexMap& a_boneNodeIndexMap, const ufbx_node* a_fbxNode, std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const
 {
-	return false;
+	a_modelMeshList.clear();
+
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode,       "ufbx_nodeがnullptrのため、ModelMeshListの抽出に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode->mesh, "ufbx_nodeにMeshが存在しないため、ModelMeshListの抽出に失敗しました。", false);
+
+	const auto* l_fbxMesh = a_fbxNode->mesh;
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->skin_deformers.count != k_supportedSkinDeformerCount, "一つのufbx_meshに設定されたSkinDeformer数が1個ではありません。", false);
+
+	const auto* l_fbxSkinDeformer = l_fbxMesh->skin_deformers.data[k_initialSkinDeformerIndex];
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinDeformer, "ufbx_skin_deformerがnullptrです。", false);
+
+	const bool l_isSupportedSkinningMethod = l_fbxSkinDeformer->skinning_method == UFBX_SKINNING_METHOD_LINEAR || 
+											 l_fbxSkinDeformer->skinning_method == UFBX_SKINNING_METHOD_RIGID; 
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_isSupportedSkinningMethod, "LinearまたはRigid以外のSkinningMethodには対応していません。", false);
+
+	// Materilaがない場合は全Faceを一つのModelMeshへ変換する
+	if (l_fbxMesh->materials.count == Constant::k_emptyModelMeshCount)
+	{
+		SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
+
+		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(k_invalidMaterialIndex,
+															   a_fbxNode,
+			                                                   a_boneNodeIndexMap,
+			                                                   l_modelMesh), 
+			                                                   "MaterialなしModelMeshの抽出に失敗しました。", 
+			                                                   false);
+
+		if (!l_modelMesh.m_modelVertexList.empty() &&
+			!l_modelMesh.m_indexList.empty())
+		{
+			l_modelMesh.m_modelMaterial = {};
+
+			a_modelMeshList.emplace_back(std::move(l_modelMesh));
+		}
+
+		return true;
+	}
+
+	for (std::size_t l_materialIndex = 0ULL; l_materialIndex < l_fbxMesh->materials.count; ++l_materialIndex)
+	{
+		SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
+
+		FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, a_boneNodeIndexMap, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+
+		if (l_modelMesh.m_modelVertexList.empty()) { continue; }
+		if (l_modelMesh.m_indexList.empty())       { continue; }
+
+		const auto* l_fbxMaterial = l_fbxMesh->materials.data[l_materialIndex];
+
+		ExtractModelMaterial(l_fbxMaterial, l_modelMesh.m_modelMaterial.m_modelMaterialAssetData);
+		
+		l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData = {};
+
+		a_modelMeshList.emplace_back(std::move(l_modelMesh));
+	}
+
+	return true;
 }
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelBoneList(const ufbx_scene* a_fbxScene, BoneNodeIndexMap& a_boneNodeIndexMap, std::vector<SkeletalAnimationModelRecord::ModelBone>& a_modelBoneList) const
 {
-	return false;
+	a_boneNodeIndexMap.clear();
+	a_modelBoneList.clear   ();
+
+	std::vector<const ufbx_node*> l_modelBoneNodeList = {};
+
+	FWK_ASSERT_RETURN_VALUE_IF(!CollectModelBoneNodes(a_fbxScene, l_modelBoneNodeList),          "FBXシーンからBoneNodeの収集に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!CreateBoneNodeIndexMap(l_modelBoneNodeList, a_boneNodeIndexMap), "BoneNodeIndexMapの作成に失敗しました。",      false);
+
+	a_modelBoneList.reserve(l_modelBoneNodeList.size());
+
+	for (const auto* l_fbxBoneNode : l_modelBoneNodeList)
+	{
+		SkeletalAnimationModelRecord::ModelBone l_modelBone = {};
+
+		FWK_ASSERT_RETURN_VALUE_IF(!CreateModelBone(a_boneNodeIndexMap, l_fbxBoneNode, l_modelBone), "ufbx_nodeからModeelBoneへの変換に失敗しました", false);
+
+		a_modelBoneList.emplace_back(std::move(l_modelBone));
+	}
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_modelBoneList.empty(), "有効なModelBoneが存在しません。", false);
+
+	return true;
 }
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t&                             a_materialIndex, 
 																				const ufbx_node*                               a_fbxNode, 
 																			    const BoneNodeIndexMap&                        a_boneNodeIndexMap,		
-																					  SkeletalAnimationModelRecord::ModelMesh& a_modelMes)
+																					  SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
 {
-	return false;
+	a_modelMesh.m_modelVertexList.clear();
+	a_modelMesh.m_bonePaletteList.clear();
+	a_modelMesh.m_indexList.clear      ();
+
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode,       "ufbx_nodeがnullptrのため、Material別ModelMeshの抽出に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode->mesh, "ufbx_nodeにMeshが存在しないため、Material別ModelMeshの抽出に失敗しました。", false);
+
+	const auto* l_fbxMesh = a_fbxNode->mesh;
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->skin_deformers.count != k_supportedSkinDeformerCount, "一つのufbx_meshに設定されたSkinDeformer数が1個ではありません。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Constant::k_emptyModelMeshCount,        "三角形化できるFaceが存在しません。",                             false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount, "三角形化できるFaceが存在しません。",                             false);
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_materialIndex != k_invalidMaterialIndex &&
+							   l_fbxMesh->face_material.count != l_fbxMesh->faces.count,
+							   "face_material数とFace数が一致しません。",
+							   false);
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_materialIndex != k_invalidMaterialIndex &&
+						       a_materialIndex >= l_fbxMesh->materials.count, 
+						       "MateirlaIndexが範囲外です。",
+						       false);
+
+	const auto* l_fbxSkinDeformer = l_fbxMesh->skin_deformers.data[k_initialSkinDeformerIndex];
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinDeformer, "ufbx_skin_deformerがnullptrです。", false);
+
+	const auto& l_trignaleIndexListSize = l_fbxMesh->max_face_triangles * Constant::k_triangleVertexCount;
+
+	std::vector<std::uint32_t> l_triangleIndexList = {};
+
+	l_triangleIndexList.resize(l_trignaleIndexListSize);
+
+	BoneIndexPaletteIndexMap l_boneIndexPaletteIndexMap = {};
+
+	l_boneIndexPaletteIndexMap.reserve(l_fbxSkinDeformer->clusters.count);
+
+	for (auto l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)
+	{
+		const auto& l_fbxFace = l_fbxMesh->faces.data[l_faceIndex];
+
+		if (a_materialIndex != k_invalidMaterialIndex)
+		{
+			const auto& l_faceMaterialIndex = l_fbxMesh->face_material.data[l_faceIndex];
+
+			FWK_ASSERT_RETURN_VALUE_IF(l_faceMaterialIndex >= l_fbxMesh->materials.count, "Faceが参照するMaterialIndexが範囲外です。", false);
+
+			if (l_faceMaterialIndex != a_materialIndex) { continue; }
+		}
+
+		const auto l_triangleCount = ufbx_triangulate_face(l_triangleIndexList.data(),
+														   l_triangleIndexList.size(),
+														   l_fbxMesh,
+														   l_fbxFace);
+
+		for (auto l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
+		{
+			for (auto l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
+			{
+				const auto& l_indexOffset    = (l_triangleIndex * Constant::k_triangleVertexCount) + l_vertexIndex;
+				const auto  l_fbxVertexIndex = l_triangleIndexList[l_indexOffset];
+
+				FWK_ASSERT_RETURN_VALUE_IF(l_fbxVertexIndex >= l_fbxMesh->vertex_indices.count, "三角形化後のVertexIndexが範囲外です。", false);
+
+				SkeletalAnimationModelRecord::ModelVertex l_modelVertex = {};
+
+				// 頂点はMeshローカル空間のまま保持する
+				l_modelVertex.m_position = FetchLocalVertexPosition(l_fbxMesh, l_fbxVertexIndex);
+				l_modelVertex.m_uv       = FetchVertexUV           (l_fbxMesh, l_fbxVertexIndex);
+				l_modelVertex.m_normal   = FetchLocalVertexNormal  (l_fbxMesh, l_fbxVertexIndex);
+				l_modelVertex.m_tangent  = FetchLocalVertexTangent (l_fbxMesh, l_fbxVertexIndex);
+
+				FWK_ASSERT_RETURN_VALUE_IF(!ApplyModelVertexBoneInfluence(a_boneNodeIndexMap,
+																		  l_fbxMesh,
+																		  l_fbxSkinDeformer,
+																		  l_fbxVertexIndex,
+																		  l_boneIndexPaletteIndexMap,
+																		  a_modelMesh.m_bonePaletteList,
+																		  l_modelVertex),
+																		  "ModelVertexへのBoneInfluence適用に失敗しました。",
+																		  false);
+
+				// 現在は重複頂点を削除せずに三角形頂点をそのまま追加する
+				a_modelMesh.m_modelVertexList.emplace_back(l_modelVertex);
+				a_modelMesh.m_indexList.emplace_back      (static_cast<std::uint32_t>(a_modelMesh.m_indexList.size()));
+			}
+		}
+	}
+
+	return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::CollectModelBoneNodes(const ufbx_scene* a_fbxScene, std::vector<const ufbx_node*>& a_modelBoneNodexList) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::CollectModelBoneNodes(const ufbx_scene* a_fbxScene, std::vector<const ufbx_node*>& a_modelBoneNodeList) const
 {
-	return false;
+	a_modelBoneNodeList.clear();
+
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,            "BoneNodeを収集するufbx_sceneがnullptrです。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene->root_node, "ufbx_sceneにRootNodeが存在しません。",        false);
+
+	std::unordered_set<const ufbx_node*> l_registeredBoneNodeSet = {};
+
+	for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
+	{
+		const auto* l_fbxNode = a_fbxScene->nodes.data[l_nodeIndex];
+
+		if (!l_fbxNode)       { continue; }
+		if (!l_fbxNode->mesh) { continue; }
+
+		const auto* l_fbxMesh = l_fbxNode->mesh;
+
+		if (l_fbxMesh->skin_deformers.count != k_emptyUFBXElementCount) { continue; }
+
+		FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->skin_deformers.count != k_supportedSkinDeformerCount, "一つのufbx_meshに設定されたSkinDeformer数が1個ではありません。", false);
+
+		const auto* l_fbxSkinDeformer = l_fbxMesh->skin_deformers.data[k_initialSkinDeformerIndex];
+
+		FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinDeformer,                        "ufbx_skin_deformerがnullptrです。",         false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinDeformer->clusters.count == 0ULL, "SkinDeformerにSkinClusterが存在しません。", false);
+
+		for (auto l_clusterIndex = 0ULL; l_clusterIndex < l_fbxSkinDeformer->clusters.count; ++l_clusterIndex)
+		{
+			const auto* l_fbxSkinCluster = l_fbxSkinDeformer->clusters.data[l_clusterIndex];
+
+			FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinCluster,            "ufbx_skin_clusterがnullptrです。",     false);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinCluster->bone_node, "SkinClusterのBoneNodeがnullptrです。", false);
+
+			std::vector<const ufbx_node*> l_childToParentBoneNodeList = {};
+
+			// SkinClusterのBoneからSceneroot直下までの親を収集する
+			auto* l_fbxBoneNode = l_fbxSkinCluster->bone_node;
+
+			while (l_fbxBoneNode)
+			{
+				if (l_fbxBoneNode->is_root ||
+					l_registeredBoneNodeSet.contains(l_fbxBoneNode))
+				{
+					break;
+				}
+
+				l_childToParentBoneNodeList.emplace_back(l_fbxBoneNode);
+
+				l_fbxBoneNode = l_fbxBoneNode->parent;
+			}
+
+			// 個から親の順で収集したため、順番を並び変える
+			std::reverse(l_childToParentBoneNodeList.begin(), l_childToParentBoneNodeList.end());
+
+			for (const auto* l_hierarchyBoneNode : l_childToParentBoneNodeList)
+			{
+				if (!l_registeredBoneNodeSet.emplace(l_hierarchyBoneNode).second) { continue; }
+
+				a_modelBoneNodeList.emplace_back(l_hierarchyBoneNode);
+			}
+		}
+	}
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_modelBoneNodeList.empty(), "SkinClusterから有効なBoneNodeを収集できませんでした。", false);
+
+	return true;
 }
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::NormalizeModelVertexBoneWeight(SkeletalAnimationModelRecord::ModelVertex& a_modelVertex) const
 {
+	const auto l_boneWeightSum = a_modelVertex.m_boneWeight.x + a_modelVertex.m_boneWeight.y + a_modelVertex.m_boneWeight.z + a_modelVertex.m_boneWeight.w;
 
+	FWK_ASSERT_RETURN_VALUE_IF(l_boneWeightSum <= k_emptyBoneWeight, "ModelVertexのBoneWeight合計が0以下です。", false);
+
+	a_modelVertex.m_boneWeight.x /= l_boneWeightSum;
+	a_modelVertex.m_boneWeight.y /= l_boneWeightSum;
+	a_modelVertex.m_boneWeight.z /= l_boneWeightSum;
+	a_modelVertex.m_boneWeight.w /= l_boneWeightSum;
+
+	return true;
 }
 
 FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchLocalVertexPosition(const ufbx_mesh * a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	return TypeAlias::Math::Vector3();
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点座標の取得に失敗しました。", {});
+
+	const auto& l_localPosition = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_position, a_vertexIndex);
+
+	return ConvertUFBXVector3ToVector3(l_localPosition);
 }
 FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchLocalVertexNormal(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	return TypeAlias::Math::Vector3();
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点法線の取得に失敗しました。", {});
+
+	if (!a_fbxMesh->vertex_normal.exists) { return {}; }
+
+	const auto& l_localNormal      = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_normal, a_vertexIndex);
+	const auto& l_normalizedNormal = ufbx_vec3_normalize (l_localNormal);
+
+	return ConvertUFBXVector3ToVector3(l_normalizedNormal);
 }
 FWK::TypeAlias::Math::Vector4 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchLocalVertexTangent(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
-	return TypeAlias::Math::Vector4();
+	FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点接線の取得に失敗しました。", {});
+
+	ufbx_vec3 l_localTangent = { k_defaultTangentX, k_defaultTangentY, k_defaultTangentZ };
+
+	if (a_fbxMesh->vertex_tangent.exists)
+	{
+		l_localTangent = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_tangent, a_vertexIndex);
+		l_localTangent = ufbx_vec3_normalize (l_localTangent);
+	}
+
+	return TypeAlias::Math::Vector4
+	{
+		static_cast<float>(l_localTangent.x),
+		static_cast<float>(l_localTangent.y),
+		static_cast<float>(l_localTangent.z),
+		k_defaultTangentW
+	};
 }
 
 FWK::TypeAlias::Math::Matrix FWK::Graphics::SkeletalAnimationModelFBXLoader::ConvertUFBXMatrixToMatrix(const ufbx_matrix& a_fbxMatrix) const
 {
-	return TypeAlias::Math::Matrix();
-}
-FWK::TypeAlias::Math::Matrix FWK::Graphics::SkeletalAnimationModelFBXLoader::ConvertUFBXTransformToMatrix(const ufbx_transform& a_fbxTransform) const
-{
-	return TypeAlias::Math::Matrix();
-}
-FWK::TypeAlias::Math::Quaternion FWK::Graphics::SkeletalAnimationModelFBXLoader::ConvertUFBXQuaternionToQuaternion(const ufbx_quat& a_fbxQuaternion) const
-{
-	return TypeAlias::Math::Quaternion();
+	// UFBXの列ベクトル行列をSimpleMathの行ベクトル行列へ転置する
+	return TypeAlias::Math::Matrix
+	{
+		static_cast<float>(a_fbxMatrix.m00),
+		static_cast<float>(a_fbxMatrix.m10),
+		static_cast<float>(a_fbxMatrix.m20),
+		k_affineMatrixAxisW,
+
+		static_cast<float>(a_fbxMatrix.m01),
+		static_cast<float>(a_fbxMatrix.m11),
+		static_cast<float>(a_fbxMatrix.m21),
+		k_affineMatrixAxisW,
+
+		static_cast<float>(a_fbxMatrix.m02),
+		static_cast<float>(a_fbxMatrix.m12),
+		static_cast<float>(a_fbxMatrix.m22),
+		k_affineMatrixAxisW,
+
+		static_cast<float>(a_fbxMatrix.m03),
+		static_cast<float>(a_fbxMatrix.m13),
+		static_cast<float>(a_fbxMatrix.m23),
+		k_affineMatrixTranslationW
+	};
 }
