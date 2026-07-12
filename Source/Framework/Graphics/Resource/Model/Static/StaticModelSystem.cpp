@@ -104,10 +104,10 @@ bool FWK::Graphics::StaticModelSystem::SubtractStaticModelReferenceCount(const s
 bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord)
 {
 	// meshoptimizerを使用して頂点とインデックスをGPUで扱いやすい配置へ最適化
-	FWK_ASSERT_RETURN_VALUE_IF(!m_meshOptimizer.OptimizeStaticModelRecord(a_staticModelRecord), "StaticModelMeshの最適化に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_meshOptimizer.OptimizeModelRecord(a_staticModelRecord), "StaticModelMeshの最適化に失敗しました。", false);
 
 	// MeshShaderで扱うため、最適化済みの頂点とインデックスからMeshletDataを作成
-	FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildStaticModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
 	// 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
 	FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelBinaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "TextureAssetの保存に失敗しました", false);

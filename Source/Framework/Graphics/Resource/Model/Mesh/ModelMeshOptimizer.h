@@ -29,7 +29,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool OptimizeModelMesh(const ModelRecordType::ModelMesh& a_modelMesh) const
+		bool OptimizeModelMesh(typename ModelRecordType::ModelMesh& a_modelMesh) const
 		{
 			FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_modelVertexList.empty(), "ModelMeshの頂点リストが空のため、ModelMeshの最適化に失敗しました。",         false);
 	        FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.empty(),		  "ModelMeshのインデックスリストが空のため、ModelMeshの最適化に失敗しました。", false);

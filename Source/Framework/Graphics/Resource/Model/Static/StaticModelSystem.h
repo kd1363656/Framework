@@ -68,10 +68,10 @@ namespace FWK::Graphics
 		
 		AssetStorage<Graphics::StaticModelRecord> m_staticModelStorage = {};
 
-		StaticModelFBXLoader				m_loader				   = {};
-		StaticModelMeshOptimizer			m_meshOptimizer			   = {};
-		StaticModelMeshletBuilder			m_meshletBuilder		   = {};
-		StaticModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+		StaticModelFBXLoader				   m_loader				     = {};
+		ModelMeshOptimizer<StaticModelRecord>  m_meshOptimizer			 = {};
+		ModelMeshletBuilder<StaticModelRecord> m_meshletBuilder		     = {};
+		StaticModelBatchUploadRecordBuilder    m_batchUploadRecordBuilder = {};
 
 		Converter::StaticModelSystemJsonConverter m_jsonConverter			   = {};
 		Converter::StaticModelBinaryConverter     m_staticModelBinaryConverter = {};

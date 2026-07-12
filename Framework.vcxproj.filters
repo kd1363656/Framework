@@ -376,12 +376,6 @@
     <Filter Include="Source\Framework\Utility\Singleton">
       <UniqueIdentifier>{db1192e0-fcd7-4b78-b176-d6fbf3bb46f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet">
-      <UniqueIdentifier>{9339af25-33b6-4b6b-a191-a0347c39b0e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\Static\Mesh">
-      <UniqueIdentifier>{88cf0829-91c6-43f9-8c05-ad64320a1151}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Texture\Converter\Json">
       <UniqueIdentifier>{9005080d-2f0d-4991-8330-b6ecc1193343}</UniqueIdentifier>
     </Filter>
@@ -850,9 +844,6 @@
     <Filter Include="Source\Framework\Definition\Constant\IMGUI">
       <UniqueIdentifier>{5ac61ca2-0d72-45b3-8ae0-48ca63dc94dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Math">
-      <UniqueIdentifier>{74681a52-0f73-45b4-9f9d-4507b093caf0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Struct\String">
       <UniqueIdentifier>{d0842a51-c26e-426c-817d-3418748e5167}</UniqueIdentifier>
     </Filter>
@@ -895,11 +886,11 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton">
       <UniqueIdentifier>{e324063c-8ba6-4ecd-907d-f4fb0c6fd44d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Mesh">
-      <UniqueIdentifier>{c3675760-2c5b-46b7-887b-6248bc1c5122}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Mesh">
       <UniqueIdentifier>{0aa6e00e-c301-4a8a-91ae-fd81752dbe56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Meshlet">
+      <UniqueIdentifier>{93a460c3-39f6-4d10-a355-75a4b6e652a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1160,12 +1151,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\Converter\Json\TextureSystemJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Json</Filter>
@@ -1680,9 +1665,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Math\NoRemainderConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -1737,11 +1719,14 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Mesh\SkeletalAnimationModelMeshOptimizer.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\ModelMeshletBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Meshlet</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMeshletBuilderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1951,12 +1936,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Mesh\StaticModelMeshOptimizer.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Meshlet\StaticModelMeshletBuilder.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\Static\Meshlet</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Texture\Converter\Binary\TextureBinaryConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Texture\Converter\Binary</Filter>
@@ -2185,9 +2164,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Mesh\SkeletalAnimationModelMeshOptimizer.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

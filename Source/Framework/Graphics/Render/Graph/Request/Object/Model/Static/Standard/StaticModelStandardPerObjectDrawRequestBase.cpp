@@ -32,7 +32,7 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectC
 			const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
 			const auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
 
-			FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.size() == StaticModelMeshletBuilder::k_emptyMeshletCount, "Meshletが存在しないため、StaticModelのPerObject定数バッファを設定できませんでした");
+			FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、StaticModelのPerObject定数バッファを設定できませんでした");
 
 			Struct::CBStaticModelPerObject l_cbStaticModelPerObject = {};
 
@@ -102,9 +102,11 @@ void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::AddDrawRequest(
 
 bool FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const
 {
-	const auto l_meshletCount = static_cast<UINT>(a_modelMesh.m_modelMeshletData.m_meshletList.size());
+	const auto& l_modelMeshletList = a_modelMesh.m_modelMeshletData.m_meshletList;
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_meshletCount == StaticModelMeshletBuilder::k_emptyMeshletCount, "Meshletが存在しないため、StaticModelを描画できませんでした。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "Meshletが存在しないため、StaticModelを描画できませんでした。", false);
+
+	const auto l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
 
 	a_directCommandList.DispatchMesh(l_meshletCount, k_defaultDispatchMeshThreadGroupCountY, k_defaultDispatchMeshThreadGroupCountZ);
 
