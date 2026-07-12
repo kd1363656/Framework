@@ -895,6 +895,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton">
       <UniqueIdentifier>{e324063c-8ba6-4ecd-907d-f4fb0c6fd44d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Mesh">
+      <UniqueIdentifier>{c3675760-2c5b-46b7-887b-6248bc1c5122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Mesh">
+      <UniqueIdentifier>{0aa6e00e-c301-4a8a-91ae-fd81752dbe56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1731,6 +1737,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Mesh\SkeletalAnimationModelMeshOptimizer.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2173,6 +2185,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Mesh\SkeletalAnimationModelMeshOptimizer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

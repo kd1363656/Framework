@@ -6,8 +6,8 @@ namespace FWK::Graphics
 	{
 	public:
 
-		 StaticModelMeshOptimizer() = default;
-		~StaticModelMeshOptimizer() = default;
+		 StaticModelMeshOptimizer()          = default;
+		~StaticModelMeshOptimizer()  = default;
 
 		bool OptimizeStaticModelRecord(Graphics::StaticModelRecord& a_staticModelRecord) const;
 

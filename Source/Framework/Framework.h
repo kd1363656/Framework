@@ -203,6 +203,7 @@
 #include "Utility/Graphics/UFBXConvertUtility.h"
 #include "Graphics/Resource/Model/Static/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
+#include "Graphics/Resource/Model/Mesh/ModelMeshOptimizer.h"
 #include "Graphics/Resource/Model/Static/Mesh/StaticModelMeshOptimizer.h"
 #include "Definition/Constant/Math/NoRemainderConstant.h"
 #include "Graphics/Resource/Model/Static/Meshlet/StaticModelMeshletBuilder.h"
