@@ -66,7 +66,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
 
     for (auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)
     {
-        if (!TryReadModelMeshBinaryData(l_staticModelMesh, l_memoryReadOffset))
+        if (!TryReadModelMeshBinaryDataCommon(l_staticModelMesh, l_memoryReadOffset))
         {
             FailLoadAsset(l_staticModelData);
 
@@ -119,7 +119,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
     // ModelMeshListを書き込む
     for (const auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)
     {
-        WriteModelMeshBinaryData(l_staticModelMesh, l_memoryWriteOffset);
+        WriteModelMeshBinaryDataCommon(l_staticModelMesh, l_memoryWriteOffset);
     }
 
     // 計算したファイルサイズと実際に書き込んだサイズが一致するか確認する
@@ -167,7 +167,7 @@ std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateAssetFileSize
 
     for (const auto& l_staticModelMesh : a_modelData.m_modelMeshList)
     {
-        l_modelAssetFileSize += CalculateModelMeshBinaryFileSize(l_staticModelMesh);
+        l_modelAssetFileSize += CalculateModelMeshBinaryFileSizeCommon(l_staticModelMesh);
     }
 
     return l_modelAssetFileSize;

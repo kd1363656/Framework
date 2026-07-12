@@ -15,6 +15,8 @@ namespace FWK::Graphics
 
 		ufbx_scene* LoadFBXScene(const std::filesystem::path& a_filePath) const;
 
+		void ExtractModelMaterial(const ufbx_material* a_fbxMaterial, Struct::ModelMaterialAssetData& a_modelMaterialAssetData) const;
+
 		void DestroyFBXScene(ufbx_scene* a_fbxScene) const;
 
 		TypeAlias::Math::Vector3 FetchWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
@@ -23,6 +25,10 @@ namespace FWK::Graphics
 		TypeAlias::Math::Vector4 FetchWorldVertexTangent (const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
 
 		std::wstring FetchMaterialTextureFilePath(const ufbx_material_map& a_materialMap) const;
+
+		TypeAlias::Math::Color FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const;
+
+		float FetchMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const;
 
 		TypeAlias::Math::Vector3 ConvertUFBXVector3ToVector3(const ufbx_vec3& a_fbxVector) const;
 		TypeAlias::Math::Vector2 ConvertUFBXVector2ToVector2(const ufbx_vec2& a_fbxVector) const;

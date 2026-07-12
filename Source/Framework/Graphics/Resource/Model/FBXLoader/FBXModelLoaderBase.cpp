@@ -40,6 +40,64 @@ ufbx_scene* FWK::Graphics::FBXModelLoaderBase::LoadFBXScene(const std::filesyste
 	return l_fbxScene;
 }
 
+void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material* a_fbxMaterial, Struct::ModelMaterialAssetData& a_modelMaterialAssetData) const
+{
+	a_modelMaterialAssetData = {};
+
+	if (!a_fbxMaterial) { return; }
+
+	// PBRのベースカラー係数。
+	a_modelMaterialAssetData.m_baseColorFactor = FetchBaseColorFactor(a_fbxMaterial->pbr.base_color);
+
+	// Roughnessは表面の粗さ。
+	// 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる。
+	a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Struct::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor);
+
+	// Metallicは金属度
+	// 0なら非金属、1なら金属としてPBR計算する
+	a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Struct::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor);
+
+	// ベースカラー
+	{
+		// BaseColorはPBRMaterialならpbr.base_color,
+		auto& l_textureFilePath = a_modelMaterialAssetData.m_baseColorTextureFilePath;
+
+		// 通常のFBXMaterialならfbx.diffuse_colorに入っていることが多い
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.base_color);
+
+		if (l_textureFilePath.empty())
+		{
+			l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.diffuse_color);
+		}
+	}
+
+	// 法線テクスチャ
+	{
+		auto& l_textureFilePath = a_modelMaterialAssetData.m_normalTextureFilePath;
+
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.normal_map);
+
+		if (l_textureFilePath.empty())
+		{
+			l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.normal_map);
+		}
+	}
+
+	// ラフネステクスチャ
+	{
+		auto& l_textureFilePath = a_modelMaterialAssetData.m_roughnessTextureFilePath;
+
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.roughness);
+	}
+
+	// Metallicテクスチャ
+	{
+		auto& l_textureFilePath = a_modelMaterialAssetData.m_metallicTextureFilePath;
+
+		l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.metalness);
+	}
+}
+
 void FWK::Graphics::FBXModelLoaderBase::DestroyFBXScene(ufbx_scene* a_fbxScene) const
 {
 	if (!a_fbxScene) { return; }
@@ -156,6 +214,26 @@ std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(con
 	l_textureFilePath.replace_extension(Converter::TextureBinaryConverter::k_lowerPNGExtension);
 
 	return l_textureFilePath.wstring();
+}
+
+FWK::TypeAlias::Math::Color FWK::Graphics::FBXModelLoaderBase::FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const
+{
+	if (!a_materialMap.has_value) { return Struct::ModelMaterialAssetData::k_defaultModelMaterialBaseColorFactor; }
+
+	return TypeAlias::Math::Color
+	{
+		static_cast<float>(a_materialMap.value_vec4.x),
+		static_cast<float>(a_materialMap.value_vec4.y),
+		static_cast<float>(a_materialMap.value_vec4.z),
+		static_cast<float>(a_materialMap.value_vec4.w)
+	};
+}
+
+float FWK::Graphics::FBXModelLoaderBase::FetchMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const
+{
+	if (!a_materialMap.has_value) { return a_defaultValue; }
+
+	return static_cast<float>(a_materialMap.value_real);
 }
 
 FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::ConvertUFBXVector3ToVector3(const ufbx_vec3& a_fbxVector) const

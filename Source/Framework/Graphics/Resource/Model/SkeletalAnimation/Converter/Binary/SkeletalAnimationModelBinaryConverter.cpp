@@ -78,7 +78,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
 	for (auto& l_modelMesh : l_modelData.m_modelMeshList)
 	{
-		if (!TryReadModelMeshBinaryData(l_modelMesh, l_memoryReadOffset))
+		if (!TryReadModelMeshBinaryData(l_modelBinaryHeader.m_boneCount, l_modelMesh, l_memoryReadOffset))
 		{
 			FailLoadAsset(l_modelData);
 
@@ -109,18 +109,20 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 			return false;
 		}
 
-		l_modelBone.m_parentBoneIndex = l_modelBoneBinaryHeader.m_parentBoneIndex;
-
-		// BindPose時点のLocalMatrix
-		if (!TryReadSingleBinaryData(l_modelBone.m_bindPoseLocalMatrix, l_memoryReadOffset))
+		// InValidは親を持たないRootBoneを表す
+		// Invalid以外なら、BoneList上の有効なIndexでなければならない
+		if (l_modelBoneBinaryHeader.m_parentBoneIndex != Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex &&
+			l_modelBoneBinaryHeader.m_parentBoneIndex >= l_modelBinaryHeader.m_boneCount) 
 		{
 			FailLoadAsset(l_modelData);
 
 			return false;
 		}
 
-		// SkinningMatrix作成時に使うInverseBindPoseMatrix
-		if (!TryReadSingleBinaryData(l_modelBone.m_inverseBindPoseMatrix, l_memoryReadOffset))
+		l_modelBone.m_parentBoneIndex = l_modelBoneBinaryHeader.m_parentBoneIndex;
+
+		// BindPose時点のLocalMatrix
+		if (!TryReadSingleBinaryData(l_modelBone.m_bindPoseLocalMatrix, l_memoryReadOffset))
 		{
 			FailLoadAsset(l_modelData);
 
@@ -163,6 +165,15 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
 			// BoneMotionTrack単位Headerを読み込む
 			if (!TryReadSingleBinaryData(l_modelBoneMotionTrackBinaryHeader, l_memoryReadOffset))
+			{
+				FailLoadAsset(l_modelData);
+
+				return false;
+			}
+
+			// MotionTrackは必ず存在するBoneを参照する
+			// Invalidもこの範囲比較でまとめて検出される
+			if (l_modelBoneMotionTrackBinaryHeader.m_boneIndex >= l_modelBinaryHeader.m_boneCount) 
 			{
 				FailLoadAsset(l_modelData);
 
@@ -222,6 +233,8 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
 
 	WriteBinaryData(k_singleBinaryElementCount, &l_modelBinaryHeader, l_memoryWriteOffset);
 
+	// 各ModelMeshについて、
+	// 共通MeshデータとInverseBindPose配列を書き込む
 	for (const auto& l_modelMesh : l_modelData.m_modelMeshList)	
 	{
 		WriteModelMeshBinaryData(l_modelMesh, l_memoryWriteOffset);
@@ -240,9 +253,6 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
 
 		// BindPoseLocalMatrix
 		WriteBinaryData(k_singleBinaryElementCount, &l_modelBone.m_bindPoseLocalMatrix, l_memoryWriteOffset);
-
-		// InverseBindPoseMatrix
-		WriteBinaryData(k_singleBinaryElementCount, &l_modelBone.m_inverseBindPoseMatrix, l_memoryWriteOffset);
 	}
 
 	// MotionSequenceListを書き込む
@@ -339,6 +349,64 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneMotionTrackBinar
 	return l_modelMotionTrackBinaryHeader;
 }
 
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBinaryData(const std::uint64_t& a_boneCount, Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryReadOffset) const
+{
+	// ModelVertex,Index,Material,Meshletを、共通基底クラスの基底クラスの既存処理で読み込む
+	if (!TryReadModelMeshBinaryDataCommon(a_modelMesh, a_memoryReadOffset))	{ return false; }
+
+	std::uint64_t l_bonePaletteCount = k_emptyBonePaletteCount;
+
+	// BonePalette数は単一のuint64_tなので
+	// 専用Header構造体を作らず直接読み込む
+	if (!TryReadSingleBinaryData(l_bonePaletteCount, a_memoryReadOffset)) { return false; }
+
+	// SkeletalAnimationModelのMeshには、少なくとも一つの使用Boneが必要
+	if (l_bonePaletteCount == k_emptyBonePaletteCount) { return false; }
+
+	// Paletteには重複しないGlobalBoneを格納するため
+	// Skelton全体のBone数を超えることはない
+	if (l_bonePaletteCount > a_boneCount) { return false; }
+
+	// 頂点のPaletteIndexがuint32_tなので、Palette数もuint32_tで表現可能な範囲に制限する
+	if (l_bonePaletteCount > std::numeric_limits<std::uint32_t>::max()) { return false; }
+
+	// このModelMeshの頂点が実際に使用するBoneだけで
+	// 構成されたBonePaletteを読み込む。
+	if (!TryReadBinaryDataList(l_bonePaletteCount, a_modelMesh.m_bonePaletteList, a_memoryReadOffset)) { return false; }
+
+	return IsValidModelMesh(a_modelMesh, a_boneCount);
+}
+
+void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMeshBinaryData(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const
+{
+	// ModelVertex、Index、Material、Meshletは、
+	// 共通基底クラスの気損処理で書き込む
+	WriteModelMeshBinaryDataCommon(a_modelMesh, a_memoryWriteOffset);
+
+	const auto& l_bonePaletteCount = a_modelMesh.m_bonePaletteList.size();
+
+	// 単一パラメータなので、Header構造体を使用せず、
+	// Palette数を直接書きこむ
+	WriteBinaryData(k_singleBinaryElementCount, &l_bonePaletteCount, a_memoryWriteOffset);
+
+	// Mesh固有のInverseBindPose配列を書き込む
+	WriteBinaryData(l_bonePaletteCount, a_modelMesh.m_bonePaletteList.data(), a_memoryWriteOffset);
+}
+
+std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateModelMeshBinaryFileSize(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
+{
+	// ModelVertex,Index,Material,Meshletの共通サイズ
+	auto l_modelMeshBinaryFileSize = CalculateModelMeshBinaryFileSizeCommon(a_modelMesh);
+
+	// BonePalette数を表すuint64_t一つ分
+	l_modelMeshBinaryFileSize += CalculateBinaryDataSize<std::uint64_t>(k_singleBinaryElementCount);
+
+	// このMeshが実際に使用するBoneだけを保持する
+	l_modelMeshBinaryFileSize += CalculateBinaryDataSize<Graphics::SkeletalAnimationModelRecord::ModelBonePaletteElement>(a_modelMesh.m_bonePaletteList.size());
+	
+	return l_modelMeshBinaryFileSize;
+}
+
 std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAssetFileSize(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData) const
 {
 	// Meshが一つもないModelDataは.asset化しない
@@ -347,16 +415,30 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 	// Boneが一つもないModelDataは,asset化しない
 	if (a_modelData.m_boneList.empty()) { return k_emptyAssetFileSize; }
 
+	const auto& l_boneCount = a_modelData.m_boneList.size();
+
 	// ファイル先頭に置く全体Header
 	auto l_modelAssetFileSize = CalculateBinaryDataSize<ModelBinaryHeader>(k_singleBinaryElementCount);
 
+	// 全ModelMeshが、BoneListと同じ数の
+	// InverseBindPose行列を持つことを保証する
+	// 数が違う状態で保存すると、読み込み側のOffsetがずれ、
+	// それ以降のBoneやAnimationデータを正しく読めなくなる
 	for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
 	{
+		if (!IsValidModelMesh(l_modelMesh, l_boneCount)) { return k_emptyAssetFileSize; }
+
 		l_modelAssetFileSize += CalculateModelMeshBinaryFileSize(l_modelMesh);
 	}
 
 	for (const auto& l_modelBone : a_modelData.m_boneList)
 	{
+		if (l_modelBone.m_parentBoneIndex !=Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex && 
+			l_modelBone.m_parentBoneIndex >= l_boneCount)
+		{
+			return k_emptyAssetFileSize;
+		}
+
 		// Bone単位Header
 		l_modelAssetFileSize += CalculateBinaryDataSize<ModelBoneBinaryHeader>(k_singleBinaryElementCount);
 
@@ -364,9 +446,6 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 		l_modelAssetFileSize += CalculateWStringBinaryFileSize(l_modelBone.m_boneName);
 
 		// BindPoseLocalMatrix
-		l_modelAssetFileSize += CalculateBinaryDataSize<TypeAlias::Math::Matrix>(k_singleBinaryElementCount);
-
-		// InverseBindPoseMatrix
 		l_modelAssetFileSize += CalculateBinaryDataSize<TypeAlias::Math::Matrix>(k_singleBinaryElementCount);
 	}
 
@@ -380,6 +459,8 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 
 		for (const auto& l_modelBoneMotionTrack : l_modelMotionSequence.m_boneMotionTrackList)
 		{
+			if (l_modelBoneMotionTrack.m_boneIndex >= l_boneCount) { return k_emptyAssetFileSize; }
+
 			// BoneMotionTrack単位Header
 			l_modelAssetFileSize += CalculateBinaryDataSize<ModelBoneMotionTrackBinaryHeader>(k_singleBinaryElementCount);
 
@@ -389,4 +470,36 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 	}
 
 	return l_modelAssetFileSize;
+}
+
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const
+{
+	if (a_modelMesh.m_modelVertexList.empty()) { return false; }
+	if (a_modelMesh.m_indexList.empty())       { return false; }
+	if (a_modelMesh.m_bonePaletteList.empty()) { return false; }
+
+	const auto& l_bonePaletteCount = a_modelMesh.m_bonePaletteList.size();
+
+	// 一つのPaletteに登録できるBone数が
+	// Skeleton全体のBone数を超えることはない
+	if (l_bonePaletteCount > a_boneCount) { return false; }
+
+	for (const auto& l_bonePaletteElement : a_modelMesh.m_bonePaletteList)
+	{
+		// k_invalidBoneIndexもuint32_tの最大値なので、
+		// この一つの比較でInvalid値と範囲外値をまとめて検出できる
+		if (l_bonePaletteElement.m_boneIndex >= a_boneCount) { return false; }
+	}
+	
+	for (const auto& l_modelVertex : a_modelMesh.m_modelVertexList)
+	{
+		// k_invalidPaletteIndexとの個別比較は不要。
+		// Invalid値もこの範囲比較で検出される。
+		if (l_modelVertex.m_bonePaletteIndex0 >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndex1 >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndex2 >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndex3 >= l_bonePaletteCount) { return false; }
+	}
+
+	return true;
 }

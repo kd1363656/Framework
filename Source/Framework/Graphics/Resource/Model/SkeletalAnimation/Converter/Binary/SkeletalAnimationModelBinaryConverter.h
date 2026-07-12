@@ -49,10 +49,9 @@ namespace FWK::Converter
 		bool LoadAsset(const std::filesystem::path& a_filePath,       Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 		bool SaveAsset(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
+		static constexpr std::uint64_t k_emptyBonePaletteCount     = 0ULL;
 		static constexpr std::uint64_t k_emptyBoneCount            = 0ULL;
 		static constexpr std::uint64_t k_emptyMotionSequenceCount  = 0ULL;
-		static constexpr std::uint64_t k_emptyBoneMotionTrackCount = 0ULL;
-		static constexpr std::uint64_t k_emptyKeyFrameCount        = 0ULL;
 
 	private:
 
@@ -66,11 +65,21 @@ namespace FWK::Converter
 
 		ModelBoneMotionTrackBinaryHeader CreateModelBoneMotionTrackBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBoneMotionTrack& a_modelBoneMotionTrack) const;
 
+		bool TryReadModelMeshBinaryData(const std::uint64_t& a_boneCount, Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryReadOffset) const;
+
+		void WriteModelMeshBinaryData(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const;
+
+		std::uint64_t CalculateModelMeshBinaryFileSize(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const;
+
 		std::uint64_t CalculateAssetFileSize(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData) const;
 
-		static constexpr std::uint64_t k_emptyBoneNameSize   = 0ULL;
-		static constexpr std::uint64_t k_emptyMotionNameSize = 0ULL;
+		bool IsValidModelMesh(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const;
 
+		static constexpr std::uint64_t k_emptyBoneNameSize         = 0ULL;
+		static constexpr std::uint64_t k_emptyMotionNameSize       = 0ULL;
+		static constexpr std::uint64_t k_emptyBoneMotionTrackCount = 0ULL;
+		static constexpr std::uint64_t k_emptyKeyFrameCount        = 0ULL;
+		
 		// 'S' = 0x53、'A' = 0x41のため、0x5341で"SA"を表す
 		static constexpr std::uint16_t k_modelAssetTypeID = 0x5341U;
 

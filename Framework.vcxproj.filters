@@ -883,6 +883,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Converter\Binary">
       <UniqueIdentifier>{d2b2eed6-0e69-4999-8c05-372faa725648}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader">
+      <UniqueIdentifier>{56b5ec13-2e82-42ff-8c99-8e767742ad3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1701,6 +1704,9 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2134,6 +2140,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

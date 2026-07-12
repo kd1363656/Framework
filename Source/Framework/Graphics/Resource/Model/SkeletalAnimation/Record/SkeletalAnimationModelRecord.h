@@ -13,12 +13,19 @@ namespace FWK::Graphics
 			TypeAlias::Math::Vector4 m_tangent  = {};
 			TypeAlias::Math::Vector2 m_uv       = {};
 
-			std::uint32_t m_boneIndex0 = k_invalidBoneIndex;
-			std::uint32_t m_boneIndex1 = k_invalidBoneIndex;
-			std::uint32_t m_boneIndex2 = k_invalidBoneIndex;
-			std::uint32_t m_boneIndex3 = k_invalidBoneIndex;
+			std::uint32_t m_bonePaletteIndex0 = k_invalidPaletteIndex;
+			std::uint32_t m_bonePaletteIndex1 = k_invalidPaletteIndex;
+			std::uint32_t m_bonePaletteIndex2 = k_invalidPaletteIndex;
+			std::uint32_t m_bonePaletteIndex3 = k_invalidPaletteIndex;
 
 			TypeAlias::Math::Vector4 m_boneWeight = {};
+		};
+
+		struct ModelBonePaletteElement final
+		{
+			TypeAlias::Math::Matrix m_inverseBindPoseMatrix = TypeAlias::Math::Matrix::Identity;
+
+			std::uint32_t m_boneIndex = k_invalidBoneIndex;
 		};
 
 		struct ModelMesh final
@@ -34,6 +41,8 @@ namespace FWK::Graphics
 
 			std::vector<ModelVertex> m_modelVertexList = {};
 
+			std::vector<ModelBonePaletteElement> m_bonePaletteList = {};
+
 			std::vector<std::uint32_t> m_indexList = {};
 
 			Struct::ModelMaterial m_modelMaterial = {};
@@ -47,9 +56,8 @@ namespace FWK::Graphics
 		{
 			std::wstring m_boneName = {};
 
-			TypeAlias::Math::Matrix m_bindPoseLocalMatrix   = TypeAlias::Math::Matrix::Identity;
-			TypeAlias::Math::Matrix m_inverseBindPoseMatrix = TypeAlias::Math::Matrix::Identity;
-
+			TypeAlias::Math::Matrix m_bindPoseLocalMatrix = TypeAlias::Math::Matrix::Identity;
+			
 			std::uint32_t m_parentBoneIndex = k_invalidBoneIndex;
 		};
 
@@ -115,7 +123,8 @@ namespace FWK::Graphics
 		static constexpr float k_initialAnimationDurationSecond = 0.0F;
 		static constexpr float k_defaultAnimationFrameRate      = 30.0F;
 
-		static constexpr std::uint32_t k_invalidBoneIndex = std::numeric_limits<std::uint32_t>::max();
+		static constexpr std::uint32_t k_invalidBoneIndex    = std::numeric_limits<std::uint32_t>::max();
+		static constexpr std::uint32_t k_invalidPaletteIndex = std::numeric_limits<std::uint32_t>::max();
 
 	private:
 

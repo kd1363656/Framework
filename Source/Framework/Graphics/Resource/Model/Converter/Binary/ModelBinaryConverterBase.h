@@ -60,7 +60,7 @@ namespace FWK::Converter
 		}
 
 		template <typename ModelMeshType>
-		bool TryReadModelMeshBinaryData(ModelMeshType& a_modelMesh, std::uint64_t& a_memoryReadOffset) const
+		bool TryReadModelMeshBinaryDataCommon(ModelMeshType& a_modelMesh, std::uint64_t& a_memoryReadOffset) const
 		{
 			ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
 
@@ -114,7 +114,7 @@ namespace FWK::Converter
 		}
 
 		template <typename ModelMeshType>
-		void WriteModelMeshBinaryData(const ModelMeshType& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const
+		void WriteModelMeshBinaryDataCommon(const ModelMeshType& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const
 		{
 			const auto& l_modelMeshBinaryHeader = CreateModelMeshBinaryHeader(a_modelMesh);
 
@@ -159,7 +159,7 @@ namespace FWK::Converter
 		}
 
 		template <typename ModelMeshType>
-		std::uint64_t CalculateModelMeshBinaryFileSize(const ModelMeshType& a_modelMesh) const
+		std::uint64_t CalculateModelMeshBinaryFileSizeCommon(const ModelMeshType& a_modelMesh) const
 		{
 			using ModelVertexType = typename std::remove_cvref_t<decltype(a_modelMesh.m_modelVertexList)>::value_type;
 

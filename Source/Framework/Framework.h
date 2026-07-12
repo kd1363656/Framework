@@ -214,6 +214,7 @@
 #include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicReadWriteStructuredBuffer.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/Record/SkeletalAnimationModelRecord.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/SkeletalAnimationModelFBXLoader.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"
