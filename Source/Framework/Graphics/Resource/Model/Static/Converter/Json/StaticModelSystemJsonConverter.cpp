@@ -4,11 +4,11 @@ void FWK::Converter::StaticModelSystemJsonConverter::Deserialize(const nlohmann:
 {
 	if (a_rootJson.is_null()) { return; }
 
-	if (a_rootJson.contains(k_staticModelStorageJsonKey))
+	if (a_rootJson.contains(k_modelStorageJsonKey))
 	{
 		auto& l_staticModelSystem = a_staticModelSystem.GetMutableREFStaticModelStorage();
 
-		l_staticModelSystem.Deserialize(a_rootJson[k_staticModelStorageJsonKey]);
+		l_staticModelSystem.Deserialize(a_rootJson[k_modelStorageJsonKey]);
 	}
 }
 
@@ -18,7 +18,7 @@ nlohmann::json FWK::Converter::StaticModelSystemJsonConverter::Serialize(const G
 
 	const auto& l_staticModelSystem = a_staticModelSystem.GetREFStaticModelStorage();
 
-	l_rootJson[k_staticModelStorageJsonKey] = l_staticModelSystem.Serialize();
+	l_rootJson[k_modelStorageJsonKey] = l_staticModelSystem.Serialize();
 
 	return l_rootJson;
 }

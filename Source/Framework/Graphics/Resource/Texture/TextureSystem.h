@@ -82,7 +82,7 @@ namespace FWK::Graphics
 		TextureLoader					m_loader				   = {};
 		TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
-		Converter::TextureSystemJsonConverter m_jsonConverter		   = {};
-		Converter::TextureBinaryConverter     m_textureBinaryConverter = {};
+		Converter::TextureSystemJsonConverter m_jsonConverter   = {};
+		Converter::TextureBinaryConverter     m_binaryConverter = {};
 	};
 }

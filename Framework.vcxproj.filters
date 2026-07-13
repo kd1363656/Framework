@@ -901,6 +901,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder">
       <UniqueIdentifier>{96910efc-4572-4440-8a5f-e2c10b113551}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json">
+      <UniqueIdentifier>{5662c144-a29b-494b-a7b7-4307fd610f66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1752,6 +1755,9 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2197,6 +2203,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -55,9 +55,9 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(c
 }
 void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(const StaticModelSystem& a_staticModelSystem)
 {
-	const auto& l_pendingStaticModelBatchUploadRecordMap = a_staticModelSystem.GetREFPendingStaticModelBatchUploadRecordMap();
+	const auto& l_pendingModelBatchUploadRecordMap = a_staticModelSystem.GetREFPendingModelBatchUploadRecordMap();
 
-	if (l_pendingStaticModelBatchUploadRecordMap.empty()) { return; }
+	if (l_pendingModelBatchUploadRecordMap.empty()) { return; }
 
 	const auto& l_copyCommandAllocator = FetchMutablePTRCopyCommandAllocator().lock();
 
@@ -66,7 +66,7 @@ void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(c
 	// コマンドリストなどのリセットなどを行う
 	BeforSubmitResourceProcess(*l_copyCommandAllocator);
 
-	for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : l_pendingStaticModelBatchUploadRecordMap)
+	for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : l_pendingModelBatchUploadRecordMap)
 	{
 		FWK_ASSERT_RETURN_IF(l_pendingStaticModelBatchUploadRecord.m_bufferUploadCommandList.empty(), "StaticModel用BufferUploadCommandListが空のため、StaticModel用BufferResourceのバッチコピーに失敗しました。");
 

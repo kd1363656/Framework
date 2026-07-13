@@ -30,7 +30,7 @@ namespace FWK::Graphics
 		bool AddStaticModelReferenceCount     (const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord);
 		bool SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		const auto& GetREFPendingStaticModelBatchUploadRecordMap() const { return m_pendingStaticModelBatchUploadRecordMap; }
+		const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
 
 		const auto& GetREFStaticModelStorage() const { return m_staticModelStorage; }
 
@@ -57,7 +57,7 @@ namespace FWK::Graphics
 
 		bool TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult);
 
-		PendingStaticModelBatchUploadRecordMap m_pendingStaticModelBatchUploadRecordMap = {};
+		PendingStaticModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
 		
 		AssetStorage<Graphics::StaticModelRecord> m_staticModelStorage = {};
 
@@ -67,7 +67,7 @@ namespace FWK::Graphics
 		ModelMeshletBuilder<StaticModelRecord>                m_meshletBuilder		         = {};
 		StaticModelBatchUploadRecordBuilder                   m_batchUploadRecordBuilder     = {};
 
-		Converter::StaticModelSystemJsonConverter m_jsonConverter			   = {};
-		Converter::StaticModelBinaryConverter     m_staticModelBinaryConverter = {};
+		Converter::StaticModelSystemJsonConverter m_jsonConverter   = {};
+		Converter::StaticModelBinaryConverter     m_binaryConverter = {};
 	};
 }

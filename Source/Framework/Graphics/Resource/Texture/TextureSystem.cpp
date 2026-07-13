@@ -44,7 +44,7 @@ FWK::Graphics::TextureSystem::TextureLoadResult FWK::Graphics::TextureSystem::Lo
 	DirectX::TexMetadata  l_texMetadata  = {};
 
 	// .assetが存在していて、PNGより更新が古くなければ.assetを優先して読み込む
-	if (!m_textureBinaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
+	if (!m_binaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
 	{
 		// .assetが読み込めなければテクスチャをロードする、失敗したらassert
 		FWK_ASSERT_RETURN_VALUE_IF(!m_loader.LoadTextureFile(a_filePath, 
@@ -64,7 +64,7 @@ FWK::Graphics::TextureSystem::TextureLoadResult FWK::Graphics::TextureSystem::Lo
 													 l_textureLoadResult);
 
 		// 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-		FWK_ASSERT_RETURN_VALUE_IF(!m_textureBinaryConverter.SaveTextureAsset(a_filePath, l_scratchImage), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
+		FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveTextureAsset(a_filePath, l_scratchImage), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
 
 		return l_textureLoadResult;
 	}

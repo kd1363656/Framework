@@ -538,6 +538,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.h" />
@@ -713,6 +714,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.cpp" />

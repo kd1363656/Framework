@@ -20,6 +20,6 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_staticModelStorageJsonKey = "StaticModelStorage";
+		static constexpr std::string_view k_modelStorageJsonKey = "ModelStorage";
 	};
 }
