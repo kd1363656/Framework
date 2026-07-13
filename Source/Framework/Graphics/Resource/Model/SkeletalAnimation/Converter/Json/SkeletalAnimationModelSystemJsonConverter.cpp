@@ -4,11 +4,12 @@ void FWK::Converter::SkeletalAnimationModelSystemJsonConverter::Deserialize(cons
 {
 	if (a_rootJson.is_null()) { return; }
 
-	if (a_rootJson.contains(k_modelStorageJsonKey))
+	if (const auto& l_json = a_rootJson.value(k_modelStorageJsonKey, nlohmann::json{});
+		!l_json.is_null())
 	{
-		auto& l_staticModelSystem = a_skeletalAnimationModelSystem.GetMutableREFModelStorage();
+		auto& l_modelStorage = a_skeletalAnimationModelSystem.GetMutableREFModelStorage();
 
-		l_staticModelSystem.Deserialize(a_rootJson[k_modelStorageJsonKey]);
+		l_modelStorage.Deserialize(l_json);
 	}
 }
 
@@ -16,9 +17,9 @@ nlohmann::json FWK::Converter::SkeletalAnimationModelSystemJsonConverter::Serial
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_staticModelSystem = a_staticModelSystem.GetREFStaticModelStorage();
+	const auto& l_modelStorage = a_skeletalAnimationModelSystem.GetREFModelStorage();
 
-	l_rootJson[k_modelStorageJsonKey] = l_staticModelSystem.Serialize();
+	l_rootJson[k_modelStorageJsonKey] = l_modelStorage.Serialize();
 
 	return l_rootJson;
 }

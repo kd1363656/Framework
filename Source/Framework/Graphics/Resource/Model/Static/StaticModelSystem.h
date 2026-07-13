@@ -32,9 +32,9 @@ namespace FWK::Graphics
 
 		const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
 
-		const auto& GetREFStaticModelStorage() const { return m_staticModelStorage; }
+		const auto& GetREFModelStorage() const { return m_modelStorage; }
 
-		auto& GetMutableREFStaticModelStorage() { return m_staticModelStorage; }
+		auto& GetMutableREFModelStorage() { return m_modelStorage; }
 
 	private:
 
@@ -59,7 +59,7 @@ namespace FWK::Graphics
 
 		PendingStaticModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
 		
-		AssetStorage<Graphics::StaticModelRecord> m_staticModelStorage = {};
+		AssetStorage<Graphics::StaticModelRecord> m_modelStorage = {};
 
 		StaticModelFBXLoader				                  m_loader				         = {};
 		ModelMaterialRuntimeTextureBuilder<StaticModelRecord> m_materialRuntimTextureBuilder = {};

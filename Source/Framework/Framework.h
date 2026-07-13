@@ -224,6 +224,7 @@
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/SkeletalAnimationModelFBXLoader.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/Builder/SkeletalAnimationModelBatchUploadRecordBuilder.h"
 #include "Definition/Struct/Graphics/SkeletalAnimationModelSystemStruct.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModelSystem.h"
 
 // アップロードシステム

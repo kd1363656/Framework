@@ -31,9 +31,9 @@ namespace FWK::Graphics
 
 		const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
 
-		const auto& GetREFSkeletalAnimationModelStorage() const { return m_skeletalAnimationModelStorage; }
+		const auto& GetREFModelStorage() const { return m_skeletalAnimationModelStorage; }
 
-		auto& GetMutableREFSkeletalAnimationModelStorage() { return m_skeletalAnimationModelStorage; }
+		auto& GetMutableREFModelStorage() { return m_skeletalAnimationModelStorage; }
 
 	private:
 
@@ -64,6 +64,7 @@ namespace FWK::Graphics
 		ModelMeshOptimizer<SkeletalAnimationModelRecord>  m_meshOptimizer  = {};
 		ModelMeshletBuilder<SkeletalAnimationModelRecord> m_meshletBuilder = {};
 
-		Converter::SkeletalAnimationModelBinaryConverter m_binaryConverter = {};
+		Converter::SkeletalAnimationModelSystemJsonConverter m_jsonConverter   = {};
+		Converter::SkeletalAnimationModelBinaryConverter     m_binaryConverter = {};
 	};
 }

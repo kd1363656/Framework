@@ -2,7 +2,9 @@
 
 void FWK::Graphics::SkeletalAnimationModelSystem::Deserialize(const nlohmann::json& a_rootJson)
 {
-	
+	if (!a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 bool FWK::Graphics::SkeletalAnimationModelSystem::Create()
@@ -20,7 +22,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
 nlohmann::json FWK::Graphics::SkeletalAnimationModelSystem::Serialize() const
 {
-	return nlohmann::json();
+	return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Graphics::SkeletalAnimationModelSystem::RegisterPendingSkeletalAnimationModels()
