@@ -64,8 +64,8 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DynamicReadWriteStructuredBuffer用SRVの作成に失敗しました。", false);
 
 			// ComputeShaderなどから書き込むためのUAVを作る
-			const auto l_uavDescriptorInde = CreateUAV(a_device,
-													   l_bufferGPUResource,
+			const auto l_uavDescriptorIndex = CreateUAV(a_device,
+										x			   l_bufferGPUResource,
 													   static_cast<UINT>(l_elementCount),
 													   static_cast<UINT>(l_structuredByteStride),
 													   a_cbvSRVUAVDescriptorPool);
@@ -83,7 +83,7 @@ namespace FWK::Graphics
 			SetBufferGPUResource (std::move(l_bufferGPUResource));
 			SetSRVDescriptorIndex(l_srvDescriptorIndex);
 
-			m_uavDescriptorIndex   = l_uavDescriptorInde;
+			m_uavDescriptorIndex   = l_uavDescriptorIndex;
 			m_currentResourceState = D3D12_RESOURCE_STATE_COMMON;
 			m_elementCount         = static_cast<UINT>(l_elementCount);
 			m_structureByteStride  = static_cast<UINT>(l_structuredByteStride);
@@ -109,11 +109,11 @@ namespace FWK::Graphics
 
 	private:
 
-		TypeAlias::DescriptorIndex CreateUAV(const Device&                            a_device,
-											 const Struct::GPUResource&               a_bufferGPUResource,
-											 const UINT								  a_elementCount,
-											 const UINT								  a_structureByteStride,
-											       TypeAlias::CBVSRVUAVDescriptorPool a_cbvSRVUAVDescriptorPool) const;
+		TypeAlias::DescriptorIndex CreateUAV(const Device&                             a_device,
+											 const Struct::GPUResource&                a_bufferGPUResource,
+											 const UINT								   a_elementCount,
+											 const UINT								   a_structureByteStride,
+											       TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
 
 		void MoveFrom(DynamicReadWriteStructuredBuffer&& a_other) noexcept;
 

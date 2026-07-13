@@ -120,11 +120,11 @@ void FWK::Graphics::DynamicReadWriteStructuredBuffer::ReleaseImmediatelyDescript
     ReleaseImmediatelyUAVDescriptorIndex(a_cbvSRVUAVDescriptorPool);
 }
 
-FWK::TypeAlias::DescriptorIndex FWK::Graphics::DynamicReadWriteStructuredBuffer::CreateUAV(const Device&                            a_device,
-											                                               const Struct::GPUResource&               a_bufferGPUResource,
-											                                               const UINT								a_elementCount,
-											                                               const UINT								a_structureByteStride,
-											                                                     TypeAlias::CBVSRVUAVDescriptorPool a_cbvSRVUAVDescriptorPool) const
+FWK::TypeAlias::DescriptorIndex FWK::Graphics::DynamicReadWriteStructuredBuffer::CreateUAV(const Device&                             a_device,
+											                                               const Struct::GPUResource&                a_bufferGPUResource,
+											                                               const UINT								 a_elementCount,
+											                                               const UINT								 a_structureByteStride,
+											                                                     TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 {
     const auto& l_device = a_device.GetREFDevice();
 

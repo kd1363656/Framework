@@ -161,8 +161,8 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkelet
 	// この時点で初めてRecordへ共有GPU Resourceを移動する
 	a_skeletalAnimationModelRecord.ApplySharedStructuredBuffers(l_structuredBufferSourceData.m_maxBoneHierarchyDepth,
 																std::move(l_boneBuffer),
-																std::move(l_boneMotionTrackBuffer),
 																std::move(l_motionSequenceBuffer),
+																std::move(l_boneMotionTrackBuffer),
 															    std::move(l_keyFrameBuffer));
 
 	// 共有Bufferの作成がすべて成功した場合だけ、
