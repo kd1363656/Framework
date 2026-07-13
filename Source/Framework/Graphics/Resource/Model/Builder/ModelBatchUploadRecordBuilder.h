@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class ModelBatchUploadRecordBuilder final
+	class ModelBatchUploadRecordBuilder
 	{
 	public:
 

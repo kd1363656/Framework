@@ -4,7 +4,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
 																							const GPUMemoryAllocator&						                 a_gpuMemoryAllocator, 
 																							       std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
 																								   TypeAlias::CBVSRVUAVDescriptorPool&	                     a_cbvSRVUAVDescriptorPool,
-																								   Graphics::StaticModelRecord&				                 a_staticModelRecord) const
+																								   StaticModelRecord&				                         a_staticModelRecord) const
 {
 	auto& l_modelMeshList = a_staticModelRecord.GetMutableREFModelData().m_modelMeshList;
 

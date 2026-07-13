@@ -19,11 +19,6 @@ void FWK::Scene::INIT()
 	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
 	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
-	auto& l_resourceContext              = l_graphicsManager.GetMutableREFResourceContext            ();
-	auto& l_skeletalAnimationModelSystem = l_resourceContext.GetMutableREFSkeltalAnimationModelSystem();
-
-	l_skeletalAnimationModelSystem.LoadSkeletalAnimationModelAsset("Asset/Model/Actor/Antike/Antike.fbx", m_skeletalAnimationMoidelRecord);
-
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 	
 	if (!l_staticModelStandardPerObjectDrawRequest) { return; }

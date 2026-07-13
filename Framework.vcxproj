@@ -397,6 +397,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCommonStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelStandardPerObjectDrawRequestDataStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
@@ -535,6 +536,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\ModelMeshletBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h" />
@@ -709,6 +711,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp" />

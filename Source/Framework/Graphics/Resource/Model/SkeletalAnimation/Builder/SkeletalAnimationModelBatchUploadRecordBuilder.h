@@ -1,0 +1,24 @@
+﻿#pragma once
+
+namespace FWK::Graphics
+{
+	class SkeletalAnimationModelBatchUploadRecordBuilder final
+	{
+	public:
+
+		 SkeletalAnimationModelBatchUploadRecordBuilder() = default;
+		~SkeletalAnimationModelBatchUploadRecordBuilder() = default;
+
+		bool CreateSkeletalAnimationModelBatchUploadRecord(const Device&									               a_device,
+												           const GPUMemoryAllocator&					                   a_gpuMemoryAllocator,
+												           	     std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
+												           	     TypeAlias::CBVSRVUAVDescriptorPool&		               a_cbvSRVUAVDescriptorPool,
+												           	     SkeletalAnimationModelRecord&			                   a_skeletalAnimationModelRecord) const;
+
+	private:
+
+		void ReleaseCreatedSkeletalAnimationModelStructuredBuffer(std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const;
+
+		ModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+	};
+}

@@ -222,6 +222,7 @@
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Skeleton/SkeletalAnimationModelFBXSkeletonExtractor.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Motion/SkeletalAnimationModelFBXMotionExtractor.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/SkeletalAnimationModelFBXLoader.h"
+#include "Definition/Struct/Graphics/SkeletalAnimationModelSystemStruct.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModelSystem.h"
 
 // アップロードシステム

@@ -9,7 +9,16 @@ namespace FWK::Graphics
 		 SkeletalAnimationModelSystem() = default;
 		~SkeletalAnimationModelSystem() = default;
 
-		bool LoadSkeletalAnimationModelAsset(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
+		Struct::SkeletalAnimationModelLoadResult LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device,
+																						  const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
+			                                                                              const std::filesystem::path&              a_filePath,
+																							    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+
+		void RegisterPendingSkeletalAnimationModels();
+
+		bool AddSkeletalAnimationModelReferenceCount(const std::weak_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord);
+
+		bool SubtractSkeletalAnimationModelReferenceCount(const std::weak_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
 	private:
 

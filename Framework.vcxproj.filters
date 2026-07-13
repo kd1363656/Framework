@@ -898,6 +898,9 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Builder">
       <UniqueIdentifier>{6804e9df-bbbb-4c64-8d2d-3062ae5c8da1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder">
+      <UniqueIdentifier>{96910efc-4572-4440-8a5f-e2c10b113551}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1743,6 +1746,12 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2185,6 +2194,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
