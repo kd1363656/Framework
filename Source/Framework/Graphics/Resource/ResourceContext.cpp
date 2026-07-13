@@ -19,9 +19,9 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
     FWK_ASSERT_RETURN_VALUE_IF(!m_uploadSystem.Create(a_device),       "UploadSystemの作成処理に失敗しました。",       false);
 
     // 作成したGPUMemoryAllocatorとUploadSystemを使用する
-    FWK_ASSERT_RETURN_VALUE_IF(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_cbvSRVUAVDescriptorPool), "TextureSystemの作成処理に失敗しました。",     false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelSystem.Create(),                                                      "StaticModelSystemの作成処理に失敗しました。", false);
-
+    FWK_ASSERT_RETURN_VALUE_IF(!m_textureSystem.Create(a_device, m_gpuMemoryAllocator, m_cbvSRVUAVDescriptorPool), "TextureSystemの作成処理に失敗しました。",                false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_staticModelSystem.Create(),                                                      "StaticModelSystemの作成処理に失敗しました。",            false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_skeletalAnimationModelSystem.Create(),                                           "SkeletalAnimationModelSystemの作成処理に失敗しました。", false);
 
     // デフォルトテクスチャの登録をここで行う
     m_uploadSystem.SubmitPendingTextureCopyBatchIfNeededAndWait(m_textureSystem);

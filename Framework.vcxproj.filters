@@ -1758,6 +1758,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

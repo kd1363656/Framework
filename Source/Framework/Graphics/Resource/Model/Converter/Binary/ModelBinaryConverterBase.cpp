@@ -3,7 +3,7 @@
 bool FWK::Converter::ModelBinaryConverterBase::CanLoadAsset(const std::filesystem::path& a_filePath) const
 {
     	// 元となるFBXが存在しない場合は、.assetの正当性を判断できないので読み込まない
-	if (!Utility::CanLoadFilePath(a_filePath, Graphics::FBXModelLoaderBase::k_lowerFBXExtension)) { return false; }
+	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension)) { return false; }
 
 	const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath);
 

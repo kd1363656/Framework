@@ -93,7 +93,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
 
     // StaticModelAssetの元になるFBXが存在しない場合、
     // 何から生成された.assetなのか判断できないため保存しない
-    FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Graphics::FBXModelLoaderBase::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
     // FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
     const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);

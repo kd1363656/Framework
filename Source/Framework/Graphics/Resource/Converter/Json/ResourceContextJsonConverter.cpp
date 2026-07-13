@@ -57,6 +57,15 @@ void FWK::Converter::ResourceContextJsonConverter::Deserialize(const nlohmann::j
 
 		l_staticModelSystem.Deserialize(l_json);
 	}
+	
+	// スケルタルアニメーションモデルシステムのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_skeletalAnimationModelSystemJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_skeletalAnimationModelSystem = a_resourceContext.GetMutableREFSkeltalAnimationModelSystem();
+
+		l_skeletalAnimationModelSystem.Deserialize(l_json);
+	}
 }
 
 nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Graphics::ResourceContext& a_resourceContext) const
@@ -67,9 +76,10 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 	const auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetREFCBVSRVUAVDescriptorPool();
 	const auto& l_dsvDescriptorPool       = a_resourceContext.GetREFDSVDescriptorPool      ();
 
-	const auto& l_uploadSystem      = a_resourceContext.GetREFUploadSystem     ();
-	const auto& l_textureSystem     = a_resourceContext.GetREFTextureSystem    ();
-	const auto& l_staticModelSystem = a_resourceContext.GetREFStaticModelSystem();
+	const auto& l_uploadSystem                 = a_resourceContext.GetREFUploadSystem     ();
+	const auto& l_textureSystem                = a_resourceContext.GetREFTextureSystem    ();
+	const auto& l_staticModelSystem            = a_resourceContext.GetREFStaticModelSystem();
+	const auto& l_skeletalAnimationModelSystem = a_resourceContext.GetREFStaticModelSystem();
 
 	// RTVディスクリプタプールのシリアライズ
 	l_rootJson[k_rtvDescriptorPoolJsonKey] = l_rtvDescriptorPool.Serialize();
@@ -88,6 +98,9 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 
 	// スタティックモデルシステムのシリアライズ
 	l_rootJson[k_staticModelSystemJsonKey] = l_staticModelSystem.Serialize();
+
+	// スケルタルアニメーションシステムのシリアライズ
+	l_rootJson[k_skeletalAnimationModelSystemJsonKey] = l_skeletalAnimationModelSystem.Serialize();
 
 	return l_rootJson;
 }

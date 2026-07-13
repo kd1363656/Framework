@@ -1348,6 +1348,13 @@
                 "Capacity": 10000
             }
         },
+        "SkeletalAnimationModelSystem": {
+            "ModelStorage": {
+                "StorageIDAllocator": {
+                    "StorageIDAllocatorCapacity": 10000
+                }
+            }
+        },
         "StaticModelSystem": {
             "ModelStorage": {
                 "StorageIDAllocator": {

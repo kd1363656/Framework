@@ -4,7 +4,7 @@ ufbx_scene* FWK::Graphics::FBXModelLoaderBase::LoadFBXScene(const std::filesyste
 {
 	// FBXファイルとして読み込めるパスか確認する
 	// 存在しないファイルや.fbx以外のファイルをufbxへ渡さないための事前チェック
-	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, FBXModelLoaderBase::k_lowerFBXExtension), "FBXファイルが読み込める形式ではありません、FBXシーンの読み込みに失敗しました。", nullptr);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "FBXファイルが読み込める形式ではありません、FBXシーンの読み込みに失敗しました。", nullptr);
 
 	// ufbx_load_optsは、ufbxでFBXを読み込むときの設定
 	const auto& l_loadOptions = CreateFBXLoadOptions();

@@ -212,7 +212,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
 
 	// SkeletalAnimationModelAssetはFBXから生成する想定
 	// 元FBXが存在しない場合、何から生成された.assetか判断できないので保存しない
-	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Graphics::FBXModelLoaderBase::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "Assetの元になるFBXファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
 	// FBXと同じ場所・同じ名前で拡張子だけ.assetにした保存先を作る
 	const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath);

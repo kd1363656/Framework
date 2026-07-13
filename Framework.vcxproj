@@ -352,6 +352,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMeshletBuilderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h" />

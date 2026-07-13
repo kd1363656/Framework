@@ -2,14 +2,16 @@
 
 void FWK::Graphics::SkeletalAnimationModelSystem::Deserialize(const nlohmann::json& a_rootJson)
 {
-	if (!a_rootJson.is_null()) { return; }
+	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 bool FWK::Graphics::SkeletalAnimationModelSystem::Create()
 {
-	return false;
+	FWK_ASSERT_RETURN_VALUE_IF(!m_modelStorage.Create(), "AssetStorageの作成に失敗したため、SkeletalAnimationModelSystemの作成処理に失敗しました。", false);
+
+	return true;
 }
 
 FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationModelSystem::LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device, 
@@ -17,7 +19,10 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 	                                                                                                                                const std::filesystem::path&              a_filePath, 
 	                                                                                                                                      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
-	return Struct::SkeletalAnimationModelLoadResult();
+	Struct::SkeletalAnimationModelLoadResult l_skeletalAnimationModelLoadResult = {};
+
+	// .fbxでない、もしくは存在しないなら読み込まない
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension), "SkeletalAnimationMOdelのFBXファイルが存在しません。", l_skeletalAnimationModelLoadResult);
 }
 
 nlohmann::json FWK::Graphics::SkeletalAnimationModelSystem::Serialize() const
@@ -40,7 +45,12 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::SubtractSkeletalAnimationModel
 	return false;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimmationModelRecord, 
+bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
+{
+	return false;
+}
+
+bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimmationModelRecord,
 	                                                                                     const Device&                                        a_device, 
 	                                                                                     const GPUMemoryAllocator&                            a_gpuMemoryAllocator, 
 	                                                                                     const std::filesystem::path&                         a_filePath, 

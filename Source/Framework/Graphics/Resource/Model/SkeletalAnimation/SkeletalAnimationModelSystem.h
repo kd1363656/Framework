@@ -6,7 +6,7 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using PendingSkeletalAnimationModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::SkeletalAnimationModelBatchUploadRecord, Struct::WStringHash, std::not_equal_to<>>;
+		using PendingSkeletalAnimationModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::SkeletalAnimationModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
 
 	public:
 
@@ -31,11 +31,13 @@ namespace FWK::Graphics
 
 		const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
 
-		const auto& GetREFModelStorage() const { return m_skeletalAnimationModelStorage; }
+		const auto& GetREFModelStorage() const { return m_modelStorage; }
 
-		auto& GetMutableREFModelStorage() { return m_skeletalAnimationModelStorage; }
+		auto& GetMutableREFModelStorage() { return m_modelStorage; }
 
 	private:
+
+		bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
 		bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimmationModelRecord,
 			                                        const Device&                                        a_device,
@@ -54,7 +56,7 @@ namespace FWK::Graphics
 
 		PendingSkeletalAnimationModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
 
-		AssetStorage<SkeletalAnimationModelRecord> m_skeletalAnimationModelStorage = {};
+		AssetStorage<SkeletalAnimationModelRecord> m_modelStorage = {};
 
 		SkeletalAnimationModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 

@@ -194,6 +194,7 @@
 
 // モデル(Static)
 #include "Definition/Struct/Graphics/ModelCommonStruct.h"
+#include "Definition/Constant/Graphics/FBXModelLoaderBaseConstant.h"
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Definition/Constant/Graphics/TriangleVertexCountConstant.h"
