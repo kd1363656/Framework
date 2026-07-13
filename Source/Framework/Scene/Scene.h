@@ -43,6 +43,8 @@ namespace FWK
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 
+		std::shared_ptr<Graphics::SkeletalAnimationModel> m_characterModel = nullptr;
+
 		std::shared_ptr<Graphics::StaticModel>											        m_groundModel                    = nullptr;
 		std::shared_ptr<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData> m_groundModelStandardDrawRequest = nullptr;
 

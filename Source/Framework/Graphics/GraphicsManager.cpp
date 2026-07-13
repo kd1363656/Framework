@@ -39,6 +39,9 @@ void FWK::Graphics::GraphicsManager::BeginFrame()
 	// 待機中スタティックモデルのバッファーコピー処理及びスタティックモデル登録処理
 	m_resourceContext.ProcessPendingStaticModelUploads();
 
+	// 待機中スケルタルアニメーションモデルのバッファーコピー及びスケルタルアニメーションモデル登録処理
+	m_resourceContext.ProcessPendingSkeletalAnimationModelUploads();
+
 	// 待機中テクスチャのコピー処理及びテクスチャ登録処理
 	m_resourceContext.ProcessPendingTextureUploads();
 

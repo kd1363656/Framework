@@ -26,7 +26,7 @@ namespace FWK::Graphics
 
 		void SubtractReferenceCount();
 
-		std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
+		std::weak_ptr<Graphics::TextureRecord> m_textureRecord;
 
 		TypeAlias::StorageID m_storageID;
 	};

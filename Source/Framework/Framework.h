@@ -227,6 +227,8 @@
 #include "Definition/Struct/Graphics/SkeletalAnimationModelSystemStruct.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModelSystem.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModel.h"
+
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"

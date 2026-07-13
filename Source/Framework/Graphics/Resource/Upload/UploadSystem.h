@@ -12,8 +12,9 @@ namespace FWK::Graphics
 		void Deserialize(const nlohmann::json& a_rootJson);
 		bool Create     (const Device&		   a_device);
 
-		void SubmitPendingTextureCopyBatchIfNeededAndWait(const TextureSystem&     a_textureSystem);
-		void SubmitPendingStaticModelBatchIfNeededAndWait(const StaticModelSystem& a_staticModelSystem);
+		void SubmitPendingTextureCopyBatchIfNeededAndWait           (const TextureSystem&                a_textureSystem);
+		void SubmitPendingStaticModelBatchIfNeededAndWait           (const StaticModelSystem&            a_staticModelSystem);
+		void SubmitPendingSkeletalAnimationModelBatchIfNeededAndWait(const SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem);
 
 		nlohmann::json Serialize() const;
 

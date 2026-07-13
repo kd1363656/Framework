@@ -46,6 +46,15 @@ void FWK::Graphics::ResourceContext::ProcessPendingStaticModelUploads()
     m_uploadSystem.SubmitPendingStaticModelBatchIfNeededAndWait(m_staticModelSystem);
     m_staticModelSystem.RegisterPendingStaticModels            ();
 }
+void FWK::Graphics::ResourceContext::ProcessPendingSkeletalAnimationModelUploads()
+{
+    // SkeletalAnimationModelSystemにPending中のモデルがあれば、
+    // UPLOADヒープからDEFAULTヒープへ各Bufferをコピーする
+    m_uploadSystem.SubmitPendingSkeletalAnimationModelBatchIfNeededAndWait(m_skeletalAnimationModelSystem);
+
+    // GPUコピー完了後、RecordをAssetStorageへ正式登録する
+    m_skeletalAnimationModelSystem.RegisterPendingSkeletalAnimationModels();
+}
 
 void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue & a_directCommandQueue)
 {

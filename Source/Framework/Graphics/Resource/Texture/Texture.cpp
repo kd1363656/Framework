@@ -1,7 +1,7 @@
 ﻿#include "Texture.h"
 
 FWK::Graphics::Texture::Texture() : 
-	m_textureRecord({}),
+	m_textureRecord(),
 	m_storageID    (AssetRecordBase::k_invalidStorageID)
 {}
 FWK::Graphics::Texture::Texture(const Texture & a_other) : 

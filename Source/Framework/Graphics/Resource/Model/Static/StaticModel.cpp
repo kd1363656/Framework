@@ -1,7 +1,7 @@
 ﻿#include "StaticModel.h"
 
 FWK::Graphics::StaticModel::StaticModel() : 
-	m_staticModelRecord({}),
+	m_staticModelRecord(),
 	m_storageID        (AssetRecordBase::k_invalidStorageID)
 {}
 FWK::Graphics::StaticModel::StaticModel(const StaticModel& a_other) : 
@@ -83,9 +83,12 @@ bool FWK::Graphics::StaticModel::Load(const std::filesystem::path& a_filePath)
 
 bool FWK::Graphics::StaticModel::IsValid() const
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID) { return false; }
-	if (m_staticModelRecord.expired())				        { return false; }
-
+	if (m_storageID == AssetRecordBase::k_invalidStorageID || 
+		m_staticModelRecord.expired())
+	{
+		return false; 
+	}
+	
 	return true;
 }
 

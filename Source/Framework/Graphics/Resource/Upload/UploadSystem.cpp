@@ -80,6 +80,34 @@ void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(c
 	// コマンドリストの実行などを行う
 	AfterSubmitResourceProcess(*l_copyCommandAllocator);
 }
+void FWK::Graphics::UploadSystem::SubmitPendingSkeletalAnimationModelBatchIfNeededAndWait(const SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem)
+{
+	const auto& l_pendingModelBatchUploadRecordMap = a_skeletalAnimationModelSystem.GetREFPendingModelBatchUploadRecordMap();
+
+	if (l_pendingModelBatchUploadRecordMap.empty()) { return; }
+
+	const auto& l_copyCommandAllocator = FetchMutablePTRCopyCommandAllocator().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、SkeletalAnimationModel用BufferResourceのバッチコピーに失敗しました。");
+
+	// CommandAllocatorとCommandListをリセットする
+	BeforSubmitResourceProcess(*l_copyCommandAllocator);
+
+	for (const auto& [l_filePath, l_pendingModelBatchUploadRecordMap] : l_pendingModelBatchUploadRecordMap)
+	{
+		const auto& l_bufferUploadCommandList = l_pendingModelBatchUploadRecordMap.m_bufferUploadCommandList;
+
+		FWK_ASSERT_RETURN_IF(l_bufferUploadCommandList.empty(), "SkeletalAnimationModel用BufferUploadCommandListが空のため、BufferResourceのバッチコピーに失敗しました。");
+
+		for (const auto& l_bufferUploadCommand : l_bufferUploadCommandList)
+		{
+			RecordBufferCopy(l_bufferUploadCommand);
+		}
+	}
+
+	// CommandListを実行してコピー完了を待つ
+	AfterSubmitResourceProcess(*l_copyCommandAllocator);
+}
 
 nlohmann::json FWK::Graphics::UploadSystem::Serialize() const
 {
