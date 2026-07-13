@@ -59,8 +59,6 @@ namespace FWK::Graphics
 
 		struct StructuredBufferSourceData final
 		{
-			static constexpr std::uint32_t k_initialMAXBoneHierarchyDepth = 0U;
-
 			std::vector<BoneBufferElement> m_boneBufferElementList = {};
 
 			std::vector<MotionSequenceBufferElement> m_motionSequenceBufferElementList = {};
@@ -69,7 +67,7 @@ namespace FWK::Graphics
 
 			std::vector<KeyFrameBufferElement> m_keyFrameBufferElementList = {};
 
-			std::uint32_t m_maxBoneHierarchyDepth = k_initialMAXBoneHierarchyDepth;
+			std::uint32_t m_maxBoneHierarchyDepth = SkeletalAnimationModelRecord::k_initialMAXBoneHierarchyDepth;
 		};
 
 	public:
@@ -101,6 +99,7 @@ namespace FWK::Graphics
 
 		static constexpr std::size_t k_initialKeyFrameIndex        = 0ULL;
 		static constexpr std::size_t k_previousKeyFrameIndexOffset = 1ULL;
+		static constexpr std::size_t k_initialTotalKeyFrameCount   = 0ULL;
 
 		static constexpr std::uint32_t k_childHierarchyDepthOffset = 1U;
 

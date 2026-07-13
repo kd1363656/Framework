@@ -59,6 +59,23 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkelet
 		l_modelMesh.m_modelMeshRuntimeData = std::move(l_modelMeshRuntimeData);
 	}
 
+	// Skeleton、BindPose、Motion、Track、KeyFrameは、
+	// Mesh単位ではなくSkeletalAnimationModel Asset全体で共有する。
+	// 全MeshのBuffer作成が成功した後に1組だけ作成する
+	if (!CreateSkeletalAnimationModelSharedStructuredBuffer(a_device,
+															a_gpuMemoryAllocator,
+															a_bufferUploadCommandList,
+															a_cbvSRVUAVDescriptorPool,
+															a_skeletalAnimationModelRecord))
+	{
+		// 共有Bufferはすべてローカルで作成してからRecordへ反映するため、
+		// 失敗した時点ではRecordに不完全な共有Bufferは残っていない。
+		// ここでは既に作成済みのMesh単位Bufferを解放する
+		ReleaseCreatedSkeletalAnimationModelStructuredBuffer(l_modelMeshList);
+
+		FWK_ASSERT_RETURN_VALUE("SkeletalAnimationModelの共有StructuredBuffer作成に失敗しました。", false);
+	}
+
 	return true;
 }
 
@@ -68,7 +85,94 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkelet
 	                                                                                                                         TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool, 
 	                                                                                                                         SkeletalAnimationModelRecord&                             a_skeletalAnimationModelRecord) const
 {
-	return false;
+	auto& l_modelData = a_skeletalAnimationModelRecord.GetMutableREFModelData();
+
+	StructuredBufferSourceData l_structuredBufferSourceData = {};
+
+	// CPU側ではBone、Motion、Track、KeyFrameが複数の可変長vectorに分かれている。
+	// Compute ShaderからIndexだけで直接参照できるように、
+	// GPUへ送る前に4本の一次元配列へ変換する
+	FWK_ASSERT_RETURN_VALUE_IF(!BuildSkeletalAnimationModelStructuredBufferSourceData(l_modelData,
+		                                                                              l_structuredBufferSourceData),
+		                                                                              "SkeletalAnimationModel用StructuredBufferSourceDataの作成に失敗しました。",
+		                                                                              false);
+
+	// 共有Buffer作成の途中で失敗した場合に、
+	// 呼び出し元のUploadCommandListへ不完全なCommandを残さないように、
+	// 一度ローカルのCommandListへ作成する
+	std::vector<StaticStructuredBuffer::BufferUploadCommand> l_sharedBufferUploadCommandList = {};
+
+	// Recordへ途中まで作成したBufferを反映しないように、
+	// 4個のBufferをまずローカル変数として作成する。
+	// 途中で失敗した場合は、作成済みのローカルBufferが自動的に解放される
+	StaticStructuredBuffer l_boneBuffer            = {};
+	StaticStructuredBuffer l_motionSequenceBuffer  = {};
+	StaticStructuredBuffer l_boneMotionTrackBuffer = {};
+	StaticStructuredBuffer l_keyFrameBuffer        = {};
+
+	// Bone BufferにはBindPoseも格納されている。
+	// Motionを持たないモデルをBindPoseで扱う場合にも必要なため、
+	// Bone Bufferだけは必ず作成する
+	FWK_ASSERT_RETURN_VALUE_IF(!l_boneBuffer.Create(l_structuredBufferSourceData.m_boneBufferElementList,
+		                                            a_device,
+		                                            a_gpuMemoryAllocator,
+		                                            l_sharedBufferUploadCommandList,
+		                                            a_cbvSRVUAVDescriptorPool),
+		                                            "SkeletalAnimationModel用BoneBufferの作成に失敗しました。",
+		                                            false);
+
+	// Motionが存在しない場合、Motion、Track、KeyFrameの配列は空になる。
+	// StaticStructuredBufferは空配列から作成できないため、
+	// Motionが存在する場合だけ残りの3個を作成する
+	if (!l_structuredBufferSourceData.m_motionSequenceBufferElementList.empty())
+	{
+				// Motionごとの再生時間、FrameRate、
+		// BoneMotionTrack配列の先頭IndexをGPUへ送る
+		FWK_ASSERT_RETURN_VALUE_IF(!l_motionSequenceBuffer.Create(l_structuredBufferSourceData.m_motionSequenceBufferElementList,
+			                                                      a_device,
+			                                                      a_gpuMemoryAllocator,
+			                                                      l_sharedBufferUploadCommandList,
+			                                                      a_cbvSRVUAVDescriptorPool),
+			                                                      "SkeletalAnimationModel用MotionSequenceBufferの作成に失敗しました。",
+			                                                      false);
+
+		// MotionごとにBone数と同じ数のTrack要素をGPUへ送る。
+		// これによりCompute ShaderではTrackの検索処理が不要になる
+		FWK_ASSERT_RETURN_VALUE_IF(!l_boneMotionTrackBuffer.Create(l_structuredBufferSourceData.m_boneMotionTrackBufferElementList,
+			                                                       a_device,
+			                                                       a_gpuMemoryAllocator,
+			                                                       l_sharedBufferUploadCommandList,
+			                                                       a_cbvSRVUAVDescriptorPool),
+			                                                       "SkeletalAnimationModel用BoneMotionTrackBufferの作成に失敗しました。",
+			                                                       false);
+
+		// 全Motionの全Trackが参照するKeyFrameを、
+		// 1本の連続したStructuredBufferとしてGPUへ送る
+		FWK_ASSERT_RETURN_VALUE_IF(!l_keyFrameBuffer.Create(l_structuredBufferSourceData.m_keyFrameBufferElementList,
+			                                                a_device,
+			                                                a_gpuMemoryAllocator,
+			                                                l_sharedBufferUploadCommandList,
+			                                                a_cbvSRVUAVDescriptorPool),
+			                                                "SkeletalAnimationModel用KeyFrameBufferの作成に失敗しました。",
+			                                                false);
+	}
+
+	// 必要なBufferがすべて作成できたため、
+	// この時点で初めてRecordへ共有GPU Resourceを移動する
+	a_skeletalAnimationModelRecord.ApplySharedStructuredBuffers(l_structuredBufferSourceData.m_maxBoneHierarchyDepth,
+																std::move(l_boneBuffer),
+																std::move(l_boneMotionTrackBuffer),
+																std::move(l_motionSequenceBuffer),
+															    std::move(l_keyFrameBuffer));
+
+	// 共有Bufferの作成がすべて成功した場合だけ、
+	//　呼びだし元のBatchUploadCommandへ追加する
+	for (auto& l_sharedBufferUploadCommand : l_sharedBufferUploadCommandList)
+	{
+		a_bufferUploadCommandList.emplace_back(std::move(l_sharedBufferUploadCommand));
+	}
+
+	return true;
 }
 
 bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeletalAnimationModelStructuredBufferSourceData(SkeletalAnimationModelRecord::ModelData& a_modelData, StructuredBufferSourceData& a_structuredBufferSourceData) const
@@ -138,7 +242,7 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeleta
 
 	l_tempModelBoneMotionTrackList.resize(l_boneCount, nullptr);
 
-	std::size_t l_totalKeyFrameCount = 0ULL;
+	std::size_t l_totalKeyFrameCount = k_initialTotalKeyFrameCount;
 
 	// KeyFrame Bufferの必要要素数を求めながら、
 	// Motion、Track、KeyFrameの参照関係が正常であることを確認する
@@ -151,8 +255,10 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeleta
 		FWK_ASSERT_RETURN_VALUE_IF(l_modelMotionSequence.m_durationSecond < SkeletalAnimationModelRecord::k_initialAnimationDurationSecond, "MotionSequenceの再生時間が0未満です。",                               false);
 		FWK_ASSERT_RETURN_VALUE_IF(l_modelMotionSequence.m_frameRate <= MotionSequenceBufferElement::k_initialFrameRate,                    "MotionSequenceのFrameRateが0以下です。",                              false);
 
-		// 全ての要素をnullptrに差し替える
-		std::fill(l_modelBoneMotionTrackList.begin(), l_modelBoneMotionTrackList.end(), nullptr);
+		// 前のMotionで設定したTrackの参照を残すと、
+		// 現在のMotionに存在しないTrackまで誤って参照してしまう。
+		// そのため、Motionの検証を始めるたびに一時参照配列を空へ戻す
+		std::fill(l_tempModelBoneMotionTrackList.begin(), l_tempModelBoneMotionTrackList.end(), nullptr);
 
 		for (const auto& l_modelBoneMotionTrack : l_modelBoneMotionTrackList)
 		{
@@ -201,7 +307,6 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeleta
 
 		l_structuredBufferSourceData.m_motionSequenceBufferElementList.emplace_back(l_motionSequenceBufferElement);
 
-		// 全ての要素をnullptrに差し替える
 		std::fill(l_tempModelBoneMotionTrackList.begin(), l_tempModelBoneMotionTrackList.end(), nullptr);
 
 		for (const auto& l_modelBoneMotionTrack : l_modelMotionSequence.m_boneMotionTrackList)
@@ -212,7 +317,7 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeleta
 		// MotionごとにBone数と同じTrack要素を作る。
 		// これによりCompute Shaderでは、
 		// firstBoneMotionTrackIndex + boneIndexだけでTrackを直接参照できる
-		for (auto l_boneIndex = 0ULL; l_boneCount < l_boneCount; ++l_boneIndex)
+		for (auto l_boneIndex = 0ULL; l_boneIndex < l_boneCount; ++l_boneIndex)
 		{
 			BoneMotionTrackBufferElement l_boneMotionTrackBufferElement = {};
 

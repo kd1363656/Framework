@@ -116,12 +116,26 @@ namespace FWK::Graphics
 		 SkeletalAnimationModelRecord()          = default;
 		~SkeletalAnimationModelRecord() override = default;
 
+		void ApplySharedStructuredBuffers(const std::uint32_t            a_maxBoneHierarchyDepth,
+			                                    StaticStructuredBuffer&& a_boneBuffer,
+										        StaticStructuredBuffer&& a_motionSequenceBuffer,
+										        StaticStructuredBuffer&& a_boneMotionTrackBuffer,
+										        StaticStructuredBuffer&& a_keyFrameBuffer);
+
 		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 
 		void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
 
 		const auto& GetREFModelData() const { return m_modelData; }
 
+		const auto& GetREFBoneBuffer() const { return m_boneBuffer; }
+
+		const auto& GetREFMotionSequenceBuffer() const { return m_motionSequenceBuffer; }
+		
+		const auto& GetREFBoneMotionTrackBuffer() const { return m_boneMotionTrackBuffer; }
+		
+		const auto& GetREFKeyFrameBuffer() const { return m_keyFrameBuffer; }
+		
 		auto& GetMutableREFModelData() { return m_modelData; }
 
 		static constexpr float k_initialAnimationTimeSecond     = 0.0F;
@@ -131,8 +145,17 @@ namespace FWK::Graphics
 		static constexpr std::uint32_t k_invalidBoneIndex    = std::numeric_limits<std::uint32_t>::max();
 		static constexpr std::uint32_t k_invalidPaletteIndex = std::numeric_limits<std::uint32_t>::max();
 
+		static constexpr std::uint32_t k_initialMAXBoneHierarchyDepth = 0U;
+
 	private:
 
 		ModelData m_modelData = {};
+
+		StaticStructuredBuffer m_boneBuffer            = {};
+		StaticStructuredBuffer m_motionSequenceBuffer  = {};
+		StaticStructuredBuffer m_boneMotionTrackBuffer = {};
+		StaticStructuredBuffer m_keyFrameBuffer        = {};
+
+		std::uint32_t m_maxBoneHierarchyDepth = k_initialMAXBoneHierarchyDepth;
 	};
 }
