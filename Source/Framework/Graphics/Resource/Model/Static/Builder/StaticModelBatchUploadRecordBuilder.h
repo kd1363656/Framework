@@ -17,12 +17,8 @@ namespace FWK::Graphics
 
 	private:
 
-		bool CreateModelBatchUploadRecord(const Device&									                  a_device,
-										  const GPUMemoryAllocator&						                  a_gpuMemoryAllocator,
-											    std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-												TypeAlias::CBVSRVUAVDescriptorPool&		                  a_cbvSRVUAVDescriptorPool,
-												StaticModelRecord::ModelMesh&				              a_modelMesh) const;
+		void ReleaseCreatedStaticModelStructuredBuffer(std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const;
 
-		void ReleaseCreatedStaticModelStructuredBufferSRV(std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
+		ModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 	};
 }

@@ -142,16 +142,16 @@ namespace FWK::Struct
 		std::vector<ModelMeshletBounds> m_meshletBoundsList = {};
 	};
 
-	struct ModelMeshRuntimeData final
+	struct ModelMeshRuntimeDataBase
 	{
-		 ModelMeshRuntimeData() = default;
-		~ModelMeshRuntimeData() = default;
+		 ModelMeshRuntimeDataBase() = default;
+		~ModelMeshRuntimeDataBase() = default;
 
-		ModelMeshRuntimeData(const ModelMeshRuntimeData&)			= delete;
-		ModelMeshRuntimeData(	   ModelMeshRuntimeData&&) noexcept = default;
+		ModelMeshRuntimeDataBase(const ModelMeshRuntimeDataBase&)			= delete;
+		ModelMeshRuntimeDataBase(	   ModelMeshRuntimeDataBase&&) noexcept = default;
 
-		ModelMeshRuntimeData& operator=(const ModelMeshRuntimeData&)		   = delete;
-		ModelMeshRuntimeData& operator=(      ModelMeshRuntimeData&&) noexcept = default;
+		ModelMeshRuntimeDataBase& operator=(const ModelMeshRuntimeDataBase&)		   = delete;
+		ModelMeshRuntimeDataBase& operator=(      ModelMeshRuntimeDataBase&&) noexcept = default;
 
 		// MeshShaderで頂点情報を参照するためのStructuredBuffer
 		Graphics::StaticStructuredBuffer m_vertexBuffer = {};

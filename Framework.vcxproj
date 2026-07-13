@@ -529,8 +529,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\ModelMeshletBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h" />
@@ -538,6 +540,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModelSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Builder\StaticModelBatchUploadRecordBuilder.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json\StaticModelSystemJsonConverter.h" />
@@ -703,6 +706,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\Allocator\DescriptorHeapIndexAllocator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Descriptor\Heap\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Memory\GPUMemoryAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp" />
@@ -710,6 +714,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModelSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Builder\StaticModelBatchUploadRecordBuilder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Binary\StaticModelBinaryConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Static\Converter\Json\StaticModelSystemJsonConverter.cpp" />

@@ -244,6 +244,7 @@ bool FWK::Graphics::TextureSystem::TryResolveCachedTextureResult(const std::file
 
 		a_textureLoadResult.m_storageID     = l_record->GetVALStorageID();
 		a_textureLoadResult.m_textureRecord = l_record;
+		a_textureLoadResult.m_isLoadSuccess = true;
 
 		return true;
 	}

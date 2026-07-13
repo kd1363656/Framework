@@ -206,9 +206,11 @@
 #include "Graphics/Resource/Model/Mesh/ModelMeshOptimizer.h"
 #include "Definition/Constant/Graphics/ModelMeshletBuilderConstant.h"
 #include "Graphics/Resource/Model/Meshlet/ModelMeshletBuilder.h"
+#include "Graphics/Resource/Model/Builder/ModelBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Model/Static/Builder/StaticModelBatchUploadRecordBuilder.h"
 #include "Definition/Struct/Graphics/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
+#include "Graphics/Resource/Model/Material/ModelMaterialRuntimeTextureBuilder.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 #include "Graphics/Resource/Model/Static/StaticModel.h"
 
@@ -220,6 +222,7 @@
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Skeleton/SkeletalAnimationModelFBXSkeletonExtractor.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Motion/SkeletalAnimationModelFBXMotionExtractor.h"
 #include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/SkeletalAnimationModelFBXLoader.h"
+#include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModelSystem.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"

@@ -36,7 +36,7 @@ namespace FWK::Graphics
 
 			// MeshShader描画時にGPU側で参照するBufferResource群
 			// .asset保存対象ではなく、実行時にModelDataから作成する
-			Struct::ModelMeshRuntimeData m_modelMeshRuntimeData = {};
+			Struct::ModelMeshRuntimeDataBase m_modelMeshRuntimeData = {};
 		};
 
 		struct ModelData final

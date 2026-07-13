@@ -28,6 +28,11 @@ namespace FWK::Graphics
 			std::uint32_t m_boneIndex = k_invalidBoneIndex;
 		};
 
+		struct ModelMeshRuntimeData final : public Struct::ModelMeshRuntimeDataBase
+		{
+			Graphics::StaticStructuredBuffer m_bonePaletteBuffer = {};
+		};
+
 		struct ModelMesh final
 		{
 			 ModelMesh() = default;
@@ -49,7 +54,7 @@ namespace FWK::Graphics
 
 			Struct::ModelMeshletData m_modelMeshletData = {};
 
-			Struct::ModelMeshRuntimeData m_modelMeshRuntimeData = {};
+			ModelMeshRuntimeData m_modelMeshRuntimeData = {};
 		};
 
 		struct ModelBone final

@@ -114,39 +114,6 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
 
 	return true;
 }
-void FWK::Graphics::StaticModelSystem::BuildMaterialRuntimeTextures(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord) const
-{
-	// ランタイムパラメータを作成していく
-	for (auto& l_modelMesh : a_staticModelRecord.GetMutableREFModelData().m_modelMeshList)
-	{
-		const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-			  auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
-
-		// ベースカラーテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_baseColorTexture = CreateSingleMaterialTexture(a_filePath, 
-																			        l_modelMaterialAssetData.m_baseColorTextureFilePath, 
-																			        Enum::TextureLoadColorSpace::SRGB, 
-																			        Enum::DefaultTextureType::BaseColor);
-
-		// ノーマルテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath, 
-																		         l_modelMaterialAssetData.m_normalTextureFilePath, 
-																		         Enum::TextureLoadColorSpace::Linear,
-																		         Enum::DefaultTextureType::Normal);
-
-		// メタリックテクスチャの読み込み
-		l_modelMaterialRuntimeData.m_metallicTexture = CreateSingleMaterialTexture(a_filePath, 
-																		           l_modelMaterialAssetData.m_metallicTextureFilePath, 
-																		           Enum::TextureLoadColorSpace::Linear,
-																		           Enum::DefaultTextureType::Metallic);
-
-		// ラフネステクスチャの読み込み
-		l_modelMaterialRuntimeData.m_roughnessTexture = CreateSingleMaterialTexture(a_filePath, 
-																		            l_modelMaterialAssetData.m_roughnessTextureFilePath, 
-																		            Enum::TextureLoadColorSpace::Linear,
-																		            Enum::DefaultTextureType::Roughness);
-	}
-}
 
 void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord, 
 																   const Device&			                 a_device,
@@ -162,7 +129,7 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
 	Struct::StaticModelBatchUploadRecord l_staticModelBatchUploadRecord = {};
 
 	// マテリアルで使用するテクスチャを読み込む
-	BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
+	m_materialRuntimTextureBuilder.BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
 
 	// バッチアップロード用情報の作成
 	if (!CreateStaticBatchUploadRecord(a_staticModelRecord,
@@ -183,26 +150,6 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
 	m_pendingStaticModelBatchUploadRecordMap.try_emplace(a_filePath.wstring(), std::move(l_staticModelBatchUploadRecord));
 }
 
-std::shared_ptr<FWK::Graphics::Texture> FWK::Graphics::StaticModelSystem::CreateSingleMaterialTexture(const std::filesystem::path&      a_modelFilePath,
-																								      const std::wstring&               a_textureFilePath,
-																								      const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
-																								      const Enum::DefaultTextureType    a_defaultTextureType) const
-{
-	auto l_texture = std::make_shared<Texture>();
-
-	std::filesystem::path l_textureFilePath = a_textureFilePath;
-
-	// FBXから取得したTextureFilePathが相対パスの場合
-	// ModelFilePathの親フォルダからの相対パスとして解決する
-	if (l_textureFilePath.is_relative())
-	{
-		l_textureFilePath = a_modelFilePath.parent_path() / l_textureFilePath;
-	}
-
-	l_texture->Load(l_textureFilePath, a_textureLoadColorSpace, a_defaultTextureType);
-
-	return l_texture;
-}
 bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord, 
 																	 const Device&							     a_device, 
 																	 const GPUMemoryAllocator&				     a_gpuMemoryAllocator, 

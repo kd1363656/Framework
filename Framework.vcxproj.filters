@@ -892,6 +892,12 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Meshlet">
       <UniqueIdentifier>{93a460c3-39f6-4d10-a355-75a4b6e652a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material">
+      <UniqueIdentifier>{c985f2df-6e9a-4ac0-a6f2-5d9008ac68f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Builder">
+      <UniqueIdentifier>{6804e9df-bbbb-4c64-8d2d-3062ae5c8da1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1728,6 +1734,15 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMeshletBuilderConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModelSystem.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2164,6 +2179,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModelSystem.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

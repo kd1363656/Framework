@@ -5,34 +5,29 @@
 void FWK::Scene::INIT()
 {
 	m_camera                         = std::make_shared<Graphics::Camera>								                       ();
-	m_charaModel                     = std::make_shared<Graphics::StaticModel>							                       ();
 	m_groundModel                    = std::make_shared<Graphics::StaticModel>							                       ();
-	m_charaModelStandardDrawRequest  = std::make_shared<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData>();
 	m_groundModelStandardDrawRequest = std::make_shared<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData>();
 	
-	const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
+	      auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
 	const auto& l_renderGraph     = l_renderer.GetREFRenderGraph		  ();
 
 	// モデル
-	m_charaModel->Load ("Asset/Model/Actor/Antike/Antike.fbx");
 	m_groundModel->Load("Asset/Model/Terrain/Terrain.fbx");
-
-	// 本来はUpdateなどで更新する
-	m_charaModelStandardDrawRequest->m_staticModelRecord           = m_charaModel->GetREFStaticModelRecord();
-	m_charaModelStandardDrawRequest->m_worldMatrix				   = TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(0.0F));
-	m_charaModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_charaModelStandardDrawRequest->m_worldMatrix);
-	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
 	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
 	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
 	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
+	auto& l_resourceContext              = l_graphicsManager.GetMutableREFResourceContext            ();
+	auto& l_skeletalAnimationModelSystem = l_resourceContext.GetMutableREFSkeltalAnimationModelSystem();
+
+	l_skeletalAnimationModelSystem.LoadSkeletalAnimationModelAsset("Asset/Model/Actor/Antike/Antike.fbx", m_skeletalAnimationMoidelRecord);
+
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 	
 	if (!l_staticModelStandardPerObjectDrawRequest) { return; }
 
-	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_charaModelStandardDrawRequest);
 	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_groundModelStandardDrawRequest);
 
 	const auto& l_viewport = l_renderer.GetREFRenderArea().GetREFViewport();
@@ -79,14 +74,8 @@ void FWK::Scene::INIT()
 	m_wasJumpKeyDown = false;
 
 	if (!m_characterVirtual) { return; }
-	if (!m_charaModelStandardDrawRequest) { return; }
-
-	const auto l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
-
-	m_charaModelStandardDrawRequest->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
-	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Transpose();
-
-
+	
+	const auto l_characterWorldPosition   = m_characterVirtual->FetchVALWorldPosition();
 	const auto& l_groundStaticModelRecord = m_groundModel->GetREFStaticModelRecord().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_groundStaticModelRecord, "Ground用StaticModelRecordが無効なため、StaticMeshBodyの作成に失敗しました。");
@@ -96,8 +85,6 @@ void FWK::Scene::INIT()
 	if (!l_meshBody->CreateBody(l_groundStaticModelRecord->GetREFModelData(), true, m_groundModelStandardDrawRequest->m_worldMatrix)) { return; }
 
 	m_staticMeshBody = std::move(l_meshBody);
-
-	
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -173,12 +160,6 @@ void FWK::Scene::Update()
 		l_rot += 1.0F;
 	}
 
-	if (GetAsyncKeyState('1'))
-	{
-		m_charaModel				    = nullptr;
-		m_charaModelStandardDrawRequest = nullptr;
-	}
-
 	m_camera->ApplyCameraMatrix(TypeAlias::Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(l_rot)) * TypeAlias::Math::Matrix::CreateTranslation(l_cameraPos));
 
 	// テスト
@@ -237,12 +218,8 @@ void FWK::Scene::Update()
 
 	// 衝突判定後のCharacterVirtual座標をAntikeへ反映する。
 	if (!m_characterVirtual) { return; }
-	if (!m_charaModelStandardDrawRequest) { return; }
-
+	
 	const auto l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
-
-	m_charaModelStandardDrawRequest->m_worldMatrix                 = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
-	m_charaModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_charaModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
 
 	m_characterVirtual->DrawDebug(JPH::ColorArg{ 255U, 255U, 255U, 255U });
 }

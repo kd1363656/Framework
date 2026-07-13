@@ -420,10 +420,8 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 	// ファイル先頭に置く全体Header
 	auto l_modelAssetFileSize = CalculateBinaryDataSize<ModelBinaryHeader>(k_singleBinaryElementCount);
 
-	// 全ModelMeshが、BoneListと同じ数の
-	// InverseBindPose行列を持つことを保証する
-	// 数が違う状態で保存すると、読み込み側のOffsetがずれ、
-	// それ以降のBoneやAnimationデータを正しく読めなくなる
+	// 各ModelMeshのBonePaletteと、
+	// ModelVertexが参照するBonePaletteIndexが有効か確認する
 	for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
 	{
 		if (!IsValidModelMesh(l_modelMesh, l_boneCount)) { return k_emptyAssetFileSize; }

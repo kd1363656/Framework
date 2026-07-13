@@ -26,9 +26,10 @@ namespace FWK::Graphics
 
 		const auto& GetREFGPUMemoryAllocator() const { return m_gpuMemoryAllocator; }
 
-		const auto& GetREFUploadSystem     () const { return m_uploadSystem; }
-		const auto& GetREFTextureSystem    () const { return m_textureSystem; }
-		const auto& GetREFStaticModelSystem() const { return m_staticModelSystem; }
+		const auto& GetREFUploadSystem               () const { return m_uploadSystem; }
+		const auto& GetREFTextureSystem              () const { return m_textureSystem; }
+		const auto& GetREFStaticModelSystem          () const { return m_staticModelSystem; }
+		const auto& GetREFSkeltalAnimationModelSystem() const { return m_skeletalAnimationModelSystem; }
 
 		const auto& GetREFResourceReleaseContext() const { return m_resourceReleaseContext; }
 
@@ -36,9 +37,10 @@ namespace FWK::Graphics
 		auto& GetMutableREFCBVSRVUAVDescriptorPool() { return m_cbvSRVUAVDescriptorPool; }
 		auto& GetMutableREFDSVDescriptorPool      () { return m_dsvDescriptorPool; }
 
-		auto& GetMutableREFUploadSystem     () { return m_uploadSystem; }
-		auto& GetMutableREFTextureSystem    () { return m_textureSystem; }
-		auto& GetMutableREFStaticModelSystem() { return m_staticModelSystem; }
+		auto& GetMutableREFUploadSystem               () { return m_uploadSystem; }
+		auto& GetMutableREFTextureSystem              () { return m_textureSystem; }
+		auto& GetMutableREFStaticModelSystem          () { return m_staticModelSystem; }
+		auto& GetMutableREFSkeltalAnimationModelSystem() { return m_skeletalAnimationModelSystem; }
 
 		auto& GetMutableREFResourceReleaseContext() { return m_resourceReleaseContext; }
 
@@ -53,8 +55,9 @@ namespace FWK::Graphics
 		GPUMemoryAllocator m_gpuMemoryAllocator = {};
 		UploadSystem       m_uploadSystem       = {};
 
-		TextureSystem     m_textureSystem     = {};
-		StaticModelSystem m_staticModelSystem = {};
+		TextureSystem                m_textureSystem                = {};
+		StaticModelSystem            m_staticModelSystem            = {};
+		SkeletalAnimationModelSystem m_skeletalAnimationModelSystem = {};
 
 		ResourceReleaseContext m_resourceReleaseContext = {};
 
