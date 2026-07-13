@@ -39,14 +39,14 @@ namespace FWK::Graphics
 
 		bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
-		bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimmationModelRecord,
+		bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
 			                                        const Device&                                        a_device,
 			                                        const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
 			                                        const std::filesystem::path&                         a_filePath,
 												    const TypeAlias::StorageID                           a_storageID,
 			                                              TypeAlias::CBVSRVUAVDescriptorPool&            a_cbvSRVUAVDescriptorPool);
 		
-		bool CreateSkeletalAnimationModelBatchUploadRecord(const std::shared_ptr<SkeletalAnimationModelRecord>&   a_skeletalAnimmationModelRecord,
+		bool CreateSkeletalAnimationModelBatchUploadRecord(const std::shared_ptr<SkeletalAnimationModelRecord>&   a_skeletalAnimationModelRecord,
 			                                               const Device&                                          a_device,
 			                                               const GPUMemoryAllocator&                              a_gpuMemoryAllocator,
 			                                                     TypeAlias::CBVSRVUAVDescriptorPool&              a_cbvSRVUAVDescriptorPool,

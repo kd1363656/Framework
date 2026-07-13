@@ -42,7 +42,7 @@ namespace FWK::Graphics
 
 		static constexpr TypeAlias::StorageID k_invalidStorageIDCapacity = 0U;
 
-		static constexpr std::uint32_t k_defaultAssetReferenceCount = 1U;
+		static constexpr std::uint32_t k_initialAssetReferenceCount = 1U;
 
 	private:
 
