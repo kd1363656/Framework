@@ -57,6 +57,12 @@
                             "CreateCount": 4096
                         },
                         "DynamicBufferUploaderTypeName": "SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4096
+                        },
+                        "DynamicBufferUploaderTypeName": "SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {

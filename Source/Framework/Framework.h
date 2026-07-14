@@ -322,6 +322,9 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h"
 
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
+
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
 #include "Definition/Struct/Graphics/RenderGraphPassStruct.h"

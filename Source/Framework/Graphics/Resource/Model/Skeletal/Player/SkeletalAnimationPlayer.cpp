@@ -8,9 +8,12 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     
     FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
-    const auto& l_modelBoneList = l_skeletalAnimationModelRecord->GetREFModelData().m_boneList;
+    const auto& l_modelData     = l_skeletalAnimationModelRecord->GetREFModelData();
+    const auto& l_modelBoneList = l_modelData.m_boneList;
+    const auto& l_modelMeshList = l_modelData.m_modelMeshList;
 
     FWK_ASSERT_RETURN_VALUE_IF(l_modelBoneList.empty(), "ModelBoneListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelMeshListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
     auto& l_graphicsManager = GraphicsManager::GetInstance();
 
@@ -26,33 +29,28 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
     FWK_ASSERT_RETURN_VALUE_IF(l_frameResourceList.empty(), "FrameResourceListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
-    const auto& l_boneCount = l_modelBoneList.size();
-
     // Playerの再作成途中で失敗しても、
-    // 現在Playerが保持している正常なBufferを壊さないように、
-    // 新しいBufferは一度ローカル変数へ作成する
-    std::vector<DynamicRWStructuredBuffer> l_boneMatrixBufferList = {};
+    // 現在Playerが保持している正常なFrameDataを壊さないように、
+    // 新しいFrameDataは一度ローカル変数へ作成する
+    std::vector<FrameData> l_frameDataList = {};
 
     // フレームリソースの数だけ容量を予約
-    l_boneMatrixBufferList.reserve(l_frameResourceList.size());
+    l_frameDataList.reserve(l_frameResourceList.size());
 
-    // 各FrameResourceで使用するBoneMatrixBufferを作成する。
-    // GPUが前のFrameResource用Bufferを読み取っている間に、
-    // 現在のFrameResource用Bufferへ安全に書き込めるように、
-    // FrameResourceごとに異なるGPUResourceを所有する
-    for (const auto& l_framResource : l_frameResourceList)
+    // 各FrameResourceで使用するBoneMatrixBufferと
+    // MeshごとのSkinnedVertexBufferを作成する
+    for (const auto& l_frameResource : l_frameResourceList)
     {
-        FWK_ASSERT_RETURN_VALUE_IF(!l_framResource, "FrameResourceが無効のため、BoneMatrixBufferの作成に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameResource, "FrameResourceが無効のため、SkeletalAnimationPlayerのFrameData作成に失敗しました。", false);
 
-        DynamicRWStructuredBuffer l_boneMatrixBuffer = {};
-
-        // BoneAnimationComputeShaderは、
-        // Skeleton内のBoneごとにMatrixを1個出力する。
-        // そのため、Bufferの要素数はModelのBone数と一致させる。
-        if (!l_boneMatrixBuffer.Create<TypeAlias::Math::Matrix>(l_device, 
-                                                                l_gpuMemoryAllocator,
-                                                                l_boneCount,
-                                                                l_cbvSRVUAVDescriptorPool))
+        FrameData l_frameData = {};
+        
+       	// BoneAnimationComputeShaderがModel全体のBoneごとに
+	    // GlobalBoneMatrixを1個出力する
+        if (!l_frameData.m_boneMatrixBuffer.Create<TypeAlias::Math::Matrix>(l_device, 
+                                                                            l_gpuMemoryAllocator,
+                                                                            l_modelBoneList.size(),
+                                                                            l_cbvSRVUAVDescriptorPool))
         {
             // 作成済みBufferはローカルvectorが破棄される際に解放される。
             // Playerの既存メンバにはまだ反映していないため、
@@ -60,13 +58,34 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
             FWK_ASSERT_RETURN_VALUE("BoneMatrix用DynamicRWStructuredBufferの作成に失敗しました。", false);
         }
 
-        l_boneMatrixBufferList.emplace_back(std::move(l_boneMatrixBuffer));
+        // SkinnedVertexBufferはMeshごとに頂点数が異なるため、
+	    // ModelMeshListと同じ数だけ作成する
+        l_frameData.m_skinnedVertexBufferList.reserve(l_modelMeshList.size());
+
+        for (const auto& l_modelMesh : l_modelMeshList)
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(l_modelMesh.m_modelVertexList.empty(), "ModelVertexListが空のため、SkinnedVertexBufferの作成に失敗しました。", false);
+
+            DynamicRWStructuredBuffer l_skinnedVertexBuffer = {};
+
+            if (!l_skinnedVertexBuffer.Create<SkinnedVertexBufferElement>(l_device,
+                                                                          l_gpuMemoryAllocator,
+                                                                          l_modelMesh.m_modelVertexList.size(),
+                                                                          l_cbvSRVUAVDescriptorPool))
+            {
+                FWK_ASSERT_RETURN_VALUE("SkinnedVertex用DynamicRWStructuredBufferの作成に失敗しました。", false);
+            }
+
+            l_frameData.m_skinnedVertexBufferList.emplace_back(std::move(l_skinnedVertexBuffer));
+        }
+
+        l_frameDataList.emplace_back(std::move(l_frameData));
     }
 
     // すべてのBuffer作成が成功してから、
     // ModelRecordへの参照とBufferをPlayerへ反映する
     m_skeletalAnimationModelRecord = a_skeletalAnimationModel.GetREFSkeletalAnimationModelRecord();
-    m_boneMatrixBufferList         = std::move                                                  (l_boneMatrixBufferList);
+    m_frameDataList                = std::move                                                  (l_frameDataList);
     
     // 新しいModelへ切り替えたため、
     // 以前のMotion再生状態を残さないように初期化する
@@ -209,26 +228,26 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
     return true;
 }
 
-const FWK::Graphics::DynamicRWStructuredBuffer* FWK::Graphics::SkeletalAnimationPlayer::FetchPTRBoneMatrixBuffer() const
+const FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FetchPTRCurrentFrameData() const
 {
     const auto& l_graphicsManager           = GraphicsManager::GetInstance              ();
     const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
     const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_currentFrameResourceIndex >= m_boneMatrixBufferList.size(), "CurrentFrameResourceIndexが範囲外のため、Bone Matrix Bufferを取得できません。", nullptr);
+    FWK_ASSERT_RETURN_VALUE_IF(l_currentFrameResourceIndex >= m_frameDataList.size(), "CurrentFrameResourceIndexが範囲外のため、SkeletalAnimationPlayerのFrameDataを取得できません。", nullptr);
 
-    return &m_boneMatrixBufferList[l_currentFrameResourceIndex];
+    return &m_frameDataList[l_currentFrameResourceIndex];
 }
 
-FWK::Graphics::DynamicRWStructuredBuffer* FWK::Graphics::SkeletalAnimationPlayer::FetchMutablePTRBoneMatrixBuffer()
+FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FetchMutablePTRCurrentFrameData()
 {
     const auto& l_graphicsManager           = GraphicsManager::GetInstance              ();
     const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
     const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_currentFrameResourceIndex >= m_boneMatrixBufferList.size(), "CurrentFrameResourceIndexが範囲外のため、Bone Matrix Bufferを取得できません。", nullptr);
+    FWK_ASSERT_RETURN_VALUE_IF(l_currentFrameResourceIndex >= m_frameDataList.size(), "CurrentFrameResourceIndexが範囲外のため、SkeletalAnimationPlayerのFrameDataを取得できません。", nullptr);
 
-    return &m_boneMatrixBufferList[l_currentFrameResourceIndex];
+    return &m_frameDataList[l_currentFrameResourceIndex];
 }
 
 float FWK::Graphics::SkeletalAnimationPlayer::FetchVALBlendWeight() const

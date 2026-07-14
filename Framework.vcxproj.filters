@@ -1767,6 +1767,12 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2258,6 +2264,9 @@
     </None>
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimation.hlsli">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,13 @@ namespace FWK::Graphics
 			bool m_isLoop = false;
 		};
 
+		struct FrameData final
+		{
+			DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
+
+			std::vector<DynamicRWStructuredBuffer> m_skinnedVertexBufferList = {};
+		};
+
 	public:
 
 		 SkeletalAnimationPlayer() = default;
@@ -47,9 +54,9 @@ namespace FWK::Graphics
 
 		bool ApplyAnimation(const Animation& a_animation);
 
-		const DynamicRWStructuredBuffer* FetchPTRBoneMatrixBuffer() const;
+		const FrameData* FetchPTRCurrentFrameData() const;
 
-		DynamicRWStructuredBuffer* FetchMutablePTRBoneMatrixBuffer();
+		FrameData* FetchMutablePTRCurrentFrameData();
 
 		float FetchVALBlendWeight() const;
 
@@ -69,6 +76,14 @@ namespace FWK::Graphics
 
 	private:
 
+		struct SkinnedVertexBufferElement final
+		{
+			TypeAlias::Math::Vector3 m_position = TypeAlias::Math::Vector3::Zero;
+			TypeAlias::Math::Vector3 m_normal   = TypeAlias::Math::Vector3::Zero;
+			TypeAlias::Math::Vector4 m_tangent  = TypeAlias::Math::Vector4::Zero;
+			TypeAlias::Math::Vector2 m_uv       = TypeAlias::Math::Vector2::Zero;
+		};
+
 		float FetchMotionDurationSecond(const Animation& a_animation) const;
 
 		float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
@@ -83,7 +98,7 @@ namespace FWK::Graphics
 
 		static constexpr float k_stoppedPlaybackSpeed = 0.0F;
 
-		std::vector<DynamicRWStructuredBuffer> m_boneMatrixBufferList = {};
+		std::vector<FrameData> m_frameDataList = {};
 
 		std::weak_ptr<SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
 		

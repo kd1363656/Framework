@@ -336,10 +336,10 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeleta
 				{
 					KeyFrameBufferElement l_keyFrameBufferElement = {};
 
-					l_keyFrameBufferElement.m_scale      = l_modelKeyFrame.m_scale;
-					l_keyFrameBufferElement.m_rotation   = l_modelKeyFrame.m_rotation;
-					l_keyFrameBufferElement.m_position   = l_modelKeyFrame.m_translation;
-					l_keyFrameBufferElement.m_timeSecond = l_modelKeyFrame.m_timeSecond;
+					l_keyFrameBufferElement.m_scale       = l_modelKeyFrame.m_scale;
+					l_keyFrameBufferElement.m_rotation    = l_modelKeyFrame.m_rotation;
+					l_keyFrameBufferElement.m_translation = l_modelKeyFrame.m_translation;
+					l_keyFrameBufferElement.m_timeSecond  = l_modelKeyFrame.m_timeSecond;
 
 					l_structuredBufferSourceData.m_keyFrameBufferElementList.emplace_back(l_keyFrameBufferElement);
 				}

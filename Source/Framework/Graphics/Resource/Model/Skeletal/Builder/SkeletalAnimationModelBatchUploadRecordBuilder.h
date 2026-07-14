@@ -52,7 +52,7 @@ namespace FWK::Graphics
 
 			TypeAlias::Math::Quaternion m_rotation = TypeAlias::Math::Quaternion::Identity;
 
-			TypeAlias::Math::Vector3 m_position = TypeAlias::Math::Vector3::Zero;
+			TypeAlias::Math::Vector3 m_translation = TypeAlias::Math::Vector3::Zero;
 
 			float m_timeSecond = k_initialTimeSecond;
 		};
