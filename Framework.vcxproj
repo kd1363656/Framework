@@ -390,6 +390,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationLocalMatrixStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBStaticModelPerObjectStruct.h" />

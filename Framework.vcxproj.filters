@@ -1761,6 +1761,9 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationLocalMatrixStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
