@@ -138,7 +138,7 @@ namespace FWK::Graphics
 		
 		auto& GetMutableREFModelData() { return m_modelData; }
 
-		auto GetVALMAXBoneHierarchyDepth8() const { return m_maxBoneHierarchyDepth; }
+		auto GetVALMAXBoneHierarchyDepth() const { return m_maxBoneHierarchyDepth; }
 
 		static constexpr float k_initialAnimationTimeSecond     = 0.0F;
 		static constexpr float k_initialAnimationDurationSecond = 0.0F;

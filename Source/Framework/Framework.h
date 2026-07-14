@@ -228,6 +228,9 @@
 #include "Graphics/Resource/Model/Skeletal/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModelSystem.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
+#include "Graphics/Resource/Model/Skeletal/Player/SkeletalAnimationPlayer.h"
+#include "Definition/Constant/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStructConstant.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStruct.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"

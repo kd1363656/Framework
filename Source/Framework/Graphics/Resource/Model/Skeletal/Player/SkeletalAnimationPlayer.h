@@ -8,13 +8,12 @@ namespace FWK::Graphics
 
 		struct Animation final
 		{
-			static constexpr float k_initialTimeSecond          = 0.0F;
 			static constexpr float k_defaultPlaybackSpeed       = 1.0F;
 			static constexpr float k_initialBlendDurationSecond = 0.0F;
-
+			
 			static constexpr std::uint32_t k_invalidMotionIndex = std::numeric_limits<std::uint32_t>::max();
 
-			float m_startTimeSecond = k_initialTimeSecond;
+			float m_startTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
 
 			float m_playbackSpeed = k_defaultPlaybackSpeed;
 
@@ -66,6 +65,10 @@ namespace FWK::Graphics
 
 		bool GetVALIsBlending() const { return m_isBlending; }
 
+		static constexpr float k_initialBlendWeight = 0.0F;
+
+		static constexpr bool k_initialIsBlending = false;
+
 	private:
 
 		float FetchMotionDurationSecond(const Animation& a_animation) const;
@@ -78,8 +81,7 @@ namespace FWK::Graphics
 
 		static constexpr float k_initialBlendElapsedSecond = 0.0F;
 
-		static constexpr float k_initialBlendWeight   = 0.0F;
-		static constexpr float k_completeBlendWeight  = 1.0F;
+		static constexpr float k_completeBlendWeight = 1.0F;
 
 		static constexpr float k_stoppedPlaybackSpeed = 0.0F;
 
@@ -90,11 +92,11 @@ namespace FWK::Graphics
 		Animation m_animation            = {};
 		Animation m_blendTargetAnimation = {};
 
-		float m_animationTimeSecond            = Animation::k_initialTimeSecond;
-		float m_blendTargetAnimationTimeSecond = Animation::k_initialTimeSecond;
+		float m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+		float m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
 
 		float m_blendElapsedSecond = k_initialBlendElapsedSecond;
 
-		bool m_isBlending = false;
+		bool m_isBlending = k_initialIsBlending;
 	};
 }

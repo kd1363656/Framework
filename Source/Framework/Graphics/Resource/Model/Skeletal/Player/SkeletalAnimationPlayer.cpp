@@ -139,7 +139,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
     const auto l_motionDurationSecond = FetchMotionDurationSecond(m_animation);
 
     // 負の再生速度ではMotion先頭へ到達した時点で終了する
-    if (m_animation.m_playbackSpeed < k_stoppedPlaybackSpeed) { return m_animationTimeSecond <= Animation::k_initialTimeSecond; }
+    if (m_animation.m_playbackSpeed < k_stoppedPlaybackSpeed) { return m_animationTimeSecond <= SkeletalAnimationModelRecord::k_initialAnimationTimeSecond; }
 
     // 通常再生または停止状態では、
     // Motion終端へ到達した時点で終了する
@@ -166,9 +166,9 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
 
     const auto l_motionDurationSecond = l_motionSequenceList[a_animation.m_motionIndex].m_durationSecond;
 
-    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond < Animation::k_initialTimeSecond,              "AnimationのStartTimeSecondが0未満のため、Animationを適用できません。",                      false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                      "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < Animation::k_initialBlendDurationSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond,     "AnimationのStartTimeSecondが0未満のため、Animationを適用できません。",                      false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                                         "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
 
     if (m_animation.m_motionIndex == Animation::k_invalidMotionIndex ||
         m_animation.m_motionIndex >= l_motionSequenceList.size()     ||
@@ -183,7 +183,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
         m_animationTimeSecond = a_animation.m_startTimeSecond;
 
         m_blendTargetAnimation           = {};
-        m_blendTargetAnimationTimeSecond = Animation::k_initialTimeSecond;
+        m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
         m_blendElapsedSecond             = k_initialBlendElapsedSecond;
 
         m_isBlending = false;
@@ -267,7 +267,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const 
 
     // 再生時間が0秒のMotionは時刻を進められないため、
     // 0秒の固定Poseとして扱う
-    if (l_motionDurationSecond <= SkeletalAnimationModelRecord::k_initialAnimationDurationSecond) { return Animation::k_initialTimeSecond; }
+    if (l_motionDurationSecond <= SkeletalAnimationModelRecord::k_initialAnimationDurationSecond) { return SkeletalAnimationModelRecord::k_initialAnimationTimeSecond; }
 
     auto l_advancedTimeSecond = a_timeSecond + a_deltaTime * a_animation.m_playbackSpeed;
 
@@ -279,7 +279,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const 
 
         // 負の再生速度ではfmodの結果が負数になることがあるため、
         // Motionの再生時間をs加算して有効な時刻へ戻す
-        if (l_advancedTimeSecond < Animation::k_initialTimeSecond)
+        if (l_advancedTimeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond)
         {
             l_advancedTimeSecond += l_motionDurationSecond;
         }
@@ -288,7 +288,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const 
     }
 
     // 非LoopAnimationはMotion先頭より前へ進めない
-    if (l_advancedTimeSecond <= Animation::k_initialTimeSecond) { return Animation::k_initialTimeSecond; }
+    if (l_advancedTimeSecond <= SkeletalAnimationModelRecord::k_initialAnimationTimeSecond) { return SkeletalAnimationModelRecord::k_initialAnimationTimeSecond; }
 
     // 非LoopAnimationはMotion終端より先へ進めない
     if (l_advancedTimeSecond >= l_motionDurationSecond) { return l_motionDurationSecond; }
@@ -310,7 +310,7 @@ void FWK::Graphics::SkeletalAnimationPlayer::CompleteAnimationBlend()
     m_animation.m_blendDurationSecond = Animation::k_initialBlendDurationSecond;
 
     m_blendTargetAnimation           = {};
-    m_blendTargetAnimationTimeSecond = Animation::k_initialTimeSecond;
+    m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
     m_blendElapsedSecond             = k_initialBlendElapsedSecond;
 
     m_isBlending = false;
@@ -321,8 +321,8 @@ void FWK::Graphics::SkeletalAnimationPlayer::ResetPlaybackState()
     m_animation            = {};
     m_blendTargetAnimation = {};
 
-    m_animationTimeSecond            = Animation::k_initialTimeSecond;
-    m_blendTargetAnimationTimeSecond = Animation::k_initialTimeSecond;
+    m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+    m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
 
     m_blendElapsedSecond = k_initialBlendElapsedSecond;
 
