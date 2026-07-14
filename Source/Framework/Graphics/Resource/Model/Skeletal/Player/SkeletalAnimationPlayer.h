@@ -46,13 +46,13 @@ namespace FWK::Graphics
 
 		void Stop();
 
-		bool IsValid() const;
-
 		bool ApplyAnimation(const Animation& a_animation);
 
 		const DynamicRWStructuredBuffer* FetchPTRBoneMatrixBuffer() const;
 
 		DynamicRWStructuredBuffer* FetchMutablePTRBoneMatrixBuffer();
+
+		float FetchVALBlendWeight() const;
 
 		const auto& GetREFSkeletalAnimationModelRecord() const { return m_skeletalAnimationModelRecord; }
 
@@ -60,17 +60,28 @@ namespace FWK::Graphics
 
 		const auto& GetREFBlendTargetAnimation() const { return m_blendTargetAnimation; }
 
-	private:
+		float GetVALAnimationTimeSecond() const { return m_animationTimeSecond; }
 
-		bool IsValidAnimation(const Animation& a_animation) const;
+		float GetVALBlendTargetAnimationTimeSecond() const { return m_blendTargetAnimationTimeSecond; }
+
+		bool GetVALIsBlending() const { return m_isBlending; }
+
+	private:
 
 		float FetchMotionDurationSecond(const Animation& a_animation) const;
 
 		float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
 
-		float CompleteAnimationBlend();
+		void CompleteAnimationBlend();
 
 		void ResetPlaybackState();
+
+		static constexpr float k_initialBlendElapsedSecond = 0.0F;
+
+		static constexpr float k_initialBlendWeight   = 0.0F;
+		static constexpr float k_completeBlendWeight  = 1.0F;
+
+		static constexpr float k_stoppedPlaybackSpeed = 0.0F;
 
 		std::vector<DynamicRWStructuredBuffer> m_boneMatrixBufferList = {};
 
@@ -78,5 +89,12 @@ namespace FWK::Graphics
 		
 		Animation m_animation            = {};
 		Animation m_blendTargetAnimation = {};
+
+		float m_animationTimeSecond            = Animation::k_initialTimeSecond;
+		float m_blendTargetAnimationTimeSecond = Animation::k_initialTimeSecond;
+
+		float m_blendElapsedSecond = k_initialBlendElapsedSecond;
+
+		bool m_isBlending = false;
 	};
 }

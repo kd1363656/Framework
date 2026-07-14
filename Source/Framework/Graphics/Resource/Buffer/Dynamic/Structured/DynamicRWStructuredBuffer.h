@@ -70,7 +70,7 @@ namespace FWK::Graphics
 													   static_cast<UINT>(l_structuredByteStride),
 													   a_cbvSRVUAVDescriptorPool);
 
-			if (l_uavDescriptorInde == DescriptorHeap::k_invalidDescriptorIndex)
+			if (l_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
 			{
 				// SRV作成後にUAV作成で失敗した場合、
 				// 既に確保したSRVDescriptorIndexを返却する
