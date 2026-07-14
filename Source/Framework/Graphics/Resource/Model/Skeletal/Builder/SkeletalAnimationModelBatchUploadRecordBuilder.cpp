@@ -177,8 +177,8 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkelet
 
 bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::BuildSkeletalAnimationModelStructuredBufferSourceData(SkeletalAnimationModelRecord::ModelData& a_modelData, StructuredBufferSourceData& a_structuredBufferSourceData) const
 {
-	auto& l_modelBoneList           = a_modelData.m_boneList;
-	auto& l_modelMotionSequenceList = a_modelData.m_motionSequenceList;
+	      auto& l_modelBoneList           = a_modelData.m_boneList;
+	const auto& l_modelMotionSequenceList = a_modelData.m_motionSequenceList;
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_modelBoneList.empty(), "ModelBoneListが空のため、SkeletalAnimationModel用StructuredBufferSourceDataの作成に失敗しました。", false);
 

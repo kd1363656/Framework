@@ -216,19 +216,18 @@
 #include "Graphics/Resource/Model/Static/StaticModel.h"
 
 // モデル(SkeletalAnimation)
-#include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicReadWriteStructuredBuffer.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/Record/SkeletalAnimationModelRecord.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
+#include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicRWStructuredBuffer.h"
+#include "Graphics/Resource/Model/Skeletal/Record/SkeletalAnimationModelRecord.h"
+#include "Graphics/Resource/Model/Skeletal/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
 #include "Definition/Constant/Graphics/SkeletalAnimationModelFBXMotionExtractorConstant.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Skeleton/SkeletalAnimationModelFBXSkeletonExtractor.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/Extractor/Motion/SkeletalAnimationModelFBXMotionExtractor.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/FBXLoader/SkeletalAnimationModelFBXLoader.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/Builder/SkeletalAnimationModelBatchUploadRecordBuilder.h"
+#include "Graphics/Resource/Model/Skeletal/FBXLoader/Extractor/Skeleton/SkeletalAnimationModelFBXSkeletonExtractor.h"
+#include "Graphics/Resource/Model/Skeletal/FBXLoader/Extractor/Motion/SkeletalAnimationModelFBXMotionExtractor.h"
+#include "Graphics/Resource/Model/Skeletal/FBXLoader/SkeletalAnimationModelFBXLoader.h"
+#include "Graphics/Resource/Model/Skeletal/Builder/SkeletalAnimationModelBatchUploadRecordBuilder.h"
 #include "Definition/Struct/Graphics/SkeletalAnimationModelSystemStruct.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModelSystem.h"
-#include "Graphics/Resource/Model/SkeletalAnimation/SkeletalAnimationModel.h"
-
+#include "Graphics/Resource/Model/Skeletal/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
+#include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModelSystem.h"
+#include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"

@@ -2,19 +2,19 @@
 
 namespace FWK::Graphics
 {
-	class DynamicReadWriteStructuredBuffer final : public StructuredBufferBase
+	class DynamicRWStructuredBuffer final : public StructuredBufferBase
 	{
 	public:
 
-		 DynamicReadWriteStructuredBuffer();
-		~DynamicReadWriteStructuredBuffer() override;
+		 DynamicRWStructuredBuffer();
+		~DynamicRWStructuredBuffer() override;
 
 		
-		DynamicReadWriteStructuredBuffer(const DynamicReadWriteStructuredBuffer&) = delete;
-		DynamicReadWriteStructuredBuffer(      DynamicReadWriteStructuredBuffer&& a_other) noexcept;
+		DynamicRWStructuredBuffer(const DynamicRWStructuredBuffer&) = delete;
+		DynamicRWStructuredBuffer(      DynamicRWStructuredBuffer&& a_other) noexcept;
 
-		DynamicReadWriteStructuredBuffer& operator=(const DynamicReadWriteStructuredBuffer&) = delete;
-		DynamicReadWriteStructuredBuffer& operator=(      DynamicReadWriteStructuredBuffer&& a_other) noexcept;
+		DynamicRWStructuredBuffer& operator=(const DynamicRWStructuredBuffer&) = delete;
+		DynamicRWStructuredBuffer& operator=(      DynamicRWStructuredBuffer&& a_other) noexcept;
 
 		template <typename Type>
 		bool Create(const Device&                             a_device,
@@ -22,15 +22,15 @@ namespace FWK::Graphics
 					const std::size_t&                        a_elementCount,
 					      TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 		{
-			// DynamicReadWriteStructuredBufferは、
+			// DynamicRWStructuredBufferは、
 			// ComputeShaderなどからUAVとして書き込み、
 			// そのあと、他のShaderからSRVとして読み取るためのStructuredBuffer
-			FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                                "ElementCountが0のため、DynamicReadWriteStructuredBufferの作成に失敗しました。",                  false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_elementCount > k_maxStructuredBufferElementCount,                     "DynamicReadWriteStructuredBufferの要素数がUINTの最大値を超えたため、作成に失敗しました。",       false);
-			FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),                        "DynamicReadWriteStructuredBufferの1要素サイズがUINTの最大値を超えたため、作成に失敗しました。",  false);
-			FWK_ASSERT_RETURN_VALUE_IF(GetREFBufferGPUResource().m_resource,                                   "DynamicReadWriteStructuredBufferは既にGPUResourceを保持しているため、再作成できません。",        false);
-			FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != DescriptorHeap::k_invalidDescriptorIndex, "DynamicReadWriteStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。", false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex != DescriptorHeap::k_invalidDescriptorIndex,       "DynamicReadWriteStructuredBufferは既にUAVDescriptorIndexを保持しているため、再作成できません。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                                "ElementCountが0のため、DynamicRWStructuredBufferの作成に失敗しました。",                  false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_elementCount > k_maxStructuredBufferElementCount,                     "DynamicRWStructuredBufferの要素数がUINTの最大値を超えたため、作成に失敗しました。",       false);
+			FWK_ASSERT_RETURN_VALUE_IF(sizeof(Type) > std::numeric_limits<UINT>::max(),                        "DynamicRWStructuredBufferの1要素サイズがUINTの最大値を超えたため、作成に失敗しました。",  false);
+			FWK_ASSERT_RETURN_VALUE_IF(GetREFBufferGPUResource().m_resource,                                   "DynamicRWStructuredBufferは既にGPUResourceを保持しているため、再作成できません。",        false);
+			FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBufferは既にSRVDescriptorIndexを保持しているため、再作成できません。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex != DescriptorHeap::k_invalidDescriptorIndex,       "DynamicRWStructuredBufferは既にUAVDescriptorIndexを保持しているため、再作成できません。", false);
 
 			const auto& l_elementCount         = a_elementCount;
 			const auto& l_structuredByteStride = sizeof(Type);
@@ -39,7 +39,7 @@ namespace FWK::Graphics
 			// TypeがMatrixで64bte、要素数が100個なら、64 * 100 = 6400byteのGPUBufferを作る
 			const auto& l_bufferSize = l_structuredByteStride * l_elementCount;
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == UploadBuffer::k_invalidBufferSize, "DynamicReadWriteStructuredBufferの作成サイズが0のため、作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(l_bufferSize == UploadBuffer::k_invalidBufferSize, "DynamicRWStructuredBufferの作成サイズが0のため、作成に失敗しました。", false);
 
 			// 失敗したときに、このクラスが中途半端な状態にならないように、
 			// まずはローカル変数でGPUResourceを作る
@@ -51,7 +51,7 @@ namespace FWK::Graphics
 																				  D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS,
 																				  D3D12_RESOURCE_STATE_COMMON,
 																				  l_bufferGPUResource),
-																				  "DynamicReadWriteStructuredBuffer用GPUResourceの作成に失敗しました。。",
+																				  "DynamicRWStructuredBuffer用GPUResourceの作成に失敗しました。。",
 																				  false);
 
 			// Shaderから読み取るためのSRVを作成
@@ -61,11 +61,11 @@ namespace FWK::Graphics
 														l_structuredByteStride,
 													    a_cbvSRVUAVDescriptorPool);
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DynamicReadWriteStructuredBuffer用SRVの作成に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBuffer用SRVの作成に失敗しました。", false);
 
 			// ComputeShaderなどから書き込むためのUAVを作る
 			const auto l_uavDescriptorIndex = CreateUAV(a_device,
-										x			   l_bufferGPUResource,
+													   l_bufferGPUResource,
 													   static_cast<UINT>(l_elementCount),
 													   static_cast<UINT>(l_structuredByteStride),
 													   a_cbvSRVUAVDescriptorPool);
@@ -76,7 +76,7 @@ namespace FWK::Graphics
 				// 既に確保したSRVDescriptorIndexを返却する
 				a_cbvSRVUAVDescriptorPool.Release(l_srvDescriptorIndex);
 
-				FWK_ASSERT_RETURN_VALUE("DynamicReadWriteStructuredBuffer用UAVの作成に失敗しました。", false);
+				FWK_ASSERT_RETURN_VALUE("DynamicRWStructuredBuffer用UAVの作成に失敗しました。", false);
 			}
 
 			// 作成したものをメンバとして格納
@@ -115,7 +115,7 @@ namespace FWK::Graphics
 											 const UINT								   a_structureByteStride,
 											       TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
 
-		void MoveFrom(DynamicReadWriteStructuredBuffer&& a_other) noexcept;
+		void MoveFrom(DynamicRWStructuredBuffer&& a_other) noexcept;
 
 		static constexpr UINT64 k_counterOffsetInBytes = 0ULL;
 

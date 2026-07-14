@@ -844,18 +844,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured">
       <UniqueIdentifier>{a965f516-0ab3-4a4c-b739-de8fc8d4986d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation">
-      <UniqueIdentifier>{b14bb783-5c01-4935-8662-03e9b0e1d080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Record">
-      <UniqueIdentifier>{9cbdabde-06cc-4f4a-9f5e-341972ec5a53}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter">
-      <UniqueIdentifier>{2bdab43a-f7a1-4e7c-baed-5d28a2a8f522}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary">
-      <UniqueIdentifier>{42f151fa-1abe-45ab-a47f-a4d86b7ab72f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Graphics\Buffer">
       <UniqueIdentifier>{98836a7e-327c-48aa-b9f1-5fb72723c4b0}</UniqueIdentifier>
     </Filter>
@@ -867,18 +855,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Converter\Binary">
       <UniqueIdentifier>{d2b2eed6-0e69-4999-8c05-372faa725648}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader">
-      <UniqueIdentifier>{56b5ec13-2e82-42ff-8c99-8e767742ad3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor">
-      <UniqueIdentifier>{e35f148d-7675-413a-978f-269465bfe3c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Motion">
-      <UniqueIdentifier>{90752af8-6938-4d80-8b0b-dc73605b0477}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton">
-      <UniqueIdentifier>{e324063c-8ba6-4ecd-907d-f4fb0c6fd44d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Mesh">
       <UniqueIdentifier>{0aa6e00e-c301-4a8a-91ae-fd81752dbe56}</UniqueIdentifier>
@@ -892,11 +868,38 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Builder">
       <UniqueIdentifier>{6804e9df-bbbb-4c64-8d2d-3062ae5c8da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder">
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal">
+      <UniqueIdentifier>{b14bb783-5c01-4935-8662-03e9b0e1d080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Record">
+      <UniqueIdentifier>{9cbdabde-06cc-4f4a-9f5e-341972ec5a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Converter">
+      <UniqueIdentifier>{2bdab43a-f7a1-4e7c-baed-5d28a2a8f522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Binary">
+      <UniqueIdentifier>{42f151fa-1abe-45ab-a47f-a4d86b7ab72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Json">
+      <UniqueIdentifier>{5662c144-a29b-494b-a7b7-4307fd610f66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader">
+      <UniqueIdentifier>{56b5ec13-2e82-42ff-8c99-8e767742ad3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor">
+      <UniqueIdentifier>{e35f148d-7675-413a-978f-269465bfe3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Motion">
+      <UniqueIdentifier>{90752af8-6938-4d80-8b0b-dc73605b0477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Skeleton">
+      <UniqueIdentifier>{e324063c-8ba6-4ecd-907d-f4fb0c6fd44d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Builder">
       <UniqueIdentifier>{96910efc-4572-4440-8a5f-e2c10b113551}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json">
-      <UniqueIdentifier>{5662c144-a29b-494b-a7b7-4307fd610f66}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player">
+      <UniqueIdentifier>{87d8dcf4-2cb5-4162-95cd-f1d655f9212c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1677,14 +1680,8 @@
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h">
       <Filter>Source\Framework\Definition\Struct\String</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicReadWriteStructuredBuffer.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicRWStructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Record</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
@@ -1704,12 +1701,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\LightSystemConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Motion</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Graphics\UFBXConvertUtility.h">
       <Filter>Source\Framework\Utility\Graphics</Filter>
     </ClInclude>
@@ -1718,9 +1709,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelFBXMotionExtractorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Mesh</Filter>
@@ -1731,29 +1719,47 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMeshletBuilderConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModelSystem.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModel.h">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary\SkeletalAnimationModelBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json\SkeletalAnimationModelSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Motion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\SkeletalAnimationModelFBXLoader.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record\SkeletalAnimationModelRecord.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModel.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModelSystem.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2171,41 +2177,44 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\StructuredBufferBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicReadWriteStructuredBuffer.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicRWStructuredBuffer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Record\SkeletalAnimationModelRecord.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Record</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Binary</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Converter\Binary\ModelBinaryConverterBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Converter\Binary</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\SkeletalAnimationModelFBXLoader.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Motion</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\FBXLoader\Extractor\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModelSystem.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Builder\ModelBatchUploadRecordBuilder.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Builder</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Builder</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Builder\SkeletalAnimationModelBatchUploadRecordBuilder.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Builder</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\Converter\Json\SkeletalAnimationModelSystemJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation\Converter\Json</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Binary\SkeletalAnimationModelBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Binary</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Model\SkeletalAnimation\SkeletalAnimationModel.cpp">
-      <Filter>Source\Framework\Graphics\Resource\Model\SkeltalAnimation</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Converter\Json\SkeletalAnimationModelSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Motion</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader\Extractor\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\SkeletalAnimationModelFBXLoader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record\SkeletalAnimationModelRecord.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Record</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModel.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\SkeletalAnimationModelSystem.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
