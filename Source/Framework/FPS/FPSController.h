@@ -26,17 +26,20 @@ namespace FWK
 
 		static constexpr float k_defaultFPS = 60.0F;
 
+		static constexpr float k_initialDeltaTime = 0.0F;
+		static constexpr float k_minDeltaTime     = 0.0F;
+
 	private:
 
 		void LimitFramerate() const;
 		
+		static constexpr float k_initialFPS       = 0.0F;
 		static constexpr float k_defaultTimeScale = 1.0F;
 
-		static constexpr float k_second      = 1.0F;
-		static constexpr float k_milliSecond = 1000.0F;
-
-		static constexpr float k_minDeltaTime = 0.0F;
-
+		static constexpr float k_second                 = 1.0F;
+		static constexpr float k_milliSecond            = 1000.0F;
+		static constexpr float k_initialScaledDeltaTime = 0.0F;
+		
 		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/FPS/FPSCONFIG.json";
 
 		Converter::FPSControllerJsonConverter m_jsonConverter = {};
@@ -45,10 +48,10 @@ namespace FWK
 		std::chrono::steady_clock::time_point m_frameBeginTime = std::chrono::steady_clock::now();
 
 		float m_timeScale       = k_defaultTimeScale;
-		float m_deltaTime       = 0.0F;
-		float m_scaledDeltaTime = 0.0F;
+		float m_deltaTime       = k_initialDeltaTime;
+		float m_scaledDeltaTime = k_initialScaledDeltaTime;
 
-		float m_currentFPS = 0.0F;
+		float m_currentFPS = k_initialFPS;
 		float m_targetFPS  = k_defaultFPS;
 	};
 }

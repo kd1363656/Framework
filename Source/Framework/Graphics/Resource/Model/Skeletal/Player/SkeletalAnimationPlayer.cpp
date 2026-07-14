@@ -99,6 +99,8 @@ bool FWK::Graphics::SkeletalAnimationPlayer::PlayMotion(const std::uint32_t a_mo
 
 void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime)
 {
+    FWK_ASSERT_RETURN_IF(a_deltaTime < FPSController::k_minDeltaTime, "DeltaTimeが0未満のため、Animationの再生時刻を更新できません。");
+
     // Motionが設定されていない場合はBindPose状態なので、
 	// Animationの再生時刻を更新しない
 	if (m_animation.m_motionIndex == Animation::k_invalidMotionIndex) { return; }

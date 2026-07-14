@@ -33,9 +33,16 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 {
 	const auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetREFCBVSRVUAVDescriptorPool();
 	const auto& l_directCommandList       = a_renderer.GetREFDirectCommandList	           ();
+	const auto& l_computeCommandList      = a_renderer.GetREFComputeCommandList            ();
 
-	// SRVディスクリプタヒープをセット
+	// GraphicsShaderからBindlessResourceを参照するため、
+	// Direct Command ListへShaderVisibleDescriptorHeapを設定する
 	l_directCommandList.SetupDescriptorHeap(l_cbvSRVUAVDescriptorPool);
+
+	// ComputeShaderも同じDescriptor Heap内の
+	// SRV/UAVDescriptorIndexを参照するため、
+	// ComputeCommandListへも設定する
+	l_computeCommandList.SetupDescriptorHeap(l_cbvSRVUAVDescriptorPool);
 
 	for (const auto& l_pass : m_passList)
 	{

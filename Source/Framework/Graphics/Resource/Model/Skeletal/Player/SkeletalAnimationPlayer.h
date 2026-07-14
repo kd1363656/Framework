@@ -67,8 +67,6 @@ namespace FWK::Graphics
 
 		static constexpr float k_initialBlendWeight = 0.0F;
 
-		static constexpr bool k_initialIsBlending = false;
-
 	private:
 
 		float FetchMotionDurationSecond(const Animation& a_animation) const;
@@ -97,6 +95,6 @@ namespace FWK::Graphics
 
 		float m_blendElapsedSecond = k_initialBlendElapsedSecond;
 
-		bool m_isBlending = k_initialIsBlending;
+		bool m_isBlending = false;
 	};
 }

@@ -6,6 +6,7 @@ void FWK::Scene::INIT()
 {
 	m_camera                         = std::make_shared<Graphics::Camera>								                       ();
 	m_characterModel                 = std::make_shared<Graphics::SkeletalAnimationModel>                                      ();
+	m_characterAnimationPlayer       = std::make_shared<Graphics::SkeletalAnimationPlayer>                                     ();
 	m_groundModel                    = std::make_shared<Graphics::StaticModel>							                       ();
 	m_groundModelStandardDrawRequest = std::make_shared<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData>();
 	
@@ -16,7 +17,9 @@ void FWK::Scene::INIT()
 	// モデル
 	m_characterModel->Load("Asset/Model/Actor/Antike/Antike.fbx");
 	m_groundModel->Load   ("Asset/Model/Terrain/Terrain.fbx");
-
+	
+	m_characterAnimationPlayer->Create(*m_characterModel);
+	
 	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
 	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
 	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();

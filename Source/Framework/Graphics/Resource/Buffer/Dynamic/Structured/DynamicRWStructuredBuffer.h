@@ -57,8 +57,8 @@ namespace FWK::Graphics
 			// Shaderから読み取るためのSRVを作成
 			const auto l_srvDescriptorIndex = CreateSRV(a_device,
 														l_bufferGPUResource,
-														l_elementCount,
-														l_structuredByteStride,
+														static_cast<UINT>(l_elementCount),
+														static_cast<UINT>(l_structuredByteStride),
 													    a_cbvSRVUAVDescriptorPool);
 
 			FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBuffer用SRVの作成に失敗しました。", false);

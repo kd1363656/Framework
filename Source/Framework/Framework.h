@@ -229,8 +229,6 @@
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModelSystem.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
 #include "Graphics/Resource/Model/Skeletal/Player/SkeletalAnimationPlayer.h"
-#include "Definition/Constant/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStructConstant.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStruct.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"
@@ -310,16 +308,19 @@
 #include "Definition/Constant/Graphics/SpriteScreenConstant.h"
 #include "Definition/Struct/Graphics/SpriteRECTStruct.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePerObjectStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Definition/Struct/Graphics/StaticModelStandardPerObjectDrawRequestDataStruct.h"
 #include "Definition/Constant/Graphics/StaticModelPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBStaticModelPerObjectStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
+
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"

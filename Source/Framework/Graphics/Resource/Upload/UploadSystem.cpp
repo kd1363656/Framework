@@ -93,9 +93,9 @@ void FWK::Graphics::UploadSystem::SubmitPendingSkeletalAnimationModelBatchIfNeed
 	// CommandAllocatorとCommandListをリセットする
 	BeforSubmitResourceProcess(*l_copyCommandAllocator);
 
-	for (const auto& [l_filePath, l_pendingModelBatchUploadRecordMap] : l_pendingModelBatchUploadRecordMap)
+	for (const auto& [l_filePath, l_pendingModelBatchUploadRecord] : l_pendingModelBatchUploadRecordMap)
 	{
-		const auto& l_bufferUploadCommandList = l_pendingModelBatchUploadRecordMap.m_bufferUploadCommandList;
+		const auto& l_bufferUploadCommandList = l_pendingModelBatchUploadRecord.m_bufferUploadCommandList;
 
 		FWK_ASSERT_RETURN_IF(l_bufferUploadCommandList.empty(), "SkeletalAnimationModel用BufferUploadCommandListが空のため、BufferResourceのバッチコピーに失敗しました。");
 

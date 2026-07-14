@@ -113,22 +113,38 @@ void FWK::Graphics::Renderer::EndFrame()
 	FWK_ASSERT_RETURN_IF(!l_directCommandAllocator,  "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_computeCommandAllocator, "コンピュートコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
 
-	// スワップチェインのリソース状態遷移(RENDER_TARGET -> PRESENT)
+	// BackBufferをREBDER_TARGETからPRESENTへ遷移する命令を、
+	// DirectCommandListへ記録する
 	m_renderGraph.EndFrame(*this);
 
-	// コマンドリストへの命令記録を終了
-	m_directCommandList.Close ();
+	// 各CommandListへの命令記録を終了する
 	m_computeCommandList.Close();
+	m_directCommandList.Close ();
 
-	// 描画命令を実行
-	m_directCommandQueue.ExecuteCommandLists (m_directCommandList);
+	// AnimationComputeなどのGPU計算を先に実行する
 	m_computeCommandQueue.ExecuteCommandLists(m_computeCommandList);
 
-	// フェンス値を更新
-	m_directCommandQueue.SignalAndTrackAllocator (*l_directCommandAllocator);
+	// ComputeCommandAllocatorが安全に再利用できるように、
+	// 今回のCompute処理完了地点へFenceSignalを登録する
 	m_computeCommandQueue.SignalAndTrackAllocator(*l_computeCommandAllocator);
 
-	// 画面描画
+	const auto& l_computeFenceValue = m_computeCommandQueue.FetchREFLastSignaledFenceValue();
+
+	FWK_ASSERT_RETURN_IF(l_computeFenceValue == Fence::k_unusedFenceValue, "ComputeQueueのFenceSignalに失敗したため、DirectQueueとの同期に失敗しました。");
+
+	// DirectQueueへGPUWaitを登録する
+	// CPUスレッドは停止せず、
+	// GPU上でComputeQueueがBoneMatrixを書き終わってから
+	// DirectQueueの描画処理を開始する
+	FWK_ASSERT_RETURN_IF(!m_directCommandQueue.Wait(m_computeCommandQueue, l_computeFenceValue), "ComputeQueueとDirectQueueの同期に失敗しました。");
+
+	// ComputeShaderが作成したBoneMatrixを使用して描画する
+	m_directCommandQueue.ExecuteCommandLists(m_directCommandList);
+
+	// DirectCommandAllocatorの再利用に必要なFence値を記録する
+	m_directCommandQueue.SignalAndTrackAllocator (*l_directCommandAllocator);
+
+	// BackBufferを画面へ表示する
 	m_swapChain.Present();
 
 	// 次のフレームで使用するフレームリソースを決める

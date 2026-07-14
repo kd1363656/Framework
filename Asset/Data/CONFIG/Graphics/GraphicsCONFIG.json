@@ -51,6 +51,12 @@
                             "CreateCount": 300000
                         },
                         "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicVertexBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4096
+                        },
+                        "DynamicBufferUploaderTypeName": "SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {

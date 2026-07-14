@@ -63,6 +63,20 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::
 	return l_pipelineState->GetREFUseRootSignature();
 }
 
+std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupComputeRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
+{
+	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::ComputePipelineState>(a_pipelineStateType);
+	const auto& l_pipelineState     = l_pipelineStateWeak.lock                                       ();
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するComputePipelineStateが無効なため、ComputePipelineの設定に失敗しました。", {});
+
+	auto& l_computeCommandList = a_renderer.GetMutableREFComputeCommandList();
+
+	l_computeCommandList.SetupComputePipeline(l_pipelineStateWeak);
+
+	return l_pipelineState->GetREFUseRootSignature();
+}
+
 void FWK::Graphics::RenderGraphPassBase::SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer)
 {
 	FWK_ASSERT_RETURN_IF(a_executionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||

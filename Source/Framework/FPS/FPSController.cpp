@@ -16,8 +16,8 @@ void FWK::FPSController::PostLoadCONFIG()
 	m_previousTime   = l_currentTime;
 	m_frameBeginTime = l_currentTime;
 
-	m_deltaTime       = 0.0F;
-	m_scaledDeltaTime = 0.0F;
+	m_deltaTime       = k_initialDeltaTime;
+	m_scaledDeltaTime = k_initialScaledDeltaTime;
 }
 
 void FWK::FPSController::BeginFrame()
