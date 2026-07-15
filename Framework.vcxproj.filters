@@ -2306,5 +2306,8 @@
     <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
       <Filter>Asset\Shader\PhysicsDebug</Filter>
     </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationLocalMatrix_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </DXCTask>
   </ItemGroup>
 </Project>
