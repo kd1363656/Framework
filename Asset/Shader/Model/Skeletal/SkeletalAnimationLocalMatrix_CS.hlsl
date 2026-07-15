@@ -33,7 +33,7 @@ void main(const uint3 a_groupThreadID : SV_GroupThreadID)
     StructuredBuffer<SkeletalAnimationMotionSequenceBufferElement>  l_motionSequenceBuffer  = ResourceDescriptorHeap[g_motionSequenceBufferSRVDescriptorIndex];
     StructuredBuffer<SkeletalAnimationBoneMotionTrackBufferElement> l_boneMotionTrackBuffer = ResourceDescriptorHeap[g_boneMotionTrackBufferSRVDescriptorIndex];
     StructuredBuffer<SkeletalAnimationKeyFrameBufferElement>        l_keyFrameBuffer        = ResourceDescriptorHeap[g_keyFrameBufferSRVDescriptorIndex];
-    StructuredBuffer<SkeletalAnimationBoneMatrixBufferElement>      l_boneMatrixBuffer      = ResourceDescriptorHeap[g_boneMatrixBufferUAVDescriptorIndex];
+    RWStructuredBuffer<SkeletalAnimationBoneMatrixBufferElement>    l_boneMatrixBuffer      = ResourceDescriptorHeap[g_boneMatrixBufferUAVDescriptorIndex];
     
     // 各ThreadがThreadCountX間隔でBoneを担当する
     for (uint l_boneIndex = a_groupThreadID.x; l_boneIndex < g_boneCount; l_boneIndex += k_localMatrixThreadCountX)
@@ -41,13 +41,13 @@ void main(const uint3 a_groupThreadID : SV_GroupThreadID)
         const SkeletalAnimationBoneBufferElement l_bone = l_boneBuffer[l_boneIndex];
         
         // 現在Animationの再生時刻に対応するLocalSRTを取得する
-        SkeletalAnimationLocalTransform l_localTrnsform = SampleAnimationLocalTransform(l_bone,
-                                                                                        g_animationTimeSecond,
-                                                                                        l_boneIndex,
-                                                                                        g_motionIndex,
-                                                                                        l_motionSequenceBuffer,
-                                                                                        l_boneMotionTrackBuffer,
-                                                                                        l_keyFrameBuffer);
+        SkeletalAnimationLocalTransform l_localTransform = SampleAnimationLocalTransform(l_bone,
+                                                                                         g_animationTimeSecond,
+                                                                                         l_boneIndex,
+                                                                                         g_motionIndex,
+                                                                                         l_motionSequenceBuffer,
+                                                                                         l_boneMotionTrackBuffer,
+                                                                                         l_keyFrameBuffer);
         
         // Blend中だけBlend先AnimationのLocalSRTを取得し、
         // 現在Animationとの間を補間する
@@ -61,12 +61,12 @@ void main(const uint3 a_groupThreadID : SV_GroupThreadID)
                                                                                                               l_boneMotionTrackBuffer,
                                                                                                               l_keyFrameBuffer);
 
-            l_localTrnsform = InterpolateAnimationLocalTransform(l_localTrnsform, l_blendTargetLocalTransform, g_blendWeight);
+            l_localTransform = InterpolateAnimationLocalTransform(l_localTransform, l_blendTargetLocalTransform, g_blendWeight);
         }
         
         SkeletalAnimationBoneMatrixBufferElement l_boneMatrixBufferElement = (SkeletalAnimationBoneMatrixBufferElement)0;
         
-        l_boneMatrixBufferElement.boneMatrix = CreateAnimationLocalMatrix(l_localTrnsform);
+        l_boneMatrixBufferElement.boneMatrix = CreateAnimationLocalMatrix(l_localTransform);
 
         l_boneMatrixBuffer[l_boneIndex] = l_boneMatrixBufferElement;
     }
