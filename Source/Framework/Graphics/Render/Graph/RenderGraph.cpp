@@ -17,6 +17,13 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
 	// 使用、ポインタがnullのパスの削除
 	RemoveExpiredPassList();
 	
+	for (const auto& l_computeRequestPerObject : m_computeRequestPerObjectList)
+	{
+		FWK_ASSERT_RETURN_IF(!l_computeRequestPerObject, "ComputeRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
+
+		l_computeRequestPerObject->BeginFrame();
+	}
+
 	for (const auto& l_drawRequestPerObject : m_drawRequestPerObjectList)
 	{
 		FWK_ASSERT_RETURN_IF              (!l_drawRequestPerObject, "DrawRequestPerObjectが無効のため、BeginFrame処理に失敗しました。");
@@ -103,7 +110,17 @@ void FWK::Graphics::RenderGraph::AddDrawRequestPass(const std::shared_ptr<DrawRe
 	m_drawRequestPassList.emplace_back(a_drawRequestPass);
 	m_drawRequestPassMap.try_emplace  (l_staticTypeID, a_drawRequestPass);
 }
+void FWK::Graphics::RenderGraph::AddComputeRequestPerObject(const std::shared_ptr<ComputeRequestPerObjectBase>& a_computeRequestPerObject)
+{
+	FWK_ASSERT_RETURN_IF(!a_computeRequestPerObject, "ComputeRequestPerObjectが無効のため、ComputeRequestPerObjectListへの登録に失敗しました。");
 
+	const auto l_staticTypeID = a_computeRequestPerObject->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	FWK_ASSERT_RETURN_IF(m_computeRequestPerObjectMap.contains(l_staticTypeID), "同じ型のComputeRequestPerObjectを二重登録しようとしており、ComputeRequestPerObjectMapへの登録に失敗しました。");
+
+	m_computeRequestPerObjectList.emplace_back(a_computeRequestPerObject);
+	m_computeRequestPerObjectMap.try_emplace  (l_staticTypeID, a_computeRequestPerObject);	
+}
 void FWK::Graphics::RenderGraph::AddDrawRequestPerObject(const std::shared_ptr<DrawRequestPerObjectBase>& a_drawRequestPerObject)
 {
 	FWK_ASSERT_RETURN_IF(!a_drawRequestPerObject, "DrawRequestPerObjectsが無効のため、DrawRequestPerObjectListへの登録に失敗しました。");

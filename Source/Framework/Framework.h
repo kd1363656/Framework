@@ -291,6 +291,9 @@
 #include "Graphics/Render/Graph/Request/Pass/Light/Buffer/LightPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Light/LightPassDrawRequest.h"
 
+// コンピュートコマンドリスト
+#include "Graphics/Command/List/Compute/ComputeCommandList.h"
+
 // コンピュートシェーダー計算リクエスト
 #include "Graphics/Render/Graph/Request/Object/ComputeRequestPerObjectBase.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedComputeRequestPerObjectBaseConcept.h"
@@ -351,9 +354,6 @@
 #include "Graphics/Render/Graph/Resource/Binder/RenderGraphResourceBinder.h"
 #include "Graphics/Render/Graph/Pass/Sorter/RenderGraphPassSorter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
-
-// コンピュートコマンドリスト
-#include "Graphics/Command/List/Compute/ComputeCommandList.h"
 
 // レンダーラー
 #include "Utility/TypeINFO/TypeINFOUtility.h"
