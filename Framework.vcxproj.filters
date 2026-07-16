@@ -904,6 +904,9 @@
     <Filter Include="Asset\Shader\Model\Skeletal">
       <UniqueIdentifier>{f33ada2c-9f6e-4eaf-9161-ac3754bb3877}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal">
+      <UniqueIdentifier>{5471599d-ca50-4eb0-b98e-87a4e1b3e14b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1785,6 +1788,15 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneHierarchyStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2242,6 +2254,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

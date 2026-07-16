@@ -18,6 +18,13 @@ void FWK::Converter::RenderGraphJsonConverter::Deserialize(const nlohmann::json&
 		DeserializeDrawRequestPassList(l_json, a_renderGraph);
 	}
 
+	// 1オブジェクトCompute申請クラスのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_computeRequestPerObjectListJsonKey, nlohmann::json::array());
+		!l_json.is_null())
+	{
+		DeserializeComputeRequestPerObjectList(l_json, a_renderGraph);
+	}
+
 	// 1オブジェクト描画申請クラスのデシリアライズ
 	if (const auto& l_json = a_rootJson.value(k_drawRequestPerObjectListJsonKey, nlohmann::json::array());
 		!l_json.is_null())
@@ -35,6 +42,9 @@ nlohmann::json FWK::Converter::RenderGraphJsonConverter::Serialize(const Graphic
 
 	// 描画共通パスのシリアライズ
 	l_rootJson[k_drawRequestPassListJsonKey] = SerializeDrawRequestPassList(a_renderGraph);
+
+	// 1オブジェクトCompute申請クラスのシリアライズ
+	l_rootJson[k_computeRequestPerObjectListJsonKey] = SerializeComputeRequestPerObjectList(a_renderGraph);
 
 	// 1オブジェクト描画申請クラスのシリアライズ
 	l_rootJson[k_drawRequestPerObjectListJsonKey] = SerializeDrawRequestPerObjectList(a_renderGraph);
@@ -56,6 +66,7 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializePassList(const nlohman
 		if (!l_renderGraphPass)
 		{
 			assert(false && "RenderGraphPassのインスタンス化に失敗しました。");
+
 			continue;
 		}
 
@@ -77,11 +88,34 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPassList(co
 		if (!l_drawRequestPass)
 		{
 			assert(false && "DrawRequestPassのインスタンス化に失敗しました。");
+
 			continue;
 		}
 
 		a_renderGraph.AddDrawRequestPass(l_drawRequestPass);
 	}
+}
+void FWK::Converter::RenderGraphJsonConverter::DeserializeComputeRequestPerObjectList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const
+{
+	if (a_rootJson.is_null())              { return; }
+	if (!Utility::IsJsonArray(a_rootJson)) { return; }
+
+	for (const auto& l_json : a_rootJson)
+	{
+		std::shared_ptr<Graphics::ComputeRequestPerObjectBase> l_computeRequestPerObject = nullptr;
+
+		// FactoryからComputeRequestPerObjectを作成する
+		Utility::DeserializeInstanceType<TypeAlias::ComputeRequestPerObjectSharedFactory>(l_json, k_computeRequestPerObjectTypeNameJsonKey, l_computeRequestPerObject);
+
+		if (!l_computeRequestPerObject)
+		{
+			assert(false && "ComputeRequestPerObjectのインスタンス化に失敗しました.");
+
+			continue;
+		}
+
+		a_renderGraph.AddComputeRequestPerObject(l_computeRequestPerObject);
+	}	
 }
 void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPerObjectList(const nlohmann::json& a_rootJson, Graphics::RenderGraph& a_renderGraph) const
 {
@@ -98,6 +132,7 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPerObjectLi
 		if (!l_drawRequestPerObject)
 		{
 			assert(false && "DrawRequestPerObjectのインスタンス化に失敗しました。");
+
 			continue;
 		}
 
@@ -139,7 +174,21 @@ nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializeDrawRequestPas
 
 	return l_rootJsonArray;
 }
+nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializeComputeRequestPerObjectList(const Graphics::RenderGraph& a_renderGraph) const
+{
+	auto l_rootJsonArray = nlohmann::json::array();
 
+	const auto& l_computeRequestPerObjectList = a_renderGraph.GetREFComputeRequestPerObjectList();
+
+	for (const auto& l_computeRequestPerObject : l_computeRequestPerObjectList)
+	{
+		if (!l_computeRequestPerObject) { continue; }
+
+		l_rootJsonArray.emplace_back(Utility::SerializeInstanceType(l_computeRequestPerObject, k_computeRequestPerObjectTypeNameJsonKey));
+	}
+
+	return l_rootJsonArray;
+}
 nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializeDrawRequestPerObjectList(const Graphics::RenderGraph& a_renderGraph) const
 {
 	auto l_rootJsonArray = nlohmann::json::array();

@@ -391,6 +391,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneHierarchyStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationLocalMatrixStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
@@ -469,6 +470,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h" />
@@ -478,6 +480,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\ComputeRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h" />
@@ -672,6 +675,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp" />

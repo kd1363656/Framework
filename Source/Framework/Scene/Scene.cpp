@@ -20,6 +20,12 @@ void FWK::Scene::INIT()
 	
 	m_characterAnimationPlayer->Create(*m_characterModel);
 	
+	m_characterAnimationPlayer->PlayMotion(0U, true, Graphics::SkeletalAnimationPlayer::Animation::k_defaultPlaybackSpeed);
+
+	const auto& l_skeletalAnimationPerObjectComputeRequest = l_renderGraph.FindVALComputeRequestPerObject<Graphics::SkeletalAnimationPerObjectComputeRequest>().lock();
+
+	l_skeletalAnimationPerObjectComputeRequest->AddComputeRequest(m_characterAnimationPlayer);
+
 	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
 	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
 	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
@@ -165,6 +171,8 @@ void FWK::Scene::Update()
 	// テスト
 	const auto& l_application = Application::GetInstance();
 	const auto  l_deltaTime = l_application.GetREFFFPSController().GetVALScaledDeltaTime();
+
+	m_characterAnimationPlayer->AdvanceTime(l_deltaTime);
 
 	if (!m_characterVirtual) { return; }
 

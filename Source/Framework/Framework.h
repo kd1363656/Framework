@@ -327,11 +327,14 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
 
+// コンピュートシェーダー計算リクエスト
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h"
-
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationPerObjectComputeRequest.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationBoneHierarchyStruct.h"
+
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
@@ -343,6 +346,7 @@
 #include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
+#include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
 #include "Graphics/Render/Graph/Pass/PhysicsDebug/PhysicsDebugPass.h"
 
 // トポロジカルソート便利クラス

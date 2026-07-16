@@ -1135,6 +1135,11 @@
             }
         ],
         "RenderGraph": {
+            "ComputeRequestPerObjectList": [
+                {
+                    "ComputeRequestPerObjectTypeName": "SkeletalAnimationPerObjectComputeRequest"
+                }
+            ],
             "DrawRequestPassList": [
                 {
                     "DrawRequestPassTypeName": "CameraPassDrawRequest"
@@ -1164,6 +1169,9 @@
                 }
             ],
             "RenderGraphPassList": [
+                {
+                    "RenderGraphPassTypeName": "SkeletalAnimationComputePass"
+                },
                 {
                     "RenderGraphPassTypeName": "StaticModelStandardUnLitPass"
                 },
