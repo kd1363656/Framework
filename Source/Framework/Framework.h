@@ -291,6 +291,11 @@
 #include "Graphics/Render/Graph/Request/Pass/Light/Buffer/LightPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Light/LightPassDrawRequest.h"
 
+// コンピュートシェーダー計算リクエスト
+#include "Graphics/Render/Graph/Request/Object/ComputeRequestPerObjectBase.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedComputeRequestPerObjectBaseConcept.h"
+#include "Definition/Type/Alias/Factory/Shared/ComputeRequestPerObjectSharedFactory.h"
+
 // 描画リクエスト(レンダーターゲット共通パス)
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/DrawRequestRenderTargetPassBase.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBFinalColorRenderTargetPassStruct.h"
