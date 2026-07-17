@@ -15,6 +15,7 @@ cbuffer CBSkeletalAnimationLocalMatrix : register(b0)
     uint g_motionIndex;
     uint g_blendTargetMotionIndex;
     uint g_boneCount;
+    uint g_maxBoneHierarchyDepth;
     uint g_isBlending;
 };
 
@@ -23,6 +24,8 @@ static const uint k_localMatrixThreadCountY = 1U;
 static const uint k_localMatrixThreadCountZ = 1U;
 
 static const uint k_blendDisabled = 0U;
+
+static const uint k_firstChildHierarchyDepth = 1U;
 
 // 1Plyaerにつき1GroupをDispatchし、
 // Group内の各Threadが64Bone間隔でLocalMatrixを計算する
@@ -35,7 +38,7 @@ void main(const uint3 a_groupThreadID : SV_GroupThreadID)
     StructuredBuffer  <SkeletalAnimationKeyFrameBufferElement>        l_keyFrameBuffer        = ResourceDescriptorHeap[g_keyFrameBufferSRVDescriptorIndex];
     RWStructuredBuffer<SkeletalAnimationBoneMatrixBufferElement>      l_boneMatrixBuffer      = ResourceDescriptorHeap[g_boneMatrixBufferUAVDescriptorIndex];
     
-    // 各ThreadがThreadCountX間隔でBoneを担当する
+    // 全ボーンのLocalMatrixを計算する
     for (uint l_boneIndex = a_groupThreadID.x; l_boneIndex < g_boneCount; l_boneIndex += k_localMatrixThreadCountX)
     {
         const SkeletalAnimationBoneBufferElement l_bone = l_boneBuffer[l_boneIndex];
@@ -70,4 +73,20 @@ void main(const uint3 a_groupThreadID : SV_GroupThreadID)
 
         l_boneMatrixBuffer[l_boneIndex] = l_boneMatrixBufferElement;
     }
+    
+    // RootBoneしか存在しない場合は
+    // LocalMatrixがそのままGlobalMatrixになる
+    if (g_maxBoneHierarchyDepth < k_firstChildHierarchyDepth) { return; }
+
+    // この先で全ThreadがLocalMatrixを読み取るため、
+    // Group内の全LcoalMatrix書き込み完了を保証する
+    DeviceMemoryBarrierWithGroupSync();
+
+    // 親BoneのGlobalMatrixが完成したDepthから順番に、
+    // 子BoneのGlobalMatrixを計算する
+    for (uint l_hierarchyDepth = k_firstChildHierarchyDepth; l_hierarchyDepth <= g_maxBoneHierarchyDepth; ++l_hierarchyDepth)
+    {
+        
+    }
+
 }

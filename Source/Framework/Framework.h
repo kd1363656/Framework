@@ -328,13 +328,11 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
 
 // コンピュートシェーダー計算リクエスト
-#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationLocalMatrixStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationBoneMatrixStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationBoneMatrixPerObjectDynamicConstantBufferUploader.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationPerObjectComputeRequest.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationBoneHierarchyStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"

@@ -391,8 +391,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneHierarchyStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationLocalMatrixStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneMatrixStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
@@ -480,8 +479,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\ComputeRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneMatrixPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectDynamicConstantBufferUploader.h" />
@@ -826,17 +824,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationBoneHierarchy_CS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationLocalMatrix_CS.hlsl">
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationBoneMatrix_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>

@@ -1764,10 +1764,10 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationLocalMatrixStruct.h">
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneMatrixStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationLocalMatrixPerObjectDynamicConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneMatrixPerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningStruct.h">
@@ -1790,12 +1790,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneHierarchyStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2336,10 +2330,7 @@
     <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
       <Filter>Asset\Shader\PhysicsDebug</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationLocalMatrix_CS.hlsl">
-      <Filter>Asset\Shader\Model\Skeletal</Filter>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationBoneHierarchy_CS.hlsl">
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationBoneMatrix_CS.hlsl">
       <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
   </ItemGroup>

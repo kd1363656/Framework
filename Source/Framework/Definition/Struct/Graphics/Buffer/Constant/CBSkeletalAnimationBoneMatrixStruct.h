@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct  CBSkeletalAnimationLocalMatrix final
+	struct CBSkeletalAnimationBoneMatrix
 	{
 		float m_blendWeight                    = Graphics::SkeletalAnimationPlayer::k_initialBlendWeight;
 		float m_animationTimeSecond            = Graphics::SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
@@ -17,6 +17,7 @@ namespace FWK::Struct
 		std::uint32_t m_motionIndex            = Graphics::SkeletalAnimationPlayer::Animation::k_invalidMotionIndex;
 		std::uint32_t m_blendTargetMotionIndex = Graphics::SkeletalAnimationPlayer::Animation::k_invalidMotionIndex;
 		std::uint32_t m_boneCount              = Converter::SkeletalAnimationModelBinaryConverter::k_emptyBoneCount;
+		std::uint32_t m_maxBoneHierarchyDepth  = {};
 		std::uint32_t m_isBlending             = static_cast<std::uint32_t>(false);
 	};
 }
