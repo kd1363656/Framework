@@ -29,11 +29,11 @@ static const uint k_blendDisabled = 0U;
 [numthreads(k_localMatrixThreadCountX, k_localMatrixThreadCountY, k_localMatrixThreadCountZ)]
 void main(const uint3 a_groupThreadID : SV_GroupThreadID)
 {
-    StructuredBuffer<SkeletalAnimationBoneBufferElement>            l_boneBuffer            = ResourceDescriptorHeap[g_boneBufferSRVDescriptorIndex];
-    StructuredBuffer<SkeletalAnimationMotionSequenceBufferElement>  l_motionSequenceBuffer  = ResourceDescriptorHeap[g_motionSequenceBufferSRVDescriptorIndex];
-    StructuredBuffer<SkeletalAnimationBoneMotionTrackBufferElement> l_boneMotionTrackBuffer = ResourceDescriptorHeap[g_boneMotionTrackBufferSRVDescriptorIndex];
-    StructuredBuffer<SkeletalAnimationKeyFrameBufferElement>        l_keyFrameBuffer        = ResourceDescriptorHeap[g_keyFrameBufferSRVDescriptorIndex];
-    RWStructuredBuffer<SkeletalAnimationBoneMatrixBufferElement>    l_boneMatrixBuffer      = ResourceDescriptorHeap[g_boneMatrixBufferUAVDescriptorIndex];
+    StructuredBuffer  <SkeletalAnimationBoneBufferElement>            l_boneBuffer            = ResourceDescriptorHeap[g_boneBufferSRVDescriptorIndex];
+    StructuredBuffer  <SkeletalAnimationMotionSequenceBufferElement>  l_motionSequenceBuffer  = ResourceDescriptorHeap[g_motionSequenceBufferSRVDescriptorIndex];
+    StructuredBuffer  <SkeletalAnimationBoneMotionTrackBufferElement> l_boneMotionTrackBuffer = ResourceDescriptorHeap[g_boneMotionTrackBufferSRVDescriptorIndex];
+    StructuredBuffer  <SkeletalAnimationKeyFrameBufferElement>        l_keyFrameBuffer        = ResourceDescriptorHeap[g_keyFrameBufferSRVDescriptorIndex];
+    RWStructuredBuffer<SkeletalAnimationBoneMatrixBufferElement>      l_boneMatrixBuffer      = ResourceDescriptorHeap[g_boneMatrixBufferUAVDescriptorIndex];
     
     // 各ThreadがThreadCountX間隔でBoneを担当する
     for (uint l_boneIndex = a_groupThreadID.x; l_boneIndex < g_boneCount; l_boneIndex += k_localMatrixThreadCountX)

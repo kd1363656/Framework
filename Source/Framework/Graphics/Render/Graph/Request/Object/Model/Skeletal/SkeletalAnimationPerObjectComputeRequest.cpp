@@ -67,6 +67,64 @@ void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::DispatchLocalMatri
 		l_computeCommandList.UAVResourceBarrier(l_boneMatrixBufferResource);
 	}
 }
+void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::DispatchBoneHIerarchy(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
+{
+	const auto& l_computeCommandList = a_renderer.GetREFComputeCommandList();
+
+	for (const auto& l_skeletalAnimatoinPlayerElement : m_skeletalAnimationPlayerList.GetREFArrayElementDataList())
+	{
+		const auto& l_skeletalAnimationPlayer = l_skeletalAnimatoinPlayerElement.m_type.lock();
+
+		if (!l_skeletalAnimationPlayer) { continue; }
+
+		const auto& l_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord().lock();
+
+		FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、BoneHierarchyの計算に失敗しました。");
+
+		auto* const l_frameData = l_skeletalAnimationPlayer->FetchPTRCurrentFrameData();
+
+		FWK_ASSERT_RETURN_IF(!l_frameData, "SkeletalAnimationPlayerの現在FrameDataを取得できないため、BoneHierarchyの計算に失敗しました。");
+
+		const auto& l_boneMatrixBuffer         = l_frameData->m_boneMatrixBuffer;
+		const auto& l_boneMatrixBufferResource = l_boneMatrixBuffer.GetREFBufferGPUResource().m_resource;
+
+		FWK_ASSERT_RETURN_IF(!l_boneMatrixBufferResource, "BoneMatrixBufferのGPUResourceが無効なため、BoneHierarchyの計算に失敗しました。");
+
+		const auto l_maxBoneHierarchyDepth = l_skeletalAnimationModelRecord->GetVALMAXBoneHierarchyDepth();
+
+		// RootBoneしか存在しない場合、
+		// LocalMatrixがそのままGlobalMatrixになる
+		if (l_maxBoneHierarchyDepth < k_firstChildHierarchyDepth) { continue; }
+
+		Struct::CBSkeletalAnimationBoneHierarchy l_cbSkeletalAnimationBoneHierarchy = {};
+
+		l_cbSkeletalAnimationBoneHierarchy.m_boneBufferSRVDescriptorIndex       = l_skeletalAnimationModelRecord->GetREFBoneBuffer().GetVALSRVDescriptorIndex();
+		l_cbSkeletalAnimationBoneHierarchy.m_boneMatrixBufferUAVDescriptorIndex = l_boneMatrixBuffer.GetVALUAVDescriptorIndex     ();
+		l_cbSkeletalAnimationBoneHierarchy.m_boneCount                          = l_boneMatrixBuffer.GetVALElementCount           ();
+
+		// 親BoneのGlobalMatrixが完成してから子Boneを処理する必要があるため、
+		// HierarchyDepthごとにDispatchする
+		for (std::uint32_t l_hierarchyDepth = k_firstChildHierarchyDepth; l_hierarchyDepth <= l_maxBoneHierarchyDepth; ++l_hierarchyDepth)
+		{
+			l_cbSkeletalAnimationBoneHierarchy.m_hierarchyDepth = l_hierarchyDepth;
+
+			SetupConstantBuffer<SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader>(l_cbSkeletalAnimationBoneHierarchy,
+				                                                                                      a_rootSignature,
+																									  l_computeCommandList,
+																									  a_frameResource,
+																									  Enum::RootParameterType::CBSkeletalAnimationBoneHierarchy);
+
+			l_computeCommandList.Dispatch(k_singleDispatchThreadGroupCount, k_singleDispatchThreadGroupCount, k_singleDispatchThreadGroupCount);
+
+			// 次のDepthが現在Depthお結果を親GlobalMatrixとして読むため、
+			// Depth間だけUAVBarrierを設定する
+			if (l_hierarchyDepth < l_maxBoneHierarchyDepth)
+			{
+				l_computeCommandList.UAVResourceBarrier(l_boneMatrixBufferResource);
+			}
+		}
+	}
+}
 
 void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::AddComputeRequest(const std::shared_ptr<SkeletalAnimationPlayer>&a_skeletalAnimationPlayer)
 {

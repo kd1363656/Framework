@@ -63,6 +63,12 @@
                             "CreateCount": 4096
                         },
                         "DynamicBufferUploaderTypeName": "SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4096
+                        },
+                        "DynamicBufferUploaderTypeName": "SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {
@@ -1132,6 +1138,19 @@
                 },
                 "PipelineStateClassName": "ComputePipelineState",
                 "PipelineStateType": "PipelineStateType::SkeletalAnimationLocalMatrix"
+            },
+            {
+                "PipelineState": {
+                    "ComputeShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Asset/Shader/Model/Skeletal/SkeletalAnimationBoneHierarchy_CS.cso",
+                        "ShaderModelVersionName": "cs_6_6"
+                    },
+                    "PipelineStateFlags": 0,
+                    "UseRootSignatureType": "RootSignatureType::SkeletalAnimationBoneHierarchy"
+                },
+                "PipelineStateClassName": "ComputePipelineState",
+                "PipelineStateType": "PipelineStateType::SkeletalAnimationBoneHierarchy"
             }
         ],
         "RenderGraph": {
@@ -1380,6 +1399,28 @@
                     "StaticSamplerDescList": []
                 },
                 "RootSignatureType": "RootSignatureType::SkeletalAnimationLocalMatrix"
+            },
+            {
+                "RootSignature": {
+                    "RootParameterIndexMap": [
+                        {
+                            "Index": 0,
+                            "RootParameterType": "RootParameterType::CBSkeletalAnimationBoneHierarchy"
+                        }
+                    ],
+                    "RootParameterList": [
+                        {
+                            "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_ALL"
+                        }
+                    ],
+                    "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",
+                    "RootSignatureVersion": "D3D_ROOT_SIGNATURE_VERSION_1",
+                    "StaticSamplerDescList": []
+                },
+                "RootSignatureType": "RootSignatureType::SkeletalAnimationBoneHierarchy"
             }
         ],
         "SwapChain": {

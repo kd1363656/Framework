@@ -334,7 +334,7 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationPerObjectComputeRequest.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationBoneHierarchyStruct.h"
-
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationBoneHierarchyPerObjectDynamicConstantBufferUploader.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"

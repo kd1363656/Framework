@@ -2339,5 +2339,8 @@
     <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationLocalMatrix_CS.hlsl">
       <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationBoneHierarchy_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </DXCTask>
   </ItemGroup>
 </Project>
