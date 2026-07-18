@@ -61,20 +61,8 @@ namespace FWK::Graphics
 		SkeletalAnimationPlayer& operator=(const SkeletalAnimationPlayer&)           = delete;
 		SkeletalAnimationPlayer& operator=(      SkeletalAnimationPlayer&&) noexcept = default;
 
-		bool                    Create                   (const SkeletalAnimationModel&                  a_skeletalAnimationModel);
-		bool                    CreateAnimationLookupData(const SkeletalAnimationModelRecord::ModelData& a_modelData, std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList);
-		TypeAlias::Math::Matrix CreateLocalMatrix        (const LocalTransform&                          a_localTransform) const;
-
-		bool EvaluateCurrentPose();
-
-		LocalTransform SampleLocalTransform(const SkeletalAnimationModelRecord::ModelMotionSequence& a_motionSequence,
-			                                const float                                              a_timeSecond,
-	                                        const std::uint32_t                                      a_motionIndex,
-	                                        const std::uint32_t                                      a_boneIndex);
-
-		LocalTransform InterpolateLocalTransform(const LocalTransform& a_startLocalTransform, const LocalTransform& a_endLcoalTransform, const float a_interpolationWeight) const;
-
-
+		bool Create(const SkeletalAnimationModel& a_skeletalAnimationModel);
+		
 		bool PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed);
 
 		void AdvanceTime(const float a_deltaTime);
@@ -107,13 +95,26 @@ namespace FWK::Graphics
 
 	private:
 
-		float FetchMotionDurationSecond(const Animation& a_animation) const;
+		bool                    CreateAnimationLookupData(      SkeletalAnimationModelRecord::ModelData& a_modelData, std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList) const;
+		TypeAlias::Math::Matrix CreateLocalMatrix        (const LocalTransform&                          a_localTransform)                                                                                                                            const;
+
+		
+		bool EvaluateCurrentPose();
+
+		LocalTransform SampleLocalTransform(const SkeletalAnimationModelRecord::ModelMotionSequence& a_motionSequence,
+			                                const float                                              a_timeSecond,
+	                                        const std::uint32_t                                      a_motionIndex,
+	                                        const std::uint32_t                                      a_boneIndex);
+
+		LocalTransform InterpolateLocalTransform(const LocalTransform& a_startLocalTransform, const LocalTransform& a_endLcoalTransform, const float a_interpolationWeight) const;
 
 		float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
 
 		void CompleteAnimationBlend();
 
 		void ResetPlaybackState();
+
+		float FetchMotionDurationSecond(const Animation& a_animation) const;
 
 		static constexpr float k_initialBlendElapsedSecond = 0.0F;
 
@@ -124,16 +125,17 @@ namespace FWK::Graphics
 		static constexpr float k_minKeyFrameTimeRange = 0.000001F;
 
 		static constexpr std::size_t k_firstBoneIndex            = 0ULL;
-        static constexpr std::size_t k_firstBoneMotionTrackIndex = 0ULL;
-        static constexpr std::size_t k_firstKeyFrameIndex        = 0ULL;
-        static constexpr std::size_t k_singleKeyFrameCount       = 1ULL;
-        static constexpr std::size_t k_nextKeyFrameOffset        = 1ULL;
+		static constexpr std::size_t k_firstMotionIndex          = 0ULL;
+		static constexpr std::size_t k_firstBoneMotionTrackIndex = 0ULL;
+		static constexpr std::size_t k_firstKeyFrameIndex        = 0ULL;
+		static constexpr std::size_t k_singleKeyFrameCount       = 1ULL;
+		static constexpr std::size_t k_nextKeyFrameOffset        = 1ULL;
 
 		static constexpr std::size_t k_binarySearchPartitionCount = 2ULL;
 
 		static constexpr std::uint32_t k_invalidBoneMotionTrackIndex = std::numeric_limits<std::uint32_t>::max();
 
-		std::vector<std::vector<std::uint32_t>> m_boneMotionTrackListIndexList = {};
+		std::vector<std::vector<std::uint32_t>> m_boneMotionTrackIndexList = {};
 
 		std::vector<FrameData> m_frameDataList = {};
 
