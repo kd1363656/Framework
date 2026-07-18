@@ -93,6 +93,32 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
     return true;
 }
+bool FWK::Graphics::SkeletalAnimationPlayer::CreateAnimationLookupData(const SkeletalAnimationModelRecord::ModelData& a_modelData, std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList)
+{
+    return false;
+}
+FWK::TypeAlias::Math::Matrix FWK::Graphics::SkeletalAnimationPlayer::CreateLocalMatrix(const LocalTransform& a_localTransform) const
+{
+    return TypeAlias::Math::Matrix();
+}
+
+bool FWK::Graphics::SkeletalAnimationPlayer::EvaluateCurrentPose()
+{
+    return false;
+}
+
+FWK::Graphics::SkeletalAnimationPlayer::LocalTransform FWK::Graphics::SkeletalAnimationPlayer::SampleLocalTransform(const SkeletalAnimationModelRecord::ModelMotionSequence& a_motionSequence, 
+                                                                                                                    const float                                              a_timeSecond, 
+                                                                                                                    const std::uint32_t                                      a_motionIndex, 
+                                                                                                                    const std::uint32_t                                      a_boneIndex)
+{
+    return LocalTransform();
+}
+
+FWK::Graphics::SkeletalAnimationPlayer::LocalTransform FWK::Graphics::SkeletalAnimationPlayer::InterpolateLocalTransform(const LocalTransform& a_startLocalTransform, const LocalTransform& a_endLcoalTransform, const float a_interpolationWeight) const
+{
+    return LocalTransform();
+}
 
 bool FWK::Graphics::SkeletalAnimationPlayer::PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed)
 {
