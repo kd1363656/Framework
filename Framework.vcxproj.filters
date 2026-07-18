@@ -901,9 +901,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer">
       <UniqueIdentifier>{1c4c6dc4-3d11-4441-b53b-d6c0ae61a71a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Shader\Model\Skeletal">
-      <UniqueIdentifier>{f33ada2c-9f6e-4eaf-9161-ac3754bb3877}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal">
       <UniqueIdentifier>{5471599d-ca50-4eb0-b98e-87a4e1b3e14b}</UniqueIdentifier>
     </Filter>
@@ -1764,12 +1761,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationBoneMatrixStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationBoneMatrixPerObjectDynamicConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
@@ -2289,9 +2280,6 @@
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
-    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimation.hlsli">
-      <Filter>Asset\Shader\Model\Skeletal</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -2329,9 +2317,6 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
       <Filter>Asset\Shader\PhysicsDebug</Filter>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationBoneMatrix_CS.hlsl">
-      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

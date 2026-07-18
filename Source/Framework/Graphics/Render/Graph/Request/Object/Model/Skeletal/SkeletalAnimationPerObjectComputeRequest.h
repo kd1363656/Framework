@@ -11,16 +11,9 @@ namespace FWK::Graphics
 
 		void BeginFrame() override;
 
-		void DispatchLocalMatrix  (const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource);
-		void DispatchBoneHIerarchy(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource);
-
 		void AddComputeRequest(const std::shared_ptr<SkeletalAnimationPlayer>& a_skeletalAnimationPlayer);
 
 	private:
-
-		static constexpr UINT k_singleDispatchThreadGroupCount = 1U;
-
-		static constexpr std::uint32_t k_firstChildHierarchyDepth = 1U;
 
 		Utility::VectorArray<std::weak_ptr<SkeletalAnimationPlayer>> m_skeletalAnimationPlayerList = {};
 
