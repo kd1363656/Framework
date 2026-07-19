@@ -77,10 +77,6 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
         // GPU使用中のUploadBufferをCPUが上書きすることを防ぐ
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_boneMatrixUploadBuffer.Create(l_device, l_boneMatrixBufferSize), "BoneMatrix用UploadBufferの作成に失敗しました。", false);
 
-        // CPUで計算したGlobalBoneMatrixを一度このUploadBufferへ書き込み、
-        // ComputeCommandListのCopyBufferRegionでDEFAULTヒープへ転送する
-        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_boneMatrixUploadBuffer.Create(l_device, l_boneMatrixBufferSize), "BoneMatrix用UploadBufferの作成に失敗しました。", false);
-
         l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
 
         // SkinnedVertexBufferはMeshごとに頂点数が異なるため、

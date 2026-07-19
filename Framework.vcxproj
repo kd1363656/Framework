@@ -549,6 +549,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\SkeletalAnimationModelFBXLoader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record\SkeletalAnimationModelRecord.h" />
