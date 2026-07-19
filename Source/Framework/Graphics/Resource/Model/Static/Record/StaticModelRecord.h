@@ -19,12 +19,10 @@ namespace FWK::Graphics
 			 ModelMesh() = default;
 			~ModelMesh() = default;
 
-			ModelMesh(const ModelMesh&)			  = delete;
-			ModelMesh(      ModelMesh&&) noexcept = default;
-
-			ModelMesh& operator=(const ModelMesh&)			 = delete;
-			ModelMesh& operator=(      ModelMesh&&) noexcept = default;
-
+			ModelMesh(const ModelMesh&) = delete;
+			
+			ModelMesh& operator=(const ModelMesh&) = delete;
+			
 			std::vector<ModelVertex>   m_modelVertexList = {};
 			std::vector<std::uint32_t> m_indexList	     = {};
 

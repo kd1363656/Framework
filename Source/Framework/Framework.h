@@ -228,6 +228,7 @@
 #include "Graphics/Resource/Model/Skeletal/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModelSystem.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
+#include "Graphics/Resource/Model/Skeletal/Player/Evaluator/SkeletalAnimationPoseEvaluator.h"
 #include "Graphics/Resource/Model/Skeletal/Player/SkeletalAnimationPlayer.h"
 
 // アップロードシステム

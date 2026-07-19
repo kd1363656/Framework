@@ -904,6 +904,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal">
       <UniqueIdentifier>{5471599d-ca50-4eb0-b98e-87a4e1b3e14b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator">
+      <UniqueIdentifier>{0ab61c6b-5959-459c-9e81-618eb95f3ab4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1782,6 +1785,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2242,6 +2248,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

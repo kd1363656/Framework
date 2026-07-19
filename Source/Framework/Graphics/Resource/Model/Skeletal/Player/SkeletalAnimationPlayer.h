@@ -14,13 +14,6 @@ namespace FWK::Graphics
 			TypeAlias::Math::Vector2 m_uv       = TypeAlias::Math::Vector2::Zero;
 		};
 
-		struct LocalTransform final
-		{
-			TypeAlias::Math::Vector3    m_scale       = TypeAlias::Math::Vector3::One;
-			TypeAlias::Math::Quaternion m_rotation    = TypeAlias::Math::Quaternion::Identity;
-			TypeAlias::Math::Vector3    m_translation = TypeAlias::Math::Vector3::Zero;
-		};
-
 	public:
 
 		struct Animation final
@@ -28,15 +21,13 @@ namespace FWK::Graphics
 			static constexpr float k_defaultPlaybackSpeed       = 1.0F;
 			static constexpr float k_initialBlendDurationSecond = 0.0F;
 			
-			static constexpr std::uint32_t k_invalidMotionIndex = std::numeric_limits<std::uint32_t>::max();
-
 			float m_startTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
 
 			float m_playbackSpeed = k_defaultPlaybackSpeed;
 
 			float m_blendDurationSecond = k_initialBlendDurationSecond;
 
-			std::uint32_t m_motionIndex = k_invalidMotionIndex;
+			std::uint32_t m_motionIndex = SkeletalAnimationPoseEvaluator::k_invalidMotionIndex;
 
 			bool m_isLoop = false;
 		};
@@ -95,18 +86,7 @@ namespace FWK::Graphics
 
 	private:
 
-		bool                    CreateAnimationLookupData(      SkeletalAnimationModelRecord::ModelData& a_modelData, std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList) const;
-		TypeAlias::Math::Matrix CreateLocalMatrix        (const LocalTransform&                          a_localTransform)                                                                                                                            const;
-
-		
 		bool EvaluateCurrentPose();
-
-		LocalTransform SampleLocalTransform(const SkeletalAnimationModelRecord::ModelMotionSequence& a_motionSequence,
-			                                const float                                              a_timeSecond,
-	                                        const std::uint32_t                                      a_motionIndex,
-	                                        const std::uint32_t                                      a_boneIndex);
-
-		LocalTransform InterpolateLocalTransform(const LocalTransform& a_startLocalTransform, const LocalTransform& a_endLcoalTransform, const float a_interpolationWeight) const;
 
 		float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
 
@@ -117,32 +97,15 @@ namespace FWK::Graphics
 		float FetchMotionDurationSecond(const Animation& a_animation) const;
 
 		static constexpr float k_initialBlendElapsedSecond = 0.0F;
-
-		static constexpr float k_completeBlendWeight = 1.0F;
-
-		static constexpr float k_stoppedPlaybackSpeed = 0.0F;
-
-		static constexpr float k_minKeyFrameTimeRange = 0.000001F;
-
-		static constexpr std::size_t k_firstBoneIndex            = 0ULL;
-		static constexpr std::size_t k_firstMotionIndex          = 0ULL;
-		static constexpr std::size_t k_firstBoneMotionTrackIndex = 0ULL;
-		static constexpr std::size_t k_firstKeyFrameIndex        = 0ULL;
-		static constexpr std::size_t k_singleKeyFrameCount       = 1ULL;
-		static constexpr std::size_t k_nextKeyFrameOffset        = 1ULL;
-
-		static constexpr std::size_t k_binarySearchPartitionCount = 2ULL;
-
-		static constexpr std::uint32_t k_invalidBoneMotionTrackIndex = std::numeric_limits<std::uint32_t>::max();
-
-		std::vector<std::vector<std::uint32_t>> m_boneMotionTrackIndexList = {};
+		static constexpr float k_completeBlendWeight       = 1.0F;
+		static constexpr float k_stoppedPlaybackSpeed      = 0.0F;
 
 		std::vector<FrameData> m_frameDataList = {};
 
-		std::vector<LocalTransform> m_bindPoseLocalTransformList = {};
-
 		std::weak_ptr<SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
 		
+		SkeletalAnimationPoseEvaluator m_poseEvaluator = {};
+
 		Animation m_animation            = {};
 		Animation m_blendTargetAnimation = {};
 
