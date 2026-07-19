@@ -13,9 +13,39 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 {
 	// LocalMatrix計算用のComputePipelineStateと
 	// RootsignatureをComputeCommandLIstへ設定する
-	const auto& l_currentFrameResource                     = a_renderer.GetREFCurrentFrameResource                                                 ().lock();
 	const auto& l_skeletalAnimationPerObjectComputeRequest = a_renderGraph.FindVALComputeRequestPerObject<SkeletalAnimationPerObjectComputeRequest>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_currentFrameResource,                     "現在のFrameResourceを取得できないため、SkeletalAnimationComputePassの実行に失敗しました。");
 	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationPerObjectComputeRequest, "SkeletalAnimationPerObjectComputeRequestを取得できないため、SkeletalAnimationComputePassの実行に失敗しました。");
+
+	const auto& l_skeletalAnimationPlayerList = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerList().GetREFArrayElementDataList();
+	const auto& l_computCommandList           = a_renderer.GetREFComputeCommandList                                          ();
+
+	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerList)
+	{
+		const auto& l_skeletalAnimationPlayer = l_skeletalAnimationPlayerData.m_type.lock();
+
+		// BeginFrame後にPlayerが破棄されていた場合は、
+		// このPlayerに対するGPU転送を行わない。
+		if (!l_skeletalAnimationPlayer) { continue; }
+
+		auto* l_frameData = l_skeletalAnimationPlayer->FetchMutablePTRCurrentFrameData();
+
+		FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、BoneMatrixをGPUへ転送できません。");
+
+		const auto& l_globalBoneMatrixList   = l_frameData->m_globalBoneMatrixList;
+		      auto& l_boneMatrixBuffer       = l_frameData->m_boneMatrixBuffer;
+			  auto& l_boneMatrixUploadBuffer = l_frameData->m_boneMatrixUploadBuffer;
+
+		// CPU側とGPU側でBone数が異なる場合は、
+		// 正しいサイズでコピーできない
+		FWK_ASSERT_RETURN_IF(l_globalBoneMatrixList.size() != static_cast<std::size_t>(l_boneMatrixBuffer.GetVALElementCount()), "GlobalBoneMatrixListとBoneMatrixBufferの要素数が一致しません。");
+
+		auto* l_mappedBoneMatrixData = l_boneMatrixUploadBuffer.FetchPTRMappedData();
+
+		FWK_ASSERT_RETURN_IF(!l_mappedBoneMatrixData, "BoneMatrix用UploadBufferの書き込み先を取得できません。");
+
+		const auto& l_boneMatrixBufferSize = sizeof(TypeAlias::Math::Matrix) * l_globalBoneMatrixList.size();
+
+
+	}
 }

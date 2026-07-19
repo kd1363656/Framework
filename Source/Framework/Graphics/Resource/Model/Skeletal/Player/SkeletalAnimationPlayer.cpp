@@ -44,6 +44,10 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     // フレームリソースの数だけ容量を予約
     l_frameDataList.reserve(l_frameResourceList.size());
 
+    // Matrix1個のサイズ × Bone数が、
+    // 1Frame分のBoneMatrix転送サイズになる。
+    const auto& l_boneMatrixBufferSize = sizeof(TypeAlias::Math::Matrix) * l_modelBoneList.size();
+
     // 各FrameResourceで使用するBoneMatrixBufferと
     // MeshごとのSkinnedVertexBufferを作成する
     for (const auto& l_frameResource : l_frameResourceList)
@@ -67,6 +71,15 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
             // Playerの再作成途中で失敗しても以前の正常な状態は維持される。   
             FWK_ASSERT_RETURN_VALUE("BoneMatrix用DynamicRWStructuredBufferの作成に失敗しました。", false);
         }
+
+        // CPUで計算したGlobalBoneMatrixを書き込むUploadBufferを作成する
+        // 現在のFrameDataと同じ数だけ持つことで、
+        // GPU使用中のUploadBufferをCPUが上書きすることを防ぐ
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_boneMatrixUploadBuffer.Create(l_device, l_boneMatrixBufferSize), "BoneMatrix用UploadBufferの作成に失敗しました。", false);
+
+        // CPUで計算したGlobalBoneMatrixを一度このUploadBufferへ書き込み、
+        // ComputeCommandListのCopyBufferRegionでDEFAULTヒープへ転送する
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_boneMatrixUploadBuffer.Create(l_device, l_boneMatrixBufferSize), "BoneMatrix用UploadBufferの作成に失敗しました。", false);
 
         l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
 

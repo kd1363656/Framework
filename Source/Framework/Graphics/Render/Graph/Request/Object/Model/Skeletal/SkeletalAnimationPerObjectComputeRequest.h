@@ -13,6 +13,8 @@ namespace FWK::Graphics
 
 		void AddComputeRequest(const std::shared_ptr<SkeletalAnimationPlayer>& a_skeletalAnimationPlayer);
 
+		const auto& GetREFSkeletalAnimationPlayerList() const { return m_skeletalAnimationPlayerList; }
+
 	private:
 
 		Utility::VectorArray<std::weak_ptr<SkeletalAnimationPlayer>> m_skeletalAnimationPlayerList = {};
