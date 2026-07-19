@@ -16,5 +16,3 @@ namespace FWK::Graphics
 		FWK_DEFINE_TYPE_INFO(SkeletalAnimationBoneMatrixBufferUploader, DynamicBufferUploaderBase)
 	};
 }
-
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader)

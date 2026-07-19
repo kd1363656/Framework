@@ -37,7 +37,7 @@ FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(DynamicBuffe
 
 	a_other.m_currentElementIndex = k_initialElementBufferIndex;
 
-	a_other.m_elementStrideSize = k_initialElementBufferIndex;
+	a_other.m_elementStrideSize = k_initialElementStrideSize;
 }
 
 void FWK::Graphics::DynamicBufferUploaderBase::Deserialize(const nlohmann::json& a_rootJson)

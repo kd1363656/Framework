@@ -24,6 +24,8 @@ namespace FWK::Graphics
 		
 		void SetCreateCount(const UINT64& a_set) { m_createCount = a_set; }
 
+		const auto& GetREFUploadBuffer() const { return m_uploadBuffer; }
+
 		const auto& GetREFTypeSize() const { return k_typeSize; }
 
 		const auto& GetREFCreateCount() const { return m_createCount; }

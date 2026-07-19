@@ -61,7 +61,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
         // FrameDataごとにUploaderを持つことで、
         // GPU使用中のUploadBufferに対する
         // CPUからの上書きを防ぐ。
-        l_frameData.m_boneMatirxBufferUploader.SetCreateCount(l_boneCount);
+        l_frameData.m_boneMatrixBufferUploader.SetCreateCount(l_boneCount);
 
 		// CPUで計算したGlobalBoneMatrixをGPUへ渡すためのBufferを作成する。
 		// BoneMatrixBufferはModel全体で1つ持ち、
@@ -82,7 +82,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
         // CPUで計算したGlobalBoneMatrixを書き込むUploadBufferを作成する
         // 現在のFrameDataと同じ数だけ持つことで、
         // GPU使用中のUploadBufferをCPUが上書きすることを防ぐ
-        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_boneMatirxBufferUploader.Create(l_device), "BoneMatrix用UploadBufferの作成に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_frameData.m_boneMatrixBufferUploader.Create(l_device), "BoneMatrix用UploadBufferの作成に失敗しました。", false);
 
         l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
 

@@ -25,9 +25,5 @@ namespace FWK::Graphics
 
 			return WriteElementRange(l_constantBufferRange);
 		}
-
-	private:
-
-		static constexpr std::size_t k_singleConstantBufferCount = 1ULL;
 	};
 }
