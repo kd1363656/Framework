@@ -32,20 +32,18 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 
 		FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、BoneMatrixをGPUへ転送できません。");
 
-		const auto& l_globalBoneMatrixList   = l_frameData->m_globalBoneMatrixList;
-		      auto& l_boneMatrixBuffer       = l_frameData->m_boneMatrixBuffer;
-			  auto& l_boneMatrixUploadBuffer = l_frameData->m_boneMatrixUploadBuffer;
+		const auto& l_globalBoneMatrixList     = l_frameData->m_globalBoneMatrixList;
+		      auto& l_boneMatrixBuffer         = l_frameData->m_boneMatrixBuffer;
+			  auto& l_boneMatrixBufferUploader = l_frameData->m_boneMatirxBufferUploader;
 
 		// CPU側とGPU側でBone数が異なる場合は、
 		// 正しいサイズでコピーできない
 		FWK_ASSERT_RETURN_IF(l_globalBoneMatrixList.size() != static_cast<std::size_t>(l_boneMatrixBuffer.GetVALElementCount()), "GlobalBoneMatrixListとBoneMatrixBufferの要素数が一致しません。");
 
-		auto* l_mappedBoneMatrixData = l_boneMatrixUploadBuffer.FetchPTRMappedData();
+		// CPUで計算済みのGlobalBoneMatrixを、
+		// 現在FrameDataのUploadBufferへ書き込む。
+		FWK_ASSERT_RETURN_IF(!l_boneMatrixBufferUploader.Write( l_globalBoneMatrixList), "BoneMatrixのUploadBufferへの書き込みに失敗しました。");
 
-		FWK_ASSERT_RETURN_IF(!l_mappedBoneMatrixData, "BoneMatrix用UploadBufferの書き込み先を取得できません。");
-
-		const auto& l_boneMatrixBufferSize = sizeof(TypeAlias::Math::Matrix) * l_globalBoneMatrixList.size();
-
-
+		const auto& l_boneMatrixBufferResource       = l_boneMatrixBuffer.GetREFBufferGPUResource().m_resource;
 	}
 }

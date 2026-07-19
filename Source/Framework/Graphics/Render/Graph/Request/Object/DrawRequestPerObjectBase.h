@@ -33,7 +33,7 @@ namespace FWK::Graphics
 			FWK_ASSERT_RETURN_IF(!l_constantBufferUploader,												   "PerObject定数バッファアップローダーが取得できないため、定数バッファのセットに失敗しました。");
 			FWK_ASSERT_RETURN_IF(l_constantBufferUploader->GetREFTypeSize() != sizeof(ConstantBufferType), "取得した定数バッファアップローダーの型サイズとGPU転送予定の定数バッファが一致しないため、定数バッファのセットに失敗しました。");
 
-			const auto& l_gpuVirtualAddress = l_constantBufferUploader->WritePerObject(a_constantBuffer);
+			const auto& l_gpuVirtualAddress = l_constantBufferUploader->Write(a_constantBuffer);
 
 			// SetGraphicsRootConstantBufferView(ルートパラメータ番号、
 			//									 CBVとして参照させるGPU仮想アドレス);

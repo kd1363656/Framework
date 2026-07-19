@@ -35,6 +35,7 @@ void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph&
 
 	FWK_ASSERT_RETURN_IF(l_lineVertexList.size() > static_cast<std::size_t>(std::numeric_limits<UINT>::max()), "PhysicsDebugのLineVertex数がDrawInstancedで描画できる上限を超えており、PhysicsDebugPassの実行に失敗しました。");
 
+	// パイプラインステートをセット
 	const auto& l_rootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::PhysicsDebug).lock();
 
 	FWK_ASSERT_RETURN_IF(!l_rootSignature, "PhysicsDebugPass用RootSignatureが無効のため、PhysicsDebugPassの実行に失敗しました。");

@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class SpriteScreenPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBSpritePerObject>
+	class SpriteScreenPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBSpritePerObject>
 	{
 	public:
 

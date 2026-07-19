@@ -646,9 +646,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant">
       <UniqueIdentifier>{8729393f-811b-4779-86c3-402af0076ce2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug">
-      <UniqueIdentifier>{df1f0fcc-2fbb-43bb-a32a-bb25f96a92fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer">
       <UniqueIdentifier>{a8c022f1-6e6a-4a80-9851-e7345da36d50}</UniqueIdentifier>
     </Filter>
@@ -906,6 +903,9 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer">
       <UniqueIdentifier>{b6746b3f-d558-4f03-a555-f9ecf11d4f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer">
+      <UniqueIdentifier>{c52abb80-953f-4316-8b1d-dacbe3ce670f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1446,9 +1446,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug\PhysicsDebugDynamicVertexBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
@@ -1790,6 +1787,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer\PhysicsDebugDynamicVertexBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferAdvancingWritePositionUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferAdvancingWritePositionUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferFixedWritePositionUploaderBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2254,6 +2263,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Evaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

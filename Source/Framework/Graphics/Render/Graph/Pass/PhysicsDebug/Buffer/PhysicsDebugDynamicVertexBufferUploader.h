@@ -2,12 +2,12 @@
 
 namespace FWK::Graphics
 {
-	class PhysicsDebugDynamicVertexBufferUploader final : public DynamicVertexBufferUploaderBase<Struct::VBPhysicsDebug>
+	class PhysicsDebugDynamicVertexBufferUploader final : public DynamicVertexBufferAdvancingWritePositionUploaderBase<Struct::VBPhysicsDebug>
 	{
 	public:
 
-		 PhysicsDebugDynamicVertexBufferUploader() = default;
-		~PhysicsDebugDynamicVertexBufferUploader() = default;
+		 PhysicsDebugDynamicVertexBufferUploader()          = default;
+		~PhysicsDebugDynamicVertexBufferUploader() override = default;
 
 		FWK_DEFINE_TYPE_INFO(PhysicsDebugDynamicVertexBufferUploader, DynamicBufferUploaderBase)
 	};

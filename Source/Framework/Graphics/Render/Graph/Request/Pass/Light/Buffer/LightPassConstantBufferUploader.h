@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class LightPassDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBLightPass>
+	class LightPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBLightPass>
 	{
 	public:
 

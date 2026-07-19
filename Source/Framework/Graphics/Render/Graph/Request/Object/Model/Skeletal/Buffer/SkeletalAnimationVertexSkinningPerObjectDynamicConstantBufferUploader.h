@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBSkeletalAnimationVertexSkinning>
+	class SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBSkeletalAnimationVertexSkinning>
 	{
 	public:
 

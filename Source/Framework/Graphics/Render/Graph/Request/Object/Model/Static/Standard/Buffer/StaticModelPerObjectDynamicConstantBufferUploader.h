@@ -4,7 +4,7 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBStaticModelPerObject>
+	class StaticModelPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBStaticModelPerObject>
 	{
 	public:
 

@@ -471,6 +471,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer\PhysicsDebugDynamicVertexBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.h" />
@@ -521,12 +522,14 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Renderer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\Converter\Json\SwapChainJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\SwapChain\SwapChain.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferAdvancingWritePositionUploaderBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferFixedWritePositionUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicRWStructuredBuffer.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferAdvancingWritePositionUploaderBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferUploaderBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\PhysicsDebug\PhysicsDebugDynamicVertexBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StaticStructuredBuffer.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\StructuredBufferBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\UploadBuffer.h" />
@@ -730,6 +733,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Motion\SkeletalAnimationModelFBXMotionExtractor.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\Extractor\Skeleton\SkeletalAnimationModelFBXSkeletonExtractor.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\FBXLoader\SkeletalAnimationModelFBXLoader.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Evaluator\SkeletalAnimationPoseEvaluator.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Record\SkeletalAnimationModelRecord.cpp" />

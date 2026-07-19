@@ -1,9 +1,13 @@
 ﻿#include "DynamicBufferUploaderBase.h"
 
-FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(const UINT64& a_typeSize) : 
+FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(const UINT64& a_typeSize, const bool a_shouldAdvanceWritePosition) :
 	k_typeSize(a_typeSize),
 
+	k_shouldAdvanceWritePosition(a_shouldAdvanceWritePosition),
+
 	m_uploadBuffer(),
+
+	m_jsonConverter(),
 
 	m_createCount(k_invalidCreateCount),
 
@@ -11,6 +15,30 @@ FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(const UINT64
 	m_elementStrideSize  (k_initialElementStrideSize)
 {}
 FWK::Graphics::DynamicBufferUploaderBase::~DynamicBufferUploaderBase() = default;
+
+FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(DynamicBufferUploaderBase&& a_other) noexcept :
+	k_typeSize(a_other.k_typeSize),
+
+	k_shouldAdvanceWritePosition(a_other.k_shouldAdvanceWritePosition),
+
+	m_uploadBuffer(std::move(a_other.m_uploadBuffer)),
+
+	m_jsonConverter(std::move(a_other.m_jsonConverter)),
+
+	m_createCount(a_other.m_createCount),
+
+	m_currentElementIndex(a_other.m_currentElementIndex),
+	m_elementStrideSize  (a_other.m_elementStrideSize)
+{
+	// UploadBufferの所有権は移動先へ渡っている。
+	// 移動元が作成済み状態に見えないよう、
+	// 可変状態を初期値へ戻す。
+	a_other.m_createCount = k_invalidCreateCount;
+
+	a_other.m_currentElementIndex = k_initialElementBufferIndex;
+
+	a_other.m_elementStrideSize = k_initialElementBufferIndex;
+}
 
 void FWK::Graphics::DynamicBufferUploaderBase::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -46,16 +74,4 @@ bool FWK::Graphics::DynamicBufferUploaderBase::CreateUploadBuffer(const Device& 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer.Create(a_device, l_totalSize),    "バッファの生成処理に失敗しました。",                              false);
 
 	return true;
-}
-
-UINT64 FWK::Graphics::DynamicBufferUploaderBase::AllocateElementRange(const UINT64& a_elementCount)
-{
-	FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == UploadBuffer::k_invalidBufferSize, "確保Element数が0のため、Allocate処理に失敗しました。",                  k_invalidElementBufferIndex);
-	FWK_ASSERT_RETURN_VALUE_IF(a_elementCount > m_createCount,                      "確保Element数が作成個数を超えているため、Allocate処理に失敗しました。", k_invalidElementBufferIndex);
-
-	const auto l_startElementIndex = m_currentElementIndex;
-
-	m_currentElementIndex += a_elementCount;
-
-	return l_startElementIndex;
 }

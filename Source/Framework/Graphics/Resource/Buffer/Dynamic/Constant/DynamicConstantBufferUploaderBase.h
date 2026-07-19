@@ -7,8 +7,8 @@ namespace FWK::Graphics
 	{
 	public:
 
-		DynamicConstantBufferUploaderBase() :
-			DynamicBufferUploaderBase(sizeof(ConstantBufferType))
+		explicit DynamicConstantBufferUploaderBase(const bool a_shouldAdvanceWritePosition) :
+			DynamicBufferUploaderBase(sizeof(ConstantBufferType), a_shouldAdvanceWritePosition)
 		{}
 		~DynamicConstantBufferUploaderBase() override = default;
 
@@ -19,24 +19,15 @@ namespace FWK::Graphics
 			return true;
 		}
 
-		// 定数バッファの上書きを許さない場合に使用
-		// 仮想アドレスのインデックスがこの関数を呼び出すたびに代わるから
-		template <typename ConstantBufferType>
-		D3D12_GPU_VIRTUAL_ADDRESS WritePerObject(const ConstantBufferType& a_constantBuffer)
+		D3D12_GPU_VIRTUAL_ADDRESS Write(const ConstantBufferType& a_constantBuffer)
 		{
-			return WriteElementAndAdvance(a_constantBuffer);
-		}
+			const std::span<const ConstantBufferType> l_constantBufferRange = { &a_constantBuffer, k_singleElementCount };
 
-		// 定数バッファの上書きをしてもよいものに使用
-		// カメラやディレクショナルライトと言った単一のものに主に使用
-		template <typename ConstantBufferType>
-		D3D12_GPU_VIRTUAL_ADDRESS WriteCommonPass(const ConstantBufferType& a_constantBuffer)
-		{
-			return WriteElementAt(a_constantBuffer, k_commonPassElementIndex);
+			return WriteElementRange(l_constantBufferRange);
 		}
 
 	private:
 
-		static constexpr UINT64 k_commonPassElementIndex = 0ULL;
+		static constexpr std::size_t k_singleConstantBufferCount = 1ULL;
 	};
 }

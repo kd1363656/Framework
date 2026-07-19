@@ -11,7 +11,7 @@ namespace FWK::Converter
 	{
 	public:
 		
-		DynamicBufferUploaderBaseJsonConverter () = default;
+		 DynamicBufferUploaderBaseJsonConverter() = default;
 		~DynamicBufferUploaderBaseJsonConverter() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson, Graphics::DynamicBufferUploaderBase& a_dynamicBufferUploaderBase) const;

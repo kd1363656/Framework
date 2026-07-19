@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class SpriteScreenPassDynamicConstantBufferUploader final : public DynamicConstantBufferUploaderBase<Struct::CBSpritePass>
+	class SpriteScreenPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBSpritePass>
 	{
 	public:
 
