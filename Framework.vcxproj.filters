@@ -2307,6 +2307,9 @@
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
+    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
