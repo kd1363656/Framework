@@ -1,6 +1,12 @@
 ﻿#include "../Model.hlsli"
 
-SamplerState g_textureSampler : register(s0);
+struct StaticModelVertex
+{
+    float3 position;
+    float3 normal;
+    float4 tangent;
+    float2 uv;
+};
 
 cbuffer CBStaticModelPerObject : register(b1)
 {
@@ -38,13 +44,7 @@ cbuffer CBLightPass : register(b2)
     float  g_ambientLightIntensity;
 };
 
-struct StaticModelVertex
-{
-    float3 position;
-    float3 normal;
-    float4 tangent;
-    float2 uv;
-};
+SamplerState g_textureSampler : register(s0);
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する
 // 3個Pack方式では、uint32_t1個に三角形1個分のPrimitiveIndexを入れている

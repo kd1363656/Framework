@@ -13,12 +13,12 @@ namespace FWK::Graphics
 			TypeAlias::Math::Vector4 m_tangent  = {};
 			TypeAlias::Math::Vector2 m_uv       = {};
 
-			std::uint32_t m_bonePaletteIndex0 = k_invalidPaletteIndex;
-			std::uint32_t m_bonePaletteIndex1 = k_invalidPaletteIndex;
-			std::uint32_t m_bonePaletteIndex2 = k_invalidPaletteIndex;
-			std::uint32_t m_bonePaletteIndex3 = k_invalidPaletteIndex;
-
 			TypeAlias::Math::Vector4 m_boneWeight = {};
+
+			std::uint32_t m_bonePaletteIndexZero  = k_invalidPaletteIndex;
+			std::uint32_t m_bonePaletteIndexOne   = k_invalidPaletteIndex;
+			std::uint32_t m_bonePaletteIndexTwo   = k_invalidPaletteIndex;
+			std::uint32_t m_bonePaletteIndexThree = k_invalidPaletteIndex;
 		};
 
 		struct ModelBonePaletteElement final

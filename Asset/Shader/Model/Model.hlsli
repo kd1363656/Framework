@@ -1,17 +1,47 @@
-﻿cbuffer CBCameraPass : register(b0)
-{
-    row_major matrix g_viewMatrix;
-    row_major matrix g_projectionMatrix;
-    row_major matrix g_viewProjectionMatrix;
-    
-    float g_nearClip;
-    float g_farClip;
-    float g_tanHalfFOVX;
-    float g_tanHalfFOVY;
-    
-    float3 g_cameraWorldPosition;
-    float  g_cameraPassPadding;
-};
+﻿static const float k_modelPositionElementW  = 1.0F;
+static const float k_modelDirectionElementW = 0.0F;
+
+// normaliaze前に長さ0付近のベクトルを避けるための値。
+// カメラがconeApexのほぼ同位置にある場合などを安全側に倒す。
+static const float k_modelMeshletCullingEpsilon = 0.000001F;
+
+// Frustumの側面Planeに対するSphere半径補正で使う
+// sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
+static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
+
+static const uint k_modelTriangleVertexCount = 3U;
+
+static const uint k_modelMaxMeshletVertexCount    = 64U;
+static const uint k_modelMaxMeshletPrimitiveCount = 126U;
+
+static const uint k_modelMeshShaderThreadCountX = 32U;
+static const uint k_modelMeshShaderThreadCountY = 1U;
+static const uint k_modelMeshShaderThreadCountZ = 1U;
+
+static const uint k_modelAmplificationShaderThreadCountX = 1U;
+static const uint k_modelAmplificationShaderThreadCountY = 1U;
+static const uint k_modelAmplificationShaderThreadCountZ = 1U;
+
+static const uint k_modelAmplificationDispatchMeshGroupCountX = 1U;
+static const uint k_modelAmplificationDispatchMeshGroupCountY = 1U;
+static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
+
+static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
+
+static const uint k_modelFirstPrimitiveVertexOffset  = 0U;
+static const uint k_modelSecondPrimitiveVertexOffset = 1U;
+static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
+
+static const uint k_modelPackedPrimitiveIndexBitCount = 8U;
+
+// uint32_tからuint8_t相当のPrimitiveIndexだけを取り出すためのMask。
+// 0xFFU = 下位8bitだけを残す。
+static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
+
+static const uint k_modelFirstPackedPrimitiveIndexShiftBit  = k_modelFirstPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
+static const uint k_modelSecondPackedPrimitiveIndexShiftBit = k_modelSecondPrimitiveVertexOffset * k_modelPackedPrimitiveIndexBitCount;
+static const uint k_modelThirdPackedPrimitiveIndexShiftBit  = k_modelThirdPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
+
 
 // StaticModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
 struct MSOutput
@@ -68,46 +98,17 @@ struct ModelAmplificationPayload
     uint meshletIndex;
 };
 
-static const float k_modelPositionElementW  = 1.0F;
-static const float k_modelDirectionElementW = 0.0F;
-
-// normaliaze前に長さ0付近のベクトルを避けるための値。
-// カメラがconeApexのほぼ同位置にある場合などを安全側に倒す。
-static const float k_modelMeshletCullingEpsilon = 0.000001F;
-
-// Frustumの側面Planeに対するSphere半径補正で使う
-// sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
-static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
-
-static const uint k_modelTriangleVertexCount = 3U;
-
-static const uint k_modelMaxMeshletVertexCount    = 64U;
-static const uint k_modelMaxMeshletPrimitiveCount = 126U;
-
-static const uint k_modelMeshShaderThreadCountX = 32U;
-static const uint k_modelMeshShaderThreadCountY = 1U;
-static const uint k_modelMeshShaderThreadCountZ = 1U;
-
-static const uint k_modelAmplificationShaderThreadCountX = 1U;
-static const uint k_modelAmplificationShaderThreadCountY = 1U;
-static const uint k_modelAmplificationShaderThreadCountZ = 1U;
-
-static const uint k_modelAmplificationDispatchMeshGroupCountX = 1U;
-static const uint k_modelAmplificationDispatchMeshGroupCountY = 1U;
-static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
-
-static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
-
-static const uint k_modelFirstPrimitiveVertexOffset  = 0U;
-static const uint k_modelSecondPrimitiveVertexOffset = 1U;
-static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
-
-static const uint k_modelPackedPrimitiveIndexBitCount = 8U;
-
-// uint32_tからuint8_t相当のPrimitiveIndexだけを取り出すためのMask。
-// 0xFFU = 下位8bitだけを残す。
-static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
-
-static const uint k_modelFirstPackedPrimitiveIndexShiftBit  = k_modelFirstPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
-static const uint k_modelSecondPackedPrimitiveIndexShiftBit = k_modelSecondPrimitiveVertexOffset * k_modelPackedPrimitiveIndexBitCount;
-static const uint k_modelThirdPackedPrimitiveIndexShiftBit  = k_modelThirdPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
+cbuffer CBCameraPass : register(b0)
+{
+    row_major matrix g_viewMatrix;
+    row_major matrix g_projectionMatrix;
+    row_major matrix g_viewProjectionMatrix;
+    
+    float g_nearClip;
+    float g_farClip;
+    float g_tanHalfFOVX;
+    float g_tanHalfFOVY;
+    
+    float3 g_cameraWorldPosition;
+    float  g_cameraPassPadding;
+};

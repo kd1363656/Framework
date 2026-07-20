@@ -177,11 +177,11 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.num_weights > l_remainingSkinWeightCount, "SkinWeight配列の参照範囲が不正です。", false);
 	
-	a_modelVertex.m_bonePaletteIndex0 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-	a_modelVertex.m_bonePaletteIndex1 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-	a_modelVertex.m_bonePaletteIndex2 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-	a_modelVertex.m_bonePaletteIndex3 = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-	a_modelVertex.m_boneWeight        = {};
+	a_modelVertex.m_boneWeight            = {};
+	a_modelVertex.m_bonePaletteIndexZero  = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+	a_modelVertex.m_bonePaletteIndexOne   = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+	a_modelVertex.m_bonePaletteIndexTwo   = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+	a_modelVertex.m_bonePaletteIndexThree = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
 
 	std::uint32_t l_appliedBoneInfluenceCount = k_emptyBoneInfluenceCount;
 
@@ -242,7 +242,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 	FWK_ASSERT_RETURN_VALUE_IF(l_appliedBoneInfluenceCount == k_emptyBoneInfluenceCount, "ModelVertexへ適用できるBoneInfluenceが存在しません。", false);
 
 	// Weightが0の未使用Slotにも有効なPaletteIndexを設定する
-	const auto l_fallbackBonePaletteIndex = a_modelVertex.m_bonePaletteIndex0;
+	const auto l_fallbackBonePaletteIndex = a_modelVertex.m_bonePaletteIndexZero;
 
 	for (auto l_slotIndex = l_appliedBoneInfluenceCount; l_slotIndex < k_maxBoneInfluenceCount; ++l_slotIndex)
 	{
@@ -263,29 +263,29 @@ void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 	{
 		case k_firstBoneInfluenceSlot:
 		{
-			a_modelVertex.m_bonePaletteIndex0 = a_bonePaletteIndex;
-			a_modelVertex.m_boneWeight.x      = a_boneWeight;
+			a_modelVertex.m_bonePaletteIndexZero = a_bonePaletteIndex;
+			a_modelVertex.m_boneWeight.x         = a_boneWeight;
 		}
 		break;
 
 		case k_secondBoneInfluenceSlot:
 		{
-			a_modelVertex.m_bonePaletteIndex1 = a_bonePaletteIndex;
-			a_modelVertex.m_boneWeight.y      = a_boneWeight;
+			a_modelVertex.m_bonePaletteIndexOne = a_bonePaletteIndex;
+			a_modelVertex.m_boneWeight.y        = a_boneWeight;
 		}
 		break;
 
 		case k_thirdBoneInfluenceSlot:
 		{
-			a_modelVertex.m_bonePaletteIndex2 = a_bonePaletteIndex;
-			a_modelVertex.m_boneWeight.z      = a_boneWeight;
+			a_modelVertex.m_bonePaletteIndexTwo = a_bonePaletteIndex;
+			a_modelVertex.m_boneWeight.z        = a_boneWeight;
 		}
 		break;
 
 		case k_fourthBoneInfluenceSlot:
 		{
-			a_modelVertex.m_bonePaletteIndex3 = a_bonePaletteIndex;
-			a_modelVertex.m_boneWeight.w      = a_boneWeight;
+			a_modelVertex.m_bonePaletteIndexThree = a_bonePaletteIndex;
+			a_modelVertex.m_boneWeight.w          = a_boneWeight;
 		}
 		break;
 

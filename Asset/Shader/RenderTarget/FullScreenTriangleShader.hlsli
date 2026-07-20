@@ -1,10 +1,4 @@
-﻿struct VSOutput
-{
-    float4 position : SV_Position;
-    float2 uv       : TEXCOORD0;
-};
-
-static const float k_triangleClipPositionZ = 0.0F;
+﻿static const float k_triangleClipPositionZ = 0.0F;
 static const float k_triangleClipPositionW = 1.0F;
 
 static const float k_trianglePositionXLeft   = -1.0F;
@@ -34,4 +28,10 @@ static const float2 k_triangleUVList[k_triangleVertexCount] =
     float2(k_triangleUVMIN, k_triangleUVMIN),
     float2(k_triangleUVMAX, k_triangleUVMIN),
     float2(k_triangleUVMIN, k_triangleUVMAX),
+};
+
+struct VSOutput
+{
+    float4 position : SV_Position;
+    float2 uv       : TEXCOORD0;
 };

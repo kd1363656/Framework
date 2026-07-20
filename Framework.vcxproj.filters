@@ -907,6 +907,9 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer">
       <UniqueIdentifier>{c52abb80-953f-4316-8b1d-dacbe3ce670f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal">
+      <UniqueIdentifier>{103fc5dc-4e48-40bf-8c2c-a7879bea0dfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2341,6 +2344,9 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
       <Filter>Asset\Shader\PhysicsDebug</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>
