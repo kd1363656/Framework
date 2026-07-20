@@ -13,8 +13,21 @@ namespace FWK::Graphics
 
 	private:
 
+		bool UploadBoneMatrix(const ComputeCommandList& a_computeCommandList, SkeletalAnimationPlayer::FrameData& a_frameData) const;
+
+		bool DispatchVertexSkinning(const SkeletalAnimationModelRecord::ModelData&                               a_modelData, 
+			                        const RootSignature&                                                         a_rootSignature,
+			                        const ComputeCommandList&                                                    a_computeCommandList, 
+			                              SkeletalAnimationPlayer::FrameData&                                    a_frameData,
+			                              SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader);
+
 		static constexpr UINT64 k_boneMatrixBufferCopyDestinationOffset = 0ULL;
 		static constexpr UINT64 k_boneMatrixBufferCopySourceOffset      = 0ULL;
+
+		static constexpr std::size_t k_firstModelMeshIndex = 0ULL;
+
+		static constexpr UINT k_vertexSkinningThreadCountX = 64U;
+		static constexpr UINT k_singleThreadGroupCount     = 1U;
 
 		FWK_DEFINE_TYPE_INFO(SkeletalAnimationComputePass, RenderGraphPassBase)
 	};

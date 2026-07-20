@@ -7,14 +7,14 @@ bool FWK::Graphics::FinalPresentRenderTargetPassDrawRequest::SetupPassConstantBu
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_finalColorRenderTargetPassTexture, "FinalColorのRenderTargetPassTextureが無効のため、FinalPresentPass定数の設定に失敗しました。", false);
 
-	const auto& l_renderTargetTexture      = l_finalColorRenderTargetPassTexture->GetREFRenderTargetTexture();
-		  auto& l_finalColorConstantBuffer = GetMutableREFConstantBuffer								   ();
+	const auto& l_renderTargetTexture        = l_finalColorRenderTargetPassTexture->GetREFRenderTargetTexture();
+		  auto& l_finalPresentConstantBuffer = GetMutableREFConstantBuffer                                   ();
 
 	// 定数バッファにシーンカラーテクスチャのSRVDescriptorIndexを渡す
-	l_finalColorConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
+	l_finalPresentConstantBuffer.m_sceneColorTextureSRVIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
 	// 定数バッファをセット
-	SetupConstantBuffer<FinalPresentRenderTargetPassDynamicConstantBufferUploader>(l_finalColorConstantBuffer,
+	SetupConstantBuffer<FinalPresentRenderTargetPassDynamicConstantBufferUploader>(l_finalPresentConstantBuffer,
 																		           a_rootSignature,
 																		           a_directCommandList,
 																		           a_frameResource,

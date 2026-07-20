@@ -8,7 +8,7 @@ namespace FWK::Graphics
 	public:
 
 		 DynamicVertexBufferAdvancingWritePositionUploaderBase() : 
-			 DynamicVertexBufferUploaderBase<VertexType>(k_advanceWritePosition)
+			 DynamicVertexBufferUploaderBase<VertexType>(DynamicBufferUploaderBase::k_advanceWritePosition)
 		 {}
 		~DynamicVertexBufferAdvancingWritePositionUploaderBase() override = default;
 	};

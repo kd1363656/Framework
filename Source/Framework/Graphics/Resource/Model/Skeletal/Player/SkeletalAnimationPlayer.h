@@ -34,6 +34,15 @@ namespace FWK::Graphics
 
 		struct FrameData final
 		{
+			 FrameData() = default;
+	        ~FrameData() = default;
+	        
+	        FrameData(const FrameData&)          = delete;
+	        FrameData(      FrameData&& a_other) = default;
+
+			FrameData& operator=(const FrameData&)           = delete;
+			FrameData& operator=(      FrameData&&) noexcept = delete;
+
 			DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
 
 			SkeletalAnimationBoneMatrixBufferUploader m_boneMatrixBufferUploader = {};
@@ -66,9 +75,9 @@ namespace FWK::Graphics
 
 		bool ApplyAnimation(const Animation& a_animation);
 
-		const FrameData* FetchPTRCurrentFrameData() const;
+		const FrameData* FindPTRCurrentFrameData() const;
 
-		FrameData* FetchMutablePTRCurrentFrameData();
+		FrameData* FindMutablePTRCurrentFrameData();
 
 		float FetchVALBlendWeight() const;
 

@@ -493,10 +493,10 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(con
 	{
 		// k_invalidPaletteIndexとの個別比較は不要。
 		// Invalid値もこの範囲比較で検出される。
-		if (l_modelVertex.m_bonePaletteIndex0 >= l_bonePaletteCount) { return false; }
-		if (l_modelVertex.m_bonePaletteIndex1 >= l_bonePaletteCount) { return false; }
-		if (l_modelVertex.m_bonePaletteIndex2 >= l_bonePaletteCount) { return false; }
-		if (l_modelVertex.m_bonePaletteIndex3 >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndexZero  >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndexOne   >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndexTwo   >= l_bonePaletteCount) { return false; }
+		if (l_modelVertex.m_bonePaletteIndexThree >= l_bonePaletteCount) { return false; }
 	}
 
 	return true;

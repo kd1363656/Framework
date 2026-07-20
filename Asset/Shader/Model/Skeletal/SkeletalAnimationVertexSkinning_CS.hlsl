@@ -84,7 +84,7 @@ float3 NormalizeSkinningDirection(const float3 a_direction, const float3 a_fallb
 // 一つのThreadが一つの頂点をスキニングする
 // X方向には64個のThreadを生成し、
 // Y方向とZ方向には一つだけThreadを生成する
-[numthread(k_vertexSkinningThreadCountX, k_singleThreadCountY, k_singleThreadCountZ)]
+[numthreads(k_vertexSkinningThreadCountX, k_singleThreadCountY, k_singleThreadCountZ)]
 void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
 {
     // X方向のThreadIDを、そのまま頂点Indexとして使用する
@@ -122,7 +122,7 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     // BoneWeightとして許可する最小値へ補正する
     const float4 l_boneWeightList = max(l_sourceVertex.boneWeight, k_minimumBoneWeight);
     
-    float3 l_accumulatedPosition = k_initialAccumulatedPosition;
+    float4 l_accumulatedPosition = k_initialAccumulatedPosition;
     float3 l_accumulatedNormal   = k_initialAccumulatedDirection;
     float3 l_accumulatedTangent = k_initialAccumulatedDirection;
     
@@ -187,7 +187,7 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
         l_accumulatedNormal += l_skinnedNormal.xyz * l_boneWeight;
         
         // Boneで変換した接線にWeightを掛けて加算する
-        l_accumulatedTangent += l_skinnedNormal.xyz * l_boneWeight;
+        l_accumulatedTangent += l_skinnedTangent.xyz * l_boneWeight;
         
         // 正常に使用できたBoneWeightを合計する
         l_validBoneWeightTotal += l_boneWeight;

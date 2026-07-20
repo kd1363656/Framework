@@ -8,7 +8,7 @@ namespace FWK::Graphics
 	public:
 
 		 DynamicConstantBufferFixedWritePositionUploaderBase() : 
-			 DynamicConstantBufferUploaderBase<ConstantBufferType>(k_keepWritePosition)
+			 DynamicConstantBufferUploaderBase<ConstantBufferType>(DynamicBufferUploaderBase::k_keepWritePosition)
 		 {}
 		~DynamicConstantBufferFixedWritePositionUploaderBase() override = default;
 	};

@@ -5,6 +5,10 @@ FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::SkeletalAnimationBoneM
 {}
 FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::~SkeletalAnimationBoneMatrixBufferUploader() = default;
 
+FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::SkeletalAnimationBoneMatrixBufferUploader(SkeletalAnimationBoneMatrixBufferUploader&& a_other) noexcept : 
+	DynamicBufferUploaderBase(std::move(a_other))
+{}
+
 bool FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::Create(const Device& a_device)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!CreateUploadBuffer(a_device, sizeof(TypeAlias::Math::Matrix)), "BoneMatrix用UploadBufferの作成に失敗しました。", false);

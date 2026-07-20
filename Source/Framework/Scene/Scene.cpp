@@ -24,6 +24,8 @@ void FWK::Scene::INIT()
 
 	const auto& l_skeletalAnimationPerObjectComputeRequest = l_renderGraph.FindVALComputeRequestPerObject<Graphics::SkeletalAnimationPerObjectComputeRequest>().lock();
 
+	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationPerObjectComputeRequest, "SkeletalAnimationPerObjectComputeRequestを取得できないため、CharacterAnimationPlayerのCompute申請に失敗しました。");
+
 	l_skeletalAnimationPerObjectComputeRequest->AddComputeRequest(m_characterAnimationPlayer);
 
 	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();

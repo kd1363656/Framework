@@ -271,7 +271,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
     return true;
 }
 
-const FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FetchPTRCurrentFrameData() const
+const FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FindPTRCurrentFrameData() const
 {
     const auto& l_graphicsManager           = GraphicsManager::GetInstance              ();
     const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
@@ -282,7 +282,7 @@ const FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::Skeletal
     return &m_frameDataList[l_currentFrameResourceIndex];
 }
 
-FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FetchMutablePTRCurrentFrameData()
+FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FindMutablePTRCurrentFrameData()
 {
     const auto& l_graphicsManager           = GraphicsManager::GetInstance              ();
     const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
@@ -317,7 +317,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::EvaluateCurrentPose()
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、現在Poseを計算できません。", false);
 
-    auto* l_frameData = FetchMutablePTRCurrentFrameData();
+    auto* l_frameData = FindMutablePTRCurrentFrameData();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_frameData, "現在FrameDataを取得できないため、現在Poseを計算できません。", false);
 

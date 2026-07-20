@@ -1,4 +1,4 @@
-﻿{
+{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -1113,10 +1113,27 @@
                 },
                 "PipelineStateClassName": "StandardPipelineState",
                 "PipelineStateType": "PipelineStateType::PhysicsDebug"
+            },
+            {
+                "PipelineState": {
+                    "ComputeShader": {
+                        "EntryPointName": "main",
+                        "FilePath": "Asset/Shader/Model/Skeletal/SkeletalAnimationVertexSkinning_CS.cso",
+                        "ShaderModelVersionName": "cs_6_6"
+                    },
+                    "PipelineStateFlags": 0,
+                    "UseRootSignatureType": "RootSignatureType::SkeletalAnimationVertexSkinning"
+                },
+                "PipelineStateClassName": "ComputePipelineState",
+                "PipelineStateType": "PipelineStateType::SkeletalAnimationVertexSkinning"
             }
         ],
         "RenderGraph": {
-            "ComputeRequestPerObjectList": [],
+            "ComputeRequestPerObjectList": [
+                {
+                    "ComputeRequestPerObjectTypeName": "SkeletalAnimationPerObjectComputeRequest"
+                }
+            ],
             "DrawRequestPassList": [
                 {
                     "DrawRequestPassTypeName": "CameraPassDrawRequest"
@@ -1335,6 +1352,28 @@
                     "StaticSamplerDescList": []
                 },
                 "RootSignatureType": "RootSignatureType::PhysicsDebug"
+            },
+            {
+                "RootSignature": {
+                    "RootParameterIndexMap": [
+                        {
+                            "Index": 0,
+                            "RootParameterType": "RootParameterType::CBSkeletalAnimationVertexSkinning"
+                        }
+                    ],
+                    "RootParameterList": [
+                        {
+                            "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 0,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_ALL"
+                        }
+                    ],
+                    "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",
+                    "RootSignatureVersion": "D3D_ROOT_SIGNATURE_VERSION_1",
+                    "StaticSamplerDescList": []
+                },
+                "RootSignatureType": "RootSignatureType::SkeletalAnimationVertexSkinning"
             }
         ],
         "SwapChain": {
