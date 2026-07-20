@@ -31,7 +31,7 @@ namespace FWK::Graphics
 			// 割り切れなければ使用できない。
 			static_assert(sizeof(RootConstantType) % k_root32BitValueByteSize == static_cast<std::size_t>(Constant::k_noRemainder));
 
-			constexpr auto l_rootConstantCount = static_cast<UINT>(sizeof(RootConstantType) / k_root32BitValueByteSize);
+			constexpr auto l_rootConstantCount = static_cast<UINT>(sizeof(RootConstantType) / sizeof(std::uint32_t));
 
 			SetupRoot32BitConstants(a_rootSignature,
 									&a_rootConstantData,
@@ -53,9 +53,6 @@ namespace FWK::Graphics
 			                         const Enum::RootParameterType a_rootParameterType, 
 			                         const UINT                    a_rootConstantCount,  
 			                         const UINT                    a_destinationOffset) const;
-
-		
-		std::size_t k_root32BitValueByteSize = sizeof(std::uint32_t);
 
 		static constexpr std::size_t k_rootConstantStartOffset = 0U;
 

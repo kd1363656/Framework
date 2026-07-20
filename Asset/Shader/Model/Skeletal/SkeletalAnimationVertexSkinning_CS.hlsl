@@ -17,8 +17,8 @@ struct SkeletalAnimationModelVertex
     
     float4 m_boneWeight;
     
-    uint bonePaletteIndex0;
-    uint bonePaletteIndex1;
-    uint bonePaletteIndex2;
-    uint bonePaletteIndex3;
+    uint bonePaletteIndexZero;
+    uint bonePaletteIndexOne;
+    uint bonePaletteIndexTwo;
+    uint bonePaletteIndexThree;
 };
