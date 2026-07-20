@@ -313,6 +313,11 @@
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/FinalPresentRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
 
+// コンピュートシェーダー計算リクエスト
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningPerObjectStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationPerObjectComputeRequest.h"
+
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedDrawRequestPerObjectBaseConcept.h"
@@ -323,18 +328,14 @@
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Definition/Struct/Graphics/StaticModelStandardPerObjectDrawRequestDataStruct.h"
-#include "Definition/Constant/Graphics/StaticModelPerObjectConstantBufferUploaderConstant.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBStaticModelPerObjectStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Buffer/StaticModelPerObjectDynamicConstantBufferUploader.h"
+#include "Definition/Constant/Graphics/ModelPerObjectConstantBufferUploaderConstant.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBModelPerObjectStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Buffer/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
-
-// コンピュートシェーダー計算リクエスト
-#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationPerObjectComputeRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/SkeletalAnimationModelStandardPerObjectDrawRequestBase.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"

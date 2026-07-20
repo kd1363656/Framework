@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct CBSkeletalAnimationVertexSkinning final
+	struct CBSkeletalAnimationVertexSkinningPerObject final
 	{
 		TypeAlias::DescriptorIndex m_sourceVertexBufferSRVDescriptorIndex  = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::DescriptorIndex m_bonePaletteBufferSRVDescriptorIndex   = Graphics::DescriptorHeap::k_invalidDescriptorIndex;

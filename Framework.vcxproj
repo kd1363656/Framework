@@ -360,7 +360,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelFBXMotionExtractorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelBinaryConverterConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\StaticModelPerObjectConstantBufferUploaderConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UFBXConvertUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
@@ -391,10 +391,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBStaticModelPerObjectStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h" />
@@ -479,12 +479,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\ComputeRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Buffer\StaticModelPerObjectDynamicConstantBufferUploader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\ModelPerObjectDynamicConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationModelStandardPerObjectDrawRequestBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationPerObjectComputeRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\SpriteScreenPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\CachedPassConstantBufferDrawRequestBase.h" />
@@ -685,8 +683,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationModelStandardPerObjectDrawRequestBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\LightPassDrawRequest.cpp" />
@@ -821,48 +819,18 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Model\Model.hlsli" />
-    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
-    <None Include="Asset\Shader\Model\Static\StaticModel.hlsli" />
+    <None Include="Asset\Shader\Model\Standard\Skeletal\SkeletalAnimationModel.hlsli" />
     <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli" />
     <None Include="Asset\Shader\RenderTarget\Final\FinalColorShader.hlsli" />
     <None Include="Asset\Shader\RenderTarget\FullScreenTriangleShader.hlsli" />
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Mesh</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Amplification</ShaderType>
-    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Standard\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl" />
+    <DXCTask Include="Asset\Shader\Model\Standard\Static\Lit\StaticModelStandardLit_MS.hlsl" />
+    <DXCTask Include="Asset\Shader\Model\Standard\Static\Lit\StaticModelStandardLit_PS.hlsl" />
+    <DXCTask Include="Asset\Shader\Model\Standard\Static\UnLit\StaticModelStandardUnLit_MS.hlsl" />
+    <DXCTask Include="Asset\Shader\Model\Standard\Static\UnLit\StaticModelStandardUnLit_PS.hlsl" />
     <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct CBStaticModelPerObject final
+	struct CBModelPerObject final
 	{
 		TypeAlias::Math::Matrix m_worldMatrix = TypeAlias::Math::Matrix::Identity;
 

@@ -164,33 +164,33 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
 		a_computeCommandList.TransitionResourceBarrier(l_skinnedVertexBufferResource, l_currentResourceState, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 		l_skinnedVertexBuffer.SetCurrentResourceState (D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 
-		Struct::CBSkeletalAnimationVertexSkinning l_cbSkeletalAnimationVertexSkinning = {};
+		Struct::CBSkeletalAnimationVertexSkinningPerObject l_cbSkeletalAnimationVertexSkinningPerObject = {};
 
 		// HLSLがResourceDescriptorHeapから参照する
 		// SRVとUAVのDescriptorIndexを設定する
-		l_cbSkeletalAnimationVertexSkinning.m_sourceVertexBufferSRVDescriptorIndex  = l_sourceVertexBufferSRVDescriptorIndex;
-		l_cbSkeletalAnimationVertexSkinning.m_bonePaletteBufferSRVDescriptorIndex   = l_bonePaletteBufferSRVDescriptorIndex;
-		l_cbSkeletalAnimationVertexSkinning.m_boneMatrixBufferSRVDescriptorIndex    = l_boneMatrixBufferSRVDescriptorIndex;
-		l_cbSkeletalAnimationVertexSkinning.m_skinnedVertexBufferUAVDescriptorIndex = l_skinnedVertexBufferUAVDescriptorIndex;
+		l_cbSkeletalAnimationVertexSkinningPerObject.m_sourceVertexBufferSRVDescriptorIndex  = l_sourceVertexBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationVertexSkinningPerObject.m_bonePaletteBufferSRVDescriptorIndex   = l_bonePaletteBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationVertexSkinningPerObject.m_boneMatrixBufferSRVDescriptorIndex    = l_boneMatrixBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationVertexSkinningPerObject.m_skinnedVertexBufferUAVDescriptorIndex = l_skinnedVertexBufferUAVDescriptorIndex;
 
 		// size_tからuint32_tへの返還は、
 		// 上で最大値を検査済みなので安全
-		l_cbSkeletalAnimationVertexSkinning.m_vertexCount = static_cast<std::uint32_t>(l_modelVertexList.size());
+		l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount = static_cast<std::uint32_t>(l_modelVertexList.size());
 
-		const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationVertexSkinning);
+		const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationVertexSkinningPerObject);
 
 		FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationVertexSkinning用定数バッファの書き込みに失敗しました。", false);
 
-		a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationVertexSkinning);
+		a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationVertexSkinningPerObject);
 
 		// VertexCountをThread数で割り、
 		// 完全に割り切れなかった場合だけ一つThread Groupを追加する
 		// VertexCount + ThreadCount - Oneという計算を使わないため、
 		// uint32_t最大値付近でも加算Overflowが起きない
-		const auto l_completeThreadGroupCount    = l_cbSkeletalAnimationVertexSkinning.m_vertexCount / k_vertexSkinningThreadCountX;
-		const auto l_remaingVertexCount          = l_cbSkeletalAnimationVertexSkinning.m_vertexCount % k_vertexSkinningThreadCountX;
-		const auto l_additionalThreadGrouptCount = l_remaingVertexCount == Constant::k_noRemainder ? Constant::k_noRemainder : k_singleThreadGroupCount;
-		const auto l_threadGroupCountX           = l_completeThreadGroupCount + l_additionalThreadGrouptCount;
+		const auto l_completeThreadGroupCount    = l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount / k_vertexSkinningThreadCountX;
+		const auto l_remainingVertexCount        = l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount % k_vertexSkinningThreadCountX;
+		const auto l_additionalThreadGroupCount  = l_remainingVertexCount == Constant::k_noRemainder ? Constant::k_noRemainder : k_singleThreadGroupCount;
+		const auto l_threadGroupCountX           = l_completeThreadGroupCount + l_additionalThreadGroupCount;
 
 		// 一つのThreadが一つの頂点を処理する
 		// Y方向とZ方向には一つのThread Groupだけを使用する

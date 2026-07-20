@@ -8,30 +8,6 @@ struct StaticModelVertex
     float2 uv;
 };
 
-cbuffer CBStaticModelPerObject : register(b1)
-{
-    row_major matrix g_worldMatrix;
-    
-    row_major matrix g_worldInverseTransposeMatrix;
-    
-    float4 g_baseColorFactor;
-    
-    float g_roughnessFactor;
-    float g_metallicFactor;
-    uint  g_baseColorTextureSRVDescriptorIndex;
-    uint  g_normalTextureSRVDescriptorIndex;
-    
-    uint g_metallicTextureSRVDescriptorIndex;
-    uint g_roughnessTextureSRVDescriptorIndex;
-    uint g_vertexBufferSRVDescriptorIndex;
-    uint g_meshletBufferSRVDescriptorIndex;
-    
-    uint  g_uniqueVertexIndexBufferSRVDescriptorIndex;
-    uint  g_primitiveIndexBufferSRVDescriptorIndex;
-    uint  g_meshletBoundsBufferSRVDescriptorIndex;
-    float g_worldMaxScale;
-};
-
 cbuffer CBLightPass : register(b2)
 {
     float3 g_directionalLightDirection;

@@ -6,7 +6,7 @@ namespace FWK::Enum
 	{
 		Invalid,
 		SpriteScreen,
-		StaticModelStandard,
+		ModelStandard,
 		SkeletalAnimationVertexSkinning,
 		FinalColor,
 		PhysicsDebug,
@@ -19,7 +19,7 @@ namespace FWK::Enum
 		RootSignatureType,
 		FWK_JSON_ENUM_VALUE(RootSignatureType::Invalid),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteScreen),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::StaticModelStandard),
+		FWK_JSON_ENUM_VALUE(RootSignatureType::ModelStandard),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::SkeletalAnimationVertexSkinning),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalColor),
 		FWK_JSON_ENUM_VALUE(RootSignatureType::PhysicsDebug),
