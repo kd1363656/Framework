@@ -364,6 +364,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UFBXConvertUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
@@ -594,7 +596,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyBase.h" />
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\Converter\PhysicsStaticBoxBodyJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.h" />
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\Converter\PhysicsStaticCapsuleBodyJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h" />
@@ -777,7 +781,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyBase.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\PhysicsStaticBoxBodyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\Converter\PhysicsStaticCapsuleBodyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp" />

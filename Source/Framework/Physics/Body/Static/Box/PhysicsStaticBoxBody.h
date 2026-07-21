@@ -16,7 +16,15 @@ namespace FWK::Physics
 
 		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
 
+		void Deserialize(const nlohmann::json& a_rootJson) override;
+
+		nlohmann::json Serialize() const override;
+
 		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
+
+		void SetHalfExtent(const TypeAlias::Math::Vector3& a_set) { m_halfExtent = a_set; }
+
+		const auto& GetRERHalfExtent() const { return m_halfExtent; }
 
 	private:
 
@@ -24,9 +32,9 @@ namespace FWK::Physics
 
 		bool ApplyShapeChange();
 
-		static constexpr float k_defaultHalfExtentLength = 0.5F;
+		Converter::PhysicsStaticBoxBodyJsonConverter m_jsonConverter = {};
 
-		TypeAlias::Math::Vector3 m_halfExtent = { k_defaultHalfExtentLength, k_defaultHalfExtentLength, k_defaultHalfExtentLength };
+		TypeAlias::Math::Vector3 m_halfExtent = { Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength };
 
 		FWK_DEFINE_TYPE_INFO(PhysicsStaticBoxBody, PhysicsStaticBodyBase)
 	};

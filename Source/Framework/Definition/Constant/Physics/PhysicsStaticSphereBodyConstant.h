@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-	static constexpr float k_defaultPhysicsStaticSphereBodyRadius = 0.5F;
+	inline constexpr float k_defaultPhysicsStaticBoxBodyHalfExtentLength = 0.5F;
 }

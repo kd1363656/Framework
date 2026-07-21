@@ -952,6 +952,12 @@
     <Filter Include="Source\Framework\Definition\Constant\Physics">
       <UniqueIdentifier>{ebb3554d-826d-4ebd-9883-65cf4fd01cdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Box\Converter">
+      <UniqueIdentifier>{070725d0-6b15-4eff-bd54-ab2b387b2149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Capsule\Converter">
+      <UniqueIdentifier>{d632fab4-3cf6-4c81-a658-179eda2ccc2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1869,6 +1875,18 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\Converter\PhysicsStaticBoxBodyJsonConverter.h">
+      <Filter>Source\Framework\Physics\Body\Static\Box\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\Converter\PhysicsStaticCapsuleBodyJsonConverter.h">
+      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2347,6 +2365,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.cpp">
       <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\PhysicsStaticBoxBodyJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Box\Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\Converter\PhysicsStaticCapsuleBodyJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
