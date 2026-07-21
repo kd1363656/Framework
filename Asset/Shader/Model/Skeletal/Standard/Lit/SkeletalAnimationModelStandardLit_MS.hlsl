@@ -4,17 +4,17 @@
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
-void main(out vertices MSOutputLit a_vertexList   [k_modelMaxMeshletVertexCount],
-          out indices  uint3       a_primitiveList[k_modelMaxMeshletPrimitiveCount],
-              const    uint3       a_groupID          : SV_GroupID, 
-              const    uint        a_groupThreadIndex : SV_GroupIndex)
+void main(in  payload  ModelAmplificationPayload a_payload,
+          out vertices MSOutputLit               a_vertexList   [k_modelMaxMeshletVertexCount],
+          out indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
+              const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {
     StructuredBuffer<SkeletalAnimationSkinnedVertex> l_skinnedVertexBuffer     = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>                   l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
     StructuredBuffer<uint>                           l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
 
     // ASからPayload経由で渡されたMeshletIndexを使う
-    const uint         l_meshletIndex = a_groupID.x;
+    const uint         l_meshletIndex = a_payload.meshletIndex;
     const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
     
     // 出力頂点数、三角形数を設定

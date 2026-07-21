@@ -2426,5 +2426,11 @@
     <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLit_MS.hlsl">
       <Filter>Asset\Shader\Model\Skeletal\Standard\UnLit</Filter>
     </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel_AS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </DXCTask>
   </ItemGroup>
 </Project>
