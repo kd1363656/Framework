@@ -4,11 +4,12 @@
 
 void FWK::Scene::INIT()
 {
-	m_camera                         = std::make_shared<Graphics::Camera>								                       ();
-	m_characterModel                 = std::make_shared<Graphics::SkeletalAnimationModel>                                      ();
-	m_characterAnimationPlayer       = std::make_shared<Graphics::SkeletalAnimationPlayer>                                     ();
-	m_groundModel                    = std::make_shared<Graphics::StaticModel>							                       ();
-	m_groundModelStandardDrawRequest = std::make_shared<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData>();
+	m_camera                            = std::make_shared<Graphics::Camera>								                                 ();
+	m_characterModel                    = std::make_shared<Graphics::SkeletalAnimationModel>                                                 ();
+	m_characterAnimationPlayer          = std::make_shared<Graphics::SkeletalAnimationPlayer>                                                ();
+	m_characterModelStandardDrawRequest = std::make_shared<Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::DrawRequestData>();
+	m_groundModel                       = std::make_shared<Graphics::StaticModel>							                                 ();
+	m_groundModelStandardDrawRequest    = std::make_shared<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData>           ();
 	
 	      auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
@@ -31,6 +32,14 @@ void FWK::Scene::INIT()
 	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
 	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
 	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
+
+	const auto& l_skeletalAnimationModelStandardLitPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SkeletalAnimationModelStandardLitPerObjectDrawRequest>().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardLitPerObjectDrawRequest, "SkeletalAnimationModelStandardLitPerObjectDrawRequestを取得できないため、Character Modelを描画できません。");
+
+	m_characterModelStandardDrawRequest->m_skeletalAnimationPlayer = m_characterAnimationPlayer;
+
+	l_skeletalAnimationModelStandardLitPerObjectDrawRequest->AddDrawRequest(m_characterModelStandardDrawRequest);
 
 	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
 	
@@ -83,8 +92,15 @@ void FWK::Scene::INIT()
 
 	if (!m_characterVirtual) { return; }
 	
-	const auto l_characterWorldPosition   = m_characterVirtual->FetchVALWorldPosition();
+	const auto  l_characterWorldPosition  = m_characterVirtual->FetchVALWorldPosition();
 	const auto& l_groundStaticModelRecord = m_groundModel->GetREFStaticModelRecord().lock();
+
+	FWK_ASSERT_RETURN_IF(!m_characterModelStandardDrawRequest, "Character Model用DrawRequestDataが無効なため、初期World Matrixを設定できません。");
+
+	const auto l_characterWorldMatrix = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
+
+	m_characterModelStandardDrawRequest->m_worldMatrix                 = l_characterWorldMatrix;
+	m_characterModelStandardDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
 
 	FWK_ASSERT_RETURN_IF(!l_groundStaticModelRecord, "Ground用StaticModelRecordが無効なため、StaticMeshBodyの作成に失敗しました。");
 
@@ -229,7 +245,11 @@ void FWK::Scene::Update()
 	// 衝突判定後のCharacterVirtual座標をAntikeへ反映する。
 	if (!m_characterVirtual) { return; }
 	
-	const auto l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
+	const auto  l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
+	const auto& l_characterWorldMatrix   = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
+
+	m_characterModelStandardDrawRequest->m_worldMatrix                 = l_characterWorldMatrix;
+	m_characterModelStandardDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
 
 	m_characterVirtual->DrawDebug(JPH::ColorArg{ 255U, 255U, 255U, 255U });
 }

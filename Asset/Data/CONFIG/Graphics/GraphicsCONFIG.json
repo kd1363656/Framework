@@ -1485,6 +1485,12 @@
                     "DrawRequestPerObjectTypeName": "StaticModelStandardLitPerObjectDrawRequest"
                 },
                 {
+                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelStandardUnLitPerObjectDrawRequest"
+                },
+                {
+                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelStandardLitPerObjectDrawRequest"
+                },
+                {
                     "DrawRequestPerObjectTypeName": "SpriteScreenPerObjectDrawRequest"
                 }
             ],
@@ -1497,6 +1503,12 @@
                 },
                 {
                     "RenderGraphPassTypeName": "StaticModelStandardLitPass"
+                },
+                {
+                    "RenderGraphPassTypeName": "SkeletalAnimationModelStandardUnLitPass"
+                },
+                {
+                    "RenderGraphPassTypeName": "SkeletalAnimationModelStandardLitPass"
                 },
                 {
                     "RenderGraphPassTypeName": "ScreenSpritePass"

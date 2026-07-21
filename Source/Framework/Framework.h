@@ -336,6 +336,8 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/SkeletalAnimationModelStandardPerObjectDrawRequestBase.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
@@ -348,6 +350,8 @@
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
+#include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPass.h"
+#include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPass.h"
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
 #include "Graphics/Render/Graph/Pass/PhysicsDebug/Buffer/PhysicsDebugDynamicVertexBufferUploader.h"
 #include "Graphics/Render/Graph/Pass/PhysicsDebug/PhysicsDebugPass.h"
