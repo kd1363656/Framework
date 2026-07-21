@@ -946,6 +946,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit">
       <UniqueIdentifier>{a2a78ab4-ef3b-406d-80a9-0e5f476ced85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Sphere\Converter">
+      <UniqueIdentifier>{1cf2d250-11c8-4dad-b40d-3cdb7ad4fdd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Physics">
+      <UniqueIdentifier>{ebb3554d-826d-4ebd-9883-65cf4fd01cdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1443,9 +1449,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelStandardPerObjectDrawRequestDataStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
@@ -1859,6 +1862,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.h">
+      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2335,6 +2344,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

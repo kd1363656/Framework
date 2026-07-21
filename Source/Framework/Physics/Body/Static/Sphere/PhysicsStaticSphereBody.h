@@ -16,17 +16,26 @@ namespace FWK::Physics
 
 		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
 
+		void Deserialize(const nlohmann::json& a_rootJson) override;
+
+		nlohmann::json Serialize() const override;
+
 		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 		
+		void SetRadius(const float a_set) { m_radius = a_set; }
+
+		float GetVALRadius() const { return m_radius; }
+
 	private:
 
 		JPH::RefConst<JPH::Shape> CreateShape() const;
 
 		bool ApplyShapeChange();
 
-		static constexpr float k_defaultRadius = 0.5F;
 
-		float m_radius = k_defaultRadius;
+		Converter::PhysicsStaticSphereBodyJsonConverter m_jsonConverter = {};
+
+		float m_radius = Constant::k_defaultPhysicsStaticSphereBodyRadius;
 
 		FWK_DEFINE_TYPE_INFO(PhysicsStaticSphereBody, PhysicsStaticBodyBase)
 	};

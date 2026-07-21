@@ -364,6 +364,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UFBXConvertUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />
@@ -403,7 +404,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelStandardPerObjectDrawRequestDataStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h" />
@@ -598,6 +598,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h" />
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.h" />
@@ -780,6 +781,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.cpp" />
