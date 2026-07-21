@@ -877,38 +877,56 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer">
       <UniqueIdentifier>{579be1ae-b767-4e61-9b1c-dae6196145d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset\Shader\Model\Standard">
-      <UniqueIdentifier>{2af2539b-962b-476d-b943-f3890e3824e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\Shader\Model\Standard\Skeletal">
-      <UniqueIdentifier>{103fc5dc-4e48-40bf-8c2c-a7879bea0dfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\Shader\Model\Standard\Static">
-      <UniqueIdentifier>{f2128ef8-d2a6-435d-9316-60a1e6389aa5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\Shader\Model\Standard\Static\Lit">
-      <UniqueIdentifier>{711af9fe-3ac6-4658-ae4c-1d97d8cb9d54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Asset\Shader\Model\Standard\Static\UnLit">
-      <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard">
-      <UniqueIdentifier>{ef29d548-fbe5-4455-b21e-330cb8cd21e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal">
       <UniqueIdentifier>{cab651c8-34f0-4d5e-8947-6902155b8d27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\Buffer">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer">
       <UniqueIdentifier>{1c4c6dc4-3d11-4441-b53b-d6c0ae61a71a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Static">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static">
       <UniqueIdentifier>{a6d02665-0c34-4959-b349-8bec9f18f60c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Static\Lit">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard">
+      <UniqueIdentifier>{ef29d548-fbe5-4455-b21e-330cb8cd21e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard">
+      <UniqueIdentifier>{2cfa1c57-57c9-4d1e-bc72-5bec8fc430bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit">
       <UniqueIdentifier>{cabc13ab-3665-44aa-880b-1c61419dc20d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Static\UnLit">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit">
       <UniqueIdentifier>{96a6bdae-7a91-4759-8dd7-aef35c5f3c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal">
+      <UniqueIdentifier>{103fc5dc-4e48-40bf-8c2c-a7879bea0dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static">
+      <UniqueIdentifier>{f2128ef8-d2a6-435d-9316-60a1e6389aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard">
+      <UniqueIdentifier>{2af2539b-962b-476d-b943-f3890e3824e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard\Lit">
+      <UniqueIdentifier>{711af9fe-3ac6-4658-ae4c-1d97d8cb9d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard\UnLit">
+      <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Standard">
+      <UniqueIdentifier>{6363d66b-fd2a-47d6-8343-ab9cc15f2bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Standard">
+      <UniqueIdentifier>{d499afe5-365c-4542-bc62-cacf596156cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Standard\Lit">
+      <UniqueIdentifier>{484a999e-9e26-4ec6-b2fa-0afc89305e3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Standard\Lit">
+      <UniqueIdentifier>{621f568e-1da1-4e2f-949e-6366c8ef4982}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Standard\UnLit">
+      <UniqueIdentifier>{a47905df-c37d-41c6-b845-940e2efb7381}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1788,14 +1806,23 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\ModelPerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationPerObjectComputeRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationModelStandardPerObjectDrawRequestBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\SkeletalAnimationModelStandardPerObjectDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\Buffer</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2258,11 +2285,14 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\SkeletalAnimationModelStandardPerObjectDrawRequestBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal\SkeletalAnimationModelStandardPerObjectDrawRequestBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Standard\Skeletal</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2298,8 +2328,14 @@
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json">
       <Filter>Asset\Data\CONFIG\Graphics</Filter>
     </None>
-    <None Include="Asset\Shader\Model\Standard\Skeletal\SkeletalAnimationModel.hlsli">
-      <Filter>Asset\Shader\Model\Standard\Skeletal</Filter>
+    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Standard\ModelStandard.hlsli">
+      <Filter>Asset\Shader\Model\Standard</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Static\StaticModel.hlsli">
+      <Filter>Asset\Shader\Model\Static\Standard</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2324,20 +2360,26 @@
     <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
       <Filter>Asset\Shader\PhysicsDebug</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
-      <Filter>Asset\Shader\Model\Standard\Skeletal</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\Static\Lit\StaticModelStandardLit_MS.hlsl">
-      <Filter>Asset\Shader\Model\Standard\Static\Lit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\Lit\StaticModelStandardLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\Lit</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\Static\Lit\StaticModelStandardLit_PS.hlsl">
-      <Filter>Asset\Shader\Model\Standard\Static\Lit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\UnLit\StaticModelStandardUnLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\Static\UnLit\StaticModelStandardUnLit_MS.hlsl">
-      <Filter>Asset\Shader\Model\Standard\Static\UnLit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\Static\UnLit\StaticModelStandardUnLit_PS.hlsl">
-      <Filter>Asset\Shader\Model\Standard\Static\UnLit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal\Standard\Lit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit_PS.hlsl">
+      <Filter>Asset\Shader\Model\Standard\Lit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
+      <Filter>Asset\Shader\Model\Standard\UnLit</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

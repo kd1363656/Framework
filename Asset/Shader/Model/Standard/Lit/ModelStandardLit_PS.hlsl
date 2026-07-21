@@ -1,4 +1,16 @@
-﻿#include "../../StaticModel.hlsli"
+﻿#include "../ModelStandard.hlsli"
+
+cbuffer CBLightPass : register(b2)
+{
+    float3 g_directionalLightDirection;
+    float  g_directionalLightIntensity;
+    
+    float3 g_directionalLightColor;
+    float  g_lightPassPadding;
+    
+    float3 g_ambientLightColor;
+    float  g_ambientLightIntensity;
+};
 
 // 0除算を避けるための小さな値
 // NdotVやNdotLが0に近いと、Cook-Torranceの分母が0に近くなるため、
@@ -299,17 +311,12 @@ float3 FetchWorldNormal(const MSOutput a_input)
 
 float4 main(const MSOutput a_input) : SV_Target0
 {
-    Texture2D<float4> l_baseColorTexture = ResourceDescriptorHeap[g_baseColorTextureSRVDescriptorIndex];
     Texture2D<float4> l_metallicTexture  = ResourceDescriptorHeap[g_metallicTextureSRVDescriptorIndex];
     Texture2D<float4> l_roughnessTexture = ResourceDescriptorHeap[g_roughnessTextureSRVDescriptorIndex];
     
-    // BaseColorTextureを読む
-    // rgbは色、aは透明度として使う
-    const float4 l_baseColorSample = l_baseColorTexture.Sample(g_textureSampler, a_input.uv);
-    
     // BaseColor、非金属ではDiffuse色として使う
     // 金属ではSpecular反射色として使う
-    const float3 l_baseColor = l_baseColorSample.rgb * g_baseColorFactor.rgb;
+    const float4 l_baseColor = FetchModelBaseColor(a_input.uv);
     
     // Metallic
     // 0.0Fに近いほど非金属、1.0Fに近いほど金属。
@@ -343,7 +350,7 @@ float4 main(const MSOutput a_input) : SV_Target0
     // F0。
     // 非金属では0.04付近。
     // 金属ではBaseColorが反射色になる
-    const float3 l_f0 = lerp(float3(k_defaultDielectricF0, k_defaultDielectricF0, k_defaultDielectricF0), l_baseColor, l_metallic);
+    const float3 l_f0 = lerp(float3(k_defaultDielectricF0, k_defaultDielectricF0, k_defaultDielectricF0), l_baseColor.rgb, l_metallic);
     
     // Cook-TorranceSpecularのD項
     // HalfVector方向を向いたMicrofacetがどれくらいあるかを表す。
@@ -381,7 +388,7 @@ float4 main(const MSOutput a_input) : SV_Target0
     // DisneyDiffuse
     // baseColor / PIが基本のLambertDiffuse
     // そこにDisneyDiffuseの角度補正を掛ける
-    const float3 l_disneyDiffuse = l_baseColor * l_disneyDiffuseFactor / k_pi;
+    const float3 l_disneyDiffuse = l_baseColor.rgb * l_disneyDiffuseFactor / k_pi;
 
     // Specularに使う割合
     // Fresnelは、浅い角度ほどSpecularを強くする
@@ -405,10 +412,10 @@ float4 main(const MSOutput a_input) : SV_Target0
                                         l_normalDotLight;
     
     // 簡易環境光
-    const float3 l_ambientLighting = g_ambientLightColor * g_ambientLightIntensity * l_baseColor;
+    const float3 l_ambientLighting = g_ambientLightColor * g_ambientLightIntensity * l_baseColor.rgb;
     
     // 最終色
     const float3 l_finalColor = l_directionLighting + l_ambientLighting;
     
-    return float4(l_finalColor, l_baseColorSample.a * g_baseColorFactor.a);
+    return float4(l_finalColor, l_baseColor.a);
 }

@@ -1,4 +1,4 @@
-﻿#include "../../StaticModel.hlsli"
+﻿#include "../StaticModel.hlsli"
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
@@ -30,8 +30,8 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // 取得した頂点番号から頂点情報を取得
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
         
-        const float3 l_worldPosition          = TransformStaticModelLocalPositionToWorld(l_staticModelVertex.position);
-        const float4 l_viewProjectionPosition = mul                                     (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
+        const float3 l_worldPosition          = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float4 l_viewProjectionPosition = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
         a_vertexList[l_vertexIndex].position = l_viewProjectionPosition;
         a_vertexList[l_vertexIndex].uv       = l_staticModelVertex.uv;
     }
@@ -44,6 +44,6 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         
         // Packされたuint32_tから、元のuint8_tのPrimitiveIndexを3個取り出し、
         // MeshShaderの三角形Indexとしてuint3へ戻す   
-        a_primitiveList[l_triangleIndex] = FetchStaticModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
+        a_primitiveList[l_triangleIndex] = FetchModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
     }
 }

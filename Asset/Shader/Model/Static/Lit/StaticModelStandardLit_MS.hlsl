@@ -1,11 +1,11 @@
-﻿#include "../../StaticModel.hlsli"
+﻿#include "../StaticModel.hlsli"
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
 void main(in  payload  ModelAmplificationPayload a_payload,
           out vertices MSOutput                  a_vertexList   [k_modelMaxMeshletVertexCount],
           out indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
-                       uint3                     a_groupID : SV_GroupID)
+              const    uint3                     a_groupID : SV_GroupID)
 {
     StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
@@ -31,10 +31,10 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
         
         // ワールド座標、法線、接線、ビュー座標を計算する
-        const float3 l_worldPosition           = TransformStaticModelLocalPositionToWorld(l_staticModelVertex.position);
-        const float3 l_worldNormal             = TransformStaticModelLocalNormalToWorld  (l_staticModelVertex.normal);
-        const float4 l_worldTangent            = TransformStaticModelLocalTangentToWorld (l_staticModelVertex.tangent);
-        const float4 l_viewProjectionPosition  = mul                                     (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
+        const float3 l_worldPosition           = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float3 l_worldNormal             = TransformModelLocalNormalToWorld  (l_staticModelVertex.normal);
+        const float4 l_worldTangent            = TransformModelLocalTangentToWorld (l_staticModelVertex.tangent);
+        const float4 l_viewProjectionPosition  = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
 
         a_vertexList[l_vertexIndex].position      = l_viewProjectionPosition;
         a_vertexList[l_vertexIndex].worldPosition = l_worldPosition;
@@ -51,6 +51,6 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         
         // Packされたuint32_tから、元のuint8_tのPrimitiveIndexを3個取り出し、
         // MeshShaderの三角形Indexとしてuint3へ戻す   
-        a_primitiveList[l_triangleIndex] = FetchStaticModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
+        a_primitiveList[l_triangleIndex] = FetchModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
     }
 }

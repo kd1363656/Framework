@@ -733,7 +733,7 @@
                     "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Model/Static/Standard/UnLit/StaticModelStandardUnLit_PS.cso",
+                        "FilePath": "Asset/Shader/Model/Standard/UnLit/ModelStandardUnLit_PS.cso",
                         "ShaderModelVersionName": "ps_6_6"
                     },
                     "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",
@@ -758,7 +758,7 @@
                         "Quality": 0
                     },
                     "SampleMask": 4294967295,
-                    "UseRootSignatureType": "RootSignatureType::StaticModelStandard"
+                    "UseRootSignatureType": "RootSignatureType::ModelStandard"
                 },
                 "PipelineStateClassName": "MeshShaderPipelineState",
                 "PipelineStateType": "PipelineStateType::StaticModelUnLit"
@@ -901,7 +901,7 @@
                     "PipelineStateFlags": 0,
                     "PixelShader": {
                         "EntryPointName": "main",
-                        "FilePath": "Asset/Shader/Model/Static/Standard/Lit/StaticModelStandardLit_PS.cso",
+                        "FilePath": "Asset/Shader/Model/Standard/Lit/ModelStandardLit_PS.cso",
                         "ShaderModelVersionName": "ps_6_6"
                     },
                     "PrimitiveTopologyType": "D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE",

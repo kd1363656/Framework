@@ -58,7 +58,7 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
 bool IsCameraInsideStaticModelMeshletBoundingSphere(const ModelMeshletBounds a_meshletBounds)
 {
     // Meshletの中心座標はLocal空間なのでWorld空間へ変換する
-    const float3 l_worldCenter = TransformStaticModelLocalPositionToWorld(a_meshletBounds.center);
+    const float3 l_worldCenter = TransformModelLocalPositionToWorld(a_meshletBounds.center);
     
     // Meshletの半径はLocal空間なので、World最大スケールを掛けてWorld空間の半径にする
     const float l_worldRadius = a_meshletBounds.radius * g_worldMaxScale;

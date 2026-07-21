@@ -43,7 +43,7 @@ static const uint k_modelSecondPackedPrimitiveIndexShiftBit = k_modelSecondPrimi
 static const uint k_modelThirdPackedPrimitiveIndexShiftBit  = k_modelThirdPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
 
 
-// StaticModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
+// ModelのMeshShaderからPixelShaderへ渡すSceneColor描画用出力
 struct MSOutput
 {
     float4 position      : SV_Position;
