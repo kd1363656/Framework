@@ -317,6 +317,8 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationPerObjectComputeRequest.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationMeshletBoundsUpdatePerObjectStruct.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Buffer/SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h"
 
 // 描画リクエスト(共通していないパス)
 #include "Graphics/Render/Graph/Request/Object/DrawRequestPerObjectBase.h"

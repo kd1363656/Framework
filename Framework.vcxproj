@@ -391,6 +391,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationMeshletBoundsUpdatePerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationVertexSkinningPerObjectStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSpritePerObjectStruct.h" />
@@ -482,6 +483,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\ComputeRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\ModelPerObjectDynamicConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPerObjectDrawRequest.h" />

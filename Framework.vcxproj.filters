@@ -1854,6 +1854,12 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBSkeletalAnimationMeshletBoundsUpdatePerObjectStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
