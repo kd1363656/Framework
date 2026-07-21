@@ -216,6 +216,72 @@ void FWK::Scene::Update()
 		l_moveDirection.x += 1.0F;
 	}
 
+	// キーを押した瞬間だけBlendを開始するため、
+	// 前Frameの入力状態を保持する。
+	static bool l_wasFirstMotionKeyDown  = false;
+	static bool l_wasSecondMotionKeyDown = false;
+	
+	const bool l_isFirstMotionKeyDown  = GetAsyncKeyState('1') != 0;
+	const bool l_isSecondMotionKeyDown = GetAsyncKeyState('2') != 0;
+	
+	// 「1」を押すとMotion ZeroへBlendする。
+	// 現在のAntikeではIDLE_COMBATに該当する。
+	if (l_isFirstMotionKeyDown   &&
+		!l_wasFirstMotionKeyDown && !m_characterAnimationPlayer->GetVALIsBlending())
+	{
+		const auto& l_currentAnimation = m_characterAnimationPlayer->GetREFAnimation();
+	
+		// すでにMotion Zeroを再生中なら、
+		// 同じMotionへの不要なBlendは開始しない。
+		if (l_currentAnimation.m_motionIndex != 0U)
+		{
+			Graphics::SkeletalAnimationPlayer::Animation l_animation = {};
+	
+			l_animation.m_motionIndex         = 0U;
+			l_animation.m_playbackSpeed       = Graphics::SkeletalAnimationPlayer::Animation::k_defaultPlaybackSpeed;
+			l_animation.m_blendDurationSecond = 0.5F;
+			l_animation.m_isLoop              = true;
+	
+			FWK_ASSERT_RETURN_IF(!m_characterAnimationPlayer->ApplyAnimation(l_animation), "Motion ZeroへのAnimation Blendを開始できませんでした。");
+		}
+	}
+	
+	// 「2」を押すとMotion OneへBlendする。
+	//
+	// 現在のAntikeではIDLE_TITLEに該当する。
+	if (l_isSecondMotionKeyDown   &&
+		!l_wasSecondMotionKeyDown && !m_characterAnimationPlayer->GetVALIsBlending())
+	{
+		const auto& l_currentAnimation = m_characterAnimationPlayer->GetREFAnimation();
+	
+		// すでにMotion Oneを再生中なら、
+		// 同じMotionへの不要なBlendは開始しない。
+		if (l_currentAnimation.m_motionIndex != 1U)
+		{
+			Graphics::SkeletalAnimationPlayer::Animation l_animation = {};
+	
+			l_animation.m_motionIndex = 1U;
+	
+			l_animation.m_playbackSpeed = Graphics::SkeletalAnimationPlayer::Animation::k_defaultPlaybackSpeed;
+	
+			l_animation.m_blendDurationSecond = 0.5F;
+	
+			l_animation.m_isLoop = true;
+	
+			FWK_ASSERT_RETURN_IF
+			(
+				!m_characterAnimationPlayer->ApplyAnimation(l_animation), "Motion OneへのAnimation Blendを開始できませんでした。"
+			);
+		}
+	}
+
+	l_wasFirstMotionKeyDown = l_isFirstMotionKeyDown;
+	l_wasSecondMotionKeyDown = l_isSecondMotionKeyDown;
+
+	// Blend元とBlend先の再生時間、Blend経過時間を進め、
+	// 現在Frame用のBone Matrixを計算する。
+	m_characterAnimationPlayer->AdvanceTime(l_deltaTime);
+
 	if (l_moveDirection.LengthSquared() > 0.0F)
 	{
 		// 斜め移動時に速度が速くならないよう、方向ベクトルの長さを1にする。
