@@ -928,6 +928,15 @@
     <Filter Include="Asset\Shader\Model\Standard\UnLit">
       <UniqueIdentifier>{a47905df-c37d-41c6-b845-940e2efb7381}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Standard\UnLit">
+      <UniqueIdentifier>{da8555e9-1bd4-42c6-b0f4-da92fb20270c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit">
+      <UniqueIdentifier>{80ea5135-1e44-4605-971e-4570ef6a9286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit">
+      <UniqueIdentifier>{fe8e3f0c-cc5c-4fd5-bf56-c6a51a471cbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2335,7 +2344,13 @@
       <Filter>Asset\Shader\Model\Standard</Filter>
     </None>
     <None Include="Asset\Shader\Model\Static\StaticModel.hlsli">
-      <Filter>Asset\Shader\Model\Static\Standard</Filter>
+      <Filter>Asset\Shader\Model\Static</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit.hlsli">
+      <Filter>Asset\Shader\Model\Standard\Lit</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit.hlsli">
+      <Filter>Asset\Shader\Model\Standard\UnLit</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2363,15 +2378,6 @@
     <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
       <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Lit\StaticModelStandardLit_MS.hlsl">
-      <Filter>Asset\Shader\Model\Static\Standard\Lit</Filter>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\UnLit\StaticModelStandardUnLit_MS.hlsl">
-      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
-      <Filter>Asset\Shader\Model\Static\Standard</Filter>
-    </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
       <Filter>Asset\Shader\Model\Skeletal\Standard\Lit</Filter>
     </DXCTask>
@@ -2380,6 +2386,18 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
       <Filter>Asset\Shader\Model\Standard\UnLit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\Lit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
+      <Filter>Asset\Shader\Model\Static</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal\Standard\UnLit</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿#include "../ModelStandard.hlsli"
+#include "ModelStandardLit.hlsli"
 
 cbuffer CBLightPass : register(b2)
 {
@@ -267,7 +268,7 @@ float CalculateDisneyDiffuseFactor(const float a_normalDotView,
 // 頂点法線だけでは、面の細かい凹凸を表現できない。
 // NormalMapからTangent空間の法線を読み取り、
 // TBN行列でWorld空間の法線へ変換する
-float3 FetchWorldNormal(const MSOutput a_input)
+float3 FetchWorldNormal(const MSOutputLit a_input)
 {
     Texture2D<float4> l_normalTexture = ResourceDescriptorHeap[g_normalTextureSRVDescriptorIndex];
     
@@ -309,7 +310,7 @@ float3 FetchWorldNormal(const MSOutput a_input)
     return normalize(mul(l_tangentNormal, l_tangentToWorldMatrix));
 }
 
-float4 main(const MSOutput a_input) : SV_Target0
+float4 main(const MSOutputLit a_input) : SV_Target0
 {
     Texture2D<float4> l_metallicTexture  = ResourceDescriptorHeap[g_metallicTextureSRVDescriptorIndex];
     Texture2D<float4> l_roughnessTexture = ResourceDescriptorHeap[g_roughnessTextureSRVDescriptorIndex];

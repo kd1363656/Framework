@@ -1,11 +1,13 @@
-﻿#include "../StaticModel.hlsli"
+﻿#include "../../StaticModel.hlsli"
+#include "../../../Standard/Lit/ModelStandardLit.hlsli"
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
 void main(in  payload  ModelAmplificationPayload a_payload,
-          out vertices MSOutput                  a_vertexList   [k_modelMaxMeshletVertexCount],
+          out vertices MSOutputLit               a_vertexList   [k_modelMaxMeshletVertexCount],
           out indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
-                       uint3                     a_groupID : SV_GroupID)
+              const    uint3                     a_groupID          : SV_GroupID,
+              const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {
     StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
@@ -18,7 +20,7 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     // 出力頂点数、三角形数を設定
     SetMeshOutputCounts(l_modelMeshlet.vertexCount, l_modelMeshlet.triangleCount);
     
-    for (uint l_vertexIndex = 0U; l_vertexIndex < l_modelMeshlet.vertexCount; ++l_vertexIndex)
+    for (uint l_vertexIndex = a_groupThreadIndex; l_vertexIndex < l_modelMeshlet.vertexCount; l_vertexIndex += k_modelMeshShaderThreadCountX)
     {
         // for分が回っている回数 + このメッシュレットの使用頂点開始位置からUniqueVertexIndexにアクセスするためのIndexを取得
         const uint l_uniqueVertexIndex = l_modelMeshlet.vertexOffset + l_vertexIndex;
@@ -30,13 +32,20 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // 取得した頂点番号から頂点情報を取得
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
         
-        const float3 l_worldPosition          = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
-        const float4 l_viewProjectionPosition = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
-        a_vertexList[l_vertexIndex].position = l_viewProjectionPosition;
-        a_vertexList[l_vertexIndex].uv       = l_staticModelVertex.uv;
+        // ワールド座標、法線、接線、ビュー座標を計算する
+        const float3 l_worldPosition           = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float3 l_worldNormal             = TransformModelLocalNormalToWorld  (l_staticModelVertex.normal);
+        const float4 l_worldTangent            = TransformModelLocalTangentToWorld (l_staticModelVertex.tangent);
+        const float4 l_viewProjectionPosition  = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
+
+        a_vertexList[l_vertexIndex].position      = l_viewProjectionPosition;
+        a_vertexList[l_vertexIndex].worldPosition = l_worldPosition;
+        a_vertexList[l_vertexIndex].worldNormal   = l_worldNormal;
+        a_vertexList[l_vertexIndex].worldTangent  = l_worldTangent;
+        a_vertexList[l_vertexIndex].uv            = l_staticModelVertex.uv;
     }
     
-    for (uint l_triangleIndex = 0U; l_triangleIndex < l_modelMeshlet.triangleCount; ++l_triangleIndex)
+    for (uint l_triangleIndex = a_groupThreadIndex; l_triangleIndex < l_modelMeshlet.triangleCount; l_triangleIndex += k_modelMeshShaderThreadCountX)
     {
         // 3個Pack方式では、uint32_t1個が三角形1個分のPrimitiveIndexを持つ
         // そのため、triangleOffsetはPack済みかPrimitiveIndexBuffer上の開始Indexとして扱う

@@ -15,7 +15,7 @@ uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
 {
     StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
     
-    // 3個数Pack方式では、uint23_t1個が三角形1個分のPrimitiveIndexを持つ。
+    // 3個数Pack方式では、uint32_t一個が三角形一個分のPrimitiveIndexを持つ。
     // そのため、a_packedPrimitiveIndexはPack済みPrimitiveIndexBuffer上のIndex。
     const uint l_packedValue = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
     

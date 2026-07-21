@@ -1,13 +1,13 @@
 ﻿#include "../../../Standard/ModelStandard.hlsli"
-#include "../../../Standard/Lit/ModelStandardLit.hlsli"
+#include "../../../Standard/UnLit/ModelStandardUnLit.hlsli"
 #include "../../SkeletalAnimationModel.hlsli"
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
-void main(out vertices MSOutputLit a_vertexList   [k_modelMaxMeshletVertexCount],
-          out indices  uint3       a_primitiveList[k_modelMaxMeshletPrimitiveCount],
-              const    uint3       a_groupID          : SV_GroupID, 
-              const    uint        a_groupThreadIndex : SV_GroupIndex)
+void main(out vertices MSOutputUnLit a_vertexList   [k_modelMaxMeshletVertexCount],
+          out indices  uint3         a_primitiveList[k_modelMaxMeshletPrimitiveCount],
+              const    uint3         a_groupID          : SV_GroupID, 
+              const    uint          a_groupThreadIndex : SV_GroupIndex)
 {
     StructuredBuffer<SkeletalAnimationSkinnedVertex> l_skinnedVertexBuffer     = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>                   l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
@@ -38,11 +38,8 @@ void main(out vertices MSOutputLit a_vertexList   [k_modelMaxMeshletVertexCount]
         const float4 l_worldTangent            = TransformModelLocalTangentToWorld (l_skeletalAnimationModelVertex.tangent);
         const float4 l_viewProjectionPosition  = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
 
-        a_vertexList[l_vertexIndex].position      = l_viewProjectionPosition;
-        a_vertexList[l_vertexIndex].worldPosition = l_worldPosition;
-        a_vertexList[l_vertexIndex].worldNormal   = l_worldNormal;
-        a_vertexList[l_vertexIndex].worldTangent  = l_worldTangent;
-        a_vertexList[l_vertexIndex].uv            = l_skeletalAnimationModelVertex.uv;
+        a_vertexList[l_vertexIndex].position = l_viewProjectionPosition;
+        a_vertexList[l_vertexIndex].uv       = l_skeletalAnimationModelVertex.uv;
     }
     
     for (uint l_triangleIndex = a_groupThreadIndex; l_triangleIndex < l_modelMeshlet.triangleCount; l_triangleIndex += k_modelMeshShaderThreadCountX)
