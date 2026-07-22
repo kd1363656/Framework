@@ -5,9 +5,11 @@ FWK::Physics::PhysicsCharacterVirtualBase::PhysicsCharacterVirtualBase() :
 
     m_extendedUpdateSettings(),
 
-    m_capsuleHalfHeightOfCylinder(k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
-    m_capsuleRadius              (k_defaultCharacterVirtualCapsuleRadius),
-    m_maxSlopeAngleRadians       (k_defaultCharacterVirtualMaxSlopeAngleRadians),
+    m_jsonConverter(),
+
+    m_capsuleHalfHeightOfCylinder(Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
+    m_capsuleRadius              (Constant::k_defaultCharacterVirtualCapsuleRadius),
+    m_maxSlopeAngleRadians       (Constant::k_defaultCharacterVirtualMaxSlopeAngleRadians),
 
     m_isEnhancedInternalEdgeRemovalDisabled(false)
 {}
@@ -20,7 +22,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                "CharacterVirtualが既に作成されています。",                                         false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius <= k_minCharacterVirtualCapsuleRadius,                             "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
 
 	FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
   		                       m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians, 
@@ -61,7 +63,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
     // 接触面の角度がこの値を超えた場合、Joltはその面を急すぎる斜面として扱う
     l_characterVirtualSettings.mMaxSlopeAngle = m_maxSlopeAngleRadians;
 
-    // MeshShapeなどを構成する三角形同士の教会で
+    // MeshShapeなどを構成する三角形同士の境界で
     // ChacacterVirtualが不要に引っかかる現象を軽減する
     l_characterVirtualSettings.mEnhancedInternalEdgeRemoval = !m_isEnhancedInternalEdgeRemovalDisabled;
     
@@ -89,6 +91,13 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
     ApplyExtendedUpdateSettings(*m_characterVirtual, m_extendedUpdateSettings);
 
     return true;
+}
+
+void FWK::Physics::PhysicsCharacterVirtualBase::Deserialize(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime)
@@ -180,6 +189,11 @@ void FWK::Physics::PhysicsCharacterVirtualBase::DrawDebug(const JPH::ColorArg a_
                   true);
 
 
+}
+
+nlohmann::json FWK::Physics::PhysicsCharacterVirtualBase::Serialize() const
+{
+    return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Physics::PhysicsCharacterVirtualBase::ReleaseCharacterVirtual()

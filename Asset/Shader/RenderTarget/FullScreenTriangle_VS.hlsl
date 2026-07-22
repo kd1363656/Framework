@@ -1,4 +1,4 @@
-﻿#include "FullScreenTriangleShader.hlsli"
+﻿#include "FullScreenTriangle.hlsli"
 
 VSOutput main(uint a_vertexID : SV_VertexID)
 {

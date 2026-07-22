@@ -1,4 +1,6 @@
-﻿#include "../Model.hlsli"
+﻿#ifndef MODEL_STANDARD_HLSLI
+#define MODEL_STANDARD_HLSLI
+#include "../Model.hlsli"
 
 SamplerState g_textureSampler : register(s0);
 
@@ -25,16 +27,6 @@ uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
         (l_packedValue >> k_modelSecondPackedPrimitiveIndexShiftBit) & k_modelPackedPrimitiveIndexValueMask,
         (l_packedValue >> k_modelThirdPackedPrimitiveIndexShiftBit)  & k_modelPackedPrimitiveIndexValueMask
     );
-}
-
-// StaticModelのLocal座標をWorld座標へ変換する
-// PBRではライト方向やカメラ方向をWorld空間で計算するため、worldPositionが必要
-float3 TransformModelLocalPositionToWorld(const float3 a_localPosition)
-{
-    const float4 l_localPosition = float4(a_localPosition, k_modelPositionElementW);
-    const float4 l_worldPosition = mul   (l_localPosition, g_worldMatrix);
-
-    return l_worldPosition.xyz;
 }
 
 // StaticModelのLocal法線をWorld空間へ変換する
@@ -67,3 +59,5 @@ float4 FetchModelBaseColor(const float2 a_uv)
     
     return l_baseColorSample * g_baseColorFactor;
 }
+
+#endif // MODEL_STANDARD_HLSLI

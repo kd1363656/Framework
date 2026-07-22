@@ -1,4 +1,7 @@
-﻿static const float k_triangleClipPositionZ = 0.0F;
+﻿#ifndef FULL_SCREEN_TRIANGLE_HLSLI
+#define FULL_SCREEN_TRIANGLE_HLSLI
+
+static const float k_triangleClipPositionZ = 0.0F;
 static const float k_triangleClipPositionW = 1.0F;
 
 static const float k_trianglePositionXLeft   = -1.0F;
@@ -35,3 +38,5 @@ struct VSOutput
     float4 position : SV_Position;
     float2 uv       : TEXCOORD0;
 };
+
+#endif // FULL_SCREEN_TRIANGLE_HLSLI

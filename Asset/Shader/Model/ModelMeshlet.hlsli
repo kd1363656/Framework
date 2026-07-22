@@ -1,4 +1,7 @@
-﻿static const uint k_modelMaxMeshletVertexCount    = 64U;
+﻿#ifndef MODEL_MESHLET_HLSLI
+#define MODEL_MESHLET_HLSLI
+
+static const uint k_modelMaxMeshletVertexCount    = 64U;
 static const uint k_modelMaxMeshletPrimitiveCount = 126U;
 
 // normaliaze前に長さ0付近のベクトルを避けるための値。
@@ -41,3 +44,5 @@ struct ModelMeshletBounds
     float3 coneAxis;
     float  padding;
 };
+
+#endif // MODEL_MESHLET_HLSLI

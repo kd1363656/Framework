@@ -1,4 +1,7 @@
-﻿struct SkeletalAnimationModelVertex
+﻿#ifndef MODEL_SKELETAL_ANIMATION_MODEL_HLSLI
+#define MODEL_SKELETAL_ANIMATION_MODEL_HLSLI
+
+struct SkeletalAnimationModelVertex
 {
     float3 position;
     float3 normal;
@@ -32,3 +35,5 @@ struct SkeletalAnimationSkinnedVertex
     float4 tangent;
     float2 uv;
 };
+
+#endif // MODEL_SKELETAL_ANIMATION_MODEL_HLSLI

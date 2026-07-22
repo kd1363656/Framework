@@ -30,7 +30,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 
 	const auto& l_meshletBoundsUpdateConstantBufferUploader = l_currentFrameResource->FindPTRDynamicBufferUploader<SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationVertexSkinning用DynamicConstantBufferUploaderを取得できません。");
+	FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationMeshletBoundsUpdate用DynamicConstantBufferUploaderを取得できません。");
 
 	const auto& l_skeletalAnimationPlayerList = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerList().GetREFArrayElementDataList();
 	const auto& l_computeCommandList          = a_renderer.GetREFComputeCommandList                                          ();
@@ -67,7 +67,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 				                                     l_computeCommandList,
 				                                     *l_frameData,
 				                                     *l_vertexSkinningConstantBufferUploader),
-			                                         "SkeletalAnimationModelのMeshlet Bounds更新に失敗しました。");
+			                                         "SkeletalAnimationModelのVertexSkinningに失敗しました。");
 	}
 
 	// 全PlayerのVertexSkinningがCommandLIstへ記録された後、
@@ -92,13 +92,14 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 
 		FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、MeshletBoundsを更新できません。");
 
-		// Model内の各MeshへLBSVertexSkinningを実行する。
+		// Model内の各Meshについて、
+		// スキニング後頂点から現在PoseのMeshletBoundsを計算する。
 		FWK_ASSERT_RETURN_IF(!DispatchMeshletBoundsUpdate(l_skeletalAnimationModelRecord->GetREFModelData(),
 				                                          *l_meshletBoundsUpdateRootSignature,
 				                                          l_computeCommandList,
 				                                          *l_frameData,
 				                                          *l_meshletBoundsUpdateConstantBufferUploader),
-			                                              "SkeletalAnimationModelのVertex Skinningに失敗しました。");
+			                                              "SkeletalAnimationModelのMeshletBounds更新に失敗しました。");
 	}
 }
 

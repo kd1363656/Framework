@@ -1,4 +1,7 @@
-﻿SamplerState g_baseColorSampler : register(s0);
+﻿#ifndef SPRITE_SCREEN_HLSLI
+#define SPRITE_SCREEN_HLSLI
+
+SamplerState g_baseColorSampler : register(s0);
 
 static const float k_positionZ = 0.0F;
 static const float k_positionW = 1.0F;
@@ -54,3 +57,5 @@ cbuffer CBSpritePerObject : register(b1)
     uint   g_baseColorTextureSRVIndex;
     float3 g_secondPadding;
 }
+
+#endif // SPRITE_SCREEN_HLSLI

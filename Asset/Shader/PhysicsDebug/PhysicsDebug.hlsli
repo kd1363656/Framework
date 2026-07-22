@@ -1,4 +1,7 @@
-﻿static const float k_physicsDebugPositionW = 1.0F;
+﻿#ifndef PHYSICS_DEBUG_HLSLI
+#define PHYSICS_DEBUG_HLSLI
+
+static const float k_physicsDebugPositionW = 1.0F;
 
 struct VSInput
 {
@@ -26,3 +29,5 @@ cbuffer CBCameraPass : register(b0)
     float3 g_cameraWorldPosition;
     float  g_cameraPassPadding;
 };
+
+#endif // PHYSICS_DEBUG_HLSLI

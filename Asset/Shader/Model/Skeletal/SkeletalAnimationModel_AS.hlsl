@@ -1,15 +1,21 @@
 ﻿#include "../Model.hlsli"
+#include "../ModelMeshletFrustumCulling.hlsli"
 
 [numthreads(k_modelAmplificationShaderThreadCountX, k_modelAmplificationShaderThreadCountY, k_modelAmplificationShaderThreadCountZ)]
 void main(uint3 a_groupID : SV_GroupID)
 {
     ModelAmplificationPayload l_payload = (ModelAmplificationPayload) 0;
 
-    const uint l_meshletIndex = a_groupID.x;
+    const uint l_meshletIndex = a_groupID.x;    
+    const bool l_isVisible    = IsVisibleModelMeshletByFrustum(l_meshletIndex);
     
     l_payload.meshletIndex = l_meshletIndex;
     
-    DispatchMesh(k_modelAmplificationDispatchMeshGroupCountX, 
+    // Frustum外の場合はX方向のMeshShaderGroup数をゼロ西、
+    // MeshShaderを起動しない
+    const uint l_dispatchMeshGroupCountX = l_isVisible ? k_modelAmplificationDispatchMeshGroupCountX : k_modelAmplificationDispatchMeshCulledGroupCountX;
+    
+    DispatchMesh(l_dispatchMeshGroupCountX, 
                  k_modelAmplificationDispatchMeshGroupCountY, 
                  k_modelAmplificationDispatchMeshGroupCountZ,
                  l_payload);

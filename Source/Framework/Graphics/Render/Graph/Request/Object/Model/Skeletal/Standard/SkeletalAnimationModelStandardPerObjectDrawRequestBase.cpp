@@ -38,8 +38,12 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Setu
 		const auto& l_modelData               = l_skeletalAnimationModelRecord->GetREFModelData();
 		const auto& l_modelMeshList           = l_modelData.m_modelMeshList;
 		const auto& l_skinnedVertexBufferList = l_frameData->m_skinnedVertexBufferList;
+		const auto& l_meshletBoundsBufferList = l_frameData->m_meshletBoundsBufferList;
 
-		FWK_ASSERT_RETURN_IF(l_modelMeshList.empty(), "ModelMeshListが空のため、Skeletal Animation Modelを描画できません。");
+		// Player::CreateではModel Mesh一つにつき、
+		// 動的Meshlet BoundsBufferを一つ作成している。
+		FWK_ASSERT_RETURN_IF(l_modelMeshList.size() != l_meshletBoundsBufferList.size(), "ModelMeshListとMeshletBoundsBufferListの要素数が一致しません。");
+		FWK_ASSERT_RETURN_IF(l_modelMeshList.empty(),                                    "ModelMeshListが空のため、SkeletalAnimationModelを描画できません。");
 
 		// Player::CreateではModel Mesh一個につき、
 		// SkinnedVertexBufferを一個作成している
@@ -55,6 +59,7 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Setu
 			const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
 			const auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
 			const auto& l_skinnedVertexBuffer      = l_skinnedVertexBufferList[l_modelMeshIndex];
+			const auto& l_meshletBoundsBuffer      = l_meshletBoundsBufferList[l_modelMeshIndex];
 
 			FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。");
 
@@ -63,6 +68,8 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Setu
 			// Mesh ShaderはNON_PIXEL Shaderに含まれるため、
 			// この状態でStructuredBufferとして読み取れる
 			FWK_ASSERT_RETURN_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMesh Shaderから読み取れるResource Stateではありません。");
+			FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
+			FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
 
 			// スキニング後の頂点構造はStatic Modelの頂点構造と同じため、
 			// 既存のModel描画用定数バッファを共有する
@@ -77,13 +84,13 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Setu
 			l_cbModelPerObject.m_roughnessFactor             = l_modelMaterialAssetData.m_roughnessFactor;
 			
 			// Static Modelでは元頂点Bufferを設定するが、
-			// Skeletal AnimationではCompute Shaderが出力した
+			// Skeletal AnimationではComputeShaderが出力した
 			// SkinnedVertexBufferのSRVを設定する
 			l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            = l_skinnedVertexBuffer.GetVALSRVDescriptorIndex                           ();
 			l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           = l_modelMeshRuntimeData.m_meshletBuffer.GetVALSRVDescriptorIndex          ();
 			l_cbModelPerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();
 			l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_modelMeshRuntimeData.m_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
-			l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_modelMeshRuntimeData.m_meshletBoundsBuffer.GetVALSRVDescriptorIndex    ();
+			l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     = l_meshletBoundsBuffer.GetVALSRVDescriptorIndex                           ();
 
 			FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。");
 			FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。");

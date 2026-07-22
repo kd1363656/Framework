@@ -958,6 +958,21 @@
     <Filter Include="Source\Framework\Physics\Body\Static\Capsule\Converter">
       <UniqueIdentifier>{d632fab4-3cf6-4c81-a658-179eda2ccc2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter">
+      <UniqueIdentifier>{b4648bf6-26fe-411a-a833-52f059ff92dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter\Json">
+      <UniqueIdentifier>{6346a33a-61c0-4e07-a9ef-1ac84dfe84d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json">
+      <UniqueIdentifier>{94721df1-14a0-4b6e-a1c4-c1da7f228b4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json">
+      <UniqueIdentifier>{b5908286-e47e-4167-b0ab-6f524739e5e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Body\Static\Box\Converter\Json">
+      <UniqueIdentifier>{6e2af38f-31fb-41e8-9315-792f633c725f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1869,22 +1884,28 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.h">
-      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\Converter\PhysicsStaticBoxBodyJsonConverter.h">
-      <Filter>Source\Framework\Physics\Body\Static\Box\Converter</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\Converter\PhysicsStaticCapsuleBodyJsonConverter.h">
-      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.h">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json\PhysicsStaticSphereBodyJsonConverter.h">
+      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json\PhysicsStaticCapsuleBodyJsonConverter.h">
+      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.h">
+      <Filter>Source\Framework\Physics\Body\Static\Box\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2363,14 +2384,17 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\PhysicsStaticSphereBodyJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter</Filter>
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\PhysicsStaticBoxBodyJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Body\Static\Box\Converter</Filter>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json\PhysicsStaticSphereBodyJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\Converter\PhysicsStaticCapsuleBodyJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter</Filter>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json\PhysicsStaticCapsuleBodyJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.cpp">
+      <Filter>Source\Framework\Physics\Body\Static\Box\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2391,10 +2415,10 @@
     <None Include="Asset\Shader\Model\Model.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
-    <None Include="Asset\Shader\RenderTarget\FullScreenTriangleShader.hlsli">
+    <None Include="Asset\Shader\RenderTarget\FullScreenTriangle.hlsli">
       <Filter>Asset\Shader\RenderTarget</Filter>
     </None>
-    <None Include="Asset\Shader\RenderTarget\Final\FinalColorShader.hlsli">
+    <None Include="Asset\Shader\RenderTarget\Final\FinalColor.hlsli">
       <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </None>
     <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli">
@@ -2422,6 +2446,9 @@
       <Filter>Asset\Shader\Model\Standard\UnLit</Filter>
     </None>
     <None Include="Asset\Shader\Model\ModelMeshlet.hlsli">
+      <Filter>Asset\Shader\Model</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\ModelMeshletFrustumCulling.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
   </ItemGroup>

@@ -35,9 +35,13 @@ namespace FWK::Physics
 
 		bool CreateCharacterVirtual(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition);
 
+		void Deserialize(const nlohmann::json& a_rootJson);
+
 		void Update(const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, const float a_deltaTime);
 
 		void DrawDebug(const JPH::ColorArg a_color) const;
+
+		nlohmann::json Serialize() const;
 
 		void ReleaseCharacterVirtual();
 
@@ -47,6 +51,18 @@ namespace FWK::Physics
 		TypeAlias::Math::Vector3 FetchVALLinearVelocity() const;
 
 		bool FetchVALIsOnGround() const;
+
+		void SetCapsuleHalfHeightOfCylinder(const float a_set) { m_capsuleHalfHeightOfCylinder = a_set; }
+		void SetCapsuleRadius              (const float a_set) { m_capsuleRadius               = a_set; }
+		void SetMaxSlopeAngleRadians       (const float a_set) { m_maxSlopeAngleRadians        = a_set; }
+
+		bool SetIsEnhancedInternalEdgeRemovalDisabled(const bool a_set) { m_isEnhancedInternalEdgeRemovalDisabled = a_set; }
+
+		float GetVALCapsuleHalfHeightOfCylinder() const { return m_capsuleHalfHeightOfCylinder; }
+		float GetVALCapsuleRadius              () const { return m_capsuleRadius; }
+		float GetVALMaxSlopeAngleRadius        () const { return m_maxSlopeAngleRadians; }
+
+		bool GetIsEnhancedInternalEdgeRemovalDisabled() const { return m_isEnhancedInternalEdgeRemovalDisabled; }
 
 		static constexpr float k_characterVirtualMovingTowardsGroundTolerance = 0.1F;
 
@@ -74,10 +90,6 @@ namespace FWK::Physics
 		static constexpr float k_maxCharacterVirtualMaxSlopeAngleRadians        = DirectX::XM_PIDIV2;
 		static constexpr float k_minCharacterVirtualJumpSpeed                   = 0.0F;
 		
-		static constexpr float k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder = 0.75F;
-		static constexpr float k_defaultCharacterVirtualCapsuleRadius			    = 0.35F;
-		static constexpr float k_defaultCharacterVirtualMaxSlopeAngleRadians        = DirectX::XMConvertToRadians(50.0F);
-
 		static constexpr float k_characterVirtualShapeChangePenetrationSlopScale = 1.5F;
 
 		static constexpr JPH::uint64 k_defaultUserData = 0ULL;
@@ -85,6 +97,8 @@ namespace FWK::Physics
 		JPH::Ref<PhysicsCharacterVirtualInstance> m_characterVirtual;
 
 		JPH::CharacterVirtual::ExtendedUpdateSettings m_extendedUpdateSettings;
+
+		Converter::PhysicsCharacterVirtualBaseJsonConverter m_jsonConverter;
 
 		float m_capsuleHalfHeightOfCylinder;
 		float m_capsuleRadius;

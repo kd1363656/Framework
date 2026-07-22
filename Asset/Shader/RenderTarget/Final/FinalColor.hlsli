@@ -1,4 +1,6 @@
-﻿#include "../FullScreenTriangleShader.hlsli"
+﻿#ifndef FINAL_COLOR_HLSLI
+#define FINAL_COLOR_HLSLI
+#include "../FullScreenTriangle.hlsli"
 
 static const float k_finalColorMINValue = 0.0F;
 static const float k_finalColorMAXValue = 1.0F;
@@ -25,3 +27,5 @@ cbuffer CBFinalColorPass : register(b0)
 }
 
 SamplerState g_sceneColorSampler : register(s0);
+
+#endif // FINAL_COLOR_HLSLI
