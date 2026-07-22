@@ -11,12 +11,6 @@ FWK::Graphics::SkeletalAnimationComputePass::~SkeletalAnimationComputePass() = d
 
 void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
-	// ComputeCommandListへ、
-	// VertexSkinning用RootSignatureとPipelineStateを設定する
-	const auto& l_rootSignature = SetupComputeRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationVertexSkinning).lock();
-
-	FWK_ASSERT_RETURN_IF(!l_rootSignature, "SkeletalAnimationVertexSkinning用RootSignatureを取得できないため、Compute Passを実行できません。");
-
 	// 定数バッファは現在FrameResourceが所有しているため、
 	// Dispatch前に現在のFrameResourceを取得する
 	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
@@ -30,12 +24,23 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 
 	// MeshごとのVertex Skinning用定数バッファを書き込むUploaderを
 	// 現在FrameResourceから取得する
-	const auto& l_constantBufferUploader = l_currentFrameResource->FindPTRDynamicBufferUploader<SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader>().lock();
+	const auto& l_vertexSkinningConstantBufferUploader = l_currentFrameResource->FindPTRDynamicBufferUploader<SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_constantBufferUploader, "SkeletalAnimationVertexSkinning用DynamicConstantBufferUploaderを取得できません。");
+	FWK_ASSERT_RETURN_IF(!l_vertexSkinningConstantBufferUploader, "SkeletalAnimationVertexSkinning用DynamicConstantBufferUploaderを取得できません。");
+
+	const auto& l_meshletBoundsUpdateConstantBufferUploader = l_currentFrameResource->FindPTRDynamicBufferUploader<SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader>().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationVertexSkinning用DynamicConstantBufferUploaderを取得できません。");
 
 	const auto& l_skeletalAnimationPlayerList = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerList().GetREFArrayElementDataList();
 	const auto& l_computeCommandList          = a_renderer.GetREFComputeCommandList                                          ();
+
+	// 最初にすべてのPlayerへVertex Skinningを行う。
+	// PlayerごとにVertexSkinningとBounds更新のPSOを
+	// 交互に切り替えず、同じPSOの処理をまとめて実行する
+	const auto& l_vertexSkinningRootSignature = SetupComputeRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationVertexSkinning).lock();
+
+	FWK_ASSERT_RETURN_IF(!l_vertexSkinningRootSignature, "SkeletalAnimationVertexSkinning用RootSignatureを取得できないため、VertexSkinningを実行できません。");
 
 	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerList)
 	{
@@ -47,22 +52,53 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, 
 
 		const auto& l_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord().lock();
 
-		FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、Vertex Skinningを実行できません。");
+		FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、VertexSkinningを実行できません。");
 
 		auto* l_frameData = l_skeletalAnimationPlayer->FindMutablePTRCurrentFrameData();
 
 		FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、Vertex Skinningを実行できません。");
 
 		// CPUで計算した現在のPoseのBoneMatrixをGPUへ転送する
-		FWK_ASSERT_RETURN_IF(!UploadBoneMatrix(l_computeCommandList, *l_frameData), "Bone MatrixのGPU転送に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!UploadBoneMatrix(l_computeCommandList, *l_frameData), "BoneMatrixのGPU転送に失敗しました。");
 
 		// Model内の各MeshへLBSVertexSkinningを実行する。
 		FWK_ASSERT_RETURN_IF(!DispatchVertexSkinning(l_skeletalAnimationModelRecord->GetREFModelData(),
-				                                     *l_rootSignature,
+				                                     *l_vertexSkinningRootSignature,
 				                                     l_computeCommandList,
 				                                     *l_frameData,
-				                                     *l_constantBufferUploader),
-			                                         "SkeletalAnimationModelのVertex Skinningに失敗しました。");
+				                                     *l_vertexSkinningConstantBufferUploader),
+			                                         "SkeletalAnimationModelのMeshlet Bounds更新に失敗しました。");
+	}
+
+	// 全PlayerのVertexSkinningがCommandLIstへ記録された後、
+	// Bounds更新用Pipelineへ一度だけ切り替える
+	const auto& l_meshletBoundsUpdateRootSignature = SetupComputeRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationMeshletBoundsUpdate).lock();
+
+	FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateRootSignature, "SkeletalAnimationMeshletBoundsUpdate用RootSignatureを取得できないため、Meshlet Boundsを更新できません。");
+
+	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerList)
+	{
+		const auto& l_skeletalAnimationPlayer = l_skeletalAnimationPlayerData.m_type.lock();
+
+		// BeginFrame後にPlayerが破棄された場合は、
+		// 無効なPlayerを処理せず次へ進む
+		if (!l_skeletalAnimationPlayer) { continue; }
+
+		const auto& l_skeletalAnimationModelRecord = l_skeletalAnimationPlayer->GetREFSkeletalAnimationModelRecord().lock();
+
+		FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効なため、MeshletBoundsを更新できません。" );
+
+		auto* l_frameData = l_skeletalAnimationPlayer->FindMutablePTRCurrentFrameData();
+
+		FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、MeshletBoundsを更新できません。");
+
+		// Model内の各MeshへLBSVertexSkinningを実行する。
+		FWK_ASSERT_RETURN_IF(!DispatchMeshletBoundsUpdate(l_skeletalAnimationModelRecord->GetREFModelData(),
+				                                          *l_meshletBoundsUpdateRootSignature,
+				                                          l_computeCommandList,
+				                                          *l_frameData,
+				                                          *l_meshletBoundsUpdateConstantBufferUploader),
+			                                              "SkeletalAnimationModelのVertex Skinningに失敗しました。");
 	}
 }
 
@@ -202,6 +238,85 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
 		// 追加のUAV Barrierは不要
 		a_computeCommandList.TransitionResourceBarrier(l_skinnedVertexBufferResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
 		l_skinnedVertexBuffer.SetCurrentResourceState (D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+	}
+
+	return true;
+}
+
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const SkeletalAnimationModelRecord::ModelData&                                    a_modelData, 
+	                                                                          const RootSignature&                                                              a_rootSignature, 
+	                                                                          const ComputeCommandList&                                                         a_computeCommandList, 
+	                                                                                SkeletalAnimationPlayer::FrameData&                                         a_frameData,
+	                                                                                SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader& a_constantBufferUploader) const
+{
+	const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
+	const auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
+	      auto& l_meshletBoundsBufferList = a_frameData.m_meshletBoundsBufferList ;
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(),                                    "ModelMeshListが空のため、MeshletBoundsを更新できません。",       false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_meshletBoundsBufferList.size(), "ModelMeshListとMeshletBoundsBufferListの要素数が一致しません。", false);
+
+	for (auto l_modelMeshIndex = k_firstModelMeshIndex; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
+	{
+		const auto& l_modelMesh            = l_modelMeshList[l_modelMeshIndex];
+		const auto& l_modelMeshRuntimeData = l_modelMesh.m_modelMeshRuntimeData;
+		const auto& l_modelMeshletList     = l_modelMesh.m_modelMeshletData.m_meshletList;
+		const auto& l_skinnedVertexBuffer  = l_skinnedVertexBufferList[l_modelMeshIndex];
+		      auto& l_meshletBoundsBuffer  = l_meshletBoundsBufferList[l_modelMeshIndex];
+
+		FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(),                                                                           "ModelMeshletListが空のため、MeshletBoundsを更新できません。",                                    false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMeshlet Bounds Compute Shaderから読み取れるResource Stateではありません。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletList.size(),                              "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。",                                  false);
+
+		const auto& l_meshletBuffer                             = l_modelMeshRuntimeData.m_meshletBuffer;
+		const auto& l_uniqueVertexIndexBuffer                   = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer;
+		const auto  l_vertexBufferSRVDescriptorIndex            = l_skinnedVertexBuffer.GetVALSRVDescriptorIndex    ();
+		const auto  l_meshletBufferSRVDescriptorIndex           = l_meshletBuffer.GetVALSRVDescriptorIndex          ();
+		const auto  l_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();
+		const auto  l_meshletBoundsBufferUAVDescriptorIndex     = l_meshletBoundsBuffer.GetVALUAVDescriptorIndex    ();
+
+		FWK_ASSERT_RETURN_VALUE_IF(l_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。",     false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。",           false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_uniqueVertexIndexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_meshletBoundsBufferUAVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのUAVDescriptorIndexが無効です。",     false);
+
+		const auto& l_meshletBoundsBufferResource = l_meshletBoundsBuffer.GetREFBufferGPUResource().m_resource;
+
+		FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBufferResource, "MeshletBoundsBufferのGPUResourceが無効です。", false);
+
+		const auto l_beforeWriteResourceState = l_meshletBoundsBuffer.GetVALCurrentResourceState();
+
+		// Bounds更新ComputeShaderから書き込めるように
+		// MeshletBoundsBufferをUAV状態へ遷移する
+		a_computeCommandList.TransitionResourceBarrier(l_meshletBoundsBufferResource, l_beforeWriteResourceState, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
+		l_meshletBoundsBuffer.SetCurrentResourceState(D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+
+		Struct::CBSkeletalAnimationMeshletBoundsUpdatePerObject l_cbSkeletalAnimationMeshletBoundsUpdatePerObject = {};
+
+		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_vertexBufferSRVDescriptorIndex            = l_vertexBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_meshletBufferSRVDescriptorIndex           = l_meshletBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_meshletBoundsBufferUAVDescriptorIndex     = l_meshletBoundsBufferUAVDescriptorIndex;
+
+		const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationMeshletBoundsUpdatePerObject);
+
+		FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationMeshletBoundsUpdate用定数バッファの書き込みに失敗しました。", false);
+
+		a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject);
+
+		const auto l_meshletCount = l_meshletBoundsBuffer.GetVALElementCount();
+
+		FWK_ASSERT_RETURN_VALUE_IF(l_meshletCount > D3D12_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION, "Meshlet数がCompute ShaderのX方向最大Dispatch Group数を超えています。", false);
+
+		a_computeCommandList.Dispatch(l_meshletCount, k_singleThreadGroupCount, k_singleThreadGroupCount);
+
+		// UAV書き込み後、後続のAmplificationShaderから
+		// StructuredBufferとして読み取れる状態へ遷移する
+		a_computeCommandList.TransitionResourceBarrier(l_meshletBoundsBufferResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+
+		l_meshletBoundsBuffer.SetCurrentResourceState(D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
 	}
 
 	return true;
