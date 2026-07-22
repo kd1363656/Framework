@@ -49,7 +49,8 @@ namespace FWK::Graphics
 			
 			std::vector<DynamicRWStructuredBuffer> m_skinnedVertexBufferList = {};
 
-			std::vector<TypeAlias::Math::Matrix> m_globalBoneMatrixList = {};
+			std::vector<DynamicRWStructuredBuffer> m_meshletBoundsBufferList = {};
+			std::vector<TypeAlias::Math::Matrix>   m_globalBoneMatrixList    = {};
 		};
 
 	public:

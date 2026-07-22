@@ -86,25 +86,44 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
         l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
 
-        // SkinnedVertexBufferはMeshごとに頂点数が異なるため、
-	    // ModelMeshListと同じ数だけ作成する
+        // SkinnedVertexBufferとMeshletBoundsBufferは
+        // ModelMesh一つにつき一つずつ作成するため、
+        // ModelMeshListと同じ数だけ容量を予約する。
         l_frameData.m_skinnedVertexBufferList.reserve(l_modelMeshList.size());
+        l_frameData.m_meshletBoundsBufferList.reserve(l_modelMeshList.size());
 
         for (const auto& l_modelMesh : l_modelMeshList)
         {
-            FWK_ASSERT_RETURN_VALUE_IF(l_modelMesh.m_modelVertexList.empty(), "ModelVertexListが空のため、SkinnedVertexBufferの作成に失敗しました。", false);
+            const auto& l_modelVertexList  = l_modelMesh.m_modelVertexList;
+            const auto& l_modelMeshletList = l_modelMesh.m_modelMeshletData.m_meshletList;
 
+            FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),  "ModelVertexListが空のため、SkinnedVertexBufferの作成に失敗しました。",  false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "ModelMeshletListが空のため、MeshletBoundsBufferの作成に失敗しました。", false);
+
+            // ComputeShaderがスキニング結果を書き込むための
+	        // VertexBufferを作成する。
             DynamicRWStructuredBuffer l_skinnedVertexBuffer = {};
 
-            if (!l_skinnedVertexBuffer.Create<SkinnedVertexBufferElement>(l_device,
-                                                                          l_gpuMemoryAllocator,
-                                                                          l_modelMesh.m_modelVertexList.size(),
-                                                                          l_cbvSRVUAVDescriptorPool))
-            {
-                FWK_ASSERT_RETURN_VALUE("SkinnedVertex用DynamicRWStructuredBufferの作成に失敗しました。", false);
-            }
+            FWK_ASSERT_RETURN_VALUE_IF(!l_skinnedVertexBuffer.Create<SkinnedVertexBufferElement>(l_device,
+                                                                                                 l_gpuMemoryAllocator,
+                                                                                                 l_modelMesh.m_modelVertexList.size(),
+                                                                                                 l_cbvSRVUAVDescriptorPool),
+                                                                                                 "SkinnedVertex用DynamicRWStructuredBufferの作成に失敗しました。", 
+                                                                                                 false);
+
+            // ComputeShaderが現在PoseのBoundsを書き込むための
+            // MeshletBoundsBufferを作成
+            DynamicRWStructuredBuffer l_meshletBoundsBuffer = {};
+
+            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create<Struct::ModelMeshletBounds>(l_device, 
+                                                                                                 l_gpuMemoryAllocator,
+                                                                                                 l_modelMeshletList.size(),
+                                                                                                 l_cbvSRVUAVDescriptorPool), 
+                                                                                                 "MeshletBounds用DynamicRWStructuredBufferの作成に失敗しました。", 
+                                                                                                 false);
 
             l_frameData.m_skinnedVertexBufferList.emplace_back(std::move(l_skinnedVertexBuffer));
+            l_frameData.m_meshletBoundsBufferList.emplace_back(std::move(l_meshletBoundsBuffer));
         }
 
         l_frameDataList.emplace_back(std::move(l_frameData));

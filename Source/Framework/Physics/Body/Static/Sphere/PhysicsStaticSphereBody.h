@@ -32,7 +32,6 @@ namespace FWK::Physics
 
 		bool ApplyShapeChange();
 
-
 		Converter::PhysicsStaticSphereBodyJsonConverter m_jsonConverter = {};
 
 		float m_radius = Constant::k_defaultPhysicsStaticSphereBodyRadius;

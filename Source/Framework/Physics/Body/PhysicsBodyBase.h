@@ -24,9 +24,9 @@ namespace FWK::Physics
 		virtual bool CreateBody(const TypeAlias::Math::Quaternion&,            const TypeAlias::Math::Vector3&, const bool)               { return false; }
 		virtual bool CreateBody(const Graphics::StaticModelRecord::ModelData&, const bool,                      TypeAlias::Math::Matrix&) { return false; }
 
-		virtual void Deserialize(const nlohmann::json& a_rootJson) = 0;
+		virtual void Deserialize(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 
-		virtual nlohmann::json Serialize() const = 0;
+		virtual nlohmann::json Serialize() const { return nlohmann::json{}; }
 
 		virtual bool ApplyWorldTransform(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&) { return false; }
 		virtual bool ApplyWorldTransform(      TypeAlias::Math::Matrix&)                                      { return false; }
