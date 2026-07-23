@@ -21,7 +21,7 @@ namespace FWK::Editor
 
 		void DrawSceneViewTexture(const ImTextureID& a_textureID, const ImVec2& a_sceneViewSize) const;
 
-		static constexpr std::string_view k_editorName = "Scene View";
+		static constexpr std::string_view k_editorName = "SceneView";
 
 		static constexpr float k_minSceneViewSize = 1.0F;
 

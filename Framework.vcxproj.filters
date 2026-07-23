@@ -973,6 +973,9 @@
     <Filter Include="Source\Framework\Physics\Body\Static\Box\Converter\Json">
       <UniqueIdentifier>{6e2af38f-31fb-41e8-9315-792f633c725f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Hierarchy">
+      <UniqueIdentifier>{6b5ae75f-7344-4a4b-ab3c-a17310c6965a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1908,6 +1911,9 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2395,6 +2401,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.cpp">
       <Filter>Source\Framework\Physics\Body\Static\Box\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

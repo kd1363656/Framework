@@ -376,7 +376,9 @@
 #include "Graphics/Converter/Json/GraphicsManagerJsonConverter.h" 
 #include "Graphics/GraphicsManager.h"
 
+//===============================================================================
 // 当たり判定
+//===============================================================================
 #include "Definition/Enum/Physics/PhysicsLayerEnum.h"
 #include "Physics/Layer/PhysicsLayerSetting.h"
 #include "Utility/Physics/PhysicsConvertVec3Utility.h"
@@ -403,7 +405,9 @@
 #include "Physics/CharacterVirtual/Gravity/Unaffected/PhysicsCharacterVirtualUnaffectedByGravity.h"
 #include "Physics/PhysicsManager.h"
 
+//===============================================================================
 // コンポーネント
+//===============================================================================
 #include "Component/ComponentBase.h"
 #include "Strategy/StrategyBase.h"
 #include "Definition/Constant/IMGUI/IMGUIConstant.h"
@@ -415,11 +419,16 @@
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
 
-// ゲームオブジェクト
-#include "GameObject/GameObject.h"
-
+//===============================================================================
 // シーン
+//===============================================================================
+#include "GameObject/GameObject.h"
 #include "Scene/Converter/Json/SceneJsonConveter.h"
 #include "Scene/Scene.h"
 #include "Scene/Converter/Json/SceneManagerJsonConveter.h"
 #include "Scene/SceneManager.h"
+
+//===============================================================================
+// エディター
+//===============================================================================
+#include "Editor/Window/Hierarchy/HierarchyEditorWindow.h"

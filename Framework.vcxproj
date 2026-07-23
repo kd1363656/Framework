@@ -437,6 +437,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.h" />
@@ -662,6 +663,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp" />

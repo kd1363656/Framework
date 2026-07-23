@@ -11,6 +11,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
 	m_imGuiCBVSRVUAVDescriptorPool(),
 
+	m_mainMenubar(),
+
 	m_jsonConverter(),
 
 	m_isInitialized      (false),
