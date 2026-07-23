@@ -21,12 +21,7 @@ uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
     // そのため、a_packedPrimitiveIndexはPack済みPrimitiveIndexBuffer上のIndex。
     const uint l_packedValue = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
     
-    return uint3
-    (
-        (l_packedValue >> k_modelFirstPackedPrimitiveIndexShiftBit)  & k_modelPackedPrimitiveIndexValueMask,
-        (l_packedValue >> k_modelSecondPackedPrimitiveIndexShiftBit) & k_modelPackedPrimitiveIndexValueMask,
-        (l_packedValue >> k_modelThirdPackedPrimitiveIndexShiftBit)  & k_modelPackedPrimitiveIndexValueMask
-    );
+    return DecodeModelPackedPrimitiveIndex(l_packedValue);
 }
 
 // StaticModelのLocal法線をWorld空間へ変換する

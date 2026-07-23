@@ -56,7 +56,7 @@ namespace FWK::Physics
 		void SetCapsuleRadius              (const float a_set) { m_capsuleRadius               = a_set; }
 		void SetMaxSlopeAngleRadians       (const float a_set) { m_maxSlopeAngleRadians        = a_set; }
 
-		bool SetIsEnhancedInternalEdgeRemovalDisabled(const bool a_set) { m_isEnhancedInternalEdgeRemovalDisabled = a_set; }
+		void SetIsEnhancedInternalEdgeRemovalDisabled(const bool a_set) { m_isEnhancedInternalEdgeRemovalDisabled = a_set; }
 
 		float GetVALCapsuleHalfHeightOfCylinder() const { return m_capsuleHalfHeightOfCylinder; }
 		float GetVALCapsuleRadius              () const { return m_capsuleRadius; }

@@ -9,8 +9,6 @@ static const float k_modelDirectionElementW = 0.0F;
 // sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
 static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
 
-static const uint k_modelTriangleVertexCount = 3U;
-
 static const uint k_modelMeshShaderThreadCountX = 32U;
 static const uint k_modelMeshShaderThreadCountY = 1U;
 static const uint k_modelMeshShaderThreadCountZ = 1U;
@@ -24,20 +22,6 @@ static const uint k_modelAmplificationDispatchMeshGroupCountY = 1U;
 static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
 
 static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
-
-static const uint k_modelFirstPrimitiveVertexOffset  = 0U;
-static const uint k_modelSecondPrimitiveVertexOffset = 1U;
-static const uint k_modelThirdPrimitiveVertexOffset  = 2U;
-
-static const uint k_modelPackedPrimitiveIndexBitCount = 8U;
-
-// uint32_tからuint8_t相当のPrimitiveIndexだけを取り出すためのMask。
-// 0xFFU = 下位8bitだけを残す。
-static const uint k_modelPackedPrimitiveIndexValueMask = 0xFFU;
-
-static const uint k_modelFirstPackedPrimitiveIndexShiftBit  = k_modelFirstPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
-static const uint k_modelSecondPackedPrimitiveIndexShiftBit = k_modelSecondPrimitiveVertexOffset * k_modelPackedPrimitiveIndexBitCount;
-static const uint k_modelThirdPackedPrimitiveIndexShiftBit  = k_modelThirdPrimitiveVertexOffset  * k_modelPackedPrimitiveIndexBitCount;
 
 // AmplificationShaderからMeshShaderへ渡すPayload
 // AS1グループ = Meshlet1個なので

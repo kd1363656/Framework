@@ -2448,7 +2448,7 @@
     <None Include="Asset\Shader\Model\ModelMeshlet.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
-    <None Include="Asset\Shader\Model\ModelMeshletFrustumCulling.hlsli">
+    <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli">
       <Filter>Asset\Shader\Model</Filter>
     </None>
   </ItemGroup>

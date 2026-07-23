@@ -843,7 +843,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Model\Model.hlsli" />
     <None Include="Asset\Shader\Model\ModelMeshlet.hlsli" />
-    <None Include="Asset\Shader\Model\ModelMeshletFrustumCulling.hlsli" />
+    <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli" />
     <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
     <None Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit.hlsli" />
     <None Include="Asset\Shader\Model\Standard\ModelStandard.hlsli" />

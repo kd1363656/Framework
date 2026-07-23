@@ -252,7 +252,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 {
 	const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
 	const auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
-	      auto& l_meshletBoundsBufferList = a_frameData.m_meshletBoundsBufferList ;
+	      auto& l_meshletBoundsBufferList = a_frameData.m_meshletBoundsBufferList;
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(),                                    "ModelMeshListが空のため、MeshletBoundsを更新できません。",       false);
 	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
@@ -272,14 +272,17 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 
 		const auto& l_meshletBuffer                             = l_modelMeshRuntimeData.m_meshletBuffer;
 		const auto& l_uniqueVertexIndexBuffer                   = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer;
+		const auto& l_primitiveIndexBuffer                      = l_modelMeshRuntimeData.m_primitiveIndexBuffer;
 		const auto  l_vertexBufferSRVDescriptorIndex            = l_skinnedVertexBuffer.GetVALSRVDescriptorIndex    ();
 		const auto  l_meshletBufferSRVDescriptorIndex           = l_meshletBuffer.GetVALSRVDescriptorIndex          ();
 		const auto  l_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();
+		const auto  l_primitiveIndexBufferSRVDescriptorIndex    = l_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
 		const auto  l_meshletBoundsBufferUAVDescriptorIndex     = l_meshletBoundsBuffer.GetVALUAVDescriptorIndex    ();
 
 		FWK_ASSERT_RETURN_VALUE_IF(l_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。",     false);
 		FWK_ASSERT_RETURN_VALUE_IF(l_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。",           false);
 		FWK_ASSERT_RETURN_VALUE_IF(l_uniqueVertexIndexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UniqueVertexIndexBufferのSRVDescriptorIndexが無効です。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(l_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。",    false);
 		FWK_ASSERT_RETURN_VALUE_IF(l_meshletBoundsBufferUAVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのUAVDescriptorIndexが無効です。",     false);
 
 		const auto& l_meshletBoundsBufferResource = l_meshletBoundsBuffer.GetREFBufferGPUResource().m_resource;
@@ -299,6 +302,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_vertexBufferSRVDescriptorIndex            = l_vertexBufferSRVDescriptorIndex;
 		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_meshletBufferSRVDescriptorIndex           = l_meshletBufferSRVDescriptorIndex;
 		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBufferSRVDescriptorIndex;
+		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_primitiveIndexBufferSRVDescriptorIndex    = l_primitiveIndexBufferSRVDescriptorIndex;
 		l_cbSkeletalAnimationMeshletBoundsUpdatePerObject.m_meshletBoundsBufferUAVDescriptorIndex     = l_meshletBoundsBufferUAVDescriptorIndex;
 
 		const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationMeshletBoundsUpdatePerObject);
