@@ -1,6 +1,8 @@
 ﻿#include "EditorManager.h"
 
 FWK::Editor::EditorManager::EditorManager() : 
+	m_imGuiCBVSRVUAVDescriptorPool(),
+
 	m_imGuiSRVDescriptorIndexMap(),
 
 	m_editorWindowMap(),
@@ -8,8 +10,6 @@ FWK::Editor::EditorManager::EditorManager() :
 	m_editorWindowList(),
 
 	m_logEditorWindow(),
-
-	m_imGuiCBVSRVUAVDescriptorPool(),
 
 	m_mainMenubar(),
 

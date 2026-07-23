@@ -110,6 +110,8 @@ namespace FWK::Editor
 
 		static constexpr int k_dockingStyleVarPopCount = 2;
 
+		TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
+
 		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
 
 		EditorWindowMap m_editorWindowMap;
@@ -117,8 +119,6 @@ namespace FWK::Editor
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
 		Editor::LogEditorWindow m_logEditorWindow;
-
-		TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
 
 		Editor::MainMenubarEditor m_mainMenubar;
 
