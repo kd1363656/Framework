@@ -139,7 +139,7 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
     // Meshlet内のすべてのTriangleが裏向き
     const float l_backfaceCullingThreshold = a_meshletBounds.coneCutoff * l_cameraDistance + l_safeBoundingSphereRadius;
     
-    return l_cameraDirectionAxisDot >= k_modelFrustumPlaneNormalBaseLength;
+    return l_cameraDirectionAxisDot >= l_backfaceCullingThreshold;
 }
 
 // FrustumCullingとBackfaceConeCullingを実行し、
