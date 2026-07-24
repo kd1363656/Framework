@@ -22,6 +22,7 @@ namespace FWK::Utility
 		using ElementType = typename Type::element_type;
 
 		static constexpr bool k_isWeakPTR   = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
+		static constexpr bool k_isSharedPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared;
 		static constexpr bool k_isUniquePTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique;
 		
 	public:
@@ -48,12 +49,30 @@ namespace FWK::Utility
 
 			ArrayElementData l_arrayElementData = {};
 
-			// ポインタとそのポインタを
+			// ポインタとそのポインタを格納
 			l_arrayElementData.m_type        = a_type;
 			l_arrayElementData.m_typeAddress = l_typeAddress;
 
 			m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
 			m_registeredAddressSet.emplace	   (l_typeAddress);
+		}
+
+		// shared_ptrの場合
+		void Add(const Type& a_type)
+			requires k_isSharedPTR
+		{
+			FWK_ASSERT_RETURN_IF(!a_type, "登録対象が無効なため、VectorArrayへの登録に失敗しました。");
+
+			const auto* const l_typeAddress = a_type.get();
+
+			ArrayElementData l_arrayElementData = {};
+
+			// ポインタとそのポインタを格納
+			l_arrayElementData.m_type        = a_type;
+			l_arrayElementData.m_typeAddress = l_typeAddress;
+			
+			m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
+			m_registeredAddressSet.emplace     (l_typeAddress);
 		}
 
 		// uniqueポインタから取得
@@ -67,7 +86,7 @@ namespace FWK::Utility
 
 			ArrayElementData l_arrayElementData = {};
 
-			// ポインタとそのポインタを
+			// ポインタとそのポインタを格納
 			l_arrayElementData.m_type        = std::move(a_type);
 			l_arrayElementData.m_typeAddress = l_typeAddress;
 

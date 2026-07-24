@@ -11,13 +11,15 @@ namespace FWK
 
 		void ConfirmMatrix();
 
+		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
+
 		const auto& GetREFParent() const { return m_parent; }
 
 		std::weak_ptr<TransformComponent> GetVALREFTransformComponent() const { return m_transformComponent; }
 
 	private:
 
-		std::vector<std::shared_ptr<ComponentBase>> m_componentBase = {};
+		Utility::VectorArray<std::shared_ptr<ComponentBase>> m_componentBase = {};
 
 		std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
 
