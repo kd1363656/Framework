@@ -4,11 +4,17 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto l_format = a_rootJson.value(k_formatJsonKey, Graphics::DepthStencilTexture::k_defaultDepthStencilTextureFormat);
-
-	const auto l_depthClearValue = a_rootJson.value(k_depthClearValueJsonKey, Constant::k_defaultDepthClearValue);
-
-	const auto l_stencilClearValue = a_rootJson.value(k_stencilClearValueJsonKey, Constant::k_defaultStencilClearValue);
+	Struct::DepthStencilTextureSettings l_depthStencilTextureSettings = {};
+																								 
+	l_depthStencilTextureSettings.m_resourceFormat    = a_rootJson.value(k_resourceFormatJsonKey,    Struct::DepthStencilTextureSettings::k_defaultResourceFormat);
+	l_depthStencilTextureSettings.m_dsvFormat         = a_rootJson.value(k_dsvFormatJsonKey,         Struct::DepthStencilTextureSettings::k_defaultDSVFormat);
+	l_depthStencilTextureSettings.m_srvFormat         = a_rootJson.value(k_srvFormatJsonKey,         Struct::DepthStencilTextureSettings::k_defaultSRVFormat);
+	l_depthStencilTextureSettings.m_depthClearValue   = a_rootJson.value(k_depthClearValueJsonKey,   Constant::k_defaultDepthClearValue);
+	l_depthStencilTextureSettings.m_arraySize         = a_rootJson.value(k_arraySizeJsonKey,         Struct::DepthStencilTextureSettings::k_defaultArraySize);
+	l_depthStencilTextureSettings.m_mipLevels         = a_rootJson.value(k_mipLevelsJsonKey,         Struct::DepthStencilTextureSettings::k_defaultMipLevels);
+	l_depthStencilTextureSettings.m_sampleCount       = a_rootJson.value(k_sampleCountJsonKey,       Constant::k_defaultSampleCount);
+	l_depthStencilTextureSettings.m_sampleQuality     = a_rootJson.value(k_sampleQualityJsonKey,     Constant::k_defaultSampleQuality);
+	l_depthStencilTextureSettings.m_stencilClearValue = a_rootJson.value(k_stencilClearValueJsonKey, Constant::k_defaultStencilClearValue);
 
 	const auto l_renderGraphDepthStencilType = a_rootJson.value(k_renderGraphDepthStencilTypeJsonKey, Enum::RenderGraphDepthStencilType::Invalid);
 
@@ -17,12 +23,6 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 
 	const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
 	
-	a_depthStencilPassTexture.SetFormat(l_format);
-
-	a_depthStencilPassTexture.SetDepthClearValue(l_depthClearValue);
-
-	a_depthStencilPassTexture.SetStencilClearValue(l_stencilClearValue);
-
 	a_depthStencilPassTexture.SetRenderGraphDepthStencilType(l_renderGraphDepthStencilType);
 
 	a_depthStencilPassTexture.SetWidth (l_width);
@@ -35,11 +35,19 @@ nlohmann::json FWK::Converter::DepthStencilPassTextureJsonConverter::Serialize(c
 {
 	nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_formatJsonKey]			             = a_depthStencilPassTexture.GetVALFormat		              ();
-	l_rootJson[k_depthClearValueJsonKey]             = a_depthStencilPassTexture.GetVALDepthClearValue            ();
-	l_rootJson[k_stencilClearValueJsonKey]           = a_depthStencilPassTexture.GetVALStencilClearValue          ();
+	const auto& l_depthStencilTextureSettings = a_depthStencilPassTexture.GetREFDepthStencilTextureSettings();
+
+	l_rootJson[k_resourceFormatJsonKey]    = l_depthStencilTextureSettings.m_resourceFormat;
+	l_rootJson[k_dsvFormatJsonKey]         = l_depthStencilTextureSettings.m_dsvFormat;
+	l_rootJson[k_srvFormatJsonKey]         = l_depthStencilTextureSettings.m_srvFormat;
+	l_rootJson[k_depthClearValueJsonKey]   = l_depthStencilTextureSettings.m_depthClearValue;
+	l_rootJson[k_arraySizeJsonKey]         = l_depthStencilTextureSettings.m_arraySize;
+	l_rootJson[k_mipLevelsJsonKey]         = l_depthStencilTextureSettings.m_mipLevels;
+	l_rootJson[k_sampleQualityJsonKey]     = l_depthStencilTextureSettings.m_sampleQuality;
+	l_rootJson[k_stencilClearValueJsonKey] = l_depthStencilTextureSettings.m_stencilClearValue;
+
 	l_rootJson[k_renderGraphDepthStencilTypeJsonKey] = a_depthStencilPassTexture.GetVALRenderGraphDepthStencilType();
-	l_rootJson[k_widthJsonKey]					     = a_depthStencilPassTexture.GetVALWidth					      ();
+	l_rootJson[k_widthJsonKey]					     = a_depthStencilPassTexture.GetVALWidth                      ();
 	l_rootJson[k_heightJsonKey]					     = a_depthStencilPassTexture.GetVALHeight			          ();
 	l_rootJson[k_isFixedSizeJsonKey]			     = a_depthStencilPassTexture.GetVALIsFixedSize			      ();
 	

@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct DepthStencilPassTextureStruct
+	struct DepthStencilTextureSettings
 	{
 		static constexpr DXGI_FORMAT k_defaultResourceFormat = DXGI_FORMAT_D32_FLOAT;
 		static constexpr DXGI_FORMAT k_defaultDSVFormat      = DXGI_FORMAT_D32_FLOAT;

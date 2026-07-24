@@ -68,11 +68,16 @@
                 "RenderGraphFrameResource": {
                     "DepthStencilPassTextureList": [
                         {
+                            "ArraySize": 1,
+                            "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
                             "DepthClearValue": 1.0,
-                            "Format": "DXGI_FORMAT_D32_FLOAT",
                             "Height": 0,
                             "IsFixedSize": false,
+                            "MipLevels": 1,
                             "RenderGraphDepthStencilType": "RenderGraphDepthStencilType::SceneDepth",
+                            "ResourceFormat": "DXGI_FORMAT_D32_FLOAT",
+                            "SRVFormat": "DXGI_FORMAT_UNKNOWN",
+                            "SampleQuality": 0,
                             "StencilClearValue": 0,
                             "Width": 0
                         }

@@ -31,25 +31,17 @@ namespace FWK::Graphics
 						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
 						  ResourceReleaseContext&	    a_resourceReleaseContext);
 
-		void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
+		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 
 		void SetRenderGraphDepthStencilType(const Enum::RenderGraphDepthStencilType a_set) { m_renderGraphDepthStencilType = a_set; }
 
-		void SetDepthClearValue(const FLOAT a_set) { m_depthClearValue = a_set; }
-
-		void SetStencilClearValue(const UINT8 a_set) { m_stencilClearValue = a_set; }
-
 		const auto& GetREFDepthStencilTexture() const { return m_depthStencilTexture; }
+
+		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
 		auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
 
-		auto GetVALFormat() const { return m_format; }
-
 		auto GetVALRenderGraphDepthStencilType() const { return m_renderGraphDepthStencilType; }
-
-		auto GetVALDepthClearValue() const { return m_depthClearValue; }
-
-		auto GetVALStencilClearValue() const { return m_stencilClearValue; }
 
 	private:
 
@@ -57,12 +49,8 @@ namespace FWK::Graphics
 
 		Converter::DepthStencilPassTextureJsonConverter m_jsonConverter = {};
 
-		DXGI_FORMAT m_format = DepthStencilTexture::k_defaultDepthStencilTextureFormat;
-
+		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
+		
 		Enum::RenderGraphDepthStencilType m_renderGraphDepthStencilType = Enum::RenderGraphDepthStencilType::Invalid;
-
-		FLOAT m_depthClearValue = Constant::k_defaultDepthClearValue;
-
-		UINT8 m_stencilClearValue = Constant::k_defaultStencilClearValue;
 	};
 }

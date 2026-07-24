@@ -14,7 +14,7 @@ nlohmann::json FWK::Graphics::DepthStencilPassTexture::Serialize() const
 
 bool FWK::Graphics::DepthStencilPassTexture::Create(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, const Window::ClientSize& a_clientSize, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(m_format == DXGI_FORMAT_UNKNOWN, "DepthStencilPassTextureのFormatが無効のため、作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_resourceFormat == DXGI_FORMAT_UNKNOWN, "DepthStencilPassTextureのFormatが無効のため、作成処理に失敗しました。", false);
 
 	const auto l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
 	const auto l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
@@ -23,11 +23,11 @@ bool FWK::Graphics::DepthStencilPassTexture::Create(const Device& a_device, cons
 
 	FWK_ASSERT_RETURN_VALUE_IF(!m_depthStencilTexture.Create(a_device,
 															 a_gpuMemoryAllocator,
-															 m_format,
-															 m_depthClearValue,
+															 m_depthStencilTextureSettings.m_resourceFormat,
+															 m_depthStencilTextureSettings.m_depthClearValue,
 															 l_width,
 															 l_height,
-															 m_stencilClearValue,
+															 m_depthStencilTextureSettings.m_stencilClearValue,
 															 a_dsvDescriptorPool),
 															 "DepthStencilTexture内部のDepthStencilTexture作成に失敗しました。",
 															 false);

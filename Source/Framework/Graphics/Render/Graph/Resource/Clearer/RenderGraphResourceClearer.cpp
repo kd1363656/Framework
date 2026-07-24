@@ -60,14 +60,15 @@ bool FWK::Graphics::RenderGraphResourceClearer::ClearDepthStencilPassTexture(con
 	// RenderGraph側でリソースの遷移漏れがあればassert
 	FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_DEPTH_WRITE, "DepthStencilPassTextureがD3D12_RESOURCE_STATE_DEPTH_WRITEではない状態でClearしようとしています。beforUsage/afterUsageの指定、またはRenderGraphの自動遷移を確認してください。", false);
 	
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList	   ();
-	const auto& l_dsvDescriptorPool = a_resourceContext.GetREFDSVDescriptorPool();
+	const auto& l_directCommandList           = a_renderer.GetREFDirectCommandList	                       (); 
+	const auto& l_dsvDescriptorPool           = a_resourceContext.GetREFDSVDescriptorPool                  (); 
+	const auto& l_depthStencilTextureSettings = a_depthStencilPassTexture.GetREFDepthStencilTextureSettings();
 
 	// レンダーターゲットテクスチャの指定職でバックバッファをクリア
 	l_directCommandList.ClearDepthStencil(l_dsvDescriptorPool,
-										  a_depthStencilPassTexture.GetVALDepthClearValue(),
+										  l_depthStencilTextureSettings.m_depthClearValue,
 										  l_depthStencilTexture.GetVALDSVDescriptorIndex(), 
-										  a_depthStencilPassTexture.GetVALStencilClearValue());
+										  l_depthStencilTextureSettings.m_stencilClearValue);
 
 	return true;
 }
