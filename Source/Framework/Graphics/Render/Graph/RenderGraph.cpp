@@ -165,9 +165,8 @@ void FWK::Graphics::RenderGraph::RemoveExpiredPassList()
 
 	while (l_index < m_passList.size())
 	{
-		const auto& l_pass = m_passList[l_index];
-
-		if (l_pass)
+		if (const auto& l_pass = m_passList[l_index];
+			l_pass)
 		{
 			++l_index;
 			continue;

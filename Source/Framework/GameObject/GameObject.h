@@ -9,7 +9,12 @@ namespace FWK
 		 GameObject() = default;
 		~GameObject() = default;
 
-		void ConfirmMatrix();
+		void PostDeserialize() const;
+
+		void EarlyUpdate  () const;
+		void Update       () const;
+		void LateUpdate   () const;
+		void ConfirmMatrix() const;
 
 		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
 
@@ -19,7 +24,11 @@ namespace FWK
 
 	private:
 
-		Utility::VectorArray<std::shared_ptr<ComponentBase>> m_componentBase = {};
+		std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>				 m_uniqueComponentMap = {};
+		std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<ComponentBase>>> m_multiComponentMap  = {};
+
+		Utility::VectorArray<std::weak_ptr<GameObject>>      m_childList     = {};
+		Utility::VectorArray<std::shared_ptr<ComponentBase>> m_componentList = {};
 
 		std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
 

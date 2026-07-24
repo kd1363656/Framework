@@ -101,7 +101,7 @@ namespace FWK::Graphics
 		ComputeRequestPerObjectMap m_computeRequestPerObjectMap = {};
 		DrawRequestPerObjectMap    m_drawRequestPerObjectMap    = {};
 
-		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList;
+		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList = {};
 
 		std::vector<std::shared_ptr<DrawRequestPassBase>>         m_drawRequestPassList         = {};
 		std::vector<std::shared_ptr<ComputeRequestPerObjectBase>> m_computeRequestPerObjectList = {};

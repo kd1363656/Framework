@@ -139,6 +139,15 @@ void FWK::Scene::EarlyUpdate()
 
 		return true;
 	});
+
+	for (const auto& l_gameObjectData : m_gameObjectDataList)
+	{
+		const auto& l_gameObject = l_gameObjectData.m_gameObject;
+
+		if (!l_gameObject) { continue; }
+
+		l_gameObject->EarlyUpdate();
+	}
 }
 void FWK::Scene::Update()
 {
@@ -318,10 +327,26 @@ void FWK::Scene::Update()
 	m_characterModelStandardDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
 
 	m_characterVirtual->DrawDebug(JPH::ColorArg{ 255U, 255U, 255U, 255U });
+
+	for (const auto& l_gameObjectData : m_gameObjectDataList)
+	{
+		const auto& l_gameObject = l_gameObjectData.m_gameObject;
+
+		if (!l_gameObject) { continue; }
+
+		l_gameObject->Update();
+	}
 }
 void FWK::Scene::LateUpdate() const
 {
+	for (const auto& l_gameObjectData : m_gameObjectDataList)
+	{
+		const auto& l_gameObject = l_gameObjectData.m_gameObject;
 
+		if (!l_gameObject) { continue; }
+
+		l_gameObject->LateUpdate();
+	}
 }
 void FWK::Scene::ConfirmMatrix() const
 {

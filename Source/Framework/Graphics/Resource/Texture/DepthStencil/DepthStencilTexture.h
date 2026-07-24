@@ -32,6 +32,8 @@ namespace FWK::Graphics
 
 		void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
 
+		TypeAlias::DescriptorIndex FetchVALDSVDescriptorIndex(const UINT a_arrayIndex, const UINT a_mipSlice) const;
+
 		const auto& GetREFGPUResource() const { return m_gpuResource; }
 
 		auto GetVALCurrentResourceState() const { return m_currentResourceState; }
@@ -52,11 +54,18 @@ namespace FWK::Graphics
 
 		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
-		static constexpr UINT k_firstArrayIndex          = 0U;
-		static constexpr UINT k_firstMipSlice            = 0U;
+		static constexpr UINT k_firstArrayIndex = 0U;
+		static constexpr UINT k_firstMipSlice   = 0U;
+
+		static constexpr UINT k_minimumSampleCount = 1U;
+
 		static constexpr UINT k_singleTextureArraySize   = 1U;
 		static constexpr UINT k_singleDSVArraySliceCount = 1U;
-		static constexpr UINT k_nonMultisampleCount      = 1U;
+		static constexpr UINT k_singleMipLevelCount      = 1U;
+		static constexpr UINT k_nonMultiSampleCount      = 1U;
+		
+		static constexpr UINT16 k_minimumTextureArraySize = 1U;
+		static constexpr UINT16 k_minimumMipLevelCount    = 1U;
 
 		Struct::GPUResource m_gpuResource = {};
 
