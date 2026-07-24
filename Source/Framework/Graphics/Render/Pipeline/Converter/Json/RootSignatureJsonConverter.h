@@ -69,7 +69,7 @@ namespace FWK::Converter
 		static constexpr std::string_view k_addressUJsonKey       = "AddressU";
 		static constexpr std::string_view k_addressVJsonKey       = "AddressV";
 		static constexpr std::string_view k_addressWJsonKey       = "AddressW";
-		static constexpr std::string_view k_mipLODBiasJsonKey     = "MipLODBias";
+		static constexpr std::string_view k_mipLODBiasJsonKey     = "MIPLODBias";
 		static constexpr std::string_view k_maxAnisotropyJsonKey  = "MaxAnisotropy";
 		static constexpr std::string_view k_comparisonFUNCJsonKey = "ComparisonFunc";
 		static constexpr std::string_view k_borderColorJsonKey    = "BorderColor";

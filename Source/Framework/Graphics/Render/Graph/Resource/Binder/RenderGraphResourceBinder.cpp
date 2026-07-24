@@ -134,8 +134,8 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
 	const auto& l_renderTargetTexture = l_renderTargetPassTexture->GetREFRenderTargetTexture();
 	const auto& l_depthStencilTexture = l_depthStencilPassTexture->GetREFDepthStencilTexture();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetTexture.GetVALRTVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのRTVDescriptorIndexが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.GetVALDSVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTextureのDSVDescriptorIndexが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetTexture.GetVALRTVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex,                  "RenderTargetTextureのRTVDescriptorIndexが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.FetchVALBaseSubresourceDSVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTextureのDSVDescriptorIndexが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
 
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList	   ();
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
@@ -149,7 +149,7 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
 	l_directCommandList.SetupRenderTargetAndDepthStencil(l_rtvDescriptorPool,
 														 l_dsvDescriptorPool,
 														 l_renderTargetTexture.GetVALRTVDescriptorIndex(),
-														 l_depthStencilTexture.GetVALDSVDescriptorIndex());
+														 l_depthStencilTexture.FetchVALBaseSubresourceDSVDescriptorIndex());
 
 	return true;
 }

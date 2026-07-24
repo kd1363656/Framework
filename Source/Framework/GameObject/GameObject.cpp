@@ -57,7 +57,33 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 	if (!a_component) 
 	{
 		FWK_ADD_LOG("GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", m_selfName);
+
 		return; 
+	}
+
+	// 派生クラスの静的IDを取得(このコンポーネントを取得時に使用)
+	const auto l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	bool l_canAdd = false;
+
+	// 複数持てるコンポーネントかどうかを判断して
+	// 適切なstd::unordered_mapに割り当てる
+	if (!a_component->IsAllowMultiple())
+	{
+		l_canAdd = m_uniqueComponentMap.try_emplace(l_staticTypeID, a_component).second;
+	}
+	else
+	{
+		m_multiComponentMap[l_staticTypeID].emplace_back(a_component);
+
+		l_canAdd = true;
+	}
+
+	if (!l_canAdd)
+	{
+		FWK_ADD_LOG("Component : {}\nコンポーネントの格納に失敗しました。", a_component->GetREFTypeINFO().k_name);
+
+		return;
 	}
 
 	m_componentList.Add(a_component);

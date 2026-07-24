@@ -12,7 +12,7 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 	// PNGなどの標準的な画像から情報を取得する関数
 	// LoadFromWICFile(読み込み画像ファイルパス、
 	//                 WIC読み込み時の追加フラグ、
-	//                 画像の幅、高さ、mip数、DXGI_FORMATなどを受け取る構造体、
+	//                 画像の幅、高さ、MIP数、DXGI_FORMATなどを受け取る構造体、
 	//                 実際の画像ピクセルデータを受け取るScratchImage);
 	const auto l_hr = DirectX::LoadFromWICFile(a_filePath.c_str(),
 											   l_wicFlags,

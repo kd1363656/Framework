@@ -80,7 +80,7 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
                                                   k_defaultTextureWidth,
                                                   k_defaultTextureHeight,
                                                   Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-                                                  Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels);
+                                                  Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
 

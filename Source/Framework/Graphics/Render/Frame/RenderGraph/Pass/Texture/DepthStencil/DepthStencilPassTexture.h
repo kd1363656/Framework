@@ -19,17 +19,19 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		bool Create(const Device&                       a_device,
-					const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-					const Window::ClientSize&           a_clientSize,
-						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
+		bool Create(const Device&                             a_device,
+					const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+					const Window::ClientSize&                 a_clientSize,
+						  TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+			              TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		bool Resize(const Device&                       a_device,
-					const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-					const Window::ClientSize&           a_clientSize,
-					const UINT64&						a_retiredFenceValue,
-						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
-						  ResourceReleaseContext&	    a_resourceReleaseContext);
+		bool Resize(const Device&                             a_device,
+					const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+					const Window::ClientSize&                 a_clientSize,
+					const UINT64&						      a_retiredFenceValue,
+						  TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+						  ResourceReleaseContext&	          a_resourceReleaseContext);
 
 		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 

@@ -106,7 +106,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	{
 		TextureBinarySubresourceHeader l_textureBinarySubresourceHeader = {};
 
-		// MipMap1枚分の情報を読む
+		// MIPMap1枚分の情報を読む
 		if (!TryReadSingleBinaryData(l_textureBinarySubresourceHeader, l_memoryReadOffset))
 		{
 			DestroyMemoryMappedFile();

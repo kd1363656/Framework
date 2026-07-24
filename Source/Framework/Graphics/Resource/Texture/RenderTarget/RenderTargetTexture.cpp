@@ -81,7 +81,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
 															 a_width,
 															 a_height,
 															 Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-															 Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels,
+															 Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels,
 															 Constant::k_defaultSampleCount,
 															 Constant::k_defaultSampleQuality,
 															 D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -155,7 +155,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
 	// PlaneSlice          : 通常カラーTextureなので0
 	// ResourceMINLODCLAMP : 最小LOD制限
 	l_srvDesc.Texture2D.MostDetailedMip     = k_mostDetailedMIP;
-	l_srvDesc.Texture2D.MipLevels           = Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels;
+	l_srvDesc.Texture2D.MipLevels           = Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels;
 	l_srvDesc.Texture2D.PlaneSlice		    = k_planeSlice;
 	l_srvDesc.Texture2D.ResourceMinLODClamp = k_resourceMINLODClamp;
 

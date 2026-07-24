@@ -54,8 +54,8 @@ bool FWK::Graphics::RenderGraphResourceClearer::ClearDepthStencilPassTexture(con
 	const auto& l_depthStencilTexture = a_depthStencilPassTexture.GetREFDepthStencilTexture();
 	const auto& l_gpuResource		  = l_depthStencilTexture.GetREFGPUResource			   ();
 
-	FWK_ASSERT_RETURN_VALUE_IF(!l_gpuResource.m_resource,															         "DepthStencilPassTextureのGPUResourceが無効のため、Clear処理に失敗しました。",    false);
-	FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.GetVALDSVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilPassTextureのDSVDescriptorIndexが無効のため、Clearに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_gpuResource.m_resource,															                          "DepthStencilPassTextureのGPUResourceが無効のため、Clear処理に失敗しました。",    false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.FetchVALBaseSubresourceDSVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilPassTextureのDSVDescriptorIndexが無効のため、Clearに失敗しました。", false);
 
 	// RenderGraph側でリソースの遷移漏れがあればassert
 	FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilTexture.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_DEPTH_WRITE, "DepthStencilPassTextureがD3D12_RESOURCE_STATE_DEPTH_WRITEではない状態でClearしようとしています。beforUsage/afterUsageの指定、またはRenderGraphの自動遷移を確認してください。", false);
@@ -67,7 +67,7 @@ bool FWK::Graphics::RenderGraphResourceClearer::ClearDepthStencilPassTexture(con
 	// レンダーターゲットテクスチャの指定職でバックバッファをクリア
 	l_directCommandList.ClearDepthStencil(l_dsvDescriptorPool,
 										  l_depthStencilTextureSettings.m_depthClearValue,
-										  l_depthStencilTexture.GetVALDSVDescriptorIndex(), 
+										  l_depthStencilTexture.FetchVALBaseSubresourceDSVDescriptorIndex(),
 										  l_depthStencilTextureSettings.m_stencilClearValue);
 
 	return true;

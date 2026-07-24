@@ -20,7 +20,7 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&			   a_device
 	auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
 	auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
 	auto& l_dsvDescriptorPool       = a_resourceContext.GetMutableREFDSVDescriptorPool      ();
-
+	
 	for (const auto& l_renderTargetPassTexture : m_renderTargetPassTextureList)
 	{
 		FWK_ASSERT_RETURN_VALUE_IF(!l_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceの作成に失敗しました。", false);
@@ -41,7 +41,8 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&			   a_device
 		FWK_ASSERT_RETURN_VALUE_IF(!l_depthStencilPassTexture->Create(a_device,
 																	  a_gpuMemoryAllocator,
 																	  a_clientSize,
-																	  l_dsvDescriptorPool),
+																	  l_dsvDescriptorPool,
+			                                                          l_cbvSRVUAVDescriptorPool),
 																	  "DepthStencilTextureの作成に失敗しました。",
 																	  false);
 	}
@@ -84,6 +85,7 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&				a_device,
 																	  a_clientSize,
 																	  a_retiredFenceValue,
 																	  l_dsvDescriptorPool,
+																	  l_cbvSRVUAVDescriptorPool,
 																	  l_resourceReleaseContext),
 																	  "DepthStencilTextureのリサイズに失敗しました。",
 																	  false);

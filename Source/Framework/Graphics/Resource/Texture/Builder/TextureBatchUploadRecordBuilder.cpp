@@ -143,7 +143,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 	FWK_ASSERT_RETURN_VALUE_IF(!l_imageList, "ScratchImageの画像データ取得に失敗したため、テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
 
 	// DirectXTexで読み込んだ画像データをUploadBufferへコピーする
-	// Texture2Dでは各MipMapが一つのサブリソースになる(Texture2DArrayなどでは違う)
+	// Texture2Dでは各MIPMapが一つのサブリソースになる(Texture2DArrayなどでは違う)
 	for (UINT l_subresourceIndex = 0U; l_subresourceIndex < l_subresourceCount; ++l_subresourceIndex)
 	{
 		// 現在処理するサブリソースの元画像データと、UploadBuffer上の配置情報を取得する

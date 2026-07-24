@@ -16,7 +16,7 @@ namespace FWK::Converter
 			std::uint64_t m_height           = k_emptyTextureHeight;
 			std::uint64_t m_depth            = k_emptyTextureDepth;
 			std::uint64_t m_arraySize        = k_defaultTexture2DArraySize;
-			std::uint64_t m_mipLevels        = k_defaultTexture2DMipLevels;
+			std::uint64_t m_mipLevels        = k_defaultTexture2DMIPLevels;
 			std::uint64_t m_subresourceCount = k_emptyTextureSubresourceCount;
 
 			// フォーマットは本来ならEnumだがAPI側では絶対に変更できないEnumなので
@@ -53,7 +53,7 @@ namespace FWK::Converter
 		inline static const std::filesystem::path k_lowerPNGExtension = ".png";
 		
 		static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
-		static constexpr std::uint64_t k_defaultTexture2DMipLevels = 1ULL;
+		static constexpr std::uint64_t k_defaultTexture2DMIPLevels = 1ULL;
 
 		static constexpr std::uint32_t k_emptyTextureWidth  = 0U;
 		static constexpr std::uint32_t k_emptyTextureHeight = 0U;
