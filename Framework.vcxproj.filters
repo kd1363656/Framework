@@ -1914,6 +1914,12 @@
     <ClInclude Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\DepthStencilPassTextureStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstasnt.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

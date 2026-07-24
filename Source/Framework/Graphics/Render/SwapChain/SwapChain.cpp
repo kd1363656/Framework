@@ -70,7 +70,7 @@ bool FWK::Graphics::SwapChain::Resize(const Device&					      a_device,
 	const auto l_hr = m_swapChain->ResizeBuffers(static_cast<UINT>(m_backBufferList.size()),
 												 a_clientSize.m_width,
 												 a_clientSize.m_height,
-												 Converter::SwapChainJsonConverter::k_defaultSwapChainBackBufferFormat,
+												 k_defaultBackBufferFormat,
 											     k_swapChainDescFlags);
 
 	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインのResizeBufferに失敗しており、リサイズ処理に失敗しました。", false);
@@ -124,7 +124,7 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
 	// 1ピクセルをどういう並びの色データとして持つかを表す。
 	// R8G8B8A8_UNORMは、RGBA各8bitの標準的なカラー形式
 	// ※注意 : RTVを作るときのフォーマットとも基本的にそろえる必要がある
-	l_desc.Format = Converter::SwapChainJsonConverter::k_defaultSwapChainBackBufferFormat;
+	l_desc.Format = k_defaultBackBufferFormat;
 
 	// 立体視表示を使うかどうか
 	// 通常の2D/3Dでは使わないためFALSEにする
@@ -134,11 +134,11 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
 	// 1はMSAAを使わない通常設定
 	// 4などにするとアンチエイリアス用途になるが、
 	// スワップチェインのバックバッファでは1を使うことが多い
-	l_desc.SampleDesc.Count = Converter::SwapChainJsonConverter::k_defaultSampleCount;
+	l_desc.SampleDesc.Count = Constant::k_defaultSampleCount;
 
 	// マルチサンプリング品質レベル
 	// 通常設定では0を使うことが多い
-	l_desc.SampleDesc.Quality = Converter::SwapChainJsonConverter::k_defaultSampleQuality;
+	l_desc.SampleDesc.Quality = Constant::k_defaultSampleQuality;
 
 	// このバッファを何に使うかを指定する
 	// DXGI_USAGE_RENDER_TARGET_OUTPUTは
@@ -212,7 +212,7 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
 
 	// RTVから見たときの画素フォーマット
 	// ※注意 : バックバッファの実際のフォーマットと基本的にそろえる必要がある
-	l_rtvDesc.Format = Converter::SwapChainJsonConverter::k_defaultSwapChainBackBufferFormat;
+	l_rtvDesc.Format = k_defaultBackBufferFormat;
 
 	// このRTVが「2Dテクスチャ」としてバックバッファを見ることを指定する。
 	// スワップチェインのバックバッファは通常2Dテクスチャとして扱う

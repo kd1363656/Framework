@@ -7,7 +7,11 @@ namespace FWK::Graphics
 	{
 	public:
 
-		 CommandQueue() = default;
+		 CommandQueue() : 
+			m_commandQueue(),
+
+			 m_fence()
+		 {}
 		~CommandQueue()
 		{
 			WaitForGPUIdleIfNeeded();

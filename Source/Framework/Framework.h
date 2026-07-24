@@ -150,6 +150,7 @@
 #include "Utility/StorageAllocator/StorageIDAllocator.h"
 
 // スワップチェイン
+#include "Definition/Constant/Graphics/SwapChainJsonConverterConstasnt.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
@@ -265,6 +266,7 @@
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/RenderTargetPassTexture.h"
 #include "Definition/Enum/Graphics/DepthStencilPassTextureEnum.h"
+#include "Definition/Struct/Graphics/DepthStencilPassTextureStruct.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/Converter/Json/DepthStencilPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/DepthStencilPassTexture.h"
 #include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"

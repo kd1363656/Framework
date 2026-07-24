@@ -89,8 +89,8 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
 															 a_height,
 															 Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
 															 Converter::TextureBinaryConverter::k_defaultTexture2DMipLevels,
-															 Converter::SwapChainJsonConverter::k_defaultSampleCount,
-															 Converter::SwapChainJsonConverter::k_defaultSampleQuality,
+															 Constant::k_defaultSampleCount,
+															 Constant::k_defaultSampleQuality,
 															 D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,

@@ -252,10 +252,10 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeSampleDe
 	DXGI_SAMPLE_DESC l_sampleDesc = {};
 
 	// MSAAのサンプル数。通常描画の既定値は1。
-	l_sampleDesc.Count = a_rootJson.value(k_countJsonKey, Converter::SwapChainJsonConverter::k_defaultSampleCount);
+	l_sampleDesc.Count = a_rootJson.value(k_countJsonKey, Constant::k_defaultSampleCount);
 
 	// サンプル品質レベル通常の既定値は0。
-	l_sampleDesc.Quality = a_rootJson.value(k_qualityJsonKey, Converter::SwapChainJsonConverter::k_defaultSampleQuality);
+	l_sampleDesc.Quality = a_rootJson.value(k_qualityJsonKey, Constant::k_defaultSampleQuality);
 
 	a_graphicsPipelineStateBase.SetSampleDesc(l_sampleDesc);
 }
