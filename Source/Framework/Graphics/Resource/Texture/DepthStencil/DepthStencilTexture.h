@@ -15,14 +15,12 @@ namespace FWK::Graphics
 		DepthStencilTexture& operator=(const DepthStencilTexture&)			 = delete;
 		DepthStencilTexture& operator=(		 DepthStencilTexture&&) noexcept = default;
 
-		bool Create(const Device&					    a_device,
-					const GPUMemoryAllocator&		    a_gpuMemoryAllocator,
-					const DXGI_FORMAT				    a_format,
-					const FLOAT						    a_depthClearValue,
-					const UINT						    a_width,
-					const UINT						    a_height,
-					const UINT8						    a_stencilClearValue,
-						  TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
+		bool Create(const Device&					           a_device,
+					const GPUMemoryAllocator&		           a_gpuMemoryAllocator,
+					const Struct::DepthStencilTextureSettings& a_depthStencilTextureSettings,
+					const UINT						           a_width,
+					const UINT						           a_height,
+						  TypeAlias::DSVDescriptorPool&        a_dsvDescriptorPool);
 
 		bool Resize(const Device&			            a_device,
 					const GPUMemoryAllocator&           a_gpuMemoryAllocator,
@@ -38,41 +36,37 @@ namespace FWK::Graphics
 
 		auto GetVALCurrentResourceState() const { return m_currentResourceState; }
 
-		auto GetVALFormat() const { return m_format; }
-
-		auto GetVALWidth () const { return m_width; }
-		auto GetVALHeight() const { return m_height; }
-
-		auto GetVALDepthClearValue  () const { return m_depthClearValue; }
-		auto GetVALStencilClearValue() const { return m_stencilClearValue; }
-
-		auto GetVALDSVDescriptorIndex() const { return m_dsvDescriptorIndex; }
-
 		static constexpr DXGI_FORMAT k_defaultDepthStencilTextureFormat = DXGI_FORMAT_D32_FLOAT;
 
 	private:
 
 		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT a_width, const UINT a_height);
 
-		bool CreateDSV(const Device& a_device, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
+		bool CreateDSVList(const Device& a_device, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
 
 		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
+		void ReleaseCreateDSVDescriptorInndexList(TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool);
+
+		D3D12_DEPTH_STENCIL_VIEW_DESC FetchVALDesc(const UINT a_arrayIndex, const UINT a_mipSlice) const;
+
 		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+
+		static constexpr UINT k_firstArrayIndex          = 0U;
+		static constexpr UINT k_firstMipSlice            = 0U;
+		static constexpr UINT k_singleTextureArraySize   = 1U;
+		static constexpr UINT k_singleDSVArraySliceCount = 1U;
+		static constexpr UINT k_nonMultisampleCount      = 1U;
 
 		Struct::GPUResource m_gpuResource = {};
 
+		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
+
+		std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
+
 		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
-
-		DXGI_FORMAT m_format = k_defaultDepthStencilTextureFormat;
-
-		FLOAT m_depthClearValue = Constant::k_defaultDepthClearValue;
 
 		UINT m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
 		UINT m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
-
-		UINT8 m_stencilClearValue = Constant::k_defaultStencilClearValue;
-
-		TypeAlias::DescriptorIndex m_dsvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};
 }

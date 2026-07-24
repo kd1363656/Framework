@@ -77,6 +77,7 @@
                             "RenderGraphDepthStencilType": "RenderGraphDepthStencilType::SceneDepth",
                             "ResourceFormat": "DXGI_FORMAT_D32_FLOAT",
                             "SRVFormat": "DXGI_FORMAT_UNKNOWN",
+                            "SampleCount": 1,
                             "SampleQuality": 0,
                             "StencilClearValue": 0,
                             "Width": 0

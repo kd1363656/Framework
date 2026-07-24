@@ -1,16 +1,17 @@
 ﻿#include "DepthStencilTexture.h"
 
-bool FWK::Graphics::DepthStencilTexture::Create(const Device&                       a_device, 
-                                                const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
-                                                const DXGI_FORMAT                   a_format, 
-                                                const FLOAT                         a_depthClearValue,
-                                                const UINT                          a_width,
-                                                const UINT                          a_height,
-                                                const UINT8                         a_stencilClearValue,
-                                                      TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
+bool FWK::Graphics::DepthStencilTexture::Create(const Device&                              a_device, 
+                                                const GPUMemoryAllocator&                  a_gpuMemoryAllocator, 
+                                                const Struct::DepthStencilTextureSettings& a_depthStencilTextureSettings, 
+                                                const UINT                                 a_width, 
+                                                const UINT                                 a_height, 
+                                                      TypeAlias::DSVDescriptorPool&        a_dsvDescriptorPool)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height), "DepthStencilTextureのSizeが無効のため、作成処理に失敗しました。",   false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_format == DXGI_FORMAT_UNKNOWN,                 "DepthStencilTextureのFormatが無効のため、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height),                       "DepthStencilTextureのSizeが無効のため、作成処理に失敗しました。",           false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_resourceFormat == DXGI_FORMAT_UNKNOWN, "DepthStencilTextureのResourceFormatが無効のため、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_dsvFormat == DXGI_FORMAT_UNKNOWN,      "DepthStencilTextureのDSVFormatが無効のため、作成処理に失敗しました。",      false);
+
+
 
     m_format               = a_format;
     m_depthClearValue      = a_depthClearValue;
@@ -21,9 +22,11 @@ bool FWK::Graphics::DepthStencilTexture::Create(const Device&                   
     FWK_ASSERT_RETURN_VALUE_IF(!CreateDSV(a_device, a_dsvDescriptorPool),                   "DepthStencilTexture用DSVの作成に失敗しました。",         false);
 
     return true;
+
+    return false;
 }
 
-bool FWK::Graphics::DepthStencilTexture::Resize(const Device&                       a_device, 
+bool FWK::Graphics::DepthStencilTexture::Resize(const Device&                       a_device,
                                                 const GPUMemoryAllocator&           a_gpuMemoryAllocator, 
                                                 const UINT64&                       a_retiredFenceValue, 
                                                 const UINT                          a_width, 
@@ -106,6 +109,11 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
     return true;
 }
 
+bool FWK::Graphics::DepthStencilTexture::CreateDSVList(const Device& a_device, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
+{
+    return false;
+}
+
 bool FWK::Graphics::DepthStencilTexture::CreateDSV(const Device& a_device, TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
 {
     const auto& l_device = a_device.GetREFDevice();
@@ -169,4 +177,12 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     m_currentResourceState = k_defaultResourceState;
 
     return true;
+}
+
+void FWK::Graphics::DepthStencilTexture::ReleaseCreateDSVDescriptorInndexList(TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
+{}
+
+D3D12_DEPTH_STENCIL_VIEW_DESC FWK::Graphics::DepthStencilTexture::FetchVALDesc(const UINT a_arrayIndex, const UINT a_mipSlice) const
+{
+    return D3D12_DEPTH_STENCIL_VIEW_DESC();
 }

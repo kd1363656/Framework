@@ -23,6 +23,7 @@ void FWK::Converter::DepthStencilPassTextureJsonConverter::Deserialize(const nlo
 
 	const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
 	
+	a_depthStencilPassTexture.SetDepthStencilTextureSettings(l_depthStencilTextureSettings);
 	a_depthStencilPassTexture.SetRenderGraphDepthStencilType(l_renderGraphDepthStencilType);
 
 	a_depthStencilPassTexture.SetWidth (l_width);
@@ -43,6 +44,7 @@ nlohmann::json FWK::Converter::DepthStencilPassTextureJsonConverter::Serialize(c
 	l_rootJson[k_depthClearValueJsonKey]   = l_depthStencilTextureSettings.m_depthClearValue;
 	l_rootJson[k_arraySizeJsonKey]         = l_depthStencilTextureSettings.m_arraySize;
 	l_rootJson[k_mipLevelsJsonKey]         = l_depthStencilTextureSettings.m_mipLevels;
+	l_rootJson[k_sampleCountJsonKey]       = l_depthStencilTextureSettings.m_sampleCount;
 	l_rootJson[k_sampleQualityJsonKey]     = l_depthStencilTextureSettings.m_sampleQuality;
 	l_rootJson[k_stencilClearValueJsonKey] = l_depthStencilTextureSettings.m_stencilClearValue;
 
