@@ -14,6 +14,7 @@ namespace FWK::Graphics
 		 Renderer() = default;
 		~Renderer() = default;
 
+		void INIT       ();
 		void Deserialize(const nlohmann::json& a_rootJson);
 
 		bool PostDeserialize(const Device&			   a_device, 
@@ -60,8 +61,9 @@ namespace FWK::Graphics
 
 		const auto& GetREFCurrentFrameResource() const { return m_currentFrameResource; }
 
-		const auto& GetREFSwapChain () const { return m_swapChain; }
-		const auto& GetREFRenderArea() const { return m_renderArea; }
+		const auto& GetREFSwapChain       () const { return m_swapChain; }
+		const auto& GetREFScreenRenderArea() const { return m_screenRenderArea; }
+		const auto& GetREFShadowContext   () const { return m_shadowContext; }
 
 		const auto& GetREFRenderGraph() const { return m_renderGraph; }
 		
@@ -76,16 +78,22 @@ namespace FWK::Graphics
 		auto& GetMutableREFSwapChain  () { return m_swapChain; }
 		auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 		
+		auto& GetMutableREFShadowContext() { return m_shadowContext; }
+
 		auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
 		auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
 
 	private:
+
+		bool SetupScreenRenderArea(const Window::ClientSize& a_clientSize);
 
 		void ResetCommandObjects(const FrameResource& a_frameResource);
 
 		void DecideNextFrameUseFrameResource();
 
 		bool PrepareForSwapChainResize();
+
+		void SyncSpritePassDrawRequest();
 
 		static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
 		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
@@ -95,14 +103,17 @@ namespace FWK::Graphics
 
 		std::vector<std::shared_ptr<FrameResource>> m_frameResourceList = {};
 
+		std::shared_ptr<Struct::CBSpritePass> m_cbSpritePass = nullptr;
+
 		std::weak_ptr<FrameResource> m_currentFrameResource = {};
 
-		SwapChain  m_swapChain  = {};
-		RenderArea m_renderArea = {};
+		SwapChain     m_swapChain        = {};
+		RenderArea    m_screenRenderArea = {};
+		ShadowContext m_shadowContext    = {};
 
 		TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
-		DirectCommandList              m_directCommandList   = {};
 		TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
+		DirectCommandList              m_directCommandList   = {};
 		ComputeCommandList             m_computeCommandList  = {};
 
 		RenderGraph m_renderGraph = {};

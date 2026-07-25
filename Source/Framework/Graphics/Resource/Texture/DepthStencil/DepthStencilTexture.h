@@ -86,8 +86,8 @@ namespace FWK::Graphics
 
 		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 
-		UINT m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-		UINT m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+		UINT m_width  = Constant::k_invalidTextureWidth;
+		UINT m_height = Constant::k_invalidTextureHeight;
 
 		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	};

@@ -1,27 +1,8 @@
 ﻿#include "RenderArea.h"
 
-bool FWK::Graphics::RenderArea::SetupRenderArea(const SwapChain& a_swapChain)
+bool FWK::Graphics::RenderArea::Setup(const UINT a_width, const UINT a_height)
 {
-	const auto& l_swapChain = a_swapChain.GetREFSwapChain();
-
-	FWK_ASSERT_RETURN_VALUE_IF(!l_swapChain, "スワップチェインが作成されておらず、ビューポート及びシザー矩形の作成に失敗しました。", false);
-
-	const auto& l_backBufferList = a_swapChain.GetREFBackBufferList();
-	
-	FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(), "バックバッファーの要素が空になっており、ビューポート及びシザー矩形の作成に失敗しました。", false);
-
-	// 先頭のバックバッファを取得
-	// Viewport生成時に、このバックバッファの幅と高さを利用する
-	const auto& l_firstBackBuffer = l_backBufferList.begin()->m_backBufferResource.Get();
-
-	FWK_ASSERT_RETURN_VALUE_IF(!l_firstBackBuffer, "バックバッファー作成ができておらず、ビューポート及びシザー矩形の作成に失敗しました。", false);
-
-	DXGI_SWAP_CHAIN_DESC1 l_desc = {};
-
-	// スワップチェインからパラメータを取得し縦幅と横幅を取得
-	auto l_hr = l_swapChain->GetDesc1(&l_desc);
-
-	FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインのパラメーターの取得に失敗しており、ビューポート及びシザー矩形の作成に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height), "RenderAreaへ指定されたWidthまたはHeightが無効です。", false);
 
 	// D3D12_VIEWPORT構造体について説明
 	// TopLeftX : 描画開始位置の左端X座標
@@ -31,7 +12,12 @@ bool FWK::Graphics::RenderArea::SetupRenderArea(const SwapChain& a_swapChain)
 	// MinDepth : 深度値の最小値
 	// MaxDepth : 深度値の最大値
 	// 実際の画面上に画面全体の大きさをどのようにして描画するかを決める設定
-	m_viewport = CD3DX12_VIEWPORT{ l_firstBackBuffer };
+	const auto& l_viewport = D3D12_VIEWPORT{ k_defaultViewportTopLeftX,
+	                                         k_defaultViewportTopLeftY,
+	                                         static_cast<float>(a_width),
+	                                         static_cast<float>(a_height),
+	                                         Constant::k_renderAreaMinimumViewportDepth,
+	                                         Constant::k_renderAreaMaximumViewportDepth };
 
 	// D3D12_RECT構造体について説明
 	// left   : 描画可能範囲の左端X座標
@@ -39,30 +25,34 @@ bool FWK::Graphics::RenderArea::SetupRenderArea(const SwapChain& a_swapChain)
 	// right  : 描画可能範囲の右端X座標
 	// bottom : 描画可能範囲の下端Y座標
 	// 実際に描画する範囲を矩形で切り取る設定
-	m_scissorRECT = CD3DX12_RECT{ k_defaultScissorRECTLeft,
-								  k_defaultScissorRECTTop,
-								  static_cast<LONG>(l_desc.Width),
-								  static_cast<LONG>(l_desc.Height) };
-	
-	if (!m_cbSpritePass)
-	{
-		m_cbSpritePass = std::make_shared<Struct::CBSpritePass>();
-	}
+	const auto& l_scissorRECT = D3D12_RECT{ k_defaultScissorRECTLeft,
+								            k_defaultScissorRECTTop,
+								            static_cast<LONG>(a_width),
+								            static_cast<LONG>(a_height) };
 
-	m_cbSpritePass->m_projectionMatrix = TypeAlias::Math::Matrix::CreateOrthographic(m_viewport.Width,
-																				     m_viewport.Height,
-																					 k_defaultNearClip,
-																					 k_defaultFarClip);
-
-	return true;
+	return Setup(l_viewport, l_scissorRECT);
 }
 
-void FWK::Graphics::RenderArea::SyncSpritePassDrawRequest(const RenderGraph& a_renderGraph)
+bool FWK::Graphics::RenderArea::Setup(const D3D12_VIEWPORT& a_viewport, const D3D12_RECT& a_scissorRECT)
 {
-	const auto& l_spriteScreenPassDrawRequest = a_renderGraph.FindVALDrawRequestPass<SpriteScreenPassDrawRequest>().lock();
+	FWK_ASSERT_RETURN_VALUE_IF(a_viewport.Width  <= k_invalidViewportSize ||
+		                       a_viewport.Height <= k_invalidViewportSize,
+		                       "RenderAreaへ指定されたViewportのWidthまたはHeightが無効です。",
+		                       false);
 
-	if (!l_spriteScreenPassDrawRequest) { return; }
+	FWK_ASSERT_RETURN_VALUE_IF(a_viewport.MinDepth <  Constant::k_renderAreaMinimumViewportDepth ||
+		                       a_viewport.MaxDepth >  Constant::k_renderAreaMaximumViewportDepth ||
+		                       a_viewport.MinDepth >= a_viewport.MaxDepth,
+		                       "RenderAreaへ指定されたViewportのDepth範囲が無効です。",
+		                       false);
 
-	// 定数バッファの変更を反映するために定数バッファデータを送信する
-	l_spriteScreenPassDrawRequest->SetSourceConstantBuffer(m_cbSpritePass);
+	FWK_ASSERT_RETURN_VALUE_IF(a_scissorRECT.right  <= a_scissorRECT.left ||
+		                       a_scissorRECT.bottom <= a_scissorRECT.top,
+		                       "RenderAreaへ指定されたScissorRECTの範囲が無効です。",
+		                       false);
+
+	m_viewport    = a_viewport;
+	m_scissorRECT = a_scissorRECT;
+
+	return true;
 }

@@ -32,8 +32,8 @@ namespace FWK::Graphics
 		
 	private:
 
-		UINT m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-		UINT m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+		UINT m_width  = Constant::k_invalidTextureWidth;
+		UINT m_height = Constant::k_invalidTextureHeight;
 
 		bool m_isFixedSize = false;
 	};

@@ -12,8 +12,8 @@ namespace FWK::Converter
 			std::uint16_t m_version     = k_textureAssetVersion;
 			std::uint16_t m_assetTypeID = k_textureAssetTypeID;
 
-			std::uint64_t m_width            = k_emptyTextureWidth;
-			std::uint64_t m_height           = k_emptyTextureHeight;
+			std::uint64_t m_width            = Constant::k_invalidTextureWidth;
+			std::uint64_t m_height           = Constant::k_invalidTextureHeight;
 			std::uint64_t m_depth            = k_emptyTextureDepth;
 			std::uint64_t m_arraySize        = k_defaultTexture2DArraySize;
 			std::uint64_t m_mipLevels        = k_defaultTexture2DMIPLevels;
@@ -34,8 +34,8 @@ namespace FWK::Converter
 
 		struct TextureBinarySubresourceHeader final
 		{
-			std::uint64_t m_width         = k_emptyTextureWidth;
-			std::uint64_t m_height        = k_emptyTextureHeight;
+			std::uint64_t m_width         = Constant::k_invalidTextureWidth;
+			std::uint64_t m_height        = Constant::k_invalidTextureHeight;
 			std::uint64_t m_rowPitch      = k_emptyTextureRowPitch;
 			std::uint64_t m_slicePitch    = k_emptyTextureSlicePitch;
 			std::uint64_t m_pixelDataSize = k_emptyTexturePixelDataSize;
@@ -54,9 +54,6 @@ namespace FWK::Converter
 		
 		static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
 		static constexpr std::uint64_t k_defaultTexture2DMIPLevels = 1ULL;
-
-		static constexpr std::uint32_t k_emptyTextureWidth  = 0U;
-		static constexpr std::uint32_t k_emptyTextureHeight = 0U;
 
 	private:
 

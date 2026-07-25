@@ -47,7 +47,7 @@ void FWK::Scene::INIT()
 
 	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_groundModelStandardDrawRequest);
 
-	const auto& l_viewport = l_renderer.GetREFRenderArea().GetREFViewport();
+	const auto& l_viewport = l_renderer.GetREFScreenRenderArea().GetREFViewport();
 
 	const auto l_aspectRatio = l_viewport.Width / l_viewport.Height;
 

@@ -36,8 +36,8 @@ bool FWK::Graphics::DepthStencilTexture::Create(const Device&                   
     {
         m_gpuResource = {};
 
-		m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-		m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+		m_width  = Constant::k_invalidTextureWidth;
+		m_height = Constant::k_invalidTextureHeight;
 
         FWK_ASSERT_RETURN_VALUE("DepthStencilTexture用DSVListの作成に失敗しました。", false);
     }
@@ -53,8 +53,8 @@ bool FWK::Graphics::DepthStencilTexture::Create(const Device&                   
 
         m_gpuResource = {};
 
-        m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-        m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+        m_width  = Constant::k_invalidTextureWidth;
+        m_height = Constant::k_invalidTextureHeight;
 
         FWK_ASSERT_RETURN_VALUE("DepthStencilTexture用SRVの作成に失敗しました。", false);
     }
@@ -423,8 +423,8 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
 
     m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
-    m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-    m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+    m_width  = Constant::k_invalidTextureWidth;
+    m_height = Constant::k_invalidTextureHeight;
     
     m_currentResourceState = k_defaultResourceState;
 

@@ -1,5 +1,12 @@
 ﻿#include "Renderer.h"
 
+void FWK::Graphics::Renderer::INIT()
+{
+	if (m_cbSpritePass) { return; }
+
+	m_cbSpritePass = std::make_shared<Struct::CBSpritePass>();
+}
+
 void FWK::Graphics::Renderer::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
@@ -15,10 +22,13 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	// フレームリソースがないとコマンドアロケーターを使えないため"return"
 	FWK_ASSERT_RETURN_VALUE_IF(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
 
-	const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator      ();
-	const auto& l_shaderCompiler     = a_resourceContext.GetREFShaderCompiler          ();
-		  auto& l_rtvDescriptorPool  = a_resourceContext.GetMutableREFRTVDescriptorPool();
-		  
+	const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator();
+	const auto& l_shaderCompiler     = a_resourceContext.GetREFShaderCompiler    ();
+
+	auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
+	auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
+	auto& l_dsvDescriptorPool       = a_resourceContext.GetMutableREFDSVDescriptorPool      ();
+
 	for (const auto& l_frameResource : m_frameResourceList)
 	{
 		if (!l_frameResource) { continue; }
@@ -30,6 +40,14 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 															"フレームリソースの作成処理に失敗しました。", 
 															false);
 	}
+
+	// ShadowContextが所有するShadow用リソースを作成する
+	FWK_ASSERT_RETURN_VALUE_IF(!m_shadowContext.Create(a_device,
+		                       l_gpuMemoryAllocator,
+		                       l_dsvDescriptorPool,
+		                       l_cbvSRVUAVDescriptorPool),
+		                       "ShadowContextの作成処理に失敗しました。",
+		                       false);
 
 	// ダイレクトコマンドキュー、リスト、コンピュートキュー、リストの作成処理
 	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandQueue.Create(a_device),  "ダイレクトコマンドキューの作成処理に失敗しました。",   false);
@@ -48,8 +66,8 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	// ルートシグネチャの作成処理
 	for (const auto& [l_type, l_rootSignature] : m_rootSignatureMap)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature,					  "RootSignatureが無効のため、RootSignatureの作成に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature->Create(a_device), "RootSignatureの作成処理に失敗しました。",						false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature,                   "RootSignatureが無効のため、RootSignatureの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature->Create(a_device), "RootSignatureの作成処理に失敗しました。",                        false);
 	}
 
 	// パイプラインステートの作成処理
@@ -60,13 +78,13 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	}
 
 	// 画面解像度に合ったビューポート、シザー矩形を作成する
-	m_renderArea.SetupRenderArea(m_swapChain);
+	FWK_ASSERT_RETURN_VALUE_IF(!SetupScreenRenderArea(a_clientSize), "レンダーエリア作成に失敗しました。", false);
 
 	// ALT + ENTERキーで排他フルスクリーン設定が反映されないようにする
 	m_swapChain.PostCreateSetup(a_window.GetREFHWND(), a_factory);
 
-	// 定数バッファを書くパスに送信
-	m_renderArea.SyncSpritePassDrawRequest(m_renderGraph);
+	// 定数バッファを各パスに送信
+	SyncSpritePassDrawRequest();
 
 	// レンダーパスの依存順序の解決を行う
 	m_renderGraph.Compile();
@@ -173,7 +191,7 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Window::Clien
 											 "バックバッファのリサイズ処理に失敗しており、リサイズ処理に失敗しました");
 
 	// スワップチェインリサイズ後にレンダーエリアを作成
-	m_renderArea.SetupRenderArea(m_swapChain);
+	SetupScreenRenderArea(a_clientSize);
 
 	const auto& l_retiredFenceValue = m_directCommandQueue.FetchREFLastSignaledFenceValue();
 
@@ -218,6 +236,30 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRoot
 	if (l_itr == m_rootSignatureMap.end()) { return {}; }
 
 	return l_itr->second;
+}
+
+bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Window::ClientSize& a_clientSize)
+{
+	FWK_ASSERT_RETURN_VALUE_IF(!m_cbSpritePass, "SpritePass用ConstantBufferが作成されておらず、ScreenRenderAreaの設定処理に失敗しました。", false);
+
+	// WindowのClientSizeから、
+	// 画面描画専用のViewportとScissorRectを設定する
+	// RenderArea自身はWindowやSwapChainを知らない
+	FWK_ASSERT_RETURN_VALUE_IF(!m_screenRenderArea.Setup(a_clientSize.m_width, a_clientSize.m_height), "WindowのClient Sizeを使用したScreenRenderAreaの設定処理に失敗しました。", false);
+
+	const auto& l_viewport = m_screenRenderArea.GetREFViewport();
+
+	// Sprite Passは画面のピクセル座標を使用するため、
+	// ScreenRenderAreaと同じ幅と高さから正射影行列を作成する。
+	//
+	// この定数バッファはShadow用RenderAreaとは関係しないため、
+	// Rendererが所有して更新する。
+	m_cbSpritePass->m_projectionMatrix = TypeAlias::Math::Matrix::CreateOrthographic(l_viewport.Width,
+			                                                                         l_viewport.Height,
+			                                                                         Constant::k_renderAreaMinimumViewportDepth,
+			                                                                         Constant::k_renderAreaMaximumViewportDepth);
+
+	return true;
 }
 
 void FWK::Graphics::Renderer::ResetCommandObjects(const FrameResource& a_frameResource)
@@ -291,4 +333,14 @@ bool FWK::Graphics::Renderer::PrepareForSwapChainResize()
 	m_directCommandList.Close();
 
 	return true;
+}
+
+void FWK::Graphics::Renderer::SyncSpritePassDrawRequest()
+{
+	const auto& l_spriteScreenPassDrawRequest = m_renderGraph.FindVALDrawRequestPass<SpriteScreenPassDrawRequest>().lock();
+
+	if (!l_spriteScreenPassDrawRequest) { return; }
+
+	// 定数バッファの変更を反映するために定数バッファデータを送信する
+	l_spriteScreenPassDrawRequest->SetSourceConstantBuffer(m_cbSpritePass);
 }

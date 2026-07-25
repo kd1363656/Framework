@@ -1956,6 +1956,15 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RendereAreaConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

@@ -24,15 +24,15 @@ namespace FWK::Graphics
 
 		nlohmann::json Serialize() const;
 
-		TypeAlias::DescriptorIndex FFetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
+		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 
-		static constexpr DXGI_FORMAT k_defaultResourceFormat = DXGI_FORMAT_R32_TYPELESS;
-		static constexpr DXGI_FORMAT k_defaultDSVFormat      = DXGI_FORMAT_D32_FLOAT;
-		static constexpr DXGI_FORMAT k_defaultSRVFormat      = DXGI_FORMAT_R32_FLOAT;
+		void SetResolution(const UINT a_set) { m_resolution = a_set; }
 
-		static constexpr UINT16 k_defaultCascadeCount = 4U;
+		TypeAlias::DescriptorIndex FetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
 
-		static constexpr UINT k_defaultResolution = 2048U;
+		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
+
+		auto GetVALResolution() const { return m_resolution; }
 
 	private:
 
@@ -43,10 +43,19 @@ namespace FWK::Graphics
 
 		DepthStencilTexture m_depthStencilTexture = {};
 
+		RenderArea m_renderArea = {};
+
 		Converter::CascadeShadowMapJsonConverter m_jsonConverter = {};
 
-		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
-		
-		UINT m_resolution = k_defaultResolution;
+		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = { Constant::k_cascadeShadowMapDefaultResourceFormat,
+																			  Constant::k_cascadeShadowMapDefaultDSVFormat,
+																			  Constant::k_cascadeShadowMapDefaultSRVFormat,
+		                                                                      Constant::k_defaultDepthClearValue,
+		                                                                      Constant::k_cascadeShadowMapDefaultCascadeCount,
+		                                                                      k_requiredMIPLevelCount,
+		                                                                      k_requiredSampleCount, 
+																			  Constant::k_defaultSampleQuality,
+																			  Constant::k_defaultStencilClearValue };
+		UINT m_resolution = Constant::k_cascadeShadowMapDefaultResolution;
 	};
 }

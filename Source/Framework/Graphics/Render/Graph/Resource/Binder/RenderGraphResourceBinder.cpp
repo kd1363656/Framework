@@ -40,10 +40,10 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupBackBufferRenderTarget(const
 	FWK_ASSERT_RETURN_VALUE_IF(l_backBuffer.m_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BackBufferのRTVDescriptorIndexが無効のため、BackBufferの描画先設定に失敗しました。", false);
 
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
-	const auto& l_renderArea        = a_renderer.GetREFRenderArea			   ();
+	const auto& l_screenRenderArea  = a_renderer.GetREFScreenRenderArea        ();
 
 	// ビューポート、シザー矩形のセット、バックバッファをOMにセット
-	l_directCommandList.SetupRenderArea  (l_renderArea);
+	l_directCommandList.SetupRenderArea  (l_screenRenderArea);
 	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 
 	return true;
@@ -69,10 +69,10 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupRenderTargetPassTextureRende
 
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
-	const auto& l_renderArea        = a_renderer.GetREFRenderArea			   ();
+	const auto& l_screenRenderArea  = a_renderer.GetREFScreenRenderArea        ();
 
 	// ビューポート、シザー矩形のセット、レンダーターゲットパステクスチャをOMにセット
-	l_directCommandList.SetupRenderArea  (l_renderArea);
+	l_directCommandList.SetupRenderArea  (l_screenRenderArea);
 	l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_renderTargetTexture.GetVALRTVDescriptorIndex());
 	
 	return true;
@@ -140,10 +140,10 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList	   ();
 	const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 	const auto& l_dsvDescriptorPool = a_resourceContext.GetREFDSVDescriptorPool();
-	const auto& l_renderArea		= a_renderer.GetREFRenderArea			   ();
+	const auto& l_screenRenderArea  = a_renderer.GetREFScreenRenderArea        ();
 
 	// ビューポート、シザー矩形のセット
-	l_directCommandList.SetupRenderArea(l_renderArea);
+	l_directCommandList.SetupRenderArea(l_screenRenderArea);
 
 	// レンダーターゲットパステクスチャ、デプスステンシルパステクスチャをOMにセット
 	l_directCommandList.SetupRenderTargetAndDepthStencil(l_rtvDescriptorPool,

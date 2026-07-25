@@ -77,8 +77,8 @@ namespace FWK::Graphics
 
 		DXGI_FORMAT m_format = k_defaultRenderTargetTextureFormat;
 
-		UINT m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-		UINT m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+		UINT m_width  = Constant::k_invalidTextureWidth;
+		UINT m_height = Constant::k_invalidTextureHeight;
 
 		TypeAlias::DescriptorIndex m_rtvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;

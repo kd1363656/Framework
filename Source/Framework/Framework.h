@@ -155,6 +155,7 @@
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
 // レンダーエリア
+#include "Definition/Constant/Graphics/RendereAreaConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
@@ -176,6 +177,7 @@
 // テクスチャ
 #include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"
 #include "Graphics/Resource/Texture/Loader/TextureLoader.h"
+#include "Definition/Constant/Graphics/TextureBinaryConverterConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
@@ -301,6 +303,7 @@
 #include "Graphics/Command/List/Compute/ComputeCommandList.h"
 
 // 影
+#include "Definition/Constant/Graphics/CascadeShadowMapJsonConverterConstant.h"
 #include "Graphics/Render/Shadow/Cascade/Converter/Json/CascadeShadowMapJsonConverter.h"
 #include "Graphics/Render/Shadow/Cascade/CascadeShadowMap.h"
 #include "Graphics/Render/Shadow/Converter/Json/ShadowContextJsonConverter.h"

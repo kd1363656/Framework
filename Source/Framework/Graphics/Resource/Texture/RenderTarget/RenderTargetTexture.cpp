@@ -208,8 +208,8 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
 	m_rtvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 	m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
-	m_width  = Converter::TextureBinaryConverter::k_emptyTextureWidth;
-	m_height = Converter::TextureBinaryConverter::k_emptyTextureHeight;
+	m_width  = Constant::k_invalidTextureWidth;
+	m_height = Constant::k_invalidTextureHeight;
 
 	m_currentResourceState = k_defaultResourceState;
 

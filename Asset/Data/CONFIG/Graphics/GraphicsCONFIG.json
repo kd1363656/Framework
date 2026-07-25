@@ -1771,6 +1771,20 @@
                 "RootSignatureType": "RootSignatureType::SkeletalAnimationMeshletBoundsUpdate"
             }
         ],
+        "ShadowContext": {
+            "CascadeShadowMap": {
+                "CascadeCount": 4,
+                "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
+                "DepthClearValue": 1.0,
+                "MIPLevels": 1,
+                "Resolution": 2048,
+                "ResourceFormat": "DXGI_FORMAT_R32_TYPELESS",
+                "SRVFormat": "DXGI_FORMAT_R32_FLOAT",
+                "SampleCount": 1,
+                "SampleQuality": 0,
+                "StencilClearValue": 0
+            }
+        },
         "SwapChain": {
             "BackBufferNum": 2,
             "SyncInterval": 1
