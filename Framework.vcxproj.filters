@@ -976,6 +976,27 @@
     <Filter Include="Source\Framework\Editor\Window\Hierarchy">
       <UniqueIdentifier>{6b5ae75f-7344-4a4b-ab3c-a17310c6965a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Component">
+      <UniqueIdentifier>{e7d48df8-10d6-445b-a0e0-bfced88f619c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow">
+      <UniqueIdentifier>{f02050bd-b903-4ff5-b643-7121bc310987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Converter">
+      <UniqueIdentifier>{2d787902-4b77-4ea2-b556-d8977d7ad86b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Converter\Json">
+      <UniqueIdentifier>{f1f53a76-64da-4f4b-97a8-0eeabb4ff8fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade">
+      <UniqueIdentifier>{51eeed03-70d3-43b8-953f-36f3f2c36105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter">
+      <UniqueIdentifier>{c271cc90-7cba-491c-99a7-46ba9ea6fad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json">
+      <UniqueIdentifier>{04b7eb22-e32c-49de-9040-e6b1f786f441}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1920,6 +1941,21 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstasnt.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Component\IsDerivedComponentBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.h">
+      <Filter>Source\Framework\Graphics\Render\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Converter\Json\ShadowContextJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.h">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2410,6 +2446,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.cpp">
+      <Filter>Source\Framework\Graphics\Render\Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Converter\Json\ShadowContextJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.cpp">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

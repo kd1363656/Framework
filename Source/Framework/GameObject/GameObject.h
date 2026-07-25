@@ -18,9 +18,47 @@ namespace FWK
 
 		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
 
+		template <Concept::IsDerivedComponentBaseConcept ComponentType>
+		std::weak_ptr<ComponentType> FindUniqueComponent() const
+		{
+			const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
+
+			if (auto l_itr = m_uniqueComponentMap.find(l_staticTypeID);
+				l_itr != m_uniqueComponentMap.end())
+			{
+				if (auto l_component = l_itr->second.lock())
+				{
+					return std::static_pointer_cast<ComponentType>(l_component);
+				}
+			}
+	
+			return std::weak_ptr<ComponentType>();
+		}
+
+		template <Concept::IsDerivedComponentBaseConcept ComponentType>
+		std::vector<std::weak_ptr<ComponentType>> FindMultiComponent() const
+		{
+			const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
+
+			std::vector<std::weak_ptr<ComponentType>> l_list = {};
+
+			if (auto l_itr = m_multiComponentMap.find(l_staticTypeID);
+				l_itr != m_multiComponentMap.end())
+			{
+				l_list.reserve(l_itr->second.size());
+
+				for (const auto& l_commponent : l_itr->second)
+				{
+					l_list.emplace_back(l_commponent);
+				}
+			}
+	
+			return l_list;
+		}
+
 		const auto& GetREFParent() const { return m_parent; }
 
-		std::weak_ptr<TransformComponent> GetVALREFTransformComponent() const { return m_transformComponent; }
+		std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
 	private:
 

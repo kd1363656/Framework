@@ -34,7 +34,7 @@ void FWK::TransformComponent::PostDeserialize()
 	// 親が存在するなら親のTransformComponentをキャッシュする
 	if (const auto& l_parent = l_owner->GetREFParent().lock())
 	{
-		m_parentTransformComponent = l_parent->GetVALREFTransformComponent();
+		m_parentTransformComponent = l_parent->GetVALTransformComponent();
 	}
 
 	ConfrimMatrixStrategy();
