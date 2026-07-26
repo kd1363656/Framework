@@ -323,7 +323,7 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBFinalPresentRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Constant/FinalPresentRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBCascadeShadowPassStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/Model/Shadow/Cascade/Buffer/Constant/CascadeShadowPassDynamicConstantBufferUploader.h"
 
 // コンピュートシェーダー計算リクエスト
@@ -365,7 +365,7 @@
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
-#include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/CascadeShadowPass.h"
+#include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/ModelCascadeShadowPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPass.h"
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"

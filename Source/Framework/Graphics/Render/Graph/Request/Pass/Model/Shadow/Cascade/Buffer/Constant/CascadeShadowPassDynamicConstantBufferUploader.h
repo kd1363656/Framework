@@ -2,15 +2,15 @@
 
 namespace FWK::Graphics
 {
-	class CascadeShadowPassDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBCascadeShadowPass>
+	class ModelCascadeShadowPassDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBModelCascadeShadowPass>
 	{
 	public:
 
-		 CascadeShadowPassDynamicConstantBufferUploader()          = default;
-		~CascadeShadowPassDynamicConstantBufferUploader() override = default;
+		 ModelCascadeShadowPassDynamicConstantBufferUploader()          = default;
+		~ModelCascadeShadowPassDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(CascadeShadowPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
+		FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::CascadeShadowPassDynamicConstantBufferUploader)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::ModelCascadeShadowPassDynamicConstantBufferUploader)

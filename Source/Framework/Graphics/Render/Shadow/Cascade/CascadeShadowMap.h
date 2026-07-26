@@ -17,14 +17,14 @@ namespace FWK::Graphics
 
 	public:
 
-		CascadeShadowMap() = default;
+		 CascadeShadowMap() = default;
 		~CascadeShadowMap() = default;
 
-		CascadeShadowMap(const CascadeShadowMap&) = delete;
-		CascadeShadowMap(CascadeShadowMap&&) noexcept = default;
+		CascadeShadowMap(const CascadeShadowMap&)           = delete;
+		CascadeShadowMap(      CascadeShadowMap&&) noexcept = default;
 
-		CascadeShadowMap& operator=(const CascadeShadowMap&) = delete;
-		CascadeShadowMap& operator=(CascadeShadowMap&&) noexcept = default;
+		CascadeShadowMap& operator=(const CascadeShadowMap&)           = delete;
+		CascadeShadowMap& operator=(      CascadeShadowMap&&) noexcept = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 

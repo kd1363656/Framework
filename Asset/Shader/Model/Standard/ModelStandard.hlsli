@@ -1,28 +1,9 @@
 ﻿#ifndef MODEL_STANDARD_HLSLI
 #define MODEL_STANDARD_HLSLI
 #include "../Model.hlsli"
+#include "../../Camera/CameraPass.hlsli"
 
 SamplerState g_textureSampler : register(s0);
-
-// 三角形1個分のPrimitiveIndexをuint3で取得する
-// 3個Pack方式では、uint32_t1個に三角形1個分のPrimitiveIndexを入れている
-// bit配置
-// 0  : 1個目のPrimitiveIndex
-// 8  : 2個目のPrimitiveIndex
-// 16 : 3個目のPrimitiveIndex
-// 24 : 未使用
-// 戻り値のuint3は、元VertexBufferのIndexではなく、
-// MeshShaderが出力したa_vertexListの何番目を使うかを表す。
-uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
-{
-    StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
-    
-    // 3個数Pack方式では、uint32_t一個が三角形一個分のPrimitiveIndexを持つ。
-    // そのため、a_packedPrimitiveIndexはPack済みPrimitiveIndexBuffer上のIndex。
-    const uint l_packedValue = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
-    
-    return DecodeModelPackedPrimitiveIndex(l_packedValue);
-}
 
 // StaticModelのLocal法線をWorld空間へ変換する
 // 法線は位置ではなく方向なのでw = 0

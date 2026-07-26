@@ -1042,6 +1042,15 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant">
       <UniqueIdentifier>{ff3dd2f3-e622-4ca8-b362-d02f37c3bff0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Camera">
+      <UniqueIdentifier>{dc0cb1a8-9f2c-4d66-ab3a-b06139b80ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Shadow">
+      <UniqueIdentifier>{f03c537f-24e0-4fc1-aced-879fec9c4d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Shadow\Cascade">
+      <UniqueIdentifier>{1cdcabe3-1457-4083-b2b1-57711b777fc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1986,7 +1995,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Sorter</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDRegistry.h">
@@ -1995,7 +2004,7 @@
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDUtility.h">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowPassStruct.h">
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelCascadeShadowPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h">
@@ -2531,7 +2540,7 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Sorter</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2588,6 +2597,12 @@
     </None>
     <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli">
       <Filter>Asset\Shader\Model</Filter>
+    </None>
+    <None Include="Asset\Shader\Camera\CameraPass.hlsli">
+      <Filter>Asset\Shader\Camera</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

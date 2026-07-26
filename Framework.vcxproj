@@ -398,7 +398,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowPassStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelCascadeShadowPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalColorRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBLightStruct.h" />
@@ -481,7 +481,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.h" />
@@ -708,7 +708,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp" />
@@ -864,9 +864,11 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
+    <None Include="Asset\Shader\Camera\CameraPass.hlsli" />
     <None Include="Asset\Shader\Model\Model.hlsli" />
     <None Include="Asset\Shader\Model\ModelMeshlet.hlsli" />
     <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli" />
+    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli" />
     <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
     <None Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit.hlsli" />
     <None Include="Asset\Shader\Model\Standard\ModelStandard.hlsli" />

@@ -1,5 +1,6 @@
 ﻿#ifndef MODEL_MESHLET_CULLING_HLSLI
 #define MODEL_MESHLET_CULLING_HLSLI
+#include "../Camera/CameraPass.hlsli"
 #include "Model.hlsli"
 
 // ConeAxisを正規化できる長さか判定するための値

@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct CBCascadeShadowPass final
+	struct CBModelCascadeShadowPass final
 	{
 		TypeAlias::Math::Matrix m_viewProjectionMatrix = TypeAlias::Math::Matrix::Identity;
 	};

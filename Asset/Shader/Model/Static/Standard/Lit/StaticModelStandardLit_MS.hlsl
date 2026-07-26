@@ -1,4 +1,5 @@
 ﻿#include "../../StaticModel.hlsli"
+#include "../../../Standard/ModelStandard.hlsli"
 #include "../../../Standard/Lit/ModelStandardLit.hlsli"
 
 [outputtopology("triangle")]

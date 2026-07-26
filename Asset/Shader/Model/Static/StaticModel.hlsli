@@ -1,6 +1,5 @@
 ﻿#ifndef STATIC_MODEL_HLSLI
 #define STATIC_MODEL_HLSLI
-#include "../Standard/ModelStandard.hlsli"
 
 struct StaticModelVertex
 {

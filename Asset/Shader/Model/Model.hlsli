@@ -31,21 +31,6 @@ struct ModelAmplificationPayload
     uint meshletIndex;
 };
 
-cbuffer CBCameraPass : register(b0)
-{
-    row_major matrix g_viewMatrix;
-    row_major matrix g_projectionMatrix;
-    row_major matrix g_viewProjectionMatrix;
-    
-    float g_nearClip;
-    float g_farClip;
-    float g_tanHalfFOVX;
-    float g_tanHalfFOVY;
-    
-    float3 g_cameraWorldPosition;
-    float  g_cameraPassPadding;
-};
-
 cbuffer CBModelPerObject : register(b1)
 {
     row_major matrix g_worldMatrix;
@@ -69,6 +54,26 @@ cbuffer CBModelPerObject : register(b1)
     uint  g_meshletBoundsBufferSRVDescriptorIndex;
     float g_worldMaxScale;
 };
+
+// 三角形1個分のPrimitiveIndexをuint3で取得する
+// 3個Pack方式では、uint32_t1個に三角形1個分のPrimitiveIndexを入れている
+// bit配置
+// 0  : 1個目のPrimitiveIndex
+// 8  : 2個目のPrimitiveIndex
+// 16 : 3個目のPrimitiveIndex
+// 24 : 未使用
+// 戻り値のuint3は、元VertexBufferのIndexではなく、
+// MeshShaderが出力したa_vertexListの何番目を使うかを表す。
+uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
+{
+    StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
+    
+    // uint一個に三角形一個分の
+    // 三つのPrimitiveIndexがPackされている
+    const uint l_packedValue = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
+    
+    return DecodeModelPackedPrimitiveIndex(l_packedValue);
+}
 
 // StaticModelのLocal座標をWorld座標へ変換する
 // PBRではライト方向やカメラ方向をWorld空間で計算するため、worldPositionが必要
