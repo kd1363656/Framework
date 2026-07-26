@@ -2,6 +2,11 @@
 
 namespace FWK::Utility
 {
+	inline bool GenerateUUID(UUID& a_uuid)
+	{
+		return UuidCreate(&a_uuid) == RPC_S_OK;
+	}
+	
 	inline std::string UUIDToString(const UUID& a_uuid)
 	{
 		RPC_CSTR l_str = nullptr;

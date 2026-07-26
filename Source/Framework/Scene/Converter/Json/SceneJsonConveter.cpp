@@ -34,16 +34,12 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 
 nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const Scene& a_scene) const
 {
-		  auto  l_rootJsonArray      = nlohmann::json::array	       ();
-	const auto& l_gameObjectDataList = a_scene.GetREFGameObjectDataList();
+		  auto  l_rootJsonArray  = nlohmann::json::array	   ();
+	const auto& l_gameObjectList = a_scene.GetREFGameObjectList();
 	
-	for (const auto& l_gameObject : l_gameObjectDataList)
+	for (const auto& l_gameObject : l_gameObjectList)
 	{
-		if (!l_gameObject.m_gameObject ||
-			!l_gameObject.m_gameObjectAddress) 
-		{
-			continue; 
-		}
+		if (!l_gameObject) { continue; }
 
 		nlohmann::json l_json = {};
 

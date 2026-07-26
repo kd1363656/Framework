@@ -9,13 +9,15 @@ namespace FWK
 
 		struct Hasher final
 		{
-			std::size_t operator()(UUID& a_uuid) const
+			std::size_t operator()(const UUID& a_uuid) const
 			{
 				RPC_STATUS l_status = {};
 
-				const unsigned short l_hash = UuidHash(&a_uuid, &l_status);
+				// UuidHashはUUID*を要求するため、
+				// const_castせずローカル変数へコピーして渡す
+				UUID l_uuid = a_uuid;
 
-				assert(l_status == RPC_S_OK);
+				const auto l_hash = UuidHash(&l_uuid, &l_status);
 
 				FWK_ASSERT_RETURN_VALUE_IF(l_status == RPC_S_OK, "ハッシュ化に失敗しました。", l_hash);
 
@@ -40,15 +42,22 @@ namespace FWK
 		 UUIDRegistry() = default;
 		~UUIDRegistry() = default;
 
-		bool Add(const Type& a_type, const UUID& a_uuid)
+		bool Add(const Type& a_type, UUID& a_uuid)
 			requires k_isWeakPTR
 		{
 			const auto& l_type = a_type.lock();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_type,                        "登録対象が無効なため、UUIDMapへの登録に失敗しました。",                               false);
-			FWK_ASSERT_RETURN_VALUE_IF(IsEqualGUID(a_uuid, GUID_NULL), "UUIDが無効値を指し示しており、UUIDMapへの登録に失敗しました。",                       false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_uuidMap.contains(a_uuid),     "既に登録されているUUIDのものを登録しようとしており、UUIDMapへの登録に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_type,                    "登録対象が無効なため、UUIDMapへの登録に失敗しました。",                               false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_uuidMap.contains(a_uuid), "既に登録されているUUIDのものを登録しようとしており、UUIDMapへの登録に失敗しました。", false);
 			
+			// 追加する際にUUIDがGUID_NULLか、同じUUID値を登録してしまうことを防ぐためにここでUUIDを生成する
+			// 被った値を生成する可能性も考慮して、被らない値を生成するまでループする
+			while (a_uuid == GUID_NULL ||
+				   m_uuidMap.contains(a_uuid))
+			{
+				Utility::GenerateUUID(a_uuid);
+			}
+
 			m_uuidMap.try_emplace(a_uuid, a_type);
 			
 			return true;

@@ -14,7 +14,7 @@ void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
 					 a_nearClip);
 
 	// 定数バッファの登録
-	RegisterCameraPassConstantBufferSource();
+	RegisterCBCameraPass();
 }
 
 void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
@@ -103,9 +103,6 @@ void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_ca
 						  a_fovYDegree,
 						  a_farClip,
 						  a_nearClip);
-
-	// 定数バッファ側に変更を反映するためのポインタを持たせる
-	RegisterCameraPassConstantBufferSource();
 }
 
 void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
@@ -115,11 +112,13 @@ void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
 	m_cbCameraPass->m_viewProjectionMatrix = m_cbCameraPass->m_viewMatrix * m_cbCameraPass->m_projectionMatrix;
 }
 
-void FWK::Graphics::Camera::RegisterCameraPassConstantBufferSource()
+void FWK::Graphics::Camera::RegisterCBCameraPass()
 {
-	const auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-	const auto& l_renderer		  = l_graphicsManager.GetREFRenderer		   ();
-	const auto& l_renderGraph	  = l_renderer.GetREFRenderGraph			   ();
+	      auto& l_graphicsManager  = FWK::Graphics::GraphicsManager::GetInstance  ();
+	      auto& l_renderer		   = l_graphicsManager.GetMutableREFRenderer      ();
+	const auto& l_renderGraph	   = l_renderer.GetREFRenderGraph			      ();
+	      auto& l_shadowContext    = l_renderer.GetMutableREFShadowContext        ();
+		  auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
 
 	const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
 
@@ -127,4 +126,5 @@ void FWK::Graphics::Camera::RegisterCameraPassConstantBufferSource()
 
 	// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
 	l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);	
+	l_cascadeShadowMap.SetCBCameraPass              (m_cbCameraPass);
 }

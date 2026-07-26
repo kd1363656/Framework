@@ -16,11 +16,15 @@ namespace FWK
 		void LateUpdate   () const;
 		void ConfirmMatrix() const;
 
+		void Destroy();
+
 		void EditInsepector();
 
 		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
 
-		void CreateParentChildRelationShip(const std::weak_ptr<GameObject>& a_child);
+		void ApplyParent(const std::weak_ptr<GameObject>& a_child);
+
+		void Unparent(const std::weak_ptr<FWK::GameObject>& a_child);
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
@@ -64,7 +68,11 @@ namespace FWK
 
 		const auto& GetREFParent() const { return m_parent; }
 
+		auto& GetMutableREFUUID() { return m_uuid; }
+
 		std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
+
+		bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
 	private:
 

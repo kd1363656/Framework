@@ -6,15 +6,6 @@ namespace FWK
 	{
 	public:
 
-		struct GameObjectData
-		{
-			std::shared_ptr<GameObject> m_gameObject = nullptr;
-
-			const GameObject* m_gameObjectAddress = nullptr;
-		};
-
-	public:
-
 		 Scene() = default;
 		~Scene() = default;
 
@@ -33,13 +24,11 @@ namespace FWK
 
 		void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 
-		const auto& GetREFGameObjectDataList() const { return m_gameObjectDataList; }
+		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 
 	private:
 
-		std::unordered_set<const GameObject*> m_registeredGameObjectDataSet = {};
-
-		std::list<GameObjectData> m_gameObjectDataList = {};
+		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};
 
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 
@@ -56,6 +45,8 @@ namespace FWK
 		std::unique_ptr<Physics::PhysicsBodyBase> m_staticMeshBody    = nullptr;
 
 		std::unique_ptr<Physics::PhysicsCharacterVirtualBase> m_characterVirtual = nullptr;
+
+		UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
 
 		Converter::SceneJsonConverter m_jsonConverter = {};
 

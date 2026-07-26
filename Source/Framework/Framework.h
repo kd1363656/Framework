@@ -436,6 +436,8 @@
 // ゲームオブジェクト
 //===============================================================================
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
+#include "Utility/UUID/UUIDUtility.h"
+#include "Utility/UUID/UUIDRegistry.h"
 #include "GameObject/GameObject.h"
 
 //===============================================================================

@@ -26,6 +26,9 @@ namespace FWK::Graphics
 
 		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 
+		void SetCBCameraPass(const std::shared_ptr<Struct::CBCameraPass>& a_set) { m_cbCameraPass; }
+		void SetCBLightPass (const std::shared_ptr<Struct::CBLightPass>&  a_set) { m_cbLightPass; }
+
 		void SetResolution(const UINT a_set) { m_resolution = a_set; }
 
 		TypeAlias::DescriptorIndex FetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
@@ -44,6 +47,9 @@ namespace FWK::Graphics
 		static constexpr UINT k_shadowMapMIPSlice   = 0U;
 
 		static constexpr UINT16 k_requiredMIPLevelCount = 1U;
+
+		std::weak_ptr<Struct::CBCameraPass> m_cbCameraPass = {};
+		std::weak_ptr<Struct::CBLightPass>  m_cbLightPass  = {};
 
 		DepthStencilTexture m_depthStencilTexture = {};
 

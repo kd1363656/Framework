@@ -52,6 +52,23 @@ void FWK::GameObject::ConfirmMatrix() const
 	m_transformComponent->ConfrimMatrix();
 }
 
+void FWK::GameObject::Destroy()
+{
+	m_isDestroyed = true;
+
+	// 子も削除フラグを立てる
+	// もし親が削除されて連動して消されたくないような局面が出てきたら
+	// その時に処理を書き換えるようにすること、基本は親と連動して削除フラグを立てる
+	for (const auto& l_childData : m_childList.GetMutableREFArrayElementDataList())
+	{
+		auto l_child = l_childData.m_type.lock();
+
+		if (!l_child) { continue; }
+
+		l_child->Destroy();
+	}
+}
+
 void FWK::GameObject::EditInsepector()
 {
 	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TrnsformComponentは必ず存在するべきComponentです。");
@@ -105,7 +122,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 	m_componentList.Add(a_component);
 }
 
-void FWK::GameObject::CreateParentChildRelationShip(const std::weak_ptr<GameObject>& a_child)
+void FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 {
 	const auto& l_child = a_child.lock();
 
@@ -124,4 +141,13 @@ void FWK::GameObject::CreateParentChildRelationShip(const std::weak_ptr<GameObje
 	// 子のTransformComponentに親のTransformComponentのポインタを渡し
 	// 親に追従する用に行列計算方式を置き換える
 	l_childTransformComponent->ApplyParentTransformComponent(m_transformComponent);
+}
+
+void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
+{
+	const auto& l_child = a_child.lock();
+
+	if (!l_child) { return; }
+
+	
 }

@@ -131,19 +131,23 @@ void FWK::Scene::PostDeserialize() const
 
 void FWK::Scene::EarlyUpdate()
 {
-	std::erase_if(m_gameObjectDataList, [this](const auto& a_gameObjectData) 
+	std::erase_if(m_gameObjectList, [this](const auto& a_gameObject) 
 	{
-		if (!a_gameObjectData.m_gameObject) { return false; }
+		if (!a_gameObject) { return true; }
 
-		m_registeredGameObjectDataSet.erase(a_gameObjectData.m_gameObjectAddress);
+		// 削除予定ならGUIDRegistryからも削除
+		if (a_gameObject->GetVALIsDestroyed())
+		{
+			m_gameObjectUUIDRegistry.Erase(a_gameObject->GetMutableREFUUID());
 
-		return true;
+			return true;
+		}
+		
+		return false;
 	});
 
-	for (const auto& l_gameObjectData : m_gameObjectDataList)
+	for (const auto& l_gameObject : m_gameObjectList)
 	{
-		const auto& l_gameObject = l_gameObjectData.m_gameObject;
-
 		if (!l_gameObject) { continue; }
 
 		l_gameObject->EarlyUpdate();
@@ -328,10 +332,8 @@ void FWK::Scene::Update()
 
 	m_characterVirtual->DrawDebug(JPH::ColorArg{ 255U, 255U, 255U, 255U });
 
-	for (const auto& l_gameObjectData : m_gameObjectDataList)
+	for (const auto& l_gameObject : m_gameObjectList)
 	{
-		const auto& l_gameObject = l_gameObjectData.m_gameObject;
-
 		if (!l_gameObject) { continue; }
 
 		l_gameObject->Update();
@@ -339,10 +341,8 @@ void FWK::Scene::Update()
 }
 void FWK::Scene::LateUpdate() const
 {
-	for (const auto& l_gameObjectData : m_gameObjectDataList)
+	for (const auto& l_gameObject : m_gameObjectList)
 	{
-		const auto& l_gameObject = l_gameObjectData.m_gameObject;
-
 		if (!l_gameObject) { continue; }
 
 		l_gameObject->LateUpdate();
@@ -350,10 +350,8 @@ void FWK::Scene::LateUpdate() const
 }
 void FWK::Scene::ConfirmMatrix() const
 {
-	for (const auto& l_gameDataObject : m_gameObjectDataList)
+	for (const auto& l_gameObject : m_gameObjectList)
 	{
-		const auto& l_gameObject = l_gameDataObject.m_gameObject;
-		
 		if (!l_gameObject) { continue; }
 
 		l_gameObject->ConfirmMatrix();
@@ -369,13 +367,13 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 {
 	if (!a_gameObject) 
 	{
-		FWK_ADD_LOG("GameObjectクラスが無効となっており、追加処理に失敗しました。");
+		FWK_ADD_LOG("GameObjectクラスが無効となっており、ゲームオブジェクトの追加処理に失敗しました。");
 		return; 
 	}
 
-	// 既に登録されているアドレスを持つゲームオブジェクトなら追加しない
-	if (m_registeredGameObjectDataSet.contains(a_gameObject.get())) { return; }
-
-	m_gameObjectDataList.emplace_back    (a_gameObject, a_gameObject.get());
-	m_registeredGameObjectDataSet.emplace(a_gameObject.get());
+	// ゲームオブジェクトとそのUUIDを登録、ただしUUIDがGUID_NULLだったり、
+	// 重複するUUIDの場合UUIDを生成してゲームオブジェクト側のUUIDにも反映する
+	FWK_ASSERT_RETURN_IF(m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFUUID()), "ゲームオブジェクトのUUIDの登録に失敗しており、ゲームオブジェクトの追加処理に失敗しました。");
+	 
+	m_gameObjectList.emplace_back(a_gameObject, a_gameObject.get());
 }
