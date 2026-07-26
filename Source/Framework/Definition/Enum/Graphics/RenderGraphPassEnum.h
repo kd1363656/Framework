@@ -49,6 +49,7 @@ namespace FWK::Enum
 	{
 		Invalid,
 		Animation,
+		Shadow,
 		Model,
 		Sprite,
 		PostEffect,
@@ -62,6 +63,7 @@ namespace FWK::Enum
 		RenderGraphPassExecutionLayer,
 		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Invalid),
 		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Animation),
+		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Shadow),
 		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Model),
 		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Sprite),
 		FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::PostEffect),

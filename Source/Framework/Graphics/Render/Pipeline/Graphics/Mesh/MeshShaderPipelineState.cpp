@@ -26,10 +26,17 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 	FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
 	const auto& l_rtvFormatList = GetREFRTVFormatList();
+	const auto  l_dsvFormat     = GetVALDSVFormat    ();
 
-	// RTVFormatListが空ならreturn
-	FWK_ASSERT_RETURN_VALUE_IF(l_rtvFormatList.empty(), "RTVFormatListが空のため、パイプラインステートの作成処理に失敗しました。", false);
+	const bool l_hasRenderTarget = !l_rtvFormatList.empty();
+	const bool l_hasDepthStencil = l_dsvFormat != DXGI_FORMAT_UNKNOWN;
 
+	// ColorまたはDepthのどちらにも出力しないPipelineは作成しない。
+    FWK_ASSERT_RETURN_VALUE_IF(!l_hasRenderTarget &&
+                               !l_hasDepthStencil,
+                               "RTVFormatとDSVFormatの両方が無効なため、出力先を持たないMeshShaderPipelineStateは作成できません。",
+                               false);
+	
 	// RTVFormatListの要素数がレンダーターゲットの要素数を超えていたらreturn
 	FWK_ASSERT_RETURN_VALUE_IF(l_rtvFormatList.size() > D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT, "RTVFormatListの要素数がDirectX12のRenderTarget上限を超えており、パイプラインステートの作成処理に失敗しました。", false);
 
@@ -134,12 +141,15 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 	// RenderTargetの枚数を指定する
 	l_pipelineStateDesc.NumRenderTargets = static_cast<UINT>(l_rtvFormatList.size());
 
-	// RTVFormatListの内容をPSO作成用の固定長RTVFormats配列へコピーする
-	std::copy(l_rtvFormatList.begin(), l_rtvFormatList.end(), l_pipelineStateDesc.RTVFormats);
+	// RTVが存在するときだけ、PSO作成用の固定長RTVFormats配列へFormatをコピーする
+	if (l_hasRenderTarget)
+	{
+		std::copy(l_rtvFormatList.begin(), l_rtvFormatList.end(), l_pipelineStateDesc.RTVFormats);
+	}
 	
 	// 深度ステンシルビューのフォーマットを設定する
 	// 深度を使うPSOでは、実際にOMへセットするDSVと同じフォーマットを指定する必要がある
-	l_pipelineStateDesc.DSVFormat = GetVALDSVFormat();
+	l_pipelineStateDesc.DSVFormat = l_dsvFormat;
 
 	// DXGI_SAMPLE_DESCについての説明
 	// Count : 1ピクセル当たりのサンプル数(1なら通常描画、4なら4x MSAAのように複数回サンプリングする)

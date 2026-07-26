@@ -43,9 +43,9 @@ namespace FWK
 	
 		void ApplyParentTransformComponent(const std::weak_ptr<TransformComponent>& a_parentTransformComponent);
 
-		const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
-
 		void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
+
+		const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
 
 	private:
 

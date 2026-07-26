@@ -14,7 +14,7 @@ FWK::Graphics::StaticModelStandardUnLitPass::StaticModelStandardUnLitPass()
 }
 FWK::Graphics::StaticModelStandardUnLitPass::~StaticModelStandardUnLitPass() = default;
 
-void FWK::Graphics::StaticModelStandardUnLitPass::Execute(Renderer & a_renderer, RenderGraph & a_renderGraph)
+void FWK::Graphics::StaticModelStandardUnLitPass::Execute(const ResourceContext&, Renderer & a_renderer, RenderGraph & a_renderGraph)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 

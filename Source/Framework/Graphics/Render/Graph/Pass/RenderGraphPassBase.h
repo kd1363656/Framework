@@ -21,7 +21,7 @@ namespace FWK::Graphics
 		RenderGraphPassBase& operator=(const RenderGraphPassBase&)  = delete;
 		RenderGraphPassBase& operator=(	     RenderGraphPassBase&&) = delete;
 
-		virtual void Execute(Renderer& a_renderer, RenderGraph& a_renderGraph) = 0;
+		virtual void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) = 0;
 
 		const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
 
@@ -33,9 +33,11 @@ namespace FWK::Graphics
 
 		void ReadRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 		void ReadDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
+		void ReadShadowMap   (const Enum::RenderGraphShadowMapType    a_shadowMapType,    const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
 		void WriteRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 		void WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
+		void WriteShadowMap   (const Enum::RenderGraphShadowMapType    a_shadowMapType,    const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage = Enum::RenderGraphResourceUsage::None);
 
 		std::weak_ptr<RootSignature> SetupGraphicsRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
 		std::weak_ptr<RootSignature> SetupComputeRenderPipeline (Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const;
@@ -47,9 +49,13 @@ namespace FWK::Graphics
 		void AddResourceAccess(const bool						       a_isBackBuffer,
 							   const Enum::RenderGraphRenderTargetType a_renderTargetType,
 							   const Enum::RenderGraphDepthStencilType a_depthStencilType,
+							   const Enum::RenderGraphShadowMapType    a_shadowMapType,
 							   const Enum::RenderGraphAccessType       a_accessType,
 							   const Enum::RenderGraphResourceUsage    a_beforeUsage,
 							   const Enum::RenderGraphResourceUsage    a_afterUsage);
+
+		static constexpr bool k_isBackBuffer    = true;
+		static constexpr bool k_isNotBackBuffer = false;
 
 		std::vector<Struct::RenderGraphResourceAccess> m_resourceAccessList = {};
 

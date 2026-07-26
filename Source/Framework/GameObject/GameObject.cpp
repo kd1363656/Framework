@@ -52,6 +52,22 @@ void FWK::GameObject::ConfirmMatrix() const
 	m_transformComponent->ConfrimMatrix();
 }
 
+void FWK::GameObject::EditInsepector()
+{
+	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TrnsformComponentは必ず存在するべきComponentです。");
+
+	m_transformComponent->EditInspector();
+
+	for (const auto& l_compoentData : m_componentList.GetREFArrayElementDataList())
+	{
+		const auto& l_compoent = l_compoentData.m_type;
+
+		if (!l_compoent) { continue; }
+
+		l_compoent->EditInspector();
+	}
+}
+
 void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_component)
 {
 	if (!a_component) 
@@ -87,4 +103,25 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 	}
 
 	m_componentList.Add(a_component);
+}
+
+void FWK::GameObject::CreateParentChildRelationShip(const std::weak_ptr<GameObject>& a_child)
+{
+	const auto& l_child = a_child.lock();
+
+	// 自分自身を子にしない
+	if (l_child.get() == this) { return; }
+
+	// このゲームオブジェクトを親としてセットし親子関係を構築
+	l_child->SetParent(weak_from_this());
+
+	m_childList.Add(l_child);
+
+	auto l_childTransformComponent = l_child->GetVALTransformComponent().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_childTransformComponent, "子にTransformComponentが存在しません。TransformComponentは絶対にゲームオブジェクトにあるべきものです。");
+
+	// 子のTransformComponentに親のTransformComponentのポインタを渡し
+	// 親に追従する用に行列計算方式を置き換える
+	l_childTransformComponent->ApplyParentTransformComponent(m_transformComponent);
 }

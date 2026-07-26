@@ -9,7 +9,7 @@ FWK::Graphics::SkeletalAnimationComputePass::SkeletalAnimationComputePass()
 
 FWK::Graphics::SkeletalAnimationComputePass::~SkeletalAnimationComputePass() = default;
 
-void FWK::Graphics::SkeletalAnimationComputePass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
 	// 定数バッファは現在FrameResourceが所有しているため、
 	// Dispatch前に現在のFrameResourceを取得する

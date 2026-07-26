@@ -448,9 +448,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Resource\Binder">
       <UniqueIdentifier>{8a432544-f669-4c72-a6a9-b993ad0fc9d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter">
-      <UniqueIdentifier>{d71e1988-27f6-429c-b088-523fef8c2aab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\Sorter">
       <UniqueIdentifier>{200d5985-647e-40e1-ab4b-66a768ffad36}</UniqueIdentifier>
     </Filter>
@@ -997,6 +994,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json">
       <UniqueIdentifier>{04b7eb22-e32c-49de-9040-e6b1f786f441}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Sorter">
+      <UniqueIdentifier>{d71e1988-27f6-429c-b088-523fef8c2aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow">
+      <UniqueIdentifier>{63def357-554f-4f68-9acf-eb040c14862b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade">
+      <UniqueIdentifier>{9b895eb0-0909-43a3-8615-d88cc1a388d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\UUID">
+      <UniqueIdentifier>{856e5243-73b1-488f-8ce4-72c0cab8432d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1307,9 +1316,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Sorter</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h">
       <Filter>Source\Framework\Utility\Sorter\Topologycal</Filter>
@@ -1965,6 +1971,21 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RendereAreaConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderGraphShadowMapEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Sorter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\UUID\UUIDRegistry.h">
+      <Filter>Source\Framework\Utility\UUID</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\UUID\UUIDUtility.h">
+      <Filter>Source\Framework\Utility\UUID</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2225,9 +2246,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Sorter</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp">
       <Filter>Source\Framework\Utility\Sorter\Topologycal</Filter>
     </ClCompile>
@@ -2467,6 +2485,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Sorter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

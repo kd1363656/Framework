@@ -16,7 +16,13 @@ namespace FWK
 		void LateUpdate   () const;
 		void ConfirmMatrix() const;
 
+		void EditInsepector();
+
 		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
+
+		void CreateParentChildRelationShip(const std::weak_ptr<GameObject>& a_child);
+
+		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
 		template <Concept::IsDerivedComponentBaseConcept ComponentType>
 		std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -73,7 +79,7 @@ namespace FWK
 		std::weak_ptr<GameObject> m_parent = {};
 
 		UUID m_uuid = GUID_NULL;
-
+		
 		std::string m_selfName   = {};
 		std::string m_prefabName = {};
 

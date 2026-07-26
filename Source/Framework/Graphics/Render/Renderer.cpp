@@ -190,8 +190,9 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Window::Clien
 											 l_rtvDescriptorPool), 
 											 "バックバッファのリサイズ処理に失敗しており、リサイズ処理に失敗しました");
 
-	// スワップチェインリサイズ後にレンダーエリアを作成
-	SetupScreenRenderArea(a_clientSize);
+	// リサイズ後のClientSizeから、
+	// 画面用Viewport、ScissorRECT、Sprite用正射影行列を更新する。
+	FWK_ASSERT_RETURN_IF(!SetupScreenRenderArea(a_clientSize), "リサイズ後のScreenRenderArea設定処理に失敗しました。");
 
 	const auto& l_retiredFenceValue = m_directCommandQueue.FetchREFLastSignaledFenceValue();
 

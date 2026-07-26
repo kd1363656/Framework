@@ -1534,6 +1534,9 @@
                     "RenderGraphPassTypeName": "SkeletalAnimationComputePass"
                 },
                 {
+                    "RenderGraphPassTypeName": "CascadeShadowPass"
+                },
+                {
                     "RenderGraphPassTypeName": "StaticModelStandardUnLitPass"
                 },
                 {

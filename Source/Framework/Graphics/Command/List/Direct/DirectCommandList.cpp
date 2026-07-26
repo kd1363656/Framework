@@ -46,6 +46,26 @@ void FWK::Graphics::DirectCommandList::ClearRenderTarget(const TypeAlias::RTVDes
 											   nullptr);
 }
 
+void FWK::Graphics::DirectCommandList::SetupDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, const TypeAlias::DescriptorIndex a_dsvDescriptorIndex) const
+{
+	FWK_ASSERT_RETURN_IF(a_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DSVDescriptorIndexが無効のため、DepthStencilの設定に失敗しました。");
+
+	const auto& l_directCommandList = GetREFCommandList();
+
+	FWK_ASSERT_RETURN_IF(!l_directCommandList, "DirectCommandListが無効のため、DepthStencilの設定に失敗しました。");
+
+	const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
+
+	// Color Render Targetを設定せず、
+	// DepthStencilだけをOutput Mergerへ設定する
+	// ShadowMap PassはDepth値だけを書き込むため、
+	// RTVは必要ない
+	l_directCommandList->OMSetRenderTargets(k_emptySetupRenderTargetNUM, 
+		                                    nullptr, 
+		                                    FALSE,
+		                                    &l_dsvHandle);
+}
+
 void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, 
 																	    const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, 
 																	    const TypeAlias::DescriptorIndex	a_rtvDescriptorIndex, 

@@ -16,7 +16,7 @@ FWK::Graphics::PhysicsDebugPass::PhysicsDebugPass()
 }
 FWK::Graphics::PhysicsDebugPass::~PhysicsDebugPass() = default;
 
-void FWK::Graphics::PhysicsDebugPass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::PhysicsDebugPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
 	const auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
 

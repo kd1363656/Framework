@@ -9,6 +9,7 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceBefor
 		if (TransitionBackBufferResource(l_resourceAccess, l_beforeUsage,  a_renderer))			    { continue; }
 		if (TransitionRenderTargetPassTextureResource(l_resourceAccess, l_beforeUsage, a_renderer)) { continue; }
 		if (TransitionDepthStencilPassTextureResource(l_resourceAccess, l_beforeUsage, a_renderer)) { continue; }
+		if (TransitionShadowMapResource(l_resourceAccess, l_beforeUsage, a_renderer))               { continue; }
 
 		FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行前の自動リソース遷移に失敗しました。");
 	}
@@ -25,6 +26,7 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceAfter
 		if (TransitionBackBufferResource(l_resourceAccess, l_afterUsage,  a_renderer))			   { continue; }
 		if (TransitionRenderTargetPassTextureResource(l_resourceAccess, l_afterUsage, a_renderer)) { continue; }
 		if (TransitionDepthStencilPassTextureResource(l_resourceAccess, l_afterUsage, a_renderer)) { continue; }
+		if (TransitionShadowMapResource(l_resourceAccess, l_afterUsage, a_renderer))               { continue; }
 
 		FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行後の自動リソース遷移に失敗しました。");
 	}
@@ -127,6 +129,33 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassT
 	if (l_beforeState == l_afterState) { return true; }
 
 	// リソースの遷移を行う
+	l_directCommandList.TransitionResourceBarrier(l_gpuResource.m_resource, l_beforeState, l_afterState);
+	l_depthStencilTexture.SetCurrentResourceState(l_afterState);
+
+	return true;
+}
+
+bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionShadowMapResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, Renderer& a_renderer) const
+{
+	if (a_resourceAccess.m_shadowMapType == Enum::RenderGraphShadowMapType::None) { return false; }
+
+	FWK_ASSERT_RETURN_VALUE_IF(a_resourceAccess.m_shadowMapType != Enum::RenderGraphShadowMapType::Cascade, "未対応のRenderGraphShadowMapTypeが指定されたため、ShadowMapの自動リソース遷移に失敗しました。", true);
+
+	      auto& l_shadowContext       = a_renderer.GetMutableREFShadowContext              ();
+	      auto& l_cascadeShadowMap    = l_shadowContext.GetMutableREFCascadeShadowMap      ();
+	      auto& l_depthStencilTexture = l_cascadeShadowMap.GetMutableREFDepthStencilTexture();
+	const auto& l_gpuResource         = l_depthStencilTexture.GetREFGPUResource            ();
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_gpuResource.m_resource, "CascadeShadowMapのGPUResourceが無効のため、自動リソース遷移に失敗しました。", true);
+
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList              ();
+	const auto  l_beforeState       = l_depthStencilTexture.GetVALCurrentResourceState();
+	const auto  l_afterState        = ConvertVALD3D12ResourceState                    (a_usage);
+
+	// Texture2DArray全体が同じ用途で使われるため、
+	// Resource全体を一度に遷移する
+	if (l_beforeState == l_afterState) { return true; }
+
 	l_directCommandList.TransitionResourceBarrier(l_gpuResource.m_resource, l_beforeState, l_afterState);
 	l_depthStencilTexture.SetCurrentResourceState(l_afterState);
 

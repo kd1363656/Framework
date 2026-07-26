@@ -15,7 +15,7 @@ FWK::Graphics::SkeletalAnimationModelStandardLitPass::SkeletalAnimationModelStan
 }
 FWK::Graphics::SkeletalAnimationModelStandardLitPass::~SkeletalAnimationModelStandardLitPass() = default;
 
-void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
 	const auto& l_directCommandList    = a_renderer.GetREFDirectCommandList   ();
 	const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SkeletalAnimationModelLit).lock();

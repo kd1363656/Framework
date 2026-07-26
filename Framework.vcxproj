@@ -383,6 +383,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\PipelineStateBaseEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderGraphPassEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderGraphPassTextureEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderGraphShadowMapEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootParameterEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootSignatureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\TextureLoadColorSpaceEnum.h" />
@@ -479,6 +480,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.h" />
@@ -487,7 +489,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer\PhysicsDebugDynamicVertexBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\ComputeRequestPerObjectBase.h" />
@@ -520,6 +521,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\LightSystemStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h" />
@@ -652,6 +654,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\String\WStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\TypeINFO\TypeINFOUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\UUID\UUIDRegistry.h" />
+    <ClInclude Include="Source\Framework\Utility\UUID\UUIDUtility.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
@@ -702,6 +706,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Converter\Json\RenderGraphJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalColorPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Final\FinalPresentPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\CascadeShadowPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp" />
@@ -709,7 +714,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sorter\RenderGraphPassSorter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
@@ -725,6 +729,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Light\LightSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Compute\ComputePipelineState.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json\ComputePipelineStateJsonConverter.cpp" />

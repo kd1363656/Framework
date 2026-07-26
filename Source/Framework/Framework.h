@@ -353,6 +353,7 @@
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
+#include "Definition/Enum/Graphics/RenderGraphShadowMapEnum.h"
 #include "Definition/Struct/Graphics/RenderGraphPassStruct.h"
 #include "Graphics/Render/Graph/Pass/RenderGraphPassBase.h"
 #include "Definition/Type/Alias/Factory/Unique/RenderGraphPassUniqueFactory.h"
@@ -362,6 +363,7 @@
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
+#include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/CascadeShadowPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPass.h"
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
@@ -375,7 +377,7 @@
 #include "Graphics/Render/Graph/Resource/Clearer/RenderGraphResourceClearer.h"
 #include "Graphics/Render/Graph/Resource/Transitioner/RenderGraphResourceTransitioner.h"
 #include "Graphics/Render/Graph/Resource/Binder/RenderGraphResourceBinder.h"
-#include "Graphics/Render/Graph/Pass/Sorter/RenderGraphPassSorter.h"
+#include "Graphics/Render/Graph/Sorter/RenderGraphPassSorter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
 
 // レンダーラー
@@ -431,10 +433,14 @@
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
 
 //===============================================================================
-// シーン
+// ゲームオブジェクト
 //===============================================================================
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
 #include "GameObject/GameObject.h"
+
+//===============================================================================
+// シーン
+//===============================================================================
 #include "Scene/Converter/Json/SceneJsonConveter.h"
 #include "Scene/Scene.h"
 #include "Scene/Converter/Json/SceneManagerJsonConveter.h"

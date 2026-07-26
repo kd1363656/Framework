@@ -88,6 +88,9 @@ void FWK::TransformComponent::ApplyParentTransformComponent(const std::weak_ptr<
 {
 	m_parentTransformComponent = a_parentTransformComponent;
 
+	// 親が存在するということは追従する可能性が高いため、自動的に親に追従するように行列を掛ける
+	m_transform.m_matrixStrategy = std::make_unique<HierarchicalMatrixStrartegy>();
+
 	// セットした後にダーティーフラグで行列の更新が妨げられてもいいように
 	// ここで一度だけ行列を更新しておく
 	ConfrimMatrixStrategy();

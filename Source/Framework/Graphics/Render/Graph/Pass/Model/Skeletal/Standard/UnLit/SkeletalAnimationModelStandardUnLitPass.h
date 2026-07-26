@@ -9,7 +9,7 @@ namespace FWK::Graphics
 		 SkeletalAnimationModelStandardUnLitPass();
 		~SkeletalAnimationModelStandardUnLitPass() override;
 
-		void Execute(Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+		void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
 		FWK_DEFINE_TYPE_INFO(SkeletalAnimationModelStandardUnLitPass, RenderGraphPassBase)
 	};

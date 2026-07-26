@@ -15,7 +15,7 @@ FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::SkeletalAnimationModelSt
 }
 FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::~SkeletalAnimationModelStandardUnLitPass() = default;
 
-void FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
 	const auto& l_directCommandList    = a_renderer.GetREFDirectCommandList   ();
 	const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SkeletalAnimationModelLit).lock();

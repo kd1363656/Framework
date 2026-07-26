@@ -14,6 +14,8 @@ namespace FWK::Graphics
 		void SetupRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex)																					            const;
 		void ClearRenderTarget(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool, const UINT a_rtvDescriptorIndex, const TypeAlias::Math::Color& a_clearColor = DirectCommandList::k_defaultBackBufferClearColor) const;
 
+		void SetupDepthStencil(const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool, const TypeAlias::DescriptorIndex a_dsvDescriptorIndex) const;
+
 		void SetupRenderTargetAndDepthStencil(const TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool,
 											  const TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
 											  const TypeAlias::DescriptorIndex	  a_rtvDescriptorIndex,
@@ -61,6 +63,7 @@ namespace FWK::Graphics
 
 	private:
 
+		static constexpr UINT k_emptySetupRenderTargetNUM  = 0U;
 		static constexpr UINT k_singleSetupRenderTargetNUM = 1U;
 		static constexpr UINT k_allRECTClear			   = 0U;
 

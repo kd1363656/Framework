@@ -32,6 +32,10 @@ namespace FWK::Graphics
 
 		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
+		const auto& GetREFRenderArea() const { return m_renderArea; }
+
+		auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
+
 		auto GetVALResolution() const { return m_resolution; }
 
 	private:

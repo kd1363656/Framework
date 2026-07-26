@@ -13,8 +13,9 @@ namespace FWK::Struct
 		Enum::RenderGraphRenderTargetType m_renderTargetType = Enum::RenderGraphRenderTargetType::None;
 		Enum::RenderGraphDepthStencilType m_depthStencilType = Enum::RenderGraphDepthStencilType::None;
 		
-		Enum::RenderGraphAccessType    m_accessType  = Enum::RenderGraphAccessType::Invalid;
-		Enum::RenderGraphResourceUsage m_beforeUsage = Enum::RenderGraphResourceUsage::Invalid;
-		Enum::RenderGraphResourceUsage m_afterUsage  = Enum::RenderGraphResourceUsage::None;
+		Enum::RenderGraphShadowMapType m_shadowMapType = Enum::RenderGraphShadowMapType::None;
+		Enum::RenderGraphAccessType    m_accessType    = Enum::RenderGraphAccessType::Invalid;
+		Enum::RenderGraphResourceUsage m_beforeUsage   = Enum::RenderGraphResourceUsage::Invalid;
+		Enum::RenderGraphResourceUsage m_afterUsage    = Enum::RenderGraphResourceUsage::None;
 	};
 }

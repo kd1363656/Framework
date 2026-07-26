@@ -61,7 +61,7 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 		// PassのWriteResourceを見て、RenderGraph側でRTVを自動セットする
 		m_resourceBinder.SetupPassRenderTarget(a_resourceContext, *l_pass, a_renderer);
 
-		l_pass->Execute(a_renderer, *this);
+		l_pass->Execute(a_resourceContext, a_renderer, *this);
 
 		// Pass実行後に、ResourceAccessのafterUsageへ遷移する
 		m_resourceTransitioner.TransitionPassResourceAfter(*l_pass, a_renderer);

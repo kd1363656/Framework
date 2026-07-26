@@ -9,7 +9,7 @@ namespace FWK::Graphics
 		 StaticModelStandardLitPass();
 		~StaticModelStandardLitPass() override;
 
-		void Execute(Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+		void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
 		FWK_DEFINE_TYPE_INFO(StaticModelStandardLitPass, RenderGraphPassBase)
 	};

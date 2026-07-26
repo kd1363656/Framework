@@ -13,7 +13,7 @@ FWK::Graphics::FinalPresentPass::FinalPresentPass()
 }
 FWK::Graphics::FinalPresentPass::~FinalPresentPass() = default;
 
-void FWK::Graphics::FinalPresentPass::Execute(Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::FinalPresentPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 

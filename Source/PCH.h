@@ -144,6 +144,6 @@
 //================================================
 #pragma comment(lib, "Ole32.lib")
 #pragma comment(lib, "winmm.lib")
-#pragma comment(lib , "Rpcrt4.lib")
+#pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")

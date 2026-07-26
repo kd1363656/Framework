@@ -222,6 +222,12 @@ bool FWK::Graphics::RenderGraphPassSorter::IsSameRenderGraphResource(const Struc
 		return a_lhs.m_depthStencilType == a_rhs.m_depthStencilType;
 	}
 
+	if (a_lhs.m_shadowMapType != Enum::RenderGraphShadowMapType::None || 
+		a_rhs.m_shadowMapType != Enum::RenderGraphShadowMapType::None)
+	{
+		return a_lhs.m_shadowMapType == a_rhs.m_shadowMapType;
+	}
+
 	return false;
 }
 bool FWK::Graphics::RenderGraphPassSorter::IsReadResourceAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
