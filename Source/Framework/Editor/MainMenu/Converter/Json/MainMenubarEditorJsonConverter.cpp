@@ -45,9 +45,9 @@ nlohmann::json FWK::Converter::MainMenubarEditorJsonConverter::SerializeEditorma
 {
     nlohmann::json l_rootJsonArray = {};
 
-    const auto& l_editorMainMenuList = a_mainMenubarEditor.GetREFEditorMainMenuList();
+    const auto& l_editorMainMenuSmartPointerVectorArray = a_mainMenubarEditor.GetREFEditorMainMenuSmartPointerVectorArray();
 
-    for (const auto& l_editorMainMenuData : l_editorMainMenuList.GetREFArrayElementDataList())
+    for (const auto& l_editorMainMenuData : l_editorMainMenuSmartPointerVectorArray.GetREFArrayElementDataList())
     {
         const auto& l_editorMainMenu = l_editorMainMenuData.m_type;
 

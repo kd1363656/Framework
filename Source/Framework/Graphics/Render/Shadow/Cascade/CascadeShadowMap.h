@@ -4,6 +4,17 @@ namespace FWK::Graphics
 {
 	class CascadeShadowMap
 	{
+	private:
+
+		struct CascadeData final
+		{
+			static constexpr float k_initialSplitDepth = 0.0F;
+
+			TypeAlias::Math::Matrix m_viewProjectionMatrix = TypeAlias::Math::Matrix::Identity;
+
+			float m_splitDepth = k_initialSplitDepth;
+		};
+
 	public:
 
 		 CascadeShadowMap() = default;
@@ -22,12 +33,14 @@ namespace FWK::Graphics
 			              TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
 			              TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
+		bool Update();
+
 		nlohmann::json Serialize() const;
 
 		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 
-		void SetCBCameraPass(const std::shared_ptr<Struct::CBCameraPass>& a_set) { m_cbCameraPass; }
-		void SetCBLightPass (const std::shared_ptr<Struct::CBLightPass>&  a_set) { m_cbLightPass; }
+		void SetCBCameraPass(const std::shared_ptr<Struct::CBCameraPass>& a_set) { m_cbCameraPass = a_set; }
+		void SetCBLightPass (const std::shared_ptr<Struct::CBLightPass>&  a_set) { m_cbLightPass  = a_set; }
 
 		void SetResolution(const UINT a_set) { m_resolution = a_set; }
 
@@ -42,6 +55,30 @@ namespace FWK::Graphics
 		auto GetVALResolution() const { return m_resolution; }
 
 	private:
+
+		static constexpr float k_cascadeSplitLambda = 0.5F;
+
+		static constexpr float k_invalidClipDistance = 0.0F;
+
+		static constexpr float k_lightViewDistanceScale = 2.0F;
+
+		static constexpr float k_lightViewDepthPaddig = 10.0F;
+
+		static constexpr float k_directionLengthSquaredEpsilon = 0.000001F;
+		static constexpr float k_parallelUpDotThreshold        = 0.99F;
+
+		static constexpr float k_ndcMINX = -1.0F;
+		static constexpr float k_ndcMAXX =  1.0F;
+		static constexpr float k_ndcMINY = -1.0F;
+		static constexpr float k_ndcMAXY =  1.0F;
+		static constexpr float k_ndcNearZ = 0.0F;
+		static constexpr float k_ndcFarZ  = 1.0F;
+
+		static constexpr std::size_t k_firstCascadeIndex       = 0ULL;
+		static constexpr std::size_t k_cascadeNumberOfset      = 1ULL;
+		static constexpr std::size_t k_firstFrustumCornerIndex = 0ULL;
+		static constexpr std::size_t k_frustumPlaneCornerCount = 4ULL;
+		static constexpr std::size_t k_frustumCornerCount      = 8ULL;
 
 		static constexpr UINT k_requiredSampleCount = 1U;
 		static constexpr UINT k_shadowMapMIPSlice   = 0U;

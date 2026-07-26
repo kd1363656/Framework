@@ -257,8 +257,8 @@ bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Window::ClientSize& a_
 	// Rendererが所有して更新する。
 	m_cbSpritePass->m_projectionMatrix = TypeAlias::Math::Matrix::CreateOrthographic(l_viewport.Width,
 			                                                                         l_viewport.Height,
-			                                                                         Constant::k_renderAreaMinimumViewportDepth,
-			                                                                         Constant::k_renderAreaMaximumViewportDepth);
+			                                                                         Constant::k_renderAreaMINViewportDepth,
+			                                                                         Constant::k_renderAreaMAXViewportDepth);
 
 	return true;
 }

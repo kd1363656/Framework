@@ -35,11 +35,13 @@ void FWK::Graphics::LightSystem::RegisterCBLightPass()
 	      auto& l_shadowContext    = l_renderer.GetMutableREFShadowContext        ();
 		  auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
 
-	const auto& l_lightPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<LightPassDrawRequest>().lock();
+	if (const auto& l_lightPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<LightPassDrawRequest>().lock();
+		l_lightPassDrawRequest)
+	{
+		// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
+		l_lightPassDrawRequest->SetSourceConstantBuffer(m_cbLightPass);
+	}
 
-	if (!l_lightPassDrawRequest) { return; }
-
-	// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
-	l_lightPassDrawRequest->SetSourceConstantBuffer(m_cbLightPass);
-	l_cascadeShadowMap.SetCBLightPass              (m_cbLightPass);
+	// Casacde計算で使用するLightConstantBufferを登録する
+	l_cascadeShadowMap.SetCBLightPass(m_cbLightPass);
 }

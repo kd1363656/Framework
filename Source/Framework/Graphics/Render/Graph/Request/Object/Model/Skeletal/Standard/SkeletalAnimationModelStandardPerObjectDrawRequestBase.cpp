@@ -4,14 +4,14 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Begi
 {
 	// DrawRequestDataの所有権が破棄されていた場合は、
 	// 内部配列から期限切れのstd::weak_ptrを削除する
-	m_forwardDrawRequestDataList.BeginFrame();
+	m_forwardDrawRequestDataSmartPointerVectorArray.BeginFrame();
 }
 
 void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer & a_renderer, const RootSignature & a_rootSignature, const FrameResource & a_frameResource)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-	for (const auto& l_drawRequestData : m_forwardDrawRequestDataList.GetREFArrayElementDataList())
+	for (const auto& l_drawRequestData : m_forwardDrawRequestDataSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_drawRequest = l_drawRequestData.m_type.lock();
 
@@ -133,7 +133,7 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::AddD
 {
 	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "DrawRequestDataが無効なため、Skeletal Animation Modelの描画申請を追加できません。");
 
-	m_forwardDrawRequestDataList.Add(a_drawRequestData);
+	m_forwardDrawRequestDataSmartPointerVectorArray.Add(a_drawRequestData);
 }
 
 bool FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const

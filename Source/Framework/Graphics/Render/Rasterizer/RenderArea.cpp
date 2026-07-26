@@ -16,8 +16,8 @@ bool FWK::Graphics::RenderArea::Setup(const UINT a_width, const UINT a_height)
 	                                         k_defaultViewportTopLeftY,
 	                                         static_cast<float>(a_width),
 	                                         static_cast<float>(a_height),
-	                                         Constant::k_renderAreaMinimumViewportDepth,
-	                                         Constant::k_renderAreaMaximumViewportDepth };
+	                                         Constant::k_renderAreaMINViewportDepth,
+	                                         Constant::k_renderAreaMAXViewportDepth };
 
 	// D3D12_RECT構造体について説明
 	// left   : 描画可能範囲の左端X座標
@@ -40,8 +40,8 @@ bool FWK::Graphics::RenderArea::Setup(const D3D12_VIEWPORT& a_viewport, const D3
 		                       "RenderAreaへ指定されたViewportのWidthまたはHeightが無効です。",
 		                       false);
 
-	FWK_ASSERT_RETURN_VALUE_IF(a_viewport.MinDepth <  Constant::k_renderAreaMinimumViewportDepth ||
-		                       a_viewport.MaxDepth >  Constant::k_renderAreaMaximumViewportDepth ||
+	FWK_ASSERT_RETURN_VALUE_IF(a_viewport.MinDepth <  Constant::k_renderAreaMINViewportDepth ||
+		                       a_viewport.MaxDepth >  Constant::k_renderAreaMAXViewportDepth ||
 		                       a_viewport.MinDepth >= a_viewport.MaxDepth,
 		                       "RenderAreaへ指定されたViewportのDepth範囲が無効です。",
 		                       false);

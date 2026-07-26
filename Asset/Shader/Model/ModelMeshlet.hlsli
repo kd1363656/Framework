@@ -6,8 +6,8 @@
 static const float k_modelMeshletCullingEpsilon     = 0.000001F;
 static const float k_modelDisabledMeshletConeCutoff = 1.0F;
 
-static const uint k_modelMaxMeshletVertexCount    = 64U;
-static const uint k_modelMaxMeshletPrimitiveCount = 126U;
+static const uint k_modelMAXMeshletVertexCount    = 64U;
+static const uint k_modelMAXMeshletPrimitiveCount = 126U;
 
 // uint32_tからuint8_t相当のPrimitiveIndexだけを取り出すためのMask。
 // 0xFFU = 下位8bitだけを残す。

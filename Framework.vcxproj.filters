@@ -1566,7 +1566,7 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Array\VectorArray.h">
+    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArray.h">
       <Filter>Source\Framework\Utility\Array</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">

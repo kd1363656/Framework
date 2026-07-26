@@ -37,7 +37,7 @@ namespace FWK::Graphics
 
 	private:
 
-		Utility::VectorArray<std::weak_ptr<DrawRequestData>> m_drawRequestDataList = {};
+		Utility::SmartPointerVectorArray<std::weak_ptr<DrawRequestData>> m_drawRequestDataSmartPointerVectorArray = {};
 
 		FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDrawRequest, DrawRequestPerObjectBase)
 	};

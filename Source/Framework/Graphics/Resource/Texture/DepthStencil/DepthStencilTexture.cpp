@@ -8,12 +8,12 @@ bool FWK::Graphics::DepthStencilTexture::Create(const Device&                   
                                                       TypeAlias::DSVDescriptorPool&        a_dsvDescriptorPool,
                                                       TypeAlias::CBVSRVUAVDescriptorPool&  a_cbvSRVUAVDescriptorPool)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height),                             "DepthStencilTextureのSizeが無効のため、作成処理に失敗しました。",           false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_resourceFormat == DXGI_FORMAT_UNKNOWN,       "DepthStencilTextureのResourceFormatが無効のため、作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_dsvFormat ==      DXGI_FORMAT_UNKNOWN,       "DepthStencilTextureのDSVFormatが無効のため、作成処理に失敗しました。",      false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_arraySize <       k_minimumTextureArraySize, "DepthStencilTextureのArraySizeが無効のため、作成処理に失敗しました。",      false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_mipLevels <       k_minimumMIPLevelCount,    "DepthStencilTextureのMipLevelsが無効のため、作成処理に失敗しました。",      false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_sampleCount <     k_minimumSampleCount,      "DepthStencilTextureのSampleCountが無効のため、作成処理に失敗しました。",    false);
+    FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(a_width, a_height),                         "DepthStencilTextureのSizeが無効のため、作成処理に失敗しました。",           false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_resourceFormat == DXGI_FORMAT_UNKNOWN,   "DepthStencilTextureのResourceFormatが無効のため、作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_dsvFormat ==      DXGI_FORMAT_UNKNOWN,   "DepthStencilTextureのDSVFormatが無効のため、作成処理に失敗しました。",      false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_arraySize <       k_minTextureArraySize, "DepthStencilTextureのArraySizeが無効のため、作成処理に失敗しました。",      false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_mipLevels <       k_minMIPLevelCount,    "DepthStencilTextureのMipLevelsが無効のため、作成処理に失敗しました。",      false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_sampleCount <     k_minSampleCount,      "DepthStencilTextureのSampleCountが無効のため、作成処理に失敗しました。",    false);
 
     // DirectX12のMSAATextureはMipMapを複数持てない。
     // SampleCountが1より大きい場合は、

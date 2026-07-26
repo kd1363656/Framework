@@ -3,7 +3,7 @@
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 {
 	// 前フレームのSprite描画申請を消す
-	m_drawRequestDataList.BeginFrame();
+	m_drawRequestDataSmartPointerVectorArray.BeginFrame();
 }
 
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
@@ -13,7 +13,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 	// PrimitiveTopologyTypeをセット
 	l_directCommandList.SetupPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	for (const auto& l_drawRequestData : m_drawRequestDataList.GetREFArrayElementDataList())
+	for (const auto& l_drawRequestData : m_drawRequestDataSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_drawRequest = l_drawRequestData.m_type.lock();
 
@@ -47,5 +47,5 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
 
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::AddDrawRequestPerObject(const std::shared_ptr<DrawRequestData>&a_drawRequestData)
 {
-	m_drawRequestDataList.Add(a_drawRequestData);
+	m_drawRequestDataSmartPointerVectorArray.Add(a_drawRequestData);
 }

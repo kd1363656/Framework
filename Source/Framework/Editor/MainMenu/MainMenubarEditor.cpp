@@ -11,7 +11,7 @@ void FWK::Editor::MainMenubarEditor::Draw() const
 {
 	if (!ImGui::BeginMainMenuBar()) { return; }
 
-	const auto& l_editorMainMenuDataList = m_editorMainMenuList.GetREFArrayElementDataList();
+	const auto& l_editorMainMenuDataList = m_editorMainMenuSmartPointerVectorArray.GetREFArrayElementDataList();
 
 	for (const auto& l_editorMainMenuData : l_editorMainMenuDataList)
 	{
@@ -38,5 +38,5 @@ void FWK::Editor::MainMenubarEditor::AddEditorMainMenu(std::unique_ptr<EditorMai
 		return;
 	}
 
-	m_editorMainMenuList.Add(std::move(a_editorMainMenu));
+	m_editorMainMenuSmartPointerVectorArray.Add(std::move(a_editorMainMenu));
 }

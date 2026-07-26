@@ -68,15 +68,15 @@ namespace FWK::Graphics
 		static constexpr UINT k_mostDetailedMIP = 0U;
 		static constexpr UINT k_planeSlice      = 0U;
 
-		static constexpr UINT k_minimumSampleCount = 1U;
+		static constexpr UINT k_minSampleCount = 1U;
 
 		static constexpr UINT k_singleTextureArraySize   = 1U;
 		static constexpr UINT k_singleDSVArraySliceCount = 1U;
 		static constexpr UINT k_singleMIPLevelCount      = 1U;
 		static constexpr UINT k_nonMultisampleCount      = 1U;
 		
-		static constexpr UINT16 k_minimumTextureArraySize = 1U;
-		static constexpr UINT16 k_minimumMIPLevelCount    = 1U;
+		static constexpr UINT16 k_minTextureArraySize = 1U;
+		static constexpr UINT16 k_minMIPLevelCount    = 1U;
 
 		Struct::GPUResource m_gpuResource = {};
 

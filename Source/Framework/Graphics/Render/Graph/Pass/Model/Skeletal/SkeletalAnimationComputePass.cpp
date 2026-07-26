@@ -32,8 +32,8 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
 	FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationMeshletBoundsUpdate用DynamicConstantBufferUploaderを取得できません。");
 
-	const auto& l_skeletalAnimationPlayerList = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerList().GetREFArrayElementDataList();
-	const auto& l_computeCommandList          = a_renderer.GetREFComputeCommandList                                          ();
+	const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorArray().GetREFArrayElementDataList();
+	const auto& l_computeCommandList                             = a_renderer.GetREFComputeCommandList                                                             ();
 
 	// 最初にすべてのPlayerへVertex Skinningを行う。
 	// PlayerごとにVertexSkinningとBounds更新のPSOを
@@ -42,7 +42,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
 	FWK_ASSERT_RETURN_IF(!l_vertexSkinningRootSignature, "SkeletalAnimationVertexSkinning用RootSignatureを取得できないため、VertexSkinningを実行できません。");
 
-	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerList)
+	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerSmartPointerVectorArray)
 	{
 		const auto& l_skeletalAnimationPlayer = l_skeletalAnimationPlayerData.m_type.lock();
 
@@ -76,7 +76,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
 	FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateRootSignature, "SkeletalAnimationMeshletBoundsUpdate用RootSignatureを取得できないため、Meshlet Boundsを更新できません。");
 
-	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerList)
+	for (const auto& l_skeletalAnimationPlayerData : l_skeletalAnimationPlayerSmartPointerVectorArray)
 	{
 		const auto& l_skeletalAnimationPlayer = l_skeletalAnimationPlayerData.m_type.lock();
 

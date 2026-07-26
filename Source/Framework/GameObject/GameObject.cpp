@@ -2,7 +2,7 @@
 
 void FWK::GameObject::PostDeserialize() const
 {
-	for (const auto& l_componentData : m_componentList.GetREFArrayElementDataList())
+	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_component = l_componentData.m_type;
 
@@ -14,7 +14,7 @@ void FWK::GameObject::PostDeserialize() const
 
 void FWK::GameObject::EarlyUpdate() const
 {
-	for (const auto& l_componentData : m_componentList.GetREFArrayElementDataList())
+	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_component = l_componentData.m_type;
 
@@ -25,7 +25,7 @@ void FWK::GameObject::EarlyUpdate() const
 }
 void FWK::GameObject::Update() const
 {
-	for (const auto& l_componentData : m_componentList.GetREFArrayElementDataList())
+	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_component = l_componentData.m_type;
 
@@ -36,7 +36,7 @@ void FWK::GameObject::Update() const
 }
 void FWK::GameObject::LateUpdate() const
 {
-	for (const auto& l_componentData : m_componentList.GetREFArrayElementDataList())
+	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_component = l_componentData.m_type;
 
@@ -59,7 +59,7 @@ void FWK::GameObject::Destroy()
 	// 子も削除フラグを立てる
 	// もし親が削除されて連動して消されたくないような局面が出てきたら
 	// その時に処理を書き換えるようにすること、基本は親と連動して削除フラグを立てる
-	for (const auto& l_childData : m_childList.GetMutableREFArrayElementDataList())
+	for (const auto& l_childData : m_childSmartPointerVectorArray.GetMutableREFArrayElementDataList())
 	{
 		auto l_child = l_childData.m_type.lock();
 
@@ -75,7 +75,7 @@ void FWK::GameObject::EditInsepector()
 
 	m_transformComponent->EditInspector();
 
-	for (const auto& l_compoentData : m_componentList.GetREFArrayElementDataList())
+	for (const auto& l_compoentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_compoent = l_compoentData.m_type;
 
@@ -119,7 +119,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 		return;
 	}
 
-	m_componentList.Add(a_component);
+	m_componentSmartPointerVectorArray.Add(a_component);
 }
 
 void FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
@@ -132,7 +132,7 @@ void FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 	// このゲームオブジェクトを親としてセットし親子関係を構築
 	l_child->SetParent(weak_from_this());
 
-	m_childList.Add(l_child);
+	m_childSmartPointerVectorArray.Add(l_child);
 
 	auto l_childTransformComponent = l_child->GetVALTransformComponent().lock();
 
@@ -148,6 +148,4 @@ void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
 	const auto& l_child = a_child.lock();
 
 	if (!l_child) { return; }
-
-	
 }

@@ -79,12 +79,12 @@ namespace FWK
 		std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>				 m_uniqueComponentMap = {};
 		std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<ComponentBase>>> m_multiComponentMap  = {};
 
-		Utility::VectorArray<std::weak_ptr<GameObject>>      m_childList     = {};
-		Utility::VectorArray<std::shared_ptr<ComponentBase>> m_componentList = {};
-
 		std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
 
 		std::weak_ptr<GameObject> m_parent = {};
+
+		Utility::SmartPointerVectorArray<std::weak_ptr<GameObject>>      m_childSmartPointerVectorArray     = {};
+		Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorArray = {};
 
 		UUID m_uuid = GUID_NULL;
 		

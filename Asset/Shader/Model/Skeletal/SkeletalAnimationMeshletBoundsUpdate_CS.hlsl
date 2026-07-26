@@ -12,8 +12,8 @@ cbuffer CBSkeletalAnimationMeshletBoundsUpdatePerObject : register(b0)
 
 static const float k_boundingSphereCenterAverageScale = 0.5F;
 
-static const float k_meshletConeMaximumNormalDot       = 1.0F;
-static const float k_meshletConeMinimumUsefulNormalDot = 0.1F;
+static const float k_meshletConeMAXNormalDot       = 1.0F;
+static const float k_meshletConeMINUsefulNormalDot = 0.1F;
 
 static const float k_triangleNormalLengthSquaredEpsilon = k_modelMeshletCullingEpsilon * k_modelMeshletCullingEpsilon;
 
@@ -31,12 +31,12 @@ static const uint k_lastElementIndexOffsetFromCount = 1U;
 
 static const uint k_meshletBoundsUpdateSecondTriangleIndexOffset = k_meshletBoundsUpdateThreadCountX;
 
-groupshared float3 g_meshletPositionList       [k_meshletBoundsUpdateThreadCountX];
-groupshared float3 g_meshletMinimumPositionList[k_meshletBoundsUpdateThreadCountX];
-groupshared float3 g_meshletMaximumPositionList[k_meshletBoundsUpdateThreadCountX];
-groupshared float3 g_meshletConeAxisSumList    [k_meshletBoundsUpdateThreadCountX];
-groupshared float  g_meshletRadiusSquaredList  [k_meshletBoundsUpdateThreadCountX];
-groupshared float  g_meshletConeMinimumDotList [k_meshletBoundsUpdateThreadCountX];
+groupshared float3 g_meshletPositionList     [k_meshletBoundsUpdateThreadCountX];
+groupshared float3 g_meshletMINPositionList  [k_meshletBoundsUpdateThreadCountX];
+groupshared float3 g_meshletMAXPositionList  [k_meshletBoundsUpdateThreadCountX];
+groupshared float3 g_meshletConeAxisSumList  [k_meshletBoundsUpdateThreadCountX];
+groupshared float  g_meshletRadiusSquaredList[k_meshletBoundsUpdateThreadCountX];
+groupshared float  g_meshletConeMINDotList   [k_meshletBoundsUpdateThreadCountX];
 
 float3 CalculateMeshletTriangleNormal(const uint a_packedPrimitiveIndex, const uint a_meshletVertexCount)
 {
@@ -117,9 +117,9 @@ void main(const uint3 a_groupID          : SV_GroupID,
     const float3 l_position               = l_vertexBuffer           [l_modelVertexIndex].position;
     
     // 各Threadが読み込んだ頂点位置をSharedMemoryへ格納する
-    g_meshletPositionList       [a_groupThreadIndex] = l_position;
-    g_meshletMinimumPositionList[a_groupThreadIndex] = l_position;
-    g_meshletMaximumPositionList[a_groupThreadIndex] = l_position;
+    g_meshletPositionList   [a_groupThreadIndex] = l_position;
+    g_meshletMINPositionList[a_groupThreadIndex] = l_position;
+    g_meshletMAXPositionList[a_groupThreadIndex] = l_position;
     
     // 全Threadが位置を書き込むまでAABBのReductionを開始しない
     GroupMemoryBarrierWithGroupSync();
@@ -172,8 +172,8 @@ void main(const uint3 a_groupID          : SV_GroupID,
         {
             const uint l_compareThreadIndex = a_groupThreadIndex + l_aabbReductionStride;
             
-            g_meshletMinimumPositionList[a_groupThreadIndex] = min(g_meshletMinimumPositionList[a_groupThreadIndex], g_meshletMinimumPositionList[l_compareThreadIndex]);
-            g_meshletMaximumPositionList[a_groupThreadIndex] = max(g_meshletMaximumPositionList[a_groupThreadIndex], g_meshletMaximumPositionList[l_compareThreadIndex]);
+            g_meshletMINPositionList[a_groupThreadIndex] = min(g_meshletMINPositionList[a_groupThreadIndex], g_meshletMINPositionList[l_compareThreadIndex]);
+            g_meshletMAXPositionList[a_groupThreadIndex] = max(g_meshletMAXPositionList[a_groupThreadIndex], g_meshletMAXPositionList[l_compareThreadIndex]);
             
             // AABBと同じReduction段階を利用して、
             // 全Triangle Normalの合計も求める。
@@ -187,9 +187,9 @@ void main(const uint3 a_groupID          : SV_GroupID,
     }
     
     // Reduction完了後、先頭要素にMeshlet全体の最小位置と最大位置が格納される
-    const float3 l_minimumMeshletPosition = g_meshletMinimumPositionList[k_firstThreadIndex];
-    const float3 l_maximumMeshletPosition = g_meshletMaximumPositionList[k_firstThreadIndex];
-    const float3 l_meshletConeAxisSum     = g_meshletConeAxisSumList    [k_firstThreadIndex];
+    const float3 l_minMeshletPosition = g_meshletMINPositionList[k_firstThreadIndex];
+    const float3 l_maxMeshletPosition = g_meshletMAXPositionList[k_firstThreadIndex];
+    const float3 l_meshletConeAxisSum = g_meshletConeAxisSumList[k_firstThreadIndex];
     
     // 合計Normalが正規化できる長さを持つか確認する。
     // 表裏が反対のNormal同士で相殺された場合や、
@@ -218,7 +218,7 @@ void main(const uint3 a_groupID          : SV_GroupID,
     // AABBの中央をBoundingSphereの中心として使用する
     // meshoptimizerが作る最小Sphereとは異なるが
     // 現在Poseの全頂点を安全に囲むSphereになる
-    const float3 l_boundingSphereCenter = (l_minimumMeshletPosition + l_maximumMeshletPosition) * k_boundingSphereCenterAverageScale;
+    const float3 l_boundingSphereCenter = (l_minMeshletPosition + l_maxMeshletPosition) * k_boundingSphereCenterAverageScale;
     
     // 各Threadが担当する頂点について
     // BoundingSphere中心からの距離の二乗を計算する
@@ -228,24 +228,24 @@ void main(const uint3 a_groupID          : SV_GroupID,
     
     g_meshletRadiusSquaredList[a_groupThreadIndex] = dot(l_boundingSphereCenterToVertex, l_boundingSphereCenterToVertex);
     
-    float l_meshletConeMinimumDot = k_meshletConeMaximumNormalDot;
+    float l_meshletConeMINDot = k_meshletConeMAXNormalDot;
     
     // Cone Axisとの内積を取得する。
     if (l_hasValidMeshletConeAxis && l_isFirstTriangleNormalValid)
     {
-        l_meshletConeMinimumDot = min(l_meshletConeMinimumDot, dot(l_meshletConeAxis, l_firstTriangleNormal) );
+        l_meshletConeMINDot = min(l_meshletConeMINDot, dot(l_meshletConeAxis, l_firstTriangleNormal) );
     }
     
     if (l_hasValidMeshletConeAxis && l_isSecondTriangleNormalValid)
     {
-        l_meshletConeMinimumDot = min(l_meshletConeMinimumDot, dot(l_meshletConeAxis, l_secondTriangleNormal));
+        l_meshletConeMINDot = min(l_meshletConeMINDot, dot(l_meshletConeAxis, l_secondTriangleNormal));
     }
     
     // このThreadが担当したTriangleのうち、
     // ConeAxisから最も離れているNormalの内積を保存する。
-    g_meshletConeMinimumDotList[a_groupThreadIndex] = l_meshletConeMinimumDot;
+    g_meshletConeMINDotList[a_groupThreadIndex] = l_meshletConeMINDot;
     
-    // 全ThreadがRadiusSquaredとCone Minimum Dotを書き込むまで、
+    // 全ThreadがRadiusSquaredとConeMINDotを書き込むまで、
     // 二回目のReductionを開始しない。
     GroupMemoryBarrierWithGroupSync();
     
@@ -262,7 +262,7 @@ void main(const uint3 a_groupID          : SV_GroupID,
             // Cone AxisとTriangle Normalの最小内積も求める。
             // Cone専用Reductionを追加しないため、
             // 新しい同期ループは必要ない。
-            g_meshletConeMinimumDotList[a_groupThreadIndex] = min(g_meshletConeMinimumDotList[a_groupThreadIndex], g_meshletConeMinimumDotList[l_compareThreadIndex]);
+            g_meshletConeMINDotList[a_groupThreadIndex] = min(g_meshletConeMINDotList[a_groupThreadIndex], g_meshletConeMINDotList[l_compareThreadIndex]);
         }
         
         GroupMemoryBarrierWithGroupSync();
@@ -290,19 +290,19 @@ void main(const uint3 a_groupID          : SV_GroupID,
         // Reduction後の先頭要素には、
         // Meshlet内すべてのTriangle Normalについて求めた
         // Cone Axisとの最小内積が格納されている
-        const float l_meshletConeMinimumNormalDot = g_meshletConeMinimumDotList[k_firstThreadIndex];
+        const float l_meshletConeMINNormalDot = g_meshletConeMINDotList[k_firstThreadIndex];
         
         // Axisが正常に作成でき、さらにNormal群が十分狭い場合だけ
         // Backface Cone Culling用の情報を有効化する
         // Minimum Dotが小さい場合は、
         // Triangle Normalが広い範囲へ分散していることを表す
         if (l_hasValidMeshletConeAxis &&
-            l_meshletConeMinimumNormalDot > k_meshletConeMinimumUsefulNormalDot)
+            l_meshletConeMINNormalDot > k_meshletConeMINUsefulNormalDot)
         {
             // Minimum Dotは、Cone Axisと最も離れたNormalとのcos値
             // Backface判定で使用するCutoffはsin値なので、
             // sqrt(One - MinimumDotSquared)で求める
-            const float l_meshletConeCutoffSquared = saturate(k_meshletConeMaximumNormalDot - l_meshletConeMinimumNormalDot * l_meshletConeMinimumNormalDot);
+            const float l_meshletConeCutoffSquared = saturate(k_meshletConeMAXNormalDot - l_meshletConeMINNormalDot * l_meshletConeMINNormalDot);
             
             l_meshletBounds.coneAxis = l_meshletConeAxis;
             

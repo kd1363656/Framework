@@ -2,9 +2,10 @@
 
 namespace FWK::Utility
 {
+	// ポインターを格納する際に重複するアドレスを持つポインタを格納しないようにするためのクラス
 	template <typename Type>
 		requires Concept::IsSmartPTRConcept<Type>
-	class VectorArray
+	class SmartPointerVectorArray
 	{
 	public:
 
@@ -27,8 +28,8 @@ namespace FWK::Utility
 		
 	public:
 
-		 VectorArray() = default;
-		~VectorArray() = default;
+		 SmartPointerVectorArray() = default;
+		~SmartPointerVectorArray() = default;
 
 		void BeginFrame()
 		{

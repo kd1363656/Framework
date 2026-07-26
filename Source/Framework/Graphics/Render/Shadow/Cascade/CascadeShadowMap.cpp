@@ -7,7 +7,10 @@ void FWK::Graphics::CascadeShadowMap::Deserialize(const nlohmann::json& a_rootJs
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-bool FWK::Graphics::CascadeShadowMap::Create(const Device & a_device, const GPUMemoryAllocator & a_gpuMemoryAllocator, TypeAlias::DSVDescriptorPool & a_dsvDescriptorPool, TypeAlias::CBVSRVUAVDescriptorPool & a_cbvSRVUAVDescriptorPool)
+bool FWK::Graphics::CascadeShadowMap::Create(const Device&                             a_device, 
+	                                         const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
+	                                               TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+	                                               TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     // Cascade Shadow Mapは通常描画時にShaderから読み取るため、
 	// SRVFormatが必須になる。
@@ -30,6 +33,11 @@ bool FWK::Graphics::CascadeShadowMap::Create(const Device & a_device, const GPUM
 		                                                     false);
 
 	return true;
+}
+
+bool FWK::Graphics::CascadeShadowMap::Update()
+{
+	return false;
 }
 
 nlohmann::json FWK::Graphics::CascadeShadowMap::Serialize() const

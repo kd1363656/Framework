@@ -120,11 +120,13 @@ void FWK::Graphics::Camera::RegisterCBCameraPass()
 	      auto& l_shadowContext    = l_renderer.GetMutableREFShadowContext        ();
 		  auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
 
-	const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
+	if (const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
+		l_cameraPassDrawRequest)
+	{
+		// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
+		l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);	
+	}
 
-	if (!l_cameraPassDrawRequest) { return; }
-
-	// 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
-	l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);	
-	l_cascadeShadowMap.SetCBCameraPass              (m_cbCameraPass);
+	// Cacade計算で使用するCameraの定数バッファを登録する
+	l_cascadeShadowMap.SetCBCameraPass(m_cbCameraPass);
 }

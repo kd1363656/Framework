@@ -29,7 +29,7 @@ namespace FWK::Graphics
 
 		bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const;
 
-		Utility::VectorArray<std::weak_ptr<DrawRequestData>> m_forwardDrawRequestDataList = {};
+		Utility::SmartPointerVectorArray<std::weak_ptr<DrawRequestData>> m_forwardDrawRequestDataSmartPointerVectorArray = {};
 
 		static constexpr UINT k_defaultDispatchMeshThreadGroupCountY = 1U;
 		static constexpr UINT k_defaultDispatchMeshThreadGroupCountZ = 1U;

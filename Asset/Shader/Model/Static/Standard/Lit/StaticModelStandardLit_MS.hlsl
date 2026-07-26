@@ -4,8 +4,8 @@
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
 void main(in  payload  ModelAmplificationPayload a_payload,
-          out vertices MSOutputLit               a_vertexList   [k_modelMaxMeshletVertexCount],
-          out indices  uint3                     a_primitiveList[k_modelMaxMeshletPrimitiveCount],
+          out vertices MSOutputLit               a_vertexList   [k_modelMAXMeshletVertexCount],
+          out indices  uint3                     a_primitiveList[k_modelMAXMeshletPrimitiveCount],
               const    uint3                     a_groupID          : SV_GroupID,
               const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {

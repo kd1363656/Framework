@@ -14,7 +14,7 @@ cbuffer CBSkeletalAnimationVertexSkinning : register(b0)
 // 通常、Bone Weightはゼロ以上でなければならない
 // 読み込んだModelデータに負数が含まれていた場合は、
 // この値まで補正する
-static const float k_minimumBoneWeight = 0.0F;
+static const float k_minBoneWeight = 0.0F;
 
 // Bone Weightを有効と判断するための許容誤差
 // 浮動小数点数は計算誤差を含むため、
@@ -120,7 +120,7 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     
     // 読み込んだModelに不正な負のBoneWeightが含まれていた場合は、
     // BoneWeightとして許可する最小値へ補正する
-    const float4 l_boneWeightList = max(l_sourceVertex.boneWeight, k_minimumBoneWeight);
+    const float4 l_boneWeightList = max(l_sourceVertex.boneWeight, k_minBoneWeight);
     
     float4 l_accumulatedPosition = k_initialAccumulatedPosition;
     float3 l_accumulatedNormal   = k_initialAccumulatedDirection;
