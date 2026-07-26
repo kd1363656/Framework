@@ -13,8 +13,6 @@ void FWK::Graphics::LightSystem::ApplyDefaultSettings()
 	l_directionalLight.m_color     = Constant::k_defaultDirectionalLightColor;
 	l_directionalLight.m_intensity = Constant::k_defaultDirectionalLightIntensity;
 
-	l_directionalLight.m_direction.Normalize();
-
 	// ライト方向はシェーダー側で内積計算に使うため、長さ1に正規化しておく
 	// 正規化していないと、方向ベクトルの長さによって明るさまで変わってしまうため
 	l_directionalLight.m_direction.Normalize();

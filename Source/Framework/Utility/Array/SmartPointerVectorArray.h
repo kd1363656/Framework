@@ -131,6 +131,25 @@ namespace FWK::Utility
 			});
 		}
 
+		void RemoveSameElements(const Type& a_type)
+			requires k_isWeakPTR
+		{
+			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
+			{
+				const auto& l_type = a_arrayElementData.m_type.lock();
+
+				// 存在していないなら要素を無駄に圧迫してるだけなので削除削除
+				if (!l_type) { return true; }
+
+				// アドレスが一致していない場合削除しない
+				if (l_type.get() != a_arrayElementData.m_typeAddress) { return false; }
+
+				m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
+
+				return true;
+			});
+		}
+
 		const auto& GetREFArrayElementDataList() const { return m_arrayElementDataList; }
 
 		auto& GetMutableREFArrayElementDataList() { return m_arrayElementDataList; }

@@ -14,10 +14,14 @@ FWK::Graphics::CascadeShadowPass::~CascadeShadowPass() = default;
 
 void FWK::Graphics::CascadeShadowPass::Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph&)
 {
-	const auto& l_dsvDescriptorPool = a_resourceContext.GetREFDSVDescriptorPool();
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
-	const auto& l_shadowContext     = a_renderer.GetREFShadowContext           ();
-	const auto& l_cascadeShadowMap  = l_shadowContext.GetREFCascadeShadowMap   ();
+	const auto& l_dsvDescriptorPool = a_resourceContext.GetREFDSVDescriptorPool    ();
+	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList           ();
+	      auto& l_shadowContext     = a_renderer.GetMutableREFShadowContext        ();
+	      auto& l_cascadeShadowMap  = l_shadowContext.GetMutableREFCascadeShadowMap();
+
+	// 登録されているCamera CBとLight CBから、
+	// このFrameで使用するCascade行列を計算する。
+	FWK_ASSERT_RETURN_IF(!l_cascadeShadowMap.Update(), "CascadeShadowMapの更新処理に失敗したため、CascadeShadowPassの実行に失敗しました。");
 
 	const auto& l_renderArea                  = l_cascadeShadowMap.GetREFRenderArea                 ();
 	const auto& l_depthStencilTextureSettings = l_cascadeShadowMap.GetREFDepthStencilTextureSettings();
