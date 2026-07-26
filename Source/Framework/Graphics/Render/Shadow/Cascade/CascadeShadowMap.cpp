@@ -296,3 +296,10 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::CascadeShadowMap::FetchVALCascade
 {
 	return m_depthStencilTexture.FetchVALDSVDescriptorIndex(a_cascadeIndex, k_shadowMapMIPSlice);
 }
+
+const FWK::TypeAlias::Math::Matrix* FWK::Graphics::CascadeShadowMap::FetchREFCascadeViewProjectionMatrix(const UINT a_cascadeIndex) const
+{
+	FWK_ASSERT_RETURN_VALUE_IF(a_cascadeIndex >= m_cascadeDataList.size(), "CascadeIndexがCascadeDataListの範囲外のため、ViewProjectionMatrixの取得に失敗しました。", nullptr);
+
+	return &m_cascadeDataList[a_cascadeIndex].m_viewProjectionMatrix;
+}

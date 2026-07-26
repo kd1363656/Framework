@@ -46,6 +46,8 @@ namespace FWK::Graphics
 
 		TypeAlias::DescriptorIndex FetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
 
+		const TypeAlias::Math::Matrix* FetchREFCascadeViewProjectionMatrix(const UINT a_cascadeIndex) const;
+
 		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
 		const auto& GetREFRenderArea() const { return m_renderArea; }

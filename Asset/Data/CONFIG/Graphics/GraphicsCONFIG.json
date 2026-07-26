@@ -1,4 +1,4 @@
-{
+﻿{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -63,6 +63,12 @@
                             "CreateCount": 4096
                         },
                         "DynamicBufferUploaderTypeName": "SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4
+                        },
+                        "DynamicBufferUploaderTypeName": "CascadeShadowPassDynamicConstantBufferUploader"
                     }
                 ],
                 "RenderGraphFrameResource": {
