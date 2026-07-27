@@ -13,7 +13,7 @@ namespace FWK::Graphics
 
 	private:
 
-		FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPass, ModelShadowPassBase)
+		FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPass, RenderGraphPassBase)
 	};
 }
 

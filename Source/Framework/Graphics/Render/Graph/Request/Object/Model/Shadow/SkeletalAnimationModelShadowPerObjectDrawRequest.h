@@ -18,8 +18,8 @@ namespace FWK::Graphics
 
 	private:
 
-		Utility::SmartPointerVectorArray<std::weak_ptr<Struct::StaticModelStandardPerObjectDrawRequestData>>            m_staticModelStandardPerObjectDrawRequestDataSmartPointerVectorArray            = {};
-		Utility::SmartPointerVectorArray<std::weak_ptr<Struct::SkeletalAnimationModelStandardPerObjectDrawRequestData>> m_skeletalAnimationModelStandardPerObjectDrawRequestDataSmartPointerVectorArray = {};
+		StaticModelStandardPerObjectDrawRequestBase            m_staticModelStandardPerObjectDrawRequest            = {};
+		SkeletalAnimationModelStandardPerObjectDrawRequestBase m_skeletalAnimationModelStandardPerObjectDrawRequest = {};
 
 		FWK_DEFINE_TYPE_INFO(ModelShadowPerObjectDrawRequest, RenderGraphPassBase)
 	};

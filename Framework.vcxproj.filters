@@ -2055,9 +2055,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCascadeShadowPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Shadow\ModelShadowPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Shadow</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2563,9 +2560,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Shadow\ModelShadowPerObjectDrawRequest.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
