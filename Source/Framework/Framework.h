@@ -305,7 +305,6 @@
 // 影
 #include "Definition/Constant/Graphics/CascadeShadowMapJsonConverterConstant.h"
 #include "Graphics/Render/Shadow/Cascade/Converter/Json/CascadeShadowMapJsonConverter.h"
-#include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Shadow/Cascade/CascadeShadowMap.h"
 #include "Graphics/Render/Shadow/Converter/Json/ShadowContextJsonConverter.h"
 #include "Graphics/Render/Shadow/ShadowContext.h"
@@ -346,12 +345,14 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
+#include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/SkeletalAnimationModelStandardPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Shadow/ModelShadowPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
@@ -365,8 +366,6 @@
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
-
-#include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/ModelCascadeShadowPass.h"
 
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPass.h"

@@ -13,8 +13,8 @@ namespace FWK::Graphics
 
 	private:
 
-		FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPass, RenderGraphPassBase)
+		FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPass, ModelShadowPassBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::ModelCascadeShadowPass)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::RenderGraphPassBase)

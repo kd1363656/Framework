@@ -3,7 +3,7 @@
 void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::BeginFrame()
 {
 	// 参照が途切れているstd::weak_ptrを削除する
-	m_forwardDrawRequestDataSmartPointerVectorArray.BeginFrame();
+	m_forwardDrawRequestDataSmartPointerVectorArray.RemoveExpiredElements();
 }
 
 void FWK::Graphics::StaticModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)

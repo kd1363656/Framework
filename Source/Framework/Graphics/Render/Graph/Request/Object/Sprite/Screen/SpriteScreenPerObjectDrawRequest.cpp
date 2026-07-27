@@ -3,7 +3,7 @@
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::BeginFrame()
 {
 	// 前フレームのSprite描画申請を消す
-	m_drawRequestDataSmartPointerVectorArray.BeginFrame();
+	m_drawRequestDataSmartPointerVectorArray.RemoveExpiredElements();
 }
 
 void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)

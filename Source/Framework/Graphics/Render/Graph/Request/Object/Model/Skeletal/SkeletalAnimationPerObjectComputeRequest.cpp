@@ -3,7 +3,7 @@
 void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::BeginFrame()
 {
 	// 参照先が破棄されたPlayerを一覧から削除する
-	m_skeletalAnimationPlayerSmartPointerVectorArray.BeginFrame();
+	m_skeletalAnimationPlayerSmartPointerVectorArray.RemoveExpiredElements();
 }
 
 void FWK::Graphics::SkeletalAnimationPerObjectComputeRequest::AddComputeRequest(const std::shared_ptr<SkeletalAnimationPlayer>&a_skeletalAnimationPlayer)

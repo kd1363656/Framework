@@ -4,7 +4,7 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Begi
 {
 	// DrawRequestDataの所有権が破棄されていた場合は、
 	// 内部配列から期限切れのstd::weak_ptrを削除する
-	m_forwardDrawRequestDataSmartPointerVectorArray.BeginFrame();
+	m_forwardDrawRequestDataSmartPointerVectorArray.RemoveExpiredElements();
 }
 
 void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer & a_renderer, const RootSignature & a_rootSignature, const FrameResource & a_frameResource)

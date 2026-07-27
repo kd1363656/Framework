@@ -4,12 +4,12 @@
 
 void FWK::Scene::INIT()
 {
-	m_camera                            = std::make_shared<Graphics::Camera>								                                 ();
-	m_characterModel                    = std::make_shared<Graphics::SkeletalAnimationModel>                                                 ();
-	m_characterAnimationPlayer          = std::make_shared<Graphics::SkeletalAnimationPlayer>                                                ();
-	m_characterModelStandardDrawRequest = std::make_shared<Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::DrawRequestData>();
-	m_groundModel                       = std::make_shared<Graphics::StaticModel>							                                 ();
-	m_groundModelStandardDrawRequest    = std::make_shared<Graphics::StaticModelStandardPerObjectDrawRequestBase::DrawRequestData>           ();
+	m_camera                            = std::make_shared<Graphics::Camera>								              ();
+	m_characterModel                    = std::make_shared<Graphics::SkeletalAnimationModel>                              ();
+	m_characterAnimationPlayer          = std::make_shared<Graphics::SkeletalAnimationPlayer>                             ();
+	m_characterModelStandardDrawRequest = std::make_shared<Struct::SkeletalAnimationModelStandardPerObjectDrawRequestData>();
+	m_groundModel                       = std::make_shared<Graphics::StaticModel>							              ();
+	m_groundModelStandardDrawRequest    = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>           ();
 	
 	      auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();

@@ -31,12 +31,6 @@ namespace FWK::Utility
 		 SmartPointerVectorArray() = default;
 		~SmartPointerVectorArray() = default;
 
-		void BeginFrame()
-		{
-			// 機能していない、不要な要素を削除
-			RemoveExpiredElements();
-		}
-
 		// shared_ptrからweak_ptrを生成して登録する
 		void Add(const Type& a_type)
 			requires k_isWeakPTR
