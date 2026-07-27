@@ -7,6 +7,16 @@
 cbuffer CBCascadeShadowPass : register(b0)
 {
     row_major matrix g_cascadeViewProjectionMatrix;
+    row_major matrix g_cascadeViewMatrix;
+    
+    float3 g_cascadeOrthographicsMIN;
+    float  g_cascadeOrthographicMINPadding;
+    
+    float3 g_cascadeOrthographicMAX;
+    float  g_cascadeOrthographicMAXPadding;
+    
+    float3 g_directionalLightDirection;
+    float  g_directionalLightDirectionPadding;
 }
 
 // ShadowMapにはDepthだけを書き込むため、

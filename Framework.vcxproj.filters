@@ -1051,6 +1051,12 @@
     <Filter Include="Asset\Shader\Model\Shadow\Cascade">
       <UniqueIdentifier>{1cdcabe3-1457-4083-b2b1-57711b777fc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Shadow">
+      <UniqueIdentifier>{dd4c77e8-49ab-4241-83bd-0faf4d90029c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Shadow\Cascade">
+      <UniqueIdentifier>{d7036bf4-a85c-4e27-9ec2-c96b298152df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1791,7 +1797,7 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured\DynamicRWStructuredBuffer.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Structured</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h">
@@ -2656,6 +2662,9 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <Filter>Asset\Shader\Model\Skeletal</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Shadow\Cascade</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

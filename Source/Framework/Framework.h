@@ -276,7 +276,7 @@
 #include "Graphics/Render/Frame/FrameResource.h"
 
 // カメラ
-#include "Definition/Constant/Graphics/Buffer/Constant/CBCameraPassConstant.h"
+#include "Definition/Constant/Graphics/Buffer/Constant/CBCameraPassStructConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBCameraPassStruct.h"
 #include "Graphics/Render/Camera/Camera.h"
 

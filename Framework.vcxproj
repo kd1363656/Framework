@@ -352,7 +352,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CommandAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\FBXModelLoaderBaseConstant.h" />
@@ -921,6 +921,7 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
     </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl" />
     <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
     </DXCTask>

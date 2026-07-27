@@ -114,7 +114,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 	// 現在作成されているCascade数を取得する。
     // Cascadeの番号をCameraFrustum全体に対する
     // Zeroより大きくOne以下の割合へ変換する際に使用する。
-	const float l_cascadeCount = static_cast<float>(m_cascadeDataList.size());
+	const auto l_cascadeCount = static_cast<float>(m_cascadeDataList.size());
 
 	// 最初のCascadeはCameraのNearPlaneから始まる
 	// Camera Frustum全体におけるNearPlaneの位置は、
@@ -274,7 +274,11 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 		// Shadow描画時はモデル頂点をShadowMap上へ変換し、
 		// 通常のLit描画時はWorld座標からShadowMap座標を求める
 		l_cascadeData.m_viewProjectionMatrix = l_lightViewMatrix * l_lightProjectionMatrix;
-
+		l_cascadeData.m_viewMatrix           = l_lightViewMatrix;
+		l_cascadeData.m_orthographicMIN      = l_min;
+		l_cascadeData.m_orthographicMAX      = l_max;
+		l_cascadeData.m_lightDirection       = l_lightDirection;
+		
 		// 現在のCascadeがCameraからどの距離までを担当するか保存する
 		// 後のLitShaderでPixelのView空間Depthと比較し、
 		// 使用するCascadeを選択する。
