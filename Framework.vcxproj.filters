@@ -2610,6 +2610,9 @@
     <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli">
       <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
+    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
@@ -2665,6 +2668,9 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
       <Filter>Asset\Shader\Model\Static\Shadow\Cascade</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

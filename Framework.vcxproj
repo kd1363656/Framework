@@ -869,6 +869,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Shader\Model\ModelMeshlet.hlsli" />
     <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli" />
     <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli" />
+    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli" />
     <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
     <None Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit.hlsli" />
     <None Include="Asset\Shader\Model\Standard\ModelStandard.hlsli" />
@@ -880,6 +881,12 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <DXCTask Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>

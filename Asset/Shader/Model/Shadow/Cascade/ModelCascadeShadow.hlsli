@@ -9,7 +9,7 @@ cbuffer CBCascadeShadowPass : register(b0)
     row_major matrix g_cascadeViewProjectionMatrix;
     row_major matrix g_cascadeViewMatrix;
     
-    float3 g_cascadeOrthographicsMIN;
+    float3 g_cascadeOrthographicMIN;
     float  g_cascadeOrthographicMINPadding;
     
     float3 g_cascadeOrthographicMAX;
