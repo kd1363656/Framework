@@ -1057,6 +1057,12 @@
     <Filter Include="Asset\Shader\Model\Static\Shadow\Cascade">
       <UniqueIdentifier>{d7036bf4-a85c-4e27-9ec2-c96b298152df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Shadow">
+      <UniqueIdentifier>{62f1b5db-88a7-4b18-bb91-c636212edb45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Shadow\Cascade">
+      <UniqueIdentifier>{3d9ba937-a13e-4d2a-8c7b-af33f62c138d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2043,6 +2049,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant\SpriteScreenPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCascadeShadowPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2671,6 +2680,9 @@
     </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
       <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
+    </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal\Shadow\Cascade</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

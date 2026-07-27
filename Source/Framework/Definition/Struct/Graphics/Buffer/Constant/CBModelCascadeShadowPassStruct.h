@@ -7,7 +7,7 @@ namespace FWK::Struct
 		TypeAlias::Math::Matrix m_viewProjectionMatrix = TypeAlias::Math::Matrix::Identity;
 		TypeAlias::Math::Matrix m_viewMatrix           = TypeAlias::Math::Matrix::Identity;
 
-		TypeAlias::Math::Vector3 m_orthographicsMIN = TypeAlias::Math::Vector3::Zero;
+		TypeAlias::Math::Vector3 m_orthographicMIN        = TypeAlias::Math::Vector3::Zero;
 		float                    m_orthographicMINPadding = 0.0F;
 
 		TypeAlias::Math::Vector3 m_orthographicMAX        = TypeAlias::Math::Vector3::Zero;

@@ -6,7 +6,7 @@
 // MeshletのBoundingSphereが、
 // 現在のCascadeのLightOrthographic領域へ
 // 少しでも重なっているか判定する。
-bool IsVisiableModelMeshletByCAscadeFrustum(const ModelMeshletBounds a_meshletBounds)
+bool IsVisibleModelMeshletByCascadeFrustum(const ModelMeshletBounds a_meshletBounds)
 {
     const float3 l_worldCenter     = TransformModelLocalPositionToWorld(a_meshletBounds.center);
     const float  l_worldRadius     = a_meshletBounds.radius * g_worldMaxScale;
@@ -38,20 +38,20 @@ bool IsVisiableModelMeshletByCAscadeFrustum(const ModelMeshletBounds a_meshletBo
 }
 
 // DirectionalLightから見たとき
-// Meshlet内の全てのTriagnleが裏向きか判定する
+// Meshlet内の全てのTriangleが裏向きか判定する
 // OrthographicProjectionでは視線方向が位置によらず一定なので、
 // Camera位置やBoundingSphere中心までの距離は使用しない
-bool IsBackfaceModelMeshletByDirectionalLightCone(const ModelMeshletBounds a_mmeshletBounds)
+bool IsBackfaceModelMeshletByDirectionalLightCone(const ModelMeshletBounds a_meshletBounds)
 {
     // 無効なConeではカリングしない
-    if (a_mmeshletBounds.coneCutoff >= k_modelDisabledMeshletConeCutoff) { return false; }
+    if (a_meshletBounds.coneCutoff >= k_modelDisabledMeshletConeCutoff) { return false; }
 
-    const float4 l_localConeAxis = float4(a_mmeshletBounds.coneAxis, k_modelDirectionElementW);
+    const float4 l_localConeAxis = float4(a_meshletBounds.coneAxis, k_modelDirectionElementW);
     const float3 l_worldConeAxis = normalize(mul(l_localConeAxis, g_worldInverseTransposeMatrix).xyz);
     
     // DirectionalLightが進む方向は
     // LightCameraからSceneを見るView方向と一致する
-    return dot(g_directionalLightDirection, l_worldConeAxis) >= a_mmeshletBounds.coneCutoff;
+    return dot(g_directionalLightDirection, l_worldConeAxis) >= a_meshletBounds.coneCutoff;
 }
 
 bool ShouldDispatchModelCascadeShadowMeshlet(const uint a_meshletIndex)
@@ -60,7 +60,7 @@ bool ShouldDispatchModelCascadeShadowMeshlet(const uint a_meshletIndex)
     
     const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
     
-    if (!IsVisiableModelMeshletByCAscadeFrustum(l_meshletBounds) ||
+    if (!IsVisibleModelMeshletByCascadeFrustum(l_meshletBounds) ||
         IsBackfaceModelMeshletByDirectionalLightCone(l_meshletBounds))
     
     {

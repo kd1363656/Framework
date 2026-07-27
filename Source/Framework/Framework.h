@@ -305,6 +305,7 @@
 // 影
 #include "Definition/Constant/Graphics/CascadeShadowMapJsonConverterConstant.h"
 #include "Graphics/Render/Shadow/Cascade/Converter/Json/CascadeShadowMapJsonConverter.h"
+#include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Shadow/Cascade/CascadeShadowMap.h"
 #include "Graphics/Render/Shadow/Converter/Json/ShadowContextJsonConverter.h"
 #include "Graphics/Render/Shadow/ShadowContext.h"
@@ -323,7 +324,6 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBFinalPresentRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Constant/FinalPresentRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/Model/Shadow/Cascade/Buffer/Constant/CascadeShadowPassDynamicConstantBufferUploader.h"
 
 // コンピュートシェーダー計算リクエスト
@@ -365,7 +365,10 @@
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
+
+#include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/ModelCascadeShadowPass.h"
+
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPass.h"
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"

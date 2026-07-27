@@ -10,13 +10,8 @@ namespace FWK::Graphics
 		{
 			static constexpr float k_initialSplitDepth = 0.0F;
 
-			TypeAlias::Math::Matrix m_viewProjectionMatrix = TypeAlias::Math::Matrix::Identity;
-			TypeAlias::Math::Matrix m_viewMatrix           = TypeAlias::Math::Matrix::Identity;
-
-			TypeAlias::Math::Vector3 m_orthographicMIN = TypeAlias::Math::Vector3::Zero;
-			TypeAlias::Math::Vector3 m_orthographicMAX = TypeAlias::Math::Vector3::Zero;
-			TypeAlias::Math::Vector3 m_lightDirection  = TypeAlias::Math::Vector3::Zero;
-
+			Struct::CBModelCascadeShadowPass m_cbModelCascadeShadowPass = {};
+		
 			float m_splitDepth = k_initialSplitDepth;
 		};
 
@@ -33,10 +28,10 @@ namespace FWK::Graphics
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool Create(const Device& a_device,
-			const GPUMemoryAllocator& a_gpuMemoryAllocator,
-			TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool,
-			TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+		bool Create(const Device&                       a_device,
+			        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
+			        TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+			        TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
 		bool Update();
 
@@ -51,7 +46,7 @@ namespace FWK::Graphics
 
 		TypeAlias::DescriptorIndex FetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
 
-		const TypeAlias::Math::Matrix* FetchREFCascadeViewProjectionMatrix(const UINT a_cascadeIndex) const;
+		const Struct::CBModelCascadeShadowPass* FetchPTRModelCascadeShadowPass(const UINT a_cascadeIndex) const;
 
 		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
@@ -119,6 +114,7 @@ namespace FWK::Graphics
 		                                                                      k_requiredSampleCount, 
 																			  Constant::k_defaultSampleQuality,
 																			  Constant::k_defaultStencilClearValue };
+
 		UINT m_resolution = Constant::k_cascadeShadowMapDefaultResolution;
 	};
 }

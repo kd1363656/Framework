@@ -9,7 +9,7 @@ namespace FWK::Graphics
 		 ModelCascadeShadowPass();
 		~ModelCascadeShadowPass() override;
 
-		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph&) override;
+		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
 	private:
 

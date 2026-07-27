@@ -14,7 +14,7 @@ namespace FWK::Graphics
 	private:
 
 		using DrawRequestPassMap         = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
-		using ComputeRequestPerObjectMap = std::unordered_map < TypeAlias::StaticTypeID, std::weak_ptr<ComputeRequestPerObjectBase>>;
+		using ComputeRequestPerObjectMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<ComputeRequestPerObjectBase>>;
 		using DrawRequestPerObjectMap    = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPerObjectBase>>;
 
 	public:

@@ -3,7 +3,7 @@
 void FWK::Graphics::Renderer::INIT()
 {
 	if (m_cbSpritePass) { return; }
-
+	
 	m_cbSpritePass = std::make_shared<Struct::CBSpritePass>();
 }
 

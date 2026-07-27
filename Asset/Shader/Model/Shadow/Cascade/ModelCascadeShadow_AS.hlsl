@@ -12,7 +12,7 @@ void main(const uint3 a_groupID : SV_GroupID)
     
     l_payload.meshletIndex = l_meshletIndex;
 
-    const uint l_dispatchMeshGroupCountX = l_shoudDispatch ? k_modelAmplificationDispatchMeshGroupCountX ? k_modelAmplificationDispatchMeshCulledGroupCountX;
+    const uint l_dispatchMeshGroupCountX = l_shoudDispatch ? k_modelAmplificationDispatchMeshGroupCountX : k_modelAmplificationDispatchMeshCulledGroupCountX;
     
     DispatchMesh(l_dispatchMeshGroupCountX,
                  k_modelAmplificationDispatchMeshGroupCountY,

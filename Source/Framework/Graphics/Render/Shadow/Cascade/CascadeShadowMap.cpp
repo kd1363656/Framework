@@ -268,16 +268,17 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 			                                                                           l_min.z,
 			                                                                           l_max.z);
 
-		auto& l_cascadeData = m_cascadeDataList[l_cascadeIndex];
+		auto& l_cascadeData              = m_cascadeDataList[l_cascadeIndex];
+		auto& l_cbModelCascadeShadowPass = l_cascadeData.m_cbModelCascadeShadowPass;
 
 		// World座標をLightのClip空間へ変換する行列を保存する
 		// Shadow描画時はモデル頂点をShadowMap上へ変換し、
 		// 通常のLit描画時はWorld座標からShadowMap座標を求める
-		l_cascadeData.m_viewProjectionMatrix = l_lightViewMatrix * l_lightProjectionMatrix;
-		l_cascadeData.m_viewMatrix           = l_lightViewMatrix;
-		l_cascadeData.m_orthographicMIN      = l_min;
-		l_cascadeData.m_orthographicMAX      = l_max;
-		l_cascadeData.m_lightDirection       = l_lightDirection;
+		l_cbModelCascadeShadowPass.m_viewProjectionMatrix = l_lightViewMatrix * l_lightProjectionMatrix;
+		l_cbModelCascadeShadowPass.m_viewMatrix           = l_lightViewMatrix;
+		l_cbModelCascadeShadowPass.m_orthographicMIN      = l_min;
+		l_cbModelCascadeShadowPass.m_orthographicMAX      = l_max;
+		l_cbModelCascadeShadowPass.m_lightDirection       = l_lightDirection;
 		
 		// 現在のCascadeがCameraからどの距離までを担当するか保存する
 		// 後のLitShaderでPixelのView空間Depthと比較し、
@@ -301,9 +302,9 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::CascadeShadowMap::FetchVALCascade
 	return m_depthStencilTexture.FetchVALDSVDescriptorIndex(a_cascadeIndex, k_shadowMapMIPSlice);
 }
 
-const FWK::TypeAlias::Math::Matrix* FWK::Graphics::CascadeShadowMap::FetchREFCascadeViewProjectionMatrix(const UINT a_cascadeIndex) const
+const FWK::Struct::CBModelCascadeShadowPass* FWK::Graphics::CascadeShadowMap::FetchPTRModelCascadeShadowPass(const UINT a_cascadeIndex) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_cascadeIndex >= m_cascadeDataList.size(), "CascadeIndexがCascadeDataListの範囲外のため、ViewProjectionMatrixの取得に失敗しました。", nullptr);
+	FWK_ASSERT_RETURN_VALUE_IF(a_cascadeIndex >= m_cascadeDataList.size(), "CascadeIndexがCascadeDataListの範囲外のため、CBModelCascadeShadowPassの取得に失敗しました。", nullptr);
 
-	return &m_cascadeDataList[a_cascadeIndex].m_viewProjectionMatrix;
+	return &m_cascadeDataList[a_cascadeIndex].m_cbModelCascadeShadowPass;
 }

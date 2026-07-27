@@ -411,6 +411,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\DepthStencilTextureStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\LightSystemStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCascadeShadowPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCommonStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RenderGraphPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h" />
@@ -887,6 +888,12 @@ if "$(Configuration)"=="Debug" (
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>
@@ -928,7 +935,9 @@ if "$(Configuration)"=="Debug" (
     <DXCTask Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl" />
+    <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
     <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
     </DXCTask>

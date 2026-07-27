@@ -129,7 +129,7 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Setu
 	}
 }
 
-void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<DrawRequestData>&a_drawRequestData)
+void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::SkeletalAnimationModelStandardPerObjectDrawRequestData>&a_drawRequestData)
 {
 	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "DrawRequestDataが無効なため、Skeletal Animation Modelの描画申請を追加できません。");
 
