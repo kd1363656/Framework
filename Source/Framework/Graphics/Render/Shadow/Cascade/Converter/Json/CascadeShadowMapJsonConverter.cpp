@@ -21,10 +21,12 @@ void FWK::Converter::CascadeShadowMapJsonConverter::Deserialize(const nlohmann::
 	l_depthStencilTextureSettings.m_sampleCount   = a_rootJson.value(k_sampleCountJsonKey,   Constant::k_defaultSampleCount);
 	l_depthStencilTextureSettings.m_sampleQuality = a_rootJson.value(k_sampleQualityJsonKey, Constant::k_defaultSampleQuality);
 
-	const auto l_resolution = a_rootJson.value(k_resolutionJsonKey, Constant::k_cascadeShadowMapDefaultResolution);
+	const auto l_sampleDepthBias = a_rootJson.value(k_sampleDepthBiasJsonKey, Constant::k_cascadeShadowMapDefaultSampleDepthBias);
+	const auto l_resolution      = a_rootJson.value(k_resolutionJsonKey,      Constant::k_cascadeShadowMapDefaultResolution);
 
 	a_cascadeShadowMap.SetDepthStencilTextureSettings(l_depthStencilTextureSettings);
 	a_cascadeShadowMap.SetResolution                 (l_resolution);
+	a_cascadeShadowMap.SetSampleDepthBias            (l_sampleDepthBias);
 }
 
 nlohmann::json FWK::Converter::CascadeShadowMapJsonConverter::Serialize(const Graphics::CascadeShadowMap & a_cascadeShadowMap) const
@@ -40,13 +42,14 @@ nlohmann::json FWK::Converter::CascadeShadowMapJsonConverter::Serialize(const Gr
 	l_rootJson[k_depthClearValueJsonKey]   = l_depthStencilTextureSettings.m_depthClearValue;
 	l_rootJson[k_stencilClearValueJsonKey] = l_depthStencilTextureSettings.m_stencilClearValue;
 
-	l_rootJson[k_cascadeCountJsonKey] = l_depthStencilTextureSettings.m_arraySize;
-	l_rootJson[k_mipLevelsJsonKey]    = l_depthStencilTextureSettings.m_mipLevels;
+	l_rootJson[k_maxCascadeCountJsonKey] = l_depthStencilTextureSettings.m_arraySize;
+	l_rootJson[k_mipLevelsJsonKey]       = l_depthStencilTextureSettings.m_mipLevels;
 
 	l_rootJson[k_sampleCountJsonKey]   = l_depthStencilTextureSettings.m_sampleCount;
 	l_rootJson[k_sampleQualityJsonKey] = l_depthStencilTextureSettings.m_sampleQuality;
 
-	l_rootJson[k_resolutionJsonKey] = a_cascadeShadowMap.GetVALResolution();
+	l_rootJson[k_sampleDepthBiasJsonKey] = a_cascadeShadowMap.GetVALSampleDepthBias();
+	l_rootJson[k_resolutionJsonKey]      = a_cascadeShadowMap.GetVALResolution     ();
 
 	return l_rootJson;
 }

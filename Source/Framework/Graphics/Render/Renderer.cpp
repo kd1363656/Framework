@@ -2,7 +2,7 @@
 
 void FWK::Graphics::Renderer::INIT()
 {
-	if (m_cbSpritePass) { return; }
+	if (!m_cbSpritePass) {return; }
 	
 	m_cbSpritePass = std::make_shared<Struct::CBSpritePass>();
 }
@@ -43,11 +43,11 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 
 	// ShadowContextが所有するShadow用リソースを作成する
 	FWK_ASSERT_RETURN_VALUE_IF(!m_shadowContext.Create(a_device,
-		                       l_gpuMemoryAllocator,
-		                       l_dsvDescriptorPool,
-		                       l_cbvSRVUAVDescriptorPool),
-		                       "ShadowContextの作成処理に失敗しました。",
-		                       false);
+		                                               l_gpuMemoryAllocator,
+		                                               l_dsvDescriptorPool,
+		                                               l_cbvSRVUAVDescriptorPool),
+		                                               "ShadowContextの作成処理に失敗しました。",
+		                                               false);
 
 	// ダイレクトコマンドキュー、リスト、コンピュートキュー、リストの作成処理
 	FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandQueue.Create(a_device),  "ダイレクトコマンドキューの作成処理に失敗しました。",   false);
@@ -73,8 +73,8 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 	// パイプラインステートの作成処理
 	for (const auto& [l_type, l_pipelineState] : m_pipelineStateMap)
 	{
-		FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState,											   "PipelineStateが無効のため、PipelineStateの作成に失敗しました。", false);
-		FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState->Create(a_device, l_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",						 false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState,                                            "PipelineStateが無効のため、PipelineStateの作成に失敗しました。", false);
+		FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState->Create(a_device, l_shaderCompiler, *this), "PipelineStateの作成処理に失敗しました。",                        false);
 	}
 
 	// 画面解像度に合ったビューポート、シザー矩形を作成する
@@ -85,6 +85,9 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 
 	// 定数バッファを各パスに送信
 	SyncSpritePassDrawRequest();
+
+	// ShadowContextで定数バッファポインタを各パスにセットする
+	m_shadowContext.Setup(*this);
 
 	// レンダーパスの依存順序の解決を行う
 	m_renderGraph.Compile();

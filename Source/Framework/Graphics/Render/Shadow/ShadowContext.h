@@ -2,6 +2,11 @@
 
 namespace FWK::Graphics
 {
+	class Renderer;
+}
+
+namespace FWK::Graphics
+{
 	class ShadowContext final
 	{
 	public:
@@ -16,7 +21,7 @@ namespace FWK::Graphics
 		ShadowContext& operator=(      ShadowContext&&) noexcept = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
-
+		
 		bool Create(const Device&                             a_device, 
 			        const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
 			              TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,

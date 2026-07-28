@@ -1060,6 +1060,18 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant">
       <UniqueIdentifier>{f24c84ca-b4cb-40da-88b4-4a2f6620b00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow">
+      <UniqueIdentifier>{6cf91feb-2b8c-40c1-a5e7-71c79b3fe81e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade">
+      <UniqueIdentifier>{590e9a5b-27d3-4846-ac01-8d1cfea0fffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer">
+      <UniqueIdentifier>{68100560-945d-44bd-bd78-b1df20812aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant">
+      <UniqueIdentifier>{c440348c-eacf-477b-bb78-77bec2feddcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2058,8 +2070,11 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCascadeShadowMapPassStructConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant\CascadeShadowMapPassConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2573,6 +2588,9 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -2635,6 +2653,9 @@
       <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
     <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
+    </None>
+    <None Include="Asset\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
       <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
   </ItemGroup>

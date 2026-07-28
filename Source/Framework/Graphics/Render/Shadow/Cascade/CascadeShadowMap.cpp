@@ -14,10 +14,12 @@ bool FWK::Graphics::CascadeShadowMap::Create(const Device&                      
 {
     // Cascade Shadow Mapは通常描画時にShaderから読み取るため、
 	// SRVFormatが必須になる。
-	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_srvFormat == DXGI_FORMAT_UNKNOWN,     "CascadeShadowMapのSRVFormatが無効のため、作成処理に失敗しました。",        false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_mipLevels != k_requiredMIPLevelCount, "CascadeShadowMapのMIPLevelsがOneではないため、作成処理に失敗しました。",   false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_sampleCount != k_requiredSampleCount, "CascadeShadowMapのSampleCountがOneではないため、作成処理に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_arraySize == k_invalidCascadeCount,   "CascadeShadowMapのArraySizeがZeroのため、作成処理に失敗しました。",        false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_srvFormat == DXGI_FORMAT_UNKNOWN,                                                         "CascadeShadowMapのSRVFormatが無効のため、作成処理に失敗しました。",                       false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_mipLevels != k_requiredMIPLevelCount,                                                     "CascadeShadowMapのMIPLevelsがOneではないため、作成処理に失敗しました。",                  false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_sampleCount != k_requiredSampleCount,                                                     "CascadeShadowMapのSampleCountがOneではないため、作成処理に失敗しました。",                false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_arraySize == k_invalidCascadeCount,                                                       "CascadeShadowMapのArraySizeがZeroのため、作成処理に失敗しました。",                       false);
+	FWK_ASSERT_RETURN_VALUE_IF(static_cast<std::size_t>(m_depthStencilTextureSettings.m_arraySize) > Constant::k_cascadeShadowMapDefaultMAXCascadeCount, "CascadeShadowMapのCascade数が対応可能な最大数を超えているため、作成処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_sampleDepthBias < k_minSampleDepthBias,                                                                                 "CascadeShadowMapのSampleDepthBiasがZero未満のため、作成処理に失敗しました。",             false);
 
 	// Texture2DArrayのSlics数と同じ数だけ、
 	// Cascadeごとの計算結果を保存する領域を作成する
@@ -45,14 +47,25 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 	const auto& l_cbCameraPass = m_cbCameraPass.lock();
 	const auto& l_cbLightPass  = m_cbLightPass.lock ();
 
-	FWK_ASSERT_RETURN_VALUE_IF(!l_cbCameraPass,           "CBCameraPassが無効なため、CascadeShadowMapの更新処理に失敗しました。",  false);
-	FWK_ASSERT_RETURN_VALUE_IF(!l_cbLightPass,            "CBLightPassが無効なため、CascadeShadowMapの更新処理に失敗しました。",   false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_cascadeDataList.empty(), "CascadeDataListが空のため、CascadeShadowMapの更新処理に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_cbCameraPass,           "CBCameraPassが無効なため、CascadeShadowMapの更新処理に失敗しました。",                     false);
+	FWK_ASSERT_RETURN_VALUE_IF(!l_cbLightPass,            "CBLightPassが無効なため、CascadeShadowMapの更新処理に失敗しました。",                      false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_cascadeDataList.empty(), "CascadeDataListが空のため、CascadeShadowMapの更新処理に失敗しました。",                    false);
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_cbCameraPass->m_nearClip <= k_invalidClipDistance ||
 		                       l_cbCameraPass->m_farClip <= l_cbCameraPass->m_nearClip,
 		                       "CameraのNearClipまたはFarClipが無効なため、CascadeShadowMapの更新処理に失敗しました。",
 		                       false);
+
+	m_cbCascadeShadowMapPass.m_shadowMapSRVDescriptorIndex = m_depthStencilTexture.GetVALSRVDescriptorIndex();
+	m_cbCascadeShadowMapPass.m_cascadeCount                = static_cast<UINT>                             (m_cascadeDataList.size());
+	m_cbCascadeShadowMapPass.m_sampleDepthBias             = m_sampleDepthBias;
+
+	// 使用しないCascade領域にも明確な初期値を設定する
+	for (std::size_t l_cascadeIndex = 0ULL; l_cascadeIndex < Constant::k_cascadeShadowMapDefaultMAXCascadeCount; ++l_cascadeIndex)
+	{
+		m_cbCascadeShadowMapPass.m_viewProjectionMatrixList[l_cascadeIndex] = TypeAlias::Math::Matrix::Identity;
+		m_cbCascadeShadowMapPass.m_splitDepthList          [l_cascadeIndex] = l_cbCameraPass->m_farClip;
+	}
 
 	// Cameraが描画する奥行き方向全体の長さを取得
 	const float l_clipRange = l_cbCameraPass->m_farClip - l_cbCameraPass->m_nearClip;
@@ -287,6 +300,10 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
 		// 次のCascadeは、現在のCascadeの終端から開始する
 		l_previousSplitRatio = l_currentSplitRatio;
+
+		// 全Cascade分の行列とSplitDepthを専用CBへ保存する
+		m_cbCascadeShadowMapPass.m_viewProjectionMatrixList[l_cascadeIndex] = l_cbModelCascadeShadowPass.m_viewProjectionMatrix;
+		m_cbCascadeShadowMapPass.m_splitDepthList          [l_cascadeIndex] = l_splitDepth;
 	}
 
 	return true;

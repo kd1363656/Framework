@@ -12,6 +12,10 @@ FWK::Graphics::SkeletalAnimationModelStandardLitPass::SkeletalAnimationModelStan
 
 	// 描画したModelのDepthをSceneDepthへ書き込む
 	WriteDepthStencil(Enum::RenderGraphDepthStencilType::SceneDepth, Enum::RenderGraphResourceUsage::DepthWrite);
+
+	// ShadowPassがDepthを書き込んだTexture2DArrayを、
+	// LitPixelShaderから読み取れる状態へ遷移する
+	ReadShadowMap(Enum::RenderGraphShadowMapType::Cascade, Enum::RenderGraphResourceUsage::PixelShaderResource);
 }
 FWK::Graphics::SkeletalAnimationModelStandardLitPass::~SkeletalAnimationModelStandardLitPass() = default;
 
@@ -26,13 +30,16 @@ void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const Resourc
 
 	const auto& l_cameraPassDrawRequest                                 = a_renderGraph.FindVALDrawRequestPass     <CameraPassDrawRequest>                                ().lock();
 	const auto& l_lightPassDrawRequest                                  = a_renderGraph.FindVALDrawRequestPass     <LightPassDrawRequest>                                 ().lock();
+	const auto& l_cascadeShadowMapPassDrawRequest                       = a_renderGraph.FindVALDrawRequestPass     <CascadeShadowMapPassDrawRequest>                      ().lock();
 	const auto& l_skeletalAnimationModelStandardLitPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelStandardLitPerObjectDrawRequest>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest,                                                                                          "CameraPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest,                                                                                           "LightPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardLitPerObjectDrawRequest,                                                          "SkeletalAnimationModelStandardLitPerObjectDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "Camera定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),  "Light定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest,                                                                                                    "CameraPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest,                                                                                                     "LightPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest,                                                                                          "CascadeShadowMapPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardLitPerObjectDrawRequest,                                                                    "SkeletalAnimationModelStandardLitPerObjectDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),           "Camera定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),            "Light定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "CascadeShadowMap定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
 
 	// 登録されている各SkeletalAnimationModelについて
 	// Model定数を設定してMeshShaderをDispatchする
