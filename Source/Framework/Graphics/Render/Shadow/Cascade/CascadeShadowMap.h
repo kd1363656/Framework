@@ -85,13 +85,17 @@ namespace FWK::Graphics
 		static constexpr float k_minSampleDepthBias  = 0.0F;
 
 		static constexpr float k_lightViewDistanceScale = 2.0F;
-
-		static constexpr float k_lightViewDepthPadding = 10.0F;
+		static constexpr float k_lightViewDepthPadding  = 10.0F;
 
 		static constexpr float k_directionLengthSquaredEpsilon = 0.000001F;
 		static constexpr float k_parallelUpDotThreshold        = 0.99F;
 
-		static constexpr float k_initialRadius = 0.0F;
+		static constexpr float k_initialRadius                  = 0.0F;
+		static constexpr float k_cascadeRadiusQuantizationScale = 16.0F;
+
+		static constexpr float k_orthographicDiameterScale      = 2.0F;
+		static constexpr float k_cascadeRadiusPaddingTexelCount = 1.0F;
+		static constexpr float k_worldUnitPerTexelEpsilon       = 0.000001F;
 
 		static constexpr std::size_t k_cascadeNumberOffset     = 1ULL;
 		static constexpr std::size_t k_frustumPlaneCornerCount = 4ULL;

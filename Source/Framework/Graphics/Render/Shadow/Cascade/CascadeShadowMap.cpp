@@ -132,6 +132,22 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 		l_lightUp = TypeAlias::Math::Vector3::Backward;
 	}
 
+	// DirectionalLightのDirectionとUpから、
+	// LightView空間で使用するRight方向を作成する
+	auto l_lightRight = l_lightUp.Cross(l_lightDirection);
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_lightRight.LengthSquared() <= k_directionLengthSquaredEpsilon, "DirectionalLightのRight方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+
+	l_lightRight.Normalize();
+
+	// LightDirectionとrightが直行するように
+	// 実際にViewMatrixへ渡すUp方向を作り直す
+	auto l_stableLightUp = l_lightDirection.Cross(l_lightRight);
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_stableLightUp.LengthSquared() <= k_directionLengthSquaredEpsilon, "DirectionalLightのUp方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+
+	l_stableLightUp.Normalize();
+
 	// 現在作成されているCascade数を取得する。
     // Cascadeの番号をCameraFrustum全体に対する
     // Zeroより大きくOne以下の割合へ変換する際に使用する。
@@ -220,7 +236,43 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 			l_cascadeRadius = std::max(l_cascadeRadius, l_cornerDistance);
 		}
 
-		// Light CameraをCascade中心から離す距離を求める
+		// 浮動小数点による僅からRadius変化で
+		// ShadowProjectionが毎Frame拡大縮小しないようにする
+		l_cascadeRadius = std::ceil(l_cascadeRadius * k_cascadeRadiusQuantizationScale) / k_cascadeRadiusQuantizationScale;
+
+		const auto l_shadowMapResolution = static_cast<float>(m_resolution);
+
+		// 量子化済みRadiusから、最初の一TexelのWorldサイズを求める
+		const float l_initialWorldUnitPerTexel = (l_cascadeRadius * k_orthographicDiameterScale) / l_shadowMapResolution;
+
+		// Cascade中心をTexel単位へ移動すると
+		// 最大で半Texelほど元の中心からずれる
+		l_cascadeRadius += l_initialWorldUnitPerTexel * k_cascadeRadiusPaddingTexelCount;
+		
+		// 実際に使用するProjection範囲での
+		// ShadowMap一Texel辺りのWorld空間サイズ
+		const float l_worldUnitPerTexel = (l_cascadeRadius * k_orthographicDiameterScale) / l_shadowMapResolution;
+
+		FWK_ASSERT_RETURN_VALUE_IF(l_worldUnitPerTexel <= k_worldUnitPerTexelEpsilon, "Cascade Shadow MapのWorldUnitPerTexelがZeroに近いため、更新処理に失敗しました。", false);
+
+		// cascade中心を、固定されたLightRight/Up軸へ投影する
+		// World原点を基準にした絶対座標を丸めることで
+		// Cameraが一Texel未満だけ移動してもLightViewは移動しない
+		const float l_cascadeCenterRight = l_cascadeCenter.Dot(l_lightRight);
+		const float l_cascadeCenterUp    = l_cascadeCenter.Dot(l_stableLightUp);
+
+		// Cascade中心をShadowMapの一Texel未満だけ移動してもLightviewは移動しない
+		const float l_snappedCascadeCenterRight = std::round(l_cascadeCenterRight / l_worldUnitPerTexel) * l_worldUnitPerTexel;
+		const float l_snappedCascadeCenterUp    = std::round(l_cascadeCenterUp    / l_worldUnitPerTexel) * l_worldUnitPerTexel;
+
+		// Right/Up方向の差分だけCascade中心を移動する
+		// LightDirection方向は変更しないため、CascadeのDepth位置は維持される
+		auto l_stableCascadeCenter = l_cascadeCenter;
+
+		l_stableCascadeCenter += l_lightRight    * (l_snappedCascadeCenterRight - l_cascadeCenterRight);
+		l_stableCascadeCenter += l_stableLightUp * (l_snappedCascadeCenterUp    - l_cascadeCenterUp);
+
+		// LightCameraをCascade中心から離す距離を求める
 		// Cascadeの半径だけではDepth方向の余裕が不足するため、
 		// ScaleとPaddingを加えて十分な距離を確保する
 		const float l_lightViewDistance = l_cascadeRadius * k_lightViewDistanceScale + k_lightViewDepthPadding;
@@ -228,19 +280,19 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 		// 光が進む方向とは逆側へLightCameraを配置する
 		// これにより、LightCameraからCascade中心を見る方向と
 		// DirectionalLightが光を照射する方向が一致する
-		const auto& l_lightPosition = l_cascadeCenter - l_lightDirection * l_lightViewDistance;
+		const auto& l_lightPosition = l_stableCascadeCenter - l_lightDirection * l_lightViewDistance;
 
 		// World空間をLightView空間へ変換するView行列を作成する
-		const auto& l_lightViewMatrix = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&l_lightPosition), DirectX::XMLoadFloat3(&l_cascadeCenter), DirectX::XMLoadFloat3(&l_lightUp));
+		const auto& l_lightViewMatrix = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&l_lightPosition), DirectX::XMLoadFloat3(&l_stableCascadeCenter), DirectX::XMLoadFloat3(&l_stableLightUp));
 
 		// Light View空間へ変換したCascadeFrustumを囲む
 		// AxisAlignedBoundingBoxの最小座標。
-		TypeAlias::Math::Vector3 l_min = { std::numeric_limits<float>::max(),
-		                                   std::numeric_limits<float>::max(),
+		TypeAlias::Math::Vector3 l_min = { -l_cascadeRadius,
+		                                   -l_cascadeRadius,
 		                                   std::numeric_limits<float>::max() };
 
-		TypeAlias::Math::Vector3 l_max = { std::numeric_limits<float>::lowest(),
-		                                   std::numeric_limits<float>::lowest(),
+		TypeAlias::Math::Vector3 l_max = { l_cascadeRadius,
+		                                   l_cascadeRadius,
 		                                   std::numeric_limits<float>::lowest() };
 		
 		// Cascadeの8つのCornerをLight View空間へ変換し、
@@ -254,12 +306,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
 			DirectX::XMStoreFloat3(&l_lightViewCorner, l_lightViewCornerVector);
 
-			l_min.x = std::min(l_min.x, l_lightViewCorner.x);
-			l_min.y = std::min(l_min.y, l_lightViewCorner.y);
 			l_min.z = std::min(l_min.z, l_lightViewCorner.z);
-
-			l_max.x = std::max(l_max.x, l_lightViewCorner.x);
-			l_max.y = std::max(l_max.y, l_lightViewCorner.y);
 			l_max.z = std::max(l_max.z, l_lightViewCorner.z);
 		}
 
