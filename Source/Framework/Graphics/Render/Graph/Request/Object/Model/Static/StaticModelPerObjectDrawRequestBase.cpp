@@ -36,6 +36,8 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
 			Struct::CBModelPerObject l_cbModelPerObject = {};
 
+			const auto l_meshletCount = static_cast<UINT>(l_modelMeshletData.m_meshletList.size());
+
 			// モデル1体ごとのワールド行列
 			l_cbModelPerObject.m_worldMatrix = l_drawRequest->m_worldMatrix;
 
@@ -45,6 +47,10 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
 			// MehsletBoundsのradiusをWorld空間へ変換するための最大スケール
 			l_cbModelPerObject.m_worldMaxScale = l_worldMaxScale;
+
+			// 最後のAmplificationShaderGroupには、実際のMeshlet数を超えるthreadが含まれる可能性がある、
+			// AS側はこの値を使用して範囲外のThreadを除外する
+			l_cbModelPerObject.m_meshletCount = l_meshletCount;
 
 			// Material係数
 			l_cbModelPerObject.m_baseColorFactor = l_modelMaterialAssetData.m_baseColorFactor;
@@ -108,7 +114,19 @@ bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const
 
 	const auto l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
 
-	a_directCommandList.DispatchMesh(l_meshletCount, k_defaultDispatchMeshThreadGroupCountY, k_defaultDispatchMeshThreadGroupCountZ);
+	// 1つのAmplificationShaderGroupが、
+	// 32個のMeshletを並列に処理する
+	auto l_amplificationShaderGroupCount = l_meshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;
+	
+	// Meshlet数が32の倍数でない場合は、
+	// 余ったMeshletを処理するGroupを1つ追加する
+	if (const auto l_meshletCountRemainder = l_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup;
+		l_meshletCountRemainder != Constant::k_noRemainder)
+	{
+		++l_amplificationShaderGroupCount; 
+	}
+
+	a_directCommandList.DispatchMesh(l_amplificationShaderGroupCount, k_defaultDispatchMeshThreadGroupCountY, k_defaultDispatchMeshThreadGroupCountZ);
 
 	return true;
 }

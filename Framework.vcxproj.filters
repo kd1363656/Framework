@@ -2076,6 +2076,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

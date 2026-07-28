@@ -346,6 +346,7 @@
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Constant/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Definition/Constant/Graphics/ModelPerObjectConstantBufferUploaderConstant.h"
+#include "Definition/Constant/Graphics/Buffer/Constant/CBModelPerObjectStructConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"

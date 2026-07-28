@@ -13,22 +13,28 @@ static const uint k_modelMeshShaderThreadCountX = 32U;
 static const uint k_modelMeshShaderThreadCountY = 1U;
 static const uint k_modelMeshShaderThreadCountZ = 1U;
 
-static const uint k_modelAmplificationShaderThreadCountX = 1U;
+// 1個のAmplificationShaderGroupで
+// 32個のMeshletを並列にカリングする
+// C++側のConstant::k_meshletCountPerAmplificationShaderGroupと必ず同じ値にする
+static const uint k_modelAmplificationShaderThreadCountX = 32U;
 static const uint k_modelAmplificationShaderThreadCountY = 1U;
 static const uint k_modelAmplificationShaderThreadCountZ = 1U;
 
-static const uint k_modelAmplificationDispatchMeshGroupCountX = 1U;
 static const uint k_modelAmplificationDispatchMeshGroupCountY = 1U;
 static const uint k_modelAmplificationDispatchMeshGroupCountZ = 1U;
 
-static const uint k_modelAmplificationDispatchMeshCulledGroupCountX = 0U;
+static const uint k_modelAmplificationInitialVisibleMeshletCount = 0U;
 
-// AmplificationShaderからMeshShaderへ渡すPayload
-// AS1グループ = Meshlet1個なので
-// MeshShaderへ渡す情報は描画するMeshletIndexだけでよい
+static const uint k_modelAmplificationVisibleMeshletCountIncrement = 1U;
+
+static const uint k_modelAmplificationLeaderThreadIndex = 0U;
+
+// 1つのAmplificationShaderGroupが可視判定を通過した
+// MeshletIndexを子MeshShaderGroupへ渡すPayload
+// 配列には可視MeshletIndexだけが先頭から連続して格納される
 struct ModelAmplificationPayload
 {
-    uint meshletIndex;
+    uint meshletIndexList[k_modelAmplificationShaderThreadCountX];
 };
 
 cbuffer CBModelPerObject : register(b1)
@@ -53,6 +59,9 @@ cbuffer CBModelPerObject : register(b1)
     uint  g_primitiveIndexBufferSRVDescriptorIndex;
     uint  g_meshletBoundsBufferSRVDescriptorIndex;
     float g_worldMaxScale;
+    
+    uint   g_meshletCount;
+    float3 g_padding;
 };
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する

@@ -63,14 +63,15 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 
 			FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。");
 
+			const auto l_meshletCount = static_cast<std::uint32_t>(l_modelMeshletData.m_meshletList.size());
+
 			// Compute Shaderは処理完了後に、
 			// SkinnedVertexBufferをNON_PIXEL_SHADER_RESOURCEへ遷移している
 			// Mesh ShaderはNON_PIXEL Shaderに含まれるため、
 			// この状態でStructuredBufferとして読み取れる
 			FWK_ASSERT_RETURN_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMesh Shaderから読み取れるResource Stateではありません。");
 			FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
-			FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
-
+			
 			// スキニング後の頂点構造はStatic Modelの頂点構造と同じため、
 			// 既存のModel描画用定数バッファを共有する
 			Struct::CBModelPerObject l_cbModelPerObject = {};
@@ -79,6 +80,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 			l_cbModelPerObject.m_worldMatrix                 = l_drawRequest->m_worldMatrix;
 			l_cbModelPerObject.m_worldInverseTransposeMatrix = l_drawRequest->m_worldInverseTransposeMatrix;
 			l_cbModelPerObject.m_worldMaxScale               = l_worldMaxScale;
+			l_cbModelPerObject.m_meshletCount                = l_meshletCount;
 			l_cbModelPerObject.m_baseColorFactor             = l_modelMaterialAssetData.m_baseColorFactor;
 			l_cbModelPerObject.m_metallicFactor              = l_modelMaterialAssetData.m_metallicFactor;
 			l_cbModelPerObject.m_roughnessFactor             = l_modelMaterialAssetData.m_roughnessFactor;
@@ -142,14 +144,19 @@ bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchMode
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。", false);
 
-	// DirectCommandList::DispatchMesh()が受け取るGroup数はUINT
-	// Meshlet数はstd::size_tで保持されているため、
-	// UINTへ変換する前に表現可能な範囲か確認する
-	FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.size() > std::numeric_limits<UINT>::max(), "Meshlet数がUINTの最大値を超えているため、Skeletal Animation Modelを描画できません。", false);
-
 	const auto l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
 
-	a_directCommandList.DispatchMesh(l_meshletCount, k_defaultDispatchMeshThreadGroupCountY, k_defaultDispatchMeshThreadGroupCountZ);
+	// 1つのAmplification Shader Groupが、最大32個のMeshletを並列に処理する
+	auto l_amplificationShaderGroupCount = l_meshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;
+
+	// Meshlet数が32の倍数でない場合は、余ったMeshletを処理するGroupを一つ追加する
+	if (const auto l_meshletCountRemainder = l_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup;
+		l_meshletCountRemainder != Constant::k_noRemainder)
+	{
+		++l_amplificationShaderGroupCount;
+	}
+
+	a_directCommandList.DispatchMesh(l_amplificationShaderGroupCount, k_defaultDispatchMeshThreadGroupCountY, k_defaultDispatchMeshThreadGroupCountZ);
 
 	return true;
 }

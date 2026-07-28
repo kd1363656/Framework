@@ -4,18 +4,19 @@
 
 [outputtopology("triangle")]
 [numthreads(k_modelMeshShaderThreadCountX, k_modelMeshShaderThreadCountY, k_modelMeshShaderThreadCountZ)]
-void main(in    payload  ModelAmplificationPayload a_payload,
-          out   vertices MSOutputCascadeShadow     a_vertexList[k_modelMAXMeshletVertexCount],
-          out   indices  uint3                     a_primitiveList[k_modelMAXMeshletPrimitiveCount],
-                const    uint                      a_groupThreadIndex : SV_GroupIndex)
+void main(in  payload  ModelAmplificationPayload a_payload,
+          out vertices MSOutputCascadeShadow     a_vertexList[k_modelMAXMeshletVertexCount],
+          out indices  uint3                     a_primitiveList[k_modelMAXMeshletPrimitiveCount],
+              const    uint3                     a_groupID : SV_GroupID,
+              const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {
     StructuredBuffer<SkeletalAnimationSkinnedVertex> l_skinnedVertexBuffer      = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
     StructuredBuffer<ModelMeshlet>                   l_modelMeshletBuffer       = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
     StructuredBuffer<uint>                           l_uniqueVertexIndexBuffer  = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
     
-    // AmplificationShaderのカリングを通過した
-    // MeshletIndexをPayloadから取得する
-    const uint l_meshletIndex = a_payload.meshletIndex;
+    // 現在の子MeshShaderGroup番号を使って、
+    // AmplificationShaderがPayload配列へ格納した可視MeshletIndexを取得する
+    const uint l_meshletIndex = a_payload.meshletIndexList[a_groupID.x];
     
     const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
     

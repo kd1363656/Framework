@@ -7,6 +7,7 @@
 void main(in    payload  ModelAmplificationPayload a_payload,
           out   vertices MSOutputCascadeShadow     a_vertexList[k_modelMAXMeshletVertexCount],
           out   indices  uint3                     a_primitiveList[k_modelMAXMeshletPrimitiveCount],
+                const    uint3                     a_groupID : SV_GroupID,
                 const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {
     StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
@@ -15,7 +16,7 @@ void main(in    payload  ModelAmplificationPayload a_payload,
     
     // AmplificationShaderのカリングを通過したMeshletIndexを
     // Payloadから取得する
-    const uint l_meshletIndex = a_payload.meshletIndex;
+    const uint l_meshletIndex = a_payload.meshletIndexList[a_groupID.x];
     
     const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
     

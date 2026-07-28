@@ -15,8 +15,8 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
     
     // ASからPayload経由で渡されたMeshletIndexを使う
-    const uint         l_meshletIndex = a_payload.meshletIndex;
-    const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
+    const uint         l_meshletIndex = a_payload.meshletIndexList[a_groupID.x];
+    const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer      [l_meshletIndex];
     
     // 出力頂点数、三角形数を設定
     SetMeshOutputCounts(l_modelMeshlet.vertexCount, l_modelMeshlet.triangleCount);

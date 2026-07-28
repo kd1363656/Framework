@@ -24,5 +24,9 @@ namespace FWK::Struct
 		TypeAlias::DescriptorIndex m_primitiveIndexBufferSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		TypeAlias::DescriptorIndex m_meshletBoundsBufferSRVDescriptorIndex     = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
 		float					   m_worldMaxScale							   = Constant::k_defaultMeshletBoundWorldMaxScale;
+
+		std::uint32_t m_meshletCount = Constant::k_defaultMeshletCount;
+
+		TypeAlias::Math::Vector3 m_padding = TypeAlias::Math::Vector3::Zero;
 	};
 }

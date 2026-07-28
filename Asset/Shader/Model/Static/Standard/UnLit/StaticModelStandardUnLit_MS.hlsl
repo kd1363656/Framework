@@ -15,13 +15,13 @@ void main(in  payload  ModelAmplificationPayload a_payload,
     StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
     
     // ASからPayload経由で渡されたMeshletIndexを使う
-    const uint         l_meshletIndex = a_payload.meshletIndex;
-    const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
+    const uint         l_meshletIndex = a_payload.meshletIndexList[a_groupID.x];
+    const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer      [l_meshletIndex];
     
     // 出力頂点数、三角形数を設定
     SetMeshOutputCounts(l_modelMeshlet.vertexCount, l_modelMeshlet.triangleCount);
     
-    for (uint l_vertexIndex = 0U; l_vertexIndex < l_modelMeshlet.vertexCount; l_vertexIndex += k_modelMeshShaderThreadCountX)
+    for (uint l_vertexIndex = a_groupThreadIndex; l_vertexIndex < l_modelMeshlet.vertexCount; l_vertexIndex += k_modelMeshShaderThreadCountX)
     {
         // for分が回っている回数 + このメッシュレットの使用頂点開始位置からUniqueVertexIndexにアクセスするためのIndexを取得
         const uint l_uniqueVertexIndex = l_modelMeshlet.vertexOffset + l_vertexIndex;
