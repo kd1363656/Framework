@@ -2,7 +2,7 @@
 
 void FWK::Graphics::Renderer::INIT()
 {
-	if (!m_cbSpritePass) {return; }
+	if (m_cbSpritePass) {return; }
 	
 	m_cbSpritePass = std::make_shared<Struct::CBSpritePass>();
 }
@@ -85,9 +85,6 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&			    a_device,
 
 	// 定数バッファを各パスに送信
 	SyncSpritePassDrawRequest();
-
-	// ShadowContextで定数バッファポインタを各パスにセットする
-	m_shadowContext.Setup(*this);
 
 	// レンダーパスの依存順序の解決を行う
 	m_renderGraph.Compile();

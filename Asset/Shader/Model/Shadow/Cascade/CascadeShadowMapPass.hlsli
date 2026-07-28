@@ -47,13 +47,8 @@ cbuffer CBCascadeShadowMapPass : register(b3)
 // ShadowMapのDepth比較専用Sampler
 SamplerComparisonState g_cascadeShadowMapComparisonSampler : register(s1);
 
-uint FetchCascadeShadowMapIndex(const float3 a_worldPosition, const uint a_cascadeCount)
+uint FetchCascadeShadowMapIndex(const float a_viewDepth, const uint a_cascadeCount)
 {
-    // World座標をCameraView空間へ変換する
-    // 左手系座標では、Cameraの前方のView空間ZをCameraからの奥行きとして利用できる
-    const float4 l_viewPosition = mul(float4(a_worldPosition, k_modelPositionElementW), g_viewMatrix);
-    const float  l_viewDepth    = l_viewPosition.z;
-    
     // どの分割にも入らなかった場合は、最後のCascadeを使用する
     uint l_cascadeIndex = a_cascadeCount - k_cascadeShadowMapLastCascadeIndexOffset;
 
@@ -61,7 +56,7 @@ uint FetchCascadeShadowMapIndex(const float3 a_worldPosition, const uint a_casca
     {
         const float l_splitDepth = g_cascadeShadowMapSplitDepthList[l_checkCascadeIndex];
         
-        if (l_viewDepth <= l_splitDepth)
+        if (a_viewDepth <= l_splitDepth)
         {
             l_cascadeIndex = l_checkCascadeIndex;
             
@@ -81,7 +76,17 @@ float CalculateCascadeShadowMapVisibility(const float3 a_worldPosition)
     // Shadowを適用せずに完全に明るい状態を返す
     if (l_cascadeCount == k_cascadeShadowMapInvalidCascadeCount) { return k_cascadeShadowMapFullyLitVisibility; }
 
-    const uint l_cascadeIndex = FetchCascadeShadowMapIndex(a_worldPosition, l_cascadeCount);
+    const float4 l_viewPosition = mul(float4(a_worldPosition, k_modelPositionElementW), g_viewMatrix);
+    const float  l_viewDepth    = l_viewPosition.z;
+    
+    // 最後のCascadeの終端距離を取得する
+    const uint  l_lastCascadeIndex = l_cascadeCount - k_cascadeShadowMapLastCascadeIndexOffset;
+    const float l_maxShadowDepth   = g_cascadeShadowMapSplitDepthList[l_lastCascadeIndex];
+   
+    // Shadow生成範囲より遠いPixelにはShadowを適用しない
+    if (l_viewDepth > l_maxShadowDepth) { return k_cascadeShadowMapFullyLitVisibility; }
+    
+    const uint l_cascadeIndex = FetchCascadeShadowMapIndex(l_viewDepth, l_cascadeCount);
     
     // World座標を、選択したCascadeのLightClip空間へ変換する
     const float4 l_lightClipPosition = mul(float4(a_worldPosition, k_modelPositionElementW), g_cascadeShadowMapViewProjectionMatrixList[l_cascadeIndex]);
@@ -96,8 +101,8 @@ float CalculateCascadeShadowMapVisibility(const float3 a_worldPosition)
     
     // DirectXのNDCDepthは0.0F ~ 1.0F
     // 範囲外の場合、このCascadeのShadowMapでは現在Pixelを判定できないため完全に明るくする
-    if (l_lightNDCPosition.z  < k_cascadeShadowMapMINDepth ||
-        l_lightClipPosition.z > k_cascadeShadowMapMAXDepth)
+    if (l_lightNDCPosition.z < k_cascadeShadowMapMINDepth ||
+        l_lightNDCPosition.z > k_cascadeShadowMapMAXDepth)
     {
         return k_cascadeShadowMapFullyLitVisibility;
     }
@@ -147,7 +152,10 @@ float CalculateCascadeShadowMapVisibility(const float3 a_worldPosition)
             // SampleCmpLevelZeroは、ShadowMapに保存されたDepthと
             // l_compareDepthをComparisonSamplerで比較し、
             // Lightから見えている割合を返す
-            l_shadowVisibility + l_cascadeShadowMap.SampleCmpLevelZero(g_cascadeShadowMapComparisonSampler, float3(l_shadowMapUV + l_sampleOffset, l_cascadeIndex), l_compareDepth);
+            l_shadowVisibility += l_cascadeShadowMap.SampleCmpLevelZero(g_cascadeShadowMapComparisonSampler, float3(l_shadowMapUV + l_sampleOffset, l_cascadeIndex), l_compareDepth);
+            
+            // PCFの平均値を求めるため実行したSample数を加算する
+            l_shadowSampleCount += k_cascadeShadowMapSampleCountIncrement;
         }
     }
     

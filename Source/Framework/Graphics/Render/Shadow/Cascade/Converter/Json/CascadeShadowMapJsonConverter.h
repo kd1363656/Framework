@@ -31,7 +31,8 @@ namespace FWK::Converter
 		static constexpr std::string_view k_sampleCountJsonKey   = "SampleCount";
 		static constexpr std::string_view k_sampleQualityJsonKey = "SampleQuality";
 
-		static constexpr std::string_view k_sampleDepthBiasJsonKey = "SampleDepthBias";
-		static constexpr std::string_view k_resolutionJsonKey      = "Resolution";
+		static constexpr std::string_view k_sampleDepthBiasJsonKey   = "SampleDepthBias";
+		static constexpr std::string_view k_maxShadowDistanceJsonKey = "MAXShadowDistance";
+		static constexpr std::string_view k_resolutionJsonKey        = "Resolution";
 	};
 }

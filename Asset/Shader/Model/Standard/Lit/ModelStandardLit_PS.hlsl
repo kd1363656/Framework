@@ -1,5 +1,6 @@
 ﻿#include "../ModelStandard.hlsli"
 #include "ModelStandardLit.hlsli"
+#include "../../Shadow/Cascade/CascadeShadowMapPass.hlsli"
 
 cbuffer CBLightPass : register(b2)
 {
@@ -403,6 +404,11 @@ float4 main(const MSOutputLit a_input) : SV_Target0
     // DirectionalLightの放射輝度の簡易表現
     const float3 l_radiance = g_directionalLightColor * g_directionalLightIntensity;
     
+    // 現在PixelがDirectionalLightから見えている割合をCascadeShadowMapから取得
+    // 1.0Fに近いほどLightから見えており
+    // 0.0Fに近いほどShadowに隠れている
+    const float l_cascadeShadowVisibility = CalculateCascadeShadowMapVisibility(a_input.worldPosition);
+    
     // 直接光
     // DiffuseはDisneyDiffuse、SpecularはCook-TorranceSpecular
     // 最後にNdotLを掛けることで、ライトが正面から当たるほど明るくなる
@@ -410,7 +416,8 @@ float4 main(const MSOutputLit a_input) : SV_Target0
                                         l_disneyDiffuse         + 
                                         l_cookTorranceSpecular) * 
                                         l_radiance              * 
-                                        l_normalDotLight;
+                                        l_normalDotLight        * 
+                                        l_cascadeShadowVisibility;
     
     // 簡易環境光
     const float3 l_ambientLighting = g_ambientLightColor * g_ambientLightIntensity * l_baseColor.rgb;

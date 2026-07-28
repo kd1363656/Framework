@@ -20,6 +20,7 @@ bool FWK::Graphics::CascadeShadowMap::Create(const Device&                      
 	FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_arraySize == k_invalidCascadeCount,                                                       "CascadeShadowMapのArraySizeがZeroのため、作成処理に失敗しました。",                       false);
 	FWK_ASSERT_RETURN_VALUE_IF(static_cast<std::size_t>(m_depthStencilTextureSettings.m_arraySize) > Constant::k_cascadeShadowMapDefaultMAXCascadeCount, "CascadeShadowMapのCascade数が対応可能な最大数を超えているため、作成処理に失敗しました。", false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_sampleDepthBias < k_minSampleDepthBias,                                                                                 "CascadeShadowMapのSampleDepthBiasがZero未満のため、作成処理に失敗しました。",             false);
+	FWK_ASSERT_RETURN_VALUE_IF(m_maxShadowDistance <= k_invalidClipDistance,                                                                             "CascadeShadowMapのMAXShadowDistanceがZero以下のため、作成処理に失敗しました。",           false);
 
 	// Texture2DArrayのSlics数と同じ数だけ、
 	// Cascadeごとの計算結果を保存する領域を作成する
@@ -56,6 +57,21 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 		                       "CameraのNearClipまたはFarClipが無効なため、CascadeShadowMapの更新処理に失敗しました。",
 		                       false);
 
+	// Camera全体のFrustum範囲
+	const float l_cameraClipRange = l_cbCameraPass->m_farClip - l_cbCameraPass->m_nearClip;
+
+	// CameraFarClipとShadow設定値のうち
+	// 小さい方を実際のShadow終端距離にする
+	const float l_shadowFarClip = std::min(l_cbCameraPass->m_farClip, m_maxShadowDistance);
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_shadowFarClip <= l_cbCameraPass->m_nearClip, "CascadeShadowMapのShadowFarClipがCamera NearClip以下のため、更新処理に失敗しました。", false);
+
+	// Cascadeの分割計算で使用するShadow専用範囲
+	const float l_shadowClipRange = l_shadowFarClip - l_cbCameraPass->m_nearClip;
+	
+	// Logarithomic分割用のShadowFar/CameraNear比率
+	const float l_shadowClipRatio = l_shadowFarClip / l_cbCameraPass->m_nearClip;
+
 	m_cbCascadeShadowMapPass.m_shadowMapSRVDescriptorIndex = m_depthStencilTexture.GetVALSRVDescriptorIndex();
 	m_cbCascadeShadowMapPass.m_cascadeCount                = static_cast<UINT>                             (m_cascadeDataList.size());
 	m_cbCascadeShadowMapPass.m_sampleDepthBias             = m_sampleDepthBias;
@@ -64,16 +80,8 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 	for (std::size_t l_cascadeIndex = 0ULL; l_cascadeIndex < Constant::k_cascadeShadowMapDefaultMAXCascadeCount; ++l_cascadeIndex)
 	{
 		m_cbCascadeShadowMapPass.m_viewProjectionMatrixList[l_cascadeIndex] = TypeAlias::Math::Matrix::Identity;
-		m_cbCascadeShadowMapPass.m_splitDepthList          [l_cascadeIndex] = l_cbCameraPass->m_farClip;
+		m_cbCascadeShadowMapPass.m_splitDepthList          [l_cascadeIndex] = l_shadowFarClip;
 	}
-
-	// Cameraが描画する奥行き方向全体の長さを取得
-	const float l_clipRange = l_cbCameraPass->m_farClip - l_cbCameraPass->m_nearClip;
-
-	// Logarithmic分割を計算するためのFar/Near比率。
-	// CascadeShadowMapでは、Cameraに近い領域を細かく分割したほうが
-	// ShadowMapの解像度を有効に使える
-	const float l_clipRatio = l_cbCameraPass->m_farClip / l_cbCameraPass->m_nearClip;
 
 	// CameraのViewProjection行列は、World座標をNDC座標へ変換する行列
 	// その逆行列を使用するとNDC座標からWorld座標へ戻せる
@@ -146,12 +154,12 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 		// 遠い部分を広く分割する。
 		// これにより、見た目への影響が大きい近距離へ
 		// ShadowMapの解像度を多く割り当てられる
-		const float l_logarithmicSplitDepth = l_cbCameraPass->m_nearClip * std::pow(l_clipRatio, l_cascadePosition);
+		const float l_logarithmicSplitDepth = l_cbCameraPass->m_nearClip * std::pow(l_shadowClipRatio, l_cascadePosition);
 
 		// Uniform分割によるCascadeの終端距離。
 		// CameraのNearClipからFarClipまでを、
 		// 完全に等間隔で分割する
-		const float l_uniformSplitDepth = l_cbCameraPass->m_nearClip + l_clipRange * l_cascadePosition;
+		const float l_uniformSplitDepth = l_cbCameraPass->m_nearClip + l_shadowClipRange * l_cascadePosition;
 
 		// Practical SplitSchemeを使用して、
 		// Logarithmic分割とUniform分割を混ぜる
@@ -163,7 +171,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 		// CameraFrustum全体における割合へ変換する
 		// この割合を使って、全体FrustumのNearCornerから
 		// FarCornerまでの線分を補間する
-		const float l_currentSplitRatio = (l_splitDepth - l_cbCameraPass->m_nearClip) / l_clipRange;
+		const float l_currentSplitRatio = (l_splitDepth - l_cbCameraPass->m_nearClip) / l_cameraClipRange;
 
 		// 現在のCascadeが担当する範囲だけを切り出した、
 		// World空間のFrustum Cornerを保存する。

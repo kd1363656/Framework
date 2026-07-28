@@ -1,4 +1,4 @@
-﻿{
+{
     "Renderer": {
         "FrameResourceList": {
             "Count": 3,
@@ -1455,14 +1455,14 @@
                         "AntialiasedLineEnable": 0,
                         "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
                         "CullMode": "D3D12_CULL_MODE_BACK",
-                        "DepthBias": 0,
+                        "DepthBias": 100,
                         "DepthBiasClamp": 0.0,
                         "DepthClipEnable": 1,
                         "FillMode": "D3D12_FILL_MODE_SOLID",
                         "ForcedSampleCount": 0,
                         "FrontCounterClockwise": 0,
                         "MultisampleEnable": 0,
-                        "SlopeScaledDepthBias": 0.0
+                        "SlopeScaledDepthBias": 1.0
                     },
                     "SampleDesc": {
                         "Count": 1,
@@ -1642,7 +1642,7 @@
                         "AntialiasedLineEnable": 0,
                         "ConservativeRaster": "D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF",
                         "CullMode": "D3D12_CULL_MODE_BACK",
-                        "DepthBias": 1000,
+                        "DepthBias": 100,
                         "DepthBiasClamp": 0.0,
                         "DepthClipEnable": 1,
                         "FillMode": "D3D12_FILL_MODE_SOLID",
@@ -2179,12 +2179,13 @@
                 "DSVFormat": "DXGI_FORMAT_D32_FLOAT",
                 "DepthClearValue": 1.0,
                 "MAXCascadeCount": 4,
+                "MAXShadowDistance": 200.0,
                 "MIPLevels": 1,
                 "Resolution": 2048,
                 "ResourceFormat": "DXGI_FORMAT_R32_TYPELESS",
                 "SRVFormat": "DXGI_FORMAT_R32_FLOAT",
                 "SampleCount": 1,
-                "SampleDepthBias" : 0.0005,
+                "SampleDepthBias": 4.999999873689376e-05,
                 "SampleQuality": 0,
                 "StencilClearValue": 0
             }

@@ -42,7 +42,8 @@ namespace FWK::Graphics
 		void SetCBCameraPass(const std::shared_ptr<Struct::CBCameraPass>& a_set) { m_cbCameraPass = a_set; }
 		void SetCBLightPass (const std::shared_ptr<Struct::CBLightPass>&  a_set) { m_cbLightPass  = a_set; }
 
-		void SetSampleDepthBias(const float a_set) { m_sampleDepthBias = a_set; }
+		void SetSampleDepthBias  (const float a_set) { m_sampleDepthBias   = a_set; }
+		void SetMAXShadowDistance(const float a_set) { m_maxShadowDistance = a_set; }
 
 		void SetResolution(const UINT a_set) { m_resolution = a_set; }
 
@@ -58,7 +59,8 @@ namespace FWK::Graphics
 
 		auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
 
-		auto GetVALSampleDepthBias() const { return m_sampleDepthBias; }
+		auto GetVALSampleDepthBias  () const { return m_sampleDepthBias; }
+		auto GetVALMAXShadowDistance() const { return m_maxShadowDistance; }
 
 		auto GetVALResolution() const { return m_resolution; }
 
@@ -124,7 +126,8 @@ namespace FWK::Graphics
 
 		Struct::CBCascadeShadowMapPass m_cbCascadeShadowMapPass = {};
 
-		float m_sampleDepthBias = Constant::k_cascadeShadowMapDefaultSampleDepthBias;
+		float m_sampleDepthBias   = Constant::k_cascadeShadowMapDefaultSampleDepthBias;
+		float m_maxShadowDistance = Constant::k_cascadeShadowMapDefaultMAXShadowDistance;
 
 		UINT m_resolution = Constant::k_cascadeShadowMapDefaultResolution;
 	};
