@@ -305,9 +305,13 @@
 // 影
 #include "Definition/Constant/Graphics/CascadeShadowMapJsonConverterConstant.h"
 #include "Graphics/Render/Shadow/Cascade/Converter/Json/CascadeShadowMapJsonConverter.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBModelCascadeShadowPassStruct.h"
 #include "Graphics/Render/Shadow/Cascade/CascadeShadowMap.h"
 #include "Graphics/Render/Shadow/Converter/Json/ShadowContextJsonConverter.h"
 #include "Graphics/Render/Shadow/ShadowContext.h"
+
+#include "Definition/Constant/Graphics/Buffer/Constant/CBCascadeShadowMapPassStructConstant.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBCascadeShadowMapPassStruct.h"
 
 // コンピュートシェーダー計算リクエスト
 #include "Graphics/Render/Graph/Request/Object/ComputeRequestPerObjectBase.h"
@@ -323,7 +327,7 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBFinalPresentRenderTargetPassStruct.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/Buffer/Constant/FinalPresentRenderTargetPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/RenderTarget/Final/FinalPresentRenderTargetPassDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Pass/Model/Shadow/Cascade/Buffer/Constant/CascadeShadowPassDynamicConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/Buffer/Constant/ModelCascadeShadowPassDynamicConstantBufferUploader.h"
 
 // コンピュートシェーダー計算リクエスト
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSkeletalAnimationVertexSkinningPerObjectStruct.h"
@@ -346,13 +350,14 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"
 #include "Utility/Math/MathMatrixUtility.h"
 #include "Definition/Struct/Graphics/ModelCascadeShadowPassStruct.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/StaticModelStandardPerObjectDrawRequestBase.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/StaticModelPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/UnLit/StaticModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Static/Standard/Lit/StaticModelStandardLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/SkeletalAnimationModelStandardPerObjectDrawRequestBase.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationModelPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Shadow/ModelShadowPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Shadow/StaticModelShadowPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Shadow/SkeletalAnimationModelShadowPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"

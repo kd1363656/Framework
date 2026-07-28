@@ -1,13 +1,13 @@
-﻿#include "SkeletalAnimationModelStandardPerObjectDrawRequestBase.h"
+﻿#include "SkeletalAnimationModelPerObjectDrawRequestBase.h"
 
-void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::BeginFrame()
+void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::BeginFrame()
 {
 	// DrawRequestDataの所有権が破棄されていた場合は、
 	// 内部配列から期限切れのstd::weak_ptrを削除する
 	m_forwardDrawRequestDataSmartPointerVectorArray.RemoveExpiredElements();
 }
 
-void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer & a_renderer, const RootSignature & a_rootSignature, const FrameResource & a_frameResource)
+void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer & a_renderer, const RootSignature & a_rootSignature, const FrameResource & a_frameResource)
 {
 	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
@@ -129,14 +129,14 @@ void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::Setu
 	}
 }
 
-void FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::SkeletalAnimationModelStandardPerObjectDrawRequestData>&a_drawRequestData)
+void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::AddDrawRequest(const std::shared_ptr<Struct::SkeletalAnimationModelPerObjectDrawRequestData>&a_drawRequestData)
 {
 	FWK_ASSERT_RETURN_IF(!a_drawRequestData, "DrawRequestDataが無効なため、SkeletalAnimationModelの描画申請を追加できません。");
 
 	m_forwardDrawRequestDataSmartPointerVectorArray.Add(a_drawRequestData);
 }
 
-bool FWK::Graphics::SkeletalAnimationModelStandardPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
+bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
 {
 	const auto& l_modelMeshletList = a_modelMesh.m_modelMeshletData.m_meshletList;
 

@@ -25,8 +25,8 @@ namespace FWK::Converter
 		static constexpr std::string_view k_depthClearValueJsonKey   = "DepthClearValue";
 		static constexpr std::string_view k_stencilClearValueJsonKey = "StencilClearValue";
 
-		static constexpr std::string_view k_cascadeCountJsonKey = "CascadeCount";
-		static constexpr std::string_view k_mipLevelsJsonKey    = "MIPLevels";
+		static constexpr std::string_view k_maxCascadeCountJsonKey = "MAXCascadeCount";
+		static constexpr std::string_view k_mipLevelsJsonKey       = "MIPLevels";
 
 		static constexpr std::string_view k_sampleCountJsonKey   = "SampleCount";
 		static constexpr std::string_view k_sampleQualityJsonKey = "SampleQuality";

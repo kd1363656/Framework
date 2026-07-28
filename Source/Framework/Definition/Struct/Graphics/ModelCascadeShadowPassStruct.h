@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct StaticModelStandardPerObjectDrawRequestData final
+	struct StaticModelPerObjectDrawRequestData final
 	{
 		static constexpr float k_defaultWorldMaxScale = 0.0F;
 
@@ -14,7 +14,7 @@ namespace FWK::Struct
 		float m_worldMaxScale = k_defaultWorldMaxScale;
 	};
 
-	struct SkeletalAnimationModelStandardPerObjectDrawRequestData final
+	struct SkeletalAnimationModelPerObjectDrawRequestData final
 	{
 		std::weak_ptr<Graphics::SkeletalAnimationPlayer> m_skeletalAnimationPlayer = {};
 

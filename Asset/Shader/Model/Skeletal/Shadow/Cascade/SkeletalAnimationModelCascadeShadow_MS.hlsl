@@ -20,7 +20,7 @@ void main(in    payload  ModelAmplificationPayload a_payload,
     const ModelMeshlet l_modelMeshlet = l_modelMeshletBuffer[l_meshletIndex];
     
     // 現在のMeshletが出力する頂点数と三角形数を設定する
-    SetMeshOutputCounts(l_modelMeshlet.vertexCount, l_modelMeshlet.triangleCount);;
+    SetMeshOutputCounts(l_modelMeshlet.vertexCount, l_modelMeshlet.triangleCount);
     
     // MeshShaderGroup内のThreadで、
     // Skinning済みの頂点の変換を分担する

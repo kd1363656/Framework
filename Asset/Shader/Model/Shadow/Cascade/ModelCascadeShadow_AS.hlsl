@@ -8,11 +8,11 @@ void main(const uint3 a_groupID : SV_GroupID)
     // 現在はASGroupがMeshlet1個を担当する
     const uint l_meshletIndex = a_groupID.x;
 
-    const bool l_shoudDispatch = ShouldDispatchModelCascadeShadowMeshlet(l_meshletIndex);
+    const bool l_shouldDispatch = ShouldDispatchModelCascadeShadowMeshlet(l_meshletIndex);
     
     l_payload.meshletIndex = l_meshletIndex;
 
-    const uint l_dispatchMeshGroupCountX = l_shoudDispatch ? k_modelAmplificationDispatchMeshGroupCountX : k_modelAmplificationDispatchMeshCulledGroupCountX;
+    const uint l_dispatchMeshGroupCountX = l_shouldDispatch ? k_modelAmplificationDispatchMeshGroupCountX : k_modelAmplificationDispatchMeshCulledGroupCountX;
     
     DispatchMesh(l_dispatchMeshGroupCountX,
                  k_modelAmplificationDispatchMeshGroupCountY,

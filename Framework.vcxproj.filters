@@ -1006,18 +1006,6 @@
     <Filter Include="Source\Framework\Utility\UUID">
       <UniqueIdentifier>{856e5243-73b1-488f-8ce4-72c0cab8432d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Model">
-      <UniqueIdentifier>{5950a91d-d5c9-463f-b58f-bbd3dbf543c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Model\Shadow">
-      <UniqueIdentifier>{a29e751c-20fe-4341-a623-8a3b7b7f0417}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Model\Shadow\Cascade">
-      <UniqueIdentifier>{cb232d90-f309-41d8-abe8-90c7bc31364b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Model\Shadow\Cascade\Buffer">
-      <UniqueIdentifier>{c57725a9-f133-498a-856d-60269d7161ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant">
       <UniqueIdentifier>{c2b0d355-98da-4589-bf0b-a857e636b12a}</UniqueIdentifier>
     </Filter>
@@ -1032,9 +1020,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\Constant">
       <UniqueIdentifier>{06f019e3-9b92-4701-8514-6c75b7d8f9d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Model\Shadow\Cascade\Buffer\Constant">
-      <UniqueIdentifier>{f24c84ca-b4cb-40da-88b4-4a2f6620b00b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant">
       <UniqueIdentifier>{2aca3c1c-374a-41d6-a0fd-f74ba4d11ace}</UniqueIdentifier>
@@ -1063,8 +1048,17 @@
     <Filter Include="Asset\Shader\Model\Skeletal\Shadow\Cascade">
       <UniqueIdentifier>{3d9ba937-a13e-4d2a-8c7b-af33f62c138d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Shadow">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow">
       <UniqueIdentifier>{9171e837-9f21-423c-a188-353463079f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow">
+      <UniqueIdentifier>{9a34861d-a454-4a61-997a-1b5f3db4d76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer">
+      <UniqueIdentifier>{c57725a9-f133-498a-856d-60269d7161ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant">
+      <UniqueIdentifier>{f24c84ca-b4cb-40da-88b4-4a2f6620b00b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1917,23 +1911,8 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant\DynamicConstantBufferFixedWritePositionUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\SkeletalAnimationModelStandardPerObjectDrawRequestBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit</Filter>
@@ -2040,9 +2019,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\Constant\LightPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Model\Shadow\Cascade\Buffer\Constant\CascadeShadowPassDynamicConstantBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Model\Shadow\Cascade\Buffer\Constant</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant\FinalColorRenderTargetPassConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant</Filter>
     </ClInclude>
@@ -2054,6 +2030,36 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCascadeShadowPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\StaticModelPerObjectDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\SkeletalAnimationModelShadowPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant\ModelCascadeShadowPassDynamicConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCascadeShadowMapPassStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2513,14 +2519,8 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\SkeletalAnimationModelStandardPerObjectDrawRequestBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\StaticModelStandardPerObjectDrawRequestBase.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\Lit</Filter>
@@ -2560,6 +2560,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\ModelCascadeShadowPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\StaticModelPerObjectDrawRequestBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\SkeletalAnimationModelShadowPerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

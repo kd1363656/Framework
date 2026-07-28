@@ -8,5 +8,5 @@ namespace FWK::Constant
 
 	inline constexpr UINT k_cascadeShadowMapDefaultResolution = 2048U;
 	
-	inline constexpr UINT16 k_cascadeShadowMapDefaultCascadeCount = 4U;
+	inline constexpr UINT16 k_cascadeShadowMapDefaultMAXCascadeCount = 4U;
 }

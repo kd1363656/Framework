@@ -27,15 +27,11 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 
 	// 通常描画で登録されているModelの描画申請を
 	// Shadow描画でも再利用する
-	const auto& l_staticModelStandardUnLitPerObjectDrawRequest            = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardUnLitPerObjectDrawRequest>           ().lock();
-	const auto& l_staticModelStandardLitPerObjectDrawRequest              = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardLitPerObjectDrawRequest>             ().lock();
-	const auto& l_skeletalAnimationModelStandardUnLitPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>().lock();
-	const auto& l_skeletalAnimationModelStandardLitPerObjectDrawRequest   = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelStandardLitPerObjectDrawRequest>  ().lock();
+	const auto& l_staticModelShadowPerObjectDrawRequest            = a_renderGraph.FindVALDrawRequestPerObject<StaticModelShadowPerObjectDrawRequest>           ().lock();
+	const auto& l_skeletalAnimationModelShadowPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelShadowPerObjectDrawRequest>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_staticModelStandardUnLitPerObjectDrawRequest,            "StaticModelStandardUnLitPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_staticModelStandardLitPerObjectDrawRequest,              "StaticModelStandardLitPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardUnLitPerObjectDrawRequest, "SkeletalAnimationModelStandardUnLitPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
-	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardLitPerObjectDrawRequest,   "SkeletalAnimationModelStandardLitPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_staticModelShadowPerObjectDrawRequest,            "StaticModelShadowPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelShadowPerObjectDrawRequest, "SkeletalAnimationModelShadowPerObjectDrawRequestを取得できないため、ModelCascadeShadowPassを実行できません。");
 
 	auto& l_shadowContext    = a_renderer.GetMutableREFShadowContext        ();
 	auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
@@ -50,6 +46,16 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 	// ShadowMapの解像度に対応する
 	// ViewportとScissorRectangleを設定する
 	l_directCommandList.SetupRenderArea(l_renderArea);
+
+	const auto& l_staticModelRootSignature            = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::StaticModelCascadeShadow).lock           ();
+	const auto& l_skeletalAnimationModelRootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationModelCascadeShadow).lock();
+
+	FWK_ASSERT_RETURN_IF(!l_staticModelRootSignature,            "StaticModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
+	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRootSignature, "SkeletalAnimationModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
+
+	// StaticとSkeletalのShadowPipelineは、
+	// 同じModelCascadeShadowRootSignatureを使う設計。
+	FWK_ASSERT_RETURN_IF(l_staticModelRootSignature != l_skeletalAnimationModelRootSignature, "StaticとSkeletalのCascade Shadow Pipeline Stateが異なるRootSignatureを使用しています。");
 
 	// CascadeごとにTexture2DArrayの異なるSliceへ
 	// StaticModelとSkeletalAnimationModelのDepthを書き込む
@@ -79,6 +85,12 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 
 		FWK_ASSERT_RETURN_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "CBModelCascadeShadowPassをUploadBufferへ書き込めないため、ModelCascadeShadowPassを実行できません。");
 
+		// StaticModelShadowの定数バッファを書き込む
+		l_directCommandList.SetupConstantBufferView                          (l_gpuVirtualAddress, *l_staticModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass);
+		l_staticModelShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,          *l_staticModelRootSignature, *l_currentFrameResource);
 
+		// SkeletalAnimationShadowの定数バッファを書き込む
+		l_directCommandList.SetupConstantBufferView                                     (l_gpuVirtualAddress, *l_skeletalAnimationModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass);
+		l_skeletalAnimationModelShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,          *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
 	}
 }

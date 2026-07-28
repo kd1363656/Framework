@@ -4,12 +4,12 @@
 
 void FWK::Scene::INIT()
 {
-	m_camera                            = std::make_shared<Graphics::Camera>								              ();
-	m_characterModel                    = std::make_shared<Graphics::SkeletalAnimationModel>                              ();
-	m_characterAnimationPlayer          = std::make_shared<Graphics::SkeletalAnimationPlayer>                             ();
-	m_characterModelStandardDrawRequest = std::make_shared<Struct::SkeletalAnimationModelStandardPerObjectDrawRequestData>();
-	m_groundModel                       = std::make_shared<Graphics::StaticModel>							              ();
-	m_groundModelStandardDrawRequest    = std::make_shared<Struct::StaticModelStandardPerObjectDrawRequestData>           ();
+	m_camera                    = std::make_shared<Graphics::Camera>								      ();
+	m_characterModel            = std::make_shared<Graphics::SkeletalAnimationModel>                      ();
+	m_characterAnimationPlayer  = std::make_shared<Graphics::SkeletalAnimationPlayer>                     ();
+	m_characterModelDrawRequest = std::make_shared<Struct::SkeletalAnimationModelPerObjectDrawRequestData>();
+	m_groundModel               = std::make_shared<Graphics::StaticModel>							      ();
+	m_groundModelDrawRequest    = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>           ();
 	
 	      auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
 	const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
@@ -29,23 +29,29 @@ void FWK::Scene::INIT()
 
 	l_skeletalAnimationPerObjectComputeRequest->AddComputeRequest(m_characterAnimationPlayer);
 
-	m_groundModelStandardDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
-	m_groundModelStandardDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelStandardDrawRequest->m_worldMatrix);
-	m_groundModelStandardDrawRequest->m_worldInverseTransposeMatrix = m_groundModelStandardDrawRequest->m_worldMatrix.Invert().Transpose();
+	m_groundModelDrawRequest->m_staticModelRecord           = m_groundModel->GetREFStaticModelRecord();
+	m_groundModelDrawRequest->m_worldMaxScale               = Utility::CalculateWorldMaxScale(m_groundModelDrawRequest->m_worldMatrix);
+	m_groundModelDrawRequest->m_worldInverseTransposeMatrix = m_groundModelDrawRequest->m_worldMatrix.Invert().Transpose();
 
 	const auto& l_skeletalAnimationModelStandardLitPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SkeletalAnimationModelStandardLitPerObjectDrawRequest>().lock();
+	const auto& l_skeletalAnimationModelShadowPerObjectDrawRequest      = l_renderGraph.FindVALDrawRequestPerObject<Graphics::SkeletalAnimationModelShadowPerObjectDrawRequest>     ().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardLitPerObjectDrawRequest, "SkeletalAnimationModelStandardLitPerObjectDrawRequestを取得できないため、Character Modelを描画できません。");
+	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelShadowPerObjectDrawRequest,      "SkeletalAnimationModelShadowPerObjectDrawRequestを取得できないため、Character ModelのShadow描画申請を追加できません。");
 
-	m_characterModelStandardDrawRequest->m_skeletalAnimationPlayer = m_characterAnimationPlayer;
+	m_characterModelDrawRequest->m_skeletalAnimationPlayer = m_characterAnimationPlayer;
 
-	l_skeletalAnimationModelStandardLitPerObjectDrawRequest->AddDrawRequest(m_characterModelStandardDrawRequest);
+	l_skeletalAnimationModelStandardLitPerObjectDrawRequest->AddDrawRequest(m_characterModelDrawRequest);
+	l_skeletalAnimationModelShadowPerObjectDrawRequest->AddDrawRequest     (m_characterModelDrawRequest);
 
-	const auto& l_staticModelStandardPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
+	const auto& l_staticModelStandardLitPerObjectDrawRequest = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelStandardLitPerObjectDrawRequest>().lock();
+	const auto& l_staticModelShadowPerObjectDrawRequest      = l_renderGraph.FindVALDrawRequestPerObject<Graphics::StaticModelShadowPerObjectDrawRequest>     ().lock();
 	
-	if (!l_staticModelStandardPerObjectDrawRequest) { return; }
+	FWK_ASSERT_RETURN_IF(!l_staticModelStandardLitPerObjectDrawRequest, "StaticModelStandardLitPerObjectDrawRequestを取得できないため、Ground Modelを描画できません。");
+	FWK_ASSERT_RETURN_IF(!l_staticModelShadowPerObjectDrawRequest,      "StaticModelShadowPerObjectDrawRequestを取得できないため、Ground ModelのShadow描画申請を追加できません。");
 
-	l_staticModelStandardPerObjectDrawRequest->AddDrawRequest(m_groundModelStandardDrawRequest);
+	l_staticModelStandardLitPerObjectDrawRequest->AddDrawRequest(m_groundModelDrawRequest);
+	l_staticModelShadowPerObjectDrawRequest->AddDrawRequest     (m_groundModelDrawRequest);
 
 	const auto& l_viewport = l_renderer.GetREFScreenRenderArea().GetREFViewport();
 
@@ -95,18 +101,18 @@ void FWK::Scene::INIT()
 	const auto  l_characterWorldPosition  = m_characterVirtual->FetchVALWorldPosition();
 	const auto& l_groundStaticModelRecord = m_groundModel->GetREFStaticModelRecord().lock();
 
-	FWK_ASSERT_RETURN_IF(!m_characterModelStandardDrawRequest, "Character Model用DrawRequestDataが無効なため、初期World Matrixを設定できません。");
+	FWK_ASSERT_RETURN_IF(!m_characterModelDrawRequest, "Character Model用DrawRequestDataが無効なため、初期World Matrixを設定できません。");
 
 	const auto l_characterWorldMatrix = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
 
-	m_characterModelStandardDrawRequest->m_worldMatrix                 = l_characterWorldMatrix;
-	m_characterModelStandardDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
+	m_characterModelDrawRequest->m_worldMatrix                 = l_characterWorldMatrix;
+	m_characterModelDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
 
 	FWK_ASSERT_RETURN_IF(!l_groundStaticModelRecord, "Ground用StaticModelRecordが無効なため、StaticMeshBodyの作成に失敗しました。");
 
 	auto l_meshBody = std::make_unique<Physics::PhysicsStaticMeshBody>();
 
-	if (!l_meshBody->CreateBody(l_groundStaticModelRecord->GetREFModelData(), true, m_groundModelStandardDrawRequest->m_worldMatrix)) { return; }
+	if (!l_meshBody->CreateBody(l_groundStaticModelRecord->GetREFModelData(), true, m_groundModelDrawRequest->m_worldMatrix)) { return; }
 
 	m_staticMeshBody = std::move(l_meshBody);
 }
@@ -327,8 +333,8 @@ void FWK::Scene::Update()
 	const auto  l_characterWorldPosition = m_characterVirtual->FetchVALWorldPosition();
 	const auto& l_characterWorldMatrix   = TypeAlias::Math::Matrix::CreateRotationY(m_characterModelRotationYRadians) * TypeAlias::Math::Matrix::CreateTranslation(l_characterWorldPosition);
 
-	m_characterModelStandardDrawRequest->m_worldMatrix                 = l_characterWorldMatrix;
-	m_characterModelStandardDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
+	m_characterModelDrawRequest->m_worldMatrix                 = l_characterWorldMatrix;
+	m_characterModelDrawRequest->m_worldInverseTransposeMatrix = l_characterWorldMatrix.Invert().Transpose();
 
 	m_characterVirtual->DrawDebug(JPH::ColorArg{ 255U, 255U, 255U, 255U });
 

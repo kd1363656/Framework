@@ -1854,6 +1854,12 @@
                     "DrawRequestPerObjectTypeName": "SkeletalAnimationModelStandardLitPerObjectDrawRequest"
                 },
                 {
+                    "DrawRequestPerObjectTypeName": "StaticModelShadowPerObjectDrawRequest"
+                },
+                {
+                    "DrawRequestPerObjectTypeName": "SkeletalAnimationModelShadowPerObjectDrawRequest"
+                },
+                {
                     "DrawRequestPerObjectTypeName": "SpriteScreenPerObjectDrawRequest"
                 }
             ],

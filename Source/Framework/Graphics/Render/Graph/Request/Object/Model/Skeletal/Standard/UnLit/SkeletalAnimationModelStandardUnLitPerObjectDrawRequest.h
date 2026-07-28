@@ -2,14 +2,14 @@
 
 namespace FWK::Graphics
 {
-	class SkeletalAnimationModelStandardUnLitPerObjectDrawRequest final : public SkeletalAnimationModelStandardPerObjectDrawRequestBase
+	class SkeletalAnimationModelStandardUnLitPerObjectDrawRequest final : public SkeletalAnimationModelPerObjectDrawRequestBase
 	{
 	public:
 
 		 SkeletalAnimationModelStandardUnLitPerObjectDrawRequest()          = default;
 		~SkeletalAnimationModelStandardUnLitPerObjectDrawRequest() override = default;
 
-		FWK_DEFINE_TYPE_INFO(SkeletalAnimationModelStandardUnLitPerObjectDrawRequest, SkeletalAnimationModelStandardPerObjectDrawRequestBase)
+		FWK_DEFINE_TYPE_INFO(SkeletalAnimationModelStandardUnLitPerObjectDrawRequest, SkeletalAnimationModelPerObjectDrawRequestBase)
 	};
 }
 
