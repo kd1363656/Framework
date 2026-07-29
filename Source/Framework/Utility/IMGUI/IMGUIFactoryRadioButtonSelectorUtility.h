@@ -3,7 +3,7 @@
 namespace FWK::Utility
 {
 	// ファクトリーから生成するクラスを選べるセレクター
-	template <typename FactoryType , typename Type>
+	template <typename FactoryType, typename Type>
 	inline bool FactoryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
 	{
 		bool l_isCreate = false;
@@ -12,7 +12,7 @@ namespace FWK::Utility
 		
 		ImGui::BeginGroup();
 
-		std::string l_createInstanceName = {};
+		std::string l_createInstanceName = Constant::k_selecteUnknown;
 
 		// もしストラテジーが既にインスタンス化されているなら文字列を取得
 		if (a_wantChange)
@@ -29,7 +29,7 @@ namespace FWK::Utility
 
 		auto& l_factory = FactoryType::GetInstance();
 
-		for (const auto& [l_key, l_value] : l_factory.GetREFFactoryMap())
+		for (const auto& [l_key, l_value] : l_factory.GetREFTypeINFONameMap())
 		{
 			bool l_isSelected = l_createInstanceName == l_key;
 			
@@ -50,7 +50,6 @@ namespace FWK::Utility
 			}
 
 			a_wantChange = l_value();
-
 			l_isCreate   = true;
 
 			ImGui::PopID();

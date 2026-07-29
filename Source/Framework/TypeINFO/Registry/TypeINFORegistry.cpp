@@ -5,16 +5,16 @@ void FWK::TypeINFORegistry::Register(const TypeINFO& a_typeINFO)
 	FWK_ASSERT_RETURN_IF(a_typeINFO.k_staticTypeID == StaticTypeIDGenerator::k_invalidStaticTypeID, "無効なStaticTypeIDを検出しており、型情報の登録に失敗しました。");
 	FWK_ASSERT_RETURN_IF(a_typeINFO.k_name.empty(),                                                 "文字列が空になっており、型情報の登録に失敗しました。");
 
-	FWK_ADD_LOG("[型情報登録]\nName : {}\nStaticTypeID : {}\n型情報の登録に成功しました。\n", a_typeINFO.k_name.data(), a_typeINFO.k_staticTypeID);
-	
 	const bool l_isFailedRegister = m_typeINFONameMap.try_emplace(a_typeINFO.k_name, &a_typeINFO).second;
 
 	FWK_ASSERT_RETURN_IF(!l_isFailedRegister, "型情報の登録が重複しており、型情報の登録に失敗しました。");
 
+	FWK_ADD_LOG("[型情報登録]\nName : {}\nStaticTypeID : {}\n型情報の登録に成功しました。\n", a_typeINFO.k_name.data(), a_typeINFO.k_staticTypeID);
+	
 	m_typeINFOStaticTypeIDMap.try_emplace(a_typeINFO.k_staticTypeID, &a_typeINFO);
 }
 
-const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindByName(const std::string_view& a_name) const
+const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindPTRByName(const std::string_view& a_name) const
 {
 	const auto& l_itr = m_typeINFONameMap.find(a_name);
 
@@ -23,7 +23,7 @@ const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindByName(const s
 
 	return l_itr->second;
 }
-const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindByID(const TypeAlias::StaticTypeID a_staticTypeID) const
+const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindPTRByID(const TypeAlias::StaticTypeID a_staticTypeID) const
 {
 	const auto& l_itr = m_typeINFOStaticTypeIDMap.find(a_staticTypeID);
 

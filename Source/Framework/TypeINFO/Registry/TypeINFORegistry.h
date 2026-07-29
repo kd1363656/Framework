@@ -34,7 +34,7 @@ namespace FWK
 		using TypeINFONameMap         = std::unordered_map<std::string_view,        const TypeINFO* const, Struct::StringHash, std::equal_to<>>;
 		using TypeINFOStaticTypeIDMap = std::unordered_map<TypeAlias::StaticTypeID, const TypeINFO* const>;
 
-		friend class SingletonBase<FWK::TypeINFORegistry>;
+		friend class SingletonBase<TypeINFORegistry>;
 
 		 TypeINFORegistry()          = default;
 		~TypeINFORegistry() override = default;
@@ -43,8 +43,10 @@ namespace FWK
 
 		void Register(const TypeINFO& a_typeINFO);
 
-		const TypeINFO* FindByName(const std::string_view&       a_name)         const;
-		const TypeINFO* FindByID  (const TypeAlias::StaticTypeID a_staticTypeID) const;
+		const TypeINFO* FindPTRByName(const std::string_view&       a_name)         const;
+		const TypeINFO* FindPTRByID  (const TypeAlias::StaticTypeID a_staticTypeID) const;
+
+		const auto& GetREFTypeINFONameMap() const { return m_typeINFONameMap; }
 
 	private:
 

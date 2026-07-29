@@ -388,6 +388,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootParameterEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RootSignatureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\TextureLoadColorSpaceEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Observer\ObserverEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsLayerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\TypeTrait\TypeTraitPTREnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowStyleEnum.h" />
@@ -398,6 +399,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\RootSignatureJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringKeyRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelCascadeShadowPassStruct.h" />
@@ -419,6 +421,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Observer\ObserverStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h" />
@@ -620,6 +623,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Texture\TextureSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
+    <ClInclude Include="Source\Framework\Observer\Observer.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyBase.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h" />
@@ -650,7 +654,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\UFBXConvertUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIFactoryRadioButtonSelectorUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIStringKeyRegisterRadioButtonSelectorUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />
@@ -660,6 +665,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h" />
     <ClInclude Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.h" />
+    <ClInclude Include="Source\Framework\Utility\String\StringKeyRegistry.h" />
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\String\WStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\TypeINFO\TypeINFOUtility.h" />

@@ -1063,6 +1063,21 @@
     <Filter Include="Source\Framework\Physics\RayCast">
       <UniqueIdentifier>{d9abc5ae-2db8-407a-8b50-c9a8344e0d04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Observer">
+      <UniqueIdentifier>{717b1663-4ece-4e5e-9fd8-cdf713c188e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Observer">
+      <UniqueIdentifier>{e5cc19bf-f9b8-4a1b-bf92-a092f91cbee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Observer">
+      <UniqueIdentifier>{d827c33c-acec-4170-83d3-5a4fd66f0afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\Utility">
+      <UniqueIdentifier>{1c9544ed-c910-4f32-85bf-ad00eeae096e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\Utility\String">
+      <UniqueIdentifier>{ad8a3fa6-ac86-4181-b9ac-f617eeb8af46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1773,7 +1788,7 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIUtility.h">
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIFactoryRadioButtonSelectorUtility.h">
       <Filter>Source\Framework\Utility\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h">
@@ -2069,6 +2084,24 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h">
       <Filter>Source\Framework\Definition\Struct\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Observer\Observer.h">
+      <Filter>Source\Framework\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Observer\ObserverEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Observer\ObserverStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\String\StringKeyRegistry.h">
+      <Filter>Source\Framework\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringKeyRegistryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Utility\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIStringKeyRegisterRadioButtonSelectorUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

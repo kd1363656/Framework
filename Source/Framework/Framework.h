@@ -436,12 +436,26 @@
 #include "Strategy/StrategyBase.h"
 #include "Definition/Constant/IMGUI/IMGUIConstant.h"
 #include "Utility/Math/MathQuaternionUtility.h"
-#include "Utility/IMGUI/IMGUIUtility.h"
+#include "Utility/IMGUI/IMGUIFactoryRadioButtonSelectorUtility.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
+
+//===============================================================================
+// 文字列をキーとして値を保持するRegistry
+//===============================================================================
+#include "Utility/String/StringKeyRegistry.h"
+#include "Definition/Macros/Utility/String/StringKeyRegistryMacros.h"
+
+//===============================================================================
+// オブザーバー
+//===============================================================================
+#include "Definition/Enum/Observer/ObserverEnum.h"
+#include "Definition/Struct/Observer/ObserverStruct.h"
+#include "Utility/IMGUI/IMGUIStringKeyRegisterRadioButtonSelectorUtility.h"
+#include "Observer/Observer.h"
 
 //===============================================================================
 // ゲームオブジェクト
