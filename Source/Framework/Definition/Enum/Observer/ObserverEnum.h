@@ -12,4 +12,10 @@ namespace FWK::Enum
 	{
 		Invalid,
 	};
+
+	FWK_JSON_SERIALIZE_ENUM
+	(
+		ComponentEvent, 
+		FWK_JSON_ENUM_VALUE(ComponentEvent::Invalid)
+	)
 }
