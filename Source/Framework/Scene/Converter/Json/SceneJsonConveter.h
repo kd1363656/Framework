@@ -24,7 +24,7 @@ namespace FWK::Converter
 
 		nlohmann::json SerializeGameObjectList(const Scene& a_scene) const;
 
-		std::string_view k_gameObjectDataListJsonKey = "GameObjectDataList";
-		std::string_view k_gameObjecJsonKey          = "GameObject";
+		std::string_view k_gameObjectListJsonKey = "GameObjectList";
+		std::string_view k_gameObjecJsonKey      = "GameObject";
 	};
 }

@@ -8,5 +8,9 @@ namespace FWK
 
 		 GameObjectJsonConverter() = default;
 		~GameObjectJsonConverter() = default;
+
+		void Deserialize(const nlohmann::json& a_rootJson);
+
+
 	};
 }
