@@ -453,7 +453,8 @@
 // オブザーバー
 //===============================================================================
 #include "Definition/Enum/Observer/ObserverEnum.h"
-#include "Definition/Struct/Observer/ObserverStruct.h"
+#include "Definition/Constant/Utility/Enum/EnumBitShiftUtilityConstant.h"
+#include "Utility/Enum/EnumBitShiftUtility.h"
 #include "Utility/IMGUI/IMGUIObserverUtility.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Observer/Observer.h"

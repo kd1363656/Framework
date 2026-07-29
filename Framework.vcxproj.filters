@@ -1069,9 +1069,6 @@
     <Filter Include="Source\Framework\Definition\Enum\Observer">
       <UniqueIdentifier>{e5cc19bf-f9b8-4a1b-bf92-a092f91cbee2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Observer">
-      <UniqueIdentifier>{d827c33c-acec-4170-83d3-5a4fd66f0afd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Macros\Utility">
       <UniqueIdentifier>{1c9544ed-c910-4f32-85bf-ad00eeae096e}</UniqueIdentifier>
     </Filter>
@@ -1083,6 +1080,12 @@
     </Filter>
     <Filter Include="Source\Framework\Observer\Converter\Json">
       <UniqueIdentifier>{6f38f7f3-50c6-43fe-9567-f4fe25a638a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Enum">
+      <UniqueIdentifier>{ef4dc3ea-d32a-4f3b-b79a-6e7d900779cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Enum">
+      <UniqueIdentifier>{96a9b25b-d208-4b66-852f-ffbc3fca32b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2097,9 +2100,6 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Observer\ObserverEnum.h">
       <Filter>Source\Framework\Definition\Enum\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Observer\ObserverStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Observer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\String\StringValueBidirectionalRegistry.h">
       <Filter>Source\Framework\Utility\String</Filter>
     </ClInclude>
@@ -2111,6 +2111,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Observer\Converter\Json\ObserverJsonConverter.h">
       <Filter>Source\Framework\Observer\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h">
+      <Filter>Source\Framework\Utility\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

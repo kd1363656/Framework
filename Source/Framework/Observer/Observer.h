@@ -28,8 +28,26 @@ namespace FWK
 			{
 				// 瞬間的に記録するイベントは毎フレーム"false"にする
 				// そうすることでそのフレームしか通知しないイベントを実現できる
-				l_value.m_isNotificationActiveThisFrame = false;
+				l_value = Utility::DisableFlag(Enum::EventLane::TriggeredThisFrame, l_value);
 			}
+		}
+
+		void NotifyEvent(const Type a_type, const Enum::EventLane a_enableFlagEventLane)
+		{
+			auto l_itr = m_eventMap.find(a_type);
+
+			if (l_itr == m_eventMap.end()) { return; }
+
+			l_itr->second = Utility::EnableFlag(a_enableFlagEventLane, l_itr->second);
+		}
+
+		bool IsEventMatching(const Type a_type, const Enum::EventLane a_isMatchEventLane)
+		{
+			auto l_itr = m_eventMap.find(a_type);
+
+			if (l_itr == m_eventMap.end()) { return false; }
+
+			return Utility::IsFlagEnabled(a_isMatchEventLane, l_itr->second);
 		}
 
 		void EditInspector()
@@ -83,10 +101,8 @@ namespace FWK
 					continue;
 				}
 
-				ImGui::Text("HasPendingNotification         : %s" , Utility::BoolToString(l_itr->second.m_hasPendingNotification).data());
-				ImGui::Text("IsNotificastionActiveThisFrame : %s" , Utility::BoolToString(l_itr->second.m_isNotificationActiveThisFrame).data());
-				ImGui::Separator();
 
+				ImGui::Separator();
 
 				l_itr++;
 
@@ -106,10 +122,8 @@ namespace FWK
 		{
 			if (a_event == Type::Invalid) { return; }
 
-			// イベントに適したキーを格納
-			Struct::EventData l_eventData = {};
-
-			m_eventMap.try_emplace(a_event, l_eventData);
+			// フラグはすべて無効状態で初期化される
+			m_eventMap.try_emplace(a_event, Constant::k_noFlagValue);
 		}
 
 		const auto& GetREFEventMap() const { return m_eventMap; }
@@ -118,7 +132,7 @@ namespace FWK
 
 		static constexpr std::string_view k_imguiLabel = "EventSelector";
 
-		std::unordered_map<Type, Struct::EventData> m_eventMap = {};
+		std::unordered_map<Type, std::uint32_t> m_eventMap = {};
 
 		Converter::ObserverJsonConverter<Type> m_jsonConverter = {};
 

@@ -2,13 +2,12 @@
 
 namespace FWK::Enum
 {
-	enum class EventLane
+	enum class EventLane : std::uint32_t
 	{
-		Invalid,
-		Moment,
-		Keep,
+		Invalid            = 0U,
+		TriggeredThisFrame = 1U << 0U,
 	};
-
+	
 	enum class ComponentEvent
 	{
 		Invalid,
