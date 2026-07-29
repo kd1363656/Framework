@@ -125,7 +125,7 @@ namespace FWK::Utility
 			});
 		}
 
-		void RemoveSameElements(const Type& a_type)
+		void RemoveSameElement(const Type& a_type)
 			requires k_isWeakPTR
 		{
 			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)

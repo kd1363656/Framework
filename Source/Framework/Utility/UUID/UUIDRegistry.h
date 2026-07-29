@@ -79,6 +79,11 @@ namespace FWK
 			return true;
 		}
 
+		void Clear()
+		{
+			m_uuidMap.clear();
+		}
+
 	private:
 
 		UUIDMap m_uuidMap = {};

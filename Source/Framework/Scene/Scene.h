@@ -28,26 +28,6 @@ namespace FWK
 
 	private:
 
-		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
-
-		std::shared_ptr<Graphics::SkeletalAnimationModel>                       m_characterModel            = nullptr;
-		std::shared_ptr<Graphics::SkeletalAnimationPlayer>                      m_characterAnimationPlayer  = nullptr;
-		std::shared_ptr<Struct::SkeletalAnimationModelPerObjectDrawRequestData> m_characterModelDrawRequest = nullptr;
-
-		std::shared_ptr<Graphics::StaticModel>					     m_groundModel            = nullptr;
-		std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_groundModelDrawRequest = nullptr;
-
-		std::unique_ptr<Physics::PhysicsBodyBase> m_staticBoxBody     = nullptr;
-		std::unique_ptr<Physics::PhysicsBodyBase> m_staticSphereBody  = nullptr;
-		std::unique_ptr<Physics::PhysicsBodyBase> m_staticCapsuleBody = nullptr;
-		std::unique_ptr<Physics::PhysicsBodyBase> m_staticMeshBody    = nullptr;
-
-		std::unique_ptr<Physics::PhysicsCharacterVirtualBase> m_characterVirtual = nullptr;
-
-		float m_characterModelRotationYRadians = 0.0F;
-
-		bool m_wasJumpKeyDown = false;
-
 		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};
 
 		UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
