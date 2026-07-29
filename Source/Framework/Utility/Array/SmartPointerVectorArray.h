@@ -130,7 +130,7 @@ namespace FWK::Utility
 		{
 			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
 			{
-				const auto& l_type = a_arrayElementData.m_type.lock();
+				const auto& l_type = a_type.lock();
 
 				// 存在していないなら要素を無駄に圧迫してるだけなので削除削除
 				if (!l_type) { return true; }

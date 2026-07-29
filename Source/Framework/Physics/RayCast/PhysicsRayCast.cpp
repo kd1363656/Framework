@@ -96,17 +96,26 @@ FWK::Struct::PhysicsRayCastHitResult FWK::Physics::PhysicsRayCast::CastClosestHi
 
 bool FWK::Physics::PhysicsRayCast::CreateJoltRay(const Struct::PhysicsRay& a_physicsRay, JPH::RRayCast& a_rRayCast) const
 {
-	const auto& l_startPosition      = a_physicsRay.m_startPosition;
-	const auto& l_directionAndLength = a_physicsRay.m_directionAndLength;
+	const auto& l_worldStartPosition = a_physicsRay.m_worldStartPosition;
+	const auto& l_worldDirection     = a_physicsRay.m_worldDirection;
+	const float l_rayLength          = a_physicsRay.m_length;
 
-	const auto& l_joltStartPosition = Utility::DirectXMathVector3ToJoltRVec3(l_startPosition);
-	const auto& l_joltDirection     = Utility::DirectXMathVector3ToJoltRVec3(l_directionAndLength);
+	// 長さが0または負数のRayは作成できない
+	FWK_ASSERT_RETURN_VALUE_IF(l_rayLength <= std::numeric_limits<float>::epsilon(), "Rayの長さが0以下、または短すぎるため、Rayの作成に失敗しました。", false);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_joltDirection.LengthSq() <= std::numeric_limits<float>::epsilon(), "Rayの方向と長さを表すベクトルが短すぎるため、Rayの作成に失敗しました。", false);
+	// 方向ベクトルがほぼゼロの場合は正規化できないため拒否する
+	FWK_ASSERT_RETURN_VALUE_IF(l_worldDirection.LengthSquared() <= std::numeric_limits<float>::epsilon(), "Rayの方向ベクトルが短すぎるため、Rayの作成に失敗しました。", false);
+
+	auto l_normalizedWorldDirection = l_worldDirection;
+
+	l_normalizedWorldDirection.Normalize();
+
+	const auto& l_joltStartPosition      = Utility::DirectXMathVector3ToJoltRVec3(l_worldStartPosition);
+	const auto& l_joltDirectionAndLength = Utility::DirectXMathVector3ToJoltVec3 (l_normalizedWorldDirection * l_rayLength);
 
 	// JoltのmDirectionは単位方向ではなく
 	// Rayを飛ばす方向と最大距離を同時に表すベクトル
-	a_rRayCast = JPH::RRayCast{ l_joltStartPosition, l_joltDirection };
+	a_rRayCast = JPH::RRayCast{ l_joltStartPosition, l_joltDirectionAndLength };
 
 	return true;
 }
@@ -133,12 +142,13 @@ FWK::Struct::PhysicsRayCastHitResult FWK::Physics::PhysicsRayCast::CreateHitResu
 	// Body表面のワールド空間法線を取得する
 	const auto& l_surfaceNormal = l_body.GetWorldSpaceSurfaceNormal(a_rayCastResult.mSubShapeID2, l_hitPosition);
 
-	l_hitResult.m_bodyID           = a_rayCastResult.mBodyID;
-	l_hitResult.m_subShadpeID      = a_rayCastResult.mSubShapeID2;
-	l_hitResult.m_hitWorldPosition = Utility::JoltRVec3ToDirectXMathVector3(l_hitPosition);
-	l_hitResult.m_hitFraction      = a_rayCastResult.mFraction;
-	l_hitResult.m_hitDistance      = a_rayLength * a_rayCastResult.mFraction;
-	l_hitResult.m_isHit            = true;
+	l_hitResult.m_bodyID             = a_rayCastResult.mBodyID;
+	l_hitResult.m_subShapeID         = a_rayCastResult.mSubShapeID2;
+	l_hitResult.m_worldHitPosition   = Utility::JoltRVec3ToDirectXMathVector3(l_hitPosition);
+	l_hitResult.m_worldSurfaceNormal = Utility::JoltRVec3ToDirectXMathVector3(l_surfaceNormal);
+	l_hitResult.m_hitFraction        = a_rayCastResult.mFraction;
+	l_hitResult.m_hitDistance        = a_rayLength * a_rayCastResult.mFraction;
+	l_hitResult.m_isHit              = true;
 
 	return l_hitResult;
 }

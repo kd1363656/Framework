@@ -149,5 +149,5 @@ void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
 
 	if (!l_child) { return; }
 
-	m_childSmartPointerVectorArray.RemoveSameElements(a_child);
+	m_childSmartPointerVectorArray.RemoveSameElement(a_child);
 }
