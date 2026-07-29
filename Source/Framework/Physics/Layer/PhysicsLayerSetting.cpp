@@ -48,6 +48,10 @@ void FWK::Physics::PhysicsLayerSetting::SetupBroadPhaseLayerMapping()
 	// 対応するBroadPhaseLayerを設定する必要があるため、
 	// Static BroadPhaseLayerへ割り当てる。
 	m_broadPhaseLayerInterface.MapObjectToBroadPhaseLayer(ConvertToJoltObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject), ConvertToJoltBroadPhaseLayer(Enum::PhysicsBroadPhaseLayerType::Static));
+
+	// RayQueryObjectもPhysicsBodyへ設定するLayerではなく
+	// RayCastのFilterを作るためのQuery専用Layer
+	m_broadPhaseLayerInterface.MapObjectToBroadPhaseLayer(ConvertToJoltObjectLayer(Enum::PhysicsObjectLayerType::RayQueryObject), ConvertToJoltBroadPhaseLayer(Enum::PhysicsBroadPhaseLayerType::Static));
 }
 void FWK::Physics::PhysicsLayerSetting::SetupObjectLayerCollisionFilter()
 {
@@ -56,6 +60,10 @@ void FWK::Physics::PhysicsLayerSetting::SetupObjectLayerCollisionFilter()
 	// CharacterVirtualの衝突Queryから、
 	// StaticObjectを検出できる組み合わせだけを有効化する。
 	EnableObjectLayerCollision(Enum::PhysicsObjectLayerType::StaticObject, Enum::PhysicsObjectLayerType::CharacterObject);
+
+	// RayCastの衝突Queryから
+	// StaticObjectを検出可能にする
+	EnableObjectLayerCollision(Enum::PhysicsObjectLayerType::StaticObject, Enum::PhysicsObjectLayerType::RayQueryObject);
 }
 void FWK::Physics::PhysicsLayerSetting::SetupObjectVSBroadPhaseLayerFilter()
 {

@@ -15,6 +15,9 @@ namespace FWK::Enum
 		// CharacterVirtualのQuery用ObjectLayer
 		CharacterObject,
 
+		// RayCastが探索可能なObjectLayerを決めるためのQuery専用ObjectLayer
+		RayQueryObject,
+
 		Count,
 	};
 

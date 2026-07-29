@@ -1060,6 +1060,9 @@
     <Filter Include="Source\Framework\GameObject\Converter\Json">
       <UniqueIdentifier>{be522c45-b9bc-4958-8f25-0d51c4d581f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\RayCast">
+      <UniqueIdentifier>{d9abc5ae-2db8-407a-8b50-c9a8344e0d04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2061,6 +2064,9 @@
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h">
+      <Filter>Source\Framework\Physics\RayCast</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h">
       <Filter>Source\Framework\Definition\Struct\Physics</Filter>
     </ClInclude>
@@ -2572,6 +2578,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp">
+      <Filter>Source\Framework\Physics\RayCast</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

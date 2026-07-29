@@ -94,9 +94,16 @@
 
 // Body関係
 #include <Jolt/Physics/Body/BodyID.h>
+#include <Jolt/Physics/Body/BodyLock.h>
 #include <Jolt/Physics/Body/BodyInterface.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/MotionType.h>
+
+// RayCast関係
+#include <Jolt/Physics/Collision/RayCast.h>
+#include <Jolt/Physics/Collision/CastResult.h>
+#include <Jolt/Physics/Collision/NarrowPhaseQuery.h>
+#include <Jolt/Physics/Collision/CollisionCollectorImpl.h>
 
 // Shape関係
 #include <Jolt/Physics/Collision/Shape/Shape.h>
