@@ -86,6 +86,8 @@ namespace FWK
 		Utility::SmartPointerVectorArray<std::weak_ptr<GameObject>>      m_childSmartPointerVectorArray     = {};
 		Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorArray = {};
 
+		GameObjectJsonConverter m_jsonConverter = {};
+
 		UUID m_uuid = GUID_NULL;
 		
 		std::string m_selfName   = {};

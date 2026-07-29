@@ -420,6 +420,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteRECTStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandAllocatorTypeAlias.h" />
@@ -456,6 +457,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
@@ -619,13 +621,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyBase.h" />
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.h" />
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json\PhysicsStaticCapsuleBodyJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.h" />
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json\PhysicsStaticSphereBodyJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.h" />
@@ -692,6 +691,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp" />
@@ -816,13 +816,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\PhysicsBodyBase.cpp" />
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.cpp" />
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json\PhysicsStaticCapsuleBodyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\PhysicsStaticCapsuleBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Mesh\PhysicsStaticMeshBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\PhysicsStaticBodyBase.cpp" />
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json\PhysicsStaticSphereBodyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\PhysicsStaticSphereBody.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.cpp" />

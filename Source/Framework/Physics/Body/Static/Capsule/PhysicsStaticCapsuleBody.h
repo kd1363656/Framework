@@ -15,11 +15,7 @@ namespace FWK::Physics
 		 PhysicsStaticCapsuleBody()          = default;
 		~PhysicsStaticCapsuleBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
-
-		void Deserialize(const nlohmann::json& a_rootJson) override;
-
-		nlohmann::json Serialize() const override;
+		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
 
 		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 		
@@ -34,8 +30,6 @@ namespace FWK::Physics
 		JPH::RefConst<JPH::Shape> CreateShape() const;
 
 		bool ApplyShapeChange();
-
-		Converter::PhysicsStaticCapsuleBodyJsonConverter m_jsonConverter = {};
 
 		float m_halfHeightOfCylinder = Constant::k_defaultPhysicsStaticCapsuleBodyHalfHeightOfCylinder;
 		float m_radius               = Constant::k_defaultPhysicsStaticCapsuleBodyRadius;

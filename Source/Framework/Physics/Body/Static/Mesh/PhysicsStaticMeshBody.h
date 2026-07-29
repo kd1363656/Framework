@@ -13,7 +13,7 @@ namespace FWK::Physics
 		 PhysicsStaticMeshBody()          = default;
 		~PhysicsStaticMeshBody() override = default;
 
-		bool CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix) override;
+		bool CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix);
 
 		bool ApplyWorldTransform(TypeAlias::Math::Matrix& a_worldMatrix) override;
 

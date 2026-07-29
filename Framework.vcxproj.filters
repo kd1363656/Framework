@@ -943,32 +943,14 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit">
       <UniqueIdentifier>{a2a78ab4-ef3b-406d-80a9-0e5f476ced85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Static\Sphere\Converter">
-      <UniqueIdentifier>{1cf2d250-11c8-4dad-b40d-3cdb7ad4fdd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Physics">
       <UniqueIdentifier>{ebb3554d-826d-4ebd-9883-65cf4fd01cdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Static\Box\Converter">
-      <UniqueIdentifier>{070725d0-6b15-4eff-bd54-ab2b387b2149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Static\Capsule\Converter">
-      <UniqueIdentifier>{d632fab4-3cf6-4c81-a658-179eda2ccc2c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter">
       <UniqueIdentifier>{b4648bf6-26fe-411a-a833-52f059ff92dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter\Json">
       <UniqueIdentifier>{6346a33a-61c0-4e07-a9ef-1ac84dfe84d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json">
-      <UniqueIdentifier>{94721df1-14a0-4b6e-a1c4-c1da7f228b4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json">
-      <UniqueIdentifier>{b5908286-e47e-4167-b0ab-6f524739e5e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Physics\Body\Static\Box\Converter\Json">
-      <UniqueIdentifier>{6e2af38f-31fb-41e8-9315-792f633c725f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Hierarchy">
       <UniqueIdentifier>{6b5ae75f-7344-4a4b-ab3c-a17310c6965a}</UniqueIdentifier>
@@ -1071,6 +1053,12 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant">
       <UniqueIdentifier>{c440348c-eacf-477b-bb78-77bec2feddcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Converter">
+      <UniqueIdentifier>{71d59703-f587-4757-8a53-2cfa84389a57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Converter\Json">
+      <UniqueIdentifier>{be522c45-b9bc-4958-8f25-0d51c4d581f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1950,15 +1938,6 @@
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.h">
       <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json\PhysicsStaticSphereBodyJsonConverter.h">
-      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json\PhysicsStaticCapsuleBodyJsonConverter.h">
-      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.h">
-      <Filter>Source\Framework\Physics\Body\Static\Box\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
@@ -2078,6 +2057,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2549,15 +2534,6 @@
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Sphere\Converter\Json\PhysicsStaticSphereBodyJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Body\Static\Sphere\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Capsule\Converter\Json\PhysicsStaticCapsuleBodyJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Body\Static\Capsule\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Body\Static\Box\Converter\Json\PhysicsStaticBoxBodyJsonConverter.cpp">
-      <Filter>Source\Framework\Physics\Body\Static\Box\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
     </ClCompile>
@@ -2593,6 +2569,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

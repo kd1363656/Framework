@@ -28,8 +28,6 @@ namespace FWK
 
 	private:
 
-		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};
-
 		std::shared_ptr<Graphics::Camera> m_camera = nullptr;
 
 		std::shared_ptr<Graphics::SkeletalAnimationModel>                       m_characterModel            = nullptr;
@@ -46,14 +44,16 @@ namespace FWK
 
 		std::unique_ptr<Physics::PhysicsCharacterVirtualBase> m_characterVirtual = nullptr;
 
+		float m_characterModelRotationYRadians = 0.0F;
+
+		bool m_wasJumpKeyDown = false;
+
+		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};
+
 		UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
 
 		Converter::SceneJsonConverter m_jsonConverter = {};
 
 		Graphics::LightSystem m_lightSystem = {};
-
-		float m_characterModelRotationYRadians = 0.0F;
-
-		bool m_wasJumpKeyDown = false;
 	};
 }

@@ -12,18 +12,6 @@ bool FWK::Physics::PhysicsStaticBoxBody::CreateBody(const TypeAlias::Math::Quate
 		                          a_isPushBackEnabled);
 }
 
-void FWK::Physics::PhysicsStaticBoxBody::Deserialize(const nlohmann::json& a_rootJson)
-{
-	if (a_rootJson.is_null()) { return; }
-
-	m_jsonConverter.Deserialize(a_rootJson, *this);
-}
-
-nlohmann::json FWK::Physics::PhysicsStaticBoxBody::Serialize() const
-{
-	return m_jsonConverter.Serialize(*this);
-}
-
 bool FWK::Physics::PhysicsStaticBoxBody::ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
 	return ApplyStaticBodyWorldTransform(a_worldRotation, a_worldPosition);

@@ -14,11 +14,7 @@ namespace FWK::Physics
 		 PhysicsStaticBoxBody()          = default;
 		~PhysicsStaticBoxBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled) override;
-
-		void Deserialize(const nlohmann::json& a_rootJson) override;
-
-		nlohmann::json Serialize() const override;
+		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
 
 		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 
@@ -31,8 +27,6 @@ namespace FWK::Physics
 		JPH::RefConst<JPH::Shape> CreateShape() const;
 
 		bool ApplyShapeChange();
-
-		Converter::PhysicsStaticBoxBodyJsonConverter m_jsonConverter = {};
 
 		TypeAlias::Math::Vector3 m_halfExtent = { Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength };
 
