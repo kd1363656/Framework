@@ -128,16 +128,27 @@ namespace FWK::Utility
 		void RemoveSameElement(const Type& a_type)
 			requires k_isWeakPTR
 		{
-			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
+			const auto& l_removeTarget = a_type.lock();
+
+			if (!l_removeTarget) { return; }
+
+			std::erase_if(m_arrayElementDataList, [this, l_removeTarget](const ArrayElementData& a_arrayElementData)
 			{
-				const auto& l_type = a_type.lock();
+				const auto& l_registeredType = a_arrayElementData.m_type.lock();
 
-				// 存在していないなら要素を無駄に圧迫してるだけなので削除削除
-				if (!l_type) { return true; }
+				// 登録対象が既に破棄されている場合は
+				// Listと登録済みアドレスSetの両方から削除する
+				if (!l_registeredType)
+				{
+					m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
 
-				// アドレスが一致していない場合削除しない
-				if (l_type.get() != a_arrayElementData.m_typeAddress) { return false; }
+					return true;
+				}
+				
+				// 削除対象と異なるオブジェクトなら削除しない
+				if (l_registeredType != l_removeTarget) { return false; }
 
+				// 同じオブジェクトなので、登録済みアドレスSetからも削除する
 				m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
 
 				return true;

@@ -4,8 +4,7 @@ namespace FWK::Struct
 {
 	struct EventData final
 	{
-		bool m_hasPendingNotification = false;
-
-		bool m_isNotificastionActiveThisFrame = false;
+		bool m_hasPendingNotification        = false;
+		bool m_isNotificationActiveThisFrame = false;
 	};
 }

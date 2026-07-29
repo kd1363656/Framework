@@ -12,7 +12,7 @@ namespace FWK::Utility
 		
 		ImGui::BeginGroup();
 
-		std::string l_createInstanceName = Constant::k_selecteUnknown;
+		std::string l_createInstanceName = Constant::k_selecteUnknownString.data();
 
 		// もしストラテジーが既にインスタンス化されているなら文字列を取得
 		if (a_wantChange)
@@ -29,7 +29,7 @@ namespace FWK::Utility
 
 		auto& l_factory = FactoryType::GetInstance();
 
-		for (const auto& [l_key, l_value] : l_factory.GetREFTypeINFONameMap())
+		for (const auto& [l_key, l_value] : l_factory.GetREFFactoryMap())
 		{
 			bool l_isSelected = l_createInstanceName == l_key;
 			

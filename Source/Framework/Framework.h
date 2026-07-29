@@ -446,15 +446,16 @@
 //===============================================================================
 // 文字列をキーとして値を保持するRegistry
 //===============================================================================
-#include "Utility/String/StringKeyRegistry.h"
-#include "Definition/Macros/Utility/String/StringKeyRegistryMacros.h"
+#include "Utility/String/StringValueBidirectionalRegistry.h"
+#include "Definition/Macros/Utility/String/StringValueBidirectionalRegistryMacros.h"
 
 //===============================================================================
 // オブザーバー
 //===============================================================================
 #include "Definition/Enum/Observer/ObserverEnum.h"
 #include "Definition/Struct/Observer/ObserverStruct.h"
-#include "Utility/IMGUI/IMGUIStringKeyRegisterRadioButtonSelectorUtility.h"
+#include "Utility/IMGUI/IMGUIObserverUtility.h"
+#include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Observer/Observer.h"
 
 //===============================================================================

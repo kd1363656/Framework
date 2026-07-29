@@ -2,7 +2,9 @@
 
 namespace FWK::Constant
 {
-	static constexpr std::string_view k_selecteUnknown = "Unknown";
+	inline constexpr std::string_view k_selecteUnknownString = "Unknown";
+	inline constexpr std::string_view k_isTrueString         = "True";
+	inline constexpr std::string_view k_isFalseString        = "False";
 
-	static constexpr float k_imguiDefaultDragValue = 0.10F;
+	inline constexpr float k_imguiDefaultDragValue = 0.10F;
 }

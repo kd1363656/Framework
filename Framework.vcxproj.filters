@@ -1078,6 +1078,12 @@
     <Filter Include="Source\Framework\Definition\Macros\Utility\String">
       <UniqueIdentifier>{ad8a3fa6-ac86-4181-b9ac-f617eeb8af46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Observer\Converter">
+      <UniqueIdentifier>{8f5390a4-bcf8-4eb1-a86d-fd5ac0617449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Observer\Converter\Json">
+      <UniqueIdentifier>{6f38f7f3-50c6-43fe-9567-f4fe25a638a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2094,14 +2100,17 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Observer\ObserverStruct.h">
       <Filter>Source\Framework\Definition\Struct\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\String\StringKeyRegistry.h">
+    <ClInclude Include="Source\Framework\Utility\String\StringValueBidirectionalRegistry.h">
       <Filter>Source\Framework\Utility\String</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringKeyRegistryMacros.h">
+    <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h">
       <Filter>Source\Framework\Definition\Macros\Utility\String</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIStringKeyRegisterRadioButtonSelectorUtility.h">
+    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIObserverUtility.h">
       <Filter>Source\Framework\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Observer\Converter\Json\ObserverJsonConverter.h">
+      <Filter>Source\Framework\Observer\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

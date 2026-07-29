@@ -48,9 +48,13 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 	const auto& l_cbCameraPass = m_cbCameraPass.lock();
 	const auto& l_cbLightPass  = m_cbLightPass.lock ();
 
-	FWK_ASSERT_RETURN_VALUE_IF(!l_cbCameraPass,           "CBCameraPassが無効なため、CascadeShadowMapの更新処理に失敗しました。",                     false);
-	FWK_ASSERT_RETURN_VALUE_IF(!l_cbLightPass,            "CBLightPassが無効なため、CascadeShadowMapの更新処理に失敗しました。",                      false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_cascadeDataList.empty(), "CascadeDataListが空のため、CascadeShadowMapの更新処理に失敗しました。",                    false);
+	if (!l_cbCameraPass ||
+		!l_cbLightPass)
+	{
+		return false;
+	}
+
+	FWK_ASSERT_RETURN_VALUE_IF(m_cascadeDataList.empty(), "CascadeDataListが空のため、CascadeShadowMapの更新処理に失敗しました。", false);
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_cbCameraPass->m_nearClip <= k_invalidClipDistance ||
 		                       l_cbCameraPass->m_farClip <= l_cbCameraPass->m_nearClip,

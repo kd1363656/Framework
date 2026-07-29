@@ -38,7 +38,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 
 	// 現在のCameraとDirectionalLightから
 	// Cascadeごとの行列とAmplicficationShader用カリング範囲を更新する
-	FWK_ASSERT_RETURN_IF(!l_cascadeShadowMap.Update(), "CascadeShadowMapを更新できないため、ModelCascadeShadowPassを実行できません。");
+	if (!l_cascadeShadowMap.Update()) { return; }
 
 	const auto& l_renderArea                  = l_cascadeShadowMap.GetREFRenderArea                 ();
 	const auto& l_depthStencilTextureSettings = l_cascadeShadowMap.GetREFDepthStencilTextureSettings();
