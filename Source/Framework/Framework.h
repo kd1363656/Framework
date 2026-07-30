@@ -475,6 +475,7 @@
 #include "Utility/UUID/UUIDUtility.h"
 #include "Utility/UUID/UUIDRegistry.h"
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
+#include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
 

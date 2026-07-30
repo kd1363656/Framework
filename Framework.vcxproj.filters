@@ -2151,6 +2151,9 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Prefab\PrefabSystemStruct.h">
       <Filter>Source\Framework\Definition\Struct\Prefab</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

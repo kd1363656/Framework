@@ -20,12 +20,12 @@ namespace FWK
 		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-			                         Scene&                                                            a_scene) const;
+			                         Scene&                                                            a_scene);
 
 		void DeserializeScene(const nlohmann::json&                                                   a_rootJson,
 			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-			                        Scene&                                                            a_scene) const;
+			                        Scene&                                                            a_scene);
 
 		void PostDeserialize  () const;
 

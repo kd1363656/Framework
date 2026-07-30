@@ -59,6 +59,7 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 
 	// プレハブの情報を先にデシリアライズ
 	DeserializePrefab(l_prefabJson, 
+		              l_gameObject,
 		              l_childLoadList,
 		              l_componentLoadList,
 		              a_scene);
@@ -67,9 +68,13 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 	DeserializeScene(a_rootJson,   
 		             l_childLoadList, 
 		             l_componentLoadList, 
+		             *l_gameObject,
 		             a_scene);
 
 	// デシリアライズした各コンポーネントを、親、子に再帰的に追加
+	RecursiveAddChild(l_gameObject, l_childLoadList, a_scene);
+
+	// 親子関係を再帰的に構築
 	RecursiveAddChild(l_gameObject, l_childLoadList, a_scene);
 }
 void FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene& a_scene) const
@@ -83,7 +88,8 @@ void FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 }
 
 void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
-	                                                       std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+	                                                 const std::weak_ptr<GameObject>&                                        a_gameObject,
+	                                                       std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 	                                                       Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 	                                                       Scene&                                                            a_scene) const
 {
@@ -94,10 +100,67 @@ void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&      
 		return;
 	}
 
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject)
+	{
+		FWK_ADD_LOG("GameObjectが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+		return;
+	}
+
+	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+	const auto& l_key = TransformComponent::GetREFTypeINFO().k_name;
+
+	if (l_key.empty())
+	{
+		FWK_ADD_LOG("TransformComponentの型情報の文字列が空になっており、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+		return;
+	}
+
+	// TransformComponentのプレハブの情報を読み込む
+	const auto& l_transformComponentJson = a_rootJson.value(l_key, nlohmann::json{});
+
+	FWK_ASSERT_RETURN_IF(l_transformComponentJson.is_null(), "TransformComponentJsonが無効になっており、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+	// コンポーネント読み込み用Jonの存在確認、なければreturn
+	const auto& l_componentJsonArray = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
+
+	if (!Utility::IsJsonArray(l_componentJsonArray)) { return; }
+
+	const auto& l_componentFactory = TypeAlias::ComponentSharedFactory::GetInstance();
+
+	// コンポーネントの読み込みと生成
+	for (const auto& l_componentJson : l_componentJsonArray)
+	{
+		if (l_componentJson.is_null()) { continue; }
+
+		// コンポーネントの名前を取得
+		const auto& l_typeName = l_componentJson.value(k_componentTypeNameJsonKey, nlohmann::json{});
+
+		// コンポーネントの名前をもとにファクトリーから生成
+		// もしインスタンス化されなければcontinue
+		const auto& l_component = l_componentFactory.Create(l_typeName);
+
+		if (!l_component) { continue; }
+
+		// コンポーネントにゲームオブジェクト自身のキャッシュを与えデシリアライズ
+		l_component->SetOwner             (a_gameObject);
+		l_component->DeserializePrefabData(l_componentJson);
+
+		// コンポーネントの実行順序はjsonに保存された順番でありScene情報も
+		// 読み込む必要があるため順番を崩さないようにリストで管理
+		a_componentSmartPointerVectorArray.Add(l_component);
+	}
 }
 void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
-	                                                      std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+	                                                      std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 	                                                      Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+	                                                      GameObject&                                                       a_gameObject,
 	                                                      Scene&                                                            a_scene) const
 {
 	if (a_rootJson.is_null())
@@ -122,8 +185,15 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializeScene(const GameObject& a_
 	return l_rootJson;
 }
 
-void FWK::GameObjectJsonConverter::RecursiveAddComponent(const std::shared_ptr<GameObject>&                                      a_self, 
-	                                                           std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+void FWK::GameObjectJsonConverter::DeserializeComponentObserver(const nlohmann::json& a_rootJson) const
+{
+	if (a_rootJson.is_null()) { return; }
+
+
+}
+
+void FWK::GameObjectJsonConverter::RecursiveAddComponent(const std::shared_ptr<GameObject>&                                      a_self,
+	                                                           std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 	                                                           Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 	                                                           Scene&                                                            a_scene) const
 {
@@ -140,7 +210,7 @@ void FWK::GameObjectJsonConverter::RecursiveAddComponent(const std::shared_ptr<G
 	}
 
 	// 子のコンポーネントを子のコンポーネントリストに追加
-	for (auto& l_childLoad : a_childDeserializeData)
+	for (auto& l_childLoad : a_childDeserializeDataList)
 	{
 		if (!l_childLoad.m_self) { continue; }
 
@@ -150,8 +220,18 @@ void FWK::GameObjectJsonConverter::RecursiveAddComponent(const std::shared_ptr<G
 			                  a_scene);
 	}
 }
-void FWK::GameObjectJsonConverter::RecursiveAddChild(const std::shared_ptr<GameObject>& a_parent, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData, Scene& a_scene) const
+void FWK::GameObjectJsonConverter::RecursiveAddChild(const std::shared_ptr<GameObject>& a_parent, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const
 {
 	// 子であろうが一つのリストに格納
-	const auto& l_scene = SceneManager::GetInstance().GetREFScene();
+	if (!a_parent) { return; }
+
+	// 親子関係を再帰的に構築
+	for (auto& l_childLoad : a_childDeserializeDataList)
+	{
+		if (!l_childLoad.m_self) { continue; }
+
+		a_parent->ApplyParent(l_childLoad.m_self);
+		a_scene.AddGameObject(l_childLoad.m_self);
+		RecursiveAddChild    (l_childLoad.m_self, l_childLoad.m_childDeserializeDataList, a_scene);
+	}
 }
