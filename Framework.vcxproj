@@ -425,6 +425,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Prefab\PrefabSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandAllocatorTypeAlias.h" />

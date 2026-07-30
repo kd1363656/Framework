@@ -1,5 +1,4 @@
 ﻿#include "Scene.h"
-
 #include "../../Application/Application.h"
 
 void FWK::Scene::INIT()
@@ -97,6 +96,6 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 	// ゲームオブジェクトとそのUUIDを登録、ただしUUIDがGUID_NULLだったり、
 	// 重複するUUIDの場合UUIDを生成してゲームオブジェクト側のUUIDにも反映する
 	FWK_ASSERT_RETURN_IF(m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFUUID()), "ゲームオブジェクトのUUIDの登録に失敗しており、ゲームオブジェクトの追加処理に失敗しました。");
-	 
+	
 	m_gameObjectList.emplace_back(a_gameObject, a_gameObject.get());
 }

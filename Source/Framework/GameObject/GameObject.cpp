@@ -1,22 +1,40 @@
 ﻿#include "GameObject.h"
 
-void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.Deserialize(a_rootJson, *this);
+	m_jsonConverter.Deserialize(weak_from_this(), a_rootJson, a_scene);
 }
-void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, std::vector<std::shared_ptr<ComponentBase>>& a_componentList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData)
+void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.DeserializePrefab(a_rootJson, a_componentList, a_childDeserializeData);
+	m_jsonConverter.DeserializePrefab(weak_from_this(), a_rootJson, a_scene);
 }
-void FWK::GameObject::DeserializeScene(const nlohmann::json & a_rootJson, std::vector<std::shared_ptr<ComponentBase>>&a_componentList, std::vector<Struct::ChildDeserializeData>&a_childDeserializeData)
+void FWK::GameObject::DeserializePrefab(const nlohmann::json &                                                 a_rootJson, 
+	                                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+	                                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+	                                         Scene&                                                            a_scene) const
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.DeserializeScene(a_rootJson, a_componentList, a_childDeserializeData);
+	m_jsonConverter.DeserializePrefab(a_rootJson, 
+		                              a_childDeserializeData,
+		                              a_componentSmartPointerVectorArray, 
+		                              a_scene);
+}
+void FWK::GameObject::DeserializeScene(const nlohmann::json &                                                  a_rootJson, 
+	                                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+	                                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+	                                         Scene&                                                            a_scene) const
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.DeserializeScene(a_rootJson, 
+		                             a_childDeserializeData, 
+		                             a_componentSmartPointerVectorArray, 
+		                             a_scene);
 }
 
 void FWK::GameObject::PostDeserialize() const
@@ -117,7 +135,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 {
 	if (!a_component) 
 	{
-		FWK_ADD_LOG("GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", m_selfName);
+		FWK_ADD_LOG("GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", m_containsNumberPrefabName);
 
 		return; 
 	}

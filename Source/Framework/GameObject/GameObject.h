@@ -1,5 +1,10 @@
 ﻿#pragma once
 
+namespace FWK::Graphics
+{
+	class Scene;
+}
+
 namespace FWK
 {
 	class GameObject final : public std::enable_shared_from_this<GameObject>
@@ -9,9 +14,19 @@ namespace FWK
 		 GameObject() = default;
 		~GameObject() = default;
 
-		void Deserialize      (const nlohmann::json& a_rootJson);
-		void DeserializePrefab(const nlohmann::json& a_rootJson, std::vector<std::shared_ptr<ComponentBase>>& a_componentList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData);
-		void DeserializeScene (const nlohmann::json& a_rootJson, std::vector<std::shared_ptr<ComponentBase>>& a_componentList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData);
+		void Deserialize      (const nlohmann::json& a_rootJson, Scene& a_scene);
+		void DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene);
+
+		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                         Scene&                                                            a_scene) const;
+
+		void DeserializeScene(const nlohmann::json&                                                   a_rootJson,
+			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                        Scene&                                                            a_scene) const;
+
 		void PostDeserialize  () const;
 
 		void EarlyUpdate  () const;
@@ -33,6 +48,9 @@ namespace FWK
 		void Unparent(const std::weak_ptr<FWK::GameObject>& a_child);
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
+
+		void SetPrefabName              (const std::string& a_set) { m_prefabName               = a_set; }
+		void SetContainsNumberPrefabName(const std::string& a_set) { m_containsNumberPrefabName = a_set; }
 
 		template <Concept::IsDerivedComponentBaseConcept ComponentType>
 		std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -98,8 +116,8 @@ namespace FWK
 
 		UUID m_uuid = GUID_NULL;
 		
-		std::string m_selfName   = {};
-		std::string m_prefabName = {};
+		std::string m_containsNumberPrefabName = {};
+		std::string m_prefabName               = {};
 
 		bool m_isDestroyed = false;
 	};

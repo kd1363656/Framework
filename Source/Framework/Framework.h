@@ -464,6 +464,7 @@
 //===============================================================================
 #include "Prefab/Converter/Json/PrefabJsonConverter.h"
 #include "Prefab/Prefab.h"
+#include "Definition/Struct/Prefab/PrefabSystemStruct.h"
 #include "Prefab/Converter/Json/PrefabSystemJsonConverter.h"
 #include "Prefab/PrefabSystem.h"
 
