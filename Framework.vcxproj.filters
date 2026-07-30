@@ -2136,6 +2136,9 @@
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.h">
       <Filter>Source\Framework\Prefab\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h">
+      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2655,6 +2658,9 @@
       <Filter>Source\Framework\Prefab</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.cpp">
+      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp">
       <Filter>Source\Framework\Prefab\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>

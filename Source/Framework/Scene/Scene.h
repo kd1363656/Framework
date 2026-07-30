@@ -26,6 +26,10 @@ namespace FWK
 
 		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 
+		const auto& GetREFPrefabSystem() const { return m_prefabSystem; }
+
+		auto& GetMutableREFPrefabSystem() { return m_prefabSystem; }
+
 	private:
 
 		std::list<std::shared_ptr<GameObject>> m_gameObjectList = {};

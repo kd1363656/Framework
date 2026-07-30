@@ -1,6 +1,22 @@
 ﻿#include "Prefab.h"
 
-nlohmann::json FWK::Prefab::Serialize() const
+void FWK::Prefab::LoadPrefab()
 {
-	return m_jsonConverter.Serialize(*this);
+	const auto& l_rootJson = Utility::LoadJsonFile(m_filePath);
+
+	if (l_rootJson.is_null()) 
+	{
+		FWK_ADD_LOG("RootJsonが無効となっており、Prefabの読み込みに失敗しました。");
+
+		return; 
+	}
+
+	m_jsonConverter.Deserialize(l_rootJson, *this);
+}
+
+void FWK::Prefab::SavePrefab() const
+{
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, m_filePath);
 }

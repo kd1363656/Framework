@@ -26,5 +26,6 @@ namespace FWK::Converter
 
 		std::string_view k_gameObjectListJsonKey = "GameObjectList";
 		std::string_view k_gameObjecJsonKey      = "GameObject";
+		std::string_view k_prefabSystemJsonKey   = "GameObject";
 	};
 }

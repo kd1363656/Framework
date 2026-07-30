@@ -6,7 +6,7 @@ namespace FWK
 	{
 	private:
 
-		using PrefabMap = std::unordered_map<std::filesystem::path, Prefab>;
+		using PrefabMap = std::unordered_map<std::string, Prefab, Struct::StringHash, std::equal_to<>>;
 
 	public:
 
@@ -16,14 +16,17 @@ namespace FWK
 		void INIT       ();
 		void Deserialize(const nlohmann::json& a_rootJson);
 
-
-		void AddPrefabMap(const std::filesystem::path& a_filePath, const Prefab& a_prefab);
-		void RemovePrefab(const std::filesystem::path& a_filePath);
+		void AddPrefabMap(const std::string& a_prefabName, const Prefab& a_prefab);
+		void RemovePrefab(const std::string& a_prefabName);
 
 		nlohmann::json Serialize() const;
+
+		const auto& GetREFPrefabMap() const { return m_prefabMap; }
 
 	private:
 
 		PrefabMap m_prefabMap = {};
+
+		Converter::PrefabSystemJsonConverter m_jsonConverter = {};
 	};
 }

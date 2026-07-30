@@ -1,5 +1,8 @@
 {
     "Scene": {
+        "GameObject": {
+            "PrefabMap": []
+        },
         "GameObjectList": []
     },
     "SceneShiftMap": []
