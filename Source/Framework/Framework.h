@@ -473,6 +473,7 @@
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
 #include "Utility/UUID/UUIDUtility.h"
 #include "Utility/UUID/UUIDRegistry.h"
+#include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
 

@@ -9,8 +9,10 @@ namespace FWK
 		 GameObject() = default;
 		~GameObject() = default;
 
-		void Deserialize    (const nlohmann::json& a_rootJson);
-		void PostDeserialize() const;
+		void Deserialize      (const nlohmann::json& a_rootJson);
+		void DeserializePrefab(const nlohmann::json& a_rootJson, std::vector<std::shared_ptr<ComponentBase>>& a_componentList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData);
+		void DeserializeScene (const nlohmann::json& a_rootJson, std::vector<std::shared_ptr<ComponentBase>>& a_componentList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData);
+		void PostDeserialize  () const;
 
 		void EarlyUpdate  () const;
 		void Update       () const;
@@ -21,7 +23,7 @@ namespace FWK
 
 		void EditInsepector();
 
-		nlohmann::json Serialize      () const;
+		nlohmann::json SerializeScene () const;
 		nlohmann::json SerializePrefab() const;
 
 		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);

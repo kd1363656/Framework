@@ -1096,6 +1096,9 @@
     <Filter Include="Source\Framework\Prefab\Converter\Json">
       <UniqueIdentifier>{5d63fa27-c090-46c3-94cb-c3824027c0c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\GameObject">
+      <UniqueIdentifier>{85c1dd65-757b-44c6-86ab-f6238955260b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2138,6 +2141,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h">
       <Filter>Source\Framework\Prefab\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h">
+      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

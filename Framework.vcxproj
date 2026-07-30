@@ -401,6 +401,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBModelCascadeShadowPassStruct.h" />

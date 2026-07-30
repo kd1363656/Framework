@@ -6,6 +6,18 @@ void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
+void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, std::vector<std::shared_ptr<ComponentBase>>& a_componentList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeData)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.DeserializePrefab(a_rootJson, a_componentList, a_childDeserializeData);
+}
+void FWK::GameObject::DeserializeScene(const nlohmann::json & a_rootJson, std::vector<std::shared_ptr<ComponentBase>>&a_componentList, std::vector<Struct::ChildDeserializeData>&a_childDeserializeData)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.DeserializeScene(a_rootJson, a_componentList, a_childDeserializeData);
+}
 
 void FWK::GameObject::PostDeserialize() const
 {
@@ -92,9 +104,9 @@ void FWK::GameObject::EditInsepector()
 	}
 }
 
-nlohmann::json FWK::GameObject::Serialize() const
+nlohmann::json FWK::GameObject::SerializeScene() const
 {
-	return m_jsonConverter.Serialize(*this);
+	return m_jsonConverter.SerializeScene(*this);
 }
 nlohmann::json FWK::GameObject::SerializePrefab() const
 {
