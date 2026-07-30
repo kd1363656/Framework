@@ -12,5 +12,7 @@ namespace FWK::Constant
 	inline constexpr std::string_view k_colorBJsonKey = "B";
 	inline constexpr std::string_view k_colorAJsonKey = "A";
 
+	inline constexpr std::string_view k_uuidJsonKey = "UUID";
+
 	inline constexpr TypeAlias::Math::Color k_whiteColor = { 1.0F, 1.0F, 1.0F, 1.0F };
 }

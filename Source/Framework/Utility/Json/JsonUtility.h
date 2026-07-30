@@ -101,6 +101,11 @@ namespace FWK::Utility
 		a_instance = l_factory.Create(l_createName);
 	}
 
+	inline UUID DeserializeUUID(const nlohmann::json& a_json)
+	{
+		return Utility::StringToUUID(a_json.value(Constant::k_uuidJsonKey, std::string{}));
+	}
+	
 	inline nlohmann::json SerializeColor(const TypeAlias::Math::Color& a_color , const std::string_view& a_key)
 	{
 		// キーとなる文字列がなければ空の"json"を返す
@@ -170,5 +175,13 @@ namespace FWK::Utility
 		l_rootJson[a_key] = a_instance->GetREFRuntimeTypeINFO().k_name;
 
 		return l_rootJson;
+	}
+
+	inline nlohmann::json SerializeUUID(const UUID& a_uuid)
+	{
+		return nlohmann::json
+		{
+			{ Constant::k_uuidJsonKey, Utility::UUIDToString(a_uuid) }
+		};
 	}
 }

@@ -92,6 +92,8 @@ namespace FWK
 
 		const auto& GetREFParent() const { return m_parent; }
 
+		auto& GetMutableREFComponentEventObserver() { return m_componentEventObserver; }
+
 		auto& GetMutableREFUUID() { return m_uuid; }
 
 		std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
@@ -114,8 +116,6 @@ namespace FWK
 
 		GameObjectJsonConverter m_jsonConverter = {};
 
-		UUID m_uuid = GUID_NULL;
-		
 		std::string m_containsNumberPrefabName = {};
 		std::string m_prefabName               = {};
 
