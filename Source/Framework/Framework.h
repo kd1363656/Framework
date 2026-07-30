@@ -460,6 +460,13 @@
 #include "Observer/Observer.h"
 
 //===============================================================================
+// プレハブ
+//===============================================================================
+#include "Prefab/Converter/Json/PrefabJsonConverter.h"
+#include "Prefab/Prefab.h"
+#include "Prefab/PrefabSystem.h"
+
+//===============================================================================
 // ゲームオブジェクト
 //===============================================================================
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"

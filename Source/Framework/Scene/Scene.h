@@ -32,6 +32,8 @@ namespace FWK
 
 		UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
 
+		PrefabSystem m_prefabSystem = {};
+
 		Converter::SceneJsonConverter m_jsonConverter = {};
 
 		Graphics::LightSystem m_lightSystem = {};

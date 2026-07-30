@@ -1,5 +1,12 @@
 ﻿#include "GameObject.h"
 
+void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::GameObject::PostDeserialize() const
 {
 	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
@@ -83,6 +90,15 @@ void FWK::GameObject::EditInsepector()
 
 		l_compoent->EditInspector();
 	}
+}
+
+nlohmann::json FWK::GameObject::Serialize() const
+{
+	return m_jsonConverter.Serialize(*this);
+}
+nlohmann::json FWK::GameObject::SerializePrefab() const
+{
+	return m_jsonConverter.SerializePrefab(*this);
 }
 
 void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_component)

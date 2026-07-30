@@ -1087,6 +1087,15 @@
     <Filter Include="Source\Framework\Definition\Constant\Utility\Enum">
       <UniqueIdentifier>{96a9b25b-d208-4b66-852f-ffbc3fca32b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Prefab">
+      <UniqueIdentifier>{f24d431d-e5f4-4817-b820-857376dba3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Prefab\Converter">
+      <UniqueIdentifier>{298bc1cc-f625-44cf-9ee9-3583e819731d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Prefab\Converter\Json">
+      <UniqueIdentifier>{5d63fa27-c090-46c3-94cb-c3824027c0c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2118,6 +2127,15 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Enum</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Prefab\PrefabSystem.h">
+      <Filter>Source\Framework\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Prefab\Prefab.h">
+      <Filter>Source\Framework\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.h">
+      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2629,6 +2647,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp">
       <Filter>Source\Framework\Physics\RayCast</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Prefab\PrefabSystem.cpp">
+      <Filter>Source\Framework\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Prefab\Prefab.cpp">
+      <Filter>Source\Framework\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.cpp">
+      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -641,6 +641,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
     <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h" />
+    <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Prefab\Prefab.h" />
+    <ClInclude Include="Source\Framework\Prefab\PrefabSystem.h" />
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h" />
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
@@ -840,6 +843,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp" />
     <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp" />
+    <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Prefab\Prefab.cpp" />
+    <ClCompile Include="Source\Framework\Prefab\PrefabSystem.cpp" />
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp" />
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />

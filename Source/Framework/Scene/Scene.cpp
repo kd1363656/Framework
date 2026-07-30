@@ -6,6 +6,9 @@ void FWK::Scene::INIT()
 {
 	m_gameObjectList.clear        ();
 	m_gameObjectUUIDRegistry.Clear();
+
+	m_prefabSystem.INIT               ();
+	m_lightSystem.ApplyDefaultSettings();
 }
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
