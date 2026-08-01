@@ -1,5 +1,10 @@
 ﻿#pragma once
 
+namespace FWK
+{
+	class GameObject;
+}
+
 namespace FWK::Editor
 {
 	class EditorManager final : public Utility::SingletonBase<EditorManager>
@@ -71,11 +76,13 @@ namespace FWK::Editor
 			return std::static_pointer_cast<WindowType>(l_editorWindow);
 		}
 
+		void SetSelectedGameObject(const std::shared_ptr<GameObject>& a_set) { m_selectedGameObject = a_set; }
+
 		void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
-		const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
-
-		const auto& GetREFMainMenubar() const { return m_mainMenubar; }
+		const auto& GetREFEditorWindowList  () const { return m_editorWindowList; }
+		const auto& GetREFMainMenubar       () const { return m_mainMenubar; }
+		const auto& GetREFSelectedGameObject() const { return m_selectedGameObject; }
 
 		auto& GetMutableREFMainMenubar() { return m_mainMenubar; }
 
@@ -117,6 +124,8 @@ namespace FWK::Editor
 		EditorWindowMap m_editorWindowMap;
 
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
+
+		std::shared_ptr<GameObject> m_selectedGameObject;
 
 		Editor::LogEditorWindow m_logEditorWindow;
 

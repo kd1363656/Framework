@@ -206,6 +206,8 @@ void FWK::Scene::RemoveDestroyedGameObjects()
 	});
 
 	// 後方に残った空階層を削除
+	// 階層が0,1,2,3とあった時に急に2を含む要素が
+	// 消えてしまっても問題がないようにpop_backで後ろから削除
 	while (!m_gameObjectExecutionLevelList.empty() &&
 		   m_gameObjectExecutionLevelList.back().empty())
 	{

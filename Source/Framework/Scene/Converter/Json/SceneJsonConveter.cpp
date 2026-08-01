@@ -57,7 +57,12 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 	
 	for (const auto& l_gameObject : l_gameObjectList)
 	{
-		if (!l_gameObject) { continue; }
+		// プレハブ名がないなら不正なゲームオブジェクトとしてシリアライズしない
+		if (!l_gameObject ||
+			l_gameObject->GetREFPrefabName().empty())
+		{
+			continue; 
+		}
 
 		nlohmann::json l_json = {};
 

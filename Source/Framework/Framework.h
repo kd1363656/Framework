@@ -446,7 +446,8 @@
 
 #include "Utility/File/Asset/Converter/Json/AssetFilePathUtilityJsonConverter.h"
 #include "Utility/File/Asset/AssetFilePathUtility.h"
-#include "Component/Render/RenderComponentBase.h"
+#include "Component/Render/Model/ModelComponentBase.h"
+#include "Component/Render/Model/Static/StaticModelComponent.h"
 
 //===============================================================================
 // 文字列をキーとして値を保持するRegistry

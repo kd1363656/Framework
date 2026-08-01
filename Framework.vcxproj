@@ -336,7 +336,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="..\Library\UFBX\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
-    <ClInclude Include="Source\Framework\Component\Render\RenderComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h" />
@@ -696,6 +697,8 @@ if "$(Configuration)"=="Debug" (
     </ClCompile>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp" />

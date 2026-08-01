@@ -9,6 +9,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
 	m_editorWindowList(),
 
+	m_selectedGameObject(),
+
 	m_logEditorWindow(),
 
 	m_mainMenubar(),

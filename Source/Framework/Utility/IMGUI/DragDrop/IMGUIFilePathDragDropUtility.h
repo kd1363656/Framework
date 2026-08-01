@@ -7,11 +7,11 @@ namespace FWK::Utility
 	{
 		constexpr auto l_kind = TypeTrait::PTRType<Type>::k_kind;
 
-		static_assert(l_kind != TypeTrait::PTRKind::Unique, "std::unique_ptrはDrawDropに対応していません");
+		static_assert(l_kind != Enum::PTRKind::Unique, "std::unique_ptrはDrawDropに対応していません");
 
 		// 生ポインタまたはshared_ptrが空の場合は送信しない
-		if constexpr (l_kind == TypeTrait::PTRKind::Raw    ||
-			          l_kind == TypeTrait::PTRKind::Shared)
+		if constexpr (l_kind == Enum::PTRKind::Raw    ||
+			          l_kind == Enum::PTRKind::Shared)
 		{
 			if (!a_payload) { return false; }
 		}
@@ -28,7 +28,7 @@ namespace FWK::Utility
 
 		ImGui::EndDragDropSource();
 
-		return true;
+		return l_isPayloadSet;
 	}
 
 	template <typename Type>
@@ -36,7 +36,7 @@ namespace FWK::Utility
 	{
 		constexpr auto l_kind = TypeTrait::PTRType<Type>::k_kind;
 
-		static_assert(l_kind != TypeTrait::PTRKind::Unique, "std::unique_ptrはDrawDropに対応していません");
+		static_assert(l_kind != Enum::PTRKind::Unique, "std::unique_ptrはDrawDropに対応していません");
 
 		if (!ImGui::BeginDragDropTarget()) { return false; }
 
@@ -55,7 +55,7 @@ namespace FWK::Utility
 			if (l_payloadPointerAddress && 
 				*l_payloadPointerAddress)
 			{
-				const Type* l_payloadPointer = *l_payloadPointerAddress;
+				const auto* l_payloadPointer = *l_payloadPointerAddress;
 
 				// 送信元オブジェクトから通常のコピー代入を行う
 				// filesystem::pathやshared_ptrも

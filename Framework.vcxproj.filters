@@ -1126,6 +1126,12 @@
     <Filter Include="Source\Framework\Utility\IMGUI\DragDrop">
       <UniqueIdentifier>{714aaf33-8c33-48ad-a062-c35f888683a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model">
+      <UniqueIdentifier>{022fc1d7-deb1-4089-8fe4-0cda5b6fc546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static">
+      <UniqueIdentifier>{c2d73838-f806-4e1d-a5eb-fc23390f988e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2172,9 +2178,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\RenderComponentBase.h">
-      <Filter>Source\Framework\Component\Render</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.h">
       <Filter>Source\Framework\Utility\File\Asset</Filter>
     </ClInclude>
@@ -2192,6 +2195,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIFilePathDragDropUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h">
+      <Filter>Source\Framework\Component\Render\Model\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h">
+      <Filter>Source\Framework\Component\Render\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2722,6 +2731,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.cpp">
       <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp">
+      <Filter>Source\Framework\Component\Render\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
