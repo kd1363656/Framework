@@ -11,3 +11,8 @@ void FWK::Editor::OutlinerEditorWindow::Draw()
 
 	ImGui::End();
 }
+
+void FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject)
+{
+
+}

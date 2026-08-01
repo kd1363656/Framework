@@ -13,6 +13,8 @@ namespace FWK::Editor
 
 	private:
 
+		void DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject);
+
 		static constexpr std::string_view k_editorName = "アウトライナー";
 
 		FWK_DEFINE_TYPE_INFO(OutlinerEditorWindow, EditorWindowBase)

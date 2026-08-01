@@ -437,7 +437,7 @@
 #include "Strategy/StrategyBase.h"
 #include "Definition/Constant/IMGUI/IMGUIConstant.h"
 #include "Utility/Math/MathQuaternionUtility.h"
-#include "Utility/IMGUI/IMGUIFactoryRadioButtonSelectorUtility.h"
+#include "Utility/IMGUI/Factory/IMGUIFactoryRadioButtonSelectorUtility.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
@@ -460,7 +460,8 @@
 #include "Definition/Enum/Observer/ObserverEnum.h"
 #include "Definition/Constant/Utility/Enum/EnumBitShiftUtilityConstant.h"
 #include "Utility/Enum/EnumBitShiftUtility.h"
-#include "Utility/IMGUI/IMGUIObserverUtility.h"
+#include "Utility/IMGUI/Observer/IMGUIObserverUtility.h"
+#include "Utility/IMGUI/Bool/IMGUIBoolToString.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Observer/Observer.h"
 
@@ -494,4 +495,5 @@
 //===============================================================================
 // エディター
 //===============================================================================
+#include "Utility/IMGUI/DragDrop/IMGUIFilePathDragDropUtility.h"
 #include "Editor/Window/Outliner/OutlinerEditorWindow.h"

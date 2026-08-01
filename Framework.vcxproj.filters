@@ -1114,6 +1114,18 @@
     <Filter Include="Source\Framework\Utility\File\Asset\Converter\Json">
       <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\Bool">
+      <UniqueIdentifier>{1fa2f86b-6a7e-40cd-9c51-664da9abe8fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\Factory">
+      <UniqueIdentifier>{a38e72be-10ce-4bf8-8e46-bef028a4d7d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\Observer">
+      <UniqueIdentifier>{eef22275-e0b6-4167-97c8-8cfc0289f7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\DragDrop">
+      <UniqueIdentifier>{714aaf33-8c33-48ad-a062-c35f888683a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1824,9 +1836,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIFactoryRadioButtonSelectorUtility.h">
-      <Filter>Source\Framework\Utility\IMGUI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h">
       <Filter>Source\Framework\Definition\Constant\IMGUI</Filter>
     </ClInclude>
@@ -2130,9 +2139,6 @@
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h">
       <Filter>Source\Framework\Definition\Macros\Utility\String</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\IMGUIObserverUtility.h">
-      <Filter>Source\Framework\Utility\IMGUI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Observer\Converter\Json\ObserverJsonConverter.h">
       <Filter>Source\Framework\Observer\Converter\Json</Filter>
     </ClInclude>
@@ -2174,6 +2180,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.h">
       <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h">
+      <Filter>Source\Framework\Utility\IMGUI\Bool</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryRadioButtonSelectorUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIFilePathDragDropUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -58,9 +58,4 @@ namespace FWK::Utility
 
 		return l_isCreate;
 	}
-
-	inline constexpr auto& BoolToString(const bool a_flag)
-	{
-		return a_flag ? Constant::k_isTrueString : Constant::k_isFalseString;
-	};
 }
