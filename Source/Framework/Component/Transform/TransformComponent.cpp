@@ -10,13 +10,13 @@ FWK::TransformComponent::TransformComponent() :
 {}
 FWK::TransformComponent::~TransformComponent() = default;
 
-void FWK::TransformComponent::DeserializePrefabData(const nlohmann::json& a_rootJson)
+void FWK::TransformComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
 	Deserialize(a_rootJson);
 }
-void FWK::TransformComponent::DeserializeSpawnData(const nlohmann::json& a_rootJson)
+void FWK::TransformComponent::DeserializeScene(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -72,35 +72,62 @@ void FWK::TransformComponent::EditInspector()
 	}
 
 	// 行列の計算方法を選択することができるラジオボタンリスト
-	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, m_transform.m_matrixStrategy);
+	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, m_matrixStrategy);
 }
 
-nlohmann::json FWK::TransformComponent::SerializeSpawnData()
+nlohmann::json FWK::TransformComponent::SerializeScene()
 {
 	return Serialize();
 }
-nlohmann::json FWK::TransformComponent::SerializePrefabData()
+nlohmann::json FWK::TransformComponent::SerializePrefab()
 {
 	return Serialize();
 }
 
-void FWK::TransformComponent::ApplyParentTransformComponent(const std::weak_ptr<TransformComponent>& a_parentTransformComponent)
+void FWK::TransformComponent::ApplyParent(const std::weak_ptr<GameObject>& a_parentObject)
 {
-	m_parentTransformComponent = a_parentTransformComponent;
+	const auto& l_parent = a_parentObject.lock();
+
+	FWK_ASSERT_RETURN_IF(!l_parent, "親GameObjectが無効なため、Transformの親を適用できませんでした。");
+
+	m_parentTransformComponent = l_parent->GetVALTransformComponent();
 
 	// 親が存在するということは追従する可能性が高いため、自動的に親に追従するように行列を掛ける
-	m_transform.m_matrixStrategy = std::make_unique<HierarchicalMatrixStrartegy>();
+	m_matrixStrategy = std::make_unique<HierarchicalMatrixStrartegy>();
+
+	m_initialMatrixStrategyTypeName = std::string(HierarchicalMatrixStrartegy::GetREFTypeINFO().k_name);
 
 	// セットした後にダーティーフラグで行列の更新が妨げられてもいいように
 	// ここで一度だけ行列を更新しておく
 	ConfrimMatrixStrategy();
 }
+void FWK::TransformComponent::ApplyStandalone()
+{
+	const auto& l_position = m_matrix.Translation();
+
+	m_parentTransformComponent.reset();
+
+	// Transformに前の親の回転率、スケール、座標を考慮した行列を格納する
+	m_transform.m_position = l_position;
+
+	// Scene保存時にも解除後の位置を保存できるように
+	// シリアライズ対象の初期Transformにも反映する
+	m_initialSettingTransform.m_position = l_position;
+
+	// 親から外れたので、
+	// 単独GameObject用の行列計算方式へ戻す
+	m_matrixStrategy = std::make_unique<StandaloneMatrixStrategy>();
+	
+	m_initialMatrixStrategyTypeName = std::string(StandaloneMatrixStrategy::GetREFTypeINFO().k_name);
+
+	ConfrimMatrixStrategy();
+}
 
 void FWK::TransformComponent::ConfrimMatrixStrategy()
 {
-	if (!m_transform.m_matrixStrategy) { return; }
+	if (!m_matrixStrategy) { return; }
 
-	m_transform.m_matrixStrategy->Execute(*this);
+	m_matrixStrategy->Execute(*this);
 }
 
 void FWK::TransformComponent::Deserialize(const nlohmann::json& a_rootJson)
@@ -110,15 +137,24 @@ void FWK::TransformComponent::Deserialize(const nlohmann::json& a_rootJson)
 	m_initialSettingTransform.m_scale    = Utility::DeserializeVector3   (a_rootJson, k_initialScaleJsonKey);
 	m_initialSettingTransform.m_rotation = Utility::DeserializeQuaternion(a_rootJson, k_initialRotationJsonKey);
 	
-	Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_initialMatrixStrategyJsonKey, m_initialSettingTransform.m_matrixStrategy);	
+	m_initialMatrixStrategyTypeName = a_rootJson.value(k_initialMatrixStrategyTypeNameJsonKey, std::string{});
+
+	if (m_initialMatrixStrategyTypeName.empty())
+	{
+		FWK_ADD_LOG("TransformComponetnのストラテジー初期化用文字列が空になっており、ストラテジーの初期化に失敗しました。");
+
+		return;
+	}
+
+	const auto& l_factory = TypeAlias::MatrixStrategyUniqueFactory::GetInstance();
+
+	m_matrixStrategy = l_factory.Create(m_initialMatrixStrategyTypeName);
 
 	m_transform.m_scale    = m_initialSettingTransform.m_scale;
 	m_transform.m_rotation = m_initialSettingTransform.m_rotation;
 
 	// 外部でInitialTransform.m_positionはデシリアライズを行う(プレハブは座標データをプレハブとして保持しなくてよいから)
 	m_transform.m_position = m_initialSettingTransform.m_position;
-
-	Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_initialMatrixStrategyJsonKey, m_transform.m_matrixStrategy);
 }
 
 nlohmann::json FWK::TransformComponent::Serialize()
@@ -129,7 +165,7 @@ nlohmann::json FWK::TransformComponent::Serialize()
 	Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(m_initialSettingTransform.m_rotation, k_initialRotationJsonKey));
 	Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(m_initialSettingTransform.m_position,    k_initialPositionJsonKey));
 
-	Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(m_initialSettingTransform.m_matrixStrategy, k_initialMatrixStrategyJsonKey));
+	l_rootJson[k_initialMatrixStrategyTypeNameJsonKey] = m_initialMatrixStrategyTypeName;
 
 	return l_rootJson;
 }

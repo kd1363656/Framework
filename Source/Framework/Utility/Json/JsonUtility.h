@@ -94,8 +94,7 @@ namespace FWK::Utility
 	{
 		if (a_json.is_null()) { return; }
 
-		const auto& l_factory = FactoryType::GetInstance();
-
+		const auto& l_factory    = FactoryType::GetInstance();
 		const auto& l_createName = a_json.value(a_key, std::string());
 
 		a_instance = l_factory.Create(l_createName);

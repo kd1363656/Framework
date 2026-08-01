@@ -19,7 +19,7 @@ namespace FWK
 
 				const auto l_hash = UuidHash(&l_uuid, &l_status);
 
-				FWK_ASSERT_RETURN_VALUE_IF(l_status == RPC_S_OK, "ハッシュ化に失敗しました。", l_hash);
+				FWK_ASSERT_RETURN_VALUE_IF(l_status != RPC_S_OK, "ハッシュ化に失敗しました。", l_hash);
 
 				return l_hash;
 			}
@@ -69,6 +69,7 @@ namespace FWK
 
 			const auto& l_itr = m_uuidMap.find(a_uuid);
 
+			// マップ内に存在しなければreturn
 			FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
 
 			m_uuidMap.erase(l_itr);
@@ -82,6 +83,17 @@ namespace FWK
 		void Clear()
 		{
 			m_uuidMap.clear();
+		}
+
+		Type FindVALRegisteredType(const UUID& a_uuid) const
+		{
+			if (IsEqualGUID(a_uuid, GUID_NULL) != FALSE) { return {}; }
+
+			const auto l_itr = m_uuidMap.find(a_uuid);
+
+			if (l_itr == m_uuidMap.end()) { return {}; }
+
+			return l_itr->second;
 		}
 
 	private:

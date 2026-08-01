@@ -13,12 +13,6 @@ void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson)
 
 void FWK::PrefabSystem::AddPrefabMap(const std::string& a_prefabName, const Struct::PrefabData& a_prefabData)
 {
-	if (a_prefabData.m_prefab.GetREFGameObject().expired())
-	{
-		FWK_ADD_LOG("Prefab用のGameObjectが設定されていないためPrefabSystemに追加できませんでした。");
-		return;
-	}
-
 	m_prefabMap.try_emplace(a_prefabName, a_prefabData);
 }
 
@@ -26,7 +20,7 @@ void FWK::PrefabSystem::RemovePrefab(const std::string& a_prefabName)
 {
 	auto l_itr = m_prefabMap.find(a_prefabName);
 
-	if (l_itr != m_prefabMap.end()) { return; }
+	if (l_itr == m_prefabMap.end()) { return; }
 
 	m_prefabMap.erase(l_itr);
 
@@ -42,7 +36,7 @@ const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const std::string& a_prefabN
 {
 	auto l_itr = m_prefabMap.find(a_prefabName);
 
-	if (l_itr != m_prefabMap.end()) { return nullptr; }
+	if (l_itr == m_prefabMap.end()) { return nullptr; }
 
 	return &l_itr->second.m_prefab;
 }

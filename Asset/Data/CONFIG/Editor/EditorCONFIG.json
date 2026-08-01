@@ -1,5 +1,5 @@
 {
-    "IsDisableEditor": true,
+    "IsDisableEditor": false,
     "MainMenubar": {
         "MainMenuList": [
             {
@@ -12,7 +12,7 @@
             "Window": "SceneViewEditorWindow"
         },
         {
-            "Window": "HierarchyEditorWindow"
+            "Window": "OutlinerEditorWindow"
         }
     ]
 }

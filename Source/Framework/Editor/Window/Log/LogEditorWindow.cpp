@@ -26,7 +26,7 @@ void FWK::Editor::LogEditorWindow::AddLog(const char* a_format, ...)
 	int l_oldSize = m_textBuffer.size();
 
 	// va_listを使って可変引数から文字列を追加
-	va_list l_args;
+	va_list l_args = {};
 
 	va_start(l_args, a_format);
 
@@ -53,16 +53,16 @@ void FWK::Editor::LogEditorWindow::AddLog(const char* a_format, ...)
 
 void FWK::Editor::LogEditorWindow::DrawEditorOptions()
 {
-	if (!ImGui::Begin("LogView"))
+	if (!ImGui::Begin(k_editorName.data()))
 	{
 		ImGui::End();
 		return;
 	}
 
-	if (ImGui::BeginPopup("Options"))
+	if (ImGui::BeginPopup(k_optionString.data()))
 	{
 		// 自動スクロールするかどうかを決めるチェックボタン
-		if (ImGui::Checkbox("AutoScroll" , &m_canAutoScroll))
+		if (ImGui::Checkbox(k_optionAutoScrollString.data(), &m_canAutoScroll))
 		{
 			m_canScrollToBottom = false;
 		}
@@ -70,15 +70,15 @@ void FWK::Editor::LogEditorWindow::DrawEditorOptions()
 		ImGui::EndPopup();
 	}
 
-	if (ImGui::Button("Options"))
+	if (ImGui::Button(k_optionString.data()))
 	{
-		ImGui::OpenPopup("Options");
+		ImGui::OpenPopup(k_optionString.data());
 	}
 
 	ImGui::SameLine();
 
 	// ログのクリア
-	if (ImGui::Button("Clear"))
+	if (ImGui::Button(k_optionClearString.data()))
 	{
 		ClearLog();
 	}
@@ -86,19 +86,19 @@ void FWK::Editor::LogEditorWindow::DrawEditorOptions()
 	ImGui::SameLine();
 
 	// ログのコピー
-	if (ImGui::Button("Copy"))
+	if (ImGui::Button(k_optionCopyString.data()))
 	{
 		ImGui::LogToClipboard();
 	}
 
 	ImGui::SameLine();
-	m_textFilter.Draw("Filter" , k_filterInputWidth);
+	m_textFilter.Draw(k_optionFilterString.data(), k_filterInputWidth);
 
 	const ImVec2 l_size = {};
 
-	ImGui::BeginChild("Scrolling"                          , 
-					  l_size                               , 
-					  false                                ,
+	ImGui::BeginChild(k_optionScrollString.data(),
+					  l_size, 
+					  false,
 					  ImGuiWindowFlags_HorizontalScrollbar);
 }
 
@@ -131,7 +131,8 @@ void FWK::Editor::LogEditorWindow::DrawLog()
 	else
 	{
 		// ユーザーが見ている部分だけ描画するクリッパー
-		ImGuiListClipper l_clipper;
+		ImGuiListClipper l_clipper = {};
+
 		l_clipper.Begin(m_textLineOffsets.Size);
 
 		while (l_clipper.Step())

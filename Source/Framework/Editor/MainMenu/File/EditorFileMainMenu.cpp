@@ -8,9 +8,9 @@ void FWK::Editor::FileMainMenuEditor::Draw()
 
 void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
 {
-	if (ImGui::BeginMenu("File"))
+	if (ImGui::BeginMenu(k_beginFileMenuTextString.data()))
 	{
-		if (ImGui::MenuItem("Save", "Ctrl+S"))
+		if (ImGui::MenuItem(k_saveTextString.data(), k_saveShortCutString.data()))
 		{
 			// すべてのシーン情報をセーブ
 			const auto& l_sceneManager = SceneManager::GetInstance();

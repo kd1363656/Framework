@@ -336,6 +336,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="..\Library\UFBX\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Render\RenderComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h" />
@@ -455,8 +456,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.h" />
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h" />
@@ -655,8 +656,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Strategy\StrategyBase.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
-    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArray.h" />
+    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArrayUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
@@ -701,8 +704,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
@@ -856,6 +859,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
+    <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.cpp" />
+    <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />
     <ClCompile Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.cpp" />

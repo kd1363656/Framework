@@ -952,9 +952,6 @@
     <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter\Json">
       <UniqueIdentifier>{6346a33a-61c0-4e07-a9ef-1ac84dfe84d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Hierarchy">
-      <UniqueIdentifier>{6b5ae75f-7344-4a4b-ab3c-a17310c6965a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Component">
       <UniqueIdentifier>{e7d48df8-10d6-445b-a0e0-bfced88f619c}</UniqueIdentifier>
     </Filter>
@@ -1101,6 +1098,21 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Prefab">
       <UniqueIdentifier>{f5070a97-60fb-47a2-9e62-5df4b20a6394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner">
+      <UniqueIdentifier>{89493100-c2bd-4e6b-911b-9c2dc32ff644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render">
+      <UniqueIdentifier>{28a5b31c-de7d-43c6-a556-39dede09053b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File\Asset">
+      <UniqueIdentifier>{64a70ad1-aaad-4dce-a5ed-78e90e23b19e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File\Asset\Converter">
+      <UniqueIdentifier>{ebb3cd76-1914-43a2-963f-487a0a363876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\File\Asset\Converter\Json">
+      <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1647,7 +1659,7 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArray.h">
+    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArrayUtility.h">
       <Filter>Source\Framework\Utility\Array</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">
@@ -1983,9 +1995,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.h">
-      <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\DepthStencilTextureStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
@@ -2153,6 +2162,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\Outliner</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\RenderComponentBase.h">
+      <Filter>Source\Framework\Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.h">
+      <Filter>Source\Framework\Utility\File\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.h">
+      <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2624,9 +2645,6 @@
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Hierarchy\HierarchyEditorWindow.cpp">
-      <Filter>Source\Framework\Editor\Window\Hierarchy</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow</Filter>
     </ClCompile>
@@ -2677,6 +2695,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp">
       <Filter>Source\Framework\Prefab\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.cpp">
+      <Filter>Source\Framework\Utility\File\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.cpp">
+      <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

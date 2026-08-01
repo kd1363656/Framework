@@ -21,6 +21,13 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 }
 void FWK::Scene::PostDeserialize() const
 {
+	for (const auto& l_gameObject : m_gameObjectList)
+	{
+		if (!l_gameObject) { continue; }
+
+		l_gameObject->PostDeserialize();
+	}
+
 	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
 
 	// StaticBodyをまとめて追加した後なので、BroadPhaseを最適化しておく。
@@ -87,15 +94,20 @@ nlohmann::json FWK::Scene::Serialize() const
 
 void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 {
-	if (!a_gameObject) 
+	if (!a_gameObject)
 	{
 		FWK_ADD_LOG("GameObjectクラスが無効となっており、ゲームオブジェクトの追加処理に失敗しました。");
-		return; 
+		return;
 	}
 
 	// ゲームオブジェクトとそのUUIDを登録、ただしUUIDがGUID_NULLだったり、
 	// 重複するUUIDの場合UUIDを生成してゲームオブジェクト側のUUIDにも反映する
-	FWK_ASSERT_RETURN_IF(m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFUUID()), "ゲームオブジェクトのUUIDの登録に失敗しており、ゲームオブジェクトの追加処理に失敗しました。");
-	
-	m_gameObjectList.emplace_back(a_gameObject, a_gameObject.get());
+	FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFUUID()), "ゲームオブジェクトのUUIDの登録に失敗しており、ゲームオブジェクトの追加処理に失敗しました。");
+
+	m_gameObjectList.emplace_back(a_gameObject);
+}
+
+std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const UUID& a_uuid) const
+{
+	return m_gameObjectUUIDRegistry.FindVALRegisteredType(a_uuid);
 }

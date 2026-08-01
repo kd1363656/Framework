@@ -20,6 +20,14 @@ namespace FWK::Editor
 
 		void ClearLog();
 
+		static constexpr std::string_view k_editorName             = "ログビュー";
+		static constexpr std::string_view k_optionString           = "設定";
+		static constexpr std::string_view k_optionAutoScrollString = "自動スクロール";
+		static constexpr std::string_view k_optionClearString      = "クリア";
+		static constexpr std::string_view k_optionCopyString       = "コピー";
+		static constexpr std::string_view k_optionFilterString     = "フィルター";
+		static constexpr std::string_view k_optionScrollString     = "スクロール";
+
 		static constexpr float k_filterInputWidth    = -100.0F;
 		static constexpr float k_scrollToBottomRatio =    1.0F;
 

@@ -8,7 +8,7 @@
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Definition/Macros/Assert/AssertReturnMacros.h"
-#include "Utility/Array/SmartPointerVectorArray.h"
+#include "Utility/Array/SmartPointerVectorArrayUtility.h"
 
 //===============================================================================
 // 型情報
@@ -74,6 +74,7 @@
 //===============================================================================
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
 #include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
+#include "Utility/UUID/UUIDUtility.h"
 #include "Utility/Json/JsonUtility.h"
 #include "Editor/Window/Scene/SceneViewEditorWindow.h"
 #include "Definition/Type/Alias/Factory/Unique/EditorMainMenuUniqueFactory.h"
@@ -443,6 +444,10 @@
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
 
+#include "Utility/File/Asset/Converter/Json/AssetFilePathUtilityJsonConverter.h"
+#include "Utility/File/Asset/AssetFilePathUtility.h"
+#include "Component/Render/RenderComponentBase.h"
+
 //===============================================================================
 // 文字列をキーとして値を保持するRegistry
 //===============================================================================
@@ -472,7 +477,6 @@
 // ゲームオブジェクト
 //===============================================================================
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
-#include "Utility/UUID/UUIDUtility.h"
 #include "Utility/UUID/UUIDRegistry.h"
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
 #include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
@@ -490,4 +494,4 @@
 //===============================================================================
 // エディター
 //===============================================================================
-#include "Editor/Window/Hierarchy/HierarchyEditorWindow.h"
+#include "Editor/Window/Outliner/OutlinerEditorWindow.h"

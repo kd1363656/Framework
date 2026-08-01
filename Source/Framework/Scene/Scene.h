@@ -24,6 +24,8 @@ namespace FWK
 
 		void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 
+		std::weak_ptr<GameObject> FindVALGameObject(const UUID& a_uuid) const;
+
 		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 
 		const auto& GetREFPrefabSystem() const { return m_prefabSystem; }

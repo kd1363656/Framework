@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
+namespace FWK
 {
 	class Scene;
 }
@@ -27,7 +27,7 @@ namespace FWK
 			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 			                        Scene&                                                            a_scene);
 
-		void PostDeserialize  () const;
+		void PostDeserialize();
 
 		void EarlyUpdate  () const;
 		void Update       () const;
@@ -36,7 +36,7 @@ namespace FWK
 
 		void Destroy();
 
-		void EditInsepector();
+		void EditInspector();
 
 		nlohmann::json SerializeScene () const;
 		nlohmann::json SerializePrefab() const;
@@ -44,13 +44,14 @@ namespace FWK
 		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
 
 		void ApplyParent(const std::weak_ptr<GameObject>& a_child);
-
-		void Unparent(const std::weak_ptr<FWK::GameObject>& a_child);
+		void Unparent   (const std::weak_ptr<FWK::GameObject>& a_child);
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
 		void SetPrefabName              (const std::string& a_set) { m_prefabName               = a_set; }
 		void SetContainsNumberPrefabName(const std::string& a_set) { m_containsNumberPrefabName = a_set; }
+
+		void SetUUID(const UUID& a_set) { m_uuid = a_set; }
 
 		template <Concept::IsDerivedComponentBaseConcept ComponentType>
 		std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -92,15 +93,29 @@ namespace FWK
 
 		const auto& GetREFParent() const { return m_parent; }
 
-		auto& GetMutableREFComponentEventObserver() { return m_componentEventObserver; }
+		const auto& GetREFPrefabName              () const { return m_prefabName; }
+		const auto& GetREFContainsNumberPrefabName() const { return m_containsNumberPrefabName; }
+
+		const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }
+		const auto& GetREFComponentSmartPointerVectorArray() const { return m_componentSmartPointerVectorArray; }
+
+		const auto& GetREFComponentEventObserver() const { return m_componentEventObserver; }
+
+		const auto& GetREFUUID() const { return m_uuid; }
+
+		auto& GetMutableREFParent() { return m_parent; }
 
 		auto& GetMutableREFUUID() { return m_uuid; }
+
+		auto& GetMutableREFComponentEventObserver() { return m_componentEventObserver; }
 
 		std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
 		bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
 	private:
+
+		bool IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const;
 
 		std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>				 m_uniqueComponentMap = {};
 		std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<ComponentBase>>> m_multiComponentMap  = {};
@@ -115,6 +130,8 @@ namespace FWK
 		Observer<Enum::ComponentEvent> m_componentEventObserver = {};
 
 		GameObjectJsonConverter m_jsonConverter = {};
+
+		UUID m_uuid = GUID_NULL;
 
 		std::string m_containsNumberPrefabName = {};
 		std::string m_prefabName               = {};

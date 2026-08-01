@@ -16,8 +16,8 @@ namespace FWK
 
 		virtual bool IsAllowMultiple() const { return false; }
 		 
-		virtual void DeserializePrefabData(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
-		virtual void DeserializeSpawnData (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void DeserializePrefab(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void DeserializeScene (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		
 		virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
@@ -27,8 +27,8 @@ namespace FWK
 		
 		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
-		virtual nlohmann::json SerializeSpawnData () { return {}; }
-		virtual nlohmann::json SerializePrefabData() { return {}; }
+		virtual nlohmann::json SerializePrefab() { return {}; }
+		virtual nlohmann::json SerializeScene () { return {}; }
 
 		void Enable ();
 		void Disable();

@@ -1,9 +1,9 @@
 {
     "Scene": {
-        "GameObject": {
+        "GameObjectList": [],
+        "PrefabSystem": {
             "PrefabMap": []
-        },
-        "GameObjectList": []
+        }
     },
     "SceneShiftMap": []
 }

@@ -33,20 +33,27 @@ void FWK::GameObject::DeserializeScene(const nlohmann::json &                   
 	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.DeserializeScene(a_rootJson,
+		                             *this,
 		                             a_childDeserializeDataList, 
 		                             a_componentSmartPointerVectorArray, 
-		                             *this,
 		                             a_scene);
 }
 
-void FWK::GameObject::PostDeserialize() const
+void FWK::GameObject::PostDeserialize()
 {
+	if (m_transformComponent)
+	{
+		m_transformComponent->SetOwner       (weak_from_this());
+		m_transformComponent->PostDeserialize();
+	}
+
 	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		const auto& l_component = l_componentData.m_type;
 
-		if (!l_component) { return; }
+		if (!l_component) { continue; }
 
+		l_component->SetOwner       (weak_from_this());
 		l_component->PostDeserialize();
 	}
 }
@@ -57,7 +64,7 @@ void FWK::GameObject::EarlyUpdate() const
 	{
 		const auto& l_component = l_componentData.m_type;
 
-		if (!l_component) { return; }
+		if (!l_component) { continue; }
 
 		l_component->EarlyUpdate();
 	}
@@ -68,7 +75,7 @@ void FWK::GameObject::Update() const
 	{
 		const auto& l_component = l_componentData.m_type;
 
-		if (!l_component) { return; }
+		if (!l_component) { continue; }
 
 		l_component->Update();
 	}
@@ -79,7 +86,7 @@ void FWK::GameObject::LateUpdate() const
 	{
 		const auto& l_component = l_componentData.m_type;
 
-		if (!l_component) { return; }
+		if (!l_component) { continue; }
 
 		l_component->LateUpdate();
 	}
@@ -108,7 +115,7 @@ void FWK::GameObject::Destroy()
 	}
 }
 
-void FWK::GameObject::EditInsepector()
+void FWK::GameObject::EditInspector()
 {
 	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TrnsformComponentは必ず存在するべきComponentです。");
 
@@ -174,21 +181,46 @@ void FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 {
 	const auto& l_child = a_child.lock();
 
-	// 自分自身を子にしない
-	if (l_child.get() == this) { return; }
+	if (!l_child) { return; }
+	
+	const auto& l_self = shared_from_this();
 
-	// このゲームオブジェクトを親としてセットし親子関係を構築
-	l_child->SetParent(weak_from_this());
+	if (!l_self) { return; }
 
-	m_childSmartPointerVectorArray.Add(l_child);
+	// 自分自身を子にはできない
+	if (l_child == l_self) { return; }
 
-	auto l_childTransformComponent = l_child->GetVALTransformComponent().lock();
+	// 循環防止
+	if (IsDescendantOf(l_child))
+	{
+		FWK_ADD_LOG("GameObjectの親子関係が循環するため、親子関係を構築できませんでした。");
 
-	FWK_ASSERT_RETURN_IF(!l_childTransformComponent, "子にTransformComponentが存在しません。TransformComponentは絶対にゲームオブジェクトにあるべきものです。");
+		return;
+	}
 
-	// 子のTransformComponentに親のTransformComponentのポインタを渡し
-	// 親に追従する用に行列計算方式を置き換える
-	l_childTransformComponent->ApplyParentTransformComponent(m_transformComponent);
+	const auto& l_childTransformComponent = l_child->GetVALTransformComponent().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_childTransformComponent, "子GameObjectにTransformComponentが存在しません。");
+
+	// すでに同じ親の場合return
+	const auto l_currentParent = l_child->GetREFParent().lock();
+
+	if (l_currentParent == l_self) { return; }
+
+	// 以前の親を解除
+	if (l_currentParent)
+	{
+		l_currentParent->Unparent(l_child);
+	}
+
+	// GameObject親子関係の構築
+	l_child->SetParent(l_self);
+
+	const std::weak_ptr<GameObject> l_childWeak = l_child;
+
+	m_childSmartPointerVectorArray.Add(l_childWeak);
+
+	l_childTransformComponent->ApplyParent(l_self);
 }
 
 void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
@@ -197,5 +229,39 @@ void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
 
 	if (!l_child) { return; }
 
+	// 自分が親ではないGameObjectは解除しない
+	if (const auto& l_currentParent = l_child->GetREFParent().lock();
+		l_currentParent != shared_from_this())
+	{
+		return; 
+	}
+
+	const auto l_childTransformComponent = l_child->GetVALTransformComponent().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_childTransformComponent, "子GameObjectにTransformComponentが存在しないため、親子関係を解除できませんでした。");
+
+	// 子の情報を削除し、子から親の情報を削除する
 	m_childSmartPointerVectorArray.RemoveSameElement(a_child);
+	l_child->GetMutableREFParent                    ().reset();
+
+	// 親がいなくても行列を計算できるようにする
+	l_childTransformComponent->ApplyStandalone();
+}
+
+bool FWK::GameObject::IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const
+{
+	if (!a_ancestor) { return false; }
+
+	auto l_parent = m_parent.lock();
+
+	// 自身から親方向へさかのぼって
+	// してGameObjectが祖先に存在するか確認する
+	while (l_parent)
+	{
+		if (l_parent == a_ancestor) { return true; }
+
+		l_parent = l_parent->GetREFParent().lock();
+	}
+
+	return false;
 }

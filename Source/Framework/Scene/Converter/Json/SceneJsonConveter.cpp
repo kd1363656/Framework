@@ -2,30 +2,29 @@
 
 void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
-	if (!a_rootJson.is_null()) { return; }
-
-	if (const auto& l_json = a_rootJson.value(k_gameObjectListJsonKey, nlohmann::json{});
-		l_json.is_null())
-	{
-		DeserializeGameObjectList(l_json, a_scene);
-	}
+	if (a_rootJson.is_null()) { return; }
 
 	if (const auto& l_json = a_rootJson.value(k_prefabSystemJsonKey, nlohmann::json{});
-		l_json.is_null())
+		!l_json.is_null())
 	{
 		auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
 
 		l_prefabSystem.Deserialize(l_json);
 	}
 
+	if (const auto& l_json = a_rootJson.value(k_gameObjectListJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		DeserializeGameObjectList(l_json, a_scene);
+	}
 }
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(const Scene& a_scene) const
 {
 	      nlohmann::json l_rootJson     = {};
 	const auto&          l_prefabSystem = a_scene.GetREFPrefabSystem();
 
-	l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList (a_scene);
 	l_rootJson[k_prefabSystemJsonKey]   = l_prefabSystem.Serialize();
+	l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList (a_scene);
 
 	return l_rootJson;
 }

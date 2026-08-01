@@ -2,6 +2,9 @@
 
 void FWK::Prefab::LoadPrefab()
 {
+	// 読み込み時に前のJsonデータが残らないように初期化
+	m_json = {};
+
 	const auto& l_rootJson = Utility::LoadJsonFile(m_filePath);
 
 	if (l_rootJson.is_null()) 
