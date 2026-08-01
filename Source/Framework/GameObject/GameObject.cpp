@@ -4,7 +4,7 @@ void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, Scene& a_sce
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.Deserialize(weak_from_this(), a_rootJson, a_scene);
+	m_jsonConverter.Deserialize(shared_from_this(), a_rootJson, a_scene);
 }
 void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene)
 {

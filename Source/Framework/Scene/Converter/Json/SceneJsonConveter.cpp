@@ -42,8 +42,10 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 
 		auto l_gameObject = std::make_shared<GameObject>();
 
+		// 子ゲームオブジェクトなどをシリアライズしてシーンに登録
 		l_gameObject->Deserialize(l_gameObjectJson, a_scene);
 
+		// シーンに親ゲームオブジェクトを追加
 		a_scene.AddGameObject(l_gameObject);
 	}
 }
