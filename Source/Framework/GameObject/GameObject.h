@@ -41,7 +41,8 @@ namespace FWK
 		nlohmann::json SerializeScene () const;
 		nlohmann::json SerializePrefab() const;
 
-		void AddComponent(const std::shared_ptr<ComponentBase>& a_component);
+		void AddComponent   (const std::shared_ptr<ComponentBase>& a_component);
+		void RemoveComponent(const std::weak_ptr<ComponentBase>&   a_component);
 
 		void ApplyParent(const std::weak_ptr<GameObject>& a_child);
 		void Unparent   (const std::weak_ptr<FWK::GameObject>& a_child);

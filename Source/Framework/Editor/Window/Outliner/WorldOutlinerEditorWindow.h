@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-	class OutlinerEditorWindow final : public EditorWindowBase
+	class WorldOutlinerEditorWindow final : public EditorWindowBase
 	{
 	public:
 
-		 OutlinerEditorWindow()          = default;
-		~OutlinerEditorWindow() override = default;
+		 WorldOutlinerEditorWindow()          = default;
+		~WorldOutlinerEditorWindow() override = default;
 
 		void Draw() override;
 
@@ -27,13 +27,12 @@ namespace FWK::Editor
 		static constexpr std::string_view k_rootContextMenuLabel           = "##RootContextMenu";
 		static constexpr std::string_view k_addRootGameObjectMenuItemName  = "空のGameObjectを追加";
 		static constexpr std::string_view k_destroyGameObjectMenuItemName  = "GameObjectを削除";
-		static constexpr std::string_view k_defaultGameObjectName          = "GameObject";
-
+		
 		static constexpr float k_rootDropAreaMINWidth  = 1.0F;
 		static constexpr float k_rootDropAreaMINHeight = 32.0F;
 
-		FWK_DEFINE_TYPE_INFO(OutlinerEditorWindow, EditorWindowBase)
+		FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::OutlinerEditorWindow)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::WorldOutlinerEditorWindow)

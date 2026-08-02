@@ -18,3 +18,5 @@ namespace FWK
 		FWK_DEFINE_TYPE_INFO(StaticModelComponent, ModelComponentBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::StaticModelComponent)

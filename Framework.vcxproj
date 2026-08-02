@@ -450,6 +450,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h" />
@@ -458,7 +459,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h" />
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h" />
@@ -704,13 +705,14 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp" />
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Details\DetailsEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />

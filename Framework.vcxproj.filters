@@ -1132,6 +1132,9 @@
     <Filter Include="Source\Framework\Editor\Window\Viewport\Toolbar">
       <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Details">
+      <UniqueIdentifier>{25abc7e1-8920-44cb-8000-eaa09690e4e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2169,7 +2172,7 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.h">
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.h">
@@ -2201,6 +2204,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Details\DetailsEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2717,7 +2723,7 @@
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp">
       <Filter>Source\Framework\Prefab\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.cpp">
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.cpp">
@@ -2737,6 +2743,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Details\DetailsEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

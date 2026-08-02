@@ -12,7 +12,10 @@
             "Window": "ViewportEditorWindow"
         },
         {
-            "Window": "OutlinerEditorWindow"
+            "Window": "WorldOutlinerEditorWindow"
+        },
+        {
+            "Window": "DetailsEditorWindow"
         }
     ]
 }

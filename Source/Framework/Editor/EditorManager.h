@@ -76,7 +76,7 @@ namespace FWK::Editor
 			return std::static_pointer_cast<WindowType>(l_editorWindow);
 		}
 
-		void SetSelectedGameObject(const std::shared_ptr<GameObject>& a_set) { m_selectedGameObject = a_set; }
+		void SetSelectedGameObject(const std::weak_ptr<GameObject>& a_set) { m_selectedGameObject = a_set; }
 
 		void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
@@ -125,7 +125,7 @@ namespace FWK::Editor
 
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
-		std::shared_ptr<GameObject> m_selectedGameObject;
+		std::weak_ptr<GameObject> m_selectedGameObject;
 
 		Editor::LogEditorWindow m_logEditorWindow;
 

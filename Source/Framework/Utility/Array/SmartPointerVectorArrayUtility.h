@@ -155,6 +155,34 @@ namespace FWK::Utility
 			});
 		}
 
+		void RemoveSameElement(const Type& a_type)
+			requires k_isSharedPTR
+		{
+			if (!a_type) { return; }
+
+			std::erase_if(m_arrayElementDataList, [this, a_type](const ArrayElementData& a_arrayElementData)
+			{
+				const auto& l_registeredType = a_arrayElementData.m_type;
+
+				// 登録対象が既に破棄されている場合は
+				// Listと登録済みアドレスSetの両方から削除する
+				if (!l_registeredType)
+				{
+					m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
+
+					return true;
+				}
+				
+				// 削除対象と異なるオブジェクトなら削除しない
+				if (l_registeredType != a_type) { return false; }
+
+				// 同じオブジェクトなので、登録済みアドレスSetからも削除する
+				m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
+
+				return true;
+			});
+		}
+
 		const auto& GetREFArrayElementDataList() const { return m_arrayElementDataList; }
 
 		auto& GetMutableREFArrayElementDataList() { return m_arrayElementDataList; }

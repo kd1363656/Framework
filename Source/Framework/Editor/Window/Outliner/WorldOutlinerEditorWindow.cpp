@@ -1,6 +1,6 @@
-﻿#include "OutlinerEditorWindow.h"
+﻿#include "WorldOutlinerEditorWindow.h"
 
-void FWK::Editor::OutlinerEditorWindow::Draw()
+void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 {
 	// Hierarchy用のImGuiウィンドウを開始する
 	if (!ImGui::Begin(k_editorName.data()))
@@ -51,7 +51,7 @@ void FWK::Editor::OutlinerEditorWindow::Draw()
 	}
 }
 
-bool FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject) const
+bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject) const
 {
 	if (!a_gameObject ||
 		a_gameObject->GetVALIsDestroyed())
@@ -67,7 +67,7 @@ bool FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr
 	// 番号を含んだゲームオブジェクトのプレハブ名、プレハブ名すら文字列が空ならゲームオブジェクトを名前とする
 	if (l_gameObjectName.empty()) 
 	{
-		l_gameObjectName = a_gameObject->GetREFPrefabName().empty() ? k_defaultGameObjectName : a_gameObject->GetREFPrefabName();
+		l_gameObjectName = a_gameObject->GetREFPrefabName().empty() ? Constant::k_gameObjectString : a_gameObject->GetREFPrefabName();
 	}
 
 	// 同じ名前のGameObjectが複数存在しても、
@@ -94,7 +94,7 @@ bool FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr
 	ImGuiTreeNodeFlags l_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow |
 		                                 ImGuiTreeNodeFlags_SpanAvailWidth;
 
-	if (const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject();
+	if (const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
 		l_selectedGameObject == a_gameObject)
 	{
 		l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
@@ -150,12 +150,14 @@ bool FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr
 		// DropされたGameObjectを子にする
 		a_gameObject->ApplyParent(l_droppedGameObject);
 
-		const auto& l_appliedParentGameObject = l_droppedGameObject->GetREFParent().lock();
-
 		// ApplyParent()が成功した場合だけ
 		// 実行階層Listの再構築を要求する
 		// 追加順序の違いで子が親よりも先に行列の確定などを行わいないようにするため
-		if (l_appliedParentGameObject != a_gameObject) { return false; }
+		if (const auto& l_appliedParentGameObject = l_droppedGameObject->GetREFParent().lock();
+			l_appliedParentGameObject != a_gameObject) 
+		{
+			return false; 
+		}
 		
 		l_editorManager.SetSelectedGameObject(l_droppedGameObject);
 
@@ -191,7 +193,7 @@ bool FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr
 		// 自身とすべての詞損へ削除フラグを立てる
 		a_gameObject->Destroy();
 
-		const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject();
+		const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
 
 		// 選択中GameObjectも削除対象になった場合は、
 		// EditorManagerの選択状態を解除する
@@ -252,7 +254,7 @@ bool FWK::Editor::OutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr
 	return false;
 }
 
-void FWK::Editor::OutlinerEditorWindow::DrawRootDropArea(Scene& a_scene)
+void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea(Scene& a_scene)
 {
 	ImVec2 l_rootDropAreaSize = ImGui::GetContentRegionAvail();
 
@@ -296,7 +298,7 @@ void FWK::Editor::OutlinerEditorWindow::DrawRootDropArea(Scene& a_scene)
 	}
 }
 
-bool FWK::Editor::OutlinerEditorWindow::TryUnparentDroppedGameObject(Scene& a_scene) const
+bool FWK::Editor::WorldOutlinerEditorWindow::TryUnparentDroppedGameObject(Scene& a_scene) const
 {
 	// RootへのDrop
 	std::shared_ptr<GameObject> l_droppedGameObject = {};
@@ -328,7 +330,7 @@ bool FWK::Editor::OutlinerEditorWindow::TryUnparentDroppedGameObject(Scene& a_sc
 	return true;
 }
 
-void FWK::Editor::OutlinerEditorWindow::RequestAddGameObject(Scene & a_scene)
+void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject(Scene & a_scene)
 {
 	const auto& l_gameObject = std::make_shared<GameObject>();
 

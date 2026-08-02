@@ -434,6 +434,8 @@
 // コンポーネント
 //===============================================================================
 #include "Component/ComponentBase.h"
+#include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
+#include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
 #include "Strategy/StrategyBase.h"
 #include "Definition/Constant/IMGUI/IMGUIConstant.h"
 #include "Utility/Math/MathQuaternionUtility.h"
@@ -443,7 +445,6 @@
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
-
 #include "Utility/File/Asset/Converter/Json/AssetFilePathUtilityJsonConverter.h"
 #include "Utility/File/Asset/AssetFilePathUtility.h"
 #include "Component/Render/Model/ModelComponentBase.h"
@@ -478,10 +479,8 @@
 //===============================================================================
 // ゲームオブジェクト
 //===============================================================================
-#include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
 #include "Utility/UUID/UUIDRegistry.h"
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
-#include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
 
@@ -497,4 +496,5 @@
 // エディター
 //===============================================================================
 #include "Utility/IMGUI/DragDrop/IMGUIFilePathDragDropUtility.h"
-#include "Editor/Window/Outliner/OutlinerEditorWindow.h"
+#include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
+#include "Editor/Details/DetailsEditorWindow.h"

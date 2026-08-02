@@ -176,6 +176,90 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 
 	m_componentSmartPointerVectorArray.Add(a_component);
 }
+void FWK::GameObject::RemoveComponent(const std::weak_ptr<ComponentBase>& a_component)
+{
+	const auto& l_component = a_component.lock();
+
+	if (!l_component)
+	{
+		FWK_ADD_LOG("削除対象Componentが無効のため、GameObjectから削除することができませんでした。");
+
+		return;
+	}
+
+	const auto l_staticTypeID = l_component->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	bool l_isRemovedFromTypeMap = false;
+
+	if (!l_component->IsAllowMultiple())
+	{
+		auto l_itr = m_uniqueComponentMap.find(l_staticTypeID);
+
+		// イテレータらから探索して、もしなければreturn
+		if (l_itr == m_uniqueComponentMap.end()) { return; }
+
+		auto l_registeredComponent = l_itr->second.lock();
+
+		if (!l_registeredComponent)
+		{
+			m_uniqueComponentMap.erase(l_itr);
+
+			return;
+		}
+
+		// 同一アドレスでない場合return
+		if (l_registeredComponent != l_component) { return; }
+
+		m_uniqueComponentMap.erase(l_itr);
+
+		l_isRemovedFromTypeMap = true;
+	}
+	else
+	{
+		auto l_componentListITR = m_multiComponentMap.find(l_staticTypeID);
+
+		if (l_componentListITR == m_multiComponentMap.end()) { return; }
+
+		// コンポーネントリストをMapから取得
+		auto& l_componentList = l_componentListITR->second;
+		auto  l_componentITR  = l_componentList.begin();
+
+		// リストから同じアドレスのコンポーネントを見つけ削除する
+		while (l_componentITR != l_componentList.end())
+		{
+			auto l_registeredComponent = l_componentITR->lock();
+
+			if (!l_registeredComponent)
+			{
+				l_componentITR = l_componentList.erase(l_componentITR);
+
+				continue;
+			}
+
+			if (l_registeredComponent != l_component)
+			{
+				++l_componentITR;
+
+				continue;
+			}
+
+			l_componentList.erase(l_componentITR);
+
+			l_isRemovedFromTypeMap = true;
+
+			break;
+		}
+
+		if (l_componentList.empty())
+		{
+			m_multiComponentMap.erase(l_componentListITR);
+		}
+	}
+
+	if (!l_isRemovedFromTypeMap) { return; }
+
+	m_componentSmartPointerVectorArray.RemoveSameElement(l_component);
+}
 
 void FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 {
