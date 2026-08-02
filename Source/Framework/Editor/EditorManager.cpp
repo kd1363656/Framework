@@ -192,13 +192,13 @@ void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Window::Resize
 		return; 
 	}
 
-	const auto& l_sceneViewEditorWindow = FetchWindowEditor<SceneViewEditorWindow>().lock();
+	const auto& l_viewportEditorWindow = FetchWindowEditor<ViewportEditorWindow>().lock();
 
-	if (!l_sceneViewEditorWindow) { return; }
+	if (!l_viewportEditorWindow) { return; }
 
 	// シーンビューウィンドウ用テクスチャのでスクリプタのコピーをし直す
 	// (レンダーターゲットテクスチャがウィンドウのリサイズ後の解像度に合わせて作られるため)
-	l_sceneViewEditorWindow->SetupSceneViewTextureDescriptors();
+	l_viewportEditorWindow->SetupViewportTextureDescriptors();
 }
 
 bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const

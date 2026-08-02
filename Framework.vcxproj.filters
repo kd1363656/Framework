@@ -334,9 +334,6 @@
     <Filter Include="Source\Framework\Editor\Converter\Json">
       <UniqueIdentifier>{50121c4f-ec3b-4082-ae04-381e988aebfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Scene">
-      <UniqueIdentifier>{82e77f6e-1eb2-449f-978d-1b26b4d8943b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Log">
       <UniqueIdentifier>{637420e2-2114-41f2-bdb2-5c4e678f583d}</UniqueIdentifier>
     </Filter>
@@ -648,9 +645,6 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\Array">
       <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Scene\Toolbar">
-      <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\MainMenu">
       <UniqueIdentifier>{184fcadd-9b45-42f8-9601-0469ed2de2df}</UniqueIdentifier>
@@ -1132,6 +1126,12 @@
     <Filter Include="Source\Framework\Component\Render\Model\Static">
       <UniqueIdentifier>{c2d73838-f806-4e1d-a5eb-fc23390f988e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport">
+      <UniqueIdentifier>{3cffe2af-0671-4cdd-b5b3-65850c307981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Toolbar">
+      <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1340,9 +1340,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h">
       <Filter>Source\Framework\Editor\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h">
-      <Filter>Source\Framework\Editor\Window\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Log</Filter>
@@ -1682,9 +1679,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.h">
-      <Filter>Source\Framework\Editor\Window\Scene\Toolbar</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.h">
       <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
@@ -2202,6 +2196,12 @@
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h">
       <Filter>Source\Framework\Component\Render\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\Viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2378,9 +2378,6 @@
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp">
-      <Filter>Source\Framework\Editor\Window\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Log</Filter>
     </ClCompile>
@@ -2506,9 +2503,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp">
-      <Filter>Source\Framework\Editor\Window\Scene\Toolbar</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp">
       <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
@@ -2737,6 +2731,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp">
       <Filter>Source\Framework\Component\Render\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

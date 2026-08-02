@@ -1,9 +1,9 @@
-﻿#include "SceneViewToolBar.h"
+﻿#include "ViewportToolbar.h"
 
-void FWK::Editor::SceneViewToolbar::Draw()
+void FWK::Editor::ViewportToolbar::Draw()
 {
 	if (const auto& l_toolbarSize = ImVec2{ ImGui::GetContentRegionAvail().x, k_toolbarHeight };
-		!ImGui::BeginChild(k_toobbarChildID.data(),
+		!ImGui::BeginChild(k_toolbarChildID.data(),
 						   l_toolbarSize,
 						   false,
 						   ImGuiWindowFlags_NoScrollbar | 
@@ -18,7 +18,7 @@ void FWK::Editor::SceneViewToolbar::Draw()
 	ImGui::EndChild();
 }
 
-void FWK::Editor::SceneViewToolbar::DrawDisplayOptionsButton() const
+void FWK::Editor::ViewportToolbar::DrawDisplayOptionsButton() const
 {
 	if (ImGui::Button("表示"))
 	{
@@ -27,7 +27,7 @@ void FWK::Editor::SceneViewToolbar::DrawDisplayOptionsButton() const
 
 	DrawDisplayOptionsPopup();
 }
-void FWK::Editor::SceneViewToolbar::DrawDisplayOptionsPopup() const
+void FWK::Editor::ViewportToolbar::DrawDisplayOptionsPopup() const
 {
 	if (!ImGui::BeginPopup(k_displayOptionsPopupID.data())) { return; }
 
@@ -35,7 +35,7 @@ void FWK::Editor::SceneViewToolbar::DrawDisplayOptionsPopup() const
 
 	ImGui::EndPopup();
 }
-void FWK::Editor::SceneViewToolbar::DrawCollisionMenuItem() const
+void FWK::Editor::ViewportToolbar::DrawCollisionMenuItem() const
 {
 	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
 

@@ -56,7 +56,7 @@
 #include "Editor/Converter/Json/EditorManagerJsonConverter.h"
 #include "Definition/Concept/IsDerivedBase/IsDerivedBaseConcept.h"
 #include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorWindowBaseConcept.h"
-#include "Editor/Window/Scene/Toolbar/SceneViewToolbar.h"
+#include "Editor/Window/Viewport/Toolbar/ViewportToolbar.h"
 #include "Editor/MainMenu/EditorMainMenuBase.h"
 #include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorMainMenuBaseConcept.h"
 #include "Editor/MainMenu/Converter/Json/MainMenubarEditorJsonConverter.h"
@@ -76,7 +76,7 @@
 #include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
 #include "Utility/UUID/UUIDUtility.h"
 #include "Utility/Json/JsonUtility.h"
-#include "Editor/Window/Scene/SceneViewEditorWindow.h"
+#include "Editor/Window/Viewport/ViewportEditorWindow.h"
 #include "Definition/Type/Alias/Factory/Unique/EditorMainMenuUniqueFactory.h"
 #include "Editor/MainMenu/File/FileMainMenuEditor.h"
 

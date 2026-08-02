@@ -9,7 +9,7 @@
     },
     "WindowList": [
         {
-            "Window": "SceneViewEditorWindow"
+            "Window": "ViewportEditorWindow"
         },
         {
             "Window": "OutlinerEditorWindow"

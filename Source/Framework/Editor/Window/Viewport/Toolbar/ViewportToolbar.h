@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-	class SceneViewToolbar final
+	class ViewportToolbar final
 	{
 	public:
 
-		 SceneViewToolbar() = default;
-		~SceneViewToolbar() = default;
+		 ViewportToolbar() = default;
+		~ViewportToolbar() = default;
 
 		void Draw();
 
@@ -17,7 +17,7 @@ namespace FWK::Editor
 		void DrawDisplayOptionsPopup () const;
 		void DrawCollisionMenuItem   () const;
 
-		static constexpr std::string_view k_toobbarChildID         = "##SceneViewToolbar";
+		static constexpr std::string_view k_toolbarChildID         = "##ViewportToolbar";
 		static constexpr std::string_view k_displayOptionsPopupID  = "##SceneViewDisplayOptionsPopup";
 		static constexpr std::string_view k_collisionMenuItemLabel = "コリジョン";
 

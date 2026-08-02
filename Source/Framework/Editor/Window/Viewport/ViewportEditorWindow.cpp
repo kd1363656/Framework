@@ -1,7 +1,7 @@
-﻿#include "SceneViewEditorWindow.h"
+﻿#include "ViewportEditorWindow.h"
 
-FWK::Editor::SceneViewEditorWindow::SceneViewEditorWindow() = default;
-FWK::Editor::SceneViewEditorWindow::~SceneViewEditorWindow()
+FWK::Editor::ViewportEditorWindow::ViewportEditorWindow () = default;
+FWK::Editor::ViewportEditorWindow::~ViewportEditorWindow()
 {
 	for (const auto& l_srvDescriptorIndex : m_imGuiSRVDescriptorIndexList)
 	{
@@ -11,31 +11,31 @@ FWK::Editor::SceneViewEditorWindow::~SceneViewEditorWindow()
 	m_imGuiSRVDescriptorIndexList.clear();
 }
 
-void FWK::Editor::SceneViewEditorWindow::PostDeserialize()
+void FWK::Editor::ViewportEditorWindow::PostDeserialize()
 {
-	SetupSceneViewTextureDescriptors();
+	SetupViewportTextureDescriptors();
 }
 
-void FWK::Editor::SceneViewEditorWindow::Draw()
+void FWK::Editor::ViewportEditorWindow::Draw()
 {
-	// SceneView用のImGuiウィンドウを開始する
+	// Viewport用のImGuiウィンドウを開始する
 	if (!ImGui::Begin(k_editorName.data())) 
 	{
 		ImGui::End();
 		return; 
 	}
 
-	// SceneView画像より先にツールバーを書く。
-	// これにより画面へ重ならず、SceneView上部へ工程表示される
-	m_sceneViewToolbar.Draw();
-	ImGui::Separator	   ();
+	// Viewport画像より先にツールバーを書く。
+	// これにより画面へ重ならず、Viewport上部へ工程表示される
+	m_toolbar.Draw  ();
+	ImGui::Separator();
 
-	// 現在のSceneViewウィンドウ内で、実際に画像を表示できる領域サイズを取得する
+	// 現在のViewportウィンドウ内で、実際に画像を表示できる領域サイズを取得する
 	// Dockingでウィンドウサイズが変わると、この値も変わる
-	const ImVec2& l_sceneViewSize = ImGui::GetContentRegionAvail();
+	const ImVec2& l_viewportSize = ImGui::GetContentRegionAvail();
 
-	if (l_sceneViewSize.x <= k_minSceneViewSize ||
-		l_sceneViewSize.y <= k_minSceneViewSize)
+	if (l_viewportSize.x  <= k_minViewportSize ||
+		l_viewportSize.y  <= k_minViewportSize)
 	{
 		// 無効サイズの場合は描画をしない
 		ImGui::End();
@@ -43,23 +43,23 @@ void FWK::Editor::SceneViewEditorWindow::Draw()
 	}
 
 	// RenderGraphで作成された最終カラーTextureを、ImGuiで表示できるTextureIDとして取得する
-	// 今回はRenderTargetTextureの解像度変更は行わなず、既存の描画結果をSceneView内に拡縮表示する
-	const auto l_sceneViewTextureID = FetchVALSceneViewTextureID();
+	// 今回はRenderTargetTextureの解像度変更は行わなず、既存の描画結果をViewport内に拡縮表示する
+	const auto l_viewportTextureID = FetchVALViewportTextureID();
 
 	// 無効なテクスチャなのでreturn
-	if (l_sceneViewTextureID == k_invalidSceneViewTextureID)
+	if (l_viewportTextureID == k_invalidViewportTextureID)
 	{
 		ImGui::End();
 		return; 
 	}
 
-	// SceneViewの表示領域全体に、取得したTextureを描画する
-	DrawSceneViewTexture(l_sceneViewTextureID, l_sceneViewSize);
+	// Viewportの表示領域全体に、取得したTextureを描画する
+	DrawViewportTexture(l_viewportTextureID, l_viewportSize);
 
 	ImGui::End();
 }
 
-void FWK::Editor::SceneViewEditorWindow::SetupSceneViewTextureDescriptors()
+void FWK::Editor::ViewportEditorWindow::SetupViewportTextureDescriptors()
 {
 	m_imGuiSRVDescriptorIndexList.clear();
 
@@ -105,7 +105,7 @@ void FWK::Editor::SceneViewEditorWindow::SetupSceneViewTextureDescriptors()
 	}	
 }
 
-ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() const
+ImTextureID FWK::Editor::ViewportEditorWindow::FetchVALViewportTextureID() const
 {
 	const auto& l_editorManager = EditorManager::GetInstance();
 
@@ -115,21 +115,21 @@ ImTextureID FWK::Editor::SceneViewEditorWindow::FetchVALSceneViewTextureID() con
 	const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
 
 	// レンダーラーから現在のFrameResourceのインデックスを取得
-	FWK_ASSERT_RETURN_VALUE_IF(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えています", k_invalidSceneViewTextureID);
+	FWK_ASSERT_RETURN_VALUE_IF(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えています", k_invalidViewportTextureID);
 
 	// もし無効なDescriptorIndexならreturn
-	if (m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex] == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return k_invalidSceneViewTextureID; }
+	if (m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex] == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return k_invalidViewportTextureID; }
 
 	return l_editorManager.FetchVALImGuiTextureID(m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex]);
 }
 
-void FWK::Editor::SceneViewEditorWindow::DrawSceneViewTexture(const ImTextureID& a_textureID, const ImVec2& a_sceneViewSize) const
+void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImTextureID& a_textureID, const ImVec2& a_viewportSize) const
 {
 	// Texture全体を表示するため、UV範囲は左上から右下までを指定する
-	const auto l_uvMIN = ImVec2(k_sceneViewUVMINX, k_sceneViewUVMINY);
-	const auto l_uvMAX = ImVec2(k_sceneViewUVMAXX, k_sceneViewUVMAXY);
+	const auto l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
+	const auto l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
 
-	// 取得したTextureをSceneViewの表示領域いっぱいに描画する
-	// a_sceneViewSizeにGetContentRegionAvailの値を渡しているため、Dockingの拡縮に追従する
-	ImGui::Image(a_textureID, a_sceneViewSize, l_uvMIN, l_uvMAX);
+	// 取得したTextureをViewportの表示領域いっぱいに描画する
+	// a_viewportSizeにGetContentRegionAvailの値を渡しているため、Dockingの拡縮に追従する
+	ImGui::Image(a_textureID, a_viewportSize, l_uvMIN, l_uvMAX);
 }

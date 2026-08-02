@@ -459,8 +459,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h" />
     <ClInclude Include="Source\Framework\Factory\GenericFactory.h" />
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
@@ -711,8 +711,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\OutlinerEditorWindow.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Scene\SceneViewEditorWindow.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Scene\Toolbar\SceneViewToolbar.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp" />
