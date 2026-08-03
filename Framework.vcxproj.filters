@@ -1150,6 +1150,12 @@
     <Filter Include="Source\Framework\Definition\Enum\Editor">
       <UniqueIdentifier>{194f14b3-a9fb-422f-83b8-0f3ee8c32872}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Converter">
+      <UniqueIdentifier>{833368f2-8c31-4336-88f8-d317f247d5e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Converter\Json">
+      <UniqueIdentifier>{55166301-0675-4d04-828d-3e5d1725f4f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2235,6 +2241,9 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\EditorAssetTypeEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h">
+      <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2779,6 +2788,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp">
       <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

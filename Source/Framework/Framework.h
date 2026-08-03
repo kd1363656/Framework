@@ -449,6 +449,7 @@
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
 #include "Utility/File/Asset/Converter/Json/AssetFilePathHelperUtilityJsonConverter.h"
 #include "Utility/File/Asset/AssetFilePathHelperUtility.h"
+#include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
 #include "Component/Render/Model/ModelComponentBase.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"
 

@@ -13,13 +13,18 @@ namespace FWK
 
 		nlohmann::json SerializePrefab() override;
 
-	protected:
-
+		const auto& GetREFDrawRequestPassList() const { return m_assetFilePathHelper; }
 		const auto& GetREFAssetFilePathHelper() const { return m_assetFilePathHelper; }
+
+		auto& GetMutableREFAssetFilePathHelper() { return m_assetFilePathHelper; }
 
 	private:
 
+		std::vector<std::uint32_t> m_drawRequestPassList = {};
+
 		Utility::AssetFilePathHelper m_assetFilePathHelper = {};
+
+		Converter::ModelComponentBaseJsonConverter m_jsonConverter = {};
 
 		FWK_DEFINE_TYPE_INFO(ModelComponentBase, ComponentBase)
 	};

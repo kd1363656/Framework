@@ -4,10 +4,10 @@ void FWK::ModelComponentBase::DeserializePrefab(const nlohmann::json& a_rootJson
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_assetFilePathHelper.Deserialize(a_rootJson);
+	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
 nlohmann::json FWK::ModelComponentBase::SerializePrefab()
 {
-	return m_assetFilePathHelper.Serialize();
+	return m_jsonConverter.SerializePrefab(*this);
 }
