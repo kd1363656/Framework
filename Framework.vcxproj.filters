@@ -1147,6 +1147,9 @@
     <Filter Include="Source\Framework\Component\Transform\Converter\Json">
       <UniqueIdentifier>{762a418e-1cdd-4c3f-9ae5-905fd27f7a79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Editor">
+      <UniqueIdentifier>{194f14b3-a9fb-422f-83b8-0f3ee8c32872}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2187,10 +2190,10 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.h">
+    <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathHelperUtility.h">
       <Filter>Source\Framework\Utility\File\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.h">
+    <ClInclude Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
       <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h">
@@ -2228,6 +2231,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h">
       <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\EditorAssetTypeEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2747,10 +2753,10 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathUtility.cpp">
+    <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathHelperUtility.cpp">
       <Filter>Source\Framework\Utility\File\Asset</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathUtilityJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp">
       <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp">

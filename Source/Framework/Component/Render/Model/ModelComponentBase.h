@@ -13,9 +13,13 @@ namespace FWK
 
 		nlohmann::json SerializePrefab() override;
 
+	protected:
+
+		const auto& GetREFAssetFilePathHelper() const { return m_assetFilePathHelper; }
+
 	private:
 
-		Utility::AssetFilePath m_assetFilePath = {};
+		Utility::AssetFilePathHelper m_assetFilePathHelper = {};
 
 		FWK_DEFINE_TYPE_INFO(ModelComponentBase, ComponentBase)
 	};

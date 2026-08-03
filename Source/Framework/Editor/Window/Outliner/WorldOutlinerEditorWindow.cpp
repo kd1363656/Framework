@@ -232,9 +232,8 @@ bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
 	// 子GameObjectを再帰描画
 	for (const auto& l_childGameObjectData : l_childGameObjectDataList)
 	{
-		const auto l_childGameObject = l_childGameObjectData.m_type.lock();
-
-		if (!l_childGameObject                     ||
+		if (const auto l_childGameObject = l_childGameObjectData.m_type.lock();
+			!l_childGameObject                     ||
 			l_childGameObject->GetVALIsDestroyed() ||
 			!DrawGameObjectNode(l_childGameObject))
 		{
@@ -254,7 +253,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
 	return false;
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea(Scene& a_scene)
+void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea(Scene& a_scene) const
 {
 	ImVec2 l_rootDropAreaSize = ImGui::GetContentRegionAvail();
 
@@ -330,7 +329,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::TryUnparentDroppedGameObject(Scene&
 	return true;
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject(Scene & a_scene)
+void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject(Scene & a_scene) const
 {
 	const auto& l_gameObject = std::make_shared<GameObject>();
 

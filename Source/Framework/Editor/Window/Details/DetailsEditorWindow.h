@@ -22,6 +22,7 @@ namespace FWK::Editor
 
 		static constexpr std::string_view k_editorName                       = "詳細";
 		static constexpr std::string_view k_noSelectedGameObjectMessage      = "GameObjectが選択されていません。";
+		static constexpr std::string_view k_gameObjectNameLabel              = "名前";
 		static constexpr std::string_view k_destroyedGameObjectMessage       = "削除申請済みのGameObjectは編集できません。";
 		static constexpr std::string_view k_invalidTransformComponentMessage = "TransformComponentを取得できませんでした。";
 		static constexpr std::string_view k_uuidLabel                        = "UUID";
@@ -29,7 +30,7 @@ namespace FWK::Editor
 		static constexpr std::string_view k_addComponentButtonName           = "コンポーネントを追加";
 		static constexpr std::string_view k_addComponentPopupLabel           = "##AddComponentPopup";
 		static constexpr std::string_view k_componentRemoveDescription       = "Component見出し右端の×で取り外せます。";
-		
+
 		static constexpr std::size_t k_initialComponentIndex = 0ULL;
 
 		FWK_DEFINE_TYPE_INFO(DetailsEditorWindow, EditorWindowBase)

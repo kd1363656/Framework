@@ -2,12 +2,12 @@
 
 namespace FWK::Utility
 {
-	class AssetFilePath final
+	class AssetFilePathHelper final
 	{
 	public:
 
-		 AssetFilePath() = default;
-		~AssetFilePath() = default;
+		 AssetFilePathHelper() = default;
+		~AssetFilePathHelper() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 
@@ -19,7 +19,7 @@ namespace FWK::Utility
 
 	private:
 
-		Converter::AssetFilePathJsonConverter m_jsonConverter = {};
+		Converter::AssetFilePathHelperJsonConverter m_jsonConverter = {};
 
 		std::filesystem::path m_assetFilePath = {};
 	};

@@ -11,9 +11,14 @@ namespace FWK
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
+		void PostDeserialize() override;
+
 		nlohmann::json SerializePrefab() override;
 
 	private:
+
+		std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
+		std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
 
 		FWK_DEFINE_TYPE_INFO(StaticModelComponent, ModelComponentBase)
 	};

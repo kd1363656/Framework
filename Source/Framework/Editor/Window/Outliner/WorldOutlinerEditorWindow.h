@@ -15,11 +15,11 @@ namespace FWK::Editor
 
 		bool DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject) const;
 
-		void DrawRootDropArea(Scene& a_scene);
+		void DrawRootDropArea(Scene& a_scene) const;
 
 		bool TryUnparentDroppedGameObject(Scene& a_scene) const;
 
-		void RequestAddGameObject(Scene& a_scene);
+		void RequestAddGameObject(Scene& a_scene) const;
 
 		static constexpr std::string_view k_editorName                     = "アウトライナー";
 		static constexpr std::string_view k_gameObjectDragDropPayloadLabel = "ゲームオブジェクト";
