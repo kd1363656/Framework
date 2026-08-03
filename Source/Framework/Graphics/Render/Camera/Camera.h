@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-	class Camera final
+	class Camera final : public std::enable_shared_from_this<Camera>
 	{
 	public:
 
@@ -24,6 +24,8 @@ namespace FWK::Graphics
 
 		void ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 
+		void ApplyPerspectiveAspectRatio(const float a_aspectRatio);
+
 		const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
 		
 	private:
@@ -34,9 +36,11 @@ namespace FWK::Graphics
 							  const float					 a_farClip     = Constant::k_defaultFarClip,
 							  const float					 a_nearClip    = Constant::k_defaultNearClip);
 
-		void UpdateViewProjectionMatrix();
+		void UpdateViewProjectionMatrix       ();
+		void UpdatePerspectiveProjectionMatrix();
 
-		void RegisterCBCameraPass();
+		void RegisterCBCameraPass          ();
+		void RegisterToEditorViewportWindow();
 
 		static constexpr float k_defaultFOVYDegree  = 60.0F;
 		static constexpr float k_invalidAspectRatio = 0.0F;
@@ -45,7 +49,11 @@ namespace FWK::Graphics
 
 		std::shared_ptr<Struct::CBCameraPass> m_cbCameraPass = nullptr;
 		
-		TypeAlias::Math::Matrix m_cameraMatrix      = TypeAlias::Math::Matrix::Identity;
-		TypeAlias::Math::Matrix m_debugCameraMatrix = TypeAlias::Math::Matrix::Identity;
+		TypeAlias::Math::Matrix m_cameraMatrix = TypeAlias::Math::Matrix::Identity;
+		
+		float m_aspectRatio = k_invalidAspectRatio;
+		float m_fovYDegree  = k_defaultFOVYDegree;
+		float m_farClip     = Constant::k_defaultFarClip;
+		float m_nearClip    = Constant::k_defaultNearClip;
 	};
 }

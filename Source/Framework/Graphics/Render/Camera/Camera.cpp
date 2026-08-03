@@ -13,8 +13,11 @@ void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
 				     a_farClip,
 					 a_nearClip);
 
-	// 定数バッファの登録
+	// 定数バッファへの登録
 	RegisterCBCameraPass();
+
+	// エディターにこのカメラクラスを登録
+	RegisterToEditorViewportWindow();
 }
 
 void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
@@ -35,9 +38,9 @@ void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_c
 }
 
 void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
-												const float a_fovYDegree,
-												const float a_farClip,
-												const float a_nearClip)
+												  const float a_fovYDegree,
+												  const float a_farClip,
+												  const float a_nearClip)
 {
 	FWK_ASSERT_RETURN_IF(a_aspectRatio <= k_invalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。");
 
@@ -57,22 +60,17 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
 																		   a_nearClip,
 																		   a_farClip);
 
+	// Perspecctive行列を後からAspectRatioだけ変更して
+	// 再作成できるよう、、現在の設定をCameraへ保持する
+	m_aspectRatio = a_aspectRatio;
+	m_fovYDegree  = a_fovYDegree;
+	m_farClip     = a_farClip;
+	m_nearClip    = a_nearClip;
+
 	m_cbCameraPass->m_nearClip = a_nearClip;
 	m_cbCameraPass->m_farClip  = a_farClip;
 
-	// 縦方向FOVの角度を算出する
-	// FOVYは画面上端から画面下端までの全体角度なので、
-	// 画面中央から上端までの片側角度にするために半分にする
-	const float l_halfFOVYRadian = l_fovYRadian * k_halfFOVScale;
-
-	// Z = 1.0の位置で、画面中央から上端までの高さを求める
-	m_cbCameraPass->m_tanHalfFOVY = std::tan(l_halfFOVYRadian);
-
-	// Z = 1.0の位置で、画面中央から右端までの幅を求める
-	// 横方向の広さは、縦方向の半分の高さに描画画面ののアスペクト比を掛けることで求まる
-	m_cbCameraPass->m_tanHalfFOVX = m_cbCameraPass->m_tanHalfFOVY * a_aspectRatio;
-
-	UpdateViewProjectionMatrix();
+	UpdatePerspectiveProjectionMatrix();
 }
 
 void FWK::Graphics::Camera::ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix)
@@ -82,6 +80,20 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const TypeAlias::Math::Matrix&
 	m_cbCameraPass->m_projectionMatrix = a_projectionMatrix;
 	
 	UpdateViewProjectionMatrix();
+}
+
+void FWK::Graphics::Camera::ApplyPerspectiveAspectRatio(const float a_aspectRatio)
+{
+	FWK_ASSERT_RETURN_IF(a_aspectRatio <= k_invalidAspectRatio, "PerspectiveのAspectRatioが不正なため、ProjectionMatrixを更新できません。");
+	FWK_ASSERT_RETURN_IF(m_aspectRatio <= k_invalidAspectRatio, "CameraのPerspective設定前にAspectRatioを変更しようとしました。");
+
+	if (!m_cbCameraPass) { return; }
+
+	// Viewportの形状変更で変えるのはAspectRatioだけ。
+	// FOVY,NearClip,FarClipは以前の値を維持する
+	m_aspectRatio = a_aspectRatio;
+
+	UpdatePerspectiveProjectionMatrix();
 }
 
 void FWK::Graphics::Camera::SetupPerspective(const TypeAlias::Math::Matrix& a_cameraMatrix,
@@ -111,6 +123,32 @@ void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
 
 	m_cbCameraPass->m_viewProjectionMatrix = m_cbCameraPass->m_viewMatrix * m_cbCameraPass->m_projectionMatrix;
 }
+void FWK::Graphics::Camera::UpdatePerspectiveProjectionMatrix()
+{
+	FWK_ASSERT_RETURN_IF(!m_cbCameraPass,                       "CBCameraPassが無効なため、PerspectiveProjectionを更新できません。");
+	FWK_ASSERT_RETURN_IF(m_aspectRatio <= k_invalidAspectRatio, "Cameraに保存されているAspectRatioが不正なため、PerspectiveProjectionを更新できません。");
+
+	const float l_fovYRadian = DirectX::XMConvertToRadians(m_fovYDegree);
+
+	m_cbCameraPass->m_projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(l_fovYRadian,
+		                                                                   m_aspectRatio,
+		                                                                   m_nearClip,
+		                                                                   m_farClip);
+
+	// 縦方向FOVの角度を算出する
+	// FOVYは画面上端から画面下端までの全体角度なので、
+	// 画面中央から上端までの片側角度にするために半分にする
+	const float l_halfFOVYRadian = l_fovYRadian * k_halfFOVScale;
+
+	// Z = 1.0の位置で、画面中央から上端までの高さを求める
+	m_cbCameraPass->m_tanHalfFOVY = std::tan(l_halfFOVYRadian);
+
+	// Z = 1.0の位置で、画面中央から右端までの幅を求める
+	// 横方向の広さは、縦方向の半分の高さに描画画面ののアスペクト比を掛けることで求まる
+	m_cbCameraPass->m_tanHalfFOVX = m_cbCameraPass->m_tanHalfFOVY * m_aspectRatio;
+
+	UpdateViewProjectionMatrix();
+}
 
 void FWK::Graphics::Camera::RegisterCBCameraPass()
 {
@@ -129,4 +167,15 @@ void FWK::Graphics::Camera::RegisterCBCameraPass()
 
 	// Cacade計算で使用するCameraの定数バッファを登録する
 	l_cascadeShadowMap.SetCBCameraPass(m_cbCameraPass);
+}
+
+void FWK::Graphics::Camera::RegisterToEditorViewportWindow()
+{
+	const auto& l_editorManager = Editor::EditorManager::GetInstance();
+
+	const auto& l_viewportWindow = l_editorManager.FindWindowEditor<Editor::ViewportEditorWindow>().lock();
+
+	if (!l_viewportWindow) { return; }
+
+	l_viewportWindow->SetCamera(weak_from_this());
 }

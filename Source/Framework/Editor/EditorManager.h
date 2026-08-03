@@ -61,7 +61,7 @@ namespace FWK::Editor
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
 		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
-		std::weak_ptr<WindowType> FetchWindowEditor() const
+		std::weak_ptr<WindowType> FindWindowEditor() const
 		{
 			const auto l_staticTypeID = WindowType::GetREFTypeINFO().k_staticTypeID;
 
@@ -126,7 +126,7 @@ namespace FWK::Editor
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
 		std::weak_ptr<GameObject> m_selectedGameObject;
-
+		
 		Editor::LogEditorWindow m_logEditorWindow;
 
 		Editor::MainMenubarEditor m_mainMenubar;
