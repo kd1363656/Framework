@@ -440,6 +440,8 @@
 #include "Definition/Constant/IMGUI/IMGUIConstant.h"
 #include "Utility/Math/MathQuaternionUtility.h"
 #include "Utility/IMGUI/Factory/IMGUIFactoryRadioButtonSelectorUtility.h"
+#include "Definition/Struct/Component/TransformComponentStruct.h"
+#include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
@@ -497,4 +499,5 @@
 //===============================================================================
 #include "Utility/IMGUI/DragDrop/IMGUIFilePathDragDropUtility.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
-#include "Editor/Details/DetailsEditorWindow.h"
+#include "Editor/Window/Details/DetailsEditorWindow.h"
+#include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"

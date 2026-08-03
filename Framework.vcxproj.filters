@@ -1135,6 +1135,18 @@
     <Filter Include="Source\Framework\Editor\Window\Details">
       <UniqueIdentifier>{25abc7e1-8920-44cb-8000-eaa09690e4e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser">
+      <UniqueIdentifier>{ea68f200-9d14-4ef8-a572-1290509e04ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Component">
+      <UniqueIdentifier>{6b69f564-47c1-4334-9646-98858e8e5971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Converter">
+      <UniqueIdentifier>{389948ee-4640-4865-9b1d-253b4fdf0994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Converter\Json">
+      <UniqueIdentifier>{762a418e-1cdd-4c3f-9ae5-905fd27f7a79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2205,8 +2217,17 @@
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Details\DetailsEditorWindow.h">
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2744,8 +2765,14 @@
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Details\DetailsEditorWindow.cpp">
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

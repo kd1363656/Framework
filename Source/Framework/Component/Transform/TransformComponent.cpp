@@ -1,28 +1,16 @@
 ﻿#include "TransformComponent.h"
 
-FWK::TransformComponent::TransformComponent() :
-	m_parentTransformComponent({}),
-
-	m_matrix(),
-
-	m_transform              (),
-	m_initialSettingTransform()
-{}
-FWK::TransformComponent::~TransformComponent() = default;
-
 void FWK::TransformComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	Deserialize(a_rootJson);
+	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 void FWK::TransformComponent::DeserializeScene(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_initialSettingTransform.m_position = Utility::DeserializeVector3(a_rootJson, k_initialPositionJsonKey);
-
-	Deserialize(a_rootJson);
+	m_jsonConverter.DeserializeScene(a_rootJson, *this);
 }
 
 void FWK::TransformComponent::PostDeserialize()
@@ -75,13 +63,13 @@ void FWK::TransformComponent::EditInspector()
 	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, m_matrixStrategy);
 }
 
-nlohmann::json FWK::TransformComponent::SerializeScene()
-{
-	return Serialize();
-}
 nlohmann::json FWK::TransformComponent::SerializePrefab()
 {
-	return Serialize();
+	return m_jsonConverter.SerializePrefab(*this);
+}
+nlohmann::json FWK::TransformComponent::SerializeScene()
+{
+	return m_jsonConverter.SerializeScene(*this);
 }
 
 void FWK::TransformComponent::ApplyParent(const std::weak_ptr<GameObject>& a_parentObject)
@@ -95,7 +83,7 @@ void FWK::TransformComponent::ApplyParent(const std::weak_ptr<GameObject>& a_par
 	// 親が存在するということは追従する可能性が高いため、自動的に親に追従するように行列を掛ける
 	m_matrixStrategy = std::make_unique<HierarchicalMatrixStrartegy>();
 
-	m_initialMatrixStrategyTypeName = std::string(HierarchicalMatrixStrartegy::GetREFTypeINFO().k_name);
+	m_initializeMatrixStrategyTypeName = std::string(HierarchicalMatrixStrartegy::GetREFTypeINFO().k_name);
 
 	// セットした後にダーティーフラグで行列の更新が妨げられてもいいように
 	// ここで一度だけ行列を更新しておく
@@ -118,7 +106,7 @@ void FWK::TransformComponent::ApplyStandalone()
 	// 単独GameObject用の行列計算方式へ戻す
 	m_matrixStrategy = std::make_unique<StandaloneMatrixStrategy>();
 	
-	m_initialMatrixStrategyTypeName = std::string(StandaloneMatrixStrategy::GetREFTypeINFO().k_name);
+	m_initializeMatrixStrategyTypeName = std::string(StandaloneMatrixStrategy::GetREFTypeINFO().k_name);
 
 	ConfrimMatrixStrategy();
 }
@@ -128,44 +116,4 @@ void FWK::TransformComponent::ConfrimMatrixStrategy()
 	if (!m_matrixStrategy) { return; }
 
 	m_matrixStrategy->Execute(*this);
-}
-
-void FWK::TransformComponent::Deserialize(const nlohmann::json& a_rootJson)
-{
-	if (a_rootJson.is_null()) { return; }
-
-	m_initialSettingTransform.m_scale    = Utility::DeserializeVector3   (a_rootJson, k_initialScaleJsonKey);
-	m_initialSettingTransform.m_rotation = Utility::DeserializeQuaternion(a_rootJson, k_initialRotationJsonKey);
-	
-	m_initialMatrixStrategyTypeName = a_rootJson.value(k_initialMatrixStrategyTypeNameJsonKey, std::string{});
-
-	if (m_initialMatrixStrategyTypeName.empty())
-	{
-		FWK_ADD_LOG("TransformComponetnのストラテジー初期化用文字列が空になっており、ストラテジーの初期化に失敗しました。");
-
-		return;
-	}
-
-	const auto& l_factory = TypeAlias::MatrixStrategyUniqueFactory::GetInstance();
-
-	m_matrixStrategy = l_factory.Create(m_initialMatrixStrategyTypeName);
-
-	m_transform.m_scale    = m_initialSettingTransform.m_scale;
-	m_transform.m_rotation = m_initialSettingTransform.m_rotation;
-
-	// 外部でInitialTransform.m_positionはデシリアライズを行う(プレハブは座標データをプレハブとして保持しなくてよいから)
-	m_transform.m_position = m_initialSettingTransform.m_position;
-}
-
-nlohmann::json FWK::TransformComponent::Serialize()
-{
-	nlohmann::json l_rootJson = {};
-
-	Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(m_initialSettingTransform.m_scale,       k_initialScaleJsonKey));
-	Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(m_initialSettingTransform.m_rotation, k_initialRotationJsonKey));
-	Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(m_initialSettingTransform.m_position,    k_initialPositionJsonKey));
-
-	l_rootJson[k_initialMatrixStrategyTypeNameJsonKey] = m_initialMatrixStrategyTypeName;
-
-	return l_rootJson;
 }

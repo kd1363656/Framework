@@ -50,7 +50,7 @@ namespace FWK
 
 		std::vector<std::shared_ptr<GameObject>>            m_gameObjectList               = {};
 		std::vector<std::vector<std::weak_ptr<GameObject>>> m_gameObjectExecutionLevelList = {};
-		                                                    
+
 		UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
 
 		PrefabSystem m_prefabSystem = {};
