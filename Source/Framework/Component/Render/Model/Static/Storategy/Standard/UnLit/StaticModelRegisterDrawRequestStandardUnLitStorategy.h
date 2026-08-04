@@ -14,3 +14,5 @@ namespace FWK
 		FWK_DEFINE_TYPE_INFO(StaticModelRegisterDrawRequestStandardUnLitStorategy, StaticModelRegisterDrawRequestStorategyBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::StaticModelRegisterDrawRequestStorategyBaseUniqueFactory, FWK::StaticModelRegisterDrawRequestStandardUnLitStorategy)

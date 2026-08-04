@@ -442,6 +442,7 @@
 #include "Utility/IMGUI/Factory/IMGUIFactoryRadioButtonSelectorUtility.h"
 #include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
+#include "Component/Transform/Inspector/TransformComponentInspector.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
@@ -453,6 +454,7 @@
 #include "Component/Render/Model/ModelComponentBase.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"
 #include "Component/Render/Model/Static/Storategy/StaticModelRegisterDrawRequestStorategyBase.h"
+#include "Definition/Type/Alias/Factory/Unique/StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h"
 #include "Component/Render/Model/Static/Storategy/Standard/Lit/StaticModelRegisterDrawRequestStandardLitStorategy.h"
 #include "Component/Render/Model/Static/Storategy/Standard/UnLit/StaticModelRegisterDrawRequestStandardUnLitStorategy.h"
 

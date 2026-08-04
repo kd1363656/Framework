@@ -344,6 +344,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\StaticModelRegisterDrawRequestStorategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h" />
@@ -453,6 +454,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
@@ -714,6 +716,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp" />

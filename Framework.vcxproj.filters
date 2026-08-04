@@ -1180,6 +1180,9 @@
     <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade">
       <UniqueIdentifier>{2d61bc4f-8fad-4092-a2bb-dddff21455a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Inspector">
+      <UniqueIdentifier>{6bc1901b-b8ad-46d1-95a9-c7494c15b871}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2280,6 +2283,12 @@
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
+      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2836,6 +2845,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

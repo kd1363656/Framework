@@ -35,32 +35,7 @@ void FWK::TransformComponent::ConfrimMatrix()
 
 void FWK::TransformComponent::EditInspector()
 {
-	// 初期スポーン位置はエディターでドラッグしたときのみ決まる
-	// 拡大率
-	if (ImGui::DragFloat3("拡大率", &m_transform.m_scale.x, Constant::k_imguiDefaultDragValue))
-	{
-		m_initialSettingTransform.m_scale = m_transform.m_scale;
-	}
-
-	// 回転
-	if (auto l_euler = FWK::Utility::QuaternionToEuler(m_transform.m_rotation);
-		ImGui::DragFloat3("回転", &l_euler.x, Constant::k_imguiDefaultDragValue))
-	{
-		// オイラー角に変換していたクオータニオンを元に戻して格納
-		auto l_dragResult = Utility::EulerToQuaternion(l_euler);
-
-		m_transform.m_rotation               = l_dragResult;
-		m_initialSettingTransform.m_rotation = l_dragResult;
-	}
-
-	// 座標
-	if (ImGui::DragFloat3("座標", &m_transform.m_position.x, Constant::k_imguiDefaultDragValue))
-	{
-		m_initialSettingTransform.m_scale = m_transform.m_scale;
-	}
-
-	// 行列の計算方法を選択することができるラジオボタンリスト
-	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, m_matrixStrategy);
+	m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::TransformComponent::SerializePrefab()

@@ -54,17 +54,21 @@ namespace FWK
 		const auto& GetREFInitialMatrixStrategyName() const { return m_initializeMatrixStrategyTypeName; }
 		const auto& GetREFInitialSettingTransform  () const { return m_initialSettingTransform; }
 
+		auto& GetMutableREFMatrixStrategy() { return m_matrixStrategy; }
+
+		auto& GetMutableREFTrnsform              () { return m_transform; }
+		auto& GetMutableREFInitialSettingTrnsform() { return m_initialSettingTransform; }
+
 	private:
 
 		void ConfrimMatrixStrategy();
-
-		static constexpr std::string_view k_matrixStrategySelectorLabel = "MatrixStrategySelector";
 
 		std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
 
 		std::weak_ptr<TransformComponent> m_parentTransformComponent = {};
 
 		Converter::TransformComponentJsonConverter m_jsonConverter = {};
+		TransformComponentInspector                m_inspector     = {};
 
 		std::string m_initializeMatrixStrategyTypeName = {};
 
