@@ -453,7 +453,8 @@
 #include "Component/Render/Model/ModelComponentBase.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"
 #include "Component/Render/Model/Static/Storategy/StaticModelRegisterDrawRequestStorategyBase.h"
-#include "Component/Render/Model/Static/Storategy/Lit/StaticModelRegisterDrawRequestLitStorategy.h"
+#include "Component/Render/Model/Static/Storategy/Standard/Lit/StaticModelRegisterDrawRequestStandardLitStorategy.h"
+#include "Component/Render/Model/Static/Storategy/Standard/UnLit/StaticModelRegisterDrawRequestStandardUnLitStorategy.h"
 
 //===============================================================================
 // 文字列をキーとして値を保持するRegistry

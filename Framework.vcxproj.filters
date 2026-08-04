@@ -958,15 +958,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Shadow\Converter\Json">
       <UniqueIdentifier>{f1f53a76-64da-4f4b-97a8-0eeabb4ff8fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade">
-      <UniqueIdentifier>{51eeed03-70d3-43b8-953f-36f3f2c36105}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter">
-      <UniqueIdentifier>{c271cc90-7cba-491c-99a7-46ba9ea6fad2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json">
-      <UniqueIdentifier>{04b7eb22-e32c-49de-9040-e6b1f786f441}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Sorter">
       <UniqueIdentifier>{d71e1988-27f6-429c-b088-523fef8c2aab}</UniqueIdentifier>
     </Filter>
@@ -1159,14 +1150,35 @@
     <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy">
       <UniqueIdentifier>{19751565-9775-4fac-98e0-a5e6419a323f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit">
-      <UniqueIdentifier>{3fe4fb61-5815-402f-b437-15ade6772bbe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade">
       <UniqueIdentifier>{d65e0655-113b-4e26-8967-fb284b10dd9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade">
       <UniqueIdentifier>{7f668f1e-30f4-4f02-b21e-082bcf5819cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard">
+      <UniqueIdentifier>{daeb70e4-b7de-424f-abe4-7a6fe1559443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit">
+      <UniqueIdentifier>{534b501a-1a76-4f84-bb66-9045d65968d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit">
+      <UniqueIdentifier>{3fe4fb61-5815-402f-b437-15ade6772bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade">
+      <UniqueIdentifier>{51eeed03-70d3-43b8-953f-36f3f2c36105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter">
+      <UniqueIdentifier>{c271cc90-7cba-491c-99a7-46ba9ea6fad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json">
+      <UniqueIdentifier>{04b7eb22-e32c-49de-9040-e6b1f786f441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow">
+      <UniqueIdentifier>{7055969d-ed69-4a3b-b529-54a654afec3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade">
+      <UniqueIdentifier>{2d61bc4f-8fad-4092-a2bb-dddff21455a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2055,12 +2067,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Converter\Json\ShadowContextJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.h">
-      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
-      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
@@ -2253,14 +2259,26 @@
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\StaticModelRegisterDrawRequestStorategyBase.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Lit</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.h">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2732,12 +2750,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Converter\Json\ShadowContextJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.cpp">
-      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
-      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Sorter</Filter>
     </ClCompile>
@@ -2804,14 +2816,26 @@
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp">
       <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Lit</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.cpp">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

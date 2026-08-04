@@ -339,7 +339,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h" />
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\StaticModelRegisterDrawRequestStorategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
@@ -708,7 +710,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp" />
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp" />

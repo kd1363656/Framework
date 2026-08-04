@@ -1,0 +1,6 @@
+﻿#include "StaticModelRegisterDrawRequestStandardUnLitStorategy.h"
+
+void FWK::StaticModelRegisterDrawRequestStandardUnLitStorategy::Execute(StaticModelComponent& a_staticModelComponent)
+{
+	RegisterDrawRequestData<Graphics::StaticModelStandardUnLitPerObjectDrawRequest>(a_staticModelComponent);
+}
