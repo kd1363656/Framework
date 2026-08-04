@@ -11,6 +11,8 @@ FWK::Physics::PhysicsManager::PhysicsManager() :
 
 	m_physicsSystem(),
 
+	m_jsonConverter(),
+
 	m_isInitialized(false),
 
 	m_isJoltTypeRegistered(false),
@@ -48,6 +50,14 @@ void FWK::Physics::PhysicsManager::INIT()
 	m_debugRenderer->ReserveLineVertexCount();
 
 	m_isInitialized = true;
+}
+void FWK::Physics::PhysicsManager::LoadCONFIG()
+{
+	const auto& l_rootJson = Utility::LoadJsonFile(k_configFileIOPath);
+
+	if (l_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(l_rootJson, *this);
 }
 
 void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
@@ -87,6 +97,13 @@ void FWK::Physics::PhysicsManager::CollectPhysicsDebugDrawCommands()
 	m_physicsSystem.DrawBodies(l_drawSettings, m_debugRenderer.get());
 
 	m_debugRenderer->NextFrame();
+}
+
+void FWK::Physics::PhysicsManager::SaveCONFIG() const
+{
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
 void FWK::Physics::PhysicsManager::TogglePhysicsDebugDraw()

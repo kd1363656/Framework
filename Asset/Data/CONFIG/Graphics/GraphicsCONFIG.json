@@ -2214,6 +2214,7 @@
         "SkeletalAnimationModelSystem": {
             "ModelStorage": {
                 "StorageIDAllocator": {
+                    "NextIDCapacity": 0,
                     "StorageIDAllocatorCapacity": 10000
                 }
             }
@@ -2221,6 +2222,7 @@
         "StaticModelSystem": {
             "ModelStorage": {
                 "StorageIDAllocator": {
+                    "NextIDCapacity": 0,
                     "StorageIDAllocatorCapacity": 10000
                 }
             }
@@ -2282,6 +2284,7 @@
             ],
             "TextureStorage": {
                 "StorageIDAllocator": {
+                    "NextIDCapacity": 4,
                     "StorageIDAllocatorCapacity": 10000
                 }
             }

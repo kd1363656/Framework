@@ -32,15 +32,16 @@ void Application::Execute()
 	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
 
 	l_graphicsManager.INIT();
+	l_physicsManager.INIT ();
 
 	LoadCONFIG                  ();
 	l_graphicsManager.LoadCONFIG();
 	l_editorManager.LoadCONFIG  ();
+	l_physicsManager.LoadCONFIG ();
 	
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
 
-	l_physicsManager.INIT();
 
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
@@ -103,7 +104,8 @@ void Application::Execute()
 	SaveCONFIG					();
 	l_graphicsManager.SaveCONFIG();
 	l_editorManager.SaveCONFIG  ();
-	
+	l_physicsManager.SaveCONFIG ();
+
 	l_sceneManager.SaveScene();
 }
 

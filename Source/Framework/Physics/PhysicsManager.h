@@ -13,18 +13,23 @@ namespace FWK::Physics
 
 	public:
 
-		void INIT();
-		
+		void INIT      ();
+		void LoadCONFIG();
+
 		void OptimizeBroadPhase();
 		
 		void ClearFrame                     ();
 		void CollectPhysicsDebugDrawCommands();
+
+		void SaveCONFIG() const;
 
 		void TogglePhysicsDebugDraw();
 
 		const auto& GetREFTempAllocator      () const { return m_tempAllocator; }
 		const auto& GetREFPhysicsLayerSetting() const { return m_physicsLayerSetting; }
 		const auto& GetREFPhysicsSystem      () const { return m_physicsSystem; }
+
+		void SetIsDisableDebugDraw(const bool a_set) { m_isDisableDebugDraw = a_set; }
 
 		auto& GetMutableREFPhysicsSystem() { return m_physicsSystem; }
 
@@ -59,7 +64,7 @@ namespace FWK::Physics
 		static constexpr JPH::uint k_bodyMutexCount = 0U;
 
 		static constexpr JPH::uint k_maxBodyPairCount = 1024U;
-
+		 
 		static constexpr JPH::uint k_maxContactConstraintCount = 1024U;
 
 		static constexpr uint32_t k_tempAllocatorSizeMB = 10U;
@@ -77,6 +82,8 @@ namespace FWK::Physics
 		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
 		JPH::PhysicsSystem m_physicsSystem;
+
+		Converter::PhyisicsManagerJsonConverter m_jsonConverter;
 
 		bool m_isInitialized;
 

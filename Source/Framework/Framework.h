@@ -424,10 +424,10 @@
 #include "Physics/CharacterVirtual/PhysicsCharacterVirtualBase.h"
 #include "Physics/CharacterVirtual/Gravity/Affected/PhysicsCharacterVirtualAffectedByGravity.h"
 #include "Physics/CharacterVirtual/Gravity/Unaffected/PhysicsCharacterVirtualUnaffectedByGravity.h"
-
 #include "Definition/Struct/Physics/PhysicsRayCastStruct.h"
 #include "Physics/RayCast/PhysicsRayCast.h"
-
+#include "Definition/Constant/Physics/PhysicaManagerJsonConverterConstant.h"
+#include "Physics/Converter/Json/PhysicsManagerConverterJson.h"
 #include "Physics/PhysicsManager.h"
 
 //===============================================================================

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -379,6 +379,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UFBXConvertUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\IMGUI\IMGUIConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h" />
@@ -652,6 +653,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.h" />
     <ClInclude Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.h" />
+    <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.h" />
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.h" />
@@ -725,7 +727,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
-    <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
@@ -869,6 +871,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Affected\PhysicsCharacterVirtualAffectedByGravity.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Gravity\Unaffected\PhysicsCharacterVirtualUnaffectedByGravity.cpp" />
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp" />
+    <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.cpp" />
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Queue\PhysicsDebugRendererQueue.cpp" />
@@ -921,6 +924,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json" />
     <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
+    <None Include="Asset\Data\CONFIG\Physics\PhysicsCONFIG.json" />
     <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
     <None Include="Asset\Shader\Camera\CameraPass.hlsli" />
     <None Include="Asset\Shader\Model\Model.hlsli" />

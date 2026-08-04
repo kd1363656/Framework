@@ -14,9 +14,9 @@ void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
 		{
 			// すべてのシーン情報をセーブ
 			const auto& l_sceneManager = SceneManager::GetInstance();
-
+			
 			l_sceneManager.SaveScene();
-
+			
 			FWK_ADD_LOG("シーンのセーブが完了しました。");
 		}
 

@@ -1183,6 +1183,15 @@
     <Filter Include="Source\Framework\Component\Transform\Inspector">
       <UniqueIdentifier>{6bc1901b-b8ad-46d1-95a9-c7494c15b871}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Physics\Converter">
+      <UniqueIdentifier>{326aa83f-a32b-4e74-8f54-aea3f0955406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Physics\Converter\Json">
+      <UniqueIdentifier>{6677586e-4982-4de7-8adc-cc25993d35cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Data\CONFIG\Physics">
+      <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2289,6 +2298,12 @@
     <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
       <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.h">
+      <Filter>Source\Framework\Physics\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2597,7 +2612,7 @@
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp">
       <Filter>Source\Framework\Editor\MainMenu</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\MainMenu\File\EditorFileMainMenu.cpp">
+    <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp">
       <Filter>Source\Framework\Editor\MainMenu\File</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.cpp">
@@ -2849,6 +2864,9 @@
     <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
       <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp">
+      <Filter>Source\Framework\Physics\Converter\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -2915,6 +2933,9 @@
     </None>
     <None Include="Asset\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
       <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
+    </None>
+    <None Include="Asset\Data\CONFIG\Physics\PhysicsCONFIG.json">
+      <Filter>Asset\Data\CONFIG\Physics</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

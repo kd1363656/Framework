@@ -22,17 +22,19 @@ namespace FWK::Utility
 
 		TypeAlias::StorageID Allocate();
 
-		void SetStorageIDCapacity(TypeAlias::StorageID a_set) { m_storageIDCapacity = a_set; }
+		void SetStorageIDCapacity(const TypeAlias::StorageID a_set) { m_storageIDCapacity = a_set; }
+		void SetNextStorageID    (const TypeAlias::StorageID a_set) { m_nextStorageID     = a_set; }
 
 		auto GetVALStorageIDCapacity() const { return m_storageIDCapacity; }
+		auto GetVALNextStorageID    () const { return m_nextStorageID; }
 
 		static constexpr TypeAlias::StorageID k_defaultCreateStorageIDCapacity = 10000U;
+		static constexpr TypeAlias::StorageID k_initialNextStorageID           = 0U;
 
 	private:
 
 		bool IsValidStorageID(const TypeAlias::StorageID a_storageID) const;
 
-		static constexpr TypeAlias::StorageID k_initialNextStorageID = 0U;
 
 		std::vector<bool> m_isAllocatedList = {};
 
