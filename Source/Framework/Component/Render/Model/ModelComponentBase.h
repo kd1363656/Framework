@@ -20,8 +20,6 @@ namespace FWK
 
 	private:
 
-		std::vector<std::uint32_t> m_drawRequestPassList = {};
-
 		Utility::AssetFilePathHelper m_assetFilePathHelper = {};
 
 		Converter::ModelComponentBaseJsonConverter m_jsonConverter = {};

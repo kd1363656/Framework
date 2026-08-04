@@ -358,8 +358,8 @@
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/SkeletalAnimationModelPerObjectDrawRequestBase.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Static/Shadow/StaticModelShadowPerObjectDrawRequest.h"
-#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Shadow/SkeletalAnimationModelShadowPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Static/Shadow/Cascade/StaticModelCascadeShadowPerObjectDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Object/Model/Skeletal/Shadow/Cascade/SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h"
 
 // 描画リクエスト制御パス
 #include "Definition/Enum/Graphics/RenderGraphPassEnum.h"
@@ -452,6 +452,8 @@
 #include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
 #include "Component/Render/Model/ModelComponentBase.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"
+#include "Component/Render/Model/Static/Storategy/StaticModelRegisterDrawRequestStorategyBase.h"
+#include "Component/Render/Model/Static/Storategy/Lit/StaticModelRegisterDrawRequestLitStorategy.h"
 
 //===============================================================================
 // 文字列をキーとして値を保持するRegistry

@@ -2,6 +2,11 @@
 
 namespace FWK
 {
+	class StaticModelRegisterDrawRequestStorategyBase;
+}
+
+namespace FWK
+{
 	class StaticModelComponent final : public ModelComponentBase
 	{
 	public:
@@ -15,7 +20,11 @@ namespace FWK
 
 		nlohmann::json SerializePrefab() override;
 
+		const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
+
 	private:
+
+		std::vector<std::unique_ptr<StaticModelRegisterDrawRequestStorategyBase>> m_registerDrawRequestStorategyList = {};
 
 		std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
 		std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();

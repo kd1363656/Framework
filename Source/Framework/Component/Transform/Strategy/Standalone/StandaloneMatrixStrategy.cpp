@@ -1,8 +1,8 @@
 ﻿#include "StandaloneMatrixStrategy.h"
 
-void FWK::StandaloneMatrixStrategy::Execute(TransformComponent& a_owner)
+void FWK::StandaloneMatrixStrategy::Execute(TransformComponent& a_transformComponent)
 {
-	auto l_resultMatrix = a_owner.CalculateScaleMatrix()* a_owner.CalculateRotationMatrix()* a_owner.CalculateTranslationMatrix();
+	auto l_resultMatrix = a_transformComponent.CalculateScaleMatrix() * a_transformComponent.CalculateRotationMatrix()* a_transformComponent.CalculateTranslationMatrix();
 
-	a_owner.SetMatrix(std::move(l_resultMatrix));
+	a_transformComponent.SetMatrix(std::move(l_resultMatrix));
 }

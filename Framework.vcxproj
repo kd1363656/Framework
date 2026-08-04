@@ -339,6 +339,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\StaticModelRegisterDrawRequestStorategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h" />
@@ -517,12 +519,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer\Constant\ModelPerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant\SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Buffer\Constant\SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\SkeletalAnimationModelShadowPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLitPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPerObjectDrawRequest.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\Lit\StaticModelStandardLitPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Standard\UnLit\StaticModelStandardUnLitPerObjectDrawRequest.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\StaticModelPerObjectDrawRequestBase.h" />
@@ -706,6 +708,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp" />
@@ -760,10 +763,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\DrawRequestPerObjectBase.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\SkeletalAnimationModelShadowPerObjectDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationPerObjectComputeRequest.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\StaticModelPerObjectDrawRequestBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\SpriteScreenPerObjectDrawRequest.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\CameraPassDrawRequest.cpp" />

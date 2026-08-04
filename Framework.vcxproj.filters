@@ -1156,6 +1156,18 @@
     <Filter Include="Source\Framework\Component\Render\Model\Converter\Json">
       <UniqueIdentifier>{55166301-0675-4d04-828d-3e5d1725f4f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy">
+      <UniqueIdentifier>{19751565-9775-4fac-98e0-a5e6419a323f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit">
+      <UniqueIdentifier>{3fe4fb61-5815-402f-b437-15ade6772bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade">
+      <UniqueIdentifier>{d65e0655-113b-4e26-8967-fb284b10dd9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade">
+      <UniqueIdentifier>{7f668f1e-30f4-4f02-b21e-082bcf5819cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2121,12 +2133,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\SkeletalAnimationModelShadowPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant\ModelCascadeShadowPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Shadow\Cascade\Buffer\Constant</Filter>
     </ClInclude>
@@ -2243,6 +2249,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h">
       <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\StaticModelRegisterDrawRequestStorategyBase.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2732,12 +2750,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\SkeletalAnimationModelPerObjectDrawRequestBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\SkeletalAnimationModelShadowPerObjectDrawRequest.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\StaticModelShadowPerObjectDrawRequest.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
     </ClCompile>
@@ -2791,6 +2803,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp">
       <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Lit\StaticModelRegisterDrawRequestLitStorategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Lit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

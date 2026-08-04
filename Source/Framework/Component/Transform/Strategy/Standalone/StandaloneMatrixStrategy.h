@@ -9,7 +9,7 @@ namespace FWK
 		 StandaloneMatrixStrategy()          = default;
 		~StandaloneMatrixStrategy() override = default;
 
-		void Execute(TransformComponent& a_owner) override;
+		void Execute(TransformComponent& a_transformComponent) override;
 
 		FWK_DEFINE_TYPE_INFO(StandaloneMatrixStrategy, MatrixStrategyBase)
 	};
