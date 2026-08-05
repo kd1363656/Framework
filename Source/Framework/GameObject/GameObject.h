@@ -49,10 +49,11 @@ namespace FWK
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
-		void SetPrefabName              (const std::string& a_set) { m_prefabName               = a_set; }
-		void SetContainsNumberPrefabName(const std::string& a_set) { m_containsNumberPrefabName = a_set; }
-
+		void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
+		
 		void SetUUID(const UUID& a_set) { m_uuid = a_set; }
+
+		void SetPrefabInstanceNUM(const TypeAlias::PrefabInstanceNUM a_set) { m_prefabInstanceNUM = a_set; }
 
 		template <Concept::IsDerivedComponentBaseConcept ComponentType>
 		std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -92,11 +93,12 @@ namespace FWK
 			return l_list;
 		}
 
+		std::string FetchVALGameObjectName() const;
+
 		const auto& GetREFParent() const { return m_parent; }
 
-		const auto& GetREFPrefabName              () const { return m_prefabName; }
-		const auto& GetREFContainsNumberPrefabName() const { return m_containsNumberPrefabName; }
-
+		const auto& GetREFPrefabName() const { return m_prefabName; }
+		
 		const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }
 		const auto& GetREFComponentSmartPointerVectorArray() const { return m_componentSmartPointerVectorArray; }
 
@@ -111,6 +113,8 @@ namespace FWK
 		auto& GetMutableREFComponentEventObserver() { return m_componentEventObserver; }
 
 		std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
+
+		auto GetVALPrefabInstanceNUM() const { return m_prefabInstanceNUM; }
 
 		bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
@@ -134,8 +138,9 @@ namespace FWK
 
 		UUID m_uuid = GUID_NULL;
 
-		std::string m_containsNumberPrefabName = {};
-		std::string m_prefabName               = {};
+		std::string m_prefabName = {};
+
+		TypeAlias::PrefabInstanceNUM m_prefabInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
 
 		bool m_isDestroyed = false;
 	};

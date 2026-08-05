@@ -670,15 +670,6 @@
     <Filter Include="Source\Framework\Graphics\Resource\Storage\Converter\Json">
       <UniqueIdentifier>{99681e47-f158-49ff-a581-b898c3c33123}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\StorageAllocator">
-      <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\StorageAllocator\Converter">
-      <UniqueIdentifier>{c3504afa-553b-4f51-891f-def85748ee79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\StorageAllocator\Converter\Json">
-      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Physics\CharacterVirtual">
       <UniqueIdentifier>{127b988e-1d8c-4998-a60e-a1afe5f56988}</UniqueIdentifier>
     </Filter>
@@ -1191,6 +1182,30 @@
     </Filter>
     <Filter Include="Asset\Data\CONFIG\Physics">
       <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Prefab\Allocator">
+      <UniqueIdentifier>{83af7c0a-4edc-4700-8ed3-9df37fa09303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Prefab\Allocator\Converter">
+      <UniqueIdentifier>{a1b75ba2-0610-4e08-bfdf-186ed3d14984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Prefab\Allocator\Converter\Json">
+      <UniqueIdentifier>{46f36a66-3a5f-4619-ac47-d65db91fc487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Storage">
+      <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Storage\Converter">
+      <UniqueIdentifier>{c3504afa-553b-4f51-891f-def85748ee79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Storage\Converter\Json">
+      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Storage">
+      <UniqueIdentifier>{c73ee9f8-b8c4-4d49-9ebb-169cd7e3dd04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Prefab">
+      <UniqueIdentifier>{2739b55b-e331-46be-b2fc-773f0a183410}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1767,12 +1782,6 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Storage\Converter\Json\AssetStorageJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Storage\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.h">
-      <Filter>Source\Framework\Utility\StorageAllocator</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.h">
-      <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h">
       <Filter>Source\Framework\Utility\Math</Filter>
     </ClInclude>
@@ -2304,6 +2313,30 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.h">
+      <Filter>Source\Framework\Prefab\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Prefab\Allocator\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabIDTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h">
+      <Filter>Source\Framework\Utility\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabInstanceNUMAllocatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Prefab</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2624,12 +2657,6 @@
     <ClCompile Include="Source\Framework\Physics\DebugRenderer\Batch\PhysicsDebugTriangleBatch.cpp">
       <Filter>Source\Framework\Physics\DebugDraw\Batch</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.cpp">
-      <Filter>Source\Framework\Utility\StorageAllocator</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
-      <Filter>Source\Framework\Utility\StorageAllocator\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Physics\CharacterVirtual\PhysicsCharacterVirtualBase.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual</Filter>
     </ClCompile>
@@ -2866,6 +2893,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.cpp">
+      <Filter>Source\Framework\Prefab\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Prefab\Allocator\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
+      <Filter>Source\Framework\Utility\Storage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

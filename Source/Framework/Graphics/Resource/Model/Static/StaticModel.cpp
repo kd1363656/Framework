@@ -2,7 +2,7 @@
 
 FWK::Graphics::StaticModel::StaticModel() : 
 	m_staticModelRecord(),
-	m_storageID        (AssetRecordBase::k_invalidStorageID)
+	m_storageID        (Constant::k_invalidStorageID)
 {}
 FWK::Graphics::StaticModel::StaticModel(const StaticModel& a_other) : 
 	m_staticModelRecord(a_other.m_staticModelRecord),
@@ -14,7 +14,7 @@ FWK::Graphics::StaticModel::StaticModel(StaticModel&& a_other) noexcept :
 	m_staticModelRecord(std::move(a_other.m_staticModelRecord)),
 	m_storageID		   (a_other.m_storageID)
 {
-	a_other.m_storageID = AssetRecordBase::k_invalidStorageID;
+	a_other.m_storageID = Constant::k_invalidStorageID;
 	a_other.m_staticModelRecord.reset();
 }
 FWK::Graphics::StaticModel::~StaticModel()
@@ -49,7 +49,7 @@ FWK::Graphics::StaticModel& FWK::Graphics::StaticModel::operator=(StaticModel&& 
 	m_staticModelRecord = std::move(a_other.m_staticModelRecord);
 
 	// 参照元のStorageIDを無効化
-	a_other.m_storageID = AssetRecordBase::k_invalidStorageID;
+	a_other.m_storageID = Constant::k_invalidStorageID;
 	a_other.m_staticModelRecord.reset();
 
 	return *this;
@@ -72,8 +72,8 @@ bool FWK::Graphics::StaticModel::Load(const std::filesystem::path& a_filePath)
 																							a_filePath,
 																							l_cbvSRVUAVDescriptorPool);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_storageID == AssetRecordBase::k_invalidStorageID, "StaticModelの読み込みに失敗しました。",                                false);
-	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_staticModelRecord.expired(),                      "StaticModelRecordが無効のため、StaticModelの読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_storageID == Constant::k_invalidStorageID, "StaticModelの読み込みに失敗しました。",                                false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_staticModelLoadResult.m_staticModelRecord.expired(),               "StaticModelRecordが無効のため、StaticModelの読み込みに失敗しました。", false);
 
 	m_storageID         = l_staticModelLoadResult.m_storageID;
 	m_staticModelRecord = l_staticModelLoadResult.m_staticModelRecord;
@@ -83,7 +83,7 @@ bool FWK::Graphics::StaticModel::Load(const std::filesystem::path& a_filePath)
 
 bool FWK::Graphics::StaticModel::IsValid() const
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID || 
+	if (m_storageID == Constant::k_invalidStorageID ||
 		m_staticModelRecord.expired())
 	{
 		return false; 
@@ -94,7 +94,7 @@ bool FWK::Graphics::StaticModel::IsValid() const
 
 void FWK::Graphics::StaticModel::AddReferenceCount() const
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID) { return; }
+	if (m_storageID == Constant::k_invalidStorageID) { return; }
 
 	auto& l_graphicsManager   = GraphicsManager::GetInstance			        ();
 	auto& l_resourceContext   = l_graphicsManager.GetMutableREFResourceContext  ();
@@ -105,7 +105,7 @@ void FWK::Graphics::StaticModel::AddReferenceCount() const
 
 void FWK::Graphics::StaticModel::SubtractReferenceCount()
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID)
+	if (m_storageID == Constant::k_invalidStorageID)
 	{
 		m_staticModelRecord.reset();
 		return; 
@@ -121,6 +121,6 @@ void FWK::Graphics::StaticModel::SubtractReferenceCount()
 
 	FWK_ASSERT_RETURN_IF(!l_staticModelSystem.SubtractStaticModelReferenceCount(m_staticModelRecord, l_directCommandQueue, l_resourceReleaseContext), "StaticModelの参照数減算に失敗しました。");
 
-	m_storageID = AssetRecordBase::k_invalidStorageID;
+	m_storageID = Constant::k_invalidStorageID;
 	m_staticModelRecord.reset();
 }

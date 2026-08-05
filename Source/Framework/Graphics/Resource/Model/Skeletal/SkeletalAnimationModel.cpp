@@ -2,7 +2,7 @@
 
 FWK::Graphics::SkeletalAnimationModel::SkeletalAnimationModel() : 
 	m_skeletalAnimationModelRecord(),
-	m_storageID                   (AssetRecordBase::k_invalidStorageID)
+	m_storageID                   (Constant::k_invalidStorageID)
 {
 
 }
@@ -16,7 +16,7 @@ FWK::Graphics::SkeletalAnimationModel::SkeletalAnimationModel(SkeletalAnimationM
 	m_skeletalAnimationModelRecord(std::move(a_other.m_skeletalAnimationModelRecord)),
 	m_storageID                   (a_other.m_storageID)
 {
-	a_other.m_storageID = AssetRecordBase::k_invalidStorageID;
+	a_other.m_storageID = Constant::k_invalidStorageID;
 
 	a_other.m_skeletalAnimationModelRecord.reset();
 }
@@ -55,7 +55,7 @@ FWK::Graphics::SkeletalAnimationModel& FWK::Graphics::SkeletalAnimationModel::op
 	m_skeletalAnimationModelRecord = std::move(a_other.m_skeletalAnimationModelRecord);
 
 	// Move元が参照数を減らさないように無効化する
-	a_other.m_storageID = AssetRecordBase::k_invalidStorageID;
+	a_other.m_storageID = Constant::k_invalidStorageID;
 	a_other.m_skeletalAnimationModelRecord.reset();
 
 	return *this;
@@ -79,8 +79,8 @@ bool FWK::Graphics::SkeletalAnimationModel::Load(const std::filesystem::path& a_
 																															 a_filePath,
 																															 l_cbvSRVUAVDescriptorPool);
 	
-	FWK_ASSERT_RETURN_VALUE_IF(l_skeletalAnimationModelLoadResult.m_storageID == AssetRecordBase::k_invalidStorageID, "SkeletalAnimationModelの読み込みに失敗しました。",                                           false);
-	FWK_ASSERT_RETURN_VALUE_IF(l_skeletalAnimationModelLoadResult.m_skeletalAnimationModelRecord.expired(),           "SkeletalAnimationModelRecordが無効のため、SkeletalAnimationModelの読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_skeletalAnimationModelLoadResult.m_storageID == Constant::k_invalidStorageID, "SkeletalAnimationModelの読み込みに失敗しました。",                                           false);
+	FWK_ASSERT_RETURN_VALUE_IF(l_skeletalAnimationModelLoadResult.m_skeletalAnimationModelRecord.expired(),    "SkeletalAnimationModelRecordが無効のため、SkeletalAnimationModelの読み込みに失敗しました。", false);
 
 	m_storageID                    = l_skeletalAnimationModelLoadResult.m_storageID;
 	m_skeletalAnimationModelRecord = l_skeletalAnimationModelLoadResult.m_skeletalAnimationModelRecord;
@@ -90,7 +90,7 @@ bool FWK::Graphics::SkeletalAnimationModel::Load(const std::filesystem::path& a_
 
 bool FWK::Graphics::SkeletalAnimationModel::IsValid() const
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID ||
+	if (m_storageID == Constant::k_invalidStorageID ||
 		m_skeletalAnimationModelRecord.expired())
 	{
 		return false;
@@ -101,7 +101,7 @@ bool FWK::Graphics::SkeletalAnimationModel::IsValid() const
 
 void FWK::Graphics::SkeletalAnimationModel::AddReferenceCount() const
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID) { return; }
+	if (m_storageID == Constant::k_invalidStorageID) { return; }
 
 	auto& l_graphicsManager              = GraphicsManager::GetInstance                               ();
 	auto& l_resourceContext              = l_graphicsManager.GetMutableREFResourceContext             ();
@@ -112,7 +112,7 @@ void FWK::Graphics::SkeletalAnimationModel::AddReferenceCount() const
 
 void FWK::Graphics::SkeletalAnimationModel::SubtractReferenceCount()
 {
-	if (m_storageID == AssetRecordBase::k_invalidStorageID) { return; }
+	if (m_storageID == Constant::k_invalidStorageID) { return; }
 
 	      auto& l_graphicsManager              = GraphicsManager::GetInstance                               ();
 	      auto& l_resourceContext              = l_graphicsManager.GetMutableREFResourceContext             ();
@@ -123,7 +123,7 @@ void FWK::Graphics::SkeletalAnimationModel::SubtractReferenceCount()
 
 	FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelSystem.SubtractSkeletalAnimationModelReferenceCount(m_skeletalAnimationModelRecord, l_directCommandQueue, l_resourceReleaseContext), "SkeletalAnimationModelの参照数減算に失敗しました。");
 
-	m_storageID = AssetRecordBase::k_invalidStorageID;
+	m_storageID = Constant::k_invalidStorageID;
 
 	m_skeletalAnimationModelRecord.reset();
 }

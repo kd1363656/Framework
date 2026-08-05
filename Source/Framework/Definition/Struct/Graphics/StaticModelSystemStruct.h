@@ -6,7 +6,7 @@ namespace FWK::Struct
 	{
 		std::weak_ptr<Graphics::StaticModelRecord> m_staticModelRecord = {};
 
-		TypeAlias::StorageID m_storageID = Graphics::AssetRecordBase::k_invalidStorageID;
+		TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
 	};
 
 	struct StaticModelBatchUploadRecord final

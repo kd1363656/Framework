@@ -53,7 +53,7 @@ namespace FWK
 		void RecursiveAddChild(const std::shared_ptr<GameObject>& a_parent, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const;
 
 		static constexpr std::string_view k_prefabNameJsonKey               = "PrefabName";
-		static constexpr std::string_view k_contanisNumberPrefabNameJsonKey = "ContainsNumberPrefabName";
+		static constexpr std::string_view k_prefabInstanceNUMJsonKey        = "PrefabInstanceNUM";
 		static constexpr std::string_view k_componentListJsonKey            = "ComponentList";
 		static constexpr std::string_view k_typeNameJsonKey                 = "TypeName";
 		static constexpr std::string_view k_componentEventObserverJsonKey   = "ComponentEventObserver";

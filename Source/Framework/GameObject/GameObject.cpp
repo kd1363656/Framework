@@ -144,7 +144,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 {
 	if (!a_component) 
 	{
-		FWK_ADD_LOG("GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", m_containsNumberPrefabName);
+		FWK_ADD_LOG("GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", FetchVALGameObjectName());
 
 		return; 
 	}
@@ -330,6 +330,23 @@ void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
 
 	// 親がいなくても行列を計算できるようにする
 	l_childTransformComponent->ApplyStandalone();
+}
+
+std::string FWK::GameObject::FetchVALGameObjectName() const
+{
+	// FBXをSceneへ置いただけで、
+	// まだPrefab化されていないGAmeObjectは
+	// Prefab名だけを表示する
+	if (m_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+	{
+		if (!m_prefabName.empty()) { return m_prefabName; }
+
+		return std::string{ Constant::k_gameObjectString };
+	}
+
+	FWK_ASSERT_RETURN_VALUE_IF(m_prefabName.empty(), "PrefabInstanceNUMが有効なのにPrefabNameが空になっています。", std::string{ Constant::k_gameObjectString });
+	
+	return std::format("{}_{}", m_prefabName, m_prefabInstanceNUM);
 }
 
 bool FWK::GameObject::IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const

@@ -6,6 +6,6 @@ namespace FWK::Struct
 	{
 		Prefab m_prefab = {};
 
-		Utility::StorageIDAllocator m_prefabNumberAllocator = {};
+		PrefabInstanceNUMAllocator m_prefabInstanceNUMAllocator = {};
 	};
 }

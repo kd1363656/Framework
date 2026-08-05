@@ -32,6 +32,52 @@ nlohmann::json FWK::PrefabSystem::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
+FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabSystem::AllocateVALPrefabInstanceNUM(const std::string& a_prefabName)
+{
+	if (a_prefabName.empty())
+	{
+		FWK_ADD_LOG("PrefabNameが空のため、PrefabInstanceNUMを発行できませんでした。");
+
+		return Constant::k_invalidPrefabInstanceNUM;
+	}
+
+	auto l_itr = m_prefabMap.find(a_prefabName);
+
+	if (l_itr == m_prefabMap.end())
+	{
+		FWK_ADD_LOG("PrefabName : {}\nPrefabが登録されていないため、PrefabInstanceNU<を発行できませんでした。");
+
+		return Constant::k_invalidPrefabInstanceNUM;
+	}
+
+	auto& l_prefabInstanceNUMAllocator = l_itr->second.m_prefabInstanceNUMAllocator;
+		
+	// 使用可能なInstanceNUMを発行
+	return l_prefabInstanceNUMAllocator.Allocate();
+}
+
+void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const std::string& a_prefabName, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM)
+{
+	if (a_prefabName.empty() ||
+		a_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+	{
+		return;
+	}
+
+	auto l_itr = m_prefabMap.find(a_prefabName);
+
+	if (l_itr == m_prefabMap.end())
+	{
+		FWK_ADD_LOG("PrefabName : {}\nPrefabが登録されていないため、PrefabInstanceNUMを解放できませんでした。", a_prefabName);
+
+		return;
+	}
+
+	auto& l_prefabInstanceNUMAllocator = l_itr->second.m_prefabInstanceNUMAllocator;
+
+	l_prefabInstanceNUMAllocator.Release(a_prefabInstanceNUM);
+}
+
 const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const std::string& a_prefabName) const
 {
 	auto l_itr = m_prefabMap.find(a_prefabName);

@@ -10,7 +10,7 @@ namespace FWK::Graphics
 		{
 			std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 
-			TypeAlias::StorageID m_storageID = Graphics::AssetRecordBase::k_invalidStorageID;
+			TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
 
 			bool m_isLoadSuccess = false;
 		};

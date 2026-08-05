@@ -45,10 +45,10 @@ namespace FWK::Graphics
 		bool RegisterRecord(const std::shared_ptr<RecordType>& a_record, const std::wstring& a_filePath)
 		{
 			// レコード情報が無効じゃないか、無効なストレージIDでないかをチェック
-			FWK_ASSERT_RETURN_VALUE_IF(!a_record,												                     "レコードのインスタンス化がされておらず、Recordの登録に失敗しました。",			   false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(),										                     "ファイルパスが空のため、Recordの登録に失敗しました。",							   false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_record->GetVALStorageID() == AssetRecordBase::k_invalidStorageID, "StorageIDが無効のため、Recordの登録に失敗しました。",							   false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_recordMap.contains(a_filePath),							                 "同じファイルパスのRecordが既に登録されているため、Recordの登録に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!a_record,												    "レコードのインスタンス化がされておらず、Recordの登録に失敗しました。",			   false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(),										    "ファイルパスが空のため、Recordの登録に失敗しました。",							   false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_record->GetVALStorageID() == Constant::k_invalidStorageID, "StorageIDが無効のため、Recordの登録に失敗しました。",							   false);
+			FWK_ASSERT_RETURN_VALUE_IF(m_recordMap.contains(a_filePath),							"同じファイルパスのRecordが既に登録されているため、Recordの登録に失敗しました。", false);
 
 			const bool l_isInserted = m_recordMap.try_emplace(a_filePath, a_record).second;
 
@@ -88,7 +88,7 @@ namespace FWK::Graphics
 			
 			// マップで管理していたレコードのストレージIDをリリース
 			if (const auto  l_storageID = l_record->GetVALStorageID();
-				l_storageID != AssetRecordBase::k_invalidStorageID)
+				l_storageID != Constant::k_invalidStorageID)
 			{
 				m_storageIDAllocator.Release(l_storageID);
 			}

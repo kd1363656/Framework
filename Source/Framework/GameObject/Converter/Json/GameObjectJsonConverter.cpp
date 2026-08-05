@@ -5,6 +5,7 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 	if (a_rootJson.is_null()) 
 	{
 		FWK_ADD_LOG("RootJsonが無効のため、ゲームオブジェクトのデシリアライズに失敗しました。");
+
 		return; 
 	}
 
@@ -18,11 +19,9 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 	}
 
 	// ゲームオブジェクトのプレハブ名を読み取る
-	const auto& l_prefabName               = a_rootJson.value(k_prefabNameJsonKey,               std::string{});
-	const auto& l_containsNumberPrefabName = a_rootJson.value(k_contanisNumberPrefabNameJsonKey, std::string{});
-
-	if (l_prefabName.empty() ||
-		l_containsNumberPrefabName.empty()) 
+	const auto& l_prefabName = a_rootJson.value(k_prefabNameJsonKey, std::string{});
+	
+	if (l_prefabName.empty())
 	{
 		FWK_ADD_LOG("名前が空のプレハブがJsonファイルに含まれています。SceneのJsonファイルを確認してください。");
 
@@ -30,9 +29,8 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 	}
 
 	// プレハブ名と現在何番目のプレハブかを表す番号付きの名前を格納
-	l_gameObject->SetPrefabName              (l_prefabName);
-	l_gameObject->SetContainsNumberPrefabName(l_containsNumberPrefabName);
-
+	l_gameObject->SetPrefabName(l_prefabName);
+	
 	// プレハブ名からプレハブを取得
 	const auto& l_prefabSystem = a_scene.GetREFPrefabSystem  ();
 	const auto* l_prefab       = l_prefabSystem.FindPTRPrefab(l_prefabName);
@@ -205,6 +203,12 @@ void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&       
 		return;
 	}
 
+	const auto l_prefabInstanceNUM = a_rootJson.value(k_prefabInstanceNUMJsonKey, Constant::k_invalidPrefabInstanceNUM);
+
+	FWK_ASSERT_RETURN_IF(l_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM, "PrefabInstanceNUMが無効となっており、GameObjectのScene情報をデシリアライズできませんでした。");
+
+	a_gameObject.SetPrefabInstanceNUM(l_prefabInstanceNUM);
+
 	const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
 
 	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのシーンのデシリアライズに失敗しました。");
@@ -263,10 +267,9 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializePrefab(const GameObject& a
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのシリアライズに失敗しました。", {});
 
-	// ゲームオブジェクトのプレハブ名と、番号を含んだプレハブ名を保存
-	l_rootJson[k_prefabNameJsonKey]               = a_gameObject.GetREFPrefabName              ();
-	l_rootJson[k_contanisNumberPrefabNameJsonKey] = a_gameObject.GetREFContainsNumberPrefabName();
-
+	// Prefab名を保存
+	l_rootJson[k_prefabNameJsonKey] = a_gameObject.GetREFPrefabName();
+	
 	if (const auto& l_json = l_transformComponent->SerializePrefab();
 		!l_json.is_null())
 	{
@@ -310,13 +313,24 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializeScene(const GameObject& a_
 {
 	nlohmann::json l_rootJson = {};
 
+	const auto& l_prefabName        = a_gameObject.GetREFPrefabName       ();
+	const auto  l_prefabInstanceNUM = a_gameObject.GetVALPrefabInstanceNUM();
+
+	// Prefab化されていないGameObjectは、
+	// Sceneの保存対象にしない
+	if (l_prefabName.empty() ||
+		l_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+	{
+		return {};
+	}
+
 	const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのシリアライズに失敗しました。", {});
 
 	// ゲームオブジェクトのプレハブ名と、番号を含んだプレハブ名を保存
-	l_rootJson[k_prefabNameJsonKey]               = a_gameObject.GetREFPrefabName              ();
-	l_rootJson[k_contanisNumberPrefabNameJsonKey] = a_gameObject.GetREFContainsNumberPrefabName();
+	l_rootJson[k_prefabNameJsonKey]        = a_gameObject.GetREFPrefabName       ();
+	l_rootJson[k_prefabInstanceNUMJsonKey] = a_gameObject.GetVALPrefabInstanceNUM();
 
 	// UUIDの保存
 	Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFUUID()));
@@ -391,13 +405,18 @@ void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json& 
 		auto l_child = std::make_shared<GameObject>();
 
 		// 子のプレハブ名を読み込む
-		const auto& l_prefabName               = l_childJson.value(k_prefabNameJsonKey,               std::string{});
-		const auto& l_containsNumberPrefabName = l_childJson.value(k_contanisNumberPrefabNameJsonKey, std::string{});
+		const auto& l_prefabName = l_childJson.value(k_prefabNameJsonKey, std::string{});
+		
+		if (l_prefabName.empty())
+		{
+			FWK_ADD_LOG("子GameObjectのPrefabNameが空となっており、子GameObjectをデシリアライズできませんでした。");
+
+			continue;
+		}
 
 		// プレハブ名と何番目のプレハブかを含む名前を格納
-		l_child->SetPrefabName              (l_prefabName);
-		l_child->SetContainsNumberPrefabName(l_containsNumberPrefabName);
-
+		l_child->SetPrefabName(l_prefabName);
+		
 		l_child->DeserializePrefab(l_childJson, 
 			                       l_childDeserializeData.m_childDeserializeDataList,
 			                       l_childDeserializeData.m_componentSmartPointerVectorArray,

@@ -361,6 +361,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CascadeShadowMapJsonConverterConstant.h" />
@@ -384,10 +385,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabInstanceNUMAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\EditorAssetTypeEnum.h" />
@@ -457,6 +460,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
@@ -660,6 +664,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
     <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h" />
+    <ClInclude Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.h" />
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.h" />
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Prefab\Prefab.h" />
@@ -692,8 +698,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h" />
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h" />
-    <ClInclude Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.h" />
+    <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h" />
     <ClInclude Include="Source\Framework\Utility\String\StringValueBidirectionalRegistry.h" />
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\String\WStringUtility.h" />
@@ -878,6 +884,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp" />
     <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp" />
+    <ClCompile Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Prefab.cpp" />
@@ -890,8 +898,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathHelperUtility.cpp" />
     <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />
-    <ClCompile Include="Source\Framework\Utility\StorageAllocator\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
-    <ClCompile Include="Source\Framework\Utility\StorageAllocator\StorageIDAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp" />
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
     <ClCompile Include="Source\PCH.cpp">

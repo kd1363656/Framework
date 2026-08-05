@@ -27,23 +27,23 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 		Struct::PrefabData l_prefabData = {};
 
-		auto& l_prefab                  = l_prefabData.m_prefab;
-		auto& l_prefabNumberIDAllocator = l_prefabData.m_prefabNumberAllocator;
+		auto& l_prefab                     = l_prefabData.m_prefab;
+		auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
 
 		// プレハブのJsonを読み込むためのファイルパスをセットして読みこむ
 		l_prefab.SetFilePath(l_filePath);
 		l_prefab.LoadPrefab ();
 
-		const auto& l_prefabNumberIDAllocatorJson =  l_json.value(k_prefabNumberAllocatorJsonKey, nlohmann::json{});
+		const auto& l_prefabNUMInstanceAllocatorJson =  l_json.value(k_prefabInstanceNUMAllocatorJsonKey, nlohmann::json{});
 
-		if (l_prefabNumberIDAllocatorJson.is_null())
+		if (l_prefabNUMInstanceAllocatorJson.is_null())
 		{
 			FWK_ADD_LOG("PrefabNumberIDAllocatorのJsonが無効となっておりPrefabDataの登録に失敗しました。");
 
 			continue;
 		}
 
-		l_prefabNumberIDAllocator.Deserialize(l_prefabNumberIDAllocatorJson);
+		l_prefabInstanceNUMAllocator.Deserialize(l_prefabNUMInstanceAllocatorJson);
 		
 		a_prefabSystem.AddPrefabMap(l_prefabName, l_prefabData);
 	}
@@ -58,18 +58,18 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const Prefab
 
 	for (const auto& [l_prefabName, l_prefabData] : l_prefabMap)
 	{
-		      nlohmann::json l_json                  = {};
-		const auto&          l_prefab                = l_prefabData.m_prefab;
-		const auto&          l_prefabNumberAllocator = l_prefabData.m_prefabNumberAllocator;
+		      nlohmann::json l_json                       = {};
+		const auto&          l_prefab                     = l_prefabData.m_prefab;
+		const auto&          l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
 
 		const auto& l_filePath = l_prefab.GetREFFilePath();
 
 		// 読み込めないファイルならシリアライズしない
 		if (!Utility::CanLoadFilePath(l_filePath)) { continue; }
 
-		l_json[k_prefabFilePathJsonKey]        = l_filePath;
-		l_json[k_prefabNameJsonKey]            = l_prefabName;
-		l_json[k_prefabNumberAllocatorJsonKey] = l_prefabNumberAllocator.Serialize();
+		l_json[k_prefabFilePathJsonKey]             = l_filePath;
+		l_json[k_prefabNameJsonKey]                 = l_prefabName;
+		l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
 
 		l_jsonArray.emplace_back(l_json);
 	}

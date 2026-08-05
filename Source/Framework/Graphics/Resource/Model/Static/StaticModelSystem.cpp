@@ -27,7 +27,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
 	const auto l_allocateStorageID = m_modelStorage.AllocateStorageID();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == AssetRecordBase::k_invalidStorageID, "StorageIDの割り当てに失敗したため、StaticModel読み込み処理に失敗しました。", l_staticModelLoadResult);
+	FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、StaticModel読み込み処理に失敗しました。", l_staticModelLoadResult);
 
 	auto l_staticModelRecord = std::make_shared<StaticModelRecord>();
 

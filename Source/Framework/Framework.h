@@ -144,11 +144,13 @@
 
 // レコードクラス
 #include "Definition/Type/Alias/StorageIDTypeAlias.h"
+#include "Definition/Constant/Graphics/AssetRecordBaseCosntant.h"
 #include "Graphics/Resource/Record/AssetRecordBase.h"
 
 // ストレージIDアロケータークラス
-#include "Utility/StorageAllocator/Converter/Json/StorageIDAllocatorJsonConverter.h"
-#include "Utility/StorageAllocator/StorageIDAllocator.h"
+#include "Definition/Constant/Utility/Storage/StorageIDAllocatorUtilityConstant.h"
+#include "Utility/Storage/Converter/Json/StorageIDAllocatorJsonConverter.h"
+#include "Utility/Storage/StorageIDAllocator.h"
 
 // スワップチェイン
 #include "Definition/Constant/Graphics/SwapChainJsonConverterConstasnt.h"
@@ -478,6 +480,10 @@
 //===============================================================================
 // プレハブ
 //===============================================================================
+#include "Prefab/Allocator/Converter/Json/PrefabInstanceNUMAllocatorJsonConverter.h"
+#include "Definition/Type/Alias/PrefabIDTypeAlias.h"
+#include "Definition/Constant/Prefab/PrefabInstanceNUMAllocatorConstant.h"
+#include "Prefab/Allocator/PrefabInstanceNUMAllocator.h"
 #include "Prefab/Converter/Json/PrefabJsonConverter.h"
 #include "Prefab/Prefab.h"
 #include "Definition/Struct/Prefab/PrefabSystemStruct.h"

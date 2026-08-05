@@ -62,7 +62,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
 	auto& l_editorManager = EditorManager::GetInstance();
 
 	// GameObject表示名
-    auto l_gameObjectName = a_gameObject->GetREFContainsNumberPrefabName();
+    auto l_gameObjectName = a_gameObject->FetchVALGameObjectName();
 
 	// 番号を含んだゲームオブジェクトのプレハブ名、プレハブ名すら文字列が空ならゲームオブジェクトを名前とする
 	if (l_gameObjectName.empty()) 

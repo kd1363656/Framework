@@ -176,6 +176,21 @@ void FWK::Scene::RemoveDestroyedGameObjects()
 
 		if (!l_gameObject->GetVALIsDestroyed()) { continue; }
 
+		const auto& l_prefabName        = l_gameObject->GetREFPrefabName       ();
+		const auto  l_prefabInstanceNUM = l_gameObject->GetVALPrefabInstanceNUM();
+
+		// Scene所有を解除する前に
+		// Prefabへ割り当てられていた番号を未使用状態へ戻す
+		if (!l_prefabName.empty() &&
+			l_prefabInstanceNUM != Constant::k_invalidPrefabInstanceNUM)
+		{
+			m_prefabSystem.ReleasePrefabInstanceNUM(l_prefabName, l_prefabInstanceNUM);
+
+			// UUID登録解除などが失敗して次のフレームに残った場合に、
+			// 同じ番号を二重開放しないようにGameObject側を無効値へ戻す
+			l_gameObject->SetPrefabInstanceNUM(Constant::k_invalidPrefabInstanceNUM);
+		}
+
 		FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Erase(l_gameObject->GetMutableREFUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。");
 
 		l_hasRemoveTarget = true;

@@ -29,7 +29,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
 	const auto l_allocateStorageID = m_modelStorage.AllocateStorageID();
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == AssetRecordBase::k_invalidStorageID, "StorageIDの割り当てに失敗したため、SkeletalAnimationModel読み込み処理に失敗しました。", l_skeletalAnimationModelLoadResult);
+	FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、SkeletalAnimationModel読み込み処理に失敗しました。", l_skeletalAnimationModelLoadResult);
 
 	auto l_skeletalAnimationModelRecord = std::make_shared<SkeletalAnimationModelRecord>();
 

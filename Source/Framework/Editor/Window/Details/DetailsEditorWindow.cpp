@@ -178,11 +178,11 @@ void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<
 	ImGui::EndPopup();
 }
 
-std::string_view FWK::Editor::DetailsEditorWindow::FetchVALGameObjectDisplyaName(const GameObject& a_gameObject) const
+std::string_view FWK::Editor::DetailsEditorWindow::FetchVALGameObjectDisplayName(const GameObject& a_gameObject) const
 {
-	const auto& l_containsNumberPrefabName = a_gameObject.GetREFContainsNumberPrefabName();
+	const auto& l_gameObjectName = a_gameObject.FetchVALGameObjectName();
 
-	if (!l_containsNumberPrefabName.empty()) { return l_containsNumberPrefabName; }
+	if (!l_gameObjectName.empty()) { return l_gameObjectName; }
 
 	const auto& l_prefabName = a_gameObject.GetREFPrefabName();
 

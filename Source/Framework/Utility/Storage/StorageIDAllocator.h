@@ -18,9 +18,9 @@ namespace FWK::Utility
 
 		nlohmann::json Serialize() const;
 
-		void Release(const TypeAlias::StorageID a_storageID);
-
 		TypeAlias::StorageID Allocate();
+
+		void Release(const TypeAlias::StorageID a_storageID);
 
 		void SetStorageIDCapacity(const TypeAlias::StorageID a_set) { m_storageIDCapacity = a_set; }
 		void SetNextStorageID    (const TypeAlias::StorageID a_set) { m_nextStorageID     = a_set; }
@@ -28,13 +28,10 @@ namespace FWK::Utility
 		auto GetVALStorageIDCapacity() const { return m_storageIDCapacity; }
 		auto GetVALNextStorageID    () const { return m_nextStorageID; }
 
-		static constexpr TypeAlias::StorageID k_defaultCreateStorageIDCapacity = 10000U;
-		static constexpr TypeAlias::StorageID k_initialNextStorageID           = 0U;
-
 	private:
 
-		bool IsValidStorageID(const TypeAlias::StorageID a_storageID) const;
 
+		bool IsValidStorageID(const TypeAlias::StorageID a_storageID) const;
 
 		std::vector<bool> m_isAllocatedList = {};
 
@@ -42,7 +39,7 @@ namespace FWK::Utility
 
 		Converter::StorageIDAllocatorJsonConverter m_storageAllocatorJsonConverter = {};
 
-		TypeAlias::StorageID m_storageIDCapacity = Graphics::AssetRecordBase::k_invalidStorageID;
-		TypeAlias::StorageID m_nextStorageID     = k_initialNextStorageID;
+		TypeAlias::StorageID m_storageIDCapacity = Constant::k_invalidStorageID;
+		TypeAlias::StorageID m_nextStorageID     = Constant::k_storageIDAllocatorInitialNextStorageID;
 	};
 }

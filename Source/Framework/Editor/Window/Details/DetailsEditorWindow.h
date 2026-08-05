@@ -18,7 +18,7 @@ namespace FWK::Editor
 		void DrawGameObjectComponentDetails         (const std::weak_ptr<GameObject>& a_gameObject) const;
 		void DrawAddComponentMenu                   (const std::weak_ptr<GameObject>& a_gameObject) const;
 
-		std::string_view FetchVALGameObjectDisplyaName(const GameObject& a_gameObject) const;
+		std::string_view FetchVALGameObjectDisplayName(const GameObject& a_gameObject) const;
 
 		static constexpr std::string_view k_editorName                       = "詳細";
 		static constexpr std::string_view k_noSelectedGameObjectMessage      = "GameObjectが選択されていません。";

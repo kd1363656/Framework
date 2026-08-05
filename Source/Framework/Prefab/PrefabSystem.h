@@ -2,6 +2,11 @@
 
 namespace FWK
 {
+	class GameObject;
+}
+
+namespace FWK
+{
 	class PrefabSystem final
 	{
 	private:
@@ -13,13 +18,17 @@ namespace FWK
 		 PrefabSystem() = default;
 		~PrefabSystem() = default;
 
-		void INIT       ();
-		void Deserialize(const nlohmann::json& a_rootJson);
-
+		void INIT        ();
+		void Deserialize (const nlohmann::json& a_rootJson);
+		
 		void AddPrefabMap(const std::string& a_prefabName, const Struct::PrefabData& a_prefabData);
 		void RemovePrefab(const std::string& a_prefabName);
 
 		nlohmann::json Serialize() const;
+
+		TypeAlias::PrefabInstanceNUM AllocateVALPrefabInstanceNUM(const std::string& a_prefabName);
+
+		void ReleasePrefabInstanceNUM(const std::string& a_prefabName, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM);
 
 		const Prefab* FindPTRPrefab(const std::string& a_prefabName) const;
 
