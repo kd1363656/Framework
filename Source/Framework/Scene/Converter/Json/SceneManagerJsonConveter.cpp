@@ -21,11 +21,11 @@ void FWK::Converter::SceneManagerJsonConverter::Deserialize (const nlohmann::jso
 	}
 }
 
-nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(const SceneManager& a_sceneManager) const
+nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(SceneManager& a_sceneManager) const
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_scene = a_sceneManager.GetREFScene();
+	auto& l_scene = a_sceneManager.GetMutableREFScene();
 
 	// シーン遷移マップのシリアライズ
 	l_rootJson[k_sceneShiftMapJsonKey] = SerializeSceneShiftMap(a_sceneManager);

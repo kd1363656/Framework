@@ -49,17 +49,17 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 	}
 }
 
-nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const PrefabSystem& a_prefabSystem) const
+nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(PrefabSystem& a_prefabSystem) const
 {
 	nlohmann::json l_rootJson  = {};
 	auto           l_jsonArray = nlohmann::json::array();
 
-	const auto& l_prefabMap = a_prefabSystem.GetREFPrefabMap();
+	auto& l_prefabMap = a_prefabSystem.GetMutableREFPrefabMap();
 
-	for (const auto& [l_prefabName, l_prefabData] : l_prefabMap)
+	for (auto& [l_prefabName, l_prefabData] : l_prefabMap)
 	{
 		      nlohmann::json l_json                       = {};
-		const auto&          l_prefab                     = l_prefabData.m_prefab;
+		      auto&          l_prefab                     = l_prefabData.m_prefab;
 		const auto&          l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
 
 		const auto& l_filePath = l_prefab.GetREFFilePath();
@@ -70,6 +70,11 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const Prefab
 		l_json[k_prefabFilePathJsonKey]             = l_filePath;
 		l_json[k_prefabNameJsonKey]                 = l_prefabName;
 		l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
+
+		l_prefab.SavePrefab();
+		
+		// 保存時に更新されるJsonが空なら保存処理をスキップする
+		if (l_prefab.GetREFJson().is_null()) { continue; }
 
 		l_jsonArray.emplace_back(l_json);
 	}

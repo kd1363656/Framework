@@ -11,6 +11,44 @@ void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson)
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
+void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject ||
+		l_gameObject->GetVALIsDestroyed()) 
+	{
+		return; 
+	}
+
+	const auto& l_prefabName = l_gameObject->GetREFPrefabName();
+
+	if (l_prefabName.empty() ||
+		l_gameObject->GetVALPrefabInstanceNUM() == Constant::k_invalidPrefabInstanceNUM)
+	{
+		return;
+	}
+
+	auto l_itr = m_prefabMap.find(l_prefabName);
+
+	if (l_itr == m_prefabMap.end()) { return; }
+
+	      auto& l_prefab           = l_itr->second.m_prefab;
+	const auto& l_cachedGameObject = l_prefab.GetREFGameObject().lock();
+
+	// 現在のキャッシュが有効なら変更しない
+	if (l_cachedGameObject                       &&
+		!l_cachedGameObject->GetVALIsDestroyed() &&
+		l_cachedGameObject->GetREFPrefabName() == l_prefabName)
+	{
+		return;
+	}
+
+	// キャッシュが空、削除予定、または異なるPrefabを示していた場合に
+	// 新しい代表GameObjectへ差し替える
+	l_prefab.SetGameObject(l_gameObject);
+}
+
 void FWK::PrefabSystem::AddPrefabMap(const std::string& a_prefabName, const Struct::PrefabData& a_prefabData)
 {
 	m_prefabMap.try_emplace(a_prefabName, a_prefabData);
@@ -27,7 +65,7 @@ void FWK::PrefabSystem::RemovePrefab(const std::string& a_prefabName)
 	FWK_ADD_LOG("PrefabName : {}\nPrefabを削除しました。", a_prefabName);
 }
 
-nlohmann::json FWK::PrefabSystem::Serialize() const
+nlohmann::json FWK::PrefabSystem::Serialize()
 {
 	return m_jsonConverter.Serialize(*this);
 }

@@ -9,18 +9,16 @@ namespace FWK
 		 Scene() = default;
 		~Scene() = default;
 
-		void INIT		();
-		void Deserialize(const nlohmann::json& a_rootJson);
-		
-		// デシリアライズ後のポインタの紐づけなどを行う
-		void PostDeserialize() const;
+		void INIT		    ();
+		void Deserialize    (const nlohmann::json& a_rootJson);
+		void PostDeserialize();
 
 		void EarlyUpdate  ();
-		void Update       ();
+		void Update       () const;
 		void LateUpdate   () const;
 		void ConfirmMatrix() const;
 
-		nlohmann::json Serialize() const;
+		nlohmann::json Serialize();
 
 		void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 

@@ -36,7 +36,7 @@ void FWK::SceneManager::ConfrimMatrix()
 	m_scene.ConfirmMatrix();
 }
 
-void FWK::SceneManager::SaveScene() const
+void FWK::SceneManager::SaveScene()
 {
 	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
 

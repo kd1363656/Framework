@@ -25,7 +25,7 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-void FWK::Scene::PostDeserialize() const
+void FWK::Scene::PostDeserialize()
 {
 	for (const auto& l_gameObject : m_gameObjectList)
 	{
@@ -71,7 +71,7 @@ void FWK::Scene::EarlyUpdate()
 		}
 	}
 }
-void FWK::Scene::Update()
+void FWK::Scene::Update() const
 {
 	for (const auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
 	{
@@ -126,7 +126,7 @@ void FWK::Scene::ConfirmMatrix() const
 	}
 }
 
-nlohmann::json FWK::Scene::Serialize() const
+nlohmann::json FWK::Scene::Serialize()
 {
 	return m_jsonConverter.Serialize(*this);
 }
@@ -150,6 +150,10 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 	FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFUUID()), "ゲームオブジェクトのUUIDの登録に失敗しており、ゲームオブジェクトの追加処理に失敗しました。");
 
 	m_gameObjectList.emplace_back(a_gameObject);
+
+	// Prefabの代表GameObjectが削除などで空になっている場合だけ
+	// 今回追加したGameObjectを新しい代表として設定する
+	m_prefabSystem.CachePrefabGameObjectIfNeeded(a_gameObject);
 
 	// 計算済みの階層へ直接追加する
 	AddGameObjectToExecutionLevelList(a_gameObject, l_executionLevel);

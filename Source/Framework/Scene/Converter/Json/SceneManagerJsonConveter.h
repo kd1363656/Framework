@@ -16,7 +16,7 @@ namespace FWK::Converter
 
 		void Deserialize(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const;
 
-		nlohmann::json Serialize(const SceneManager& a_sceneManager) const;
+		nlohmann::json Serialize(SceneManager& a_sceneManager) const;
 
 	private:
 

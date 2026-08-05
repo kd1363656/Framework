@@ -16,7 +16,7 @@ namespace FWK
 
 		void LoadPrefab();
 
-		void SavePrefab() const;
+		void SavePrefab();
 
 		void SetGameObject(const std::weak_ptr<GameObject>& a_set) { m_gameObject = a_set; }
 

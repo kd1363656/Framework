@@ -21,7 +21,12 @@ nlohmann::json FWK::Converter::PrefabJsonConverter::Serialize(const Prefab& a_pr
 	const auto&          l_gameObject = a_prefab.GetREFGameObject().lock();
 	      nlohmann::json l_rootJson   = {};
 
-	if (!l_gameObject) { return {}; }
+	if (!l_gameObject) 
+	{
+		FWK_ADD_LOG("Prefab保存用GameObjectが存在しないため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_prefab.GetREFFilePath());
+
+		return {}; 
+	}
 
 	l_rootJson[k_gameObjectJsonKey] = l_gameObject->SerializePrefab();
 

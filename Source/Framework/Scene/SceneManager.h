@@ -24,7 +24,7 @@ namespace FWK
 		void LateUpdate   () const;
 		void ConfrimMatrix();
 		
-		void SaveScene() const;
+		void SaveScene();
 
 		void AddSceneShiftMap(const SceneName& a_sceneName, const SceneFilePath& a_sceneFilePath);
 
