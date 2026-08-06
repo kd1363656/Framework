@@ -13,10 +13,10 @@ namespace FWK
 		void Deserialize    (const nlohmann::json& a_rootJson);
 		void PostDeserialize();
 
-		void EarlyUpdate  ();
-		void Update       () const;
-		void LateUpdate   () const;
-		void ConfirmMatrix() const;
+		void EarlyUpdate   ();
+		void Update        () const;
+		void LateUpdate    () const;
+		void PostLateUpdate() const;
 
 		nlohmann::json Serialize();
 

@@ -450,8 +450,8 @@
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
-#include "Utility/File/Asset/Converter/Json/AssetFilePathHelperUtilityJsonConverter.h"
-#include "Utility/File/Asset/AssetFilePathHelperUtility.h"
+#include "Utility/Helper/Asset/Converter/Json/AssetFilePathHelperUtilityJsonConverter.h"
+#include "Utility/Helper/Asset/AssetFilePathHelperUtility.h"
 #include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
 #include "Component/Render/Model/ModelComponentBase.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"
@@ -497,6 +497,7 @@
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
+#include "Utility/GameObject/GameObjectUtility.h"
 
 //===============================================================================
 // シーン

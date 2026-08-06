@@ -41,8 +41,8 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectDetails(const std::weak_ptr
 
 	if (!l_gameObject) { return; }
 
-	const auto& l_gameObjectDisplayName = FetchVALGameObjectDisplyaName(*l_gameObject);
-	const auto& l_uuidString            = Utility::UUIDToString        (l_gameObject->GetREFUUID());
+	const auto& l_gameObjectDisplayName = l_gameObject->FetchVALGameObjectName();
+	const auto& l_uuidString            = Utility::UUIDToString               (l_gameObject->GetREFUUID());
 
 	ImGui::Text("%s : %.*s", k_gameObjectNameLabel.data(), static_cast<int>(l_gameObjectDisplayName.size()), l_gameObjectDisplayName.data());
 	ImGui::Text("%s : %s",   k_uuidLabel.data(),                            l_uuidString.c_str());

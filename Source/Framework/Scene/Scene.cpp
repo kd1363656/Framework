@@ -107,7 +107,7 @@ void FWK::Scene::LateUpdate() const
 		}
 	}
 }
-void FWK::Scene::ConfirmMatrix() const
+void FWK::Scene::PostLateUpdate() const
 {
 	for (const auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
 	{
@@ -121,7 +121,7 @@ void FWK::Scene::ConfirmMatrix() const
 				continue;
 			}
 
-			l_gameObject->ConfirmMatrix();
+			l_gameObject->PostLateUpdate();
 		}
 	}
 }

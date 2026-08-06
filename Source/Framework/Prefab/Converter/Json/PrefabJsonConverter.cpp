@@ -23,7 +23,7 @@ nlohmann::json FWK::Converter::PrefabJsonConverter::Serialize(const Prefab& a_pr
 
 	if (!l_gameObject) 
 	{
-		FWK_ADD_LOG("Prefab保存用GameObjectが存在しないため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_prefab.GetREFFilePath());
+		FWK_ADD_LOG("Prefab保存用GameObjectが存在しないため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_prefab.GetREFFilePath().string());
 
 		return {}; 
 	}

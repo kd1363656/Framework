@@ -4,7 +4,7 @@ void FWK::Converter::StorageIDAllocatorJsonConverter::Deserialize(const nlohmann
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto l_storageIDCapacity = a_rootJson.value(k_capacityJsonKey, Utility::StorageIDAllocator::k_defaultCreateStorageIDCapacity);
+	const auto l_storageIDCapacity = a_rootJson.value(k_capacityJsonKey, Constant::k_storageIDAllocatorDefaultCreateStorageIDCapacity);
 	
 	a_storageIDAllocator.SetStorageIDCapacity(l_storageIDCapacity);
 }

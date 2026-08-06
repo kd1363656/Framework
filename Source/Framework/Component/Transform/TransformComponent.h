@@ -19,7 +19,7 @@ namespace FWK
 
 		void PostDeserialize() override;
 		
-		void ConfrimMatrix();
+		void PostLateUpdate() override;
 
 		void EditInspector() override;
 
@@ -61,7 +61,7 @@ namespace FWK
 
 	private:
 
-		void ConfrimMatrixStrategy();
+		void ConfrimMatrix();
 
 		std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
 

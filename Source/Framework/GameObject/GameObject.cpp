@@ -91,11 +91,22 @@ void FWK::GameObject::LateUpdate() const
 		l_component->LateUpdate();
 	}
 }
-void FWK::GameObject::ConfirmMatrix() const
+void FWK::GameObject::PostLateUpdate() const
 {
 	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TransformComponentは必ず存在するべきComponentです。");
 
-	m_transformComponent->ConfrimMatrix();
+	// 当たり判定などで微調整された行列を確定
+	m_transformComponent->PostLateUpdate();
+
+	// 行列確定後に決まる処理を更新する
+	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+	{
+		const auto& l_component = l_componentData.m_type;
+
+		if (!l_component) { continue; }
+
+		l_component->PostLateUpdate();
+	}
 }
 
 void FWK::GameObject::Destroy()

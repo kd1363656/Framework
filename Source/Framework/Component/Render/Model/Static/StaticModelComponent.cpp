@@ -43,6 +43,11 @@ void FWK::StaticModelComponent::PostDeserialize()
 	m_drawRequestData->m_worldMaxScale               = Utility::CalculateWorldMaxScale(l_matrix);
 }
 
+void FWK::StaticModelComponent::PostLateUpdate()
+{
+	if (!m_drawRequestData) { return; }
+}
+
 nlohmann::json FWK::StaticModelComponent::SerializePrefab()
 {
 	nlohmann::json l_rootJson = {};

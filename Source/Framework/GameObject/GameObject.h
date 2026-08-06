@@ -29,10 +29,10 @@ namespace FWK
 
 		void PostDeserialize();
 
-		void EarlyUpdate  () const;
-		void Update       () const;
-		void LateUpdate   () const;
-		void ConfirmMatrix() const;
+		void EarlyUpdate   () const;
+		void Update        () const;
+		void LateUpdate    () const;
+		void PostLateUpdate() const;
 
 		void Destroy();
 

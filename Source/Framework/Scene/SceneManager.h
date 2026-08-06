@@ -19,10 +19,10 @@ namespace FWK
 
 		void LoadScene(const std::string_view& a_sceneFilePath);
 		
-		void EarlyUpdate  ();
-		void Update       ();
-		void LateUpdate   () const;
-		void ConfrimMatrix();
+		void EarlyUpdate   ();
+		void Update        ();
+		void LateUpdate    () const;
+		void PostLateUpdate();
 		
 		void SaveScene();
 

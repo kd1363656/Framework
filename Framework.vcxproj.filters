@@ -1081,15 +1081,6 @@
     <Filter Include="Source\Framework\Component\Render">
       <UniqueIdentifier>{28a5b31c-de7d-43c6-a556-39dede09053b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\File\Asset">
-      <UniqueIdentifier>{64a70ad1-aaad-4dce-a5ed-78e90e23b19e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\File\Asset\Converter">
-      <UniqueIdentifier>{ebb3cd76-1914-43a2-963f-487a0a363876}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\File\Asset\Converter\Json">
-      <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\IMGUI\Bool">
       <UniqueIdentifier>{1fa2f86b-6a7e-40cd-9c51-664da9abe8fc}</UniqueIdentifier>
     </Filter>
@@ -1206,6 +1197,21 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Prefab">
       <UniqueIdentifier>{2739b55b-e331-46be-b2fc-773f0a183410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\GameObject">
+      <UniqueIdentifier>{267ae01b-247a-4ecf-995d-4fb9d2c6299d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper">
+      <UniqueIdentifier>{9b92d68c-fc2f-447c-a927-469ffeec4ef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Asset">
+      <UniqueIdentifier>{64a70ad1-aaad-4dce-a5ed-78e90e23b19e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Asset\Converter">
+      <UniqueIdentifier>{ebb3cd76-1914-43a2-963f-487a0a363876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Asset\Converter\Json">
+      <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2229,12 +2235,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Asset\AssetFilePathHelperUtility.h">
-      <Filter>Source\Framework\Utility\File\Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
-      <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h">
       <Filter>Source\Framework\Utility\IMGUI\Bool</Filter>
     </ClInclude>
@@ -2336,6 +2336,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabInstanceNUMAllocatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectUtility.h">
+      <Filter>Source\Framework\Utility\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelperUtility.h">
+      <Filter>Source\Framework\Utility\Helper\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
+      <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2837,12 +2846,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\File\Asset\AssetFilePathHelperUtility.cpp">
-      <Filter>Source\Framework\Utility\File\Asset</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\File\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp">
-      <Filter>Source\Framework\Utility\File\Asset\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static</Filter>
     </ClCompile>
@@ -2905,6 +2908,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
       <Filter>Source\Framework\Utility\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelperUtility.cpp">
+      <Filter>Source\Framework\Utility\Helper\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp">
+      <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

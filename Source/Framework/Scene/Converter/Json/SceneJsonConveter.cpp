@@ -89,8 +89,6 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 			continue;
 		}
 
-		const auto& l_gameObjectJson = l_gameObject->SerializeScene();
-
 		nlohmann::json l_json = {};
 
 		l_json[k_gameObjecJsonKey] = l_gameObject->SerializeScene();

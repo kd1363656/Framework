@@ -21,10 +21,11 @@ namespace FWK
 		
 		virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
-		virtual void EarlyUpdate()       { /*必要に応じてオーバーライドしてください*/ };
-		virtual void Update     ()       { /*必要に応じてオーバーライドしてください*/ };
-		virtual void LateUpdate () const { /*必要に応じてオーバーライドしてください*/ };
-		
+		virtual void EarlyUpdate   () { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Update        () { /*必要に応じてオーバーライドしてください*/ };
+		virtual void LateUpdate    () { /*必要に応じてオーバーライドしてください*/ };
+		virtual void PostLateUpdate() { /*必要に応じてオーバーライドしてください*/ };
+		 
 		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual nlohmann::json SerializePrefab() { return {}; }

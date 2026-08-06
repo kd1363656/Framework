@@ -18,6 +18,8 @@ namespace FWK
 
 		void PostDeserialize() override;
 
+		void PostLateUpdate() override;
+
 		nlohmann::json SerializePrefab() override;
 
 		const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
