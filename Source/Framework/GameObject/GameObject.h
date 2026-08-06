@@ -3,6 +3,7 @@
 namespace FWK
 {
 	class Scene;
+	class TransformComponent;
 }
 
 namespace FWK

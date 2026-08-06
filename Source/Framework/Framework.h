@@ -433,34 +433,6 @@
 #include "Physics/PhysicsManager.h"
 
 //===============================================================================
-// コンポーネント
-//===============================================================================
-#include "Component/ComponentBase.h"
-#include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
-#include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
-#include "Strategy/StrategyBase.h"
-#include "Definition/Constant/IMGUI/IMGUIConstant.h"
-#include "Utility/Math/MathQuaternionUtility.h"
-#include "Utility/IMGUI/Factory/IMGUIFactoryRadioButtonSelectorUtility.h"
-#include "Definition/Struct/Component/TransformComponentStruct.h"
-#include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
-#include "Component/Transform/Inspector/TransformComponentInspector.h"
-#include "Component/Transform/TransformComponent.h"
-#include "Component/Transform/Strategy/MatrixStrategyBase.h"
-#include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
-#include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
-#include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
-#include "Utility/Helper/Asset/Converter/Json/AssetFilePathHelperUtilityJsonConverter.h"
-#include "Utility/Helper/Asset/AssetFilePathHelperUtility.h"
-#include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
-#include "Component/Render/Model/ModelComponentBase.h"
-#include "Component/Render/Model/Static/StaticModelComponent.h"
-#include "Component/Render/Model/Static/Storategy/StaticModelRegisterDrawRequestStorategyBase.h"
-#include "Definition/Type/Alias/Factory/Unique/StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h"
-#include "Component/Render/Model/Static/Storategy/Standard/Lit/StaticModelRegisterDrawRequestStandardLitStorategy.h"
-#include "Component/Render/Model/Static/Storategy/Standard/UnLit/StaticModelRegisterDrawRequestStandardUnLitStorategy.h"
-
-//===============================================================================
 // 文字列をキーとして値を保持するRegistry
 //===============================================================================
 #include "Utility/String/StringValueBidirectionalRegistry.h"
@@ -472,6 +444,7 @@
 #include "Definition/Enum/Observer/ObserverEnum.h"
 #include "Definition/Constant/Utility/Enum/EnumBitShiftUtilityConstant.h"
 #include "Utility/Enum/EnumBitShiftUtility.h"
+#include "Definition/Constant/IMGUI/IMGUIConstant.h"
 #include "Utility/IMGUI/Observer/IMGUIObserverUtility.h"
 #include "Utility/IMGUI/Bool/IMGUIBoolToString.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
@@ -491,6 +464,13 @@
 #include "Prefab/PrefabSystem.h"
 
 //===============================================================================
+// コンポーネント(基底クラス)
+//===============================================================================
+#include "Component/ComponentBase.h"
+#include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
+#include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
+
+//===============================================================================
 // ゲームオブジェクト
 //===============================================================================
 #include "Utility/UUID/UUIDRegistry.h"
@@ -498,6 +478,30 @@
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
 #include "Utility/GameObject/GameObjectUtility.h"
+
+//===============================================================================
+// コンポーネント
+//===============================================================================
+#include "Strategy/StrategyBase.h"
+#include "Utility/Math/MathQuaternionUtility.h"
+#include "Utility/IMGUI/Factory/IMGUIFactoryRadioButtonSelectorUtility.h"
+#include "Definition/Struct/Component/TransformComponentStruct.h"
+#include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
+#include "Component/Transform/Inspector/TransformComponentInspector.h"
+#include "Component/Transform/TransformComponent.h"
+#include "Component/Transform/Strategy/MatrixStrategyBase.h"
+#include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
+#include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
+#include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrartegy.h"
+#include "Utility/Helper/Asset/Converter/Json/AssetFilePathHelperUtilityJsonConverter.h"
+#include "Utility/Helper/Asset/AssetFilePathHelperUtility.h"
+#include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
+#include "Component/Render/Model/ModelComponentBase.h"
+#include "Component/Render/Model/Static/StaticModelComponent.h"
+#include "Component/Render/Model/Static/Storategy/StaticModelRegisterDrawRequestStorategyBase.h"
+#include "Definition/Type/Alias/Factory/Unique/StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h"
+#include "Component/Render/Model/Static/Storategy/Standard/Lit/StaticModelRegisterDrawRequestStandardLitStorategy.h"
+#include "Component/Render/Model/Static/Storategy/Standard/UnLit/StaticModelRegisterDrawRequestStandardUnLitStorategy.h"
 
 //===============================================================================
 // シーン

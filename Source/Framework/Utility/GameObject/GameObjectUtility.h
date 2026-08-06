@@ -2,7 +2,14 @@
 
 namespace FWK::Utility
 {
-	inline bool IsValidPrefabHierarchy(const GameObject& a_rootGameObject)
+	inline std::string_view FetchVALPrefabName(const GameObject& a_gameObject)
+	{
+		if (a_gameObject.GetVALPrefabInstanceNUM() == Constant::k_invalidPrefabInstanceNUM) { return {}; }
+
+		return a_gameObject.GetREFPrefabName();
+	}
+
+	inline bool IsValidPrefabHierarchy(const GameObject& a_gameObject)
 	{
 		return true;
 	}
