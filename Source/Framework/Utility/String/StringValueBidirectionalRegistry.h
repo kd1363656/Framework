@@ -7,7 +7,7 @@ namespace FWK::Utility
 	{
 	private:
 
-		using StringToValueMap = std::unordered_map<std::string, Type, Struct::StringHash, std::equal_to<>>;
+		using StringToValueMap = std::unordered_map<std::string, Type, Struct::StringHashStruct, std::equal_to<>>;
 		using ValueToStringMap = std::unordered_map<Type,        std::string>;
 
 		friend class SingletonBase<StringValueBidirectionalRegistry<Type>>;

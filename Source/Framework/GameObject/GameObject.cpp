@@ -1,10 +1,13 @@
 ﻿#include "GameObject.h"
 
-void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene)
+void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.Deserialize(shared_from_this(), a_rootJson, a_scene);
+	m_jsonConverter.Deserialize(shared_from_this(), 
+		                        a_rootJson, 
+		                        a_parentPrefabNameSet,
+		                        a_scene);
 }
 void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene)
 {
@@ -15,6 +18,7 @@ void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, Scene&
 void FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 	                                          std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 	                                          Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+	                                          TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
 	                                          Scene&                                                            a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
@@ -23,6 +27,7 @@ void FWK::GameObject::DeserializePrefab(const nlohmann::json&                   
 		                              weak_from_this(),
 		                              a_childDeserializeDataList,
 		                              a_componentSmartPointerVectorArray, 
+		                              a_parentPrefabNameSet,
 		                              a_scene);
 }
 void FWK::GameObject::DeserializeScene(const nlohmann::json &                                                  a_rootJson, 

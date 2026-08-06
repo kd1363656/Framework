@@ -15,12 +15,13 @@ namespace FWK
 		 GameObject() = default;
 		~GameObject() = default;
 
-		void Deserialize      (const nlohmann::json& a_rootJson, Scene& a_scene);
+		void Deserialize      (const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene);
 		void DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene);
 
 		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                         TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
 			                         Scene&                                                            a_scene);
 
 		void DeserializeScene(const nlohmann::json&                                                   a_rootJson,

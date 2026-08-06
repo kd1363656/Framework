@@ -7,9 +7,4 @@ namespace FWK::Utility
 		return !a_gameObject.GetREFPrefabName       ().empty() &&
 			    a_gameObject.GetVALPrefabInstanceNUM() != Constant::k_invalidPrefabInstanceNUM;
 	}
-
-	inline bool CanBuildPrefabHierarchy(const GameObject& a_parentGameObject, const GameObject& a_childGameObject)
-	{
-	
-	}
 }

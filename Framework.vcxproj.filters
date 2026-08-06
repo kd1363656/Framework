@@ -1752,7 +1752,7 @@
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h">
+    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArrayUtility.h">
@@ -2346,6 +2346,9 @@
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\GameObjectJsonConverterTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2645,7 +2648,7 @@
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp">
+    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp">

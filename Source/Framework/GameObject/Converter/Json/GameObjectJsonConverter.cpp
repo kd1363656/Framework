@@ -1,6 +1,6 @@
 ﻿#include "GameObjectJsonConverter.h"
 
-void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene& a_scene) const
+void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene) const
 {
 	if (a_rootJson.is_null()) 
 	{
@@ -128,67 +128,25 @@ void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&      
 		return;
 	}
 
-	const auto& l_gameObject = a_gameObject.lock();
+	// 現在デシリアライズしている親階層のPrefab名を管理する集合
+	// 子の集合にはScene内のPrefab名ではなく
+	// 現在再帰定期にどっている親階層のPrefab名だけを格納する
+	PrefabNameSet l_parentPrefabNameSet = {};
 
-	if (!l_gameObject)
+	// ルートとなるGameObjectのPrefab名を取得する
+	const auto& l_prefabName = a_rootJson.value(k_prefabNameJsonKey, std::string{});
+
+	if (!l_prefabName.empty())
 	{
-		FWK_ADD_LOG("GameObjectが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
-
-		return;
+		l_parentPrefabNameSet.emplace(l_prefabName);
 	}
 
-	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
-
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
-
-	// TransformComponentのプレハブの情報を読み込む
-	const auto& l_transformComponentJson = a_rootJson.value(k_transformComponentJsonKey, nlohmann::json{});
-
-	FWK_ASSERT_RETURN_IF(l_transformComponentJson.is_null(), "TransformComponentJsonが無効になっており、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
-
-	l_transformComponent->DeserializePrefab(l_transformComponentJson);
-
-	// コンポーネント読み込み用Jonの存在確認、なければreturn
-	if (const auto& l_componentJsonArray = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
-		Utility::IsJsonArray(l_componentJsonArray))
-	{
-		const auto& l_componentFactory = TypeAlias::ComponentSharedFactory::GetInstance();
-
-		// コンポーネントの読み込みと生成
-		for (const auto& l_componentJson : l_componentJsonArray)
-		{
-			if (l_componentJson.is_null()) { continue; }
-
-			// コンポーネントの名前を取得
-			const auto& l_typeName = l_componentJson.value(k_typeNameJsonKey, std::string{});
-
-			if (l_typeName.empty())
-			{
-				FWK_ADD_LOG("ComponentTypeNameが空のため、Componentを生成できませんでした。");
-
-				continue;
-			}
-
-			// コンポーネントの名前をもとにファクトリーから生成
-			// もしインスタンス化されなければcontinue
-			const auto& l_component = l_componentFactory.Create(l_typeName);
-
-			if (!l_component) { continue; }
-
-			// コンポーネントにゲームオブジェクト自身のキャッシュを与えデシリアライズ
-			l_component->DeserializePrefab(l_componentJson);
-
-			// コンポーネントの実行順序はjsonに保存された順番でありScene情報も
-			// 読み込む必要があるため順番を崩さないようにリストで管理
-			a_componentSmartPointerVectorArray.Add(l_component);
-		}
-	}
-
-	// コンポーネントオブザーバーのデシリアライズ
-	DeserializeComponentEventObserver(a_rootJson, *l_gameObject);
-
-	// 子ゲームオブジェクトのデシリアライズ
-	DeserializeChildPrefab(a_rootJson, a_childDeserializeDataList, a_scene);
+	DeserializePrefab(a_rootJson, 
+		              a_gameObject,
+		              a_childDeserializeDataList,
+		              a_componentSmartPointerVectorArray,
+		              l_parentPrefabNameSet,
+		              a_scene)
 }
 void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
 	                                                      GameObject&                                                       a_gameObject,
@@ -372,6 +330,85 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializeScene(const GameObject& a_
 	return l_rootJson;
 }
 
+void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+	                                                 const std::weak_ptr<GameObject>&                                        a_gameObject, 
+	                                                       std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
+	                                                       Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
+	                                                       TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
+	                                                       Scene&                                                            a_scene) const
+{
+	if (a_rootJson.is_null())
+	{
+		FWK_ADD_LOG("RootJsonが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+		return;
+	}
+
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject)
+	{
+		FWK_ADD_LOG("GameObjectが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+		return;
+	}
+
+	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
+
+	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+	// TransformComponentのPrefab情報を読み込む
+	const auto& l_transformComponentJson = a_rootJson.value(k_transformComponentJsonKey, nlohmann::json{});
+
+	FWK_ASSERT_RETURN_IF(l_transformComponentJson.is_null(), "TransformComponentJsonが無効になっており、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
+
+	l_transformComponent->DeserializePrefab(l_transformComponentJson);
+
+	// ComponentListが存在する場合、
+	// Prefabに保存されている順番でComponentを生成する
+	if (const auto& l_componentJsonArray = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
+		Utility::IsJsonArray(l_componentJsonArray))
+	{
+		const auto& l_componentFactory = TypeAlias::ComponentSharedFactory::GetInstance();
+
+		for (const auto& l_componentJson : l_componentJsonArray)
+		{
+			if (l_componentJson.is_null()) { continue; }
+
+			// Componentの型名を取得する
+			const auto& l_typeName = l_componentJson.value(k_typeNameJsonKey, std::string{});
+
+			if (l_typeName.empty())
+			{
+				FWK_ADD_LOG("ComponentTypeNameが空のため、Componentを生成できませんでした。");
+
+				continue;
+			}
+
+			// 登録されているFactoryからComponentを生成する
+			const auto& l_component = l_componentFactory.Create(l_typeName);
+
+			if (!l_component) { continue; }
+
+			l_component->DeserializePrefab(l_componentJson);
+
+			// Scene情報は同じ格納順を使って上書きするため
+			// Componentの保存順番を維持する
+			a_componentSmartPointerVectorArray.Add(l_component);
+		}
+	}
+
+	// ComponentEventObserverのPrefab情報を読み込む
+	DeserializeComponentEventObserver(a_rootJson, *l_gameObject);
+
+	// 現在の親階層に存在するPrefab名の集合を引き継いで、
+	// 子GameObjectを再帰的に読み込む
+	DeserializeChildPrefab(a_rootJson,
+		                   a_childDeserializeDataList,
+		                   a_parentPrefabNameSet,
+		                   a_scene);
+}
+
 void FWK::GameObjectJsonConverter::DeserializeComponentEventObserver(const nlohmann::json& a_rootJson, GameObject& a_gameObject) const
 {
 	if (a_rootJson.is_null()) { return; }
@@ -385,7 +422,10 @@ void FWK::GameObjectJsonConverter::DeserializeComponentEventObserver(const nlohm
 	l_componentEventObserver.Deserialize(l_rootJson);
 }
 
-void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json& a_rootJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const
+void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json&                            a_rootJson, 
+	                                                            std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
+	                                                            PrefabNameSet&                             a_parentPrefabNameSet, 
+	                                                            Scene&                                     a_scene) const
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -393,16 +433,21 @@ void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json& 
 
 	if (!Utility::IsJsonArray(l_childJsonArray)) { return; }
 
+	// 子の追加時にvectorが何度も再確保をされることを防ぐ
+	a_childDeserializeDataList.reserve(a_childDeserializeDataList.size() + l_childJsonArray.size());
+
 	for (const auto& l_childJson : l_childJsonArray)
 	{
+		// PrefabとSceneでは、子Jsonの配列添え字によって
+		// 同じ子GameObjectを対応付けている
+		// そのため循環Prefabを除外する場合でもからデータを追加して
+		// Prefab側とScene側の添え字がずれないようにする
+		a_childDeserializeDataList.emplace_back();
+
+		// 現在追加した子ゲームオブジェクトをリストから取得
+		auto& l_childDeserialzieData = a_childDeserializeDataList.back();
+
 		if (l_childJson.is_null()) { continue; }
-
-		// リストが回るたびに子ゲームオブジェクトが"Json"保存前に存在していたということなので
-		// 毎回ゲームオブジェクトを生成
-		Struct::ChildDeserializeData l_childDeserializeData = {};
-
-		// 子を初期化
-		auto l_child = std::make_shared<GameObject>();
 
 		// 子のプレハブ名を読み込む
 		const auto& l_prefabName = l_childJson.value(k_prefabNameJsonKey, std::string{});
@@ -414,9 +459,25 @@ void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json& 
 			continue;
 		}
 
-		// プレハブ名と何番目のプレハブかを含む名前を格納
+		// 現在の親階層に同じPrefab名が存在する場合
+		// 直接または間接的なPrefab階層になるため読み込まない
+		if (a_parentPrefabNameSet.contains(l_prefabName))
+		{
+			FWK_ADD_LOG("親階層と同じPrefabNameを持つ子GameObjectを検出したため、子GameObjectのデシリアライズを除外しました。");
+
+			continue;
+		}
+
+		auto l_child = std::make_shared<GameObject>();
+
 		l_child->SetPrefabName(l_prefabName);
 		
+		// GameObject::DeserializeePrefabを呼ぶと
+		// 親Prefab名の集合が新しく作り直されてしまう
+		// そのため同じConverter内部の再起用関数を直接予備だ火
+		// 現愛の親Prefab各集合をそのまま引き継ぐ
+
+
 		l_child->DeserializePrefab(l_childJson, 
 			                       l_childDeserializeData.m_childDeserializeDataList,
 			                       l_childDeserializeData.m_componentSmartPointerVectorArray,

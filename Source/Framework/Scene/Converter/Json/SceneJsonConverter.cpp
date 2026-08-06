@@ -1,4 +1,4 @@
-﻿#include "SceneJsonConveter.h"
+﻿#include "SceneJsonConverter.h"
 
 void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
@@ -44,10 +44,15 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 
 		auto l_gameObject = std::make_shared<GameObject>();
 
+		// 親Prefab名はRootGameObjectごとに独立して管理する
+		// Scene内の別のRootGameObjectが同じPrefab名を持っていても、
+		// 親子関係ではないため循環扱いにしない
+		TypeAlias::PrefabNameSet l_parentPrefabNameSet = {};
+
 		// Prefab情報を生成した後
 		// Scene固有情報としてPrefabInstanceNUMなどを復元する
 		// 子ゲームオブジェクトなどをシリアライズしてシーンに登録
-		l_gameObject->Deserialize(l_gameObjectJson, a_scene);
+		l_gameObject->Deserialize(l_gameObjectJson, l_parentPrefabNameSet, a_scene);
 
 	    // PrefabInstanceNUMがDeserializeで有効値にならず無効値のままなら
 		// Sceneへ登録しない

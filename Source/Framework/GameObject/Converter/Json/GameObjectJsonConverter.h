@@ -15,14 +15,15 @@ namespace FWK
 		 GameObjectJsonConverter() = default;
 		~GameObjectJsonConverter() = default;
 
-		void Deserialize      (const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene& a_scene) const;
-		void DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene& a_scene) const;
+		void Deserialize      (const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene) const;
+		void DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene&                    a_scene) const;
 
 		// a_rootJsonがそもそもプレハブのjsonを読み込む前提
 		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson,
 			                   const std::weak_ptr<GameObject>&                                        a_gameObject,
 			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList, 
-			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
+			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                         TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
 			                         Scene&                                                            a_scene) const;
 
 		void DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
@@ -36,9 +37,20 @@ namespace FWK
 
 	private:
 
+		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+			                   const std::weak_ptr<GameObject>&                                        a_gameObject,
+			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
+			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                         TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
+                                     Scene&                                                            a_scene) const;
+
 		void DeserializeComponentEventObserver(const nlohmann::json& a_rootJson, GameObject& a_gameObject) const;
 
-		void DeserializeChildPrefab(const nlohmann::json& a_rootJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const;
+		void DeserializeChildPrefab(const nlohmann::json&                            a_rootJson, 
+			                              std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
+			                              TypeAlias::PrefabNameSet&                  a_parentPrefabNameSet,
+			                              Scene&                                     a_scene) const;
+
 		void DeserializeChildScene (const nlohmann::json& a_rootJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const;
 
 		nlohmann::json SerializeComponentObserver(const GameObject& a_gameObject) const;

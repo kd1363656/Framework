@@ -11,7 +11,7 @@ namespace FWK
 	{
 	private:
 
-		using PrefabMap = std::unordered_map<std::string, Struct::PrefabData, Struct::StringHash, std::equal_to<>>;
+		using PrefabMap = std::unordered_map<std::string, Struct::PrefabData, Struct::StringHashStruct, std::equal_to<>>;
 
 	public:
 

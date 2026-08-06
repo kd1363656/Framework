@@ -31,7 +31,7 @@ namespace FWK
 	private:
 
 		// k_nameは静的寿命であることを前提にstd::string_viewをキーとして使用
-		using TypeINFONameMap         = std::unordered_map<std::string_view,        const TypeINFO* const, Struct::StringHash, std::equal_to<>>;
+		using TypeINFONameMap         = std::unordered_map<std::string_view,        const TypeINFO* const, Struct::StringHashStruct, std::equal_to<>>;
 		using TypeINFOStaticTypeIDMap = std::unordered_map<TypeAlias::StaticTypeID, const TypeINFO* const>;
 
 		friend class SingletonBase<TypeINFORegistry>;

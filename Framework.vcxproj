@@ -459,6 +459,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\GameObjectJsonConverterTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
@@ -670,7 +671,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Prefab\Prefab.h" />
     <ClInclude Include="Source\Framework\Prefab\PrefabSystem.h" />
-    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.h" />
+    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.h" />
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
@@ -891,7 +892,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Prefab.cpp" />
     <ClCompile Include="Source\Framework\Prefab\PrefabSystem.cpp" />
-    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConveter.cpp" />
+    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />

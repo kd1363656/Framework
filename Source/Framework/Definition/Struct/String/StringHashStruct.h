@@ -3,7 +3,7 @@
 namespace FWK::Struct
 {
 	// 文字列キー用の透過ハッシュ構造体
-	struct StringHash final
+	struct StringHashStruct final
 	{
 		// 透過ハッシュであることをSTLに通知するための宣言
 		using is_transparent = void;

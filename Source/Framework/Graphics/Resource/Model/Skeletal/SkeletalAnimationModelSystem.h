@@ -6,7 +6,7 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using PendingSkeletalAnimationModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::SkeletalAnimationModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
+		using PendingSkeletalAnimationModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::SkeletalAnimationModelBatchUploadRecord, Struct::WStringHashStruct, std::equal_to<>>;
 
 	public:
 

@@ -475,6 +475,7 @@
 //===============================================================================
 #include "Utility/UUID/UUIDRegistry.h"
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
+#include "Definition/Type/Alias/GameObjectJsonConverterTypeAlias.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
 #include "Utility/GameObject/GameObjectUtility.h"
@@ -506,7 +507,7 @@
 //===============================================================================
 // シーン
 //===============================================================================
-#include "Scene/Converter/Json/SceneJsonConveter.h"
+#include "Scene/Converter/Json/SceneJsonConverter.h"
 #include "Scene/Scene.h"
 #include "Scene/Converter/Json/SceneManagerJsonConveter.h"
 #include "Scene/SceneManager.h"
