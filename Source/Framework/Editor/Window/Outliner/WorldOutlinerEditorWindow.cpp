@@ -2,19 +2,51 @@
 
 void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 {
-	// Hierarchy用のImGuiウィンドウを開始する
+	const auto& l_editorManager = EditorManager::GetInstance();
+	const auto& l_scene         = SceneManager::GetInstance ().GetMutableREFScene();
+
+	// Outliner用ImGuiウィンドウを開始
 	if (!ImGui::Begin(k_editorName.data()))
 	{
 		ImGui::End();
+
+		// 前フレームから削除要求が残っていた場合に備えて
+		// Outlinerが折りたたまれていても削除要求を処理する
+		ApplySelectedGameObjectDestroyRequest    ();
+		ApplyGameObjectNodeHierarchyChangeRequest();
+
 		return;
 	}
 
-	auto& l_scene = SceneManager::GetInstance().GetMutableREFScene();
+	// ViewportなどのOutliner以外からのEditorManagerの選択状態が変更された場合にOutliner側の選択状態を同期する
+	SynchronizeSelectedGameObject();
 
-	bool l_isHierarchyChanged = false;
+	// リネーム中に選択対象が無効になった場合や、
+	// 複数選択へ変化した場合はリネームをキャンセルする
+	if (m_isGameObjectRenameActive)
+	{
+		const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
 
-	// SceneのGameObjectListにはRootと子の両方が存在するため
-	// 親を持たないGameObjectだけを再帰描画の開始点にする
+		if (!l_selectedGameObject ||
+			l_selectedGameObject->GetVALIsDestroyed() ||
+			Utility::IsPrefabInstance(*l_selectedGameObject) ||
+			FetchVALSelectedGameObjectCount() != k_singleSelectionCount)
+		{
+			CancelGameObjectRename();
+		}
+	}
+
+	// Outlinerにフォーカスがある場合だけF2を受け付け
+	// 名前変更要求を行う
+	if (!m_isGameObjectRenameActive                                   &&
+		ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) &&
+		ImGui::IsKeyPressed(ImGuiKey_F2, false))
+	{
+		RequestGameObjectRename(l_editorManager.GetREFSelectedGameObject());
+	}
+
+	// SceneのGameObject所有リストを
+	// Outlinerの描画元としてそのまま使用する
 	for (const auto& l_gameObject : l_scene.GetREFGameObjectList())
 	{
 		if (!l_gameObject ||
@@ -23,331 +55,385 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 			continue;
 		}
 
-		// 親を持っているGameObjectは、
-		// 親GameObjectのNodeから描画されるため、continue
+		// 親を持つGameObjectは、
+		// 親GameObjectのNodeから再帰描画される
 		if (!l_gameObject->GetREFParent().expired()) { continue; }
 
-		// 親子変更によって子Listが変更された場合は、
-		// そのフレームのHierarchy操作を終了する
-		if (DrawGameObjectNode(l_gameObject)) 
-		{
-			l_isHierarchyChanged = true;
-
-			break;
-		}
+		// 親子関係変更はImGui::End()後まで反映しないため
+		// Sceneの所有Listと各GameObejctの子Listを最後まで完全に走査できる
+		DrawGameObjectNode(l_gameObject);
 	}
 
-	// 親子変更が起きていてもSceneの所有List自体は変更されていないため、
-	// RootへのDrop領域は描画できる
-	DrawRootDropArea(l_scene);
+	// Outlinerの残りの領域を、
+	// RootへのDrop先、選択解除領域
+	// 空白右クリック領域として描画する
+	DrawRootDropArea();
 
 	ImGui::End();
 
-	if (l_isHierarchyChanged)
-	{
-		// 登録済みGameObjectの実行階層が変化したため、
-		// 次のEarlyUpdateで実行階層Listを再構築する
-		l_scene.SetIsGameObjectExecutionLevelListDirty(true);
-	}
+	// OutlinerのImGui描画が完全に終了してから
+	// 選択中GameOBjectへ削除フラグを設定する
+	// アウトライナーの全体の描画を止めないようにするため
+	ApplySelectedGameObjectDestroyRequest();
+
+	// 親子関係の変更もImGui病が終了後に反映する
+	ApplyGameObjectNodeHierarchyChangeRequest();
 }
 
-bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject) const
+void FWK::Editor::WorldOutlinerEditorWindow::SynchronizeSelectedGameObject()
 {
-	if (!a_gameObject ||
-		a_gameObject->GetVALIsDestroyed())
+	// Sceneから実際に削除され
+	// weak_ptrが失効した選択要素を取り除く
+	m_selectedGameObjectVectorArray.RemoveExpiredElements();
+
+	const auto& l_editorManager                = EditorManager::GetInstance              ();
+	const auto& l_editorSelectedGameObjectWeak = l_editorManager.GetREFSelectedGameObject();
+	const auto& l_editorSelectedGameObject     = l_editorSelectedGameObjectWeak.lock     ();
+
+	// Editormanager側の選択が解除されている場合は、
+	// Outliner側の複数選択も解除する
+	if (!l_editorSelectedGameObject)
 	{
-		return false;
+		m_selectedGameObjectVectorArray.Clear();
+
+		return;
+	}
+
+	// EditorManagerの代表選択が削除申請済みの場合は選択リストから外し、
+	// 残っている選択から新しい代表選択を設定する
+	if (l_editorSelectedGameObject->GetVALIsDestroyed())
+	{
+		RemoveSelectedGameObject(l_editorSelectedGameObjectWeak);
+		
+		return;
+	}
+
+	// EditorManagerの代表選択がOutlinerの選択リストに含まれている場合は同期済み
+	// Shift範囲選択やCtrl複数選択も、この条件によってそのまま維持される
+	if (ContainsSelectedGameObject(l_editorSelectedGameObjectWeak)) { return; }
+
+	// ViewportなどOutliner以外からGameObjectが選択された場合は、
+	// 外部で選択されたGameObjectだけの単一選択へ切り替える
+	m_selectedGameObjectVectorArray.Clear();
+
+	AddSelectedGameObject(l_editorSelectedGameObjectWeak);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	
+}
+FWK::Editor::WorldOutlinerEditorWindow::GameObjectNodeDrawResult FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeHeader(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	return GameObjectNodeDrawResult();
+}
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeContextMenu(const std::weak_ptr<GameObject>& a_gameObject)
+{
+
+}
+bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeDragDrop(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	return false;
+}
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectRenameInput()
+{
+}
+void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
+{
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindow::HasValidChildGameObject(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+	return false;
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::ApplyGameObjectNodeSelection(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	if (!ImGui::IsItemClicked(ImGuiMouseButton_Left)) { return; }
+
+	// リネーム中に別のNode操作が行われた場合は
+	// 先に現在の名前変更を確定する
+	if (m_isGameObjectRenameActive)
+	{
+		ConfirmGameObjectRename();
+	}
+
+	const auto& l_imGuiIO = ImGui::GetIO();
+
+	// ShiftをCtrlより優先する
+	if (l_imGuiIO.KeyShift)
+	{
+		SelectGameObjectRange(a_gameObject);
+
+		return;
+	}
+
+	if (l_imGuiIO.KeyCtrl)
+	{
+		ToggleGameObjectSelection(a_gameObject);
+
+		return;
+	}
+
+	SelectSingleGameObject(a_gameObject);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::SelectSingleGameObject(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	const auto& l_gameObject    = a_gameObject.lock         ();
+	      auto& l_editorManager = EditorManager::GetInstance();
+
+	if (!l_gameObject ||
+		l_gameObject->GetVALIsDestroyed())
+	{
+		return;
+	}
+
+	m_selectedGameObjectVectorArray.Clear();
+
+	AddSelectedGameObject(a_gameObject);
+
+	l_editorManager.SetSelectedGameObject(a_gameObject);
+}
+void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObjectRange(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	const auto& l_rangeEndGameObject = a_gameObject.lock();
+
+	if (!l_rangeEndGameObject ||
+		l_rangeEndGameObject->GetVALIsDestroyed())
+	{
+		return;
+	}
+
+	const auto& l_rangeAnchorGameObjectWeak = EditorManager::GetInstance      ().GetREFSelectedGameObject();
+	const auto& l_rangeAnchorGameObject     = l_rangeAnchorGameObjectWeak.lock();
+
+	// Shiftセンタ奥の開始地点が存在しない場合は、
+	// 通常の単一選択として扱う
+	if (!l_rangeAnchorGameObject ||
+		l_rangeAnchorGameObject->GetVALIsDestroyed())
+	{
+		SelectSingleGameObject(a_gameObject);
+
+		return;
+	}
+
+	// 開始地点と終了地点が同じ場合は、
+	// そのGameObjectだけを選択状態にする
+	if (l_rangeAnchorGameObject == l_rangeEndGameObject)
+	{
+		m_selectedGameObjectVectorArray.Clear();
+
+		AddSelectedGameObject(a_gameObject);
+
+		return;
+	}
+
+	m_selectedGameObjectVectorArray.Clear();
+
+	GameObjectRangeSelectionState l_rangeSelectionState = GameObjectRangeSelectionState::BeforeRange;
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::ToggleGameObjectSelection(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject ||
+		l_gameObject->GetVALIsDestroyed())
+	{
+		return;
 	}
 
 	auto& l_editorManager = EditorManager::GetInstance();
 
-	// GameObject表示名
-    auto l_gameObjectName = a_gameObject->FetchVALGameObjectName();
-
-	// 番号を含んだゲームオブジェクトのプレハブ名、プレハブ名すら文字列が空ならゲームオブジェクトを名前とする
-	if (l_gameObjectName.empty()) 
+	// 既に選択済みの場合は解除する
+	if (ContainsSelectedGameObject(a_gameObject))
 	{
-		l_gameObjectName = a_gameObject->GetREFPrefabName().empty() ? Constant::k_gameObjectString : a_gameObject->GetREFPrefabName();
-	}
+		const auto& l_editorSelectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
 
-	// 同じ名前のGameObjectが複数存在しても、
-	// UUIDによってImGui内部では別のItemとして扱う
-	const auto& l_gameObjectNodeLabel     = std::format                                     ("{}##{}", l_gameObjectName, Utility::UUIDToString(a_gameObject->GetREFUUID()));
-	const auto& l_childGameObjectDataList = a_gameObject->GetREFChildSmartPointerVectorArray().GetREFArrayElementDataList();
+		RemoveSelectedGameObject(a_gameObject);
 
-	bool l_hasChildGameObject = false;
-	
-	for (const auto& l_childGameObjectData : l_childGameObjectDataList)
-	{
-		if (const auto l_childGameObject = l_childGameObjectData.m_type.lock();
-			!l_childGameObject ||
-			l_childGameObject->GetVALIsDestroyed()) 
+		// EditorManagerの代表選択ではないGameObjectを削除しただけなら、
+		// Editormanager側は変更しない
+		if (l_editorSelectedGameObject != l_gameObject) { return; }
+
+		// EditorManagerの代表選択を解除した場合は、
+		// 残っている選択GameObjectから新しい代表を設定する
+		const auto& l_selectedGameObjectDataList = m_selectedGameObjectVectorArray.GetREFArrayElementDataList();
+
+		for (const auto& l_selectedGameObjectData : l_selectedGameObjectDataList)
 		{
-			continue; 
+			if (const auto& l_selectedGameObject = l_selectedGameObjectData.m_type.lock();
+				!l_selectedGameObject ||
+				l_selectedGameObject->GetVALIsDestroyed())
+			{
+				continue;
+			}
+
+			l_editorManager.SetSelectedGameObject(l_selectedGameObjectData.m_type);
+
+			return;
 		}
 
-		l_hasChildGameObject = true;
+		// 一つも選択が残っていない場合は
+		// ユーザー捜査によって選択がなくなったため解除する
+		l_editorManager.SetSelectedGameObject({});
 
-		break;
+		return;
 	}
 
-	ImGuiTreeNodeFlags l_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow |
-		                                 ImGuiTreeNodeFlags_SpanAvailWidth;
+	// 未選択GameObjectなら現在の複数選択へ追加する
+	AddSelectedGameObject(a_gameObject);
 
-	if (const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
-		l_selectedGameObject == a_gameObject)
+	// Ctrlで新しく選択されたGameObjectを代表選択にする
+	l_editorManager.SetSelectedGameObject(a_gameObject);
+}
+
+FWK::Editor::WorldOutlinerEditorWindow::GameObjectRangeSelectionState FWK::Editor::WorldOutlinerEditorWindow::AddGameObjectRangeSelectionRecursive(const std::weak_ptr<GameObject>&    a_gameObject, 
+	                                                                                                                                               const std::weak_ptr<GameObject>&    a_rangeAnchorObject, 
+	                                                                                                                                               const std::weak_ptr<GameObject>&    a_rangeEndGameObject, 
+	                                                                                                                                                     GameObjectRangeSelectionState a_rangeSelectionState)
+{
+	return GameObjectRangeSelectionState();
+}
+void FWK::Editor::WorldOutlinerEditorWindow::AddSelectedGameObject(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	const auto& l_gameObejct = a_gameObject.lock();
+
+	if (!l_gameObejct->GetVALIsDestroyed()) { return; }
+
+	// 同じGmaeObjectを二重登録しない
+	if (ContainsSelectedGameObject(a_gameObject)) { return; }
+
+	m_selectedGameObjectVectorArray.Add(a_gameObject);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::RemoveSelectedGameObject(const std::weak_ptr<GameObject>& a_gameObject)
+{
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject)
 	{
-		l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
+		// 失効済みweak_ptrはまとめて除去する
+		m_selectedGameObjectVectorArray.RemoveExpiredElements();
+
+		return;
 	}
 
-	// 有効な子が存在しない場合は展開用の矢印を表示しない
-	if (!l_hasChildGameObject)
+	m_selectedGameObjectVectorArray.RemoveSameElement(a_gameObject);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::ClearSelectedGameObjects()
+{
+	m_selectedGameObjectVectorArray.Clear();
+
+	auto& l_editorManager = EditorManager::GetInstance();
+
+	l_editorManager.SetSelectedGameObject({});
+}
+void FWK::Editor::WorldOutlinerEditorWindow::ClearGameObjectRenameState()
+{
+
+}
+void FWK::Editor::WorldOutlinerEditorWindow::ClearGameObjectNodeHierarchyChangeRequest()
+{
+
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindow::ContainsSelectedGameObject(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject ||
+		l_gameObject->GetVALIsDestroyed())
 	{
-		l_treeNodeFlags |= ImGuiTreeNodeFlags_Leaf | 
-			               ImGuiTreeNodeFlags_NoTreePushOnOpen;
-	}
-
-	const bool l_isNodeOpen = ImGui::TreeNodeEx(l_gameObjectNodeLabel.c_str(), l_treeNodeFlags);
-
-	// 左クリックされたGameObjectを選択する
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-	{
-		l_editorManager.SetSelectedGameObject(a_gameObject);
-	}
-
-	// Drawを開始しようとしているGameObjectも選択対象にする
-	if (ImGui::IsItemActive() &&
-		ImGui::IsMouseDragging(ImGuiMouseButton_Left))
-	{
-		l_editorManager.SetSelectedGameObject(a_gameObject);
-	}
-
-	// EditorManagerが所有するstd::shared_ptrをPayloadとして使用する
-	// EditorManagerのメンバなのでDrag中もアドレスが変化しない
-	Utility::DragDropSource(k_gameObjectDragDropPayloadLabel, l_editorManager.GetREFSelectedGameObject());
-
-	if (std::shared_ptr<GameObject> l_droppedGameObject = nullptr;
-		Utility::DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
-	{
-		// 無効または削除予定のGameObjectは受け付けない
-		// ジフン自信を自分の子にはできない
-		if (!l_droppedGameObject                     ||
-			l_droppedGameObject->GetVALIsDestroyed() ||
-			l_droppedGameObject == a_gameObject)
-		{
-			return false; 
-		}
-
-		// すでに同じ親なら何もしない
-		if (const auto& l_currentParentGameObject = l_droppedGameObject->GetREFParent().lock();
-			l_currentParentGameObject == a_gameObject) 
-		{
-			return false; 
-		}
-
-		// すでに同じ親なら親子関係を変更しない
-		// 描画しているGameObjectを親として、
-		// DropされたGameObjectを子にする
-		a_gameObject->ApplyParent(l_droppedGameObject);
-
-		// ApplyParent()が成功した場合だけ
-		// 実行階層Listの再構築を要求する
-		// 追加順序の違いで子が親よりも先に行列の確定などを行わいないようにするため
-		if (const auto& l_appliedParentGameObject = l_droppedGameObject->GetREFParent().lock();
-			l_appliedParentGameObject != a_gameObject) 
-		{
-			return false; 
-		}
-		
-		l_editorManager.SetSelectedGameObject(l_droppedGameObject);
-
-		// 子を持つ開かれたNodeは、
-		// TreeNodeEX()によってTreePushされている
-		if (l_hasChildGameObject && 
-			l_isNodeOpen)
-		{
-			ImGui::TreePop();
-		}
-
-		// ApplyParent()によって子Listが変更されたため
-		// 現在のHierarchy操作を終了する
-		return true;
-	}
-
-	// 右クリックメニュー
-	bool l_isDestroyRequested = false;
-
-	if (ImGui::BeginPopupContextItem())
-	{
-		// 右クリックしたGameObjectを選択対象にする
-		l_editorManager.SetSelectedGameObject(a_gameObject);
-
-		l_isDestroyRequested = ImGui::MenuItem(k_destroyGameObjectMenuItemName.data());
-
-		ImGui::EndPopup();
-	}
-
-	if (l_isDestroyRequested)
-	{
-		// Sceneからその場で削除するのではなく、
-		// 自身とすべての詞損へ削除フラグを立てる
-		a_gameObject->Destroy();
-
-		const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
-
-		// 選択中GameObjectも削除対象になった場合は、
-		// EditorManagerの選択状態を解除する
-		if (l_selectedGameObject && 
-			l_selectedGameObject->GetVALIsDestroyed())
-		{
-			// 空のゲームオブジェクトを渡し保持しているゲームオブジェクトをリセット
-			l_editorManager.SetSelectedGameObject(std::shared_ptr<GameObject>());
-		}
-
-	}
-
-	// 削除申請されたGameObject以下は、
-	// このフレームでは描画しない
-	if (a_gameObject->GetVALIsDestroyed())
-	{
-		// 子を持つ開かれたNodeだけ
-		// TreeNodeEx(9によってTreePushされている
-		if (l_hasChildGameObject && 
-			l_isNodeOpen)
-		{
-			ImGui::TreePop();
-		}
-
-		// Destroy()では子List事態は変更されないため、
-		// 他のRootGameObjectの描画は続行できる
 		return false;
 	}
 
-	// 子が存在しない場合は再帰描画しない
-	if (!l_hasChildGameObject) { return false; }
+	const auto& l_selectedGameObjectDataList = m_selectedGameObjectVectorArray.GetREFArrayElementDataList();
 
-	// Nodeが閉じている場合も子を描画しない
-	if (!l_isNodeOpen) { return false; }
-
-	// 子GameObjectを再帰描画
-	for (const auto& l_childGameObjectData : l_childGameObjectDataList)
+	for (const auto& l_selectedGameObjectData : l_selectedGameObjectDataList)
 	{
-		if (const auto l_childGameObject = l_childGameObjectData.m_type.lock();
-			!l_childGameObject                     ||
-			l_childGameObject->GetVALIsDestroyed() ||
-			!DrawGameObjectNode(l_childGameObject))
+		const auto& l_selectedGameObject = l_selectedGameObjectData.m_type.lock();
+
+		if (!l_selectedGameObject ||
+			l_selectedGameObject->GetVALIsDestroyed())
 		{
-			continue; 
+			continue;
 		}
-		
-		// 子以下でApplyParent()が行われた場合、
-		// 現在捜査している子Listも変更されている可能性があるため、
-		// それ以上捜査せずtrueを伝える
-		ImGui::TreePop();
 
-		return true;
+		if (l_selectedGameObject == l_gameObject) { return true; }
 	}
-
-	ImGui::TreePop();
 
 	return false;
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea(Scene& a_scene) const
+void FWK::Editor::WorldOutlinerEditorWindow::RequestApplyParent(const std::weak_ptr<GameObject>& a_parentGameObject, const std::weak_ptr<GameObject>& a_childGameObject)
 {
-	ImVec2 l_rootDropAreaSize = ImGui::GetContentRegionAvail();
+	
+}
 
-	if (l_rootDropAreaSize.x < k_rootDropAreaMINWidth) 
+void FWK::Editor::WorldOutlinerEditorWindow::RequestUnparent(const std::weak_ptr<GameObject>& a_childGameObject)
+{
+
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::ApplyGameObjectNodeHierarchyChangeRequest()
+{
+
+}
+void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyRequest()
+{
+
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::RequestGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject)
+{
+
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::ConfirmGameObjectRename()
+{
+
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::CancelGameObjectRename()
+{
+
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectRenameTarget(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindow::UnparentDroppedGameObject()
+{
+	return false;
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject()
+{
+}
+
+std::size_t FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectedGameObjectCount() const
+{
+	std::size_t l_selectedGameObjectCount = k_initialSelectedGameObjectCount;
+
+	const auto& l_selectedGameObjectDataList = m_selectedGameObjectVectorArray.GetREFArrayElementDataList();
+
+	for (const auto& l_selectedGameObjectData : l_selectedGameObjectDataList)
 	{
-		l_rootDropAreaSize.x = k_rootDropAreaMINWidth;
-	}
+		const auto& l_selectedGameObject = l_selectedGameObjectData.m_type.lock();
 
-	if (l_rootDropAreaSize.y < k_rootDropAreaMINHeight)
-	{
-		l_rootDropAreaSize.y = k_rootDropAreaMINHeight;
-	}
-
-	// Outlinerの残りの空白部分を一つのImGuiItemにする
-	// この領域をRootへのDrop先
-	// 空白右クリックメニュー
-	// 選択解除領域として使用する
-	ImGui::InvisibleButton(k_rootDropAreaLabel.data(), l_rootDropAreaSize);
-
-	const bool l_isRootDropAreaClicked = ImGui::IsItemClicked(ImGuiMouseButton_Left);
-	const bool l_isGameObjectDropped   = TryUnparentDroppedGameObject(a_scene);
-
-	// Hoverではなく、本当に空白領域がクリックされた場合だけ
-	// 選択を解除する
-	// Drag&Dropではない通常の空白クリック時だけ選択を解除する
-	if (l_isRootDropAreaClicked &&
-		!l_isGameObjectDropped)
-	{
-		EditorManager::GetInstance().SetSelectedGameObject(std::shared_ptr<GameObject>());
-	}
-
-	// Outliner空白右クリックメニュー
-	if (ImGui::BeginPopupContextItem(k_rootContextMenuLabel.data()))
-	{
-		if (ImGui::MenuItem(k_addRootGameObjectMenuItemName.data()))
+		if (!l_selectedGameObject ||
+			l_selectedGameObject->GetVALIsDestroyed())
 		{
-			RequestAddGameObject(a_scene);
+			continue;
 		}
 
-		ImGui::EndPopup();
+		++l_selectedGameObjectCount;
 	}
-}
 
-bool FWK::Editor::WorldOutlinerEditorWindow::TryUnparentDroppedGameObject(Scene& a_scene) const
-{
-	// RootへのDrop
-	std::shared_ptr<GameObject> l_droppedGameObject = {};
-
-	if (!Utility::DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject)) { return false; }
-
-	// Drop操作自体は成立している
-	// 以下の失敗時にも空白クリックとしては処理しない
-	if (!l_droppedGameObject)                     { return true; }
-	if (l_droppedGameObject->GetVALIsDestroyed()) { return true; }
-
-	const auto& l_currentParentGameObject = l_droppedGameObject->GetREFParent().lock();
-
-	if (!l_currentParentGameObject) { return true; }
-
-	// すでにrootなら解除する親がいない
-	l_currentParentGameObject->Unparent(l_droppedGameObject);
-
-	// Unparent後にも親が残っている場合は解除失敗
-	if (!l_droppedGameObject->GetREFParent().expired()) { return true; }
-
-	EditorManager::GetInstance().SetSelectedGameObject(l_droppedGameObject);
-
-
-	// 親解除によって実行階層が変化したため、
-	// 次のEarlyUpdateで実行階層Listを再構築する
-	a_scene.SetIsGameObjectExecutionLevelListDirty(true);
-
-	return true;
-}
-
-void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject(Scene & a_scene) const
-{
-	const auto& l_gameObject = std::make_shared<GameObject>();
-
-	// TransformComponentを含む各Componentへ、
-	// OwnerGameObjectなどの必要な情報を設定する
-	l_gameObject->PostDeserialize();
-
-	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
-
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "新規GameObjectにTransformComponentが存在しないため、Outlinerから空のGameObjectを追加できませんでした。");
-
-	//Outlinerから作成するGameObjectは、親を持たないStandalone状態で開始する
-	l_transformComponent->ApplyStandalone();
-
-	// 親を持たないため
-	// Scene::AddGameObjectによってExecutionLevelZeroへ追加される
-	a_scene.AddGameObject(l_gameObject);
-
-	// 作成したGameObjectを選択状態にする
-	EditorManager::GetInstance().SetSelectedGameObject(l_gameObject);
+	return l_selectedGameObjectCount;
 }

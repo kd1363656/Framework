@@ -46,8 +46,9 @@ namespace FWK
 		void AddComponent   (const std::shared_ptr<ComponentBase>& a_component);
 		void RemoveComponent(const std::weak_ptr<ComponentBase>&   a_component);
 
-		void ApplyParent(const std::weak_ptr<GameObject>& a_child);
-		void Unparent   (const std::weak_ptr<FWK::GameObject>& a_child);
+		bool ApplyParent(const std::weak_ptr<GameObject>& a_child);
+		bool ApplyParent(const std::weak_ptr<GameObject>& a_child, TypeAlias::PrefabNameSet& a_parentPrefabNameSet);
+		void Unparent   (const std::weak_ptr<GameObject>& a_child);
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
@@ -121,6 +122,8 @@ namespace FWK
 		bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
 	private:
+
+		bool ContainsDuplicatePrefabNameRecursive(const std::weak_ptr<GameObject>& a_gameObject, TypeAlias::PrefabNameSet& a_prefabNameSet) const;
 
 		bool IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const;
 

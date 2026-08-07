@@ -22,7 +22,7 @@ void FWK::Editor::DetailsEditorWindow::Draw()
 
 	if (l_selectedGameObject->GetVALIsDestroyed())
 	{
-		l_editorManager.SetSelectedGameObject(std::weak_ptr<GameObject>());
+		l_editorManager.SetSelectedGameObject({});
 
 		ImGui::TextDisabled(k_destroyedGameObjectMessage.data());
 		ImGui::End         ();
@@ -86,6 +86,8 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std:
 
 	const auto& l_componentDataList = l_gameObject->GetREFComponentSmartPointerVectorArray().GetREFArrayElementDataList();
 
+	// ComonentListを捜査している途中では削除せず、
+	// 捜査終了後にGameObjectへ削除を依頼する
 	std::weak_ptr<ComponentBase> l_removeRequestedComponent = {};
 	
 	for (const auto& l_componentData : l_componentDataList)
@@ -100,6 +102,28 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std:
 
 		      bool l_isKeepComponent       = true;
 		const bool l_isComponentHeaderOpen = ImGui::CollapsingHeader(l_component->GetREFRuntimeTypeINFO().k_name.data(), &l_isKeepComponent, ImGuiTreeNodeFlags_DefaultOpen);
+
+		// 直前に描画したCollapsingHeaderへカーソルが重なっている場合だけ、
+		// Componentを取り外す方法をTooltipで表示する
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+
+			ImGui::TextUnformatted(k_componentRemoveTooltip.data());
+
+			ImGui::EndTooltip();
+		}
+
+		// CollapsingHeader右端のXを押した場合だけfalseになる
+		if (!l_isKeepComponent)
+		{
+			l_removeRequestedComponent = l_component;
+
+			ImGui::PopID();
+
+			continue;
+		}
+
 
 		// 右端のXを押した場合だけfalseになる
 		if (!l_isKeepComponent)
@@ -126,11 +150,6 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std:
 	if (!l_removeRequestedComponent.expired())
 	{
 		l_gameObject->RemoveComponent(l_removeRequestedComponent);
-	}
-
-	if (!l_componentDataList.empty())
-	{
-		ImGui::TextDisabled(k_componentRemoveDescription.data());
 	}
 }
 void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<GameObject>& a_gameObject) const
@@ -166,9 +185,8 @@ void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<
 
 		// ゲームオブジェクトのPostDeserialize関数を呼ぶことで
 		// 全てのコンポーネントのポインタの結び付け処理を行う
+		l_gameObject->AddComponent   (l_component);
 		l_gameObject->PostDeserialize();
-
-		l_gameObject->AddComponent(l_component);
 
 		ImGui::CloseCurrentPopup();
 

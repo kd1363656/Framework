@@ -139,7 +139,7 @@ namespace FWK::Editor
 }
 
 // __VA_OPT(,)は可変長引数があるときだけ"","を追加するためのC++20の機能
-#define FWK_ADD_LOG(Format , ...)																						 \
+#define FWK_ADD_LOG(Format, ...)																						 \
 do																														 \
 {																														 \
 	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), Format __VA_OPT__(,) __VA_ARGS__); \

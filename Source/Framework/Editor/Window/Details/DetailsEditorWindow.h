@@ -29,7 +29,7 @@ namespace FWK::Editor
 		static constexpr std::string_view k_transformComponentHeaderName     = "TransformComponent";
 		static constexpr std::string_view k_addComponentButtonName           = "コンポーネントを追加";
 		static constexpr std::string_view k_addComponentPopupLabel           = "##AddComponentPopup";
-		static constexpr std::string_view k_componentRemoveDescription       = "Component見出し右端の×で取り外せます。";
+		static constexpr std::string_view k_componentRemoveTooltip           = "右端のxを押すと、このComponentを取り外せます。";
 
 		static constexpr std::size_t k_initialComponentIndex = 0ULL;
 

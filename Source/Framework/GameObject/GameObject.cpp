@@ -277,53 +277,148 @@ void FWK::GameObject::RemoveComponent(const std::weak_ptr<ComponentBase>& a_comp
 	m_componentSmartPointerVectorArray.RemoveSameElement(l_component);
 }
 
-void FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
+bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 {
 	const auto& l_child = a_child.lock();
 
-	if (!l_child) { return; }
+	if (!l_child) { return false; }
 	
 	const auto& l_self = shared_from_this();
 
-	if (!l_self) { return; }
+	if (!l_self) { return false; }
 
 	// 自分自身を子にはできない
-	if (l_child == l_self) { return; }
+	if (l_child == l_self) { return false; }
 
 	// 循環防止
 	if (IsDescendantOf(l_child))
 	{
 		FWK_ADD_LOG("GameObjectの親子関係が循環するため、親子関係を構築できませんでした。");
 
-		return;
+		return false;
 	}
 
 	const auto& l_childTransformComponent = l_child->GetVALTransformComponent().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_childTransformComponent, "子GameObjectにTransformComponentが存在しません。");
+	FWK_ASSERT_RETURN_VALUE_IF(!l_childTransformComponent, "子GameObjectにTransformComponentが存在しません。", false);
 
-	// すでに同じ親の場合return
-	const auto l_currentParent = l_child->GetREFParent().lock();
+	TypeAlias::PrefabNameSet l_prefabNameSet = {};
 
-	if (l_currentParent == l_self) { return; }
+	// 新しい親となる自分自身からRootまでのPrefab名を登録する
+	auto l_parentGameObject = l_self;
 
-	// 以前の親を解除
+	// まずはRootからPrefabの重複があるかどうかを確認
+	while (l_parentGameObject)
+	{
+		// Prefab化されていない一時GameObjectの名前は
+		// Prefabの循環判定には使用しない
+		if (Utility::IsPrefabInstance(*l_parentGameObject))
+		{
+			const auto& l_prefabName = l_parentGameObject->GetREFPrefabName();
+	
+			// 現在の親階層事態に同じPrefabが存在している場合も、
+			// 新しい親子関係は構築しない
+			if (!l_prefabNameSet.emplace(l_prefabName).second)
+			{
+				FWK_ADD_LOG("親階層に同じPrefabNameが存在するため、親子関係を構築できませんでした。");
+
+				return false;
+			}
+		}
+
+		// PrefabInstanceかどうかに関係なく
+		// 必ず一つ上の親GameObjectへ移動する
+		l_parentGameObject = l_parentGameObject->GetREFParent().lock();
+	}
+
+	// 親のRootからこのGameObjectまでのPrefabの重複がないことを確認出来たら
+	// 新しい子GameObject以下を再帰的調べる
+	// 新しい親階層と子階層の同じ経路上に
+	// 同じPrefabが存在する場合は親子関係を構築しない
+	if (ContainsDuplicatePrefabNameRecursive(a_child, l_prefabNameSet))
+	{
+		FWK_ADD_LOG("同じ親子経路上に同じPrefabNameが存在するため、親子関係を構築できませんでした。");
+
+		return false;
+	}
+
+	const auto& l_currentParent = l_child->GetREFParent().lock();
+
+	if (l_currentParent == l_self) { return false; }
+
+	// 現在の親GameObjectが存在する場合は
+	// 新しい親を設定する前に親子関係を解除する
 	if (l_currentParent)
 	{
 		l_currentParent->Unparent(l_child);
+
+		// Unpatenr()に失敗して現在の親が残っている場合は
+		// 新しい親GameObjectを設定しない
+		if (!l_child->GetREFParent().expired())
+		{
+			FWK_ADD_LOG("以前の親GameObjectとの親子関係を解除できませんでした。");
+
+			return false;
+		}
 	}
 
 	// GameObject親子関係の構築
 	l_child->SetParent(l_self);
 
-	const std::weak_ptr<GameObject> l_childWeak = l_child;
+	// 親GameObject側へ子GameObjectを登録する
+	m_childSmartPointerVectorArray.Add(a_child);
 
-	m_childSmartPointerVectorArray.Add(l_childWeak);
-
+	// TransformComponentへ新しい親GameObjectを適用する。
 	l_childTransformComponent->ApplyParent(l_self);
+
+	return true;
+}
+bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child, TypeAlias::PrefabNameSet& a_parentPrefabNameSet)
+{
+	const auto& l_child = a_child.lock();
+
+	if (!l_child ||
+		l_child->GetVALIsDestroyed())
+	{
+		return false;
+	}
+
+	const auto& l_childPrefabName = l_child->GetREFPrefabName();
+
+	if (l_childPrefabName.empty())
+	{
+		FWK_ADD_LOG("子GameObjectのPrefabNameが空のため、親子関係を構築できませんでした。");
+
+		return false;
+	}
+
+	// Rootから現在の親GameObjectまでの経路上に、
+	// 子GameObjectと同じPrefabNameが存在する場合は追加しない
+	if (!a_parentPrefabNameSet.emplace(l_childPrefabName).second)
+	{
+		FWK_ADD_LOG("親階層と同じPrefabNameを持つ子GameObjectは追加できません。");
+
+		return false;
+	}
+
+	// GameObjectの循環確認、Transform適用、
+	// 以前の親解除などは通常盤へまとめる
+	if (!ApplyParent(a_child))
+	{
+		// 親子関係を構築できなかったため
+		// この関数で追加したPrefabNameを元へ戻す
+		a_parentPrefabNameSet.erase(l_childPrefabName);
+
+		return false;
+	}
+
+	// 成功した場合はPrefabNameをSetへ残す
+	// この子GameObject以下の再帰処理が完了した後に、
+	// GameObjectJsonConverter側でerase()する
+	return true;
 }
 
-void FWK::GameObject::Unparent(const std::weak_ptr<FWK::GameObject>&a_child)
+void FWK::GameObject::Unparent(const std::weak_ptr<GameObject>&a_child)
 {
 	const auto& l_child = a_child.lock();
 
@@ -363,6 +458,71 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 	FWK_ASSERT_RETURN_VALUE_IF(m_prefabName.empty(), "PrefabInstanceNUMが有効なのにPrefabNameが空になっています。", std::string{ Constant::k_gameObjectString });
 	
 	return std::format("{}_{}", m_prefabName, m_prefabInstanceNUM);
+}
+
+bool FWK::GameObject::ContainsDuplicatePrefabNameRecursive(const std::weak_ptr<GameObject>& a_gameObject, TypeAlias::PrefabNameSet& a_prefabNameSet) const
+{
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject ||
+		l_gameObject->GetVALIsDestroyed())
+	{
+		return false;
+	}
+
+	bool l_isPrefabNameAdded = false;
+
+	// PrefabInstanceとして確定していてGameObjectだけを、
+	// PrefabNameの重複確認対象にする
+	if (Utility::IsPrefabInstance(*l_gameObject))
+	{
+		// 現z内の親子経路上に同じPrefabNameが存在する
+		if (const auto& l_prefabName = l_gameObject->GetREFPrefabName();
+			!a_prefabNameSet.emplace(l_prefabName).second) 
+		{
+			return true; 
+		}
+
+		l_isPrefabNameAdded = true;
+	}
+
+	const auto& l_childSmartPointerVectorArray = l_gameObject->GetREFChildSmartPointerVectorArray         ();
+	const auto& l_childGameObjectDataList      = l_childSmartPointerVectorArray.GetREFArrayElementDataList();
+
+	for (const auto& l_childGameObjectData : l_childGameObjectDataList)
+	{
+		if (const auto& l_childGameObject = l_childGameObjectData.m_type.lock();
+			!l_childGameObject ||
+			l_childGameObject->GetVALIsDestroyed())
+		{
+			continue;
+		}
+
+		if (ContainsDuplicatePrefabNameRecursive(l_childGameObjectData.m_type, a_prefabNameSet))
+		{
+			// 現在のGameObjectでPrefabNameを追加した場合は、
+			// 呼びだし元へ戻る前に登録状態を元へ戻す
+			if (l_isPrefabNameAdded)
+			{
+				a_prefabNameSet.erase(l_gameObject->GetREFPrefabName());
+
+			}
+
+			// 現在のGameObjectがPrefabInstanceでなくても
+			// 子孫で見つかった重複を必ず呼びだし元へ伝える
+			return true;
+		}
+	}
+
+	// このGameObject以下の経路確認が完了しており
+	// 筐体GameObjectは同じ親子経路ではないため
+	// 次の兄弟を確認する前に現在のPrefabNameを解除しておく
+	if (l_isPrefabNameAdded)
+	{
+		a_prefabNameSet.erase(l_gameObject->GetREFPrefabName());
+	}
+
+	return false;
 }
 
 bool FWK::GameObject::IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const
