@@ -14,6 +14,8 @@ namespace FWK
 		 TransformComponent()          = default;
 		~TransformComponent() override = default;
 
+		void INIT() override;
+
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 		void DeserializeScene (const nlohmann::json& a_rootJson) override;
 

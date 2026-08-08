@@ -14,7 +14,7 @@ namespace FWK
 				 ComponentBase() = default;
 		virtual ~ComponentBase() = default;
 
-		virtual void Setup() { /*必要に応じてオーバーライドしてください*/ };
+		virtual void INIT() { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual void DeserializePrefab(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		virtual void DeserializeScene (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };

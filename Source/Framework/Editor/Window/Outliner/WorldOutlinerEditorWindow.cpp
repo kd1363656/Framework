@@ -596,6 +596,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject()
 
 	// 新規GameObjectが持っているTransformComponentへ
 	// Ownerなどの初期状態を適用する
+	l_gameObject->INIT           ();
 	l_gameObject->PostDeserialize();
 
 	auto& l_sceneManager = SceneManager::GetInstance        ();

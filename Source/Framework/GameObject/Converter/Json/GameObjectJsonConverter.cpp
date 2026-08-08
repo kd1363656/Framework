@@ -213,6 +213,7 @@ void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&      
 			if (!l_component) { continue; }
 
 			// ComponentのPrefab情報を読み込む
+			l_component->INIT             ();
 			l_component->DeserializePrefab(l_componentJson);
 
 			// Scene情報はPrefabと同じ順番で上書きするため
@@ -476,6 +477,7 @@ void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json& 
 
 		auto l_child = std::make_shared<GameObject>();
 
+		l_child->INIT         ();
 		l_child->SetPrefabName(l_prefabName);
 		
 		// GameObjectJsonConverterを直接再帰呼び出しせず、

@@ -1,6 +1,6 @@
 ﻿#include "ModelComponentBase.h"
 
-void FWK::ModelComponentBase::Setup()
+void FWK::ModelComponentBase::INIT()
 {
 	m_assetFilePathHelper.SetAllowedFileExtension(Constant::k_lowerFBXExtension);
 }

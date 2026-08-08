@@ -9,7 +9,7 @@ namespace FWK
 		 ModelComponentBase()          = default;
 		~ModelComponentBase() override = default;
 
-		void Setup() override;
+		void INIT() override;
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 

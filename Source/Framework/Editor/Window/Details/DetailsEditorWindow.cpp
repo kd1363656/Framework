@@ -177,6 +177,8 @@ void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<
 
 		// ゲームオブジェクトのPostDeserialize関数を呼ぶことで
 		// 全てのコンポーネントのポインタの結び付け処理を行う
+		l_component->INIT            ();
+		l_component->SetOwner        (l_gameObject);
 		l_gameObject->AddComponent   (l_component);
 		l_gameObject->PostDeserialize();
 

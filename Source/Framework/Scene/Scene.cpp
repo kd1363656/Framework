@@ -15,19 +15,7 @@ void FWK::Scene::INIT()
     // 階層別実行順を再構築できるようにする。
 	m_isGameObjectExecutionLevelListDirty = false;
 }
-void FWK::Scene::Setup()
-{
-	for (const auto& l_gameObject : m_gameObjectList)
-	{
-		if (!l_gameObject ||
-			l_gameObject->GetVALIsDestroyed())
-		{
-			continue;
-		}
 
-		l_gameObject->Setup();
-	}
-}
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) 
@@ -38,7 +26,7 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-void FWK::Scene::PostDeserialize()
+void FWK::Scene::PostDeserialize() const
 {
 	for (const auto& l_gameObject : m_gameObjectList)
 	{

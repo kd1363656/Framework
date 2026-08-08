@@ -1,16 +1,33 @@
 ﻿#include "GameObject.h"
 
-void FWK::GameObject::Setup()
+void FWK::GameObject::INIT()
 {
-	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+	m_uniqueComponentMap.clear();
+	m_multiComponentMap.clear ();
+
+	if (!m_transformComponent)
 	{
-		const auto& l_component = l_componentData.m_type;
-
-		if (!l_component) { continue; }
-
-		l_component->SetOwner(weak_from_this());
-		l_component->Setup   ();
+		m_transformComponent = std::make_shared<TransformComponent>();
 	}
+
+	m_transformComponent->INIT();
+
+	m_parent.reset();
+
+	m_childSmartPointerVectorArray.Clear    ();
+	m_componentSmartPointerVectorArray.Clear();
+
+	m_componentEventObserver.INIT();
+
+	m_jsonConverter = {};
+
+	m_uuid = GUID_NULL;
+
+	m_prefabName.clear();
+
+	m_prefabInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
+
+	m_isDestroyed = false;
 }
 
 void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene)
@@ -59,11 +76,10 @@ void FWK::GameObject::DeserializeScene(const nlohmann::json &                   
 
 void FWK::GameObject::PostDeserialize()
 {
-	if (m_transformComponent)
-	{
-		m_transformComponent->SetOwner       (weak_from_this());
-		m_transformComponent->PostDeserialize();
-	}
+	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TransformComponentは必ず存在するべきComponentです。");
+
+	m_transformComponent->SetOwner       (weak_from_this());
+	m_transformComponent->PostDeserialize();
 
 	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
 	{

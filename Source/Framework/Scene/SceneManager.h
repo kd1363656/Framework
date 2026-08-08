@@ -17,7 +17,6 @@ namespace FWK
 
 	public:
 
-		void Setup    ();
 		void LoadScene(const std::string_view& a_sceneFilePath);
 		
 		void EarlyUpdate   ();

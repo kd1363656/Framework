@@ -1,5 +1,22 @@
 ﻿#include "TransformComponent.h"
 
+void FWK::TransformComponent::INIT()
+{
+	m_matrixStrategy = nullptr;
+
+	m_parentTransformComponent.reset();
+
+	m_jsonConverter = {};
+	m_inspector     = {};
+
+	m_initializeMatrixStrategyTypeName = {};
+
+	m_matrix = TypeAlias::Math::Matrix::Identity;
+
+	m_transform               = {};
+	m_initialSettingTransform = {};
+}
+
 void FWK::TransformComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }

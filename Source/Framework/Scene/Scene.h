@@ -10,9 +10,8 @@ namespace FWK
 		~Scene() = default;
 
 		void INIT		    ();
-		void Setup          ();
 		void Deserialize    (const nlohmann::json& a_rootJson);
-		void PostDeserialize();
+		void PostDeserialize() const;
 
 		void EarlyUpdate   ();
 		void Update        () const;

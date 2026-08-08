@@ -52,6 +52,7 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 		// Prefab情報を生成した後
 		// Scene固有情報としてPrefabInstanceNUMなどを復元する
 		// 子ゲームオブジェクトなどをシリアライズしてシーンに登録
+		l_gameObject->INIT       ();
 		l_gameObject->Deserialize(l_gameObjectJson, l_parentPrefabNameSet, a_scene);
 
 	    // PrefabInstanceNUMがDeserializeで有効値にならず無効値のままなら
