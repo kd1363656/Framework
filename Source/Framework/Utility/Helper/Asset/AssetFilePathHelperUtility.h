@@ -13,7 +13,8 @@ namespace FWK::Utility
 
 		nlohmann::json Serialize() const;
 
-		void SetAssetFilePath(const std::filesystem::path& a_set) { m_assetFilePath = a_set; }
+		void SetAllowedFileExtension(const std::filesystem::path& a_set) { m_allowedFileExtension = a_set; }
+		void SetAssetFilePath       (const std::filesystem::path& a_set) { m_assetFilePath        = a_set; }
 
 		const auto& GetREFAssetFilePath() const { return m_assetFilePath; }
 
@@ -21,6 +22,7 @@ namespace FWK::Utility
 
 		Converter::AssetFilePathHelperJsonConverter m_jsonConverter = {};
 
-		std::filesystem::path m_assetFilePath = {};
+		std::filesystem::path m_allowedFileExtension = {};
+		std::filesystem::path m_assetFilePath        = {};
 	};
 }

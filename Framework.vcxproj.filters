@@ -1213,6 +1213,24 @@
     <Filter Include="Source\Framework\Utility\Helper\Asset\Converter\Json">
       <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection">
+      <UniqueIdentifier>{1c878e66-6693-4072-93a7-190cd59b24aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Hierarchy">
+      <UniqueIdentifier>{5bcf19b1-f196-429f-8297-a23ca64a884f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Editor\Window">
+      <UniqueIdentifier>{58b13c6c-5141-4c50-a9c6-e5d98e57bd7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor">
+      <UniqueIdentifier>{237ff102-74b5-4d28-9941-7a9a0bd8505f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor\Window">
+      <UniqueIdentifier>{d93576fd-176e-44e0-9109-bc2ef31dd57d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\Tooltip">
+      <UniqueIdentifier>{bde3ef0f-a030-4182-b16f-b5bcd13739fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2349,6 +2367,21 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\GameObjectJsonConverterTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Hierarchy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\Tooltip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2917,6 +2950,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Hierarchy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

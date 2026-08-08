@@ -14,8 +14,8 @@ namespace FWK
 				 ComponentBase() = default;
 		virtual ~ComponentBase() = default;
 
-		virtual bool IsAllowMultiple() const { return false; }
-		 
+		virtual void Setup() { /*必要に応じてオーバーライドしてください*/ };
+
 		virtual void DeserializePrefab(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		virtual void DeserializeScene (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 		
@@ -30,6 +30,8 @@ namespace FWK
 
 		virtual nlohmann::json SerializePrefab() { return {}; }
 		virtual nlohmann::json SerializeScene () { return {}; }
+
+		virtual bool IsAllowMultiple() const { return false; }
 
 		void Enable ();
 		void Disable();

@@ -1,5 +1,18 @@
 ﻿#include "GameObject.h"
 
+void FWK::GameObject::Setup()
+{
+	for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+	{
+		const auto& l_component = l_componentData.m_type;
+
+		if (!l_component) { continue; }
+
+		l_component->SetOwner(weak_from_this());
+		l_component->Setup   ();
+	}
+}
+
 void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene)
 {
 	if (a_rootJson.is_null()) { return; }

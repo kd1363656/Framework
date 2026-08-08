@@ -105,14 +105,7 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std:
 
 		// 直前に描画したCollapsingHeaderへカーソルが重なっている場合だけ、
 		// Componentを取り外す方法をTooltipで表示する
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-
-			ImGui::TextUnformatted(k_componentRemoveTooltip.data());
-
-			ImGui::EndTooltip();
-		}
+		Utility::DelayedTooltip(k_componentRemoveTooltip.data());
 
 		// CollapsingHeader右端のXを押した場合だけfalseになる
 		if (!l_isKeepComponent)
@@ -123,7 +116,6 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std:
 
 			continue;
 		}
-
 
 		// 右端のXを押した場合だけfalseになる
 		if (!l_isKeepComponent)

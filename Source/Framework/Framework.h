@@ -516,6 +516,11 @@
 // エディター
 //===============================================================================
 #include "Utility/IMGUI/DragDrop/IMGUIFilePathDragDropUtility.h"
+#include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowEnum.h"
+#include "Definition/Struct/Editor/Window/WorldOutlinerEditorWindowStruct.h"
+#include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowGameObjectSelection.h"
+#include "Editor/Window/Outliner/Hierarchy/WorldOutlinerEditorWindowGameObjectHierarchy.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
+#include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 #include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"

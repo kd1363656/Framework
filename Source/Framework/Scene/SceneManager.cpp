@@ -1,5 +1,9 @@
 ﻿#include "SceneManager.h"
 
+void FWK::SceneManager::Setup()
+{
+	m_scene.Setup();
+}
 void FWK::SceneManager::LoadScene(const std::string_view& a_sceneFilePath)
 {
 	// ロード前に初期化を行う
