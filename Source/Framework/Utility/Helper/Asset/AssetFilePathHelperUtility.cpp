@@ -18,7 +18,11 @@ bool FWK::Utility::AssetFilePathHelper::ReceiveFilePathDragDrop()
 
     // 直前に描画されたImGuiItemへFilePathがDropされた場合だけ、
     // DropされたFilePathを受け取る
-    if (!Utility::FilePathDragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_filePath)) { return false; }
+    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_filePath)) 
+    {
+        return false; 
+    }
 
     // FilePathの最終的な妥当性確認はApplyAssetFilePathへ集約する
     return ApplyAssetFilePath(l_filePath);
@@ -31,16 +35,18 @@ bool FWK::Utility::AssetFilePathHelper::ApplyAssetFilePath(const std::filesystem
     {
         m_allowedFileExtension.empty();
 
-        return;
+        return true;
     }
 
     // 読み込み可能拡張子が設定されていなければAssetを受け付けない
-    if (m_allowedFileExtension.empty()) { return; }
+    if (m_allowedFileExtension.empty()) { return false; }
 
     // Fileが存在すること
     // RegularFileであること
     // 許可買う調子と一致することを確認する
-    if (!Utility::CanLoadFilePath(a_set, m_allowedFileExtension)) { return; }
+    if (!Utility::CanLoadFilePath(a_set, m_allowedFileExtension)) { return false; }
 
     m_assetFilePath = a_set;
+
+    return true;
 }

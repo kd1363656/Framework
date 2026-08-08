@@ -6,7 +6,7 @@ void FWK::Converter::AssetFilePathHelperJsonConverter::Deserialize(const nlohman
 
 	const std::filesystem::path& l_assetFilePath = a_rootJson.value(k_assetFilePathJsonKey.data(), std::filesystem::path{});
 
-	a_assetFilePathHelper.SetAssetFilePath(l_assetFilePath);
+	a_assetFilePathHelper.ApplyAssetFilePath(l_assetFilePath);
 }
 
 nlohmann::json FWK::Converter::AssetFilePathHelperJsonConverter::Serialize(const Utility::AssetFilePathHelper& a_assetFilePathHelper) const

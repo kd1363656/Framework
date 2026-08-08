@@ -339,20 +339,25 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 	// まずはRootからPrefabの重複があるかどうかを確認
 	while (l_parentGameObject)
 	{
+		const auto& l_prefabName = l_parentGameObject->GetREFPrefabName();
+
+		// PrefabInstanceかどうかに関係なく
+		// PrefabNameが空のGameObjectをHierarchyへ含めない
+		if (l_prefabName.empty())
+		{
+			FWK_ADD_LOG("親階層にPrefabNameが空のGameObjectが存在するため、親子関係を構築できませんでした。");
+
+			return false;
+		}
+
 		// Prefab化されていない一時GameObjectの名前は
 		// Prefabの循環判定には使用しない
-		if (Utility::IsPrefabInstance(*l_parentGameObject))
+		if (Utility::IsPrefabInstance(*l_parentGameObject) &&
+			!l_prefabNameSet.emplace(l_prefabName).second)
 		{
-			const auto& l_prefabName = l_parentGameObject->GetREFPrefabName();
-	
 			// 現在の親階層事態に同じPrefabが存在している場合も、
 			// 新しい親子関係は構築しない
-			if (!l_prefabNameSet.emplace(l_prefabName).second)
-			{
-				FWK_ADD_LOG("親階層に同じPrefabNameが存在するため、親子関係を構築できませんでした。");
-
-				return false;
-			}
+			return false;
 		}
 
 		// PrefabInstanceかどうかに関係なく

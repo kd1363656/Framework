@@ -2262,7 +2262,7 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIFilePathDragDropUtility.h">
+    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h">
@@ -2956,6 +2956,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Hierarchy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.cpp">
+      <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

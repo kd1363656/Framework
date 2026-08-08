@@ -30,7 +30,7 @@ void Application::Execute()
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
 	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
-
+	
 	l_graphicsManager.INIT();
 	l_physicsManager.INIT ();
 

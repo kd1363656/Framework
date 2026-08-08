@@ -141,6 +141,12 @@ void FWK::Editor::EditorManager::DrawEditor()
 	// ImGuiのフレーム開始
 	ImGui::NewFrame();
 
+	// 前フレームでDragDropが完了またはキャンセルされていれば
+	// Framework側で保持しチエルPayloadを破棄する
+	auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+	l_imguiDragDropPayloadStorage.BeginFrame();
+
 	if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_D, false)) 
 	{
 		m_isDisableDrawEditor = m_isDisableDrawEditor ? false : true;

@@ -28,6 +28,8 @@
 #include <unordered_set>
 #include <format>
 #include <source_location>
+#include <any>
+#include <type_traits>
 
 //================================================
 // 外部ライブラリ
