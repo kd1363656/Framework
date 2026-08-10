@@ -114,8 +114,11 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::f
 		                                        l_directoryName.c_str());
 
 	// Folderの行をClickした場合は、
-	// そのFolderを右ペインでも開く
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+	// そのFolderを右ペインで開く
+	// ArrowをクリックしてTreeNodeを開閉しただけの場合は
+	// CurrentDirectoryを変更しない
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left) &&
+		!ImGui::IsItemToggledOpen())
 	{
 		ApplyCurrentDirectoryPath(a_directoryPath);
 	}
@@ -186,8 +189,8 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 
 	// Cardと次のCardの間隔には
 	// Editor全体のImTuiItemSpacingをそのまま使用する
-	const float         l_itemSpacing         = ImGui::GetStyle                           ().ItemSpacing.x;
-	const std::uint32_t l_directoryEntryPitch = k_directoryEntryWidth + static_cast<float>(l_itemSpacing);
+	const float l_itemSpacing         = ImGui::GetStyle().ItemSpacing.x;
+	const float l_directoryEntryPitch = k_directoryEntryWidth + l_itemSpacing;
 
 	// ペインが広ければColumn数を増やし
 	// 狭ければ自動的に少なくする
@@ -250,6 +253,8 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 
 void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::filesystem::path& a_entryPath, bool a_isDirectory)
 {
+
+
 	const auto& l_entryPathString = a_entryPath.generic_string();
 	const auto& l_entryName       = a_entryPath.filename      ().string();
 	const auto& l_icon            = FetchVALDirectoryEntryIcon(a_entryPath, a_isDirectory);
@@ -258,7 +263,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 	// ImGui上で別Itemとして扱えるよう、Path全体をIDに使用する
 	ImGui::PushID(l_entryPathString.c_str());
 
-	const ImVec2 l_entrySize = { k_directoryEntryWidth, k_directoryEntryHeight };
+	const ImVec2& l_entrySize = { k_directoryEntryWidth, k_directoryEntryHeight };
 
 	// Item全体をClick領域にする
 	// InvisibleButton事態は何も描画しない、
@@ -271,7 +276,12 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 	const auto& l_itemMAX    = ImGui::GetItemRectMax   ();
 	      auto* l_drawList   = ImGui::GetWindowDrawList();
 
-    if (!l_drawList) { return; }
+    if (!l_drawList) 
+	{
+		ImGui::PopID();
+
+		return; 
+	}
 
 	if (l_isSelected)
 	{
@@ -284,7 +294,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 	}
 	else if (l_isHovered)
 	{
-		const auto l_backgroundColor = ImGui::GetColorU32(ImGui::GetColorU32(ImGuiCol_HeaderHovered));
+		const auto l_backgroundColor = ImGui::GetColorU32(ImGuiCol_HeaderHovered);
 
 		l_drawList->AddRectFilled(l_itemMIN,
 			                      l_itemMAX,
@@ -297,7 +307,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 		                                                    k_filleRemainingSize,
 		                                                    l_icon.data());
 
-	const float l_iconPositionX = l_itemMIN.x + (k_directoryEntryWidth - l_iconSize.x) * k_centerinRatio;
+	const float l_iconPositionX = l_itemMIN.x + (k_directoryEntryWidth - l_iconSize.x) * k_centeringRatio;
 	const float l_iconPositionY = l_itemMIN.y + k_directoryEntryIconTopPadding;
 
 	const ImVec2& l_iconPosition = { l_iconPositionX, l_iconPositionY };
@@ -310,38 +320,33 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 		                l_textColor,
 		                l_icon.data());
 
-	const auto& l_entryNameSize      = ImGui::CalcTextSize(l_entryName.c_str());
-	const float l_textAvailableWidth = k_directoryEntryWidth - k_directoryEntryTextHorizontalPadding - k_directoryEntryTextHorizontalPadding;
-	      float l_textPositionX      = l_itemMIN.x           + k_directoryEntryTextHorizontalPadding;
+	// 実際のファイル名は変更しない
+	// コンテンツブラウザー上で表示する名前だけを必要に応じて省略する
+	std::string l_displayEntryName = l_entryName;
 
-	// Card内へ収まる名前なら中央揃え
-	if (l_entryNameSize.x <= l_textAvailableWidth)
+	// 9文字以上の場合は
+	// hogeeeeeeTest.pngはhogeeeeee...というように表示
+	if (l_displayEntryName.size() >= k_directoryEntryNameDisplayCharacterCount)
 	{
-		l_textPositionX = l_itemMIN.x + (k_directoryEntryWidth - l_entryNameSize.x) * k_centerinRatio;
+		l_displayEntryName = l_displayEntryName.substr(static_cast<std::uint32_t>(NULL), k_directoryEntryNameDisplayCharacterCount);
+
+		l_displayEntryName += k_directoryEntryNameEllipsis;
 	}
 
-	const float   l_textPositionY = l_itemMAX.y - ImGui::GetTextLineHeight() - k_directoryEntryTextBottomPadding;
-	const ImVec2& l_textPosition  = { l_textPositionX, l_textPositionY };
+	const ImVec2& l_entryNameSize = ImGui::CalcTextSize(l_displayEntryName.c_str());
 
-	// 長いFile名が隣のCardへ飛び出さないようにする
-	const ImVec2& l_textClipMIN = { l_itemMIN.x + k_directoryEntryTextHorizontalPadding, l_textPositionY };
-	const ImVec2& l_textClipMAX = { l_itemMAX.x - k_directoryEntryTextHorizontalPadding, l_itemMAX.y };
+	// File名は常にCard中央へ配置する
+	const float l_textPositionX = l_itemMIN.x +                         (k_directoryEntryWidth - l_entryNameSize.x) * k_centeringRatio;
+	const float l_textPositionY = l_itemMAX.y - ImGui::GetTextLineHeight()                                          - k_directoryEntryTextBottomPadding;
 
-	l_drawList->PushClipRect(l_textClipMIN,  l_textClipMAX, true);
-	l_drawList->AddText     (l_textPosition, l_textColor,   l_entryName.c_str());
-	l_drawList->PopClipRect ();
+	const ImVec2& l_textPosition = { l_textPositionX, l_textPositionY };
+
+	l_drawList->AddText(l_textPosition, l_textColor, l_displayEntryName.c_str());
 
 	// 左クリックしたItemを現在の選択対象にする
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 	{
 		m_selectedEntryPath = a_entryPath;
-	}
-
-	if (a_isDirectory &&
-		l_isHovered   &&
-		ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-	{
-		
 	}
 
 	ImGui::PopID();

@@ -30,22 +30,24 @@ namespace FWK::Editor
 		static constexpr std::string_view k_directoryTreeChildString    = "##ContentBrowserDirectoryTree";
 		static constexpr std::string_view k_currentDirectoryChildString = "##ContentBrowserCurrentDirectory";
 		static constexpr std::string_view k_directoryEntryButtonString  = "##ContentBrowserDirectoryEntry";
+		static constexpr std::string_view k_directoryEntryNameEllipsis  = "...";
 
 		static constexpr float k_directoryTreePanelWidth = 240.0F;
 		static constexpr float k_filleRemainingSize      = 0.0F;
 
+		static constexpr float k_directoryEntryWidth  = 104.0F;
 		static constexpr float k_directoryEntryHeight = 92.0F;
 
 		static constexpr float k_directoryEntryIconFontSize = 48.0F;
 
-		static constexpr float k_directoryEntryIconTopPadding        = 8.0F;
-		static constexpr float k_directoryEntryTextBottomPadding     = 7.0F;
-		static constexpr float k_directoryEntryTextHorizontalPadding = 5.0F;
-
+		static constexpr float k_directoryEntryIconTopPadding    = 8.0F;
+		static constexpr float k_directoryEntryTextBottomPadding = 7.0F;
+		
 		static constexpr float k_directoryEntryRounding = 4.0F;
-		static constexpr float k_centerinRatio          = 0.5F;
+		static constexpr float k_centeringRatio         = 0.5F;
 
-		static constexpr std::uint32_t k_directoryEntryWidth              = 104U;
+		static constexpr std::size_t k_directoryEntryNameDisplayCharacterCount = 9U;
+
 		static constexpr std::uint32_t k_minDirectoryEntryColumnCount     = 1U;
 		static constexpr std::uint32_t k_initialDirectoryEntryColumnCount = 0U;
 
