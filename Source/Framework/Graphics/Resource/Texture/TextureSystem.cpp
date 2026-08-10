@@ -28,7 +28,7 @@ FWK::Graphics::TextureSystem::TextureLoadResult FWK::Graphics::TextureSystem::Lo
 
 	// 読み込めるファイルかどうかを確認
 	// 読み込めるファイル出ない場合デフォルトテクスチャを返す
-	if (!Utility::CanLoadFilePath(a_filePath, Converter::TextureBinaryConverter::k_lowerPNGExtension))
+	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension))
 	{
 		ApplyDefaultTextureToLoadResult(a_defaultTextureType, l_textureLoadResult);
 

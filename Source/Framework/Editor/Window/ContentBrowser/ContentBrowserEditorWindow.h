@@ -16,12 +16,13 @@ namespace FWK::Editor
 		void DrawDirectoryTree    ();
 		void DrawDirectoryTreeNode(const std::filesystem::path& a_directoryPath);
 		void DrawCurrentDirectory ();
+		void DrawDirectoryEntry   (const std::filesystem::path& a_entryPath, bool a_isDirectory);
 
 		bool HasChildDirectory(const std::filesystem::path& a_directoryPath) const;
 
 		void ApplyCurrentDirectoryPath(const std::filesystem::path& a_directoryPath);
 
-		std::string FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPaath, bool a_isDirectory) const;
+		std::string_view FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPaath, bool a_isDirectory) const;
 
 		inline static const std::filesystem::path k_contentRootDirectoryPath = "Content";
 		
@@ -42,6 +43,7 @@ namespace FWK::Editor
 		static constexpr float k_directoryEntryTextHorizontalPadding = 5.0F;
 
 		static constexpr float k_directoryEntryRounding = 4.0F;
+		static constexpr float k_centerinRatio          = 0.5F;
 
 		static constexpr std::uint32_t k_directoryEntryWidth              = 104U;
 		static constexpr std::uint32_t k_minDirectoryEntryColumnCount     = 1U;

@@ -5,7 +5,7 @@ bool FWK::Graphics::TextureLoader::LoadTextureFile(const std::filesystem::path& 
 														 DirectX::ScratchImage&      a_scratchImage, 
 														 DirectX::TexMetadata&       a_texMetadata) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Converter::TextureBinaryConverter::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "ロードしようとしたファイルが無効かPNGファイルでないため、テクスチャファイル読み込みに失敗しました。", false);
 
 	const auto l_wicFlags = CreateWICFlags(a_textureLoadColorSpace);
 

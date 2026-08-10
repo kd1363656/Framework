@@ -186,8 +186,8 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 
 	// Cardと次のCardの間隔には
 	// Editor全体のImTuiItemSpacingをそのまま使用する
-	const float l_itemSpacing         = ImGui::GetStyle                                   ().ItemSpacing.x;
-	const float l_directoryEntryPitch = k_directoryEntryWidth + static_cast<std::uint32_t>(l_itemSpacing);
+	const float         l_itemSpacing         = ImGui::GetStyle                           ().ItemSpacing.x;
+	const std::uint32_t l_directoryEntryPitch = k_directoryEntryWidth + static_cast<float>(l_itemSpacing);
 
 	// ペインが広ければColumn数を増やし
 	// 狭ければ自動的に少なくする
@@ -215,18 +215,8 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 		{
 			const auto& l_entryPath = l_directoryITR->path();
 
-			// FoldlerをDoubleClickしてCurrentDirectoryが要求された場合、
-			// 古いDirectoryのEntryをこのフレームで描画し続けない
+			DrawDirectoryEntry(l_entryPath, l_isDirectory);
 
-			const auto& l_entryName = l_entryPath.filename().string();
-			const auto& l_icon      = l_isDirectory ? Constant::k_fontAwesomeFolderIcon : Constant::k_fontAwesomeFileIcon;
-
-			const auto l_itemLabel = std::format("{} {}", l_icon, l_entryName);
-
-			ImGui::Selectable(l_itemLabel.c_str(), false, ImGuiSelectableFlags_AllowDoubleClick);
-
-			// ここではCurrentDirectoryを変更しない
-			// 開きたいFolderだけ保存しておく
 			if (l_isDirectory          &&
 				ImGui::IsItemHovered() &&
 				ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
@@ -256,6 +246,105 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 	if (l_requestedDirectoryPath.empty()) { return; }
 
 	ApplyCurrentDirectoryPath(l_requestedDirectoryPath);
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::filesystem::path& a_entryPath, bool a_isDirectory)
+{
+	const auto& l_entryPathString = a_entryPath.generic_string();
+	const auto& l_entryName       = a_entryPath.filename      ().string();
+	const auto& l_icon            = FetchVALDirectoryEntryIcon(a_entryPath, a_isDirectory);
+
+	// 同じ名前のFile/Folderが別Directoryに存在しても
+	// ImGui上で別Itemとして扱えるよう、Path全体をIDに使用する
+	ImGui::PushID(l_entryPathString.c_str());
+
+	const ImVec2 l_entrySize = { k_directoryEntryWidth, k_directoryEntryHeight };
+
+	// Item全体をClick領域にする
+	// InvisibleButton事態は何も描画しない、
+	// この後DrawListをつあって背景・Icon・名前を自部で描画する
+	ImGui::InvisibleButton(k_directoryEntryButtonString.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
+
+	const bool  l_isHovered  = ImGui::IsItemHovered();
+	const bool  l_isSelected = m_selectedEntryPath == a_entryPath;
+	const auto& l_itemMIN    = ImGui::GetItemRectMin   ();
+	const auto& l_itemMAX    = ImGui::GetItemRectMax   ();
+	      auto* l_drawList   = ImGui::GetWindowDrawList();
+
+    if (!l_drawList) { return; }
+
+	if (l_isSelected)
+	{
+		const auto l_backgroundColor = ImGui::GetColorU32(l_isHovered ? ImGuiCol_HeaderActive : ImGuiCol_Header);
+
+		l_drawList->AddRectFilled(l_itemMIN,
+			                      l_itemMAX,
+			                      l_backgroundColor,
+			                      k_directoryEntryRounding);
+	}
+	else if (l_isHovered)
+	{
+		const auto l_backgroundColor = ImGui::GetColorU32(ImGui::GetColorU32(ImGuiCol_HeaderHovered));
+
+		l_drawList->AddRectFilled(l_itemMIN,
+			                      l_itemMAX,
+		                          l_backgroundColor,
+			                      k_directoryEntryRounding);
+	}
+
+	const auto l_iconSize = ImGui::GetFont()->CalcTextSizeA(k_directoryEntryIconFontSize, 
+		                                                    std::numeric_limits<float>::max(),
+		                                                    k_filleRemainingSize,
+		                                                    l_icon.data());
+
+	const float l_iconPositionX = l_itemMIN.x + (k_directoryEntryWidth - l_iconSize.x) * k_centerinRatio;
+	const float l_iconPositionY = l_itemMIN.y + k_directoryEntryIconTopPadding;
+
+	const ImVec2& l_iconPosition = { l_iconPositionX, l_iconPositionY };
+	const auto    l_textColor    = ImGui::GetColorU32(ImGuiCol_Text);
+
+	// FontAwesomeGlyphを通常Textより大きく描画する
+	l_drawList->AddText(ImGui::GetFont(),
+		                k_directoryEntryIconFontSize,
+		                l_iconPosition,
+		                l_textColor,
+		                l_icon.data());
+
+	const auto& l_entryNameSize      = ImGui::CalcTextSize(l_entryName.c_str());
+	const float l_textAvailableWidth = k_directoryEntryWidth - k_directoryEntryTextHorizontalPadding - k_directoryEntryTextHorizontalPadding;
+	      float l_textPositionX      = l_itemMIN.x           + k_directoryEntryTextHorizontalPadding;
+
+	// Card内へ収まる名前なら中央揃え
+	if (l_entryNameSize.x <= l_textAvailableWidth)
+	{
+		l_textPositionX = l_itemMIN.x + (k_directoryEntryWidth - l_entryNameSize.x) * k_centerinRatio;
+	}
+
+	const float   l_textPositionY = l_itemMAX.y - ImGui::GetTextLineHeight() - k_directoryEntryTextBottomPadding;
+	const ImVec2& l_textPosition  = { l_textPositionX, l_textPositionY };
+
+	// 長いFile名が隣のCardへ飛び出さないようにする
+	const ImVec2& l_textClipMIN = { l_itemMIN.x + k_directoryEntryTextHorizontalPadding, l_textPositionY };
+	const ImVec2& l_textClipMAX = { l_itemMAX.x - k_directoryEntryTextHorizontalPadding, l_itemMAX.y };
+
+	l_drawList->PushClipRect(l_textClipMIN,  l_textClipMAX, true);
+	l_drawList->AddText     (l_textPosition, l_textColor,   l_entryName.c_str());
+	l_drawList->PopClipRect ();
+
+	// 左クリックしたItemを現在の選択対象にする
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+	{
+		m_selectedEntryPath = a_entryPath;
+	}
+
+	if (a_isDirectory &&
+		l_isHovered   &&
+		ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+	{
+		
+	}
+
+	ImGui::PopID();
 }
 
 bool FWK::Editor::ContentBrowserEditorWindow::HasChildDirectory(const std::filesystem::path& a_directoryPath) const
@@ -303,7 +392,14 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentDirectoryPath(const st
 	m_currentDirectoryPath = a_directoryPath.lexically_normal();
 }
 
-std::string FWK::Editor::ContentBrowserEditorWindow::FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPaath, bool a_isDirectory) const
+std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPaath, bool a_isDirectory) const
 {
-	return std::string();
+	if (a_isDirectory) { return Constant::k_fontAwesomeFolderIcon; }
+
+	const auto& l_extension = a_entryPaath.extension();
+
+	if (l_extension == Constant::k_lowerFBXExtension) { return Constant::k_fontAwesomeCubeIcon; }
+	if (l_extension == Constant::k_lowerPNGExtension) { return Constant::k_fontAwesomeImageIcon; }
+
+	return Constant::k_fontAwesomeFileIcon;
 }

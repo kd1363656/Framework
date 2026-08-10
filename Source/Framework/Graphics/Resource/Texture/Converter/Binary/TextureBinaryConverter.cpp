@@ -185,7 +185,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage)
 {
 	// 保存元のPNGが存在するかどうか、DirectXTexで読み込んだScratchImageが正常かを確認する
-	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, TextureBinaryConverter::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
+	FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
 	// PNGと同じ場所・同じ名前で拡張子だけ.assetにしたパスを作る
 	const auto& l_textureAssetFilePath = CreateAssetFilePath		  (a_filePath);
@@ -245,7 +245,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::filesystem::path& a_filePath) const
 {
 	// まず元のPNGが存在していて、拡張子も.pngか確認する
-	if (!Utility::CanLoadFilePath(a_filePath, TextureBinaryConverter::k_lowerPNGExtension)) { return false; }
+	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
 
 	// もし元ファイルが更新されていたらバイナリーファイルも更新する
 	// PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する

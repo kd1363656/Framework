@@ -211,7 +211,7 @@ std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(con
 
 	// 現在のTextureSystemはPNG読み込み方針なので、
 	// FBX内のpng等の参照をエンジンで使うpngパスへ変換する
-	l_textureFilePath.replace_extension(Converter::TextureBinaryConverter::k_lowerPNGExtension);
+	l_textureFilePath.replace_extension(Constant::k_lowerPNGExtension);
 
 	return l_textureFilePath.wstring();
 }

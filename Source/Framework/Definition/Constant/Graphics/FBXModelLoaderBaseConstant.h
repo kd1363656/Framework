@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-	inline static const std::filesystem::path k_lowerFBXExtension = ".fbx";
+	inline const std::filesystem::path k_lowerFBXExtension = ".fbx";
 }
