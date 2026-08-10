@@ -71,7 +71,7 @@ namespace FWK::Physics
 		static constexpr uint32_t k_kiloBytePerMB       = 1024U;
 		static constexpr uint32_t k_bytePerKB           = 1024U;
 
-		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Physics/PhysicsCONFIG.json";
+		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Physics/PhysicsCONFIG.json";
 
 		std::unique_ptr<JPH::Factory> m_factory;
 

@@ -39,7 +39,7 @@ namespace FWK::Graphics
 		bool EnableDebugLayer() const;
 #endif
 
-		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Graphics/GraphicsCONFIG.json";
+		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Graphics/GraphicsCONFIG.json";
 
 		Factory			m_factory		  = {};
 		Device			m_device		  = {};

@@ -1,0 +1,24 @@
+{
+    "IsDisableEditor": false,
+    "MainMenubar": {
+        "MainMenuList": [
+            {
+                "MainMenuTypeName": "FileMainMenuEditor"
+            }
+        ]
+    },
+    "WindowList": [
+        {
+            "Window": "ViewportEditorWindow"
+        },
+        {
+            "Window": "ContentBrowserEditorWindow"
+        },
+        {
+            "Window": "WorldOutlinerEditorWindow"
+        },
+        {
+            "Window": "DetailsEditorWindow"
+        }
+    ]
+}

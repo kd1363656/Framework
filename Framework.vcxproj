@@ -939,135 +939,85 @@ if "$(Configuration)"=="Debug" (
     <Text Include="Documents\CodingConventions.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Asset\Data\CONFIG\Editor\EditorCONFIG.json" />
-    <None Include="Asset\Data\CONFIG\FPS\FPSCONFIG.json" />
-    <None Include="Asset\Data\CONFIG\Graphics\GraphicsCONFIG.json" />
-    <None Include="Asset\Data\CONFIG\Physics\PhysicsCONFIG.json" />
-    <None Include="Asset\Data\CONFIG\Window\WindowCONFIG.json" />
-    <None Include="Asset\Shader\Camera\CameraPass.hlsli" />
-    <None Include="Asset\Shader\Model\Model.hlsli" />
-    <None Include="Asset\Shader\Model\ModelMeshlet.hlsli" />
-    <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli" />
-    <None Include="Asset\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli" />
-    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli" />
-    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli" />
-    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
-    <None Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit.hlsli" />
-    <None Include="Asset\Shader\Model\Standard\ModelStandard.hlsli" />
-    <None Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit.hlsli" />
-    <None Include="Asset\Shader\Model\Static\StaticModel.hlsli" />
-    <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli" />
-    <None Include="Asset\Shader\RenderTarget\Final\FinalColor.hlsli" />
-    <None Include="Asset\Shader\RenderTarget\FullScreenTriangle.hlsli" />
-    <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
+    <None Include="CONFIG\Editor\EditorCONFIG.json" />
+    <None Include="CONFIG\FPS\FPSCONFIG.json" />
+    <None Include="CONFIG\Graphics\GraphicsCONFIG.json" />
+    <None Include="CONFIG\Physics\PhysicsCONFIG.json" />
+    <None Include="CONFIG\Window\WindowCONFIG.json" />
+    <None Include="Content\Shader\Camera\CameraPass.hlsli" />
+    <None Include="Content\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli" />
+    <None Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli" />
+    <None Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli" />
+    <None Include="Content\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli" />
+    <None Include="Content\Shader\Model\Standard\Lit\ModelStandardLit.hlsli" />
+    <None Include="Content\Shader\Model\Standard\ModelStandard.hlsli" />
+    <None Include="Content\Shader\Model\Standard\UnLit\ModelStandardUnLit.hlsli" />
+    <None Include="Content\Shader\Model\Static\StaticModel.hlsli" />
+    <None Include="Content\Shader\PhysicsDebug\PhysicsDebug.hlsli" />
+    <None Include="Content\Shader\RenderTarget\Final\FinalColor.hlsli" />
+    <None Include="Content\Shader\RenderTarget\FullScreenTriangle.hlsli" />
+    <None Include="Content\Shader\Sprite\Screen\SpriteScreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <DXCTask Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
+    <DXCTask Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
+    <DXCTask Include="Content\Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel_AS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_6_6</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
+    <DXCTask Include="Content\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLit_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
+    <DXCTask Include="Content\Shader\Model\Skeletal\SkeletalAnimationModel_AS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    <DXCTask Include="Content\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_VS.hlsl">
+    <DXCTask Include="Content\Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLit_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Standard\Lit\ModelStandardLit_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Mesh</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Model\Static\StaticModel_AS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Amplification</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\PhysicsDebug\PhysicsDebug_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
+    <DXCTask Include="Content\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
+    <DXCTask Include="Content\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\RenderTarget\FullScreenTriangle_VS.hlsl">
+    <DXCTask Include="Content\Shader\RenderTarget\FullScreenTriangle_VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </DXCTask>
-    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_VS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </DXCTask>
-    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
+    <DXCTask Include="Content\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)%(Filename).cso</ObjectFileOutput>
+    </DXCTask>
+    <DXCTask Include="Content\Shader\Sprite\Screen\SpriteScreen_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </DXCTask>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

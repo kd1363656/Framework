@@ -16,8 +16,17 @@ FWK::Editor::LogEditorWindow::~LogEditorWindow() = default;
 
 void FWK::Editor::LogEditorWindow::Draw()
 {
+	if (!ImGui::Begin(k_editorName.data()))
+	{
+		ImGui::End();
+
+		return;
+	}
+
 	DrawEditorOptions();
 	DrawLog          ();
+
+	ImGui::End();
 }
 
 void FWK::Editor::LogEditorWindow::AddLog(const char* a_format, ...)
@@ -53,12 +62,6 @@ void FWK::Editor::LogEditorWindow::AddLog(const char* a_format, ...)
 
 void FWK::Editor::LogEditorWindow::DrawEditorOptions()
 {
-	if (!ImGui::Begin(k_editorName.data()))
-	{
-		ImGui::End();
-		return;
-	}
-
 	if (ImGui::BeginPopup(k_optionString.data()))
 	{
 		// 自動スクロールするかどうかを決めるチェックボタン
@@ -125,7 +128,7 @@ void FWK::Editor::LogEditorWindow::DrawLog()
 			if (!m_textFilter.PassFilter(l_lineStart , l_lineEnd)) { continue; }
 
 			// 合致する行だけ表示
-			ImGui::TextUnformatted(l_lineStart , l_lineEnd);
+			ImGui::Text(l_lineStart , l_lineEnd);
 		}
 	}
 	else
@@ -142,7 +145,7 @@ void FWK::Editor::LogEditorWindow::DrawLog()
 				const char* l_lineStart = l_buffer + m_textLineOffsets[l_lineNum];
 				const char* l_lineEnd   = (l_lineNum + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNum + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
 
-				ImGui::TextUnformatted(l_lineStart , l_lineEnd);
+				ImGui::Text(l_lineStart , l_lineEnd);
 			}
 		}
 		l_clipper.End();
@@ -157,7 +160,6 @@ void FWK::Editor::LogEditorWindow::DrawLog()
 	}
 
 	ImGui::EndChild();
-	ImGui::End     ();
 }
 
 void FWK::Editor::LogEditorWindow::ClearLog()

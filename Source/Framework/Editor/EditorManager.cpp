@@ -99,7 +99,7 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 
 	// WIN32用ImGuiバックエンドを初期化する
 	// ImGui_ImplWin32_Init(入力を受け取る対象ウィンドウハンドル);
-	FWK_ASSERT_RETURN_IF(!ImGui_ImplWin32_Init(a_hwnd),      "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!ImGui_ImplWin32_Init(a_hwnd), "IMGUI_IMPLWIN32_INITに失敗したため、ImGuiの初期化処理に失敗しました。");
 
 	// DirectX12用ImGuiバックエンドを初期化する
 	// ImGui_ImplDX12_Init(DirectX12用初期化情報);
@@ -189,7 +189,7 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
 	Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest)
+void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest) const
 {
 	// window側でサイズ変更が起きていない場合は、何もしない
 	if (!a_windowResizeRequest.m_isRequested ||
@@ -368,14 +368,14 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
 }
 void FWK::Editor::EditorManager::DrawEditorWindow()
 {
+	m_logEditorWindow.Draw();
+
 	for (const auto& l_editorWindow : m_editorWindowList)
 	{
 		if (!l_editorWindow) { continue; }
 
 		l_editorWindow->Draw();
 	}
-
-	m_logEditorWindow.Draw();
 }
 
 void FWK::Editor::EditorManager::Release()

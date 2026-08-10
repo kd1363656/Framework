@@ -123,7 +123,7 @@ namespace FWK
 
 		static constexpr int k_quitExitCode = 0;
 
-		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Window/WindowCONFIG.json";
+		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Window/WindowCONFIG.json";
 
 		Converter::WindowJsonConverter m_jsonConverter = {};
 

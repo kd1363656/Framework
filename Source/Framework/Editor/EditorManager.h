@@ -29,7 +29,7 @@ namespace FWK::Editor
 		
 		void SaveCONFIG() const;
 	
-		void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest);
+		void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest) const;
 
 		bool CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
@@ -101,7 +101,7 @@ namespace FWK::Editor
 
 		void Release();
 
-		const std::filesystem::path k_configFileIOPath = "Asset/Data/CONFIG/Editor/EditorCONFIG.json";
+		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Editor/EditorCONFIG.json";
 
 		static constexpr const char* k_dockingWindowName = "DockSpace";
 		static constexpr const char* k_dockingSpaceName  = "DockSpace";

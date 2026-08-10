@@ -224,7 +224,7 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
 }
 void FWK::Editor::EditorStyle::ApplyFont()
 {
-	ImGuiIO& l_io = ImGui::GetIO();
+	auto& l_io = ImGui::GetIO();
 
 	FWK_ASSERT_RETURN_IF(!l_io.Fonts, "フォントが無効です、フォントの適用に失敗しました。");
 
@@ -237,10 +237,10 @@ void FWK::Editor::EditorStyle::ApplyFont()
 	l_fontConfig.OversampleV = k_fontVerticalOversample;
 	l_fontConfig.PixelSnapH  = true;
 	
-	const ImFont* const l_japaneseFont = l_io.Fonts->AddFontFromFileTTF(k_fontPath,
-																		k_editorFontSize,
-																		&l_fontConfig,
-																		l_io.Fonts->GetGlyphRangesJapanese());
+	const auto* const l_japaneseFont = l_io.Fonts->AddFontFromFileTTF(k_fontPath.string().c_str(),
+                                                                      k_editorFontSize,
+                                                                      &l_fontConfig,
+                                                                      l_io.Fonts->GetGlyphRangesJapanese());
 
 	// フォント読み込みに失敗した場合だけ、最低限の標準フォントへ戻す。
 	// ただし、この阿合は日本語表示できない
@@ -248,6 +248,20 @@ void FWK::Editor::EditorStyle::ApplyFont()
 	{
 		l_io.Fonts->AddFontDefault();
 	}
+
+	ImFontConfig l_iconFontConfig = {};
+
+	// 直前に読み込んだCicaへIconGlyphを追加する
+	// FontAwesome専用Fontへ切り替える必要がなくなる
+	l_iconFontConfig.MergeMode  = true;
+	l_iconFontConfig.PixelSnapH = true;
+
+	const auto* const l_iconFong = l_io.Fonts->AddFontFromFileTTF(k_iconFontPath.string().c_str(), 
+		                                                          k_editorFontSize,
+		                                                          &l_iconFontConfig,
+		                                                          k_iconGlyphRanges);
+
+	FWK_ASSERT_RETURN_IF(!l_iconFong, "FontAwesomeの読み込みに失敗しました。");
 }
 
 ImVec4 FWK::Editor::EditorStyle::ConvertEditorColorToIMVEC4(const TypeAlias::Math::Color& a_color)

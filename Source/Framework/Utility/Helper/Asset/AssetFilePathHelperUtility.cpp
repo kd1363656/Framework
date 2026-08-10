@@ -31,12 +31,7 @@ bool FWK::Utility::AssetFilePathHelper::ReceiveFilePathDragDrop()
 bool FWK::Utility::AssetFilePathHelper::ApplyAssetFilePath(const std::filesystem::path& a_set)
 {
     // 許可され邸内拡張子だった場合、フィルパスを更新しない
-    if (a_set.empty())
-    {
-        m_allowedFileExtension.empty();
-
-        return true;
-    }
+    if (a_set.empty()) { return true; }
 
     // 読み込み可能拡張子が設定されていなければAssetを受け付けない
     if (m_allowedFileExtension.empty()) { return false; }
