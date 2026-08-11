@@ -191,7 +191,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 		if (l_appliedBoneInfluenceCount >= k_maxBoneInfluenceCount) { break; }
 
 		const auto  l_skinWeightIndex = l_fbxSkinVertex.weight_begin + l_skinWeightOffset;
-		const auto& l_fbxSkinWeight = a_fbxSkinDeformer->weights.data[l_skinWeightIndex];
+		const auto& l_fbxSkinWeight   = a_fbxSkinDeformer->weights.data[l_skinWeightIndex];
 
 		// Weightは降順なので0以下になった時点で終了する
 		if (l_fbxSkinWeight.weight <= k_emptyBoneWeight) { break; }
@@ -252,6 +252,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 										  a_modelVertex);
 	}
 
+	// Weightが大きい先頭4件が必ず合計値が1.0Fになるように正規化する
 	return NormalizeModelVertexBoneWeight(a_modelVertex);
 }
 void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluenceSlot(const float                                      a_boneWeight, 

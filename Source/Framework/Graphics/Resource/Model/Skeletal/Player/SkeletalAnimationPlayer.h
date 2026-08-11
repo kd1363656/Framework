@@ -2,6 +2,7 @@
 
 namespace FWK::Graphics
 {
+	// 一つ一つのスケルタルアニメーションモデルのanimation進捗度などを管理するクラス
 	class SkeletalAnimationPlayer final
 	{
 	private:

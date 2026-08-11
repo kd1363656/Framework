@@ -13,8 +13,13 @@ namespace FWK::Graphics
 			TypeAlias::Math::Vector4 m_tangent  = {};
 			TypeAlias::Math::Vector2 m_uv       = {};
 
+			// 子の頂点が対応する最大4本のボーンから
+			// それぞれどれだけ影響を受けるかを表す割合
+			// 基本的には有効なWeightの合計が1.0Fになる
 			TypeAlias::Math::Vector4 m_boneWeight = {};
 
+			// 子の頂点に影響するBoneを
+			// ModelMesh::m_bonePaletteListの何番から取得するかを表す
 			std::uint32_t m_bonePaletteIndexZero  = k_invalidPaletteIndex;
 			std::uint32_t m_bonePaletteIndexOne   = k_invalidPaletteIndex;
 			std::uint32_t m_bonePaletteIndexTwo   = k_invalidPaletteIndex;
@@ -23,6 +28,9 @@ namespace FWK::Graphics
 
 		struct ModelBonePaletteElement final
 		{
+			// バンドポーズ時点ですでにModel空間へ配置されている頂点から
+			// BindPose時のBone変換を取り除くためのMatrix
+			// Skinning時にCurrentGlobalBoneMatrixと組み合わせて使用する
 			TypeAlias::Math::Matrix m_inverseBindPoseMatrix = TypeAlias::Math::Matrix::Identity;
 
 			std::uint32_t m_boneIndex = k_invalidBoneIndex;
