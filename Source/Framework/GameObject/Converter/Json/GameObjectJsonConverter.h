@@ -45,7 +45,7 @@ namespace FWK
 
 		void DeserializeChildPrefab(const nlohmann::json&                            a_rootJson, 
 			                              std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-			                              std::unordered_set<boost::uuids::uuid>&&   a_parentPrefabNameSet,
+			                              std::unordered_set<boost::uuids::uuid>&    a_parentPrefabNameSet,
 			                              Scene&                                     a_scene) const;
 
 		void DeserializeChildScene (const nlohmann::json& a_rootJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const;
@@ -64,9 +64,10 @@ namespace FWK
 			                         std::unordered_set<boost::uuids::uuid>&    a_parentPrefabNameSet, 
 			                         Scene&                                     a_scene) const;
 
-		static constexpr std::string_view k_prefabNameJsonKey               = "PrefabName";
+		static constexpr std::string_view k_sceneInstanceNameJsonKey        = "SceneInstanceName";
 		static constexpr std::string_view k_prefabUUIDJsonKey               = "PrefabUUID";
-		static constexpr std::string_view k_prefabInstanceNUMJsonKey        = "PrefabInstanceNUM";
+		static constexpr std::string_view k_sceneInstanceUUIDJsonKey        = "SceneInstanceUUID";
+		static constexpr std::string_view k_prefabSceneInstanceNUMJsonKey   = "PrefabSceneInstanceNUM";
 		static constexpr std::string_view k_componentListJsonKey            = "ComponentList";
 		static constexpr std::string_view k_typeNameJsonKey                 = "TypeName";
 		static constexpr std::string_view k_componentEventObserverJsonKey   = "ComponentEventObserver";

@@ -196,7 +196,7 @@ std::string_view FWK::Editor::DetailsEditorWindow::FetchVALGameObjectDisplayName
 
 	if (!l_gameObjectName.empty()) { return l_gameObjectName; }
 
-	const auto& l_prefabName = a_gameObject.GetREFPrefabName();
+	const auto& l_prefabName = a_gameObject.GetREFSceneInstanceName();
 
 	if (!l_prefabName.empty()) { return l_prefabName; }
 

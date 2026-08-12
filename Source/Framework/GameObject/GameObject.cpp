@@ -378,8 +378,7 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 		// unordered_set::emplace()の戻り値を利用して、
 		// contains()とemplace()を別々に呼ばず
 		// 一度の検索で重複確認と登録を行う
-		if (const auto& l_prefabUUID = l_parentGameObject->GetREFPrefabUUID();
-			!l_prefabUUIDSet.emplace(l_prefabUUID).second)
+		if (!l_prefabUUIDSet.emplace(l_prefabUUID).second)
 		{
 			FWK_ADD_LOG("親階層に同じPrefabUUIDを持つGameObjectが存在するため、親子関係を構築できませんでした。");
 
@@ -504,8 +503,7 @@ void FWK::GameObject::Unparent(const std::weak_ptr<GameObject>&a_child)
 std::string FWK::GameObject::FetchVALGameObjectName() const
 {
 	// FBXをSceneへ置いただけで、
-	// まだPrefab化されていないGAmeObjectは
-	// Prefab名だけを表示する
+	// まだPrefab化されていないGAmeObjectはPrefab名だけを表示する
 	if (m_prefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
 	{
 		if (!m_sceneInstanceName.empty()) { return m_sceneInstanceName; }
@@ -515,6 +513,8 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 
 	FWK_ASSERT_RETURN_VALUE_IF(m_sceneInstanceName.empty(), "PrefabInstanceNUMが有効なのにSceneInstanceNameが空になっています。", std::string{ Constant::k_gameObjectString });
 	
+	// シーンインスタンス数が無効値でない場合、シーンインスタンスネームがPrefab名なのは確定なので
+	// "GameObject_1"のような描画方式にしてもらう
 	return std::format("{}_{}", m_sceneInstanceName, m_prefabSceneInstanceNUM);
 }
 

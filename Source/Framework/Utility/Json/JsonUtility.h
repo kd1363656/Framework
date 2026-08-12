@@ -100,9 +100,11 @@ namespace FWK::Utility
 		a_instance = l_factory.Create(l_createName);
 	}
 
-	inline boost::uuids::uuid DeserializeUUID(const nlohmann::json& a_json)
+	inline boost::uuids::uuid DeserializeUUID(const nlohmann::json& a_json, const std::string_view& a_key = {})
 	{
-		return Utility::StringToUUID(a_json.value(Constant::k_uuidJsonKey, std::string{}));
+		const auto& l_key = a_key.empty() ? Constant::k_uuidJsonKey : a_key;
+
+		return Utility::StringToUUID(a_json.value(l_key, std::string{}));
 	}
 	
 	inline nlohmann::json SerializeColor(const TypeAlias::Math::Color& a_color , const std::string_view& a_key)
@@ -176,11 +178,13 @@ namespace FWK::Utility
 		return l_rootJson;
 	}
 
-	inline nlohmann::json SerializeUUID(const boost::uuids::uuid& a_uuid)
+	inline nlohmann::json SerializeUUID(const boost::uuids::uuid& a_uuid, const std::string_view& a_key = {})
 	{
+		const auto& l_key = a_key.empty() ? Constant::k_uuidJsonKey : a_key;
+
 		return nlohmann::json
 		{
-			{ Constant::k_uuidJsonKey, boost::uuids::to_string(a_uuid) }
+			{ l_key, boost::uuids::to_string(a_uuid) }
 		};
 	}
 }

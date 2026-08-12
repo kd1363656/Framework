@@ -31,9 +31,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 		// PrefabInstanceNUMが発行済みのGameObjectは、
         // PrefabName + InstanceNUMから名前が決まるため
         // Outlinerから直接リネームしない
-		if (!l_selectedGameObject                                                                   ||
-			l_selectedGameObject->GetVALIsDestroyed()                                               ||
-			l_selectedGameObject->GetVALPrefabInstanceNUM() == Constant::k_invalidPrefabInstanceNUM ||
+		if (!l_selectedGameObject                                                                        ||
+			l_selectedGameObject->GetVALIsDestroyed()                                                    ||
+			l_selectedGameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabInstanceNUM ||
 			m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount)
 		{
 			CancelGameObjectRename();
@@ -495,10 +495,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestGameObjectRename(const std::
 		return;
 	}
 
-	// PrefabInstanceの名前は
+	// PrefabSceneInstanceの名前は
 	// PrefabName + InstanceNUMから決定されているため
 	// Outlinerから直接リネームしない
-	if (l_gameObject->GetVALPrefabInstanceNUM() != Constant::k_invalidPrefabInstanceNUM) 
+	if (l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabInstanceNUM) 
 	{
 		return; 
 	}
@@ -523,7 +523,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::ConfirmGameObjectRename()
 
 	if (!l_selectedGameObject                     ||
 		l_selectedGameObject->GetVALIsDestroyed() ||
-		l_selectedGameObject->GetVALPrefabInstanceNUM() != Constant::k_invalidPrefabInstanceNUM)
+		l_selectedGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabInstanceNUM)
 	{
 		ClearGameObjectRenameState();
 
@@ -533,7 +533,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::ConfirmGameObjectRename()
 	// 非PrefabGameObjectではPrefasbNameを
 	// Outliner上のGameObject名とし使用しているため
 	// 編集Bufferの内容をそのまま設定する
-	l_selectedGameObject->SetPrefabName(m_gameObjectRenameBuffer);
+	l_selectedGameObject->SetSceneInstanceName(m_gameObjectRenameBuffer);
 
 	ClearGameObjectRenameState();
 }

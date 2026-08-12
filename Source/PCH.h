@@ -35,10 +35,10 @@
 //================================================
 // Boost
 //================================================
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/string_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
+#include <Boost/uuid/uuid.hpp>
+#include <Boost/uuid/random_generator.hpp>
+#include <Boost/uuid/string_generator.hpp>
+#include <Boost/uuid/uuid_io.hpp>
 
 //================================================
 // Json

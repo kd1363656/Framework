@@ -120,7 +120,7 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 	// Prefab内部のキャッシュも更新しない
 	if (!Utility::SaveJsonFile(l_rootJson, l_filePath))
 	{
-		FWK_ADD_LOG("PrefabファイルへのJson書き込みに失敗しました。\nFilePath : {}", l_filePath);
+		FWK_ADD_LOG("PrefabファイルへのJson書き込みに失敗しました。\nFilePath : {}", l_filePath.string());
 
 		return false;
 	}

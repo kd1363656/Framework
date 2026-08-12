@@ -22,8 +22,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 	{
 		if (l_json.is_null()) { continue; }
 
-		const auto& l_prefabUUIDString = l_json.value         (k_prefabUUIDJsonKey,     std::string{});
-		const auto& l_prefabUUID       = Utility::StringToUUID(l_prefabUUIDString);
+		const auto& l_prefabUUID = Utility::DeserializeUUID(l_json, k_prefabUUIDJsonKey);
 
 		// 保存されていたUUIDを復元できなかった場合
 		// ここで新しいUUIDを発行してはいけない
@@ -39,15 +38,23 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 		Struct::PrefabData l_prefabData = {};
 
-		auto& l_prefab                     = l_prefabData.m_prefab;
-		auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
+		      auto& l_prefab                     = l_prefabData.m_prefab;
+		      auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
+		const auto& l_prefabJson                 = l_json.value(k_prefabJsonKey, nlohmann::json{});
 
-		// プレハブのJsonを読み込むためのファイルパスをセットして読みこむ
-		if (const auto& l_prefabJson = l_json.value(k_prefabJsonKey, nlohmann::json{});
-			!l_json.is_null())
+
+		// Prefab自身へ渡すJsonが存在しない場合は、
+	    // Prefab内部のDeserializeを実行しない。
+		if (l_prefabJson.is_null())
 		{
-			l_prefab.Deserialize(l_prefabJson);
+			FWK_ADD_LOG("PrefabJsonが無効のため、PrefabDataを登録できませんでした。");
+
+			continue;
 		}
+
+		// FilePathやPrefabNameの復元、
+		// 実Prefabファイルの読み込みはPrefab自身へ任せる
+		l_prefab.Deserialize(l_prefabJson);
 
 		// Prefabファイル自体を読み込めなかった場合は、
 		// PrefabSystemへ不完全なPrefabを登録しない
@@ -101,8 +108,12 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(PrefabSystem
 		
 		nlohmann::json l_json = {};
 
-		l_json[k_prefabJsonKey]                     = l_prefab.Serialize();
-		l_json[k_prefabUUIDJsonKey]                 = boost::uuids::to_string(l_prefabUUID);
+		const auto& l_prefabJson = l_prefab.Serialize();
+
+		if (l_prefabJson.is_null()) { continue; }
+
+		l_json[k_prefabJsonKey]                     = l_prefabJson;
+		l_json[k_prefabUUIDJsonKey]                 = Utility::SerializeUUID(l_prefabUUID, k_prefabUUIDJsonKey);
 		l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
 
 		l_jsonArray.emplace_back(l_json);
