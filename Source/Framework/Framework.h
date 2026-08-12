@@ -475,7 +475,7 @@
 //===============================================================================
 // ゲームオブジェクト
 //===============================================================================
-#include "Definition/Struct/UUID/UUIDHashStruct.h"
+#include "Utility/UUID/UUIDManager.h"
 #include "Utility/UUID/UUIDRegistry.h"
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
 #include "Definition/Type/Alias/PrefabUUIDSetTypeAlias.h"

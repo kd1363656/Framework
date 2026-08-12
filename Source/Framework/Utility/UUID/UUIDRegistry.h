@@ -7,7 +7,7 @@ namespace FWK
 	{
 	private:
 
-		using UUIDMap = std::unordered_map<UUID, Type, Struct::UUIDHashStruct>;
+		using UUIDMap = std::unordered_map<TypeAlias::UUID, Type>;
 
 		static constexpr bool k_isWeakPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
 
@@ -16,40 +16,52 @@ namespace FWK
 		 UUIDRegistry() = default;
 		~UUIDRegistry() = default;
 
-		bool Add(const Type& a_type, UUID& a_uuid)
+		bool Add(const Type& a_type, TypeAlias::UUID& a_uuid)
 			requires k_isWeakPTR
 		{
 			const auto& l_type = a_type.lock();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_type,                    "登録対象が無効なため、UUIDMapへの登録に失敗しました。",                               false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_uuidMap.contains(a_uuid), "既に登録されているUUIDのものを登録しようとしており、UUIDMapへの登録に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(!l_type, "登録対象が無効なため、UUIDMapへの登録に失敗しました。", false);
 			
-			// 追加する際にUUIDがGUID_NULLか、同じUUID値を登録してしまうことを防ぐためにここでUUIDを生成する
-			// 被った値を生成する可能性も考慮して、被らない値を生成するまでループする
-			while (a_uuid == GUID_NULL ||
-				   m_uuidMap.contains(a_uuid))
+			// 既にUUIDを持っている場合
+			// Deserializeなどで復元されたUUIDなので
+			// 重複していたからと言って勝手に別UUIDeへ変更しない
+			if (!a_uuid.is_nil())
 			{
-				Utility::GenerateUUID(a_uuid);
+				const bool l_isContains = m_uuidMap.try_emplace(a_uuid, a_type).second;
+
+				FWK_ASSERT_RETURN_VALUE_IF(!l_isContains, "既に同じUUIDが登録されているため、UUIDMapへの登録に失敗しました。", false);
+
+				return l_isContains;
 			}
 
-			m_uuidMap.try_emplace(a_uuid, a_type);
-			
-			return true;
+			// 新規GameObjectなど、
+			// UUIDをまだ持っていない場合のみ新規発行する
+			while (true)
+			{
+				a_uuid = UUIDManager::GetInstance().GenerateVALUUID();
+
+				if (a_uuid.is_nil()) { continue; }
+
+				if (m_uuidMap.try_emplace(a_uuid, a_type).second)
+				{
+					return true;
+				}
+			}
 		}
 
-		bool Erase(UUID& a_uuid)
+		bool Erase(TypeAlias::UUID& a_uuid)
 		{
-			FWK_ASSERT_RETURN_VALUE_IF(IsEqualGUID(a_uuid, GUID_NULL) != FALSE, "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
+			FWK_ASSERT_RETURN_VALUE_IF(a_uuid.is_nil(), "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
 
 			const auto& l_itr = m_uuidMap.find(a_uuid);
 
-			// マップ内に存在しなければreturn
 			FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
 
 			m_uuidMap.erase(l_itr);
 
 			// UUIDを明示的に無効値として扱う
-			a_uuid = GUID_NULL;
+			a_uuid = {};
 
 			return true;
 		}
@@ -59,9 +71,9 @@ namespace FWK
 			m_uuidMap.clear();
 		}
 
-		Type FindVALRegisteredType(const UUID& a_uuid) const
+		Type FindVALRegisteredType(const TypeAlias::UUID& a_uuid) const
 		{
-			if (IsEqualGUID(a_uuid, GUID_NULL) != FALSE) { return {}; }
+			if (a_uuid.is_nil()) { return {}; }
 
 			const auto l_itr = m_uuidMap.find(a_uuid);
 

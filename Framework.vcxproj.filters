@@ -2382,6 +2382,9 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\UUIDTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
+      <Filter>Source\Framework\Utility\UUID</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2959,6 +2962,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.cpp">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
+      <Filter>Source\Framework\Utility\UUID</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,37 +2,24 @@
 
 namespace FWK::Utility
 {
-	inline bool GenerateUUID(UUID& a_uuid)
-	{
-		return UuidCreate(&a_uuid) == RPC_S_OK;
-	}
-	
-	inline std::string UUIDToString(const UUID& a_uuid)
-	{
-		RPC_CSTR l_str = nullptr;
-
-		if (UuidToStringA(&a_uuid, &l_str) != RPC_S_OK ||
-			!l_str)
-		{
-			return {};
-		}
-
-		std::string l_result(reinterpret_cast<char*>(l_str));
-
-		RpcStringFreeA(&l_str);
-
-		return l_result;
-	}
-
 	inline UUID StringToUUID(const std::string& a_string)
 	{
-		UUID l_uuid = GUID_NULL;
+		if (a_string.empty()) { return {}; }
 
-		if (auto l_rpcStr = reinterpret_cast<RPC_CSTR>(const_cast<char*>(a_string.c_str()));
-			UuidFromStringA(l_rpcStr, &l_uuid) != RPC_S_OK)
-		{
-			return GUID_NULL;
-		}
+		const boost::uuids::string_generator l_generator = {};
+
+		std::ptrdiff_t l_errorPosition = {};
+
+		UUID                           l_uuid  = GUID_NULL;
+		boost::uuids::from_chars_error l_error = boost::uuids::from_chars_error::none;
+
+		const auto l_uuid = l_generator(a_string.begin(),
+			                            a_string.end(),
+			                            l_errorPosition,
+			                            l_error);
+
+		// 文字列をUUIDへ変換できなかった場合はnilUUIDを渡す
+		if (l_error != boost::uuids::from_chars_error::none) { return{}; }
 
 		return l_uuid;
 	}

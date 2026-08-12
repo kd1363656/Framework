@@ -712,6 +712,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\String\StringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\String\WStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\TypeINFO\TypeINFOUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h" />
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDRegistry.h" />
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDUtility.h" />
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
@@ -911,6 +912,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp" />
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
     <ClCompile Include="Source\PCH.cpp">

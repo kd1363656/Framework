@@ -49,7 +49,7 @@ void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameOb
 	l_prefab.SetGameObject(l_gameObject);
 }
 
-void FWK::PrefabSystem::AddPrefabMap(const UUID& a_prefabUUID, const Struct::PrefabData& a_prefabData)
+void FWK::PrefabSystem::AddPrefabMap(const TypeAlias::UUID& a_prefabUUID, const Struct::PrefabData& a_prefabData)
 {
 	if (a_prefabUUID == GUID_NULL)
 	{
