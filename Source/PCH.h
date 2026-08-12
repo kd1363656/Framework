@@ -31,10 +31,18 @@
 #include <any>
 #include <type_traits>
 
+
 //================================================
-// 外部ライブラリ
+// Boost
 //================================================
-// json
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/string_generator.hpp>
+#include <Boost/uuid/uuid_io.hpp>
+
+//================================================
+// Json
+//================================================
 #include <json.hpp>
 
 //================================================
@@ -153,6 +161,5 @@
 //================================================
 #pragma comment(lib, "Ole32.lib")
 #pragma comment(lib, "winmm.lib")
-#pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
