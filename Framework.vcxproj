@@ -445,6 +445,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Prefab\PrefabSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\WStringHashStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\UUID\UUIDHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandAllocatorTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandQueueTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\ComPTRTypeAlias.h" />

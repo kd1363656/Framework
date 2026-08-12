@@ -11,7 +11,7 @@ namespace FWK
 	{
 	private:
 
-		using PrefabMap = std::unordered_map<std::string, Struct::PrefabData, Struct::StringHashStruct, std::equal_to<>>;
+		using PrefabMap = std::unordered_map<UUID, Struct::PrefabData, Struct::UUIDHashStruct, Struct::UUIDEqualStruct>;
 
 	public:
 
@@ -22,16 +22,16 @@ namespace FWK
 		void Deserialize                  (const nlohmann::json& a_rootJson);
 		void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
 
-		void AddPrefabMap(const std::string& a_prefabName, const Struct::PrefabData& a_prefabData);
-		void RemovePrefab(const std::string& a_prefabName);
+		void AddPrefabMap(const UUID& a_prefabUUID, const Struct::PrefabData& a_prefabData);
+		void RemovePrefab(const UUID& a_prefabUUID);
 
 		nlohmann::json Serialize();
 
-		TypeAlias::PrefabInstanceNUM AllocateVALPrefabInstanceNUM(const std::string& a_prefabName);
+		TypeAlias::PrefabInstanceNUM AllocatePrefabInstanceNUM(const UUID& a_prefabUUID);
 
-		void ReleasePrefabInstanceNUM(const std::string& a_prefabName, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM);
+		void ReleasePrefabInstanceNUM(const UUID& a_prefabUUID, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM);
 
-		const Prefab* FindPTRPrefab(const std::string& a_prefabName) const;
+		const Prefab* FindPTRPrefab(const UUID& a_prefabUUID) const;
 
 		const auto& GetREFPrefabMap() const { return m_prefabMap; }
 

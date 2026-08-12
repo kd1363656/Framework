@@ -49,20 +49,29 @@ void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameOb
 	l_prefab.SetGameObject(l_gameObject);
 }
 
-void FWK::PrefabSystem::AddPrefabMap(const std::string& a_prefabName, const Struct::PrefabData& a_prefabData)
+void FWK::PrefabSystem::AddPrefabMap(const UUID& a_prefabUUID, const Struct::PrefabData& a_prefabData)
 {
-	m_prefabMap.try_emplace(a_prefabName, a_prefabData);
-}
+	if (a_prefabUUID == GUID_NULL)
+	{
+		FWK_ADD_LOG("PrefabUUIDが無効だったため、PrefabSystemのプレハブマップに追加できませんでした。");
 
-void FWK::PrefabSystem::RemovePrefab(const std::string& a_prefabName)
+		return;
+	}
+
+	if (m_prefabMap.try_emplace(a_prefabUUID, a_prefabData).second)
+	{
+		FWK_ADD_LOG("同じPrefabUUIDが既に登録されており、PrefabSystemのプレハブマップに追加できませんでした。");
+	}
+}
+void FWK::PrefabSystem::RemovePrefab(const UUID& a_prefabUUID)
 {
-	auto l_itr = m_prefabMap.find(a_prefabName);
+	auto l_itr = m_prefabMap.find(a_prefabUUID);
 
 	if (l_itr == m_prefabMap.end()) { return; }
 
 	m_prefabMap.erase(l_itr);
 
-	FWK_ADD_LOG("PrefabName : {}\nPrefabを削除しました。", a_prefabName);
+	FWK_ADD_LOG("PrefabUUID : {}\nPrefabを削除しました。", Utility::UUIDToString(a_prefabUUID));
 }
 
 nlohmann::json FWK::PrefabSystem::Serialize()
@@ -70,16 +79,16 @@ nlohmann::json FWK::PrefabSystem::Serialize()
 	return m_jsonConverter.Serialize(*this);
 }
 
-FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabSystem::AllocateVALPrefabInstanceNUM(const std::string& a_prefabName)
+FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabSystem::AllocatePrefabInstanceNUM(const UUID& a_prefabUUID)
 {
-	if (a_prefabName.empty())
+	if (a_prefabUUID == GUID_NULL)
 	{
 		FWK_ADD_LOG("PrefabNameが空のため、PrefabInstanceNUMを発行できませんでした。");
 
 		return Constant::k_invalidPrefabInstanceNUM;
 	}
 
-	auto l_itr = m_prefabMap.find(a_prefabName);
+	auto l_itr = m_prefabMap.find(a_prefabUUID);
 
 	if (l_itr == m_prefabMap.end())
 	{
@@ -94,19 +103,19 @@ FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabSystem::AllocateVALPrefabInstanceNU
 	return l_prefabInstanceNUMAllocator.Allocate();
 }
 
-void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const std::string& a_prefabName, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM)
+void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const UUID& a_prefabUUID, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM)
 {
-	if (a_prefabName.empty() ||
+	if (a_prefabUUID == GUID_NULL ||
 		a_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
 	{
 		return;
 	}
 
-	auto l_itr = m_prefabMap.find(a_prefabName);
+	auto l_itr = m_prefabMap.find(a_prefabUUID);
 
 	if (l_itr == m_prefabMap.end())
 	{
-		FWK_ADD_LOG("PrefabName : {}\nPrefabが登録されていないため、PrefabInstanceNUMを解放できませんでした。", a_prefabName);
+		FWK_ADD_LOG("PrefabUUID : {}\nPrefabが登録されていないため、PrefabInstanceNUMを解放できませんでした。", Utility::UUIDToString(a_prefabUUID));
 
 		return;
 	}
@@ -116,9 +125,9 @@ void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const std::string& a_prefabName
 	l_prefabInstanceNUMAllocator.Release(a_prefabInstanceNUM);
 }
 
-const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const std::string& a_prefabName) const
+const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const UUID& a_prefabUUID) const
 {
-	auto l_itr = m_prefabMap.find(a_prefabName);
+	auto l_itr = m_prefabMap.find(a_prefabUUID);
 
 	if (l_itr == m_prefabMap.end()) { return nullptr; }
 
