@@ -22,8 +22,20 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 	{
 		if (l_json.is_null()) { continue; }
 
-		const auto& l_filePath   = l_json.value(k_prefabFilePathJsonKey, std::filesystem::path{});
-		const auto& l_prefabName = l_json.value(k_prefabNameJsonKey,     std::string{});
+		const auto& l_prefabUUIDString = l_json.value         (k_prefabUUIDJsonKey,     std::string{});
+		const auto& l_prefabUUID       = Utility::StringToUUID(l_prefabUUIDString);
+
+		// 保存されていたUUIDを復元できなかった場合
+		// ここで新しいUUIDを発行してはいけない
+		// Scene上のGameObjectが保持するPrefabUUIDとの
+		// 対応関係が壊れてしまうため
+		// このPrefab自体を登録しない
+		if (l_prefabUUID.is_nil())
+		{
+			FWK_ADD_LOG("PrefabUUIDが無効のため、PrefabDataを登録できませんでした。");
+
+			continue;
+		}
 
 		Struct::PrefabData l_prefabData = {};
 
@@ -31,21 +43,35 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 		auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
 
 		// プレハブのJsonを読み込むためのファイルパスをセットして読みこむ
-		l_prefab.SetFilePath(l_filePath);
-		l_prefab.LoadPrefab ();
+		if (const auto& l_prefabJson = l_json.value(k_prefabJsonKey, std::string{});
+			!l_json.is_null())
+		{
+			l_prefab.Deserialize(l_prefabJson);
+		}
+
+		// Prefabファイル自体を読み込めなかった場合は、
+		// PrefabSystemへ不完全なPrefabを登録しない
+		// Scene上のGameObjectにPrefabUUIDが残っていれば後から「PrefabUUIDはあるがPrefabSystemには存在しない」
+		// 壊れた参照として判定できる
+		if (l_prefab.GetREFJson().is_null())
+		{
+			FWK_ADD_LOG("PrefabのJsonを読み込めなかったため、PrefabDataを登録できませんでした。");
+
+			continue;
+		}
 
 		const auto& l_prefabNUMInstanceAllocatorJson =  l_json.value(k_prefabInstanceNUMAllocatorJsonKey, nlohmann::json{});
 
 		if (l_prefabNUMInstanceAllocatorJson.is_null())
 		{
-			FWK_ADD_LOG("PrefabNumberIDAllocatorのJsonが無効となっておりPrefabDataの登録に失敗しました。");
+			FWK_ADD_LOG("PrefabInstanceNUMAllocatorのJsonが無効となっており、PrefabDataの登録に失敗しました。");
 
 			continue;
 		}
 
 		l_prefabInstanceNUMAllocator.Deserialize(l_prefabNUMInstanceAllocatorJson);
 		
-		a_prefabSystem.AddPrefabMap(l_prefabName, l_prefabData);
+		a_prefabSystem.AddPrefabMap(l_prefabUUID, l_prefabData);
 	}
 }
 
@@ -56,25 +82,28 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(PrefabSystem
 
 	auto& l_prefabMap = a_prefabSystem.GetMutableREFPrefabMap();
 
-	for (auto& [l_prefabName, l_prefabData] : l_prefabMap)
+	for (auto& [l_prefabUUID, l_prefabData] : l_prefabMap)
 	{
-		      nlohmann::json l_json                       = {};
-		      auto&          l_prefab                     = l_prefabData.m_prefab;
-		const auto&          l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
+		// NilUUIDはPrefabMapへ本来登録されないが
+		// 異常なデータをJsonへ保存されないように念のため除外する
+		if (l_prefabUUID.is_nil()) { continue; }
 
-		const auto& l_filePath = l_prefab.GetREFFilePath();
-
-		// 読み込めないファイルならシリアライズしない
-		if (!Utility::CanLoadFilePath(l_filePath)) { continue; }
-
-		l_json[k_prefabFilePathJsonKey]             = l_filePath;
-		l_json[k_prefabNameJsonKey]                 = l_prefabName;
-		l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
-
-		l_prefab.SavePrefab();
+		      auto& l_prefab                     = l_prefabData.m_prefab;
+		const auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
 		
-		// 保存時に更新されるJsonが空なら保存処理をスキップする
-		if (l_prefab.GetREFJson().is_null()) { continue; }
+		// 読み込めないファイルならシリアライズしない
+		if (const auto& l_filePath = l_prefab.GetREFFilePath();
+			!Utility::CanLoadFilePath(l_filePath) ||
+			l_prefab.GetREFJson().is_null())
+		{
+			continue; 
+		}
+		
+		nlohmann::json l_json = {};
+
+		l_json[k_prefabJsonKey]                     = l_prefab.Serialize();
+		l_json[k_prefabUUIDJsonKey]                 = boost::uuids::to_string(l_prefabUUID);
+		l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
 
 		l_jsonArray.emplace_back(l_json);
 	}

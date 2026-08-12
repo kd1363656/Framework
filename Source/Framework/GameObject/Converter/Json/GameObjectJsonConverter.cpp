@@ -1,6 +1,9 @@
 ﻿#include "GameObjectJsonConverter.h"
 
-void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene) const
+void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>&              a_gameObject,
+	                                           const nlohmann::json&                         a_rootJson, 
+	                                                 std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet,
+	                                                 Scene&                                  a_scene) const
 {
 	if (a_rootJson.is_null()) 
 	{
@@ -28,8 +31,21 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 		return;
 	}
 
+	// Prefabの検索や同一性判定ではPrefabNameを所要せず、
+	// 永続的な識別子であるPrefabUUIDを使用する
+	const auto& l_prefabUUIDString = a_rootJson.value     (k_prefabUUIDJsonKey, std::string{});
+	const auto  l_prefabUUID       = Utility::StringToUUID(l_prefabUUIDString);
+
+	if (l_prefabUUID.is_nil())
+	{
+		FWK_ADD_LOG("PrefabUUIDが無効のため、GameObjectをデシリアライズできませんでした。");
+
+		return;
+	}
+
 	// プレハブ名と現在何番目のプレハブかを表す番号付きの名前を格納
 	l_gameObject->SetPrefabName(l_prefabName);
+	l_gameObject->SetPrefabUUID(l_prefabUUID);
 	
 	// プレハブ名からプレハブを取得
 	const auto& l_prefabSystem = a_scene.GetREFPrefabSystem  ();
@@ -157,7 +173,7 @@ void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&      
 	                                                 const std::weak_ptr<GameObject>&                                        a_gameObject, 
 	                                                       std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 	                                                       Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
-	                                                       TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet, 
+	                                                       std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet, 
 	                                                       Scene&                                                            a_scene) const
 {
 	if (a_rootJson.is_null())
@@ -229,7 +245,7 @@ void FWK::GameObjectJsonConverter::DeserializePrefab(const nlohmann::json&      
 	// 子GameObjectを読み込む
 	DeserializeChildPrefab(a_rootJson,
 		                   a_childDeserializeDataList,
-		                   a_parentPrefabNameSet,
+		                   a_parentPrefabUUIDSet,
 		                   a_scene);
 }
 void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                                                   a_rootJson,
@@ -429,7 +445,7 @@ void FWK::GameObjectJsonConverter::DeserializeComponentEventObserver(const nlohm
 
 void FWK::GameObjectJsonConverter::DeserializeChildPrefab(const nlohmann::json&                            a_rootJson, 
 	                                                            std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
-	                                                            TypeAlias::PrefabNameSet&                  a_parentPrefabNameSet, 
+	                                                            std::unordered_set<boost::uuids::uuid>&    a_parentPrefabUUIDSet, 
 	                                                            Scene&                                     a_scene) const
 {
 	if (a_rootJson.is_null()) { return; }
@@ -625,7 +641,7 @@ void FWK::GameObjectJsonConverter::RecursiveAddComponent(const std::shared_ptr<G
 }
 void FWK::GameObjectJsonConverter::RecursiveAddChild(const std::shared_ptr<GameObject>&               a_parent, 
 	                                                       std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
-	                                                       TypeAlias::PrefabNameSet&                  a_parentPrefabNameSet,
+	                                                       std::unordered_set<boost::uuids::uuid>&    a_parentPrefabUUIDSet,
 	                                                       Scene&                                     a_scene) const
 {
 	// 子であろうが一つのリストに格納

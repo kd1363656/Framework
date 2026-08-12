@@ -28,9 +28,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	{
 		const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
 
-		if (!l_selectedGameObject                            ||
-			l_selectedGameObject->GetVALIsDestroyed()        ||
-			Utility::IsPrefabInstance(*l_selectedGameObject) ||
+		// PrefabInstanceNUMが発行済みのGameObjectは、
+        // PrefabName + InstanceNUMから名前が決まるため
+        // Outlinerから直接リネームしない
+		if (!l_selectedGameObject                                                                   ||
+			l_selectedGameObject->GetVALIsDestroyed()                                               ||
+			l_selectedGameObject->GetVALPrefabInstanceNUM() == Constant::k_invalidPrefabInstanceNUM ||
 			m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount)
 		{
 			CancelGameObjectRename();
@@ -143,7 +146,7 @@ FWK::Struct::GameObjectNodeDrawResult FWK::Editor::WorldOutlinerEditorWindow::Dr
 
 	// GameObject名は変更される可能性があるため
 	// ImGui内部IDにあｈ変更されないUUIDを使用する
-	const auto& l_gameObjectUUIDString     = Utility::UUIDToString   (l_gameObject->GetREFUUID());
+	const auto& l_gameObjectUUIDString     = boost::uuids::to_string (l_gameObject->GetREFSceneInstanceUUID());
 	const bool  l_isGameObjectRenameTarget = IsGameObjectRenameTarget(a_gameObject);
 	
 	std::string l_gameObjectNodeLabel = {};
@@ -495,7 +498,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestGameObjectRename(const std::
 	// PrefabInstanceの名前は
 	// PrefabName + InstanceNUMから決定されているため
 	// Outlinerから直接リネームしない
-	if (Utility::IsPrefabInstance(*l_gameObject)) { return; }
+	if (l_gameObject->GetVALPrefabInstanceNUM() != Constant::k_invalidPrefabInstanceNUM) 
+	{
+		return; 
+	}
 
 	// F2リネームは単一選択時のみ行う
 	if (m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount) { return; }
@@ -515,9 +521,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::ConfirmGameObjectRename()
 	const auto& l_editorManager      = EditorManager::GetInstance              ();
 	const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
 
-	if (!l_selectedGameObject ||
+	if (!l_selectedGameObject                     ||
 		l_selectedGameObject->GetVALIsDestroyed() ||
-		 Utility::IsPrefabInstance(*l_selectedGameObject))
+		l_selectedGameObject->GetVALPrefabInstanceNUM() != Constant::k_invalidPrefabInstanceNUM)
 	{
 		ClearGameObjectRenameState();
 

@@ -19,10 +19,9 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_prefabMapJsonKey                  = "PrefabMap";
-		static constexpr std::string_view k_prefabFilePathJsonKey             = "PrefabFilePath";
-		static constexpr std::string_view k_prefabNameJsonKey                 = "PrefabName";
-		static constexpr std::string_view k_prefabInstanceNUMAllocatorJsonKey = "PrefabInstanceNUMAllocator";
 		static constexpr std::string_view k_prefabJsonKey                     = "Prefab";
+		static constexpr std::string_view k_prefabMapJsonKey                  = "PrefabMap";
+		static constexpr std::string_view k_prefabUUIDJsonKey                 = "PrefabUUID";
+		static constexpr std::string_view k_prefabInstanceNUMAllocatorJsonKey = "PrefabInstanceNUMAllocator";
 	};
 }
