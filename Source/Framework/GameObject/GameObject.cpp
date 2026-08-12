@@ -21,8 +21,8 @@ void FWK::GameObject::INIT()
 
 	m_jsonConverter = {};
 
-	m_prefabUUID        = GUID_NULL;
-	m_sceneInstanceUUID = GUID_NULL;
+	m_prefabUUID        = {};
+	m_sceneInstanceUUID = {};
 	
 	m_prefabName.clear();
 
@@ -31,7 +31,7 @@ void FWK::GameObject::INIT()
 	m_isDestroyed = false;
 }
 
-void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, TypeAlias::PrefabUUIDSet& a_parentPrefabUUIDSet, Scene& a_scene)
+void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet, Scene& a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -49,7 +49,7 @@ void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, Scene&
 void FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 	                                          std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 	                                          Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-	                                          TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
+	                                          std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
 	                                          Scene&                                                            a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
@@ -58,7 +58,7 @@ void FWK::GameObject::DeserializePrefab(const nlohmann::json&                   
 		                              weak_from_this(),
 		                              a_childDeserializeDataList,
 		                              a_componentSmartPointerVectorArray, 
-		                              a_parentPrefabNameSet,
+		                              a_parentPrefabUUIDSet,
 		                              a_scene);
 }
 void FWK::GameObject::DeserializeScene(const nlohmann::json &                                                  a_rootJson, 
@@ -317,10 +317,24 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 
 	if (!l_self) { return false; }
 
-	// 自分自身を子にはできない
+	// 自分自身を子にするとGameObjectの親子関係が即座に循環するため許可しない
 	if (l_child == l_self) { return false; }
 
-	// 循環防止
+	if (l_child->GetREFPrefabUUID().is_nil()) { return false; }
+
+	// 親子構築するGameObjectは、
+	// PrefabUUIDとPrefabInstanceNUMの両方を持つ
+	// 有効なPrefabInstanceである必要がある
+	if (!Utility::IsPrefabInstance(*l_self) ||
+		!Utility::IsPrefabInstance(*l_child))
+	{
+		FWK_ADD_LOG("PrefabInstanceではないGameObject同士では親子関係を構築できませんでした。");
+
+		return false;
+	}
+
+	// 自分の祖先にしようとしていてるGameObjectを子へ設定すると
+	// GameObjectそのものの親子関係が循環するため拒否する
 	if (IsDescendantOf(l_child))
 	{
 		FWK_ADD_LOG("GameObjectの親子関係が循環するため、親子関係を構築できませんでした。");
@@ -332,53 +346,52 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_childTransformComponent, "子GameObjectにTransformComponentが存在しません。", false);
 
-	TypeAlias::PrefabNameSet l_prefabNameSet = {};
-
-	// 新しい親となる自分自身からRootまでのPrefab名を登録する
+	std::unordered_set<boost::uuids::uuid> l_prefabUUIDSet = {};
+	
+	// 新しい親となる自分自身からRootまで辿り
+	// 同一PrefabUUIDが尾内親経路に存在しないことを確認する
 	auto l_parentGameObject = l_self;
 
 	// まずはRootからPrefabの重複があるかどうかを確認
 	while (l_parentGameObject)
-	{
-		const auto& l_prefabName = l_parentGameObject->GetREFPrefabName();
+	{		
+		if (l_parentGameObject->GetREFPrefabUUID().is_nil()) { return false; }
 
-		// PrefabInstanceかどうかに関係なく
-		// PrefabNameが空のGameObjectをHierarchyへ含めない
-		if (l_prefabName.empty())
+		// Hierarchyへ登録されているGameObjectは、有効なPrefabInstanceでなければならない
+		if (!Utility::IsPrefabInstance(*l_parentGameObject))
 		{
-			FWK_ADD_LOG("親階層にPrefabNameが空のGameObjectが存在するため、親子関係を構築できませんでした。");
+			FWK_ADD_LOG("親階層にPrefabInstanceではないGameObjectが存在するため、親子関係を構築できませんでした。");
 
 			return false;
 		}
 
-		// Prefab化されていない一時GameObjectの名前は
-		// Prefabの循環判定には使用しない
-		if (Utility::IsPrefabInstance(*l_parentGameObject) &&
-			!l_prefabNameSet.emplace(l_prefabName).second)
+		// unordered_set::emplace()の戻り値を利用して、
+		// contains()とemplace()を別々に呼ばず
+		// 一度の検索で重複確認と登録を行う
+		if (const auto& l_prefabUUID = l_parentGameObject->GetREFPrefabUUID();
+			!l_prefabUUIDSet.emplace(l_prefabUUID).second)
 		{
-			// 現在の親階層事態に同じPrefabが存在している場合も、
-			// 新しい親子関係は構築しない
+			FWK_ADD_LOG("親階層に同じPrefabUUIDを持つGameObjectが存在するため、親子関係を構築できませんでした。");
+
 			return false;
 		}
 
-		// PrefabInstanceかどうかに関係なく
-		// 必ず一つ上の親GameObjectへ移動する
 		l_parentGameObject = l_parentGameObject->GetREFParent().lock();
 	}
 
-	// 親のRootからこのGameObjectまでのPrefabの重複がないことを確認出来たら
-	// 新しい子GameObject以下を再帰的調べる
-	// 新しい親階層と子階層の同じ経路上に
-	// 同じPrefabが存在する場合は親子関係を構築しない
-	if (ContainsDuplicatePrefabNameRecursive(a_child, l_prefabNameSet))
+	// 親階層だけでなく、
+	// 新しく接続する子GameObject以下の階層も含めて
+	// 同一路線上に同じPrefabUUIDが存在しないことを確認する
+	if (ContainsDuplicatePrefabUUIDRecursive(a_child, l_prefabUUIDSet))
 	{
-		FWK_ADD_LOG("同じ親子経路上に同じPrefabNameが存在するため、親子関係を構築できませんでした。");
+		FWK_ADD_LOG("同じ親子経路上に同じPrefabUUIDが存在するため、親子関係を構築できませんでした。");
 
 		return false;
 	}
 
 	const auto& l_currentParent = l_child->GetREFParent().lock();
 
+	// すでに同じGameOBjectが親の場合は二重登録しない
 	if (l_currentParent == l_self) { return false; }
 
 	// 現在の親GameObjectが存在する場合は
@@ -408,48 +421,48 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 
 	return true;
 }
-bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child, TypeAlias::PrefabNameSet& a_parentPrefabNameSet)
+bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet)
 {
 	const auto& l_child = a_child.lock();
 
-	if (!l_child ||
-		l_child->GetVALIsDestroyed())
+	if (!l_child                     ||
+		l_child->GetVALIsDestroyed() ||
+		l_child->GetREFPrefabUUID().is_nil())
 	{
 		return false;
 	}
 
-	const auto& l_childPrefabName = l_child->GetREFPrefabName();
-
-	if (l_childPrefabName.empty())
+	// Deserialize対象の子GameObjectも、
+	// PrefabUUIDとPrefabInstanceNUMを持つ
+	// 有効なPrefabInstanceである必要がある
+	if (!Utility::IsPrefabInstance(*l_child))
 	{
-		FWK_ADD_LOG("子GameObjectのPrefabNameが空のため、親子関係を構築できませんでした。");
+		FWK_ADD_LOG("子GameObjectがPrefabInstanceではないため、親子関係を構築できませんでした。");
 
 		return false;
 	}
 
-	// Rootから現在の親GameObjectまでの経路上に、
-	// 子GameObjectと同じPrefabNameが存在する場合は追加しない
-	if (!a_parentPrefabNameSet.emplace(l_childPrefabName).second)
+	const auto& l_childPrefabUUID = l_child->GetREFPrefabUUID();
+
+	// Root空現在の親までの経路上に
+	// 子と同じPrefabUUIDが存在する場合は
+	// Prefabの循環参照になるため追加しない
+	if (!a_parentPrefabUUIDSet.emplace(l_childPrefabUUID).second)
 	{
-		FWK_ADD_LOG("親階層と同じPrefabNameを持つ子GameObjectは追加できません。");
+		FWK_ADD_LOG("親階層と同じPrefabUUIDを持つ子GameObjectは追加できません。");
 
 		return false;
 	}
 
-	// GameObjectの循環確認、Transform適用、
-	// 以前の親解除などは通常盤へまとめる
+	// GameObject自身の循環確認
 	if (!ApplyParent(a_child))
 	{
-		// 親子関係を構築できなかったため
-		// この関数で追加したPrefabNameを元へ戻す
-		a_parentPrefabNameSet.erase(l_childPrefabName);
+		a_parentPrefabUUIDSet.erase(l_childPrefabUUID);
 
 		return false;
 	}
 
-	// 成功した場合はPrefabNameをSetへ残す
-	// この子GameObject以下の再帰処理が完了した後に、
-	// GameObjectJsonConverter側でerase()する
+	// 孫以下の処理終了後にConverter側からeraseする
 	return true;
 }
 
@@ -495,30 +508,33 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 	return std::format("{}_{}", m_prefabName, m_prefabInstanceNUM);
 }
 
-bool FWK::GameObject::ContainsDuplicatePrefabNameRecursive(const std::weak_ptr<GameObject>& a_gameObject, TypeAlias::PrefabNameSet& a_prefabNameSet) const
+bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<GameObject>& a_gameObject, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet) const
 {
 	const auto& l_gameObject = a_gameObject.lock();
 
-	if (!l_gameObject ||
-		l_gameObject->GetVALIsDestroyed())
+	if (!l_gameObject                     ||
+		l_gameObject->GetVALIsDestroyed() ||
+		l_gameObject->GetREFPrefabUUID().is_nil())
 	{
 		return false;
 	}
 
-	bool l_isPrefabNameAdded = false;
+	bool l_isPrefabUUIDAdded = false;
 
 	// PrefabInstanceとして確定していてGameObjectだけを、
-	// PrefabNameの重複確認対象にする
+	// `PrefabUUIDの重複確認対象にする
 	if (Utility::IsPrefabInstance(*l_gameObject))
 	{
-		// 現z内の親子経路上に同じPrefabNameが存在する
-		if (const auto& l_prefabName = l_gameObject->GetREFPrefabName();
-			!a_prefabNameSet.emplace(l_prefabName).second) 
+		// 現在確認している親子経路上へ
+		// 同じPrefabUUIDが既に登録されている場合は
+		// Prefabが循環していると判断する
+		if (const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
+			!a_prefabUUIDSet.emplace(l_prefabUUID).second)
 		{
 			return true; 
 		}
 
-		l_isPrefabNameAdded = true;
+		l_isPrefabUUIDAdded = true;
 	}
 
 	const auto& l_childSmartPointerVectorArray = l_gameObject->GetREFChildSmartPointerVectorArray         ();
@@ -533,28 +549,24 @@ bool FWK::GameObject::ContainsDuplicatePrefabNameRecursive(const std::weak_ptr<G
 			continue;
 		}
 
-		if (ContainsDuplicatePrefabNameRecursive(l_childGameObjectData.m_type, a_prefabNameSet))
+		if (ContainsDuplicatePrefabUUIDRecursive(l_childGameObjectData.m_type, a_prefabUUIDSet))
 		{
-			// 現在のGameObjectでPrefabNameを追加した場合は、
+			// このGameObjecでUUIDをSet追加した場合は、
 			// 呼びだし元へ戻る前に登録状態を元へ戻す
-			if (l_isPrefabNameAdded)
+			if (l_isPrefabUUIDAdded)
 			{
-				a_prefabNameSet.erase(l_gameObject->GetREFPrefabName());
-
+				a_prefabUUIDSet.erase(l_gameObject->GetREFPrefabUUID());
 			}
 
-			// 現在のGameObjectがPrefabInstanceでなくても
-			// 子孫で見つかった重複を必ず呼びだし元へ伝える
 			return true;
 		}
 	}
 
-	// このGameObject以下の経路確認が完了しており
-	// 筐体GameObjectは同じ親子経路ではないため
-	// 次の兄弟を確認する前に現在のPrefabNameを解除しておく
-	if (l_isPrefabNameAdded)
+	// 兄弟は同じ親子経路ではないため
+	// 現在のGameObjectの以下の確認が終了した時点で解除する
+	if (l_isPrefabUUIDAdded)
 	{
-		a_prefabNameSet.erase(l_gameObject->GetREFPrefabName());
+		a_prefabUUIDSet.erase(l_gameObject->GetREFPrefabUUID());
 	}
 
 	return false;

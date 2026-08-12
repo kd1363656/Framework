@@ -24,7 +24,7 @@ namespace FWK
 
 		void SetIsGameObjectExecutionLevelListDirty(const bool a_set) { m_isGameObjectExecutionLevelListDirty = a_set; }
 
-		std::weak_ptr<GameObject> FindVALGameObject(const UUID& a_uuid) const;
+		std::weak_ptr<GameObject> FindVALGameObject(const boost::uuids::uuid& a_uuid) const;
 
 		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 

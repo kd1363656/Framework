@@ -100,7 +100,7 @@ namespace FWK::Utility
 		a_instance = l_factory.Create(l_createName);
 	}
 
-	inline UUID DeserializeUUID(const nlohmann::json& a_json)
+	inline boost::uuids::uuid DeserializeUUID(const nlohmann::json& a_json)
 	{
 		return Utility::StringToUUID(a_json.value(Constant::k_uuidJsonKey, std::string{}));
 	}
@@ -176,11 +176,11 @@ namespace FWK::Utility
 		return l_rootJson;
 	}
 
-	inline nlohmann::json SerializeUUID(const UUID& a_uuid)
+	inline nlohmann::json SerializeUUID(const boost::uuids::uuid& a_uuid)
 	{
 		return nlohmann::json
 		{
-			{ Constant::k_uuidJsonKey, Utility::UUIDToString(a_uuid) }
+			{ Constant::k_uuidJsonKey, boost::uuids::to_string(a_uuid) }
 		};
 	}
 }

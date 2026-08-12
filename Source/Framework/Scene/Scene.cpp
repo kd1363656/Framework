@@ -146,10 +146,12 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 	// Sceneへ登録されなければならない
 	CalculateGameObjectExecutionLevel(a_gameObject, l_executionLevel);
 
-	// ゲームオブジェクトとそのUUIDを登録、ただしUUIDがGUID_NULLだったり、
-	// 重複するUUIDの場合UUIDを生成してゲームオブジェクト側のUUIDにも反映する
-	FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFUUID()), "ゲームオブジェクトのUUIDの登録に失敗しており、ゲームオブジェクトの追加処理に失敗しました。");
-
+	// GameObject自身を識別するSceneInstanceUUIDをUUIDRegistryへ登録する
+    // 新規GameObjectでUUIDがnilの場合はUUIDRegistry内で新規発行する
+    // Deserialize済みで既にUUIDを持っている場合は、そのUUIDを維持したまま
+    // Registry内で重複していないことを確認して登録する
+    FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFSceneInstanceUUID()),"GameObjectのSceneInstanceUUID登録に失敗したため、GameObjectをSceneへ追加できませんでした。");
+	
 	m_gameObjectList.emplace_back(a_gameObject);
 
 	// Prefabの代表GameObjectが削除などで空になっている場合だけ
@@ -160,7 +162,7 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 	AddGameObjectToExecutionLevelList(a_gameObject, l_executionLevel);
 }
 
-std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const UUID& a_uuid) const
+std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_uuid) const
 {
 	return m_gameObjectUUIDRegistry.FindVALRegisteredType(a_uuid);
 }
@@ -181,22 +183,22 @@ void FWK::Scene::RemoveDestroyedGameObjects()
 
 		if (!l_gameObject->GetVALIsDestroyed()) { continue; }
 
-		const auto& l_prefabName        = l_gameObject->GetREFPrefabName       ();
+		const auto& l_prefabUUID        = l_gameObject->GetREFPrefabUUID       ();
 		const auto  l_prefabInstanceNUM = l_gameObject->GetVALPrefabInstanceNUM();
 
-		// Scene所有を解除する前に
-		// Prefabへ割り当てられていた番号を未使用状態へ戻す
-		if (!l_prefabName.empty() &&
+		// 有効なPrefabUUIDとInstanceNUMを持っている場合だけ、
+		// PrefabSystemへInstanceNUMを返却する
+		if (!l_prefabUUID.is_nil() &&
 			l_prefabInstanceNUM != Constant::k_invalidPrefabInstanceNUM)
 		{
-			m_prefabSystem.ReleasePrefabInstanceNUM(l_prefabName, l_prefabInstanceNUM);
+			m_prefabSystem.ReleasePrefabInstanceNUM(l_prefabUUID, l_prefabInstanceNUM);
 
 			// UUID登録解除などが失敗して次のフレームに残った場合に、
-			// 同じ番号を二重開放しないようにGameObject側を無効値へ戻す
+			// 同じ番号を二重解放しないようにGameObject側を無効値へ戻す
 			l_gameObject->SetPrefabInstanceNUM(Constant::k_invalidPrefabInstanceNUM);
 		}
 
-		FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Erase(l_gameObject->GetMutableREFUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。");
+		FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Erase(l_gameObject->GetMutableREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。");
 
 		l_hasRemoveTarget = true;
 	}

@@ -2361,9 +2361,6 @@
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabUUIDSetTypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
     </ClInclude>
@@ -2378,9 +2375,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Tooltip</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\UUIDTypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
       <Filter>Source\Framework\Utility\UUID</Filter>

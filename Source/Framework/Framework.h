@@ -74,8 +74,6 @@
 //===============================================================================
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
 #include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
-
-#include "Definition/Type/Alias/UUIDTypeAlias.h"
 #include "Utility/UUID/UUIDUtility.h"
 #include "Utility/Json/JsonUtility.h"
 #include "Editor/Window/Viewport/ViewportEditorWindow.h"
@@ -478,7 +476,6 @@
 #include "Utility/UUID/UUIDManager.h"
 #include "Utility/UUID/UUIDRegistry.h"
 #include "Definition/Struct/GameObject/GameObjectJsonConverterStruct.h"
-#include "Definition/Type/Alias/PrefabUUIDSetTypeAlias.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/GameObject.h"
 #include "Utility/GameObject/GameObjectUtility.h"

@@ -6,14 +6,14 @@ namespace FWK
 	{
 	private:
 
-		friend class SingletonBase<UUIDManager>;
+		friend class Utility::SingletonBase<UUIDManager>;
 
 		 UUIDManager() = default;
 		~UUIDManager() = default;
 
 	public:
 
-		TypeAlias::UUID GenerateVALUUID();
+		boost::uuids::uuid GenerateVALUUID();
 
 	private:
 

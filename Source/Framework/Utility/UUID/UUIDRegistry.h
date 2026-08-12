@@ -7,7 +7,7 @@ namespace FWK
 	{
 	private:
 
-		using UUIDMap = std::unordered_map<TypeAlias::UUID, Type>;
+		using UUIDMap = std::unordered_map<boost::uuids::uuid, Type>;
 
 		static constexpr bool k_isWeakPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
 
@@ -16,7 +16,7 @@ namespace FWK
 		 UUIDRegistry() = default;
 		~UUIDRegistry() = default;
 
-		bool Add(const Type& a_type, TypeAlias::UUID& a_uuid)
+		bool Add(const Type& a_type, boost::uuids::uuid& a_uuid)
 			requires k_isWeakPTR
 		{
 			const auto& l_type = a_type.lock();
@@ -25,14 +25,14 @@ namespace FWK
 			
 			// 既にUUIDを持っている場合
 			// Deserializeなどで復元されたUUIDなので
-			// 重複していたからと言って勝手に別UUIDeへ変更しない
+			// 重複していたからと言って勝手に別UUIDへ変更しない
 			if (!a_uuid.is_nil())
 			{
-				const bool l_isContains = m_uuidMap.try_emplace(a_uuid, a_type).second;
+				const bool l_isInserted = m_uuidMap.try_emplace(a_uuid, a_type).second;
 
-				FWK_ASSERT_RETURN_VALUE_IF(!l_isContains, "既に同じUUIDが登録されているため、UUIDMapへの登録に失敗しました。", false);
+				FWK_ASSERT_RETURN_VALUE_IF(!l_isInserted, "既に同じUUIDが登録されているため、UUIDMapへの登録に失敗しました。", false);
 
-				return l_isContains;
+				return true;
 			}
 
 			// 新規GameObjectなど、
@@ -50,7 +50,7 @@ namespace FWK
 			}
 		}
 
-		bool Erase(TypeAlias::UUID& a_uuid)
+		bool Erase(boost::uuids::uuid& a_uuid)
 		{
 			FWK_ASSERT_RETURN_VALUE_IF(a_uuid.is_nil(), "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
 
@@ -71,7 +71,7 @@ namespace FWK
 			m_uuidMap.clear();
 		}
 
-		Type FindVALRegisteredType(const TypeAlias::UUID& a_uuid) const
+		Type FindVALRegisteredType(const boost::uuids::uuid& a_uuid) const
 		{
 			if (a_uuid.is_nil()) { return {}; }
 

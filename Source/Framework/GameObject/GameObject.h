@@ -16,13 +16,13 @@ namespace FWK
 		~GameObject() = default;
 
 		void INIT             ();
-		void Deserialize      (const nlohmann::json& a_rootJson, TypeAlias::PrefabUUIDSet& a_parentPrefabUUIDSet, Scene& a_scene);
-		void DeserializePrefab(const nlohmann::json& a_rootJson, Scene&                    a_scene);
+		void Deserialize      (const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet, Scene& a_scene);
+		void DeserializePrefab(const nlohmann::json& a_rootJson, Scene&                                  a_scene);
 
 		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-			                         TypeAlias::PrefabNameSet&                                         a_parentPrefabNameSet,
+			                         std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
 			                         Scene&                                                            a_scene);
 
 		void DeserializeScene(const nlohmann::json&                                                   a_rootJson,
@@ -48,17 +48,17 @@ namespace FWK
 		void RemoveComponent(const std::weak_ptr<ComponentBase>&   a_component);
 
 		bool ApplyParent(const std::weak_ptr<GameObject>& a_child);
-		bool ApplyParent(const std::weak_ptr<GameObject>& a_child, TypeAlias::PrefabNameSet& a_parentPrefabNameSet);
+		bool ApplyParent(const std::weak_ptr<GameObject>& a_child, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet);
 		void Unparent   (const std::weak_ptr<GameObject>& a_child);
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
-		void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
-		
-		void SetPrefabUUID       (const UUID& a_set) { m_prefabUUID        = a_set; }
-		void SetSceneInstanceUUID(const UUID& a_set) { m_sceneInstanceUUID = a_set; }
+		void SetPrefabUUID       (const boost::uuids::uuid& a_set) { m_prefabUUID        = a_set; }
+		void SetSceneInstanceUUID(const boost::uuids::uuid& a_set) { m_sceneInstanceUUID = a_set; }
 
 		void SetPrefabInstanceNUM(const TypeAlias::PrefabInstanceNUM a_set) { m_prefabInstanceNUM = a_set; }
+
+		void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
 
 		template <Concept::IsDerivedComponentBaseConcept ComponentType>
 		std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -102,8 +102,6 @@ namespace FWK
 
 		const auto& GetREFParent() const { return m_parent; }
 
-		const auto& GetREFPrefabName() const { return m_prefabName; }
-		
 		const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }
 		const auto& GetREFComponentSmartPointerVectorArray() const { return m_componentSmartPointerVectorArray; }
 
@@ -111,6 +109,8 @@ namespace FWK
 
 		const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
 		const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
+
+		const auto& GetREFPrefabName() const { return m_prefabName; }
 
 		auto& GetMutableREFParent() { return m_parent; }
 
@@ -127,7 +127,7 @@ namespace FWK
 
 	private:
 
-		bool ContainsDuplicatePrefabNameRecursive(const std::weak_ptr<GameObject>& a_gameObject, TypeAlias::PrefabNameSet& a_prefabNameSet) const;
+		bool ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<GameObject>& a_gameObject, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet) const;
 
 		bool IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const;
 
@@ -145,12 +145,12 @@ namespace FWK
 
 		GameObjectJsonConverter m_jsonConverter = {};
 
-		UUID m_prefabUUID        = GUID_NULL;
-		UUID m_sceneInstanceUUID = GUID_NULL;
-
-		std::string m_prefabName = {};
+		boost::uuids::uuid m_prefabUUID        = {};
+		boost::uuids::uuid m_sceneInstanceUUID = {};
 
 		TypeAlias::PrefabInstanceNUM m_prefabInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
+
+		std::string m_prefabName = {};
 
 		bool m_isDestroyed = false;
 	};
