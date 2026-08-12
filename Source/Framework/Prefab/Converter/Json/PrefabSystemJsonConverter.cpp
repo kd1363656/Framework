@@ -43,7 +43,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 		auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
 
 		// プレハブのJsonを読み込むためのファイルパスをセットして読みこむ
-		if (const auto& l_prefabJson = l_json.value(k_prefabJsonKey, std::string{});
+		if (const auto& l_prefabJson = l_json.value(k_prefabJsonKey, nlohmann::json{});
 			!l_json.is_null())
 		{
 			l_prefab.Deserialize(l_prefabJson);

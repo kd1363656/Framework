@@ -183,19 +183,19 @@ void FWK::Scene::RemoveDestroyedGameObjects()
 
 		if (!l_gameObject->GetVALIsDestroyed()) { continue; }
 
-		const auto& l_prefabUUID        = l_gameObject->GetREFPrefabUUID       ();
-		const auto  l_prefabInstanceNUM = l_gameObject->GetVALPrefabInstanceNUM();
+		const auto& l_prefabUUID             = l_gameObject->GetREFPrefabUUID            ();
+		const auto  l_prefabSceneInstanceNUM = l_gameObject->GetVALPrefabSceneInstanceNUM();
 
 		// 有効なPrefabUUIDとInstanceNUMを持っている場合だけ、
 		// PrefabSystemへInstanceNUMを返却する
 		if (!l_prefabUUID.is_nil() &&
-			l_prefabInstanceNUM != Constant::k_invalidPrefabInstanceNUM)
+			l_prefabSceneInstanceNUM != Constant::k_invalidPrefabInstanceNUM)
 		{
-			m_prefabSystem.ReleasePrefabInstanceNUM(l_prefabUUID, l_prefabInstanceNUM);
+			m_prefabSystem.ReleasePrefabInstanceNUM(l_prefabUUID, l_prefabSceneInstanceNUM);
 
 			// UUID登録解除などが失敗して次のフレームに残った場合に、
 			// 同じ番号を二重解放しないようにGameObject側を無効値へ戻す
-			l_gameObject->SetPrefabInstanceNUM(Constant::k_invalidPrefabInstanceNUM);
+			l_gameObject->SetPrefabSceneInstanceNUM(Constant::k_invalidPrefabInstanceNUM);
 		}
 
 		FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Erase(l_gameObject->GetMutableREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。");
