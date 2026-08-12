@@ -21,8 +21,9 @@ void FWK::GameObject::INIT()
 
 	m_jsonConverter = {};
 
-	m_uuid = GUID_NULL;
-
+	m_prefabUUID        = GUID_NULL;
+	m_sceneInstanceUUID = GUID_NULL;
+	
 	m_prefabName.clear();
 
 	m_prefabInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
@@ -30,13 +31,13 @@ void FWK::GameObject::INIT()
 	m_isDestroyed = false;
 }
 
-void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene)
+void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, TypeAlias::PrefabUUIDSet& a_parentPrefabUUIDSet, Scene& a_scene)
 {
 	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.Deserialize(shared_from_this(), 
 		                        a_rootJson, 
-		                        a_parentPrefabNameSet,
+		                        a_parentPrefabUUIDSet,
 		                        a_scene);
 }
 void FWK::GameObject::DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene)

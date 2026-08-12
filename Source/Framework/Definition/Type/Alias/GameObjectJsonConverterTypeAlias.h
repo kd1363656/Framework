@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using PrefabUUIDSet = std::unordered_set<UUID, Struct::UUIDHashStruct, Struct::UUIDEqualStruct>;
+	using PrefabUUIDSet = std::unordered_set<UUID, Struct::UUIDHashStruct>;
 }

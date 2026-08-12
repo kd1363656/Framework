@@ -16,8 +16,8 @@ namespace FWK
 		~GameObject() = default;
 
 		void INIT             ();
-		void Deserialize      (const nlohmann::json& a_rootJson, TypeAlias::PrefabNameSet& a_parentPrefabNameSet, Scene& a_scene);
-		void DeserializePrefab(const nlohmann::json& a_rootJson, Scene& a_scene);
+		void Deserialize      (const nlohmann::json& a_rootJson, TypeAlias::PrefabUUIDSet& a_parentPrefabUUIDSet, Scene& a_scene);
+		void DeserializePrefab(const nlohmann::json& a_rootJson, Scene&                    a_scene);
 
 		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
@@ -55,7 +55,8 @@ namespace FWK
 
 		void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
 		
-		void SetUUID(const UUID& a_set) { m_uuid = a_set; }
+		void SetPrefabUUID       (const UUID& a_set) { m_prefabUUID        = a_set; }
+		void SetSceneInstanceUUID(const UUID& a_set) { m_sceneInstanceUUID = a_set; }
 
 		void SetPrefabInstanceNUM(const TypeAlias::PrefabInstanceNUM a_set) { m_prefabInstanceNUM = a_set; }
 
@@ -108,12 +109,14 @@ namespace FWK
 
 		const auto& GetREFComponentEventObserver() const { return m_componentEventObserver; }
 
-		const auto& GetREFUUID() const { return m_uuid; }
+		const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
+		const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
 
 		auto& GetMutableREFParent() { return m_parent; }
 
-		auto& GetMutableREFUUID() { return m_uuid; }
+		auto& GetMutableREFSceneInstanceUUID() { return m_sceneInstanceUUID; }
 
+		auto& GetMutableREFPrefabUUID            () { return m_prefabUUID; }
 		auto& GetMutableREFComponentEventObserver() { return m_componentEventObserver; }
 
 		std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
@@ -142,7 +145,8 @@ namespace FWK
 
 		GameObjectJsonConverter m_jsonConverter = {};
 
-		UUID m_uuid = GUID_NULL;
+		UUID m_prefabUUID        = GUID_NULL;
+		UUID m_sceneInstanceUUID = GUID_NULL;
 
 		std::string m_prefabName = {};
 

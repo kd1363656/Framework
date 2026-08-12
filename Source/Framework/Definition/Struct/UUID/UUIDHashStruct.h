@@ -19,12 +19,4 @@ namespace FWK::Struct
 			return l_hash;
 		}
 	};
-
-	struct UUIDEqualStruct final
-	{
-		bool operator()(const UUID& a_lhs, const UUID& a_rhs) const
-		{
-			return IsEqualGUID(a_lhs, a_rhs) != FALSE;
-		}
-	};
 }
