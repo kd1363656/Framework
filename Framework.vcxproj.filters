@@ -1228,9 +1228,6 @@
     <Filter Include="CONFIG\Physics">
       <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\UUID">
-      <UniqueIdentifier>{2e13800c-6697-4c51-aaba-8225a0d18e36}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2364,7 +2361,7 @@
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\GameObjectJsonConverterTypeAlias.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabUUIDSetTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.h">
@@ -2382,8 +2379,8 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Tooltip</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\UUID\UUIDHashStruct.h">
-      <Filter>Source\Framework\Definition\Struct\UUID</Filter>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\UUIDTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
