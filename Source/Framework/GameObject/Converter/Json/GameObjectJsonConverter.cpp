@@ -21,45 +21,12 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 		return;
 	}
 
-	// Prefabの検索や同一性判定ではSceneInstanceNameを使用せず、
-	// 永続的な識別子であるPrefabUUIDを使用する
-	const auto& l_prefabUUID = Utility::DeserializeUUID(a_rootJson, k_prefabUUIDJsonKey);
-
-	if (l_prefabUUID.is_nil())
+	// ゲームオブジェクトのシーンインスタンス名を読み取る
+	// インスタンス名が空でない場合にのみ格納
+	if (const auto& l_sceneInstanceName = a_rootJson.value(k_sceneInstanceNameJsonKey, std::string{});
+		!l_sceneInstanceName.empty())
 	{
-		FWK_ADD_LOG("PrefabUUIDが無効のため、GameObjectをデシリアライズできませんでした。");
-
-		return;
-	}
-
-	l_gameObject->SetPrefabUUID(l_prefabUUID);
-	
-	// プレハブ名からプレハブを取得
-	const auto& l_prefabSystem = a_scene.GetREFPrefabSystem  ();
-	const auto* l_prefab       = l_prefabSystem.FindPTRPrefab(l_prefabUUID);
-
-	if (!l_prefab)
-	{
-		FWK_ADD_LOG("プレハブが存在しておらず、ゲームオブジェクトのデシリアライズ処理に失敗しました。。");
-
-		return;
-	}
-
-	const auto& l_prefabJson = l_prefab->GetREFJson();
-
-	if (l_prefabJson.is_null())
-	{
-		FWK_ADD_LOG("プレハブのJsonが無効値となっており、ゲームオブジェクトのデシリアライズ処理に失敗しました。。");
-
-		return;
-	}
-
-	// ルートPrefabUUIDを、現在のPrefab階層へ登録する
-	if (!a_parentPrefabUUIDSet.emplace(l_prefabUUID).second)
-	{
-		FWK_ADD_LOG("ルートGameObjectと同じPrefabNameが親Prefab階層にすでに存在しています。");
-
-		return;
+		l_gameObject->SetSceneInstanceName(l_sceneInstanceName);
 	}
 
 	Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> l_componentLoadVectorArray = {};
@@ -95,13 +62,16 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 	// このルート以下の読み込みが完了したため登録を解除する
 	a_parentPrefabUUIDSet.erase(l_prefabUUID);
 }
-bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene& a_scene) const
+void FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObject>&              a_gameObject, 
+	                                                 const nlohmann::json&                         a_rootJson, 
+	                                                       std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet, 
+	                                                       Scene&                                  a_scene) const
 {
 	if (a_rootJson.is_null())
 	{
 		FWK_ADD_LOG("RootJsonが無効のため、ゲームオブジェクトのプレハブのデシリアライズに失敗しました。");
 
-		return false;
+		return;
 	}
 
 	const auto& l_gameObject = a_gameObject.lock();
@@ -110,19 +80,59 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 	{
 		FWK_ADD_LOG("ゲームオブジェクトが無効になっており、ゲームオブジェクトのデシリアライズ処理に失敗しました。");
 
-		return false;
+		return;
+	}
+
+	// Prefabの検索や同一性判定ではSceneInstanceNameを使用せず、
+	// 永続的な識別子であるPrefabUUIDを使用する
+	const auto& l_prefabUUID = Utility::DeserializeUUID(a_rootJson, k_childListJsonKey);
+
+	if (l_prefabUUID.is_nil())
+	{
+		FWK_ADD_LOG("PrefabUUIDが無効のため、GameObjectをデシリアライズできませんでした。");
+
+		return;
+	}
+
+	// プレハブ識別UUIDを格納
+	l_gameObject->SetPrefabUUID(l_prefabUUID);
+	
+	// プレハブ名からプレハブを取得
+	const auto& l_prefabSystem = a_scene.GetREFPrefabSystem  ();
+	const auto* l_prefab       = l_prefabSystem.FindPTRPrefab(l_prefabUUID);
+
+	if (!l_prefab)
+	{
+		FWK_ADD_LOG("プレハブが存在しておらず、ゲームオブジェクトのデシリアライズ処理に失敗しました。。");
+
+		return;
+	}
+
+	const auto& l_prefabJson = l_prefab->GetREFJson();
+
+	if (l_prefabJson.is_null())
+	{
+		FWK_ADD_LOG("プレハブのJsonが無効値となっており、ゲームオブジェクトのデシリアライズ処理に失敗しました。。");
+
+		return;
+	}
+
+	// ルートPrefabUUIDを、現在のPrefab階層へ登録する
+	if (!a_parentPrefabUUIDSet.emplace(l_prefabUUID).second)
+	{
+		FWK_ADD_LOG("ルートGameObjectと同じPrefabNameが親Prefab階層にすでに存在しています。");
+
+		return;
 	}
 
 	// ゲームオブジェクトのシーンインスタンス名を読み取る
-
-
 	const auto& l_sceneInstanceName = a_rootJson.value(k_sceneInstanceNameJsonKey, std::string{});
 
 	if (l_sceneInstanceName.empty())
 	{
 		FWK_ADD_LOG("名前が空のシーンインスタンスががJsonファイルに含まれています。SceneのJsonファイルを確認してください。");
 
-		return false;
+		return;
 	}
 
 	l_gameObject->SetSceneInstanceName(l_sceneInstanceName);
@@ -137,11 +147,7 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 		return;
 	}
 
-	// SceneJsonConverterを経由しないPrefab単体生成では、
-	// この関数内でルート専用の集合を作成する
-	std::unordered_set<boost::uuids::uuid> l_parentPrefabUUIDSet = {};
-
-	l_parentPrefabUUIDSet.emplace(l_prefabUUID);
+	a_parentPrefabUUIDSet.emplace(l_prefabUUID);
 
 	Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> l_componentLoadVectorArray = {};
 	std::vector<Struct::ChildDeserializeData>                        l_childLoadList            = {};
@@ -258,18 +264,6 @@ void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&       
 
 		return;
 	}
-
-	// ゲームオブジェクトのシーンインスタンス名を読み取る
-	const auto& l_sceneInstanceName = a_rootJson.value(k_sceneInstanceNameJsonKey, std::string{});
-
-	if (l_sceneInstanceName.empty())
-	{
-		FWK_ADD_LOG("名前が空のシーンインスタンスががJsonファイルに含まれています。SceneのJsonファイルを確認してください。");
-
-		return;
-	}
-
-	a_gameObject.SetSceneInstanceName(l_sceneInstanceName);
 
 	const auto l_prefabSceneInstanceNUM = a_rootJson.value(k_prefabSceneInstanceNUMJsonKey, Constant::k_invalidPrefabInstanceNUM);
 
