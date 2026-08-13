@@ -33,7 +33,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
         // Outlinerから直接リネームしない
 		if (!l_selectedGameObject                                                                             ||
 			l_selectedGameObject->GetVALIsDestroyed()                                                         ||
-			l_selectedGameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM ||
+			l_selectedGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM ||
 			m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount)
 		{
 			CancelGameObjectRename();

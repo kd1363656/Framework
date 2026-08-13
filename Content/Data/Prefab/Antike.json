@@ -1,0 +1,29 @@
+{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentEventObserver": {
+            "EventMap": []
+        },
+        "ComponentList": [],
+        "PrefabUUID": "b38d7a90-4dbb-4957-a6e4-2f900c615603",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialRotation": {
+                "W": 1.0,
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    }
+}

@@ -112,8 +112,8 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(PrefabSystem
 
 		if (l_prefabJson.is_null()) { continue; }
 
+		Utility::UpdateJson(l_json, Utility::SerializeUUID(l_prefabUUID, k_prefabUUIDJsonKey));
 		l_json[k_prefabJsonKey]                     = l_prefabJson;
-		l_json[k_prefabUUIDJsonKey]                 = Utility::SerializeUUID(l_prefabUUID, k_prefabUUIDJsonKey);
 		l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
 
 		l_jsonArray.emplace_back(l_json);

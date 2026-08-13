@@ -105,8 +105,6 @@ void Application::Execute()
 	l_graphicsManager.SaveCONFIG();
 	l_editorManager.SaveCONFIG  ();
 	l_physicsManager.SaveCONFIG ();
-
-	l_sceneManager.SaveScene();
 }
 
 void Application::LoadCONFIG()

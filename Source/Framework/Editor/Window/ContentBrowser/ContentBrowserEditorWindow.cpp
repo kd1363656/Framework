@@ -42,6 +42,184 @@ nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
 	return m_jsonConverter.Serialize(*this);;
 }
 
+bool FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
+{
+	const auto& l_gameObject = a_gameObject.lock();
+
+	if (!l_gameObject ||
+		l_gameObject->GetVALIsDestroyed())
+	{
+		FWK_ADD_LOG("Prefab化するGameObjectが無効のため、Prefabを作成できませんでした。");
+
+		return false;
+	}
+
+	// 保存先Folder確認
+	std::error_code l_errorCode = {};
+
+	if (!std::filesystem::is_directory(a_directoryPath, l_errorCode) ||
+		l_errorCode)
+	{
+		FWK_ADD_LOG("Prefab保存先Directoryが無効のため、Prefabを作成できませんでした。\nDirectoryPath : {}", a_directoryPath.string());
+
+		return false;
+	}
+
+	// Prefab化されていないことを確認
+	if (!l_gameObject->GetREFPrefabUUID().is_nil() ||
+		l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM)
+	{
+		FWK_ADD_LOG("すでにPrefabInstanceとなっているGameObjectは新規Prefab化できません。");
+
+		return false;
+	}
+
+	// Outlinderでf2リネームされたSceneInstanceNameをそのままPrefabNameとして使用する
+	const auto& l_prefabName = l_gameObject->GetREFSceneInstanceName();
+
+	if (l_prefabName.empty())
+	{
+		FWK_ADD_LOG("SceneInstanceNameが空のため、PrefabNameを決定できませんでした。");
+
+		return false;
+	}
+
+	std::filesystem::path l_prefabFilePath = a_directoryPath / l_prefabName;
+
+	l_prefabFilePath += Constant::k_lowerJsonExtension.string();
+
+	l_errorCode.clear();
+
+	// 既存ファイルを勝手に上書きしない
+	if (std::filesystem::exists(l_prefabFilePath, l_errorCode))
+	{
+		FWK_ADD_LOG("同名Prefabファイルが既に存在するため、新しいPrefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
+
+		return false;
+	}
+
+	if (l_errorCode)
+	{
+		FWK_ADD_LOG("PrefabFilePathを確認できなかったため、Prefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
+
+		return false;
+	}
+
+	// Registry上でも同じfilePathが使用済みなら作成しない
+	if (!m_assetRegistry.FindVALAssetUUID(l_prefabFilePath).is_nil())
+	{
+		FWK_ADD_LOG("同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
+
+		return false;
+	}
+
+	// PrefabUUIDの生成
+	      auto& l_uuidManager = UUIDManager::GetInstance     ();
+	const auto& l_prefabUUID  = l_uuidManager.GenerateVALUUID();
+
+	if (l_prefabUUID.is_nil())
+	{
+		FWK_ADD_LOG("PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
+
+		return false;
+	}
+
+	auto& l_scene        = SceneManager::GetInstance        ().GetMutableREFScene();
+	auto& l_prefabSystem = l_scene.GetMutableREFPrefabSystem();
+
+	// PrefabSystem側でもUUIDが使用済みなら登録しない
+	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))
+	{
+		FWK_ADD_LOG("生成したPrefabUUIDがPrefabSystemですでに使用されています。");
+
+		return false;
+	}
+
+	if (!m_assetRegistry.Add(l_prefabUUID, l_prefabFilePath))
+	{
+		FWK_ADD_LOG("ContentBrowserAssetRegistryへPrefabを登録できませんでした。");
+
+		return false;
+	}
+
+	Struct::PrefabData l_prefabData = {};
+
+	auto& l_prefab = l_prefabData.m_prefab;
+
+	l_prefab.SetPrefabName(l_prefabName);
+	l_prefab.SetFilePath  (l_prefabFilePath);
+
+	// 今回Prefab化するScene上のGameObjectを
+	// このPrefabの保存用代表ゲームオブジェクトとして使用する
+	l_prefab.SetGameObject(l_gameObject);
+
+	l_prefabSystem.AddPrefabMap(l_prefabUUID, l_prefabData);
+
+	auto* l_registeredPrefab = l_prefabSystem.FindMutablePTRPrefab(l_prefabUUID);
+
+	if (!l_registeredPrefab)
+	{
+		m_assetRegistry.Erase(l_prefabFilePath);
+
+		FWK_ADD_LOG("PrefabSystemへのPrefab登録に失敗しました。");
+
+		return false;
+	}
+
+	const auto l_prefabSceneInstanceNUM = l_prefabSystem.AllocatePrefabInstanceNUM(l_prefabUUID);
+
+	// シーンインスタンス数が無効値ならAssetRegistryやPrefabSystemから情報を消す
+	if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
+	{
+		l_prefabSystem.RemovePrefab(l_prefabUUID);
+		m_assetRegistry.Erase      (l_prefabFilePath);
+
+		FWK_ADD_LOG("PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
+
+		return false;
+	}
+
+	l_gameObject->SetPrefabUUID            (l_prefabUUID);
+	l_gameObject->SetPrefabSceneInstanceNUM(l_prefabSceneInstanceNUM);
+
+	if (const auto& l_prefabSerializeJson = l_registeredPrefab->Serialize();
+		l_prefabSerializeJson.is_null())
+	{
+		// InstanceNUMをPrefabSystemへ返す
+		l_prefabSystem.ReleasePrefabInstanceNUM(l_prefabUUID, l_prefabSceneInstanceNUM);
+		
+		// GameObjectをPrefab化前に戻す
+		l_gameObject->SetPrefabSceneInstanceNUM(Constant::k_invalidPrefabSceneInstanceNUM);
+
+		l_gameObject->SetPrefabUUID({});
+
+		l_prefabSystem.RemovePrefab(l_prefabUUID);
+
+		m_assetRegistry.Erase(l_prefabFilePath);
+
+		// SaveJsonFileの途中でFileだけ生成された場合も
+		// 不完全なPrefabファイルを渡さない
+		l_errorCode.clear();
+
+		std::filesystem::remove(l_prefabFilePath, l_errorCode);
+
+		FWK_ADD_LOG("Prefabファイルの保存に失敗したため、Prefab作成を取り消しました。");
+
+		return false;
+	}
+
+	// 新しく生成されたPrefabをContentBrowser上でも選択対象にしておく
+	m_selectedEntryPath = l_prefabFilePath;
+
+	FWK_ADD_LOG("Prefabを作成しました。\nPrefabName : {}\nFilePath : {}\nPrefabUUID : {}\nPrefabInstanceNUM : {}",
+		        l_prefabName,
+		        l_prefabFilePath.string(),
+		        boost::uuids::to_string(l_prefabUUID),
+		        l_prefabSceneInstanceNUM);
+
+	return true;
+}
+
 void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTree()
 {
 	std::error_code l_errorCode = {};
@@ -125,6 +303,9 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::f
 		                                        Constant::k_fontAwesomeFolderIcon.data(),
 		                                        l_directoryName.c_str());
 
+	// 左側FolderTree空もPrefab保存先をしてできるようにする
+	DrawGameObjectPrefabDragDropTarget(a_directoryPath);
+
 	// Folderの行をClickした場合は、
 	// そのFolderを右ペインで開く
 	// ArrowをクリックしてTreeNodeを開閉しただけの場合は
@@ -174,7 +355,6 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::f
 
 	ImGui::TreePop();
 }
-
 void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 {
 	std::error_code l_errorCode = {};
@@ -262,11 +442,8 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 
 	ApplyCurrentDirectoryPath(l_requestedDirectoryPath);
 }
-
 void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::filesystem::path& a_entryPath, bool a_isDirectory)
 {
-
-
 	const auto& l_entryPathString = a_entryPath.generic_string();
 	const auto& l_entryName       = a_entryPath.filename      ().string();
 	const auto& l_icon            = FetchVALDirectoryEntryIcon(a_entryPath, a_isDirectory);
@@ -281,6 +458,13 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 	// InvisibleButton事態は何も描画しない、
 	// この後DrawListをつあって背景・Icon・名前を自部で描画する
 	ImGui::InvisibleButton(k_directoryEntryButtonString.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
+
+	// FolderカードへOutlinerのGameObjectがDropされた場合、
+	// このFolderをPrefabの保存先として使用する
+	if (a_isDirectory)
+	{
+		DrawGameObjectPrefabDragDropTarget(a_entryPath);
+	}
 
 	const bool  l_isHovered  = ImGui::IsItemHovered();
 	const bool  l_isSelected = m_selectedEntryPath == a_entryPath;
@@ -363,6 +547,18 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 
 	ImGui::PopID();
 }
+void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_directoryPath)
+{
+	auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+	std::weak_ptr<GameObject> l_gameObject = {};
+
+	// Outlinerが送信しているGameObjectPayloadを受け取る
+	if (!l_dragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_gameObject)) { return; }
+
+	// DropされたFolderをPrefabの保存先としてPrefab化する
+	CreatePrefabFromGameObject(l_gameObject, a_directoryPath);
+}
 
 bool FWK::Editor::ContentBrowserEditorWindow::HasChildDirectory(const std::filesystem::path& a_directoryPath) const
 {
@@ -406,7 +602,7 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentDirectoryPath(const st
 
 	// "."や".."が混ざったPathを
 	// Path文字列上だけ正規化して保持する
-	m_currentDirectoryPath = a_directoryPath.lexically_normal();
+	m_currentDirectoryPath = a_directoryPath;
 }
 
 std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPath, bool a_isDirectory) const

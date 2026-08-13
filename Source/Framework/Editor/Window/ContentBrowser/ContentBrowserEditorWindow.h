@@ -21,10 +21,13 @@ namespace FWK::Editor
 
 	private:
 
-		void DrawDirectoryTree    ();
-		void DrawDirectoryTreeNode(const std::filesystem::path& a_directoryPath);
-		void DrawCurrentDirectory ();
-		void DrawDirectoryEntry   (const std::filesystem::path& a_entryPath, bool a_isDirectory);
+		bool CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath);
+
+		void DrawDirectoryTree                 ();
+		void DrawDirectoryTreeNode             (const std::filesystem::path& a_directoryPath);
+		void DrawCurrentDirectory              ();
+		void DrawDirectoryEntry                (const std::filesystem::path& a_entryPath, bool a_isDirectory);
+		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_directoryPath);
 
 		bool HasChildDirectory(const std::filesystem::path& a_directoryPath) const;
 
