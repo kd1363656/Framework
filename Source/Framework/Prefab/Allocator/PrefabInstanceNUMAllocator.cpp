@@ -37,7 +37,7 @@ FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate
 	}
 
 	// vectorの要素数が次に新規発行する番号となる
-	FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList.size() >= static_cast<std::size_t>(Constant::k_invalidPrefabInstanceNUM), "PrefabInstanceNUMをこれ以上発行できません。", Constant::k_invalidPrefabSceneInstanceNUM);
+	FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList.size() >= static_cast<std::size_t>(Constant::k_invalidPrefabSceneInstanceNUM), "PrefabInstanceNUMをこれ以上発行できません。", Constant::k_invalidPrefabSceneInstanceNUM);
 
 	const auto l_newPrefabInstanceNUM = static_cast<TypeAlias::PrefabSceneInstanceNUM>(m_isAllocatedList.size());
 

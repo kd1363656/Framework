@@ -20,13 +20,13 @@ namespace FWK
 		void Deserialize(const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet, Scene& a_scene);
 
 
-		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+		bool DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 			                         std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
 			                         Scene&                                                            a_scene);
 
-		void DeserializeScene(const nlohmann::json&                                                   a_rootJson,
+		bool DeserializeScene(const nlohmann::json&                                                   a_rootJson,
 			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 			                        Scene&                                                            a_scene);
@@ -49,7 +49,6 @@ namespace FWK
 		void RemoveComponent(const std::weak_ptr<ComponentBase>&   a_component);
 
 		bool ApplyParent(const std::weak_ptr<GameObject>& a_child);
-		bool ApplyParent(const std::weak_ptr<GameObject>& a_child, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet);
 		void Unparent   (const std::weak_ptr<GameObject>& a_child);
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }

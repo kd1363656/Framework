@@ -36,11 +36,14 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 	}
 
 	// デシリアライズし終わったコンポーネントや子ゲームオブジェクトにシーンデータを読み込ませる
-	DeserializeScene(a_rootJson,
-	                 l_childLoadList,
-	                 l_componentLoadVectorArray,
-	                 *l_gameObject,
-		             a_scene);
+	if (!DeserializeScene(a_rootJson,
+	                      l_childLoadList,
+	                      l_componentLoadVectorArray,
+	                      *l_gameObject,
+		                  a_scene))
+	{
+		return;
+	}
 
 	// デシリアライズした各コンポーネントを、親、子に再帰的に追加
 	RecursiveAddComponent(l_gameObject,
@@ -49,10 +52,7 @@ void FWK::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>& 
 		                  a_scene);
 
 	// 親子関係を再帰的に構築
-	RecursiveAddChild(l_gameObject, 
-		              l_childLoadList,
-		              a_prefabUUIDSet,
-		              a_scene);
+	RecursiveAddChild(l_gameObject, l_childLoadList, a_scene);
 }
 bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObject>&                                        a_gameObject, 
 	                                                 const nlohmann::json&                                                   a_rootJson,
@@ -76,6 +76,13 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 		return false;
 	}
 
+	if (!a_prefabUUIDSet.emplace(l_prefabUUID).second)
+	{
+		FWK_ADD_LOG("プレハブのUUIDが重複しています、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+
+		return false;
+	}
+
 	// Prefabを識別するためのUUIDを格納
 	l_gameObject->SetPrefabUUID(l_prefabUUID);
 
@@ -85,6 +92,8 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 	if (!l_prefab)
 	{
 		FWK_ADD_LOG("プレハブが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+
+		a_prefabUUIDSet.erase(l_prefabUUID);
 
 		return false;
 	}
@@ -101,6 +110,7 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 	{
 		FWK_ADD_LOG("プレハブが保持しているJsonが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
+		a_prefabUUIDSet.erase(l_prefabUUID);
 
 		return false; 
 	}
@@ -115,6 +125,7 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 	{
 		FWK_ADD_LOG("コンポーネントのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
+		a_prefabUUIDSet.erase(l_prefabUUID);
 
 		return false;
 	}
@@ -125,30 +136,34 @@ bool FWK::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObj
 	{
 		FWK_ADD_LOG("コンポーネントオブザーバーのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
+		a_prefabUUIDSet.erase(l_prefabUUID);
 
 		return false;
 	}
 
 	// プレハブ子ゲームオブジェクトのデシリアライズ
 	if (const auto& l_childListJson = l_prefabJson.value(k_childListJsonKey, nlohmann::json{});
-		!l_childListJson.is_null() &&
-		Utility::IsJsonArray(l_childListJson))
-	{
-		if (!DeserializePrefabChildList(l_childListJson,
+		!l_childListJson.is_null()            &&
+		Utility::IsJsonArray(l_childListJson) &&
+		!DeserializePrefabChildList(l_childListJson,
 		                                a_prefabUUIDSet,
 		                                a_childDeserializeDataList,
 		                                a_scene))
-		{
-			FWK_ADD_LOG("子ゲームオブジェクトのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+	{
+		FWK_ADD_LOG("子ゲームオブジェクトのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
+		a_prefabUUIDSet.erase(l_prefabUUID);
 
-			return false;
-		}
+		return false;
 	}	
+
+	// このPrefab以下のデシリアライズがすべて終了したため、
+	// 兄弟Prefabで同じUUIDを使用できるように現在経路から削除する
+	a_prefabUUIDSet.erase(l_prefabUUID);
 
 	return true;
 }
-void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
+bool FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
 	                                                      std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList, 
 	                                                      Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 	                                                      GameObject&                                                       a_gameObject, 
@@ -158,18 +173,42 @@ void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&       
 	{
 		FWK_ADD_LOG("RootJsonが無効のため、ゲームオブジェクトのシーンのデシリアライズに失敗しました。");
 
-		return;
+		return false;
 	}
 
 	const auto l_prefabSceneInstanceNUM = a_rootJson.value(k_prefabSceneInstanceNUMJsonKey, Constant::k_invalidPrefabSceneInstanceNUM);
 
-	FWK_ASSERT_RETURN_IF(l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM, "PrefabInstanceNUMが無効となっており、GameObjectのScene情報をデシリアライズできませんでした。");
+	if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
+	{
+		FWK_ADD_LOG("PrefabSceneInstanceNUMが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
+
+		return false;
+	}
+	
+	// 保存していたUUIDを取得
+	const auto l_sceneInstanceUUID = Utility::DeserializeUUID(a_rootJson, k_sceneInstanceUUIDJsonKey);
+
+	if (l_sceneInstanceUUID.is_nil())
+	{
+		FWK_ADD_LOG("SceneInstanceUUIDが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
+
+		return false;
+	}
+
+	// コンポーネントのシーン情報のデシリアライズ
+	if (!DeserializeSceneComponent(a_rootJson, a_componentSmartPointerVectorArray, a_gameObject)) { return false; }
+
+	// 子ゲームオブジェクトのシーン情報のデシリアライズ
+	if (const auto& l_childListJson = a_rootJson.value(k_childListJsonKey, nlohmann::json{});
+		!l_childListJson.is_null()            &&
+		Utility::IsJsonArray(l_childListJson) &&
+		!DeserializeSceneChildList(l_childListJson, a_childDeserializeDataList, a_scene))
+	{ 
+		return false;
+	}
 
 	// シーンに接地されているプレハブで何番目かを格納
 	a_gameObject.SetPrefabSceneInstanceNUM(l_prefabSceneInstanceNUM);
-
-	// 保存していたUUIDを取得
-	const auto l_sceneInstanceUUID = Utility::DeserializeUUID(a_rootJson, k_sceneInstanceUUIDJsonKey);
 
 	// シーンに配置されているゲームオブジェクトのUUID
 	// 他のゲームオブジェクトがこのゲームオブジェクトに瞬時にアクセスしたいときなどに使用する
@@ -184,16 +223,7 @@ void FWK::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&       
 		a_gameObject.SetSceneInstanceName(l_sceneInstanceName);
 	}
 
-	// コンポーネントのシーン情報のデシリアライズ
-	DeserializeSceneComponent(a_rootJson, a_componentSmartPointerVectorArray, a_gameObject);
-
-	// 子ゲームオブジェクトのシーン情報のデシリアライズ
-	if (const auto& l_childListJson = a_rootJson.value(k_childListJsonKey, nlohmann::json{});
-		!l_childListJson.is_null() &&
-		Utility::IsJsonArray(l_childListJson))
-	{
-		DeserializeSceneChildList(l_childListJson, a_childDeserializeDataList, a_scene);
-	}
+	return true;
 }
 
 nlohmann::json FWK::GameObjectJsonConverter::SerializePrefab(const GameObject& a_gameObject) const
@@ -218,6 +248,9 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializePrefab(const GameObject& a
 	// コンポーネントのプレハブデータのシリアライズ
 	Utility::UpdateJson(l_rootJson, SerializePrefabComponent(a_gameObject));
 	
+	// コンポーネントオブザーバのシリアライズ
+	Utility::UpdateJson(l_rootJson, SerializePrefabComponentObserver(a_gameObject));
+
 	// 子ゲームオブジェクトをシリアライズ
 	l_rootJson[k_childListJsonKey] = SerializePrefabChildList(a_gameObject);
 
@@ -243,7 +276,6 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializeScene(const GameObject& a_
 	}
 
 	// ゲームオブジェクトのシーンインスタンス名と、プレ布武シーンインスタンス番号を保存
-	l_rootJson[k_sceneInstanceUUIDJsonKey]      = Utility::SerializeUUID(l_prefabUUID, k_sceneInstanceUUIDJsonKey);
 	l_rootJson[k_prefabSceneInstanceNUMJsonKey] = l_prefabSceneInstanceNUM;
 	l_rootJson[k_sceneInstanceNameJsonKey]      = l_sceneInstanceName;
 
@@ -252,6 +284,8 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializeScene(const GameObject& a_
 
 	// Scene上のGameObject自身を識別するUUID
 	Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(l_sceneInstanceUUID, k_sceneInstanceUUIDJsonKey));
+
+	Utility::UpdateJson(l_rootJson, SerializeSceneComponent(a_gameObject));
 
 	// 子ゲームオブジェクトの保存
 	l_rootJson[k_childListJsonKey] = SerializeSceneChildList(a_gameObject);
@@ -280,6 +314,7 @@ bool FWK::GameObjectJsonConverter::DeserializePrefabComponent(const std::weak_pt
 	// プレハブに保存されているコンポーネントを
 	// 保存されている順番のまま生成する
 	if (const auto& l_componentJsonArray = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
+		!l_componentJsonArray.is_null() &&
 		Utility::IsJsonArray(l_componentJsonArray))
 	{
 		const auto& l_componentFactory = TypeAlias::ComponentSharedFactory::GetInstance();
@@ -293,13 +328,13 @@ bool FWK::GameObjectJsonConverter::DeserializePrefabComponent(const std::weak_pt
 			{
 				FWK_ADD_LOG("ComponentTypeNameが空のため、Componentを生成できませんでした。");
 
-				continue;
+				return false;
 			}
 
 			// 型名をもとにComponentを生成する
 			const auto& l_component = l_componentFactory.Create(l_typeName);
 
-			if (!l_component) { continue; }
+			if (!l_component) { return false; }
 
 			// ComponentのPrefab情報を読み込む
 			l_component->INIT             ();
@@ -363,11 +398,16 @@ bool FWK::GameObjectJsonConverter::DeserializePrefabChildList(const nlohmann::js
 		// 子GameObject自身のDeserializePrefabを呼び出す
 		// 現在のPrefabUUIDSetも引き継ぐため、
 		// 孫以下でも同じ親Prefab階層を確認できる
-		l_child->DeserializePrefab(l_childJson, 
-			                       l_childDeserializeData.m_childDeserializeDataList,
-			                       l_childDeserializeData.m_componentSmartPointerVectorArray,
-			                       a_prefabUUIDSet,
-			                       a_scene);
+		if (!l_child->DeserializePrefab(l_childJson, 
+			                            l_childDeserializeData.m_childDeserializeDataList,
+			                            l_childDeserializeData.m_componentSmartPointerVectorArray,
+			                            a_prefabUUIDSet,
+			                            a_scene))
+		{
+			// 循環Prefabなどで失敗した場合、
+			// m_selfは空のまま残してSceneとの配列添字だけ維持する
+			continue;
+		}
 
 		// 構造体にSceneデシリアライズ用に自身を格納
 		l_childDeserializeData.m_self = l_child;
@@ -376,22 +416,23 @@ bool FWK::GameObjectJsonConverter::DeserializePrefabChildList(const nlohmann::js
 	return true;
 }
 
-void FWK::GameObjectJsonConverter::DeserializeSceneComponent(const nlohmann::json& a_rootJson, Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, GameObject& a_gameObject) const
+bool FWK::GameObjectJsonConverter::DeserializeSceneComponent(const nlohmann::json& a_rootJson, Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, GameObject& a_gameObject) const
 {
 	const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのシーンのデシリアライズに失敗しました。");
+	FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、GameObjectのSceneデータのデシリアライズに失敗しました。", false);
 
 	// TransformComponentのプレハブの情報を読み込む
 	const auto& l_transformComponentJson = a_rootJson.value(k_transformComponentJsonKey, nlohmann::json{});
 
-	FWK_ASSERT_RETURN_IF(l_transformComponentJson.is_null(), "TransformComponentJsonが無効になっており、ゲームオブジェクトのシーンのデシリアライズに失敗しました。");
-
+	FWK_ASSERT_RETURN_VALUE_IF(l_transformComponentJson.is_null(), "TransformComponentJsonが無効のため、GameObjectのSceneデータのデシリアライズに失敗しました。", false);
+	
 	// TransformComponentのシーンデータをデシリアライズ
 	l_transformComponent->DeserializeScene(l_transformComponentJson);
 
 	// コンポーネント読み込み用Jonの存在確認、なければreturn
 	if (const auto& l_componentJsonArray = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
+		!l_componentJsonArray.is_null() &&
 		Utility::IsJsonArray(l_componentJsonArray))
 	{
 		auto& l_componentList = a_componentSmartPointerVectorArray.GetMutableREFArrayElementDataList();;
@@ -401,35 +442,46 @@ void FWK::GameObjectJsonConverter::DeserializeSceneComponent(const nlohmann::jso
 		{
 			FWK_ADD_LOG("コンポーネントの数がPrefabとSceneで一致しないためComponentのScene情報のデシリアライズに失敗しました。");
 		
-			return;
+			return false;
 		}
 
 		for (std::size_t l_i = 0U; l_i < l_componentJsonArray.size(); ++l_i)
 		{
 			const auto& l_json = l_componentJsonArray[l_i];
 
-			if (l_json.is_null()) { continue; }
+			if (l_json.is_null())
+			{
+				FWK_ADD_LOG("SceneのComponentListに無効なJsonが含まれています。");
+
+				return false;
+			}
 
 			// 各コンポーネントのScene情報を読み込むJsonArrayで保存する関係上
 			// 絶対に前回と同じコンポーネントの格納順番なので安全にインデックスを指定して
 			// 読み込むことが可能
 			const auto& l_component = l_componentList[l_i].m_type;
 
-			if (!l_component) { continue; }
+			if (!l_component) 
+			{
+				FWK_ADD_LOG("Prefabで生成したComponentが無効です。");
+
+				return false;
+			}
 
 			l_component->DeserializeScene(l_json);
 		}
 	}
+
+	return true;
 }
 
-void FWK::GameObjectJsonConverter::DeserializeSceneChildList(const nlohmann::json& a_rootJsonArray, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const
+bool FWK::GameObjectJsonConverter::DeserializeSceneChildList(const nlohmann::json& a_rootJsonArray, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const
 {
 	// リストが空なら読み込めていないのでreturn
-	if (a_childDeserializeDataList.empty() ||
-		a_rootJsonArray.is_null()          ||
+	if (a_rootJsonArray.is_null()          ||
 		!Utility::IsJsonArray(a_rootJsonArray))
 	{
-		return; 
+		return false; 
 	}
 
 	// Json配列のサイズが一致しなければreturn
@@ -437,7 +489,7 @@ void FWK::GameObjectJsonConverter::DeserializeSceneChildList(const nlohmann::jso
 	{
 		FWK_ADD_LOG("子の数がPrefabとSceneで一致しないためSceneの子情報のデシリアライズに失敗しました。");
 
-		return;
+		return false;
 	}
 
 	// 子の保存順序はJson::arrayで保証されているので安全にScene情報を読み取ることができる
@@ -445,17 +497,27 @@ void FWK::GameObjectJsonConverter::DeserializeSceneChildList(const nlohmann::jso
 	{
 		const auto& l_json = a_rootJsonArray[l_i];
 
-		if (l_json.is_null()) { continue; }
+		if (l_json.is_null()) 
+		{
+			FWK_ADD_LOG("Prefab側に存在するChildGameObjectのSceneJsonが無効です。");
+
+			return false;
+		}
 
 		auto& l_childDeserializeData = a_childDeserializeDataList[l_i];
 
 		if (!l_childDeserializeData.m_self) { continue; }
 
-		l_childDeserializeData.m_self->DeserializeScene(l_json, 
-			                                            l_childDeserializeData.m_childDeserializeDataList, 
-			                                            l_childDeserializeData.m_componentSmartPointerVectorArray, 
-			                                            a_scene);
+		if (!l_childDeserializeData.m_self->DeserializeScene(l_json, 
+			                                                 l_childDeserializeData.m_childDeserializeDataList, 
+			                                                 l_childDeserializeData.m_componentSmartPointerVectorArray, 
+			                                                 a_scene))
+		{
+			return false;
+		}
 	}
+
+	return true;
 }
 
 nlohmann::json FWK::GameObjectJsonConverter::SerializePrefabComponent(const GameObject& a_gameObject) const
@@ -466,9 +528,6 @@ nlohmann::json FWK::GameObjectJsonConverter::SerializePrefabComponent(const Game
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのシリアライズに失敗しました。", {});
 
-	// PrefabUUIDを文字列にして保存
-	l_rootJson[k_prefabUUIDJsonKey] = boost::uuids::to_string(a_gameObject.GetREFPrefabUUID());
-	
 	if (const auto& l_json = l_transformComponent->SerializePrefab();
 		!l_json.is_null())
 	{
@@ -633,33 +692,29 @@ void FWK::GameObjectJsonConverter::RecursiveAddComponent(const std::shared_ptr<G
 			                  a_scene);
 	}
 }
-void FWK::GameObjectJsonConverter::RecursiveAddChild(const std::shared_ptr<GameObject>&               a_parent, 
-	                                                       std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
-	                                                       std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet, 
-	                                                       Scene&                                     a_scene) const
+void FWK::GameObjectJsonConverter::RecursiveAddChild(const std::shared_ptr<GameObject>& a_parent, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const
 {
-	// 子であろうが一つのリストに格納
+		// 子であろうが一つのリストに格納
 	if (!a_parent) { return; }
 
 	// 親子関係を再帰的に構築
 	for (auto& l_childLoad : a_childDeserializeDataList)
 	{
-		if (!l_childLoad.m_self) { continue; }
+		const auto& l_child = l_childLoad.m_self;
 
-		const auto& l_childPrefabUUID = l_childLoad.m_self->GetREFPrefabUUID();
+		if (!l_child) { continue; }
+
+		const auto& l_childPrefabUUID = l_child->GetREFPrefabUUID();
 
 		// 同じPrefab名が親経路に存在する場合や、
 		// GameObjectの親子関係を構築できなかった場合は追加しない
-		if (!a_parent->ApplyParent(l_childLoad.m_self, a_prefabUUIDSet)) { continue; }
+		if (!a_parent->ApplyParent(l_child)) { continue; }
 
 		// 親子関係を構築できたGameObjectだけをSceneへ追加する
-		a_scene.AddGameObject(l_childLoad.m_self);
+		a_scene.AddGameObject(l_child);
 
 		// 子のPrefabUUIDがSetへ入った状態で
 		// 孫以下の親子関係を構築する
-		RecursiveAddChild(l_childLoad.m_self, 
-			             l_childLoad.m_childDeserializeDataList,
-			             a_prefabUUIDSet,
-			             a_scene);
+		RecursiveAddChild(l_child, l_childLoad.m_childDeserializeDataList, a_scene);
 	}
 }

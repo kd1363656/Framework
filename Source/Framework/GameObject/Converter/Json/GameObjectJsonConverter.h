@@ -27,7 +27,7 @@ namespace FWK
 	                                 Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 	                                 Scene&                                                            a_scene) const;
 
-		void DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
+		bool DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
 			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList, 
 			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 			                        GameObject&                                                       a_gameObject,
@@ -46,8 +46,8 @@ namespace FWK
 			                                  std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
 			                                  Scene&                                     a_scene) const;
 
-		void DeserializeSceneComponent(const nlohmann::json& a_rootJson,      Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, GameObject& a_gameObject) const;
-		void DeserializeSceneChildList(const nlohmann::json& a_rootJsonArray, std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,         Scene&      a_scene)      const;
+		bool DeserializeSceneComponent(const nlohmann::json& a_rootJson,      Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, GameObject& a_gameObject) const;
+		bool DeserializeSceneChildList(const nlohmann::json& a_rootJsonArray, std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,         Scene&      a_scene)      const;
 
 		nlohmann::json SerializePrefabComponent        (const GameObject& a_gameObject) const;
 		nlohmann::json SerializePrefabComponentObserver(const GameObject& a_gameObject) const;
@@ -61,10 +61,7 @@ namespace FWK
 			                             std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 			                             Scene&                                                            a_scene) const;
 
-		void RecursiveAddChild(const std::shared_ptr<GameObject>&               a_parent, 
-			                         std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
-			                         std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet, 
-			                         Scene&                                     a_scene) const;
+		void RecursiveAddChild(const std::shared_ptr<GameObject>& a_parent,  std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const;
 
 		static constexpr std::string_view k_prefabUUIDJsonKey             = "PrefabUUID";
 		static constexpr std::string_view k_sceneInstanceNameJsonKey      = "SceneInstanceName";

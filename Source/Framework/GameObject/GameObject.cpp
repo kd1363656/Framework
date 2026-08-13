@@ -40,34 +40,34 @@ void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, std::unorder
 		                        a_prefabUUIDSet,
 		                        a_scene);
 }
-void FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+bool FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
 	                                          std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData, 
 	                                          Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 	                                          std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet, 
 	                                          Scene&                                                            a_scene)
 {
-	if (a_rootJson.is_null()) { return; }
+	if (a_rootJson.is_null()) { return false; }
 
-	m_jsonConverter.DeserializePrefab(weak_from_this(),
-		                              a_rootJson,
-		                              a_childDeserializeData,
-		                              a_parentPrefabUUIDSet,
-		                              a_componentSmartPointerVectorArray,
-		                              a_scene);
+	return m_jsonConverter.DeserializePrefab(weak_from_this(),
+		                                     a_rootJson,
+		                                     a_childDeserializeData,
+		                                     a_parentPrefabUUIDSet,
+		                                     a_componentSmartPointerVectorArray,
+		                                     a_scene);
 }
 
-void FWK::GameObject::DeserializeScene(const nlohmann::json&                                                   a_rootJson,
+bool FWK::GameObject::DeserializeScene(const nlohmann::json&                                                   a_rootJson,
 	                                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
 	                                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 	                                         Scene&                                                            a_scene)
 {
-	if (a_rootJson.is_null()) { return; }
+	if (a_rootJson.is_null()) { return false; }
 
-	m_jsonConverter.DeserializeScene(a_rootJson,
-		                             a_childDeserializeData,
-		                             a_componentSmartPointerVectorArray,
-		                             *this,
-		                             a_scene);
+	return m_jsonConverter.DeserializeScene(a_rootJson,
+		                                    a_childDeserializeData,
+		                                    a_componentSmartPointerVectorArray,
+		                                    *this,
+		                                    a_scene);
 }
 
 void FWK::GameObject::PostDeserialize()
@@ -423,50 +423,6 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 	// TransformComponentへ新しい親GameObjectを適用する。
 	l_childTransformComponent->ApplyParent(l_self);
 
-	return true;
-}
-bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child, std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet)
-{
-	const auto& l_child = a_child.lock();
-
-	if (!l_child ||
-		l_child->GetVALIsDestroyed())
-	{
-		return false;
-	}
-
-	const auto& l_childPrefabUUID             = l_child->GetREFPrefabUUID            ();
-	const auto  l_childPrefabSceneInstanceNUM = l_child->GetVALPrefabSceneInstanceNUM();
-
-	// Deserialize対象の子GameObjectも、
-	// PrefabUUIDとPrefabInstanceNUMを持つ
-	// 有効なPrefabInstanceである必要がある
-	if (l_childPrefabUUID.is_nil() ||
-		l_childPrefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-	{
-		FWK_ADD_LOG("子GameObjectがPrefabInstanceではないため、親子関係を構築できませんでした。");
-
-		return false;
-	}
-
-	// Root空現在位置までの経路上に
-	// 同じPrefabUUIDが存在する場合はPrefab循環となる
-	if (!a_parentPrefabUUIDSet.emplace(l_childPrefabUUID).second)
-	{
-		FWK_ADD_LOG("親階層と同じPrefabUUIDを持つ子GameObjectは追加できません。");
-
-		return false;
-	}
-
-	// GameObject自身の循環確認
-	if (!ApplyParent(a_child))
-	{
-		a_parentPrefabUUIDSet.erase(l_childPrefabUUID);
-
-		return false;
-	}
-
-	// 孫以下の処理終了後にConverter側からeraseする
 	return true;
 }
 
