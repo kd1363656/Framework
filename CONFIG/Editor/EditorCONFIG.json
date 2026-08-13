@@ -9,16 +9,24 @@
     },
     "WindowList": [
         {
-            "Window": "ViewportEditorWindow"
+            "Window": null,
+            "WindowTypeName": "ViewportEditorWindow"
         },
         {
-            "Window": "ContentBrowserEditorWindow"
+            "Window": {
+                "AssetRegistry": {
+                    "AssetFilePathToUUIDMap": []
+                }
+            },
+            "WindowTypeName": "ContentBrowserEditorWindow"
         },
         {
-            "Window": "WorldOutlinerEditorWindow"
+            "Window": null,
+            "WindowTypeName": "WorldOutlinerEditorWindow"
         },
         {
-            "Window": "DetailsEditorWindow"
+            "Window": null,
+            "WindowTypeName": "DetailsEditorWindow"
         }
     ]
 }

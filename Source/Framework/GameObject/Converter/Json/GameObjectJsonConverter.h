@@ -20,7 +20,7 @@ namespace FWK
 			                   std::unordered_set<boost::uuids::uuid>& a_parentPrefabUUIDSet, 
 			                   Scene&                                  a_scene) const;
 
-		void DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene&                                  a_scene) const;
+		bool DeserializePrefab(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Scene& a_scene) const;
 
 		// a_rootJsonがそもそもプレハブのjsonを読み込む前提
 		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson,

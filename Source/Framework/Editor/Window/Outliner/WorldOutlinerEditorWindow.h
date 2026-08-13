@@ -41,7 +41,6 @@ namespace FWK::Editor
 		void RequestAddGameObject();
 
 		static constexpr std::string_view k_editorName                     = "アウトライナー";
-		static constexpr std::string_view k_gameObjectDragDropPayloadLabel = "ゲームオブジェクト";
 		static constexpr std::string_view k_gameObjectRenameInputLabel     = "##GameObjectRenameInput";
 		static constexpr std::string_view k_rootDropAreaLabel              = "##RootDropArea";
 		static constexpr std::string_view k_rootContextMenuLabel           = "##RootContextMenu";

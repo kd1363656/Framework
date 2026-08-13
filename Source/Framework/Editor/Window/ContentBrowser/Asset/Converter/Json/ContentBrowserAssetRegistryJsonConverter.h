@@ -24,8 +24,8 @@ namespace FWK::Converter
 		
 		nlohmann::json SerializeAssetFilePathToUUIDMap(const Editor::ContentBrowserAssetRegistry& a_contentBrowserAssetRegistry) const;
 		
-		std::string_view k_assetFilePathToUUIDMapJsonKey = "AssetFilePathToUUIDMap";
-		std::string_view k_filePathJsonKey               = "FilePath";
-		std::string_view k_uuidJsonKey                   = "UUID";
+		static constexpr std::string_view k_assetFilePathToUUIDMapJsonKey = "AssetFilePathToUUIDMap";
+		static constexpr std::string_view k_filePathJsonKey               = "FilePath";
+		static constexpr std::string_view k_assetUUIDJsonKey              = "AssetUUID";
 	};
 }

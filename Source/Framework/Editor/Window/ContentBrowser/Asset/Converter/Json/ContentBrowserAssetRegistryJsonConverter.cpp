@@ -17,19 +17,19 @@ nlohmann::json FWK::Converter::ContentBrowserAssetRegistryJsonConverter::Seriali
 
 	l_rootJson[k_assetFilePathToUUIDMapJsonKey] = SerializeAssetFilePathToUUIDMap(a_contentBrowserAssetRegistry);
 	
-	return nlohmann::json();
+	return l_rootJson;
 }
 
 void FWK::Converter::ContentBrowserAssetRegistryJsonConverter::DeserializeAssetFilePathToUUIDMap(const nlohmann::json& a_rootJson, Editor::ContentBrowserAssetRegistry& a_contentBrowserAssetRegistry) const
 {
-	if (!a_rootJson.is_null())             { return; }
+	if (a_rootJson.is_null())              { return; }
 	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{
-		if (l_json.is_null()) { continue;; }
+		if (l_json.is_null()) { continue; }
 
-		const auto& l_uuid     = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
+		const auto& l_uuid     = Utility::DeserializeUUID(l_json, k_assetUUIDJsonKey);
 		const auto& l_filePath = l_json.value            (k_filePathJsonKey, std::filesystem::path{});
 
 		// 読み込めないファイルパスがある場合はMapに追加しない
@@ -45,10 +45,10 @@ nlohmann::json FWK::Converter::ContentBrowserAssetRegistryJsonConverter::Seriali
 
 	const auto& l_assetFilePathToUUIDMap = a_contentBrowserAssetRegistry.GetREFAssetFilePathToUUIDMap();
 
-	for (const auto& [l_filePath, l_uuid] : l_assetFilePathToUUIDMap)
+	for (const auto& [l_filePath, l_assetUUID] : l_assetFilePathToUUIDMap)
 	{
 		// UUIDが無効化読み込めるファイルパスでなければシリアライズしない
-		if (l_uuid.is_nil() ||
+		if (l_assetUUID.is_nil() ||
 			!Utility::CanLoadFilePath(l_filePath))
 		{
 			continue; 
@@ -56,8 +56,8 @@ nlohmann::json FWK::Converter::ContentBrowserAssetRegistryJsonConverter::Seriali
 
 		auto l_json = nlohmann::json{};
 
-		l_json[k_filePathJsonKey] = l_filePath;
-		l_json[k_uuidJsonKey]     = l_uuid;
+		l_json[k_filePathJsonKey]  = l_filePath;
+		Utility::UpdateJson(l_json, Utility::SerializeUUID(l_assetUUID, k_assetUUIDJsonKey));
 
 		l_rootJsonArray.emplace_back(l_json);
 	}

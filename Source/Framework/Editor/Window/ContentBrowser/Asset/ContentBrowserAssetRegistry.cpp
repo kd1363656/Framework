@@ -14,10 +14,7 @@ nlohmann::json FWK::Editor::ContentBrowserAssetRegistry::Serialize() const
 
 bool FWK::Editor::ContentBrowserAssetRegistry::Add(const boost::uuids::uuid& a_assetUUID, const std::filesystem::path& a_assetFilePath)
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty() || 
-		                       !std::filesystem::exists(a_assetFilePath),
-		                       "AssetFilePathが空のため、ContentBrowserAssetRegistryへの登録に失敗しました。", 
-		                       false);
+	FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、ContentBrowserAssetRegistryへの登録に失敗しました。",  false);
 
 	// 無効なUUIDなら登録しない
 	if (a_assetUUID.is_nil())
@@ -35,13 +32,20 @@ bool FWK::Editor::ContentBrowserAssetRegistry::Add(const boost::uuids::uuid& a_a
 		return false;
 	}
 
-	m_assetFilePathToUUIDMap.try_emplace(a_assetFilePath, a_assetUUID);
-	m_assetUUIDSet.emplace              (a_assetUUID);
+	if (!m_assetFilePathToUUIDMap.try_emplace(a_assetFilePath, a_assetUUID).second)
+	{
+		FWK_ADD_LOG("ContentBrowserAssetRegistryへの登録に失敗しました。");
+
+		return false;
+	}
+
+
+	m_assetUUIDSet.emplace(a_assetUUID);
 
 	return true;
 }
 
-bool FWK::Editor::ContentBrowserAssetRegistry::Erace(const std::filesystem::path& a_assetFilePath)
+bool FWK::Editor::ContentBrowserAssetRegistry::Erase(const std::filesystem::path& a_assetFilePath)
 {
 	FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、ContentBrowserAssetRegistryから削除できませんでした。", false);
 
@@ -56,13 +60,13 @@ bool FWK::Editor::ContentBrowserAssetRegistry::Erace(const std::filesystem::path
 	return true;
 }
 
-boost::uuids::uuid FWK::Editor::ContentBrowserAssetRegistry::FindPTRAssetUUID(const std::filesystem::path& a_assetFilePath) const
+boost::uuids::uuid FWK::Editor::ContentBrowserAssetRegistry::FindVALAssetUUID(const std::filesystem::path& a_assetFilePath) const
 {
-	if (a_assetFilePath.empty()) { return; }
+	if (a_assetFilePath.empty()) { return {}; }
 
 	const auto& l_itr = m_assetFilePathToUUIDMap.find(a_assetFilePath);
 
-	if (l_itr == m_assetFilePathToUUIDMap.end()) { return; }
+	if (l_itr == m_assetFilePathToUUIDMap.end()) { return {}; }
 
 	return l_itr->second;
 }

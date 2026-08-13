@@ -15,9 +15,9 @@ namespace FWK::Editor
 
 		bool Add(const boost::uuids::uuid& a_assetUUID, const std::filesystem::path& a_assetFilePath);
 
-		bool Erace(const std::filesystem::path& a_assetFilePath);
+		bool Erase(const std::filesystem::path& a_assetFilePath);
 
-		boost::uuids::uuid FindPTRAssetUUID(const std::filesystem::path& a_assetFilePath) const;
+		boost::uuids::uuid FindVALAssetUUID(const std::filesystem::path& a_assetFilePath) const;
 
 		const auto& GetREFAssetFilePathToUUIDMap() const { return m_assetFilePathToUUIDMap; };
 

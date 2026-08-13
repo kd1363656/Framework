@@ -9,7 +9,7 @@ void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_ro
 		return;
 	}
 
-	const auto& l_filePath   = a_rootJson.value(k_filePathJsonKey,   std::string{});
+	const auto& l_filePath   = a_rootJson.value(k_filePathJsonKey,   std::filesystem::path{});
 	const auto& l_prefabName = a_rootJson.value(k_prefabNameJsonKey, std::string{});
 
 	// PrefabSystem側に保存されているFilePathが無効なら
@@ -53,7 +53,7 @@ nlohmann::json FWK::Converter::PrefabJsonConverter::Serialize(Prefab& a_prefab) 
 
 	nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_filePathJsonKey]   = l_filePath.string        ();
+	l_rootJson[k_filePathJsonKey]   = l_filePath;
 	l_rootJson[k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
 
 	return l_rootJson;

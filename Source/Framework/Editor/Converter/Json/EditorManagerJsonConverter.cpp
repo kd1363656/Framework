@@ -54,7 +54,7 @@ void FWK::Converter::EditorManagerJsonConverter::DeserializeWindow(const nlohman
 
 		std::shared_ptr<Editor::EditorWindowBase> l_editorWindow = nullptr;
 		
-		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_windowTypeJsonKey, l_editorWindow);
+		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_windowTypeNameJsonKey, l_editorWindow);
 
 		if (!l_editorWindow) { continue; }
 
@@ -79,7 +79,7 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::SerializeWindow(const
 
 		auto l_json = nlohmann::json{};
 
-		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_editorWindow, k_windowTypeJsonKey));
+		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_editorWindow, k_windowTypeNameJsonKey));
 		l_json[k_windowJsonKey] = l_editorWindow->Serialize();
 
 		l_rootJsonArray.emplace_back(l_json);

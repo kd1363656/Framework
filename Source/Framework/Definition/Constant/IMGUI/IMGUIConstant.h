@@ -8,6 +8,7 @@ namespace FWK::Constant
 
 	inline constexpr std::string_view k_gameObjectString = "GameObject";
 
+	static constexpr std::string_view k_gameObjectDragDropPayloadLabel       = "ゲームオブジェクト";
 	inline constexpr std::string_view k_assetFilePathDragAndDropPayloadLabel = "AssetFilePath";
 
 	inline constexpr std::string_view k_fontAwesomeFolderIcon = "\xEF\x81\xBB";

@@ -253,13 +253,13 @@ bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeDragDrop(const st
 	auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
 	// 現在描画しているGameObjectをDrag元として使用する
-	l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, a_gameObject);
+	l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_gameObjectDragDropPayloadLabel, a_gameObject);
 	
 	std::weak_ptr<GameObject> l_droppedGameObject = {};
 
 	// 現在描画しているGameObject上へ
 	// 別のGameObjectがDropされたが確認する
-	if (!l_imguiDragDropPayloadStorage.DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject)) { return false; }
+	if (!l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject)) { return false; }
 
 	const auto& l_childGameObject = l_droppedGameObject.lock();
 
@@ -576,7 +576,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::UnparentDroppedGameObject()
 	// 直前に描画しとRootDropAreaへ
 	// GameObjectがDropされたか確認する
 	if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-		!l_imguiDragDropPayloadStorage.DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject)) 
+		!l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
 	{
 		return false; 
 	}

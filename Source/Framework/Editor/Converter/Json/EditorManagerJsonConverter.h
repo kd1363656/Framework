@@ -24,9 +24,9 @@ namespace FWK::Converter
 
 		nlohmann::json SerializeWindow(const Editor::EditorManager& a_editorManager) const;
 
-		static constexpr std::string_view k_windowListJsonKey = "WindowList";
-		static constexpr std::string_view k_windowJsonKey     = "Window";
-		static constexpr std::string_view k_windowTypeJsonKey = "WindowType";
+		static constexpr std::string_view k_windowListJsonKey     = "WindowList";
+		static constexpr std::string_view k_windowJsonKey         = "Window";
+		static constexpr std::string_view k_windowTypeNameJsonKey = "WindowTypeName";
 
 		static constexpr std::string_view k_mainMenubarJsonKey = "MainMenubar";
 

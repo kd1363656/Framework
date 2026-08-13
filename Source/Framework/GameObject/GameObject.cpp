@@ -502,8 +502,9 @@ void FWK::GameObject::Unparent(const std::weak_ptr<GameObject>&a_child)
 
 std::string FWK::GameObject::FetchVALGameObjectName() const
 {
-	// FBXをSceneへ置いただけで、
-	// まだPrefab化されていないGAmeObjectはPrefab名だけを表示する
+	// PrefabInstanceではないゲームオブジェクトは
+	// ユーザーがOutlinerのF2リネームで設定した
+	// SceneInstanceNameをそのまま表示名として使用する
 	if (m_prefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
 	{
 		if (!m_sceneInstanceName.empty()) { return m_sceneInstanceName; }
@@ -511,11 +512,23 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 		return std::string{ Constant::k_gameObjectString };
 	}
 
-	FWK_ASSERT_RETURN_VALUE_IF(m_sceneInstanceName.empty(), "PrefabInstanceNUMが有効なのにSceneInstanceNameが空になっています。", std::string{ Constant::k_gameObjectString });
+	FWK_ASSERT_RETURN_VALUE_IF(m_prefabUUID.is_nil(), "PrefabInstanceNUMが有効なのにPrefabUUIDが無効になっています。", std::string{ Constant::k_gameObjectString });
+
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetREFScene();
+	const auto& l_prefabSystem = l_scene.GetREFPrefabSystem();
 	
-	// シーンインスタンス数が無効値でない場合、シーンインスタンスネームがPrefab名なのは確定なので
-	// "GameObject_1"のような描画方式にしてもらう
-	return std::format("{}_{}", m_sceneInstanceName, m_prefabSceneInstanceNUM);
+	const auto* l_prefab = l_prefabSystem.FindPTRPrefab(m_prefabUUID);
+
+	FWK_ASSERT_RETURN_VALUE_IF(!l_prefab, "PrefabUUIDに対応するPrefabがPrefabSystemに存在しません。", std::string{ Constant::k_gameObjectString });
+
+	const auto& l_prefabName = l_prefab->GetREFPrefabName();
+
+	FWK_ASSERT_RETURN_VALUE_IF(l_prefabName.empty(), "PrefabNameが空のためGameObject名を生成できませんでした。", std::string{ Constant::k_gameObjectString });
+
+	// PrefabNameはGameObject側へ複製せず、
+	// PrefabSystemに登録されているPrefabから取得する
+	return std::format("{}_{}", l_prefabName, m_prefabSceneInstanceNUM);
 }
 
 bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<GameObject>& a_gameObject, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet) const
