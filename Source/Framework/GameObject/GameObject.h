@@ -16,7 +16,21 @@ namespace FWK
 		~GameObject() = default;
 
 		void INIT();
-		
+
+		void Deserialize(const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet, Scene& a_scene);
+
+
+		void DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                         std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
+			                         Scene&                                                            a_scene);
+
+		void DeserializeScene(const nlohmann::json&                                                   a_rootJson,
+			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
+			                        Scene&                                                            a_scene);
+
 		void PostDeserialize();
 
 		void EarlyUpdate   () const;
@@ -27,6 +41,9 @@ namespace FWK
 		void Destroy();
 
 		void EditInspector();
+
+		nlohmann::json SerializeScene () const;
+		nlohmann::json SerializePrefab() const;
 
 		void AddComponent   (const std::shared_ptr<ComponentBase>& a_component);
 		void RemoveComponent(const std::weak_ptr<ComponentBase>&   a_component);
@@ -132,7 +149,7 @@ namespace FWK
 		boost::uuids::uuid m_prefabUUID        = {};
 		boost::uuids::uuid m_sceneInstanceUUID = {};
 
-		TypeAlias::PrefabSceneInstanceNUM m_prefabSceneInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
+		TypeAlias::PrefabSceneInstanceNUM m_prefabSceneInstanceNUM = Constant::k_invalidPrefabSceneInstanceNUM;
 
 		std::string m_sceneInstanceName = {};
 

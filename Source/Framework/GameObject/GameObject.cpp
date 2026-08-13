@@ -26,9 +26,48 @@ void FWK::GameObject::INIT()
 	
 	m_sceneInstanceName.clear();
 
-	m_prefabSceneInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
+	m_prefabSceneInstanceNUM = Constant::k_invalidPrefabSceneInstanceNUM;
 
 	m_isDestroyed = false;
+}
+
+void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet, Scene& a_scene)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(weak_from_this(), 
+		                        a_rootJson, 
+		                        a_prefabUUIDSet,
+		                        a_scene);
+}
+void FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
+	                                          std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData, 
+	                                          Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
+	                                          std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet, 
+	                                          Scene&                                                            a_scene)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.DeserializePrefab(weak_from_this(),
+		                              a_rootJson,
+		                              a_childDeserializeData,
+		                              a_parentPrefabUUIDSet,
+		                              a_componentSmartPointerVectorArray,
+		                              a_scene);
+}
+
+void FWK::GameObject::DeserializeScene(const nlohmann::json&                                                   a_rootJson,
+	                                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+	                                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
+	                                         Scene&                                                            a_scene)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.DeserializeScene(a_rootJson,
+		                             a_childDeserializeData,
+		                             a_componentSmartPointerVectorArray,
+		                             *this,
+		                             a_scene);
 }
 
 void FWK::GameObject::PostDeserialize()
@@ -131,6 +170,15 @@ void FWK::GameObject::EditInspector()
 
 		l_compoent->EditInspector();
 	}
+}
+
+nlohmann::json FWK::GameObject::SerializeScene() const
+{
+	return m_jsonConverter.SerializeScene(*this);
+}
+nlohmann::json FWK::GameObject::SerializePrefab() const
+{
+	return m_jsonConverter.SerializePrefab(*this);
 }
 
 void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_component)
@@ -276,10 +324,10 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 
 	// Prefabの親子関係を構築するGameObjectは、
 	// PrefabUUIDとPrefabInstanceNUMの両方を有効な値として持っている必要がある
-	if (l_selfPrefabUUID.is_nil()                                            ||
-		l_childPrefabUUID.is_nil()                                           ||
-		l_selfPrefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM ||
-		l_childPrefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+	if (l_selfPrefabUUID.is_nil()                                                 ||
+		l_childPrefabUUID.is_nil()                                                ||
+		l_selfPrefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM ||
+		l_childPrefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		FWK_ADD_LOG(
 			"PrefabUUIDまたはPrefabInstanceNUMが無効なため、親子関係を構築できませんでした。");
@@ -315,7 +363,7 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 		// PrefabHierarchyを構成するGameObjectは、
 		// PrefabUUIDとPrefabInstanceNUMの両方が有効である必要がある
 		if (l_prefabUUID.is_nil() ||
-			l_prefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+			l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 		{
 			FWK_ADD_LOG("親階層にPrefabInstanceではないGameObjectが存在するため、親子関係を構築できませんでした。");
 
@@ -394,7 +442,7 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child, std:
 	// PrefabUUIDとPrefabInstanceNUMを持つ
 	// 有効なPrefabInstanceである必要がある
 	if (l_childPrefabUUID.is_nil() ||
-		l_childPrefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+		l_childPrefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		FWK_ADD_LOG("子GameObjectがPrefabInstanceではないため、親子関係を構築できませんでした。");
 
@@ -452,7 +500,7 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 	// PrefabInstanceではないゲームオブジェクトは
 	// ユーザーがOutlinerのF2リネームで設定した
 	// SceneInstanceNameをそのまま表示名として使用する
-	if (m_prefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+	if (m_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		if (!m_sceneInstanceName.empty()) { return m_sceneInstanceName; }
 
@@ -494,7 +542,7 @@ bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<G
 	// Prefab情報を持っていないGameObjectは、
 	// PrefabUUIDによる循環確認の対象には含めない
 	if (l_prefabUUID.is_nil() ||
-		l_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+		l_prefabInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		return false;
 	}

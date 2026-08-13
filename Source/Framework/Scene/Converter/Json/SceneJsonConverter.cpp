@@ -58,7 +58,7 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 	    // PrefabInstanceNUMがDeserializeで有効値にならず無効値のままなら
 		// Sceneへ登録しない
 		if (l_gameObject->GetREFSceneInstanceName().empty() ||
-			l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabInstanceNUM)
+			l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
 		{
 			FWK_ADD_LOG("PrefabNameまたはPrefabInstaneNUMが無効のため、GameObjectをSceneへ追加できませんでした。");
 
@@ -92,7 +92,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 		// プレハブインスタンスナンバーが無効値ならシリアライズ処理を行わない
 		if (l_gameObject->GetREFPrefabUUID().is_nil()       ||
 			l_gameObject->GetREFSceneInstanceName().empty() ||
-			l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabInstanceNUM)
+			l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
 		{
 			continue;
 		}

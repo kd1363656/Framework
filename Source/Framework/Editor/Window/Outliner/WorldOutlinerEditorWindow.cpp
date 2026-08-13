@@ -31,9 +31,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 		// PrefabInstanceNUMが発行済みのGameObjectは、
         // PrefabName + InstanceNUMから名前が決まるため
         // Outlinerから直接リネームしない
-		if (!l_selectedGameObject                                                                        ||
-			l_selectedGameObject->GetVALIsDestroyed()                                                    ||
-			l_selectedGameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabInstanceNUM ||
+		if (!l_selectedGameObject                                                                             ||
+			l_selectedGameObject->GetVALIsDestroyed()                                                         ||
+			l_selectedGameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM ||
 			m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount)
 		{
 			CancelGameObjectRename();
@@ -498,7 +498,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestGameObjectRename(const std::
 	// PrefabSceneInstanceの名前は
 	// PrefabName + InstanceNUMから決定されているため
 	// Outlinerから直接リネームしない
-	if (l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabInstanceNUM) 
+	if (l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM) 
 	{
 		return; 
 	}
@@ -523,7 +523,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::ConfirmGameObjectRename()
 
 	if (!l_selectedGameObject                     ||
 		l_selectedGameObject->GetVALIsDestroyed() ||
-		l_selectedGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabInstanceNUM)
+		l_selectedGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		ClearGameObjectRenameState();
 

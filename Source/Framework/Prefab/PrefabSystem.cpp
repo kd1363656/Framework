@@ -27,7 +27,7 @@ void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameOb
 	// PrefabUUIDとPrefabInstanceのNUMの両方を持つGameObjectだけを、
 	// Prefabの代表GameObject候補として扱う
 	if (l_prefabUUID.is_nil() ||
-		l_prefabSceneInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+		l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		return;
 	}
@@ -94,7 +94,7 @@ FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstance
 	{
 		FWK_ADD_LOG("PrefabUUIDが無効のため、PrefabInstanceNUMを発行できませんでした。");
 
-		return Constant::k_invalidPrefabInstanceNUM;
+		return Constant::k_invalidPrefabSceneInstanceNUM;
 	}
 
 	auto l_itr = m_prefabMap.find(a_prefabUUID);
@@ -103,7 +103,7 @@ FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstance
 	{
 		FWK_ADD_LOG("PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを発行できませんでした。", boost::uuids::to_string(a_prefabUUID));
 
-		return Constant::k_invalidPrefabInstanceNUM;
+		return Constant::k_invalidPrefabSceneInstanceNUM;
 	}
 
 	auto& l_prefabInstanceNUMAllocator = l_itr->second.m_prefabInstanceNUMAllocator;
@@ -115,7 +115,7 @@ FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstance
 void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM)
 {
 	if (a_prefabUUID.is_nil() ||
-		a_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)
+		a_prefabInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
 		return;
 	}
