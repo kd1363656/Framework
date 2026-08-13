@@ -33,6 +33,8 @@ namespace FWK
 
 		const Prefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 
+		Prefab* FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID);
+
 		const auto& GetREFPrefabMap() const { return m_prefabMap; }
 
 		auto& GetMutableREFPrefabMap() { return m_prefabMap; }

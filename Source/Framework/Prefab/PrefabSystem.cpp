@@ -145,3 +145,15 @@ const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const boost::uuids::uuid& a_
 
 	return &l_itr->second.m_prefab;
 }
+
+FWK::Prefab* FWK::PrefabSystem::FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID)
+{
+	// NilUUIDからPrefabを検索することはできない
+	if (a_prefabUUID.is_nil()) { return nullptr; }
+
+	auto l_itr = m_prefabMap.find(a_prefabUUID);
+
+	if (l_itr == m_prefabMap.end()) { return nullptr; }
+
+	return &l_itr->second.m_prefab;
+}
