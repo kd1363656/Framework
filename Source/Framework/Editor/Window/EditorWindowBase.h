@@ -9,8 +9,8 @@ namespace FWK::Editor
 				 EditorWindowBase() = default;
 		virtual ~EditorWindowBase() = default;
 
-		virtual void Deserialize    (const nlohmann::json& a_rootJson) { /*必要に応じてオーバーライドしてください*/ };
-		virtual void PostDeserialize()                                 { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Deserialize    (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void PostDeserialize()                      { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual void Draw() = 0;
 

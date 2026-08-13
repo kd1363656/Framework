@@ -704,8 +704,6 @@ void FWK::GameObjectJsonConverter::RecursiveAddChild(const std::shared_ptr<GameO
 
 		if (!l_child) { continue; }
 
-		const auto& l_childPrefabUUID = l_child->GetREFPrefabUUID();
-
 		// 同じPrefab名が親経路に存在する場合や、
 		// GameObjectの親子関係を構築できなかった場合は追加しない
 		if (!a_parent->ApplyParent(l_child)) { continue; }
