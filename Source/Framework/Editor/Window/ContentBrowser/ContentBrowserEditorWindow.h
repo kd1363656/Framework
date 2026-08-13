@@ -9,7 +9,15 @@ namespace FWK::Editor
 		 ContentBrowserEditorWindow()          = default;
 		~ContentBrowserEditorWindow() override = default;
 
+		void Deserialize(const nlohmann::json& a_rootJson) override;
+
 		void Draw() override;
+
+		nlohmann::json Serialize() override;
+
+		const auto& GetREFAssetRegistry() const { return m_assetRegistry; }
+
+		auto& GetMutableREFAssetRegistry() { return m_assetRegistry; }
 
 	private:
 
@@ -22,7 +30,7 @@ namespace FWK::Editor
 
 		void ApplyCurrentDirectoryPath(const std::filesystem::path& a_directoryPath);
 
-		std::string_view FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPaath, bool a_isDirectory) const;
+		std::string_view FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPath, bool a_isDirectory) const;
 
 		inline static const std::filesystem::path k_contentRootDirectoryPath = "Content";
 		
@@ -53,6 +61,10 @@ namespace FWK::Editor
 
 		std::filesystem::path m_currentDirectoryPath = k_contentRootDirectoryPath;
 		std::filesystem::path m_selectedEntryPath    = {};
+
+		ContentBrowserAssetRegistry m_assetRegistry = {};
+
+		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
 		FWK_DEFINE_TYPE_INFO(ContentBrowserEditorWindow, EditorWindowBase)
 	};

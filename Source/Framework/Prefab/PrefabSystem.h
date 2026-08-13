@@ -27,9 +27,9 @@ namespace FWK
 
 		nlohmann::json Serialize();
 
-		TypeAlias::PrefabInstanceNUM AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID);
+		TypeAlias::PrefabSceneInstanceNUM AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID);
 
-		void ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM);
+		void ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
 
 		const Prefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 

@@ -56,7 +56,7 @@ namespace FWK
 		void SetPrefabUUID       (const boost::uuids::uuid& a_set) { m_prefabUUID        = a_set; }
 		void SetSceneInstanceUUID(const boost::uuids::uuid& a_set) { m_sceneInstanceUUID = a_set; }
 
-		void SetPrefabSceneInstanceNUM(const TypeAlias::PrefabInstanceNUM a_set) { m_prefabSceneInstanceNUM = a_set; }
+		void SetPrefabSceneInstanceNUM(const TypeAlias::PrefabSceneInstanceNUM a_set) { m_prefabSceneInstanceNUM = a_set; }
 
 		void SetSceneInstanceName(const std::string& a_set) { m_sceneInstanceName = a_set; }
 
@@ -148,7 +148,7 @@ namespace FWK
 		boost::uuids::uuid m_prefabUUID        = {};
 		boost::uuids::uuid m_sceneInstanceUUID = {};
 
-		TypeAlias::PrefabInstanceNUM m_prefabSceneInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
+		TypeAlias::PrefabSceneInstanceNUM m_prefabSceneInstanceNUM = Constant::k_invalidPrefabInstanceNUM;
 
 		std::string m_sceneInstanceName = {};
 

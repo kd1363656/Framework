@@ -454,7 +454,7 @@
 // プレハブ
 //===============================================================================
 #include "Prefab/Allocator/Converter/Json/PrefabInstanceNUMAllocatorJsonConverter.h"
-#include "Definition/Type/Alias/PrefabIDTypeAlias.h"
+#include "Definition/Type/Alias/PrefabSceneInstanceNUMTypeAlias.h"
 #include "Definition/Constant/Prefab/PrefabInstanceNUMAllocatorConstant.h"
 #include "Prefab/Allocator/PrefabInstanceNUMAllocator.h"
 #include "Prefab/Converter/Json/PrefabJsonConverter.h"
@@ -523,4 +523,7 @@
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
 #include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
+#include "Editor/Window/ContentBrowser/Asset/Converter/Json/ContentBrowserAssetRegistryJsonConverter.h"
+#include "Editor/Window/ContentBrowser/Asset/ContentBrowserAssetRegistry.h"
+#include "Editor/Window/ContentBrowser/Converter/Json/ContentBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"

@@ -18,7 +18,7 @@ nlohmann::json FWK::PrefabInstanceNUMAllocator::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate()
+FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate()
 {
 	// 削除によって空いた番号が存在する場合は、
 	// 新しい番号を作る前に際し利用する
@@ -28,8 +28,8 @@ FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate()
 
 		m_freePrefabInstanceNUMQueue.pop();
 
-		FWK_ASSERT_RETURN_VALUE_IF(l_reusePrefabInstanceNUM >= static_cast<TypeAlias::PrefabInstanceNUM>(m_isAllocatedList.size()), "再利用しようとしたPrefabInstanceNUMが有効範囲外となっている。", Constant::k_invalidPrefabInstanceNUM);
-		FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList[l_reusePrefabInstanceNUM],                                                     "使用中のPrefabInstanceNUMを再利用しようとしています。",         Constant::k_invalidPrefabInstanceNUM);
+		FWK_ASSERT_RETURN_VALUE_IF(l_reusePrefabInstanceNUM >= static_cast<TypeAlias::PrefabSceneInstanceNUM>(m_isAllocatedList.size()), "再利用しようとしたPrefabInstanceNUMが有効範囲外となっている。", Constant::k_invalidPrefabInstanceNUM);
+		FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList[l_reusePrefabInstanceNUM],                                                          "使用中のPrefabInstanceNUMを再利用しようとしています。",         Constant::k_invalidPrefabInstanceNUM);
 
 		m_isAllocatedList[l_reusePrefabInstanceNUM] = true;
 
@@ -39,7 +39,7 @@ FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate()
 	// vectorの要素数が次に新規発行する番号となる
 	FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList.size() >= static_cast<std::size_t>(Constant::k_invalidPrefabInstanceNUM), "PrefabInstanceNUMをこれ以上発行できません。", Constant::k_invalidPrefabInstanceNUM);
 
-	const auto l_newPrefabInstanceNUM = static_cast<TypeAlias::PrefabInstanceNUM>(m_isAllocatedList.size());
+	const auto l_newPrefabInstanceNUM = static_cast<TypeAlias::PrefabSceneInstanceNUM>(m_isAllocatedList.size());
 
 	//　新しい番号尾使用ちゅう状態として追加する
 	m_isAllocatedList.emplace_back(true);
@@ -47,10 +47,10 @@ FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate()
 	return l_newPrefabInstanceNUM;
 }
 
-void FWK::PrefabInstanceNUMAllocator::Release(const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM)
+void FWK::PrefabInstanceNUMAllocator::Release(const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM)
 {
-	FWK_ASSERT_RETURN_IF(a_prefabInstanceNUM >= static_cast<TypeAlias::PrefabInstanceNUM>(m_isAllocatedList.size()), "解放しようとしたPrefabInstanceNUMが有効範囲外となっています。");
-	FWK_ASSERT_RETURN_IF(!m_isAllocatedList[a_prefabInstanceNUM],                                                    "未使用のPrefabInstanceNUMを二重に解放しようとしています。");
+	FWK_ASSERT_RETURN_IF(a_prefabInstanceNUM >= static_cast<TypeAlias::PrefabSceneInstanceNUM>(m_isAllocatedList.size()), "解放しようとしたPrefabInstanceNUMが有効範囲外となっています。");
+	FWK_ASSERT_RETURN_IF(!m_isAllocatedList[a_prefabInstanceNUM],                                                         "未使用のPrefabInstanceNUMを二重に解放しようとしています。");
 
 	// 削除されたPrefabインスタンスの名前を未使用状態へ戻す
 	m_isAllocatedList[a_prefabInstanceNUM] = false;
@@ -70,6 +70,6 @@ void FWK::PrefabInstanceNUMAllocator::RebuildFreePrefabIDQueue()
 		if (m_isAllocatedList[l_i]) { continue; }
 
 		// 現在のfor分のインデックスを使用可能IDとして保存
-		m_freePrefabInstanceNUMQueue.push(static_cast<TypeAlias::PrefabInstanceNUM>(l_i));
+		m_freePrefabInstanceNUMQueue.push(static_cast<TypeAlias::PrefabSceneInstanceNUM>(l_i));
 	}
 }

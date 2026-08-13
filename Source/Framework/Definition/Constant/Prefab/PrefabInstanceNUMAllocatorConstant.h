@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-	inline constexpr TypeAlias::PrefabInstanceNUM k_invalidPrefabInstanceNUM = std::numeric_limits<TypeAlias::PrefabInstanceNUM>::max();
+	inline constexpr TypeAlias::PrefabSceneInstanceNUM k_invalidPrefabInstanceNUM = std::numeric_limits<TypeAlias::PrefabSceneInstanceNUM>::max();
 }

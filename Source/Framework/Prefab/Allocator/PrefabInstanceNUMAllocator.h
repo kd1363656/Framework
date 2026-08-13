@@ -13,9 +13,9 @@ namespace FWK
 		
 		nlohmann::json Serialize() const;
 
-		TypeAlias::PrefabInstanceNUM Allocate();
+		TypeAlias::PrefabSceneInstanceNUM Allocate();
 
-		void Release(const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM);
+		void Release(const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
 
 		auto& GetMutableREFIsAllocatedList() { return m_isAllocatedList; }
 
@@ -27,7 +27,7 @@ namespace FWK
 
 		std::vector<bool> m_isAllocatedList = {};
 
-		std::queue<TypeAlias::PrefabInstanceNUM> m_freePrefabInstanceNUMQueue = {};
+		std::queue<TypeAlias::PrefabSceneInstanceNUM> m_freePrefabInstanceNUMQueue = {};
 
 		Converter::PrefabInstanceNUMAllocatorJsonConverter m_jsonConverter = {};
 	};

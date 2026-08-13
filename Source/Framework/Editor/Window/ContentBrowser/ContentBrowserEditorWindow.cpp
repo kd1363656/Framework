@@ -1,5 +1,12 @@
 ﻿#include "ContentBrowserEditorWindow.h"
 
+void FWK::Editor::ContentBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Editor::ContentBrowserEditorWindow::Draw()
 {
 	if (!ImGui::Begin(k_editorName.data()))
@@ -28,6 +35,11 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 
 	ImGui::EndChild();
 	ImGui::End     ();
+}
+
+nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
+{
+	return m_jsonConverter.Serialize(*this);;
 }
 
 void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTree()
@@ -397,11 +409,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentDirectoryPath(const st
 	m_currentDirectoryPath = a_directoryPath.lexically_normal();
 }
 
-std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPaath, bool a_isDirectory) const
+std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPath, bool a_isDirectory) const
 {
 	if (a_isDirectory) { return Constant::k_fontAwesomeFolderIcon; }
 
-	const auto& l_extension = a_entryPaath.extension();
+	const auto& l_extension = a_entryPath.extension();
 
 	if (l_extension == Constant::k_lowerFBXExtension) { return Constant::k_fontAwesomeCubeIcon; }
 	if (l_extension == Constant::k_lowerPNGExtension) { return Constant::k_fontAwesomeImageIcon; }

@@ -88,7 +88,7 @@ nlohmann::json FWK::PrefabSystem::Serialize()
 	return m_jsonConverter.Serialize(*this);
 }
 
-FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabSystem::AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID)
+FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID)
 {
 	if (a_prefabUUID.is_nil())
 	{
@@ -112,7 +112,7 @@ FWK::TypeAlias::PrefabInstanceNUM FWK::PrefabSystem::AllocatePrefabInstanceNUM(c
 	return l_prefabInstanceNUMAllocator.Allocate();
 }
 
-void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabInstanceNUM a_prefabInstanceNUM)
+void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM)
 {
 	if (a_prefabUUID.is_nil() ||
 		a_prefabInstanceNUM == Constant::k_invalidPrefabInstanceNUM)

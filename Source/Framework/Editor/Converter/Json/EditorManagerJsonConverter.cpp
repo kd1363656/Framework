@@ -50,11 +50,19 @@ void FWK::Converter::EditorManagerJsonConverter::DeserializeWindow(const nlohman
 	// jsonファイルに保存されていたエディターを復元
 	for (const auto& l_json : a_rootJson)
 	{
+		if (l_json.is_null()) { continue; }
+
 		std::shared_ptr<Editor::EditorWindowBase> l_editorWindow = nullptr;
 		
-		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_windowJsonKey, l_editorWindow);
+		Utility::DeserializeInstanceType<TypeAlias::EditorWindowSharedFactory>(l_json, k_windowTypeJsonKey, l_editorWindow);
 
 		if (!l_editorWindow) { continue; }
+
+		if (const auto& l_windowJson = l_json.value(k_windowJsonKey, nlohmann::json{});
+			!l_windowJson.is_null())
+		{
+			l_editorWindow->Deserialize(l_windowJson);
+		}
 
 		a_editorManager.AddEditorWindow(l_editorWindow);
 	}
@@ -69,7 +77,12 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::SerializeWindow(const
 	{
 		if (!l_editorWindow) { continue; }
 
-		l_rootJsonArray.emplace_back(Utility::SerializeInstanceType(l_editorWindow, k_windowJsonKey));
+		auto l_json = nlohmann::json{};
+
+		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_editorWindow, k_windowTypeJsonKey));
+		l_json[k_windowJsonKey] = l_editorWindow->Serialize();
+
+		l_rootJsonArray.emplace_back(l_json);
 	}
 
 	return l_rootJsonArray;

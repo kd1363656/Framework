@@ -1228,6 +1228,21 @@
     <Filter Include="CONFIG\Physics">
       <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Asset">
+      <UniqueIdentifier>{6028bfc0-b87f-4971-95fe-c43f9ae5cede}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter">
+      <UniqueIdentifier>{38674f05-c28d-434e-9d72-e97e7b774c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json">
+      <UniqueIdentifier>{51ad67ec-fc07-48ca-bc91-ebbb103cb592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Converter">
+      <UniqueIdentifier>{9eba691b-1c51-43a7-b598-b8303d0eb818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json">
+      <UniqueIdentifier>{af7d7dae-4fbb-46bb-981a-eb303238b43e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2337,7 +2352,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabIDTypeAlias.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabSceneInstanceNUMTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h">
@@ -2378,6 +2393,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
       <Filter>Source\Framework\Utility\UUID</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserAssetRegistry.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserAssetRegistryJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2959,6 +2983,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
       <Filter>Source\Framework\Utility\UUID</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserAssetRegistry.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserAssetRegistryJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
