@@ -143,7 +143,7 @@ namespace FWK
 
 		Observer<Enum::ComponentEvent> m_componentEventObserver = {};
 
-		GameObjectJsonConverter m_jsonConverter = {};
+		Converter::GameObjectJsonConverter m_jsonConverter = {};
 
 		boost::uuids::uuid m_prefabUUID        = {};
 		boost::uuids::uuid m_sceneInstanceUUID = {};

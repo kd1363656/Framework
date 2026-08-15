@@ -1243,6 +1243,15 @@
     <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json">
       <UniqueIdentifier>{af7d7dae-4fbb-46bb-981a-eb303238b43e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Converter\Json\Prefab">
+      <UniqueIdentifier>{1bd77e02-e4b3-4423-9e18-df73d83da387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Converter\Json\Scene">
+      <UniqueIdentifier>{ce1521d5-0074-4287-af70-f72c2faff802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\GameObject">
+      <UniqueIdentifier>{d9abe8ad-05b0-41bc-9af1-7fd47978126d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2403,6 +2412,15 @@
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Converter\Json\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -2992,6 +3010,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Converter\Json\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

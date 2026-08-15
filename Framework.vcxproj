@@ -361,6 +361,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h" />
@@ -490,6 +491,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h" />
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h" />
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
@@ -759,6 +762,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp" />
