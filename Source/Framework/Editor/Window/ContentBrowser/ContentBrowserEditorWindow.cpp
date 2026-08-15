@@ -226,6 +226,15 @@ bool FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const s
 	return true;
 }
 
+bool FWK::Editor::ContentBrowserEditorWindow::CreateFolder(const std::filesystem::path& a_parentDirectoryPath)
+{
+	return false;
+}
+bool FWK::Editor::ContentBrowserEditorWindow::DeleteFolder(const std::filesystem::path& a_folderPath)
+{
+	return false;
+}
+
 void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTree()
 {
 	std::error_code l_errorCode = {};

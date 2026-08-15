@@ -22,6 +22,8 @@ namespace FWK::Editor
 	private:
 
 		bool CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath);
+		bool CreateFolder              (const std::filesystem::path&     a_parentFolderPath);
+		bool DeleteFolder              (const std::filesystem::path&     a_folderPath);
 
 		void DrawDirectoryTree                 ();
 		void DrawDirectoryTreeNode             (const std::filesystem::path& a_directoryPath);
@@ -61,6 +63,7 @@ namespace FWK::Editor
 
 		static constexpr std::uint32_t k_minDirectoryEntryColumnCount     = 1U;
 		static constexpr std::uint32_t k_initialDirectoryEntryColumnCount = 0U;
+		static constexpr std::uint32_t k_firstFolderNameIndex             = 1U;
 
 		std::filesystem::path m_currentDirectoryPath = k_contentRootDirectoryPath;
 		std::filesystem::path m_selectedEntryPath    = {};
