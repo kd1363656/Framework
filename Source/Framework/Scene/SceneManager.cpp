@@ -14,26 +14,34 @@ void FWK::SceneManager::LoadScene(const std::string_view& a_sceneFilePath)
 	m_jsonConverter.Deserialize(l_json, *this);
 
 	// シーンをロードしてデシリアライズした後の処理
-	m_scene.PostDeserialize();
+	m_scene->PostDeserialize();
 }
 
 void FWK::SceneManager::EarlyUpdate()
 {
 	SceneShiftIfNeeded();
 
-	m_scene.EarlyUpdate();
+	if (!m_scene) { return; }
+
+	m_scene->EarlyUpdate();
 }
 void FWK::SceneManager::Update()
 {
+	if (!m_scene) { return; }
+
 	m_scene.Update ();
 }
 void FWK::SceneManager::LateUpdate() const
 {
-	m_scene.LateUpdate();
+	if (!m_scene) { return; }
+
+	m_scene->LateUpdate();
 }
 void FWK::SceneManager::PostLateUpdate()
 {
-	m_scene.PostLateUpdate();
+	if (!m_scene) { return; }
+
+	m_scene->PostLateUpdate();
 }
 
 void FWK::SceneManager::SaveScene()
@@ -70,8 +78,9 @@ void FWK::SceneManager::INIT()
 {
 	m_sceneShiftMap.clear();
 
-	m_scene.INIT();
-
+	// 現在保持しているシーンをリセットして新しいシーンを作成
+	m_scene = std::make_shared<Scene>();
+	
 	m_nextSceneName.clear       ();
 	m_currentSceneFilePath.clear();
 }

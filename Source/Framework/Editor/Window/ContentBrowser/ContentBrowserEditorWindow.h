@@ -30,7 +30,7 @@ namespace FWK::Editor
 		void DrawCurrentFolderContextMenu      ();
 		void DrawFolderEntryContextMenu        (const std::filesystem::path& a_folderPath);
 		
-		void RequestFolderCreate();
+		void RequestFolderCreate(const std::filesystem::path& a_parentFolderPath);
 
 		void ConfirmFolderCreate();
 

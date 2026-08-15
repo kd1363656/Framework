@@ -384,10 +384,16 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget
 	if (!l_dragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_gameObject)) { return; }
 
 	// DropされたフォルダをPrefabの保存先としてPrefab化する
-	m_fileSystem.CreatePrefabFromGameObject(l_gameObject, 
-		                                    a_directoryPath, 
-		                                    m_assetRegistry,
-		                                    m_selectedEntryPath);
+	const auto& l_prefabFilePath = m_fileSystem.CreatePrefabFromGameObject(l_gameObject, a_directoryPath, m_assetRegistry);
+
+	// 新しく生成されたPrefabをContentBrowser上でも選択対象にしておく
+	if (std::filesystem::exists(l_prefabFilePath))
+	{
+		m_selectedEntryPath = l_prefabFilePath;
+	}
+}
+void FWK::Editor::ContentBrowserEditorWindow::DrawFolderCreateEntry()
+{
 }
 void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentFolderContextMenu()
 {
@@ -398,7 +404,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntryContextMenu(const s
 
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate()
+void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate(const std::filesystem::path& a_parentFolderPath)
 {
 
 }

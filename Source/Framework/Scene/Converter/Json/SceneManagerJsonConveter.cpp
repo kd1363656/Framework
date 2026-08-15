@@ -15,9 +15,11 @@ void FWK::Converter::SceneManagerJsonConverter::Deserialize (const nlohmann::jso
 	if (const auto& l_json = a_rootJson.value(k_sceneJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		auto& l_scene = a_sceneManager.GetMutableREFScene();
+		const auto& l_scene = a_sceneManager.GetVALScene().lock();
 
-		l_scene.Deserialize(l_json);
+		if (!l_scene) { return; }
+		
+		l_scene->Deserialize(l_json);
 	}
 }
 
@@ -25,13 +27,15 @@ nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(SceneManager
 {
 	nlohmann::json l_rootJson = {};
 
-	auto& l_scene = a_sceneManager.GetMutableREFScene();
+	const auto& l_scene = a_sceneManager.GetVALScene().lock();
+
+	if (!l_scene) { return {}; }
 
 	// シーン遷移マップのシリアライズ
 	l_rootJson[k_sceneShiftMapJsonKey] = SerializeSceneShiftMap(a_sceneManager);
 
 	// シーンのシリアライズ
-	l_rootJson[k_sceneJsonKey] = l_scene.Serialize();
+	l_rootJson[k_sceneJsonKey] = l_scene->Serialize();
 
 	return l_rootJson;
 }

@@ -95,11 +95,13 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectSelection::SelectRangeGameO
 	Enum::GameObjectRangeSelectionState l_rangeSelectionState = Enum::GameObjectRangeSelectionState::BeforeRange;
 
 	const auto& l_sceneManager = SceneManager::GetInstance ();
-	const auto& l_scene        = l_sceneManager.GetREFScene();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+	if (!l_scene) { return; }
 
 	// Outlinerと同じ順番で、
 	// RootGameObjectから再帰走査する
-	for (const auto& l_rootGameObject : l_scene.GetREFGameObjectList())
+	for (const auto& l_rootGameObject : l_scene->GetREFGameObjectList())
 	{
 		if (!l_rootGameObject ||
 			l_rootGameObject->GetVALIsDestroyed())

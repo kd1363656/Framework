@@ -3,8 +3,7 @@
 void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 {
 	const auto& l_editorManager = EditorManager::GetInstance();
-	const auto& l_scene         = SceneManager::GetInstance ().GetMutableREFScene();
-
+	
 	// Outliner用ImGuiウィンドウを開始
 	if (!ImGui::Begin(k_editorName.data()))
 	{
@@ -17,6 +16,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 
 		return;
 	}
+
+	const auto& l_scene = SceneManager::GetInstance ().GetVALScene().lock();
+
+	if (!l_scene) { return; }
 
 	// ViewportなどのOutliner以外からのEditorManagerの選択状態が変更された
 	// EditorManagerの選択状態をOutliner側へ同期する
@@ -51,7 +54,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 
 	// SceneのGameObject所有リストを
 	// Outlinerの描画元としてそのまま使用する
-	for (const auto& l_gameObject : l_scene.GetREFGameObjectList())
+	for (const auto& l_gameObject : l_scene->GetREFGameObjectList())
 	{
 		if (!l_gameObject ||
 			l_gameObject->GetVALIsDestroyed())
@@ -466,9 +469,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyReque
 {
 	if (!m_isSelectedGameObjectDestroyRequested) { return; }
 
-	const auto& l_scene = SceneManager::GetInstance().GetREFScene();
 
-	for (const auto& l_gameObject : l_scene.GetREFGameObjectList())
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+	if (!l_scene) { return; }
+
+	for (const auto& l_gameObject : l_scene->GetREFGameObjectList())
 	{
 		if (!l_gameObject ||
 			 l_gameObject->GetVALIsDestroyed())
@@ -611,8 +618,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject()
 	l_gameObject->INIT           ();
 	l_gameObject->PostDeserialize();
 
-	auto& l_sceneManager = SceneManager::GetInstance        ();
-	auto& l_scene        = l_sceneManager.GetMutableREFScene();
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+	if (!l_scene) { return; }
 
 	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
 
@@ -623,7 +632,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject()
 
 	// Outlinerから作成できるGameObjectはRootのみなので
 	// ApplyParent(9などは行わず、そのままSceneへ変化する
-	l_scene.AddGameObject(l_gameObject);
+	l_scene->AddGameObject(l_gameObject);
 
 	// 作成したGameObjectをOutlinerの単一選択にする
 	m_gameObjectSelection.SelectSingleGameObject(l_gameObject);

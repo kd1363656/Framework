@@ -30,9 +30,7 @@ namespace FWK
 
 		const auto& GetREFSceneShiftMap() const { return m_sceneShiftMap; }
 
-		const auto& GetREFScene() const { return m_scene; }
-
-		auto& GetMutableREFScene() { return m_scene; }
+		std::weak_ptr<Scene> GetVALScene() const { return m_scene; }
 
 	private:
 
@@ -44,7 +42,7 @@ namespace FWK
 
 		SceneShiftMap m_sceneShiftMap = {};
 
-		Scene m_scene = {};
+		std::shared_ptr<Scene> m_scene = nullptr;
 
 		Converter::SceneManagerJsonConverter m_jsonConverter = {};
 

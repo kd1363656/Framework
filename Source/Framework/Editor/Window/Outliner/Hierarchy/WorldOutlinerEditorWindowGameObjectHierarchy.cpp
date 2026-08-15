@@ -63,7 +63,10 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 		return;
 	}
 
-	auto& l_scene = SceneManager::GetInstance().GetMutableREFScene();
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+	if (l_scene) { return; }
 
 	const auto& l_childGameObject = m_gameObjectNodeHierarchyChangeRequest.m_childGameObject.lock();
 
@@ -92,7 +95,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 			// 実際の親子関係を構築する
 			if (l_parentGameObject->ApplyParent(m_gameObjectNodeHierarchyChangeRequest.m_childGameObject))
 			{
-				l_scene.SetIsGameObjectExecutionLevelListDirty(true);
+				l_scene->SetIsGameObjectExecutionLevelListDirty(true);
 			}
 		}
 		break;
@@ -122,7 +125,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 			// Sceneの実行階層Listを再構築する
 			if (l_childGameObject->GetREFParent().expired())
 			{
-				l_scene.SetIsGameObjectExecutionLevelListDirty(true);
+				l_scene->SetIsGameObjectExecutionLevelListDirty(true);
 			}
 		}
 		break;

@@ -24,8 +24,6 @@ namespace FWK
 
 		void SetFilePath(const std::filesystem::path& a_set) { m_filePath = a_set; }
 
-		void SetPrefabType(const Enum::PrefabType a_set) { m_prefabType = a_set; }
-
 		void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
 
 		const auto& GetREFGameObject() const { return m_gameObject; }
@@ -35,8 +33,6 @@ namespace FWK
 		const auto& GetREFFilePath() const { return m_filePath; }
 
 		const auto& GetREFPrefabName() const { return m_prefabName; }
-
-		auto GetVALPrefabType() const { return m_prefabType; }
 
 	private:
 
@@ -49,7 +45,5 @@ namespace FWK
 		std::filesystem::path m_filePath = {};
 
 		std::string m_prefabName = {};
-
-		Enum::PrefabType m_prefabType = Enum::PrefabType::GameObject;
 	};
 }

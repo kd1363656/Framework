@@ -407,7 +407,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\TextureLoadColorSpaceEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Observer\ObserverEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsLayerEnum.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\Prefab\PrefabEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\TypeTrait\TypeTraitPTREnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowStyleEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Assert\AssertReturnMacros.h" />

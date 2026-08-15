@@ -1,6 +1,6 @@
 ﻿#include "ContentBrowserEditorWindowFileSystem.h"
 
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateVALFolder(const std::filesystem::path& a_parentFolderPath, const std::string& a_folderName) const
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateFolder(const std::filesystem::path& a_parentFolderPath, const std::string& a_folderName) const
 {
 	if (a_folderName.empty())
 	{
@@ -63,10 +63,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateV
 	
 	return l_newFolderPath;
 }
-bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>&               a_gameObject,
-	                                                                               const std::filesystem::path&                   a_parentFolderPath,
-	                                                                                     ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, 
-	                                                                                     std::filesystem::path&                   a_selectedEntryPath) const
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_parentFolderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
 {
 	const auto& l_gameObject = a_gameObject.lock();
 
@@ -75,7 +72,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("Prefab化するGameObjectが無効のため、Prefabを作成できませんでした。");
 
-		return false;
+		return {};
 	}
 
 	// 保存先フォルダ確認
@@ -86,7 +83,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("Prefab保存先フォルダが無効のため、Prefabを作成できませんでした。\nFolderPath : {}", a_parentFolderPath.string());
 
-		return false;
+		return {};
 	}
 
 	// Prefab化されていないことを確認
@@ -95,7 +92,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("すでにPrefabInstanceとなっているGameObjectは新規Prefab化できません。");
 
-		return false;
+		return {};
 	}
 
 	// Outlinderでf2リネームされたSceneInstanceNameをそのままPrefabNameとして使用する
@@ -105,7 +102,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("SceneInstanceNameが空のため、PrefabNameを決定できませんでした。");
 
-		return false;
+		return {};
 	}
 
 	std::filesystem::path l_prefabFilePath = a_parentFolderPath / l_prefabName;
@@ -119,14 +116,14 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("同名Prefabファイルが既に存在するため、新しいPrefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
 
-		return false;
+		return {};
 	}
 
 	if (l_errorCode)
 	{
 		FWK_ADD_LOG("PrefabFilePathを確認できなかったため、Prefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
 
-		return false;
+		return {};
 	}
 
 	// Registry上でも同じfilePathが使用済みなら作成しない
@@ -134,7 +131,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
 
-		return false;
+		return {};
 	}
 
 	// PrefabUUIDの生成
@@ -145,25 +142,28 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 	{
 		FWK_ADD_LOG("PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
 
-		return false;
+		return {};
 	}
 
-	auto& l_scene        = SceneManager::GetInstance        ().GetMutableREFScene();
-	auto& l_prefabSystem = l_scene.GetMutableREFPrefabSystem();
+	const auto& l_sceneManager = SceneManager::GetInstance         ();
+	const auto& l_scene        = l_sceneManager.GetVALScene        ().lock();
+	      auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+
+	if (l_scene) { return {}; }
 
 	// PrefabSystem側でもUUIDが使用済みなら登録しない
 	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))
 	{
 		FWK_ADD_LOG("生成したPrefabUUIDがPrefabSystemですでに使用されています。");
 
-		return false;
+		return {};
 	}
 
 	if (!a_assetRegistry.Add(l_prefabUUID, l_prefabFilePath))
 	{
 		FWK_ADD_LOG("ContentBrowserAssetRegistryへPrefabを登録できませんでした。");
 
-		return false;
+		return {};
 	}
 
 	Struct::PrefabData l_prefabData = {};
@@ -187,7 +187,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 
 		FWK_ADD_LOG("PrefabSystemへのPrefab登録に失敗しました。");
 
-		return false;
+		return {};
 	}
 
 	const auto l_prefabSceneInstanceNUM = l_prefabSystem.AllocatePrefabInstanceNUM(l_prefabUUID);
@@ -200,7 +200,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 
 		FWK_ADD_LOG("PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
 
-		return false;
+		return {};
 	}
 
 	l_gameObject->SetPrefabUUID            (l_prefabUUID);
@@ -229,11 +229,8 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 
 		FWK_ADD_LOG("Prefabファイルの保存に失敗したため、Prefab作成を取り消しました。");
 
-		return false;
+		return {};
 	}
-
-	// 新しく生成されたPrefabをContentBrowser上でも選択対象にしておく
-	a_selectedEntryPath = l_prefabFilePath;
 
 	FWK_ADD_LOG("Prefabを作成しました。\nPrefabName : {}\nFilePath : {}\nPrefabUUID : {}\nPrefabInstanceNUM : {}",
 		        l_prefabName,
@@ -241,7 +238,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObje
 		        boost::uuids::to_string(l_prefabUUID),
 		        l_prefabSceneInstanceNUM);
 
-	return true;
+	return l_prefabFilePath;
 }
 
 bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
@@ -367,9 +364,11 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 	}
 
 	// シーンにある現在削除したプレハブのゲームオブジェクトをすべて削除する
-	      auto& l_sceneManager   = SceneManager::GetInstance        ();
-	      auto& l_scene          = l_sceneManager.GetMutableREFScene();
-	const auto& l_gameObjectList = l_scene.GetREFGameObjectList     ();
+	const auto& l_sceneManager   = SceneManager::GetInstance        ();
+	const auto& l_scene          = l_sceneManager.GetVALScene().lock();
+	const auto& l_gameObjectList = l_scene->GetREFGameObjectList    ();
+
+	if (!l_scene) { return false; }
 
 	for (const auto& l_gameObject : l_gameObjectList)
 	{
@@ -389,7 +388,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 		l_gameObject->Destroy();
 	}
 
-	l_scene.GetMutableREFPrefabSystem().RemovePrefab(l_prefabUUID);
+	l_scene->GetMutableREFPrefabSystem().RemovePrefab(l_prefabUUID);
 
 	FWK_ADD_LOG("Prefabを削除しました。\nFilePath : {}\nPrefabUUID : {}", a_prefabFilePath.string(), boost::uuids::to_string(l_prefabUUID));
 
