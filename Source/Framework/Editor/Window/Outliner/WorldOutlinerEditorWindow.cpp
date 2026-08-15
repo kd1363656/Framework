@@ -19,7 +19,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 
 	const auto& l_scene = SceneManager::GetInstance ().GetVALScene().lock();
 
-	if (!l_scene) { return; }
+	if (!l_scene) 
+	{
+		ImGui::End();
+
+		return; 
+	}
 
 	// ViewportなどのOutliner以外からのEditorManagerの選択状態が変更された
 	// EditorManagerの選択状態をOutliner側へ同期する
@@ -51,6 +56,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	{
 		RequestGameObjectRename(l_editorManager.GetREFSelectedGameObject());
 	}
+
+	// Deleteキーによる選択中GameObjectの削除要求を確認
+	ApplySelectedGameObjectDestroyShortcut();
 
 	// SceneのGameObject所有リストを
 	// Outlinerの描画元としてそのまま使用する
@@ -235,7 +243,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeContextMenu(const
 		m_gameObjectSelection.SelectSingleGameObject(a_gameObject);
 	}
 
-	if (ImGui::MenuItem(k_destroyGameObjectMenuItemName.data()))
+	if (ImGui::MenuItem(k_destroyGameObjectMenuItemText.data(),
+		                k_destroyGameObjectMenuItemShortcutText.data()))
 	{
 		// 実際のDestroy()はNode病が終了後に行う
 		m_isSelectedGameObjectDestroyRequested = true;
@@ -388,7 +397,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 			ConfirmGameObjectRename();
 		}
 
-		if (ImGui::MenuItem(k_addRootGameObjectMenuItemName.data()))
+		if (ImGui::MenuItem(k_addRootGameObjectMenuItemText.data()))
 		{
 			RequestAddGameObject();
 		}
@@ -465,15 +474,52 @@ void FWK::Editor::WorldOutlinerEditorWindow::ClearGameObjectRenameState()
 	m_isGameObjectRenameInputFocusRequested = false;
 }
 
+void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyShortcut()
+{
+	// 既に削除要求が出ているウ場合は
+	// 同じFrame内で重複して要求しない
+	if (m_isSelectedGameObjectDestroyRequested) { return; }
+
+	// Rename中のDeleteキーはGameObject削除ではなく
+	// InputText内の文字削除として吸わせる
+	if (m_isGameObjectRenameActive) { return; }
+
+	// OutlinerまたはOutliner配下のChildWindowにFocusがある場合だけ
+	// Deleteショートカットを有効にする
+	if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)) { return; }
+
+	// 今後Outlinerに検索欄などのInputTextを追加した場合も、
+	// Text入力中のDeleteキーをGameObject削除として扱わない
+	if (ImGui::GetIO().WantTextInput) { return; }
+
+	if (!ImGui::IsKeyPressed(ImGuiKey_Delete, false)) { return; }
+
+	// 選択中GameObjectが存在しないなら何もしない
+	if (m_gameObjectSelection.FetchVALSelectedGameObjectCount() == k_emptySelectionCount) { return; }
+
+	// ここではDestro()しない
+	// OutlinerのScene/GameObject走査が全て終了してから
+	// ApplySelectedGameObjectDestroyRequest()で実際に削除要求を出す
+	m_isSelectedGameObjectDestroyRequested = true;
+}
 void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyRequest()
 {
 	if (!m_isSelectedGameObjectDestroyRequested) { return; }
 
+	// このFrameの要求はここで消費する
+	m_isSelectedGameObjectDestroyRequested = false;
 
 	const auto& l_sceneManager = SceneManager::GetInstance ();
 	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
-	if (!l_scene) { return; }
+	if (!l_scene) 
+	{
+		// ActiveなSceneがない状態では
+		// GameObject選択自体も有効状態としてあ扱わない
+		m_gameObjectSelection.ClearSelectedGameObjects();
+
+		return; 
+	}
 
 	for (const auto& l_gameObject : l_scene->GetREFGameObjectList())
 	{
@@ -489,7 +535,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyReque
 		l_gameObject->Destroy();
 	}
 
-	m_isSelectedGameObjectDestroyRequested = false;
+	// Destroy要求を出したGameObjectを
+	// EditorManagerやOutlinerの選択肢として残さない
+	m_gameObjectSelection.ClearSelectedGameObjects();
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::RequestGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject)

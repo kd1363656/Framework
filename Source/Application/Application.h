@@ -34,7 +34,7 @@ private:
 
 	void UpdateWindowTitleBar() const;
 
-	static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Test/TestScene.json";
+	static constexpr std::string_view k_firstLoadSceneFilepath = "Content/Data/Scene/Test/TestScene.json";
 
 	const std::wstring k_windowClassName = L"Window";
 	const std::string  k_titleName       = "MRI_FRAMEWORK";

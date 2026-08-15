@@ -42,7 +42,6 @@ void Application::Execute()
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
 
-
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
 

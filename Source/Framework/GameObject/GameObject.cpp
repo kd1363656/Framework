@@ -466,8 +466,11 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 	FWK_ASSERT_RETURN_VALUE_IF(m_prefabUUID.is_nil(), "PrefabInstanceNUMが有効なのにPrefabUUIDが無効になっています。", std::string{ Constant::k_gameObjectString });
 
 	const auto& l_sceneManager = SceneManager::GetInstance ();
-	const auto& l_scene        = l_sceneManager.GetREFScene();
-	const auto& l_prefabSystem = l_scene.GetREFPrefabSystem();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+	if (!l_scene) { return std::string{ Constant::k_gameObjectString.data()}; }
+
+	const auto& l_prefabSystem = l_scene->GetREFPrefabSystem();
 	
 	const auto* l_prefab = l_prefabSystem.FindPTRPrefab(m_prefabUUID);
 

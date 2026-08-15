@@ -421,6 +421,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
 {
 }
 
+void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateShortCut()
+{
+	
+}
+
 void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
 {
 	// FileをCurrentDirectoryとして設定することは許可しない

@@ -38,8 +38,9 @@ namespace FWK::Editor
 
 		void ClearFolderCreateState();
 
-		void ApplyCurrentFolderPath  (const std::filesystem::path& a_folderPath);
-		void ApplyFolderDeleteRequest();
+		void ApplyFolderCreateShortCut();
+		void ApplyCurrentFolderPath   (const std::filesystem::path& a_folderPath);
+		void ApplyFolderDeleteRequest ();
 
 		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const;
 
@@ -51,6 +52,7 @@ namespace FWK::Editor
 		static constexpr std::string_view k_folderCreateInputeLabel       = "##ContentBrowserFolderCreateInput";
 		static constexpr std::string_view k_currentFolderContextMenuLabel = "##ContentBrowserFolderCreateInput";
 		static constexpr std::string_view k_addFolderMenuItemName         = "フォルダーを追加";
+		static constexpr std::string_view k_addFolderShortcutText         = "Ctrl + Shift + N";
 		static constexpr std::string_view k_deleteFolderMenuItemName      = "フォルダーを削除";
 
 		static constexpr std::string_view k_folderTreeChildLabel     = "##ContentBrowserFolderTree";

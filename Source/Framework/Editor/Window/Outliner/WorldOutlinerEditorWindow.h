@@ -26,7 +26,8 @@ namespace FWK::Editor
 
 		void ClearGameObjectRenameState();
 		
-		void ApplySelectedGameObjectDestroyRequest();
+		void ApplySelectedGameObjectDestroyShortcut();
+		void ApplySelectedGameObjectDestroyRequest ();
 
 		void RequestGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject);
 
@@ -40,13 +41,15 @@ namespace FWK::Editor
 
 		void RequestAddGameObject();
 
-		static constexpr std::string_view k_editorName                     = "アウトライナー";
-		static constexpr std::string_view k_gameObjectRenameInputLabel     = "##GameObjectRenameInput";
-		static constexpr std::string_view k_rootDropAreaLabel              = "##RootDropArea";
-		static constexpr std::string_view k_rootContextMenuLabel           = "##RootContextMenu";
-		static constexpr std::string_view k_addRootGameObjectMenuItemName  = "空のGameObjectを追加";
-		static constexpr std::string_view k_destroyGameObjectMenuItemName  = "GameObjectを削除";
+		static constexpr std::string_view k_editorName                            = "アウトライナー";
+		static constexpr std::string_view k_gameObjectRenameInputLabel            = "##GameObjectRenameInput";
+		static constexpr std::string_view k_rootDropAreaLabel                     = "##RootDropArea";
+		static constexpr std::string_view k_rootContextMenuLabel                  = "##RootContextMenu";
+		static constexpr std::string_view k_addRootGameObjectMenuItemText         = "空のGameObjectを追加";
+		static constexpr std::string_view k_destroyGameObjectMenuItemText         = "GameObjectを削除";
+		static constexpr std::string_view k_destroyGameObjectMenuItemShortcutText = "Delete";
 
+		static constexpr std::size_t k_emptySelectionCount  = 0ULL;
 		static constexpr std::size_t k_singleSelectionCount = 1ULL;
 		
 		static constexpr float k_rootDropAreaMINWidth  = 1.0F;

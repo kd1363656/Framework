@@ -29,7 +29,7 @@ void FWK::SceneManager::Update()
 {
 	if (!m_scene) { return; }
 
-	m_scene.Update ();
+	m_scene->Update ();
 }
 void FWK::SceneManager::LateUpdate() const
 {

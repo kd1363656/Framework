@@ -149,7 +149,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	const auto& l_scene        = l_sceneManager.GetVALScene        ().lock();
 	      auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
 
-	if (l_scene) { return {}; }
+	if (!l_scene) { return {}; }
 
 	// PrefabSystem側でもUUIDが使用済みなら登録しない
 	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))
@@ -329,6 +329,16 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 {
 	if (a_prefabFilePath.empty()) { return false; }
 
+	const auto& l_sceneManager   = SceneManager::GetInstance        ();
+	const auto& l_scene          = l_sceneManager.GetVALScene().lock();
+	
+	if (!l_scene) 
+	{
+		FWK_ADD_LOG("Sceneが無効のため、Prefabを削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
+
+		return false; 
+	}
+
 	const auto l_prefabUUID = a_assetRegistry.FindVALAssetUUID(a_prefabFilePath);
 
 	if (l_prefabUUID.is_nil()) 
@@ -364,11 +374,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 	}
 
 	// シーンにある現在削除したプレハブのゲームオブジェクトをすべて削除する
-	const auto& l_sceneManager   = SceneManager::GetInstance        ();
-	const auto& l_scene          = l_sceneManager.GetVALScene().lock();
-	const auto& l_gameObjectList = l_scene->GetREFGameObjectList    ();
-
-	if (!l_scene) { return false; }
+	const auto& l_gameObjectList = l_scene->GetREFGameObjectList();
 
 	for (const auto& l_gameObject : l_gameObjectList)
 	{

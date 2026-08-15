@@ -66,7 +66,12 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 	const auto& l_sceneManager = SceneManager::GetInstance ();
 	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
-	if (l_scene) { return; }
+	if (!l_scene) 
+	{
+		ClearRequest();
+
+		return; 
+	}
 
 	const auto& l_childGameObject = m_gameObjectNodeHierarchyChangeRequest.m_childGameObject.lock();
 
