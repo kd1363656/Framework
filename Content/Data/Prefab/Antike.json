@@ -5,9 +5,9 @@
             "EventMap": []
         },
         "ComponentList": [],
-        "PrefabUUID": "b38d7a90-4dbb-4957-a6e4-2f900c615603",
+        "PrefabUUID": "39ebf42a-8ef3-426b-9581-7dc3159c313a",
         "TransformComponent": {
-            "InitialMatrixStrategyTypeName": "",
+            "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
                 "X": 0.0,
                 "Y": 0.0,

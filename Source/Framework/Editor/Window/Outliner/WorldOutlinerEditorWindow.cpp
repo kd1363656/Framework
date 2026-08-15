@@ -614,6 +614,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject()
 	auto& l_sceneManager = SceneManager::GetInstance        ();
 	auto& l_scene        = l_sceneManager.GetMutableREFScene();
 
+	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
+
+	if (!l_transformComponent) { return; }
+
+	// 一つの行列で機能する行列合成方法を設定
+	l_transformComponent->ApplyStandalone();
+
 	// Outlinerから作成できるGameObjectはRootのみなので
 	// ApplyParent(9などは行わず、そのままSceneへ変化する
 	l_scene.AddGameObject(l_gameObject);

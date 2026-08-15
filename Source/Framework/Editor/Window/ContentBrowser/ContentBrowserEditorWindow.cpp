@@ -34,7 +34,13 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 	}
 
 	ImGui::EndChild();
-	ImGui::End     ();
+
+	// EndChild()した直後は右currentDirectoryのChildWindow全体がImGuiの直前Itemとして扱われる
+	// そのため右ペインの空白部分へGameObjectをDropした場合も、
+	// 現在開いているDirectoryへPrefabを作成できる
+	DrawGameObjectPrefabDragDropTarget(m_currentDirectoryPath);
+
+	ImGui::End();
 }
 
 nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
