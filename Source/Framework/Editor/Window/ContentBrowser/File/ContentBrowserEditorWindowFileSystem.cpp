@@ -1,56 +1,66 @@
 ﻿#include "ContentBrowserEditorWindowFileSystem.h"
 
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateVALFolder(const std::filesystem::path& a_parentFolderPath) const
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateVALFolder(const std::filesystem::path& a_parentFolderPath, const std::string& a_folderName) const
 {
+	if (a_folderName.empty())
+	{
+		FWK_ADD_LOG("フォルダ名が空のため、フォルダを作成できませんでした。");
+
+		return {};
+	}
+
 	std::error_code l_errorCode = {};
 
 	// Folder作成先が実際に存在するFolderか確認する
 	if (!std::filesystem::is_directory(a_parentFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG("Folder作成先が無効です。\nFolderPath : {}", a_parentFolderPath.string());
+		FWK_ADD_LOG("フォルダ作成先が無効です。\nFolderPath : {}", a_parentFolderPath.string());
 
 		return {};
 	}
 
-	std::filesystem::path l_newFolderPath = a_parentFolderPath / k_newFolderName.data();
+	// 一度のFolder作成で複数階層を作成させない
+	const std::filesystem::path& l_folderNamePath = a_folderName;
 
-	auto l_folderNameIndex = k_firstFolderNameIndex;
-
-	// NewFolderが既に存在する場合は
-	// NewFolder_1, NewFolder_2の順に未使用名を探す
-	while (true)
+	if (l_folderNamePath.has_parent_path())
 	{
-		l_errorCode.clear();
+		FWK_ADD_LOG("フォルダ名にFolderPathを含めることはできません。\nFolderName : {}", a_folderName);
 
-		const bool l_isAlreadyExist = std::filesystem::exists(l_newFolderPath, l_errorCode);
+		return {};
+	}
 
-		if (l_errorCode)
-		{
-			FWK_ADD_LOG("新しいFolder名を確認できませんでした。\nFolderPath : {}", l_newFolderPath.string());
+	const std::filesystem::path& l_newFolderPath = a_parentFolderPath / a_folderName;
 
-			return {};
-		}
+	l_errorCode.clear();
 
-		if (!l_isAlreadyExist) { break; }
+	// 同じ名前のファイルまたはフォルダーを上書きしない
+	if (std::filesystem::exists(l_newFolderPath, l_errorCode))
+	{
+		FWK_ADD_LOG("同名のファイルまたはフォルダーが既に存在します。\nFolderPath : {}", l_newFolderPath.string());
 
-		l_newFolderPath = a_parentFolderPath / std::format("{}_{}", k_newFolderName, l_folderNameIndex);
+		return {};
+	}
 
-		++l_folderNameIndex;
+	if (l_errorCode)
+	{
+		FWK_ADD_LOG("フォルダー名を確認できませんでした。\nFolderPath : {}", l_newFolderPath.string());
+
+		return {};
 	}
 
 	l_errorCode.clear();
 
-	if (!std::filesystem::create_directory(l_newFolderPath, l_errorCode) ||
-		l_errorCode)
+	if (!std::filesystem::create_directory(l_newFolderPath, l_errorCode))
 	{
-		FWK_ADD_LOG("Folderを作成できませんでした。\nFolderPath : {}", l_newFolderPath.string());
+	
+		FWK_ADD_LOG("フォルダーを作成できませんでした。\nFolderPath : {}", l_newFolderPath.string());
 
 		return {};
 	}
 
-	FWK_ADD_LOG("Folderを作成しました。\nFolderPath : {}", l_newFolderPath.string());
-
+	FWK_ADD_LOG("フォルダーを作成しました。\nFolderPath : {}", l_newFolderPath.string());
+	
 	return l_newFolderPath;
 }
 bool FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>&               a_gameObject,
@@ -279,7 +289,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 
 		if (l_errorCode)
 		{
-			FWK_ADD_LOG("削除対象Folderの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
+			FWK_ADD_LOG("削除対象フォルダーの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
 
 			return false;
 		}
@@ -292,7 +302,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	{
 		if (!DeletePrefabFile(l_prefabFilePath, a_assetRegistry))
 		{
-			FWK_ADD_LOG("Folder配下のPrefab削除に失敗したため、Folder削除を中止しました。\nPrefabFilePath : {}", l_prefabFilePath.string());
+			FWK_ADD_LOG("フォルダー配下のPrefab削除に失敗したため、Folder削除を中止しました。\nPrefabFilePath : {}", l_prefabFilePath.string());
 
 			return false;
 		}
@@ -300,7 +310,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 
 	// Prefabファイルについては
 	// 上ですでに正規のDeletePrefabFile(9を通している
-	// PNG/FBX等の残りFileと子FolderはFolder削除の対象なのでまとめて削除する
+	// PNG/FBX等の残りFileと子フォルダーはフォルダー削除の対象なのでまとめて削除する
 	l_errorCode.clear();
 
 	const auto& l_removedEntryCount = std::filesystem::remove_all(a_folderPath, l_errorCode);
@@ -308,12 +318,12 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	if (l_errorCode ||
 		l_removedEntryCount == k_notRemovedEntryCount)
 	{
-		FWK_ADD_LOG("Folderを削除できませんでした。\nFolderPath : {}", a_folderPath.string());
+		FWK_ADD_LOG("フォルダーを削除できませんでした。\nFolderPath : {}", a_folderPath.string());
 
 		return false;
 	}
 	
-	FWK_ADD_LOG("Folderを削除しました。\nFolderPath : {}", a_folderPath.string());
+	FWK_ADD_LOG("フォルダーを削除しました。\nFolderPath : {}", a_folderPath.string());
 
 	return true;
 }
@@ -393,7 +403,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::HasChildFolder(const std
 
 	if (l_errorCode) 
 	{
-		FWK_ADD_LOG("子Folderの確認に失敗しました。\nFolderPath : {}", a_folderPath.string());
+		FWK_ADD_LOG("子フォルダーの確認に失敗しました。\nFolderPath : {}", a_folderPath.string());
 
 		return false;
 	}
@@ -411,7 +421,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::HasChildFolder(const std
 
 		if (l_errorCode)
 		{
-			FWK_ADD_LOG("子Folderの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
+			FWK_ADD_LOG("子フォルダーの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
 
 			return false;
 		}

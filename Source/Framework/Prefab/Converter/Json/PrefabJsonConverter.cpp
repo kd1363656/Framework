@@ -11,6 +11,7 @@ void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_ro
 
 	const auto& l_filePath   = a_rootJson.value(k_filePathJsonKey,   std::filesystem::path{});
 	const auto& l_prefabName = a_rootJson.value(k_prefabNameJsonKey, std::string{});
+	const auto& l_prefabType = a_rootJson.value(k_prefabTypeJsonKey, Enum::PrefabType::GameObject);
 
 	// PrefabSystem側に保存されているFilePathが無効なら
 	// どのPrefabファイルを読み込むべきか判断できない
@@ -32,6 +33,7 @@ void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_ro
 
 	a_prefab.SetFilePath  (l_filePath);
 	a_prefab.SetPrefabName(l_prefabName);
+	a_prefab.SetPrefabType(l_prefabType);
 
 	// 実際のプレハブ読み込みはデシリアライズで行う(デシリアライズで取得したファイルパスを元に行うものだから)
 	LoadGameObjectPrefab(a_prefab);
@@ -55,6 +57,7 @@ nlohmann::json FWK::Converter::PrefabJsonConverter::Serialize(Prefab& a_prefab) 
 
 	l_rootJson[k_filePathJsonKey]   = l_filePath;
 	l_rootJson[k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
+	l_rootJson[k_prefabTypeJsonKey] = a_prefab.GetVALPrefabType();
 
 	return l_rootJson;
 }

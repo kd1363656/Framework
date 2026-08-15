@@ -9,7 +9,7 @@ namespace FWK::Editor
 		 ContentBrowserEditorWindowFileSystem() = default;
 		~ContentBrowserEditorWindowFileSystem() = default;
 
-		std::filesystem::path CreateVALFolder(const std::filesystem::path& a_parentFolderPath) const;
+		std::filesystem::path CreateVALFolder(const std::filesystem::path& a_parentFolderPath, const std::string& a_folderName) const;
 
 		bool CreatePrefabFromGameObject(const std::weak_ptr<GameObject>&               a_gameObject, 
 			                            const std::filesystem::path&                   a_parentFolderPath, 
@@ -24,10 +24,6 @@ namespace FWK::Editor
 
 	private:
 
-		static constexpr std::string_view k_newFolderName = "NewFolder";
-
 		static constexpr std::uintmax_t k_notRemovedEntryCount = 0U;
-
-		static constexpr std::uint32_t k_firstFolderNameIndex = 1U;
 	};
 }

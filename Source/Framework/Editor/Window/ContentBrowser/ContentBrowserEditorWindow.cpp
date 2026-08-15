@@ -18,7 +18,7 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 
 	// 左ペイン
 	if (const ImVec2 l_folderTreePaneSize = { k_folderTreePanelWidth, k_filleRemainingSize };
-		ImGui::BeginChild(k_folderTreeChildString.data(), l_folderTreePaneSize, true))
+		ImGui::BeginChild(k_folderTreeChildLabel.data(), l_folderTreePaneSize, true))
 	{
 		DrawFolderTree();
 	}
@@ -28,7 +28,7 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 
 	// 右ペイン
 	if (const ImVec2 l_currentFolderPaneSize = { k_filleRemainingSize, k_filleRemainingSize };
-		ImGui::BeginChild(k_currentFolderChildString.data(), l_currentFolderPaneSize, true))
+		ImGui::BeginChild(k_currentFolderChildLabel.data(), l_currentFolderPaneSize, true))
 	{
 		DrawCurrentFolder();
 	}
@@ -284,7 +284,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const std::filesys
 	// Item全体をClick領域にする
 	// InvisibleButton事態は何も描画しない、
 	// この後DrawListをつあって背景・Icon・名前を自部で描画する
-	ImGui::InvisibleButton(k_folderEntryButtonString.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
+	ImGui::InvisibleButton(k_folderEntryButtonLabel.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
 
 	// フォルダカードへOutlinerのGameObjectがDropされた場合、
 	// このフォルダをPrefabの保存先として使用する
@@ -389,6 +389,31 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget
 		                                    m_assetRegistry,
 		                                    m_selectedEntryPath);
 }
+void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentFolderContextMenu()
+{
+
+}
+void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntryContextMenu(const std::filesystem::path& a_folderPath)
+{
+
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate()
+{
+
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::ConfirmFolderCreate()
+{
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::CancelFolderCreate()
+{
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
+{
+}
 
 void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
 {
@@ -404,6 +429,9 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::
 	// Path文字列上だけ正規化して保持する
 	m_currentFolderPath = a_folderPath;
 }
+
+void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderDeleteRequest()
+{}
 
 std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const
 {
