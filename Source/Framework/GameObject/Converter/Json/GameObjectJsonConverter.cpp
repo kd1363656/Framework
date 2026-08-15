@@ -61,12 +61,12 @@ bool FWK::Converter::GameObjectJsonConverter::DeserializePrefab(const std::weak_
 	                                                                  Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 	                                                                  Scene&                                                            a_scene) const
 {
-	m_prefabJsonConverter.Deserialize(a_gameObject,
-		                              a_rootJson,
-		                              a_childDeserializeDataList,
-		                              a_prefabUUIDSet,
-		                              a_componentSmartPointerVectorArray,
-		                              a_scene);
+	return m_prefabJsonConverter.Deserialize(a_gameObject,
+		                                     a_rootJson,
+		                                     a_childDeserializeDataList,
+		                                     a_prefabUUIDSet,
+		                                     a_componentSmartPointerVectorArray,
+		                                     a_scene);
 }
 bool FWK::Converter::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                                                   a_rootJson,
 	                                                                 std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList, 
@@ -74,11 +74,11 @@ bool FWK::Converter::GameObjectJsonConverter::DeserializeScene(const nlohmann::j
 	                                                                 GameObject&                                                       a_gameObject, 
 	                                                                 Scene&                                                            a_scene) const
 {
-	m_sceneJsonConverter.Deserialize(a_rootJson,
-		                             a_childDeserializeDataList,
-		                             a_componentSmartPointerVectorArray,
-		                             a_gameObject,
-		                             a_scene);
+	return m_sceneJsonConverter.Deserialize(a_rootJson,
+		                                    a_childDeserializeDataList,
+		                                    a_componentSmartPointerVectorArray,
+		                                    a_gameObject,
+		                                    a_scene);
 }
 
 nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializePrefab(const GameObject& a_gameObject) const

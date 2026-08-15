@@ -384,7 +384,10 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget
 	if (!l_dragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_gameObject)) { return; }
 
 	// DropされたフォルダをPrefabの保存先としてPrefab化する
-	m_fileSystem.CreatePrefabFromGameObject(l_gameObject, a_directoryPath, m_assetRegistry);
+	m_fileSystem.CreatePrefabFromGameObject(l_gameObject, 
+		                                    a_directoryPath, 
+		                                    m_assetRegistry,
+		                                    m_selectedEntryPath);
 }
 
 void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
