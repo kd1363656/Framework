@@ -1252,6 +1252,9 @@
     <Filter Include="Source\Framework\Definition\Constant\GameObject">
       <UniqueIdentifier>{d9abe8ad-05b0-41bc-9af1-7fd47978126d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\File">
+      <UniqueIdentifier>{d501373c-1746-4d2d-b89f-251a39d690f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2403,10 +2406,10 @@
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserAssetRegistry.h">
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserAssetRegistryJsonConverter.h">
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h">
@@ -2420,6 +2423,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\File</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3002,10 +3008,10 @@
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserAssetRegistry.cpp">
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserAssetRegistryJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp">
@@ -3016,6 +3022,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

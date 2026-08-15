@@ -21,54 +21,48 @@ namespace FWK::Editor
 
 	private:
 
-		bool CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath);
-		bool CreateFolder              (const std::filesystem::path&     a_parentFolderPath);
-		bool DeleteFolder              (const std::filesystem::path&     a_folderPath);
+		void DrawFolderTree                    ();
+		void DrawFolderTreeNode                (const std::filesystem::path& a_folderPath);
+		void DrawCurrentFolder                 ();
+		void DrawFolderEntry                   (const std::filesystem::path& a_entryPath, bool a_isFolder);
+		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_folderPath);
 
-		void DrawDirectoryTree                 ();
-		void DrawDirectoryTreeNode             (const std::filesystem::path& a_directoryPath);
-		void DrawCurrentDirectory              ();
-		void DrawDirectoryEntry                (const std::filesystem::path& a_entryPath, bool a_isDirectory);
-		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_directoryPath);
+		void ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath);
 
-		bool HasChildDirectory(const std::filesystem::path& a_directoryPath) const;
+		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const;
 
-		void ApplyCurrentDirectoryPath(const std::filesystem::path& a_directoryPath);
-
-		std::string_view FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPath, bool a_isDirectory) const;
-
-		inline static const std::filesystem::path k_contentRootDirectoryPath = "Content";
+		inline static const std::filesystem::path k_contentRootFolderPath = "Content";
 		
-		static constexpr std::string_view k_editorName                  = "コンテンツブラウザー";
-		static constexpr std::string_view k_directoryTreeChildString    = "##ContentBrowserDirectoryTree";
-		static constexpr std::string_view k_currentDirectoryChildString = "##ContentBrowserCurrentDirectory";
-		static constexpr std::string_view k_directoryEntryButtonString  = "##ContentBrowserDirectoryEntry";
-		static constexpr std::string_view k_directoryEntryNameEllipsis  = "...";
+		static constexpr std::string_view k_editorName               = "コンテンツブラウザー";
+		static constexpr std::string_view k_folderTreeChildString    = "##ContentBrowserFolderTree";
+		static constexpr std::string_view k_currentFolderChildString = "##ContentBrowserCurrentFolder";
+		static constexpr std::string_view k_folderEntryButtonString  = "##ContentBrowserFolderEntry";
+		static constexpr std::string_view k_folderEntryNameEllipsis  = "...";
 
-		static constexpr float k_directoryTreePanelWidth = 240.0F;
-		static constexpr float k_filleRemainingSize      = 0.0F;
+		static constexpr float k_folderTreePanelWidth = 240.0F;
+		static constexpr float k_filleRemainingSize   = 0.0F;
 
-		static constexpr float k_directoryEntryWidth  = 104.0F;
-		static constexpr float k_directoryEntryHeight = 92.0F;
+		static constexpr float k_folderEntryWidth  = 104.0F;
+		static constexpr float k_folderEntryHeight = 92.0F;
 
-		static constexpr float k_directoryEntryIconFontSize = 48.0F;
+		static constexpr float k_folderEntryIconFontSize = 48.0F;
 
-		static constexpr float k_directoryEntryIconTopPadding    = 8.0F;
-		static constexpr float k_directoryEntryTextBottomPadding = 7.0F;
+		static constexpr float k_folderEntryIconTopPadding    = 8.0F;
+		static constexpr float k_folderEntryTextBottomPadding = 7.0F;
 		
-		static constexpr float k_directoryEntryRounding = 4.0F;
-		static constexpr float k_centeringRatio         = 0.5F;
+		static constexpr float k_folderEntryRounding = 4.0F;
+		static constexpr float k_centeringRatio      = 0.5F;
 
-		static constexpr std::size_t k_directoryEntryNameDisplayCharacterCount = 9U;
+		static constexpr std::size_t k_folderEntryNameDisplayCharacterCount = 9U;
 
-		static constexpr std::uint32_t k_minDirectoryEntryColumnCount     = 1U;
-		static constexpr std::uint32_t k_initialDirectoryEntryColumnCount = 0U;
-		static constexpr std::uint32_t k_firstFolderNameIndex             = 1U;
+		static constexpr std::uint32_t k_minFolderEntryColumnCount     = 1U;
+		static constexpr std::uint32_t k_initialFolderEntryColumnCount = 0U;
+		
+		std::filesystem::path m_currentFolderPath = k_contentRootFolderPath;
+		std::filesystem::path m_selectedEntryPath = {};
 
-		std::filesystem::path m_currentDirectoryPath = k_contentRootDirectoryPath;
-		std::filesystem::path m_selectedEntryPath    = {};
-
-		ContentBrowserAssetRegistry m_assetRegistry = {};
+		ContentBrowserEditorWindowAssetRegistry m_assetRegistry = {};
+		ContentBrowserEditorWindowFileSystem    m_fileSystem    = {};
 
 		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
 

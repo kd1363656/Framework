@@ -474,10 +474,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserAssetRegistry.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserAssetRegistryJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
@@ -748,10 +749,11 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserAssetRegistry.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserAssetRegistryJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp" />

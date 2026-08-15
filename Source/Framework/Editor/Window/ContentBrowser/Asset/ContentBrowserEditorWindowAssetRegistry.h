@@ -1,13 +1,14 @@
-﻿#pragma once
+﻿
+#pragma once
 
 namespace FWK::Editor
 {
-	class ContentBrowserAssetRegistry final
+	class ContentBrowserEditorWindowAssetRegistry final
 	{
 	public:
 
-		 ContentBrowserAssetRegistry() = default;
-		~ContentBrowserAssetRegistry() = default;
+		 ContentBrowserEditorWindowAssetRegistry() = default;
+		~ContentBrowserEditorWindowAssetRegistry() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 
@@ -26,6 +27,6 @@ namespace FWK::Editor
 		std::unordered_map<std::filesystem::path, boost::uuids::uuid> m_assetFilePathToUUIDMap = {};
 		std::unordered_set<boost::uuids::uuid>                        m_assetUUIDSet           = {};
 
-		Converter::ContentBrowserAssetRegistryJsonConverter m_jsonConverter = {};
+		Converter::ContentBrowserEditorWindowAssetRegistryJsonConverter m_jsonConverter = {};
 	};
 }

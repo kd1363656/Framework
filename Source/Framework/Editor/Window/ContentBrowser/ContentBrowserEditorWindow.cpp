@@ -17,28 +17,28 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 	}
 
 	// 左ペイン
-	if (const ImVec2 l_directoryTreePaneSize = { k_directoryTreePanelWidth, k_filleRemainingSize };
-		ImGui::BeginChild(k_directoryTreeChildString.data(), l_directoryTreePaneSize, true))
+	if (const ImVec2 l_folderTreePaneSize = { k_folderTreePanelWidth, k_filleRemainingSize };
+		ImGui::BeginChild(k_folderTreeChildString.data(), l_folderTreePaneSize, true))
 	{
-		DrawDirectoryTree();
+		DrawFolderTree();
 	}
 	
 	ImGui::EndChild();
 	ImGui::SameLine();
 
 	// 右ペイン
-	if (const ImVec2 l_currentDirectoryPaneSize = { k_filleRemainingSize, k_filleRemainingSize };
-		ImGui::BeginChild(k_currentDirectoryChildString.data(), l_currentDirectoryPaneSize, true))
+	if (const ImVec2 l_currentFolderPaneSize = { k_filleRemainingSize, k_filleRemainingSize };
+		ImGui::BeginChild(k_currentFolderChildString.data(), l_currentFolderPaneSize, true))
 	{
-		DrawCurrentDirectory();
+		DrawCurrentFolder();
 	}
 
 	ImGui::EndChild();
 
-	// EndChild()した直後は右currentDirectoryのChildWindow全体がImGuiの直前Itemとして扱われる
+	// EndChild()した直後は右currentFolderのChildWindow全体がImGuiの直前Itemとして扱われる
 	// そのため右ペインの空白部分へGameObjectをDropした場合も、
-	// 現在開いているDirectoryへPrefabを作成できる
-	DrawGameObjectPrefabDragDropTarget(m_currentDirectoryPath);
+	// 現在開いているFolderへPrefabを作成できる
+	DrawGameObjectPrefabDragDropTarget(m_currentFolderPath);
 
 	ImGui::End();
 }
@@ -48,200 +48,13 @@ nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
 	return m_jsonConverter.Serialize(*this);;
 }
 
-bool FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
-{
-	const auto& l_gameObject = a_gameObject.lock();
-
-	if (!l_gameObject ||
-		l_gameObject->GetVALIsDestroyed())
-	{
-		FWK_ADD_LOG("Prefab化するGameObjectが無効のため、Prefabを作成できませんでした。");
-
-		return false;
-	}
-
-	// 保存先Folder確認
-	std::error_code l_errorCode = {};
-
-	if (!std::filesystem::is_directory(a_directoryPath, l_errorCode) ||
-		l_errorCode)
-	{
-		FWK_ADD_LOG("Prefab保存先Directoryが無効のため、Prefabを作成できませんでした。\nDirectoryPath : {}", a_directoryPath.string());
-
-		return false;
-	}
-
-	// Prefab化されていないことを確認
-	if (!l_gameObject->GetREFPrefabUUID().is_nil() ||
-		l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM)
-	{
-		FWK_ADD_LOG("すでにPrefabInstanceとなっているGameObjectは新規Prefab化できません。");
-
-		return false;
-	}
-
-	// Outlinderでf2リネームされたSceneInstanceNameをそのままPrefabNameとして使用する
-	const auto& l_prefabName = l_gameObject->GetREFSceneInstanceName();
-
-	if (l_prefabName.empty())
-	{
-		FWK_ADD_LOG("SceneInstanceNameが空のため、PrefabNameを決定できませんでした。");
-
-		return false;
-	}
-
-	std::filesystem::path l_prefabFilePath = a_directoryPath / l_prefabName;
-
-	l_prefabFilePath += Constant::k_lowerJsonExtension.string();
-
-	l_errorCode.clear();
-
-	// 既存ファイルを勝手に上書きしない
-	if (std::filesystem::exists(l_prefabFilePath, l_errorCode))
-	{
-		FWK_ADD_LOG("同名Prefabファイルが既に存在するため、新しいPrefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
-
-		return false;
-	}
-
-	if (l_errorCode)
-	{
-		FWK_ADD_LOG("PrefabFilePathを確認できなかったため、Prefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
-
-		return false;
-	}
-
-	// Registry上でも同じfilePathが使用済みなら作成しない
-	if (!m_assetRegistry.FindVALAssetUUID(l_prefabFilePath).is_nil())
-	{
-		FWK_ADD_LOG("同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
-
-		return false;
-	}
-
-	// PrefabUUIDの生成
-	      auto& l_uuidManager = UUIDManager::GetInstance     ();
-	const auto& l_prefabUUID  = l_uuidManager.GenerateVALUUID();
-
-	if (l_prefabUUID.is_nil())
-	{
-		FWK_ADD_LOG("PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
-
-		return false;
-	}
-
-	auto& l_scene        = SceneManager::GetInstance        ().GetMutableREFScene();
-	auto& l_prefabSystem = l_scene.GetMutableREFPrefabSystem();
-
-	// PrefabSystem側でもUUIDが使用済みなら登録しない
-	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))
-	{
-		FWK_ADD_LOG("生成したPrefabUUIDがPrefabSystemですでに使用されています。");
-
-		return false;
-	}
-
-	if (!m_assetRegistry.Add(l_prefabUUID, l_prefabFilePath))
-	{
-		FWK_ADD_LOG("ContentBrowserAssetRegistryへPrefabを登録できませんでした。");
-
-		return false;
-	}
-
-	Struct::PrefabData l_prefabData = {};
-
-	auto& l_prefab = l_prefabData.m_prefab;
-
-	l_prefab.SetPrefabName(l_prefabName);
-	l_prefab.SetFilePath  (l_prefabFilePath);
-
-	// 今回Prefab化するScene上のGameObjectを
-	// このPrefabの保存用代表ゲームオブジェクトとして使用する
-	l_prefab.SetGameObject(l_gameObject);
-
-	l_prefabSystem.AddPrefabMap(l_prefabUUID, l_prefabData);
-
-	auto* l_registeredPrefab = l_prefabSystem.FindMutablePTRPrefab(l_prefabUUID);
-
-	if (!l_registeredPrefab)
-	{
-		m_assetRegistry.Erase(l_prefabFilePath);
-
-		FWK_ADD_LOG("PrefabSystemへのPrefab登録に失敗しました。");
-
-		return false;
-	}
-
-	const auto l_prefabSceneInstanceNUM = l_prefabSystem.AllocatePrefabInstanceNUM(l_prefabUUID);
-
-	// シーンインスタンス数が無効値ならAssetRegistryやPrefabSystemから情報を消す
-	if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-	{
-		l_prefabSystem.RemovePrefab(l_prefabUUID);
-		m_assetRegistry.Erase      (l_prefabFilePath);
-
-		FWK_ADD_LOG("PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
-
-		return false;
-	}
-
-	l_gameObject->SetPrefabUUID            (l_prefabUUID);
-	l_gameObject->SetPrefabSceneInstanceNUM(l_prefabSceneInstanceNUM);
-
-	if (const auto& l_prefabSerializeJson = l_registeredPrefab->Serialize();
-		l_prefabSerializeJson.is_null())
-	{
-		// InstanceNUMをPrefabSystemへ返す
-		l_prefabSystem.ReleasePrefabInstanceNUM(l_prefabUUID, l_prefabSceneInstanceNUM);
-		
-		// GameObjectをPrefab化前に戻す
-		l_gameObject->SetPrefabSceneInstanceNUM(Constant::k_invalidPrefabSceneInstanceNUM);
-
-		l_gameObject->SetPrefabUUID({});
-
-		l_prefabSystem.RemovePrefab(l_prefabUUID);
-
-		m_assetRegistry.Erase(l_prefabFilePath);
-
-		// SaveJsonFileの途中でFileだけ生成された場合も
-		// 不完全なPrefabファイルを渡さない
-		l_errorCode.clear();
-
-		std::filesystem::remove(l_prefabFilePath, l_errorCode);
-
-		FWK_ADD_LOG("Prefabファイルの保存に失敗したため、Prefab作成を取り消しました。");
-
-		return false;
-	}
-
-	// 新しく生成されたPrefabをContentBrowser上でも選択対象にしておく
-	m_selectedEntryPath = l_prefabFilePath;
-
-	FWK_ADD_LOG("Prefabを作成しました。\nPrefabName : {}\nFilePath : {}\nPrefabUUID : {}\nPrefabInstanceNUM : {}",
-		        l_prefabName,
-		        l_prefabFilePath.string(),
-		        boost::uuids::to_string(l_prefabUUID),
-		        l_prefabSceneInstanceNUM);
-
-	return true;
-}
-
-bool FWK::Editor::ContentBrowserEditorWindow::CreateFolder(const std::filesystem::path& a_parentDirectoryPath)
-{
-	return false;
-}
-bool FWK::Editor::ContentBrowserEditorWindow::DeleteFolder(const std::filesystem::path& a_folderPath)
-{
-	return false;
-}
-
-void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTree()
+void FWK::Editor::ContentBrowserEditorWindow::DrawFolderTree()
 {
 	std::error_code l_errorCode = {};
 
 	// ContentBrowserのRootであるContent自体が存在しなければ
-	// DirectoryTreeは作成できない
-	if (!std::filesystem::exists(k_contentRootDirectoryPath, l_errorCode) ||
+	// FolderTreeは作成できない
+	if (!std::filesystem::exists(k_contentRootFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
 		return;
@@ -249,40 +62,40 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTree()
 
 	l_errorCode.clear();
 
-	if (!std::filesystem::is_directory(k_contentRootDirectoryPath, l_errorCode) ||
+	if (!std::filesystem::is_directory(k_contentRootFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
 		return;
 	}
 
 	// RootであるContentからFolderTreeでの描画を開始する
-	DrawDirectoryTreeNode(k_contentRootDirectoryPath);
+	DrawFolderTreeNode(k_contentRootFolderPath);
 }
-void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::filesystem::path& a_directoryPath)
+void FWK::Editor::ContentBrowserEditorWindow::DrawFolderTreeNode(const std::filesystem::path & a_folderPath)
 {
 	std::error_code l_errorCode = {};
 
-	if (!std::filesystem::is_directory(a_directoryPath, l_errorCode) ||
+	if (!std::filesystem::is_directory(a_folderPath, l_errorCode) ||
 		l_errorCode)
 	{
 		return;
 	}
 
-	const bool l_hasChildDirectory = HasChildDirectory(a_directoryPath);
+	const bool l_hasChildFolder = m_fileSystem.HasChildFolder(a_folderPath);
 
 	// 矢印部分をクリックすると開閉できるようにする
 	ImGuiTreeNodeFlags l_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow |
 		                                 ImGuiTreeNodeFlags_SpanAvailWidth;
 
-	// 現在右ペインで開いているDirectoryを
+	// 現在右ペインで開いているフォルダを
 	// 右側Treeでも選択状態として視覚化する
-	if (m_currentDirectoryPath == a_directoryPath)
+	if (m_currentFolderPath == a_folderPath)
 	{
 		l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
 	}
 
-	// 子Folderを持たないDirectoryには展開用のArrowを表示しない
-	if (!l_hasChildDirectory)
+	// 子Folderを持たないフォルダには展開用のArrowを表示しない
+	if (!l_hasChildFolder)
 	{
 		l_treeNodeFlags |= ImGuiTreeNodeFlags_Leaf;
 		l_treeNodeFlags |= ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -291,57 +104,57 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::f
 	// ContentBrowserを初めて開いた時だけ
 	// RootであるContentを開いた状態にする
 	// ImGuiCond_Onceなので、ユーザが後からContentを閉じれば閉じたままになる
-	if (a_directoryPath == k_contentRootDirectoryPath)
+	if (a_folderPath == k_contentRootFolderPath)
 	{
 		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 	}
 
-	// TreeNodeのIDにはDirectory全体のPathを使用する
+	// TreeNodeのIDにはフォルダ全体のPathを使用する
 	// 例えば
 	// Content/Model/Actor
 	// Content/Texture/Actor
-	// のように同じ名前のFolderが別階層にあってる
+	// のように同じ名前のフォルダが別階層にあってる
 	// ImGui上では別Nodeとして扱える
-	const auto l_directoryPathString = a_directoryPath.generic_string();
-	      auto l_directoryName       = a_directoryPath.filename      ().string();
+	const auto l_folderPathString = a_folderPath.generic_string();
+	      auto l_folderName       = a_folderPath.filename      ().string();
 
 	// 通常Content出は発生しないが
 	// filename()が空だった場合の最低限のか表示
-	if (l_directoryName.empty())
+	if (l_folderName.empty())
 	{
-		l_directoryName = l_directoryPathString;
+		l_folderName = l_folderPathString;
 	}
 
-	const bool l_isNodeOpen = ImGui::TreeNodeEx(l_directoryPathString.c_str(), 
+	const bool l_isNodeOpen = ImGui::TreeNodeEx(l_folderPathString.c_str(),
 		                                        l_treeNodeFlags,
 		                                        "%s %s", 
 		                                        Constant::k_fontAwesomeFolderIcon.data(),
-		                                        l_directoryName.c_str());
+		                                        l_folderName.c_str());
 
-	// 左側FolderTree空もPrefab保存先をしてできるようにする
-	DrawGameObjectPrefabDragDropTarget(a_directoryPath);
+	// 左側フォルダツリー側もPrefab保存先をしてできるようにする
+	DrawGameObjectPrefabDragDropTarget(a_folderPath);
 
-	// Folderの行をClickした場合は、
+	// フォルダの行をClickした場合は、
 	// そのFolderを右ペインで開く
 	// ArrowをクリックしてTreeNodeを開閉しただけの場合は
-	// CurrentDirectoryを変更しない
+	// CurrentFolderを変更しない
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Left) &&
 		!ImGui::IsItemToggledOpen())
 	{
-		ApplyCurrentDirectoryPath(a_directoryPath);
+		ApplyCurrentFolderPath(a_folderPath);
 	}
 
 	// フォルダーが閉じている場合は
 	// それより下の階層は一切走査しない
 	if (!l_isNodeOpen ||
-		!l_hasChildDirectory)
+		!l_hasChildFolder)
 	{
 		return;
 	}
 
-	// 現在Nodeが開いているDirectoryの
+	// 現在Nodeが開いているフォルダの
 	// 「直下」だけを調べる
-	std::filesystem::directory_iterator l_directoryITR    = { a_directoryPath, l_errorCode };
+	std::filesystem::directory_iterator l_directoryITR    = { a_folderPath, l_errorCode };
 	std::filesystem::directory_iterator l_endDirectoryITR = {};
 
 	if (l_errorCode)
@@ -356,11 +169,11 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::f
 		std::error_code l_entryErrorCode = {};
 
 		// 左ペインではFileを描画しない
-		// Folderだけを再帰的にTreeへ追加する
+		// フォルダだけを再帰的にTreeへ追加する
 		if (l_directoryITR->is_directory(l_entryErrorCode) &&
 			!l_entryErrorCode)
 		{
-			DrawDirectoryTreeNode(l_directoryITR->path());
+			DrawFolderTreeNode(l_directoryITR->path());
 		}
 
 		l_directoryITR.increment(l_errorCode);
@@ -370,22 +183,22 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryTreeNode(const std::f
 
 	ImGui::TreePop();
 }
-void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
+void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentFolder()
 {
 	std::error_code l_errorCode = {};
 
-	// Explorer等から現在開いていたFolderを削除された場合などに
+	// Explorer等から現在開いているフォルダを削除された場合などに
 	// 無効Pathを保持し続けないようにContentへ戻す
-	if(!std::filesystem::is_directory(m_currentDirectoryPath, l_errorCode) ||
+	if(!std::filesystem::is_directory(m_currentFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		ApplyCurrentDirectoryPath(k_contentRootDirectoryPath);
+		ApplyCurrentFolderPath(k_contentRootFolderPath);
 
 		l_errorCode.clear();
 	}
 
 	// Content事態まで存在しない場合は表示できない
-	if (!std::filesystem::is_directory(m_currentDirectoryPath, l_errorCode) ||
+	if (!std::filesystem::is_directory(m_currentFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
 		return;
@@ -396,21 +209,20 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 
 	// Cardと次のCardの間隔には
 	// Editor全体のImTuiItemSpacingをそのまま使用する
-	const float l_itemSpacing         = ImGui::GetStyle().ItemSpacing.x;
-	const float l_directoryEntryPitch = k_directoryEntryWidth + l_itemSpacing;
+	const float l_itemSpacing      = ImGui::GetStyle().ItemSpacing.x;
+	const float l_folderEntryPitch = k_folderEntryWidth + l_itemSpacing;
 
 	// ペインが広ければColumn数を増やし
 	// 狭ければ自動的に少なくする
-	const std::uint32_t l_calculatedColumnCount = static_cast<std::uint32_t>(l_availableWidth + l_itemSpacing) / static_cast<std::uint32_t>(l_directoryEntryPitch);
-	const std::uint32_t l_columnCount           = std::max                  (k_minDirectoryEntryColumnCount, l_calculatedColumnCount);
+	const std::uint32_t l_calculatedColumnCount = static_cast<std::uint32_t>(l_availableWidth + l_itemSpacing) / static_cast<std::uint32_t>(l_folderEntryPitch);
+	const std::uint32_t l_columnCount           = std::max                  (k_minFolderEntryColumnCount, l_calculatedColumnCount);
 
-	auto l_currentColumn = k_initialDirectoryEntryColumnCount;
+	auto l_currentColumn = k_initialFolderEntryColumnCount;
 
-	// DoubleClickされた瞬間にm_currentDirectoryPathを置き換えず、
-	// 現在Directoryの描画が全部終わってから反映する
-
+	// DoubleClickされた瞬間にm_currentFolderPathを置き換えず、
+	// 現在フォルダの描画が全部終わってから反映する
 	      std::filesystem::path               l_requestedDirectoryPath = {};
-	      std::filesystem::directory_iterator l_directoryITR           = { m_currentDirectoryPath, l_errorCode };
+	      std::filesystem::directory_iterator l_directoryITR           = { m_currentFolderPath, l_errorCode };
 	const std::filesystem::directory_iterator l_endDirectoryITR        = {};
 
 	if (l_errorCode) { return; }
@@ -425,7 +237,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 		{
 			const auto& l_entryPath = l_directoryITR->path();
 
-			DrawDirectoryEntry(l_entryPath, l_isDirectory);
+			DrawFolderEntry(l_entryPath, l_isDirectory);
 
 			if (l_isDirectory          &&
 				ImGui::IsItemHovered() &&
@@ -442,7 +254,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 			}
 			else
 			{
-				l_currentColumn = k_initialDirectoryEntryColumnCount;
+				l_currentColumn = k_initialFolderEntryColumnCount;
 			}
 		}
 
@@ -452,31 +264,31 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentDirectory()
 		if (l_errorCode) { break; }
 	}
 
-	// 描画終了後にDirectory変更
+	// 描画終了後にフォルダパスを変更
 	if (l_requestedDirectoryPath.empty()) { return; }
 
-	ApplyCurrentDirectoryPath(l_requestedDirectoryPath);
+	ApplyCurrentFolderPath(l_requestedDirectoryPath);
 }
-void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::filesystem::path& a_entryPath, bool a_isDirectory)
+void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const std::filesystem::path & a_entryPath, bool a_isFolder)
 {
 	const auto& l_entryPathString = a_entryPath.generic_string();
 	const auto& l_entryName       = a_entryPath.filename      ().string();
-	const auto& l_icon            = FetchVALDirectoryEntryIcon(a_entryPath, a_isDirectory);
+	const auto& l_icon            = FetchVALFolderEntryIcon   (a_entryPath, a_isFolder);
 
-	// 同じ名前のFile/Folderが別Directoryに存在しても
+	// 同じ名前のファイル/フォルダが別Folderに存在しても
 	// ImGui上で別Itemとして扱えるよう、Path全体をIDに使用する
 	ImGui::PushID(l_entryPathString.c_str());
 
-	const ImVec2& l_entrySize = { k_directoryEntryWidth, k_directoryEntryHeight };
+	const ImVec2& l_entrySize = { k_folderEntryWidth, k_folderEntryHeight };
 
 	// Item全体をClick領域にする
 	// InvisibleButton事態は何も描画しない、
 	// この後DrawListをつあって背景・Icon・名前を自部で描画する
-	ImGui::InvisibleButton(k_directoryEntryButtonString.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
+	ImGui::InvisibleButton(k_folderEntryButtonString.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
 
-	// FolderカードへOutlinerのGameObjectがDropされた場合、
-	// このFolderをPrefabの保存先として使用する
-	if (a_isDirectory)
+	// フォルダカードへOutlinerのGameObjectがDropされた場合、
+	// このフォルダをPrefabの保存先として使用する
+	if (a_isFolder)
 	{
 		DrawGameObjectPrefabDragDropTarget(a_entryPath);
 	}
@@ -501,7 +313,7 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 		l_drawList->AddRectFilled(l_itemMIN,
 			                      l_itemMAX,
 			                      l_backgroundColor,
-			                      k_directoryEntryRounding);
+			                      k_folderEntryRounding);
 	}
 	else if (l_isHovered)
 	{
@@ -510,23 +322,23 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 		l_drawList->AddRectFilled(l_itemMIN,
 			                      l_itemMAX,
 		                          l_backgroundColor,
-			                      k_directoryEntryRounding);
+			                      k_folderEntryRounding);
 	}
 
-	const auto l_iconSize = ImGui::GetFont()->CalcTextSizeA(k_directoryEntryIconFontSize, 
+	const auto l_iconSize = ImGui::GetFont()->CalcTextSizeA(k_folderEntryIconFontSize, 
 		                                                    std::numeric_limits<float>::max(),
 		                                                    k_filleRemainingSize,
 		                                                    l_icon.data());
 
-	const float l_iconPositionX = l_itemMIN.x + (k_directoryEntryWidth - l_iconSize.x) * k_centeringRatio;
-	const float l_iconPositionY = l_itemMIN.y + k_directoryEntryIconTopPadding;
+	const float l_iconPositionX = l_itemMIN.x + (k_folderEntryWidth - l_iconSize.x) * k_centeringRatio;
+	const float l_iconPositionY = l_itemMIN.y + k_folderEntryIconTopPadding;
 
 	const ImVec2& l_iconPosition = { l_iconPositionX, l_iconPositionY };
 	const auto    l_textColor    = ImGui::GetColorU32(ImGuiCol_Text);
 
 	// FontAwesomeGlyphを通常Textより大きく描画する
 	l_drawList->AddText(ImGui::GetFont(),
-		                k_directoryEntryIconFontSize,
+		                k_folderEntryIconFontSize,
 		                l_iconPosition,
 		                l_textColor,
 		                l_icon.data());
@@ -537,18 +349,18 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawDirectoryEntry(const std::file
 
 	// 9文字以上の場合は
 	// hogeeeeeeTest.pngはhogeeeeee...というように表示
-	if (l_displayEntryName.size() >= k_directoryEntryNameDisplayCharacterCount)
+	if (l_displayEntryName.size() >= k_folderEntryNameDisplayCharacterCount)
 	{
-		l_displayEntryName = l_displayEntryName.substr(static_cast<std::uint32_t>(NULL), k_directoryEntryNameDisplayCharacterCount);
+		l_displayEntryName = l_displayEntryName.substr(static_cast<std::uint32_t>(NULL), k_folderEntryNameDisplayCharacterCount);
 
-		l_displayEntryName += k_directoryEntryNameEllipsis;
+		l_displayEntryName += k_folderEntryNameEllipsis;
 	}
 
 	const ImVec2& l_entryNameSize = ImGui::CalcTextSize(l_displayEntryName.c_str());
 
-	// File名は常にCard中央へ配置する
-	const float l_textPositionX = l_itemMIN.x +                         (k_directoryEntryWidth - l_entryNameSize.x) * k_centeringRatio;
-	const float l_textPositionY = l_itemMAX.y - ImGui::GetTextLineHeight()                                          - k_directoryEntryTextBottomPadding;
+	// ファイル名は常にCard中央へ配置する
+	const float l_textPositionX = l_itemMIN.x +                         (k_folderEntryWidth - l_entryNameSize.x) * k_centeringRatio;
+	const float l_textPositionY = l_itemMAX.y - ImGui::GetTextLineHeight()                                       - k_folderEntryTextBottomPadding;
 
 	const ImVec2& l_textPosition = { l_textPositionX, l_textPositionY };
 
@@ -571,45 +383,15 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget
 	// Outlinerが送信しているGameObjectPayloadを受け取る
 	if (!l_dragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_gameObject)) { return; }
 
-	// DropされたFolderをPrefabの保存先としてPrefab化する
-	CreatePrefabFromGameObject(l_gameObject, a_directoryPath);
+	// DropされたフォルダをPrefabの保存先としてPrefab化する
+	m_fileSystem.CreatePrefabFromGameObject(l_gameObject, a_directoryPath, m_assetRegistry);
 }
 
-bool FWK::Editor::ContentBrowserEditorWindow::HasChildDirectory(const std::filesystem::path& a_directoryPath) const
-{
-	      std::error_code                     l_errorCode       = {};
-	      std::filesystem::directory_iterator l_directoryITR    = { a_directoryPath, l_errorCode };
-	const std::filesystem::directory_iterator l_endDirectoryITR = {};
-
-	if (l_errorCode) { return false; }
-
-	while (l_directoryITR != l_endDirectoryITR)
-	{
-		std::error_code l_entryErrorCode = {};
-
-		const bool l_isDirectory = l_directoryITR->is_directory(l_entryErrorCode);
-
-		// 一つでも子Folderがあれば
-		// TreeNodeを展開可能にする
-		if (!l_entryErrorCode &&
-			l_isDirectory)
-		{
-			return true;
-		}
-
-		l_directoryITR.increment(l_errorCode);
-
-		if (l_errorCode) { return false; }
-	}
-
-	return false;
-}
-
-void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentDirectoryPath(const std::filesystem::path& a_directoryPath)
+void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
 {
 	// FileをCurrentDirectoryとして設定することは許可しない
 	if (std::error_code l_errorCode = {};
-		!std::filesystem::is_directory(a_directoryPath, l_errorCode) ||
+		!std::filesystem::is_directory(a_folderPath, l_errorCode) ||
 		l_errorCode)
 	{
 		return;
@@ -617,12 +399,12 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentDirectoryPath(const st
 
 	// "."や".."が混ざったPathを
 	// Path文字列上だけ正規化して保持する
-	m_currentDirectoryPath = a_directoryPath;
+	m_currentFolderPath = a_folderPath;
 }
 
-std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALDirectoryEntryIcon(const std::filesystem::path& a_entryPath, bool a_isDirectory) const
+std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const
 {
-	if (a_isDirectory) { return Constant::k_fontAwesomeFolderIcon; }
+	if (a_isFolder) { return Constant::k_fontAwesomeFolderIcon; }
 
 	const auto& l_extension = a_entryPath.extension();
 
