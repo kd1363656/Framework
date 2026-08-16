@@ -2,8 +2,6 @@
 
 void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 {
-	const auto& l_editorManager = EditorManager::GetInstance();
-	
 	// Outliner用ImGuiウィンドウを開始
 	if (!ImGui::Begin(k_editorName.data()))
 	{
@@ -30,32 +28,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	// EditorManagerの選択状態をOutliner側へ同期する
 	m_gameObjectSelection.Synchronize();
 
-	// リネーム中に選択対象が無効になった場合や、
-	// 複数選択へ変化した場合はリネームをキャンセルする
-	if (m_isGameObjectRenameActive)
-	{
-		const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
-
-		// PrefabInstanceNUMが発行済みのGameObjectは、
-        // PrefabName + InstanceNUMから名前が決まるため
-        // Outlinerから直接リネームしない
-		if (!l_selectedGameObject                                                                             ||
-			l_selectedGameObject->GetVALIsDestroyed()                                                         ||
-			l_selectedGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM ||
-			m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount)
-		{
-			CancelGameObjectRename();
-		}
-	}
-
-	// Outlinerにフォーカスがある場合だけF2を受け付け
-	// 名前変更要求を行う
-	if (!m_isGameObjectRenameActive                                   &&
-		ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) &&
-		ImGui::IsKeyPressed(ImGuiKey_F2, false))
-	{
-		RequestGameObjectRename(l_editorManager.GetREFSelectedGameObject());
-	}
+	// Renameじょうたいごの確認とF2によるRename開始を行う
+	m_gameObjectRename.Update(m_gameObjectSelection);
 
 	// Deleteキーによる選択中GameObjectの削除要求を確認
 	ApplySelectedGameObjectDestroyShortcut();
@@ -157,8 +131,8 @@ FWK::Struct::GameObjectNodeDrawResult FWK::Editor::WorldOutlinerEditorWindow::Dr
 
 	// GameObject名は変更される可能性があるため
 	// ImGui内部IDにあｈ変更されないUUIDを使用する
-	const auto& l_gameObjectUUIDString     = boost::uuids::to_string (l_gameObject->GetREFSceneInstanceUUID());
-	const bool  l_isGameObjectRenameTarget = IsGameObjectRenameTarget(a_gameObject);
+	const auto& l_gameObjectUUIDString     = boost::uuids::to_string    (l_gameObject->GetREFSceneInstanceUUID());
+	const bool  l_isGameObjectRenameTarget = m_gameObjectRename.IsTarget(a_gameObject);
 	
 	std::string l_gameObjectNodeLabel = {};
 
@@ -211,7 +185,7 @@ FWK::Struct::GameObjectNodeDrawResult FWK::Editor::WorldOutlinerEditorWindow::Dr
 	{
 		ImGui::SameLine();
 
-		DrawGameObjectRenameInput();
+		m_gameObjectRename.DrawRenameInput();
 	}
 
 	return l_gameObjectNodeDrawResult;
@@ -229,9 +203,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeContextMenu(const
 
 	// Renameh食うに別のGameObjectを右クリックした場合も
 	// 選択状態を変更する前に現在のRenameを確定する
-	if (m_isGameObjectRenameActive)
+	if (m_gameObjectRename.GetVALIsRenameActive())
 	{
-		ConfirmGameObjectRename();
+		m_gameObjectRename.ConfirmRename();
 	}
 
 	// 未選択のGameObjectを右クリックした場合は
@@ -297,55 +271,6 @@ bool FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNodeDragDrop(const st
 
 	return true;
 }
-void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectRenameInput()
-{
-	if (!m_isGameObjectRenameActive) { return; }
-
-	// F2を押した直後の1フレームだけ
-	// InputTextへKeyboardFocusを移動する
-	if (m_isGameObjectRenameInputFocusRequested)
-	{
-		ImGui::SetKeyboardFocusHere();
-
-		m_isGameObjectRenameInputFocusRequested = false;
-	}
-
-	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-
-	const bool l_isRenameConfirmedByEnter = ImGui::InputText(k_gameObjectRenameInputLabel.data(), 
-		                                                     &m_gameObjectRenameBuffer,
-		                                                     ImGuiInputTextFlags_EnterReturnsTrue |
-	                                                         ImGuiInputTextFlags_AutoSelectAll);
-
-	const bool l_isRenameInputHovered = ImGui::IsItemHovered();
-
-	// Escapeなら変更を破棄する
-	if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
-	{
-		CancelGameObjectRename();
-
-		return;
-	}
-
-	if (l_isRenameConfirmedByEnter) 
-	{
-		ConfirmGameObjectRename();
-
-		return;
-	}
-
-	// InputText事態をクリックした場合は
-	// カーソル移動などの編集捜査なので確定しない
-	if (l_isRenameInputHovered) { return; }
-
-	// InputText以外を左クリック、または右クリックした場合は
-	// 現在の名前を確定する
-	if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
-		ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-	{
-		ConfirmGameObjectRename();
-	}
-}
 void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 {
 	// GameObjectNodeを描画した後に残っている
@@ -376,9 +301,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 		// Rename中の空白左クリックは、
 		// Renameを確定するだけにする
 		// 現在選択しているGameObjectは選択解除しない
-		if (m_isGameObjectRenameActive)
+		if (m_gameObjectRename.GetVALIsRenameActive())
 		{
-			ConfirmGameObjectRename();
+			m_gameObjectRename.ConfirmRename();
 
 			return;
 		}
@@ -392,9 +317,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 	if (!ImGui::BeginPopupContextItem(k_rootContextMenuLabel.data())) { return; }
 
 	// 空白右クリックでもRename中なら先に確定する
-	if (m_isGameObjectRenameActive)
+	if (m_gameObjectRename.GetVALIsRenameActive())
 	{
-		ConfirmGameObjectRename();
+		m_gameObjectRename.ConfirmRename();
 	}
 
 	const auto l_selectedGameObjectCount = m_gameObjectSelection.FetchVALSelectedGameObjectCount();
@@ -458,9 +383,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplyGameObjectNodeSelection(const 
 
 	// リネーム中に別のNode操作が行われた場合は
 	// 先に現在の名前変更を確定する
-	if (m_isGameObjectRenameActive)
+	if (m_gameObjectRename.GetVALIsRenameActive())
 	{
-		ConfirmGameObjectRename();
+		m_gameObjectRename.ConfirmRename();
 	}
 
 	const auto& l_imGuiIO = ImGui::GetIO();
@@ -483,14 +408,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplyGameObjectNodeSelection(const 
 	m_gameObjectSelection.SelectSingleGameObject(a_gameObject);
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::ClearGameObjectRenameState()
-{
-	m_gameObjectRenameBuffer.clear();
-
-	m_isGameObjectRenameActive              = false;
-	m_isGameObjectRenameInputFocusRequested = false;
-}
-
 void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyShortcut()
 {
 	// 既に削除要求が出ているウ場合は
@@ -499,7 +416,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyShort
 
 	// Rename中のDeleteキーはGameObject削除ではなく
 	// InputText内の文字削除として吸わせる
-	if (m_isGameObjectRenameActive) { return; }
+	if (m_gameObjectRename.GetVALIsRenameActive()) { return; }
 
 	// OutlinerまたはOutliner配下のChildWindowにFocusがある場合だけ
 	// Deleteショートカットを有効にする
@@ -555,90 +472,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyReque
 	// Destroy要求を出したGameObjectを
 	// EditorManagerやOutlinerの選択肢として残さない
 	m_gameObjectSelection.ClearSelectedGameObjects();
-}
-
-void FWK::Editor::WorldOutlinerEditorWindow::RequestGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject)
-{
-	const auto& l_gameObject = a_gameObject.lock();
-
-	if (!l_gameObject ||
-		l_gameObject->GetVALIsDestroyed())
-	{
-		return;
-	}
-
-	// PrefabSceneInstanceの名前は
-	// PrefabName + InstanceNUMから決定されているため
-	// Outlinerから直接リネームしない
-	if (l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM) 
-	{
-		return; 
-	}
-
-	// F2リネームは単一選択時のみ行う
-	if (m_gameObjectSelection.FetchVALSelectedGameObjectCount() != k_singleSelectionCount) { return; }
-
-	// 現在Outlinerへ表示されている名前を
-	// 編集用Bufferへコピーする
-	m_gameObjectRenameBuffer = l_gameObject->FetchVALGameObjectName();
-
-	m_isGameObjectRenameActive              = true;
-	m_isGameObjectRenameInputFocusRequested = true;
-}
-
-void FWK::Editor::WorldOutlinerEditorWindow::ConfirmGameObjectRename()
-{
-	if (!m_isGameObjectRenameActive) { return; }
-
-	const auto& l_editorManager      = EditorManager::GetInstance              ();
-	const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
-
-	if (!l_selectedGameObject                     ||
-		l_selectedGameObject->GetVALIsDestroyed() ||
-		l_selectedGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM)
-	{
-		ClearGameObjectRenameState();
-
-		return;
-	}
-
-	// 非PrefabGameObjectではPrefasbNameを
-	// Outliner上のGameObject名とし使用しているため
-	// 編集Bufferの内容をそのまま設定する
-	l_selectedGameObject->SetSceneInstanceName(m_gameObjectRenameBuffer);
-
-	ClearGameObjectRenameState();
-}
-
-void FWK::Editor::WorldOutlinerEditorWindow::CancelGameObjectRename()
-{
-	if (!m_isGameObjectRenameActive) { return; }
-
-	ClearGameObjectRenameState();
-}
-
-bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectRenameTarget(const std::weak_ptr<GameObject>& a_gameObject) const
-{
-	if (!m_isGameObjectRenameActive) { return false; }
-
-	const auto& l_gameObject = a_gameObject.lock();
-
-	if (!l_gameObject ||
-		l_gameObject->GetVALIsDestroyed())
-	{
-		return false;
-	}
-
-    const auto& l_editorManager      = EditorManager::GetInstance              ();
-	const auto& l_selectedGameObject = l_editorManager.GetREFSelectedGameObject().lock();
-
-	if (!l_selectedGameObject ||
-		l_selectedGameObject->GetVALIsDestroyed())
-	{
-		return false;
-	}
-
-	return l_gameObject == l_selectedGameObject;
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindow::UnparentDroppedGameObject()

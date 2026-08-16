@@ -1255,6 +1255,9 @@
     <Filter Include="Source\Framework\Definition\Constant\Editor">
       <UniqueIdentifier>{6982fdce-d030-43fa-a394-b3ea6e54db1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Rename">
+      <UniqueIdentifier>{20cbed7c-d059-4b9b-b81e-539d1aa4bd5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2427,6 +2430,9 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3025,6 +3031,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\File</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
