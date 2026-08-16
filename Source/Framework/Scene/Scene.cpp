@@ -20,7 +20,7 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) 
 	{
-		FWK_ADD_LOG("jsonの中身が空となっておりシーンのデシリアライズ処理に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Jsonの中身が空となっておりシーンのデシリアライズ処理に失敗しました。");
 		return; 
 	}
 
@@ -136,7 +136,7 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 {
 	if (!a_gameObject)
 	{
-		FWK_ADD_LOG("GameObjectクラスが無効となっており、ゲームオブジェクトの追加処理に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "GameObjectクラスが無効となっており、ゲームオブジェクトの追加処理に失敗しました。");
 		return;
 	}
 
@@ -280,7 +280,7 @@ void FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObjec
 	{
 		if (l_parentGameObject->GetVALIsDestroyed())
 		{
-			FWK_ADD_LOG("削除予定の親GameObjectを持つGameObjectはSceneへ追加できません。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "削除予定の親GameObjectを持つGameObjectはSceneへ追加できません。");
 
 			return;
 		}

@@ -11,7 +11,7 @@ void FWK::Converter::GameObjectJsonConverter::Deserialize(const std::weak_ptr<Ga
 
 	if (!l_gameObject)
 	{
-		FWK_ADD_LOG("ゲームオブジェクトが無効になっておりデシリアライズ処理に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "ゲームオブジェクトが無効になっておりデシリアライズ処理に失敗しました。");
 
 		return;
 	}

@@ -4,7 +4,7 @@ void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_ro
 {
 	if (a_rootJson.is_null())
 	{
-		FWK_ADD_LOG("RootJsonが無効となっており、Prefabのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効となっており、Prefabのデシリアライズに失敗しました。");
 
 		return;
 	}
@@ -16,7 +16,7 @@ void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_ro
 	// どのPrefabファイルを読み込むべきか判断できない
 	if (!Utility::CanLoadFilePath(l_filePath))
 	{
-		FWK_ADD_LOG("PrefabのFilePathが空となっており、Prefabのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabのFilePathが空となっており、Prefabのデシリアライズに失敗しました。");
 
 		return;
 	}
@@ -25,7 +25,7 @@ void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_ro
 	// GameObject名の元になるための必須情報
 	if (l_prefabName.empty())
 	{
-		FWK_ADD_LOG("PrefabNameが空となっており、Prefabのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabNameが空となっており、Prefabのデシリアライズに失敗しました。");
 
 		return;
 	}
@@ -44,7 +44,7 @@ nlohmann::json FWK::Converter::PrefabJsonConverter::Serialize(Prefab& a_prefab) 
 	if (l_filePath.empty() ||
 		l_filePath.extension() != Constant::k_lowerJsonExtension)
 	{
-		FWK_ADD_LOG("書き込みが不可能なファイルパスになっており、書き込み処理に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "書き込みが不可能なファイルパスになっており、書き込み処理に失敗しました。");
 
 		return {};
 	}
@@ -66,7 +66,7 @@ void FWK::Converter::PrefabJsonConverter::LoadGameObjectPrefab(Prefab& a_prefab)
 	// Jsonでデシリアライズしたファイルパスからjsonファイルをロードして保持する
 	if (!Utility::CanLoadFilePath(l_filePath, Constant::k_lowerJsonExtension))
 	{
-		FWK_ADD_LOG("読み込みが不可能なファイルパスになっており、読み込み処理に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "読み込みが不可能なファイルパスになっており、読み込み処理に失敗しました。");
 
 		return;
 	}
@@ -75,7 +75,7 @@ void FWK::Converter::PrefabJsonConverter::LoadGameObjectPrefab(Prefab& a_prefab)
 
 	if (l_rootJson.is_null())
 	{
-		FWK_ADD_LOG("RootJsonが無効となっており、Prefabの読み込みに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効となっており、Prefabの読み込みに失敗しました。");
 
 		return;
 	}
@@ -93,7 +93,7 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 
 	if (!l_gameObject)
 	{
-		FWK_ADD_LOG("Prefab保存用GameObjectが存在しないため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_prefab.GetREFFilePath().string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab保存用GameObjectが存在しないため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_prefab.GetREFFilePath().string());
 
 		return false;
 	}
@@ -105,7 +105,7 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 	// 不完全なPrefabファイルを書き込まない。
 	if (l_gameObjectJson.is_null())
 	{
-		FWK_ADD_LOG("GameObjectのPrefabJsonを生成できなかったため、Prefabファイルを保存できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "GameObjectのPrefabJsonを生成できなかったため、Prefabファイルを保存できませんでした。");
 
 		return false;
 	}
@@ -120,7 +120,7 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 	// Prefab内部のキャッシュも更新しない
 	if (!Utility::SaveJsonFile(l_rootJson, l_filePath))
 	{
-		FWK_ADD_LOG("PrefabファイルへのJson書き込みに失敗しました。\nFilePath : {}", l_filePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabファイルへのJson書き込みに失敗しました。\nFilePath : {}", l_filePath.string());
 
 		return false;
 	}

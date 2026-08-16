@@ -4,7 +4,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 {
 	if (a_rootJson.is_null()) 
 	{
-		FWK_ADD_LOG("RootJsonが無効となっており、PrefabSystemのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効となっており、PrefabSystemのデシリアライズに失敗しました。");
 
 		return;
 	}
@@ -13,7 +13,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 	if (!Utility::IsJsonArray(l_jsonArray)) 
 	{
-		FWK_ADD_LOG("取得したJsonが配列になっておらずプレハブマップのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "取得したJsonが配列になっておらずプレハブマップのデシリアライズに失敗しました。");
 
 		return; 
 	}
@@ -31,7 +31,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 		// このPrefab自体を登録しない
 		if (l_prefabUUID.is_nil())
 		{
-			FWK_ADD_LOG("PrefabUUIDが無効のため、PrefabDataを登録できませんでした。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDが無効のため、PrefabDataを登録できませんでした。");
 
 			continue;
 		}
@@ -47,7 +47,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 	    // Prefab内部のDeserializeを実行しない。
 		if (l_prefabJson.is_null())
 		{
-			FWK_ADD_LOG("PrefabJsonが無効のため、PrefabDataを登録できませんでした。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabJsonが無効のため、PrefabDataを登録できませんでした。");
 
 			continue;
 		}
@@ -62,7 +62,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 		// 壊れた参照として判定できる
 		if (l_prefab.GetREFJson().is_null())
 		{
-			FWK_ADD_LOG("PrefabのJsonを読み込めなかったため、PrefabDataを登録できませんでした。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabのJsonを読み込めなかったため、PrefabDataを登録できませんでした。");
 
 			continue;
 		}
@@ -71,7 +71,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 		if (l_prefabNUMInstanceAllocatorJson.is_null())
 		{
-			FWK_ADD_LOG("PrefabInstanceNUMAllocatorのJsonが無効となっており、PrefabDataの登録に失敗しました。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabInstanceNUMAllocatorのJsonが無効となっており、PrefabDataの登録に失敗しました。");
 
 			continue;
 		}

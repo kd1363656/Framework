@@ -55,19 +55,22 @@ void FWK::SceneManager::AddSceneShiftMap(const SceneName& a_sceneName, const Sce
 {
 	if (a_sceneName.empty())
 	{
-		FWK_ADD_LOG("シーン遷移に追加しようとしたシーン名が空です、追加しようとしたシーン名の確認をしてください。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーン名が空です、追加しようとしたシーン名の確認をしてください。");
+
 		return;
 	}
 
 	if (a_sceneFilePath.empty())
 	{
-		FWK_ADD_LOG("シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
+
 		return;
 	}
 
 	if (!Utility::CanLoadFilePath(a_sceneFilePath, Constant::k_lowerJsonExtension))
 	{
-		FWK_ADD_LOG("シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
+
 		return;
 	}
 
@@ -95,7 +98,8 @@ void FWK::SceneManager::SceneShiftIfNeeded()
 	// 次のシーンのファイルパスが空なら移行しない
 	if (l_nextSceneFilePath.empty())
 	{
-		FWK_ADD_LOG("次のシーンへのファイルパスが空です、SceneManagerのマップ内部を確認してください。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへのファイルパスが空です、SceneManagerのマップ内部を確認してください。");
+
 		return;
 	}
 

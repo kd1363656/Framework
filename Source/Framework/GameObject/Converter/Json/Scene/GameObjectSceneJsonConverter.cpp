@@ -8,7 +8,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
 {
     if (a_rootJson.is_null())
 	{
-		FWK_ADD_LOG("RootJsonが無効のため、ゲームオブジェクトのシーンのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効のため、ゲームオブジェクトのシーンのデシリアライズに失敗しました。");
 
 		return false;
 	}
@@ -17,7 +17,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
 
 	if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
-		FWK_ADD_LOG("PrefabSceneInstanceNUMが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabSceneInstanceNUMが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
 
 		return false;
 	}
@@ -27,7 +27,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
 
 	if (l_sceneInstanceUUID.is_nil())
 	{
-		FWK_ADD_LOG("SceneInstanceUUIDが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneInstanceUUIDが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
 
 		return false;
 	}
@@ -124,7 +124,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneComponent(con
 		// コンポーネント数が一致しない場合コンポーネントのデシリアライズを行わない
 		if (l_componentJsonArray.size() != l_componentList.size())
 		{
-			FWK_ADD_LOG("コンポーネントの数がPrefabとSceneで一致しないためComponentのScene情報のデシリアライズに失敗しました。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "コンポーネントの数がPrefabとSceneで一致しないためComponentのScene情報のデシリアライズに失敗しました。");
 		
 			return false;
 		}
@@ -135,7 +135,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneComponent(con
 
 			if (l_json.is_null())
 			{
-				FWK_ADD_LOG("SceneのComponentListに無効なJsonが含まれています。");
+				FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneのComponentListに無効なJsonが含まれています。");
 
 				return false;
 			}
@@ -147,7 +147,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneComponent(con
 
 			if (!l_component) 
 			{
-				FWK_ADD_LOG("Prefabで生成したComponentが無効です。");
+				FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabで生成したComponentが無効です。");
 
 				return false;
 			}
@@ -170,7 +170,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneChildList(con
 	// Json配列のサイズが一致しなければreturn
 	if (a_childDeserializeDataList.size() != a_rootJsonArray.size())
 	{
-		FWK_ADD_LOG("子の数がPrefabとSceneで一致しないためSceneの子情報のデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "子の数がPrefabとSceneで一致しないためSceneの子情報のデシリアライズに失敗しました。");
 
 		return false;
 	}
@@ -182,7 +182,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneChildList(con
 
 		if (l_json.is_null()) 
 		{
-			FWK_ADD_LOG("Prefab側に存在するChildGameObjectのSceneJsonが無効です。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab側に存在するChildGameObjectのSceneJsonが無効です。");
 
 			return false;
 		}
@@ -209,7 +209,7 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::SerializeSceneCompo
 
 	if(!l_transformComponent)
 	{
-		FWK_ADD_LOG("シーンデータのシリアライズ時にTransformComponentが無効だったため、シリアライズ処理に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンデータのシリアライズ時にTransformComponentが無効だったため、シリアライズ処理に失敗しました。");
 
 		return {};
 	}

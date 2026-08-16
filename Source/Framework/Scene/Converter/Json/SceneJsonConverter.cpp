@@ -60,7 +60,7 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
 		if (l_gameObject->GetREFSceneInstanceName().empty() ||
 			l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
 		{
-			FWK_ADD_LOG("PrefabNameまたはPrefabInstaneNUMが無効のため、GameObjectをSceneへ追加できませんでした。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabNameまたはPrefabInstaneNUMが無効のため、GameObjectをSceneへ追加できませんでした。");
 
 			continue;
 		}

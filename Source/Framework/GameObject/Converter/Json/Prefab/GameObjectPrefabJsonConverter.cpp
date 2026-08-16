@@ -17,14 +17,14 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 
 	if (l_prefabUUID.is_nil())
 	{
-		FWK_ADD_LOG("プレハブのUUIDが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "プレハブのUUIDが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		return false;
 	}
 
 	if (!a_prefabUUIDSet.emplace(l_prefabUUID).second)
 	{
-		FWK_ADD_LOG("プレハブのUUIDが重複しています、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Constant::k_debugWarningColor, プレハブのUUIDが重複しています、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		return false;
 	}
@@ -37,7 +37,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 
 	if (!l_prefab)
 	{
-		FWK_ADD_LOG("プレハブが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "プレハブが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		a_prefabUUIDSet.erase(l_prefabUUID);
 
@@ -54,7 +54,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 
 	if (l_prefabJson.is_null()) 
 	{
-		FWK_ADD_LOG("プレハブが保持しているJsonが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "プレハブが保持しているJsonが無効となっていおり、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		a_prefabUUIDSet.erase(l_prefabUUID);
 
@@ -69,7 +69,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 	// コンポーネントのプレハブデータのデシリアライズ
 	if (!DeserializePrefabComponent(a_gameObject, l_prefabJson, a_componentSmartPointerVectorArray))
 	{
-		FWK_ADD_LOG("コンポーネントのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "コンポーネントのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		a_prefabUUIDSet.erase(l_prefabUUID);
 
@@ -82,7 +82,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 	{
 		// コンポーネント用オブザーバのデシリアライズ
 		// シーン情報は存在しない
-		FWK_ADD_LOG("コンポーネントオブザーバーのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "コンポーネントオブザーバーのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		a_prefabUUIDSet.erase(l_prefabUUID);
 
@@ -98,7 +98,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 		                                a_childDeserializeDataList,
 		                                a_scene))
 	{
-		FWK_ADD_LOG("子ゲームオブジェクトのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "子ゲームオブジェクトのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
 		a_prefabUUIDSet.erase(l_prefabUUID);
 
@@ -176,7 +176,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponent(c
 
 			if (l_typeName.empty())
 			{
-				FWK_ADD_LOG("ComponentTypeNameが空のため、Componentを生成できませんでした。");
+				FWK_ADD_LOG(Constant::k_debugWarningColor, "ComponentTypeNameが空のため、Componentを生成できませんでした。");
 
 				return false;
 			}

@@ -58,14 +58,14 @@ void FWK::PrefabSystem::AddPrefabMap(const boost::uuids::uuid& a_prefabUUID, con
 {
 	if (a_prefabUUID.is_nil())
 	{
-		FWK_ADD_LOG("PrefabUUIDが無効だったため、PrefabSystemのプレハブマップに追加できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDが無効だったため、PrefabSystemのプレハブマップに追加できませんでした。");
 
 		return;
 	}
 
 	if (!m_prefabMap.try_emplace(a_prefabUUID, a_prefabData).second)
 	{
-		FWK_ADD_LOG("同じPrefabUUIDが既に登録されており、PrefabSystemのプレハブマップに追加できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じPrefabUUIDが既に登録されており、PrefabSystemのプレハブマップに追加できませんでした。");
 	}
 }
 void FWK::PrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
@@ -80,7 +80,7 @@ void FWK::PrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
 
 	m_prefabMap.erase(l_itr);
 
-	FWK_ADD_LOG("PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
+	FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
 }
 
 nlohmann::json FWK::PrefabSystem::Serialize()
@@ -92,7 +92,7 @@ FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstance
 {
 	if (a_prefabUUID.is_nil())
 	{
-		FWK_ADD_LOG("PrefabUUIDが無効のため、PrefabInstanceNUMを発行できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDが無効のため、PrefabInstanceNUMを発行できませんでした。");
 
 		return Constant::k_invalidPrefabSceneInstanceNUM;
 	}
@@ -101,7 +101,7 @@ FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstance
 
 	if (l_itr == m_prefabMap.end())
 	{
-		FWK_ADD_LOG("PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを発行できませんでした。", boost::uuids::to_string(a_prefabUUID));
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを発行できませんでした。", boost::uuids::to_string(a_prefabUUID));
 
 		return Constant::k_invalidPrefabSceneInstanceNUM;
 	}
@@ -124,7 +124,7 @@ void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_pre
 
 	if (l_itr == m_prefabMap.end())
 	{
-		FWK_ADD_LOG("PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを解放できませんでした。", boost::uuids::to_string(a_prefabUUID));
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを解放できませんでした。", boost::uuids::to_string(a_prefabUUID));
 
 		return;
 	}
