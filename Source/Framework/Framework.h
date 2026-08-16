@@ -51,6 +51,7 @@
 //===============================================================================
 #include "Definition/Type/Alias/MathTypeAlias.h"
 #include "Editor/Style/EditorStyle.h"
+#include "Definition/Constant/Editor/EditorConstant.h"
 #include "Editor/Window/Log/LogEditorWindow.h"
 #include "Editor/Window/EditorWindowBase.h"
 #include "Editor/Converter/Json/EditorManagerJsonConverter.h"
@@ -444,7 +445,6 @@
 #include "Definition/Enum/Observer/ObserverEnum.h"
 #include "Definition/Constant/Utility/Enum/EnumBitShiftUtilityConstant.h"
 #include "Utility/Enum/EnumBitShiftUtility.h"
-#include "Definition/Constant/IMGUI/IMGUIConstant.h"
 #include "Utility/IMGUI/Observer/IMGUIObserverUtility.h"
 #include "Utility/IMGUI/Bool/IMGUIBoolToString.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"

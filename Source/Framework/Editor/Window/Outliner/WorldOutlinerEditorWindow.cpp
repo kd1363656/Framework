@@ -349,7 +349,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectRenameInput()
 void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 {
 	// GameObjectNodeを描画した後に残っている
-	//Outliner領域全体をRoot用DropArea領域として利用する
+	// Outliner領域全体をRoot用DropArea領域として利用する
 	ImVec2 l_rootDropAreaSize = ImGui::GetContentRegionAvail();
 
 	// ImGuiの残り領域が小さすぎても
@@ -389,21 +389,38 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 	}
 
 	// Outlinerの空白部分を右クリックした場合のメニュー
-	if (ImGui::BeginPopupContextItem(k_rootContextMenuLabel.data()))
-	{
-		// 空白右クリックでもRenameを確定する
-		if (m_isGameObjectRenameActive)
-		{
-			ConfirmGameObjectRename();
-		}
+	if (!ImGui::BeginPopupContextItem(k_rootContextMenuLabel.data())) { return; }
 
+	// 空白右クリックでもRename中なら先に確定する
+	if (m_isGameObjectRenameActive)
+	{
+		ConfirmGameObjectRename();
+	}
+
+	const auto l_selectedGameObjectCount = m_gameObjectSelection.FetchVALSelectedGameObjectCount();
+
+	if (l_selectedGameObjectCount != k_emptySelectionCount)
+	{
+		// GameObjectが一つでも選択されている場合は、
+		// 「GameObject追加」は表示しない
+		// 複数選択中でも、このMenuItemから
+		// 選択されているGameObjectをまとめて削除できる
+		if (ImGui::MenuItem(k_destroyGameObjectMenuItemText.data(), k_destroyGameObjectMenuItemShortcutText.data()))
+		{
+			// 実際のDestroy()はOutliner描画終了後に行う
+			m_isSelectedGameObjectDestroyRequested = true;
+		}
+	}
+	else
+	{
+		// 何も選択されていない場合だけRootGameObject追加を表示する
 		if (ImGui::MenuItem(k_addRootGameObjectMenuItemText.data()))
 		{
 			RequestAddGameObject();
 		}
-
-		ImGui::EndPopup();
 	}
+
+	ImGui::EndPopup();
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindow::HasValidChildGameObject(const std::weak_ptr<GameObject>& a_gameObject) const

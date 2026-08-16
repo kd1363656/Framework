@@ -421,9 +421,14 @@ void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
 {
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateShortCut()
+void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateShortcut()
 {
-	
+
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateRequest()
+{
+
 }
 
 void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
@@ -443,6 +448,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::
 
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderDeleteRequest()
 {}
+
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindow::FetchVALFolderCreateParentPath() const
+{
+	return std::filesystem::path();
+}
 
 std::string_view FWK::Editor::ContentBrowserEditorWindow::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const
 {

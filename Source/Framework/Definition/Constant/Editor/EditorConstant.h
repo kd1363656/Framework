@@ -19,5 +19,37 @@ namespace FWK::Constant
 	inline constexpr float k_imguiDefaultDragValue       = 0.10F;
 	inline constexpr float k_imguiDefaultDelayDrawSecond = 1.0F;
 
+	inline constexpr TypeAlias::Math::Color k_debugDefaultColor = 
+	{
+		0.92F,
+		0.96F,
+		0.92F,
+		1.00F
+	};
+
+	inline constexpr TypeAlias::Math::Color k_debugSuccessColor =
+	{
+		0.35F,
+		0.90F,
+		0.45F,
+		1.00F
+	};
+
+	inline constexpr TypeAlias::Math::Color k_debugWarningColor =
+	{
+		1.00F,
+		0.78F,
+		0.24F,
+		1.00F
+	};
+
+	inline constexpr TypeAlias::Math::Color k_debugErrorColor =
+	{
+		1.00F,
+		0.32F,
+		0.32F,
+		1.00F
+	};
+
 	inline constexpr std::size_t k_filePathNullTerminatorElementCount = 1ULL;
 }

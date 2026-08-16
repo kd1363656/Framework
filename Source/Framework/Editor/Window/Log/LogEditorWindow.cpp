@@ -1,10 +1,10 @@
 ﻿#include "LogEditorWindow.h"
 
 FWK::Editor::LogEditorWindow::LogEditorWindow() : 
-	m_textBuffer(),
+	m_textLineColorList(),
 
-	m_textFilter(),
-
+	m_textBuffer     (),
+	m_textFilter     (),
 	m_textLineOffsets(),
 
 	m_canAutoScroll    (k_enableCanAutoScroll),
@@ -29,35 +29,9 @@ void FWK::Editor::LogEditorWindow::Draw()
 	ImGui::End();
 }
 
-void FWK::Editor::LogEditorWindow::AddLog(const char* a_format, ...)
+void FWK::Editor::LogEditorWindow::AddLog(const TypeAlias::Math::Color& a_textColor, const std::string& a_text)
 {
-	// 現在のm_textBufferのサイズを保存(どこから新しい文字列が始まるかを記録)
-	int l_oldSize = m_textBuffer.size();
-
-	// va_listを使って可変引数から文字列を追加
-	va_list l_args = {};
-
-	va_start(l_args, a_format);
-
-	// フォーマット済み文字列をバッファに追加
-	m_textBuffer.appendfv(a_format, l_args);
-
-	va_end(l_args);
-
-	// 新たに追加された部分を走査し、改行文字がある位置を次の行の開始位置として記録
-	for (int l_newSize = m_textBuffer.size(); l_oldSize < l_newSize; l_oldSize++)
-	{
-		// 改行を検出したら、次の行の先頭インデックスを記録
-		if (m_textBuffer[l_oldSize] != '\n') { continue; }
-
-		m_textLineOffsets.push_back(l_oldSize + k_nextLineStartOffset);
-	}
-
-	// 自動スクロールが有効な場合、視界描画時に最下部へスクロールするフラグをセット
-	if (m_canAutoScroll)
-	{
-		m_canScrollToBottom = true;
-	}
+	// 空モッジの場合は追加するものがないため終了する
 }
 
 void FWK::Editor::LogEditorWindow::DrawEditorOptions()
