@@ -33,7 +33,7 @@ void FWK::Converter::MainMenubarEditorJsonConverter::DeserializeEditorMainMenu(c
 
         if (!l_editorMainMenuBase) 
         {
-            FWK_ADD_LOG("EditorMainMenuが復元されておらず、追加処理に失敗しました。");
+            FWK_ADD_LOG(Constant::k_debugWarningColor, "EditorMainMenuが復元されておらず、追加処理に失敗しました。");
             continue;
         }
 

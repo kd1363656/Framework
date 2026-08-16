@@ -19,7 +19,7 @@ bool FWK::Editor::ContentBrowserEditorWindowAssetRegistry::Add(const boost::uuid
 	// 無効なUUIDなら登録しない
 	if (a_assetUUID.is_nil())
 	{
-		FWK_ADD_LOG("ContentBrowserEditorWindowAssetRegistryに追加する予定のUUIDが無効値を示しており、ContentBrowserEditorWindowAssetRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserEditorWindowAssetRegistryに追加する予定のUUIDが無効値を示しており、ContentBrowserEditorWindowAssetRegistryへの登録に失敗しました。");
 
 		return false;
 	}
@@ -27,14 +27,14 @@ bool FWK::Editor::ContentBrowserEditorWindowAssetRegistry::Add(const boost::uuid
 	// UUIDが既に登録されているなら登録しない
 	if (m_assetUUIDSet.contains(a_assetUUID))
 	{
-		FWK_ADD_LOG("ContentBrowserEditorWindowAssetRegistryに追加する予定のUUIDが既に登録されており、ContentBrowserEditorWindowAssetRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserEditorWindowAssetRegistryに追加する予定のUUIDが既に登録されており、ContentBrowserEditorWindowAssetRegistryへの登録に失敗しました。");
 
 		return false;
 	}
 
 	if (!m_assetFilePathToUUIDMap.try_emplace(a_assetFilePath, a_assetUUID).second)
 	{
-		FWK_ADD_LOG("ContentBrowserEditorWindowAssetRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserEditorWindowAssetRegistryへの登録に失敗しました。");
 
 		return false;
 	}

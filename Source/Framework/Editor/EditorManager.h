@@ -40,7 +40,10 @@ namespace FWK::Editor
 		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		template <class... Args>
-		void AddLog(const std::source_location& a_location, const std::string_view& a_format, Args&&... a_args)
+		void AddLog(const std::source_location&   a_location, 
+			        const TypeAlias::Math::Color& a_textColor,
+			        const std::string_view&       a_format, 
+			              Args&&...               a_args)
 		{
 			// a_formatとa_args...を使って、ログ本文の文字列を作成する
 			// 例 : FWK_ADD_LOG("HP = {}, Name = {}", 100, "Player");
@@ -50,12 +53,14 @@ namespace FWK::Editor
 			// 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
 			const std::string l_message = std::vformat(a_format, std::make_format_args(a_args...));
 
+			const std::string& l_formattedLog = std::format("[{} : {}][{}]\n{}\n",
+				                                            a_location.file_name(),
+				                                            a_location.line(),
+				                                            a_location.function_name(),
+				                                            l_message);
+
 			// 呼びだし元情報をつけてログ本文を記述
-			m_logEditorWindow.AddLog("[%s : %u][%s]\n%s\n",
-									 a_location.file_name(),
-									 a_location.line(),
-									 a_location.function_name(),
-									 l_message.c_str());
+			m_logEditorWindow.AddLog(a_textColor, l_formattedLog);
 		}
 	
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
@@ -139,9 +144,9 @@ namespace FWK::Editor
 }
 
 // __VA_OPT(,)は可変長引数があるときだけ"","を追加するためのC++20の機能
-#define FWK_ADD_LOG(Format, ...)																						 \
-do																														 \
-{																														 \
-	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), Format __VA_OPT__(,) __VA_ARGS__); \
-}																														 \
+#define FWK_ADD_LOG(TextColor, Format, ...)																						    \
+do																														            \
+{																														            \
+	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), TextColor, Format __VA_OPT__(,) __VA_ARGS__); \
+}																														            \
 while(false)

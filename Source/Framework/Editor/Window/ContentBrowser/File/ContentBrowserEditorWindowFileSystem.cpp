@@ -4,7 +4,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 {
 	if (a_folderName.empty())
 	{
-		FWK_ADD_LOG("フォルダ名が空のため、フォルダを作成できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダ名が空のため、フォルダを作成できませんでした。");
 
 		return {};
 	}
@@ -15,7 +15,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 	if (!std::filesystem::is_directory(a_parentFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG("フォルダ作成先が無効です。\nFolderPath : {}", a_parentFolderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダ作成先が無効です。\nFolderPath : {}", a_parentFolderPath.string());
 
 		return {};
 	}
@@ -25,7 +25,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 
 	if (l_folderNamePath.has_parent_path())
 	{
-		FWK_ADD_LOG("フォルダ名にFolderPathを含めることはできません。\nFolderName : {}", a_folderName);
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダ名にFolderPathを含めることはできません。\nFolderName : {}", a_folderName);
 
 		return {};
 	}
@@ -37,14 +37,14 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 	// 同じ名前のファイルまたはフォルダーを上書きしない
 	if (std::filesystem::exists(l_newFolderPath, l_errorCode))
 	{
-		FWK_ADD_LOG("同名のファイルまたはフォルダーが既に存在します。\nFolderPath : {}", l_newFolderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "同名のファイルまたはフォルダーが既に存在します。\nFolderPath : {}", l_newFolderPath.string());
 
 		return {};
 	}
 
 	if (l_errorCode)
 	{
-		FWK_ADD_LOG("フォルダー名を確認できませんでした。\nFolderPath : {}", l_newFolderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダー名を確認できませんでした。\nFolderPath : {}", l_newFolderPath.string());
 
 		return {};
 	}
@@ -54,12 +54,12 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 	if (!std::filesystem::create_directory(l_newFolderPath, l_errorCode))
 	{
 	
-		FWK_ADD_LOG("フォルダーを作成できませんでした。\nFolderPath : {}", l_newFolderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダーを作成できませんでした。\nFolderPath : {}", l_newFolderPath.string());
 
 		return {};
 	}
 
-	FWK_ADD_LOG("フォルダーを作成しました。\nFolderPath : {}", l_newFolderPath.string());
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "フォルダーを作成しました。\nFolderPath : {}", l_newFolderPath.string());
 	
 	return l_newFolderPath;
 }
@@ -70,7 +70,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	if (!l_gameObject ||
 		l_gameObject->GetVALIsDestroyed())
 	{
-		FWK_ADD_LOG("Prefab化するGameObjectが無効のため、Prefabを作成できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab化するGameObjectが無効のため、Prefabを作成できませんでした。");
 
 		return {};
 	}
@@ -81,7 +81,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	if (!std::filesystem::is_directory(a_parentFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG("Prefab保存先フォルダが無効のため、Prefabを作成できませんでした。\nFolderPath : {}", a_parentFolderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab保存先フォルダが無効のため、Prefabを作成できませんでした。\nFolderPath : {}", a_parentFolderPath.string());
 
 		return {};
 	}
@@ -90,7 +90,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	if (!l_gameObject->GetREFPrefabUUID().is_nil() ||
 		l_gameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM)
 	{
-		FWK_ADD_LOG("すでにPrefabInstanceとなっているGameObjectは新規Prefab化できません。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "すでにPrefabInstanceとなっているGameObjectは新規Prefab化できません。");
 
 		return {};
 	}
@@ -100,7 +100,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 	if (l_prefabName.empty())
 	{
-		FWK_ADD_LOG("SceneInstanceNameが空のため、PrefabNameを決定できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneInstanceNameが空のため、PrefabNameを決定できませんでした。");
 
 		return {};
 	}
@@ -114,14 +114,14 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	// 既存ファイルを勝手に上書きしない
 	if (std::filesystem::exists(l_prefabFilePath, l_errorCode))
 	{
-		FWK_ADD_LOG("同名Prefabファイルが既に存在するため、新しいPrefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "同名Prefabファイルが既に存在するため、新しいPrefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
 
 		return {};
 	}
 
 	if (l_errorCode)
 	{
-		FWK_ADD_LOG("PrefabFilePathを確認できなかったため、Prefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabFilePathを確認できなかったため、Prefabを作成できませんでした。\nFilePath : {}", l_prefabFilePath.string());
 
 		return {};
 	}
@@ -129,7 +129,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	// Registry上でも同じfilePathが使用済みなら作成しない
 	if (!a_assetRegistry.FindVALAssetUUID(l_prefabFilePath).is_nil())
 	{
-		FWK_ADD_LOG("同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
 
 		return {};
 	}
@@ -140,7 +140,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 	if (l_prefabUUID.is_nil())
 	{
-		FWK_ADD_LOG("PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
 
 		return {};
 	}
@@ -154,14 +154,14 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	// PrefabSystem側でもUUIDが使用済みなら登録しない
 	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))
 	{
-		FWK_ADD_LOG("生成したPrefabUUIDがPrefabSystemですでに使用されています。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "生成したPrefabUUIDがPrefabSystemですでに使用されています。");
 
 		return {};
 	}
 
 	if (!a_assetRegistry.Add(l_prefabUUID, l_prefabFilePath))
 	{
-		FWK_ADD_LOG("ContentBrowserAssetRegistryへPrefabを登録できませんでした。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserAssetRegistryへPrefabを登録できませんでした。");
 
 		return {};
 	}
@@ -185,7 +185,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	{
 		a_assetRegistry.Erase(l_prefabFilePath);
 
-		FWK_ADD_LOG("PrefabSystemへのPrefab登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabSystemへのPrefab登録に失敗しました。");
 
 		return {};
 	}
@@ -198,7 +198,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 		l_prefabSystem.RemovePrefab(l_prefabUUID);
 		a_assetRegistry.Erase      (l_prefabFilePath);
 
-		FWK_ADD_LOG("PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
 
 		return {};
 	}
@@ -227,12 +227,12 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 		std::filesystem::remove(l_prefabFilePath, l_errorCode);
 
-		FWK_ADD_LOG("Prefabファイルの保存に失敗したため、Prefab作成を取り消しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabファイルの保存に失敗したため、Prefab作成を取り消しました。");
 
 		return {};
 	}
 
-	FWK_ADD_LOG("Prefabを作成しました。\nPrefabName : {}\nFilePath : {}\nPrefabUUID : {}\nPrefabInstanceNUM : {}",
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Prefabを作成しました。\nPrefabName : {}\nFilePath : {}\nPrefabUUID : {}\nPrefabInstanceNUM : {}",
 		        l_prefabName,
 		        l_prefabFilePath.string(),
 		        boost::uuids::to_string(l_prefabUUID),
@@ -250,7 +250,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	if (!std::filesystem::is_directory(a_folderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG("削除対象Fodlerが無効です。\nFolderPath : {}", a_folderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象Fodlerが無効です。\nFolderPath : {}", a_folderPath.string());
 
 		return false;
 	}
@@ -286,7 +286,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 
 		if (l_errorCode)
 		{
-			FWK_ADD_LOG("削除対象フォルダーの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象フォルダーの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
 
 			return false;
 		}
@@ -299,7 +299,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	{
 		if (!DeletePrefabFile(l_prefabFilePath, a_assetRegistry))
 		{
-			FWK_ADD_LOG("フォルダー配下のPrefab削除に失敗したため、Folder削除を中止しました。\nPrefabFilePath : {}", l_prefabFilePath.string());
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダー配下のPrefab削除に失敗したため、Folder削除を中止しました。\nPrefabFilePath : {}", l_prefabFilePath.string());
 
 			return false;
 		}
@@ -315,12 +315,12 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	if (l_errorCode ||
 		l_removedEntryCount == k_notRemovedEntryCount)
 	{
-		FWK_ADD_LOG("フォルダーを削除できませんでした。\nFolderPath : {}", a_folderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダーを削除できませんでした。\nFolderPath : {}", a_folderPath.string());
 
 		return false;
 	}
 	
-	FWK_ADD_LOG("フォルダーを削除しました。\nFolderPath : {}", a_folderPath.string());
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "フォルダーを削除しました。\nFolderPath : {}", a_folderPath.string());
 
 	return true;
 }
@@ -334,7 +334,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 	
 	if (!l_scene) 
 	{
-		FWK_ADD_LOG("Sceneが無効のため、Prefabを削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Sceneが無効のため、Prefabを削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
 		return false; 
 	}
@@ -343,7 +343,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 
 	if (l_prefabUUID.is_nil()) 
 	{
-		FWK_ADD_LOG("削除対象PrefabのUUIDを取得できませんでした。\nFilePath : {}", a_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象PrefabのUUIDを取得できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
 		return false;
 	}
@@ -352,7 +352,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 	// UUIDを取得した後でRegistryから削除する
 	if (!a_assetRegistry.Erase(a_prefabFilePath))
 	{
-		FWK_ADD_LOG("PrefabをAssetRegistryから削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabをAssetRegistryから削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
 		return false;
 	}
@@ -365,10 +365,10 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 		// AssetRegistryを削除前の状態に戻す
 		if (!a_assetRegistry.Add(l_prefabUUID, a_prefabFilePath))
 		{
-			FWK_ADD_LOG("Prefab削除失敗後のAssetRegistry復元にも失敗しました。\nFilePath : {}", a_prefabFilePath.string());
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab削除失敗後のAssetRegistry復元にも失敗しました。\nFilePath : {}", a_prefabFilePath.string());
 		}
 
-		FWK_ADD_LOG("Prefabファイルを削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabファイルを削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
 		return false;
 	}
@@ -396,7 +396,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 
 	l_scene->GetMutableREFPrefabSystem().RemovePrefab(l_prefabUUID);
 
-	FWK_ADD_LOG("Prefabを削除しました。\nFilePath : {}\nPrefabUUID : {}", a_prefabFilePath.string(), boost::uuids::to_string(l_prefabUUID));
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Prefabを削除しました。\nFilePath : {}\nPrefabUUID : {}", a_prefabFilePath.string(), boost::uuids::to_string(l_prefabUUID));
 
 	return true;
 }
@@ -408,7 +408,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::HasChildFolder(const std
 
 	if (l_errorCode) 
 	{
-		FWK_ADD_LOG("子フォルダーの確認に失敗しました。\nFolderPath : {}", a_folderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "子フォルダーの確認に失敗しました。\nFolderPath : {}", a_folderPath.string());
 
 		return false;
 	}
@@ -426,7 +426,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::HasChildFolder(const std
 
 		if (l_errorCode)
 		{
-			FWK_ADD_LOG("子フォルダーの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "子フォルダーの走査中にエラーが発生しました。\nFolderPath : {}", a_folderPath.string());
 
 			return false;
 		}

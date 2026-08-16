@@ -17,7 +17,7 @@ void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
 			
 			l_sceneManager.SaveScene();
 			
-			FWK_ADD_LOG("シーンのセーブが完了しました。");
+			FWK_ADD_LOG(Constant::k_debugINFOColor, "シーンのセーブが完了しました。");
 		}
 
 		ImGui::EndMenu();
@@ -32,6 +32,6 @@ void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
 
 		l_sceneManager.SaveScene();
 
-		FWK_ADD_LOG("シーンのセーブが完了しました。");
+		FWK_ADD_LOG(Constant::k_debugINFOColor, "シーンのセーブが完了しました。");
 	}
 }

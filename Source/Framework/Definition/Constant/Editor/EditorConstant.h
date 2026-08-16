@@ -19,7 +19,7 @@ namespace FWK::Constant
 	inline constexpr float k_imguiDefaultDragValue       = 0.10F;
 	inline constexpr float k_imguiDefaultDelayDrawSecond = 1.0F;
 
-	inline constexpr TypeAlias::Math::Color k_debugDefaultColor = 
+	inline constexpr TypeAlias::Math::Color k_debugINFOColor = 
 	{
 		0.92F,
 		0.96F,

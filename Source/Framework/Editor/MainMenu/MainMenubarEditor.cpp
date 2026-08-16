@@ -34,7 +34,7 @@ void FWK::Editor::MainMenubarEditor::AddEditorMainMenu(std::unique_ptr<EditorMai
 {
 	if (!a_editorMainMenu) 
 	{
-		FWK_ADD_LOG("追加しようとしたメインメニューが無効なため、メインメニュー追加処理に失敗しました");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "追加しようとしたメインメニューが無効なため、メインメニュー追加処理に失敗しました");
 		return;
 	}
 

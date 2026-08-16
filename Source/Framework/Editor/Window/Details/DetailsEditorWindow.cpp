@@ -170,7 +170,7 @@ void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<
 
 		if (!l_component)
 		{
-			FWK_ADD_LOG("Component : {}\nComponentFactoryからの生成に失敗しました。");
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "Component : {}\nComponentFactoryからの生成に失敗しました。");
 
 			continue;
 		}
