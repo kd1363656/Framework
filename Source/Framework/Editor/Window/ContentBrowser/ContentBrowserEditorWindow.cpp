@@ -425,12 +425,14 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateShortcut()
 {
 
 }
+void FWK::Editor::ContentBrowserEditorWindow::ApplyEntrySelectionShortcut()
+{
 
+}
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateRequest()
 {
 
 }
-
 void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
 {
 	// FileをCurrentDirectoryとして設定することは許可しない
@@ -445,9 +447,13 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::
 	// Path文字列上だけ正規化して保持する
 	m_currentFolderPath = a_folderPath;
 }
-
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderDeleteRequest()
-{}
+{
+}
+void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
+{
+
+}
 
 std::filesystem::path FWK::Editor::ContentBrowserEditorWindow::FetchVALFolderCreateParentPath() const
 {

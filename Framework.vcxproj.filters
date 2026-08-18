@@ -1258,6 +1258,12 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Rename">
       <UniqueIdentifier>{20cbed7c-d059-4b9b-b81e-539d1aa4bd5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Entry">
+      <UniqueIdentifier>{6b5b7668-c6f9-4aa2-bd14-aeae7d882759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Entry\Selection">
+      <UniqueIdentifier>{aca9788f-429d-46b0-bf34-5d887508fd86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2433,6 +2439,12 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntrySystem.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\Selection\ContentBrowserEditorWindowEntrySelection.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry\Selection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3034,6 +3046,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntrySystem.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\Selection\ContentBrowserEditorWindowEntrySelection.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry\Selection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

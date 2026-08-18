@@ -530,5 +530,7 @@
 #include "Editor/Window/ContentBrowser/Asset/Converter/Json/ContentBrowserEditorWindowAssetRegistryJsonConverter.h"
 #include "Editor/Window/ContentBrowser/Asset/ContentBrowserEditorWindowAssetRegistry.h"
 #include "Editor/Window/ContentBrowser/File/ContentBrowserEditorWindowFileSystem.h"
+#include "Editor/Window/ContentBrowser/Entry/Selection/ContentBrowserEditorWindowEntrySelection.h"
+#include "Editor/Window/ContentBrowser/Entry/ContentBrowserEditorWindowEntrySystem.h"
 #include "Editor/Window/ContentBrowser/Converter/Json/ContentBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"
