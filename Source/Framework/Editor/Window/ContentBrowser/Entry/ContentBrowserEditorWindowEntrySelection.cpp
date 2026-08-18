@@ -1,11 +1,11 @@
 ﻿#include "ContentBrowserEditorWindowEntrySelection.h"
 
-void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SynchronizeCurrentFolderEntries(const std::vector<std::filesystem::path>& a_currentFolderEntryPathList)
+void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SynchronizeCurrentFolderEntries(const std::vector<Struct::ContentBrowserEntryData>& a_currentFolderEntryList)
 {
     // CurrentFolderに現在表示されているEntry一覧を保持する
     // この順番がそのままShift範囲選択の基準になるため、
     // 呼びだし側では表示順に並べた状態で渡す
-    m_currentFolderEntryPathList = a_currentFolderEntryPathList;
+    m_currentFolderEntryPathList = a_currentFolderEntryList;
 
     // Explorer等からFolder/Fileを外部削除された場合や、
     // CurrentFolderが変更された場合に
@@ -32,7 +32,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SynchronizeCurrentFo
     }
 }
 
-void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SelectSingleEntry(const std::filesystem::path& a_entryPath)
+void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SelectSingleEntry(const std::filesystem::path& a_entryPath, const std::vector<Struct::ContentBrowserEntryData>& a_currentFolderEntryList)
 {
     if (!ContainsCurrentFolderEntry(a_entryPath)) { return; }
 
@@ -45,7 +45,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SelectSingleEntry(co
     // 次回Shift選択の開始位置にする
     m_rangeAnchorEntryPath = a_entryPath;
 }
-void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SelectRangeEntry(const std::filesystem::path& a_entryPath)
+void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SelectRangeEntry(const std::filesystem::path& a_entryPath, const std::vector<Struct::ContentBrowserEntryData>& a_currentFolderEntryList)
 {
     if (!ContainsCurrentFolderEntry(a_entryPath)) { return; }
 
@@ -78,7 +78,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntrySelection::SelectRangeEntry(con
     }
 
     // CurrenFolde一覧に存在していることは事前確認済みだが、
-    // 状態不整合が発生した場合に備えて安全のため確認
+    // 状態不整合が発生した場合に備えて安全のため範囲外かどうかを確認
     if (l_anchorIndex == m_currentFolderEntryPathList.size() ||
         l_selectedIndex == m_currentFolderEntryPathList.size())
     {
@@ -124,7 +124,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntrySelection::ToggleEntrySelection
     // 次のShift選択の基準にもする
     m_rangeAnchorEntryPath = a_entryPath;
 
-    if (ContainsCurrentFolderEntry(a_entryPath))
+    if (ContainsSelectedEntry(a_entryPath))
     {
         // 既に選択されているEntryなら
         // そのEntryだけ選択解除する
@@ -150,16 +150,16 @@ bool FWK::Editor::ContentBrowserEditorWindowEntrySelection::ContainsSelectedEntr
     return m_selectedEntryPathSet.contains(a_entryPath);
 }
 
+bool FWK::Editor::ContentBrowserEditorWindowEntrySelection::ContainsCurrentFolderEntry(const std::filesystem::path& a_selectedEntryPathSet) const
+{
+    if (a_selectedEntryPathSet.empty()) { return false; }
+
+    return std::ranges::find(m_currentFolderEntryPathList, a_selectedEntryPathSet) != m_currentFolderEntryPathList.end();
+}
+
 std::size_t FWK::Editor::ContentBrowserEditorWindowEntrySelection::FetchVALSelectedEntryCount() const
 {
     return m_selectedEntryPathSet.size();
-}
-
-bool FWK::Editor::ContentBrowserEditorWindowEntrySelection::ContainsCurrentFolderEntry(const std::filesystem::path& a_entryPath) const
-{
-    if (a_entryPath.empty()) { return false; }
-
-    return std::ranges::find(m_currentFolderEntryPathList, a_entryPath) != m_currentFolderEntryPathList.end();
 }
 
 void FWK::Editor::ContentBrowserEditorWindowEntrySelection::AddSelectedEntry(const std::filesystem::path& a_entryPath)

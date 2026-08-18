@@ -38,10 +38,12 @@ namespace FWK::Editor
 
 		void ClearFolderCreateState();
 
-		void ApplyFolderCreateShortcut();
-		void ApplyFolderCreateRequest ();
-		void ApplyCurrentFolderPath   (const std::filesystem::path& a_folderPath);
-		void ApplyFolderDeleteRequest ();
+		void ApplyFolderCreateShortcut      ();
+		void ApplyEntrySelectionShortcut    ();
+		void ApplySelectedEntryDeleteRequest();
+		void ApplyFolderCreateRequest       ();
+		void ApplyCurrentFolderPath         (const std::filesystem::path& a_folderPath);
+		void ApplyFolderDeleteRequest       ();
 
 		std::filesystem::path FetchVALFolderCreateParentPath() const;
 
@@ -85,8 +87,7 @@ namespace FWK::Editor
 		static constexpr std::uint32_t k_initialFolderEntryColumnCount = 0U;
 		
 		std::filesystem::path m_currentFolderPath = k_contentRootFolderPath;
-		std::filesystem::path m_selectedEntryPath = {};
-
+		
 		ContentBrowserEditorWindowAssetRegistry m_assetRegistry = {};
 		ContentBrowserEditorWindowFileSystem    m_fileSystem    = {};
 

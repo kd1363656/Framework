@@ -427,8 +427,13 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateShortcut()
 }
 void FWK::Editor::ContentBrowserEditorWindow::ApplyEntrySelectionShortcut()
 {
+	
+}
+void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
+{
 
 }
+
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateRequest()
 {
 
@@ -449,10 +454,6 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::
 }
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderDeleteRequest()
 {
-}
-void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
-{
-
 }
 
 std::filesystem::path FWK::Editor::ContentBrowserEditorWindow::FetchVALFolderCreateParentPath() const
