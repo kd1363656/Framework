@@ -16,6 +16,8 @@ namespace FWK::Editor
 
 		nlohmann::json Serialize() override;
 
+		void RequestFolderCreate(const std::filesystem::path& a_parentFolderPath);
+
 		void RefreshCurrentFolderEntries();
 
 		void ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath);
@@ -41,8 +43,6 @@ namespace FWK::Editor
 		void DrawCurrentFolderContextMenu      ();
 		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData);
 		
-		void RequestFolderCreate(const std::filesystem::path& a_parentFolderPath);
-
 		void ConfirmFolderCreate();
 
 		void CancelFolderCreate();

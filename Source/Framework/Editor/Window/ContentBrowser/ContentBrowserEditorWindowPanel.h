@@ -20,10 +20,10 @@ namespace FWK::Editor
 	private:
 
 		void DrawFolderTreeNode                (const std::filesystem::path&           a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
-		bool DrawFolderEntry                   (const Struct::ContentBrowserEntryData& a_entryData,  ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
+		bool DrawFolderEntry                   (const Struct::ContentBrowserEntryData& a_entryData,  ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path&           a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void DrawCurrentFolderContextMenu      (ContentBrowserEditorWindow&            a_contentBrowserEditorWindow);
-		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
+		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 
 		void ApplyEntrySelectionShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 
@@ -35,6 +35,7 @@ namespace FWK::Editor
 		static constexpr std::string_view k_currentFolderContextMenuLabel = "##ContentBrowserCurrentFolderContextMenu";
 		static constexpr std::string_view k_folderEntryContextMenuLabel   = "##ContentBrowserFolderEntryContextMenu";
 
+		static constexpr std::string_view k_addFolderMenuItemLabel   = "フォルダーを追加";
 		static constexpr std::string_view k_deleteEntryMenuItemLabel = "削除";
 
 		static constexpr std::string_view k_folderEntryNameEllipsis = "...";

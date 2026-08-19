@@ -1,7 +1,9 @@
 ﻿#include "ContentBrowserEditorWindow.h"
 
 void FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
-{}
+{
+
+}
 
 void FWK::Editor::ContentBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -55,6 +57,11 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
 {
 	return m_jsonConverter.Serialize(*this);;
+}
+
+void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate(const std::filesystem::path& a_parentFolderPath)
+{
+
 }
 
 void FWK::Editor::ContentBrowserEditorWindow::RefreshCurrentFolderEntries()
@@ -509,11 +516,6 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntryContextMenu(const S
 	}
 
 	ImGui::EndPopup();
-}
-
-void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate(const std::filesystem::path& a_parentFolderPath)
-{
-
 }
 
 void FWK::Editor::ContentBrowserEditorWindow::ConfirmFolderCreate()
