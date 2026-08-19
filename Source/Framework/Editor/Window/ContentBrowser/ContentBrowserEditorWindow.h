@@ -24,11 +24,11 @@ namespace FWK::Editor
 		void DrawFolderTree                    ();
 		void DrawFolderTreeNode                (const std::filesystem::path& a_folderPath);
 		void DrawCurrentFolder                 ();
-		void DrawFolderEntry                   (const std::filesystem::path& a_entryPath, bool a_isFolder);
-		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_folderPath);
+		bool DrawFolderEntry                   (const Struct::ContentBrowserEntryData& a_entryData);
+		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path&           a_folderPath);
 		void DrawFolderCreateEntry             ();
 		void DrawCurrentFolderContextMenu      ();
-		void DrawFolderEntryContextMenu        (const std::filesystem::path& a_folderPath);
+		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData);
 		
 		void RequestFolderCreate(const std::filesystem::path& a_parentFolderPath);
 
@@ -82,17 +82,20 @@ namespace FWK::Editor
 
 		static constexpr std::size_t k_folderEntryNameDisplayCharacterCount = 9ULL;
 		static constexpr std::size_t k_folderEntryNameStartIndex            = 0ULL;
+		static constexpr std::size_t k_emptySelectionCount                  = 0ULL;
 
 		static constexpr std::uint32_t k_minFolderEntryColumnCount     = 1U;
 		static constexpr std::uint32_t k_initialFolderEntryColumnCount = 0U;
 		
-		std::filesystem::path m_currentFolderPath = k_contentRootFolderPath;
-		
-		ContentBrowserEditorWindowAssetRegistry m_assetRegistry = {};
-		ContentBrowserEditorWindowFileSystem    m_fileSystem    = {};
+		ContentBrowserEditorWindowAssetRegistry  m_assetRegistry  = {};
+		ContentBrowserEditorWindowEntryCache     m_entryCache     = {};
+		ContentBrowserEditorWindowEntrySelection m_entrySelection = {};
+		ContentBrowserEditorWindowFileSystem     m_fileSystem     = {};
 
 		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
+		std::filesystem::path m_currentFolderPath         = k_contentRootFolderPath;
+		std::filesystem::path m_requestedSelectEntryPath  = {};
 		std::filesystem::path m_folderCreateParentPath    = {};
 		std::filesystem::path m_requestedDeleteFolderPath = {};
 
@@ -101,6 +104,8 @@ namespace FWK::Editor
 		bool m_isFolderCreateActive              = false;
 		bool m_isFolderCreateInputFocusRequested = false;
 		bool m_isFolderCreateRequested           = false;
+
+		bool m_isSelectedEntryDeleteRequested = false;
 
 		FWK_DEFINE_TYPE_INFO(ContentBrowserEditorWindow, EditorWindowBase)
 	};

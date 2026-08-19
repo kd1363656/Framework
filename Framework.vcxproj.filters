@@ -2436,11 +2436,11 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntrySelection.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ContentBrowserEditorWindowStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3044,7 +3044,7 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntrySelection.cpp">
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
     </ClCompile>
   </ItemGroup>

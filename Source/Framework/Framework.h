@@ -531,6 +531,7 @@
 #include "Editor/Window/ContentBrowser/Asset/ContentBrowserEditorWindowAssetRegistry.h"
 #include "Editor/Window/ContentBrowser/File/ContentBrowserEditorWindowFileSystem.h"
 #include "Definition/Struct/Editor/Window/ContentBrowserEditorWindowStruct.h"
+#include "Editor/Window/ContentBrowser/Entry/ContentBrowserEditorWindowEntryCache.h"
 #include "Editor/Window/ContentBrowser/Entry/ContentBrowserEditorWindowEntrySelection.h"
 #include "Editor/Window/ContentBrowser/Converter/Json/ContentBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"

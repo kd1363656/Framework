@@ -40,6 +40,12 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 	// 現在開いているFolderへPrefabを作成できる
 	DrawGameObjectPrefabDragDropTarget(m_currentFolderPath);
 
+	// 遅延削除処理
+	// FolderTree/CurrentFolderのFileSystem操作が完全に終了してから
+	// 実際の削除処理を行う
+	ApplySelectedEntryDeleteRequest();
+	ApplyFolderDeleteRequest       ();
+
 	ImGui::End();
 }
 
@@ -204,76 +210,80 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentFolder()
 		return;
 	}
 
-	// 現在の右ペインで使用可能な横幅
-	const float l_availableWidth = ImGui::GetContentRegionAvail().x;
-
-	// Cardと次のCardの間隔には
-	// Editor全体のImTuiItemSpacingをそのまま使用する
-	const float l_itemSpacing      = ImGui::GetStyle().ItemSpacing.x;
-	const float l_folderEntryPitch = k_folderEntryWidth + l_itemSpacing;
-
-	// ペインが広ければColumn数を増やし
-	// 狭ければ自動的に少なくする
-	const std::uint32_t l_calculatedColumnCount = static_cast<std::uint32_t>(l_availableWidth + l_itemSpacing) / static_cast<std::uint32_t>(l_folderEntryPitch);
-	const std::uint32_t l_columnCount           = std::max                  (k_minFolderEntryColumnCount, l_calculatedColumnCount);
-
-	auto l_currentColumn = k_initialFolderEntryColumnCount;
-
-	// DoubleClickされた瞬間にm_currentFolderPathを置き換えず、
-	// 現在フォルダの描画が全部終わってから反映する
-	      std::filesystem::path               l_requestedDirectoryPath = {};
-	      std::filesystem::directory_iterator l_directoryITR           = { m_currentFolderPath, l_errorCode };
-	const std::filesystem::directory_iterator l_endDirectoryITR        = {};
-
-	if (l_errorCode) { return; }
-
-	while (l_directoryITR != l_endDirectoryITR)
+	// Dirty時だけEntryCacheを再構築
+	if (m_entryCache.GetVALIsCurrentFolderEntryListDirty())
 	{
-		std::error_code l_entryErrorCode = {};
+		m_entryCache.RefreshCurrentFolderEntryList(m_assetRegistry, m_currentFolderPath);
+		
+		const auto& l_currentFolderEntryList = m_entryCache.GetREFCurrentFolderEntryList();
 
-		const bool l_isDirectory = l_directoryITR->is_directory(l_entryErrorCode);
+		// Selectionも最新EntryCacheへ同期する
+		m_entrySelection.SynchronizeCurrentFolderEntries(l_currentFolderEntryList);
 
-		if (!l_entryErrorCode)
+		// Prefab作成等によって
+		// Refresh後に選択したいEntryが指定されている場合だけ反映する
+		if (!m_requestedSelectEntryPath.empty())
 		{
-			const auto& l_entryPath = l_directoryITR->path();
-
-			DrawFolderEntry(l_entryPath, l_isDirectory);
-
-			if (l_isDirectory          &&
-				ImGui::IsItemHovered() &&
-				ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-			{
-				l_requestedDirectoryPath = l_entryPath;
-			}
-
-			++l_currentColumn;
-
-			if (l_currentColumn < l_columnCount)
-			{
-				ImGui::SameLine();
-			}
-			else
-			{
-				l_currentColumn = k_initialFolderEntryColumnCount;
-			}
+			m_entrySelection.SelectSingleEntry(l_currentFolderEntryList, m_requestedSelectEntryPath);
+			m_requestedSelectEntryPath.clear  ();
 		}
-
-        // イテレーターの更新
-		l_directoryITR.increment(l_errorCode);
-
-		if (l_errorCode) { break; }
 	}
 
-	// 描画終了後にフォルダパスを変更
+	// Ctrl + A
+	// vectorをCopyせず、
+	// m_currentFolderEntryListをconst参照でSelectionへ渡す
+	ApplyEntrySelectionShortcut();
+
+	// 現在の右ペインで使用可能な横幅
+	const float l_availableWidth   = ImGui::GetContentRegionAvail().x;
+	const float l_itemSpacing      = ImGui::GetStyle             ().ItemSpacing.x;
+	const float l_folderEntryPitch = k_folderEntryWidth + l_itemSpacing;
+
+	const auto l_calculatedColumnCount = static_cast<std::uint32_t>((l_availableWidth + l_itemSpacing) / l_folderEntryPitch);
+	const auto l_columnCount           = std::max                  (k_minFolderEntryColumnCount, l_calculatedColumnCount);
+	      auto l_currentColumn         = k_initialFolderEntryColumnCount;
+
+	// DoubleClickされたFolderは、
+	// vector捜査終了後にCurrentFoldereへ反映する
+	std::filesystem::path l_requestedDirectoryPath = {};
+
+	const auto& l_currentFolderEntryList = m_entryCache.GetREFCurrentFolderEntryList();
+
+	for (const auto& l_entryData : l_currentFolderEntryList)
+	{
+		if (DrawFolderEntry(l_entryData))
+		{
+			l_requestedDirectoryPath = l_entryData.m_entryPath;
+		}
+
+		++l_currentColumn;
+
+		if (l_currentColumn < l_columnCount) 
+		{
+			ImGui::SameLine();
+		}
+		else
+		{
+			l_currentColumn = k_initialFolderEntryColumnCount;
+		}
+	}
+
+	// CurrentFolder空白部分
+	// Entry描画後なのでItemに重なっていない空白部分のClickを判定できる
+	DrawCurrentFolderContextMenu();
+
+	// FolderのDoubleClickによる移動は
+	// EntryCacheの操作が完全に終了してから反映する
 	if (l_requestedDirectoryPath.empty()) { return; }
 
 	ApplyCurrentFolderPath(l_requestedDirectoryPath);
 }
-void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const std::filesystem::path & a_entryPath, bool a_isFolder)
+bool FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const Struct::ContentBrowserEntryData& a_entryData)
 {
-	const auto& l_entryPathString = a_entryPath.generic_string();
-	const auto& l_entryName       = a_entryPath.filename      ().string();
-	const auto& l_icon            = FetchVALFolderEntryIcon   (a_entryPath, a_isFolder);
+	const auto& l_entryPath       = a_entryData.m_entryPath;
+	const auto& l_entryPathString = l_entryPath.generic_string();
+	const auto& l_entryName       = l_entryPath.filename      ().string();
+	const auto& l_icon            = FetchVALFolderEntryIcon   (l_entryPath, a_entryData.m_isFolder);
 
 	// 同じ名前のファイル/フォルダが別Folderに存在しても
 	// ImGui上で別Itemとして扱えるよう、Path全体をIDに使用する
@@ -286,24 +296,61 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const std::filesys
 	// この後DrawListをつあって背景・Icon・名前を自部で描画する
 	ImGui::InvisibleButton(k_folderEntryButtonLabel.data(), l_entrySize, ImGuiButtonFlags_MouseButtonLeft);
 
-	// フォルダカードへOutlinerのGameObjectがDropされた場合、
-	// このフォルダをPrefabの保存先として使用する
-	if (a_isFolder)
+	// この後DragDropTarget等の別ImGui処理を行うため
+	// Button自身の状態はここで取得する
+	const bool l_isHovered     = ImGui::IsItemHovered();
+	const bool l_isLeftClicked = ImGui::IsItemClicked(ImGuiMouseButton_Left);
+	const bool l_isDoubleClicked = a_entryData.m_isFolder &&
+		                           l_isHovered            &&
+		                           ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
+
+	// BeginPopupContextItem()は直前Itemを対象にするため
+	// DragDropTargetより先に処理する
+	if (a_entryData.m_isSelectable)
 	{
-		DrawGameObjectPrefabDragDropTarget(a_entryPath);
+		DrawFolderEntryContextMenu(a_entryData);
 	}
 
-	const bool  l_isHovered  = ImGui::IsItemHovered();
-	const bool  l_isSelected = m_selectedEntryPath == a_entryPath;
-	const auto& l_itemMIN    = ImGui::GetItemRectMin   ();
-	const auto& l_itemMAX    = ImGui::GetItemRectMax   ();
-	      auto* l_drawList   = ImGui::GetWindowDrawList();
+	// FolderCardへOutlinerGameObjectをDropした場合、
+	// このFolderをPrefab保存先として使用する
+	if (a_entryData.m_isFolder)
+	{
+		DrawGameObjectPrefabDragDropTarget(l_entryPath);
+	}
 
-    if (!l_drawList) 
+	if (l_isLeftClicked &&
+		a_entryData.m_isSelectable)
+	{
+		const auto& l_imGuiIO                = ImGui::GetIO                             ();
+		const auto& l_currentFolderEntryList = m_entryCache.GetREFCurrentFolderEntryList();
+
+		// Shiftを先に確認することで、
+		// Ctrl + Shiftが同時に押されている場合は
+		// Shift範囲選択を優先する
+		if (l_imGuiIO.KeyShift)
+		{
+			m_entrySelection.SelectRangeEntry(l_currentFolderEntryList, l_entryPath);
+		}
+		else if (l_imGuiIO.KeyCtrl)
+		{
+			m_entrySelection.ToggleEntrySelection(l_currentFolderEntryList, l_entryPath);
+		}
+		else
+		{
+			m_entrySelection.SelectSingleEntry(l_currentFolderEntryList, l_entryPath);
+		}
+	}
+
+	const bool  l_isSelected = m_entrySelection.ContainsSelectedEntry(l_entryPath);
+	const auto& l_itemMIN    = ImGui::GetItemRectMin                 ();
+	const auto& l_itemMAX    = ImGui::GetItemRectMax                 ();
+	      auto* l_drawList   = ImGui::GetWindowDrawList              ();
+
+	if (!l_drawList)
 	{
 		ImGui::PopID();
 
-		return; 
+		return false;
 	}
 
 	if (l_isSelected)
@@ -321,14 +368,14 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const std::filesys
 
 		l_drawList->AddRectFilled(l_itemMIN,
 			                      l_itemMAX,
-		                          l_backgroundColor,
+			                      l_backgroundColor,
 			                      k_folderEntryRounding);
 	}
 
-	const auto l_iconSize = ImGui::GetFont()->CalcTextSizeA(k_folderEntryIconFontSize, 
-		                                                    std::numeric_limits<float>::max(),
-		                                                    k_filleRemainingSize,
-		                                                    l_icon.data());
+	const auto& l_iconSize = ImGui::GetFont()->CalcTextSizeA(k_folderEntryIconFontSize, 
+		                                                     std::numeric_limits<float>::max(),
+		                                                     k_filleRemainingSize,
+		                                                     l_icon.data());
 
 	const float l_iconPositionX = l_itemMIN.x + (k_folderEntryWidth - l_iconSize.x) * k_centeringRatio;
 	const float l_iconPositionY = l_itemMIN.y + k_folderEntryIconTopPadding;
@@ -366,13 +413,9 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntry(const std::filesys
 
 	l_drawList->AddText(l_textPosition, l_textColor, l_displayEntryName.c_str());
 
-	// 左クリックしたItemを現在の選択対象にする
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-	{
-		m_selectedEntryPath = a_entryPath;
-	}
-
 	ImGui::PopID();
+
+	return l_isDoubleClicked;
 }
 void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_directoryPath)
 {
@@ -386,22 +429,80 @@ void FWK::Editor::ContentBrowserEditorWindow::DrawGameObjectPrefabDragDropTarget
 	// DropされたフォルダをPrefabの保存先としてPrefab化する
 	const auto& l_prefabFilePath = m_fileSystem.CreatePrefabFromGameObject(l_gameObject, a_directoryPath, m_assetRegistry);
 
-	// 新しく生成されたPrefabをContentBrowser上でも選択対象にしておく
-	if (std::filesystem::exists(l_prefabFilePath))
-	{
-		m_selectedEntryPath = l_prefabFilePath;
-	}
+	if (l_prefabFilePath.empty()) { return; }
+
+	// CurrentFolder以外へPrefabを作成した場合、
+	// 現在右ペインに表示しているCacheには影響しない
+	if (a_directoryPath != m_currentFolderPath) { return; }
+
+	// FolderCardへのDropは
+	// m_currentFolderEntryListをFor分で捜査している最中に発生しているため
+	// 遅延処理で追加する
+	m_entryCache.SetCurrentFolderEntryListDirty(true);
+	m_requestedSelectEntryPath  = l_prefabFilePath;
 }
 void FWK::Editor::ContentBrowserEditorWindow::DrawFolderCreateEntry()
 {
 }
 void FWK::Editor::ContentBrowserEditorWindow::DrawCurrentFolderContextMenu()
 {
+	// CurrentFolderChildWindow上にMouseがあり、
+	// どのEntryItemにもHoverしていない場合だけ
+	// 「空白部分として扱う」
+	if (ImGui::IsWindowHovered()   &&
+		!ImGui::IsAnyItemHovered() &&
+		ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+	{
+		m_entrySelection.ClearSelectedEntries();
+	}
 
+	// NoOpenOverItemsをつけることで
+	// EntryCard上の右クリックではこのPopupを開かない
+	if (!ImGui::BeginPopupContextWindow(k_currentFolderChildLabel.data(), ImGuiPopupFlags_MouseButtonRight |
+	                                    ImGuiPopupFlags_NoOpenOverItems))
+	{
+		return;
+	}
+
+	// 現座Selectionが残っている場合は、
+	// 空白部分のContextMenu空でもまとめて削除できる
+	if (m_entrySelection.FetchVALSelectedEntryCount() != k_emptySelectionCount)
+	{
+		if (ImGui::MenuItem(k_deleteFolderMenuItemName.data()))
+		{
+			m_isSelectedEntryDeleteRequested = true;
+		}
+	}
+
+	ImGui::EndPopup();
 }
-void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntryContextMenu(const std::filesystem::path& a_folderPath)
+void FWK::Editor::ContentBrowserEditorWindow::DrawFolderEntryContextMenu(const Struct::ContentBrowserEntryData& a_entryData)
 {
+	if (!a_entryData.m_isSelectable ||
+		!ImGui::BeginPopupContextItem(k_folderEntryContextMenuLabel.data())) 
+	{
+		return; 
+	}
 
+	const auto& l_entryPath = a_entryData.m_entryPath;
+
+	// 未選択Entryを右クリックでそのEntryだけを選択する
+	// 既に選択されているEntryを右クリック
+	// 現在の複数Selectionを維持する
+	// A/B/Cを複数選択してBを右クリックしても、A/B/Cを選択したまま削除Menuを使用できる
+	if (!m_entrySelection.ContainsSelectedEntry(l_entryPath))
+	{
+		const auto& l_currentFolderEntryList = m_entryCache.GetREFCurrentFolderEntryList();
+
+		m_entrySelection.SelectSingleEntry(l_currentFolderEntryList, l_entryPath);
+	}
+
+	if (ImGui::MenuItem(k_deleteFolderMenuItemName.data()))
+	{
+		m_isSelectedEntryDeleteRequested = true;
+	}
+
+	ImGui::EndPopup();
 }
 
 void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate(const std::filesystem::path& a_parentFolderPath)
@@ -427,7 +528,24 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateShortcut()
 }
 void FWK::Editor::ContentBrowserEditorWindow::ApplyEntrySelectionShortcut()
 {
-	
+	const auto& l_imGuiIO = ImGui::GetIO();
+
+	// InputText編集中のCtrl + Aは、
+	// Text全選択として使用させる
+	if (l_imGuiIO.WantTextInput) { return; }
+
+	// ContentBrowserまたはそのChildが
+	// Focusされている場合だけShortcutを受け付ける
+	if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) ||
+		!l_imGuiIO.KeyCtrl                                             ||
+		!ImGui::IsKeyPressed(ImGuiKey_A, false))
+	{
+		return; 
+	}
+
+	const auto& l_currentFolderEntryList = m_entryCache.GetREFCurrentFolderEntryList();
+
+	m_entrySelection.SelectAllEntries(l_currentFolderEntryList);	
 }
 void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 {
@@ -448,9 +566,22 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::
 		return;
 	}
 
-	// "."や".."が混ざったPathを
-	// Path文字列上だけ正規化して保持する
-	m_currentFolderPath = a_folderPath;
+	const auto& l_normalizedFolderPath = a_folderPath.lexically_normal();
+
+	// 同じFolderならEntryCacheを再構築しない
+	if (m_currentFolderPath == l_normalizedFolderPath) { return; }
+
+	m_currentFolderPath = l_normalizedFolderPath;
+
+	// Folderが変化したので
+	// 次のDrawCurrentFolder()で一度だけCacheをRefreshする
+	m_entryCache.SetCurrentFolderEntryListDirty(true);
+
+	// 前FolderのSelectionを新Folderへ持ち越さない
+	m_entrySelection.ClearSelectedEntries();
+
+	// 前Folderで作成されたPrefab選択要求も持ち越さない
+	m_requestedSelectEntryPath.clear();
 }
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderDeleteRequest()
 {
