@@ -24,8 +24,9 @@ namespace FWK::Editor
 
 		void RequestSelectedEntryDelete();
 
-		const auto& GetREFAssetRegistry() const { return m_assetRegistry; }
-		const auto& GetREFFileSystem   () const { return m_fileSystem; }
+		const auto& GetREFAssetRegistry  () const { return m_assetRegistry; }
+		const auto& GetREFEntryController() const { return m_entryController; }
+		const auto& GetREFFileSystem     () const { return m_fileSystem; }
 
 		const auto& GetREFCurrentFolderPath() const { return m_currentFolderPath; }
 
@@ -34,14 +35,7 @@ namespace FWK::Editor
 
 	private:
 
-		void DrawFolderTree                    ();
-		void DrawFolderTreeNode                (const std::filesystem::path& a_folderPath);
-		void DrawCurrentFolder                 ();
-		bool DrawFolderEntry                   (const Struct::ContentBrowserEntryData& a_entryData);
-		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path&           a_folderPath);
-		void DrawFolderCreateEntry             ();
-		void DrawCurrentFolderContextMenu      ();
-		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData);
+		void DrawFolderCreateEntry();
 		
 		void ConfirmFolderCreate();
 
@@ -50,25 +44,23 @@ namespace FWK::Editor
 		void ClearFolderCreateState();
 
 		void ApplyFolderCreateShortcut      ();
-		void ApplyEntrySelectionShortcut    ();
 		void ApplySelectedEntryDeleteRequest();
 		void ApplyFolderCreateRequest       ();
-		void ApplyFolderDeleteRequest       ();
-
+		
 		std::filesystem::path FetchVALFolderCreateParentPath() const;
 
-		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const;
+		static constexpr std::string_view k_editorName = "コンテンツブラウザー";
 
 		ContentBrowserEditorWindowAssetRegistry   m_assetRegistry   = {};
 		ContentBrowserEditorWindowEntryController m_entryController = {};
 		ContentBrowserEditorWindowFileSystem      m_fileSystem      = {};
+		ContentBrowserEditorWindowPanel           m_panel           = {};
 
 		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
 		std::filesystem::path m_currentFolderPath         = Constant::k_contentRootFolderPath;
 		std::filesystem::path m_requestedSelectEntryPath  = {};
 		std::filesystem::path m_folderCreateParentPath    = {};
-		std::filesystem::path m_requestedDeleteFolderPath = {};
 
 		std::string m_folderCreateNameBuffer = {};
 

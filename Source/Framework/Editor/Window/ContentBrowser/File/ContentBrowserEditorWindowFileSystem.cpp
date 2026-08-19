@@ -145,11 +145,12 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 		return {};
 	}
 
-	const auto& l_sceneManager = SceneManager::GetInstance         ();
-	const auto& l_scene        = l_sceneManager.GetVALScene        ().lock();
-	      auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
 	if (!l_scene) { return {}; }
+
+	auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
 
 	// PrefabSystem側でもUUIDが使用済みなら登録しない
 	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))

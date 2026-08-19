@@ -36,6 +36,8 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTree(ContentBrowser
 
 void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
 {
+    // k_fillRemainingSizeは0.0fだがImGuiでは{ 0.0F, 0.0F }で親ウィンドウの残っているすべての領域を使う
+    // 右ペインすべての領域を使うということ
     if (const ImVec2& l_currentFolderPanelSize = { k_fillRemainingSize, k_fillRemainingSize };
         !ImGui::BeginChild(k_currentFolderChildLabel.data(), l_currentFolderPanelSize, true))
     {
@@ -46,11 +48,10 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
 
     std::error_code l_errorCode = {};
 
-    const auto& l_currentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
-
     // Explorer等からCurrentFolderを削除された場合は
     // ContentRootへ戻す
-    if (!std::filesystem::is_directory(l_currentFolderPath, l_errorCode) ||
+    if (const auto& l_currentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
+        !std::filesystem::is_directory(l_currentFolderPath, l_errorCode) ||
         l_errorCode)
     {
         a_contentBrowserEditorWindow.ApplyCurrentFolderPath(Constant::k_contentRootFolderPath);
@@ -58,11 +59,10 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
         l_errorCode.clear();
     }
 
-    const auto& l_validCurrentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
-
     // ContentRoot自体まで存在しない場合は
     // Entryを描画できない
-    if (!std::filesystem::is_directory(l_validCurrentFolderPath, l_errorCode) ||
+    if (const auto& l_validCurrentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
+        !std::filesystem::is_directory(l_validCurrentFolderPath, l_errorCode) ||
         l_errorCode)
     {
         ImGui::EndChild();
@@ -70,7 +70,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
         return;
     }
 
-    auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
+    const auto& l_entryController = a_contentBrowserEditorWindow.GetREFEntryController();
 
     // Dirtyの時だけFilesystemを走査する
     if (l_entryController.GetVALIsCurrentFolderEntryListDirty())
@@ -85,6 +85,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
     const float l_itemSpacing      = ImGui::GetStyle             ().ItemSpacing.x;
     const float l_folderEntryPitch = k_folderEntryWidth + l_itemSpacing;
 
+    // 何列表示できるのかを計算Cardの横幅 + スペース幅で現在の右ペインで何個横に並べれるかを計算している
     const auto l_calculatedColumnCount = static_cast<std::uint32_t>((l_availableWidth + l_itemSpacing) / l_folderEntryPitch);
     const auto l_columnCount           = std::max                  (k_minFolderEntryColumnCount, l_calculatedColumnCount);
           auto l_currentColumn         = k_initialFolderEntryColumnCount;
@@ -227,11 +228,10 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
 
     while (l_directoryITR != l_endDirectoryITR)
     {
-        std::error_code l_entryErrorCode = {};
-
         // 左ペインにはFileを表示しない
         // Folderだけを再帰的に描画する
-        if (l_directoryITR->is_directory(l_entryErrorCode) &&
+        if (std::error_code l_entryErrorCode = {};
+            l_directoryITR->is_directory(l_entryErrorCode) &&
             !l_entryErrorCode)
         {
             DrawFolderTreeNode(l_directoryITR->path(), a_contentBrowserEditorWindow);
