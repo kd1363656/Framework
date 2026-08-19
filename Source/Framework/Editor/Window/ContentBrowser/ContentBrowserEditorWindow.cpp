@@ -1,5 +1,8 @@
 ﻿#include "ContentBrowserEditorWindow.h"
 
+void FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
+{}
+
 void FWK::Editor::ContentBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
@@ -53,6 +56,9 @@ nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
 {
 	return m_jsonConverter.Serialize(*this);;
 }
+
+void FWK::Editor::ContentBrowserEditorWindow::RefreshCurrentFolderEntries()
+{}
 
 void FWK::Editor::ContentBrowserEditorWindow::DrawFolderTree()
 {
@@ -558,31 +564,37 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateRequest()
 }
 void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
 {
-	// FileをCurrentDirectoryとして設定することは許可しない
-	if (std::error_code l_errorCode = {};
-		!std::filesystem::is_directory(a_folderPath, l_errorCode) ||
+	// FileをCurrentFolderとして設定することは許可しない(ディレクトリのみ)
+	if (std::error_code l_errorCode = {}; !std::filesystem::is_directory(a_folderPath, l_errorCode) ||
 		l_errorCode)
 	{
 		return;
 	}
 
+	// ".."や"."などを整理したPathへ統一する
 	const auto& l_normalizedFolderPath = a_folderPath.lexically_normal();
 
-	// 同じFolderならEntryCacheを再構築しない
-	if (m_currentFolderPath == l_normalizedFolderPath) { return; }
-
+	// 同じFolderを指定された場合は、
+	// Entry一覧を不必要に再構築しない
 	m_currentFolderPath = l_normalizedFolderPath;
 
-	// Folderが変化したので
-	// 次のDrawCurrentFolder()で一度だけCacheをRefreshする
-	m_entryCache.SetCurrentFolderEntryListDirty(true);
+	// CurrentFolder画変更されたので、
+	// 次のCurrentFolder描画時にEntry一覧を再構築する
+	m_entryController.SetCurrentFolderEntryListDirty(true);
 
-	// 前FolderのSelectionを新Folderへ持ち越さない
-	m_entrySelection.ClearSelectedEntries();
+	// 前FolderのSelectionを新しいFolderへ持ち越さない
+	m_entryController.ClearSelectedEntries();
 
-	// 前Folderで作成されたPrefab選択要求も持ち越さない
+	// 前Folderで作成されたPrefabに対する
+	// 選択要求も新しいFolderへ持ち越さない
 	m_requestedSelectEntryPath.clear();
 }
+
+void FWK::Editor::ContentBrowserEditorWindow::RequestSelectedEntryDelete()
+{
+	m_isSelectedEntryDeleteRequested = true;
+}
+
 void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderDeleteRequest()
 {
 }

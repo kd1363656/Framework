@@ -478,6 +478,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.h" />
@@ -755,6 +756,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.cpp" />

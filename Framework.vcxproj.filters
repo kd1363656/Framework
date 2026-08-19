@@ -2442,6 +2442,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3046,6 +3049,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

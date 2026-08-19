@@ -9,15 +9,26 @@ namespace FWK::Editor
 		 ContentBrowserEditorWindow()          = default;
 		~ContentBrowserEditorWindow() override = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson) override;
+		void CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath);
+		void Deserialize               (const nlohmann::json&            a_rootJson) override;
 
 		void Draw() override;
 
 		nlohmann::json Serialize() override;
 
-		const auto& GetREFAssetRegistry() const { return m_assetRegistry; }
+		void RefreshCurrentFolderEntries();
 
-		auto& GetMutableREFAssetRegistry() { return m_assetRegistry; }
+		void ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath);
+
+		void RequestSelectedEntryDelete();
+
+		const auto& GetREFAssetRegistry() const { return m_assetRegistry; }
+		const auto& GetREFFileSystem   () const { return m_fileSystem; }
+
+		const auto& GetREFCurrentFolderPath() const { return m_currentFolderPath; }
+
+		auto& GetMutableREFEntryController() { return m_entryController; }
+		auto& GetMutableREFAssetRegistry  () { return m_assetRegistry; }
 
 	private:
 
@@ -42,59 +53,19 @@ namespace FWK::Editor
 		void ApplyEntrySelectionShortcut    ();
 		void ApplySelectedEntryDeleteRequest();
 		void ApplyFolderCreateRequest       ();
-		void ApplyCurrentFolderPath         (const std::filesystem::path& a_folderPath);
 		void ApplyFolderDeleteRequest       ();
 
 		std::filesystem::path FetchVALFolderCreateParentPath() const;
 
 		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, bool a_isFolder) const;
 
-		inline static const std::filesystem::path k_contentRootFolderPath = "Content";
-		
-		static constexpr std::string_view k_editorName = "コンテンツブラウザー";
-
-		static constexpr std::string_view k_defaultNewFolderName          = "NewFolder";
-		static constexpr std::string_view k_folderCreateInputeLabel       = "##ContentBrowserFolderCreateInput";
-		static constexpr std::string_view k_currentFolderContextMenuLabel = "##ContentBrowserCurrentFolderContextMenu";
-		static constexpr std::string_view k_folderEntryContextMenuLabel   = "##ContentBrowserCurrentFolderContextMenu";
-		static constexpr std::string_view k_addFolderMenuItemName         = "フォルダーを追加";
-		static constexpr std::string_view k_addFolderShortcutText         = "Ctrl + Shift + N";
-		static constexpr std::string_view k_deleteFolderMenuItemName      = "フォルダーを削除";
-
-		static constexpr std::string_view k_folderTreeChildLabel     = "##ContentBrowserFolderTree";
-		static constexpr std::string_view k_currentFolderChildLabel  = "##ContentBrowserCurrentFolder";
-		static constexpr std::string_view k_folderEntryButtonLabel   = "##ContentBrowserFolderEntry";
-		static constexpr std::string_view k_folderEntryNameEllipsis  = "...";
-
-		static constexpr float k_folderTreePanelWidth = 240.0F;
-		static constexpr float k_filleRemainingSize   = 0.0F;
-
-		static constexpr float k_folderEntryWidth  = 104.0F;
-		static constexpr float k_folderEntryHeight = 92.0F;
-
-		static constexpr float k_folderEntryIconFontSize = 48.0F;
-
-		static constexpr float k_folderEntryIconTopPadding    = 8.0F;
-		static constexpr float k_folderEntryTextBottomPadding = 7.0F;
-		
-		static constexpr float k_folderEntryRounding = 4.0F;
-		static constexpr float k_centeringRatio      = 0.5F;
-
-		static constexpr std::size_t k_folderEntryNameDisplayCharacterCount = 9ULL;
-		static constexpr std::size_t k_folderEntryNameStartIndex            = 0ULL;
-		static constexpr std::size_t k_emptySelectionCount                  = 0ULL;
-
-		static constexpr std::uint32_t k_minFolderEntryColumnCount     = 1U;
-		static constexpr std::uint32_t k_initialFolderEntryColumnCount = 0U;
-		
-		ContentBrowserEditorWindowAssetRegistry  m_assetRegistry  = {};
-		ContentBrowserEditorWindowEntryCache     m_entryCache     = {};
-		ContentBrowserEditorWindowEntrySelection m_entrySelection = {};
-		ContentBrowserEditorWindowFileSystem     m_fileSystem     = {};
+		ContentBrowserEditorWindowAssetRegistry   m_assetRegistry   = {};
+		ContentBrowserEditorWindowEntryController m_entryController = {};
+		ContentBrowserEditorWindowFileSystem      m_fileSystem      = {};
 
 		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
-		std::filesystem::path m_currentFolderPath         = k_contentRootFolderPath;
+		std::filesystem::path m_currentFolderPath         = Constant::k_contentRootFolderPath;
 		std::filesystem::path m_requestedSelectEntryPath  = {};
 		std::filesystem::path m_folderCreateParentPath    = {};
 		std::filesystem::path m_requestedDeleteFolderPath = {};

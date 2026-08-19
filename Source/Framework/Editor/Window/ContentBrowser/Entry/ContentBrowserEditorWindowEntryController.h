@@ -19,13 +19,15 @@ namespace FWK::Editor
 
 		void ClearSelectedEntries();
 
-		bool ContainsSelectedEntry(const std::filesystem::path& a_entryPath);
+		bool ContainsSelectedEntry(const std::filesystem::path& a_entryPath) const;
 
 		void SetCurrentFolderEntryListDirty(const bool a_set) { m_isCurrentFolderEntryListDirty = a_set; }
 
 		std::size_t FetchVALSelectedEntryCount() const;
 
 		const auto& GetREFSelectedEntryPathSet() const { return m_selectedEntryPathSet; }
+
+		const auto& GetREFCurrentFolderEntryDataList() const { return m_currentFolderEntryDataList; }
 
 		bool GetVALIsCurrentFolderEntryListDirty() const { return m_isCurrentFolderEntryListDirty; }
 

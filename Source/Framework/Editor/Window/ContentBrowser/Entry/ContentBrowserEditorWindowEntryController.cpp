@@ -54,9 +54,9 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolde
 		}
 
 		// エラーが起こっておらずフォルダかファイルならエントリーデータを構築
-		if (l_entryErrorCode &&
-			l_isFolder      ||
-			l_isFile)
+		if (!l_entryErrorCode &&
+			(l_isFolder      ||
+			 l_isFile))
 		{
 			Struct::ContentBrowserEntryData l_entryData = {};
 
@@ -232,7 +232,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::ClearSelectedEntrie
 	m_rangeAnchorEntryPath.clear();
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowEntryController::ContainsSelectedEntry(const std::filesystem::path& a_entryPath)
+bool FWK::Editor::ContentBrowserEditorWindowEntryController::ContainsSelectedEntry(const std::filesystem::path& a_entryPath) const
 {
 	if (a_entryPath.empty()) { return false; }
 
