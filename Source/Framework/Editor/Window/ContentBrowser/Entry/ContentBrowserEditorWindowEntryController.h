@@ -9,7 +9,7 @@ namespace FWK::Editor
 		 ContentBrowserEditorWindowEntryController() = default;
 		~ContentBrowserEditorWindowEntryController() = default;
 
-		void RefreshCurrentFolderEntryList(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_currentFolderPath);
+		void RefreshCurrentFolderEntryList(const std::filesystem::path& a_currentFolderPath);
 
 		void SelectSingleEntry(const std::filesystem::path& a_entryPath);
 		void SelectRangeEntry (const std::filesystem::path& a_entryPath);
@@ -22,6 +22,8 @@ namespace FWK::Editor
 		bool ContainsSelectedEntry(const std::filesystem::path& a_entryPath) const;
 
 		void SetCurrentFolderEntryListDirty(const bool a_set) { m_isCurrentFolderEntryListDirty = a_set; }
+
+		std::filesystem::path FetchVALSingleSelectedFolderPath() const;
 
 		std::size_t FetchVALSelectedEntryCount() const;
 
@@ -36,6 +38,8 @@ namespace FWK::Editor
 		bool ContainsCurrentFolderEntry(const std::filesystem::path& a_entryPath) const;
 
 		void SynchronizeCurrentFolderEntries();
+
+		static constexpr std::size_t k_singleFolderCount = 1ULL;
 
 		static constexpr bool k_initialCurrentFolderEntryListDirty = true;
 

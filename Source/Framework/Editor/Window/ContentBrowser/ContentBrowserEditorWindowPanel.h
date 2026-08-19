@@ -22,10 +22,12 @@ namespace FWK::Editor
 		void DrawFolderTreeNode                (const std::filesystem::path&           a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
 		bool DrawFolderEntry                   (const Struct::ContentBrowserEntryData& a_entryData,  ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path&           a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
-		void DrawCurrentFolderContextMenu      (ContentBrowserEditorWindow&            a_contentBrowserEditorWindow);
+		void DrawCurrentFolderContextMenu      (      ContentBrowserEditorWindow&      a_contentBrowserEditorWindow);
 		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void DrawFolderCreateEntry             (      ContentBrowserEditorWindow&      a_contentBrowserEditorWindow)                                          const;
 
 		void ApplyEntrySelectionShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void ApplyFolderCreateShortcut  (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 
 		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const;
 
@@ -34,11 +36,13 @@ namespace FWK::Editor
 		static constexpr std::string_view k_folderEntryButtonLabel        = "##ContentBrowserFolderEntry";
 		static constexpr std::string_view k_currentFolderContextMenuLabel = "##ContentBrowserCurrentFolderContextMenu";
 		static constexpr std::string_view k_folderEntryContextMenuLabel   = "##ContentBrowserFolderEntryContextMenu";
+		static constexpr std::string_view k_folderCreateInputLabel        = "##ContentBrowserFolderCreateInput";
 
 		static constexpr std::string_view k_addFolderMenuItemLabel   = "フォルダーを追加";
 		static constexpr std::string_view k_deleteEntryMenuItemLabel = "削除";
 
-		static constexpr std::string_view k_folderEntryNameEllipsis = "...";
+		static constexpr std::string_view k_folderEntryNameEllipsis  = "...";
+		static constexpr std::string_view k_folderCreateShortcutText = "Ctrl + Shift + N";
 
 		static constexpr float k_folderTreePanelWidth = 240.0F;
 		static constexpr float k_fillRemainingSize    = 0.0F;

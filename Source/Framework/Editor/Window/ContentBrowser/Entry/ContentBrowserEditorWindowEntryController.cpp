@@ -1,6 +1,6 @@
 ﻿#include "ContentBrowserEditorWindowEntryController.h"
 
-void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolderEntryList(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_currentFolderPath)
+void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolderEntryList(const std::filesystem::path& a_currentFolderPath)
 {
 	m_currentFolderEntryDataList.clear();
 
@@ -65,12 +65,11 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolde
 
 			// フォルダかどうかの確認、フォルダじゃなければファイルとみなす
 			l_entryData.m_isFolder = l_isFolder;
-
-			// Folderはすべて選択可能
-			// FileはAssetRegistryへ登録済みのものだけ
-			// 現在ContentBrowserが管理しているAssetとして選択花押にする
+			
+			// ContentBrowserへ表示している
+			// Folder/RegularFileはすべてSelection対象とする。
 			l_entryData.m_isSelectable = l_isFolder || 
-				                         !a_assetRegistry.FindVALAssetUUID(l_entryData.m_entryPath).is_nil();
+				                         l_isFile;
 
 			m_currentFolderEntryDataList.emplace_back(std::move(l_entryData));
 		}
@@ -217,7 +216,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::ToggleEntrySelectio
 	{
 		// 既に選択されているEntryなら
 		// そのEntryだけ選択解除する
-		m_selectedEntryPathSet.erase(a_entryPath);;
+		m_selectedEntryPathSet.erase(a_entryPath);
 
 		return;
 	}
@@ -237,6 +236,24 @@ bool FWK::Editor::ContentBrowserEditorWindowEntryController::ContainsSelectedEnt
 	if (a_entryPath.empty()) { return false; }
 
 	return m_selectedEntryPathSet.contains(a_entryPath);
+}
+
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindowEntryController::FetchVALSingleSelectedFolderPath() const
+{
+	// 一つだけ選択されていない場合は、
+	// Folder作成先として使用しない
+	if (m_selectedEntryPathSet.size() != k_singleFolderCount) { return {}; }
+
+	const auto& l_selectedEntryPath = *m_selectedEntryPathSet.begin();
+
+	if (std::error_code l_errorCode = {};
+		!std::filesystem::is_directory(l_selectedEntryPath, l_errorCode) ||
+		l_errorCode)
+	{
+		return {};
+	}
+
+	return l_selectedEntryPath;
 }
 
 std::size_t FWK::Editor::ContentBrowserEditorWindowEntryController::FetchVALSelectedEntryCount() const

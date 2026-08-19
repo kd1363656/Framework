@@ -81,6 +81,11 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
     // すべてのファイルやフォルダを選択するショートカット
     ApplyEntrySelectionShortcut(a_contentBrowserEditorWindow);
 
+    // フォルダ作成ショートカットの受付
+    ApplyFolderCreateShortcut(a_contentBrowserEditorWindow);
+
+    DrawFolderCreateEntry(a_contentBrowserEditorWindow);
+
     const float l_availableWidth   = ImGui::GetContentRegionAvail().x;
     const float l_itemSpacing      = ImGui::GetStyle             ().ItemSpacing.x;
     const float l_folderEntryPitch = k_folderEntryWidth + l_itemSpacing;
@@ -279,12 +284,23 @@ bool FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntry(const Struct:
     const auto& l_itemMIN = ImGui::GetItemRectMin();
     const auto& l_itemMAX = ImGui::GetItemRectMax();
 
-    // この時点ではInvisibleButtonが直前Itemなので
-    // Entry右クリックContextMenuをここで判定する
+    // FBX/ PNG/ JSONなどのFileを
+    // AssetFilePath Payloadとして送信する
+    // Folder移動は別のPayloadを使用する
+    if (!a_entryData.m_isFolder)
+    {
+        auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+        // std::filesystem::pathをPayloadとして送る
+        l_dragDropPayloadStorage.DragDropSource(Constant::k_assetFilePathDragAndDropPayloadLabel, l_entryPath);
+    }
+
+    // InvisibleButtonが現在のEntryなので
+    // Entry右クリックContextMenuを処理する
     DrawFolderEntryContextMenu(a_entryData, a_contentBrowserEditorWindow);
 
-    // Folderの場合だけ、
-    // OutlinerからGameObjectをDropできるPrefab保存先として扱う
+    // Folderの場合だけ
+    // OutlinerのGameObjectをDropできるPrefab保存先として扱う
     if (a_entryData.m_isFolder)
     {
         DrawGameObjectPrefabDragDropTarget(l_entryPath, a_contentBrowserEditorWindow);
@@ -506,6 +522,36 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntryContextMenu(co
     ImGui::EndPopup();
 }
 
+void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderCreateEntry(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+{
+    if (!a_contentBrowserEditorWindow.GetVALIsFolderCreateActive()) { return; }
+
+    auto& l_folderCreateNameBuffer = a_contentBrowserEditorWindow.GetMutableREFolderCreateNameBuffer();
+
+    if (a_contentBrowserEditorWindow.GetVALIsFolderCreateInputFocusRequested())
+    {
+        ImGui::SetKeyboardFocusHere();
+
+        a_contentBrowserEditorWindow.SetFolderCreateInputFocusRequested(false);
+    }
+
+    const bool l_isEnterPressed = ImGui::InputText(k_folderCreateInputLabel.data(),
+                                                   &l_folderCreateNameBuffer,
+                                                   ImGuiInputTextFlags_EnterReturnsTrue);
+
+    if (l_isEnterPressed)
+    {
+        a_contentBrowserEditorWindow.ConfirmFolderCreate();
+
+        return;
+    }
+
+    if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+    {
+        a_contentBrowserEditorWindow.CancelFolderCreate();
+    }
+}
+
 void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyEntrySelectionShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
 {
     const auto& l_imGuiIO = ImGui::GetIO();
@@ -527,6 +573,42 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyEntrySelectionShortcut(C
     auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
 
     l_entryController.SelectAllEntries();
+}
+
+void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyFolderCreateShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+{
+    const auto& l_imGuiIO = ImGui::GetIO();
+
+    // InputText入力中はショートカットを奪わない
+    if (l_imGuiIO.WantTextInput ||
+        !ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows))
+    {
+        return; 
+    }
+
+    if (!l_imGuiIO.KeyCtrl  ||
+        !l_imGuiIO.KeyShift ||
+        !ImGui::IsKeyPressed(ImGuiKey_N, false))
+    {
+        return;
+    }
+
+    const auto& l_entryController = a_contentBrowserEditorWindow.GetREFEntryController();
+
+    // Folderが一つだけ選択されている場合は
+    // そのFolder内を選択先にする
+    const auto& l_selectedFolderPath = l_entryController.FetchVALSingleSelectedFolderPath();
+
+    if (!l_selectedFolderPath.empty())
+    {
+        a_contentBrowserEditorWindow.RequestFolderCreate(l_selectedFolderPath);
+
+        return;
+    }
+
+    // Ctrl + Shift + Nでは
+    // 現在開いているFolderを作成先とする
+    a_contentBrowserEditorWindow.RequestFolderCreate(a_contentBrowserEditorWindow.GetREFCurrentFolderPath());
 }
 
 std::string_view FWK::Editor::ContentBrowserEditorWindowPanel::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const

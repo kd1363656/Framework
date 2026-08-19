@@ -24,6 +24,12 @@ namespace FWK::Editor
 
 		void RequestSelectedEntryDelete();
 
+		void ConfirmFolderCreate();
+
+		void CancelFolderCreate();
+
+		void SetFolderCreateInputFocusRequested(const bool a_set) { m_isFolderCreateInputFocusRequested = a_set; }
+
 		const auto& GetREFAssetRegistry  () const { return m_assetRegistry; }
 		const auto& GetREFEntryController() const { return m_entryController; }
 		const auto& GetREFFileSystem     () const { return m_fileSystem; }
@@ -32,23 +38,19 @@ namespace FWK::Editor
 
 		auto& GetMutableREFEntryController() { return m_entryController; }
 		auto& GetMutableREFAssetRegistry  () { return m_assetRegistry; }
+		
+		auto& GetMutableREFolderCreateNameBuffer() { return m_folderCreateNameBuffer; }
+
+		bool GetVALIsFolderCreateActive             () const { return m_isFolderCreateActive; }
+		bool GetVALIsFolderCreateInputFocusRequested() const { return m_isFolderCreateInputFocusRequested; }
 
 	private:
 
-		void DrawFolderCreateEntry();
-		
-		void ConfirmFolderCreate();
-
-		void CancelFolderCreate();
-
 		void ClearFolderCreateState();
 
-		void ApplyFolderCreateShortcut      ();
 		void ApplySelectedEntryDeleteRequest();
 		void ApplyFolderCreateRequest       ();
 		
-		std::filesystem::path FetchVALFolderCreateParentPath() const;
-
 		static constexpr std::string_view k_editorName = "コンテンツブラウザー";
 
 		ContentBrowserEditorWindowAssetRegistry   m_assetRegistry   = {};

@@ -401,6 +401,35 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 
 	return true;
 }
+bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteRegularFile(const std::filesystem::path& a_filePath) const
+{
+	if (a_filePath.empty()) { return false; }
+
+	std::error_code l_errorCode = {};
+
+	// Folderや特殊なPathを通常File削除処理へ渡さない
+	if (!std::filesystem::is_regular_file(a_filePath, l_errorCode) ||
+		l_errorCode)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象Fileが無効です。\nFilePath : {}", a_filePath.string());
+
+		return false;
+	}
+
+	l_errorCode.clear();
+
+	if (!std::filesystem::remove(a_filePath, l_errorCode) ||
+		l_errorCode)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Fileを削除できませんでした。\nFilePath : {}", a_filePath.string());
+
+		return false;
+	}
+
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Fileを削除しました。\nFilePath : {}", a_filePath.string());
+
+	return true;
+}
 bool FWK::Editor::ContentBrowserEditorWindowFileSystem::HasChildFolder(const std::filesystem::path& a_folderPath) const
 {
 	std::error_code                     l_errorCode         = {};
