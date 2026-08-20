@@ -97,6 +97,8 @@ const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator:
 	l_prefab.SetFilePath(a_prefabFilePath);
 	l_prefab.SetJson    (l_prefabJson);
 	l_prefab.Deserialize(l_prefabJson);
+
+	return nullptr;
 }
 
 void FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const
