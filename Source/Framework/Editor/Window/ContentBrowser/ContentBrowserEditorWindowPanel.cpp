@@ -78,8 +78,15 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
         a_contentBrowserEditorWindow.RefreshCurrentFolderEntries();
     }
 
-    // すべてのファイルやフォルダを選択するショートカット
+    // Ctrl + Aで現在表示しているEntryをすべて選択する
     ApplyEntrySelectionShortcut(a_contentBrowserEditorWindow);
+
+    // 選択中Folderが1つだけならEnterキーでそのEnterキーでそのFolderを開く
+    ApplySelectedFolderOpenShortcut(a_contentBrowserEditorWindow);
+
+    // Deleteキーで現在選択されているEntryを削除要求する
+    // 複数選択・全選択も既存の削除処理がまとめて処理する
+    ApplySelectedEntryDeleteShortcut(a_contentBrowserEditorWindow);
 
     // フォルダ作成ショートカットの受付
     ApplyFolderCreateShortcut(a_contentBrowserEditorWindow);
@@ -574,7 +581,33 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyEntrySelectionShortcut(C
 
     l_entryController.SelectAllEntries();
 }
+void FWK::Editor::ContentBrowserEditorWindowPanel::ApplySelectedFolderOpenShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+{
+    const auto& l_imGuiIO = ImGui::GetIO();
 
+    // Folder作成用InputTextを編集中の場合は、
+    // EnterキーをFolder移動として使用しない
+    if (a_contentBrowserEditorWindow.GetVALIsFolderCreateActive() ||
+        l_imGuiIO.WantTextInput)
+    {
+        return;
+    }
+
+    // ContentBrowserまたはそのChildWindowにFocusがあるときだけ
+    // Enterショートカットを有効にする
+    if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) ||
+        !ImGui::IsKeyPressed(ImGuiKey_Enter, false))
+    {
+        return; 
+    }
+    
+    const auto& l_entryCoontroller   = a_contentBrowserEditorWindow.GetREFEntryController ();
+    const auto& l_selectedFolderPath = l_entryCoontroller.FetchVALSingleSelectedFolderPath();
+
+    if (l_selectedFolderPath.empty()) { return; }
+    
+    a_contentBrowserEditorWindow.ApplyCurrentFolderPath(l_selectedFolderPath);
+}
 void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyFolderCreateShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
 {
     const auto& l_imGuiIO = ImGui::GetIO();
@@ -609,6 +642,34 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyFolderCreateShortcut(Con
     // Ctrl + Shift + Nでは
     // 現在開いているFolderを作成先とする
     a_contentBrowserEditorWindow.RequestFolderCreate(a_contentBrowserEditorWindow.GetREFCurrentFolderPath());
+}
+void FWK::Editor::ContentBrowserEditorWindowPanel::ApplySelectedEntryDeleteShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+{
+    // Folder各入力中などは、
+    // DeleteキーをInputText内の文字削除として使用する
+    if (const auto& l_imGuiIO = ImGui::GetIO();
+        a_contentBrowserEditorWindow.GetVALIsFolderCreateActive() ||
+        l_imGuiIO.WantTextInput)
+    {
+        return;
+    }
+
+    // ContentBrowserまたはそのChildWindowにFocusがある時だけ
+    // Deleteキーによる削除を有効にする
+    if (!ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows) ||
+        !ImGui::IsKeyPressed(ImGuiKey_Delete, false))
+    {
+        return; 
+    }
+
+    // Selectionが存在しない場合は削除要求出さない
+    if (const auto& l_entryController = a_contentBrowserEditorWindow.GetREFEntryController();
+        l_entryController.FetchVALSelectedEntryCount() == k_emptySelectionCount)
+    {
+        return; 
+    }
+
+    a_contentBrowserEditorWindow.RequestSelectedEntryDelete();
 }
 
 std::string_view FWK::Editor::ContentBrowserEditorWindowPanel::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const

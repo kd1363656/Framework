@@ -313,12 +313,18 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabChi
 {
 	auto l_rootJsonArray = nlohmann::json::array();
 
+	const auto& l_childSmartPointerVectorArray = a_gameObject.GetREFChildSmartPointerVectorArray();
+
 	// ルートから全ての子情報を再帰的に保存していく
-	for (const auto& l_childData : a_gameObject.GetREFChildSmartPointerVectorArray().GetREFArrayElementDataList())
+	for (const auto& l_childData : l_childSmartPointerVectorArray.GetREFArrayElementDataList())
 	{
 		auto l_child = l_childData.m_type.lock();
 
-		if (!l_child) { continue; }
+		if (!l_child ||
+			l_child->GetVALIsDestroyed())
+		{
+			continue; 
+		}
 
 		auto l_json = l_child->SerializePrefab();
 

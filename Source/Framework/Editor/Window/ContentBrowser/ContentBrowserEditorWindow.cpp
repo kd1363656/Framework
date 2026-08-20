@@ -170,9 +170,8 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 		// RegularFileの場合の削除処理
 		l_errorCode.clear();
 
-		const bool l_isRegularFile = std::filesystem::is_regular_file(l_entryPath, l_errorCode);
-
-		if (l_errorCode ||
+		if (const bool l_isRegularFile = std::filesystem::is_regular_file(l_entryPath, l_errorCode);
+			l_errorCode ||
 			!l_isRegularFile)
 		{
 			l_isAllDeleteSucceeded = false;

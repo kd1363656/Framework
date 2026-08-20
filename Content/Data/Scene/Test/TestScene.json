@@ -1,51 +1,8 @@
 {
     "Scene": {
-        "GameObjectList": [
-            {
-                "GameObject": {
-                    "ChildList": [],
-                    "ComponentList": [],
-                    "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "09da5b0f-145c-48b5-9c3c-d422b015116f",
-                    "SceneInstanceName": "Antike",
-                    "SceneInstanceUUID": "6b42c4f5-2a33-410e-b9c2-bdf8749ed992",
-                    "TransformComponent": {
-                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
-                        "InitialPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "InitialRotation": {
-                            "W": 1.0,
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "InitialScale": {
-                            "X": 1.0,
-                            "Y": 1.0,
-                            "Z": 1.0
-                        }
-                    }
-                }
-            }
-        ],
+        "GameObjectList": [],
         "PrefabSystem": {
-            "PrefabMap": [
-                {
-                    "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json",
-                        "PrefabName": "Antike"
-                    },
-                    "PrefabInstanceNUMAllocator": {
-                        "IsAllocatedList": [
-                            true
-                        ]
-                    },
-                    "PrefabUUID": "09da5b0f-145c-48b5-9c3c-d422b015116f"
-                }
-            ]
+            "PrefabMap": []
         }
     },
     "SceneShiftMap": []

@@ -37,6 +37,16 @@ namespace FWK::Editor
 
 		void RequestAddGameObject();
 
+		static constexpr ImVec4 k_prefabGameObjectTextColor = { 0.30F,
+		                                                        0.65F, 
+		                                                        1.00F,
+		                                                        1.00F };
+
+		static constexpr ImVec4 k_nonPrefabGameObjectTextColor = { 1.00F,
+																   0.35F,
+																   0.35F,
+																   1.00f };
+
 		static constexpr std::string_view k_editorName                            = "アウトライナー";
 		static constexpr std::string_view k_rootDropAreaLabel                     = "##RootDropArea";
 		static constexpr std::string_view k_rootContextMenuLabel                  = "##RootContextMenu";

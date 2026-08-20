@@ -101,6 +101,10 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 			if (l_parentGameObject->ApplyParent(m_gameObjectNodeHierarchyChangeRequest.m_childGameObject))
 			{
 				l_scene->SetIsGameObjectExecutionLevelListDirty(true);
+
+				// Prefabの親子構造が変更されたので
+				// Scene上の現在の構造から全Prefabを更新する
+				l_scene->GetMutableREFPrefabSystem().RefreshAllPrefab();
 			}
 		}
 		break;
@@ -131,6 +135,10 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 			if (l_childGameObject->GetREFParent().expired())
 			{
 				l_scene->SetIsGameObjectExecutionLevelListDirty(true);
+
+				// Prefabの親子構造からChildが外れたため
+				// 全Prefabの保存内容も現在のHierarchyへ同期する
+				l_scene->GetMutableREFPrefabSystem().RefreshAllPrefab();
 			}
 		}
 		break;

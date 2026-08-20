@@ -22,7 +22,9 @@ namespace FWK
 		void Deserialize                  (const nlohmann::json&            a_rootJson);
 		void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
 
-		void AddPrefabMap(const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData);
+		void RefreshAllPrefab();
+
+		void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData);
 		void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);
 
 		nlohmann::json Serialize();

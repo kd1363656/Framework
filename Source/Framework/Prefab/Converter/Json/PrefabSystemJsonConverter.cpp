@@ -78,7 +78,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 		l_prefabInstanceNUMAllocator.Deserialize(l_prefabNUMInstanceAllocatorJson);
 		
-		a_prefabSystem.AddPrefabMap(l_prefabUUID, l_prefabData);
+		a_prefabSystem.AddPrefab(l_prefabUUID, l_prefabData);
 	}
 }
 

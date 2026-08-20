@@ -95,7 +95,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const C
 
 	const auto& l_prefabInstanceCreator = a_contentBrowserEditorWindow.GetREFPrefabInstanceCreator();
 	const auto& l_assetRegistry         = a_contentBrowserEditorWindow.GetREFAssetRegistry        ();
-	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance            (l_assetFilePath, l_assetRegistry, *l_scene);
+	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance            (l_assetRegistry, l_assetFilePath, *l_scene);
 
 	if (l_createdGameObject.expired()) { return false; }
 
@@ -170,6 +170,9 @@ FWK::Struct::GameObjectNodeDrawResult FWK::Editor::WorldOutlinerEditorWindow::Dr
 	const auto& l_gameObjectUUIDString     = boost::uuids::to_string    (l_gameObject->GetREFSceneInstanceUUID());
 	const bool  l_isGameObjectRenameTarget = m_gameObjectRename.IsTarget(a_gameObject);
 	
+	const bool  l_isPrefabGameObject  = !l_gameObject->GetREFPrefabUUID().is_nil();
+	const auto& l_gameObjectTextColor = l_isPrefabGameObject ? k_prefabGameObjectTextColor : k_nonPrefabGameObjectTextColor;
+
 	std::string l_gameObjectNodeLabel = {};
 
 	if (l_isGameObjectRenameTarget)
@@ -201,7 +204,12 @@ FWK::Struct::GameObjectNodeDrawResult FWK::Editor::WorldOutlinerEditorWindow::Dr
 			               ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 
+	// TreeNodeの文字色だけをPrefabかどうかに応じて変更する
+	ImGui::PushStyleColor(ImGuiCol_Text, l_gameObjectTextColor);
+
 	l_gameObjectNodeDrawResult.m_isNodeOpen = ImGui::TreeNodeEx(l_gameObjectNodeLabel.c_str(), l_treeNodeFlags);
+
+	ImGui::PopStyleColor();
 
 	// 展開矢印をクリックしただけの場合は、
 	// GameObjectの選択状態を変更しない
@@ -482,7 +490,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyShort
 	// 選択中GameObjectが存在しないなら何もしない
 	if (m_gameObjectSelection.FetchVALSelectedGameObjectCount() == k_emptySelectionCount) { return; }
 
-	// ここではDestro()しない
+	// ここではDestroy()しない
 	// OutlinerのScene/GameObject走査が全て終了してから
 	// ApplySelectedGameObjectDestroyRequest()で実際に削除要求を出す
 	m_isSelectedGameObjectDestroyRequested = true;
@@ -506,6 +514,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyReque
 		return; 
 	}
 
+	bool l_isPrefabDestroyed = false;
+
 	for (const auto& l_gameObject : l_scene->GetREFGameObjectList())
 	{
 		if (!l_gameObject ||
@@ -517,7 +527,23 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyReque
 		// Outlinerで現在選択されているGameObjectだけ削除要求を出す
 		if (!m_gameObjectSelection.ContainsSelectedGameObject(l_gameObject)) { continue; }
 
+		// PrefabInstanceが一つでも削除対象に含まれていた場合は、
+		// Destroy要求後にPrefab全体を更新する
+		// 親PrefabがこのGameObjectをChildとして保持している場合
+		// 親PrefabのJson空も削除する必要があるため
+		if (!l_gameObject->GetREFPrefabUUID().is_nil())
+		{
+			l_isPrefabDestroyed = true;
+		}
+
 		l_gameObject->Destroy();
+	}
+
+	if (l_isPrefabDestroyed)
+	{
+		auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+
+		l_prefabSystem.RefreshAllPrefab();
 	}
 
 	// Destroy要求を出したGameObjectを
@@ -580,7 +606,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::RequestAddGameObject()
 	l_transformComponent->ApplyStandalone();
 
 	// Outlinerから作成できるGameObjectはRootのみなので
-	// ApplyParent(9などは行わず、そのままSceneへ変化する
+	// ApplyParent()などは行わず、そのままSceneへ変化する
 	l_scene->AddGameObject(l_gameObject);
 
 	// 作成したGameObjectをOutlinerの単一選択にする

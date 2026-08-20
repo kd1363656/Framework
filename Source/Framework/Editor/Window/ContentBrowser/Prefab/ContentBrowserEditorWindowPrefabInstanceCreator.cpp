@@ -1,13 +1,11 @@
 ﻿#include "ContentBrowserEditorWindowPrefabInstanceCreator.h"
 
-std::weak_ptr<FWK::GameObject> FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::CreatePrefabInstance(const std::filesystem::path& a_prefabFilePath, const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, Scene& a_scene) const
+std::weak_ptr<FWK::GameObject> FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::CreatePrefabInstance(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_prefabFilePath, Scene& a_scene) const
 {
-	const auto& l_prefabUUID = a_assetRegistry.FindVALAssetUUID(a_prefabFilePath);
+	auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
 
-	if (l_prefabUUID.is_nil()) { return {}; }
-
-	      auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
-	const auto* l_prefab       = l_prefabSystem.FindPTRPrefab     (l_prefabUUID);
+	// まずはScene側のPrefabSystemにPrefabがなければプレハブ作成から始める
+	const auto* l_prefab = SynchronizePrefabIfNotExist(a_assetRegistry, a_prefabFilePath, l_prefabSystem);
 
 	if (!l_prefab) { return {}; }
 
@@ -23,9 +21,7 @@ std::weak_ptr<FWK::GameObject> FWK::Editor::ContentBrowserEditorWindowPrefabInst
 
 	// PrefabJsonから
 	// Root/Component/Childの構造を更新する
-	if (!l_gameObject->DeserializePrefabInstance(l_prefabJson,
-		                                         l_childDeserializeDataList,
-		                                         a_scene))
+	if (!l_gameObject->DeserializePrefabInstance(l_prefabJson, l_childDeserializeDataList, a_scene))
 	{
 		return {};
 	}
@@ -57,6 +53,50 @@ std::weak_ptr<FWK::GameObject> FWK::Editor::ContentBrowserEditorWindowPrefabInst
 	RecursivePostDeserialize(l_gameObject);
 
 	return l_gameObject;
+}
+
+const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::SynchronizePrefabIfNotExist(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_prefabFilePath, PrefabSystem& a_prefabSystem) const
+{
+	// Prefabとして読み込むので、
+	// 通常FileだけでなくJSON拡張子まで確認する
+	if (!Utility::CanLoadFilePath(a_prefabFilePath)) 
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "FilePath : {}\n読み込めるファイルではなくシーンのPrefabSystemに登録できませんでした。", a_prefabFilePath.string());
+
+		return nullptr; 
+	}
+
+	const auto& l_prefabUUID = a_assetRegistry.FindVALAssetUUID(a_prefabFilePath);
+
+	if (l_prefabUUID.is_nil()) 
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetRegistryからPrefabUUIDを取得できませんでした。\nFilePath : {}", a_prefabFilePath.string());
+
+		return nullptr;
+	}
+
+	// SceneLoad済み、または同じPrefabを以前生成済みなら、
+	// 現在のPrefabDataをそのまま使用する
+	if (const auto* l_registeredPrefab = a_prefabSystem.FindPTRPrefab(l_prefabUUID)) 
+	{
+		return l_registeredPrefab;
+	}
+
+	const auto& l_prefabJson = Utility::LoadJsonFile(a_prefabFilePath);
+
+	if (l_prefabJson.is_null()) 
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabJsonを読み込めませんでした。\nFilePath : {}", a_prefabFilePath.string());
+
+		return nullptr;
+	}
+
+	Struct::PrefabData l_prefabData = {};
+	auto&              l_prefab     = l_prefabData.m_prefab;
+
+	l_prefab.SetFilePath(a_prefabFilePath);
+	l_prefab.SetJson    (l_prefabJson);
+	l_prefab.Deserialize(l_prefabJson);
 }
 
 void FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const

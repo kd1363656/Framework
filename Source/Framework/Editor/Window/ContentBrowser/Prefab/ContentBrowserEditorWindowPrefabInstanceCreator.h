@@ -9,9 +9,11 @@ namespace FWK::Editor
 		 ContentBrowserEditorWindowPrefabInstanceCreator() = default;
 		~ContentBrowserEditorWindowPrefabInstanceCreator() = default;
 
-		std::weak_ptr<GameObject> CreatePrefabInstance(const std::filesystem::path& a_prefabFilePath, const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, Scene& a_scene) const;
+		std::weak_ptr<GameObject> CreatePrefabInstance(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_prefabFilePath, Scene& a_scene) const;
 
 	private:
+
+		const Prefab* SynchronizePrefabIfNotExist(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_prefabFilePath, PrefabSystem& a_prefabSystem) const;
 
 		void RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const;
 

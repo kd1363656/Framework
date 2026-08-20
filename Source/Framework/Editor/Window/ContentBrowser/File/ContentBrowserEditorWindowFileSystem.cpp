@@ -95,7 +95,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 		return {};
 	}
 
-	// Outlinderでf2リネームされたSceneInstanceNameをそのままPrefabNameとして使用する
+	// OutlinerでF2リネームされたSceneInstanceNameをそのままPrefabNameとして使用する
 	const auto& l_prefabName = l_gameObject->GetREFSceneInstanceName();
 
 	if (l_prefabName.empty())
@@ -178,7 +178,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	// このPrefabの保存用代表ゲームオブジェクトとして使用する
 	l_prefab.SetGameObject(l_gameObject);
 
-	l_prefabSystem.AddPrefabMap(l_prefabUUID, l_prefabData);
+	l_prefabSystem.AddPrefab(l_prefabUUID, l_prefabData);
 
 	auto* l_registeredPrefab = l_prefabSystem.FindMutablePTRPrefab(l_prefabUUID);
 
@@ -232,6 +232,10 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 		return {};
 	}
+
+	// 新しPrefabの登録・保存が完全に成功した後で、
+	// Scene上の現在のPrefab構造を全Prefabへ反映する
+	l_prefabSystem.RefreshAllPrefab();
 
 	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Prefabを作成しました。\nPrefabName : {}\nFilePath : {}\nPrefabUUID : {}\nPrefabInstanceNUM : {}",
 		        l_prefabName,
@@ -395,7 +399,10 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 		l_gameObject->Destroy();
 	}
 
-	l_scene->GetMutableREFPrefabSystem().RemovePrefab(l_prefabUUID);
+	auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+
+	l_prefabSystem.RemovePrefab    (l_prefabUUID);
+	l_prefabSystem.RefreshAllPrefab();
 
 	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Prefabを削除しました。\nFilePath : {}\nPrefabUUID : {}", a_prefabFilePath.string(), boost::uuids::to_string(l_prefabUUID));
 

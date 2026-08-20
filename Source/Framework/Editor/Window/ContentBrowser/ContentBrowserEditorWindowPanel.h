@@ -26,8 +26,10 @@ namespace FWK::Editor
 		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void DrawFolderCreateEntry             (      ContentBrowserEditorWindow&      a_contentBrowserEditorWindow)                                          const;
 
-		void ApplyEntrySelectionShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
-		void ApplyFolderCreateShortcut  (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void ApplyEntrySelectionShortcut     (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void ApplySelectedFolderOpenShortcut (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void ApplySelectedEntryDeleteShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void ApplyFolderCreateShortcut       (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 
 		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const;
 

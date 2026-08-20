@@ -54,7 +54,58 @@ void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameOb
 	l_prefab.SetGameObject(l_gameObject);
 }
 
-void FWK::PrefabSystem::AddPrefabMap(const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData)
+void FWK::PrefabSystem::RefreshAllPrefab()
+{
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+	if (!l_scene) { return; }
+
+	const auto& l_gameObjectList = l_scene->GetREFGameObjectList();
+
+
+	for (auto& [l_prefabUUID, l_prefabData] : m_prefabMap)
+	{
+		if (l_prefabUUID.is_nil()) { continue; }
+
+		auto& l_prefab = l_prefabData.m_prefab;
+		
+		const auto& l_prefabGameObject = l_prefab.GetREFGameObject().lock();
+
+		if (!l_prefabGameObject) { continue; }
+
+		// プレハブ構築用ゲームオブジェクトが無効ならプレハブ構築用ゲームオブジェクトをシーンから探す
+		if (l_prefabGameObject->GetVALIsDestroyed())
+		{
+			// 代表GameObjectが存在しないPrefabは
+			// 現在のScene状態から新しいPrefab情報を生成できない
+			// そのためPrefabゲームオブジェクトをもう一度探し直し設定する
+			for (const auto& l_gameObject : l_gameObjectList)
+			{
+				if (!l_gameObject                                    || 
+					l_prefabUUID == l_gameObject->GetREFPrefabUUID() ||
+					l_gameObject->GetVALIsDestroyed()                ||
+					l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM) 
+				{
+					continue; 
+				}
+
+				l_prefab.SetGameObject(l_gameObject);
+
+				// 代表Prefab構築用ゲームオブジェクトを見つけたら走査する必要がないためbreak
+				break;
+			}	
+		}
+
+		// シリアライズでファイルを保存するがそれとともに戻り値で
+		// nlohmann::jsonで保存内容が空かどうかを確認する
+		if (l_prefab.Serialize().is_null())
+		{
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabの更新に失敗しました。\nPrefabUUID : {}\nFilePath : {}", boost::uuids::to_string(l_prefabUUID), l_prefab.GetREFFilePath().string());
+		}
+	}
+}
+
+void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData)
 {
 	if (a_prefabUUID.is_nil())
 	{
@@ -80,7 +131,7 @@ void FWK::PrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
 
 	m_prefabMap.erase(l_itr);
 
-	FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
 }
 
 nlohmann::json FWK::PrefabSystem::Serialize()

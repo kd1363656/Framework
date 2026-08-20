@@ -18,7 +18,6 @@ namespace FWK::Editor
 
 		bool HasChildFolder(const std::filesystem::path& a_folderPath) const;
 
-
 	private:
 
 		static constexpr std::uintmax_t k_notRemovedEntryCount = 0U;
