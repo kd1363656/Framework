@@ -533,5 +533,6 @@
 #include "Definition/Struct/Editor/Window/ContentBrowserEditorWindowStruct.h"
 #include "Editor/Window/ContentBrowser/Entry/ContentBrowserEditorWindowEntryController.h"
 #include "Editor/Window/ContentBrowser/ContentBrowserEditorWindowPanel.h"
+#include "Editor/Window/ContentBrowser/Prefab/ContentBrowserEditorWindowPrefabInstanceCreator.h"
 #include "Editor/Window/ContentBrowser/Converter/Json/ContentBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"

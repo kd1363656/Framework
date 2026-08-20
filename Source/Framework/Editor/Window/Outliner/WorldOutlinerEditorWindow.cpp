@@ -61,12 +61,48 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	ImGui::End();
 
 	// OutlinerのImGui描画が完全に終了してから
-	// 選択中GameOBjectへ削除フラグを設定する
+	// 選択中GameObjectへ削除フラグを設定する
 	// アウトライナーの全体の描画を止めないようにするため
 	ApplySelectedGameObjectDestroyRequest();
 
 	// 親子関係の変更もImGui病が終了後に反映する
 	m_gameObjectHierarchy.ApplyRequest();
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+{
+	std::filesystem::path l_assetFilePath = {};
+
+	// ContentBrowserのFileEntryから送られている
+	// AssetFilePathPayloadを受け取る
+	if (auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+		!l_dragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_assetFilePath)) 
+	{
+		return false; 
+	}
+
+	if (l_assetFilePath.empty()) { return false; }
+
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+	if (!l_scene)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Sceneが無効のためPrefabInstanceを生成できませんでした。");
+
+		return false;
+	}
+
+	const auto& l_prefabInstanceCreator = a_contentBrowserEditorWindow.GetREFPrefabInstanceCreator();
+	const auto& l_assetRegistry         = a_contentBrowserEditorWindow.GetREFAssetRegistry        ();
+	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance            (l_assetFilePath, l_assetRegistry, *l_scene);
+
+	if (l_createdGameObject.expired()) { return false; }
+
+	// Dropして生成したrootGameObjetをそのまま選択する
+	m_gameObjectSelection.SelectSingleGameObject(l_createdGameObject);
+
+	return true;
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject)
@@ -293,9 +329,25 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 	// Outlinerの残り領域を操作可能なItemとして登録する
 	ImGui::InvisibleButton(k_rootDropAreaLabel.data(), l_rootDropAreaSize);
 
-	// InvisibleButtonが直前のItemなので、
-	// ここでDragDropTargetを判定する
-	if (!UnparentDroppedGameObject() &&
+	// Outliner上のGameObjectを空白領域へDropした場合は、既存の親子関係解除要求として処理する
+	// Outliner上のGameObjectを空白領域へDropした場合は、
+	// 既存の親子関係解除要求として処理する
+	const bool  l_isGameObjectUnparentRequested = UnparentDroppedGameObject                                   ();
+	const auto& l_editorManager                 = EditorManager::GetInstance                                  ();
+	const auto& l_contentBrowserEditorWindow    = l_editorManager.FindWindowEditor<ContentBrowserEditorWindow>().lock();
+	      bool  l_isPrefabInstanceCreated       = false;
+
+	if (l_contentBrowserEditorWindow)
+	{
+		// ContentBrowserからAssetFilePathがDropされた場合、
+		// Registry -> PrefabUUID -> Prefab生成処理へつなぐ
+		l_isPrefabInstanceCreated = CreateDroppedPrefabInstance(*l_contentBrowserEditorWindow);
+	}
+
+	// Drop操作を処理したFrameでは、
+	// 空白クリックとしてSelectionを解除しない
+	if (!l_isGameObjectUnparentRequested &&
+		!l_isPrefabInstanceCreated       &&
 		ImGui::IsItemClicked(ImGuiMouseButton_Left))
 	{
 		// Rename中の空白左クリックは、
@@ -322,9 +374,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 		m_gameObjectRename.ConfirmRename();
 	}
 
-	const auto l_selectedGameObjectCount = m_gameObjectSelection.FetchVALSelectedGameObjectCount();
-
-	if (l_selectedGameObjectCount != k_emptySelectionCount)
+	if (const auto& l_selectedGameObjectCount = m_gameObjectSelection.FetchVALSelectedGameObjectCount();
+		l_selectedGameObjectCount != k_emptySelectionCount)
 	{
 		// GameObjectが一つでも選択されている場合は、
 		// 「GameObject追加」は表示しない

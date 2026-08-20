@@ -30,9 +30,10 @@ namespace FWK::Editor
 
 		void SetFolderCreateInputFocusRequested(const bool a_set) { m_isFolderCreateInputFocusRequested = a_set; }
 
-		const auto& GetREFAssetRegistry  () const { return m_assetRegistry; }
-		const auto& GetREFEntryController() const { return m_entryController; }
-		const auto& GetREFFileSystem     () const { return m_fileSystem; }
+		const auto& GetREFAssetRegistry        () const { return m_assetRegistry; }
+		const auto& GetREFEntryController      () const { return m_entryController; }
+		const auto& GetREFFileSystem           () const { return m_fileSystem; } 
+		const auto& GetREFPrefabInstanceCreator() const { return m_prefabInstanceCreator; }
 
 		const auto& GetREFCurrentFolderPath() const { return m_currentFolderPath; }
 
@@ -53,10 +54,11 @@ namespace FWK::Editor
 		
 		static constexpr std::string_view k_editorName = "コンテンツブラウザー";
 
-		ContentBrowserEditorWindowAssetRegistry   m_assetRegistry   = {};
-		ContentBrowserEditorWindowEntryController m_entryController = {};
-		ContentBrowserEditorWindowFileSystem      m_fileSystem      = {};
-		ContentBrowserEditorWindowPanel           m_panel           = {};
+		ContentBrowserEditorWindowAssetRegistry         m_assetRegistry         = {};
+		ContentBrowserEditorWindowEntryController       m_entryController       = {};
+		ContentBrowserEditorWindowFileSystem            m_fileSystem            = {};
+		ContentBrowserEditorWindowPrefabInstanceCreator m_prefabInstanceCreator = {};
+		ContentBrowserEditorWindowPanel                 m_panel                 = {};
 
 		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
 

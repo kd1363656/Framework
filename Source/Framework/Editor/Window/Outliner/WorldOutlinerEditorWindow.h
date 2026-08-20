@@ -2,6 +2,11 @@
 
 namespace FWK::Editor
 {
+	class ContentBrowserEditorWindow;
+}
+
+namespace FWK::Editor
+{
 	class WorldOutlinerEditorWindow final : public EditorWindowBase
 	{
 	public:
@@ -12,6 +17,8 @@ namespace FWK::Editor
 		void Draw() override;
 
 	private:
+
+		bool CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
 
 		void                             DrawGameObjectNode           (const std::weak_ptr<GameObject>& a_gameObject);
 		Struct::GameObjectNodeDrawResult DrawGameObjectNodeHeader     (const std::weak_ptr<GameObject>& a_gameObject);

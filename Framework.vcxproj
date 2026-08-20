@@ -482,6 +482,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
@@ -760,6 +761,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp" />

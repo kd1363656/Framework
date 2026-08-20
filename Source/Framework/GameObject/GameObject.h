@@ -21,16 +21,21 @@ namespace FWK
 
 
 		bool DeserializePrefab(const nlohmann::json&                                                   a_rootJson, 
-			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+			                         std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 			                         Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 			                         std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
 			                         Scene&                                                            a_scene);
 
+		bool DeserializePrefabInstance(const nlohmann::json& a_prefabJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene);
+
 		bool DeserializeScene(const nlohmann::json&                                                   a_rootJson,
-			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeData,
+			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
 			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
 			                        Scene&                                                            a_scene);
 
+		void RecursiveAddComponent(const Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList);
+		bool RecursiveAddChild    (      std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,         Scene&                                     a_scene);
+		
 		void PostDeserialize();
 
 		void EarlyUpdate   () const;

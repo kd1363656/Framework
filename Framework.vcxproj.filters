@@ -1261,6 +1261,9 @@
     <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Entry">
       <UniqueIdentifier>{6b5b7668-c6f9-4aa2-bd14-aeae7d882759}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Prefab">
+      <UniqueIdentifier>{f496ca46-ad9d-4bff-8082-84c3f815c21d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2445,6 +2448,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.h">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3052,6 +3058,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.cpp">
+      <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

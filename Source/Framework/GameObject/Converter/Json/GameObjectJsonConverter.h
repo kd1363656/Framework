@@ -27,6 +27,11 @@ namespace FWK::Converter
 	                                 Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
 	                                 Scene&                                                            a_scene) const;
 
+		bool DeserializePrefabInstance(const std::weak_ptr<GameObject>&                 a_gameObject, 
+			                           const nlohmann::json&                            a_prefabJson,
+	                                         std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
+			                                 Scene&                                     a_scene) const;
+
 		bool DeserializeScene(const nlohmann::json&                                                   a_rootJson, 
 			                        std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList, 
 			                        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, 
@@ -37,13 +42,6 @@ namespace FWK::Converter
 		nlohmann::json SerializeScene (const GameObject& a_gameObject) const;
 
 	private:
-
-		void RecursiveAddComponent(const std::shared_ptr<GameObject>&                                      a_self,   
-			                       const Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-			                             std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-			                             Scene&                                                            a_scene) const;
-
-		void RecursiveAddChild(const std::shared_ptr<GameObject>& a_parent,  std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene) const;
 
 		GameObjectPrefabJsonConverter m_prefabJsonConverter = {};
 		GameObjectSceneJsonConverter  m_sceneJsonConverter  = {};

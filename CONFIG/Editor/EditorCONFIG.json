@@ -15,7 +15,12 @@
         {
             "Window": {
                 "AssetRegistry": {
-                    "AssetFilePathToUUIDMap": []
+                    "AssetFilePathToUUIDMap": [
+                        {
+                            "AssetUUID": "09da5b0f-145c-48b5-9c3c-d422b015116f",
+                            "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
+                        }
+                    ]
                 }
             },
             "WindowTypeName": "ContentBrowserEditorWindow"
