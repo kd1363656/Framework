@@ -42,12 +42,12 @@ void FWK::TransformComponent::PostDeserialize()
 		m_parentTransformComponent = l_parent->GetVALTransformComponent();
 	}
 
-	ConfrimMatrix();
+	ConfirmMatrix();
 }
 
 void FWK::TransformComponent::PostLateUpdate()
 {
-	ConfrimMatrix();
+	ConfirmMatrix();
 }
 
 void FWK::TransformComponent::EditInspector()
@@ -79,7 +79,7 @@ void FWK::TransformComponent::ApplyParent(const std::weak_ptr<GameObject>& a_par
 
 	// セットした後にダーティーフラグで行列の更新が妨げられてもいいように
 	// ここで一度だけ行列を更新しておく
-	ConfrimMatrix();
+	ConfirmMatrix();
 }
 void FWK::TransformComponent::ApplyStandalone()
 {
@@ -100,10 +100,10 @@ void FWK::TransformComponent::ApplyStandalone()
 	
 	m_initializeMatrixStrategyTypeName = std::string(StandaloneMatrixStrategy::GetREFTypeINFO().k_name);
 
-	ConfrimMatrix();
+	ConfirmMatrix();
 }
 
-void FWK::TransformComponent::ConfrimMatrix()
+void FWK::TransformComponent::ConfirmMatrix()
 {
 	if (!m_matrixStrategy) { return; }
 

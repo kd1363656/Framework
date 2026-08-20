@@ -1282,6 +1282,9 @@
     <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self">
       <UniqueIdentifier>{e2f979f2-87a7-4eb8-ba5d-a09dc4657674}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Inspector">
+      <UniqueIdentifier>{cf72dc1a-63fa-4f0f-a9d3-76a3be3caf22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2304,7 +2307,7 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h">
       <Filter>Source\Framework\Utility\IMGUI\Bool</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryRadioButtonSelectorUtility.h">
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Factory</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h">
@@ -2474,6 +2477,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h">
       <Filter>Source\Framework\Utility\Helper\Component\Fetch\Transform\Self</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3091,6 +3097,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Component\Fetch\Transform\Self</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

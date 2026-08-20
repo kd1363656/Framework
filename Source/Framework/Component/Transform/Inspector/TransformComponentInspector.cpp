@@ -2,9 +2,12 @@
 
 void FWK::TransformComponentInspector::EditInspector(TransformComponent& a_transformComponent)
 {
-	auto& l_transform               = a_transformComponent.GetMutableREFTrnsform              ();
-	auto& l_initialSettingTransform = a_transformComponent.GetMutableREFInitialSettingTrnsform();
-	auto& l_matrixStrategy          = a_transformComponent.GetMutableREFMatrixStrategy        ();
+	auto& l_transform               = a_transformComponent.GetMutableREFTransform              ();
+	auto& l_initialSettingTransform = a_transformComponent.GetMutableREFInitialSettingTransform();
+	auto& l_matrixStrategy          = a_transformComponent.GetMutableREFMatrixStrategy         ();
+
+	// 行列の計算方法を選択することができるラジオボタンリスト
+	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy);
 
 	// 位置
 	if (ImGui::DragFloat3(k_transformPositionLabel.data(), &l_transform.m_position.x, Constant::k_imguiDefaultDragValue))
@@ -28,7 +31,4 @@ void FWK::TransformComponentInspector::EditInspector(TransformComponent& a_trans
 	{
 		l_initialSettingTransform.m_scale = l_transform.m_scale;
 	}
-
-	// 行列の計算方法を選択することができるラジオボタンリスト
-	Utility::FactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy);
 }

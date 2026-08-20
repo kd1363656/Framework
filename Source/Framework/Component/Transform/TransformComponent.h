@@ -58,12 +58,12 @@ namespace FWK
 
 		auto& GetMutableREFMatrixStrategy() { return m_matrixStrategy; }
 
-		auto& GetMutableREFTrnsform              () { return m_transform; }
-		auto& GetMutableREFInitialSettingTrnsform() { return m_initialSettingTransform; }
+		auto& GetMutableREFTransform              () { return m_transform; }
+		auto& GetMutableREFInitialSettingTransform() { return m_initialSettingTransform; }
 
 	private:
 
-		void ConfrimMatrix();
+		void ConfirmMatrix();
 
 		std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
 

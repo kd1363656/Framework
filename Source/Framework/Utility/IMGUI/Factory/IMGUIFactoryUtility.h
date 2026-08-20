@@ -10,6 +10,7 @@ namespace FWK::Utility
 
 		if constexpr (!Concept::IsSmartPTRConcept<Type>) { return false; }
 		
+		ImGui::PushID    (std::to_address(a_wantChange));
 		ImGui::BeginGroup();
 
 		std::string l_createInstanceName = Constant::k_selecteUnknownString.data();
@@ -22,6 +23,7 @@ namespace FWK::Utility
 
 		if (!ImGui::BeginCombo(a_label.data(), l_createInstanceName.c_str()))
 		{
+			ImGui::PopID   ();
 			ImGui::EndGroup();
 
 			return false;
@@ -33,13 +35,9 @@ namespace FWK::Utility
 		{
 			bool l_isSelected = l_createInstanceName == l_key;
 			
-			ImGui::PushID(&l_value);
-
 			// ラジオボタンがクリックされなければ処理をスキップ
 			if (!ImGui::RadioButton(l_key.c_str() , l_isSelected))
 			{
-				ImGui::PopID();
-
 				continue;
 			}
 
@@ -51,13 +49,33 @@ namespace FWK::Utility
 
 			a_wantChange = l_value();
 			l_isCreate   = true;
-
-			ImGui::PopID();
 		}
 
 		ImGui::EndCombo();
 		ImGui::EndGroup();
+		ImGui::PopID   ();
 
 		return l_isCreate;
+	}
+
+	template <typename FactoryType, typename Key, typename Value>
+	inline bool FactoryCheckBoxMapSelector(std::unordered_map<Key, Value>& a_selectedMap)
+	{
+		// Factoryから生成されるGameObjectは
+		// shared_ptr/weak_ptrなどのSmartPointer前提にする
+		if constexpr (!Concept::IsSmartPTRConcept<Type>) { return false; }
+
+		bool  l_isChanged = false;
+		auto& l_factory   = FactoryType::GetInstance();
+
+		ImGui::PushID    (std::to_address(a_selectedMap));
+		ImGui::BeginGroup();
+
+		// Factoryへ登録されている全Typeを
+		// Checkboxとして一覧表示する
+		for (const auto& [l_key, l_value] : l_factory.GetREFFactoryMap())
+		{
+			// 現在a_selectedMapに存在しているなら
+		}
 	}
 }

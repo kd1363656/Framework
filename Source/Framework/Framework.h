@@ -488,7 +488,7 @@
 //===============================================================================
 #include "Strategy/StrategyBase.h"
 #include "Utility/Math/MathQuaternionUtility.h"
-#include "Utility/IMGUI/Factory/IMGUIFactoryRadioButtonSelectorUtility.h"
+#include "Utility/IMGUI/Factory/IMGUIFactoryUtility.h"
 #include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
 #include "Component/Transform/Inspector/TransformComponentInspector.h"
@@ -502,6 +502,7 @@
 #include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
 #include "Utility/Helper/Component/Fetch/Transform/Self/FetchTransformComponentFromSelfGameObjectHelper.h"
 #include "Component/Render/Model/ModelComponentBase.h"
+#include "Component/Render/Model/Static/Inspector/StaticModelComponentInspector.h"
 #include "Component/Render/Model/Static/Converter/Json/StaticModelComponentJsonConverter.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"
 #include "Component/Render/Model/Static/Strategy/StaticModelRegisterDrawRequestStrategyBase.h"

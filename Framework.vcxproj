@@ -339,6 +339,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.h" />
@@ -708,7 +709,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryRadioButtonSelectorUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
@@ -741,6 +742,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.cpp" />

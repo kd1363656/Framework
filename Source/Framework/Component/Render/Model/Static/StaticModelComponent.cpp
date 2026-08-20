@@ -1,10 +1,5 @@
 ﻿#include "StaticModelComponent.h"
 
-void FWK::StaticModelComponent::INIT()
-{
-	ModelComponentBase::INIT();
-}
-
 void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
