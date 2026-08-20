@@ -14,6 +14,8 @@ namespace FWK
 		 Prefab() = default;
 		~Prefab() = default;
 
+		void LoadGameObjectPrefab();
+
 		void Deserialize(const nlohmann::json& a_rootJson);
 
 		nlohmann::json Serialize();

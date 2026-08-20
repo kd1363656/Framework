@@ -95,10 +95,14 @@ const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator:
 	auto&              l_prefab     = l_prefabData.m_prefab;
 
 	l_prefab.SetFilePath(a_prefabFilePath);
-	l_prefab.SetJson    (l_prefabJson);
-	l_prefab.Deserialize(l_prefabJson);
 
-	return nullptr;
+	// 設定されたファイルパスをもとにプレハブを構築
+	l_prefab.LoadGameObjectPrefab();
+	
+	a_prefabSystem.AddPrefab(l_prefabUUID, l_prefabData);
+
+	// 格納したプレハブのアドレスを取得
+	return a_prefabSystem.FindPTRPrefab(l_prefabUUID);
 }
 
 void FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const

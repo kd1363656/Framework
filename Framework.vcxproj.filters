@@ -2451,6 +2451,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Prefab</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

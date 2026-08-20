@@ -1,5 +1,46 @@
 ﻿#include "PrefabJsonConverter.h"
 
+void FWK::Converter::PrefabJsonConverter::LoadGameObjectPrefab(Prefab& a_prefab) const
+{
+	const auto& l_filePath = a_prefab.GetREFFilePath();
+
+	// Jsonでデシリアライズしたファイルパスからjsonファイルをロードして保持する
+	if (!Utility::CanLoadFilePath(l_filePath, Constant::k_lowerJsonExtension))
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "読み込みが不可能なファイルパスになっており、読み込み処理に失敗しました。");
+
+		return;
+	}
+
+	const auto& l_rootJson = Utility::LoadJsonFile(l_filePath);
+
+	if (l_rootJson.is_null())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効となっており、Prefabの読み込みに失敗しました。");
+
+		return;
+	}
+
+	const auto& l_prefabName = l_rootJson.value(Constant::k_prefabNameJsonKey, std::string{});
+
+	// PrefabNameは、このPrefabから生成される
+	// GameObject名の元になるための必須情報
+	if (l_prefabName.empty())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabNameが空となっており、Prefabのデシリアライズに失敗しました。");
+
+		return;
+	}
+
+	a_prefab.SetPrefabName(l_prefabName);
+
+	const auto& l_json = l_rootJson.value(Constant::k_prefabJsonKey, nlohmann::json{});
+
+	if (l_json.is_null()) { return; }
+
+	a_prefab.SetJson(l_json);
+}
+
 void FWK::Converter::PrefabJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Prefab& a_prefab) const
 {
 	if (a_rootJson.is_null())
@@ -47,47 +88,6 @@ nlohmann::json FWK::Converter::PrefabJsonConverter::Serialize(Prefab& a_prefab) 
 	return l_rootJson;
 }
 
-void FWK::Converter::PrefabJsonConverter::LoadGameObjectPrefab(Prefab& a_prefab) const
-{
-	const auto& l_filePath = a_prefab.GetREFFilePath();
-
-	// Jsonでデシリアライズしたファイルパスからjsonファイルをロードして保持する
-	if (!Utility::CanLoadFilePath(l_filePath, Constant::k_lowerJsonExtension))
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "読み込みが不可能なファイルパスになっており、読み込み処理に失敗しました。");
-
-		return;
-	}
-
-	const auto& l_rootJson = Utility::LoadJsonFile(l_filePath);
-
-	if (l_rootJson.is_null())
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効となっており、Prefabの読み込みに失敗しました。");
-
-		return;
-	}
-
-	const auto& l_prefabName = l_rootJson.value(k_prefabNameJsonKey, std::string{});
-
-	// PrefabNameは、このPrefabから生成される
-	// GameObject名の元になるための必須情報
-	if (l_prefabName.empty())
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabNameが空となっており、Prefabのデシリアライズに失敗しました。");
-
-		return;
-	}
-
-	a_prefab.SetPrefabName(l_prefabName);
-
-	const auto& l_json = l_rootJson.value(k_prefabJsonKey, nlohmann::json{});
-
-	if (l_json.is_null()) { return; }
-
-	a_prefab.SetJson(l_json);
-}
-
 bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab) const
 {
 	const auto& l_gameObject = a_prefab.GetREFGameObject().lock();
@@ -103,11 +103,11 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 	const auto&          l_gameObjectJson = l_gameObject->SerializePrefab();
 	      nlohmann::json l_rootJson       = {};
 
-	l_rootJson[k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
+	l_rootJson[Constant::k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
 
 	// 実際のPrefabファイルには、
 	// GameObjectを復元するための情報を保存する
-	l_rootJson[k_prefabJsonKey] = l_gameObjectJson;
+	l_rootJson[Constant::k_prefabJsonKey] = l_gameObjectJson;
 
 	// GameObjectJsonを生成できなかった場合は、
 	// 不完全なPrefabファイルを書き込まない。

@@ -5,7 +5,7 @@
             "EventMap": []
         },
         "ComponentList": [],
-        "PrefabUUID": "ca507fc4-8ce2-4ee4-8ac1-a6fad2d5c752",
+        "PrefabUUID": "be3e06a8-f485-4446-bd77-edeb1ad9de24",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
@@ -25,5 +25,6 @@
                 "Z": 1.0
             }
         }
-    }
+    },
+    "PrefabName": "Antike"
 }
