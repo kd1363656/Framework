@@ -2,7 +2,9 @@
 
 void FWK::ModelComponentBase::INIT()
 {
-	m_assetFilePathHelper.SetAllowedFileExtension(Constant::k_lowerFBXExtension);
+	if (!m_assetFilePathHelper) { return; }
+
+	m_assetFilePathHelper->SetAllowedFileExtension(Constant::k_lowerFBXExtension);
 }
 
 void FWK::ModelComponentBase::DeserializePrefab(const nlohmann::json& a_rootJson)

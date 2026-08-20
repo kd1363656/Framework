@@ -7,9 +7,12 @@ void FWK::Converter::ModelComponentBaseJsonConverter::DeserializePrefab(const nl
 	if (const auto& l_json = a_rootJson.value(k_assetFilePathHelperJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		auto& l_assetFilePathHelper = a_modelComponentBase.GetMutableREFAssetFilePathHelper();
+		const auto& l_assetFilePathHelper = a_modelComponentBase.GetVALAssetFilePathHelper().lock();
 
-		l_assetFilePathHelper.Deserialize(l_json);
+		if (l_assetFilePathHelper)
+		{
+			l_assetFilePathHelper->Deserialize(l_json);
+		}
 	}
 }
 
@@ -17,9 +20,11 @@ nlohmann::json FWK::Converter::ModelComponentBaseJsonConverter::SerializePrefab(
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_assetFilePathHelper = a_modelComponentBase.GetREFAssetFilePathHelper();
-
-	l_rootJson[k_assetFilePathHelperJsonKey] = l_assetFilePathHelper.Serialize();
+	if (const auto& l_assetFilePathHelper = a_modelComponentBase.GetVALAssetFilePathHelper().lock();
+		l_assetFilePathHelper)
+	{
+		l_rootJson[k_assetFilePathHelperJsonKey] = l_assetFilePathHelper->Serialize();
+	}
 
 	return l_rootJson;
 }

@@ -2,12 +2,12 @@
 
 namespace FWK
 {
-	class StaticModelRegisterDrawRequestStorategyBase : public StrategyBase<StaticModelComponent>
+	class StaticModelRegisterDrawRequestStrategyBase : public StrategyBase<StaticModelComponent>
 	{
 	public:
 
-		 StaticModelRegisterDrawRequestStorategyBase()          = default;
-		~StaticModelRegisterDrawRequestStorategyBase() override = default;
+		 StaticModelRegisterDrawRequestStrategyBase()          = default;
+		~StaticModelRegisterDrawRequestStrategyBase() override = default;
 
 	protected:
 
@@ -26,6 +26,6 @@ namespace FWK
 			l_drawRequestPass->AddDrawRequest(a_staticModelComponent.GetREFDrawRequestData());
 		}
 
-		FWK_DEFINE_TYPE_INFO_ROOT(StaticModelRegisterDrawRequestStorategyBase)
+		FWK_DEFINE_TYPE_INFO_ROOT(StaticModelRegisterDrawRequestStrategyBase)
 	};
 }

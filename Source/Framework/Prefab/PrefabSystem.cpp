@@ -62,7 +62,6 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 
 	const auto& l_gameObjectList = l_scene->GetREFGameObjectList();
 
-
 	for (auto& [l_prefabUUID, l_prefabData] : m_prefabMap)
 	{
 		if (l_prefabUUID.is_nil()) { continue; }
@@ -173,12 +172,7 @@ void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_pre
 
 	auto l_itr = m_prefabMap.find(a_prefabUUID);
 
-	if (l_itr == m_prefabMap.end())
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを解放できませんでした。", boost::uuids::to_string(a_prefabUUID));
-
-		return;
-	}
+	if (l_itr == m_prefabMap.end()) { return; }
 
 	auto& l_prefabInstanceNUMAllocator = l_itr->second.m_prefabInstanceNUMAllocator;
 

@@ -1264,6 +1264,12 @@
     <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Prefab">
       <UniqueIdentifier>{f496ca46-ad9d-4bff-8082-84c3f815c21d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Converter">
+      <UniqueIdentifier>{074b806e-26e3-414d-b02f-cf0b6ff4cb4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Converter\Json">
+      <UniqueIdentifier>{549ba115-093a-4775-8b89-9a807f3e3f40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2325,20 +2331,11 @@
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h">
       <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\StaticModelRegisterDrawRequestStorategyBase.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
@@ -2346,10 +2343,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStorategyBaseUniqueFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyBaseUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
@@ -2450,6 +2444,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2981,20 +2990,11 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStorategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStorategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\CascadeShadowMap.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStorategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
       <Filter>Source\Framework\Component\Transform\Inspector</Filter>
@@ -3061,6 +3061,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

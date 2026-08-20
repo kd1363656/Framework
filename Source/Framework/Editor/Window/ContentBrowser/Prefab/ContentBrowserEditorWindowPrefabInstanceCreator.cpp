@@ -82,9 +82,8 @@ const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator:
 		return l_registeredPrefab;
 	}
 
-	const auto& l_prefabJson = Utility::LoadJsonFile(a_prefabFilePath);
-
-	if (l_prefabJson.is_null()) 
+	if (const auto& l_prefabJson = Utility::LoadJsonFile(a_prefabFilePath);
+		l_prefabJson.is_null())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabJsonを読み込めませんでした。\nFilePath : {}", a_prefabFilePath.string());
 

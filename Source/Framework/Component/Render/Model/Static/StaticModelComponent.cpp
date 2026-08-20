@@ -1,5 +1,10 @@
 ﻿#include "StaticModelComponent.h"
 
+void FWK::StaticModelComponent::INIT()
+{
+	ModelComponentBase::INIT();
+}
+
 void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
@@ -7,14 +12,18 @@ void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJs
 	// アセットのファイルパスなどを読み込む
 	ModelComponentBase::DeserializePrefab(a_rootJson);
 
-	const auto& l_assetFilePath = GetREFAssetFilePathHelper().GetREFAssetFilePath();
+	const auto& l_assetFilePathHelper = GetVALAssetFilePathHelper().lock();
+
+	if (!l_assetFilePathHelper) { return; }
+
+	const auto& l_assetFilePath = l_assetFilePathHelper->GetREFAssetFilePath();
 
 	if (l_assetFilePath.empty() ||
 		!m_model)
 	{
 		return;
 	}
-	
+
 	m_model->Load(l_assetFilePath);
 }
 
@@ -46,6 +55,9 @@ void FWK::StaticModelComponent::PostDeserialize()
 void FWK::StaticModelComponent::PostLateUpdate()
 {
 	if (!m_drawRequestData) { return; }
+
+	// 当たり判定などを行って確定したTransformComponentの現在の行列を取得し適用
+
 }
 
 nlohmann::json FWK::StaticModelComponent::SerializePrefab()
@@ -55,4 +67,13 @@ nlohmann::json FWK::StaticModelComponent::SerializePrefab()
 	Utility::UpdateJson(l_rootJson, ModelComponentBase::SerializePrefab());
 
 	return l_rootJson;
+}
+
+void FWK::StaticModelComponent::AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy)
+{
+	if (!a_registerDrawRequestStrategy) { return; }
+
+	const auto l_staticTypeID = a_registerDrawRequestStrategy->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+	m_registerDrawRequestStrategyMap.try_emplace(l_staticTypeID, a_registerDrawRequestStrategy);
 }

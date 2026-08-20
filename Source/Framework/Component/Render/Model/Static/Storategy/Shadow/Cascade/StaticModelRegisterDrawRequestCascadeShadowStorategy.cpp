@@ -1,6 +1,0 @@
-﻿#include "StaticModelRegisterDrawRequestCascadeShadowStorategy.h"
-
-void FWK::StaticModelRegisterDrawRequestCascadeShadowStorategy::Execute(StaticModelComponent& a_staticModelComponent)
-{
-	RegisterDrawRequestData<Graphics::StaticModelCascadeShadowPerObjectDrawRequest>(a_staticModelComponent);
-}

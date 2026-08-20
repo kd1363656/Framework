@@ -1,0 +1,6 @@
+﻿#include "StaticModelRegisterDrawRequestStandardUnLitStrategy.h"
+
+void FWK::StaticModelRegisterDrawRequestStandardUnLitStrategy::Execute(StaticModelComponent& a_staticModelComponent)
+{
+	RegisterDrawRequestData<Graphics::StaticModelStandardUnLitPerObjectDrawRequest>(a_staticModelComponent);
+}

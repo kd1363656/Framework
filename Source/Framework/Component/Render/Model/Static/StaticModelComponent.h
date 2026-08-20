@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-	class StaticModelRegisterDrawRequestStorategyBase;
+	class StaticModelRegisterDrawRequestStrategyBase;
 }
 
 namespace FWK
@@ -14,6 +14,8 @@ namespace FWK
 	     StaticModelComponent()          = default;
 		~StaticModelComponent() override = default;
 
+		void INIT() override;
+
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
 		void PostDeserialize() override;
@@ -22,11 +24,15 @@ namespace FWK
 
 		nlohmann::json SerializePrefab() override;
 
+		void AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy);
+
+		const auto& GetREFRegisterDrawRequestStrategyMap() const { return m_registerDrawRequestStrategyMap; }
+
 		const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
 
 	private:
 
-		std::vector<std::unique_ptr<StaticModelRegisterDrawRequestStorategyBase>> m_registerDrawRequestStorategyList = {};
+		std::unordered_map<TypeAlias::StaticTypeID, std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>> m_registerDrawRequestStrategyMap = {};
 
 		std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
 		std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
