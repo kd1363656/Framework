@@ -1270,6 +1270,18 @@
     <Filter Include="Source\Framework\Component\Render\Model\Static\Converter\Json">
       <UniqueIdentifier>{549ba115-093a-4775-8b89-9a807f3e3f40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Component">
+      <UniqueIdentifier>{d9f2b667-456e-43c5-9fb6-e24c825957a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch">
+      <UniqueIdentifier>{67ad9dc7-c486-4330-9569-cfcbfa528188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Transform">
+      <UniqueIdentifier>{052a65f0-7803-4dd9-8457-ad9f5ba4084b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self">
+      <UniqueIdentifier>{e2f979f2-87a7-4eb8-ba5d-a09dc4657674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2460,6 +2472,9 @@
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h">
+      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Transform\Self</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3073,6 +3088,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.cpp">
+      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Transform\Self</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

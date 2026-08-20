@@ -500,6 +500,7 @@
 #include "Utility/Helper/Asset/Converter/Json/AssetFilePathHelperUtilityJsonConverter.h"
 #include "Utility/Helper/Asset/AssetFilePathHelperUtility.h"
 #include "Component/Render/Model/Converter/Json/ModelComponentBaseJsonConverter.h"
+#include "Utility/Helper/Component/Fetch/Transform/Self/FetchTransformComponentFromSelfGameObjectHelper.h"
 #include "Component/Render/Model/ModelComponentBase.h"
 #include "Component/Render/Model/Static/Converter/Json/StaticModelComponentJsonConverter.h"
 #include "Component/Render/Model/Static/StaticModelComponent.h"

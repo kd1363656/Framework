@@ -13,6 +13,10 @@ void FWK::ModelComponentBase::DeserializePrefab(const nlohmann::json& a_rootJson
 
 	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
+void FWK::ModelComponentBase::PostDeserialize()
+{
+	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(GetREFOwner());
+}
 
 nlohmann::json FWK::ModelComponentBase::SerializePrefab()
 {

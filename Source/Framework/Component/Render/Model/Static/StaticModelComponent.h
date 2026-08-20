@@ -32,6 +32,8 @@ namespace FWK
 
 	private:
 
+		void UpdateDrawRequestData();
+
 		std::unordered_map<TypeAlias::StaticTypeID, std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>> m_registerDrawRequestStrategyMap = {};
 
 		std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
