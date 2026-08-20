@@ -26,5 +26,7 @@ namespace FWK::Converter
 
 		static constexpr std::string_view k_prefabTypeJsonKey = "PrefabType";
 		static constexpr std::string_view k_filePathJsonKey   = "FilePath";
+		static constexpr std::string_view k_prefabJsonKey     = "Prefab";
+	    static constexpr std::string_view k_prefabNameJsonKey = "PrefabName";
 	};
 }

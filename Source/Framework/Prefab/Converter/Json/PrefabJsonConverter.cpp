@@ -21,7 +21,7 @@ void FWK::Converter::PrefabJsonConverter::LoadGameObjectPrefab(Prefab& a_prefab)
 		return;
 	}
 
-	const auto& l_prefabName = l_rootJson.value(Constant::k_prefabNameJsonKey, std::string{});
+	const auto& l_prefabName = l_rootJson.value(k_prefabNameJsonKey, std::string{});
 
 	// PrefabNameは、このPrefabから生成される
 	// GameObject名の元になるための必須情報
@@ -34,7 +34,7 @@ void FWK::Converter::PrefabJsonConverter::LoadGameObjectPrefab(Prefab& a_prefab)
 
 	a_prefab.SetPrefabName(l_prefabName);
 
-	const auto& l_json = l_rootJson.value(Constant::k_prefabJsonKey, nlohmann::json{});
+	const auto& l_json = l_rootJson.value(k_prefabJsonKey, nlohmann::json{});
 
 	if (l_json.is_null()) { return; }
 
@@ -103,11 +103,11 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 	const auto&          l_gameObjectJson = l_gameObject->SerializePrefab();
 	      nlohmann::json l_rootJson       = {};
 
-	l_rootJson[Constant::k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
+	l_rootJson[k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
 
 	// 実際のPrefabファイルには、
 	// GameObjectを復元するための情報を保存する
-	l_rootJson[Constant::k_prefabJsonKey] = l_gameObjectJson;
+	l_rootJson[k_prefabJsonKey] = l_gameObjectJson;
 
 	// GameObjectJsonを生成できなかった場合は、
 	// 不完全なPrefabファイルを書き込まない。
