@@ -33,6 +33,8 @@ namespace FWK::Editor
 
 		std::string_view FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const;
 
+		bool ContainsCurrentFolderPath(const std::filesystem::path& a_folderPath, const std::filesystem::path& a_currentFolderPath) const;
+
 		static constexpr std::string_view k_folderTreeChildLabel          = "##ContentBrowserFolderTree";
 		static constexpr std::string_view k_currentFolderChildLabel       = "##ContentBrowserCurrentFolder";
 		static constexpr std::string_view k_folderEntryButtonLabel        = "##ContentBrowserFolderEntry";
@@ -66,5 +68,7 @@ namespace FWK::Editor
 
 		static constexpr std::uint32_t k_minFolderEntryColumnCount     = 1U;
 		static constexpr std::uint32_t k_initialFolderEntryColumnCount = 0U;
+
+		std::filesystem::path m_synchronizedCurrentFolderPath = {};
 	};
 }

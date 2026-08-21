@@ -158,16 +158,18 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
         return;
     }
 
-    const auto& l_fileSystem     = a_contentBrowserEditorWindow.GetREFFileSystem();
-    const bool  l_hasChildFolder = l_fileSystem.HasChildFolder                  (a_folderPath);
+    const auto& l_fileSystem        = a_contentBrowserEditorWindow.GetREFFileSystem       ();
+    const auto& l_currentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
 
+    const bool l_hasChildFolder                            = l_fileSystem.HasChildFolder(a_folderPath);
+    const bool l_isFolderTreeSynchronizedCurrentFolderPath = m_synchronizedCurrentFolderPath != l_currentFolderPath;
+    
     auto l_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow |
                            ImGuiTreeNodeFlags_SpanAvailWidth;
 
     // 右ペインで現在開いているFolderを
     // 左FolderTreeでも選択状態として表示する
-    if (const auto& l_currentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
-        l_currentFolderPath == a_folderPath)
+    if (l_currentFolderPath == a_folderPath)
     {
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
@@ -181,12 +183,16 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
 
     // ContentBrowserを初めて聞いた時だけ
     // RootであるContentを展開しておく
-    if (a_folderPath == Constant::k_contentRootFolderPath)
+    // 同名Folderが別階層に存在しても
+    // ImGuiIDが衝突しないようにPath全体をIDとして使用する
+    if (l_isFolderTreeSynchronizedCurrentFolderPath &&
+        l_hasChildFolder                            &&
+        ContainsCurrentFolderPath(a_folderPath, l_currentFolderPath))
     {
-        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+        ImGui::SetNextItemOpen(true, ImGuiCond_Always);
     }
 
-    // 同名Folderが別階層に存在しても
+    // 同じ名前のFolder別階層が存在していても
     // ImGuiIDが衝突しないようにPath全体をIDとして使用する
     const auto& l_folderPathString = a_folderPath.generic_string();
           auto  l_folderName       = a_folderPath.filename      ().string();
@@ -212,11 +218,32 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
     // GameObjectのPrefab保存先として使用できるようにする
     DrawGameObjectPrefabDragDropTarget(a_folderPath, a_contentBrowserEditorWindow);
 
-    // Arrow操作ではCurrentFolderを変更しない
-    // Folder行そのものをClickした場合だけ右ペインを変更する
+    // このFolderが実際のCurrentFolderなら、
+    // 左FolderTreeの動機が正常に完了したことになる
+    if (l_isFolderTreeSynchronizedCurrentFolderPath &&
+        l_currentFolderPath == a_folderPath)
+    {
+        // 不快階層へ右ペインから移動した場合、
+        // Treeを展開しただけでは左ペインの画面外に
+        // CurrentFolderが存在する可能性がある
+        // 現在Folderが見える位置まで
+        ImGui::SetScrollHereY(k_centeringRatio);
+
+        m_synchronizedCurrentFolderPath = a_folderPath;
+    }
+
+    // 左FolderTree上のFolderも
+    // GameObjectのPrefab保存先として信用できるようにする
+    DrawGameObjectPrefabDragDropTarget(a_folderPath, a_contentBrowserEditorWindow);
+
+    // _Arrow操作ではCurrentFolderを変更しない
+    // Folderの行本体をClickした場合だけ、
+    // 右ペインのCurrentFolderを変更する
     if (l_isNodeClicked &&
         !l_isNodeToggledOpen)
     {
+        m_synchronizedCurrentFolderPath = a_folderPath;
+
         a_contentBrowserEditorWindow.ApplyCurrentFolderPath(a_folderPath);
     }
 
@@ -688,4 +715,30 @@ std::string_view FWK::Editor::ContentBrowserEditorWindowPanel::FetchVALFolderEnt
     // Jsonを含む、それ以外のFileは
     // 八病FileIconを使用する
     return Constant::k_fontAwesomeFileIcon;
+}
+
+bool FWK::Editor::ContentBrowserEditorWindowPanel::ContainsCurrentFolderPath(const std::filesystem::path& a_folderPath, const std::filesystem::path& a_currentFolderPath) const
+{
+    auto l_folderPathITR        = a_folderPath.begin       ();
+    auto l_currentFolderPathITR = a_currentFolderPath.begin();
+
+    while (l_folderPathITR != a_folderPath.end())
+    {
+        // CurrentFolder側が先に終わった場合、
+        // a_folderPathのほうが深い階層に存在する
+        // つまりCurrentFolder自身でも祖先Folderでもない
+        if (l_currentFolderPathITR == a_currentFolderPath.end()) { return false; }
+
+        // Folder単位でも異なる部分があれば
+        // CurerntFolderへ到達する経路上のFolderではない
+        if (*l_folderPathITR != *l_currentFolderPathITR) { return false; }
+
+        ++l_folderPathITR;
+        ++l_currentFolderPathITR;
+    }
+
+    // a_folderPathのすべての構成要素が
+    // CurrentFolderの先頭側と一致しということ、つまり
+    // CurrentFolder自身、またはCurrentFolderの祖先Folderのどちらか
+    return true;
 }
