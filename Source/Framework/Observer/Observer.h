@@ -52,65 +52,7 @@ namespace FWK
 
 		void EditInspector()
 		{
-			ImGui::PushID(&m_eventMap);
-
-			// StringKeyRegistryから追加したいEventを選択する
-			Utility::StringValueBidirectionalRegistryRadioButtonSelector<Type>(k_imguiLabel, m_imguiSelectingEvent);
-
-			ImGui::SameLine();
-
-			if (ImGui::Button("AddEvent"))
-			{
-				AddEvent(m_imguiSelectingEvent);
-			}
-
-			ImGui::Separator();
-
-			const auto& l_stringValueBidirectionalRegistry = Utility::StringValueBidirectionalRegistry<Type>::GetInstance();
-			      auto  l_itr                              = m_eventMap.begin                                            ();
-
-			while (l_itr != m_eventMap.end())
-			{
-				// イテレータごとにIDを発行
-				ImGui::PushID(&l_itr->second);
-
-				std::string_view l_keyName = l_stringValueBidirectionalRegistry.FindVALKeyByValue(l_itr->first);
-
-				if (l_keyName.empty())
-				{
-					l_keyName = Constant::k_selectUnknownString;
-				}
-
-				if (!ImGui::TreeNodeEx(l_keyName.data(), ImGuiTreeNodeFlags_Framed))
-				{
-					++l_itr;
-					ImGui::PopID();
-					
-					continue;
-				}
-
-				// 削除されたらイテレーターを更新して"continue"
-				ImGui::SameLine();
-
-				if (ImGui::Button("Delete"))
-				{
-					l_itr = m_eventMap.erase(l_itr);
-					ImGui::TreePop          ();
-					ImGui::PopID            ();
-
-					continue;
-				}
-
-
-				ImGui::Separator();
-
-				l_itr++;
-
-				ImGui::TreePop();
-				ImGui::PopID  ();
-			}
-
-			ImGui::PopID();
+			m_inspector.EditorInspector(m_eventMap);
 		}
 
 		nlohmann::json Serialize() const
@@ -130,9 +72,9 @@ namespace FWK
 
 	private:
 
-		static constexpr std::string_view k_imguiLabel = "EventSelector";
-
 		std::unordered_map<Type, std::uint32_t> m_eventMap = {};
+
+		ObserverInspector<Type> m_inspector = {};
 
 		Converter::ObserverJsonConverter<Type> m_jsonConverter = {};
 

@@ -665,6 +665,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\Converter\Json\UploadSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Resource\Upload\UploadSystem.h" />
     <ClInclude Include="Source\Framework\Observer\Converter\Json\ObserverJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Observer\Inspector\ObsreverInspector.h" />
     <ClInclude Include="Source\Framework\Observer\Observer.h" />
     <ClInclude Include="Source\Framework\Physics\Body\PhysicsBodyBase.h" />
     <ClInclude Include="Source\Framework\Physics\Body\Static\Box\PhysicsStaticBoxBody.h" />

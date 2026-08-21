@@ -447,6 +447,7 @@
 #include "Utility/Enum/EnumBitShiftUtility.h"
 #include "Utility/IMGUI/Observer/IMGUIObserverUtility.h"
 #include "Utility/IMGUI/Bool/IMGUIBoolToString.h"
+#include "Observer/Inspector/ObsreverInspector.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Observer/Observer.h"
 

@@ -93,9 +93,8 @@ namespace FWK::Utility
 		// 現在利用可能な横幅いっぱいまでリストを広げる
 		if (!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMaxSizeX, l_listHeight)))
 		{
-			ImGui::EndListBox();
-			ImGui::EndGroup  ();
-			ImGui::PopID     ();
+			ImGui::EndGroup();
+			ImGui::PopID   ();
 
 			return false;
 		}

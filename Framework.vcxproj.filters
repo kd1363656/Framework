@@ -1291,8 +1291,8 @@
     <Filter Include="Source\Framework\Utility\Helper\Asset\Inspector">
       <UniqueIdentifier>{8474e5af-6cb7-4c06-953b-17234dacc80d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\IMGUI\CheckBox">
-      <UniqueIdentifier>{8b9580d5-530e-4e45-8af5-9e38a863f456}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Observer\Inspector">
+      <UniqueIdentifier>{0dc6c2b0-c1af-4f6b-9309-936b88c05b83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2495,6 +2495,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.h">
       <Filter>Source\Framework\Utility\Helper\Asset\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Observer\Inspector\ObsreverInspector.h">
+      <Filter>Source\Framework\Observer\Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

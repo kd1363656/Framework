@@ -44,12 +44,13 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectDetails(const std::weak_ptr
 	const auto& l_gameObjectDisplayName = l_gameObject->FetchVALGameObjectName();
 	const auto& l_uuidString            = boost::uuids::to_string             (l_gameObject->GetREFSceneInstanceUUID());
 
+	ImGui::SeparatorText(k_defaultINFOSeparatorLabel.data());
+
 	ImGui::Text("%s : %.*s", k_gameObjectNameLabel.data(), static_cast<int>(l_gameObjectDisplayName.size()), l_gameObjectDisplayName.data());
 	ImGui::Text("%s : %s",   k_uuidLabel.data(),                            l_uuidString.c_str());
 
-	ImGui::Separator();
-
-	DrawGameObjectComponentObserverDetails (*l_gameObject);
+	DrawGameObjectComponentObserverDetails(*l_gameObject);
+	ImGui::SeparatorText                   (k_componentSeparatorLabel.data());
 	DrawGameObjectTransformComponentDetails(*l_gameObject);
 	DrawGameObjectComponentDetails         (*l_gameObject);
 
@@ -59,9 +60,28 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectDetails(const std::weak_ptr
 }
 void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentObserverDetails(GameObject& a_gameObject) const
 {
-	const auto& l_componentEventObverser = a_gameObject.GetREFComponentEventObserver();
+	auto& l_componentEventObserver = a_gameObject.GetMutableREFComponentEventObserver();
 
+	if (!ImGui::CollapsingHeader(k_componentEventObserverLabel.data(), ImGuiTreeNodeFlags_None)) { return; }
 
+	// コンポーネントオブザーバーの生成、破棄を管理
+	if (bool l_isChecked = l_componentEventObserver ? true : false;
+		ImGui::Checkbox(k_componentEventObserverUseLabel.data(), &l_isChecked))
+	{
+		if (l_componentEventObserver)
+		{
+			l_componentEventObserver.reset();
+		}
+		else
+		{
+			l_componentEventObserver = std::make_unique<Observer<Enum::ComponentEvent>>();
+			l_componentEventObserver->INIT                                             ();
+		}
+	}
+
+	if (!l_componentEventObserver) { return; }
+
+	l_componentEventObserver->EditInspector();
 }
 void FWK::Editor::DetailsEditorWindow::DrawGameObjectTransformComponentDetails(const GameObject& a_gameObject) const
 {
@@ -74,7 +94,7 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectTransformComponentDetails(c
 		return;
 	}
 
-	if (!ImGui::CollapsingHeader(k_transformComponentHeaderName.data(), ImGuiTreeNodeFlags_DefaultOpen)) { return; }
+	if (!ImGui::CollapsingHeader(k_transformComponentHeaderName.data(), ImGuiTreeNodeFlags_None)) { return; }
 
 	// TransformComponentはGameObjectに必須であり、
 	// 通常ComponentListとは別に所有されるため、
@@ -100,7 +120,7 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(GameObject
 		ImGui::PushID(std::to_address(l_componentData.m_type));
 
 		      bool l_isKeepComponent       = true;
-		const bool l_isComponentHeaderOpen = ImGui::CollapsingHeader(l_component->GetREFRuntimeTypeINFO().k_name.data(), &l_isKeepComponent, ImGuiTreeNodeFlags_DefaultOpen);
+		const bool l_isComponentHeaderOpen = ImGui::CollapsingHeader(l_component->GetREFRuntimeTypeINFO().k_name.data(), &l_isKeepComponent, ImGuiTreeNodeFlags_None);
 
 		// 直前に描画したCollapsingHeaderへカーソルが重なっている場合だけ、
 		// Componentを取り外す方法をTooltipで表示する
@@ -191,13 +211,17 @@ void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<
 
 std::string_view FWK::Editor::DetailsEditorWindow::FetchVALGameObjectDisplayName(const GameObject& a_gameObject) const
 {
-	const auto& l_gameObjectName = a_gameObject.FetchVALGameObjectName();
+	if (const auto& l_gameObjectName = a_gameObject.FetchVALGameObjectName();
+		!l_gameObjectName.empty())
+	{
+		return l_gameObjectName; 
+	}
 
-	if (!l_gameObjectName.empty()) { return l_gameObjectName; }
-
-	const auto& l_prefabName = a_gameObject.GetREFSceneInstanceName();
-
-	if (!l_prefabName.empty()) { return l_prefabName; }
+	if (const auto& l_prefabName = a_gameObject.GetREFSceneInstanceName();
+		!l_prefabName.empty())
+	{
+		return l_prefabName; 
+	}
 
 	return Constant::k_gameObjectString;
 }

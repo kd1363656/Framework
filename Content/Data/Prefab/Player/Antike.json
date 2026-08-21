@@ -4,7 +4,11 @@
         "ComponentEventObserver": {
             "EventMap": []
         },
-        "ComponentList": [],
+        "ComponentList": [
+            {
+                "ComponentTypeName": "StaticModelComponent"
+            }
+        ],
         "PrefabUUID": "be3e06a8-f485-4446-bd77-edeb1ad9de24",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
