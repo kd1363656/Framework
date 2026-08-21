@@ -335,6 +335,7 @@ if "$(Configuration)"=="Debug" (
   <ItemGroup>
     <ClInclude Include="..\Library\UFBX\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
+    <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h" />
@@ -741,6 +742,7 @@ if "$(Configuration)"=="Debug" (
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Platform)\Library\$(Configuration)\UFBX\%(Filename).obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp" />

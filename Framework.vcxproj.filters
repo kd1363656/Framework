@@ -1294,6 +1294,9 @@
     <Filter Include="Source\Framework\Observer\Inspector">
       <UniqueIdentifier>{0dc6c2b0-c1af-4f6b-9309-936b88c05b83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Camera">
+      <UniqueIdentifier>{81b6d736-5ae1-48fb-abe1-5b28eb3e0233}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2499,6 +2502,9 @@
     <ClInclude Include="Source\Framework\Observer\Inspector\ObsreverInspector.h">
       <Filter>Source\Framework\Observer\Inspector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h">
+      <Filter>Source\Framework\Component\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3124,6 +3130,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp">
+      <Filter>Source\Framework\Component\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
