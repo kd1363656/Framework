@@ -81,7 +81,7 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentObserverDetails(Ga
 
 	if (!l_componentEventObserver) { return; }
 
-	l_componentEventObserver->EditInspector();
+	l_componentEventObserver->EditInspector(k_componentEventObserverSelectorLabel);
 }
 void FWK::Editor::DetailsEditorWindow::DrawGameObjectTransformComponentDetails(const GameObject& a_gameObject) const
 {

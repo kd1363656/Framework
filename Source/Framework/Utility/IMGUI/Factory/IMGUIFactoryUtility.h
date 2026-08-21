@@ -126,10 +126,8 @@ namespace FWK::Utility
 				}
 			}
 
-			const bool l_isCheckBoxChanged = ImGui::Checkbox(l_key.c_str(), &l_isSelected);
-
 			// CheckBoxのOn/Offが切り替えられていないならcontinue
-			if (!l_isCheckBoxChanged) { continue; }
+			if (!ImGui::Checkbox(l_key.c_str(), &l_isSelected)) { continue; }
 
 			if (l_isSelected) 
 			{
@@ -158,8 +156,13 @@ namespace FWK::Utility
 
 				continue;
 			}
-
-			a_selectedMap.erase(l_staticTypeID);
+			else
+			{
+				if (a_selectedMap.erase(l_staticTypeID) != static_cast<std::uint32_t>(NULL))
+				{
+					l_isChanged = true;
+				}
+			}
 		}
 
 		ImGui::EndListBox();

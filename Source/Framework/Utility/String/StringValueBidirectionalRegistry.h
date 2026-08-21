@@ -23,7 +23,7 @@ namespace FWK::Utility
 
 			bool l_isFailedRegister = m_stringToValueMap.try_emplace(a_key, a_type).second;
 			
-			l_isFailedRegister = m_valueToStringMap.try_emplace(a_type, a_key);
+			l_isFailedRegister = m_valueToStringMap.try_emplace(a_type, a_key).second;
 
 			FWK_ASSERT_RETURN_IF(!l_isFailedRegister, "登録する際のキーが重複しており、値の登録に失敗しました。");
 		}
@@ -49,7 +49,6 @@ namespace FWK::Utility
 		}
 
 		const auto& GetREFStringToValueMap() const { return m_stringToValueMap; }
-
 
 		StringToValueMap m_stringToValueMap = {};
 		ValueToStringMap m_valueToStringMap = {};

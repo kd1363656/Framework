@@ -19,3 +19,5 @@ namespace FWK::Enum
 		FWK_JSON_ENUM_VALUE(ComponentEvent::Invalid)
 	)
 }
+
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::ComponentEvent, FWK::Enum::ComponentEvent::Invalid)

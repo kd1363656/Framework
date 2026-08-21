@@ -50,9 +50,9 @@ namespace FWK
 			return Utility::IsFlagEnabled(a_isMatchEventLane, l_itr->second);
 		}
 
-		void EditInspector()
+		void EditInspector(const std::string_view& a_label)
 		{
-			m_inspector.EditorInspector(m_eventMap);
+			m_inspector.EditorInspector(a_label, m_eventMap);
 		}
 
 		nlohmann::json Serialize() const
