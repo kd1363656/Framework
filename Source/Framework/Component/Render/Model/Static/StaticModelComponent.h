@@ -20,6 +20,8 @@ namespace FWK
 
 		void PostLateUpdate() override;
 
+		void EditInspector() override;
+
 		nlohmann::json SerializePrefab() override;
 
 		void AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy);
@@ -27,6 +29,8 @@ namespace FWK
 		const auto& GetREFRegisterDrawRequestStrategyMap() const { return m_registerDrawRequestStrategyMap; }
 
 		const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
+
+		auto& GetMutableRegisterDrawRequestStrategyMap() { return m_registerDrawRequestStrategyMap; }
 
 	private:
 

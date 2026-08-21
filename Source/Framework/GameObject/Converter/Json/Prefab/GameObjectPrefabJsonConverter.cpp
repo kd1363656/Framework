@@ -135,7 +135,11 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::Serialize(const Ga
 	Utility::UpdateJson(l_rootJson, SerializePrefabComponent(a_gameObject));
 	
 	// コンポーネントオブザーバのシリアライズ
-	l_rootJson[k_componentEventObserverJsonKey] = SerializePrefabComponentObserver(a_gameObject);
+	if (const auto& l_json = SerializePrefabComponentObserver(a_gameObject);
+		l_json.is_null())
+	{
+		l_rootJson[k_componentEventObserverJsonKey] = l_json;
+	}
 
 	// 子ゲームオブジェクトをシリアライズ
 	l_rootJson[Constant::k_gameObjectChildListJsonKey] = SerializePrefabChildList(a_gameObject);
@@ -202,9 +206,23 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponentEv
 {
 	if (a_rootJson.is_null()) { return false; }
 
-	auto& l_componentEventObserver = a_gameObject.GetMutableREFComponentEventObserver();
+	// ComponentEventObserverのJsonがnull出ない場合std::make_uniqueでインスタンス化
+	{
+		const auto& l_componentEventObserver = a_gameObject.GetREFComponentEventObserver();
 
-	l_componentEventObserver.Deserialize(a_rootJson);
+		if (!l_componentEventObserver)
+		{
+			auto l_createdComponentEventObserver = std::make_unique<Observer<Enum::ComponentEvent>>();
+
+			l_componentEventObserver->INIT();
+
+			a_gameObject.SetComponentEventObserver(std::move(l_createdComponentEventObserver));
+		}
+	}
+
+	const auto& l_componentEventObserver = a_gameObject.GetREFComponentEventObserver();
+
+	l_componentEventObserver->Deserialize(a_rootJson);
 
 	return true;
 }
@@ -307,7 +325,9 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabCom
 {
 	const auto& l_componentEventObserver = a_gameObject.GetREFComponentEventObserver();
 
-	return l_componentEventObserver.Serialize();
+	if (!l_componentEventObserver) { return {}; }
+
+	return l_componentEventObserver->Serialize();
 }
 nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabChildList(const GameObject& a_gameObject) const
 {

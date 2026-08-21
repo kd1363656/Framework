@@ -1285,6 +1285,15 @@
     <Filter Include="Source\Framework\Component\Render\Model\Static\Inspector">
       <UniqueIdentifier>{cf72dc1a-63fa-4f0f-a9d3-76a3be3caf22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Inspector">
+      <UniqueIdentifier>{6fbf7109-2aea-41d6-a19d-452ce18507f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Asset\Inspector">
+      <UniqueIdentifier>{8474e5af-6cb7-4c06-953b-17234dacc80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\CheckBox">
+      <UniqueIdentifier>{8b9580d5-530e-4e45-8af5-9e38a863f456}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1527,7 +1536,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h">
       <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h">
+    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonBase.h">
       <Filter>Source\Framework\Utility\Singleton</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Static\StaticModelSystem.h">
@@ -2313,7 +2322,7 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.h">
+    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h">
@@ -2397,10 +2406,10 @@
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectUtility.h">
       <Filter>Source\Framework\Utility\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelperUtility.h">
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.h">
       <Filter>Source\Framework\Utility\Helper\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h">
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.h">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.h">
@@ -2480,6 +2489,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h">
+      <Filter>Source\Framework\Component\Render\Model\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.h">
+      <Filter>Source\Framework\Utility\Helper\Asset\Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3035,10 +3050,10 @@
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
       <Filter>Source\Framework\Utility\Storage</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelperUtility.cpp">
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.cpp">
@@ -3047,7 +3062,7 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Hierarchy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.cpp">
+    <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
@@ -3100,6 +3115,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp">
+      <Filter>Source\Framework\Component\Render\Model\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.cpp">
+      <Filter>Source\Framework\Utility\Helper\Asset\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

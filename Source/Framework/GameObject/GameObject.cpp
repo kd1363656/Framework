@@ -14,10 +14,13 @@ void FWK::GameObject::INIT()
 
 	m_parent.reset();
 
+	if (m_componentEventObserver)
+	{
+		m_componentEventObserver->INIT();
+	}
+
 	m_childSmartPointerVectorArray.Clear    ();
 	m_componentSmartPointerVectorArray.Clear();
-
-	m_componentEventObserver.INIT();
 
 	m_jsonConverter = {};
 

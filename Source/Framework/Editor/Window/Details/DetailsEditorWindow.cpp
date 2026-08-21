@@ -49,20 +49,23 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectDetails(const std::weak_ptr
 
 	ImGui::Separator();
 
-	DrawGameObjectTransformComponentDetails(a_gameObject);
-	DrawGameObjectComponentDetails         (a_gameObject);
+	DrawGameObjectComponentObserverDetails (*l_gameObject);
+	DrawGameObjectTransformComponentDetails(*l_gameObject);
+	DrawGameObjectComponentDetails         (*l_gameObject);
 
 	ImGui::Separator();
 
-	DrawAddComponentMenu(a_gameObject);
+	DrawAddComponentMenu(l_gameObject);
 }
-void FWK::Editor::DetailsEditorWindow::DrawGameObjectTransformComponentDetails(const std::weak_ptr<GameObject>& a_gameObject) const
+void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentObserverDetails(GameObject& a_gameObject) const
 {
-	const auto& l_gameObject = a_gameObject.lock();
+	const auto& l_componentEventObverser = a_gameObject.GetREFComponentEventObserver();
 
-	if (!l_gameObject) { return; }
 
-	const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
+}
+void FWK::Editor::DetailsEditorWindow::DrawGameObjectTransformComponentDetails(const GameObject& a_gameObject) const
+{
+	const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
 
 	if (!l_transformComponent)
 	{
@@ -78,15 +81,11 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectTransformComponentDetails(c
 	// 削除用のXボタンは表示しない
 	l_transformComponent->EditInspector();
 }
-void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std::weak_ptr<GameObject>& a_gameObject) const
+void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(GameObject& a_gameObject) const
 {
-	const auto& l_gameObject = a_gameObject.lock();
+	const auto& l_componentDataList = a_gameObject.GetREFComponentSmartPointerVectorArray().GetREFArrayElementDataList();
 
-	if (!l_gameObject) { return; }
-
-	const auto& l_componentDataList = l_gameObject->GetREFComponentSmartPointerVectorArray().GetREFArrayElementDataList();
-
-	// ComonentListを捜査している途中では削除せず、
+	// ComponentListを捜査している途中では削除せず、
 	// 捜査終了後にGameObjectへ削除を依頼する
 	std::weak_ptr<ComponentBase> l_removeRequestedComponent = {};
 	
@@ -141,7 +140,7 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectComponentDetails(const std:
 	// GameObjectへ取り外しを依頼する
 	if (!l_removeRequestedComponent.expired())
 	{
-		l_gameObject->RemoveComponent(l_removeRequestedComponent);
+		a_gameObject.RemoveComponent(l_removeRequestedComponent);
 	}
 }
 void FWK::Editor::DetailsEditorWindow::DrawAddComponentMenu(const std::weak_ptr<GameObject>& a_gameObject) const

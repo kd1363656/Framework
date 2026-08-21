@@ -23,6 +23,8 @@ namespace FWK::Utility
 
 	private:
 
+		AssetFilePathHelperInspector m_inspector = {};
+
 		Converter::AssetFilePathHelperJsonConverter m_jsonConverter = {};
 
 		std::filesystem::path m_allowedFileExtension = {};

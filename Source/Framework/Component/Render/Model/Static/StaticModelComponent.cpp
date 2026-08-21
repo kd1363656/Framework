@@ -26,8 +26,6 @@ void FWK::StaticModelComponent::PostDeserialize()
 {
 	ModelComponentBase::PostDeserialize();
 
-	const auto& l_transformComponent = GetREFFetchTransformComponentFromSelfGameObjectHelper().GetREFFetchedTransformComponent().lock();
-
 	// 初めの座標を反映するためにDrawRequestDataを更新
 	UpdateDrawRequestData();
 }
@@ -37,6 +35,13 @@ void FWK::StaticModelComponent::PostLateUpdate()
 	if (!m_drawRequestData) { return; }
 
 	UpdateDrawRequestData();
+}
+
+void FWK::StaticModelComponent::EditInspector()
+{
+	ModelComponentBase::EditInspector();
+
+	m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::StaticModelComponent::SerializePrefab()
@@ -54,7 +59,7 @@ void FWK::StaticModelComponent::AddRegisterDrawRequestStrategy(std::unique_ptr<S
 
 	const auto l_staticTypeID = a_registerDrawRequestStrategy->GetREFRuntimeTypeINFO().k_staticTypeID;
 
-	m_registerDrawRequestStrategyMap.try_emplace(l_staticTypeID, a_registerDrawRequestStrategy);
+	m_registerDrawRequestStrategyMap.try_emplace(l_staticTypeID, std::move(a_registerDrawRequestStrategy));
 }
 
 void FWK::StaticModelComponent::UpdateDrawRequestData()
@@ -62,7 +67,7 @@ void FWK::StaticModelComponent::UpdateDrawRequestData()
 	// 当たり判定などを行って確定したTransformComponentの現在の行列を取得し適用
 	const auto& l_transformComponent = GetREFFetchTransformComponentFromSelfGameObjectHelper().GetREFFetchedTransformComponent().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "存在すべきTrnsformComponentが存在しておらず、StaticModelComponentのUpdateDrawRequestData処理に失敗しました。");
+	FWK_ASSERT_RETURN_IF(!l_transformComponent, "存在すべきTransformComponentが存在しておらず、StaticModelComponentのUpdateDrawRequestData処理に失敗しました。");
 
 	if (!m_model ||
 		!m_drawRequestData) 

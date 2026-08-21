@@ -78,7 +78,7 @@ namespace FWK
 
 				if (l_keyName.empty())
 				{
-					l_keyName = Constant::k_selecteUnknownString;
+					l_keyName = Constant::k_selectUnknownString;
 				}
 
 				if (!ImGui::TreeNodeEx(l_keyName.data(), ImGuiTreeNodeFlags_Framed))
@@ -136,7 +136,7 @@ namespace FWK
 
 		Converter::ObserverJsonConverter<Type> m_jsonConverter = {};
 
-		// 絶対にEnum側で無効値としてInvlaidを用意しておく
+		// 絶対にEnum側で無効値としてInvalidを用意しておく
 		Type m_imguiSelectingEvent = Type::Invalid;
 	};
 }

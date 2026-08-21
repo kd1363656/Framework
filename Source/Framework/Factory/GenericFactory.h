@@ -34,8 +34,8 @@ namespace FWK
 			requires Concept::IsDerivedBaseConcept<DerivedType, BaseType>
 		void Register(const std::string& a_typeName)
 		{
-			// 作成処理の登録もしTypeがstd::sahred_ptrならstd::shared_ptr番のCreateInstanceが、
-			// そうでないならstd::uinque_ptr番のCreateInstanceがコンパイル時に選択される
+			// 作成処理の登録もしTypeがstd::shared_ptrならstd::shared_ptr番のCreateInstanceが、
+			// そうでないならstd::unique_ptr番のCreateInstanceがコンパイル時に選択される
 			m_factoryMap.try_emplace(a_typeName, []() -> Type 
 			{
 				return CreateInstance<DerivedType>();

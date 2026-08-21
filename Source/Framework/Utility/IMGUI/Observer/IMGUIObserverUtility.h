@@ -17,7 +17,7 @@ namespace FWK::Utility
 		// 文字列が空なら登録されていない値なのでUnknownの文字列を渡す
 		if (l_valueName.empty())
 		{
-			l_valueName = Constant::k_selecteUnknownString;
+			l_valueName = Constant::k_selectUnknownString;
 		}
 
 		if (!ImGui::BeginCombo(a_label.data(), l_valueName.data()))

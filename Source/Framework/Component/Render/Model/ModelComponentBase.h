@@ -14,6 +14,8 @@ namespace FWK
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 		void PostDeserialize  ()                                 override;
 
+		void EditInspector() override;
+
 		nlohmann::json SerializePrefab() override;
 
 		const auto& GetREFDrawRequestPassList() const { return m_assetFilePathHelper; }
@@ -27,6 +29,8 @@ namespace FWK
 		std::shared_ptr<Utility::AssetFilePathHelper> m_assetFilePathHelper = {};
 
 		Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
+
+		ModelComponentBaseInspector m_inspector = {};
 
 		Converter::ModelComponentBaseJsonConverter m_jsonConverter = {};
 

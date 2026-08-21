@@ -13,7 +13,7 @@ namespace FWK::Utility
 		ImGui::PushID    (std::to_address(a_wantChange));
 		ImGui::BeginGroup();
 
-		std::string l_createInstanceName = Constant::k_selecteUnknownString.data();
+		std::string l_createInstanceName = Constant::k_selectUnknownString.data();
 
 		// もしストラテジーが既にインスタンス化されているなら文字列を取得
 		if (a_wantChange)
@@ -48,6 +48,7 @@ namespace FWK::Utility
 			}
 
 			a_wantChange = l_value();
+
 			l_isCreate   = true;
 		}
 
@@ -58,24 +59,114 @@ namespace FWK::Utility
 		return l_isCreate;
 	}
 
-	template <typename FactoryType, typename Key, typename Value>
-	inline bool FactoryCheckBoxMapSelector(std::unordered_map<Key, Value>& a_selectedMap)
+	template <typename FactoryType, typename Value>
+	inline bool FactoryCheckBoxMapSelector(const std::string_view& a_label, std::unordered_map<TypeAlias::StaticTypeID, Value>& a_selectedMap, const float a_visibleItemCount = Constant::k_defaultChildVisibleItemCount)
 	{
 		// Factoryから生成されるGameObjectは
 		// shared_ptr/weak_ptrなどのSmartPointer前提にする
-		if constexpr (!Concept::IsSmartPTRConcept<Type>) { return false; }
+		if constexpr (!Concept::IsSharedPTRConcept<Value> &&
+			          !Concept::IsUniquePTRConcept<Value>)
+		{
+			return false; 
+		}
 
-		bool  l_isChanged = false;
-		auto& l_factory   = FactoryType::GetInstance();
+		      bool  l_isChanged        = false;
+		      auto& l_factory          = FactoryType::GetInstance     ();
+		const auto& l_typeINFORegistry = TypeINFORegistry::GetInstance();
 
-		ImGui::PushID    (std::to_address(a_selectedMap));
+		ImGui::PushID    (std::addressof(a_selectedMap));
 		ImGui::BeginGroup();
 
-		// Factoryへ登録されている全Typeを
-		// Checkboxとして一覧表示する
+		// リスト前の区切り線
+		if (!a_label.empty())
+		{
+			ImGui::SeparatorText(a_label.data());
+		}
+		else
+		{
+			ImGui::Separator();
+		}
+
+		const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
+
+		// -1.0Fを使用すると
+		// 現在利用可能な横幅いっぱいまでリストを広げる
+		if (!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMaxSizeX, l_listHeight)))
+		{
+			ImGui::EndListBox();
+			ImGui::EndGroup  ();
+			ImGui::PopID     ();
+
+			return false;
+		}
+
 		for (const auto& [l_key, l_value] : l_factory.GetREFFactoryMap())
 		{
-			// 現在a_selectedMapに存在しているなら
+			const auto* l_typeINFO = l_typeINFORegistry.FindPTRByName(l_key);
+
+			if (!l_typeINFO)
+			{
+				FWK_ADD_LOG(Constant::k_debugWarningColor, "Factoryに登録されている型のTypeINFOを取得できませんでした。\nTypeName : {}", l_key);
+
+				continue;
+			}
+
+			const auto l_staticTypeID = l_typeINFO->k_staticTypeID;
+			      bool l_isSelected   = false;
+
+			// Mapのキーだけを信用するのではなく
+			// 実際に保持しているInstanceのRuntimeTypeInfoとFactory型のStaticTypeIDを比較する
+			if (const auto& l_itr = a_selectedMap.find(l_staticTypeID);
+				l_itr != a_selectedMap.end())
+			{
+				const auto& l_instance = l_itr->second;
+
+				if (l_instance)
+				{
+					l_isSelected = l_instance->GetREFRuntimeTypeINFO().k_staticTypeID == l_staticTypeID;
+				}
+			}
+
+			const bool l_isCheckBoxChanged = ImGui::Checkbox(l_key.c_str(), &l_isSelected);
+
+			// CheckBoxのOn/Offが切り替えられていないならcontinue
+			if (!l_isCheckBoxChanged) { continue; }
+
+			if (l_isSelected) 
+			{
+				auto l_instance = l_value();
+
+				if (!l_instance)
+				{
+					FWK_ADD_LOG(Constant::k_debugWarningColor, "FactoryからInstanceを生成できませんでした。\nTypeName : {}", l_key);
+
+					continue;
+				}
+
+				// Factoryから生成されたInstanceが、本当に選択したFactory型と一致しているか確認する
+				const auto l_createdStaticTypeID = l_instance->GetREFRuntimeTypeINFO().k_staticTypeID;
+
+				if (l_createdStaticTypeID != l_staticTypeID)
+				{
+					FWK_ADD_LOG(Constant::k_debugWarningColor, "Factoryから生成したInstanceのStaticTypeIDが一致しませんでした。\nTypeName : {}", l_key);
+
+					continue;
+				}
+
+				a_selectedMap.try_emplace(l_staticTypeID, std::move(l_instance));
+
+				l_isChanged = true;
+
+				continue;
+			}
+
+			a_selectedMap.erase(l_staticTypeID);
 		}
+
+		ImGui::EndListBox();
+		ImGui::EndGroup  ();
+		ImGui::PopID     ();
+
+		return l_isChanged;
 	}
 }

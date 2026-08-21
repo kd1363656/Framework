@@ -14,8 +14,9 @@ namespace FWK::Editor
 	private:
 
 		void DrawGameObjectDetails                  (const std::weak_ptr<GameObject>& a_gameObject) const;
-		void DrawGameObjectTransformComponentDetails(const std::weak_ptr<GameObject>& a_gameObject) const;
-		void DrawGameObjectComponentDetails         (const std::weak_ptr<GameObject>& a_gameObject) const;
+		void DrawGameObjectComponentObserverDetails (      GameObject&                a_gameObject) const;
+		void DrawGameObjectTransformComponentDetails(const GameObject&                a_gameObject) const;
+		void DrawGameObjectComponentDetails         (      GameObject&                a_gameObject) const;
 		void DrawAddComponentMenu                   (const std::weak_ptr<GameObject>& a_gameObject) const;
 
 		std::string_view FetchVALGameObjectDisplayName(const GameObject& a_gameObject) const;

@@ -337,6 +337,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.h" />
@@ -704,11 +705,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\UFBXConvertUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelperUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.h" />
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.h" />
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h" />
-    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h" />
@@ -717,7 +719,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Physics\PhysicsConvertVec3Utility.h" />
-    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\Singleton\SingletonBase.h" />
     <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h" />
     <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h" />
@@ -740,6 +742,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.cpp" />
@@ -931,10 +934,11 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelperUtility.cpp" />
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperUtilityJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.cpp" />
     <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.cpp" />
-    <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorageUtility.cpp" />
+    <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp" />

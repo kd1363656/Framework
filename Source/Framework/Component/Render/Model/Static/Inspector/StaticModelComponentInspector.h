@@ -19,7 +19,5 @@ namespace FWK
 	private:
 
 		static constexpr std::string_view k_drawRequestDataStrategySelectorLabel = "描画シェーダーセレクター";
-
-		std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase> m_wantAddStaticModelRegisterDrawRequestStrategy = nullptr;
 	};
 }

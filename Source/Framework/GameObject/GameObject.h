@@ -58,6 +58,8 @@ namespace FWK
 
 		void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
+		void SetComponentEventObserver(std::unique_ptr<Observer<Enum::ComponentEvent>>&& a_set) { m_componentEventObserver = std::move(a_set); }
+
 		void SetPrefabUUID       (const boost::uuids::uuid& a_set) { m_prefabUUID        = a_set; }
 		void SetSceneInstanceUUID(const boost::uuids::uuid& a_set) { m_sceneInstanceUUID = a_set; }
 
@@ -143,10 +145,10 @@ namespace FWK
 
 		std::weak_ptr<GameObject> m_parent = {};
 
+		std::unique_ptr<Observer<Enum::ComponentEvent>> m_componentEventObserver = nullptr;
+
 		Utility::SmartPointerVectorArray<std::weak_ptr<GameObject>>      m_childSmartPointerVectorArray     = {};
 		Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorArray = {};
-
-		Observer<Enum::ComponentEvent> m_componentEventObserver = {};
 
 		Converter::GameObjectJsonConverter m_jsonConverter = {};
 
