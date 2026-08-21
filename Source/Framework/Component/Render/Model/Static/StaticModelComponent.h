@@ -14,6 +14,8 @@ namespace FWK
 	     StaticModelComponent()          = default;
 		~StaticModelComponent() override = default;
 
+		void LoadModel();
+
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
 		void PostDeserialize() override;
@@ -25,6 +27,8 @@ namespace FWK
 		nlohmann::json SerializePrefab() override;
 
 		void AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy);
+		 
+		void SetDrawRequestData(const std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData>& a_set) { m_drawRequestData = a_set; }
 
 		const auto& GetREFRegisterDrawRequestStrategyMap() const { return m_registerDrawRequestStrategyMap; }
 
@@ -42,6 +46,8 @@ namespace FWK
 		std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
 
 		StaticModelComponentInspector m_inspector = {};
+
+		Converter::StaticModelComponentJsonConverter m_jsonConverter = {};
 
 		FWK_DEFINE_TYPE_INFO(StaticModelComponent, ModelComponentBase)
 	};

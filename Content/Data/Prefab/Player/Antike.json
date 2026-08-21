@@ -1,12 +1,20 @@
 {
     "Prefab": {
         "ChildList": [],
-        "ComponentEventObserver": {
-            "EventMap": []
-        },
         "ComponentList": [
             {
-                "ComponentTypeName": "StaticModelComponent"
+                "AssetFilePathHelper": {
+                    "AssetFilePath": "Content\\Model\\Actor\\Player\\Antike.fbx"
+                },
+                "ComponentTypeName": "StaticModelComponent",
+                "RegisterDrawRequestStrategyMapJsonKey": [
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestCascadeShadowStrategy"
+                    },
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestStandardLitStrategy"
+                    }
+                ]
             }
         ],
         "PrefabUUID": "be3e06a8-f485-4446-bd77-edeb1ad9de24",

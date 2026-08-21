@@ -1,12 +1,7 @@
 ﻿#include "StaticModelComponent.h"
 
-void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
+void FWK::StaticModelComponent::LoadModel()
 {
-	if (a_rootJson.is_null()) { return; }
-
-	// アセットのファイルパスなどを読み込む
-	ModelComponentBase::DeserializePrefab(a_rootJson);
-
 	const auto& l_assetFilePathHelper = GetVALAssetFilePathHelper().lock();
 
 	if (!l_assetFilePathHelper) { return; }
@@ -20,6 +15,15 @@ void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJs
 	}
 
 	m_model->Load(l_assetFilePath);
+}
+
+void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+
+	LoadModel();
 }
 
 void FWK::StaticModelComponent::PostDeserialize()
@@ -39,18 +43,12 @@ void FWK::StaticModelComponent::PostLateUpdate()
 
 void FWK::StaticModelComponent::EditInspector()
 {
-	ModelComponentBase::EditInspector();
-
 	m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::StaticModelComponent::SerializePrefab()
 {
-	nlohmann::json l_rootJson = {};
-
-	Utility::UpdateJson(l_rootJson, ModelComponentBase::SerializePrefab());
-
-	return l_rootJson;
+	return m_jsonConverter.SerializePrefab(*this);
 }
 
 void FWK::StaticModelComponent::AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy)

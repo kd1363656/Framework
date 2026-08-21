@@ -2,7 +2,10 @@
 
 void FWK::ModelComponentBase::INIT()
 {
-	if (!m_assetFilePathHelper) { return; }
+	if (!m_assetFilePathHelper)
+	{
+		m_assetFilePathHelper = std::make_shared<Utility::AssetFilePathHelper>();
+	}
 
 	m_assetFilePathHelper->SetAllowedFileExtension(Constant::k_lowerFBXExtension);
 }

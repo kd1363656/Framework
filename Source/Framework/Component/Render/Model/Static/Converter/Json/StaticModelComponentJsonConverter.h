@@ -16,7 +16,7 @@ namespace FWK::Converter
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson, StaticModelComponent& a_staticModelComponent) const;
 		
-		nlohmann::json SerializePrefab(const StaticModelComponent& a_staticModelComponent) const;
+		nlohmann::json SerializePrefab(StaticModelComponent& a_staticModelComponent) const;
 		
 	private:
 

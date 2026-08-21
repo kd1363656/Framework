@@ -5,4 +5,6 @@ void FWK::ModelComponentBaseInspector::EditInspector(ModelComponentBase& a_model
 	const auto& l_assetFilePathHelper = a_modelComponentBase.GetVALAssetFilePathHelper().lock();
 
 	if (!l_assetFilePathHelper) { return; }
+
+	l_assetFilePathHelper->EditInspector();
 }

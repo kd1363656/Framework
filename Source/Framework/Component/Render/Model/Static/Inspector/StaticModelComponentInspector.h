@@ -14,10 +14,11 @@ namespace FWK
 		 StaticModelComponentInspector() = default;
 		~StaticModelComponentInspector() = default;
 
-		void EditInspector(StaticModelComponent& a_staticModelComponent);
+		void EditInspector(StaticModelComponent& a_staticModelComponent) const;
 
 	private:
 
 		static constexpr std::string_view k_drawRequestDataStrategySelectorLabel = "描画シェーダーセレクター";
+		static constexpr std::string_view k_fbxFilePathSelectorLabel             = "FBXファイルドロップエリア";
 	};
 }

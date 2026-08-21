@@ -4,6 +4,8 @@ void FWK::Converter::StaticModelComponentJsonConverter::DeserializePrefab(const 
 {
 	if (a_rootJson.is_null()) { return; }
 
+	a_staticModelComponent.ModelComponentBase::DeserializePrefab(a_rootJson);
+
 	if (const auto& l_json = a_rootJson.value(k_registerDrawRequestStrategyMapJsonKey, nlohmann::json{});
 		!l_json.is_null() &&
 		Utility::IsJsonArray(l_json))
@@ -12,9 +14,11 @@ void FWK::Converter::StaticModelComponentJsonConverter::DeserializePrefab(const 
 	}
 }
 
-nlohmann::json FWK::Converter::StaticModelComponentJsonConverter::SerializePrefab(const StaticModelComponent& a_staticModelComponent) const
+nlohmann::json FWK::Converter::StaticModelComponentJsonConverter::SerializePrefab(StaticModelComponent& a_staticModelComponent) const
 {
 	nlohmann::json l_rootJson = {};
+
+	Utility::UpdateJson(l_rootJson, a_staticModelComponent.ModelComponentBase::SerializePrefab());
 
 	l_rootJson[k_registerDrawRequestStrategyMapJsonKey] = SerializeRegisterDrawRequestStrategyMap(a_staticModelComponent);
 
@@ -24,7 +28,7 @@ nlohmann::json FWK::Converter::StaticModelComponentJsonConverter::SerializePrefa
 void FWK::Converter::StaticModelComponentJsonConverter::DeserializeRegisterDrawRequestStrategyMap(const nlohmann::json& a_rootJson, StaticModelComponent& a_staticModelComponent) const
 {
 	if (a_rootJson.is_null() ||
-		!Utility::IsJsonArray(a_rootJson.is_null()))
+		!Utility::IsJsonArray(a_rootJson))
 	{
 		return; 
 	}
