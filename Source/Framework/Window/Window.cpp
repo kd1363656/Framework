@@ -10,7 +10,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND,
 															 WPARAM,
 															 LPARAM);
 
-FWK::Window::Window() : 
+FWK::Window::Window() :
 	m_jsonConverter(),
 
 	m_normalWindowRECT(),
@@ -20,7 +20,9 @@ FWK::Window::Window() :
 
 	m_hwnd(nullptr),
 
-	m_style(Enum::WindowStyle::None)
+	m_style(Enum::WindowStyle::None),
+
+	m_aspectRatio(k_initialAspectRatio)
 {}
 FWK::Window::~Window()
 {
@@ -169,6 +171,50 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
 								     const WPARAM a_wPARAM, 
 									 const LPARAM a_lPARAM)
 {
+	// DirectXTK12のKeyboard/ouseへ
+	// Windowsから届いた入力メッセージを通知する
+	// ImGuiより先に処理することでImGuiがメッセージを使用した場合でも
+	// DirectXTK12側の入力状態が欠落しないようにする
+	switch (a_message)
+	{
+		case WM_ACTIVATE:
+		case WM_ACTIVATEAPP:
+		{
+			DirectX::Keyboard::ProcessMessage(a_message, a_wPARAM, a_lPARAM);
+			DirectX::Mouse::ProcessMessage   (a_message, a_wPARAM, a_lPARAM);
+		}
+		break;
+
+		case WM_KEYDOWN:
+		case WM_SYSKEYDOWN:
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+		{
+			DirectX::Keyboard::ProcessMessage(a_message, a_wPARAM, a_lPARAM);
+		}
+		break;
+
+		case WM_INPUT:
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MOUSEWHEEL:
+		case WM_XBUTTONDOWN:
+		case WM_XBUTTONUP:
+		case WM_MOUSEHOVER:
+		{
+			DirectX::Mouse::ProcessMessage(a_message, a_wPARAM, a_lPARAM);
+		}
+		break;
+
+		default:
+		break;
+	}
+
 	if (ImGui::GetCurrentContext() && ImGui_ImplWin32_WndProcHandler(a_hwnd, 
 																	 a_message,
 																	 a_wPARAM,
@@ -385,6 +431,8 @@ void FWK::Window::ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, cons
 
 	m_clientSize				 = a_clientSize;
 	m_resizeRequest.m_clientSize = m_clientSize;
+
+	RequestResizeFromClientSize(m_clientSize);
 }
 
 void FWK::Window::ApplyWindowStyle()
@@ -511,6 +559,9 @@ void FWK::Window::RequestResizeFromClientSize(const ClientSize& a_clientSize)
 	m_resizeRequest.m_clientSize  = a_clientSize;
 	m_resizeRequest.m_isRequested = true;
 	m_resizeRequest.m_isMinimized = false;
+
+	// ウィンドウサイズの変更に伴ってアスペクト比率を変更する
+	m_aspectRatio = static_cast<float>(a_clientSize.m_width) / static_cast<float>(a_clientSize.m_height);
 }
 
 HINSTANCE FWK::Window::FetchVALInstanceHandle() const

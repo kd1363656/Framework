@@ -51,8 +51,8 @@ void FWK::Editor::DetailsEditorWindow::DrawGameObjectDetails(const std::weak_ptr
 
 	DrawGameObjectComponentObserverDetails(*l_gameObject);
 	ImGui::SeparatorText                   (k_componentSeparatorLabel.data());
-	DrawGameObjectTransformComponentDetails(*l_gameObject);
 	DrawGameObjectComponentDetails         (*l_gameObject);
+	DrawGameObjectTransformComponentDetails(*l_gameObject);
 
 	ImGui::Separator();
 

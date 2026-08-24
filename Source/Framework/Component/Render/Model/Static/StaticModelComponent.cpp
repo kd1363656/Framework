@@ -32,6 +32,13 @@ void FWK::StaticModelComponent::PostDeserialize()
 
 	// 初めの座標を反映するためにDrawRequestDataを更新
 	UpdateDrawRequestData();
+
+	for (const auto& [l_staticTypeID, l_strategy] : m_registerDrawRequestStrategyMap)
+	{
+		if (!l_strategy) { continue; }
+
+		l_strategy->Execute(*this);
+	}
 }
 
 void FWK::StaticModelComponent::PostLateUpdate()

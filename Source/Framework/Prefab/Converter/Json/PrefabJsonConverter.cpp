@@ -99,6 +99,14 @@ bool FWK::Converter::PrefabJsonConverter::SaveGameObjectPrefab(Prefab& a_prefab)
 		return false;
 	}
 
+	if (l_gameObject->GetREFPrefabUUID().is_nil() ||
+		l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab保存用GameObjectのPrefab情報が無効なため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_prefab.GetREFFilePath().string());
+
+		return false;
+	}
+
 	const auto&          l_filePath       = a_prefab.GetREFFilePath      ();
 	const auto&          l_gameObjectJson = l_gameObject->SerializePrefab();
 	      nlohmann::json l_rootJson       = {};

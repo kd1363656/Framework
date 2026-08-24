@@ -164,7 +164,8 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
     const bool l_hasChildFolder                            = l_fileSystem.HasChildFolder(a_folderPath);
     const bool l_isFolderTreeSynchronizedCurrentFolderPath = m_synchronizedCurrentFolderPath != l_currentFolderPath;
     
-    auto l_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow |
+    auto l_treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow       |
+                           ImGuiTreeNodeFlags_OpenOnDoubleClick |
                            ImGuiTreeNodeFlags_SpanAvailWidth;
 
     // 右ペインで現在開いているFolderを

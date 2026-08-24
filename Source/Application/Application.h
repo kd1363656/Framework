@@ -13,6 +13,7 @@ public:
 
 	void Execute();
 
+	const auto& GetREFWindow        () const { return m_window; }
 	const auto& GetREFFFPSController() const { return m_fpsController; }
 
 	static constexpr int k_exitCodeSuccess			   =  0;

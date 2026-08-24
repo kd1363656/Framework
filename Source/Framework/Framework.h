@@ -282,6 +282,7 @@
 // カメラ
 #include "Definition/Constant/Graphics/Buffer/Constant/CBCameraPassStructConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBCameraPassStruct.h"
+#include "Definition/Constant/Graphics/CameraConstant.h"
 #include "Graphics/Render/Camera/Camera.h"
 
 // ライト
@@ -485,6 +486,13 @@
 #include "Utility/GameObject/GameObjectUtility.h"
 
 //===============================================================================
+// 入力検知クラス
+//===============================================================================
+#include "Input/Keyboard/KeyboardController.h"
+#include "Input/Mouse/MouseController.h"
+#include "Input/InputManager.h"
+
+//===============================================================================
 // コンポーネント
 //===============================================================================
 #include "Strategy/StrategyBase.h"
@@ -512,6 +520,9 @@
 #include "Definition/Type/Alias/Factory/Unique/StaticModelRegisterDrawRequestStrategyBaseUniqueFactory.h"
 #include "Component/Render/Model/Static/Strategy/Standard/Lit/StaticModelRegisterDrawRequestStandardLitStrategy.h"
 #include "Component/Render/Model/Static/Strategy/Standard/UnLit/StaticModelRegisterDrawRequestStandardUnLitStrategy.h"
+#include "Component/Camera/Inspector/CameraComponentInspector.h"
+#include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
+#include "Component/Camera/CameraComponent.h"
 
 //===============================================================================
 // シーン

@@ -1,0 +1,34 @@
+{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [
+            {
+                "ComponentTypeName": "CameraComponent",
+                "FarClip": 2000.0,
+                "FovYDegree": 60.0,
+                "NearClip": 0.009999999776482582
+            }
+        ],
+        "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": -4.400000095367432
+            },
+            "InitialRotation": {
+                "W": 1.0,
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    },
+    "PrefabName": "FreeCamera"
+}

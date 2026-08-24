@@ -19,6 +19,21 @@ void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
 	// エディターにこのカメラクラスを登録
 	RegisterToEditorViewportWindow();
 }
+void FWK::Graphics::Camera::Setup()
+{
+	// ビュー行列の作成
+	SetupPerspective(m_cameraMatrix,
+					 m_aspectRatio,
+					 m_fovYDegree,
+				     m_farClip,
+					 m_nearClip);
+
+	// 定数バッファへの登録
+	RegisterCBCameraPass();
+
+	// エディターにこのカメラクラスを登録
+	RegisterToEditorViewportWindow();
+}
 
 void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
 {
@@ -42,7 +57,7 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
 												  const float a_farClip,
 												  const float a_nearClip)
 {
-	FWK_ASSERT_RETURN_IF(a_aspectRatio <= k_invalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。");
+	FWK_ASSERT_RETURN_IF(a_aspectRatio <= Constant::k_cameraInvalidAspectRatio, "CameraのAspectRatioが不正なため、ProjectionMatrixの作成に失敗しました。");
 
 	if (!m_cbCameraPass) { return; }
 
@@ -60,7 +75,7 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const float a_aspectRatio,
 																		   a_nearClip,
 																		   a_farClip);
 
-	// Perspecctive行列を後からAspectRatioだけ変更して
+	// Perspective行列を後からAspectRatioだけ変更して
 	// 再作成できるよう、、現在の設定をCameraへ保持する
 	m_aspectRatio = a_aspectRatio;
 	m_fovYDegree  = a_fovYDegree;
@@ -84,8 +99,8 @@ void FWK::Graphics::Camera::ApplyProjectionMatrix(const TypeAlias::Math::Matrix&
 
 void FWK::Graphics::Camera::ApplyPerspectiveAspectRatio(const float a_aspectRatio)
 {
-	FWK_ASSERT_RETURN_IF(a_aspectRatio <= k_invalidAspectRatio, "PerspectiveのAspectRatioが不正なため、ProjectionMatrixを更新できません。");
-	FWK_ASSERT_RETURN_IF(m_aspectRatio <= k_invalidAspectRatio, "CameraのPerspective設定前にAspectRatioを変更しようとしました。");
+	FWK_ASSERT_RETURN_IF(a_aspectRatio <= Constant::k_cameraInvalidAspectRatio, "PerspectiveのAspectRatioが不正なため、ProjectionMatrixを更新できません。");
+	FWK_ASSERT_RETURN_IF(m_aspectRatio <= Constant::k_cameraInvalidAspectRatio, "CameraのPerspective設定前にAspectRatioを変更しようとしました。");
 
 	if (!m_cbCameraPass) { return; }
 
@@ -125,8 +140,8 @@ void FWK::Graphics::Camera::UpdateViewProjectionMatrix()
 }
 void FWK::Graphics::Camera::UpdatePerspectiveProjectionMatrix()
 {
-	FWK_ASSERT_RETURN_IF(!m_cbCameraPass,                       "CBCameraPassが無効なため、PerspectiveProjectionを更新できません。");
-	FWK_ASSERT_RETURN_IF(m_aspectRatio <= k_invalidAspectRatio, "Cameraに保存されているAspectRatioが不正なため、PerspectiveProjectionを更新できません。");
+	FWK_ASSERT_RETURN_IF(!m_cbCameraPass,                                       "CBCameraPassが無効なため、PerspectiveProjectionを更新できません。");
+	FWK_ASSERT_RETURN_IF(m_aspectRatio <= Constant::k_cameraInvalidAspectRatio, "Cameraに保存されているAspectRatioが不正なため、PerspectiveProjectionを更新できません。");
 
 	const float l_fovYRadian = DirectX::XMConvertToRadians(m_fovYDegree);
 
@@ -165,7 +180,7 @@ void FWK::Graphics::Camera::RegisterCBCameraPass()
 		l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);	
 	}
 
-	// Cacade計算で使用するCameraの定数バッファを登録する
+	// Cascade計算で使用するCameraの定数バッファを登録する
 	l_cascadeShadowMap.SetCBCameraPass(m_cbCameraPass);
 }
 

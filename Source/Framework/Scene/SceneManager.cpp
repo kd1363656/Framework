@@ -25,7 +25,7 @@ void FWK::SceneManager::EarlyUpdate()
 
 	m_scene->EarlyUpdate();
 }
-void FWK::SceneManager::Update()
+void FWK::SceneManager::Update() const
 {
 	if (!m_scene) { return; }
 
@@ -37,7 +37,7 @@ void FWK::SceneManager::LateUpdate() const
 
 	m_scene->LateUpdate();
 }
-void FWK::SceneManager::PostLateUpdate()
+void FWK::SceneManager::PostLateUpdate() const
 {
 	if (!m_scene) { return; }
 

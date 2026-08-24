@@ -12,7 +12,7 @@ void FWK::TransformComponentInspector::EditInspector(TransformComponent& a_trans
 	// 位置
 	if (ImGui::DragFloat3(k_transformPositionLabel.data(), &l_transform.m_position.x, Constant::k_imguiDefaultDragValue))
 	{
-		l_initialSettingTransform.m_scale = l_transform.m_scale;
+		l_initialSettingTransform.m_position = l_transform.m_position;
 	}
 
 	// 回転

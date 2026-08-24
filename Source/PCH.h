@@ -75,6 +75,8 @@
 // DirectXTK12
 //================================================
 #include <SimpleMath.h>
+#include <Keyboard.h>
+#include <Mouse.h>
 
 //================================================
 // UFBX

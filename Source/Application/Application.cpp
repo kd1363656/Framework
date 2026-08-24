@@ -42,6 +42,12 @@ void Application::Execute()
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
 
+	// MouseControllerがWindowHandlwを必要尾するため、
+	// Window生成完了後にInputManagerを初期化する
+	FWK::InputManager::GetInstance().INIT();
+
+	l_editorManager.INIT(m_window.GetREFHWND());
+
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
 
@@ -61,15 +67,15 @@ void Application::Execute()
 		l_graphicsManager.ProcessWindowResizeRequest(m_window.GetREFResizeRequest());
 		l_editorManager.ProcessWindowResizeRequest  (m_window.GetREFResizeRequest());
 
-		// リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
-		ClearWindowResizeRequest();
-
 		// 最小化中など、描画やゲームの更新を進めていけない状態なら
 		// アプリは終了せずに、次のメッセージ処理へ進む
 		// ここで描画と更新をやめるのでFPSを計測
 		if (!CanUpdateFrame()) 
 		{
+			// リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
+			ClearWindowResizeRequest();
 			m_fpsController.EndFrame();
+
 			continue; 
 		}
 
@@ -81,6 +87,8 @@ void Application::Execute()
 		l_sceneManager.Update        ();
 		l_sceneManager.LateUpdate    ();
 		l_sceneManager.PostLateUpdate();
+
+		ClearWindowResizeRequest();
 
 		// JoltPhysicsのデバック命令をこのフレーム用のQueueへ集める
 	    // ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
@@ -122,14 +130,20 @@ bool Application::BeginFrame()
 	// FPSの計測開始
 	m_fpsController.BeginFrame();
 
-	if (!m_window.ProcessMessages()) { return false; }
-
-	// ウィンドウズハンドルを所持していないかエスケープキーを押されたらreturn
-	if (GetAsyncKeyState(VK_ESCAPE) ||
-		!m_window.GetREFHWND())
+	if (!m_window.ProcessMessages() ||
+		!m_window.GetREFHWND()) 
 	{
-		return false;
+		return false; 
 	}
+
+	      auto& l_inputManager       = FWK::InputManager::GetInstance();
+	const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
+
+	// WindowProcedureでDirectXTK12へ入力メッセージを渡した後、
+	// 現在フレームのKeyboard/Mouse状態を確定する
+	l_inputManager.Update();
+
+	if (l_keyboardController.IsKeyPressed(DirectX::Keyboard::Escape)) { return false; }
 
 	return true;
 }

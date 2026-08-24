@@ -53,6 +53,8 @@ namespace FWK
 
 		auto GetVALStyle() const { return m_style; }
 
+		float GetVALAspectRatio() const { return m_aspectRatio; }
+
 	private:
 
 		// Win32APIに渡すウィンドウプロシージャは通常のメンバ関数では渡せないため、
@@ -115,6 +117,8 @@ namespace FWK
 		static constexpr UINT k_msgFilterMAX		  = 0U;
 		static constexpr UINT k_wmCreateHandledResult = 0U;
 
+		static constexpr float k_initialAspectRatio = 0.0F;
+
 		static constexpr int k_classExtraBytes  = 0;
 		static constexpr int k_windowExtraBytes = 0;
 
@@ -135,5 +139,7 @@ namespace FWK
 		HWND m_hwnd;
 
 		Enum::WindowStyle m_style;
+
+		float m_aspectRatio;
 	};
 }

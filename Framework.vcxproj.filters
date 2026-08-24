@@ -1297,6 +1297,24 @@
     <Filter Include="Source\Framework\Component\Camera">
       <UniqueIdentifier>{81b6d736-5ae1-48fb-abe1-5b28eb3e0233}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Camera\Inspector">
+      <UniqueIdentifier>{59ad939a-455f-4620-b2fa-05eb95ee09f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Camera\Converter">
+      <UniqueIdentifier>{d54ee024-84b6-45f4-938a-34e63a5dc74c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Camera\Converter\Json">
+      <UniqueIdentifier>{2730b066-ab16-445d-a09a-d943380001e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Input">
+      <UniqueIdentifier>{5a209d6f-4c92-4d22-8ce5-e982224028bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Input\Keyboard">
+      <UniqueIdentifier>{00f79f8f-903f-466b-9f58-e33ab6778d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Input\Mouse">
+      <UniqueIdentifier>{6811dd03-102e-4483-ba37-667b892a7f0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2505,6 +2523,24 @@
     <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h">
       <Filter>Source\Framework\Component\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h">
+      <Filter>Source\Framework\Component\Camera\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Input\InputManager.h">
+      <Filter>Source\Framework\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Input\Keyboard\KeyboardController.h">
+      <Filter>Source\Framework\Input\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Input\Mouse\MouseController.h">
+      <Filter>Source\Framework\Input\Mouse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3133,6 +3169,21 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp">
       <Filter>Source\Framework\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Camera\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Input\InputManager.cpp">
+      <Filter>Source\Framework\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Input\Keyboard\KeyboardController.cpp">
+      <Filter>Source\Framework\Input\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Input\Mouse\MouseController.cpp">
+      <Filter>Source\Framework\Input\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

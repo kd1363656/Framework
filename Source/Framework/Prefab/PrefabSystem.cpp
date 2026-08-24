@@ -58,6 +58,7 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 {
 	const auto& l_sceneManager = SceneManager::GetInstance ();
 	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
 	if (!l_scene) { return; }
 
 	const auto& l_gameObjectList = l_scene->GetREFGameObjectList();
@@ -68,12 +69,20 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 
 		auto& l_prefab = l_prefabData.m_prefab;
 		
-		const auto& l_prefabGameObject = l_prefab.GetREFGameObject().lock();
-
-		if (!l_prefabGameObject) { continue; }
+		bool l_isPrefabGameObjectFound = false;
 
 		// プレハブ構築用ゲームオブジェクトが無効ならプレハブ構築用ゲームオブジェクトをシーンから探す
-		if (l_prefabGameObject->GetVALIsDestroyed())
+		if (const auto& l_prefabGameObject = l_prefab.GetREFGameObject().lock();
+			 l_prefabGameObject                                     &&
+			!l_prefabGameObject->GetVALIsDestroyed()                &&
+			 l_prefabUUID == l_prefabGameObject->GetREFPrefabUUID() &&
+			 l_prefabGameObject->GetVALPrefabSceneInstanceNUM() != Constant::k_invalidPrefabSceneInstanceNUM)
+		{
+			l_isPrefabGameObjectFound = true;
+		}
+		// 現在のPrefab構築用GameObjectが無効なら
+		// 同じPrefabUUIDを持つGameObjectをシーンから探しなおす
+		else
 		{
 			// 代表GameObjectが存在しないPrefabは
 			// 現在のScene状態から新しいPrefab情報を生成できない
@@ -81,8 +90,8 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 			for (const auto& l_gameObject : l_gameObjectList)
 			{
 				if (!l_gameObject                                    || 
-					l_prefabUUID == l_gameObject->GetREFPrefabUUID() ||
 					l_gameObject->GetVALIsDestroyed()                ||
+					l_prefabUUID != l_gameObject->GetREFPrefabUUID() ||
 					l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM) 
 				{
 					continue; 
@@ -90,10 +99,16 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 
 				l_prefab.SetGameObject(l_gameObject);
 
+				l_isPrefabGameObjectFound = true;
+
 				// 代表Prefab構築用ゲームオブジェクトを見つけたら走査する必要がないためbreak
 				break;
 			}	
 		}
+
+		// Scene上に子のPrefabの有効なGameObjectが存在しない場合は
+		// Destroy済みGameObjectからPrefabファイルを書き換えない
+		if (!l_isPrefabGameObjectFound) { continue; }
 
 		// シリアライズでファイルを保存するがそれとともに戻り値で
 		// nlohmann::jsonで保存内容が空かどうかを確認する

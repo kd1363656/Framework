@@ -17,8 +17,12 @@
                 "AssetRegistry": {
                     "AssetFilePathToUUIDMap": [
                         {
-                            "AssetUUID": "be3e06a8-f485-4446-bd77-edeb1ad9de24",
-                            "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
+                            "AssetUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
+                            "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
+                        },
+                        {
+                            "AssetUUID": "91ac2257-2c72-4166-8593-1254a7445e55",
+                            "FilePath": "Content\\Data\\Prefab\\Player\\A.json"
                         }
                     ]
                 }

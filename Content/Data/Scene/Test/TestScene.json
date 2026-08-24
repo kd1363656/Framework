@@ -6,13 +6,46 @@
                     "ChildList": [],
                     "ComponentList": [
                         {
+                            "ComponentTypeName": "CameraComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
+                    "SceneInstanceName": "FreeCamera",
+                    "SceneInstanceUUID": "c790ec87-4227-49e4-837d-513c9d569291",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": -4.400000095367432
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
                             "ComponentTypeName": "StaticModelComponent"
                         }
                     ],
                     "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "be3e06a8-f485-4446-bd77-edeb1ad9de24",
-                    "SceneInstanceName": "Antike",
-                    "SceneInstanceUUID": "916a4bf3-a594-4d82-979c-d867ac288ab6",
+                    "PrefabUUID": "91ac2257-2c72-4166-8593-1254a7445e55",
+                    "SceneInstanceName": "A",
+                    "SceneInstanceUUID": "9b523797-5ffc-4197-b8ad-a8e7e67e9213",
                     "TransformComponent": {
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
@@ -39,14 +72,28 @@
             "PrefabMap": [
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
+                        "FilePath": "Content\\Data\\Prefab\\Player\\A.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true
+                            true,
+                            false,
+                            false
                         ]
                     },
-                    "PrefabUUID": "be3e06a8-f485-4446-bd77-edeb1ad9de24"
+                    "PrefabUUID": "91ac2257-2c72-4166-8593-1254a7445e55"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true,
+                            false
+                        ]
+                    },
+                    "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd"
                 }
             ]
         }

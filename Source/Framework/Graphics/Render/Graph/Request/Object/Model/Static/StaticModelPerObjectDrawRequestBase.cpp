@@ -19,8 +19,8 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
 		const auto& l_staticModelRecord = l_drawRequest->m_staticModelRecord.lock();
 
-		FWK_ASSERT_RETURN_IF(!l_staticModelRecord, "StaticModelRecordのポインタが無効です。");
-
+		if (!l_staticModelRecord) { continue; }
+		
 		const auto& l_modelData     = l_staticModelRecord->GetREFModelData();
 		const float l_worldMaxScale = Utility::CalculateWorldMaxScale     (l_drawRequest->m_worldMatrix);
 
