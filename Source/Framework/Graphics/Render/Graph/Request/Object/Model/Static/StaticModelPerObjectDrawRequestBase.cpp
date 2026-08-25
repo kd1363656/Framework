@@ -21,8 +21,9 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
 		if (!l_staticModelRecord) { continue; }
 		
-		const auto& l_modelData     = l_staticModelRecord->GetREFModelData();
-		const float l_worldMaxScale = Utility::CalculateWorldMaxScale     (l_drawRequest->m_worldMatrix);
+		const auto& l_modelData            = l_staticModelRecord->GetREFModelData    ();
+		const float l_worldMaxScale        = Utility::CalculateWorldMaxScale         (l_drawRequest->m_worldMatrix);
+		const float l_worldOrientationSign = l_drawRequest->m_worldMatrix.Determinant() < Constant::k_modelWorldOrientationDeterminantBoundary ? Constant::k_mirrorModelWorldOrientationSign : Constant::k_normalModelWorldOrientationSign;
 
 		for(const auto& l_modelMesh : l_modelData.m_modelMeshList)
 		{
@@ -47,6 +48,10 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
 			// MehsletBoundsのradiusをWorld空間へ変換するための最大スケール
 			l_cbModelPerObject.m_worldMaxScale = l_worldMaxScale;
+
+			// ObjectのWorldTransformがMirror状態なら-1
+			// 通常なら+1をシェーダーに送る
+			l_cbModelPerObject.m_worldOrientationSign = l_worldOrientationSign;
 
 			// 最後のAmplificationShaderGroupには、実際のMeshlet数を超えるthreadが含まれる可能性がある、
 			// AS側はこの値を使用して範囲外のThreadを除外する

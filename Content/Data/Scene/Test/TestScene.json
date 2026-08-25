@@ -17,8 +17,74 @@
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
                             "X": 0.0,
+                            "Y": -0.699999988079071,
+                            "Z": -8.699999809265137
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": 0.0,
                             "Y": 0.0,
-                            "Z": -4.400000095367432
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895",
+                    "SceneInstanceName": "Antike",
+                    "SceneInstanceUUID": "1a302685-53fe-43ac-b0a7-fe90afca4111",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": -1.600000023841858,
+                            "Z": -3.700000047683716
+                        },
+                        "InitialRotation": {
+                            "W": -1.1920928955078125e-07,
+                            "X": 0.0,
+                            "Y": 0.9999998807907104,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7",
+                    "SceneInstanceName": "TestTerrain",
+                    "SceneInstanceUUID": "8643b4f7-fe95-4766-bac4-6202d56b9555",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": -1.600000023841858,
+                            "Z": 0.0
                         },
                         "InitialRotation": {
                             "W": 1.0,
@@ -48,6 +114,28 @@
                         ]
                     },
                     "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Test\\TestTerrain.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7"
                 }
             ]
         }

@@ -5,6 +5,12 @@
 static const float k_modelPositionElementW  = 1.0F;
 static const float k_modelDirectionElementW = 0.0F;
 
+static const float k_modelNormalWorldOrientationSign = 1.0F;
+
+// WorldMatrixのdeterminantが負となり
+// TriangleのWindingが反転してる状態
+static const float k_modelMirroredWorldOrientationSign = -1.0F;
+
 // Frustumの側面Planeに対するSphere半径補正で使う
 // sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
 static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
@@ -60,12 +66,15 @@ cbuffer CBModelPerObject : register(b1)
     uint  g_meshletBoundsBufferSRVDescriptorIndex;
     float g_worldMaxScale;
     
+    float  g_worldOrientationSign;
     uint   g_meshletCount;
-    float3 g_padding;
+    float2 g_padding;
 };
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する
 // 3個Pack方式では、uint32_t1個に三角形1個分のPrimitiveIndexを入れている
+// また、WorldMatrixのdeterminant画布の場合は、
+// WorldTransformによってTriangleのWindingが反転する
 // bit配置
 // 0  : 1個目のPrimitiveIndex
 // 8  : 2個目のPrimitiveIndex
@@ -79,9 +88,15 @@ uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
     
     // uint一個に三角形一個分の
     // 三つのPrimitiveIndexがPackされている
-    const uint l_packedValue = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
+    const uint  l_packedValue    = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
+    const uint3 l_primitiveIndex = DecodeModelPackedPrimitiveIndex(l_packedValue);
     
-    return DecodeModelPackedPrimitiveIndex(l_packedValue);
+    // determinantが負のWorldMatrixでは
+    // (0, 1, 2)のTriangleを、(0, 2, 1)
+    // へ変更することでWindingを元に戻す
+    if (g_worldOrientationSign == k_modelMirroredWorldOrientationSign) { return uint3(l_primitiveIndex.x, l_primitiveIndex.z, l_primitiveIndex.y); }
+    
+    return l_primitiveIndex;
 }
 
 // StaticModelのLocal座標をWorld座標へ変換する

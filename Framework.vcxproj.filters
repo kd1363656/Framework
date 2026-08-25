@@ -1324,6 +1324,9 @@
     <Filter Include="Source\Framework\Component\Input\Condition\Component">
       <UniqueIdentifier>{05ea6ebb-2fc2-4248-a725-d427cdbcd93e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor\Node">
+      <UniqueIdentifier>{9e938630-b6d3-4185-8719-bd350e73ff74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2568,6 +2571,9 @@
     <ClInclude Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.h">
       <Filter>Source\Framework\Component\Input\Condition\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3278,6 +3284,15 @@
     </None>
     <None Include="Content\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
       <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
+    </None>
+    <None Include="Content\Shader\Model\Model.hlsli">
+      <Filter>Content\Shader\Model</Filter>
+    </None>
+    <None Include="Content\Shader\Model\ModelMeshlet.hlsli">
+      <Filter>Content\Shader\Model</Filter>
+    </None>
+    <None Include="Content\Shader\Model\ModelMeshletCulling.hlsli">
+      <Filter>Content\Shader\Model</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

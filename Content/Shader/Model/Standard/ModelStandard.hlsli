@@ -24,7 +24,7 @@ float4 TransformModelLocalTangentToWorld(const float4 a_localTangent)
     const float4 l_localTangent = float4(a_localTangent.xyz, k_modelDirectionElementW);
     const float4 l_worldTangent = mul   (l_localTangent,     g_worldMatrix);
 
-    return float4(normalize(l_worldTangent.xyz), a_localTangent.w);
+    return float4(normalize(l_worldTangent.xyz), a_localTangent.w * g_worldOrientationSign);
 }
 
 float4 FetchModelBaseColor(const float2 a_uv)

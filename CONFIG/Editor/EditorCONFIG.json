@@ -19,6 +19,14 @@
                         {
                             "AssetUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
                             "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
+                        },
+                        {
+                            "AssetUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895",
+                            "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
+                        },
+                        {
+                            "AssetUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7",
+                            "FilePath": "Content\\Data\\Prefab\\Test\\TestTerrain.json"
                         }
                     ]
                 }

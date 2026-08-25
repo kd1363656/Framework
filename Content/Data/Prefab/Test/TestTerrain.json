@@ -1,0 +1,42 @@
+{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [
+            {
+                "AssetFilePathHelper": {
+                    "AssetFilePath": "Content\\Model\\Test\\Terrain.fbx"
+                },
+                "ComponentTypeName": "StaticModelComponent",
+                "RegisterDrawRequestStrategyMapJsonKey": [
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestCascadeShadowStrategy"
+                    },
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestStandardLitStrategy"
+                    }
+                ]
+            }
+        ],
+        "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": -1.600000023841858,
+                "Z": 0.0
+            },
+            "InitialRotation": {
+                "W": 1.0,
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    },
+    "PrefabName": "TestTerrain"
+}

@@ -13,4 +13,11 @@ namespace FWK::Struct
 
 		bool m_expectedObserverResult = false;
 	};
+
+	struct ComponentObserverInputExecutionConditionNode final
+	{
+		ObserverInputExecutionCondition<Enum::ComponentEvent> m_condition = {};
+
+		NodeEditorNodeData m_nodeData = {};
+	};
 }

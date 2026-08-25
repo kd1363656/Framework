@@ -49,7 +49,8 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 		// SkinnedVertexBufferを一個作成している
 		FWK_ASSERT_RETURN_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。");
 
-		const float l_worldMaxScale = Utility::CalculateWorldMaxScale(l_drawRequest->m_worldMatrix);
+		const float l_worldMaxScale        = Utility::CalculateWorldMaxScale         (l_drawRequest->m_worldMatrix);
+		const float l_worldOrientationSign = l_drawRequest->m_worldMatrix.Determinant() < Constant::k_modelWorldOrientationDeterminantBoundary ? Constant::k_mirrorModelWorldOrientationSign : Constant::k_normalModelWorldOrientationSign;
 
 		for (auto l_modelMeshIndex = 0ULL; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
 		{
@@ -80,6 +81,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
 			l_cbModelPerObject.m_worldMatrix                 = l_drawRequest->m_worldMatrix;
 			l_cbModelPerObject.m_worldInverseTransposeMatrix = l_drawRequest->m_worldInverseTransposeMatrix;
 			l_cbModelPerObject.m_worldMaxScale               = l_worldMaxScale;
+			l_cbModelPerObject.m_worldOrientationSign        = l_worldOrientationSign;
 			l_cbModelPerObject.m_meshletCount                = l_meshletCount;
 			l_cbModelPerObject.m_baseColorFactor             = l_modelMaterialAssetData.m_baseColorFactor;
 			l_cbModelPerObject.m_metallicFactor              = l_modelMaterialAssetData.m_metallicFactor;

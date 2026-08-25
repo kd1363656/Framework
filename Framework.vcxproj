@@ -430,6 +430,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ContentBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />
@@ -1000,6 +1001,9 @@ if "$(Configuration)"=="Debug" (
     <None Include="CONFIG\Physics\PhysicsCONFIG.json" />
     <None Include="CONFIG\Window\WindowCONFIG.json" />
     <None Include="Content\Shader\Camera\CameraPass.hlsli" />
+    <None Include="Content\Shader\Model\Model.hlsli" />
+    <None Include="Content\Shader\Model\ModelMeshlet.hlsli" />
+    <None Include="Content\Shader\Model\ModelMeshletCulling.hlsli" />
     <None Include="Content\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
       <FileType>Document</FileType>
     </None>

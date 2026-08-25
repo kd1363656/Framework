@@ -14,8 +14,8 @@
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
                 "X": 0.0,
-                "Y": 0.0,
-                "Z": -4.400000095367432
+                "Y": -0.699999988079071,
+                "Z": -8.699999809265137
             },
             "InitialRotation": {
                 "W": 1.0,

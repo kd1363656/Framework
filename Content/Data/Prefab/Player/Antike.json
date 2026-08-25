@@ -1,0 +1,42 @@
+{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [
+            {
+                "AssetFilePathHelper": {
+                    "AssetFilePath": "Content\\Model\\Actor\\Player\\Antike.fbx"
+                },
+                "ComponentTypeName": "StaticModelComponent",
+                "RegisterDrawRequestStrategyMapJsonKey": [
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestCascadeShadowStrategy"
+                    },
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestStandardLitStrategy"
+                    }
+                ]
+            }
+        ],
+        "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": -1.600000023841858,
+                "Z": -3.700000047683716
+            },
+            "InitialRotation": {
+                "W": -1.1920928955078125e-07,
+                "X": 0.0,
+                "Y": 0.9999998807907104,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    },
+    "PrefabName": "Antike"
+}
