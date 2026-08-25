@@ -138,7 +138,7 @@ namespace FWK::Editor
 
 		Editor::MainMenubarEditor m_mainMenubar;
 
-		//ax::NodeEditor::EditorContext* m_editorContext;
+		ax::NodeEditor::EditorContext* m_editorContext;
 
 		Converter::EditorManagerJsonConverter m_jsonConverter;
 

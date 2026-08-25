@@ -525,6 +525,7 @@
 #include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
 #include "Component/Camera/CameraComponent.h"
 
+#include "Definition/Struct/Component/InputComponentStruct.h"
 #include "Component/Input/Condition/IInputExecutionCondition.h"
 #include "Component/Input/InputComponent.h"
 

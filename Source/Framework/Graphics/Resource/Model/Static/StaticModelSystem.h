@@ -6,7 +6,7 @@ namespace FWK::Graphics
 	{
 	private:
 
-		using PendingStaticModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::StaticModelBatchUploadRecord, Struct::WStringHashStruct, std::equal_to<>>;
+		using PendingStaticModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::StaticModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
 
 	public:
 

@@ -17,7 +17,7 @@ namespace FWK::Graphics
 
 	private:
 
-		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, TextureBatchUploadRecordBuilder::TextureBatchUploadRecord, Struct::WStringHashStruct, std::equal_to<>>;
+		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, TextureBatchUploadRecordBuilder::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
 		
 	public:
 

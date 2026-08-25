@@ -85,6 +85,6 @@ void FWK::StaticModelComponent::UpdateDrawRequestData()
 	// 描画に必要なデータを渡す
 	m_drawRequestData->m_worldMatrix                 = l_matrix;
 	m_drawRequestData->m_staticModelRecord           = m_model->GetREFStaticModelRecord();
-	m_drawRequestData->m_worldInverseTransposeMatrix = l_matrix.Transpose();
-	m_drawRequestData->m_worldMaxScale               = Utility::CalculateWorldMaxScale(l_matrix);
+	m_drawRequestData->m_worldInverseTransposeMatrix = l_matrix.Invert                 ().Transpose();
+	m_drawRequestData->m_worldMaxScale               = Utility::CalculateWorldMaxScale (l_matrix);
 }

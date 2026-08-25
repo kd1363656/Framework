@@ -2,19 +2,19 @@
 
 namespace FWK
 {
-	class InputExecutionConditionBase final
+	class IInputExecutionConditionBase
 	{
 	public:
 
-		 InputExecutionConditionBase() = default;
-		~InputExecutionConditionBase() = default;
+		 IInputExecutionConditionBase() = default;
+		~IInputExecutionConditionBase() = default;
 
-		virtual void CanNotify(Observer<Enum::ComponentEvent>& a_componentEvent) = 0;
+		virtual bool CanNotify(Observer<Enum::ComponentEvent>& a_componentEvent) = 0;
 
 		virtual void Deserialize(const nlohmann::json& a_rootJson) = 0;
 
 		virtual nlohmann::json Serialize() const = 0;
 
-		FWK_DEFINE_TYPE_INFO_ROOT(InputExecutionConditionBase)
+		FWK_DEFINE_TYPE_INFO_ROOT(IInputExecutionConditionBase)
 	};
 }

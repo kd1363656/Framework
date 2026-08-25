@@ -339,6 +339,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.h" />
     <ClInclude Include="Source\Framework\Component\Input\Condition\IInputExecutionCondition.h" />
     <ClInclude Include="Source\Framework\Component\Input\InputComponent.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
@@ -427,6 +428,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ContentBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowStruct.h" />
@@ -756,6 +758,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
+    <ClCompile Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp" />

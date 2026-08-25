@@ -19,10 +19,6 @@
                         {
                             "AssetUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
                             "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
-                        },
-                        {
-                            "AssetUUID": "91ac2257-2c72-4166-8593-1254a7445e55",
-                            "FilePath": "Content\\Data\\Prefab\\Player\\A.json"
                         }
                     ]
                 }

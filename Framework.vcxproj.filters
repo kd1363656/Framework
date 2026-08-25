@@ -1321,6 +1321,9 @@
     <Filter Include="Source\Framework\Component\Input\Condition">
       <UniqueIdentifier>{9cf41843-d7e5-4292-862c-11f68ce84d36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Input\Condition\Component">
+      <UniqueIdentifier>{05ea6ebb-2fc2-4248-a725-d427cdbcd93e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2559,6 +2562,12 @@
     <ClInclude Include="Source\Framework\Component\Input\Condition\IInputExecutionCondition.h">
       <Filter>Source\Framework\Component\Input\Condition</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.h">
+      <Filter>Source\Framework\Component\Input\Condition\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3205,6 +3214,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp">
       <Filter>Source\Framework\Component\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.cpp">
+      <Filter>Source\Framework\Component\Input\Condition\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

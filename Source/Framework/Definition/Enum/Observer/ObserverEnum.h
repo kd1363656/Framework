@@ -18,6 +18,10 @@ namespace FWK::Enum
 		ComponentEvent, 
 		FWK_JSON_ENUM_VALUE(ComponentEvent::Invalid)
 	)
+
 }
+
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLane, FWK::Enum::EventLane::Invalid)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLane, FWK::Enum::EventLane::TriggeredThisFrame)
 
 FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::ComponentEvent, FWK::Enum::ComponentEvent::Invalid)

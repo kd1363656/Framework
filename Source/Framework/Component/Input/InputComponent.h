@@ -6,8 +6,8 @@ namespace FWK
 	{
 	public:
 
-		 InputComponent();
-		~InputComponent();
+		 InputComponent()          = default;
+		~InputComponent() override = default;
 
 		bool IsAllowMultiple() const override { return true; }
 
