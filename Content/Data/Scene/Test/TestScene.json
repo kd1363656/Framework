@@ -33,56 +33,10 @@
                         }
                     }
                 }
-            },
-            {
-                "GameObject": {
-                    "ChildList": [],
-                    "ComponentList": [
-                        {
-                            "ComponentTypeName": "StaticModelComponent"
-                        }
-                    ],
-                    "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "91ac2257-2c72-4166-8593-1254a7445e55",
-                    "SceneInstanceName": "A",
-                    "SceneInstanceUUID": "9b523797-5ffc-4197-b8ad-a8e7e67e9213",
-                    "TransformComponent": {
-                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
-                        "InitialPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "InitialRotation": {
-                            "W": 1.0,
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "InitialScale": {
-                            "X": 1.0,
-                            "Y": 1.0,
-                            "Z": 1.0
-                        }
-                    }
-                }
             }
         ],
         "PrefabSystem": {
             "PrefabMap": [
-                {
-                    "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Player\\A.json"
-                    },
-                    "PrefabInstanceNUMAllocator": {
-                        "IsAllocatedList": [
-                            true,
-                            false,
-                            false
-                        ]
-                    },
-                    "PrefabUUID": "91ac2257-2c72-4166-8593-1254a7445e55"
-                },
                 {
                     "Prefab": {
                         "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"

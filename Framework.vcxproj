@@ -220,7 +220,7 @@ if "$(Configuration)"=="Debug" (
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;D3D12MAd.lib;imguid.lib;imguizmo.lib;imgui-node-editor.lib</AdditionalDependencies>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;imguid.lib;imgui-node-editor.lib;imguizmo.lib;D3D12MAd.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
@@ -286,7 +286,7 @@ if "$(Configuration)"=="Debug" (
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;imguid.lib;imgui-node-editor.lib;imguizmo.lib;D3D12MA.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/VERBOSE:LIB %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -339,6 +339,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Condition\IInputExecutionCondition.h" />
+    <ClInclude Include="Source\Framework\Component\Input\InputComponent.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
@@ -402,6 +404,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\EditorAssetTypeEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\NodeEditorWindowEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DepthStencilPassTextureEnum.h" />
@@ -471,6 +474,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyBaseUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabSceneInstanceNUMTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
@@ -752,6 +756,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
+    <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />

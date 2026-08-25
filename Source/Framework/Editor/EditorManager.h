@@ -37,8 +37,6 @@ namespace FWK::Editor
 
 		void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
 
-		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
-
 		template <class... Args>
 		void AddLog(const std::source_location&   a_location, 
 			        const TypeAlias::Math::Color& a_textColor,
@@ -85,11 +83,15 @@ namespace FWK::Editor
 
 		void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
+		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
+
 		const auto& GetREFEditorWindowList  () const { return m_editorWindowList; }
 		const auto& GetREFMainMenubar       () const { return m_mainMenubar; }
 		const auto& GetREFSelectedGameObject() const { return m_selectedGameObject; }
 
 		auto& GetMutableREFMainMenubar() { return m_mainMenubar; }
+
+		auto* GetMutablePTREditorContext() { return m_editorContext; }
 
 		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
@@ -135,6 +137,8 @@ namespace FWK::Editor
 		Editor::LogEditorWindow m_logEditorWindow;
 
 		Editor::MainMenubarEditor m_mainMenubar;
+
+		ax::NodeEditor::EditorContext* m_editorContext;
 
 		Converter::EditorManagerJsonConverter m_jsonConverter;
 

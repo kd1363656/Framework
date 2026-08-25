@@ -1315,6 +1315,12 @@
     <Filter Include="Source\Framework\Input\Mouse">
       <UniqueIdentifier>{6811dd03-102e-4483-ba37-667b892a7f0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Input">
+      <UniqueIdentifier>{052dd4e3-38de-4c50-82ac-01f2dbcb74e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Input\Condition">
+      <UniqueIdentifier>{9cf41843-d7e5-4292-862c-11f68ce84d36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2541,6 +2547,18 @@
     <ClInclude Include="Source\Framework\Input\Mouse\MouseController.h">
       <Filter>Source\Framework\Input\Mouse</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\NodeEditorWindowEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\InputComponent.h">
+      <Filter>Source\Framework\Component\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\Condition\IInputExecutionCondition.h">
+      <Filter>Source\Framework\Component\Input\Condition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3184,6 +3202,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Input\Mouse\MouseController.cpp">
       <Filter>Source\Framework\Input\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp">
+      <Filter>Source\Framework\Component\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

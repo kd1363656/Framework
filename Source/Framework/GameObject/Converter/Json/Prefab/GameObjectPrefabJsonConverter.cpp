@@ -212,11 +212,11 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponentEv
 
 		if (!l_componentEventObserver)
 		{
-			auto l_createdComponentEventObserver = std::make_unique<Observer<Enum::ComponentEvent>>();
+			auto l_createdComponentEventObserver = std::make_shared<Observer<Enum::ComponentEvent>>();
 
 			l_createdComponentEventObserver->INIT();
 
-			a_gameObject.SetComponentEventObserver(std::move(l_createdComponentEventObserver));
+			a_gameObject.SetComponentEventObserver(l_createdComponentEventObserver);
 		}
 	}
 

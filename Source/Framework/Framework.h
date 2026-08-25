@@ -51,6 +51,7 @@
 //===============================================================================
 #include "Definition/Type/Alias/MathTypeAlias.h"
 #include "Editor/Style/EditorStyle.h"
+#include "Definition/Type/Alias/NodeEditorTypeAlias.h"
 #include "Definition/Constant/Editor/EditorConstant.h"
 #include "Editor/Window/Log/LogEditorWindow.h"
 #include "Editor/Window/EditorWindowBase.h"
@@ -523,6 +524,9 @@
 #include "Component/Camera/Inspector/CameraComponentInspector.h"
 #include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
 #include "Component/Camera/CameraComponent.h"
+
+#include "Component/Input/Condition/IInputExecutionCondition.h"
+#include "Component/Input/InputComponent.h"
 
 //===============================================================================
 // シーン

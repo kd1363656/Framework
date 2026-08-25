@@ -17,7 +17,7 @@ namespace FWK
 
 	public:
 
-		MouseController() = default;
+		 MouseController() = default;
 		~MouseController() = default;
 
 		void INIT();
@@ -30,9 +30,6 @@ namespace FWK
 		bool IsButtonReleased(const MouseButton a_button) const;
 
 		void SetVisible(const bool a_set);
-
-		const auto& GetREFCurrentPosition() const { return m_position; }
-		const auto& GetREFMovement       () const { return m_movement; }
 
 		int FetchVALScrollWheelValue() const;
 
