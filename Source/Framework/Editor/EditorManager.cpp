@@ -15,7 +15,7 @@ FWK::Editor::EditorManager::EditorManager() :
 
 	m_mainMenubar(),
 
-	//m_editorContext(nullptr),
+	m_editorContext(nullptr),
 
 	m_jsonConverter(),
 

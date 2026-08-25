@@ -352,6 +352,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\RotationComponent.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h" />
@@ -430,7 +433,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ContentBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />
@@ -770,6 +772,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\RotationComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp" />

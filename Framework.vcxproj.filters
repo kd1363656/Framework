@@ -1324,8 +1324,17 @@
     <Filter Include="Source\Framework\Component\Input\Condition\Component">
       <UniqueIdentifier>{05ea6ebb-2fc2-4248-a725-d427cdbcd93e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Editor\Node">
-      <UniqueIdentifier>{9e938630-b6d3-4185-8719-bd350e73ff74}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Rotation">
+      <UniqueIdentifier>{b6061534-33b7-47ce-903b-f770805e2d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Converter">
+      <UniqueIdentifier>{fd217b33-2686-489d-a0cb-a90274014f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Converter\Json">
+      <UniqueIdentifier>{014bc86f-8e34-40fb-92be-be9e59155d3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Inspector">
+      <UniqueIdentifier>{340a7461-7ea6-4bb3-b7a5-d3c9c76c3a69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2571,8 +2580,14 @@
     <ClInclude Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.h">
       <Filter>Source\Framework\Component\Input\Condition\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
+    <ClInclude Include="Source\Framework\Component\Rotation\RotationComponent.h">
+      <Filter>Source\Framework\Component\Rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Rotation\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h">
+      <Filter>Source\Framework\Component\Rotation\Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3223,6 +3238,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.cpp">
       <Filter>Source\Framework\Component\Input\Condition\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\RotationComponent.cpp">
+      <Filter>Source\Framework\Component\Rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Rotation\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Rotation\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

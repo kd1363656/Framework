@@ -525,10 +525,14 @@
 #include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
 #include "Component/Camera/CameraComponent.h"
 
-#include "Definition/Struct/Editor/Node/NodeEditorStruct.h"
+// 実装中
 #include "Definition/Struct/Component/InputComponentStruct.h"
 #include "Component/Input/Condition/IInputExecutionCondition.h"
+#include "Component/Input/Condition/Component/ComponentObserverInputExecutionCondition.h"
 #include "Component/Input/InputComponent.h"
+#include "Component/Rotation/Converter/Json/RotationComponentJsonConverter.h"
+#include "Component/Rotation/Inspector/RotationComponentInspector.h"
+#include "Component/Rotation/RotationComponent.h"
 
 //===============================================================================
 // シーン
