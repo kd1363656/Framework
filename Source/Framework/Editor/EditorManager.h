@@ -91,7 +91,7 @@ namespace FWK::Editor
 
 		auto& GetMutableREFMainMenubar() { return m_mainMenubar; }
 
-		auto* GetMutablePTREditorContext() { return m_editorContext; }
+		//auto* GetMutablePTREditorContext() { return m_editorContext; }
 
 		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
@@ -138,7 +138,7 @@ namespace FWK::Editor
 
 		Editor::MainMenubarEditor m_mainMenubar;
 
-		ax::NodeEditor::EditorContext* m_editorContext;
+		//ax::NodeEditor::EditorContext* m_editorContext;
 
 		Converter::EditorManagerJsonConverter m_jsonConverter;
 

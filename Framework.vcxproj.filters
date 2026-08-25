@@ -3231,9 +3231,6 @@
     <None Include="Content\Shader\Camera\CameraPass.hlsli">
       <Filter>Content\Shader\Camera</Filter>
     </None>
-    <None Include="Content\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
-      <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
-    </None>
     <None Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli">
       <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
     </None>
@@ -3266,6 +3263,9 @@
     </None>
     <None Include="Content\Shader\Sprite\Screen\SpriteScreen.hlsli">
       <Filter>Content\Shader\Sprite\Screen</Filter>
+    </None>
+    <None Include="Content\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
+      <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

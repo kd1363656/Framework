@@ -35,10 +35,10 @@
 //================================================
 // Boost
 //================================================
-#include <Boost/uuid/uuid.hpp>
-#include <Boost/uuid/random_generator.hpp>
-#include <Boost/uuid/string_generator.hpp>
-#include <Boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/string_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 //================================================
 // Json
@@ -152,7 +152,7 @@
 #include <imgui_impl_win32.h>
 #include <imgui_impl_dx12.h>
 #include <imgui_stdlib.h>
-#include <imgui-node-editor/imgui_node_editor.h>
+//#include <imgui_node_editor.h>
 
 //================================================
 // フレームワーク
