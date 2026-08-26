@@ -15,7 +15,7 @@ void FWK::Editor::NodeEditor::INIT()
 	FWK_ASSERT_RETURN_IF(m_editorContext, "IMGUINodeEditorContextはすでに作成されています。");
 
 	ax::NodeEditor::Config l_config = {};
-
+	int a = 0;
 	l_config.SettingsFile = nullptr;
 
 	m_editorContext = ax::NodeEditor::CreateEditor(&l_config);
