@@ -208,7 +208,7 @@ if "$(Configuration)"=="Debug" (
       <PreprocessorDefinitions>JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DEBUG_RENDERER;JPH_OBJECT_STREAM;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;..\Library\JoltPhysics\INC;..\Library\Boost\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX\INC;..\Library\IMGUI\INC;..\Library\JoltPhysics\INC;..\Library\Boost\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:preprocessor /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
@@ -220,7 +220,7 @@ if "$(Configuration)"=="Debug" (
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);..\Library\MeshOptimizer\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;imgui-node-editor.lib;imguizmo.lib;imguizmo.lib;meshoptimizer.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;imguizmo.lib;imguizmo.lib;meshoptimizer.lib;D3D12MAd.lib;imguid.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>set "DXC_BIN_DIR=$(ProjectDir)..\Library\DXCCompiler\BIN\$(Configuration)"
@@ -274,7 +274,7 @@ if "$(Configuration)"=="Debug" (
       <PreprocessorDefinitions>JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_DEBUG_RENDERER;JPH_OBJECT_STREAM;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX;..\Library\IMGUI\INC;..\Library\JoltPhysics\INC;..\Library\Boost\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Source;..\Library;..\Library\Json\INC;..\Library\Json\INC\nlohmann;..\Library\D3DX12\INC;..\Library\DirectXTEX\INC;..\Library\D3D12MA\INC;..\Library\DirectXTK12\INC;..\Library\MeshOptimizer\INC;..\Library\UFBX\INC;..\Library\IMGUI\INC;..\Library\JoltPhysics\INC;..\Library\Boost\INC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:preprocessor /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>PCH.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename).obj</ObjectFileName>
@@ -286,7 +286,7 @@ if "$(Configuration)"=="Debug" (
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Library\DXCCompiler\LIB\$(Configuration);..\Library\DirectXTEX\LIB\$(Configuration);..\Library\D3D12MA\LIB\$(Configuration);..\Library\DirectXTK12\LIB\$(Configuration);..\Library\IMGUI\LIB\$(Configuration);..\Library\JoltPhysics\LIB\$(Configuration);..\Library\MeshOptimizer\LIB\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;imgui-node-editor.lib;imguizmo.lib;meshoptimizer.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxcompiler.lib;DirectXTex.lib;DirectXTK12.lib;Jolt.lib;imguizmo.lib;meshoptimizer.lib;D3D12MA.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/VERBOSE:LIB %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -333,7 +333,9 @@ if "$(Configuration)"=="Debug" (
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Library\UFBX\ufbx.h" />
+    <ClInclude Include="..\Library\IMGUI\INC\imnodes.h" />
+    <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h" />
+    <ClInclude Include="..\Library\UFBX\INC\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
@@ -496,7 +498,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
-    <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h" />
@@ -759,10 +760,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\PCH.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Library\UFBX\ufbx.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)$(Platform)\Library\$(Configuration)\UFBX\%(Filename).obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Platform)\Library\$(Configuration)\UFBX\%(Filename).obj</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
+    <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
@@ -799,7 +798,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp" />

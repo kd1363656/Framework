@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using NodeEditorID = std::uint32_t;
+	using NodeEditorID = int;
 }

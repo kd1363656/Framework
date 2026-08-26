@@ -1357,11 +1357,17 @@
     <Filter Include="Source\Framework\Component\Move\Inspector">
       <UniqueIdentifier>{3367d8e8-f51f-4921-bab3-80e5e33006c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Node">
-      <UniqueIdentifier>{d8113ade-1ce0-4c89-93cf-fe8654d837aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Component\Rotation\Mode">
       <UniqueIdentifier>{c0617107-3794-4ae0-9416-89d82ec91adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\UFBX\INC">
+      <UniqueIdentifier>{d09e5349-b5fc-4858-8931-ebab903ccc91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\IMGUI">
+      <UniqueIdentifier>{d96b94e6-c4a2-4b48-bc10-aa5045002d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\IMGUI\INC">
+      <UniqueIdentifier>{61ddca0c-6710-409b-a6c5-7d1f2f765110}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1583,9 +1589,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Camera\Camera.h">
       <Filter>Source\Framework\Graphics\Render\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\UFBX\ufbx.h">
-      <Filter>Library\UFBX</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
@@ -2631,11 +2634,17 @@
     <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h">
       <Filter>Source\Framework\Component\Move\Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h">
-      <Filter>Source\Framework\Editor\Node</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.h">
       <Filter>Source\Framework\Component\Rotation\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\UFBX\INC\ufbx.h">
+      <Filter>Library\UFBX\INC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\IMGUI\INC\imnodes.h">
+      <Filter>Library\IMGUI\INC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h">
+      <Filter>Library\IMGUI\INC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2824,9 +2833,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Camera\Camera.cpp">
       <Filter>Source\Framework\Graphics\Render\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\UFBX\ufbx.cpp">
-      <Filter>Library\UFBX</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\FBXLoader\FBXModelLoaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\FBXLoader</Filter>
@@ -3311,11 +3317,14 @@
     <ClCompile Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.cpp">
       <Filter>Source\Framework\Component\Move\Inspector</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp">
-      <Filter>Source\Framework\Editor\Node</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
+      <Filter>Library\UFBX\INC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp">
+      <Filter>Library\IMGUI\INC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
