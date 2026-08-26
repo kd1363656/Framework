@@ -341,7 +341,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.h" />
     <ClInclude Include="Source\Framework\Component\Input\Condition\IInputExecutionCondition.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\InputComponent.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Move\MoveComponent.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h" />
@@ -490,6 +495,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
+    <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h" />
@@ -762,7 +768,12 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.cpp" />
+    <ClCompile Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp" />
+    <ClCompile Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Move\MoveComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp" />
@@ -786,6 +797,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp" />

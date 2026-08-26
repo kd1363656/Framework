@@ -17,8 +17,6 @@ namespace FWK
 
 	private:
 
-		std::vector<Struct::ComponentObserverInputExecutionConditionNode> m_conditionNodeList = {};
-
 		FWK_DEFINE_TYPE_INFO(ComponentObserverInputExecutionCondition, IInputExecutionConditionBase)
 	};
 }

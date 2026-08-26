@@ -228,7 +228,7 @@ void FWK::GameObject::Destroy()
 
 void FWK::GameObject::EditInspector()
 {
-	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TrnsformComponentは必ず存在するべきComponentです。");
+	FWK_ASSERT_RETURN_IF(!m_transformComponent, "TransformComponentが存在しません、TransformComponentは必ず存在するべきComponentです。");
 
 	m_transformComponent->EditInspector();
 

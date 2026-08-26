@@ -21,6 +21,8 @@ namespace FWK
 
 		Converter::RotationComponentJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
+		FWK_DEFINE_TYPE_INFO(RotationComponent, ComponentBase)
 	};
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::RotationComponent)

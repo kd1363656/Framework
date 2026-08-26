@@ -1336,6 +1336,30 @@
     <Filter Include="Source\Framework\Component\Rotation\Inspector">
       <UniqueIdentifier>{340a7461-7ea6-4bb3-b7a5-d3c9c76c3a69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Input\Inspector">
+      <UniqueIdentifier>{7ebcb9a1-ec92-45f2-8d61-38cec894f961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Input\Converter">
+      <UniqueIdentifier>{cbc688ef-c944-4a80-8017-fcf481518af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Input\Converter\Json">
+      <UniqueIdentifier>{17856d1f-65f9-4362-8776-e73ddbb0e679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Move">
+      <UniqueIdentifier>{dfc4636b-c4a5-4763-874b-57b9c9d7db62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Move\Converter">
+      <UniqueIdentifier>{6ca148e7-e5a0-4bcc-986a-1825b16bc3c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Move\Converter\Json">
+      <UniqueIdentifier>{d0745a9e-765b-401d-a161-edeebbc4697d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Move\Inspector">
+      <UniqueIdentifier>{3367d8e8-f51f-4921-bab3-80e5e33006c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Node">
+      <UniqueIdentifier>{d8113ade-1ce0-4c89-93cf-fe8654d837aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2589,6 +2613,24 @@
     <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h">
       <Filter>Source\Framework\Component\Rotation\Inspector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.h">
+      <Filter>Source\Framework\Component\Input\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Input\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Move\MoveComponent.h">
+      <Filter>Source\Framework\Component\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Move\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h">
+      <Filter>Source\Framework\Component\Move\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h">
+      <Filter>Source\Framework\Editor\Node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3247,6 +3289,24 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp">
       <Filter>Source\Framework\Component\Rotation\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Input\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Input\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Move\MoveComponent.cpp">
+      <Filter>Source\Framework\Component\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Move\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Move\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp">
+      <Filter>Source\Framework\Editor\Node</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

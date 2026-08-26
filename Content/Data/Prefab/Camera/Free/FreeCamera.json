@@ -7,6 +7,9 @@
                 "FarClip": 2000.0,
                 "FovYDegree": 60.0,
                 "NearClip": 0.009999999776482582
+            },
+            {
+                "ComponentTypeName": "InputComponent"
             }
         ],
         "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd",

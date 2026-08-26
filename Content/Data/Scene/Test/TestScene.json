@@ -7,6 +7,9 @@
                     "ComponentList": [
                         {
                             "ComponentTypeName": "CameraComponent"
+                        },
+                        {
+                            "ComponentTypeName": "InputComponent"
                         }
                     ],
                     "PrefabSceneInstanceNUM": 0,

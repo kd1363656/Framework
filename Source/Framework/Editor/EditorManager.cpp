@@ -15,8 +15,6 @@ FWK::Editor::EditorManager::EditorManager() :
 
 	m_mainMenubar(),
 
-	m_editorContext(nullptr),
-
 	m_jsonConverter(),
 
 	m_isInitialized      (false),
@@ -106,18 +104,6 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 	// DirectX12用ImGuiバックエンドを初期化する
 	// ImGui_ImplDX12_Init(DirectX12用初期化情報);
 	FWK_ASSERT_RETURN_IF(!ImGui_ImplDX12_Init (&l_initINFO), "ImGui_ImplDX12_Initに失敗したため、ImGuiの初期化処理に失敗しました。");
-
-	// 同じクラスからEditorContextを二重生成すると
-	// 最初に生成したEditorContextを失ってしまうため禁止
-	FWK_ASSERT_RETURN_IF(m_editorContext, "IMGUINodeEditorContextはすでに作成されています。");
-
-	ax::NodeEditor::Config l_config = {};
-
-	l_config.SettingsFile = nullptr;
-
-	m_editorContext = ax::NodeEditor::CreateEditor(&l_config);
-
-	FWK_ASSERT_RETURN_IF(!m_editorContext, "imgui-node-editorのEditorContext生成に失敗しました。");
 
 	m_isInitialized = true;
 }
@@ -403,21 +389,6 @@ void FWK::Editor::EditorManager::Release()
 	if (ImGui::GetCurrentContext())
 	{
 		ImGui::DestroyContext();
-	}
-
-	if (m_editorContext)
-	{
-		// 現在使用中になっているEditorContextをそのまま破棄すると、
-		// imgui-node-editor側に破棄済みContextが現在値として
-		// 残る可能性を避けたいので、先にnullptrへ戻す
-		if (ax::NodeEditor::GetCurrentEditor() == m_editorContext)
-		{
-			ax::NodeEditor::SetCurrentEditor(nullptr);
-		}
-
-		ax::NodeEditor::DestroyEditor(m_editorContext);
-
-		m_editorContext = nullptr;
 	}
 
 	m_imGuiSRVDescriptorIndexMap.clear();

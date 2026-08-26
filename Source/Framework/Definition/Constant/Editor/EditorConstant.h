@@ -13,7 +13,8 @@ namespace FWK::Constant
 	inline constexpr std::string_view k_gameObjectDragDropPayloadLabel       = "ゲームオブジェクト";
 	inline constexpr std::string_view k_assetFilePathDragAndDropPayloadLabel = "AssetFilePath";
 	
-	inline constexpr std::string_view k_factoryCheckBoxListLabel = "##FactoryCheckBoxList";
+	inline constexpr std::string_view k_factoryCheckBoxListLabel      = "##FactoryCheckBoxList";
+	inline constexpr std::string_view k_missingNodeEditorContextLabel = "ノードエディターコンテキストが作成されていません。";
 
 	inline constexpr std::string_view k_fontAwesomeFolderIcon = "\xEF\x81\xBB";
 	inline constexpr std::string_view k_fontAwesomeFileIcon   = "\xEF\x85\x9B";
@@ -26,6 +27,8 @@ namespace FWK::Constant
 	inline constexpr ImVec2 k_nodeEditorBottomCenterPinPivotAlignment = { 0.50F, 1.0F };
 	inline constexpr ImVec2 k_nodeEditorLeftCenterPinPivotAlignment   = { 0.0F,  0.50F };
 	inline constexpr ImVec2 k_nodeEditorRightCenterPinPivotAlignment  = { 1.0F,  0.50F };
+
+	inline constexpr ImVec2 k_defaultNodeEditorCanvasSize = { 0.0F, 0.0F };
 
 	inline constexpr TypeAlias::Math::Color k_debugINFOColor = 
 	{

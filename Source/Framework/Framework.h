@@ -529,10 +529,15 @@
 #include "Definition/Struct/Component/InputComponentStruct.h"
 #include "Component/Input/Condition/IInputExecutionCondition.h"
 #include "Component/Input/Condition/Component/ComponentObserverInputExecutionCondition.h"
+#include "Editor/Node/NodeEditor.h"
+#include "Component/Input/Inspector/InputComponentInspector.h"
 #include "Component/Input/InputComponent.h"
 #include "Component/Rotation/Converter/Json/RotationComponentJsonConverter.h"
 #include "Component/Rotation/Inspector/RotationComponentInspector.h"
 #include "Component/Rotation/RotationComponent.h"
+#include "Component/Move/Inspector/MoveComponentInspector.h"
+#include "Component/Move/Converter/Json/MoveComponentJsonConverter.h"
+#include "Component/Move/MoveComponent.h"
 
 //===============================================================================
 // シーン
