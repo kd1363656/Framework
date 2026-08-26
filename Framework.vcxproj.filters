@@ -1372,6 +1372,12 @@
     <Filter Include="Source\Framework\Editor\Node">
       <UniqueIdentifier>{315c738d-c35d-46ea-898e-0d36b271d554}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Node\Allocator">
+      <UniqueIdentifier>{32026bcf-23dd-47e6-8ef8-699306b46526}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Allocator">
+      <UniqueIdentifier>{0d29ce88-656b-4105-b8d9-5c6432ffaf9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
