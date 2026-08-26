@@ -20,9 +20,12 @@ namespace FWK::Converter
 
 		void Deserialize(const nlohmann::json& a_rootJson, Observer<Type>& a_observer)
 		{
-			if (a_rootJson.is_null())								  { return; }
-			if (!Utility::IsJsonArray(a_rootJson, k_eventMapJsonKey)) { return; }
-
+			if (a_rootJson.is_null() ||
+				!Utility::IsJsonArray(a_rootJson, k_eventMapJsonKey))
+			{
+				return; 
+			}
+			
 			for (const auto& l_json : a_rootJson[k_eventMapJsonKey])
 			{
 				if (l_json.is_null()) { continue; }

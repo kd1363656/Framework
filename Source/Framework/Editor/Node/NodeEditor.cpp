@@ -15,12 +15,41 @@ void FWK::Editor::NodeEditor::INIT()
 	FWK_ASSERT_RETURN_IF(m_editorContext, "IMGUINodeEditorContextはすでに作成されています。");
 
 	ax::NodeEditor::Config l_config = {};
-	int a = 0;
+	
 	l_config.SettingsFile = nullptr;
 
 	m_editorContext = ax::NodeEditor::CreateEditor(&l_config);
 
 	FWK_ASSERT_RETURN_IF(!m_editorContext, "imgui-node-editorのEditorContext生成に失敗しました。");
+}
+
+bool FWK::Editor::NodeEditor::Begin(const std::string_view& a_editorLabel, const ImVec2 a_canvasSize)
+{
+	// imgui-node-editorのContextがまだ生成されていない場合は
+	// NodeEditorを描画できないため何もしない
+	if (!m_editorContext)
+	{
+		ImGui::TextDisabled(k_missingNodeEditorContextLabel.data());
+
+		return false;
+	}
+
+	// imgu-node-editorでは、Begin()を呼ぶ前に
+	// どのEditorContextを使用するか指定する必要がある
+	ax::NodeEditor::SetCurrentEditor(m_editorContext);
+
+	// DetailsEditorWindowのComponent領域内へ
+	// NodeEditorのキャンバスを作成する
+	ax::NodeEditor::Begin(a_editorLabel.data(), a_canvasSize);
+}
+
+void FWK::Editor::NodeEditor::End()
+{
+	ax::NodeEditor::End();
+
+	// 他のEditorへNodeEditorのContextが残らないように
+	// 病が終了後は現在Contextを解除する
+	ax::NodeEditor::SetCurrentEditor(nullptr);
 }
 
 void FWK::Editor::NodeEditor::Release()

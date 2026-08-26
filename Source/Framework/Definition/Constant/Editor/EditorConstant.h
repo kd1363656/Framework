@@ -13,9 +13,8 @@ namespace FWK::Constant
 	inline constexpr std::string_view k_gameObjectDragDropPayloadLabel       = "ゲームオブジェクト";
 	inline constexpr std::string_view k_assetFilePathDragAndDropPayloadLabel = "AssetFilePath";
 	
-	inline constexpr std::string_view k_factoryCheckBoxListLabel      = "##FactoryCheckBoxList";
-	inline constexpr std::string_view k_missingNodeEditorContextLabel = "ノードエディターコンテキストが作成されていません。";
-
+	inline constexpr std::string_view k_factoryCheckBoxListLabel = "##FactoryCheckBoxList";
+	
 	inline constexpr std::string_view k_fontAwesomeFolderIcon = "\xEF\x81\xBB";
 	inline constexpr std::string_view k_fontAwesomeFileIcon   = "\xEF\x85\x9B";
 	inline constexpr std::string_view k_fontAwesomeImageIcon  = "\xEF\x80\xBE";

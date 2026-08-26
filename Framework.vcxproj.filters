@@ -1360,6 +1360,9 @@
     <Filter Include="Source\Framework\Editor\Node">
       <UniqueIdentifier>{d8113ade-1ce0-4c89-93cf-fe8654d837aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode">
+      <UniqueIdentifier>{c0617107-3794-4ae0-9416-89d82ec91adc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2631,6 +2634,9 @@
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h">
       <Filter>Source\Framework\Editor\Node</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.h">
+      <Filter>Source\Framework\Component\Rotation\Mode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3307,6 +3313,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp">
       <Filter>Source\Framework\Editor\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

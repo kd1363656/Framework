@@ -20,7 +20,7 @@ namespace FWK
 
 	private:
 
-		static constexpr std::string_view k_nodeEditorName = "##InputComponentNodeEditor";
+		static constexpr std::string_view k_nodeEditorLabel = "##InputComponentNodeEditor";
 		
 		static constexpr float k_nodeEditorHeight = 300.0F;
 
