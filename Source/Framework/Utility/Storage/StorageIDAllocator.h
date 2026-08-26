@@ -37,7 +37,7 @@ namespace FWK::Utility
 
 		std::queue<TypeAlias::StorageID> m_freeStorageIDQueue = {};
 
-		Converter::StorageIDAllocatorJsonConverter m_storageAllocatorJsonConverter = {};
+		Converter::StorageIDAllocatorJsonConverter m_jsonConverter = {};
 
 		TypeAlias::StorageID m_storageIDCapacity = Constant::k_invalidStorageID;
 		TypeAlias::StorageID m_nextStorageID     = Constant::k_storageIDAllocatorInitialNextStorageID;

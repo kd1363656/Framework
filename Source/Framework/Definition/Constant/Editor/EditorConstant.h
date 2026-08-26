@@ -63,5 +63,7 @@ namespace FWK::Constant
 	inline constexpr float k_childWindowMaxSizeX          = -1.0F;
 	inline constexpr float k_defaultChildVisibleItemCount = 8.0F;
 
+	inline constexpr TypeAlias::NodeEditorID k_invalidNodeEditorID = std::numeric_limits<TypeAlias::NodeEditorID>::max();
+
 	inline constexpr std::size_t k_filePathNullTerminatorElementCount = 1ULL;
 }

@@ -1081,15 +1081,6 @@
     <Filter Include="Source\Framework\Prefab\Allocator\Converter\Json">
       <UniqueIdentifier>{46f36a66-3a5f-4619-ac47-d65db91fc487}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\Storage">
-      <UniqueIdentifier>{6af30e45-feaa-437b-9923-47e6a0341a49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Storage\Converter">
-      <UniqueIdentifier>{c3504afa-553b-4f51-891f-def85748ee79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Storage\Converter\Json">
-      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Utility\Storage">
       <UniqueIdentifier>{c73ee9f8-b8c4-4d49-9ebb-169cd7e3dd04}</UniqueIdentifier>
     </Filter>
@@ -1375,8 +1366,20 @@
     <Filter Include="Source\Framework\Editor\Node\Allocator">
       <UniqueIdentifier>{32026bcf-23dd-47e6-8ef8-699306b46526}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\Allocator">
+    <Filter Include="Source\Framework\Utility\Storage">
       <UniqueIdentifier>{0d29ce88-656b-4105-b8d9-5c6432ffaf9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Storage\Converter">
+      <UniqueIdentifier>{5abff67c-21d5-48df-a02b-258d60110047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Storage\Converter\Json">
+      <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Node\Allocator\Converter">
+      <UniqueIdentifier>{78290779-2760-4f1d-b41c-7592287b42e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Node\Allocator\Converter\Json">
+      <UniqueIdentifier>{f61949f3-8c09-4496-9c6c-8f9944f6f51d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2472,12 +2475,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabSceneInstanceNUMTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h">
-      <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h">
-      <Filter>Source\Framework\Utility\Storage</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Storage</Filter>
     </ClInclude>
@@ -2657,6 +2654,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h">
       <Filter>Source\Framework\Editor\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h">
+      <Filter>Source\Framework\Utility\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.h">
+      <Filter>Source\Framework\Editor\Node\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.h">
+      <Filter>Source\Framework\Editor\Node\Allocator\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3203,12 +3212,6 @@
     <ClCompile Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.cpp">
       <Filter>Source\Framework\Prefab\Allocator\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
-      <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
-      <Filter>Source\Framework\Utility\Storage</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset</Filter>
     </ClCompile>
@@ -3340,6 +3343,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp">
       <Filter>Source\Framework\Editor\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
+      <Filter>Source\Framework\Utility\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.cpp">
+      <Filter>Source\Framework\Editor\Node\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Node\Allocator\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

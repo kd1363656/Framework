@@ -498,6 +498,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
+    <ClInclude Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.h" />
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
@@ -799,6 +801,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />

@@ -3,7 +3,8 @@
 void FWK::Utility::StorageIDAllocator::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
-	m_storageAllocatorJsonConverter.Deserialize(a_rootJson, *this);
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 bool FWK::Utility::StorageIDAllocator::Create()
@@ -25,7 +26,7 @@ bool FWK::Utility::StorageIDAllocator::Create()
 
 nlohmann::json FWK::Utility::StorageIDAllocator::Serialize() const
 {
-	return m_storageAllocatorJsonConverter.Serialize(*this);
+	return m_jsonConverter.Serialize(*this);
 }
 
 FWK::TypeAlias::StorageID FWK::Utility::StorageIDAllocator::Allocate()
@@ -33,7 +34,7 @@ FWK::TypeAlias::StorageID FWK::Utility::StorageIDAllocator::Allocate()
 	// 解放済みスロットがあればそれを優先再利用する
 	if (!m_freeStorageIDQueue.empty())
 	{
-		const TypeAlias::StorageID l_reuseStorageID = m_freeStorageIDQueue.front();
+		const auto l_reuseStorageID = m_freeStorageIDQueue.front();
 
 		m_freeStorageIDQueue.pop();
 
