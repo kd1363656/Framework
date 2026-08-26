@@ -2,7 +2,7 @@
 
 void FWK::InputComponent::INIT()
 {
-
+	m_inspector.INIT();
 }
 
 void FWK::InputComponent::EditInspector()

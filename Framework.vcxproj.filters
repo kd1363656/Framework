@@ -1369,6 +1369,9 @@
     <Filter Include="Library\IMGUI\INC">
       <UniqueIdentifier>{61ddca0c-6710-409b-a6c5-7d1f2f765110}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Node">
+      <UniqueIdentifier>{315c738d-c35d-46ea-898e-0d36b271d554}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2646,6 +2649,9 @@
     <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h">
       <Filter>Library\IMGUI\INC</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h">
+      <Filter>Source\Framework\Editor\Node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3325,6 +3331,9 @@
     </ClCompile>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp">
       <Filter>Library\IMGUI\INC</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp">
+      <Filter>Source\Framework\Editor\Node</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

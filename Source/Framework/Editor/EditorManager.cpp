@@ -1,6 +1,8 @@
 ﻿#include "EditorManager.h"
 
 FWK::Editor::EditorManager::EditorManager() : 
+	m_imNodesContext(nullptr),
+
 	m_imGuiCBVSRVUAVDescriptorPool(),
 
 	m_imGuiSRVDescriptorIndexMap(),
@@ -59,6 +61,13 @@ void FWK::Editor::EditorManager::INIT(const HWND& a_hwnd)
 	// ImGuiのバージョンをチェックして、ImGuiContextを作成する
 	IMGUI_CHECKVERSION  ();
 	ImGui::CreateContext();
+
+	// ImNodesはImGui上で動作するため
+	// ImGuiContext生成後にImNodes全体のContextを作成する
+	m_imNodesContext = ImNodes::CreateContext();
+
+	// 作成が失敗していたらassert
+	FWK_ASSERT_RETURN_IF(!m_imNodesContext, "ImNodesContextの作成に失敗したため、EditorManagerの初期化処理に失敗しました。" );
 
 	auto& l_io = ImGui::GetIO();
 
@@ -385,6 +394,13 @@ void FWK::Editor::EditorManager::Release()
 
 	ImGui_ImplDX12_Shutdown ();
 	ImGui_ImplWin32_Shutdown();
+
+	if (m_imNodesContext)
+	{
+		ImNodes::DestroyContext(m_imNodesContext);
+
+		m_imNodesContext = nullptr;
+	}
 
 	if (ImGui::GetCurrentContext())
 	{

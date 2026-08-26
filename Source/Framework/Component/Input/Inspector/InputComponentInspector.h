@@ -14,6 +14,8 @@ namespace FWK
 		 InputComponentInspector() = default;
 		~InputComponentInspector() = default;
 
+		void INIT();
+
 		void EditInspector(InputComponent& a_inputComponent);
 
 	private:
@@ -21,5 +23,7 @@ namespace FWK
 		static constexpr std::string_view k_nodeEditorLabel = "##InputComponentNodeEditor";
 		
 		static constexpr float k_nodeEditorHeight = 300.0F;
+
+		Editor::NodeEditor m_nodeEditor = {};
 	};
 }

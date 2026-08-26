@@ -122,6 +122,8 @@ namespace FWK::Editor
 
 		static constexpr int k_dockingStyleVarPopCount = 2;
 
+		ImNodesContext* m_imNodesContext;
+
 		TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
 
 		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;

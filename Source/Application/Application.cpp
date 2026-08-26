@@ -42,11 +42,9 @@ void Application::Execute()
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
 
-	// MouseControllerがWindowHandlwを必要尾するため、
+	// MouseControllerがWindowHandleを必要とするため、
 	// Window生成完了後にInputManagerを初期化する
 	FWK::InputManager::GetInstance().INIT();
-
-	l_editorManager.INIT(m_window.GetREFHWND());
 
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();

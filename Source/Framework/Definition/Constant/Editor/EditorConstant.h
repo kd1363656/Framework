@@ -22,11 +22,6 @@ namespace FWK::Constant
 
 	inline constexpr ImVec2 k_defaultChildWindowSize = { 250.0F, 180.0F };
 
-	inline constexpr ImVec2 k_nodeEditorTopCenterPinPivotAlignment    = { 0.50F, 0.0F };
-	inline constexpr ImVec2 k_nodeEditorBottomCenterPinPivotAlignment = { 0.50F, 1.0F };
-	inline constexpr ImVec2 k_nodeEditorLeftCenterPinPivotAlignment   = { 0.0F,  0.50F };
-	inline constexpr ImVec2 k_nodeEditorRightCenterPinPivotAlignment  = { 1.0F,  0.50F };
-
 	inline constexpr ImVec2 k_defaultNodeEditorCanvasSize = { 0.0F, 0.0F };
 
 	inline constexpr TypeAlias::Math::Color k_debugINFOColor = 
