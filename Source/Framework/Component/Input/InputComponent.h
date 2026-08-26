@@ -15,9 +15,13 @@ namespace FWK
 
 		void EditInspector() override;
 
+		void AddExecutionConditionList(const Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>& a_executionCondition);
+
 	private:
 
 		InputComponentInspector m_inspector = {};
+
+		std::vector<Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>> m_executionConditionList = {};
 
 		FWK_DEFINE_TYPE_INFO(InputComponent, ComponentBase)
 	};
