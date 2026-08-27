@@ -63,15 +63,17 @@ namespace FWK
 		static constexpr std::string_view k_expectedResultLabel          = "ExpectedObserverResult";
 		static constexpr std::string_view k_addNodeContextMenuLabel      = "##InputComponentAddNodeContextMenu";
 		static constexpr std::string_view k_nodeContextMenuLabel         = "##InputComponentNodeContextMenu";
-		static constexpr std::string_view k_addNodeMenuLabel             = "追加";
-		static constexpr std::string_view k_componentEventMenuLabel      = "ComponentEvent";
+		static constexpr std::string_view k_addComponentEventMenuLabel   = "ComponentEventの追加";
 		static constexpr std::string_view k_deleteNodeMenuLabel          = "削除";
 		static constexpr std::string_view k_noAddableComponentEventLabel = "追加可能なComponentEventはありません";
 		static constexpr std::string_view k_startNodeDeleteDisabledLabel = "Startノードは削除できません";
 
-		static constexpr float  k_minMapSizeFraction       = 0.20F;
-		static constexpr ImVec2 k_startNodeInitialPosition = { 40.0F, 80.0F };
-		
+		static constexpr ImVec2 k_startNodeInitialPosition  = { 40.0F,  80.0F };
+		static constexpr ImVec2 k_createNodeContextMenuSize = { 420.0F, 260.0F };
+		static constexpr ImVec2 k_addComponentListSize      = { 420.0F, 780.0F };
+
+		static constexpr float k_minMapSizeFraction = 0.20F;
+
 		Editor::NodeEditor     m_nodeEditor = {};
 		Editor::NodeEditorNode m_startNode  = {};
 

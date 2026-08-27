@@ -242,20 +242,19 @@ void FWK::InputComponentInspector::PrepareNodeEditorContextMenu(const bool a_isE
 
 void FWK::InputComponentInspector::DrawCreateNodeContextMenu(InputComponent& a_inputComponent)
 {
+	// ポップアップのサイズ指定
+	ImGui::SetNextWindowSize(k_createNodeContextMenuSize, ImGuiCond_Always);
+
 	if (!ImGui::BeginPopup(k_addNodeContextMenuLabel.data())) { return; }
 
-	if (!ImGui::BeginMenu(k_addNodeMenuLabel.data()))         
+	ImGui::SeparatorText(k_addComponentEventMenuLabel.data());
+
+	const auto& l_componentEventRegistry = Utility::StringValueBidirectionalRegistry<Enum::ComponentEvent>::GetInstance();
+	const auto& l_executionConditionList = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList           ();
+
+	// Popup内部で利用可能な領域いっぱいまでListBoxを広げる
+	if (ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), k_addComponentListSize))
 	{
-		ImGui::EndPopup();
-
-		return; 
-	}
-
-	if (ImGui::BeginMenu(k_componentEventMenuLabel.data()))
-	{
-		const auto& l_componentEventRegistry = Utility::StringValueBidirectionalRegistry<Enum::ComponentEvent>::GetInstance();
-		const auto& l_executionConditionList = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList           ();
-
 		bool l_hasAddableComponentEvent = false;
 
 		for (const auto& [l_key, l_value] : l_componentEventRegistry.GetREFStringToValueMap())
@@ -263,7 +262,7 @@ void FWK::InputComponentInspector::DrawCreateNodeContextMenu(InputComponent& a_i
 			// Invalidは「未設定」を表す値なので
 			// 実際のComponentEventNodeとしては追加しない
 			if (l_value == Enum::ComponentEvent::Invalid) { continue; }
-
+	
 			// すでに同じComponentEventNodeが存在しているなら
 			// 追加候補へ表示しない
 			if (std::ranges::any_of(l_executionConditionList,
@@ -274,28 +273,34 @@ void FWK::InputComponentInspector::DrawCreateNodeContextMenu(InputComponent& a_i
 			{
 				continue;
 			}
-
+	
 			l_hasAddableComponentEvent = true;
+	
+			if (!ImGui::Selectable(l_key.c_str())) { continue; }
+	
+			// Node生成に成功した場合は、
+			// 選択官僚としてPopupを閉じる
+			if (AddComponentEventNode(m_createNodeScreenSpacePosition, l_value, a_inputComponent))
+			{
+				ImGui::CloseCurrentPopup();
+			}
 
-			if (!ImGui::MenuItem(l_key.c_str())) { continue; }
-
-			AddComponentEventNode(m_createNodeScreenSpacePosition, l_value, a_inputComponent);
+			// AddComponentEventNode()によってvector画変更されるので
+			// iterator/referenceの無効化を避けるため
+			// このフレームではそれ以上捜査しない
+			break;
 		}
-
+	
 		// 全ComponentEventが既にt追加済みなら
 		// 空Menuにせず理由を表示すっる
 		if (!l_hasAddableComponentEvent)
 		{
-			ImGui::MenuItem(k_noAddableComponentEventLabel.data(), 
-				            nullptr,
-				            false, 
-				            false);
+			ImGui::TextDisabled("%s", k_noAddableComponentEventLabel.data());
 		}
-
-		ImGui::EndMenu();
+	
+		ImGui::EndListBox();
 	}
 
-	ImGui::EndMenu ();
 	ImGui::EndPopup();
 }
 

@@ -33,7 +33,7 @@ namespace FWK
 
 			// -1.0Fを使用すると
 			// 現在利用可能な横幅いっぱいまでリストを広げる
-			if (!ImGui::BeginListBox(k_observerSelectorCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMaxSizeX, l_listHeight)))
+			if (!ImGui::BeginListBox(k_observerSelectorCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMAXSize, l_listHeight)))
 			{
 				ImGui::EndGroup();
 				ImGui::PopID   ();

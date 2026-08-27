@@ -90,7 +90,7 @@ namespace FWK::Utility
 		// -1.0Fを使用すると
 		// 現在利用可能な横幅いっぱいまでリストを広げる
 		if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
-			!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMaxSizeX, l_listHeight)))
+			!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMAXSize, l_listHeight)))
 		{
 			ImGui::EndGroup();
 			ImGui::PopID   ();

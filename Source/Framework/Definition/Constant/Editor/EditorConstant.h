@@ -60,7 +60,7 @@ namespace FWK::Constant
 	inline constexpr float k_imguiDefaultDelayDrawSecond = 1.0F;
 
 	// -1.0を使用することでウィンドウのX最大まで引き延ばす
-	inline constexpr float k_childWindowMaxSizeX          = -1.0F;
+	inline constexpr float k_childWindowMAXSize           = -1.0F;
 	inline constexpr float k_defaultChildVisibleItemCount = 8.0F;
 
 	inline constexpr TypeAlias::NodeEditorID k_invalidNodeEditorID         = std::numeric_limits<TypeAlias::NodeEditorID>::max();
