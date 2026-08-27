@@ -255,7 +255,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	if (!std::filesystem::is_directory(a_folderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象Fodlerが無効です。\nFolderPath : {}", a_folderPath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象Folderが無効です。\nFolderPath : {}", a_folderPath.string());
 
 		return false;
 	}

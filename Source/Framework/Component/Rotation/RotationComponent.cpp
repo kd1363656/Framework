@@ -7,6 +7,11 @@ void FWK::RotationComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
+void FWK::RotationComponent::Update()
+{
+	if (!m_rotationMode) { return; }
+}
+
 void FWK::RotationComponent::EditInspector()
 {
 	m_inspector.EditInspector(*this);

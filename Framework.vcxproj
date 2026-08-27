@@ -414,6 +414,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\EditorAssetTypeEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\NodeEditorWindowEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowEnum.h" />
@@ -440,6 +441,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ContentBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />

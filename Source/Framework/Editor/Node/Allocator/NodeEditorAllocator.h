@@ -23,6 +23,8 @@ namespace FWK
 		
 	private:
 
+		void RebuildFreeNodeEditorIDQueue();
+		
 		std::vector<bool> m_isAllocatedList = {};
 
 		std::queue<TypeAlias::NodeEditorID> m_freeNodeEditorIDQueue = {};

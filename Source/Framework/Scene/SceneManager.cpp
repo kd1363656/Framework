@@ -83,6 +83,8 @@ void FWK::SceneManager::INIT()
 
 	// 現在保持しているシーンをリセットして新しいシーンを作成
 	m_scene = std::make_shared<Scene>();
+
+	m_scene->INIT();
 	
 	m_nextSceneName.clear       ();
 	m_currentSceneFilePath.clear();

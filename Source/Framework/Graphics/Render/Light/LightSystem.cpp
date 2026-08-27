@@ -40,6 +40,6 @@ void FWK::Graphics::LightSystem::RegisterCBLightPass()
 		l_lightPassDrawRequest->SetSourceConstantBuffer(m_cbLightPass);
 	}
 
-	// Casacde計算で使用するLightConstantBufferを登録する
+	// Cascade計算で使用するLightConstantBufferを登録する
 	l_cascadeShadowMap.SetCBLightPass(m_cbLightPass);
 }

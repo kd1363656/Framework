@@ -2,20 +2,7 @@
     "Prefab": {
         "ChildList": [],
         "ComponentEventObserver": {
-            "EventMap": [
-                {
-                    "Event": "ComponentEvent::InputRight"
-                },
-                {
-                    "Event": "ComponentEvent::InputLeft"
-                },
-                {
-                    "Event": "ComponentEvent::InputForward"
-                },
-                {
-                    "Event": "ComponentEvent::InputBackward"
-                }
-            ]
+            "EventMap": []
         },
         "ComponentList": [
             {
@@ -26,19 +13,7 @@
             },
             {
                 "ComponentTypeName": "InputComponent",
-                "Inspector": {
-                    "InputComponentNodeEditor": {
-                        "NodeEditorAllocator": {
-                            "IsAllocatedList": [
-                                false,
-                                true,
-                                true,
-                                true,
-                                true
-                            ]
-                        }
-                    }
-                },
+                "Inspector": null,
                 "NotifyComponentEventExecutionConditionList": []
             }
         ],
@@ -46,15 +21,15 @@
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
-                "X": 0.0,
-                "Y": -0.699999988079071,
-                "Z": -8.399999618530273
+                "X": 0.4000000059604645,
+                "Y": 0.5,
+                "Z": -7.5
             },
             "InitialRotation": {
-                "W": 1.0,
-                "X": 0.0,
-                "Y": 0.0,
-                "Z": 0.0
+                "W": 0.9600264430046082,
+                "X": 0.2798222005367279,
+                "Y": 0.00670233927667141,
+                "Z": -0.001953553408384323
             },
             "InitialScale": {
                 "X": 1.0,

@@ -47,6 +47,14 @@ bool FWK::Editor::NodeEditor::BeginDraw()
 	return true;
 }
 
+void FWK::Editor::NodeEditor::DrawLinkList() const
+{
+	for (const auto& l_linkData : m_linkDataList)
+	{
+		ImNodes::Link(l_linkData.m_linkID, l_linkData.m_outputPinID, l_linkData.m_inputPinID);
+	}
+}
+
 void FWK::Editor::NodeEditor::EndDraw()
 {
 	if (!m_isDrawing) { return; }
@@ -60,12 +68,97 @@ nlohmann::json FWK::Editor::NodeEditor::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }
+bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID)
+{
+	if (a_outputPinID == Constant::k_invalidNodeEditorID ||
+		a_inputPinID == Constant::k_invalidNodeEditorID)
+	{
+		return false;
+	}
+
+	// 自分自身のPinへLinkすることは許可しない
+	if (a_outputPinID == a_inputPinID) { return false; }
+
+	// Node・Pin・Link全てのIDを同じAllocatorから払い出す
+	// こうすることでNodeEditor内部に同じIDが存在しないようにする
+	const auto l_linkID = m_nodeEditorAllocator.Allocate();
+
+	if (l_linkID == Constant::k_invalidNodeEditorID) { return false; }
+
+	Struct::NodeEditorLinkData l_linkData = {};
+
+	l_linkData.m_linkID      = l_linkID;
+	l_linkData.m_outputPinID = a_outputPinID;
+	l_linkData.m_inputPinID  = a_inputPinID;
+
+	if (AddLink(l_linkData)) { return true; }
+
+	// Link追加に失敗した場合、
+	// 確保したLinkIDを使用中のまま残さない
+	m_nodeEditorAllocator.Release(l_linkID);
+
+	return false;
+}
+bool FWK::Editor::NodeEditor::AddLink(const Struct::NodeEditorLinkData& a_linkData)
+{
+	if (a_linkData.m_linkID == Constant::k_invalidNodeEditorID      ||
+		a_linkData.m_outputPinID == Constant::k_invalidNodeEditorID ||
+		a_linkData.m_inputPinID == Constant::k_invalidNodeEditorID)
+	{
+		return false;
+	}
+
+	// 同じLinkIDが複数存在すると
+	// ImNodesがLinkを一意に識別できなくなる
+	if (std::ranges::any_of(m_linkDataList, [&a_linkData](const auto& a_listLinkData) 
+		                   {
+								return a_listLinkData.m_linkID == a_linkData.m_linkID;
+		                   }))
+	{
+		return false;
+	}
+
+	m_linkDataList.emplace_back(a_linkData);
+
+	return true;
+}
+
+void FWK::Editor::NodeEditor::RemoveLink(const TypeAlias::NodeEditorID a_linkID)
+{
+	const auto& l_itr = std::find_if(m_linkDataList.begin(), 
+		                             m_linkDataList.end(),
+			                         [a_linkID](const auto& a_linkData)
+			                         {
+										return a_linkData.m_linkID == a_linkID;
+			                         });
+
+	if (l_itr == m_linkDataList.end()) { return; }
+
+	// LinkIDもNodeEditorAllocatorから取得しているので、
+	// Link削除時には必ずAllocatorへ返却する。
+	m_nodeEditorAllocator.Release(l_itr->m_linkID);
+
+	m_linkDataList.erase(l_itr);
+}
+
+void FWK::Editor::NodeEditor::ClearLinkData()
+{
+	m_linkDataList.clear();
+}
 
 bool FWK::Editor::NodeEditor::FetchVALIsInitialized() const
 {
 	if (m_editorContext) { return true; }
 
 	return false;
+}
+
+bool FWK::Editor::NodeEditor::FetchVALIsInputPinLinked(const TypeAlias::NodeEditorID a_inputPinID) const
+{
+	return std::ranges::any_of(m_linkDataList, [&a_inputPinID](const auto& a_linkData)
+		                       {
+									return a_linkData.m_inputPinID == a_inputPinID;
+		                       });
 }
 
 void FWK::Editor::NodeEditor::Release()

@@ -17,6 +17,9 @@ namespace FWK::Editor
 
 		void Release(NodeEditorAllocator& a_nodeEditorAllocator);
 
+		void ReleaseInputPinIDList (NodeEditorAllocator& a_nodeEditorAllocator);
+		void ReleaseOutputPinIDList(NodeEditorAllocator& a_nodeEditorAllocator);
+
 		bool AddInputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
 		bool AddInputPinID(const TypeAlias::NodeEditorID a_pinID);
 

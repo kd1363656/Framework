@@ -37,7 +37,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
 	auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
 
 	// 現在のCameraとDirectionalLightから
-	// Cascadeごとの行列とAmplicficationShader用カリング範囲を更新する
+	// Cascadeごとの行列とAmplificationShader用カリング範囲を更新する
 	if (!l_cascadeShadowMap.Update()) { return; }
 
 	const auto& l_renderArea                  = l_cascadeShadowMap.GetREFRenderArea                 ();

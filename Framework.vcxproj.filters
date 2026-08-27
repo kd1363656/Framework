@@ -1384,6 +1384,12 @@
     <Filter Include="Source\Framework\Component\Input\Inspector\Converter\Json">
       <UniqueIdentifier>{07d136eb-d523-4773-b5bd-bca13b51f6a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor\Node">
+      <UniqueIdentifier>{ea83392c-f927-4bc8-8168-f184701a641e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Axis">
+      <UniqueIdentifier>{bf3af4c7-afd1-4c77-a89d-b693b652e4a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2672,6 +2678,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h">
       <Filter>Source\Framework\Component\Input\Inspector\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Axis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

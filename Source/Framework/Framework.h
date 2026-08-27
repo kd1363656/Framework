@@ -525,6 +525,7 @@
 #include "Component/Camera/CameraComponent.h"
 
 // 実装中
+#include "Definition/Struct/Editor/Node/NodeEditorStruct.h"
 #include "Editor/Node/Allocator/Converter/Json/NodeEditorAllocatorJsonConverter.h"
 #include "Editor/Node/Allocator/NodeEditorAllocator.h"
 #include "Editor/Node/Converter/Json/NodeEditorNodeJsonConverter.h"
@@ -538,9 +539,12 @@
 #include "Component/Input/Converter/Json/InputComponentJsonConverter.h"
 #include "Component/Input/InputComponent.h"
 
+#include "Definition/Enum/Axis/AxisEnum.h"
+#include "Component/Rotation/Mode/RotationComponentModeBase.h"
 #include "Component/Rotation/Converter/Json/RotationComponentJsonConverter.h"
 #include "Component/Rotation/Inspector/RotationComponentInspector.h"
 #include "Component/Rotation/RotationComponent.h"
+
 #include "Component/Move/Inspector/MoveComponentInspector.h"
 #include "Component/Move/Converter/Json/MoveComponentJsonConverter.h"
 #include "Component/Move/MoveComponent.h"

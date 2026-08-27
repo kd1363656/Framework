@@ -9,15 +9,21 @@ namespace FWK
 		         RotationComponentModeBase() = default;
 		virtual ~RotationComponentModeBase() = default;
 
-		virtual void INIT() { /*必要に応じてオーバーライドしてください*/ };
+		virtual void INIT();
 
 		virtual void DeserializePrefab(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual void PostDeserialize(const std::shared_ptr<GameObject>& a_owner);
+		
+		void ResetRotationDirection();
+
+		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual nlohmann::json SerializePrefab() { return {}; }
 
 	private:
+
+		std::vector<Enum::Axis> m_rotationApplyAxisList = {};
 
 		Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
 

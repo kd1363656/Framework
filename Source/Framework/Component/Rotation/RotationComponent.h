@@ -11,12 +11,16 @@ namespace FWK
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
+		void Update() override;
+
 		void EditInspector() override;
 
 		nlohmann::json SerializePrefab() override;
 
 	private:
 		
+		std::shared_ptr<RotationComponentModeBase> m_rotationMode = nullptr;
+
 		RotationComponentInspector m_inspector = {};
 
 		Converter::RotationComponentJsonConverter m_jsonConverter = {};

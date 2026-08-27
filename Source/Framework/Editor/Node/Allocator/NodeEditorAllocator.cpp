@@ -5,6 +5,9 @@ void FWK::NodeEditorAllocator::Deserialize(const nlohmann::json& a_rootJson)
 	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
+
+	// IsAllocatedListをDeserializeした後にQueueもそのDeserialize結果を受けて再構築
+	RebuildFreeNodeEditorIDQueue();
 }
 
 nlohmann::json FWK::NodeEditorAllocator::Serialize() const
@@ -48,4 +51,18 @@ void FWK::NodeEditorAllocator::Release(const TypeAlias::NodeEditorID a_nodeEdito
 
 	// 次回のAllocate()で再利用できるようにする
 	m_freeNodeEditorIDQueue.push(a_nodeEditorID);
+}
+
+void FWK::NodeEditorAllocator::RebuildFreeNodeEditorIDQueue()
+{
+	std::queue<TypeAlias::NodeEditorID> l_emptyQueue = {};
+
+	m_freeNodeEditorIDQueue.swap(l_emptyQueue);
+
+	for (std::size_t l_index = 0ULL; l_index < m_isAllocatedList.size(); ++l_index)
+	{
+		if (m_isAllocatedList[l_index]) { continue; }
+
+		m_freeNodeEditorIDQueue.push(static_cast<TypeAlias::NodeEditorID>(l_index));
+	}
 }

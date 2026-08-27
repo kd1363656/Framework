@@ -28,16 +28,10 @@ nlohmann::json FWK::Editor::NodeEditorNode::Serialize() const
 void FWK::Editor::NodeEditorNode::Release(NodeEditorAllocator& a_nodeEditorAllocator)
 {
 	// InputPinをすべて解放する
-	for (const auto l_pinID : m_inputPInIDList)
-	{
-		a_nodeEditorAllocator.Release(l_pinID);
-	}
+	ReleaseInputPinIDList(a_nodeEditorAllocator);
 
 	// OutputPinをすべて解放する
-	for (const auto l_pinID : m_outputPInIDList)
-	{
-		a_nodeEditorAllocator.Release(l_pinID);
-	}
+	ReleaseOutputPinIDList(a_nodeEditorAllocator);
 
 	if (FetchVALIsCreated())
 	{
@@ -45,6 +39,25 @@ void FWK::Editor::NodeEditorNode::Release(NodeEditorAllocator& a_nodeEditorAlloc
 	}
 
 	Reset();
+}
+
+void FWK::Editor::NodeEditorNode::ReleaseInputPinIDList(NodeEditorAllocator& a_nodeEditorAllocator)
+{
+	for (const auto l_pinID : m_inputPInIDList)
+	{
+		a_nodeEditorAllocator.Release(l_pinID);
+	}
+
+	m_inputPInIDList.clear();
+}
+void FWK::Editor::NodeEditorNode::ReleaseOutputPinIDList(NodeEditorAllocator& a_nodeEditorAllocator)
+{
+	for (const auto l_pinID : m_outputPInIDList)
+	{
+		a_nodeEditorAllocator.Release(l_pinID);
+	}
+
+	m_outputPInIDList.clear();
 }
 
 bool FWK::Editor::NodeEditorNode::AddInputPinID(NodeEditorAllocator& a_nodeEditorAllocator)
