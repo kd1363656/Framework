@@ -341,10 +341,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
-    <ClInclude Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.h" />
-    <ClInclude Include="Source\Framework\Component\Input\Condition\IInputExecutionCondition.h" />
     <ClInclude Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\InputComponent.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h" />
@@ -500,7 +499,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.h" />
+    <ClInclude Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorNodeJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h" />
+    <ClInclude Include="Source\Framework\Editor\Node\NodeEditorNode.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h" />
@@ -740,7 +742,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\IMGUI\Observer\IMGUIObserverUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
@@ -770,9 +771,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
-    <ClCompile Include="Source\Framework\Component\Input\Condition\Component\ComponentObserverInputExecutionCondition.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp" />
+    <ClCompile Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.cpp" />
@@ -803,7 +804,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorNodeJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Node\NodeEditorNode.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp" />

@@ -9,7 +9,17 @@
                 "NearClip": 0.009999999776482582
             },
             {
-                "ComponentTypeName": "InputComponent"
+                "ComponentTypeName": "InputComponent",
+                "Inspector": {
+                    "InputComponentNodeEditor": {
+                        "NodeEditorAllocator": {
+                            "IsAllocatedList": [
+                                false
+                            ]
+                        }
+                    }
+                },
+                "NotifyComponentEventExecutionConditionList": []
             }
         ],
         "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
@@ -18,7 +28,7 @@
             "InitialPosition": {
                 "X": 0.0,
                 "Y": -0.699999988079071,
-                "Z": -8.699999809265137
+                "Z": -8.399999618530273
             },
             "InitialRotation": {
                 "W": 1.0,

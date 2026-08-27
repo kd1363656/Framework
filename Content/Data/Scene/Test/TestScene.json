@@ -21,7 +21,7 @@
                         "InitialPosition": {
                             "X": 0.0,
                             "Y": -0.699999988079071,
-                            "Z": -8.699999809265137
+                            "Z": -8.399999618530273
                         },
                         "InitialRotation": {
                             "W": 1.0,
@@ -102,6 +102,72 @@
                         }
                     }
                 }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf",
+                    "SceneInstanceName": "Anubis",
+                    "SceneInstanceUUID": "cce7d59b-3bd8-41b6-a158-591450ee0019",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.800000011920929,
+                            "Y": -1.600000023841858,
+                            "Z": -5.400000095367432
+                        },
+                        "InitialRotation": {
+                            "W": -1.1920928955078125e-07,
+                            "X": 0.0,
+                            "Y": -0.9999998807907104,
+                            "Z": -0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "d2965d52-9f31-46ff-abb5-564d1e22f936",
+                    "SceneInstanceName": "TestSkySphere",
+                    "SceneInstanceUUID": "29947f71-65ee-4e7d-a8c8-0645deafefda",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
             }
         ],
         "PrefabSystem": {
@@ -117,6 +183,17 @@
                         ]
                     },
                     "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Test\\TestSkySphere.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "d2965d52-9f31-46ff-abb5-564d1e22f936"
                 },
                 {
                     "Prefab": {
@@ -139,6 +216,17 @@
                         ]
                     },
                     "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Enemy\\Anubis\\Anubis.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf"
                 }
             ]
         }

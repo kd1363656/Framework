@@ -18,7 +18,7 @@ namespace FWK
 
 	private:
 
-		static constexpr std::string_view k_drawRequestDataStrategySelectorLabel = "描画シェーダーセレクター";
+		static constexpr std::string_view k_drawRequestDataStrategySelectorLabel = "描画シェーダー使用是非チェックボックス";
 		static constexpr std::string_view k_fbxFilePathSelectorLabel             = "FBXファイルドロップエリア";
 	};
 }

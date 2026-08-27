@@ -4,16 +4,16 @@ void FWK::Converter::NodeEditorAllocatorJsonConverter::Deserialize(const nlohman
 {
 	if (a_rootJson.is_null()) { return; }
 
-	const auto l_nodeEditorIDCapacity = a_rootJson.value(k_capacityJsonKey, k_nodeEditorIDCapacity);
+	auto& l_isAllocatedList = a_nodeEditorAllocator.GetMutableREFIsAllocatedList();
 
-	a_nodeEditorAllocator.SetNodeEditorIDCapacity(l_nodeEditorIDCapacity);
+	l_isAllocatedList = a_rootJson.value(k_isAllocatedListJsonKey, std::vector<bool>());
 }
 
 nlohmann::json FWK::Converter::NodeEditorAllocatorJsonConverter::Serialize(const NodeEditorAllocator& a_nodeEditorAllocator) const
 {
 	nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_capacityJsonKey] = a_nodeEditorAllocator.GetVALNodeEditorIDCapacity();
-
+	l_rootJson[k_isAllocatedListJsonKey] = a_nodeEditorAllocator.GetREFIsAllocatedList();
+	
 	return l_rootJson;
 }

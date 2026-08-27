@@ -1,0 +1,42 @@
+{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [
+            {
+                "AssetFilePathHelper": {
+                    "AssetFilePath": "Content\\Model\\Test\\SkySphere\\SkySphere.fbx"
+                },
+                "ComponentTypeName": "StaticModelComponent",
+                "RegisterDrawRequestStrategyMapJsonKey": [
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestStandardUnLitStrategy"
+                    },
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestCascadeShadowStrategy"
+                    }
+                ]
+            }
+        ],
+        "PrefabUUID": "d2965d52-9f31-46ff-abb5-564d1e22f936",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialRotation": {
+                "W": 1.0,
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    },
+    "PrefabName": "TestSkySphere"
+}

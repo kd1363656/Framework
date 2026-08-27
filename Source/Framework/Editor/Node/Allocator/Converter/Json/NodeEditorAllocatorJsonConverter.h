@@ -20,8 +20,6 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_capacityJsonKey = "NodeEditorAllocatorCapacity";
-
-		inline constexpr TypeAlias::NodeEditorID k_nodeEditorIDCapacity = 1000;
+		static constexpr std::string_view k_isAllocatedListJsonKey = "IsAllocatedList";
 	};
 }

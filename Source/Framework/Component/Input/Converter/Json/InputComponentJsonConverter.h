@@ -17,5 +17,19 @@ namespace FWK::Converter
 		void DeserializePrefab(const nlohmann::json& a_rootJson, InputComponent& a_inputComponent) const;
 		
 		nlohmann::json SerializePrefab(const InputComponent& a_inputComponent) const;
+
+	private:
+
+		void DeserializeNotifyComponentEventExecutionCondition(const nlohmann::json& a_rootJson, InputComponent& a_inputComponent) const;
+
+		nlohmann::json SerializeNotifyComponentEventExecutionCondition(const InputComponent& a_inputComponent) const;
+
+		static constexpr std::string_view k_notifyComponentEventExecutionConditionListJsonKey = "NotifyComponentEventExecutionConditionList";
+		static constexpr std::string_view k_receiveComponentEventJsonKey                      = "ReceiveComponentEvent";
+		static constexpr std::string_view k_nodeEditorNodeEventJsonKey                        = "NodeEditorNode";
+		static constexpr std::string_view k_checkEventLaneJsonKey                             = "CheckEventLane";
+		static constexpr std::string_view k_expectedObserverResultJsonKey                     = "ExpectedObserverResult";
+		
+		static constexpr std::string_view k_inspectorJsonKey = "Inspector";
 	};
 }

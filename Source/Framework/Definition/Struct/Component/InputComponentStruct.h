@@ -8,6 +8,8 @@ namespace FWK::Struct
 	{
 		Type m_receiveComponentEvent = Type::Invalid;
 
+		Editor::NodeEditorNode m_editorNodeEditor = {};
+
 		// 入力チェックをするオブザーバーの通知の種類は一つのみ取り扱いたいからEnumで管理
 		Enum::EventLane m_checkEventLane = Enum::EventLane::Invalid;
 

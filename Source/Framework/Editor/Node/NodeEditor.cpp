@@ -26,7 +26,14 @@ void FWK::Editor::NodeEditor::INIT()
 	FWK_ASSERT_RETURN_IF(!m_editorContext, "ImNodesEditorContextの作成に失敗したため、NodeEditorを初期化できませんでした。" );
 }
 
-bool FWK::Editor::NodeEditor::PrepareDraw()
+void FWK::Editor::NodeEditor::Deserialize(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
+bool FWK::Editor::NodeEditor::BeginDraw()
 {
 	FWK_ASSERT_RETURN_VALUE_IF(!m_editorContext, "ImNodesEditorContextが存在しないため、NodeEditorの描画を開始できませんでした。", false);
 	FWK_ASSERT_RETURN_VALUE_IF(m_isDrawing,      "NodeEditorの描画処理が既に開始されています。",                                   false);
@@ -40,13 +47,18 @@ bool FWK::Editor::NodeEditor::PrepareDraw()
 	return true;
 }
 
-void FWK::Editor::NodeEditor::FinalizeDraw()
+void FWK::Editor::NodeEditor::EndDraw()
 {
 	if (!m_isDrawing) { return; }
 
 	ImNodes::EndNodeEditor();
 
 	m_isDrawing = false;
+}
+
+nlohmann::json FWK::Editor::NodeEditor::Serialize() const
+{
+	return m_jsonConverter.Serialize(*this);
 }
 
 bool FWK::Editor::NodeEditor::FetchVALIsInitialized() const
