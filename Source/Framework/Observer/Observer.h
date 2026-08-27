@@ -32,13 +32,20 @@ namespace FWK
 			}
 		}
 
-		void NotifyEvent(const Type a_type, const Enum::EventLane a_enableFlagEventLane)
+		void NotifyEvent(const Type a_type, const Enum::EventLane a_eventLane, const bool a_isEnabled)
 		{
 			auto l_itr = m_eventMap.find(a_type);
 
 			if (l_itr == m_eventMap.end()) { return; }
 
-			l_itr->second = Utility::EnableFlag(a_enableFlagEventLane, l_itr->second);
+			if (a_isEnabled)
+			{
+				l_itr->second = Utility::EnableFlag(a_eventLane, l_itr->second);
+			}
+			else
+			{
+				l_itr->second = Utility::DisableFlag(a_eventLane, l_itr->second);
+			}
 		}
 
 		bool IsEventMatching(const Type a_type, const Enum::EventLane a_isMatchEventLane)

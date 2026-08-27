@@ -15,4 +15,15 @@ namespace FWK::Struct
 
 		bool m_expectedObserverResult = false;
 	};
+
+	struct InputComponentExecution final
+	{
+		Editor::NodeEditorNode m_editorNodeEditor = {};
+
+		Enum::ComponentEvent m_notifyComponentEvent = Enum::ComponentEvent::Invalid;
+
+		Enum::EventLane m_notifyEventLane = Enum::EventLane::Invalid;
+
+		bool m_notifyResult = false;
+	};
 }

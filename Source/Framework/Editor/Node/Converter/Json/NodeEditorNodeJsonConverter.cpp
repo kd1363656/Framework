@@ -18,6 +18,11 @@ void FWK::Converter::NodeEditorNodeJsonConverter::Deserialize(const nlohmann::js
 		DeserializeOutputPinIDList(l_json, a_nodeEditorNode);
 	}
 
+	// NodePositionの復元
+	const auto& l_nodePosition = Utility::DeserializeIMVEC2(a_rootJson, k_nodePositionJsonKey);
+
+	a_nodeEditorNode.SetNodePosition(l_nodePosition);
+
 	a_nodeEditorNode.SetNodeID(a_rootJson.value(k_nodeIDJsonKey, Constant::k_invalidNodeEditorID));
 }
 
@@ -27,10 +32,13 @@ nlohmann::json FWK::Converter::NodeEditorNodeJsonConverter::Serialize(const Edit
 
 	const auto& l_inputPinIDList  = a_nodeEditorNode.GetREFInputPinIDList ();
 	const auto& l_outputPinIDList = a_nodeEditorNode.GetREFOutputPinIDList();
+	const auto& l_nodePosition    = a_nodeEditorNode.GetREFNodePosition   ();
 	const auto  l_nodeID          = a_nodeEditorNode.GetVALNodeID         ();
 
 	l_rootJson[k_inputPinListJsonKey]  = SerializePinIDList(l_inputPinIDList);
 	l_rootJson[k_outputPinListJsonKey] = SerializePinIDList(l_outputPinIDList);
+
+	Utility::UpdateJson(l_rootJson, Utility::SerializeIMVEC2(l_nodePosition, k_nodePositionJsonKey));
 
 	l_rootJson[k_nodeIDJsonKey] = l_nodeID;
 

@@ -67,8 +67,12 @@ bool FWK::Editor::NodeEditorNode::AddInputPinID(NodeEditorAllocator& a_nodeEdito
 	const auto l_pinID = a_nodeEditorAllocator.Allocate();
 
 	if (l_pinID == Constant::k_invalidNodeEditorID) { return false; }
+	if (AddInputPinID(l_pinID))                     { return true; }
 
-	return AddInputPinID(l_pinID);
+	// 追加に失敗していたらアロケーターへ戻す
+	a_nodeEditorAllocator.Release(l_pinID);
+
+	return false;
 }
 bool FWK::Editor::NodeEditorNode::AddInputPinID(const TypeAlias::NodeEditorID a_pinID)
 {
@@ -84,8 +88,12 @@ bool FWK::Editor::NodeEditorNode::AddOutputPinID(NodeEditorAllocator& a_nodeEdit
 	const auto l_pinID = a_nodeEditorAllocator.Allocate();
 
 	if (l_pinID == Constant::k_invalidNodeEditorID) { return false; }
+	if (AddOutputPinID(l_pinID))                    { return true; }
 
-	return AddOutputPinID(l_pinID);
+	// 追加に失敗していたらアロケーターへ戻す
+	a_nodeEditorAllocator.Release(l_pinID);
+	
+	return false;
 }
 bool FWK::Editor::NodeEditorNode::AddOutputPinID(const TypeAlias::NodeEditorID a_pinID)
 {
@@ -119,8 +127,10 @@ bool FWK::Editor::NodeEditorNode::AddPinIDToPinIDList(const TypeAlias::NodeEdito
 
 void FWK::Editor::NodeEditorNode::Reset()
 {
-	m_nodeID = Constant::k_invalidNodeEditorID;
-
 	m_inputPInIDList.clear ();
 	m_outputPInIDList.clear();
+
+	m_nodePosition = {};
+
+	m_nodeID = Constant::k_invalidNodeEditorID;
 }

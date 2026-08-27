@@ -118,6 +118,9 @@ bool FWK::Editor::NodeEditor::AddLink(const Struct::NodeEditorLinkData& a_linkDa
 		return false;
 	}
 
+	// 全く同じOutputPin->InputPinのLinkも重複して保持しない
+	if (FetchVALHasLink(a_linkData.m_outputPinID, a_linkData.m_inputPinID)) { return false; }
+
 	m_linkDataList.emplace_back(a_linkData);
 
 	return true;
@@ -158,6 +161,16 @@ bool FWK::Editor::NodeEditor::FetchVALIsInputPinLinked(const TypeAlias::NodeEdit
 	return std::ranges::any_of(m_linkDataList, [&a_inputPinID](const auto& a_linkData)
 		                       {
 									return a_linkData.m_inputPinID == a_inputPinID;
+		                       });
+}
+bool FWK::Editor::NodeEditor::FetchVALHasLink(const TypeAlias::NodeEditorID a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID) const
+{
+	return std::ranges::any_of(m_linkDataList, [a_outputPinID, a_inputPinID](const auto& a_linkData)
+		                       {
+									const bool l_isSameOutputPin = a_linkData.m_outputPinID == a_outputPinID;
+									const bool l_isSameInputPin  = a_linkData.m_inputPinID  == a_inputPinID;
+
+									return l_isSameOutputPin && l_isSameInputPin;
 		                       });
 }
 

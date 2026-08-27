@@ -39,6 +39,8 @@ namespace FWK
 
 		InputComponentInspector m_inspector = {};
 
+		Struct::InputComponentExecution m_execution = {};
+
 		Converter::InputComponentJsonConverter m_jsonConverter = {};
 
 		FWK_DEFINE_TYPE_INFO(InputComponent, ComponentBase)

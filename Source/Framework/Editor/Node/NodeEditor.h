@@ -31,7 +31,8 @@ namespace FWK::Editor
 
 		bool FetchVALIsInitialized() const;
 
-		bool FetchVALIsInputPinLinked(const TypeAlias::NodeEditorID a_inputPinID) const;
+		bool FetchVALIsInputPinLinked(const TypeAlias::NodeEditorID a_inputPinID)                                              const;
+		bool FetchVALHasLink         (const TypeAlias::NodeEditorID a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID) const;
 
 		const auto& GetREFLinkDataList() const { return m_linkDataList; }
 

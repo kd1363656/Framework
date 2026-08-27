@@ -64,6 +64,27 @@ namespace FWK::Utility
 		};
 	}
 
+	inline ImVec2 DeserializeIMVEC2(const nlohmann::json & a_json, const std::string_view a_key)
+	{
+		// "json"を読み込めるか確認、読み込めなければ"return"
+		if (a_json.is_null() || 
+			a_key.empty()    ||
+			!a_json.contains(a_key.data()))
+		{
+			return {};
+		}
+
+		const auto& l_json = a_json[a_key.data()];
+
+		if (l_json.is_null())  { return {}; }
+
+		return ImVec2
+		{
+			l_json.value(Constant::k_xJsonKey, static_cast<float>(NULL)), 
+			l_json.value(Constant::k_yJsonKey, static_cast<float>(NULL))
+		};
+	}
+
 	inline TypeAlias::Math::Quaternion DeserializeQuaternion(const nlohmann::json& a_json , const std::string_view a_key)
 	{
 		// "json"を読み込めるか確認、読み込めなければ"return"
@@ -143,6 +164,24 @@ namespace FWK::Utility
 			}
 		};
 	}
+
+	inline nlohmann::json SerializeIMVEC2(const ImVec2& a_value , const std::string_view a_key)
+	{
+		// キーとなる文字列がなければ空の"json"を返す
+		if (a_key.empty()) { return nlohmann::json(); }
+
+		return nlohmann::json
+		{
+			{
+				a_key.data() ,
+				{
+					{ Constant::k_xJsonKey, a_value.x } ,
+					{ Constant::k_yJsonKey, a_value.y }
+				}
+			}
+		};
+	}
+
 
 	inline nlohmann::json SerializeQuaternion(const TypeAlias::Math::Quaternion& a_value , const std::string_view a_key)
 	{

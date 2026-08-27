@@ -65,6 +65,7 @@ namespace FWK
 		static constexpr float k_executeNodePositionY          = 160.0F;
 
 		static constexpr std::size_t k_primaryPinIndex = 0ULL;
+		static constexpr std::size_t k_primaryPinIndex = 1ULL;
 
 		Editor::NodeEditor m_nodeEditor = {};
 

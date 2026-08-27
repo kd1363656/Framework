@@ -28,6 +28,7 @@ namespace FWK::Converter
 		static constexpr std::string_view k_inputPinListJsonKey  = "InputPinIDList";
 		static constexpr std::string_view k_outputPinListJsonKey = "OutputPinIDList";
 		static constexpr std::string_view k_pinIDJsonKey         = "PinID";
-		static constexpr std::string_view k_nodeIDJsonKey         = "NodeID";
+		static constexpr std::string_view k_nodeIDJsonKey        = "NodeID";
+		static constexpr std::string_view k_nodePositionJsonKey  = "NodePosition";
 	};
 }

@@ -23,17 +23,20 @@ namespace FWK::Editor
 		bool AddInputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
 		bool AddInputPinID(const TypeAlias::NodeEditorID a_pinID);
 
-		bool AddOutputPinID(      NodeEditorAllocator&          a_nodeEditorAllocator);
+		bool AddOutputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
 		bool AddOutputPinID(const TypeAlias::NodeEditorID a_pinID);
 
 		void SetNodeID(const TypeAlias::NodeEditorID a_set) { m_nodeID = a_set; }
 
-		bool FetchVALIsCreated() const ;
+		void SetNodePosition(const ImVec2& a_set) { m_nodePosition = a_set; }
 
+		bool FetchVALIsCreated() const;
+		
 		auto GetVALNodeID() const { return m_nodeID; }
 
 		const auto& GetREFInputPinIDList () const { return m_inputPInIDList; }
 		const auto& GetREFOutputPinIDList() const { return m_outputPInIDList; }
+		const auto& GetREFNodePosition   () const { return m_nodePosition; }
 
 	private:
 
@@ -45,6 +48,8 @@ namespace FWK::Editor
 		std::vector<TypeAlias::NodeEditorID> m_outputPInIDList = {};
 
 		Converter::NodeEditorNodeJsonConverter m_jsonConverter = {};
+
+		ImVec2 m_nodePosition = {};
 
 		TypeAlias::NodeEditorID m_nodeID = Constant::k_invalidNodeEditorID;
 	};
