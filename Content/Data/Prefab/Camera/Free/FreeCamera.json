@@ -1,6 +1,22 @@
 {
     "Prefab": {
         "ChildList": [],
+        "ComponentEventObserver": {
+            "EventMap": [
+                {
+                    "Event": "ComponentEvent::InputRight"
+                },
+                {
+                    "Event": "ComponentEvent::InputLeft"
+                },
+                {
+                    "Event": "ComponentEvent::InputForward"
+                },
+                {
+                    "Event": "ComponentEvent::InputBackward"
+                }
+            ]
+        },
         "ComponentList": [
             {
                 "ComponentTypeName": "CameraComponent",
@@ -14,7 +30,11 @@
                     "InputComponentNodeEditor": {
                         "NodeEditorAllocator": {
                             "IsAllocatedList": [
-                                false
+                                false,
+                                true,
+                                true,
+                                true,
+                                true
                             ]
                         }
                     }

@@ -28,7 +28,7 @@ namespace FWK::Utility
 			FWK_ASSERT_RETURN_IF(!l_isFailedRegister, "登録する際のキーが重複しており、値の登録に失敗しました。");
 		}
 
-		const Type FindVALValueByKey(const std::string_view& a_key)
+		const Type FindVALValueByKey(const std::string_view& a_key) const
 		{
 			const auto& l_itr = m_stringToValueMap.find(a_key);
 
@@ -38,7 +38,7 @@ namespace FWK::Utility
 			return l_itr->second;
 		}
 
-		const std::string_view FindVALKeyByValue(const Type a_type)
+		const std::string_view FindVALKeyByValue(const Type a_type) const
 		{
 			const auto& l_itr = m_valueToStringMap.find(a_type);
 
