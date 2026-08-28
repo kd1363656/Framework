@@ -13,7 +13,56 @@
             },
             {
                 "ComponentTypeName": "InputComponent",
-                "Inspector": null,
+                "Execution": {
+                    "NodeEditorNode": {
+                        "InputPinIDList": [
+                            {
+                                "PinID": 3
+                            }
+                        ],
+                        "NodeID": 2,
+                        "NodePosition": {
+                            "X": 109.0,
+                            "Y": 364.0
+                        },
+                        "OutputPinIDList": []
+                    },
+                    "NotifyComponentEvent": "ComponentEvent::InputMouseRight",
+                    "NotifyEventLane": 0
+                },
+                "Inspector": {
+                    "NodeEditor": {
+                        "LinkDataList": [
+                            {
+                                "InputPinID": 3,
+                                "LinkID": 4,
+                                "OutputPinID": 1
+                            }
+                        ],
+                        "NodeEditorAllocator": {
+                            "IsAllocatedList": [
+                                true,
+                                true,
+                                true,
+                                true,
+                                true
+                            ]
+                        }
+                    },
+                    "StartNodeEditor": {
+                        "InputPinIDList": [],
+                        "NodeID": 0,
+                        "NodePosition": {
+                            "X": 0.0,
+                            "Y": 160.0
+                        },
+                        "OutputPinIDList": [
+                            {
+                                "PinID": 1
+                            }
+                        ]
+                    }
+                },
                 "NotifyComponentEventExecutionConditionList": []
             }
         ],
@@ -22,7 +71,7 @@
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
                 "X": 0.4000000059604645,
-                "Y": 1.7000000476837158,
+                "Y": 0.5,
                 "Z": -7.5
             },
             "InitialRotation": {

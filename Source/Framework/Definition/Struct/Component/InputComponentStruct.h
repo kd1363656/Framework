@@ -23,7 +23,5 @@ namespace FWK::Struct
 		Enum::ComponentEvent m_notifyComponentEvent = Enum::ComponentEvent::Invalid;
 
 		Enum::EventLane m_notifyEventLane = Enum::EventLane::Invalid;
-
-		bool m_notifyResult = false;
 	};
 }

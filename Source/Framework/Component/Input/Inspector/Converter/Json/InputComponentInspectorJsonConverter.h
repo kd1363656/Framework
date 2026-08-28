@@ -17,5 +17,10 @@ namespace FWK::Converter
 		void Deserialize(const nlohmann::json& a_rootJson, InputComponentInspector& a_inputComponentInspector) const;
 		
 		nlohmann::json Serialize(const InputComponentInspector& a_inputComponentInspector) const;
+
+	private:
+
+		static constexpr std::string_view k_nodeEditorJsonKey      = "NodeEditor";
+		static constexpr std::string_view k_startNodeEditorJsonKey = "StartNodeEditor";
 	};	
 }

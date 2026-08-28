@@ -345,6 +345,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Input\InputComponent.h" />
     <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Strategy\ComponentEventNotifyStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Move\MoveComponent.h" />
@@ -744,6 +745,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />

@@ -19,6 +19,7 @@ namespace FWK::Enum
 	(
 		ComponentEvent, 
 		FWK_JSON_ENUM_VALUE(ComponentEvent::Invalid),
+		FWK_JSON_ENUM_VALUE(ComponentEvent::InputMouseRight),
 	)
 }
 

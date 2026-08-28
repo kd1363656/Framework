@@ -2,6 +2,11 @@
 
 namespace FWK
 {
+	class ComponentEventNotifyStrategyBase;
+}
+
+namespace FWK
+{
 	class InputComponent final : public ComponentBase
 	{
 	public:
@@ -21,21 +26,29 @@ namespace FWK
 
 		void EditInspector() override;
 
-		bool CanNotifyInputEvent(Observer<Enum::ComponentEvent>& a_componentEventObserver);
+		bool CanNotifyEvent(Observer<Enum::ComponentEvent>& a_componentEventObserver);
 
 		void AddExecutionConditionList(const Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>& a_executionCondition);
+
+		void SetNotifyStrategy(std::unique_ptr<ComponentEventNotifyStrategyBase>&& a_set) { m_notifyStrategy = std::move(a_set); }
 
 		const auto& GetREFNotifyComponentEventExecutionConditionList() const { return m_notifyComponentEventExecutionConditionList; }
 
 		const auto& GetREFInspector() const { return m_inspector; }
+		const auto& GetREFExecution() const { return m_execution; }
 
 		auto& GetMutableREFNotifyComponentEventExecutionConditionList() { return m_notifyComponentEventExecutionConditionList; }
 
 		auto& GetMutableREFInspector() { return m_inspector; }
+		auto& GetMutableREFExecution() { return m_execution; }
 
 	private:
 
+		void NotifyEvent();
+
 		std::vector<Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>> m_notifyComponentEventExecutionConditionList = {};
+
+		std::unique_ptr<ComponentEventNotifyStrategyBase> m_notifyStrategy = nullptr;
 
 		InputComponentInspector m_inspector = {};
 

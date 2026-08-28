@@ -1390,6 +1390,12 @@
     <Filter Include="Source\Framework\Definition\Enum\Axis">
       <UniqueIdentifier>{bf3af4c7-afd1-4c77-a89d-b693b652e4a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\String">
+      <UniqueIdentifier>{610f4d6b-20a0-4755-9679-8ad433aef097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Input\Strategy">
+      <UniqueIdentifier>{df38fd01-0d82-4a4a-b184-fd21934024c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2073,9 +2079,6 @@
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h">
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
       <Filter>Source\Framework\Utility\Json</Filter>
     </ClInclude>
@@ -2684,6 +2687,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h">
       <Filter>Source\Framework\Definition\Enum\Axis</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\String</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\Strategy\ComponentEventNotifyStrategyBase.h">
+      <Filter>Source\Framework\Component\Input\Strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

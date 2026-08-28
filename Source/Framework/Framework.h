@@ -535,9 +535,11 @@
 #include "Editor/Node/Converter/Json/NodeEditorJsonConverter.h"
 #include "Editor/Node/NodeEditor.h"
 #include "Component/Input/Inspector/Converter/Json/InputComponentInspectorJsonConverter.h"
+#include "Utility/IMGUI/String/IMGUIStringValueBidirectionalRegistryUtility.h"
 #include "Component/Input/Inspector/InputComponentInspector.h"
 #include "Component/Input/Converter/Json/InputComponentJsonConverter.h"
 #include "Component/Input/InputComponent.h"
+#include "Component/Input/Strategy/ComponentEventNotifyStrategyBase.h"
 
 #include "Definition/Enum/Axis/AxisEnum.h"
 #include "Component/Rotation/Mode/RotationComponentModeBase.h"
