@@ -14,29 +14,35 @@
             {
                 "ComponentTypeName": "InputComponent",
                 "Execution": {
-                    "NodeEditorNode": {
+                    "NotifyComponentEvent": "ComponentEvent::InputMouseRight",
+                    "NotifyEventLane": 0,
+                    "NotifyFlag": true
+                },
+                "Inspector": {
+                    "ExecuteNodeEditorNode": {
                         "InputPinIDList": [
                             {
-                                "PinID": 3
+                                "PinID": 11
                             }
                         ],
-                        "NodeID": 2,
+                        "NodeID": 10,
                         "NodePosition": {
-                            "X": 109.0,
-                            "Y": 364.0
+                            "X": 96.0,
+                            "Y": 47.0
                         },
                         "OutputPinIDList": []
                     },
-                    "NotifyComponentEvent": "ComponentEvent::InputMouseRight",
-                    "NotifyEventLane": 0
-                },
-                "Inspector": {
                     "NodeEditor": {
                         "LinkDataList": [
                             {
-                                "InputPinID": 3,
+                                "InputPinID": 8,
                                 "LinkID": 4,
-                                "OutputPinID": 1
+                                "OutputPinID": 6
+                            },
+                            {
+                                "InputPinID": 11,
+                                "LinkID": 12,
+                                "OutputPinID": 6
                             }
                         ],
                         "NodeEditorAllocator": {
@@ -45,25 +51,51 @@
                                 true,
                                 true,
                                 true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
+                                true,
                                 true
                             ]
                         }
                     },
-                    "StartNodeEditor": {
-                        "InputPinIDList": [],
-                        "NodeID": 0,
+                    "RootConditionNodeEditorNode": {
+                        "InputPinIDList": [
+                            {
+                                "PinID": 8
+                            }
+                        ],
+                        "NodeID": 7,
                         "NodePosition": {
-                            "X": 0.0,
-                            "Y": 160.0
+                            "X": 97.9456787109375,
+                            "Y": -71.27365112304688
                         },
                         "OutputPinIDList": [
                             {
-                                "PinID": 1
+                                "PinID": 9
+                            }
+                        ]
+                    },
+                    "StartNodeEditorNode": {
+                        "InputPinIDList": [],
+                        "NodeID": 5,
+                        "NodePosition": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "OutputPinIDList": [
+                            {
+                                "PinID": 6
                             }
                         ]
                     }
                 },
-                "NotifyComponentEventExecutionConditionList": []
+                "NotifyComponentEventExecutionConditionList": [],
+                "NotifyStrategy": "InputMouseRightComponentEventNotifyStrategy"
             }
         ],
         "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
@@ -72,13 +104,13 @@
             "InitialPosition": {
                 "X": 0.4000000059604645,
                 "Y": 0.5,
-                "Z": -7.5
+                "Z": -10.0
             },
             "InitialRotation": {
-                "W": 0.9600264430046082,
-                "X": 0.2798222005367279,
-                "Y": 0.00670233927667141,
-                "Z": -0.001953553408384323
+                "W": 0.9915341734886169,
+                "X": 0.1296577751636505,
+                "Y": 0.006922293454408646,
+                "Z": -0.0009051906527020037
             },
             "InitialScale": {
                 "X": 1.0,

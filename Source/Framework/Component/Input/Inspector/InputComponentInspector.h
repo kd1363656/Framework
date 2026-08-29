@@ -18,54 +18,73 @@ namespace FWK
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 
+		void PostDeserialize(InputComponent& a_inputComponent);
+
 		void EditInspector(InputComponent& a_inputComponent);
 
 		nlohmann::json Serialize() const;
 
-		void SetIsDefaultNodePositionApplied(const bool a_set) { m_isDefaultNodePositionApplied = a_set; }
+		const auto& GetREFNodeEditor                 () const { return m_nodeEditor; }
+		const auto& GetREFStartNodeEditorNode        () const { return m_startNodeEditorNode; }
+		const auto& GetREFRootConditionNodeEditorNode() const { return m_rootConditionNodeEditorNode; }
+		const auto& GetREFExecuteNodeEditorNode      () const { return m_executeNodeEditorNode; }
 
-		const auto& GetREFNodeEditor     () const { return m_nodeEditor; }
-		const auto& GetREFStartNodeEditor() const { return m_startNodeEditor; }
-		
-		auto& GetMutableREFNodeEditor     () { return m_nodeEditor; }
-		auto& GetMutableREFStartNodeEditor() { return m_startNodeEditor; }
-		
+		auto& GetMutableREFNodeEditor                 () { return m_nodeEditor; }
+		auto& GetMutableREFStartNodeEditorNode        () { return m_startNodeEditorNode; }
+		auto& GetMutableREFRootConditionNodeEditorNode() { return m_rootConditionNodeEditorNode; }
+		auto& GetMutableREFExecuteNodeEditorNode      () { return m_executeNodeEditorNode; }
+
 	private:
 
 		bool SynchronizeNodeGraph        (InputComponent& a_inputComponent);
 		bool SynchronizeStartNode        ();
-		bool SynchronizeExecuteNode      (InputComponent& a_inputComponent);
+		bool SynchronizeConditionNode    ();
+		bool SynchronizeExecuteNode      ();
 		bool SynchronizeConditionNodeList(InputComponent& a_inputComponent);
 
 		void SynchronizeLinkList        (const InputComponent& a_inputComponent);
 		void SynchronizeNodePositionList(      InputComponent& a_inputComponent);
 
-		void ApplyDefaultNodePositions(InputComponent& a_inputComponent);
+		void ApplyNodePositions               (const InputComponent& a_inputComponent);
+		void ApplyPendingConditionNodePosition(      InputComponent& a_inputComponent);
 
-		void DrawStartNode        ()                                 const;
-		void DrawConditionNodeList(InputComponent& a_inputComponent) const;
-		void DrawExecuteNode      (InputComponent& a_inputComponent) const;
+		void DrawStartNode               ()                                 const;
+		void DrawConditionNode           ()                                 const;
+		void DrawConditionNodeList       (InputComponent& a_inputComponent) const;
+		void DrawConditionNodeCreatePopup(InputComponent& a_inputComponent);
+		void DrawExecuteNode             (InputComponent& a_inputComponent) const;
 
-		bool FetchVALIsAllowedInputPin(const InputComponent& a_inputComponent, const TypeAlias::NodeEditorID a_inputPinID) const;
+		void RequestConditionNodeCreatePopup();
 
-		static constexpr std::string_view k_addConditionButtonLabel     = "Condition追加";
-		static constexpr std::string_view k_startNodeLabel              = "Start";
-		static constexpr std::string_view k_conditionNodeLabel          = "Condition";
-		static constexpr std::string_view k_executeNodeLabel            = "Execute";
-		static constexpr std::string_view k_outputPinLabel              = "Output";
-		static constexpr std::string_view k_inputPinLabel               = "Input";
-		static constexpr std::string_view k_notifyComponentEventLabel   = "ComponentEvent";
-		static constexpr std::string_view k_notifyEventLaneLabel        = "EventLane";
-		static constexpr std::string_view k_notifyResultLabel           = "Result";
-		static constexpr std::string_view k_expectedObserverResultLabel = "ExpectedResult";
+		bool AddConditionNode(const Enum::ComponentEvent a_componentEvent, const ImVec2& a_nodeScreenPosition, InputComponent& a_inputComponent);
 
-		static constexpr float k_startNodePositionX            = 0.0F;
-		static constexpr float k_startNodePositionY            = 160.0F;
-		static constexpr float k_conditionNodePositionX        = 320.0F;
-		static constexpr float k_conditionNodeFirstPositionY   = 20.0F;
-		static constexpr float k_conditionNodeVerticalInterval = 150.0F;
-		static constexpr float k_executeNodePositionX          = 640.0F;
-		static constexpr float k_executeNodePositionY          = 160.0F;
+		bool FetchVALIsAllowedLink       (const InputComponent& a_inputComponent, const TypeAlias::NodeEditorID a_inputPinID, const TypeAlias::NodeEditorID a_outputPinID) const;
+		bool FetchVALIsComponentEventUsed(const InputComponent& a_inputComponent, const Enum::ComponentEvent    a_componentEvent)                                          const;
+
+		static constexpr std::string_view k_conditionNodeCreatePopupLabel                        = "Condition作成##ConditionNodeCreatePopup";
+		static constexpr std::string_view k_conditionNodeCreateListBoxLabel                      = "##ConditionNodeCreateListBox";
+		static constexpr std::string_view k_noUnusedComponentEventLabel                          = "追加できるComponentEventがありません。";
+		static constexpr std::string_view k_addConditionButtonLabel                              = "Condition追加";
+		static constexpr std::string_view k_startNodeLabel                                       = "Start";
+		static constexpr std::string_view k_conditionNodeLabel                                   = "Condition";
+		static constexpr std::string_view k_executeNodeLabel                                     = "Execute";
+		static constexpr std::string_view k_outputPinLabel                                       = "Output";
+		static constexpr std::string_view k_inputPinLabel                                        = "Input";
+		static constexpr std::string_view k_notifyComponentEventLabel                            = "ComponentEvent";
+		static constexpr std::string_view k_notifyEventLaneLabel                                 = "EventLane";
+		static constexpr std::string_view k_notifyFlagLabel                                      = "NotifyFlag";
+		static constexpr std::string_view k_componentEventNotifyStrategyRadioButtonSelectorLabel = "ComponentEventNotifyStrategyRadioButtonSelector";
+		static constexpr std::string_view k_expectedObserverResultLabel                          = "ExpectedResult";
+
+		static constexpr float k_initialRootConditionNodePositionX = 96.0F;
+		static constexpr float k_initialRootConditionNodePositionY = -71.0F;
+
+		static constexpr float k_initialChildConditionNodePositionX = 340.0F;
+		static constexpr float k_initialChildConditionNodePositionY = 20.0F;
+		static constexpr float k_childConditionNodeVerticalInterval = 50.0F;
+		
+		static constexpr float k_initialExecuteNodePositionX = 97.0F;
+		static constexpr float k_initialExecuteNodePositionY = 47.0F;
 
 		static constexpr std::size_t k_initialConditionIndex = 0ULL;
 		static constexpr std::size_t k_initialLinkIndex      = 0ULL;
@@ -74,12 +93,15 @@ namespace FWK
 
 		Editor::NodeEditor m_nodeEditor = {};
 
-		Editor::NodeEditorNode m_startNodeEditor = {};
+		Editor::NodeEditorNode m_startNodeEditorNode         = {};
+		Editor::NodeEditorNode m_rootConditionNodeEditorNode = {};
+		Editor::NodeEditorNode m_executeNodeEditorNode       = {};
 		
-		Converter::InputComponentInspectorJsonConverter m_jsonConverter = {};
+		ImVec2 m_conditionNodeDropScreenPosition          = {};
+		ImVec2 m_pendingConditionNodeCreateScreenPosition = {};
 
-		// Nodeを毎フレーム初期位置へ戻してしまうと
-		// ドラッグできなくなるため、一度だけ配置する。
-		bool m_isDefaultNodePositionApplied = false;
+		TypeAlias::NodeEditorID m_pendingConditionNodePositionNodeID = Constant::k_invalidNodeEditorID;
+
+		Converter::InputComponentInspectorJsonConverter m_jsonConverter = {};
 	};
 }

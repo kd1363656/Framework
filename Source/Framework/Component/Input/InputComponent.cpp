@@ -12,6 +12,11 @@ void FWK::InputComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
+void FWK::InputComponent::PostDeserialize()
+{
+	m_inspector.PostDeserialize(*this);
+}
+
 void FWK::InputComponent::EarlyUpdate()
 {
 	const auto& l_gameObject = GetREFOwner().lock();

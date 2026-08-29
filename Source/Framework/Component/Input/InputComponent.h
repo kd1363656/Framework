@@ -18,6 +18,8 @@ namespace FWK
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
+		void PostDeserialize() override;
+
 		void EarlyUpdate() override;
 
 		nlohmann::json SerializePrefab() override;
@@ -34,10 +36,14 @@ namespace FWK
 
 		const auto& GetREFNotifyComponentEventExecutionConditionList() const { return m_notifyComponentEventExecutionConditionList; }
 
+		const auto& GetREFNotifyStrategy() const { return m_notifyStrategy; }
+
 		const auto& GetREFInspector() const { return m_inspector; }
 		const auto& GetREFExecution() const { return m_execution; }
 
 		auto& GetMutableREFNotifyComponentEventExecutionConditionList() { return m_notifyComponentEventExecutionConditionList; }
+
+		auto& GetMutableREFNotifyStrategy() { return m_notifyStrategy; }
 
 		auto& GetMutableREFInspector() { return m_inspector; }
 		auto& GetMutableREFExecution() { return m_execution; }

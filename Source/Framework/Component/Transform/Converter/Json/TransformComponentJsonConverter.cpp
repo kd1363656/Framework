@@ -39,7 +39,7 @@ void FWK::Converter::TransformComponentJsonConverter::CommonDeserialize(const nl
 
 	if (l_matrixStrategyTypeName.empty())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor,"TransformComponetnのストラテジー初期化用文字列が空になっており、ストラテジーの初期化に失敗しました。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor,"TransformComponentのストラテジー初期化用文字列が空になっており、ストラテジーの初期化に失敗しました。");
 
 		return;
 	}

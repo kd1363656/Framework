@@ -540,6 +540,8 @@
 #include "Component/Input/Converter/Json/InputComponentJsonConverter.h"
 #include "Component/Input/InputComponent.h"
 #include "Component/Input/Strategy/ComponentEventNotifyStrategyBase.h"
+#include "Definition/Type/Alias/Factory/Unique/ComponentEventNotifyStrategyUniqueFactory.h"
+#include "Component/Input/Strategy/Input/MouseRight/InputMouseRightComponentEventNotifyStrategy.h"
 
 #include "Definition/Enum/Axis/AxisEnum.h"
 #include "Component/Rotation/Mode/RotationComponentModeBase.h"

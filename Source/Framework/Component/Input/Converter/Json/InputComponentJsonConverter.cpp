@@ -27,17 +27,25 @@ void FWK::Converter::InputComponentJsonConverter::DeserializePrefab(const nlohma
 	{
 		DeserializeExecution(l_json, a_inputComponent);
 	}
+
+	auto& l_notifyStrategy = a_inputComponent.GetMutableREFNotifyStrategy();
+
+	// 通知戦略クラスの復元
+	Utility::DeserializeInstanceType<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(a_rootJson, k_notifyStrategyJsonKey, l_notifyStrategy);
 }
 
 nlohmann::json FWK::Converter::InputComponentJsonConverter::SerializePrefab(const InputComponent& a_inputComponent) const
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_inspector = a_inputComponent.GetREFInspector();
+	const auto& l_inspector      = a_inputComponent.GetREFInspector     ();
+	const auto& l_notifyStrategy = a_inputComponent.GetREFNotifyStrategy();
 
 	l_rootJson[k_inspectorJsonKey]                                  = l_inspector.Serialize                          ();
 	l_rootJson[k_notifyComponentEventExecutionConditionListJsonKey] = SerializeNotifyComponentEventExecutionCondition(a_inputComponent);
 	l_rootJson[k_executionJsonKey]                                  = SerializeExecution                             (a_inputComponent);
+
+	Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_notifyStrategy, k_notifyStrategyJsonKey));
 
 	return l_rootJson;
 }
@@ -76,21 +84,15 @@ void FWK::Converter::InputComponentJsonConverter::DeserializeExecution(const nlo
 
 	auto& l_execution = a_inputComponent.GetMutableREFExecution();
 
-	// Executeノード自身のNodeID/PinID/座標を復元する
-	if (const auto& l_json = a_rootJson.value(k_nodeEditorNodeEventJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		auto& l_nodeEditor = l_execution.m_editorNodeEditor;
-
-		l_nodeEditor.Deserialize(l_json);
-	}
-
 	// ExecuteノードがComponentEventObserverへ通知する
 	// ComponentEventを復元する
 	l_execution.m_notifyComponentEvent = a_rootJson.value(k_notifyComponentEventJsonKey, Enum::ComponentEvent::Invalid);
 
 	// 通知するComponentEventのどのEventLaneか
 	l_execution.m_notifyEventLane = a_rootJson.value(k_notifyEventLaneJsonKey, Enum::EventLane::Invalid);
+
+	// 通知する際のフラグがtrueかfalseか
+	l_execution.m_notifyFlag = a_rootJson.value(k_notifyFlagJsonKey, false);
 }
 
 nlohmann::json FWK::Converter::InputComponentJsonConverter::SerializeNotifyComponentEventExecutionCondition(const InputComponent& a_inputComponent) const
@@ -116,12 +118,11 @@ nlohmann::json FWK::Converter::InputComponentJsonConverter::SerializeExecution(c
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_execution        = a_inputComponent.GetREFExecution();
-	      auto& l_editorNodeEditor = l_execution.m_editorNodeEditor;
-
-	l_rootJson[k_nodeEditorNodeEventJsonKey]  = l_editorNodeEditor.Serialize();
+	const auto& l_execution = a_inputComponent.GetREFExecution();
+	   
 	l_rootJson[k_notifyComponentEventJsonKey] = l_execution.m_notifyComponentEvent;
 	l_rootJson[k_notifyEventLaneJsonKey]      = l_execution.m_notifyEventLane;
+	l_rootJson[k_notifyFlagJsonKey]           = l_execution.m_notifyFlag;
 	
 	return l_rootJson;
 }

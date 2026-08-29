@@ -346,6 +346,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Input\Strategy\ComponentEventNotifyStrategyBase.h" />
+    <ClInclude Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Move\MoveComponent.h" />
@@ -484,6 +485,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
@@ -779,6 +781,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Move\MoveComponent.cpp" />

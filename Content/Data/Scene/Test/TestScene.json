@@ -21,13 +21,13 @@
                         "InitialPosition": {
                             "X": 0.4000000059604645,
                             "Y": 0.5,
-                            "Z": -7.5
+                            "Z": -10.0
                         },
                         "InitialRotation": {
-                            "W": 0.9600264430046082,
-                            "X": 0.2798222005367279,
-                            "Y": 0.00670233927667141,
-                            "Z": -0.001953553408384323
+                            "W": 0.9915341734886169,
+                            "X": 0.1296577751636505,
+                            "Y": 0.006922293454408646,
+                            "Z": -0.0009051906527020037
                         },
                         "InitialScale": {
                             "X": 1.0,
@@ -186,17 +186,6 @@
                 },
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
-                    },
-                    "PrefabInstanceNUMAllocator": {
-                        "IsAllocatedList": [
-                            true
-                        ]
-                    },
-                    "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895"
-                },
-                {
-                    "Prefab": {
                         "FilePath": "Content\\Data\\Prefab\\Test\\TestSkySphere.json"
                     },
                     "PrefabInstanceNUMAllocator": {
@@ -208,14 +197,14 @@
                 },
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Enemy\\Anubis\\Anubis.json"
+                        "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
                             true
                         ]
                     },
-                    "PrefabUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf"
+                    "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895"
                 },
                 {
                     "Prefab": {
@@ -227,6 +216,17 @@
                         ]
                     },
                     "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Enemy\\Anubis\\Anubis.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf"
                 }
             ]
         }

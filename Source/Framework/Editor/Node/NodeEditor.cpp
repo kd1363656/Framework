@@ -68,16 +68,31 @@ nlohmann::json FWK::Editor::NodeEditor::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }
-bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID)
+
+bool FWK::Editor::NodeEditor::ApplyNodePosition(const NodeEditorNode& a_nodeEditorNode)
 {
-	if (a_outputPinID == Constant::k_invalidNodeEditorID ||
-		a_inputPinID == Constant::k_invalidNodeEditorID)
+	FWK_ASSERT_RETURN_VALUE_IF(!m_editorContext, "ImNodesEditorContextが存在しないため、Node座標を反映できませんでした。", false);
+
+	if (!a_nodeEditorNode.FetchVALIsCreated()) { return false; }
+
+	ImNodes::EditorContextSet   (m_editorContext);
+	ImNodes::SetNodeGridSpacePos(a_nodeEditorNode.GetVALNodeID(), a_nodeEditorNode.GetREFNodePosition());
+
+	return true;
+}
+
+bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_inputPinID, const TypeAlias::NodeEditorID a_outputPinID)
+{
+	if (a_inputPinID == Constant::k_invalidNodeEditorID ||
+		a_outputPinID == Constant::k_invalidNodeEditorID)
 	{
 		return false;
 	}
 
 	// 自分自身のPinへLinkすることは許可しない
-	if (a_outputPinID == a_inputPinID) { return false; }
+	if (a_inputPinID == a_outputPinID) { return false; }
+
+	if (FetchVALHasLink(a_inputPinID, a_outputPinID)) { return false; }
 
 	// Node・Pin・Link全てのIDを同じAllocatorから払い出す
 	// こうすることでNodeEditor内部に同じIDが存在しないようにする
@@ -88,8 +103,8 @@ bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_outputPinI
 	Struct::NodeEditorLinkData l_linkData = {};
 
 	l_linkData.m_linkID      = l_linkID;
-	l_linkData.m_outputPinID = a_outputPinID;
 	l_linkData.m_inputPinID  = a_inputPinID;
+	l_linkData.m_outputPinID = a_outputPinID;
 
 	if (AddLink(l_linkData)) { return true; }
 
@@ -101,9 +116,9 @@ bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_outputPinI
 }
 bool FWK::Editor::NodeEditor::AddLink(const Struct::NodeEditorLinkData& a_linkData)
 {
-	if (a_linkData.m_linkID == Constant::k_invalidNodeEditorID      ||
-		a_linkData.m_outputPinID == Constant::k_invalidNodeEditorID ||
-		a_linkData.m_inputPinID == Constant::k_invalidNodeEditorID)
+	if (a_linkData.m_linkID == Constant::k_invalidNodeEditorID     ||
+		a_linkData.m_inputPinID == Constant::k_invalidNodeEditorID ||
+		a_linkData.m_outputPinID == Constant::k_invalidNodeEditorID)
 	{
 		return false;
 	}
@@ -119,7 +134,7 @@ bool FWK::Editor::NodeEditor::AddLink(const Struct::NodeEditorLinkData& a_linkDa
 	}
 
 	// 全く同じOutputPin->InputPinのLinkも重複して保持しない
-	if (FetchVALHasLink(a_linkData.m_outputPinID, a_linkData.m_inputPinID)) { return false; }
+	if (FetchVALHasLink(a_linkData.m_inputPinID, a_linkData.m_outputPinID)) { return false; }
 
 	m_linkDataList.emplace_back(a_linkData);
 
@@ -163,9 +178,9 @@ bool FWK::Editor::NodeEditor::FetchVALIsInputPinLinked(const TypeAlias::NodeEdit
 									return a_linkData.m_inputPinID == a_inputPinID;
 		                       });
 }
-bool FWK::Editor::NodeEditor::FetchVALHasLink(const TypeAlias::NodeEditorID a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID) const
+bool FWK::Editor::NodeEditor::FetchVALHasLink(const TypeAlias::NodeEditorID a_inputPinID, const TypeAlias::NodeEditorID a_outputPinID) const
 {
-	return std::ranges::any_of(m_linkDataList, [a_outputPinID, a_inputPinID](const auto& a_linkData)
+	return std::ranges::any_of(m_linkDataList, [a_inputPinID, a_outputPinID](const auto& a_linkData)
 		                       {
 									const bool l_isSameOutputPin = a_linkData.m_outputPinID == a_outputPinID;
 									const bool l_isSameInputPin  = a_linkData.m_inputPinID  == a_inputPinID;

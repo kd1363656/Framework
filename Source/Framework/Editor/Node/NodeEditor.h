@@ -22,7 +22,9 @@ namespace FWK::Editor
 
 		nlohmann::json Serialize() const;
 
-		bool AddLink(const TypeAlias::NodeEditorID     a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID);
+		bool ApplyNodePosition(const NodeEditorNode& a_nodeEditorNode);
+
+		bool AddLink(const TypeAlias::NodeEditorID     a_inputPinID, TypeAlias::NodeEditorID a_outputPinID);
 		bool AddLink(const Struct::NodeEditorLinkData& a_linkData);
 
 		void RemoveLink(const TypeAlias::NodeEditorID a_linkID);
@@ -32,7 +34,7 @@ namespace FWK::Editor
 		bool FetchVALIsInitialized() const;
 
 		bool FetchVALIsInputPinLinked(const TypeAlias::NodeEditorID a_inputPinID)                                              const;
-		bool FetchVALHasLink         (const TypeAlias::NodeEditorID a_outputPinID, const TypeAlias::NodeEditorID a_inputPinID) const;
+		bool FetchVALHasLink         (const TypeAlias::NodeEditorID a_inputPinID, const TypeAlias::NodeEditorID a_outputPinID) const;
 
 		const auto& GetREFLinkDataList() const { return m_linkDataList; }
 

@@ -20,7 +20,9 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_nodeEditorJsonKey      = "NodeEditor";
-		static constexpr std::string_view k_startNodeEditorJsonKey = "StartNodeEditor";
+		static constexpr std::string_view k_nodeEditorJsonKey                  = "NodeEditor";
+		static constexpr std::string_view k_startNodeEditorNodeJsonKey         = "StartNodeEditorNode";
+		static constexpr std::string_view k_rootConditionNodeEditorNodeJsonKey = "RootConditionNodeEditorNode";
+		static constexpr std::string_view k_executeNodeEditorNodeJsonKey       = "ExecuteNodeEditorNode";
 	};	
 }

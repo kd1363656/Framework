@@ -1396,6 +1396,12 @@
     <Filter Include="Source\Framework\Component\Input\Strategy">
       <UniqueIdentifier>{df38fd01-0d82-4a4a-b184-fd21934024c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Input\Strategy\Input">
+      <UniqueIdentifier>{be27c63a-c064-4046-9b98-3cad105e3fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Input\Strategy\Input\MouseRight">
+      <UniqueIdentifier>{000e3943-4836-481e-a24d-716d10010084}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2697,6 +2703,12 @@
     <ClInclude Include="Source\Framework\Component\Input\Strategy\ComponentEventNotifyStrategyBase.h">
       <Filter>Source\Framework\Component\Input\Strategy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.h">
+      <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3394,6 +3406,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.cpp">
       <Filter>Source\Framework\Component\Input\Inspector\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.cpp">
+      <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

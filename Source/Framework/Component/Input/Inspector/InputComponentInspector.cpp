@@ -12,30 +12,25 @@ void FWK::InputComponentInspector::Deserialize(const nlohmann::json& a_rootJson)
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
+void FWK::InputComponentInspector::PostDeserialize(InputComponent& a_inputComponent)
+{
+	FWK_ASSERT_RETURN_IF(!SynchronizeNodeGraph(a_inputComponent), "InputComponentのNodeGraphをPostDeserializeで復元できませんでした。");
+
+	// NodeEditorNodeへ保存されているGridSpace座標を
+	// ImNodes側のEditorContextへ反映する
+	ApplyNodePositions(a_inputComponent);
+}
+
 void FWK::InputComponentInspector::EditInspector(InputComponent& a_inputComponent)
 {
 	if (!m_nodeEditor.BeginDraw()) { return; }
 
-	// Node/Pin/Linkが不足していた場合は
-	// 現在のInputComponentの固定構造に合わせて生成する
-	if (!SynchronizeNodeGraph(a_inputComponent))
-	{
-		m_nodeEditor.EndDraw();
-
-		return;
-	}
-
-	// 保存されているNode座標をImNodesへ反映する
-	// 毎フレーム実行するとドラッグ操作を上書きするため
-	// 最初の一フレームだけ実行
-	if (!m_isDefaultNodePositionApplied)
-	{
-		ApplyDefaultNodePositions(a_inputComponent);
-
-		m_isDefaultNodePositionApplied = true;
-	}
+	// 前フレームのPopupで作成されたConditionがある場合、
+	// Nodeを描画すより前にDrop位置をImNodesへ反映する
+	ApplyPendingConditionNodePosition(a_inputComponent);
 
 	DrawStartNode        ();
+	DrawConditionNode    ();
 	DrawConditionNodeList(a_inputComponent);
 	DrawExecuteNode      (a_inputComponent);
 
@@ -45,6 +40,14 @@ void FWK::InputComponentInspector::EditInspector(InputComponent& a_inputComponen
 	// ユーザーがNodeをドラッグした後の最新座標を
 	// NodeEditorNodeのメンバへ戻す
 	SynchronizeNodePositionList(a_inputComponent);
+
+	// ImNodesのリンク捜査結果はEndNodeEditor()後に取得する必要がある
+	// そのためNodeEditorの描画が完了してから
+	// Condition親ノードのOutputPinからリンクが空白へドロップされたか確認する
+	RequestConditionNodeCreatePopup();
+
+	// Linkを話した位置へComponentEvent選択Popupを表示する
+	DrawConditionNodeCreatePopup(a_inputComponent);
 }
 
 nlohmann::json FWK::InputComponentInspector::Serialize() const
@@ -54,9 +57,13 @@ nlohmann::json FWK::InputComponentInspector::Serialize() const
 
 bool FWK::InputComponentInspector::SynchronizeNodeGraph(InputComponent& a_inputComponent)
 {
-	if (!SynchronizeStartNode())                         { return false; }
+	// 固定で存在する上位MNodeを先に生成する
+	if (!SynchronizeStartNode())     { return false; }
+	if (!SynchronizeConditionNode()) { return false; }
+	if (!SynchronizeExecuteNode())   { return false; }
+
+	// Conditionノードより後のノードを生成する
 	if (!SynchronizeConditionNodeList(a_inputComponent)) { return false; }
-	if (!SynchronizeExecuteNode(a_inputComponent))       { return false; }
 
 	SynchronizeLinkList(a_inputComponent);
 
@@ -68,65 +75,109 @@ bool FWK::InputComponentInspector::SynchronizeStartNode()
 
 	// Startは謬六を受け取るNodeではないため
 	// InputPinを持たせない
-	const auto& l_inputPinIDList = m_startNodeEditor.GetREFInputPinIDList();
-
-	if (!l_inputPinIDList.empty()) 
+	if (const auto& l_inputPinIDList = m_startNodeEditorNode.GetREFInputPinIDList();
+		!l_inputPinIDList.empty())
 	{
-		m_startNodeEditor.ReleaseInputPinIDList(l_nodeEditorAllocator);
+		m_startNodeEditorNode.ReleaseInputPinIDList(l_nodeEditorAllocator);
 	}
 
 	// NodeIDがまだ存在しない場合だけ生成する
-	if (!m_startNodeEditor.FetchVALIsCreated())
+	if (!m_startNodeEditorNode.FetchVALIsCreated())
 	{
-		if (!m_startNodeEditor.ApplyNodeID(l_nodeEditorAllocator)) { return false; }
+		if (!m_startNodeEditorNode.ApplyNodeID(l_nodeEditorAllocator)) { return false; }
 
 		// 新しく作ったStartだけ初期座標を設定する
 		// DeserializeされたStartには保存座標が既に存在するため
 		// ここでは上書きされない
-		m_startNodeEditor.SetNodePosition(ImVec2{ k_startNodePositionX, k_startNodePositionY });
+		m_startNodeEditorNode.SetNodePosition(ImVec2{});
 	}
 
 	// StartはoutputPinを1個だけ持つ
-	const auto& l_outputPinIDList = m_startNodeEditor.GetREFOutputPinIDList();
-
-	if (l_outputPinIDList.size() != k_primaryPinCount)
+	if (const auto& l_outputPinIDList = m_startNodeEditorNode.GetREFOutputPinIDList();
+		l_outputPinIDList.size() != k_primaryPinCount)
 	{
-		m_startNodeEditor.ReleaseOutputPinIDList(l_nodeEditorAllocator);
+		m_startNodeEditorNode.ReleaseOutputPinIDList(l_nodeEditorAllocator);
 
-		if (!m_startNodeEditor.AddOutputPinID(l_nodeEditorAllocator)) { return false; }
+		if (!m_startNodeEditorNode.AddOutputPinID(l_nodeEditorAllocator)) { return false; }
 	}
 
 	return true;
 }
-bool FWK::InputComponentInspector::SynchronizeExecuteNode(InputComponent& a_inputComponent)
+bool FWK::InputComponentInspector::SynchronizeConditionNode()
 {
 	auto& l_nodeEditorAllocator = m_nodeEditor.GetMutableREFNodeEditorAllocator();
-	auto& l_execution           = a_inputComponent.GetMutableREFExecution      ();
-	auto& l_executeNodeEditor   = l_execution.m_editorNodeEditor;
 
-	// Executeは他Nodeへ接続する必要がないため
-	// OutputPinを持たない
-	if (const auto& l_outputPintIDList = l_executeNodeEditor.GetREFOutputPinIDList();
-		!l_outputPintIDList.empty())
+	// Condition[0]などを束ねる親Conditionノード
+	if (!m_rootConditionNodeEditorNode.FetchVALIsCreated())
 	{
-		l_executeNodeEditor.ReleaseOutputPinIDList(l_nodeEditorAllocator);
+		if (!m_rootConditionNodeEditorNode.ApplyNodeID(l_nodeEditorAllocator))
+		{
+			return false;
+		}
+
+		m_rootConditionNodeEditorNode.SetNodePosition(ImVec2{ k_initialRootConditionNodePositionX, k_initialRootConditionNodePositionY });
 	}
 
-	// ExecuteのNodeIDがまだ存在しない場合だけ生成する
-	if (!l_executeNodeEditor.FetchVALIsCreated())
-	{
-		if (!l_executeNodeEditor.ApplyNodeID(l_nodeEditorAllocator)) { return false; }
-
-		l_executeNodeEditor.SetNodePosition(ImVec2{ k_executeNodePositionX, k_executeNodePositionY });
-	}
-
-	// ExecuteはStart空接続されるInputPinを1個だけ持つ
-	if (const auto& l_inputPinIDList = l_executeNodeEditor.GetREFInputPinIDList();
+	// Start -> Condition
+	// の接続を受け取るInputPinを1個持たせる
+	if (const auto& l_inputPinIDList = m_rootConditionNodeEditorNode.GetREFInputPinIDList();
 		l_inputPinIDList.size() != k_primaryPinCount)
 	{
-		l_executeNodeEditor.ReleaseInputPinIDList(l_nodeEditorAllocator);
+		m_rootConditionNodeEditorNode.ReleaseInputPinIDList(l_nodeEditorAllocator);
 
-		if (!l_executeNodeEditor.AddInputPinID(l_nodeEditorAllocator)) { return false; }
+		if (!m_rootConditionNodeEditorNode.AddInputPinID(l_nodeEditorAllocator))
+		{
+			return false;
+		}
+	}
+
+	// Condition -> Condition[0]
+	// Condition -> Condition[1]
+	// の接続元となるOutputPinを1個持たせる
+	if (const auto& l_outputPinIDList = m_rootConditionNodeEditorNode.GetREFOutputPinIDList();
+		l_outputPinIDList.size() != k_primaryPinCount)
+	{
+		m_rootConditionNodeEditorNode.ReleaseOutputPinIDList(l_nodeEditorAllocator);
+
+		if (!m_rootConditionNodeEditorNode.AddOutputPinID(l_nodeEditorAllocator))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+bool FWK::InputComponentInspector::SynchronizeExecuteNode()
+{
+	auto& l_nodeEditorAllocator = m_nodeEditor.GetMutableREFNodeEditorAllocator();
+
+	// Executeは終端ノードなので
+	// OutputPinは持たない
+	if (const auto& l_outputPinIDList = m_executeNodeEditorNode.GetREFOutputPinIDList();
+		!l_outputPinIDList.empty())
+	{
+		m_executeNodeEditorNode.ReleaseOutputPinIDList(l_nodeEditorAllocator);
+	}
+
+	// Execute自身のNodeIDをAllocatorから発行する
+	if (!m_executeNodeEditorNode.FetchVALIsCreated())
+	{
+		if (!m_executeNodeEditorNode.ApplyNodeID(l_nodeEditorAllocator)) { return false; }
+
+		m_executeNodeEditorNode.SetNodePosition(ImVec2{ k_initialExecuteNodePositionX, k_initialExecuteNodePositionY });
+	}
+
+	// Start -> Execute
+	// の接続を受け取るInputPinを1個持つ
+	if (const auto& l_inputPinIDList = m_executeNodeEditorNode.GetREFInputPinIDList();
+		l_inputPinIDList.size() != k_primaryPinCount)
+	{
+		m_executeNodeEditorNode.ReleaseInputPinIDList(l_nodeEditorAllocator);
+
+		if (!m_executeNodeEditorNode.AddInputPinID(l_nodeEditorAllocator))
+		{
+			return false;
+		}
 	}
 
 	return true;
@@ -135,16 +186,14 @@ bool FWK::InputComponentInspector::SynchronizeConditionNodeList(InputComponent& 
 {
 	auto& l_nodeEditorAllocator = m_nodeEditor.GetMutableREFNodeEditorAllocator                           ();
 	auto& l_conditionList       = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
-
-	auto l_conditionIndex = k_initialConditionIndex;
-
-	while (l_conditionIndex < l_conditionList.size())
+	
+	for (std::size_t l_conditionIndex = 0ULL; l_conditionIndex < l_conditionList.size(); ++l_conditionIndex)
 	{
 		auto& l_condition           = l_conditionList[l_conditionIndex];
 		auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
 
-		// ConditionはStartから接続されるだけなので
-		// OutputPinは持たない
+		// Condition[1]は現在終端ノードなので
+		// OutputPinを持たない
 		if (const auto& l_outputPinIDList = l_conditionNodeEditor.GetREFOutputPinIDList();
 			!l_outputPinIDList.empty())
 		{
@@ -157,168 +206,200 @@ bool FWK::InputComponentInspector::SynchronizeConditionNodeList(InputComponent& 
 		{
 			if (!l_conditionNodeEditor.ApplyNodeID(l_nodeEditorAllocator)) { return false; }
 
-			const float l_conditionPositionY = k_conditionNodeFirstPositionY + k_conditionNodeVerticalInterval * static_cast<float>(l_conditionIndex);
+			const float l_conditionPositionY = k_initialChildConditionNodePositionY + k_childConditionNodeVerticalInterval * static_cast<float>(l_conditionIndex);
 
-			l_conditionNodeEditor.SetNodePosition(ImVec2{ k_conditionNodePositionX, l_conditionPositionY });
+			l_conditionNodeEditor.SetNodePosition(ImVec2{ k_initialChildConditionNodePositionX, l_conditionPositionY });
 		}
 
-		// ConditionはStartからLinkされるInputPinを
-		// 必ず一個だけ持つ
+		// 親Conditionかｒ接続されるInputPinを1個持つ
 		if (const auto& l_inputPinIDList = l_conditionNodeEditor.GetREFInputPinIDList();
 			l_inputPinIDList.size() != k_primaryPinCount)
 		{
 			l_conditionNodeEditor.ReleaseInputPinIDList(l_nodeEditorAllocator);
 
 			if (!l_conditionNodeEditor.AddInputPinID(l_nodeEditorAllocator)) { return false; }
-		}
-
-		++l_conditionIndex;
+		}	
 	}
 
 	return true;
 }
 void FWK::InputComponentInspector::SynchronizeLinkList(const InputComponent& a_inputComponent)
 {
-	const auto& l_startOutputPinIDList = m_startNodeEditor.GetREFOutputPinIDList();
+	const auto& l_startOutputPinIDList     = m_startNodeEditorNode.GetREFOutputPinIDList        ();
+	const auto& l_conditionInputPinIDList  = m_rootConditionNodeEditorNode.GetREFInputPinIDList ();
+	const auto& l_conditionOutputPinIDList = m_rootConditionNodeEditorNode.GetREFOutputPinIDList();
+	const auto& l_executeInputPinIDList    = m_executeNodeEditorNode.GetREFInputPinIDList       ();
 
-	if (l_startOutputPinIDList.empty()) { return; }
+	// 固定NodeのPinが揃っていなければ
+	// Graphを構築できない
+	if (l_startOutputPinIDList.empty()      ||
+		l_conditionInputPinIDList.empty()   ||
+		l_conditionOutputPinIDList.empty() ||
+		l_executeInputPinIDList.empty())
+	{
+		return;
+	}
 
-	const auto l_startOutputPinID = l_startOutputPinIDList[k_primaryPinIndex];
+	const auto l_startOutputPinID     = l_startOutputPinIDList    [k_primaryPinIndex];
+	const auto l_conditionInputPinID  = l_conditionInputPinIDList [k_primaryPinIndex];
+	const auto l_conditionOutputPinID = l_conditionOutputPinIDList[k_primaryPinIndex];
+	const auto l_executeInputPinID    = l_executeInputPinIDList   [k_primaryPinIndex];
 
-	      auto  l_linkIndex    = k_initialLinkIndex;
+	// 不要になったLinkを削除
 	const auto& l_linkDataList = m_nodeEditor.GetREFLinkDataList();
+	      auto  l_linkIndex    = k_initialLinkIndex;
 
+	// RemoveLink()するとvector内部の要素が移動するため
+	// 削除時に同じIndexを再確認できるwhileを使用する
 	while (l_linkIndex < l_linkDataList.size())
 	{
-		const auto& l_linkData =l_linkDataList[l_linkIndex];
+		const auto& l_linkData = l_linkDataList[l_linkIndex];
 
-		// 現在許可されている接続元は
-		// StartのOutputPinだけ
-		const bool l_isStartOutputPin  = l_linkData.m_outputPinID == l_startOutputPinID;
-		const bool l_isAllowedInputPin = FetchVALIsAllowedInputPin(a_inputComponent, l_linkData.m_inputPinID);
-
-		if (l_isStartOutputPin &&
-			l_isAllowedInputPin)
+		// リンクすることが許されているかどうかを確認し、許されているなら
+		// インデックスをインクリメントして後続の処理を飛ばす
+		if (FetchVALIsAllowedLink(a_inputComponent, l_linkData.m_inputPinID, l_linkData.m_outputPinID))
 		{
 			++l_linkIndex;
 
 			continue;
 		}
 
-		// RemoveLink(9でvectorが変化する前に
-		// LinkIDだけ値で取得しておく
 		const auto l_removeLinkID = l_linkData.m_linkID;
 
 		m_nodeEditor.RemoveLink(l_removeLinkID);
 	}
 
-	const auto& l_conditionList = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList();
-
-	auto l_conditionIndex = k_initialConditionIndex;
-
-	while (l_conditionIndex < l_conditionList.size())
+	// Start -> Condition
+	if (!m_nodeEditor.FetchVALHasLink(l_conditionInputPinID, l_startOutputPinID))
 	{
-		const auto& l_condition               = l_conditionList[l_conditionIndex];
-		const auto& l_conditionInputPinIDList = l_condition.m_editorNodeEditor.GetREFInputPinIDList();
-
-		if (!l_conditionInputPinIDList.empty()) 
-		{
-			const auto l_conditionInputPinID = l_conditionInputPinIDList[k_primaryPinIndex];
-
-			// Start->このConditionがまだ存在していない場合だけ
-			// Linkを新規生成する
-			if (!m_nodeEditor.FetchVALHasLink(l_startOutputPinID, l_conditionInputPinID))
-			{
-				m_nodeEditor.AddLink(l_startOutputPinID, l_conditionInputPinID);
-			}
-		}
-
-		++l_conditionIndex;
+		m_nodeEditor.AddLink(l_conditionInputPinID, l_startOutputPinID);
 	}
 
-	const auto& l_execution             = a_inputComponent.GetREFExecution                   ();
-	const auto& l_executeInputPinIDList = l_execution.m_editorNodeEditor.GetREFInputPinIDList();
+	// Start -> Execute
+	if (!m_nodeEditor.FetchVALHasLink(l_executeInputPinID, l_startOutputPinID))
+	{
+		m_nodeEditor.AddLink(l_executeInputPinID, l_startOutputPinID);
+	}
 
-	if (l_executeInputPinIDList.empty()) { return; }
+	// Condition -> Condition[i]
+	const auto& l_conditionList  = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList();
+	      
+	for (const auto& l_condition : l_conditionList)
+	{
+		const auto& l_childConditionInputPinIDList = l_condition.m_editorNodeEditor.GetREFInputPinIDList();
 
-	const auto l_executeInputPinID = l_executeInputPinIDList[k_primaryPinIndex];
+		if (l_childConditionInputPinIDList.empty()) { continue; }
 
-	if (m_nodeEditor.FetchVALHasLink(l_startOutputPinID, l_executeInputPinID)) { return; }
+		const auto l_childConditionInputPinID = l_childConditionInputPinIDList[k_primaryPinIndex];
 
-	m_nodeEditor.AddLink(l_startOutputPinID, l_executeInputPinID);
+		if (m_nodeEditor.FetchVALHasLink(l_childConditionInputPinID, l_conditionOutputPinID)) { continue; }
+
+		m_nodeEditor.AddLink(l_childConditionInputPinID, l_conditionOutputPinID);
+	}
 }
 void FWK::InputComponentInspector::SynchronizeNodePositionList(InputComponent& a_inputComponent)
 {
-	// ImNodes上でユーザーが移動させた現在位置を取得して
-	// NodeEditorNode自身が保持する座標へ戻す
-	if (m_startNodeEditor.FetchVALIsCreated())
+	// Startノード
+	if (m_startNodeEditorNode.FetchVALIsCreated())
 	{
-		m_startNodeEditor.SetNodePosition(ImNodes::GetNodeGridSpacePos(m_startNodeEditor.GetVALNodeID()));
+		m_startNodeEditorNode.SetNodePosition(ImNodes::GetNodeGridSpacePos(m_startNodeEditorNode.GetVALNodeID()));
 	}
 
-	auto& l_conditionList  = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
-	auto  l_conditionIndex = k_initialConditionIndex;
-
-	while (l_conditionIndex < l_conditionList.size())
+	// Conditionルートノード
+	if (m_rootConditionNodeEditorNode.FetchVALIsCreated())
 	{
-		auto& l_condition           = l_conditionList[l_conditionIndex];
+		m_rootConditionNodeEditorNode.SetNodePosition(ImNodes::GetNodeGridSpacePos(m_rootConditionNodeEditorNode.GetVALNodeID()));
+	}
+
+	// Executeノード
+	if (m_executeNodeEditorNode.FetchVALIsCreated())
+	{
+		m_executeNodeEditorNode.SetNodePosition(ImNodes::GetNodeGridSpacePos(m_executeNodeEditorNode.GetVALNodeID()));
+	}
+
+	// Conditionルートノードの子ノード
+	auto& l_conditionList  = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
+	
+	for (auto& l_condition : l_conditionList)
+	{
 		auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
 
-		if (l_conditionNodeEditor.FetchVALIsCreated())
-		{
-			l_conditionNodeEditor.SetNodePosition(ImNodes::GetNodeGridSpacePos(l_conditionNodeEditor.GetVALNodeID()));
-		}
+		if (!l_conditionNodeEditor.FetchVALIsCreated()) { continue; }
 
-		++l_conditionIndex;
+		l_conditionNodeEditor.SetNodePosition(ImNodes::GetNodeGridSpacePos(l_conditionNodeEditor.GetVALNodeID()));
 	}
-
-	auto& l_execution         = a_inputComponent.GetMutableREFExecution();
-	auto& l_executeNodeEditor = l_execution.m_editorNodeEditor;
-
-	if (!l_executeNodeEditor.FetchVALIsCreated()) { return; }
-
-	l_executeNodeEditor.SetNodePosition(ImNodes::GetNodeGridSpacePos(l_executeNodeEditor.GetVALNodeID()));
 }
 
-void FWK::InputComponentInspector::ApplyDefaultNodePositions(InputComponent& a_inputComponent)
+void FWK::InputComponentInspector::ApplyNodePositions(const InputComponent& a_inputComponent)
 {
-	if (m_startNodeEditor.FetchVALIsCreated())
+	// Startノードの位置をエディターに反映
+	if (m_startNodeEditorNode.FetchVALIsCreated())
 	{
-		ImNodes::SetNodeGridSpacePos(m_startNodeEditor.GetVALNodeID(), m_startNodeEditor.GetREFNodePosition());
+		FWK_ASSERT_RETURN_IF(!m_nodeEditor.ApplyNodePosition(m_startNodeEditorNode), "Startノードの座標反映に失敗しました。");
 	}
+
+	// Conditionノードの位置をエディターに反映
+	if (m_rootConditionNodeEditorNode.FetchVALIsCreated())
+	{
+		FWK_ASSERT_RETURN_IF(!m_nodeEditor.ApplyNodePosition(m_rootConditionNodeEditorNode), "Conditionノードの座標反映に失敗しました。");
+	}
+
+	// Executeノードの位置をエディターに反映
+	if (m_executeNodeEditorNode.FetchVALIsCreated())
+	{
+		FWK_ASSERT_RETURN_IF(!m_nodeEditor.ApplyNodePosition(m_executeNodeEditorNode), "Executeノードの座標反映に失敗しました。");
+	}
+
+	const auto& l_conditionList  = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList();
+	     
+	for (const auto& l_condition : l_conditionList)
+	{
+		const auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
+
+		if (!l_conditionNodeEditor.FetchVALIsCreated())
+		{
+			continue;
+		}
+
+		FWK_ASSERT_RETURN_IF(!m_nodeEditor.ApplyNodePosition(l_conditionNodeEditor), "Condition子ノードの座標反映に失敗しました。");
+	}
+}
+void FWK::InputComponentInspector::ApplyPendingConditionNodePosition(InputComponent& a_inputComponent)
+{
+	// 配置待ちNodeが存在しなければ何もしない
+	if (m_pendingConditionNodePositionNodeID == Constant::k_invalidNodeEditorID) { return; }
 
 	auto& l_conditionList = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
 
-	auto l_conditionIndex = k_initialConditionIndex;
-
-	while (l_conditionIndex < l_conditionList.size())
+	for (auto& l_condition : l_conditionList)
 	{
-		auto& l_condition           = l_conditionList[l_conditionIndex];
 		auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
 
-		if (l_conditionNodeEditor.FetchVALIsCreated()) 
-		{
-			ImNodes::SetNodeGridSpacePos(l_conditionNodeEditor.GetVALNodeID(), l_conditionNodeEditor.GetREFNodePosition());
-		}
+		if (l_conditionNodeEditor.GetVALNodeID() != m_pendingConditionNodePositionNodeID) { continue; }
 
-		++l_conditionIndex;
+		ImNodes::SetNodeScreenSpacePos(l_conditionNodeEditor.GetVALNodeID(), m_pendingConditionNodeCreateScreenPosition);
+
+		// ImNodesへ設定した位置をGridSpaceとして取り直す
+		l_conditionNodeEditor.SetNodePosition(ImNodes::GetNodeGridSpacePos(l_conditionNodeEditor.GetVALNodeID()));
+
+		m_pendingConditionNodePositionNodeID       = Constant::k_invalidNodeEditorID;
+		m_pendingConditionNodeCreateScreenPosition = {};
+
+		break;
 	}
 
-	auto& l_execution         = a_inputComponent.GetMutableREFExecution();
-	auto& l_executeNodeEditor = l_execution.m_editorNodeEditor;
-
-	if (!l_executeNodeEditor.FetchVALIsCreated()) { return; }
-
-	ImNodes::SetNodeGridSpacePos(l_executeNodeEditor.GetVALNodeID(), l_executeNodeEditor.GetREFNodePosition());
+	// 一回反映したら予約を解除
+	m_pendingConditionNodePositionNodeID       = Constant::k_invalidNodeEditorID;
+	m_pendingConditionNodeCreateScreenPosition = {};
 }
 
 void FWK::InputComponentInspector::DrawStartNode() const
 {
-	const auto& l_outputPinIDList = m_startNodeEditor.GetREFOutputPinIDList();
+	const auto& l_outputPinIDList = m_startNodeEditorNode.GetREFOutputPinIDList();
 
 	if (l_outputPinIDList.empty()) { return; }
 
-	ImNodes::BeginNode(m_startNodeEditor.GetVALNodeID());
+	ImNodes::BeginNode(m_startNodeEditorNode.GetVALNodeID());
 
 	ImNodes::BeginNodeTitleBar();
 	ImGui::TextUnformatted    (k_startNodeLabel.data());
@@ -329,97 +410,299 @@ void FWK::InputComponentInspector::DrawStartNode() const
 	ImNodes::EndOutputAttribute  ();
 	ImNodes::EndNode             ();
 }
-void FWK::InputComponentInspector::DrawConditionNodeList(InputComponent& a_inputComponent) const
+void FWK::InputComponentInspector::DrawConditionNode() const
 {
-	auto& l_conditionList  = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
-	auto  l_conditionIndex = k_initialConditionIndex;
+	const auto& l_inputPinIDList  = m_rootConditionNodeEditorNode.GetREFInputPinIDList();
+	const auto& l_outputPinIDList = m_rootConditionNodeEditorNode.GetREFOutputPinIDList();
 
-	while (l_conditionIndex < l_conditionList.size())
+	if (l_inputPinIDList.empty() ||
+		l_outputPinIDList.empty())
 	{
-		      auto& l_condition           = l_conditionList[l_conditionIndex];
-		      auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
-		const auto& l_inputPinIDList      = l_conditionNodeEditor.GetREFInputPinIDList();
-
-		if (l_inputPinIDList.empty())
-		{
-			++l_conditionIndex;
-			
-			continue;
-		}
-
-		ImNodes::BeginNode        (l_conditionNodeEditor.GetVALNodeID());
-		ImGui::PushID             (l_conditionNodeEditor.GetVALNodeID());
-		ImNodes::BeginNodeTitleBar();
-		ImGui::TextUnformatted    (k_conditionNodeLabel.data());
-		ImNodes::EndNodeTitleBar  ();
-
-		// ConditionはStartから入力されるだけなので
-		// InputPinだけを持つ
-		ImNodes::BeginInputAttribute(l_inputPinIDList[k_primaryPinIndex]);
-		ImGui::TextUnformatted       (k_inputPinLabel.data());
-		ImNodes::EndInputAttribute   ();
-
-		Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel, l_condition.m_receiveComponentEvent);
-		Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel, l_condition.m_checkEventLane);
-
-		ImGui::Checkbox(k_expectedObserverResultLabel.data(), &l_condition.m_expectedObserverResult);
-		ImGui::PopID   ();
-
-		ImNodes::EndNode();
-
-		++l_conditionIndex;
+		return;
 	}
-}
-void FWK::InputComponentInspector::DrawExecuteNode(InputComponent& a_inputComponent) const
-{
-	      auto& l_execution         = a_inputComponent.GetMutableREFExecution();
-	      auto& l_executeNodeEditor = l_execution.m_editorNodeEditor;
-	const auto& l_inputPinIDList    = l_executeNodeEditor.GetREFInputPinIDList();
 
-	if (l_inputPinIDList.empty()) { return; }
+	ImNodes::BeginNode(m_rootConditionNodeEditorNode.GetVALNodeID());
+	ImGui::PushID     (m_rootConditionNodeEditorNode.GetVALNodeID());
 
-	ImNodes::BeginNode(l_executeNodeEditor.GetVALNodeID());
-	ImGui::PushID     (l_executeNodeEditor.GetVALNodeID());
-
+	// タイトルバーの描画
 	ImNodes::BeginNodeTitleBar();
-	ImGui::TextUnformatted    (k_executeNodeLabel.data());
+	ImGui::TextUnformatted    (k_conditionNodeLabel.data());
 	ImNodes::EndNodeTitleBar  ();
 
+	// Inputピンの描画
 	ImNodes::BeginInputAttribute(l_inputPinIDList[k_primaryPinIndex]);
 	ImGui::TextUnformatted      (k_inputPinLabel.data());
 	ImNodes::EndInputAttribute  ();
 
-	// InputComponentが実際に通知する
-	Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel, l_execution.m_notifyComponentEvent);
-	Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyEventLaneLabel,      l_execution.m_notifyEventLane);
+	// Outputピンの描画
+	ImNodes::BeginOutputAttribute(l_outputPinIDList[k_primaryPinIndex]);
+	ImGui::TextUnformatted       (k_outputPinLabel.data());
+	ImNodes::EndOutputAttribute  ();
+
+	ImGui::PopID    ();
+	ImNodes::EndNode();
+}
+void FWK::InputComponentInspector::DrawConditionNodeList(InputComponent& a_inputComponent) const
+{
+	auto& l_conditionList  = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
+	
+	for (std::size_t l_conditionIndex = 0ULL; l_conditionIndex < l_conditionList.size(); ++l_conditionIndex)
+	{
+			  auto& l_condition           = l_conditionList[l_conditionIndex];
+		const auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
+		const auto& l_inputPinIDList      = l_conditionNodeEditor.GetREFInputPinIDList();
+
+		if (l_inputPinIDList.empty()) { continue; }
+
+		ImNodes::BeginNode(l_conditionNodeEditor.GetVALNodeID());
+		ImGui::PushID     (std::addressof(l_condition));
+
+		const auto& l_conditionNodeText = std::format("{}[{}]", k_conditionNodeLabel.data(), std::to_string(l_conditionIndex));
+
+		ImNodes::BeginNodeTitleBar();
+		ImGui::TextUnformatted    (l_conditionNodeText.c_str());
+		ImNodes::EndNodeTitleBar  ();
+
+		// Condition[i]は親Conditionから入力されるのでInputPinだけを持つ
+		ImNodes::BeginInputAttribute(l_inputPinIDList[k_primaryPinIndex]);
+		ImGui::TextUnformatted       (k_inputPinLabel.data());
+		ImNodes::EndInputAttribute   ();
+
+		Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel,          l_condition.m_receiveComponentEvent);
+		Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyEventLaneLabel,               l_condition.m_checkEventLane);
+		ImGui::Checkbox                                             (k_expectedObserverResultLabel.data(), &l_condition.m_expectedObserverResult);
+		ImGui::PopID                                                ();
+
+		ImNodes::EndNode();
+	}
+}
+void FWK::InputComponentInspector::DrawConditionNodeCreatePopup(InputComponent& a_inputComponent)
+{
+	if (!ImGui::IsPopupOpen(k_conditionNodeCreatePopupLabel.data())) { return; }
+
+	// Linkを話した位置へPopupを表示する
+	ImGui::SetNextWindowPos(m_conditionNodeDropScreenPosition, ImGuiCond_Appearing);
+
+	if (!ImGui::BeginPopup(k_conditionNodeCreatePopupLabel.data())) { return; }
+
+	// 今回OpenPopup()を呼ぶのはLinkをDropした瞬間なのでこの座標 = Linkを話した座標になる
+	const auto& l_nodeCreateScreenPosition = ImGui::GetMousePosOnOpeningCurrentPopup();
+
+	ImGui::TextUnformatted(k_notifyComponentEventLabel.data());
+
+	if (!ImGui::BeginListBox(k_conditionNodeCreateListBoxLabel.data())) 
+	{
+		ImGui::EndPopup();
+
+		return; 
+	}
+	
+	const auto& l_componentEventRegistry = Utility::StringValueBidirectionalRegistry<Enum::ComponentEvent>::GetInstance();
+	const auto& l_componentEventMap      = l_componentEventRegistry.GetREFStringToValueMap                             ();
+
+	bool l_hasUnusedComponentEvent = false;
+
+	for (const auto& [l_componentEventName, l_componentEvent] : l_componentEventMap)
+	{
+		// Invalidは実際のConditionとして作成しない
+		if (l_componentEvent == Enum::ComponentEvent::Invalid) { continue; }
+
+		// 既に別Conditionで使用されているイベントは表示しない
+		if (FetchVALIsComponentEventUsed(a_inputComponent, l_componentEvent)) { continue; }
+
+		l_hasUnusedComponentEvent = true;
+
+		if (!ImGui::Selectable(l_componentEventName.c_str())) { continue; }
+
+		if (AddConditionNode(l_componentEvent, l_nodeCreateScreenPosition, a_inputComponent))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+
+		break;
+	}
+
+	if (!l_hasUnusedComponentEvent)
+	{
+		ImGui::TextDisabled("%s", k_noUnusedComponentEventLabel.data());
+	}
+
+	ImGui::EndListBox();
+	ImGui::EndPopup  ();
+}
+void FWK::InputComponentInspector::DrawExecuteNode(InputComponent& a_inputComponent) const
+{
+	      auto& l_execution      = a_inputComponent.GetMutableREFExecution     ();
+		  auto& l_notifyStrategy = a_inputComponent.GetMutableREFNotifyStrategy();
+	const auto& l_inputPinIDList = m_executeNodeEditorNode.GetREFInputPinIDList();
+
+	if (l_inputPinIDList.empty()) { return; }
+
+	ImNodes::BeginNode(m_executeNodeEditorNode.GetVALNodeID());
+	ImGui::PushID     (m_executeNodeEditorNode.GetVALNodeID());
+
+	// タイトルバーの描画
+	ImNodes::BeginNodeTitleBar();
+	ImGui::TextUnformatted    (k_executeNodeLabel.data());
+	ImNodes::EndNodeTitleBar  ();
+
+	// Inputピンの描画
+	ImNodes::BeginInputAttribute(l_inputPinIDList[k_primaryPinIndex]);
+	ImGui::TextUnformatted      (k_inputPinLabel.data());
+	ImNodes::EndInputAttribute  ();
+
+	// セレクターからストラテジーが生成されたなら適用
+	Utility::FactoryRadioButtonSelector<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(k_componentEventNotifyStrategyRadioButtonSelectorLabel, l_notifyStrategy);
+	Utility::StringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyComponentEventLabel,                            l_execution.m_notifyComponentEvent);
+	Utility::StringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyEventLaneLabel,                                 l_execution.m_notifyEventLane);
+	ImGui::Checkbox                                                                          (k_notifyFlagLabel.data(),                               &l_execution.m_notifyFlag);
 
 	ImGui::PopID    ();
 	ImNodes::EndNode();
 }
 
-bool FWK::InputComponentInspector::FetchVALIsAllowedInputPin(const InputComponent& a_inputComponent, const TypeAlias::NodeEditorID a_inputPinID) const
+void FWK::InputComponentInspector::RequestConditionNodeCreatePopup()
 {
-	const auto& l_conditionList  = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList();
-	      auto  l_conditionIndex = k_initialConditionIndex;
+	const auto& l_rootConditionOutputPinIDList = m_rootConditionNodeEditorNode.GetREFOutputPinIDList();
 
-	while (l_conditionIndex < l_conditionList.size())
+	if (l_rootConditionOutputPinIDList.empty()) { return; }
+
+	auto l_startedPinID = Constant::k_invalidNodeEditorID;
+
+	// 第二引数false
+	// 既存Linkを切り離してDropした場合は対象にせず、
+	// 新しくPinから延ばしたLinkを空白へDrop下場合だけ検出する
+	if (!ImNodes::IsLinkDropped(std::addressof(l_startedPinID), false)) { return; }
+
+	// RootConditionのOutputPin以外から延ばされたLinkでは
+	// Condition作成Popupを開かない
+	if (l_startedPinID != l_rootConditionOutputPinIDList[k_primaryPinIndex]) { return; }
+
+	// Popupと新規Conditionノードの両方で使用するため、
+	// Linkを話した瞬間のScreenSpace座標を保存する
+	m_conditionNodeDropScreenPosition = ImGui::GetMousePos();
+
+	ImGui::OpenPopup(k_conditionNodeCreatePopupLabel.data());
+}
+
+bool FWK::InputComponentInspector::AddConditionNode(const Enum::ComponentEvent a_componentEvent, const ImVec2 & a_nodeScreenPosition, InputComponent & a_inputComponent)
+{
+	// InvalidはConditionとして生成しない
+	if (a_componentEvent == Enum::ComponentEvent::Invalid) { return false; }
+
+	// Popup以外からこの間数が呼ばれるようになった場合にも
+	// ComponentEventの重複を防げるように検証
+	if (FetchVALIsComponentEventUsed(a_inputComponent, a_componentEvent)) { return false; }
+
+	const auto& l_rootConditionOutputPinIDList = m_rootConditionNodeEditorNode.GetREFOutputPinIDList();
+
+	// rootConditionのoutputPinが存在しなければ
+	// Condition[i]を接続できない
+	if (l_rootConditionOutputPinIDList.empty()) { return false; }
+
+	auto& l_nodeEditorAllocator = m_nodeEditor.GetMutableREFNodeEditorAllocator                           ();
+	auto& l_conditionList       = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
+
+	// Conditionデータを追加する
+	l_conditionList.emplace_back();
+
+	auto& l_condition           = l_conditionList.back();
+	auto& l_conditionNodeEditor = l_condition.m_editorNodeEditor;
+
+	l_condition.m_receiveComponentEvent = a_componentEvent;
+
+	// Condition[i]のNodeIDを発行する
+	if (!l_conditionNodeEditor.ApplyNodeID(l_nodeEditorAllocator))
 	{
-		const auto& l_condition      = l_conditionList[l_conditionIndex];
-		const auto& l_inputPinIDList = l_condition.m_editorNodeEditor.GetREFInputPinIDList();
+		l_conditionList.pop_back();
 
-		if (!l_inputPinIDList.empty() &&
-			l_inputPinIDList[k_primaryPinIndex] == a_inputPinID)
+		return false;
+	}
+
+	// RootCondition -> Condition[i]の接続を受け取るInputPinを発行する
+	if (!l_conditionNodeEditor.AddInputPinID(l_nodeEditorAllocator))
+	{
+		l_conditionNodeEditor.Release(l_nodeEditorAllocator);
+		l_conditionList.pop_back     ();
+
+		return false;
+	}
+
+	const auto& l_conditionInputPinIDList  = l_conditionNodeEditor.GetREFInputPinIDList();
+	const auto  l_conditionInputPinID      = l_conditionInputPinIDList     [k_primaryPinIndex];
+	const auto  l_rootConditionOutputPinID = l_rootConditionOutputPinIDList[k_primaryPinIndex];
+
+	if (!m_nodeEditor.AddLink(l_conditionInputPinID, l_rootConditionOutputPinID))
+	{
+		l_conditionNodeEditor.Release(l_nodeEditorAllocator);
+		l_conditionList.pop_back     ();
+
+		return false;
+	}
+
+	// 次FrameのBeginNodeEditor(9直後に配置するため、
+	// NodeIDと「Popupを開いた瞬間の座標」を予約する
+	m_pendingConditionNodePositionNodeID       = l_conditionNodeEditor.GetVALNodeID();
+	m_pendingConditionNodeCreateScreenPosition = a_nodeScreenPosition;
+	
+	return true;
+}
+
+bool FWK::InputComponentInspector::FetchVALIsAllowedLink(const InputComponent& a_inputComponent, const TypeAlias::NodeEditorID a_inputPinID, const TypeAlias::NodeEditorID a_outputPinID) const
+{
+	const auto& l_startOutputPinIDList     = m_startNodeEditorNode.GetREFOutputPinIDList        ();
+	const auto& l_conditionInputPinIDList  = m_rootConditionNodeEditorNode.GetREFInputPinIDList ();
+	const auto& l_conditionOutputPinIDList = m_rootConditionNodeEditorNode.GetREFOutputPinIDList();
+	const auto& l_executeInputPinIDList    = m_executeNodeEditorNode.GetREFInputPinIDList       ();
+
+	// Start-> Condition
+	// Start-> Execute
+	if (!l_startOutputPinIDList.empty() &&
+		a_outputPinID == l_startOutputPinIDList[k_primaryPinIndex])
+	{
+		if (!l_conditionInputPinIDList.empty() &&
+			a_inputPinID == l_conditionInputPinIDList[k_primaryPinIndex])
 		{
 			return true;
 		}
 
-		++l_conditionIndex;
+		if (!l_executeInputPinIDList.empty() &&
+			a_inputPinID == l_executeInputPinIDList[k_primaryPinIndex])
+		{
+			return true;
+		}
+
+		return false;
 	}
 
-	const auto& l_execution               = a_inputComponent.GetREFExecution                   ();
-	const auto& l_executionInputPinIDList = l_execution.m_editorNodeEditor.GetREFInputPinIDList();
+	// Condition -> Condition[i]
+	if (l_conditionOutputPinIDList.empty() ||
+		a_outputPinID != l_conditionOutputPinIDList[k_primaryPinIndex])
+	{
+		return false;
+	}
 
-	if (l_executionInputPinIDList.empty()) { return false; }
+	const auto& l_conditionList  = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList();
+	      
+	for (const auto& l_condition : l_conditionList)
+	{
+		if (const auto& l_childConditionInputPinIDList = l_condition.m_editorNodeEditor.GetREFInputPinIDList();
+			!l_childConditionInputPinIDList.empty() &&
+			a_inputPinID == l_childConditionInputPinIDList[k_primaryPinIndex])
+		{
+			return true;
+		}
+	}
 
-	return l_executionInputPinIDList[k_primaryPinIndex] == a_inputPinID;
+	return false;
+}
+
+bool FWK::InputComponentInspector::FetchVALIsComponentEventUsed(const InputComponent& a_inputComponent, const Enum::ComponentEvent a_componentEvent) const
+{
+	const auto& l_conditionList = a_inputComponent.GetREFNotifyComponentEventExecutionConditionList();
+
+	return std::any_of(l_conditionList.begin(), l_conditionList.end(), [a_componentEvent](const auto& a_condition)
+					  {
+							return a_condition.m_receiveComponentEvent == a_componentEvent;
+					  });
 }

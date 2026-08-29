@@ -13,28 +13,47 @@ void FWK::Converter::InputComponentInspectorJsonConverter::Deserialize(const nlo
 		l_nodeEditor.Deserialize(l_json);
 	}
 
-	if (const auto& l_json = a_rootJson.value(k_startNodeEditorJsonKey, nlohmann::json{});
+	// Startノードの復元
+	if (const auto& l_json = a_rootJson.value(k_startNodeEditorNodeJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		auto& l_startNodeEditor = a_inputComponentInspector.GetMutableREFStartNodeEditor();
+		auto& l_startNodeEditorNode = a_inputComponentInspector.GetMutableREFStartNodeEditorNode();
 
-		l_startNodeEditor.Deserialize(l_json);
+		l_startNodeEditorNode.Deserialize(l_json);
 	}
 
-	// Deserailize下Node座標を次回の描画時に
-	// ImNodesへ反映する必要があるためfalseへ戻す
-	a_inputComponentInspector.SetIsDefaultNodePositionApplied(false);
+	// コンディションノードの復元
+	if (const auto& l_json = a_rootJson.value(k_rootConditionNodeEditorNodeJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_rootConditionNodeEditorNode = a_inputComponentInspector.GetMutableREFRootConditionNodeEditorNode();
+
+		l_rootConditionNodeEditorNode.Deserialize(l_json);
+	}
+
+	// Executionノードの復元
+	if (const auto& l_json = a_rootJson.value(k_executeNodeEditorNodeJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_executeNodeEditorNode = a_inputComponentInspector.GetMutableREFExecuteNodeEditorNode();
+
+		l_executeNodeEditorNode.Deserialize(l_json);
+	}
 }
 
 nlohmann::json FWK::Converter::InputComponentInspectorJsonConverter::Serialize(const InputComponentInspector& a_inputComponentInspector) const
 {
 	nlohmann::json l_rootJson = {};
 
-	const auto& l_nodeEditor      = a_inputComponentInspector.GetREFNodeEditor     ();
-	const auto& l_startNodeEditor = a_inputComponentInspector.GetREFStartNodeEditor();
+	const auto& l_nodeEditor                  = a_inputComponentInspector.GetREFNodeEditor                 ();
+	const auto& l_startNodeEditorNode         = a_inputComponentInspector.GetREFStartNodeEditorNode        ();
+	const auto& l_rootConditionNodeEditorNode = a_inputComponentInspector.GetREFRootConditionNodeEditorNode();
+	const auto& l_executeNodeEditorNode       = a_inputComponentInspector.GetREFExecuteNodeEditorNode      ();
 
-	l_rootJson[k_nodeEditorJsonKey]      = l_nodeEditor.Serialize     ();
-	l_rootJson[k_startNodeEditorJsonKey] = l_startNodeEditor.Serialize();
+	l_rootJson[k_nodeEditorJsonKey]                  = l_nodeEditor.Serialize                 ();
+	l_rootJson[k_startNodeEditorNodeJsonKey]         = l_startNodeEditorNode.Serialize        ();
+	l_rootJson[k_rootConditionNodeEditorNodeJsonKey] = l_rootConditionNodeEditorNode.Serialize();
+	l_rootJson[k_executeNodeEditorNodeJsonKey]       = l_executeNodeEditorNode.Serialize      ();
 
 	return l_rootJson;
 }

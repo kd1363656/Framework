@@ -1,0 +1,42 @@
+{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [
+            {
+                "AssetFilePathHelper": {
+                    "AssetFilePath": "Content\\Model\\Weapon\\Player\\Dagger\\Durisuruya.fbx"
+                },
+                "ComponentTypeName": "StaticModelComponent",
+                "RegisterDrawRequestStrategyMapJsonKey": [
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestCascadeShadowStrategy"
+                    },
+                    {
+                        "DrawRequestStrategyJsonKey": "StaticModelRegisterDrawRequestStandardLitStrategy"
+                    }
+                ]
+            }
+        ],
+        "PrefabUUID": "56498ecc-a25e-4ccd-a08f-62410d931247",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": -0.6000000238418579,
+                "Z": -6.300000190734863
+            },
+            "InitialRotation": {
+                "W": 0.9647873044013977,
+                "X": 0.0,
+                "Y": 0.2630312144756317,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 5.400000095367432,
+                "Y": 6.300000190734863,
+                "Z": 5.800000190734863
+            }
+        }
+    },
+    "PrefabName": "Test"
+}

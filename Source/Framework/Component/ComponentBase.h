@@ -38,11 +38,9 @@ namespace FWK
 
 		void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
-		bool GetVALIsDisable() const { return m_isDisable; }
-
-	protected:
-
 		const auto& GetREFOwner() const { return m_owner; }
+
+		bool GetVALIsDisable() const { return m_isDisable; }
 
 	private:
 
