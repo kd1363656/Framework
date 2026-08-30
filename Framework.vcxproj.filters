@@ -2448,9 +2448,6 @@
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h">
       <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\EditorAssetTypeEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h">
       <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
     </ClInclude>
@@ -2708,6 +2705,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\ContentBrowserEditorWindowEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

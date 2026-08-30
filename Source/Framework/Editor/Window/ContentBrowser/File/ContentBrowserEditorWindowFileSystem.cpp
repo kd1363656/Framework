@@ -21,9 +21,8 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 	}
 
 	// 一度のFolder作成で複数階層を作成させない
-	const std::filesystem::path& l_folderNamePath = a_folderName;
-
-	if (l_folderNamePath.has_parent_path())
+	if (const std::filesystem::path& l_folderNamePath = a_folderName;
+		l_folderNamePath.has_parent_path())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダ名にFolderPathを含めることはできません。\nFolderName : {}", a_folderName);
 

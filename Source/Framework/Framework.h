@@ -573,6 +573,7 @@
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
 #include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
+#include "Definition/Enum/Editor/Window/ContentBrowserEditorWindowEnum.h"
 #include "Editor/Window/ContentBrowser/Asset/Converter/Json/ContentBrowserEditorWindowAssetRegistryJsonConverter.h"
 #include "Editor/Window/ContentBrowser/Asset/ContentBrowserEditorWindowAssetRegistry.h"
 #include "Editor/Window/ContentBrowser/File/ContentBrowserEditorWindowFileSystem.h"
