@@ -22,17 +22,14 @@ namespace FWK
 		void LateUpdate    () const;
 		void PostLateUpdate();
 		
-		void SaveScene();
+		void SaveScene() const;
+		bool SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath);
 		
 		void AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath);
-
-		void SetCurrentSceneUUID(const boost::uuids::uuid& a_set) { m_currentSceneUUID = a_set; }
 
 		const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
 		
 		const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
-
-		const auto& GetREFCurrentSceneUUID() const { return m_currentSceneUUID; }
 
 		auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
 
@@ -56,7 +53,6 @@ namespace FWK
 
 		std::filesystem::path m_currentSceneFilePath = {};
 
-		boost::uuids::uuid m_currentSceneUUID = {};
-		boost::uuids::uuid m_nextSceneUUID    = {};
+		boost::uuids::uuid m_nextSceneUUID = {};
 	};
 }

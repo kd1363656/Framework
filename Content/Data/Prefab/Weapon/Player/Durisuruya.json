@@ -4,7 +4,7 @@
         "ComponentList": [
             {
                 "AssetFilePathHelper": {
-                    "AssetFilePath": "Content\\Model\\Actor\\Enemy\\Anubis\\Anubis.fbx"
+                    "AssetFilePath": "Content\\Model\\Weapon\\Player\\Dagger\\Durisuruya.fbx"
                 },
                 "ComponentTypeName": "StaticModelComponent",
                 "RegisterDrawRequestStrategyMapJsonKey": [
@@ -17,12 +17,12 @@
                 ]
             }
         ],
-        "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
+        "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
-                "X": 0.0,
-                "Y": 0.0,
+                "X": 1.7000000476837158,
+                "Y": 1.100000023841858,
                 "Z": 0.0
             },
             "InitialRotation": {
@@ -38,5 +38,5 @@
             }
         }
     },
-    "PrefabName": "Anubis"
+    "PrefabName": "Durisuruya"
 }

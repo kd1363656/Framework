@@ -23,6 +23,24 @@ void FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const s
 	// Refresh後に作成したPrefabを選択する
 	m_requestedSelectEntryPath = l_prefabFilePath;
 }
+void FWK::Editor::ContentBrowserEditorWindow::CreateSceneFromScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_directoryPath)
+{
+	auto* l_sceneAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
+
+	if (!l_sceneAssetRegistry) { return; }
+
+	const auto& l_sceneFilePath = m_fileSystem.CreateSceneFromScene(a_scene, a_directoryPath, *l_sceneAssetRegistry);
+
+	if (l_sceneFilePath.empty()) { return; }
+
+	// 現在開いているFolder以外へDropした場合は
+	// 現在右側に表示しているEntryを更新する必要はない
+	if (a_directoryPath != m_currentFolderPath) { return; }
+
+	m_entryController.SetCurrentFolderEntryListDirty(true);
+
+	m_requestedSelectEntryPath = l_sceneFilePath;
+}
 
 void FWK::Editor::ContentBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
 {

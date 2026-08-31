@@ -10,6 +10,7 @@ namespace FWK::Editor
 		~ContentBrowserEditorWindow() override = default;
 
 		void CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath);
+		void CreateSceneFromScene      (const std::weak_ptr<Scene>&      a_scene,      const std::filesystem::path& a_directoryPath);
 		void Deserialize               (const nlohmann::json&            a_rootJson) override;
 
 		void Draw() override;

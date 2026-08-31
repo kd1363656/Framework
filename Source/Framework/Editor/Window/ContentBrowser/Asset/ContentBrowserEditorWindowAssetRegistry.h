@@ -20,6 +20,8 @@ namespace FWK::Editor
 
 		boost::uuids::uuid FindVALAssetUUID(const std::filesystem::path& a_assetFilePath) const;
 
+		bool ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const;
+
 		const auto& GetREFAssetFilePathToUUIDMap() const { return m_assetFilePathToUUIDMap; };
 
 	private:

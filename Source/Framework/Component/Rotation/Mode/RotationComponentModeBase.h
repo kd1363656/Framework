@@ -15,9 +15,9 @@ namespace FWK
 
 		virtual void PostDeserialize(const std::shared_ptr<GameObject>& a_owner);
 		
-		void ResetRotationDirection();
-
 		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
+
+		void ResetRotationDirection();
 
 		virtual nlohmann::json SerializePrefab() { return {}; }
 
@@ -28,6 +28,8 @@ namespace FWK
 		Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
 		TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
+
+		std::uint32_t m_applyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
 
 		FWK_DEFINE_TYPE_INFO_ROOT(RotationComponentModeBase)
 	};

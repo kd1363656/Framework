@@ -160,6 +160,15 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const std::weak_ptr<S
 		ApplySceneNodeSelection();
 	}
 
+	// Renameしていない通常状態だけ、
+	// 現在SceneをContentBrowserへ変身できるようにする
+	if (!l_isSceneRenameTarget)
+	{
+		auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+		l_dragDropPayloadStorage.DragDropSource(Constant::k_sceneDragDropPayloadLabel, a_scene);
+	}
+
 	// SceneがRename対象なら
 	// TreeNodeと同じ行へInputTextを描画する
 	if (l_isSceneRenameTarget)

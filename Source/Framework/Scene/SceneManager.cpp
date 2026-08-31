@@ -1,14 +1,30 @@
 ﻿#include "SceneManager.h"
 
 void FWK::SceneManager::LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath)
-{
+{	const auto& l_json = Utility::LoadJsonFile(a_nextSceneLoadFilePath);
+
+	if (l_json.is_null()) 
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "jsonファイルの読み取りに失敗しました。");
+
+		return; 
+	}
+
 	// ロード前に初期化を行う
 	// (そのシーンで使用するSceneShiftMapなどの情報を消して、次のシーンでしか使用しない情報に置き換えるため)
 	INIT();
 
-	const auto& l_json = Utility::LoadJsonFile(a_nextSceneLoadFilePath);
-
 	m_jsonConverter.Deserialize(l_json, *this);
+
+	m_currentSceneFilePath = a_nextSceneLoadFilePath;
+
+	// Sceneの作成に失敗していればログで出力する
+	if (!m_scene)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Sceneが無効なためSceneのロードに失敗しました。");
+
+		return;
+	}
 
 	// シーンをロードしてデシリアライズした後の処理
 	m_scene->PostDeserialize();
@@ -43,11 +59,62 @@ void FWK::SceneManager::PostLateUpdate()
 	LoadNextSceneIfNeeded();
 }
 
-void FWK::SceneManager::SaveScene()
+void FWK::SceneManager::SaveScene() const
 {
 	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
 
 	Utility::SaveJsonFile(l_rootJson, m_currentSceneFilePath);
+}
+bool FWK::SceneManager::SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath)
+{
+	if (!m_scene)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンが無効なため、シーンの保存に失敗しました。");
+
+		return false;
+	}
+
+	if (a_nextSceneLoadFilePath.empty())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンの保存先ファイルパスが空のため、シーンの保存に失敗しました。");
+
+		return false;
+	}
+
+	if (a_nextSceneLoadFilePath.extension() != Constant::k_lowerJsonExtension)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンの保存先ファイルがJson形式ではないため、シーンの保存に失敗しました。\nFilePath : {}", a_nextSceneLoadFilePath.string());
+
+		return false;
+	}
+
+	const auto& l_rootJson = m_jsonConverter.Serialize(*this);
+
+	if (l_rootJson.is_null())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンのシリアライズに失敗したため、シーンの保存に失敗しました。");
+
+		return false;
+	}
+
+	// SaveJsonFile()はFileが存在しない場合でも
+	// 新しいJsonファイルを作成できる
+	// そのためContent BrowserへのD&Dによる
+	// Scene Json新規作成にもこの関数を使用できる。
+	if (!Utility::SaveJsonFile(l_rootJson, a_nextSceneLoadFilePath))
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor,"シーンJsonの書き込みに失敗しました。\nFilePath : {}", a_nextSceneLoadFilePath.string());
+
+		return false;
+	}
+
+	// Jsonファイルへの保存が完全に成功した後でのみ、
+	// 現在Sceneの正式なFilePathを変更する。
+	//
+	// 保存失敗したPathを現在Sceneへ設定しないため。
+	m_currentSceneFilePath = a_nextSceneLoadFilePath.lexically_normal();
+
+	return true;
 }
 
 void FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath)
@@ -86,8 +153,6 @@ void FWK::SceneManager::INIT()
 	m_scene->INIT();
 	
 	m_nextSceneUUID = {};
-
-	m_currentSceneUUID = {};
 }
 
 void FWK::SceneManager::LoadNextSceneIfNeeded()

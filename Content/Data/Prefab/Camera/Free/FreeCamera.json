@@ -13,15 +13,15 @@
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
-                "X": 0.0,
-                "Y": 0.0,
-                "Z": -2.700000047683716
+                "X": 2.700000047683716,
+                "Y": 1.2999999523162842,
+                "Z": -0.10000000149011612
             },
             "InitialRotation": {
-                "W": 1.0,
-                "X": 0.0,
-                "Y": 0.0,
-                "Z": 0.0
+                "W": 0.7981100082397461,
+                "X": 4.209128601218026e-10,
+                "Y": -0.6025117039680481,
+                "Z": -5.575573891469787e-10
             },
             "InitialScale": {
                 "X": 1.0,

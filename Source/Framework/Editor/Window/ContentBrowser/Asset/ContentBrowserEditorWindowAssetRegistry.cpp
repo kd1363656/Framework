@@ -70,3 +70,8 @@ boost::uuids::uuid FWK::Editor::ContentBrowserEditorWindowAssetRegistry::FindVAL
 
 	return l_itr->second;
 }
+
+bool FWK::Editor::ContentBrowserEditorWindowAssetRegistry::ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const
+{
+	return m_assetUUIDSet.contains(a_assetUUID);
+}

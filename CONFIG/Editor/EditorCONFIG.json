@@ -29,6 +29,14 @@
                                 {
                                     "AssetUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
                                     "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                                },
+                                {
+                                    "AssetUUID": "8c8012cd-2b11-4a49-a301-3c7ea1eab773",
+                                    "FilePath": "Content\\Data\\Prefab\\Actor\\Player\\Antike.json"
+                                },
+                                {
+                                    "AssetUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59",
+                                    "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
                                 }
                             ]
                         }

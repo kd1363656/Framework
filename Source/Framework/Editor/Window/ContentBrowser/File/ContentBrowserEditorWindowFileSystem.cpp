@@ -1,6 +1,6 @@
 ﻿#include "ContentBrowserEditorWindowFileSystem.h"
 
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateFolder(const std::filesystem::path& a_parentFolderPath, const std::string& a_folderName) const
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateFolder(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_folderName) const
 {
 	if (a_folderName.empty())
 	{
@@ -134,14 +134,26 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	}
 
 	// PrefabUUIDの生成
-	      auto& l_uuidManager = UUIDManager::GetInstance     ();
-	const auto& l_prefabUUID  = l_uuidManager.GenerateVALUUID();
+	auto&              l_uuidManager = UUIDManager::GetInstance ();
+	boost::uuids::uuid l_prefabUUID  = {};
 
 	if (l_prefabUUID.is_nil())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
 
 		return {};
+	}
+
+	// UUIDが重複しないよにする
+	while (true)
+	{
+		l_prefabUUID = l_uuidManager.GenerateVALUUID();
+
+		if (l_prefabUUID.is_nil()) { continue; }
+
+		if (a_assetRegistry.ContainsAssetUUID(l_prefabUUID)) { continue; }
+
+		break;
 	}
 
 	const auto& l_sceneManager = SceneManager::GetInstance ();
@@ -243,6 +255,118 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 		        l_prefabSceneInstanceNUM);
 
 	return l_prefabFilePath;
+}
+std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateSceneFromScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_parentFolderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+{
+	const auto& l_scene = a_scene.lock();
+
+	if (!l_scene)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Sceneが無効なため、Sceneを作成できませんでした。");
+
+		return {};
+	}
+
+	// 保存先が実際に存在するFolderか確認する
+	std::error_code l_errorCode = {};
+
+	if (!std::filesystem::is_directory(a_parentFolderPath, l_errorCode) ||
+		l_errorCode)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Scene保存先フォルダが無効なため、Sceneを作成できませんでした。\nFolderPath : {}", a_parentFolderPath.string());
+
+		return {};
+	}
+
+	const auto& l_sceneName = l_scene->GetREFSceneName();
+
+	if (l_sceneName.empty())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneNameが空のため、SceneFilePathを決定できませんでした。");
+
+		return {};
+	}
+
+	// "..Stage"や"Scene/Stage"のように
+	// SceneNameから別Folderへ保存させない
+	if (const std::filesystem::path& l_sceneNamePath = l_sceneName;
+		l_sceneNamePath.has_parent_path())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneNameにFolderPathを含めることはできません。\nSceneName : {}", l_sceneName);
+
+		return {};
+	}
+
+	std::filesystem::path l_sceneFilePath = a_parentFolderPath / l_sceneName;
+
+	l_sceneFilePath += Constant::k_lowerJsonExtension;
+	
+	l_errorCode.clear();
+
+	// ドラッグ&ドロップでは既存Sceneファイルを勝手に上書きしない
+	if (std::filesystem::exists(l_sceneFilePath, l_errorCode))
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "同名Sceneファイルが既に存在するため、新しいSceneを作成できませんでした。\nFilePath : {}", l_sceneFilePath.string());
+
+		return {};
+	}
+
+	if (l_errorCode)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneFilePathを確認できなかったため、Sceneを作成できませんでした。\nFilePath : {}", l_sceneFilePath.string());
+
+		return {};
+	}
+
+	// Registry上でも同じFilePathが使用済みなら作成しない
+	if (const auto& l_uuid = a_assetRegistry.FindVALAssetUUID(l_sceneFilePath);
+		!l_uuid.is_nil())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じSceneFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_sceneFilePath.string());
+
+		return {};
+	}
+
+	      auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_currentScene = l_sceneManager.GetVALScene().lock();
+
+	// OutlinerでDragしたSceneと
+	// SceneManageerが現在管理しているSceneが同じであることを確認する
+	if (!l_currentScene ||
+		l_currentScene != l_scene)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "現在SceneとDrag&DropされたSceneが一致しないため、Sceneを作成できませんでした。");
+
+		return {};
+	}
+
+	// Prefab作成と同じく
+	// Assetを実際に作成するFileSystem側でUUIDを発行する
+	auto& l_uuidManager = UUIDManager::GetInstance();
+
+	boost::uuids::uuid l_sceneUUID = {};
+
+	// 少なくともSceneRegistry内でUUIDが重複しないものを発行する
+	while (true)
+	{
+		l_sceneUUID = l_uuidManager.GenerateVALUUID();
+
+		if (l_sceneUUID.is_nil()) { continue; }
+
+		if (a_assetRegistry.ContainsAssetUUID(l_sceneUUID)) { continue; }
+
+		break;
+	}
+
+	// FilePathに対応するUUIDを発行
+	if (!a_assetRegistry.Add(l_sceneUUID, l_sceneFilePath))
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserAssetRegistryへSceneを登録できませんでした。");
+		
+		return {};
+	}
+
+	
 }
 
 bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const

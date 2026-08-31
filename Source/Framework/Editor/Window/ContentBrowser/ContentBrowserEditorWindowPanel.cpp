@@ -144,6 +144,9 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
     // currentFolderChildWindow全体への
     // GameObjectDropも受け取る
     DrawGameObjectPrefabDragDropTarget(a_contentBrowserEditorWindow.GetREFCurrentFolderPath(), a_contentBrowserEditorWindow);
+
+    // シーンのDropを受け取る
+    DrawSceneDragDropTarget(a_contentBrowserEditorWindow.GetREFCurrentFolderPath(), a_contentBrowserEditorWindow);
 }
 
 void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
@@ -218,6 +221,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
     // 左FolderTree上のFolderも
     // GameObjectのPrefab保存先として使用できるようにする
     DrawGameObjectPrefabDragDropTarget(a_folderPath, a_contentBrowserEditorWindow);
+    DrawSceneDragDropTarget           (a_folderPath, a_contentBrowserEditorWindow);
 
     // このFolderが実際のCurrentFolderなら、
     // 左FolderTreeの動機が正常に完了したことになる
@@ -232,10 +236,6 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
 
         m_synchronizedCurrentFolderPath = a_folderPath;
     }
-
-    // 左FolderTree上のFolderも
-    // GameObjectのPrefab保存先として信用できるようにする
-    DrawGameObjectPrefabDragDropTarget(a_folderPath, a_contentBrowserEditorWindow);
 
     // _Arrow操作ではCurrentFolderを変更しない
     // Folderの行本体をClickした場合だけ、
@@ -339,6 +339,7 @@ bool FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntry(const Struct:
     if (a_entryData.m_isFolder)
     {
         DrawGameObjectPrefabDragDropTarget(l_entryPath, a_contentBrowserEditorWindow);
+        DrawSceneDragDropTarget           (l_entryPath, a_contentBrowserEditorWindow);
     }
 
     auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
@@ -505,6 +506,21 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolderContextMenu(
     }
 
     ImGui::EndPopup();
+}
+
+void FWK::Editor::ContentBrowserEditorWindowPanel::DrawSceneDragDropTarget(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+{
+    auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+    std::weak_ptr<Scene> l_scene = {};
+
+    // WorldOutlinerのSceneNodeから送信された
+    // SceneDragDropPayloadを受け取る
+    if (!l_dragDropPayloadStorage.DragDropTarget(Constant::k_sceneDragDropPayloadLabel, l_scene)) { return; }
+
+    // Panel自身はSceneJsonを生成しない
+    // 保存処理はContentBrowserEditorWindow側へ渡す
+    a_contentBrowserEditorWindow.CreateSceneFromScene(l_scene, a_folderPath);
 }
 
 void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntryContextMenu(const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const

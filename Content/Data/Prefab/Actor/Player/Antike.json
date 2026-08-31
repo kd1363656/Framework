@@ -4,7 +4,7 @@
         "ComponentList": [
             {
                 "AssetFilePathHelper": {
-                    "AssetFilePath": "Content\\Model\\Actor\\Enemy\\Anubis\\Anubis.fbx"
+                    "AssetFilePath": "Content\\Model\\Actor\\Player\\Antike.fbx"
                 },
                 "ComponentTypeName": "StaticModelComponent",
                 "RegisterDrawRequestStrategyMapJsonKey": [
@@ -17,18 +17,18 @@
                 ]
             }
         ],
-        "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
+        "PrefabUUID": "8c8012cd-2b11-4a49-a301-3c7ea1eab773",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
-                "X": 0.0,
+                "X": 1.399999976158142,
                 "Y": 0.0,
                 "Z": 0.0
             },
             "InitialRotation": {
-                "W": 1.0,
+                "W": -1.1920928955078125e-07,
                 "X": 0.0,
-                "Y": 0.0,
+                "Y": 0.9999998807907104,
                 "Z": 0.0
             },
             "InitialScale": {
@@ -38,5 +38,5 @@
             }
         }
     },
-    "PrefabName": "Anubis"
+    "PrefabName": "Antike"
 }

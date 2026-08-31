@@ -23,8 +23,9 @@ namespace FWK::Editor
 		bool DrawFolderEntry                   (const Struct::ContentBrowserEntryData& a_entryData,  ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void DrawGameObjectPrefabDragDropTarget(const std::filesystem::path&           a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void DrawCurrentFolderContextMenu      (      ContentBrowserEditorWindow&      a_contentBrowserEditorWindow);
-		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
-		void DrawFolderCreateEntry             (      ContentBrowserEditorWindow&      a_contentBrowserEditorWindow)                                          const;
+		void DrawSceneDragDropTarget           (const std::filesystem::path&           a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void DrawFolderEntryContextMenu        (const Struct::ContentBrowserEntryData& a_entryData,  ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+		void DrawFolderCreateEntry             (      ContentBrowserEditorWindow&      a_contentBrowserEditorWindow)                                           const;
 
 		void ApplyEntrySelectionShortcut     (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
 		void ApplySelectedFolderOpenShortcut (ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;

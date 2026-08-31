@@ -1,4 +1,5 @@
 {
+    "NextSceneLoadFilePathMap": [],
     "Scene": {
         "GameObjectList": [
             {
@@ -16,15 +17,15 @@
                     "TransformComponent": {
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": -2.700000047683716
+                            "X": 2.700000047683716,
+                            "Y": 1.2999999523162842,
+                            "Z": -0.10000000149011612
                         },
                         "InitialRotation": {
-                            "W": 1.0,
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
+                            "W": 0.7981100082397461,
+                            "X": 4.209128601218026e-10,
+                            "Y": -0.6025117039680481,
+                            "Z": -5.575573891469787e-10
                         },
                         "InitialScale": {
                             "X": 1.0,
@@ -95,21 +96,86 @@
                         }
                     }
                 }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "8c8012cd-2b11-4a49-a301-3c7ea1eab773",
+                    "SceneInstanceName": "Antike",
+                    "SceneInstanceUUID": "4f3e6128-74f7-4484-a462-96b78523ae3b",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 1.399999976158142,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialRotation": {
+                            "W": -1.1920928955078125e-07,
+                            "X": 0.0,
+                            "Y": 0.9999998807907104,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59",
+                    "SceneInstanceName": "Durisuruya",
+                    "SceneInstanceUUID": "f32457ab-dca0-44c2-9978-2a93a598b698",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 1.7000000476837158,
+                            "Y": 1.100000023841858,
+                            "Z": 0.0
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
             }
         ],
         "PrefabSystem": {
             "PrefabMap": [
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                        "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true,
-                            false
+                            true
                         ]
                     },
-                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                    "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59"
                 },
                 {
                     "Prefab": {
@@ -125,6 +191,18 @@
                 },
                 {
                     "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true,
+                            false
+                        ]
+                    },
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                },
+                {
+                    "Prefab": {
                         "FilePath": "Content\\Data\\Prefab\\Map\\Background\\SkySphere\\Desert\\DesertNightSkySphere.json"
                     },
                     "PrefabInstanceNUMAllocator": {
@@ -133,10 +211,23 @@
                         ]
                     },
                     "PrefabUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Player\\Antike.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "8c8012cd-2b11-4a49-a301-3c7ea1eab773"
                 }
             ]
         },
         "SceneName": "Test"
     },
-    "SceneShiftMap": []
+    "SceneShiftEventObserver": {
+        "EventMap": []
+    }
 }

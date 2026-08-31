@@ -8,7 +8,7 @@ void FWK::Converter::SceneManagerJsonConverter::Deserialize (const nlohmann::jso
 	if (const auto& l_json = a_rootJson.value(k_nextSceneLoadFilePathMapJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
-		DeserializeSceneShiftMap(l_json, a_sceneManager);
+		DeserializeNextSceneLoadFilePathMap(l_json, a_sceneManager);
 	}
 
 	auto& l_sceneShiftEventObserver = a_sceneManager.GetMutableREFSceneShiftEventObserver();
@@ -41,12 +41,10 @@ nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(const SceneM
 	if (!l_scene) { return {}; }
 
 	// シーン遷移マップのシリアライズ
-	l_rootJson[k_nextSceneLoadFilePathMapJsonKey] = SerializeSceneShiftMap(a_sceneManager);
-
-	l_rootJson[k_sceneShiftEventObserverJsonKey] = l_sceneShiftEventObserver.Serialize();
+	l_rootJson[k_nextSceneLoadFilePathMapJsonKey] = SerializeNextSceneLoadFilePathMap(a_sceneManager);
 
 	// シーンオブザーバーのデシリアライズ
-	l_rootJson[k_sceneShiftEventObserverJsonKey] = 
+	l_rootJson[k_sceneShiftEventObserverJsonKey] = l_sceneShiftEventObserver.Serialize();
 
 	// シーンのシリアライズ
 	l_rootJson[k_sceneJsonKey] = l_scene->Serialize();
@@ -54,27 +52,32 @@ nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(const SceneM
 	return l_rootJson;
 }
 
-void FWK::Converter::SceneManagerJsonConverter::DeserializeSceneShiftMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const
+void FWK::Converter::SceneManagerJsonConverter::DeserializeNextSceneLoadFilePathMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const
 {
 	if (a_rootJson.is_null())			   { return; }
 	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
 	{ 
-		const auto& l_sceneUUID             = Utility::DeserializeUUID(l_json,                         k_sceneUUIDJsonKey);
-		const auto& l_nextSceneLoadFilePath = l_json.value            (k_nextSceneLoadFilePathJsonKey, std::filesystem::path());
+		const auto& l_sceneUUID = Utility::DeserializeUUID(l_json, k_sceneUUIDJsonKey);
+
+		if (l_sceneUUID.is_nil()) { continue; }
+
+		const auto& l_nextSceneLoadFilePath = l_json.value(k_nextSceneLoadFilePathJsonKey, std::filesystem::path());
 
 		a_sceneManager.AddNextSceneLoadFilePath(l_sceneUUID, l_nextSceneLoadFilePath);
 	}
 }
 
-nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeSceneShiftMap(const SceneManager& a_sceneManager) const
+nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeNextSceneLoadFilePathMap(const SceneManager & a_sceneManager) const
 {
-		  auto  l_rootJsonArray            = nlohmann::json::array				          ();
+	      auto  l_rootJsonArray            = nlohmann::json::array				          ();
 	const auto& l_nextSceneLoadFilePathMap = a_sceneManager.GetREFNextSceneLoadFilePathMap();
 
 	for (const auto& [l_sceneUUID, l_nextSceneLoadFilePath] : l_nextSceneLoadFilePathMap)
 	{
+		if (l_sceneUUID.is_nil()) { continue; }
+
 		nlohmann::json l_json = {};
 
 		Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_sceneUUIDJsonKey));

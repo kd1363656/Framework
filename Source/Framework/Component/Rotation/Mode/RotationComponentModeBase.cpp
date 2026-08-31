@@ -2,9 +2,13 @@
 
 void FWK::RotationComponentModeBase::INIT()
 {
+	m_rotationApplyAxisList.clear();
+
 	m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
+
+	m_applyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
 }
 
 void FWK::RotationComponentModeBase::PostDeserialize(const std::shared_ptr<GameObject>& a_owner)

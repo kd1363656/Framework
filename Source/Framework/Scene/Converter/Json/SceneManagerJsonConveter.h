@@ -20,9 +20,9 @@ namespace FWK::Converter
 
 	private:
 
-		void DeserializeSceneShiftMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const;
+		void DeserializeNextSceneLoadFilePathMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const;
 
-		nlohmann::json SerializeSceneShiftMap(const SceneManager& a_sceneManager) const;
+		nlohmann::json SerializeNextSceneLoadFilePathMap(const SceneManager& a_sceneManager) const;
 
 		static constexpr std::string_view k_sceneUUIDJsonKey                = "SceneUUID";
 		static constexpr std::string_view k_sceneShiftEventObserverJsonKey  = "SceneShiftEventObserver";
