@@ -2,11 +2,9 @@
 
 namespace FWK::Constant
 {
-	inline const std::filesystem::path k_contentRootFolderPath = "Content";
-
-	inline constexpr std::string_view k_selectUnknownString = "Unknown";
-	inline constexpr std::string_view k_isTrueString        = "True";
-	inline constexpr std::string_view k_isFalseString       = "False";
+	inline constexpr std::string_view k_stringUnknown = "Unknown";
+	inline constexpr std::string_view k_isTrueString  = "True";
+	inline constexpr std::string_view k_isFalseString = "False";
 
 	inline constexpr std::string_view k_gameObjectString = "GameObject";
 

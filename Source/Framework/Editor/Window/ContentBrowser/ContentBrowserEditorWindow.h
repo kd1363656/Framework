@@ -30,15 +30,18 @@ namespace FWK::Editor
 
 		void SetFolderCreateInputFocusRequested(const bool a_set) { m_isFolderCreateInputFocusRequested = a_set; }
 
-		const auto& GetREFAssetRegistry        () const { return m_assetRegistry; }
+		const ContentBrowserEditorWindowAssetRegistry* FetchPTRAssetRegistry       (const Enum::ContentBrowserAssetType a_assetType) const;
+		      ContentBrowserEditorWindowAssetRegistry* FetchMutablePTRAssetRegistry(const Enum::ContentBrowserAssetType a_assetType);
+
+		const auto& GetREFAssetRegistryList    () const { return m_assetRegistryList; }
 		const auto& GetREFEntryController      () const { return m_entryController; }
 		const auto& GetREFFileSystem           () const { return m_fileSystem; } 
 		const auto& GetREFPrefabInstanceCreator() const { return m_prefabInstanceCreator; }
 
 		const auto& GetREFCurrentFolderPath() const { return m_currentFolderPath; }
 
-		auto& GetMutableREFEntryController() { return m_entryController; }
-		auto& GetMutableREFAssetRegistry  () { return m_assetRegistry; }
+		auto& GetMutableREFEntryController  () { return m_entryController; }
+		auto& GetMutableREFAssetRegistryList() { return m_assetRegistryList; }
 		
 		auto& GetMutableREFolderCreateNameBuffer() { return m_folderCreateNameBuffer; }
 
@@ -54,7 +57,8 @@ namespace FWK::Editor
 		
 		static constexpr std::string_view k_editorName = "コンテンツブラウザー";
 
-		ContentBrowserEditorWindowAssetRegistry         m_assetRegistry         = {};
+		std::array<ContentBrowserEditorWindowAssetRegistry, static_cast<std::size_t>(Enum::ContentBrowserAssetType::Count)>  m_assetRegistryList = {};
+
 		ContentBrowserEditorWindowEntryController       m_entryController       = {};
 		ContentBrowserEditorWindowFileSystem            m_fileSystem            = {};
 		ContentBrowserEditorWindowPrefabInstanceCreator m_prefabInstanceCreator = {};

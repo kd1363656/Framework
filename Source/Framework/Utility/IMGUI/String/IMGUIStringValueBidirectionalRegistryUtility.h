@@ -8,7 +8,7 @@ namespace FWK::Utility
 		const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
 		const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
 
-		std::string_view l_preview = Constant::k_selectUnknownString;
+		std::string_view l_preview = Constant::k_stringUnknown;
 
 		// 現在選択されているEnumに対応する文字列を取得する
 		for (const auto& [l_key, l_value] : l_stringToValueMap)

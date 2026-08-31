@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <wrl/client.h>
 #include <cassert>
+#include <ShObjIdl_core.h>
 
 //================================================
 // STL

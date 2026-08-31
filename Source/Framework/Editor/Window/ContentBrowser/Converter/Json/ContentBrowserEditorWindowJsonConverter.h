@@ -20,6 +20,11 @@ namespace FWK::Converter
 
 	private:
 
-		std::string_view k_assetRegistryJsonKey = "AssetRegistry";
+		void DeserializeAssetRegistryList(const nlohmann::json& a_rootJson, Editor::ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+
+		nlohmann::json SerializeAssetRegistryList(const Editor::ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const;
+
+		std::string_view k_assetRegistryListJsonKey = "AssetRegistryList";
+		std::string_view k_assetRegistryJsonKey     = "AssetRegistry";
 	};
 }

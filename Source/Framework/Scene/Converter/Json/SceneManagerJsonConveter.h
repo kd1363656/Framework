@@ -24,7 +24,7 @@ namespace FWK::Converter
 
 		nlohmann::json SerializeSceneShiftMap(const SceneManager& a_sceneManager) const;
 
-		static constexpr std::string_view k_sceneNameJsonKey     = "SceneName";
+		static constexpr std::string_view k_sceneUUIDJsonKey     = "SceneUUID";
 		static constexpr std::string_view k_sceneFilePathJsonKey = "SceneFilePath";
 		static constexpr std::string_view k_sceneShiftMapJsonKey = "SceneShiftMap";
 		static constexpr std::string_view k_sceneJsonKey         = "Scene";

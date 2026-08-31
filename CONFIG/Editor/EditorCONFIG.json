@@ -14,34 +14,31 @@
         },
         {
             "Window": {
-                "AssetRegistry": {
-                    "AssetFilePathToUUIDMap": [
-                        {
-                            "AssetUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
-                            "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
-                        },
-                        {
-                            "AssetUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7",
-                            "FilePath": "Content\\Data\\Prefab\\Test\\TestTerrain.json"
-                        },
-                        {
-                            "AssetUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895",
-                            "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
-                        },
-                        {
-                            "AssetUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf",
-                            "FilePath": "Content\\Data\\Prefab\\Enemy\\Anubis\\Anubis.json"
-                        },
-                        {
-                            "AssetUUID": "d2965d52-9f31-46ff-abb5-564d1e22f936",
-                            "FilePath": "Content\\Data\\Prefab\\Test\\TestSkySphere.json"
-                        },
-                        {
-                            "AssetUUID": "56498ecc-a25e-4ccd-a08f-62410d931247",
-                            "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Dagger\\Test.json"
+                "AssetRegistryList": [
+                    {
+                        "AssetRegistry": {
+                            "AssetFilePathToUUIDMap": [
+                                {
+                                    "AssetUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46",
+                                    "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
+                                },
+                                {
+                                    "AssetUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113",
+                                    "FilePath": "Content\\Data\\Prefab\\Map\\Background\\SkySphere\\Desert\\DesertNightSkySphere.json"
+                                },
+                                {
+                                    "AssetUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
+                                    "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                                }
+                            ]
                         }
-                    ]
-                }
+                    },
+                    {
+                        "AssetRegistry": {
+                            "AssetFilePathToUUIDMap": []
+                        }
+                    }
+                ]
             },
             "WindowTypeName": "ContentBrowserEditorWindow"
         },

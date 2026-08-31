@@ -20,6 +20,8 @@ namespace FWK::Editor
 
 		bool CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
 
+		void DrawSceneNode(const std::weak_ptr<Scene>& a_scene);
+
 		void                             DrawGameObjectNode           (const std::weak_ptr<GameObject>& a_gameObject);
 		Struct::GameObjectNodeDrawResult DrawGameObjectNodeHeader     (const std::weak_ptr<GameObject>& a_gameObject);
 		void                             DrawGameObjectNodeContextMenu(const std::weak_ptr<GameObject>& a_gameObject);
@@ -28,8 +30,9 @@ namespace FWK::Editor
 
 		bool HasValidChildGameObject(const std::weak_ptr<GameObject>& a_gameObject) const;
 
-		void ApplyGameObjectNodeSelection(const std::weak_ptr<GameObject>& a_gameObject);
+		void ApplySceneNodeSelection();
 
+		void ApplyGameObjectNodeSelection          (const std::weak_ptr<GameObject>& a_gameObject);
 		void ApplySelectedGameObjectDestroyShortcut();
 		void ApplySelectedGameObjectDestroyRequest ();
 
@@ -48,6 +51,7 @@ namespace FWK::Editor
 																   1.00f };
 
 		static constexpr std::string_view k_editorName                            = "アウトライナー";
+		static constexpr std::string_view k_sceneNodeInternalLabel                = "###SceneNode";
 		static constexpr std::string_view k_rootDropAreaLabel                     = "##RootDropArea";
 		static constexpr std::string_view k_rootContextMenuLabel                  = "##RootContextMenu";
 		static constexpr std::string_view k_addRootGameObjectMenuItemText         = "空のGameObjectを追加";
@@ -62,8 +66,10 @@ namespace FWK::Editor
 		WorldOutlinerEditorWindowGameObjectSelection m_gameObjectSelection = {};
 		WorldOutlinerEditorWindowGameObjectHierarchy m_gameObjectHierarchy = {};
 		WorldOutlinerEditorWindowGameObjectRename    m_gameObjectRename    = {};
+		WorldOutlinerEditorWindowSceneRename         m_sceneRename         = {};
 
 		bool m_isSelectedGameObjectDestroyRequested  = false;
+		bool m_isSceneSelected                       = false;
 
 		FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
 	};

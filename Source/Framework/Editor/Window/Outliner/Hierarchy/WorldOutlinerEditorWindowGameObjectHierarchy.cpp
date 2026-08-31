@@ -25,7 +25,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::RequestApplyPare
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::RequestUnparent(const std::weak_ptr<GameObject>& a_childGameObject)
 {
-	// 1フレーム中に複数の親子関係を変更要求を処理しない
+	// 1フレーム中に複数の親子関係変更要求を処理しない
 	if (m_gameObjectNodeHierarchyChangeRequest.m_type != Enum::GameObjectHierarchyChangeRequestType::None)
 	{
 		return;
@@ -96,7 +96,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 			}
 
 			// GameObject側で
-			// GameObject事態の循環とPrefab循環を確認してから
+			// GameObject自体の循環とPrefab循環を確認してから
 			// 実際の親子関係を構築する
 			if (l_parentGameObject->ApplyParent(m_gameObjectNodeHierarchyChangeRequest.m_childGameObject))
 			{
@@ -122,7 +122,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectHierarchy::ApplyRequest()
 			const auto& l_currentParentGameObject = l_childGameObject->GetREFParent().lock();
 
 			// RequestUnparent()を行った時点から
-			// 親GameObjetが変化している場合は解除しない
+			// 親GameObjectが変化している場合は解除しない
 			if (l_currentParentGameObject != l_requestedParentGameObject)
 			{
 				break;

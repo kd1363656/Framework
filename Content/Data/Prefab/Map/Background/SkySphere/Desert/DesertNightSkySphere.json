@@ -1,21 +1,14 @@
 {
     "Prefab": {
         "ChildList": [],
-        "ComponentList": [
-            {
-                "ComponentTypeName": "CameraComponent",
-                "FarClip": 2000.0,
-                "FovYDegree": 60.0,
-                "NearClip": 0.009999999776482582
-            }
-        ],
-        "PrefabUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46",
+        "ComponentList": [],
+        "PrefabUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
                 "X": 0.0,
                 "Y": 0.0,
-                "Z": -2.700000047683716
+                "Z": 0.0
             },
             "InitialRotation": {
                 "W": 1.0,
@@ -30,5 +23,5 @@
             }
         }
     },
-    "PrefabName": "FreeCamera"
+    "PrefabName": "DesertNightSkySphere"
 }

@@ -53,6 +53,7 @@
 #include "Editor/Style/EditorStyle.h"
 #include "Definition/Type/Alias/NodeEditorTypeAlias.h"
 #include "Definition/Constant/Editor/EditorConstant.h"
+#include "Definition/Constant/Utility/File/SaveFileDialogUtilityConstant.h"
 #include "Editor/Window/Log/LogEditorWindow.h"
 #include "Editor/Window/EditorWindowBase.h"
 #include "Editor/Converter/Json/EditorManagerJsonConverter.h"
@@ -569,11 +570,15 @@
 #include "Definition/Struct/Editor/Window/WorldOutlinerEditorWindowStruct.h"
 #include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowGameObjectSelection.h"
 #include "Editor/Window/Outliner/Rename/WorldOutlinerEditorWindowGameObjectRename.h"
+#include "Editor/Window/Outliner/Rename/WorldOutlinerEditorWindowSceneRename.h"
 #include "Editor/Window/Outliner/Hierarchy/WorldOutlinerEditorWindowGameObjectHierarchy.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
 #include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 #include "Definition/Enum/Editor/Window/ContentBrowserEditorWindowEnum.h"
+
+#include "Utility/File/SaveFileDialogUtility.h"
+
 #include "Editor/Window/ContentBrowser/Asset/Converter/Json/ContentBrowserEditorWindowAssetRegistryJsonConverter.h"
 #include "Editor/Window/ContentBrowser/Asset/ContentBrowserEditorWindowAssetRegistry.h"
 #include "Editor/Window/ContentBrowser/File/ContentBrowserEditorWindowFileSystem.h"

@@ -7,59 +7,23 @@
                     "ComponentList": [
                         {
                             "ComponentTypeName": "CameraComponent"
-                        },
-                        {
-                            "ComponentTypeName": "InputComponent"
                         }
                     ],
                     "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd",
+                    "PrefabUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46",
                     "SceneInstanceName": "FreeCamera",
-                    "SceneInstanceUUID": "c790ec87-4227-49e4-837d-513c9d569291",
-                    "TransformComponent": {
-                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
-                        "InitialPosition": {
-                            "X": 0.4000000059604645,
-                            "Y": 0.5,
-                            "Z": -10.0
-                        },
-                        "InitialRotation": {
-                            "W": 0.9915341734886169,
-                            "X": 0.1296577751636505,
-                            "Y": 0.006922293454408646,
-                            "Z": -0.0009051906527020037
-                        },
-                        "InitialScale": {
-                            "X": 1.0,
-                            "Y": 1.0,
-                            "Z": 1.0
-                        }
-                    }
-                }
-            },
-            {
-                "GameObject": {
-                    "ChildList": [],
-                    "ComponentList": [
-                        {
-                            "ComponentTypeName": "StaticModelComponent"
-                        }
-                    ],
-                    "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895",
-                    "SceneInstanceName": "Antike",
-                    "SceneInstanceUUID": "1a302685-53fe-43ac-b0a7-fe90afca4111",
+                    "SceneInstanceUUID": "d50599db-eb31-46bd-b277-db42c53282b8",
                     "TransformComponent": {
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
                             "X": 0.0,
-                            "Y": -1.600000023841858,
-                            "Z": -3.700000047683716
+                            "Y": 0.0,
+                            "Z": -2.700000047683716
                         },
                         "InitialRotation": {
-                            "W": -1.1920928955078125e-07,
+                            "W": 1.0,
                             "X": 0.0,
-                            "Y": 0.9999998807907104,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "InitialScale": {
@@ -73,20 +37,16 @@
             {
                 "GameObject": {
                     "ChildList": [],
-                    "ComponentList": [
-                        {
-                            "ComponentTypeName": "StaticModelComponent"
-                        }
-                    ],
+                    "ComponentList": [],
                     "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7",
-                    "SceneInstanceName": "TestTerrain",
-                    "SceneInstanceUUID": "8643b4f7-fe95-4766-bac4-6202d56b9555",
+                    "PrefabUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113",
+                    "SceneInstanceName": "DesertNightSkySphere",
+                    "SceneInstanceUUID": "7d62a11c-ed58-49b1-85eb-5e4ec878d3f9",
                     "TransformComponent": {
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
                             "X": 0.0,
-                            "Y": -1.600000023841858,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "InitialRotation": {
@@ -112,42 +72,9 @@
                         }
                     ],
                     "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf",
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
                     "SceneInstanceName": "Anubis",
-                    "SceneInstanceUUID": "cce7d59b-3bd8-41b6-a158-591450ee0019",
-                    "TransformComponent": {
-                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
-                        "InitialPosition": {
-                            "X": 0.800000011920929,
-                            "Y": -1.600000023841858,
-                            "Z": -5.400000095367432
-                        },
-                        "InitialRotation": {
-                            "W": -1.1920928955078125e-07,
-                            "X": 0.0,
-                            "Y": -0.9999998807907104,
-                            "Z": -0.0
-                        },
-                        "InitialScale": {
-                            "X": 1.0,
-                            "Y": 1.0,
-                            "Z": 1.0
-                        }
-                    }
-                }
-            },
-            {
-                "GameObject": {
-                    "ChildList": [],
-                    "ComponentList": [
-                        {
-                            "ComponentTypeName": "StaticModelComponent"
-                        }
-                    ],
-                    "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "d2965d52-9f31-46ff-abb5-564d1e22f936",
-                    "SceneInstanceName": "TestSkySphere",
-                    "SceneInstanceUUID": "29947f71-65ee-4e7d-a8c8-0645deafefda",
+                    "SceneInstanceUUID": "f4d2c66b-7f46-41ae-a7a4-0904ff614118",
                     "TransformComponent": {
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
@@ -174,6 +101,18 @@
             "PrefabMap": [
                 {
                     "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true,
+                            false
+                        ]
+                    },
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                },
+                {
+                    "Prefab": {
                         "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
                     },
                     "PrefabInstanceNUMAllocator": {
@@ -182,54 +121,22 @@
                             false
                         ]
                     },
-                    "PrefabUUID": "12272b07-428b-4849-b2e1-a039728a48cd"
+                    "PrefabUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46"
                 },
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Test\\TestSkySphere.json"
+                        "FilePath": "Content\\Data\\Prefab\\Map\\Background\\SkySphere\\Desert\\DesertNightSkySphere.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
                             true
                         ]
                     },
-                    "PrefabUUID": "d2965d52-9f31-46ff-abb5-564d1e22f936"
-                },
-                {
-                    "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Player\\Antike.json"
-                    },
-                    "PrefabInstanceNUMAllocator": {
-                        "IsAllocatedList": [
-                            true
-                        ]
-                    },
-                    "PrefabUUID": "fdd5c184-2506-42a4-b07d-e88e8d9da895"
-                },
-                {
-                    "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Test\\TestTerrain.json"
-                    },
-                    "PrefabInstanceNUMAllocator": {
-                        "IsAllocatedList": [
-                            true
-                        ]
-                    },
-                    "PrefabUUID": "77b0b1f8-0960-4cda-954c-dbd429474bd7"
-                },
-                {
-                    "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Enemy\\Anubis\\Anubis.json"
-                    },
-                    "PrefabInstanceNUMAllocator": {
-                        "IsAllocatedList": [
-                            true
-                        ]
-                    },
-                    "PrefabUUID": "0188ba0a-c708-43f3-a380-ab885bcf07bf"
+                    "PrefabUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113"
                 }
             ]
-        }
+        },
+        "SceneName": "Test"
     },
     "SceneShiftMap": []
 }

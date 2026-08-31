@@ -13,7 +13,7 @@ namespace FWK::Utility
 		ImGui::PushID    (std::to_address(a_wantChange));
 		ImGui::BeginGroup();
 
-		std::string l_createInstanceName = Constant::k_selectUnknownString.data();
+		std::string l_createInstanceName = Constant::k_stringUnknown.data();
 
 		// もしストラテジーが既にインスタンス化されているなら文字列を取得
 		if (a_wantChange)

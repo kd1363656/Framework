@@ -50,12 +50,16 @@ void FWK::SceneManager::SaveScene()
 
 	Utility::SaveJsonFile(l_rootJson, m_currentSceneFilePath);
 }
-
-void FWK::SceneManager::AddSceneShiftMap(const SceneName& a_sceneName, const SceneFilePath& a_sceneFilePath)
+void FWK::SceneManager::SaveScene(const std::filesystem::path& a_sceneFilePath)
 {
-	if (a_sceneName.empty())
+
+}
+
+void FWK::SceneManager::AddSceneShiftMap(const boost::uuids::uuid& a_sceneUUID, const SceneFilePath& a_sceneFilePath)
+{
+	if (a_sceneUUID.is_nil())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーン名が空です、追加しようとしたシーン名の確認をしてください。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたUUIDが無効です、追加しようとしたシーン名の確認をしてください。");
 
 		return;
 	}
@@ -74,7 +78,12 @@ void FWK::SceneManager::AddSceneShiftMap(const SceneName& a_sceneName, const Sce
 		return;
 	}
 
-	m_sceneShiftMap.try_emplace(a_sceneName, a_sceneFilePath);
+	m_sceneShiftMap.try_emplace(a_sceneUUID, a_sceneFilePath);
+}
+
+void FWK::SceneManager::RequestSceneShift(const boost::uuids::uuid& a_sceneUUID)
+{
+	
 }
 
 void FWK::SceneManager::INIT()
@@ -86,16 +95,17 @@ void FWK::SceneManager::INIT()
 
 	m_scene->INIT();
 	
-	m_nextSceneName.clear       ();
+	m_nextSceneUUID = {};
+
 	m_currentSceneFilePath.clear();
 }
 
 void FWK::SceneManager::SceneShiftIfNeeded()
 {
 	// 次のに移行するシーンの名前が空なら移行しない
-	if (m_nextSceneName.empty()) { return; }
+	if (m_nextSceneUUID.is_nil()) { return; }
 
-	const auto& l_nextSceneFilePath = FindSceneShiftFilePath(m_nextSceneName);
+	const auto& l_nextSceneFilePath = FindSceneShiftFilePath(m_nextSceneUUID);
 
 	// 次のシーンのファイルパスが空なら移行しない
 	if (l_nextSceneFilePath.empty())
@@ -110,9 +120,9 @@ void FWK::SceneManager::SceneShiftIfNeeded()
 	LoadScene(l_nextSceneFilePath);
 }
 
-std::string FWK::SceneManager::FindSceneShiftFilePath(const std::string_view& a_sceneName) const
+std::string FWK::SceneManager::FindSceneShiftFilePath(const boost::uuids::uuid& a_sceneUUID) const
 {
-	const auto& l_itr = m_sceneShiftMap.find(a_sceneName);
+	const auto& l_itr = m_sceneShiftMap.find(a_sceneUUID);
 
 	if (l_itr == m_sceneShiftMap.end()) { return {}; }
 

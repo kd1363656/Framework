@@ -411,6 +411,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabInstanceNUMAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h" />
@@ -522,6 +523,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h" />
@@ -735,6 +737,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h" />
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
@@ -828,6 +831,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp" />

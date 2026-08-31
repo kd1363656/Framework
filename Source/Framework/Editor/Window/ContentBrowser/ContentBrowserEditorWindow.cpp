@@ -2,8 +2,12 @@
 
 void FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
 {
+	auto* l_prefabAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Prefab);
+
+	if (!l_prefabAssetRegistry) { return; }
+
 	// 実際のPrefabファイルを作成しPrefabSystemへ登録する
-	const auto& l_prefabFilePath = m_fileSystem.CreatePrefabFromGameObject(a_gameObject, a_directoryPath, m_assetRegistry);
+	const auto& l_prefabFilePath = m_fileSystem.CreatePrefabFromGameObject(a_gameObject, a_directoryPath, *l_prefabAssetRegistry);
 
 	if (l_prefabFilePath.empty()) { return; }
 
@@ -111,6 +115,23 @@ void FWK::Editor::ContentBrowserEditorWindow::CancelFolderCreate()
 	ClearFolderCreateState();
 }
 
+const FWK::Editor::ContentBrowserEditorWindowAssetRegistry* FWK::Editor::ContentBrowserEditorWindow::FetchPTRAssetRegistry(const Enum::ContentBrowserAssetType a_assetType) const
+{
+	const auto l_index = static_cast<std::size_t>(a_assetType);
+
+	FWK_ASSERT_RETURN_VALUE_IF(m_assetRegistryList.size() <= l_index, "AssetTypeのインデックスがEnumの最大インデックス数以上です。", nullptr);
+
+	return &m_assetRegistryList[l_index];
+}
+FWK::Editor::ContentBrowserEditorWindowAssetRegistry* FWK::Editor::ContentBrowserEditorWindow::FetchMutablePTRAssetRegistry(const Enum::ContentBrowserAssetType a_assetType)
+{
+	const auto l_index = static_cast<std::size_t>(a_assetType);
+
+	FWK_ASSERT_RETURN_VALUE_IF(m_assetRegistryList.size() <= l_index, "AssetTypeのインデックスがEnumの最大インデックス数以上です。", nullptr);
+
+	return &m_assetRegistryList[l_index];
+}
+
 void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
 {
 	m_folderCreateParentPath.clear();
@@ -123,6 +144,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
 
 void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 {
+	auto* l_prefabAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Prefab);
+
+
+	if (!l_prefabAssetRegistry) { return; }
+
 	// 削除要求がなければreturn
 	if (!m_isSelectedEntryDeleteRequested) { return; }
 
@@ -159,7 +185,7 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 			// Folder配下にPrefabが存在した場合
 			// DeletePrefabFile(9を通して
 			// AssetRegistry,PrefabSystem,PrefabInstanceまで同期してからFolderを削除する
-			if (!m_fileSystem.DeleteFolder(l_entryPath, m_assetRegistry))
+			if (!m_fileSystem.DeleteFolder(l_entryPath, *l_prefabAssetRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
@@ -182,12 +208,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 		// Prefab,RegularFile振り分け
 		// 現在AssetRegistryへ登録しているFileはPrefabなので、
 		// UUIDが存在するかどうかでPrefabを判定する
-		const auto l_assetUUID = m_assetRegistry.FindVALAssetUUID(l_entryPath);
-
 		// 無効値でなければプレハブ化されたファイルパスなので削除する
-		if (!l_assetUUID.is_nil())
+		if (const auto l_assetUUID = l_prefabAssetRegistry->FindVALAssetUUID(l_entryPath);
+			!l_assetUUID.is_nil())
 		{
-			if (!m_fileSystem.DeletePrefabFile(l_entryPath, m_assetRegistry))
+			if (!m_fileSystem.DeletePrefabFile(l_entryPath, *l_prefabAssetRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}

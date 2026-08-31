@@ -46,11 +46,11 @@ void FWK::Converter::SceneManagerJsonConverter::DeserializeSceneShiftMap(const n
 	if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
 	for (const auto& l_json : a_rootJson)
-	{
-		const auto& l_sceneName     = l_json.value(k_sceneNameJsonKey,     std::string{});
-		const auto& l_sceneFilePath = l_json.value(k_sceneFilePathJsonKey, std::string{});
+	{ 
+		const auto& l_sceneUUID     = Utility::DeserializeUUID(l_json,                 k_sceneFilePathJsonKey);
+		const auto& l_sceneFilePath = l_json.value            (k_sceneFilePathJsonKey, std::string{});
 
-		a_sceneManager.AddSceneShiftMap(l_sceneName, l_sceneFilePath);
+		a_sceneManager.AddSceneShiftMap(l_sceneUUID, l_sceneFilePath);
 	}
 }
 
@@ -59,11 +59,12 @@ nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeSceneShiftMap
 		  auto  l_rootJsonArray = nlohmann::json::array				();
 	const auto& l_sceneShiftMap = a_sceneManager.GetREFSceneShiftMap();
 
-	for (const auto& [l_sceneName, l_sceneFilePath] : l_sceneShiftMap)
+	for (const auto& [l_sceneUUID, l_sceneFilePath] : l_sceneShiftMap)
 	{
 		nlohmann::json l_json = {};
 
-		l_json[k_sceneNameJsonKey]     = l_sceneName;
+		Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_sceneUUIDJsonKey));
+
 		l_json[k_sceneFilePathJsonKey] = l_sceneFilePath;
 
 		l_rootJsonArray.emplace_back(l_json);

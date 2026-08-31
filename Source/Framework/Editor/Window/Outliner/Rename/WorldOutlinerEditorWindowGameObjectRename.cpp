@@ -69,7 +69,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectRename::DrawRenameInput()
 		return;
 	}
 
-	// InputText事態をクリックした場合は
+	// InputText自体をクリックした場合は
 	// カーソル移動などの編集捜査なので確定しない
 	if (l_isRenameInputHovered) { return; }
 
@@ -98,8 +98,8 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectRename::ConfirmRename()
 		return;
 	}
 
-	// 非PrefabGameObjectではPrefasbNameを
-	// Outliner上のGameObject名とし使用しているため
+	// 非PrefabGameObjectではPrefabNameを
+	// Outliner上のGameObject名として使用しているため
 	// 編集Bufferの内容をそのまま設定する
 	l_selectedGameObject->SetSceneInstanceName(m_renameBuffer);
 

@@ -11,6 +11,9 @@ void FWK::Scene::INIT()
 	m_prefabSystem.INIT               ();
 	m_lightSystem.ApplyDefaultSettings();
 
+	m_filePath.clear ();
+	m_sceneName.clear();
+
 	// 次にGameObjectを追加した後で、
     // 階層別実行順を再構築できるようにする。
 	m_isGameObjectExecutionLevelListDirty = false;
@@ -301,5 +304,5 @@ void FWK::Scene::AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObjec
 		m_gameObjectExecutionLevelList.emplace_back();
 	}
 
-	m_gameObjectExecutionLevelList[a_executionLevel].emplace_back(a_gameObject);;
+	m_gameObjectExecutionLevelList[a_executionLevel].emplace_back(a_gameObject);
 }

@@ -2709,6 +2709,15 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\ContentBrowserEditorWindowEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h">
+      <Filter>Source\Framework\Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3409,6 +3418,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.cpp">
       <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
