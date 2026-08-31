@@ -11,7 +11,6 @@ void FWK::Scene::INIT()
 	m_prefabSystem.INIT               ();
 	m_lightSystem.ApplyDefaultSettings();
 
-	m_filePath.clear ();
 	m_sceneName.clear();
 
 	// 次にGameObjectを追加した後で、

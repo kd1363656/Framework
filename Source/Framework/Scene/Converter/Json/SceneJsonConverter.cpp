@@ -90,8 +90,8 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 			continue; 
 		}
 
-		// 子GameObjectは親GaameObjectのChildListへ保存されているため
-		// Scenec直下にRootGameObjectだけを保存する
+		// 子GameObjectは親GameObjectのChildListへ保存されているため
+		// Scene直下にRootGameObjectだけを保存する
 		if (!l_gameObject->GetREFParent().expired()) { continue; }
 
 		// PrefabUUIDが無効値、シーンインスタンス名が空、

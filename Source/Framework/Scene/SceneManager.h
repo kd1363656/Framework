@@ -6,8 +6,7 @@ namespace FWK
 	{
 	private:
 
-		using SceneFilePath = std::string;
-		using SceneShiftMap = std::unordered_map<boost::uuids::uuid, SceneFilePath>;
+		using NextSceneLoadFilePathMap = std::unordered_map<boost::uuids::uuid, std::filesystem::path>;
 
 		friend class SingletonBase<SceneManager>;
 
@@ -16,25 +15,26 @@ namespace FWK
 
 	public:
 
-		void LoadScene(const std::string_view& a_sceneFilePath);
+		void LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath);
 		
 		void EarlyUpdate   ();
 		void Update        () const;
 		void LateUpdate    () const;
-		void PostLateUpdate() const;
+		void PostLateUpdate();
 		
 		void SaveScene();
-		void SaveScene(const std::filesystem::path& a_sceneFilePath);
-
-		void AddSceneShiftMap(const boost::uuids::uuid& a_sceneUUID, const SceneFilePath& a_sceneFilePath);
-
-		void RequestSceneShift(const boost::uuids::uuid& a_sceneUUID);
+		
+		void AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath);
 
 		void SetCurrentSceneUUID(const boost::uuids::uuid& a_set) { m_currentSceneUUID = a_set; }
 
-		const auto& GetREFSceneShiftMap() const { return m_sceneShiftMap; }
+		const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
+		
+		const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
 
 		const auto& GetREFCurrentSceneUUID() const { return m_currentSceneUUID; }
+
+		auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
 
 		std::weak_ptr<Scene> GetVALScene() const { return m_scene; }
 
@@ -42,13 +42,19 @@ namespace FWK
 
 		void INIT();
 
-		void SceneShiftIfNeeded();
+		void LoadNextSceneIfNeeded();
 
-		SceneShiftMap m_sceneShiftMap = {};
+		const std::filesystem::path* FindPTRNextSceneLoadFilePath(const boost::uuids::uuid& a_uuid) const;
+
+		NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
 
 		std::shared_ptr<Scene> m_scene = nullptr;
 
+		Observer<Enum::SceneShiftEvent> m_sceneShiftEventObserver = {};
+
 		Converter::SceneManagerJsonConverter m_jsonConverter = {};
+
+		std::filesystem::path m_currentSceneFilePath = {};
 
 		boost::uuids::uuid m_currentSceneUUID = {};
 		boost::uuids::uuid m_nextSceneUUID    = {};

@@ -16,7 +16,7 @@ namespace FWK::Converter
 
 		void Deserialize(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const;
 
-		nlohmann::json Serialize(SceneManager& a_sceneManager) const;
+		nlohmann::json Serialize(const SceneManager& a_sceneManager) const;
 
 	private:
 
@@ -24,9 +24,10 @@ namespace FWK::Converter
 
 		nlohmann::json SerializeSceneShiftMap(const SceneManager& a_sceneManager) const;
 
-		static constexpr std::string_view k_sceneUUIDJsonKey     = "SceneUUID";
-		static constexpr std::string_view k_sceneFilePathJsonKey = "SceneFilePath";
-		static constexpr std::string_view k_sceneShiftMapJsonKey = "SceneShiftMap";
-		static constexpr std::string_view k_sceneJsonKey         = "Scene";
+		static constexpr std::string_view k_sceneUUIDJsonKey                = "SceneUUID";
+		static constexpr std::string_view k_sceneShiftEventObserverJsonKey  = "SceneShiftEventObserver";
+		static constexpr std::string_view k_nextSceneLoadFilePathJsonKey    = "NextSceneFilePath";
+		static constexpr std::string_view k_nextSceneLoadFilePathMapJsonKey = "NextSceneLoadFilePathMap";
+		static constexpr std::string_view k_sceneJsonKey                    = "Scene";
 	};
 }

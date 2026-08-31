@@ -1,15 +1,12 @@
 ﻿#include "SceneManager.h"
 
-void FWK::SceneManager::LoadScene(const std::string_view& a_sceneFilePath)
+void FWK::SceneManager::LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath)
 {
 	// ロード前に初期化を行う
 	// (そのシーンで使用するSceneShiftMapなどの情報を消して、次のシーンでしか使用しない情報に置き換えるため)
 	INIT();
 
-	// ロード時に使用したパスを保存しておく
-	m_currentSceneFilePath = a_sceneFilePath;
-
-	const auto& l_json = Utility::LoadJsonFile(a_sceneFilePath);
+	const auto& l_json = Utility::LoadJsonFile(a_nextSceneLoadFilePath);
 
 	m_jsonConverter.Deserialize(l_json, *this);
 
@@ -19,8 +16,6 @@ void FWK::SceneManager::LoadScene(const std::string_view& a_sceneFilePath)
 
 void FWK::SceneManager::EarlyUpdate()
 {
-	SceneShiftIfNeeded();
-
 	if (!m_scene) { return; }
 
 	m_scene->EarlyUpdate();
@@ -37,11 +32,15 @@ void FWK::SceneManager::LateUpdate() const
 
 	m_scene->LateUpdate();
 }
-void FWK::SceneManager::PostLateUpdate() const
+void FWK::SceneManager::PostLateUpdate()
 {
 	if (!m_scene) { return; }
 
 	m_scene->PostLateUpdate();
+
+	// シーン内部で全ての処理が終わった後に
+	// シーンを
+	LoadNextSceneIfNeeded();
 }
 
 void FWK::SceneManager::SaveScene()
@@ -50,12 +49,8 @@ void FWK::SceneManager::SaveScene()
 
 	Utility::SaveJsonFile(l_rootJson, m_currentSceneFilePath);
 }
-void FWK::SceneManager::SaveScene(const std::filesystem::path& a_sceneFilePath)
-{
 
-}
-
-void FWK::SceneManager::AddSceneShiftMap(const boost::uuids::uuid& a_sceneUUID, const SceneFilePath& a_sceneFilePath)
+void FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath)
 {
 	if (a_sceneUUID.is_nil())
 	{
@@ -64,31 +59,26 @@ void FWK::SceneManager::AddSceneShiftMap(const boost::uuids::uuid& a_sceneUUID, 
 		return;
 	}
 
-	if (a_sceneFilePath.empty())
+	if (a_nextSceneLoadFilePath.empty())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
 
 		return;
 	}
 
-	if (!Utility::CanLoadFilePath(a_sceneFilePath, Constant::k_lowerJsonExtension))
+	if (!Utility::CanLoadFilePath(a_nextSceneLoadFilePath, Constant::k_lowerJsonExtension))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
 
 		return;
 	}
 
-	m_sceneShiftMap.try_emplace(a_sceneUUID, a_sceneFilePath);
-}
-
-void FWK::SceneManager::RequestSceneShift(const boost::uuids::uuid& a_sceneUUID)
-{
-	
+	m_nextSceneLoadFilePathMap.try_emplace(a_sceneUUID, a_nextSceneLoadFilePath);
 }
 
 void FWK::SceneManager::INIT()
 {
-	m_sceneShiftMap.clear();
+	m_nextSceneLoadFilePathMap.clear();
 
 	// 現在保持しているシーンをリセットして新しいシーンを作成
 	m_scene = std::make_shared<Scene>();
@@ -97,18 +87,25 @@ void FWK::SceneManager::INIT()
 	
 	m_nextSceneUUID = {};
 
-	m_currentSceneFilePath.clear();
+	m_currentSceneUUID = {};
 }
 
-void FWK::SceneManager::SceneShiftIfNeeded()
+void FWK::SceneManager::LoadNextSceneIfNeeded()
 {
 	// 次のに移行するシーンの名前が空なら移行しない
 	if (m_nextSceneUUID.is_nil()) { return; }
 
-	const auto& l_nextSceneFilePath = FindSceneShiftFilePath(m_nextSceneUUID);
+	const auto* l_nextSceneLoadFilePath = FindPTRNextSceneLoadFilePath(m_nextSceneUUID);
+
+	if (!l_nextSceneLoadFilePath) 
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへの遷移用のUUIDが無効です、SceneManagerのマップ内部を確認してください。");
+
+		return; 
+	}
 
 	// 次のシーンのファイルパスが空なら移行しない
-	if (l_nextSceneFilePath.empty())
+	if (l_nextSceneLoadFilePath->empty())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへのファイルパスが空です、SceneManagerのマップ内部を確認してください。");
 
@@ -117,14 +114,14 @@ void FWK::SceneManager::SceneShiftIfNeeded()
 
 	// シーンマネージャーのシーン遷移情報をクリアして
 	// シーン遷移情報及びシーンを読み込む
-	LoadScene(l_nextSceneFilePath);
+	LoadScene(*l_nextSceneLoadFilePath);
 }
 
-std::string FWK::SceneManager::FindSceneShiftFilePath(const boost::uuids::uuid& a_sceneUUID) const
+const std::filesystem::path* FWK::SceneManager::FindPTRNextSceneLoadFilePath(const boost::uuids::uuid& a_uuid) const
 {
-	const auto& l_itr = m_sceneShiftMap.find(a_sceneUUID);
+	const auto& l_itr = m_nextSceneLoadFilePathMap.find(a_uuid);
 
-	if (l_itr == m_sceneShiftMap.end()) { return {}; }
+	if (l_itr == m_nextSceneLoadFilePathMap.end()) { return nullptr; }
 
-	return l_itr->second;
+	return &l_itr->second;
 }

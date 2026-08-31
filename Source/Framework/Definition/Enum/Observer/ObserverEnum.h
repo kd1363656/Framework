@@ -8,6 +8,24 @@ namespace FWK::Enum
 		TriggeredThisFrame = 1U << 0U,
 	};
 	
+	enum class SceneShiftEvent
+	{
+		Invalid,
+
+		Title,
+		Game,
+		Gameover,
+	};
+
+	FWK_JSON_SERIALIZE_ENUM
+	(
+		SceneShiftEvent, 
+		FWK_JSON_ENUM_VALUE(SceneShiftEvent::Invalid),
+		FWK_JSON_ENUM_VALUE(SceneShiftEvent::Title),
+		FWK_JSON_ENUM_VALUE(SceneShiftEvent::Game),
+		FWK_JSON_ENUM_VALUE(SceneShiftEvent::Gameover),
+	)
+
 	enum class ComponentEvent
 	{
 		Invalid,
