@@ -43,7 +43,12 @@
                     },
                     {
                         "AssetRegistry": {
-                            "AssetFilePathToUUIDMap": []
+                            "AssetFilePathToUUIDMap": [
+                                {
+                                    "AssetUUID": "c1cdc2ec-66ea-4cfd-ad37-effdf29f8731",
+                                    "FilePath": "Content\\Data\\Scene\\Game\\Stage1-1.json"
+                                }
+                            ]
                         }
                     }
                 ]

@@ -117,30 +117,30 @@ bool FWK::SceneManager::SaveScene(const std::filesystem::path& a_nextSceneLoadFi
 	return true;
 }
 
-void FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath)
+bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath)
 {
 	if (a_sceneUUID.is_nil())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたUUIDが無効です、追加しようとしたシーン名の確認をしてください。");
 
-		return;
+		return false;
 	}
 
 	if (a_nextSceneLoadFilePath.empty())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
 
-		return;
+		return false;
 	}
 
 	if (!Utility::CanLoadFilePath(a_nextSceneLoadFilePath, Constant::k_lowerJsonExtension))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
 
-		return;
+		return false;
 	}
 
-	m_nextSceneLoadFilePathMap.try_emplace(a_sceneUUID, a_nextSceneLoadFilePath);
+	return m_nextSceneLoadFilePathMap.try_emplace(a_sceneUUID, a_nextSceneLoadFilePath).second;
 }
 
 void FWK::SceneManager::INIT()
@@ -177,9 +177,15 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 		return;
 	}
 
+	const std::filesystem::path l_nextSceneFilePath = *l_nextSceneLoadFilePath;
+
+	// LoadScene(9事態が失敗した場合でも
+	// 同じ遷移要求を毎フレーム繰り返さないようにする
+	m_nextSceneUUID = {};
+
 	// シーンマネージャーのシーン遷移情報をクリアして
 	// シーン遷移情報及びシーンを読み込む
-	LoadScene(*l_nextSceneLoadFilePath);
+	LoadScene(l_nextSceneFilePath);
 }
 
 const std::filesystem::path* FWK::SceneManager::FindPTRNextSceneLoadFilePath(const boost::uuids::uuid& a_uuid) const

@@ -167,6 +167,31 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const std::weak_ptr<S
 		auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
 		l_dragDropPayloadStorage.DragDropSource(Constant::k_sceneDragDropPayloadLabel, a_scene);
+
+		// ContentBrowserからSceneファイルがSceneNodeはDropされた場合は、
+		// 現在Sceneの遷移先として登場する
+		std::filesystem::path l_assetFilePath = {};
+
+		const auto& l_editorManager              = EditorManager::GetInstance                                  ();
+		const auto& l_contentBrowserEditorWindow = l_editorManager.FindWindowEditor<ContentBrowserEditorWindow>().lock();
+
+		if (const auto* l_sceneAssetRegistry = l_contentBrowserEditorWindow->FetchPTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
+			l_contentBrowserEditorWindow &&
+			l_sceneAssetRegistry         &&
+			l_dragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_assetFilePath))
+		{
+			// SceneFilePath -> SceneUUID
+			// のマップからUUIDを取得する
+			const auto l_sceneUUID = l_sceneAssetRegistry->FindVALAssetUUID(l_assetFilePath);
+
+			// SceneRegistryに登録されているFileだけをScene遷移先として扱う
+			if (!l_sceneUUID.is_nil())
+			{
+				auto& l_sceneManager = SceneManager::GetInstance();
+
+				l_sceneManager.AddNextSceneLoadFilePath(l_sceneUUID, l_assetFilePath);
+			}
+		}
 	}
 
 	// SceneがRename対象なら
@@ -204,7 +229,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const std::weak_ptr<S
 	}
 	
 	// SceneNodeはTreePushされているため必ず戻す
-	ImGui::TreePop();
+	ImGui::TreePop();	
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject)

@@ -24,7 +24,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 	if (const std::filesystem::path& l_folderNamePath = a_folderName;
 		l_folderNamePath.has_parent_path())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダ名にFolderPathを含めることはできません。\nFolderName : {}", a_folderName);
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダ名にFolderPathを含めることはできません。\nFolderName : {}", a_folderName.string());
 
 		return {};
 	}
@@ -136,13 +136,6 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	// PrefabUUIDの生成
 	auto&              l_uuidManager = UUIDManager::GetInstance ();
 	boost::uuids::uuid l_prefabUUID  = {};
-
-	if (l_prefabUUID.is_nil())
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDを生成できなかったため、Prefabを作成できませんでした。");
-
-		return {};
-	}
 
 	// UUIDが重複しないよにする
 	while (true)
@@ -331,7 +324,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateS
 	const auto& l_currentScene = l_sceneManager.GetVALScene().lock();
 
 	// OutlinerでDragしたSceneと
-	// SceneManageerが現在管理しているSceneが同じであることを確認する
+	// SceneManagerが現在管理しているSceneが同じであることを確認する
 	if (!l_currentScene ||
 		l_currentScene != l_scene)
 	{
@@ -366,7 +359,25 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateS
 		return {};
 	}
 
-	
+	// SceneManagerの既存Serialize処理を使用して、
+	// 今回決定したFilePathへSceneJsonを作成する
+	if (!l_sceneManager.SaveScene(l_sceneFilePath))
+	{
+		// Json保存に失敗した場合
+		// SceneAsset化前の状態へ戻す
+		a_assetRegistry.Erase(l_sceneFilePath);
+
+		// SaveJsonFile途中で不完全なFileだけ作成された場合も削除する
+		l_errorCode.clear();
+
+		std::filesystem::remove(l_sceneFilePath, l_errorCode);
+
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Sceneファイルの保存に失敗したため、Scene作成を取り消しました。");
+
+		return {};
+	}
+
+	return l_sceneFilePath;
 }
 
 bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const

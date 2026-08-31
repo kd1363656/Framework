@@ -168,14 +168,15 @@
             "PrefabMap": [
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true
+                            true,
+                            false
                         ]
                     },
-                    "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59"
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
                 },
                 {
                     "Prefab": {
@@ -191,15 +192,14 @@
                 },
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                        "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true,
-                            false
+                            true
                         ]
                     },
-                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                    "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59"
                 },
                 {
                     "Prefab": {
@@ -225,7 +225,7 @@
                 }
             ]
         },
-        "SceneName": "Test"
+        "SceneName": "Stage1-1"
     },
     "SceneShiftEventObserver": {
         "EventMap": []
