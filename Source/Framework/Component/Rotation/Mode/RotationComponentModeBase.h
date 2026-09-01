@@ -11,15 +11,15 @@ namespace FWK
 
 		virtual void INIT();
 
-		virtual void Deserialize(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Deserialize(const nlohmann::json& a_rootJson);
 
 		virtual void PostDeserialize(const std::shared_ptr<GameObject>& a_owner);
 		
-		virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
+		virtual void EditInspector();
 
 		void ResetRotationDirection();
 
-		virtual nlohmann::json Serialize() { return {}; }
+		virtual nlohmann::json Serialize();
 
 		void AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis);
 
@@ -32,6 +32,10 @@ namespace FWK
 		std::vector<Enum::Axis> m_rotationApplyAxisList = {};
 
 		Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
+
+		RotationComponentModeBaseInspector m_inspector = {};
+
+		Converter::RotationComponentModeBaseJsonConverter m_jsonConverter = {};
 
 		TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 

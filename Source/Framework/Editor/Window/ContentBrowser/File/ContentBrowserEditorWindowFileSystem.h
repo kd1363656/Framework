@@ -13,8 +13,9 @@ namespace FWK::Editor
 		std::filesystem::path CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject,       const std::filesystem::path& a_parentFolderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const;
 		std::filesystem::path CreateSceneFromScene      (const std::weak_ptr<Scene>&      a_scene,            const std::filesystem::path& a_parentFolderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const;
 		
-		bool DeleteFolder     (const std::filesystem::path& a_folderPath,     ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const;
+		bool DeleteFolder     (const std::filesystem::path& a_folderPath,     ContentBrowserEditorWindowAssetRegistry& a_prefabAssetRegistry, ContentBrowserEditorWindowAssetRegistry& a_sceneAssetRegistry) const;
 		bool DeletePrefabFile (const std::filesystem::path& a_prefabFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const;
+		bool DeleteSceneFile  (const std::filesystem::path& a_sceneFilePath,  ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const;
 		bool DeleteRegularFile(const std::filesystem::path& a_filePath)                                                                 const;
 
 		bool HasChildFolder(const std::filesystem::path& a_folderPath) const;

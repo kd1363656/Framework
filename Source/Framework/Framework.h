@@ -547,6 +547,9 @@
 #include "Component/Rotation/Mode/RotationComponentModeBase.h"
 #include "Component/Rotation/Converter/Json/RotationComponentJsonConverter.h"
 #include "Component/Rotation/Inspector/RotationComponentInspector.h"
+#include "Definition/Constant/Component/Rotation/RotationComponentConstantModeBaseConstant.h"
+#include "Component/Rotation/Mode/Constant/Converter/Json/RotationComponentConstantModeBaseJson.h"
+#include "Component/Rotation/Mode/Constant/RotationComponentConstantModeBase.h"
 #include "Component/Rotation/RotationComponent.h"
 
 #include "Component/Move/Inspector/MoveComponentInspector.h"

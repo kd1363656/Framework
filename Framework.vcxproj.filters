@@ -1411,6 +1411,21 @@
     <Filter Include="Source\Framework\Component\Rotation\Mode\Converter\Json">
       <UniqueIdentifier>{74cd4bf8-a594-4870-bf72-2edb473f1d0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant">
+      <UniqueIdentifier>{ad980362-c088-4bc7-9289-16e46e820d0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Converter">
+      <UniqueIdentifier>{6f32a96e-07c4-4308-bd74-290a5889c688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json">
+      <UniqueIdentifier>{1320c8f5-33c4-4abd-aea4-6bfc2213cf2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Component">
+      <UniqueIdentifier>{17cacd4e-b127-4e6b-9ef7-bea09d330608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Component\Rotation">
+      <UniqueIdentifier>{c2ce45cc-6126-413e-b4fc-eb77968197c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2733,6 +2748,15 @@
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Component\Rotation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3442,6 +3466,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

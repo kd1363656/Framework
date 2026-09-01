@@ -11,6 +11,13 @@ void FWK::RotationComponentModeBase::INIT()
 	m_applyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
 }
 
+void FWK::RotationComponentModeBase::Deserialize(const nlohmann::json& a_rootJson)
+{
+	if (a_rootJson.is_null()) { return; }
+
+	m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::RotationComponentModeBase::PostDeserialize(const std::shared_ptr<GameObject>& a_owner)
 {
 	if (!a_owner) { return; }
@@ -18,9 +25,19 @@ void FWK::RotationComponentModeBase::PostDeserialize(const std::shared_ptr<GameO
 	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(a_owner);
 }
 
+void FWK::RotationComponentModeBase::EditInspector()
+{
+	m_inspector.EditInspector(*this);
+}
+
 void FWK::RotationComponentModeBase::ResetRotationDirection()
 {
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
+}
+
+nlohmann::json FWK::RotationComponentModeBase::Serialize()
+{
+	return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::RotationComponentModeBase::AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis)

@@ -362,6 +362,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.h" />
@@ -384,6 +386,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
@@ -801,6 +804,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.cpp" />

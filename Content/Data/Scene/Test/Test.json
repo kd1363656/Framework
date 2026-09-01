@@ -38,6 +38,35 @@
             {
                 "GameObject": {
                     "ChildList": [],
+                    "ComponentList": [],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113",
+                    "SceneInstanceName": "DesertNightSkySphere",
+                    "SceneInstanceUUID": "7d62a11c-ed58-49b1-85eb-5e4ec878d3f9",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
                     "ComponentList": [
                         {
                             "ComponentTypeName": "StaticModelComponent"
@@ -73,6 +102,18 @@
             "PrefabMap": [
                 {
                     "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true,
+                            false
+                        ]
+                    },
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                },
+                {
+                    "Prefab": {
                         "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
                     },
                     "PrefabInstanceNUMAllocator": {
@@ -85,15 +126,14 @@
                 },
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                        "FilePath": "Content\\Data\\Prefab\\Map\\Background\\SkySphere\\Desert\\DesertNightSkySphere.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true,
-                            false
+                            true
                         ]
                     },
-                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                    "PrefabUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113"
                 }
             ]
         },

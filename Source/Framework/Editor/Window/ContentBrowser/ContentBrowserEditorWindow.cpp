@@ -163,9 +163,13 @@ void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
 void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 {
 	auto* l_prefabAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Prefab);
+	auto* l_sceneAssetRegistry  = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
 
-
-	if (!l_prefabAssetRegistry) { return; }
+	if (!l_prefabAssetRegistry ||
+		!l_sceneAssetRegistry) 
+	{
+		return; 
+	}
 
 	// 削除要求がなければreturn
 	if (!m_isSelectedEntryDeleteRequested) { return; }
@@ -203,7 +207,7 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 			// Folder配下にPrefabが存在した場合
 			// DeletePrefabFile(9を通して
 			// AssetRegistry,PrefabSystem,PrefabInstanceまで同期してからFolderを削除する
-			if (!m_fileSystem.DeleteFolder(l_entryPath, *l_prefabAssetRegistry))
+			if (!m_fileSystem.DeleteFolder(l_entryPath, *l_prefabAssetRegistry, *l_sceneAssetRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
@@ -227,10 +231,22 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 		// 現在AssetRegistryへ登録しているFileはPrefabなので、
 		// UUIDが存在するかどうかでPrefabを判定する
 		// 無効値でなければプレハブ化されたファイルパスなので削除する
-		if (const auto l_assetUUID = l_prefabAssetRegistry->FindVALAssetUUID(l_entryPath);
-			!l_assetUUID.is_nil())
+		if (const auto& l_prefabUUID = l_prefabAssetRegistry->FindVALAssetUUID(l_entryPath);
+			!l_prefabUUID.is_nil())
 		{
 			if (!m_fileSystem.DeletePrefabFile(l_entryPath, *l_prefabAssetRegistry))
+			{
+				l_isAllDeleteSucceeded = false;
+			}
+
+			continue;
+		}
+
+		// Prefabではなく、SceneとしてAssetRegistryへ登録されているか確認する
+		if (const auto& l_sceneUUID = l_sceneAssetRegistry->FindVALAssetUUID(l_entryPath);
+			!l_sceneUUID.is_nil())
+		{
+			if (!m_fileSystem.DeleteSceneFile(l_entryPath, *l_sceneAssetRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
