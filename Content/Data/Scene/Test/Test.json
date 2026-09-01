@@ -1,0 +1,105 @@
+{
+    "NextSceneLoadFilePathMap": [],
+    "Scene": {
+        "GameObjectList": [
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "CameraComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46",
+                    "SceneInstanceName": "FreeCamera",
+                    "SceneInstanceUUID": "d50599db-eb31-46bd-b277-db42c53282b8",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 2.700000047683716,
+                            "Y": 1.2999999523162842,
+                            "Z": -4.199999809265137
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": -8.326672022944184e-17,
+                            "Y": -5.81698451049713e-26,
+                            "Z": -6.985965694816798e-10
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            },
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "StaticModelComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
+                    "SceneInstanceName": "Anubis",
+                    "SceneInstanceUUID": "f4d2c66b-7f46-41ae-a7a4-0904ff614118",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialRotation": {
+                            "W": -1.1920928955078125e-07,
+                            "X": 0.0,
+                            "Y": 0.9999998807907104,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            }
+        ],
+        "PrefabSystem": {
+            "PrefabMap": [
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true,
+                            false
+                        ]
+                    },
+                    "PrefabUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46"
+                },
+                {
+                    "Prefab": {
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                    },
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true,
+                            false
+                        ]
+                    },
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                }
+            ]
+        },
+        "SceneName": "Test"
+    },
+    "SceneShiftEventObserver": {
+        "EventMap": []
+    }
+}

@@ -22,7 +22,7 @@ void FWK::StaticModelComponentInspector::EditInspector(StaticModelComponent& a_s
 	}
 
 	// 描画方法を選択することができるラジオボタンリスト
-	if (Utility::FactoryCheckBoxMapSelector<TypeAlias::StaticModelRegisterDrawRequestStrategyBaseUniqueFactory>(k_drawRequestDataStrategySelectorLabel, a_staticModelComponent.GetMutableRegisterDrawRequestStrategyMap()))
+	if (Utility::FactoryCheckBoxSelector<TypeAlias::StaticModelRegisterDrawRequestStrategyBaseUniqueFactory>(k_drawRequestDataStrategySelectorLabel, a_staticModelComponent.GetMutableRegisterDrawRequestStrategyMap()))
 	{
 		// Graphicsで実行したいシェーダーに渡したDrawRequestDataが不必要になる可能性を考慮して
 		// 一旦ポインターを削除してもう一度使用したいシェーダーに登録を行う

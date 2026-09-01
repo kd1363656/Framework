@@ -44,8 +44,8 @@ void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeRotation
 
 nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::SerializeRotationApplyAxisList(const RotationComponentModeBase& a_rotationComponentModeBase) const
 {
-	      auto  l_rootJsonArray         = nlohmann::json::array                               ();
-	const auto& l_rotationApplyAxisList = a_rotationComponentModeBase.GetRotationApplyAxisList();
+	      auto  l_rootJsonArray         = nlohmann::json::array                                  ();
+	const auto& l_rotationApplyAxisList = a_rotationComponentModeBase.GetREFRotationApplyAxisList();
 
 	for (const auto& l_rotationApplyAxis : l_rotationApplyAxisList)
 	{

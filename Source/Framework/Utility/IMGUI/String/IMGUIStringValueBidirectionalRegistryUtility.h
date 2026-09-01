@@ -60,4 +60,72 @@ namespace FWK::Utility
 
 		return l_isChanged;
 	}
+
+	template <typename Type>
+	inline bool StringValueBidirectionalRegistryCheckBoxSelector(const std::string_view& a_label, std::vector<Type>& a_valueList, const float a_visibleItemCount = Constant::k_defaultChildVisibleItemCount)
+	{
+		const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
+		const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
+		      bool  l_isChanged                        = false;
+
+		ImGui::PushID    (std::addressof(a_valueList));
+		ImGui::BeginGroup();
+
+		// リスト前の区切り線
+		if (!a_label.empty())
+		{
+			ImGui::SeparatorText(a_label.data());
+		}
+		else
+		{
+			ImGui::Separator();
+		}
+
+		// -1.0Fを使用すると
+		// 現在利用可能な横幅いっぱいまでリストを広げる
+		if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
+			!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMAXSize, l_listHeight)))
+		{
+			ImGui::EndGroup();
+			ImGui::PopID   ();
+
+			return false;
+		}
+
+		for (const auto& [l_key, l_value] : l_stringToValueMap)
+		{
+			bool l_isSelected = std::ranges::any_of(a_valueList, [&l_value](const Type& a_value) 
+				                                   {
+				                                   		return a_value == l_value; 
+				                                   });
+
+			if (!ImGui::Checkbox(l_key.c_str(), &l_isSelected)) { continue; }
+
+			if (l_isSelected)
+			{
+				a_valueList.emplace_back(l_value);
+
+				l_isChanged = true;
+
+				continue;
+			}
+			else
+			{
+				const auto& l_itr = std::ranges::find_if(a_valueList, [&l_value](const auto& a_value) 
+					                                     {
+															return a_value == l_value;
+					                                     });
+
+				a_valueList.erase(l_itr);
+				
+				l_isChanged = true;
+			}
+		}
+
+		ImGui::EndListBox();
+		ImGui::EndGroup  ();
+		ImGui::PopID     ();
+
+		return l_isChanged;
+	}
 }

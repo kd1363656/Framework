@@ -23,7 +23,9 @@ namespace FWK
 
 		void AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis);
 
-		const auto& GetRotationApplyAxisList() const { return m_rotationApplyAxisList; }
+		const auto& GetREFRotationApplyAxisList() const { return m_rotationApplyAxisList; }
+
+		auto& GetMutableREFRotationApplyAxisList() { return m_rotationApplyAxisList; }
 
 	private:
 

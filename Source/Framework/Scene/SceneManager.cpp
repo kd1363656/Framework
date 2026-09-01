@@ -1,7 +1,8 @@
 ﻿#include "SceneManager.h"
 
 void FWK::SceneManager::LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath)
-{	const auto& l_json = Utility::LoadJsonFile(a_nextSceneLoadFilePath);
+{	
+	const auto& l_json = Utility::LoadJsonFile(a_nextSceneLoadFilePath);
 
 	if (l_json.is_null()) 
 	{

@@ -18,9 +18,11 @@ namespace FWK::Editor
 
 	private:
 
-		bool CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
+		bool CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow, const std::filesystem::path& a_assetFilePath);
 
 		void DrawSceneNode(const std::weak_ptr<Scene>& a_scene);
+
+		void DrawOutlinerAssetFileDropTarget(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
 
 		void                             DrawGameObjectNode           (const std::weak_ptr<GameObject>& a_gameObject);
 		Struct::GameObjectNodeDrawResult DrawGameObjectNodeHeader     (const std::weak_ptr<GameObject>& a_gameObject);
@@ -35,6 +37,7 @@ namespace FWK::Editor
 		void ApplyGameObjectNodeSelection          (const std::weak_ptr<GameObject>& a_gameObject);
 		void ApplySelectedGameObjectDestroyShortcut();
 		void ApplySelectedGameObjectDestroyRequest ();
+		void ApplyDroppedSceneChange               ();
 
 		bool UnparentDroppedGameObject();
 
@@ -51,6 +54,7 @@ namespace FWK::Editor
 																   1.00f };
 
 		static constexpr std::string_view k_editorName                            = "アウトライナー";
+		static constexpr std::string_view k_outlinerContentRegionLabel            = "##OutlinerContentRegion";
 		static constexpr std::string_view k_sceneNodeInternalLabel                = "###SceneNode";
 		static constexpr std::string_view k_rootDropAreaLabel                     = "##RootDropArea";
 		static constexpr std::string_view k_rootContextMenuLabel                  = "##RootContextMenu";
@@ -60,6 +64,7 @@ namespace FWK::Editor
 
 		static constexpr std::size_t k_emptySelectionCount  = 0ULL;
 		
+		static constexpr float k_fillRemainingSize     = 0.0F;
 		static constexpr float k_rootDropAreaMINWidth  = 1.0F;
 		static constexpr float k_rootDropAreaMINHeight = 32.0F;
 
@@ -68,8 +73,11 @@ namespace FWK::Editor
 		WorldOutlinerEditorWindowGameObjectRename    m_gameObjectRename    = {};
 		WorldOutlinerEditorWindowSceneRename         m_sceneRename         = {};
 
+		std::filesystem::path m_droppedSceneFilePath = {};
+
 		bool m_isSelectedGameObjectDestroyRequested  = false;
 		bool m_isSceneSelected                       = false;
+		bool m_isRootDropAreaHovered                 = false;
 
 		FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
 	};

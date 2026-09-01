@@ -60,7 +60,7 @@ namespace FWK::Utility
 	}
 
 	template <typename FactoryType, typename Value>
-	inline bool FactoryCheckBoxMapSelector(const std::string_view& a_label, std::unordered_map<TypeAlias::StaticTypeID, Value>& a_selectedMap, const float a_visibleItemCount = Constant::k_defaultChildVisibleItemCount)
+	inline bool FactoryCheckBoxSelector(const std::string_view& a_label, std::unordered_map<TypeAlias::StaticTypeID, Value>& a_selectedMap, const float a_visibleItemCount = Constant::k_defaultChildVisibleItemCount)
 	{
 		// Factoryから生成されるGameObjectは
 		// shared_ptr/weak_ptrなどのSmartPointer前提にする

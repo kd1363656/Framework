@@ -14,6 +14,10 @@ namespace FWK
 		 RotationComponentModeBaseInspector() = default;
 		~RotationComponentModeBaseInspector() = default;
 
-		void EditInspector(const RotationComponentModeBase& a_rotationComponentModeBase);
+		void EditInspector(RotationComponentModeBase& a_rotationComponentModeBase);
+
+	private:
+
+		static constexpr std::string_view k_rotationApplyAxisCheckboxLabel = "回転軸適用チェックボックス";
 	};
 }

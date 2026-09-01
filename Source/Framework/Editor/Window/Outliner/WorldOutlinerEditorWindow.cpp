@@ -50,17 +50,35 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	// Deleteキーによる選択中GameObjectの削除要求を確認
 	ApplySelectedGameObjectDestroyShortcut();
 
-	// SceneをOutlinerの最上位Nodeとして描画し、
-	// その配下にScene内のRootGameObjectと子Hierarchyを描画する
-	DrawSceneNode(l_sceneWeak);
+	// RootDropAreaのHover情報は毎フレーム作り直す
+	m_isRootDropAreaHovered = false;
 
-	// Outlinerの残りの領域を、
-	// RootへのDrop先、選択解除領域
-	// 空白右クリック領域として描画する
-	DrawRootDropArea();
+	if (const ImVec2& l_outlinerContentRegionSize = { k_fillRemainingSize, k_fillRemainingSize };
+		ImGui::BeginChild(k_outlinerContentRegionLabel.data(), l_outlinerContentRegionSize, false))
+	{
+		// SceneをOutlinerの最上位Nodeとして描画し、
+		// その配下にScene内のRootGameObjectと子Hierarchyを描画する
+		DrawSceneNode(l_sceneWeak);
+
+		// Outlinerの残りの領域を、
+		// RootへのDrop先、選択解除領域
+		// 空白右クリック領域として描画する
+		DrawRootDropArea();	
+	}
+	
+	ImGui::EndChild();
+
+	// EndChild()直後なので
+	// DragDropTargetの当たり判定はChildWindow全体になる
+	const auto& l_editorManager = EditorManager::GetInstance();
+
+	if (const auto& l_contentBrowserEditorWindow = l_editorManager.FindWindowEditor<ContentBrowserEditorWindow>().lock())
+	{
+		DrawOutlinerAssetFileDropTarget(*l_contentBrowserEditorWindow);
+	}
 
 	ImGui::End();
-
+	
 	// OutlinerのImGui描画が完全に終了してから
 	// 選択中GameObjectへ削除フラグを設定する
 	// アウトライナーの全体の描画を止めないようにするため
@@ -68,22 +86,17 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 
 	// 親子関係の変更もImGui描画終了後に反映する
 	m_gameObjectHierarchy.ApplyRequest();
+
+	// SceneJsonがDropされた場合h、
+	// Outliner内の編集処理をすべて反映した後でSceneを保存し
+	// SceneManagerへLoad要求を登録する
+	ApplyDroppedSceneChange();
 }
 
-bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow, const std::filesystem::path& a_assetFilePath)
 {
-	std::filesystem::path l_assetFilePath = {};
-
-	// ContentBrowserのFileEntryから送られている
-	// AssetFilePathPayloadを受け取る
-	if (auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-		!l_dragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_assetFilePath)) 
-	{
-		return false; 
-	}
-
-	if (l_assetFilePath.empty()) { return false; }
-
+	if (a_assetFilePath.empty()) { return false; }
+	
 	const auto& l_sceneManager = SceneManager::GetInstance ();
 	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
@@ -99,7 +112,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const C
 	if (!l_prefabAssetRegistry) { return false; }
 
 	const auto& l_prefabInstanceCreator = a_contentBrowserEditorWindow.GetREFPrefabInstanceCreator();
-	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance            (*l_prefabAssetRegistry, l_assetFilePath, *l_scene);
+	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance            (*l_prefabAssetRegistry, a_assetFilePath, *l_scene);
 
 	if (l_createdGameObject.expired()) { return false; }
 
@@ -167,31 +180,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const std::weak_ptr<S
 		auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
 		l_dragDropPayloadStorage.DragDropSource(Constant::k_sceneDragDropPayloadLabel, a_scene);
-
-		// ContentBrowserからSceneファイルがSceneNodeはDropされた場合は、
-		// 現在Sceneの遷移先として登場する
-		std::filesystem::path l_assetFilePath = {};
-
-		const auto& l_editorManager              = EditorManager::GetInstance                                  ();
-		const auto& l_contentBrowserEditorWindow = l_editorManager.FindWindowEditor<ContentBrowserEditorWindow>().lock();
-
-		if (const auto* l_sceneAssetRegistry = l_contentBrowserEditorWindow->FetchPTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
-			l_contentBrowserEditorWindow &&
-			l_sceneAssetRegistry         &&
-			l_dragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_assetFilePath))
-		{
-			// SceneFilePath -> SceneUUID
-			// のマップからUUIDを取得する
-			const auto l_sceneUUID = l_sceneAssetRegistry->FindVALAssetUUID(l_assetFilePath);
-
-			// SceneRegistryに登録されているFileだけをScene遷移先として扱う
-			if (!l_sceneUUID.is_nil())
-			{
-				auto& l_sceneManager = SceneManager::GetInstance();
-
-				l_sceneManager.AddNextSceneLoadFilePath(l_sceneUUID, l_assetFilePath);
-			}
-		}
 	}
 
 	// SceneがRename対象なら
@@ -230,6 +218,43 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const std::weak_ptr<S
 	
 	// SceneNodeはTreePushされているため必ず戻す
 	ImGui::TreePop();	
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::DrawOutlinerAssetFileDropTarget(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+{
+	std::filesystem::path l_assetFilePath = {};
+
+	// EndChild()直後にこの間数を読んでいるため
+	// OutlinerのContent領域全体がDropTargetになる
+	if (auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+		!l_dragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_assetFilePath)) 
+	{
+		return; 
+	}
+
+	if (l_assetFilePath.empty()) { return; }
+
+	if (const auto* l_sceneAssetRegistry = a_contentBrowserEditorWindow.FetchPTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
+		l_sceneAssetRegistry)
+	{
+		// JSONという拡張子だけでは
+		// SceneかPrefab格別できない
+		// Scene用Registryへ登録され散るFilePathだけをSceneとして扱う
+		const auto& l_sceneUUID = l_sceneAssetRegistry->FindVALAssetUUID(l_assetFilePath);
+
+		if (!l_sceneUUID.is_nil())
+		{
+			// Outlinerの描画が完了してからApplyDroppedSceneLoadRequestでシーンを読み込む
+			m_droppedSceneFilePath = l_assetFilePath;
+
+			return;
+		}
+	}
+
+	// Sceneではない場合はPrefabか確認
+	if (!m_isRootDropAreaHovered) { return; }
+
+	CreateDroppedPrefabInstance(a_contentBrowserEditorWindow, l_assetFilePath);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject)
@@ -473,24 +498,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 	// Outlinerの残り領域を操作可能なItemとして登録する
 	ImGui::InvisibleButton(k_rootDropAreaLabel.data(), l_rootDropAreaSize);
 
+	// ContentBrowserからAssetをDragしている間でも
+	// RootDropArea上にMouseがあるか確認できるようにする
+	m_isRootDropAreaHovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
+
 	// Outliner上のGameObjectを空白領域へDropした場合は、
 	// 既存の親子関係解除要求として処理する
-	const bool  l_isGameObjectUnparentRequested = UnparentDroppedGameObject                                   ();
-	const auto& l_editorManager                 = EditorManager::GetInstance                                  ();
-	const auto& l_contentBrowserEditorWindow    = l_editorManager.FindWindowEditor<ContentBrowserEditorWindow>().lock();
-	      bool  l_isPrefabInstanceCreated       = false;
-
-	if (l_contentBrowserEditorWindow)
-	{
-		// ContentBrowserからAssetFilePathがDropされた場合、
-		// Registry -> PrefabUUID -> Prefab生成処理へつなぐ
-		l_isPrefabInstanceCreated = CreateDroppedPrefabInstance(*l_contentBrowserEditorWindow);
-	}
-
-	// Drop操作を処理したFrameでは、
-	// 空白クリックとしてSelectionを解除しない
-	if (!l_isGameObjectUnparentRequested &&
-		!l_isPrefabInstanceCreated       &&
+	if (UnparentDroppedGameObject() &&
 		ImGui::IsItemClicked(ImGuiMouseButton_Left))
 	{
 		// SceneRename中は空白クリックをRename確定操作として扱う
@@ -732,6 +746,21 @@ void FWK::Editor::WorldOutlinerEditorWindow::ApplySelectedGameObjectDestroyReque
 	// Destroy要求を出したGameObjectを
 	// EditorManagerやOutlinerの選択肢として残さない
 	m_gameObjectSelection.ClearSelectedGameObjects();
+}
+void FWK::Editor::WorldOutlinerEditorWindow::ApplyDroppedSceneChange()
+{
+	if (m_droppedSceneFilePath.empty()) { return; }
+
+	auto& l_sceneManager = SceneManager::GetInstance();
+
+	// 現z内編集しているSceneを保存する
+	l_sceneManager.SaveScene();
+
+	// シーンの読み込みを行う
+	l_sceneManager.LoadScene(m_droppedSceneFilePath);
+	
+	// Drop情報は今回だけ使用するため破棄する
+	m_droppedSceneFilePath.clear();
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindow::UnparentDroppedGameObject()

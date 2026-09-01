@@ -47,6 +47,10 @@
                                 {
                                     "AssetUUID": "c1cdc2ec-66ea-4cfd-ad37-effdf29f8731",
                                     "FilePath": "Content\\Data\\Scene\\Game\\Stage1-1.json"
+                                },
+                                {
+                                    "AssetUUID": "c0a1ff08-db1b-4bda-80cd-d5efe2a1c61b",
+                                    "FilePath": "Content\\Data\\Scene\\Test\\Test.json"
                                 }
                             ]
                         }
