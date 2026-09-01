@@ -22,3 +22,22 @@ void FWK::RotationComponentModeBase::ResetRotationDirection()
 {
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 }
+
+void FWK::RotationComponentModeBase::AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis)
+{
+	// 同じ要素を含めない
+	if (std::ranges::any_of(m_rotationApplyAxisList, [a_applyRotationAxis](const auto a_containsApplyRotationAxis) 
+		                                                                  {
+																				return a_containsApplyRotationAxis == a_applyRotationAxis;
+		                                                                  }))
+	{
+		return;
+	}
+
+	// jsonに保存してもビットシフトの値が変わっても問題ないように
+	// Enumをstd::vectorで保存する
+	m_rotationApplyAxisList.emplace_back(a_applyRotationAxis);
+
+	// ビットフラグを反映する
+	Utility::EnableFlag(a_applyRotationAxis, m_applyRotationAxis);
+}

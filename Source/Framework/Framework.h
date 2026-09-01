@@ -524,14 +524,11 @@
 #include "Component/Camera/Inspector/CameraComponentInspector.h"
 #include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
 #include "Component/Camera/CameraComponent.h"
-
-// 実装中
 #include "Definition/Struct/Editor/Node/NodeEditorStruct.h"
 #include "Editor/Node/Allocator/Converter/Json/NodeEditorAllocatorJsonConverter.h"
 #include "Editor/Node/Allocator/NodeEditorAllocator.h"
 #include "Editor/Node/Converter/Json/NodeEditorNodeJsonConverter.h"
 #include "Editor/Node/NodeEditorNode.h"
-
 #include "Definition/Struct/Component/InputComponentStruct.h"
 #include "Editor/Node/Converter/Json/NodeEditorJsonConverter.h"
 #include "Editor/Node/NodeEditor.h"
@@ -545,6 +542,8 @@
 #include "Component/Input/Strategy/Input/MouseRight/InputMouseRightComponentEventNotifyStrategy.h"
 
 #include "Definition/Enum/Axis/AxisEnum.h"
+#include "Component/Rotation/Mode/Converter/Json/RotationComponentModeBaseJsonConverter.h"
+#include "Component/Rotation/Mode/Inspector/RotationComponentModeBaseInspector.h"
 #include "Component/Rotation/Mode/RotationComponentModeBase.h"
 #include "Component/Rotation/Converter/Json/RotationComponentJsonConverter.h"
 #include "Component/Rotation/Inspector/RotationComponentInspector.h"

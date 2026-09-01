@@ -1402,6 +1402,15 @@
     <Filter Include="Source\Framework\Component\Input\Strategy\Input\MouseRight">
       <UniqueIdentifier>{000e3943-4836-481e-a24d-716d10010084}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Inspector">
+      <UniqueIdentifier>{a20fc715-8e53-4b34-a297-e125e18d6be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Converter">
+      <UniqueIdentifier>{42e83e55-1743-4791-947f-eb9c4117ca61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Converter\Json">
+      <UniqueIdentifier>{74cd4bf8-a594-4870-bf72-2edb473f1d0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2718,6 +2727,12 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3421,6 +3436,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

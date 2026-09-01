@@ -11,7 +11,7 @@ namespace FWK
 
 		virtual void INIT();
 
-		virtual void DeserializePrefab(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+		virtual void Deserialize(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 
 		virtual void PostDeserialize(const std::shared_ptr<GameObject>& a_owner);
 		
@@ -19,7 +19,11 @@ namespace FWK
 
 		void ResetRotationDirection();
 
-		virtual nlohmann::json SerializePrefab() { return {}; }
+		virtual nlohmann::json Serialize() { return {}; }
+
+		void AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis);
+
+		const auto& GetRotationApplyAxisList() const { return m_rotationApplyAxisList; }
 
 	private:
 

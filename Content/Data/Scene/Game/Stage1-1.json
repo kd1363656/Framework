@@ -19,13 +19,13 @@
                         "InitialPosition": {
                             "X": 2.700000047683716,
                             "Y": 1.2999999523162842,
-                            "Z": -0.10000000149011612
+                            "Z": -4.199999809265137
                         },
                         "InitialRotation": {
-                            "W": 0.7981100082397461,
-                            "X": 4.209128601218026e-10,
-                            "Y": -0.6025117039680481,
-                            "Z": -5.575573891469787e-10
+                            "W": 1.0,
+                            "X": -8.326672022944184e-17,
+                            "Y": -5.81698451049713e-26,
+                            "Z": -6.985965694816798e-10
                         },
                         "InitialScale": {
                             "X": 1.0,
@@ -84,9 +84,9 @@
                             "Z": 0.0
                         },
                         "InitialRotation": {
-                            "W": 1.0,
+                            "W": -1.1920928955078125e-07,
                             "X": 0.0,
-                            "Y": 0.0,
+                            "Y": 0.9999998807907104,
                             "Z": 0.0
                         },
                         "InitialScale": {
@@ -168,15 +168,14 @@
             "PrefabMap": [
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
+                        "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true,
-                            false
+                            true
                         ]
                     },
-                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
+                    "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59"
                 },
                 {
                     "Prefab": {
@@ -192,14 +191,15 @@
                 },
                 {
                     "Prefab": {
-                        "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
+                        "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
                     },
                     "PrefabInstanceNUMAllocator": {
                         "IsAllocatedList": [
-                            true
+                            true,
+                            false
                         ]
                     },
-                    "PrefabUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59"
+                    "PrefabUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33"
                 },
                 {
                     "Prefab": {

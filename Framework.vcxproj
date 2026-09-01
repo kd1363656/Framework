@@ -362,6 +362,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\RotationComponent.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h" />
@@ -799,6 +801,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\RotationComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp" />
