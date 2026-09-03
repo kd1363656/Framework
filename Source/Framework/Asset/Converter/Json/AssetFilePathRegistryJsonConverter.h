@@ -20,12 +20,13 @@ namespace FWK::Converter
 
 	private:
 
-		void DeserializeAssetFilePathToUUIDMap(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry) const;
+		void DeserializeFilePathRegistryMap(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry) const;
 		
-		nlohmann::json SerializeAssetFilePathToUUIDMap(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
+		nlohmann::json SerializeFilePathRegistryMap(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
 		
-		static constexpr std::string_view k_assetFilePathToUUIDMapJsonKey = "AssetFilePathToUUIDMap";
-		static constexpr std::string_view k_filePathJsonKey               = "FilePath";
-		static constexpr std::string_view k_assetUUIDJsonKey              = "AssetUUID";
+		static constexpr std::string_view k_filePathRegistryMapJsonKey  = "FilePathRegistryMap";
+		static constexpr std::string_view k_filePathJsonKey             = "FilePath";
+		static constexpr std::string_view k_uuidJsonKey                 = "UUID";
+		static constexpr std::string_view k_filePathRegistryTypeJsonKey = "FilePathRegistryType";
 	};
 }

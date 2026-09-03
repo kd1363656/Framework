@@ -1,6 +1,6 @@
-﻿#include "ContentBrowserEditorWindowFileSystem.h"
+﻿#include "AssetBrowserEditorWindowFileSystem.h"
 
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateFolder(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_folderName) const
+std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreateFolder(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_folderName) const
 {
 	if (a_folderName.empty())
 	{
@@ -62,7 +62,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateF
 	
 	return l_newFolderPath;
 }
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_parentFolderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
 	const auto& l_gameObject = a_gameObject.lock();
 
@@ -126,7 +126,9 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	}
 
 	// Registry上でも同じfilePathが使用済みなら作成しない
-	if (!a_assetRegistry.FindVALAssetUUID(l_prefabFilePath).is_nil())
+	if (const auto& l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_prefabFilePath);
+		l_uuid &&
+		l_uuid->is_nil())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
 
@@ -144,7 +146,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 		if (l_prefabUUID.is_nil()) { continue; }
 
-		if (a_assetRegistry.ContainsAssetUUID(l_prefabUUID)) { continue; }
+		if (a_assetFilePathRegistry.ContainsAssetUUID(l_prefabUUID)) { continue; }
 
 		break;
 	}
@@ -164,7 +166,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 		return {};
 	}
 
-	if (!a_assetRegistry.Add(l_prefabUUID, l_prefabFilePath))
+	if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserAssetRegistryへPrefabを登録できませんでした。");
 
@@ -188,7 +190,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 	if (!l_registeredPrefab)
 	{
-		a_assetRegistry.Erase(l_prefabFilePath);
+		a_assetFilePathRegistry.Erase(l_prefabFilePath);
 
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabSystemへのPrefab登録に失敗しました。");
 
@@ -200,8 +202,8 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 	// シーンインスタンス数が無効値ならAssetRegistryやPrefabSystemから情報を消す
 	if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
-		l_prefabSystem.RemovePrefab(l_prefabUUID);
-		a_assetRegistry.Erase      (l_prefabFilePath);
+		l_prefabSystem.RemovePrefab   (l_prefabUUID);
+		a_assetFilePathRegistry.Erase(l_prefabFilePath);
 
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
 
@@ -224,7 +226,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 		l_prefabSystem.RemovePrefab(l_prefabUUID);
 
-		a_assetRegistry.Erase(l_prefabFilePath);
+		a_assetFilePathRegistry.Erase(l_prefabFilePath);
 
 		// SaveJsonFileの途中でFileだけ生成された場合も
 		// 不完全なPrefabファイルを渡さない
@@ -249,7 +251,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateP
 
 	return l_prefabFilePath;
 }
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateSceneFromScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_parentFolderPath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreateSceneFromScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
 	const auto& l_scene = a_scene.lock();
 
@@ -312,8 +314,9 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateS
 	}
 
 	// Registry上でも同じFilePathが使用済みなら作成しない
-	if (const auto& l_uuid = a_assetRegistry.FindVALAssetUUID(l_sceneFilePath);
-		!l_uuid.is_nil())
+	if (const auto* l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_sceneFilePath);
+		l_uuid &&
+		!l_uuid->is_nil())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じSceneFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_sceneFilePath.string());
 
@@ -346,13 +349,13 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateS
 
 		if (l_sceneUUID.is_nil()) { continue; }
 
-		if (a_assetRegistry.ContainsAssetUUID(l_sceneUUID)) { continue; }
+		if (a_assetFilePathRegistry.ContainsAssetUUID(l_sceneUUID)) { continue; }
 
 		break;
 	}
 
 	// FilePathに対応するUUIDを発行
-	if (!a_assetRegistry.Add(l_sceneUUID, l_sceneFilePath))
+	if (!a_assetFilePathRegistry.Add(l_sceneFilePath, l_sceneUUID, Enum::AssetFilePathRegistryType::Scene))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "ContentBrowserAssetRegistryへSceneを登録できませんでした。");
 		
@@ -365,7 +368,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateS
 	{
 		// Json保存に失敗した場合
 		// SceneAsset化前の状態へ戻す
-		a_assetRegistry.Erase(l_sceneFilePath);
+		a_assetFilePathRegistry.Erase(l_sceneFilePath);
 
 		// SaveJsonFile途中で不完全なFileだけ作成された場合も削除する
 		l_errorCode.clear();
@@ -380,7 +383,7 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowFileSystem::CreateS
 	return l_sceneFilePath;
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindowAssetRegistry& a_prefabAssetRegistry, ContentBrowserEditorWindowAssetRegistry& a_sceneAssetRegistry) const
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteFolder(const std::filesystem::path& a_folderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
 	if (a_folderPath.empty()) { return false; }
 
@@ -414,13 +417,15 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 			const auto& l_filePath = l_folderEntryITR->path();
 
 			// AssetRegistryにUUIDが登録されているFileだけを現在管理対象のPrefabとして扱う
-			if (const auto& l_prefabUUID = a_prefabAssetRegistry.FindVALAssetUUID(l_filePath);
-				!l_prefabUUID.is_nil())
+			if (const auto& l_prefabUUID = a_assetFilePathRegistry.FindPTRAssetUUID(l_filePath);
+				l_prefabUUID &&
+				!l_prefabUUID->is_nil())
 			{
 				l_prefabFilePathList.emplace_back(l_filePath);
 			}
-			else if (const auto& l_sceneUUID = a_sceneAssetRegistry.FindVALAssetUUID(l_filePath);
-				!l_sceneUUID.is_nil())
+			else if (const auto& l_sceneUUID = a_assetFilePathRegistry.FindPTRAssetUUID(l_filePath);
+				l_sceneUUID &&
+				!l_sceneUUID->is_nil())
 			{
 				l_sceneFilePathList.emplace_back(l_filePath);
 			}
@@ -441,7 +446,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	// そのためPath収集が完全に終わった後で削除する
 	for (const auto& l_prefabFilePath : l_prefabFilePathList)
 	{
-		if (!DeletePrefabFile(l_prefabFilePath, a_prefabAssetRegistry))
+		if (!DeletePrefabFile(l_prefabFilePath, a_assetFilePathRegistry))
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダー配下のPrefab削除に失敗したため、Folder削除を中止しました。\nPrefabFilePath : {}", l_prefabFilePath.string());
 
@@ -451,7 +456,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 
 	for (const auto& l_sceneFilePath : l_sceneFilePathList)
 	{
-		if (!DeleteSceneFile(l_sceneFilePath, a_sceneAssetRegistry))
+		if (!DeleteSceneFile(l_sceneFilePath, a_assetFilePathRegistry))
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "フォルダー配下のScene削除に失敗したため、Folder削除を中止しました。\nSceneFilePath : {}", l_sceneFilePath.string());
 
@@ -479,7 +484,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteFolder(const std::
 	return true;
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const std::filesystem::path& a_prefabFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std::filesystem::path& a_prefabFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
 {
 	if (a_prefabFilePath.empty()) { return false; }
 
@@ -557,7 +562,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeletePrefabFile(const s
 
 	return true;
 }
-bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteSceneFile(const std::filesystem::path& a_sceneFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteSceneFile(const std::filesystem::path& a_sceneFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
 {
 	if (a_sceneFilePath.empty()) { return false; }
 
@@ -604,7 +609,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteSceneFile(const st
 
 	return true;
 }
-bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteRegularFile(const std::filesystem::path& a_filePath) const
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteRegularFile(const std::filesystem::path& a_filePath) const
 {
 	if (a_filePath.empty()) { return false; }
 
@@ -633,7 +638,7 @@ bool FWK::Editor::ContentBrowserEditorWindowFileSystem::DeleteRegularFile(const 
 
 	return true;
 }
-bool FWK::Editor::ContentBrowserEditorWindowFileSystem::HasChildFolder(const std::filesystem::path& a_folderPath) const
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::HasChildFolder(const std::filesystem::path& a_folderPath) const
 {
 	std::error_code                     l_errorCode         = {};
 	std::filesystem::directory_iterator l_folderEntryITR    = { a_folderPath, l_errorCode };

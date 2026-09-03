@@ -14,11 +14,12 @@ namespace FWK
 
 		nlohmann::json Serialize() const;
 
-		bool Add(const boost::uuids::uuid& a_assetUUID, const std::filesystem::path& a_assetFilePath);
+		bool Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType);
 
 		bool Erase(const std::filesystem::path& a_assetFilePath);
 
-		boost::uuids::uuid FindVALAssetUUID(const std::filesystem::path& a_assetFilePath) const;
+		const boost::uuids::uuid*        FindPTRAssetUUID        (const std::filesystem::path& a_assetFilePath) const;
+		const Struct::AssetFilePathData* FindPTRAssetFilePathData(const boost::uuids::uuid&    a_uuid)          const;
 
 		bool ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const;
 
@@ -26,8 +27,8 @@ namespace FWK
 
 	private:
 
-		std::unordered_map<std::filesystem::path, boost::uuids::uuid> m_assetFilePathToUUIDMap = {};
-		std::unordered_set<boost::uuids::uuid>                        m_assetUUIDSet           = {};
+		std::unordered_map<std::filesystem::path, boost::uuids::uuid>        m_assetFilePathToUUIDMap  = {};
+		std::unordered_map<boost::uuids::uuid,    Struct::AssetFilePathData> m_uuidToAssetFilePathData = {};
 
 		Converter::AssetFilePathRegistryJsonConverter m_jsonConverter = {};
 	};

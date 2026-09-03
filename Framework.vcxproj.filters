@@ -1213,15 +1213,6 @@
     <Filter Include="CONFIG\Physics">
       <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Asset">
-      <UniqueIdentifier>{6028bfc0-b87f-4971-95fe-c43f9ae5cede}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter">
-      <UniqueIdentifier>{38674f05-c28d-434e-9d72-e97e7b774c23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json">
-      <UniqueIdentifier>{51ad67ec-fc07-48ca-bc91-ebbb103cb592}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Converter">
       <UniqueIdentifier>{9eba691b-1c51-43a7-b598-b8303d0eb818}</UniqueIdentifier>
     </Filter>
@@ -1437,6 +1428,15 @@
     </Filter>
     <Filter Include="Source\Framework\Asset\Converter\Json">
       <UniqueIdentifier>{e095656e-049e-4dc1-bd8d-f17d2707a806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Asset">
+      <UniqueIdentifier>{4edcf70c-d8df-43c8-908d-93fd8973269f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser">
+      <UniqueIdentifier>{5934e3ea-83e2-48c1-973c-396c2214695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\File">
+      <UniqueIdentifier>{43f2dcd6-1d43-4b01-a1bb-a239f89c4231}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2556,12 +2556,6 @@
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
     </ClInclude>
@@ -2771,6 +2765,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.h">
       <Filter>Source\Framework\Asset\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Asset\AssetFilePathRegistryStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\File</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3335,12 +3335,6 @@
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
     </ClCompile>
@@ -3493,6 +3487,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp">
       <Filter>Source\Framework\Asset\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

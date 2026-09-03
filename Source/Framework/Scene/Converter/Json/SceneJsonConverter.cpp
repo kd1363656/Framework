@@ -4,12 +4,21 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 {
 	if (a_rootJson.is_null()) { return; }
 
-	auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
+	// アセットファイルパスレジストリーのデシリアライズ
+	if (const auto& l_json = a_rootJson.value(k_assetFilePathRegistryJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_assetFilePathRegistry = a_scene.GetMutableREFAssetFilePathRegistry();
+
+		l_assetFilePathRegistry.Deserialize(l_json);
+	}
 
 	// プレハブシステムのデシリアライズ
 	if (const auto& l_json = a_rootJson.value(k_prefabSystemJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
+		auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
+
 		l_prefabSystem.Deserialize(l_json);
 	}
 
@@ -26,13 +35,15 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 }
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
 {
-	      nlohmann::json l_rootJson     = {};
-	const auto&          l_sceneName    = a_scene.GetREFSceneName          ();
-	      auto&          l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
+	      nlohmann::json l_rootJson              = {};
+	const auto&          l_assetFilePathRegistry = a_scene.GetREFAssetFilePathRegistry();
+	const auto&          l_sceneName             = a_scene.GetREFSceneName            ();
+	      auto&          l_prefabSystem          = a_scene.GetMutableREFPrefabSystem  ();
 
-	l_rootJson[k_prefabSystemJsonKey]   = l_prefabSystem.Serialize();
-	l_rootJson[k_sceneNameJsonKey]      = l_sceneName; 
-	l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList (a_scene);
+	l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
+	l_rootJson[k_prefabSystemJsonKey]          = l_prefabSystem.Serialize();
+	l_rootJson[k_sceneNameJsonKey]             = l_sceneName; 
+	l_rootJson[k_gameObjectListJsonKey]        = SerializeGameObjectList (a_scene);
 
 	return l_rootJson;
 }

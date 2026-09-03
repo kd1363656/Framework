@@ -560,9 +560,9 @@
 // アセットファイルパス管理クラス
 //===============================================================================
 #include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
+#include "Definition/Struct/Asset/AssetFilePathRegistryStruct.h"
 #include "Asset/Converter/Json/AssetFilePathRegistryJsonConverter.h"
 #include "Asset/AssetFilePathRegistry.h"
-
 
 //===============================================================================
 // シーン
@@ -587,8 +587,8 @@
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 
 #include "Utility/File/SaveFileDialogUtility.h"
-#include "Editor/Window/ContentBrowser/Asset/Converter/Json/ContentBrowserEditorWindowAssetRegistryJsonConverter.h"
-#include "Editor/Window/ContentBrowser/Asset/ContentBrowserEditorWindowAssetRegistry.h"
+
+
 #include "Editor/Window/ContentBrowser/File/ContentBrowserEditorWindowFileSystem.h"
 #include "Definition/Struct/Editor/Window/ContentBrowserEditorWindowStruct.h"
 #include "Editor/Window/ContentBrowser/Entry/ContentBrowserEditorWindowEntryController.h"

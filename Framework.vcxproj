@@ -448,6 +448,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Json\StandardShaderPipelineStateJsonConverterMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\TypeINFO\TypeINFORegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Asset\AssetFilePathRegistryStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
@@ -516,8 +517,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditorNode.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.h" />
     <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h" />
@@ -831,8 +831,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditorNode.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\ContentBrowserEditorWindowAssetRegistry.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Asset\Converter\Json\ContentBrowserEditorWindowAssetRegistryJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp" />
