@@ -33,7 +33,6 @@ namespace FWK::Editor
       
 		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
-		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 		const auto& GetREFEntryController      () const { return m_entryController; }
 		const auto& GetREFFileSystem           () const { return m_fileSystem; } 
 		const auto& GetREFPrefabInstanceCreator() const { return m_prefabInstanceCreator; }
@@ -42,7 +41,6 @@ namespace FWK::Editor
 
 		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 		auto& GetMutableREFEntryController      () { return m_entryController; }
-		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 		
 		auto& GetMutableREFolderCreateNameBuffer() { return m_folderCreateNameBuffer; }
 
@@ -66,7 +64,7 @@ namespace FWK::Editor
 
 		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
-		std::filesystem::path m_currentFolderPath         = Constant::k_contentRootFolderPath;
+		std::filesystem::path m_currentFolderPath         = Constant::k_assetRootFolderPath;
 		std::filesystem::path m_requestedSelectEntryPath  = {};
 		std::filesystem::path m_folderCreateParentPath    = {};
 

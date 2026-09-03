@@ -104,37 +104,36 @@ void FWK::Editor::AssetBrowserEditorWindow::RefreshCurrentFolderEntries()
 	m_requestedSelectEntryPath.clear   ();
 }
 
-void FWK::Editor::AssetBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path & a_folderPath)
+void FWK::Editor::AssetBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
 {
-	if (!m_isFolderCreateRequested) { return; }
+	if (a_folderPath.empty()) { return; }
 
-	if (m_folderCreateParentPath.empty() ||
-		m_folderCreateNameBuffer.empty())
+	std::error_code l_errorCode = {};
+
+	// 実際に存在するFolderだけをAssetBrowserのCurrentFolderとして設定する
+	// 存在しないPathを保持すると、右ペインのEntry取得時に
+	// FileSystemと表示状態が不整合になるため
+	if (!std::filesystem::is_directory(a_folderPath, l_errorCode) ||
+		l_errorCode)
 	{
-		ClearFolderCreateState();
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetBrowserへ設定するFolderPathが無効です。\nFolderPath : {}", a_folderPath.string());
 
 		return;
 	}
 
-	const auto& l_createdFolderPath = m_fileSystem.CreateFolder(m_folderCreateParentPath, m_folderCreateNameBuffer);
+	const auto& l_folderPath = a_folderPath.lexically_normal();
 
-	if (l_createdFolderPath.empty())
-	{
-		ClearFolderCreateState();
+	if (m_currentFolderPath == l_folderPath) { return; }
 
-		return;
-	}
+	m_currentFolderPath = l_folderPath;
 
-	// currentFolder直下へ作成した場合だけ
-	// 右ペイン一覧を更新する
-	if (m_folderCreateParentPath == m_currentFolderPath)
-	{
-		m_entryController.SetCurrentFolderEntryListDirty(true);
+	// Folderを切り替えたため、
+	// 以前のFolderに属するEntry選択状態を残さない
+	m_entryController.ClearSelectedEntries();
 
-		m_requestedSelectEntryPath = l_createdFolderPath;
-	}
-
-	ClearFolderCreateState();
+	// 次回DrawCurrentFolder()で
+	// 新しいFolder直下のEntry一覧を再構築する
+	m_entryController.SetCurrentFolderEntryListDirty(true);
 }
 
 void FWK::Editor::AssetBrowserEditorWindow::RequestSelectedEntryDelete()
@@ -231,15 +230,13 @@ void FWK::Editor::AssetBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 			continue;
 		}
 
-		// Prefab,RegularFile振り分け
-		// 現在AssetRegistryへ登録しているFileはPrefabなので、
-		// UUIDが存在するかどうかでPrefabを判定する
-		// 無効値でなければプレハブ化されたファイルパスなので削除する
-		if (const auto& l_prefabUUID = m_assetFilePathRegistry.FindPTRAssetUUID(l_entryPath);
-			l_prefabUUID &&
-			!l_prefabUUID->is_nil())
+		const auto* l_assetUUID = m_assetFilePathRegistry.FindPTRAssetUUID(l_entryPath);
+
+		// Registryへ登録されていないないFileは、
+		// 現段階ではFBX/PNG等の通常Fileとして削除する
+		if (!l_assetUUID)
 		{
-			if (!m_fileSystem.DeletePrefabFile(l_entryPath, m_assetFilePathRegistry))
+			if (!m_fileSystem.DeleteRegularFile(l_entryPath))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
@@ -247,24 +244,53 @@ void FWK::Editor::AssetBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 			continue;
 		}
 
-		// Prefabではなく、SceneとしてAssetRegistryへ登録されているか確認する
-		if (const auto& l_sceneUUID = m_assetFilePathRegistry.FindPTRAssetUUID(l_entryPath);
-			l_sceneUUID &&
-			!l_sceneUUID->is_nil())
-		{
-			if (!m_fileSystem.DeleteSceneFile(l_entryPath, m_assetFilePathRegistry))
-			{
-				l_isAllDeleteSucceeded = false;
-			}
-
-			continue;
-		}
-
-		// Registryへ登録されていない
-		// FBX/PNG等の通常Fileはこちらで削除する
-		if (!m_fileSystem.DeleteRegularFile(l_entryPath))
+		if (l_assetUUID->is_nil())
 		{
 			l_isAllDeleteSucceeded = false;
+
+			continue;
+		}
+
+		const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(*l_assetUUID);
+
+		if (!l_assetFilePathData) 
+		{
+			l_isAllDeleteSucceeded = false;
+
+			continue;
+		}
+
+		// PrefabとSceneはどちらもJSONなので拡張子では判別できない
+		// AsseFilePathRegistryへ登録したTypeを正本として
+		// 削除処理を分ける
+		switch (l_assetFilePathData->m_type)
+		{
+			case Enum::AssetFilePathRegistryType::Prefab:
+			{
+				if (!m_fileSystem.DeletePrefabFile(l_entryPath, m_assetFilePathRegistry))
+				{
+					l_isAllDeleteSucceeded = false;
+				}
+
+			}
+			break;
+
+			case Enum::AssetFilePathRegistryType::Scene:
+			{
+				if (!m_fileSystem.DeleteSceneFile(l_entryPath, m_assetFilePathRegistry))
+				{
+					l_isAllDeleteSucceeded = false;
+				}
+			}
+			break;
+
+			default:
+			{
+				FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象AssetのTypeが無効です。\nFilePath : {}", l_entryPath.string());
+
+				l_isAllDeleteSucceeded = false;
+			}
+			break;
 		}
 	}
 

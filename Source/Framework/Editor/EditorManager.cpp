@@ -207,7 +207,7 @@ void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Window::Resize
 		return; 
 	}
 
-	const auto& l_viewportEditorWindow = FindWindowEditor<ViewportEditorWindow>().lock();
+	const auto& l_viewportEditorWindow = FindVALWindowEditor<ViewportEditorWindow>().lock();
 
 	if (!l_viewportEditorWindow) { return; }
 

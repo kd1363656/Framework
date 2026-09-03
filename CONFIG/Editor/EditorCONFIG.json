@@ -13,55 +13,26 @@
             "WindowTypeName": "ViewportEditorWindow"
         },
         {
-            "Window": {
-                "AssetRegistryList": [
-                    {
-                        "AssetRegistry": {
-                            "AssetFilePathToUUIDMap": [
-                                {
-                                    "AssetUUID": "e79c2544-0d2b-483e-a11b-3c7414c5bb46",
-                                    "FilePath": "Content\\Data\\Prefab\\Camera\\Free\\FreeCamera.json"
-                                },
-                                {
-                                    "AssetUUID": "1cbb3f52-2794-4e1c-b637-af82815e7113",
-                                    "FilePath": "Content\\Data\\Prefab\\Map\\Background\\SkySphere\\Desert\\DesertNightSkySphere.json"
-                                },
-                                {
-                                    "AssetUUID": "70fb21ad-f5f0-46cc-aa78-34da2f8d9d33",
-                                    "FilePath": "Content\\Data\\Prefab\\Actor\\Enemy\\Anubis\\Anubis.json"
-                                },
-                                {
-                                    "AssetUUID": "8c8012cd-2b11-4a49-a301-3c7ea1eab773",
-                                    "FilePath": "Content\\Data\\Prefab\\Actor\\Player\\Antike.json"
-                                },
-                                {
-                                    "AssetUUID": "4c5ca273-207f-4046-8c5e-32ec0c173b59",
-                                    "FilePath": "Content\\Data\\Prefab\\Weapon\\Player\\Durisuruya.json"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "AssetRegistry": {
-                            "AssetFilePathToUUIDMap": [
-                                {
-                                    "AssetUUID": "c1cdc2ec-66ea-4cfd-ad37-effdf29f8731",
-                                    "FilePath": "Content\\Data\\Scene\\Game\\Stage1-1.json"
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "WindowTypeName": "ContentBrowserEditorWindow"
-        },
-        {
             "Window": null,
             "WindowTypeName": "WorldOutlinerEditorWindow"
         },
         {
             "Window": null,
             "WindowTypeName": "DetailsEditorWindow"
+        },
+        {
+            "Window": {
+                "AssetRegistry": {
+                    "FilePathRegistryMap": [
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Camera\\Free\\FreeCamera.json",
+                            "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                            "UUID": "e003b5e4-369b-4846-a930-e995f2bd3e2b"
+                        }
+                    ]
+                }
+            },
+            "WindowTypeName": "AssetBrowserEditorWindow"
         }
     ]
 }

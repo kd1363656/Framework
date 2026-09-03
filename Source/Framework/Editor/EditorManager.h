@@ -64,7 +64,7 @@ namespace FWK::Editor
 		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
 		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
-		std::weak_ptr<WindowType> FindWindowEditor() const
+		std::weak_ptr<WindowType> FindVALWindowEditor() const
 		{
 			const auto l_staticTypeID = WindowType::GetREFTypeINFO().k_staticTypeID;
 

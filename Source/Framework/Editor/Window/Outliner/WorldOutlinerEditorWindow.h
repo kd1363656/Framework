@@ -2,7 +2,7 @@
 
 namespace FWK::Editor
 {
-	class ContentBrowserEditorWindow;
+	class AssetBrowserEditorWindow;
 }
 
 namespace FWK::Editor
@@ -18,11 +18,11 @@ namespace FWK::Editor
 
 	private:
 
-		bool CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow, const std::filesystem::path& a_assetFilePath);
+		bool CreateDroppedPrefabInstance(const AssetBrowserEditorWindow& a_assetBrowserEditorWindow, const std::filesystem::path& a_assetFilePath);
 
 		void DrawSceneNode(const std::weak_ptr<Scene>& a_scene);
 
-		void DrawOutlinerAssetFileDropTarget(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow);
+		void DrawOutlinerAssetFileDropTarget(const AssetBrowserEditorWindow& a_assetBrowserEditorWindow);
 
 		void                             DrawGameObjectNode           (const std::weak_ptr<GameObject>& a_gameObject);
 		Struct::GameObjectNodeDrawResult DrawGameObjectNodeHeader     (const std::weak_ptr<GameObject>& a_gameObject);

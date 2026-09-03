@@ -186,9 +186,8 @@ void FWK::Graphics::Camera::RegisterCBCameraPass()
 
 void FWK::Graphics::Camera::RegisterToEditorViewportWindow()
 {
-	const auto& l_editorManager = Editor::EditorManager::GetInstance();
-
-	const auto& l_viewportWindow = l_editorManager.FindWindowEditor<Editor::ViewportEditorWindow>().lock();
+	const auto& l_editorManager  = Editor::EditorManager::GetInstance                               ();
+	const auto& l_viewportWindow = l_editorManager.FindVALWindowEditor<Editor::ViewportEditorWindow>().lock();
 
 	if (!l_viewportWindow) { return; }
 

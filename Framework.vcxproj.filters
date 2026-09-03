@@ -1114,84 +1114,6 @@
     <Filter Include="Source\Framework\Utility\IMGUI\Tooltip">
       <UniqueIdentifier>{bde3ef0f-a030-4182-b16f-b5bcd13739fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Content">
-      <UniqueIdentifier>{bb277239-a5ec-498d-94e8-e04cbe3527da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader">
-      <UniqueIdentifier>{a1c0aa1c-c00a-4523-a7fe-1e4ae19711c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Sprite">
-      <UniqueIdentifier>{3ef4bcd8-2cc6-4fb0-92d6-b1d381e32af8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Sprite\Screen">
-      <UniqueIdentifier>{2f9fac29-c82b-40ad-ad77-b1e2527f6461}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model">
-      <UniqueIdentifier>{fa93691e-67d7-4ba6-883c-37bdd3dff222}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Skeletal">
-      <UniqueIdentifier>{103fc5dc-4e48-40bf-8c2c-a7879bea0dfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Skeletal\Standard">
-      <UniqueIdentifier>{d499afe5-365c-4542-bc62-cacf596156cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Skeletal\Standard\Lit">
-      <UniqueIdentifier>{484a999e-9e26-4ec6-b2fa-0afc89305e3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Skeletal\Standard\UnLit">
-      <UniqueIdentifier>{da8555e9-1bd4-42c6-b0f4-da92fb20270c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Skeletal\Shadow">
-      <UniqueIdentifier>{62f1b5db-88a7-4b18-bb91-c636212edb45}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Skeletal\Shadow\Cascade">
-      <UniqueIdentifier>{3d9ba937-a13e-4d2a-8c7b-af33f62c138d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Static">
-      <UniqueIdentifier>{f2128ef8-d2a6-435d-9316-60a1e6389aa5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Static\Standard">
-      <UniqueIdentifier>{2af2539b-962b-476d-b943-f3890e3824e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Static\Standard\Lit">
-      <UniqueIdentifier>{711af9fe-3ac6-4658-ae4c-1d97d8cb9d54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Static\Standard\UnLit">
-      <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Static\Shadow">
-      <UniqueIdentifier>{dd4c77e8-49ab-4241-83bd-0faf4d90029c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Static\Shadow\Cascade">
-      <UniqueIdentifier>{d7036bf4-a85c-4e27-9ec2-c96b298152df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Standard">
-      <UniqueIdentifier>{6363d66b-fd2a-47d6-8343-ab9cc15f2bb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Standard\Lit">
-      <UniqueIdentifier>{621f568e-1da1-4e2f-949e-6366c8ef4982}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Standard\UnLit">
-      <UniqueIdentifier>{a47905df-c37d-41c6-b845-940e2efb7381}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Shadow">
-      <UniqueIdentifier>{f03c537f-24e0-4fc1-aced-879fec9c4d7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Model\Shadow\Cascade">
-      <UniqueIdentifier>{1cdcabe3-1457-4083-b2b1-57711b777fc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\RenderTarget">
-      <UniqueIdentifier>{f26372d4-c2d7-4c7b-98ab-c104ab20452e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\RenderTarget\Final">
-      <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\PhysicsDebug">
-      <UniqueIdentifier>{d0b6fda1-6399-4986-afd6-bd80746e2af9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shader\Camera">
-      <UniqueIdentifier>{dc0cb1a8-9f2c-4d66-ab3a-b06139b80ec8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CONFIG">
       <UniqueIdentifier>{beb37171-8f90-4dc3-afbe-5bb3e544476c}</UniqueIdentifier>
     </Filter>
@@ -1434,6 +1356,84 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json">
       <UniqueIdentifier>{64d45172-d49d-4e98-b9ae-1be2f5823c1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset">
+      <UniqueIdentifier>{bb277239-a5ec-498d-94e8-e04cbe3527da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader">
+      <UniqueIdentifier>{a1c0aa1c-c00a-4523-a7fe-1e4ae19711c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Sprite">
+      <UniqueIdentifier>{3ef4bcd8-2cc6-4fb0-92d6-b1d381e32af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Sprite\Screen">
+      <UniqueIdentifier>{2f9fac29-c82b-40ad-ad77-b1e2527f6461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model">
+      <UniqueIdentifier>{fa93691e-67d7-4ba6-883c-37bdd3dff222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal">
+      <UniqueIdentifier>{103fc5dc-4e48-40bf-8c2c-a7879bea0dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Standard">
+      <UniqueIdentifier>{d499afe5-365c-4542-bc62-cacf596156cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Standard\Lit">
+      <UniqueIdentifier>{484a999e-9e26-4ec6-b2fa-0afc89305e3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Standard\UnLit">
+      <UniqueIdentifier>{da8555e9-1bd4-42c6-b0f4-da92fb20270c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Shadow">
+      <UniqueIdentifier>{62f1b5db-88a7-4b18-bb91-c636212edb45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Skeletal\Shadow\Cascade">
+      <UniqueIdentifier>{3d9ba937-a13e-4d2a-8c7b-af33f62c138d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static">
+      <UniqueIdentifier>{f2128ef8-d2a6-435d-9316-60a1e6389aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard">
+      <UniqueIdentifier>{2af2539b-962b-476d-b943-f3890e3824e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard\Lit">
+      <UniqueIdentifier>{711af9fe-3ac6-4658-ae4c-1d97d8cb9d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Standard\UnLit">
+      <UniqueIdentifier>{c1c2cef7-bcea-4256-ac2a-6da55a171de0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Shadow">
+      <UniqueIdentifier>{dd4c77e8-49ab-4241-83bd-0faf4d90029c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Static\Shadow\Cascade">
+      <UniqueIdentifier>{d7036bf4-a85c-4e27-9ec2-c96b298152df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Standard">
+      <UniqueIdentifier>{6363d66b-fd2a-47d6-8343-ab9cc15f2bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Standard\Lit">
+      <UniqueIdentifier>{621f568e-1da1-4e2f-949e-6366c8ef4982}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Standard\UnLit">
+      <UniqueIdentifier>{a47905df-c37d-41c6-b845-940e2efb7381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Shadow">
+      <UniqueIdentifier>{f03c537f-24e0-4fc1-aced-879fec9c4d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Model\Shadow\Cascade">
+      <UniqueIdentifier>{1cdcabe3-1457-4083-b2b1-57711b777fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\RenderTarget">
+      <UniqueIdentifier>{f26372d4-c2d7-4c7b-98ab-c104ab20452e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\RenderTarget\Final">
+      <UniqueIdentifier>{7847047b-694a-4026-b604-730e180438f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\PhysicsDebug">
+      <UniqueIdentifier>{d0b6fda1-6399-4986-afd6-bd80746e2af9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asset\Shader\Camera">
+      <UniqueIdentifier>{dc0cb1a8-9f2c-4d66-ab3a-b06139b80ec8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3504,115 +3504,115 @@
     <None Include="CONFIG\Window\WindowCONFIG.json">
       <Filter>CONFIG\Window</Filter>
     </None>
-    <None Include="Content\Shader\Camera\CameraPass.hlsli">
-      <Filter>Content\Shader\Camera</Filter>
+    <None Include="Asset\Shader\Camera\CameraPass.hlsli">
+      <Filter>Asset\Shader\Camera</Filter>
     </None>
-    <None Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli">
-      <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
+    <None Include="Asset\Shader\Model\Model.hlsli">
+      <Filter>Asset\Shader\Model</Filter>
     </None>
-    <None Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli">
-      <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
+    <None Include="Asset\Shader\Model\ModelMeshlet.hlsli">
+      <Filter>Asset\Shader\Model</Filter>
     </None>
-    <None Include="Content\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli">
-      <Filter>Content\Shader\Model\Skeletal</Filter>
+    <None Include="Asset\Shader\Model\ModelMeshletCulling.hlsli">
+      <Filter>Asset\Shader\Model</Filter>
     </None>
-    <None Include="Content\Shader\Model\Standard\ModelStandard.hlsli">
-      <Filter>Content\Shader\Model\Standard</Filter>
+    <None Include="Asset\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
-    <None Include="Content\Shader\Model\Standard\Lit\ModelStandardLit.hlsli">
-      <Filter>Content\Shader\Model\Standard\Lit</Filter>
+    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow.hlsli">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
-    <None Include="Content\Shader\Model\Standard\UnLit\ModelStandardUnLit.hlsli">
-      <Filter>Content\Shader\Model\Standard\UnLit</Filter>
+    <None Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadowMeshletCulling.hlsli">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </None>
-    <None Include="Content\Shader\Model\Static\StaticModel.hlsli">
-      <Filter>Content\Shader\Model\Static</Filter>
+    <None Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel.hlsli">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </None>
-    <None Include="Content\Shader\PhysicsDebug\PhysicsDebug.hlsli">
-      <Filter>Content\Shader\PhysicsDebug</Filter>
+    <None Include="Asset\Shader\Model\Standard\ModelStandard.hlsli">
+      <Filter>Asset\Shader\Model\Standard</Filter>
     </None>
-    <None Include="Content\Shader\RenderTarget\FullScreenTriangle.hlsli">
-      <Filter>Content\Shader\RenderTarget</Filter>
+    <None Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit.hlsli">
+      <Filter>Asset\Shader\Model\Standard\Lit</Filter>
     </None>
-    <None Include="Content\Shader\RenderTarget\Final\FinalColor.hlsli">
-      <Filter>Content\Shader\RenderTarget\Final</Filter>
+    <None Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit.hlsli">
+      <Filter>Asset\Shader\Model\Standard\UnLit</Filter>
     </None>
-    <None Include="Content\Shader\Sprite\Screen\SpriteScreen.hlsli">
-      <Filter>Content\Shader\Sprite\Screen</Filter>
+    <None Include="Asset\Shader\Model\Static\StaticModel.hlsli">
+      <Filter>Asset\Shader\Model\Static</Filter>
     </None>
-    <None Include="Content\Shader\Model\Shadow\Cascade\CascadeShadowMapPass.hlsli">
-      <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
+    <None Include="Asset\Shader\PhysicsDebug\PhysicsDebug.hlsli">
+      <Filter>Asset\Shader\PhysicsDebug</Filter>
     </None>
-    <None Include="Content\Shader\Model\Model.hlsli">
-      <Filter>Content\Shader\Model</Filter>
+    <None Include="Asset\Shader\RenderTarget\FullScreenTriangle.hlsli">
+      <Filter>Asset\Shader\RenderTarget</Filter>
     </None>
-    <None Include="Content\Shader\Model\ModelMeshlet.hlsli">
-      <Filter>Content\Shader\Model</Filter>
+    <None Include="Asset\Shader\RenderTarget\Final\FinalColor.hlsli">
+      <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </None>
-    <None Include="Content\Shader\Model\ModelMeshletCulling.hlsli">
-      <Filter>Content\Shader\Model</Filter>
+    <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <DXCTask Include="Content\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
-      <Filter>Content\Shader\Model\Shadow\Cascade</Filter>
+    <DXCTask Include="Asset\Shader\Model\Shadow\Cascade\ModelCascadeShadow_AS.hlsl">
+      <Filter>Asset\Shader\Model\Shadow\Cascade</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
-      <Filter>Content\Shader\Model\Skeletal</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationMeshletBoundsUpdate_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Skeletal\SkeletalAnimationModel_AS.hlsl">
-      <Filter>Content\Shader\Model\Skeletal</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationModel_AS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
-      <Filter>Content\Shader\Model\Skeletal</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\SkeletalAnimationVertexSkinning_CS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
-      <Filter>Content\Shader\Model\Skeletal\Shadow\Cascade</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Shadow\Cascade\SkeletalAnimationModelCascadeShadow_MS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal\Shadow\Cascade</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
-      <Filter>Content\Shader\Model\Skeletal\Standard\Lit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\Lit\SkeletalAnimationModelStandardLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal\Standard\Lit</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLit_MS.hlsl">
-      <Filter>Content\Shader\Model\Skeletal\Standard\UnLit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Skeletal\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Standard\Lit\ModelStandardLit_PS.hlsl">
-      <Filter>Content\Shader\Model\Standard\Lit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Standard\Lit\ModelStandardLit_PS.hlsl">
+      <Filter>Asset\Shader\Model\Standard\Lit</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
-      <Filter>Content\Shader\Model\Standard\UnLit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Standard\UnLit\ModelStandardUnLit_PS.hlsl">
+      <Filter>Asset\Shader\Model\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
-      <Filter>Content\Shader\Model\Static\Shadow\Cascade</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\StaticModel_AS.hlsl">
+      <Filter>Asset\Shader\Model\Static</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
-      <Filter>Content\Shader\Model\Static\Standard\Lit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\Shadow\Cascade\StaticModelCascadeShadow_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Shadow\Cascade</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
-      <Filter>Content\Shader\Model\Static\Standard\UnLit</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\Lit\StaticModelStandardLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\Lit</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Model\Static\StaticModel_AS.hlsl">
-      <Filter>Content\Shader\Model\Static</Filter>
+    <DXCTask Include="Asset\Shader\Model\Static\Standard\UnLit\StaticModelStandardUnLit_MS.hlsl">
+      <Filter>Asset\Shader\Model\Static\Standard\UnLit</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
-      <Filter>Content\Shader\PhysicsDebug</Filter>
+    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_PS.hlsl">
+      <Filter>Asset\Shader\PhysicsDebug</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\PhysicsDebug\PhysicsDebug_VS.hlsl">
-      <Filter>Content\Shader\PhysicsDebug</Filter>
+    <DXCTask Include="Asset\Shader\PhysicsDebug\PhysicsDebug_VS.hlsl">
+      <Filter>Asset\Shader\PhysicsDebug</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\RenderTarget\FullScreenTriangle_VS.hlsl">
-      <Filter>Content\Shader\RenderTarget</Filter>
+    <DXCTask Include="Asset\Shader\RenderTarget\FullScreenTriangle_VS.hlsl">
+      <Filter>Asset\Shader\RenderTarget</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
-      <Filter>Content\Shader\RenderTarget\Final</Filter>
+    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
+      <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\RenderTarget\Final\FinalPresent_PS.hlsl">
-      <Filter>Content\Shader\RenderTarget\Final</Filter>
+    <DXCTask Include="Asset\Shader\RenderTarget\Final\FinalColor_PS.hlsl">
+      <Filter>Asset\Shader\RenderTarget\Final</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
-      <Filter>Content\Shader\Sprite\Screen</Filter>
+    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_PS.hlsl">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </DXCTask>
-    <DXCTask Include="Content\Shader\Sprite\Screen\SpriteScreen_VS.hlsl">
-      <Filter>Content\Shader\Sprite\Screen</Filter>
+    <DXCTask Include="Asset\Shader\Sprite\Screen\SpriteScreen_VS.hlsl">
+      <Filter>Asset\Shader\Sprite\Screen</Filter>
     </DXCTask>
   </ItemGroup>
 </Project>

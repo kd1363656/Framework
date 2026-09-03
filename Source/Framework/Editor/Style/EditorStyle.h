@@ -16,8 +16,8 @@ namespace FWK::Editor
 
 		static ImVec4 ConvertEditorColorToIMVEC4(const TypeAlias::Math::Color&a_color);
 
-		inline static const std::filesystem::path k_fontPath     = "Content/Data/Font/Cica/Cica-Regular.ttf";
-		inline static const std::filesystem::path k_iconFontPath = "Content/Data/Font/Icon/FontAwesome/Font Awesome 7 Free-Solid-900.otf";
+		inline static const std::filesystem::path k_fontPath     = "Asset/Data/Font/Cica/Cica-Regular.ttf";
+		inline static const std::filesystem::path k_iconFontPath = "Asset/Data/Font/Icon/FontAwesome/Font Awesome 7 Free-Solid-900.otf";
 
 		static constexpr ImWchar k_iconGlyphRanges[] = { 0xE000, 0xF8FF, 0 };
 

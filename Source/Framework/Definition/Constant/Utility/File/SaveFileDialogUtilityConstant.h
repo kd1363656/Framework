@@ -2,7 +2,7 @@
 
 namespace FWK::Constant
 {
-	inline const std::filesystem::path k_contentRootFolderPath = "Content";
+	inline const std::filesystem::path k_assetRootFolderPath = "Asset";
 
 	inline constexpr std::wstring_view k_saveJsonFileDialogTitle        = L"シーンファイルを保存";
 	inline constexpr std::wstring_view k_jsonFileDialogFilterName       = L"JSON File(*.json)";

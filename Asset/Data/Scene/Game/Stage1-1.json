@@ -1,0 +1,50 @@
+{
+    "NextSceneLoadFilePathMap": [],
+    "Scene": {
+        "AssetFilePathRegistry": {
+            "FilePathRegistryMap": []
+        },
+        "GameObjectList": [
+            {
+                "GameObject": {
+                    "ChildList": [],
+                    "ComponentList": [
+                        {
+                            "ComponentTypeName": "CameraComponent"
+                        }
+                    ],
+                    "PrefabSceneInstanceNUM": 0,
+                    "PrefabUUID": "e003b5e4-369b-4846-a930-e995f2bd3e2b",
+                    "SceneInstanceName": "FreeCamera",
+                    "SceneInstanceUUID": "0e793a52-b7b9-49ff-8ba1-c46bed2f3e42",
+                    "TransformComponent": {
+                        "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
+                        "InitialPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialRotation": {
+                            "W": 1.0,
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "InitialScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 1.0
+                        }
+                    }
+                }
+            }
+        ],
+        "PrefabSystem": {
+            "PrefabMap": []
+        },
+        "SceneName": "Stage1-1"
+    },
+    "SceneShiftEventObserver": {
+        "EventMap": []
+    }
+}

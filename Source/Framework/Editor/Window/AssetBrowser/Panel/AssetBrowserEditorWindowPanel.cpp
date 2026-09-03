@@ -13,19 +13,19 @@ void FWK::Editor::AssetBrowserEditorWindowPanel::DrawFolderTree(AssetBrowserEdit
 
     // ContentBrowserのRootであるContent事態がそんz寧しなければfolderTreeは描画できない
     if (std::error_code l_errorCode = {};
-        std::filesystem::exists(Constant::k_contentRootFolderPath, l_errorCode) &&
+        std::filesystem::exists(Constant::k_assetRootFolderPath, l_errorCode) &&
         !l_errorCode)
     {
         l_errorCode.clear();
 
         // Contentが存在していても
         // Fileだった場合はFolderTreeのRootとして使用できない
-        if (std::filesystem::is_directory(Constant::k_contentRootFolderPath, l_errorCode) &&
+        if (std::filesystem::is_directory(Constant::k_assetRootFolderPath, l_errorCode) &&
             !l_errorCode)
         {
             // RootであるContentから
             // 再帰的なFolderTree描画を開始する
-            DrawFolderTreeNode(Constant::k_contentRootFolderPath, a_assetBrowserEditorWindow);
+            DrawFolderTreeNode(Constant::k_assetRootFolderPath, a_assetBrowserEditorWindow);
         }
     }
 
@@ -53,7 +53,7 @@ void FWK::Editor::AssetBrowserEditorWindowPanel::DrawCurrentFolder(AssetBrowserE
         !std::filesystem::is_directory(l_currentFolderPath, l_errorCode) ||
         l_errorCode)
     {
-        a_assetBrowserEditorWindow.ApplyCurrentFolderPath(Constant::k_contentRootFolderPath);
+        a_assetBrowserEditorWindow.ApplyCurrentFolderPath(Constant::k_assetRootFolderPath);
 
         l_errorCode.clear();
     }
@@ -678,7 +678,7 @@ void FWK::Editor::AssetBrowserEditorWindowPanel::ApplySelectedEntryDeleteShortcu
 
     // Ctrl + Shift + Nでは
     // 現在開いているFolderを作成先とする
-    a_assetBrowserEditorWindow.RequestFolderCreate(a_contentBrowserEditorWindow.GetREFCurrentFolderPath());
+    a_assetBrowserEditorWindow.RequestFolderCreate(a_assetBrowserEditorWindow.GetREFCurrentFolderPath());
 }
 void FWK::Editor::AssetBrowserEditorWindowPanel::ApplyFolderCreateShortcut(AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {

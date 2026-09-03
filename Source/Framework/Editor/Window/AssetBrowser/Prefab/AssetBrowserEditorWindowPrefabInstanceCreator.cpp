@@ -68,7 +68,7 @@ const FWK::Prefab* FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::S
 
 	const auto* l_prefabUUID = a_assetFilePathRegistry.FindPTRAssetUUID(a_prefabFilePath);
 
-	if (l_prefabUUID ||
+	if (!l_prefabUUID ||
 		l_prefabUUID->is_nil()) 
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetRegistryからPrefabUUIDを取得できませんでした。\nFilePath : {}", a_prefabFilePath.string());
@@ -76,22 +76,30 @@ const FWK::Prefab* FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::S
 		return nullptr;
 	}
 
+	const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(*l_prefabUUID);
+
 	// SceneLoad済み、または同じPrefabを以前生成済みなら、
-	// 現在のPrefabDataをそのまま使用する
-	if (const auto* l_registeredPrefab = a_prefabSystem.FindPTRPrefab(*l_prefabUUID)) 
-	{
-		return l_registeredPrefab;
-	}
-
+	// 現在PrefabSystemが保持しているPrefabをそのまま使用する
+	if (const auto* l_registeredPrefab = a_prefabSystem.FindPTRPrefab(*l_prefabUUID)) { return l_registeredPrefab; }
+	
 	Struct::PrefabData l_prefabData = {};
-	auto&              l_prefab     = l_prefabData.m_prefab;
-
-	// 設定されたファイルパスをもとにプレハブを構築
-	l_prefab.Load(a_prefabFilePath);
+	
+	auto& l_prefab = l_prefabData.m_prefab;
+	
+	// AssetFilePathRegistryによってPrefabであることまで確認済みなので、
+	// 現在のFilePathからPrefab本体を読み込む
+	l_prefab.Load(l_assetFilePathData->m_assetFilePath);
+	
+	if (l_prefab.GetREFJson().is_null())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabファイルを読み込めなかったため、PrefabSystemへ登録できませんでした。\nFilePath : {}", l_assetFilePathData->m_assetFilePath.string());
+	
+		return nullptr;
+	}
 	
 	a_prefabSystem.AddPrefab(*l_prefabUUID, l_prefabData);
-
-	// 格納したプレハブのアドレスを取得
+	
+	// PrefabSystemへ実際に登録されたPrefabを返す
 	return a_prefabSystem.FindPTRPrefab(*l_prefabUUID);
 }
 

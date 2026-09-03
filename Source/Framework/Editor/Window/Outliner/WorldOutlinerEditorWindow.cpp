@@ -72,9 +72,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	// DragDropTargetの当たり判定はChildWindow全体になる
 	const auto& l_editorManager = EditorManager::GetInstance();
 
-	if (const auto& l_contentBrowserEditorWindow = l_editorManager.FindWindowEditor<ContentBrowserEditorWindow>().lock())
+	if (const auto& l_assetBrowserEditorWindow = l_editorManager.FindVALWindowEditor<AssetBrowserEditorWindow>().lock())
 	{
-		DrawOutlinerAssetFileDropTarget(*l_contentBrowserEditorWindow);
+		DrawOutlinerAssetFileDropTarget(*l_assetBrowserEditorWindow);
 	}
 
 	ImGui::End();
@@ -93,7 +93,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 	ApplyDroppedSceneChange();
 }
 
-bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow, const std::filesystem::path& a_assetFilePath)
+bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const AssetBrowserEditorWindow& a_assetBrowserEditorWindow, const std::filesystem::path& a_assetFilePath)
 {
 	if (a_assetFilePath.empty()) { return false; }
 	
@@ -107,12 +107,9 @@ bool FWK::Editor::WorldOutlinerEditorWindow::CreateDroppedPrefabInstance(const C
 		return false;
 	}
 
-	const auto* l_prefabAssetRegistry = a_contentBrowserEditorWindow.FetchPTRAssetRegistry(Enum::ContentBrowserAssetType::Prefab);
-
-	if (!l_prefabAssetRegistry) { return false; }
-
-	const auto& l_prefabInstanceCreator = a_contentBrowserEditorWindow.GetREFPrefabInstanceCreator();
-	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance            (*l_prefabAssetRegistry, a_assetFilePath, *l_scene);
+	const auto& l_assetFilePathRegistry = a_assetBrowserEditorWindow.GetREFAssetFilePathRegistry();
+	const auto& l_prefabInstanceCreator = a_assetBrowserEditorWindow.GetREFPrefabInstanceCreator();
+	const auto& l_createdGameObject     = l_prefabInstanceCreator.CreatePrefabInstance          (l_assetFilePathRegistry, a_assetFilePath, *l_scene);
 
 	if (l_createdGameObject.expired()) { return false; }
 
@@ -220,7 +217,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const std::weak_ptr<S
 	ImGui::TreePop();	
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::DrawOutlinerAssetFileDropTarget(const ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+void FWK::Editor::WorldOutlinerEditorWindow::DrawOutlinerAssetFileDropTarget(const AssetBrowserEditorWindow& a_assetBrowserEditorWindow)
 {
 	std::filesystem::path l_assetFilePath = {};
 
@@ -234,27 +231,47 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawOutlinerAssetFileDropTarget(con
 
 	if (l_assetFilePath.empty()) { return; }
 
-	if (const auto* l_sceneAssetRegistry = a_contentBrowserEditorWindow.FetchPTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
-		l_sceneAssetRegistry)
+	const auto& l_assetFilePathRegistry = a_assetBrowserEditorWindow.GetREFAssetFilePathRegistry();
+
+	// JSONという拡張子だけでは
+	// SceneかPrefab格別できない
+	// Scene用Registryへ登録され散るFilePathだけをSceneとして扱う
+	const auto* l_assetUUID= l_assetFilePathRegistry.FindPTRAssetUUID(l_assetFilePath);
+
+	if (!l_assetUUID ||
+		l_assetUUID->is_nil())
 	{
-		// JSONという拡張子だけでは
-		// SceneかPrefab格別できない
-		// Scene用Registryへ登録され散るFilePathだけをSceneとして扱う
-		const auto& l_sceneUUID = l_sceneAssetRegistry->FindVALAssetUUID(l_assetFilePath);
-
-		if (!l_sceneUUID.is_nil())
-		{
-			// Outlinerの描画が完了してからApplyDroppedSceneLoadRequestでシーンを読み込む
-			m_droppedSceneFilePath = l_assetFilePath;
-
-			return;
-		}
+		return;
 	}
 
-	// Sceneではない場合はPrefabか確認
-	if (!m_isRootDropAreaHovered) { return; }
+	const auto* l_assetFilePathData = l_assetFilePathRegistry.FindPTRAssetFilePathData(*l_assetUUID);
 
-	CreateDroppedPrefabInstance(a_contentBrowserEditorWindow, l_assetFilePath);
+	if (!l_assetFilePathData) { return; }
+
+	// PrefabとSceneはどちらもJSONなので拡張子では判別しない
+	// AssetFilePathRegistryに保存したTypeを正本として
+	// Drop処理を振り分ける
+	switch (l_assetFilePathData->m_type)
+	{
+		case Enum::AssetFilePathRegistryType::Scene:
+		{
+			// Outlinerの描画が完全に終了してから
+			// ApplyDroppedSceneChange()でSceneを切り替える
+			m_droppedSceneFilePath = l_assetFilePath;
+		}
+		return;
+
+		case Enum::AssetFilePathRegistryType::Prefab:
+		{
+			if (!m_isRootDropAreaHovered) { return; }
+
+			CreateDroppedPrefabInstance(a_assetBrowserEditorWindow, l_assetFilePath);
+		}
+		return;
+
+		default:
+		return;
+	}
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject)
