@@ -1426,6 +1426,12 @@
     <Filter Include="Source\Framework\Definition\Constant\Component\Rotation">
       <UniqueIdentifier>{c2ce45cc-6126-413e-b4fc-eb77968197c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Asset">
+      <UniqueIdentifier>{056e21de-9f54-4450-9148-3100213ec0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Asset">
+      <UniqueIdentifier>{f0fc572c-8e03-4917-bd52-d7fd83858690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2637,9 +2643,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\NodeEditorWindowEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Input\InputComponent.h">
       <Filter>Source\Framework\Component\Input</Filter>
     </ClInclude>
@@ -2730,9 +2733,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\ContentBrowserEditorWindowEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClInclude>
@@ -2756,6 +2756,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Component\Rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Asset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
