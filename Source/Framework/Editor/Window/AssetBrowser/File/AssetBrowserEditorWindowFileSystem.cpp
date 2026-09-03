@@ -484,7 +484,7 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteFolder(const std::fi
 	return true;
 }
 
-bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std::filesystem::path& a_prefabFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std::filesystem::path& a_prefabFilePath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
 	if (a_prefabFilePath.empty()) { return false; }
 
@@ -498,9 +498,10 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std
 		return false; 
 	}
 
-	const auto l_prefabUUID = a_assetRegistry.FindVALAssetUUID(a_prefabFilePath);
+	const auto l_prefabUUID = a_assetFilePathRegistry.FindPTRAssetUUID(a_prefabFilePath);
 
-	if (l_prefabUUID.is_nil()) 
+	if (!l_prefabUUID ||
+		l_prefabUUID->is_nil()) 
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "削除対象PrefabのUUIDを取得できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
@@ -509,7 +510,7 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std
 
 	// ファイル削除に失敗した場合にregistryを戻せるように
 	// UUIDを取得した後でRegistryから削除する
-	if (!a_assetRegistry.Erase(a_prefabFilePath))
+	if (!a_assetFilePathRegistry.Erase(a_prefabFilePath))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabをAssetRegistryから削除できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
@@ -522,7 +523,7 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std
 	{
 		// 実ファイル削除に失敗したので
 		// AssetRegistryを削除前の状態に戻す
-		if (!a_assetRegistry.Add(l_prefabUUID, a_prefabFilePath))
+		if (!a_assetFilePathRegistry.Add(a_prefabFilePath, *l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefab削除失敗後のAssetRegistry復元にも失敗しました。\nFilePath : {}", a_prefabFilePath.string());
 		}
@@ -544,8 +545,7 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std
 		}
 
 		// 削除したPrefabと関係ないGameObjectは何もしない
-		if (l_gameObject->GetREFPrefabUUID() !=
-			l_prefabUUID)
+		if (l_gameObject->GetREFPrefabUUID() != *l_prefabUUID)
 		{
 			continue;
 		}
@@ -555,22 +555,24 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeletePrefabFile(const std
 
 	auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
 
-	l_prefabSystem.RemovePrefab    (l_prefabUUID);
+	l_prefabSystem.RemovePrefab    (*l_prefabUUID);
 	l_prefabSystem.RefreshAllPrefab();
 
-	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Prefabを削除しました。\nFilePath : {}\nPrefabUUID : {}", a_prefabFilePath.string(), boost::uuids::to_string(l_prefabUUID));
+	FWK_ADD_LOG(Constant::k_debugSuccessColor, "Prefabを削除しました。\nFilePath : {}\nPrefabUUID : {}", a_prefabFilePath.string(), boost::uuids::to_string(*l_prefabUUID));
 
 	return true;
 }
-bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteSceneFile(const std::filesystem::path& a_sceneFilePath, ContentBrowserEditorWindowAssetRegistry& a_assetRegistry) const
+
+bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteSceneFile(const std::filesystem::path& a_sceneFilePath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
 	if (a_sceneFilePath.empty()) { return false; }
 
 	// SceneFilePathに対応しているUUIDを先に取得する
 	// ファイル削除に失敗した場合、このUUIDを使ってRegistryを復元する
-	const auto& l_sceneUUID = a_assetRegistry.FindVALAssetUUID(a_sceneFilePath);
+	const auto& l_sceneUUID = a_assetFilePathRegistry.FindPTRAssetUUID(a_sceneFilePath);
 
-	if (l_sceneUUID.is_nil()) 
+	if (!l_sceneUUID ||
+		l_sceneUUID->is_nil()) 
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor,"削除対象SceneのUUIDを取得できませんでした。\nFilePath : {}", a_sceneFilePath.string());
 
@@ -578,7 +580,7 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteSceneFile(const std:
 	}
 
 	// SceneUUIDとFilePathの関連をAssetRegistryから解除する
-	if (!a_assetRegistry.Erase(a_sceneFilePath))
+	if (!a_assetFilePathRegistry.Erase(a_sceneFilePath))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneをAssetRegistryから削除できませんでした。\nFilePath : {}", a_sceneFilePath.string());
 
@@ -592,7 +594,7 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteSceneFile(const std:
 		// 実ファイルを削除できなかった場合、
 		// Registryだけ削除済みになるとFileとUUIDの状態が壊れる
 		// そのため削除前のUUIDとFilePathをRegistryへ戻す
-		if (!a_assetRegistry.Add(l_sceneUUID, a_sceneFilePath))
+		if (!a_assetFilePathRegistry.Add(a_sceneFilePath, *l_sceneUUID, Enum::AssetFilePathRegistryType::Scene))
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "Scene削除失敗後のAssetRegistry復元にも失敗しました。\nFilePath : {}", a_sceneFilePath.string());
 		}
@@ -605,10 +607,11 @@ bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteSceneFile(const std:
 	FWK_ADD_LOG(Constant::k_debugSuccessColor,
 		        "Sceneを削除しました。\nFilePath : {}\nSceneUUID : {}",
 		        a_sceneFilePath.string(),
-		        boost::uuids::to_string(l_sceneUUID));
+		        boost::uuids::to_string(*l_sceneUUID));
 
 	return true;
 }
+
 bool FWK::Editor::AssetBrowserEditorWindowFileSystem::DeleteRegularFile(const std::filesystem::path& a_filePath) const
 {
 	if (a_filePath.empty()) { return false; }
