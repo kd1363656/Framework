@@ -585,7 +585,6 @@
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
 #include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
-
 #include "Utility/File/SaveFileDialogUtility.h"
 #include "Editor/Window/AssetBrowser/File/AssetBrowserEditorWindowFileSystem.h"
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowStruct.h"

@@ -2,7 +2,13 @@
     "NextSceneLoadFilePathMap": [],
     "Scene": {
         "AssetFilePathRegistry": {
-            "FilePathRegistryMap": []
+            "FilePathRegistryMap": [
+                {
+                    "FilePath": "Asset\\Data\\Prefab\\Camera\\Free\\FreeCamera.json",
+                    "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                    "UUID": "522829e2-a824-4cbb-93c8-19e313185acd"
+                }
+            ]
         },
         "GameObjectList": [
             {
@@ -14,9 +20,9 @@
                         }
                     ],
                     "PrefabSceneInstanceNUM": 0,
-                    "PrefabUUID": "e003b5e4-369b-4846-a930-e995f2bd3e2b",
+                    "PrefabUUID": "522829e2-a824-4cbb-93c8-19e313185acd",
                     "SceneInstanceName": "FreeCamera",
-                    "SceneInstanceUUID": "0e793a52-b7b9-49ff-8ba1-c46bed2f3e42",
+                    "SceneInstanceUUID": "38ce57bd-2722-4b03-af21-1dd8a1b3f764",
                     "TransformComponent": {
                         "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
                         "InitialPosition": {
@@ -40,7 +46,16 @@
             }
         ],
         "PrefabSystem": {
-            "PrefabMap": []
+            "PrefabMap": [
+                {
+                    "PrefabInstanceNUMAllocator": {
+                        "IsAllocatedList": [
+                            true
+                        ]
+                    },
+                    "PrefabUUID": "522829e2-a824-4cbb-93c8-19e313185acd"
+                }
+            ]
         },
         "SceneName": "Stage1-1"
     },

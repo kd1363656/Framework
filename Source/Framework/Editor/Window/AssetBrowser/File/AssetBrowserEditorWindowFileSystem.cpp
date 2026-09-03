@@ -152,7 +152,8 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 
 	if (!l_scene) { return {}; }
 
-	auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+	auto& l_prefabSystem               = l_scene->GetMutableREFPrefabSystem         ();
+	auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
 
 	// PrefabSystem側でもUUIDが使用済みなら登録しない
 	if (l_prefabSystem.FindPTRPrefab(l_prefabUUID))
@@ -165,6 +166,18 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 	if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetBrowserAssetRegistryへPrefabを登録できませんでした。");
+
+		return {};
+	}
+
+	// 現在のシーンにもプレハブを登録
+	if (!l_sceneAssetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
+	{
+		// Scene側への登録だけ失敗した場合、
+		// AssetBrowser側だけにPrefab情報を残してはいけない
+		a_assetFilePathRegistry.Erase( l_prefabFilePath);
+
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Scene側AssetFilePathRegistryへPrefabを登録できませんでした。\nFilePath : {}", l_prefabFilePath.string());
 
 		return {};
 	}
@@ -185,7 +198,8 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 
 	if (!l_registeredPrefab)
 	{
-		a_assetFilePathRegistry.Erase(l_prefabFilePath);
+		l_sceneAssetFilePathRegistry.Erase(l_prefabFilePath);
+		a_assetFilePathRegistry.Erase     (l_prefabFilePath);
 
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabSystemへのPrefab登録に失敗しました。");
 
@@ -197,8 +211,9 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 	// シーンインスタンス数が無効値ならAssetRegistryやPrefabSystemから情報を消す
 	if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
 	{
-		l_prefabSystem.RemovePrefab   (l_prefabUUID);
-		a_assetFilePathRegistry.Erase(l_prefabFilePath);
+		l_prefabSystem.RemovePrefab        (l_prefabUUID);
+		l_sceneAssetFilePathRegistry.Erase(l_prefabFilePath);
+		a_assetFilePathRegistry.Erase     (l_prefabFilePath);
 
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabInstanceNUMを発行できなかったため、Prefab作成を中止しました。");
 
@@ -224,7 +239,8 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 
 		l_prefabSystem.RemovePrefab(l_prefabUUID);
 
-		a_assetFilePathRegistry.Erase(l_prefabFilePath);
+		l_sceneAssetFilePathRegistry.Erase(l_prefabFilePath);
+		a_assetFilePathRegistry.Erase     (l_prefabFilePath);
 
 		// SaveJsonFileの途中でFileだけ生成された場合も
 		// 不完全なPrefabファイルを渡さない

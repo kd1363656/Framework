@@ -13,7 +13,7 @@ namespace FWK::Editor
 
 	private:
 
-		const Prefab* SynchronizePrefabIfNotExist(const AssetFilePathRegistry& a_assetFilePathRegistry, const std::filesystem::path& a_prefabFilePath, PrefabSystem& a_prefabSystem) const;
+		const Prefab* SynchronizePrefabIfNotExist(const AssetFilePathRegistry& a_assetFilePathRegistry, const std::filesystem::path& a_prefabFilePath, Scene& a_scene) const;
 
 		void RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const;
 

@@ -5,7 +5,7 @@ std::weak_ptr<FWK::GameObject> FWK::Editor::AssetBrowserEditorWindowPrefabInstan
 	auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
 
 	// まずはScene側のPrefabSystemにPrefabがなければプレハブ作成から始める
-	const auto* l_prefab = SynchronizePrefabIfNotExist(a_assetFilePathRegistry, a_prefabFilePath, l_prefabSystem);
+	const auto* l_prefab = SynchronizePrefabIfNotExist(a_assetFilePathRegistry, a_prefabFilePath, a_scene);
 
 	if (!l_prefab) { return {}; }
 
@@ -55,7 +55,7 @@ std::weak_ptr<FWK::GameObject> FWK::Editor::AssetBrowserEditorWindowPrefabInstan
 	return l_gameObject;
 }
 
-const FWK::Prefab* FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::SynchronizePrefabIfNotExist(const AssetFilePathRegistry& a_assetFilePathRegistry, const std::filesystem::path& a_prefabFilePath, PrefabSystem& a_prefabSystem) const
+const FWK::Prefab* FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::SynchronizePrefabIfNotExist(const AssetFilePathRegistry& a_assetFilePathRegistry, const std::filesystem::path& a_prefabFilePath, Scene& a_scene) const
 {
 	// Prefabとして読み込むので、
 	// 通常FileだけでなくJSON拡張子まで確認する
@@ -78,29 +78,87 @@ const FWK::Prefab* FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::S
 
 	const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(*l_prefabUUID);
 
-	// SceneLoad済み、または同じPrefabを以前生成済みなら、
-	// 現在PrefabSystemが保持しているPrefabをそのまま使用する
-	if (const auto* l_registeredPrefab = a_prefabSystem.FindPTRPrefab(*l_prefabUUID)) { return l_registeredPrefab; }
-	
-	Struct::PrefabData l_prefabData = {};
-	
-	auto& l_prefab = l_prefabData.m_prefab;
-	
-	// AssetFilePathRegistryによってPrefabであることまで確認済みなので、
-	// 現在のFilePathからPrefab本体を読み込む
-	l_prefab.Load(l_assetFilePathData->m_assetFilePath);
-	
-	if (l_prefab.GetREFJson().is_null())
+	if (!l_assetFilePathData)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabファイルを読み込めなかったため、PrefabSystemへ登録できませんでした。\nFilePath : {}", l_assetFilePathData->m_assetFilePath.string());
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDに対応するAssetFilePathDataを取得できませんでした。\nPrefabUUID : {}", boost::uuids::to_string(*l_prefabUUID));
 	
 		return nullptr;
 	}
-	
-	a_prefabSystem.AddPrefab(*l_prefabUUID, l_prefabData);
-	
-	// PrefabSystemへ実際に登録されたPrefabを返す
-	return a_prefabSystem.FindPTRPrefab(*l_prefabUUID);
+
+	if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab)
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "指定されたAssetがPrefabではありません。\nFilePath : {}", l_assetFilePathData->m_assetFilePath.string());
+
+		return nullptr;
+	}
+
+	auto& l_assetFilePathRegistry = a_scene.GetMutableREFAssetFilePathRegistry();
+
+	// Scene側Registryにも同じUUIDが既に存在する場合は、
+	// AssetBrowser側と同じPrefabを指しているか確認する
+	if (const auto* l_sceneAssetFilePathData = l_assetFilePathRegistry.FindPTRAssetFilePathData(*l_prefabUUID))
+	{
+		if (l_sceneAssetFilePathData->m_assetFilePath != l_assetFilePathData->m_assetFilePath ||
+			l_sceneAssetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab)
+		{
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "Scene側AssetFilePathRegistryに同じUUIDの異なるAsset情報が登録されています。\nPrefabUUID : {}", boost::uuids::to_string(*l_prefabUUID));
+
+			return nullptr;
+		}
+	}
+	else
+	{
+		// AssetBrowserが正本として持っているUUID/Path/Typeを
+		// このSceneが使用するAsset情報としてScene側Registryにも登録する
+		if (!l_assetFilePathRegistry.Add(l_assetFilePathData->m_assetFilePath, *l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
+		{
+			FWK_ADD_LOG(Constant::k_debugWarningColor,
+				        "Prefab情報をScene側AssetFilePathRegistryへ登録できませんでした。\nPrefabUUID : {}\nFilePath : {}",
+				        boost::uuids::to_string(*l_prefabUUID),
+				        l_assetFilePathData->m_assetFilePath.string());
+
+			return nullptr;
+		}
+	}
+
+	auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
+
+	// すでにSceneのPrefabSystemへ読み込まれていれば再ロードしない
+	if (const auto* l_registeredPrefab = l_prefabSystem.FindPTRPrefab(*l_prefabUUID)) { return l_registeredPrefab; }
+
+	Struct::PrefabData l_prefabData = {};
+
+	auto& l_prefab = l_prefabData.m_prefab;
+
+	// FilePathはPrefabに保持せず、
+	// Sceneへ同期したUUIDに対応するFilePathを処理時だけ使用する。
+	l_prefab.Load(l_assetFilePathData->m_assetFilePath);
+
+	if (l_prefab.GetREFJson().is_null())
+	{
+		// PrefabSystemへの登録に失敗したので
+		// 今回追加したScene側Asset情報も残さないほうが安全
+		l_assetFilePathRegistry.Erase(l_assetFilePathData->m_assetFilePath);
+
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabファイルを読み込めなかったため、PrefabSystemへ登録できませんでした。\nFilePath : {}", l_assetFilePathData->m_assetFilePath.string());
+
+		return nullptr;
+	}
+
+	l_prefabSystem.AddPrefab(*l_prefabUUID, l_prefabData);
+
+	const auto* l_registeredPrefab = l_prefabSystem.FindPTRPrefab(*l_prefabUUID);
+
+	if (!l_registeredPrefab)
+	{
+		l_assetFilePathRegistry.Erase(l_assetFilePathData->m_assetFilePath);
+
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabSystemへのPrefab登録に失敗しました。\nPrefabUUID : {}", boost::uuids::to_string(*l_prefabUUID));
+
+		return nullptr;
+	}
+
+	return l_registeredPrefab;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const

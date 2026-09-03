@@ -519,10 +519,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRootDropArea()
 	// RootDropArea上にMouseがあるか確認できるようにする
 	m_isRootDropAreaHovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
 
+	// GameObjectがRoot領域へDropされていれば
+	// 親子関係の解除要求を登録する
+	UnparentDroppedGameObject();
+
 	// Outliner上のGameObjectを空白領域へDropした場合は、
 	// 既存の親子関係解除要求として処理する
-	if (UnparentDroppedGameObject() &&
-		ImGui::IsItemClicked(ImGuiMouseButton_Left))
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
 	{
 		// SceneRename中は空白クリックをRename確定操作として扱う
 		if (m_sceneRename.GetVALIsRenameActive())
