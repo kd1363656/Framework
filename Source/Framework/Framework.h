@@ -557,6 +557,14 @@
 #include "Component/Move/MoveComponent.h"
 
 //===============================================================================
+// アセットファイルパス管理クラス
+//===============================================================================
+#include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
+#include "Asset/Converter/Json/AssetFilePathRegistryJsonConverter.h"
+#include "Asset/AssetFilePathRegistry.h"
+
+
+//===============================================================================
 // シーン
 //===============================================================================
 #include "Scene/Converter/Json/SceneJsonConverter.h"
@@ -577,8 +585,6 @@
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
 #include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
-
-#include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
 
 #include "Utility/File/SaveFileDialogUtility.h"
 #include "Editor/Window/ContentBrowser/Asset/Converter/Json/ContentBrowserEditorWindowAssetRegistryJsonConverter.h"

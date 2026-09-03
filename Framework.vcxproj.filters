@@ -1432,6 +1432,12 @@
     <Filter Include="Source\Framework\Definition\Enum\Asset">
       <UniqueIdentifier>{f0fc572c-8e03-4917-bd52-d7fd83858690}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Asset\Converter">
+      <UniqueIdentifier>{fc6d009a-1301-41c5-bf74-452f89aeb6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Asset\Converter\Json">
+      <UniqueIdentifier>{e095656e-049e-4dc1-bd8d-f17d2707a806}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2760,6 +2766,12 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h">
       <Filter>Source\Framework\Definition\Enum\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Asset\AssetFilePathRegistry.h">
+      <Filter>Source\Framework\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.h">
+      <Filter>Source\Framework\Asset\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3475,6 +3487,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp">
+      <Filter>Source\Framework\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp">
+      <Filter>Source\Framework\Asset\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

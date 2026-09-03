@@ -337,6 +337,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h" />
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
+    <ClInclude Include="Source\Framework\Asset\AssetFilePathRegistry.h" />
+    <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
@@ -780,6 +782,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
     <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp" />
+    <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
