@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-	class ContentBrowserEditorWindow final : public EditorWindowBase
+	class AssetBrowserEditorWindow final : public EditorWindowBase
 	{
 	public:
 
-		 ContentBrowserEditorWindow()          = default;
-		~ContentBrowserEditorWindow() override = default;
+		 AssetBrowserEditorWindow()          = default;
+		~AssetBrowserEditorWindow() override = default;
 
 		void CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath);
 		void CreateSceneFromScene      (const std::weak_ptr<Scene>&      a_scene,      const std::filesystem::path& a_directoryPath);
@@ -30,19 +30,19 @@ namespace FWK::Editor
 		void CancelFolderCreate();
 
 		void SetFolderCreateInputFocusRequested(const bool a_set) { m_isFolderCreateInputFocusRequested = a_set; }
+      
+		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
-		const ContentBrowserEditorWindowAssetRegistry* FetchPTRAssetRegistry       (const Enum::ContentBrowserAssetType a_assetType) const;
-		      ContentBrowserEditorWindowAssetRegistry* FetchMutablePTRAssetRegistry(const Enum::ContentBrowserAssetType a_assetType);
-
-		const auto& GetREFAssetRegistryList    () const { return m_assetRegistryList; }
+		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 		const auto& GetREFEntryController      () const { return m_entryController; }
 		const auto& GetREFFileSystem           () const { return m_fileSystem; } 
 		const auto& GetREFPrefabInstanceCreator() const { return m_prefabInstanceCreator; }
 
 		const auto& GetREFCurrentFolderPath() const { return m_currentFolderPath; }
 
-		auto& GetMutableREFEntryController  () { return m_entryController; }
-		auto& GetMutableREFAssetRegistryList() { return m_assetRegistryList; }
+		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
+		auto& GetMutableREFEntryController      () { return m_entryController; }
+		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 		
 		auto& GetMutableREFolderCreateNameBuffer() { return m_folderCreateNameBuffer; }
 
@@ -56,16 +56,15 @@ namespace FWK::Editor
 		void ApplySelectedEntryDeleteRequest();
 		void ApplyFolderCreateRequest       ();
 		
-		static constexpr std::string_view k_editorName = "コンテンツブラウザー";
+		static constexpr std::string_view k_editorName = "アセットブラウザー";
 
-		std::array<ContentBrowserEditorWindowAssetRegistry, static_cast<std::size_t>(Enum::ContentBrowserAssetType::Count)>  m_assetRegistryList = {};
+		AssetFilePathRegistry                         m_assetFilePathRegistry = {};
+		AssetBrowserEditorWindowEntryController       m_entryController       = {};
+		AssetBrowserEditorWindowFileSystem            m_fileSystem            = {};
+		AssetBrowserEditorWindowPrefabInstanceCreator m_prefabInstanceCreator = {};
+		AssetBrowserEditorWindowPanel                 m_panel                 = {};
 
-		ContentBrowserEditorWindowEntryController       m_entryController       = {};
-		ContentBrowserEditorWindowFileSystem            m_fileSystem            = {};
-		ContentBrowserEditorWindowPrefabInstanceCreator m_prefabInstanceCreator = {};
-		ContentBrowserEditorWindowPanel                 m_panel                 = {};
-
-		Converter::ContentBrowserEditorWindowJsonConverter m_jsonConverter = {};
+		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
 		std::filesystem::path m_currentFolderPath         = Constant::k_contentRootFolderPath;
 		std::filesystem::path m_requestedSelectEntryPath  = {};
@@ -79,8 +78,8 @@ namespace FWK::Editor
 
 		bool m_isSelectedEntryDeleteRequested = false;
 
-		FWK_DEFINE_TYPE_INFO(ContentBrowserEditorWindow, EditorWindowBase)
+		FWK_DEFINE_TYPE_INFO(AssetBrowserEditorWindow, EditorWindowBase)
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::ContentBrowserEditorWindow)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::AssetBrowserEditorWindow)

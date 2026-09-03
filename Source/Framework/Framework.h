@@ -587,12 +587,10 @@
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 
 #include "Utility/File/SaveFileDialogUtility.h"
-
-
 #include "Editor/Window/AssetBrowser/File/AssetBrowserEditorWindowFileSystem.h"
-#include "Definition/Struct/Editor/Window/ContentBrowserEditorWindowStruct.h"
-#include "Editor/Window/ContentBrowser/Entry/ContentBrowserEditorWindowEntryController.h"
-#include "Editor/Window/ContentBrowser/ContentBrowserEditorWindowPanel.h"
-#include "Editor/Window/ContentBrowser/Prefab/ContentBrowserEditorWindowPrefabInstanceCreator.h"
-#include "Editor/Window/ContentBrowser/Converter/Json/ContentBrowserEditorWindowJsonConverter.h"
-#include "Editor/Window/ContentBrowser/ContentBrowserEditorWindow.h"
+#include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowStruct.h"
+#include "Editor/Window/AssetBrowser/Entry/AssetBrowserEditorWindowEntryController.h"
+#include "Editor/Window/AssetBrowser/Panel/AssetBrowserEditorWindowPanel.h"
+#include "Editor/Window/AssetBrowser/Prefab/AssetBrowserEditorWindowPrefabInstanceCreator.h"
+#include "Editor/Window/AssetBrowser/Converter/Json/AssetBrowserEditorWindowJsonConverter.h"
+#include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"

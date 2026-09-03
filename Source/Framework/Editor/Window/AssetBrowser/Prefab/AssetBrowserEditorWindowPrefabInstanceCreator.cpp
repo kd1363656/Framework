@@ -1,11 +1,11 @@
-﻿#include "ContentBrowserEditorWindowPrefabInstanceCreator.h"
+﻿#include "AssetBrowserEditorWindowPrefabInstanceCreator.h"
 
-std::weak_ptr<FWK::GameObject> FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::CreatePrefabInstance(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_prefabFilePath, Scene& a_scene) const
+std::weak_ptr<FWK::GameObject> FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::CreatePrefabInstance(const AssetFilePathRegistry& a_assetFilePathRegistry, const std::filesystem::path& a_prefabFilePath, Scene& a_scene) const
 {
 	auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
 
 	// まずはScene側のPrefabSystemにPrefabがなければプレハブ作成から始める
-	const auto* l_prefab = SynchronizePrefabIfNotExist(a_assetRegistry, a_prefabFilePath, l_prefabSystem);
+	const auto* l_prefab = SynchronizePrefabIfNotExist(a_assetFilePathRegistry, a_prefabFilePath, l_prefabSystem);
 
 	if (!l_prefab) { return {}; }
 
@@ -55,7 +55,7 @@ std::weak_ptr<FWK::GameObject> FWK::Editor::ContentBrowserEditorWindowPrefabInst
 	return l_gameObject;
 }
 
-const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::SynchronizePrefabIfNotExist(const ContentBrowserEditorWindowAssetRegistry& a_assetRegistry, const std::filesystem::path& a_prefabFilePath, PrefabSystem& a_prefabSystem) const
+const FWK::Prefab* FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::SynchronizePrefabIfNotExist(const AssetFilePathRegistry& a_assetFilePathRegistry, const std::filesystem::path& a_prefabFilePath, PrefabSystem& a_prefabSystem) const
 {
 	// Prefabとして読み込むので、
 	// 通常FileだけでなくJSON拡張子まで確認する
@@ -66,9 +66,10 @@ const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator:
 		return nullptr; 
 	}
 
-	const auto& l_prefabUUID = a_assetRegistry.FindVALAssetUUID(a_prefabFilePath);
+	const auto* l_prefabUUID = a_assetFilePathRegistry.FindPTRAssetUUID(a_prefabFilePath);
 
-	if (l_prefabUUID.is_nil()) 
+	if (l_prefabUUID ||
+		l_prefabUUID->is_nil()) 
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetRegistryからPrefabUUIDを取得できませんでした。\nFilePath : {}", a_prefabFilePath.string());
 
@@ -77,34 +78,24 @@ const FWK::Prefab* FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator:
 
 	// SceneLoad済み、または同じPrefabを以前生成済みなら、
 	// 現在のPrefabDataをそのまま使用する
-	if (const auto* l_registeredPrefab = a_prefabSystem.FindPTRPrefab(l_prefabUUID)) 
+	if (const auto* l_registeredPrefab = a_prefabSystem.FindPTRPrefab(*l_prefabUUID)) 
 	{
 		return l_registeredPrefab;
-	}
-
-	if (const auto& l_prefabJson = Utility::LoadJsonFile(a_prefabFilePath);
-		l_prefabJson.is_null())
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabJsonを読み込めませんでした。\nFilePath : {}", a_prefabFilePath.string());
-
-		return nullptr;
 	}
 
 	Struct::PrefabData l_prefabData = {};
 	auto&              l_prefab     = l_prefabData.m_prefab;
 
-	l_prefab.SetFilePath(a_prefabFilePath);
-
 	// 設定されたファイルパスをもとにプレハブを構築
-	l_prefab.LoadGameObjectPrefab();
+	l_prefab.Load(a_prefabFilePath);
 	
-	a_prefabSystem.AddPrefab(l_prefabUUID, l_prefabData);
+	a_prefabSystem.AddPrefab(*l_prefabUUID, l_prefabData);
 
 	// 格納したプレハブのアドレスを取得
-	return a_prefabSystem.FindPTRPrefab(l_prefabUUID);
+	return a_prefabSystem.FindPTRPrefab(*l_prefabUUID);
 }
 
-void FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const
+void FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::RecursivePostDeserialize(const std::weak_ptr<GameObject>& a_gameObject) const
 {
 	const auto& l_gameObject = a_gameObject.lock();
 
@@ -124,7 +115,7 @@ void FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::RecursivePost
 	}
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::AllocatePrefabSceneInstanceNUMRecursive(const std::weak_ptr<GameObject>& a_gameObject, const std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, PrefabSystem& a_prefabSystem) const
+bool FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::AllocatePrefabSceneInstanceNUMRecursive(const std::weak_ptr<GameObject>&a_gameObject, const std::vector<Struct::ChildDeserializeData>&a_childDeserializeDataList, PrefabSystem& a_prefabSystem) const
 {
 	const auto& l_gameObject = a_gameObject.lock();
 
@@ -150,7 +141,7 @@ bool FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::AllocatePrefa
 	return true;
 }
 
-void FWK::Editor::ContentBrowserEditorWindowPrefabInstanceCreator::ReleasePrefabSceneInstanceNUMRecursive(const std::weak_ptr<GameObject>& a_gameObject, const std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, PrefabSystem& a_prefabSystem) const
+void FWK::Editor::AssetBrowserEditorWindowPrefabInstanceCreator::ReleasePrefabSceneInstanceNUMRecursive(const std::weak_ptr<GameObject>& a_gameObject, const std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, PrefabSystem& a_prefabSystem) const
 {
 	const auto& l_gameObject = a_gameObject.lock();
 

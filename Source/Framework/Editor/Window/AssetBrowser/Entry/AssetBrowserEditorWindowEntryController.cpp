@@ -1,6 +1,6 @@
-﻿#include "ContentBrowserEditorWindowEntryController.h"
+﻿#include "AssetBrowserEditorWindowEntryController.h"
 
-void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolderEntryList(const std::filesystem::path& a_currentFolderPath)
+void FWK::Editor::AssetBrowserEditorWindowEntryController::RefreshCurrentFolderEntryList(const std::filesystem::path& a_currentFolderPath)
 {
 	m_currentFolderEntryDataList.clear();
 
@@ -58,7 +58,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolde
 			(l_isFolder      ||
 			 l_isFile))
 		{
-			Struct::ContentBrowserEntryData l_entryData = {};
+			Struct::AssetBrowserEntryData l_entryData = {};
 
 			// 正規化を行い余計な..などを削除したファイルパスを格納
 			l_entryData.m_entryPath = l_directoryITR->path().lexically_normal();
@@ -90,16 +90,16 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::RefreshCurrentFolde
 	// directory_iteratorの列挙順は保証されない。
 	// 表示順をPath順へ固定することで
 	// Refresh後もShift選択範囲が変化しないようにする
-	std::ranges::sort(m_currentFolderEntryDataList, {}, &Struct::ContentBrowserEntryData::m_entryPath);
+	std::ranges::sort(m_currentFolderEntryDataList, {}, &Struct::AssetBrowserEntryData::m_entryPath);
 
 	m_isCurrentFolderEntryListDirty = false;
 
 	// Entry一覧とSelectionは同じクラスが所有しているため、
 	// Refresh直後に必ずSelection側も同期して不整合を残さない
-	SynchronizeCurrentFolderEntries();
+	SynchronizeCurrentFolderEntries();	
 }
 
-void FWK::Editor::ContentBrowserEditorWindowEntryController::SelectSingleEntry(const std::filesystem::path& a_entryPath)
+void FWK::Editor::AssetBrowserEditorWindowEntryController::SelectSingleEntry(const std::filesystem::path& a_entryPath)
 {
 	if (!ContainsCurrentFolderEntry(a_entryPath)) { return; }
 
@@ -111,7 +111,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::SelectSingleEntry(c
 	// いj会Shift選択の開始位置にする
 	m_rangeAnchorEntryPath = a_entryPath;
 }
-void FWK::Editor::ContentBrowserEditorWindowEntryController::SelectRangeEntry(const std::filesystem::path& a_entryPath)
+void FWK::Editor::AssetBrowserEditorWindowEntryController::SelectRangeEntry(const std::filesystem::path& a_entryPath)
 {
 	if (!ContainsCurrentFolderEntry(a_entryPath)) { return; }
 
@@ -176,7 +176,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::SelectRangeEntry(co
 		m_selectedEntryPathSet.emplace(l_entryData.m_entryPath);
 	}
 }
-void FWK::Editor::ContentBrowserEditorWindowEntryController::SelectAllEntries()
+void FWK::Editor::AssetBrowserEditorWindowEntryController::SelectAllEntries()
 {
 	m_selectedEntryPathSet.clear();
 
@@ -205,7 +205,7 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::SelectAllEntries()
 	}
 }
 
-void FWK::Editor::ContentBrowserEditorWindowEntryController::ToggleEntrySelection(const std::filesystem::path& a_entryPath)
+void FWK::Editor::AssetBrowserEditorWindowEntryController::ToggleEntrySelection(const std::filesystem::path& a_entryPath)
 {
 	if (!ContainsCurrentFolderEntry(a_entryPath)) { return; }
 
@@ -225,20 +225,20 @@ void FWK::Editor::ContentBrowserEditorWindowEntryController::ToggleEntrySelectio
 	m_selectedEntryPathSet.emplace(a_entryPath);
 }
 
-void FWK::Editor::ContentBrowserEditorWindowEntryController::ClearSelectedEntries()
+void FWK::Editor::AssetBrowserEditorWindowEntryController::ClearSelectedEntries()
 {
 	m_selectedEntryPathSet.clear();
 	m_rangeAnchorEntryPath.clear();
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowEntryController::ContainsSelectedEntry(const std::filesystem::path& a_entryPath) const
+bool FWK::Editor::AssetBrowserEditorWindowEntryController::ContainsSelectedEntry(const std::filesystem::path& a_entryPath) const
 {
 	if (a_entryPath.empty()) { return false; }
 
 	return m_selectedEntryPathSet.contains(a_entryPath);
 }
 
-std::filesystem::path FWK::Editor::ContentBrowserEditorWindowEntryController::FetchVALSingleSelectedFolderPath() const
+std::filesystem::path FWK::Editor::AssetBrowserEditorWindowEntryController::FetchVALSingleSelectedFolderPath() const
 {
 	// 一つだけ選択されていない場合は、
 	// Folder作成先として使用しない
@@ -256,12 +256,12 @@ std::filesystem::path FWK::Editor::ContentBrowserEditorWindowEntryController::Fe
 	return l_selectedEntryPath;
 }
 
-std::size_t FWK::Editor::ContentBrowserEditorWindowEntryController::FetchVALSelectedEntryCount() const
+std::size_t FWK::Editor::AssetBrowserEditorWindowEntryController::FetchVALSelectedEntryCount() const
 {
 	return m_selectedEntryPathSet.size();
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowEntryController::ContainsCurrentFolderEntry(const std::filesystem::path& a_entryPath) const
+bool FWK::Editor::AssetBrowserEditorWindowEntryController::ContainsCurrentFolderEntry(const std::filesystem::path& a_entryPath) const
 {
 	if (a_entryPath.empty()) { return false; }
 
@@ -277,7 +277,7 @@ bool FWK::Editor::ContentBrowserEditorWindowEntryController::ContainsCurrentFold
 	return false;
 }
 
-void FWK::Editor::ContentBrowserEditorWindowEntryController::SynchronizeCurrentFolderEntries()
+void FWK::Editor::AssetBrowserEditorWindowEntryController::SynchronizeCurrentFolderEntries()
 {
 	// Explorer等からFolder/Fileを外部削除された場合や
 	// CurrentFolderが変更された場合に、

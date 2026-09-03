@@ -1,13 +1,9 @@
-﻿#include "ContentBrowserEditorWindow.h"
+﻿#include "AssetBrowserEditorWindow.h"
 
-void FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
+void FWK::Editor::AssetBrowserEditorWindow::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, const std::filesystem::path& a_directoryPath)
 {
-	auto* l_prefabAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Prefab);
-
-	if (!l_prefabAssetRegistry) { return; }
-
 	// 実際のPrefabファイルを作成しPrefabSystemへ登録する
-	const auto& l_prefabFilePath = m_fileSystem.CreatePrefabFromGameObject(a_gameObject, a_directoryPath, *l_prefabAssetRegistry);
+	const auto& l_prefabFilePath = m_fileSystem.CreatePrefabFromGameObject(a_gameObject, a_directoryPath, m_assetFilePathRegistry);
 
 	if (l_prefabFilePath.empty()) { return; }
 
@@ -23,13 +19,9 @@ void FWK::Editor::ContentBrowserEditorWindow::CreatePrefabFromGameObject(const s
 	// Refresh後に作成したPrefabを選択する
 	m_requestedSelectEntryPath = l_prefabFilePath;
 }
-void FWK::Editor::ContentBrowserEditorWindow::CreateSceneFromScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_directoryPath)
+void FWK::Editor::AssetBrowserEditorWindow::CreateSceneFromScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_directoryPath)
 {
-	auto* l_sceneAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
-
-	if (!l_sceneAssetRegistry) { return; }
-
-	const auto& l_sceneFilePath = m_fileSystem.CreateSceneFromScene(a_scene, a_directoryPath, *l_sceneAssetRegistry);
+	const auto& l_sceneFilePath = m_fileSystem.CreateSceneFromScene(a_scene, a_directoryPath, m_assetFilePathRegistry);
 
 	if (l_sceneFilePath.empty()) { return; }
 
@@ -42,14 +34,14 @@ void FWK::Editor::ContentBrowserEditorWindow::CreateSceneFromScene(const std::we
 	m_requestedSelectEntryPath = l_sceneFilePath;
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::Editor::AssetBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::Draw()
+void FWK::Editor::AssetBrowserEditorWindow::Draw()
 {
 	if (!ImGui::Begin(k_editorName.data()))
 	{
@@ -73,12 +65,12 @@ void FWK::Editor::ContentBrowserEditorWindow::Draw()
 	ImGui::End();
 }
 
-nlohmann::json FWK::Editor::ContentBrowserEditorWindow::Serialize()
+nlohmann::json FWK::Editor::AssetBrowserEditorWindow::Serialize()
 {
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate(const std::filesystem::path& a_parentFolderPath)
+void FWK::Editor::AssetBrowserEditorWindow::RequestFolderCreate(const std::filesystem::path& a_parentFolderPath)
 {
 	if (m_isFolderCreateActive) { return; }
 
@@ -99,7 +91,7 @@ void FWK::Editor::ContentBrowserEditorWindow::RequestFolderCreate(const std::fil
 	m_isFolderCreateInputFocusRequested = true;
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::RefreshCurrentFolderEntries()
+void FWK::Editor::AssetBrowserEditorWindow::RefreshCurrentFolderEntries()
 {
 	// currentFolder直下のFile/Forder一覧を再構築する
 	m_entryController.RefreshCurrentFolderEntryList(m_currentFolderPath);
@@ -112,7 +104,45 @@ void FWK::Editor::ContentBrowserEditorWindow::RefreshCurrentFolderEntries()
 	m_requestedSelectEntryPath.clear   ();
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::ConfirmFolderCreate()
+void FWK::Editor::AssetBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path & a_folderPath)
+{
+	if (!m_isFolderCreateRequested) { return; }
+
+	if (m_folderCreateParentPath.empty() ||
+		m_folderCreateNameBuffer.empty())
+	{
+		ClearFolderCreateState();
+
+		return;
+	}
+
+	const auto& l_createdFolderPath = m_fileSystem.CreateFolder(m_folderCreateParentPath, m_folderCreateNameBuffer);
+
+	if (l_createdFolderPath.empty())
+	{
+		ClearFolderCreateState();
+
+		return;
+	}
+
+	// currentFolder直下へ作成した場合だけ
+	// 右ペイン一覧を更新する
+	if (m_folderCreateParentPath == m_currentFolderPath)
+	{
+		m_entryController.SetCurrentFolderEntryListDirty(true);
+
+		m_requestedSelectEntryPath = l_createdFolderPath;
+	}
+
+	ClearFolderCreateState();
+}
+
+void FWK::Editor::AssetBrowserEditorWindow::RequestSelectedEntryDelete()
+{
+	m_isSelectedEntryDeleteRequested = true;
+}
+
+void FWK::Editor::AssetBrowserEditorWindow::ConfirmFolderCreate()
 {
 	if (!m_isFolderCreateActive ||
 		m_folderCreateNameBuffer.empty())
@@ -126,31 +156,14 @@ void FWK::Editor::ContentBrowserEditorWindow::ConfirmFolderCreate()
 	m_isFolderCreateInputFocusRequested = false;
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::CancelFolderCreate()
+void FWK::Editor::AssetBrowserEditorWindow::CancelFolderCreate()
 {
 	if (!m_isFolderCreateActive) { return; }
 
 	ClearFolderCreateState();
 }
 
-const FWK::Editor::ContentBrowserEditorWindowAssetRegistry* FWK::Editor::ContentBrowserEditorWindow::FetchPTRAssetRegistry(const Enum::ContentBrowserAssetType a_assetType) const
-{
-	const auto l_index = static_cast<std::size_t>(a_assetType);
-
-	FWK_ASSERT_RETURN_VALUE_IF(m_assetRegistryList.size() <= l_index, "AssetTypeのインデックスがEnumの最大インデックス数以上です。", nullptr);
-
-	return &m_assetRegistryList[l_index];
-}
-FWK::Editor::ContentBrowserEditorWindowAssetRegistry* FWK::Editor::ContentBrowserEditorWindow::FetchMutablePTRAssetRegistry(const Enum::ContentBrowserAssetType a_assetType)
-{
-	const auto l_index = static_cast<std::size_t>(a_assetType);
-
-	FWK_ASSERT_RETURN_VALUE_IF(m_assetRegistryList.size() <= l_index, "AssetTypeのインデックスがEnumの最大インデックス数以上です。", nullptr);
-
-	return &m_assetRegistryList[l_index];
-}
-
-void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
+void FWK::Editor::AssetBrowserEditorWindow::ClearFolderCreateState()
 {
 	m_folderCreateParentPath.clear();
 	m_folderCreateNameBuffer.clear();
@@ -160,17 +173,8 @@ void FWK::Editor::ContentBrowserEditorWindow::ClearFolderCreateState()
 	m_isFolderCreateRequested           = false;
 }
 
-void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
+void FWK::Editor::AssetBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 {
-	auto* l_prefabAssetRegistry = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Prefab);
-	auto* l_sceneAssetRegistry  = FetchMutablePTRAssetRegistry(Enum::ContentBrowserAssetType::Scene);
-
-	if (!l_prefabAssetRegistry ||
-		!l_sceneAssetRegistry) 
-	{
-		return; 
-	}
-
 	// 削除要求がなければreturn
 	if (!m_isSelectedEntryDeleteRequested) { return; }
 
@@ -207,7 +211,7 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 			// Folder配下にPrefabが存在した場合
 			// DeletePrefabFile(9を通して
 			// AssetRegistry,PrefabSystem,PrefabInstanceまで同期してからFolderを削除する
-			if (!m_fileSystem.DeleteFolder(l_entryPath, *l_prefabAssetRegistry, *l_sceneAssetRegistry))
+			if (!m_fileSystem.DeleteFolder(l_entryPath, m_assetFilePathRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
@@ -231,10 +235,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 		// 現在AssetRegistryへ登録しているFileはPrefabなので、
 		// UUIDが存在するかどうかでPrefabを判定する
 		// 無効値でなければプレハブ化されたファイルパスなので削除する
-		if (const auto& l_prefabUUID = l_prefabAssetRegistry->FindVALAssetUUID(l_entryPath);
-			!l_prefabUUID.is_nil())
+		if (const auto& l_prefabUUID = m_assetFilePathRegistry.FindPTRAssetUUID(l_entryPath);
+			l_prefabUUID &&
+			!l_prefabUUID->is_nil())
 		{
-			if (!m_fileSystem.DeletePrefabFile(l_entryPath, *l_prefabAssetRegistry))
+			if (!m_fileSystem.DeletePrefabFile(l_entryPath, m_assetFilePathRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
@@ -243,10 +248,11 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 		}
 
 		// Prefabではなく、SceneとしてAssetRegistryへ登録されているか確認する
-		if (const auto& l_sceneUUID = l_sceneAssetRegistry->FindVALAssetUUID(l_entryPath);
-			!l_sceneUUID.is_nil())
+		if (const auto& l_sceneUUID = m_assetFilePathRegistry.FindPTRAssetUUID(l_entryPath);
+			l_sceneUUID &&
+			!l_sceneUUID->is_nil())
 		{
-			if (!m_fileSystem.DeleteSceneFile(l_entryPath, *l_sceneAssetRegistry))
+			if (!m_fileSystem.DeleteSceneFile(l_entryPath, m_assetFilePathRegistry))
 			{
 				l_isAllDeleteSucceeded = false;
 			}
@@ -278,7 +284,7 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplySelectedEntryDeleteRequest()
 
 	FWK_ADD_LOG(Constant::k_debugSuccessColor, "選択Entryを削除しました。");
 }
-void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateRequest()
+void FWK::Editor::AssetBrowserEditorWindow::ApplyFolderCreateRequest()
 {
 	if (!m_isFolderCreateRequested) { return; }
 
@@ -309,38 +315,4 @@ void FWK::Editor::ContentBrowserEditorWindow::ApplyFolderCreateRequest()
 	}
 
 	ClearFolderCreateState();
-}
-void FWK::Editor::ContentBrowserEditorWindow::ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath)
-{
-	// FileをCurrentFolderとして設定することは許可しない(ディレクトリのみ)
-	if (std::error_code l_errorCode = {}; !std::filesystem::is_directory(a_folderPath, l_errorCode) ||
-		l_errorCode)
-	{
-		return;
-	}
-
-	// ".."や"."などを整理したPathへ統一する
-	const auto& l_normalizedFolderPath = a_folderPath.lexically_normal();
-
-	// 同じFolderを指定された場合は、
-	// Entry一覧を不必要に再構築しない
-	if (m_currentFolderPath == l_normalizedFolderPath) { return; }
-
-	m_currentFolderPath = l_normalizedFolderPath;
-
-	// CurrentFolder画変更されたので、
-	// 次のCurrentFolder描画時にEntry一覧を再構築する
-	m_entryController.SetCurrentFolderEntryListDirty(true);
-
-	// 前FolderのSelectionを新しいFolderへ持ち越さない
-	m_entryController.ClearSelectedEntries();
-
-	// 前Folderで作成されたPrefabに対する
-	// 選択要求も新しいFolderへ持ち越さない
-	m_requestedSelectEntryPath.clear();
-}
-
-void FWK::Editor::ContentBrowserEditorWindow::RequestSelectedEntryDelete()
-{
-	m_isSelectedEntryDeleteRequested = true;
 }

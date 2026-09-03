@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-	struct ContentBrowserEntryData final
+	struct AssetBrowserEntryData final
 	{
 		std::filesystem::path m_entryPath = {};
 

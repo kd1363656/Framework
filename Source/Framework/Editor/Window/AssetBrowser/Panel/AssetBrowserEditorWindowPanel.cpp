@@ -1,8 +1,8 @@
-﻿#include "ContentBrowserEditorWindowPanel.h"
+﻿#include "AssetBrowserEditorWindowPanel.h"
 
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTree(ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawFolderTree(AssetBrowserEditorWindow& a_assetBrowserEditorWindow)
 {
-    // 左ペインのFolderTree専用のChildeWindowを作成する
+	// 左ペインのFolderTree専用のChildeWindowを作成する
     if (const ImVec2 l_folderTreePanelSize = { k_folderTreePanelWidth, k_fillRemainingSize };
         !ImGui::BeginChild(k_folderTreeChildLabel.data(), l_folderTreePanelSize, true))
     {
@@ -25,7 +25,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTree(ContentBrowser
         {
             // RootであるContentから
             // 再帰的なFolderTree描画を開始する
-            DrawFolderTreeNode(Constant::k_contentRootFolderPath, a_contentBrowserEditorWindow);
+            DrawFolderTreeNode(Constant::k_contentRootFolderPath, a_assetBrowserEditorWindow);
         }
     }
 
@@ -33,8 +33,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTree(ContentBrowser
     // EndChild(9は必ず呼ぶ必要がある
     ImGui::EndChild();
 }
-
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawCurrentFolder(AssetBrowserEditorWindow& a_assetBrowserEditorWindow)
 {
     // k_fillRemainingSizeは0.0fだがImGuiでは{ 0.0F, 0.0F }で親ウィンドウの残っているすべての領域を使う
     // 右ペインすべての領域を使うということ
@@ -50,18 +49,18 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
 
     // Explorer等からCurrentFolderを削除された場合は
     // ContentRootへ戻す
-    if (const auto& l_currentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
+    if (const auto& l_currentFolderPath = a_assetBrowserEditorWindow.GetREFCurrentFolderPath();
         !std::filesystem::is_directory(l_currentFolderPath, l_errorCode) ||
         l_errorCode)
     {
-        a_contentBrowserEditorWindow.ApplyCurrentFolderPath(Constant::k_contentRootFolderPath);
+        a_assetBrowserEditorWindow.ApplyCurrentFolderPath(Constant::k_contentRootFolderPath);
 
         l_errorCode.clear();
     }
 
     // ContentRoot自体まで存在しない場合は
     // Entryを描画できない
-    if (const auto& l_validCurrentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
+    if (const auto& l_validCurrentFolderPath = a_assetBrowserEditorWindow.GetREFCurrentFolderPath();
         !std::filesystem::is_directory(l_validCurrentFolderPath, l_errorCode) ||
         l_errorCode)
     {
@@ -70,28 +69,28 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
         return;
     }
 
-    const auto& l_entryController = a_contentBrowserEditorWindow.GetREFEntryController();
+    const auto& l_entryController = a_assetBrowserEditorWindow.GetREFEntryController();
 
     // Dirtyの時だけFilesystemを走査する
     if (l_entryController.GetVALIsCurrentFolderEntryListDirty())
     {
-        a_contentBrowserEditorWindow.RefreshCurrentFolderEntries();
+        a_assetBrowserEditorWindow.RefreshCurrentFolderEntries();
     }
 
     // Ctrl + Aで現在表示しているEntryをすべて選択する
-    ApplyEntrySelectionShortcut(a_contentBrowserEditorWindow);
+    ApplyEntrySelectionShortcut(a_assetBrowserEditorWindow);
 
     // 選択中Folderが1つだけならEnterキーでそのEnterキーでそのFolderを開く
-    ApplySelectedFolderOpenShortcut(a_contentBrowserEditorWindow);
+    ApplySelectedFolderOpenShortcut(a_assetBrowserEditorWindow);
 
     // Deleteキーで現在選択されているEntryを削除要求する
     // 複数選択・全選択も既存の削除処理がまとめて処理する
-    ApplySelectedEntryDeleteShortcut(a_contentBrowserEditorWindow);
+    ApplySelectedEntryDeleteShortcut(a_assetBrowserEditorWindow);
 
     // フォルダ作成ショートカットの受付
-    ApplyFolderCreateShortcut(a_contentBrowserEditorWindow);
+    ApplyFolderCreateShortcut(a_assetBrowserEditorWindow);
 
-    DrawFolderCreateEntry(a_contentBrowserEditorWindow);
+    DrawFolderCreateEntry(a_assetBrowserEditorWindow);
 
     const float l_availableWidth   = ImGui::GetContentRegionAvail().x;
     const float l_itemSpacing      = ImGui::GetStyle             ().ItemSpacing.x;
@@ -112,7 +111,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
 
     for (const auto& l_entryData : l_currentFolderEntryDataList)
     {
-        if (DrawFolderEntry(l_entryData, a_contentBrowserEditorWindow))
+        if (DrawFolderEntry(l_entryData, a_assetBrowserEditorWindow))
         {
             l_requestedDirectoryPath = l_entryData.m_entryPath;
         }
@@ -130,28 +129,28 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolder(ContentBrow
     }
 
     // Entry以外の空白ContextMenuを処理する
-    DrawCurrentFolderContextMenu(a_contentBrowserEditorWindow);
+    DrawCurrentFolderContextMenu(a_assetBrowserEditorWindow);
 
     // Entry一覧の走査が完全に終了してから
     // DoubleClickされたFolderへ移動する
     if (!l_requestedDirectoryPath.empty())
     {
-        a_contentBrowserEditorWindow.ApplyCurrentFolderPath(l_requestedDirectoryPath);
+        a_assetBrowserEditorWindow.ApplyCurrentFolderPath(l_requestedDirectoryPath);
     }
 
     ImGui::EndChild();
 
     // currentFolderChildWindow全体への
     // GameObjectDropも受け取る
-    DrawGameObjectPrefabDragDropTarget(a_contentBrowserEditorWindow.GetREFCurrentFolderPath(), a_contentBrowserEditorWindow);
+    DrawGameObjectPrefabDragDropTarget(a_assetBrowserEditorWindow.GetREFCurrentFolderPath(), a_assetBrowserEditorWindow);
 
     // シーンのDropを受け取る
-    DrawSceneDragDropTarget(a_contentBrowserEditorWindow.GetREFCurrentFolderPath(), a_contentBrowserEditorWindow);
+    DrawSceneDragDropTarget(a_assetBrowserEditorWindow.GetREFCurrentFolderPath(), a_assetBrowserEditorWindow);
 }
 
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawFolderTreeNode(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_assetBrowserEditorWindow)
 {
-    std::error_code l_errorCode = {};
+        std::error_code l_errorCode = {};
 
     // FolderTreeにはdirectoryだけを表示する
     // Fileや無効なPathが渡された場合は描画しない
@@ -161,8 +160,8 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
         return;
     }
 
-    const auto& l_fileSystem        = a_contentBrowserEditorWindow.GetREFFileSystem       ();
-    const auto& l_currentFolderPath = a_contentBrowserEditorWindow.GetREFCurrentFolderPath();
+    const auto& l_fileSystem        = a_assetBrowserEditorWindow.GetREFFileSystem       ();
+    const auto& l_currentFolderPath = a_assetBrowserEditorWindow.GetREFCurrentFolderPath();
 
     const bool l_hasChildFolder                            = l_fileSystem.HasChildFolder(a_folderPath);
     const bool l_isFolderTreeSynchronizedCurrentFolderPath = m_synchronizedCurrentFolderPath != l_currentFolderPath;
@@ -220,8 +219,8 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
 
     // 左FolderTree上のFolderも
     // GameObjectのPrefab保存先として使用できるようにする
-    DrawGameObjectPrefabDragDropTarget(a_folderPath, a_contentBrowserEditorWindow);
-    DrawSceneDragDropTarget           (a_folderPath, a_contentBrowserEditorWindow);
+    DrawGameObjectPrefabDragDropTarget(a_folderPath, a_assetBrowserEditorWindow);
+    DrawSceneDragDropTarget           (a_folderPath, a_assetBrowserEditorWindow);
 
     // このFolderが実際のCurrentFolderなら、
     // 左FolderTreeの動機が正常に完了したことになる
@@ -245,7 +244,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
     {
         m_synchronizedCurrentFolderPath = a_folderPath;
 
-        a_contentBrowserEditorWindow.ApplyCurrentFolderPath(a_folderPath);
+        a_assetBrowserEditorWindow.ApplyCurrentFolderPath(a_folderPath);
     }
 
     // 閉じているFolderやLeafなら、
@@ -274,7 +273,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
             l_directoryITR->is_directory(l_entryErrorCode) &&
             !l_entryErrorCode)
         {
-            DrawFolderTreeNode(l_directoryITR->path(), a_contentBrowserEditorWindow);
+            DrawFolderTreeNode(l_directoryITR->path(), a_assetBrowserEditorWindow);
         }
 
         l_directoryITR.increment(l_errorCode);
@@ -284,8 +283,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderTreeNode(const std:
 
     ImGui::TreePop();
 }
-
-bool FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntry(const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+bool FWK::Editor::AssetBrowserEditorWindowPanel::DrawFolderEntry(const Struct::AssetBrowserEntryData& a_entryData, AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     const auto& l_entryPath = a_entryData.m_entryPath;
 
@@ -332,17 +330,17 @@ bool FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntry(const Struct:
 
     // InvisibleButtonが現在のEntryなので
     // Entry右クリックContextMenuを処理する
-    DrawFolderEntryContextMenu(a_entryData, a_contentBrowserEditorWindow);
+    DrawFolderEntryContextMenu(a_entryData, a_assetBrowserEditorWindow);
 
     // Folderの場合だけ
     // OutlinerのGameObjectをDropできるPrefab保存先として扱う
     if (a_entryData.m_isFolder)
     {
-        DrawGameObjectPrefabDragDropTarget(l_entryPath, a_contentBrowserEditorWindow);
-        DrawSceneDragDropTarget           (l_entryPath, a_contentBrowserEditorWindow);
+        DrawGameObjectPrefabDragDropTarget(l_entryPath, a_assetBrowserEditorWindow);
+        DrawSceneDragDropTarget           (l_entryPath, a_assetBrowserEditorWindow);
     }
 
-    auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
+    auto& l_entryController = a_assetBrowserEditorWindow.GetMutableREFEntryController();
 
     if (l_isLeftClicked &&
         a_entryData.m_isSelectable)
@@ -457,8 +455,7 @@ bool FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntry(const Struct:
     // DrawCurrentFolder()側で行う
     return l_isDoubleClicked;
 }
-
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawGameObjectPrefabDragDropTarget(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
@@ -469,15 +466,14 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawGameObjectPrefabDragDropT
     if (!l_dragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_gameObject)) { return; }
 
     // PanelはPrefabそのものを作成しない
-    a_contentBrowserEditorWindow.CreatePrefabFromGameObject(l_gameObject, a_folderPath);
+    a_assetBrowserEditorWindow.CreatePrefabFromGameObject(l_gameObject, a_folderPath);
 }
-
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolderContextMenu(ContentBrowserEditorWindow& a_contentBrowserEditorWindow)
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawCurrentFolderContextMenu(AssetBrowserEditorWindow& a_assetBrowserEditorWindow)
 {
     const bool l_isCurrentFolderWindowHovered = ImGui::IsWindowHovered();
     const bool l_isAnyItemHovered             = ImGui::IsAnyItemHovered();
 
-    auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
+    auto& l_entryController = a_assetBrowserEditorWindow.GetMutableREFEntryController();
 
     // currentFolderの空白部分を左クリックした場合だけ
     // Entryの選択状態をすべて解除する
@@ -502,13 +498,12 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawCurrentFolderContextMenu(
 
     if (ImGui::MenuItem(k_addFolderMenuItemLabel.data()))
     {
-        a_contentBrowserEditorWindow.RequestFolderCreate(a_contentBrowserEditorWindow.GetREFCurrentFolderPath());
+        a_assetBrowserEditorWindow.RequestFolderCreate(a_assetBrowserEditorWindow.GetREFCurrentFolderPath());
     }
 
     ImGui::EndPopup();
 }
-
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawSceneDragDropTarget(const std::filesystem::path& a_folderPath, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawSceneDragDropTarget(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     auto& l_dragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
@@ -520,14 +515,13 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawSceneDragDropTarget(const
 
     // Panel自身はSceneJsonを生成しない
     // 保存処理はContentBrowserEditorWindow側へ渡す
-    a_contentBrowserEditorWindow.CreateSceneFromScene(l_scene, a_folderPath);
+    a_assetBrowserEditorWindow.CreateSceneFromScene(l_scene, a_folderPath);
 }
-
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntryContextMenu(const Struct::ContentBrowserEntryData& a_entryData, ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawFolderEntryContextMenu(const Struct::AssetBrowserEntryData& a_entryData, AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     if (!a_entryData.m_isSelectable) { return; }
 
-          auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
+          auto& l_entryController = a_assetBrowserEditorWindow.GetMutableREFEntryController();
     const auto& l_entryPath       = a_entryData.m_entryPath;
 
     // 削除ContextMenuはContentBrowserWindow内
@@ -567,23 +561,22 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderEntryContextMenu(co
         // Entry一覧描画中に実際の削除を行わず
         // ContentBrowserEditorWindowへ削除要求だけ通知する
         // 実際には現在選択されているFile / Folder全てが削除対象になる
-        a_contentBrowserEditorWindow.RequestSelectedEntryDelete();
+        a_assetBrowserEditorWindow.RequestSelectedEntryDelete();
     }
 
     ImGui::EndPopup();
 }
-
-void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderCreateEntry(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::DrawFolderCreateEntry(AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
-    if (!a_contentBrowserEditorWindow.GetVALIsFolderCreateActive()) { return; }
+    if (!a_assetBrowserEditorWindow.GetVALIsFolderCreateActive()) { return; }
 
-    auto& l_folderCreateNameBuffer = a_contentBrowserEditorWindow.GetMutableREFolderCreateNameBuffer();
+    auto& l_folderCreateNameBuffer = a_assetBrowserEditorWindow.GetMutableREFolderCreateNameBuffer();
 
-    if (a_contentBrowserEditorWindow.GetVALIsFolderCreateInputFocusRequested())
+    if (a_assetBrowserEditorWindow.GetVALIsFolderCreateInputFocusRequested())
     {
         ImGui::SetKeyboardFocusHere();
 
-        a_contentBrowserEditorWindow.SetFolderCreateInputFocusRequested(false);
+        a_assetBrowserEditorWindow.SetFolderCreateInputFocusRequested(false);
     }
 
     const bool l_isEnterPressed = ImGui::InputText(k_folderCreateInputLabel.data(),
@@ -592,18 +585,18 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::DrawFolderCreateEntry(Content
 
     if (l_isEnterPressed)
     {
-        a_contentBrowserEditorWindow.ConfirmFolderCreate();
+        a_assetBrowserEditorWindow.ConfirmFolderCreate();
 
         return;
     }
 
     if (ImGui::IsKeyPressed(ImGuiKey_Escape, false))
     {
-        a_contentBrowserEditorWindow.CancelFolderCreate();
+        a_assetBrowserEditorWindow.CancelFolderCreate();
     }
 }
 
-void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyEntrySelectionShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::ApplyEntrySelectionShortcut(AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     const auto& l_imGuiIO = ImGui::GetIO();
 
@@ -621,17 +614,17 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyEntrySelectionShortcut(C
         return;
     }
 
-    auto& l_entryController = a_contentBrowserEditorWindow.GetMutableREFEntryController();
+    auto& l_entryController = a_assetBrowserEditorWindow.GetMutableREFEntryController();
 
     l_entryController.SelectAllEntries();
 }
-void FWK::Editor::ContentBrowserEditorWindowPanel::ApplySelectedFolderOpenShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::ApplySelectedFolderOpenShortcut(AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     const auto& l_imGuiIO = ImGui::GetIO();
 
     // Folder作成用InputTextを編集中の場合は、
     // EnterキーをFolder移動として使用しない
-    if (a_contentBrowserEditorWindow.GetVALIsFolderCreateActive() ||
+    if (a_assetBrowserEditorWindow.GetVALIsFolderCreateActive() ||
         l_imGuiIO.WantTextInput)
     {
         return;
@@ -645,14 +638,14 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplySelectedFolderOpenShortc
         return; 
     }
     
-    const auto& l_entryCoontroller   = a_contentBrowserEditorWindow.GetREFEntryController ();
+    const auto& l_entryCoontroller   = a_assetBrowserEditorWindow.GetREFEntryController ();
     const auto& l_selectedFolderPath = l_entryCoontroller.FetchVALSingleSelectedFolderPath();
 
     if (l_selectedFolderPath.empty()) { return; }
     
-    a_contentBrowserEditorWindow.ApplyCurrentFolderPath(l_selectedFolderPath);
+    a_assetBrowserEditorWindow.ApplyCurrentFolderPath(l_selectedFolderPath);
 }
-void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyFolderCreateShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::ApplySelectedEntryDeleteShortcut(AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     const auto& l_imGuiIO = ImGui::GetIO();
 
@@ -670,7 +663,7 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyFolderCreateShortcut(Con
         return;
     }
 
-    const auto& l_entryController = a_contentBrowserEditorWindow.GetREFEntryController();
+    const auto& l_entryController = a_assetBrowserEditorWindow.GetREFEntryController();
 
     // Folderが一つだけ選択されている場合は
     // そのFolder内を選択先にする
@@ -678,21 +671,21 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplyFolderCreateShortcut(Con
 
     if (!l_selectedFolderPath.empty())
     {
-        a_contentBrowserEditorWindow.RequestFolderCreate(l_selectedFolderPath);
+        a_assetBrowserEditorWindow.RequestFolderCreate(l_selectedFolderPath);
 
         return;
     }
 
     // Ctrl + Shift + Nでは
     // 現在開いているFolderを作成先とする
-    a_contentBrowserEditorWindow.RequestFolderCreate(a_contentBrowserEditorWindow.GetREFCurrentFolderPath());
+    a_assetBrowserEditorWindow.RequestFolderCreate(a_contentBrowserEditorWindow.GetREFCurrentFolderPath());
 }
-void FWK::Editor::ContentBrowserEditorWindowPanel::ApplySelectedEntryDeleteShortcut(ContentBrowserEditorWindow& a_contentBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPanel::ApplyFolderCreateShortcut(AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     // Folder各入力中などは、
     // DeleteキーをInputText内の文字削除として使用する
     if (const auto& l_imGuiIO = ImGui::GetIO();
-        a_contentBrowserEditorWindow.GetVALIsFolderCreateActive() ||
+        a_assetBrowserEditorWindow.GetVALIsFolderCreateActive() ||
         l_imGuiIO.WantTextInput)
     {
         return;
@@ -707,16 +700,16 @@ void FWK::Editor::ContentBrowserEditorWindowPanel::ApplySelectedEntryDeleteShort
     }
 
     // Selectionが存在しない場合は削除要求出さない
-    if (const auto& l_entryController = a_contentBrowserEditorWindow.GetREFEntryController();
+    if (const auto& l_entryController = a_assetBrowserEditorWindow.GetREFEntryController();
         l_entryController.FetchVALSelectedEntryCount() == k_emptySelectionCount)
     {
         return; 
     }
 
-    a_contentBrowserEditorWindow.RequestSelectedEntryDelete();
+    a_assetBrowserEditorWindow.RequestSelectedEntryDelete();
 }
 
-std::string_view FWK::Editor::ContentBrowserEditorWindowPanel::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const
+std::string_view FWK::Editor::AssetBrowserEditorWindowPanel::FetchVALFolderEntryIcon(const std::filesystem::path& a_entryPath, const bool a_isFolder) const
 {
     // Folderの場合は拡張子を見る必要がない
     if (a_isFolder) { return Constant::k_fontAwesomeFolderIcon; }
@@ -734,7 +727,7 @@ std::string_view FWK::Editor::ContentBrowserEditorWindowPanel::FetchVALFolderEnt
     return Constant::k_fontAwesomeFileIcon;
 }
 
-bool FWK::Editor::ContentBrowserEditorWindowPanel::ContainsCurrentFolderPath(const std::filesystem::path& a_folderPath, const std::filesystem::path& a_currentFolderPath) const
+bool FWK::Editor::AssetBrowserEditorWindowPanel::ContainsCurrentFolderPath(const std::filesystem::path& a_folderPath, const std::filesystem::path& a_currentFolderPath) const
 {
     auto l_folderPathITR        = a_folderPath.begin       ();
     auto l_currentFolderPathITR = a_currentFolderPath.begin();

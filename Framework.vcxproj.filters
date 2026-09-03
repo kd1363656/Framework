@@ -1006,9 +1006,6 @@
     <Filter Include="Source\Framework\Editor\Window\Details">
       <UniqueIdentifier>{25abc7e1-8920-44cb-8000-eaa09690e4e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser">
-      <UniqueIdentifier>{ea68f200-9d14-4ef8-a572-1290509e04ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Component">
       <UniqueIdentifier>{6b69f564-47c1-4334-9646-98858e8e5971}</UniqueIdentifier>
     </Filter>
@@ -1213,12 +1210,6 @@
     <Filter Include="CONFIG\Physics">
       <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Converter">
-      <UniqueIdentifier>{9eba691b-1c51-43a7-b598-b8303d0eb818}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json">
-      <UniqueIdentifier>{af7d7dae-4fbb-46bb-981a-eb303238b43e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\GameObject\Converter\Json\Prefab">
       <UniqueIdentifier>{1bd77e02-e4b3-4423-9e18-df73d83da387}</UniqueIdentifier>
     </Filter>
@@ -1228,20 +1219,11 @@
     <Filter Include="Source\Framework\Definition\Constant\GameObject">
       <UniqueIdentifier>{d9abe8ad-05b0-41bc-9af1-7fd47978126d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\File">
-      <UniqueIdentifier>{d501373c-1746-4d2d-b89f-251a39d690f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor">
       <UniqueIdentifier>{6982fdce-d030-43fa-a394-b3ea6e54db1b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner\Rename">
       <UniqueIdentifier>{20cbed7c-d059-4b9b-b81e-539d1aa4bd5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Entry">
-      <UniqueIdentifier>{6b5b7668-c6f9-4aa2-bd14-aeae7d882759}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\ContentBrowser\Prefab">
-      <UniqueIdentifier>{f496ca46-ad9d-4bff-8082-84c3f815c21d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Component\Render\Model\Static\Converter">
       <UniqueIdentifier>{074b806e-26e3-414d-b02f-cf0b6ff4cb4b}</UniqueIdentifier>
@@ -1437,6 +1419,21 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\File">
       <UniqueIdentifier>{43f2dcd6-1d43-4b01-a1bb-a239f89c4231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Entry">
+      <UniqueIdentifier>{a7e7eae4-6ed3-48a2-b1af-6852169f7c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Panel">
+      <UniqueIdentifier>{46c41c27-1bf0-40da-bec3-79c979bb2e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Prefab">
+      <UniqueIdentifier>{808a6ec4-766a-4f5d-b666-d99e40597ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Converter">
+      <UniqueIdentifier>{f37523eb-08eb-49aa-8236-e836817098fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json">
+      <UniqueIdentifier>{64d45172-d49d-4e98-b9ae-1be2f5823c1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2472,9 +2469,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClInclude>
@@ -2556,9 +2550,6 @@
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json\Prefab</Filter>
     </ClInclude>
@@ -2568,26 +2559,14 @@
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\File</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\ContentBrowserEditorWindowStruct.h">
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.h">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
@@ -2771,6 +2750,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryController.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Panel\AssetBrowserEditorWindowPanel.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Prefab\AssetBrowserEditorWindowPrefabInstanceCreator.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3281,9 +3275,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindow.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClCompile>
@@ -3335,29 +3326,14 @@
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Converter\Json\ContentBrowserEditorWindowJsonConverter.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Converter\Json\Prefab</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\File\ContentBrowserEditorWindowFileSystem.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\File</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Entry\ContentBrowserEditorWindowEntryController.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\ContentBrowserEditorWindowPanel.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\ContentBrowser\Prefab\ContentBrowserEditorWindowPrefabInstanceCreator.cpp">
-      <Filter>Source\Framework\Editor\Window\ContentBrowser\Prefab</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
@@ -3490,6 +3466,21 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\File</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryController.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Panel\AssetBrowserEditorWindowPanel.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Prefab\AssetBrowserEditorWindowPrefabInstanceCreator.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

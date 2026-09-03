@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-	class ContentBrowserEditorWindowEntryController final
+	class AssetBrowserEditorWindowEntryController final
 	{
 	public:
 
-		 ContentBrowserEditorWindowEntryController() = default;
-		~ContentBrowserEditorWindowEntryController() = default;
+		 AssetBrowserEditorWindowEntryController() = default;
+		~AssetBrowserEditorWindowEntryController() = default;
 
 		void RefreshCurrentFolderEntryList(const std::filesystem::path& a_currentFolderPath);
 
@@ -45,7 +45,7 @@ namespace FWK::Editor
 
 		std::unordered_set<std::filesystem::path> m_selectedEntryPathSet = {};
 
-		std::vector<Struct::ContentBrowserEntryData> m_currentFolderEntryDataList = {};
+		std::vector<Struct::AssetBrowserEntryData> m_currentFolderEntryDataList = {};
 
 		std::filesystem::path m_rangeAnchorEntryPath = {};
 
