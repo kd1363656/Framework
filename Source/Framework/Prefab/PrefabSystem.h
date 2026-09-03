@@ -3,6 +3,7 @@
 namespace FWK
 {
 	class GameObject;
+	class AssetFilePathRegistry;
 }
 
 namespace FWK
@@ -19,7 +20,7 @@ namespace FWK
 		~PrefabSystem() = default;
 
 		void INIT                         ();
-		void Deserialize                  (const nlohmann::json&            a_rootJson);
+		void Deserialize                  (const nlohmann::json&            a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry);
 		void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
 
 		void RefreshAllPrefab();
@@ -27,7 +28,7 @@ namespace FWK
 		void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData);
 		void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);
 
-		nlohmann::json Serialize();
+		nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry);
 
 		TypeAlias::PrefabSceneInstanceNUM AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID);
 

@@ -1,17 +1,23 @@
 ﻿#include "Prefab.h"
 
-void FWK::Prefab::LoadGameObjectPrefab()
+void FWK::Prefab::Load(const std::filesystem::path& a_filePath)
 {
-	m_jsonConverter.LoadGameObjectPrefab(*this);
+	if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension)) { return; }
+
+	const auto& l_rootJson = Utility::LoadJsonFile(a_filePath);
+
+	m_jsonConverter.Load(l_rootJson, *this);
 }
 
-void FWK::Prefab::Deserialize(const nlohmann::json& a_rootJson)
+bool FWK::Prefab::Save(const std::filesystem::path & a_filePath)
 {
-	m_jsonConverter.Deserialize(a_rootJson, *this);
-}
+	if (a_filePath.empty() ||
+		a_filePath.extension() != Constant::k_lowerJsonExtension) 
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabの保存先FilePathが無効です。\nFilePath : {}", a_filePath.string());
 
-nlohmann::json FWK::Prefab::Serialize()
-{
-	// シリアライズしたプレハブを保持
-	return m_jsonConverter.Serialize(*this);
+		return false; 
+	}
+
+	return m_jsonConverter.Save(a_filePath, *this);
 }

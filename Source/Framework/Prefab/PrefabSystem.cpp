@@ -4,11 +4,11 @@ void FWK::PrefabSystem::INIT()
 {
 	m_prefabMap.clear();
 }
-void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry)
 {
 	if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.Deserialize(a_rootJson, *this);
+	m_jsonConverter.Deserialize(a_rootJson, *this, a_assetFilePathRegistry);
 }
 
 void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject)
@@ -61,7 +61,8 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 
 	if (!l_scene) { return; }
 
-	const auto& l_gameObjectList = l_scene->GetREFGameObjectList();
+	const auto& l_assetFilePathRegistry = l_scene->GetREFAssetFilePathRegistry();
+	const auto& l_gameObjectList        = l_scene->GetREFGameObjectList       ();
 
 	for (auto& [l_prefabUUID, l_prefabData] : m_prefabMap)
 	{
@@ -110,12 +111,18 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 		// Destroy済みGameObjectからPrefabファイルを書き換えない
 		if (!l_isPrefabGameObjectFound) { continue; }
 
+		const auto* l_assetFilePathData = l_assetFilePathRegistry.FindPTRAssetFilePathData(l_prefabUUID);
+
+		// Prefab用のAssetFilePath出ないなら処理を飛ばす
+		if (!l_assetFilePathData || 
+			l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab) 
+		{
+			continue; 
+		}
+
 		// シリアライズでファイルを保存するがそれとともに戻り値で
 		// nlohmann::jsonで保存内容が空かどうかを確認する
-		if (l_prefab.Serialize().is_null())
-		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabの更新に失敗しました。\nPrefabUUID : {}\nFilePath : {}", boost::uuids::to_string(l_prefabUUID), l_prefab.GetREFFilePath().string());
-		}
+		l_prefab.Save(l_assetFilePathData->m_assetFilePath);
 	}
 }
 
@@ -148,9 +155,9 @@ void FWK::PrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
 	FWK_ADD_LOG(Constant::k_debugSuccessColor, "PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
 }
 
-nlohmann::json FWK::PrefabSystem::Serialize()
+nlohmann::json FWK::PrefabSystem::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
-	return m_jsonConverter.Serialize(*this);
+	return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
 }
 
 FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID)

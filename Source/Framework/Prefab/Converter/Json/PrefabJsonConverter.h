@@ -14,18 +14,12 @@ namespace FWK::Converter
 		 PrefabJsonConverter() = default;
 		~PrefabJsonConverter() = default;
 
-		void LoadGameObjectPrefab(Prefab& a_prefab) const;
+		void Load(const nlohmann::json& a_rootJson, Prefab& a_prefab) const;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Prefab& a_prefab) const;
-
-		nlohmann::json Serialize(Prefab& a_prefab) const;
+		bool Save(const std::filesystem::path& a_filePath, Prefab& a_prefab) const;
 
 	private:
 
-		bool SaveGameObjectPrefab(Prefab& a_prefab) const;
-
-		static constexpr std::string_view k_prefabTypeJsonKey = "PrefabType";
-		static constexpr std::string_view k_filePathJsonKey   = "FilePath";
 		static constexpr std::string_view k_prefabJsonKey     = "Prefab";
 	    static constexpr std::string_view k_prefabNameJsonKey = "PrefabName";
 	};

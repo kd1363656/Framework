@@ -49,6 +49,9 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
 	if (Struct::AssetFilePathData l_assetFilePathData = { a_assetFilePath, a_assetFilePathRegisterType };
 		!m_uuidToAssetFilePathData.try_emplace(a_assetUUID, l_assetFilePathData).second)
 	{
+		// 2爪のMap登録に失敗したら一つ目のマップから削除
+		m_assetFilePathToUUIDMap.erase(a_assetFilePath);
+
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryへの登録に失敗しました。");
 
 		return false;
@@ -86,7 +89,7 @@ const boost::uuids::uuid* FWK::AssetFilePathRegistry::FindPTRAssetUUID(const std
 }
 const FWK::Struct::AssetFilePathData* FWK::AssetFilePathRegistry::FindPTRAssetFilePathData(const boost::uuids::uuid& a_uuid) const
 {
-	if (a_uuid.is_nil()) { return; }
+	if (a_uuid.is_nil()) { return nullptr; }
 
 	const auto& l_itr = m_uuidToAssetFilePathData.find(a_uuid);
 

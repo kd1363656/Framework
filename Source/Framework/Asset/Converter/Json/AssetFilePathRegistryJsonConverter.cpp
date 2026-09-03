@@ -21,7 +21,7 @@ nlohmann::json FWK::Converter::AssetFilePathRegistryJsonConverter::Serialize(con
 
 void FWK::Converter::AssetFilePathRegistryJsonConverter::DeserializeFilePathRegistryMap(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
-	if (a_rootJson.is_null() &&
+	if (a_rootJson.is_null() ||
 		!Utility::IsJsonArray(a_rootJson))
 	{
 		return; 

@@ -126,8 +126,8 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 	}
 
 	// Registry上でも同じfilePathが使用済みなら作成しない
-	if (const auto& l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_prefabFilePath);
-		l_uuid &&
+	if (const auto* l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_prefabFilePath);
+		!l_uuid ||
 		l_uuid->is_nil())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_prefabFilePath.string());
@@ -178,8 +178,7 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 	auto& l_prefab = l_prefabData.m_prefab;
 
 	l_prefab.SetPrefabName(l_prefabName);
-	l_prefab.SetFilePath  (l_prefabFilePath);
-
+	
 	// 今回Prefab化するScene上のGameObjectを
 	// このPrefabの保存用代表ゲームオブジェクトとして使用する
 	l_prefab.SetGameObject(l_gameObject);
@@ -213,7 +212,10 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreatePre
 	l_gameObject->SetPrefabUUID            (l_prefabUUID);
 	l_gameObject->SetPrefabSceneInstanceNUM(l_prefabSceneInstanceNUM);
 
-	if (const auto& l_prefabSerializeJson = l_registeredPrefab->Serialize();
+	// 現在のプレハブ内容を反映するために保存
+	l_registeredPrefab->Save(l_prefabFilePath);
+
+	if (const auto& l_prefabSerializeJson = l_registeredPrefab->GetREFJson();
 		l_prefabSerializeJson.is_null())
 	{
 		// InstanceNUMをPrefabSystemへ返す
@@ -315,8 +317,8 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileSystem::CreateSce
 
 	// Registry上でも同じFilePathが使用済みなら作成しない
 	if (const auto* l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_sceneFilePath);
-		l_uuid &&
-		!l_uuid->is_nil())
+		!l_uuid ||
+		l_uuid->is_nil())
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "同じSceneFilePathがContentBrowserAssetRegistryへ既に登録されています。\nFilePath : {}", l_sceneFilePath.string());
 
