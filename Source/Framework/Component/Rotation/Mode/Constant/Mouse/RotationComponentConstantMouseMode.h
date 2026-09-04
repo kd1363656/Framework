@@ -19,6 +19,10 @@ namespace FWK
 
 		nlohmann::json Serialize() const override;
 
+		void SetXAxisRotatableRange(const Struct::Range<float>& a_set) { m_xAxisRotatableRange = a_set; }
+
+		const auto& GetREFXAxisRotatableRange() const { return m_xAxisRotatableRange; }
+
 		auto& GetMutableREFXAxisRotatableRange() { return m_xAxisRotatableRange; }
 
 	private:
