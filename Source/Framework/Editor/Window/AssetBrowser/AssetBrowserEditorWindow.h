@@ -19,6 +19,8 @@ namespace FWK::Editor
 
 		void RequestFolderCreate(const std::filesystem::path& a_parentFolderPath);
 
+		void PreparedSelectedFolderCopy();
+
 		void RefreshCurrentFolderEntries();
 
 		void ApplyCurrentFolderPath(const std::filesystem::path& a_folderPath);
@@ -55,6 +57,8 @@ namespace FWK::Editor
 		void ApplyFolderCreateRequest       ();
 		
 		static constexpr std::string_view k_editorName = "アセットブラウザー";
+
+		std::vector<std::filesystem::path> m_folderClipboardPathList = {};
 
 		AssetFilePathRegistry                         m_assetFilePathRegistry = {};
 		AssetBrowserEditorWindowEntryController       m_entryController       = {};

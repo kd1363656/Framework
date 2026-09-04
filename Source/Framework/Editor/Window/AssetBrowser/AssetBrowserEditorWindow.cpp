@@ -91,6 +91,24 @@ void FWK::Editor::AssetBrowserEditorWindow::RequestFolderCreate(const std::files
 	m_isFolderCreateInputFocusRequested = true;
 }
 
+void FWK::Editor::AssetBrowserEditorWindow::PreparedSelectedFolderCopy()
+{
+	const auto& l_selectedEntryPathSet = m_entryController.GetREFSelectedEntryPathSet();
+
+	if (l_selectedEntryPathSet.empty()) { return; }
+
+	std::vector<std::filesystem::path> l_folderPathList = {};
+
+	// 複数選択以上に増えることはないので
+	// 最初に最大数を確保して再Allocationを防ぐ
+	l_folderPathList.reserve(l_selectedEntryPathSet.size());
+
+	for (const auto& l_selectedEntryPath : l_selectedEntryPathSet)
+	{
+		std::error_code l_errorCode = {};
+	}
+}
+
 void FWK::Editor::AssetBrowserEditorWindow::RefreshCurrentFolderEntries()
 {
 	// currentFolder直下のFile/Forder一覧を再構築する

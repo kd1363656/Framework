@@ -1435,6 +1435,12 @@
     <Filter Include="Asset\Shader\Camera">
       <UniqueIdentifier>{dc0cb1a8-9f2c-4d66-ab3a-b06139b80ec8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector">
+      <UniqueIdentifier>{ac175854-dbf0-4249-8868-693f3c04dd56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse">
+      <UniqueIdentifier>{feb2dbd6-db0b-47e1-a760-7af538f56a13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2766,6 +2772,12 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3481,6 +3493,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

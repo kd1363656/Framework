@@ -23,6 +23,12 @@ namespace FWK
 
 	private:
 
+		RotationComponentConstantModeBaseInspector m_inspector = {};
+
+		Converter::RotationComponentConstantModeBaseJsonConverter m_jsonConverter = {};
+
 		float m_rotationSpeed = Constant::k_rotationComponentConstantDefaultRotationSpeed;
+
+		FWK_DEFINE_TYPE_INFO(RotationComponentConstantModeBase, RotationComponentModeBase)
 	};
 }

@@ -365,6 +365,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.h" />
@@ -807,6 +809,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.cpp" />

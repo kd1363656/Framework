@@ -15,6 +15,8 @@ namespace FWK
 
 		virtual void PostDeserialize(const std::shared_ptr<GameObject>& a_owner);
 		
+		virtual void Update() = 0;
+
 		virtual void EditInspector();
 
 		void ResetRotationDirection();
