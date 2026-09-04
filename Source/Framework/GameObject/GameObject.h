@@ -111,7 +111,7 @@ namespace FWK
 		const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }
 		const auto& GetREFComponentSmartPointerVectorArray() const { return m_componentSmartPointerVectorArray; }
 
-		const auto& GetREFComponentEventObserver() const { return m_componentEventObserver; }
+		const std::weak_ptr<Observer<Enum::ComponentEvent>>& GetVALComponentEventObserver() const { return m_componentEventObserver; }
 
 		const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
 		const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
@@ -142,9 +142,9 @@ namespace FWK
 
 		std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
 
-		std::weak_ptr<GameObject> m_parent = {};
-
 		std::shared_ptr<Observer<Enum::ComponentEvent>> m_componentEventObserver = nullptr;
+
+		std::weak_ptr<GameObject> m_parent = {};
 
 		Utility::SmartPointerVectorArray<std::weak_ptr<GameObject>>      m_childSmartPointerVectorArray     = {};
 		Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorArray = {};

@@ -17,9 +17,19 @@ namespace FWK::Editor
 
 	private:
 
-		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
+		void DrawFolderPane() const;
+		void DrawAssetPane () const;
 
 		static constexpr std::string_view k_editorName = "アセットブラウザー";
+
+		static constexpr std::string_view k_folderPaneChildLabel = "##AssetBrowserFolderPane";
+		static constexpr std::string_view k_assetPaneChildLabel  = "##AssetBrowserAssetPane";
+
+		static constexpr float k_folderPaneWidth = 240.0F;
+
+		static constexpr float k_fileRemainingArea = 0.0F;
+
+		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
 		FWK_DEFINE_TYPE_INFO(AssetBrowserEditorWindow, EditorWindowBase)
 	};

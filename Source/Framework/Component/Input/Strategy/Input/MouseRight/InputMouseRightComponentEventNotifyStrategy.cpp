@@ -11,7 +11,7 @@ void FWK::InputMouseRightComponentEventNotifyStrategy::Execute(InputComponent& a
 		return;
 	}
 
-	auto& l_componentEventObserver = l_gameObject->GetREFComponentEventObserver();
+	const auto& l_componentEventObserver = l_gameObject->GetVALComponentEventObserver().lock();
 
 	if (!l_componentEventObserver)
 	{

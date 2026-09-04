@@ -6,6 +6,7 @@ namespace FWK::Enum
 	{
 		Invalid            = 0U,
 		TriggeredThisFrame = 1U << 0U,
+		TriggeredKeepFrame = 2U << 0U,
 	};
 	
 	enum class SceneShiftEvent
@@ -31,6 +32,8 @@ namespace FWK::Enum
 		Invalid,
 
 		InputMouseRight,
+
+		CanRotation,
 	};
 
 	FWK_JSON_SERIALIZE_ENUM
@@ -38,6 +41,7 @@ namespace FWK::Enum
 		ComponentEvent, 
 		FWK_JSON_ENUM_VALUE(ComponentEvent::Invalid),
 		FWK_JSON_ENUM_VALUE(ComponentEvent::InputMouseRight),
+		FWK_JSON_ENUM_VALUE(ComponentEvent::CanRotation),
 	)
 }
 

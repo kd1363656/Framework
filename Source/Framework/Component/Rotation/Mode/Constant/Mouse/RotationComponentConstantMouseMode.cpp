@@ -9,6 +9,14 @@ void FWK::RotationComponentConstantMouseMode::INIT()
 
 void FWK::RotationComponentConstantMouseMode::Update()
 {
+	auto l_fetchTransformComponentFromSelfGameObjectHelper = GetREFFetchTransformComponentFromSelfGameObjectHelper                            ();
+	auto l_fetchTransformComponent                         = l_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent().lock();
+
+	if (!l_fetchTransformComponent) { return; }
+
+	const auto& l_inuputManager   = InputManager::GetInstance            ();
+	const auto& l_mouseController = l_inuputManager.GetREFMouseController();
+
 
 }
 

@@ -207,22 +207,13 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponentEv
 	if (a_rootJson.is_null()) { return false; }
 
 	// ComponentEventObserverのJsonがnull出ない場合std::make_uniqueでインスタンス化
-	{
-		const auto& l_componentEventObserver = a_gameObject.GetREFComponentEventObserver();
+	auto l_componentEventObserver = std::make_shared<Observer<Enum::ComponentEvent>>();
 
-		if (!l_componentEventObserver)
-		{
-			auto l_createdComponentEventObserver = std::make_shared<Observer<Enum::ComponentEvent>>();
-
-			l_createdComponentEventObserver->INIT();
-
-			a_gameObject.SetComponentEventObserver(l_createdComponentEventObserver);
-		}
-	}
-
-	const auto& l_componentEventObserver = a_gameObject.GetREFComponentEventObserver();
+	l_componentEventObserver->INIT();
 
 	l_componentEventObserver->Deserialize(a_rootJson);
+
+	a_gameObject.SetComponentEventObserver(l_componentEventObserver);
 
 	return true;
 }
@@ -323,7 +314,7 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabCom
 }
 nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabComponentObserver(const GameObject& a_gameObject) const
 {
-	const auto& l_componentEventObserver = a_gameObject.GetREFComponentEventObserver();
+	const auto& l_componentEventObserver = a_gameObject.GetVALComponentEventObserver().lock();
 
 	if (!l_componentEventObserver) { return {}; }
 

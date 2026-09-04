@@ -29,6 +29,10 @@ namespace FWK
 
 		auto& GetMutableREFRotationApplyAxisList() { return m_rotationApplyAxisList; }
 
+	protected:
+
+		const auto& GetREFFetchTransformComponentFromSelfGameObjectHelper() const { return m_fetchTransformComponentFromSelfGameObjectHelper; }
+
 	private:
 
 		std::vector<Enum::Axis> m_rotationApplyAxisList = {};
