@@ -2805,6 +2805,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\RotationComponentConstantMouseModeStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

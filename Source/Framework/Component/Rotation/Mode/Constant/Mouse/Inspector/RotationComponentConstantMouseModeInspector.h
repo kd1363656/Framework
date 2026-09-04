@@ -18,6 +18,8 @@ namespace FWK
 
 	private:
 
-		static constexpr std::string_view k_rotationSpeedLabel = "回転スピード";
+		static constexpr std::string_view k_xAxisRotatable    = "X軸回転可能角度";
+		static constexpr std::string_view k_xAxisRotatableMAX = "最大";
+		static constexpr std::string_view k_xAxisRotatableMIN = "最少";
 	};
 }

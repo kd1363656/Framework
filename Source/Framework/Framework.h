@@ -552,7 +552,7 @@
 #include "Component/Rotation/Mode/Constant/Converter/Json/RotationComponentConstantModeBaseJson.h"
 #include "Component/Rotation/Mode/Constant/Inspector/RotationComponentConstantModeBaseInspector.h"
 #include "Component/Rotation/Mode/Constant/RotationComponentConstantModeBase.h"
-
+#include "Definition/Struct/Component/RotationComponentConstantMouseModeStruct.h"
 #include "Component/Rotation/Mode/Constant/Mouse/Inspector/RotationComponentConstantMouseModeInspector.h"
 #include "Component/Rotation/Mode/Constant/Mouse/Converter/Json/RotationComponentConstantMouseModeJsonConverter.h"
 #include "Component/Rotation/Mode/Constant/Mouse/RotationComponentConstantMouseMode.h"

@@ -2,7 +2,9 @@
 
 void FWK::RotationComponentConstantMouseMode::INIT()
 {
+	m_inspector = {};
 
+	m_jsonConverter = {};
 }
 
 void FWK::RotationComponentConstantMouseMode::Update()

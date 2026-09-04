@@ -19,11 +19,15 @@ namespace FWK
 
 		nlohmann::json Serialize() const override;
 
+		auto& GetMutableREFXAxisRotatableRange() { return m_xAxisRotatableRange; }
+
 	private:
 
 		RotationComponentConstantMouseModeInspector m_inspector = {};
 
 		Converter::RotationComponentConstantMouseModeJsonConverter m_jsonConverter = {};
+
+		Struct::Range<float> m_xAxisRotatableRange = {};
 
 		FWK_DEFINE_TYPE_INFO(RotationComponentConstantMouseMode, RotationComponentConstantModeBase)
 	};

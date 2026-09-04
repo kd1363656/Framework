@@ -6,6 +6,10 @@ void FWK::RotationComponentModeBase::INIT()
 
 	m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
+	m_inspector = {};
+
+	m_jsonConverter = {};
+
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 
 	m_applyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);

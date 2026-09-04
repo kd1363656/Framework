@@ -454,6 +454,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Macros\Utility\String\StringValueBidirectionalRegistryMacros.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Asset\AssetFilePathRegistryStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\RotationComponentConstantMouseModeStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h" />

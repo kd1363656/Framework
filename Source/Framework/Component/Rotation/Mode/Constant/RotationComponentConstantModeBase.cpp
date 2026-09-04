@@ -4,6 +4,10 @@ void FWK::RotationComponentConstantModeBase::INIT()
 {
 	RotationComponentModeBase::INIT();
 
+	m_inspector = {};
+
+	m_jsonConverter = {};
+
 	m_rotationSpeed = Constant::k_rotationComponentConstantDefaultRotationSpeed;
 }
 
