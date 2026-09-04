@@ -542,6 +542,7 @@
 #include "Component/Input/Strategy/Input/MouseRight/InputMouseRightComponentEventNotifyStrategy.h"
 
 #include "Definition/Enum/Axis/AxisEnum.h"
+#include "Utility/Helper/Component/Fetch/Observer/Self/FetchComponentEventObserverFromSelfGameObjectHelper.h"
 #include "Component/Rotation/Mode/Converter/Json/RotationComponentModeBaseJsonConverter.h"
 #include "Component/Rotation/Mode/Inspector/RotationComponentModeBaseInspector.h"
 #include "Component/Rotation/Mode/RotationComponentModeBase.h"
@@ -585,5 +586,7 @@
 #include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 #include "Utility/File/SaveFileDialogUtility.h"
+
+#include "Editor/Window/AssetBrowser/Watcher/AssetBrowserEditorWindowDirectoryWatcher.h"
 #include "Editor/Window/AssetBrowser/Converter/Json/AssetBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"

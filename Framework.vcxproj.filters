@@ -1420,6 +1420,18 @@
     <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json">
       <UniqueIdentifier>{457f3931-5c99-4b52-8c8b-b68ac9442798}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher">
+      <UniqueIdentifier>{1fc9897b-12d2-4c86-8058-f5110edf3e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Move\Mode">
+      <UniqueIdentifier>{7a7d3c55-1ede-4ee2-a550-a0d9b8af1dce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Observer">
+      <UniqueIdentifier>{500bb9c8-a146-4cbf-ba67-df168e48fd00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self">
+      <UniqueIdentifier>{980df63c-a707-4000-8839-3bb9427eaf4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2736,6 +2748,15 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.h">
+      <Filter>Source\Framework\Component\Move\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.h">
+      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3439,6 +3460,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.cpp">
+      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

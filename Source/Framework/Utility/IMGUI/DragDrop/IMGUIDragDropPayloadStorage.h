@@ -73,7 +73,7 @@ namespace FWK::Utility
 				                                                  sizeof(l_payloadID),
 				                                                  ImGuiCond_Once);
 
-			ImGui::Text             ("%s", a_label.data());
+			ImGui::TextUnformatted  (a_label.data());
 			ImGui::EndDragDropSource();
 
 			return l_isPayloadSet;

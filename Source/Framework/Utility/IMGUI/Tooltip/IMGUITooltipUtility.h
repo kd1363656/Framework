@@ -21,8 +21,8 @@ namespace FWK::Utility
 
 		if (!l_isTooltipDisplayable) { return; }
 
-		ImGui::BeginTooltip();
-		ImGui::Text        (a_tooltipText.data());
-		ImGui::EndTooltip  ();
+		ImGui::BeginTooltip   ();
+		ImGui::TextUnformatted(a_tooltipText.data());
+		ImGui::EndTooltip     ();
 	}
 }

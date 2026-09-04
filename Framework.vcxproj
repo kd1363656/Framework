@@ -351,6 +351,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.h" />
     <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.h" />
     <ClInclude Include="Source\Framework\Component\Move\MoveComponent.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h" />
@@ -522,6 +523,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
@@ -746,6 +748,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.h" />
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.h" />
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.h" />
+    <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.h" />
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
@@ -831,6 +834,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp" />
@@ -998,6 +1002,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.cpp" />
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.cpp" />
+    <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.cpp" />
     <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.cpp" />
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />

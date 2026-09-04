@@ -26,7 +26,8 @@ void FWK::RotationComponentModeBase::PostDeserialize(const std::shared_ptr<GameO
 {
 	if (!a_owner) { return; }
 
-	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(a_owner);
+	m_fetchComponentEventObserverFromSelfGameObjectHelper.PostDeserialize(a_owner);
+	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize    (a_owner);
 }
 
 void FWK::RotationComponentModeBase::EditInspector()
@@ -61,4 +62,22 @@ void FWK::RotationComponentModeBase::AddRotationApplyAxis(const Enum::Axis a_app
 
 	// ビットフラグを反映する
 	Utility::EnableFlag(a_applyRotationAxis, m_applyRotationAxis);
+}
+
+bool FWK::RotationComponentModeBase::CanUpdate()
+{
+	const auto& l_fetchTransformComponent     = m_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent        ().lock();
+	const auto& l_fetchComponentEventObserver = m_fetchComponentEventObserverFromSelfGameObjectHelper.GetREFFetchedComponentEventObserver().lock();
+
+	if (!l_fetchComponentEventObserver ||
+		!l_fetchTransformComponent) 
+	{
+		return false; 
+	}
+
+	// イベントから回転できるかどうかを取得する
+	// できないなら書いて処理を行わない
+	if (!l_fetchComponentEventObserver->IsEventMatching(Enum::ComponentEvent::CanRotation, Enum::EventLane::TriggeredKeepFrame)) { return false; }
+	
+	return true;
 }

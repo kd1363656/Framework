@@ -31,13 +31,14 @@ namespace FWK
 
 	protected:
 
-		const auto& GetREFFetchTransformComponentFromSelfGameObjectHelper() const { return m_fetchTransformComponentFromSelfGameObjectHelper; }
+		bool CanUpdate();
 
 	private:
 
 		std::vector<Enum::Axis> m_rotationApplyAxisList = {};
 
-		Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
+		Utility::FetchComponentEventObserverFromSelfGameObjectHelper m_fetchComponentEventObserverFromSelfGameObjectHelper = {};
+		Utility::FetchTransformComponentFromSelfGameObjectHelper     m_fetchTransformComponentFromSelfGameObjectHelper     = {};
 
 		RotationComponentModeBaseInspector m_inspector = {};
 
