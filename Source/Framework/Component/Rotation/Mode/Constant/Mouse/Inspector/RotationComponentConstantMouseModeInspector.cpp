@@ -1,0 +1,6 @@
+﻿#include "RotationComponentConstantMouseModeInspector.h"
+
+void FWK::RotationComponentConstantMouseModeInspector::EditInspector(RotationComponentConstantMouseMode& a_rotationComponentConstantMouseMode)
+{
+	a_rotationComponentConstantMouseMode.RotationComponentConstantModeBase::EditInspector();
+}

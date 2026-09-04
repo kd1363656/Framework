@@ -1441,6 +1441,18 @@
     <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse">
       <UniqueIdentifier>{feb2dbd6-db0b-47e1-a760-7af538f56a13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector">
+      <UniqueIdentifier>{e45be404-8e2a-4732-8df9-b03985bb2d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter">
+      <UniqueIdentifier>{cc9c6144-ea10-4b93-b683-22145f13f822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json">
+      <UniqueIdentifier>{457f3931-5c99-4b52-8c8b-b68ac9442798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut">
+      <UniqueIdentifier>{cba55e52-dacd-4dab-8bcb-433d9349816d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2499,7 +2511,7 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyBaseUniqueFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
@@ -2777,6 +2789,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.h">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryPanel.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3499,6 +3526,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryPanel.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

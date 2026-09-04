@@ -15,5 +15,9 @@ namespace FWK
 		~RotationComponentInspector() = default;
 
 		void EditInspector(RotationComponent& a_rotationComponent);
+
+	private:
+
+		static constexpr std::string_view k_rotationModeRadioButtonSelectorLabel = "回転モードラジオボタンセレクター";
 	};
 }

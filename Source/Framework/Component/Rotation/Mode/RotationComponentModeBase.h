@@ -21,7 +21,7 @@ namespace FWK
 
 		void ResetRotationDirection();
 
-		virtual nlohmann::json Serialize();
+		virtual nlohmann::json Serialize() const;
 
 		void AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis);
 

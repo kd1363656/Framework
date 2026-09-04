@@ -7,20 +7,38 @@
                 "FarClip": 2000.0,
                 "FovYDegree": 60.0,
                 "NearClip": 0.009999999776482582
+            },
+            {
+                "ComponentTypeName": "RotationComponent",
+                "RotationMode": "RotationComponentConstantMouseMode",
+                "RotationModeData": {
+                    "RotationApplyAxisList": [
+                        {
+                            "RotationApplyAxis": "Axis::X"
+                        },
+                        {
+                            "RotationApplyAxis": "Axis::Y"
+                        },
+                        {
+                            "RotationApplyAxis": "Axis::Z"
+                        }
+                    ],
+                    "RotationSpeed": 1.0
+                }
             }
         ],
         "PrefabUUID": "522829e2-a824-4cbb-93c8-19e313185acd",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "StandaloneMatrixStrategy",
             "InitialPosition": {
-                "X": 0.0,
-                "Y": 0.0,
-                "Z": 0.0
+                "X": -0.20000000298023224,
+                "Y": 1.2999999523162842,
+                "Z": -0.6000000238418579
             },
             "InitialRotation": {
-                "W": 1.0,
+                "W": 0.9598053097724915,
                 "X": 0.0,
-                "Y": 0.0,
+                "Y": 0.280666708946228,
                 "Z": 0.0
             },
             "InitialScale": {

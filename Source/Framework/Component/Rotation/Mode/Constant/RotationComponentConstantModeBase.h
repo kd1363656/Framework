@@ -15,7 +15,7 @@ namespace FWK
 
 		void EditInspector() override;
 
-		nlohmann::json Serialize() override;
+		nlohmann::json Serialize() const override;
 
 		void SetRotationSpeed(const float a_set) { m_rotationSpeed = a_set; }
 

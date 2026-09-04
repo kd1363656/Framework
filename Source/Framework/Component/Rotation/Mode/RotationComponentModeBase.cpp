@@ -35,7 +35,7 @@ void FWK::RotationComponentModeBase::ResetRotationDirection()
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 }
 
-nlohmann::json FWK::RotationComponentModeBase::Serialize()
+nlohmann::json FWK::RotationComponentModeBase::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }

@@ -4,6 +4,8 @@ void FWK::Converter::RotationComponentConstantModeBaseJsonConverter::Deserialize
 {
 	if (a_rootJson.is_null()) { return; }
 
+	a_rotationComponentConstantModeBase.RotationComponentModeBase::Deserialize(a_rootJson);
+
 	const float l_rotationSpeed = a_rootJson.value(k_rotationSpeedJsonKey, Constant::k_rotationComponentConstantDefaultRotationSpeed);
 
 	a_rotationComponentConstantModeBase.SetRotationSpeed(l_rotationSpeed);
@@ -11,7 +13,7 @@ void FWK::Converter::RotationComponentConstantModeBaseJsonConverter::Deserialize
 
 nlohmann::json FWK::Converter::RotationComponentConstantModeBaseJsonConverter::Serialize(const RotationComponentConstantModeBase& a_rotationComponentConstantModeBase) const
 {
-	nlohmann::json l_rootJson = {};
+	nlohmann::json l_rootJson = a_rotationComponentConstantModeBase.RotationComponentModeBase::Serialize();
 
 	l_rootJson[k_rotationSpeedJsonKey] = a_rotationComponentConstantModeBase.GetVALRotationSpeed();
 

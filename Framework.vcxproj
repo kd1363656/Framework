@@ -366,6 +366,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.h" />
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h" />
@@ -499,7 +501,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyBaseUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabSceneInstanceNUMTypeAlias.h" />
@@ -522,9 +525,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryController.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryPanel.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Panel\AssetBrowserEditorWindowPanel.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Prefab\AssetBrowserEditorWindowPrefabInstanceCreator.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
@@ -810,6 +815,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp" />
@@ -837,9 +844,11 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryController.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryPanel.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Panel\AssetBrowserEditorWindowPanel.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Prefab\AssetBrowserEditorWindowPrefabInstanceCreator.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp" />

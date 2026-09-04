@@ -19,7 +19,7 @@ void FWK::RotationComponentConstantModeBase::EditInspector()
 	m_inspector.EditInspector(*this);
 }
 
-nlohmann::json FWK::RotationComponentConstantModeBase::Serialize()
+nlohmann::json FWK::RotationComponentConstantModeBase::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }

@@ -25,7 +25,7 @@ nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::Serialize
 void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeRotationApplyAxisList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const
 {
 	if (a_rootJson.is_null() ||
-		!Utility::IsJsonArray(a_rootJson, k_rotationApplyAxisListJsonKey))
+		!Utility::IsJsonArray(a_rootJson))
 	{
 		return;
 	}
@@ -49,7 +49,7 @@ nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::Serialize
 
 	for (const auto& l_rotationApplyAxis : l_rotationApplyAxisList)
 	{
-		if (l_rotationApplyAxis != Enum::Axis::Invalid) { continue; }
+		if (l_rotationApplyAxis == Enum::Axis::Invalid) { continue; }
 
 		nlohmann::json l_json = {};
 

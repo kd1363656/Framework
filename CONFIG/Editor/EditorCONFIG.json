@@ -1,5 +1,5 @@
 {
-    "IsDisableEditor": true,
+    "IsDisableEditor": false,
     "MainMenubar": {
         "MainMenuList": [
             {
@@ -28,6 +28,11 @@
                             "FilePath": "Asset\\Data\\Prefab\\Camera\\Free\\FreeCamera.json",
                             "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
                             "UUID": "522829e2-a824-4cbb-93c8-19e313185acd"
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Actor\\Player\\Antike.json",
+                            "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                            "UUID": "8fb47682-c083-4726-9dba-3a97641591ac"
                         }
                     ]
                 }
