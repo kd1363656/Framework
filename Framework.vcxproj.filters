@@ -1015,9 +1015,6 @@
     <Filter Include="Source\Framework\Component\Transform\Converter\Json">
       <UniqueIdentifier>{762a418e-1cdd-4c3f-9ae5-905fd27f7a79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Enum\Editor">
-      <UniqueIdentifier>{194f14b3-a9fb-422f-83b8-0f3ee8c32872}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Component\Render\Model\Converter">
       <UniqueIdentifier>{833368f2-8c31-4336-88f8-d317f247d5e4}</UniqueIdentifier>
     </Filter>
@@ -1096,20 +1093,8 @@
     <Filter Include="Source\Framework\Utility\Helper\Asset\Converter\Json">
       <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection">
-      <UniqueIdentifier>{1c878e66-6693-4072-93a7-190cd59b24aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Hierarchy">
-      <UniqueIdentifier>{5bcf19b1-f196-429f-8297-a23ca64a884f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Enum\Editor\Window">
-      <UniqueIdentifier>{58b13c6c-5141-4c50-a9c6-e5d98e57bd7b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Editor">
       <UniqueIdentifier>{237ff102-74b5-4d28-9941-7a9a0bd8505f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Editor\Window">
-      <UniqueIdentifier>{d93576fd-176e-44e0-9109-bc2ef31dd57d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\IMGUI\Tooltip">
       <UniqueIdentifier>{bde3ef0f-a030-4182-b16f-b5bcd13739fc}</UniqueIdentifier>
@@ -1143,9 +1128,6 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor">
       <UniqueIdentifier>{6982fdce-d030-43fa-a394-b3ea6e54db1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Rename">
-      <UniqueIdentifier>{20cbed7c-d059-4b9b-b81e-539d1aa4bd5b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Component\Render\Model\Static\Converter">
       <UniqueIdentifier>{074b806e-26e3-414d-b02f-cf0b6ff4cb4b}</UniqueIdentifier>
@@ -1339,18 +1321,6 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser">
       <UniqueIdentifier>{5934e3ea-83e2-48c1-973c-396c2214695c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\File">
-      <UniqueIdentifier>{43f2dcd6-1d43-4b01-a1bb-a239f89c4231}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Entry">
-      <UniqueIdentifier>{a7e7eae4-6ed3-48a2-b1af-6852169f7c6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Panel">
-      <UniqueIdentifier>{46c41c27-1bf0-40da-bec3-79c979bb2e26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Prefab">
-      <UniqueIdentifier>{808a6ec4-766a-4f5d-b666-d99e40597ecc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Converter">
       <UniqueIdentifier>{f37523eb-08eb-49aa-8236-e836817098fe}</UniqueIdentifier>
     </Filter>
@@ -1449,9 +1419,6 @@
     </Filter>
     <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json">
       <UniqueIdentifier>{457f3931-5c99-4b52-8c8b-b68ac9442798}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut">
-      <UniqueIdentifier>{cba55e52-dacd-4dab-8bcb-433d9349816d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2550,18 +2517,6 @@
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.h">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Hierarchy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Tooltip</Filter>
     </ClInclude>
@@ -2579,12 +2534,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
@@ -2709,9 +2658,6 @@
     <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h">
       <Filter>Source\Framework\Component\Input\Inspector\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h">
       <Filter>Source\Framework\Definition\Enum\Axis</Filter>
     </ClInclude>
@@ -2729,9 +2675,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h">
       <Filter>Source\Framework\Utility\File</Filter>
@@ -2766,18 +2709,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Asset\AssetFilePathRegistryStruct.h">
       <Filter>Source\Framework\Definition\Struct\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\File</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryController.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Panel\AssetBrowserEditorWindowPanel.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Panel</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Prefab\AssetBrowserEditorWindowPrefabInstanceCreator.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Prefab</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Converter\Json</Filter>
     </ClInclude>
@@ -2799,14 +2730,11 @@
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryPanel.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Component\RotationComponentConstantMouseModeStruct.h">
       <Filter>Source\Framework\Definition\Struct\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3356,12 +3284,6 @@
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowGameObjectSelection.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Hierarchy\WorldOutlinerEditorWindowGameObjectHierarchy.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Hierarchy</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClCompile>
@@ -3373,9 +3295,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowGameObjectRename.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
@@ -3485,9 +3404,6 @@
     <ClCompile Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.cpp">
       <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Rename\WorldOutlinerEditorWindowSceneRename.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Rename</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Inspector</Filter>
     </ClCompile>
@@ -3506,18 +3422,6 @@
     <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp">
       <Filter>Source\Framework\Asset\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\File\AssetBrowserEditorWindowFileSystem.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\File</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryController.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Panel\AssetBrowserEditorWindowPanel.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Panel</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Prefab\AssetBrowserEditorWindowPrefabInstanceCreator.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Prefab</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Converter\Json</Filter>
     </ClCompile>
@@ -3535,12 +3439,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Entry\AssetBrowserEditorWindowEntryPanel.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutController.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
