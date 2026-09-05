@@ -27,9 +27,19 @@ namespace FWK
 		
 		bool AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath);
 
+		bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID);
+		
+		bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID);
+
 		const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
 		
 		const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
+
+		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
+
+		const auto& GetREFCurrentSceneFilePath() const { return m_currentSceneFilePath; }
+
+		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
 		auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
 
@@ -41,13 +51,13 @@ namespace FWK
 
 		void LoadNextSceneIfNeeded();
 
-		const std::filesystem::path* FindPTRNextSceneLoadFilePath(const boost::uuids::uuid& a_uuid) const;
-
 		NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
 
 		std::shared_ptr<Scene> m_scene = nullptr;
 
 		Observer<Enum::SceneShiftEvent> m_sceneShiftEventObserver = {};
+
+		AssetFilePathRegistry m_assetFilePathRegistry = {};
 
 		Converter::SceneManagerJsonConverter m_jsonConverter = {};
 

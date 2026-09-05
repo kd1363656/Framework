@@ -30,7 +30,8 @@ void Application::Execute()
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
 	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
-	
+	auto& l_inputManager    = FWK::InputManager::GetInstance             ();
+
 	l_graphicsManager.INIT();
 	l_physicsManager.INIT ();
 
@@ -44,7 +45,7 @@ void Application::Execute()
 
 	// MouseControllerがWindowHandleを必要とするため、
 	// Window生成完了後にInputManagerを初期化する
-	FWK::InputManager::GetInstance().INIT();
+	l_inputManager.INIT();
 
 	l_editorManager.INIT		  (m_window.GetREFHWND());
 	l_editorManager.PostLoadCONFIG();
@@ -76,6 +77,8 @@ void Application::Execute()
 
 			continue; 
 		}
+
+		l_inputManager.Update();
 
 		// CharacterVirtualのDraw内容も受け取るため、ここでクリア
 		l_physicsManager.ClearFrame();

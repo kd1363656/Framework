@@ -1,17 +1,8 @@
 ﻿#include "SceneJsonConverter.h"
 
-void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene) const
+void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const
 {
 	if (a_rootJson.is_null()) { return; }
-
-	auto& l_assetFilePathRegistry = a_scene.GetMutableREFAssetFilePathRegistry();
-
-	// アセットファイルパスレジストリーのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_assetFilePathRegistryJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		l_assetFilePathRegistry.Deserialize(l_json);
-	}
 
 	// プレハブシステムのデシリアライズ
 	if (const auto& l_json = a_rootJson.value(k_prefabSystemJsonKey, nlohmann::json{});
@@ -19,7 +10,7 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 	{
 		auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
 
-		l_prefabSystem.Deserialize(l_json, l_assetFilePathRegistry);
+		l_prefabSystem.Deserialize(l_json, a_assetFilePathRegistry);
 	}
 
 	// ゲームオブジェクトリストのデシリアライズ
@@ -33,15 +24,14 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 
 	a_scene.SetSceneName(l_sceneName);
 }
-nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
-{
-	      nlohmann::json l_rootJson              = {};
-	const auto&          l_assetFilePathRegistry = a_scene.GetREFAssetFilePathRegistry();
-	const auto&          l_sceneName             = a_scene.GetREFSceneName            ();
-	      auto&          l_prefabSystem          = a_scene.GetMutableREFPrefabSystem  ();
 
-	l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
-	l_rootJson[k_prefabSystemJsonKey]          = l_prefabSystem.Serialize         (l_assetFilePathRegistry);
+nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const
+{
+	      nlohmann::json l_rootJson     = {};
+	const auto&          l_sceneName    = a_scene.GetREFSceneName            ();
+	      auto&          l_prefabSystem = a_scene.GetMutableREFPrefabSystem  ();
+
+	l_rootJson[k_prefabSystemJsonKey]          = l_prefabSystem.Serialize(a_assetFilePathRegistry);
 	l_rootJson[k_sceneNameJsonKey]             = l_sceneName; 
 	l_rootJson[k_gameObjectListJsonKey]        = SerializeGameObjectList (a_scene);
 

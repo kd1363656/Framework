@@ -15,8 +15,12 @@ void FWK::SceneManager::LoadScene(const std::filesystem::path& a_nextSceneLoadFi
 	// (そのシーンで使用するSceneShiftMapなどの情報を消して、次のシーンでしか使用しない情報に置き換えるため)
 	INIT();
 
-	m_jsonConverter.Deserialize(l_json, *this);
+	// 込むためのファイルパスを格納
+	m_currentSceneFilePath = a_nextSceneLoadFilePath;
 
+	m_jsonConverter.Deserialize(*this);
+
+	// ファイルパスを格納する
 	m_currentSceneFilePath = a_nextSceneLoadFilePath;
 
 	// Sceneの作成に失敗していればログで出力する
@@ -144,8 +148,20 @@ bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sce
 	return m_nextSceneLoadFilePathMap.try_emplace(a_sceneUUID, a_nextSceneLoadFilePath).second;
 }
 
+bool FWK::SceneManager::RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)
+{
+	return false;
+}
+
+bool FWK::SceneManager::ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID)
+{
+	return false;
+}
+
 void FWK::SceneManager::INIT()
 {
+	m_assetFilePathRegistry.INIT();
+
 	m_nextSceneLoadFilePathMap.clear();
 
 	// 現在保持しているシーンをリセットして新しいシーンを作成
@@ -153,6 +169,8 @@ void FWK::SceneManager::INIT()
 
 	m_scene->INIT();
 	
+	m_currentSceneFilePath = {};
+
 	m_nextSceneUUID = {};
 }
 
@@ -161,9 +179,9 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 	// 次のに移行するシーンの名前が空なら移行しない
 	if (m_nextSceneUUID.is_nil()) { return; }
 
-	const auto* l_nextSceneLoadFilePath = FindPTRNextSceneLoadFilePath(m_nextSceneUUID);
+	const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(m_nextSceneUUID);
 
-	if (!l_nextSceneLoadFilePath) 
+	if (!l_assetFilePathData) 
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへの遷移用のUUIDが無効です、SceneManagerのマップ内部を確認してください。");
 
@@ -171,14 +189,16 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 	}
 
 	// 次のシーンのファイルパスが空なら移行しない
-	if (l_nextSceneLoadFilePath->empty())
+	if (l_assetFilePathData->m_assetFilePath.empty() ||
+		l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへのファイルパスが空です、SceneManagerのマップ内部を確認してください。");
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへの情報が無効です、SceneManagerのマップ内部を確認してください。");
 
 		return;
 	}
 
-	const std::filesystem::path l_nextSceneFilePath = *l_nextSceneLoadFilePath;
+	// コピー渡しで次に読み込むファイルのファイルパスがこの関数実行中は絶対に存在するようにする
+	const std::filesystem::path l_nextSceneFilePath = l_assetFilePathData->m_assetFilePath;
 
 	// LoadScene(9事態が失敗した場合でも
 	// 同じ遷移要求を毎フレーム繰り返さないようにする
@@ -187,13 +207,4 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 	// シーンマネージャーのシーン遷移情報をクリアして
 	// シーン遷移情報及びシーンを読み込む
 	LoadScene(l_nextSceneFilePath);
-}
-
-const std::filesystem::path* FWK::SceneManager::FindPTRNextSceneLoadFilePath(const boost::uuids::uuid& a_uuid) const
-{
-	const auto& l_itr = m_nextSceneLoadFilePathMap.find(a_uuid);
-
-	if (l_itr == m_nextSceneLoadFilePathMap.end()) { return nullptr; }
-
-	return &l_itr->second;
 }

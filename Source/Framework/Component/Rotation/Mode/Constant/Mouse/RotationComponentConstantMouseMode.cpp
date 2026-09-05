@@ -11,8 +11,12 @@ void FWK::RotationComponentConstantMouseMode::Update()
 {
 	if (!CanUpdate()) { return; }
 
-	const auto& l_inuputManager   = InputManager::GetInstance            ();
-	const auto& l_mouseController = l_inuputManager.GetREFMouseController();
+	const auto& l_inputManager    = InputManager::GetInstance           ();
+	const auto& l_mouseController = l_inputManager.GetREFMouseController();
+	const auto& l_mouseMovement   = l_mouseController.GetREFMovement    ();
+
+	// マウスの移動量がほとんどないなら"return"
+	if (l_mouseMovement.LengthSquared() <= std::numeric_limits<float>::epsilon()) { return; }
 }
 
 void FWK::RotationComponentConstantMouseMode::EditInspector()

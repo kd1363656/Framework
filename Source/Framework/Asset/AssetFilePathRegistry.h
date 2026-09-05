@@ -10,11 +10,15 @@ namespace FWK
 		 AssetFilePathRegistry() = default;
 		~AssetFilePathRegistry() = default;
 
+		void INIT();
+
 		void Deserialize(const nlohmann::json& a_rootJson);
 
 		nlohmann::json Serialize() const;
 
 		bool Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType);
+
+		bool ReplaceFilePath(const std::filesystem::path& a_oldAssetFilePath, const std::filesystem::path& a_newAssetFilePath);
 
 		bool Erase(const std::filesystem::path& a_assetFilePath);
 

@@ -30,15 +30,11 @@ namespace FWK
 
 		const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 
-		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
-
 		const auto& GetREFPrefabSystem() const { return m_prefabSystem; }
 
 		const auto& GetREFSceneName() const { return m_sceneName; }
 
 		auto& GetMutableREFPrefabSystem() { return m_prefabSystem; }
-
-		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
 	private:
 
@@ -58,8 +54,6 @@ namespace FWK
 		std::vector<std::vector<std::weak_ptr<GameObject>>> m_gameObjectExecutionLevelList = {};
 
 		UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
-
-		AssetFilePathRegistry m_assetFilePathRegistry = {};
 
 		PrefabSystem m_prefabSystem = {};
 

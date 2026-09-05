@@ -1,11 +1,31 @@
 ﻿#include "SceneManagerJsonConveter.h"
 
-void FWK::Converter::SceneManagerJsonConverter::Deserialize (const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const
+void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManager) const
 {
-	if (a_rootJson.is_null ()) { return; }
+	const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
+
+	if (!Utility::CanLoadFilePath(l_currentSceneFilePath))
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "読み込めるファイルパスでないため、シーンの読み込みに失敗しました。");
+
+		return;
+	}
+
+	const auto& l_rootJson = Utility::LoadJsonFile(l_currentSceneFilePath);
+
+	if (l_rootJson.is_null ()) { return; }
+
+	auto& l_assetFilePathRegistry = a_sceneManager.GetMutableREFAssetFilePathRegistry();
+
+	// アセットファイルパスレジストリーのデシリアライズ
+	if (const auto& l_json = l_rootJson.value(k_assetFilePathRegistryJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		l_assetFilePathRegistry.Deserialize(l_json);
+	}
 
 	// シーン遷移マップのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_nextSceneLoadFilePathMapJsonKey, nlohmann::json{});
+	if (const auto& l_json = l_rootJson.value(k_nextSceneLoadFilePathMapJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
 		DeserializeNextSceneLoadFilePathMap(l_json, a_sceneManager);
@@ -13,14 +33,14 @@ void FWK::Converter::SceneManagerJsonConverter::Deserialize (const nlohmann::jso
 
 	auto& l_sceneShiftEventObserver = a_sceneManager.GetMutableREFSceneShiftEventObserver();
 
-	if (const auto& l_json = a_rootJson.value(k_sceneShiftEventObserverJsonKey, nlohmann::json{});
+	if (const auto& l_json = l_rootJson.value(k_sceneShiftEventObserverJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
 		l_sceneShiftEventObserver.Deserialize(l_json);
 	}
 
 	// シーンのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_sceneJsonKey, nlohmann::json{});
+	if (const auto& l_json = l_rootJson.value(k_sceneJsonKey, nlohmann::json{});
 		!l_json.is_null())
 	{
 		const auto& l_scene = a_sceneManager.GetVALScene().lock();
@@ -31,14 +51,17 @@ void FWK::Converter::SceneManagerJsonConverter::Deserialize (const nlohmann::jso
 	}
 }
 
-nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(const SceneManager& a_sceneManager) const
+void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const
 {
 	nlohmann::json l_rootJson = {};
 
+	const auto& l_assetFilePathRegistry   = a_sceneManager.GetREFAssetFilePathRegistry  ();
 	const auto& l_scene                   = a_sceneManager.GetVALScene                  ().lock();
 	const auto& l_sceneShiftEventObserver = a_sceneManager.GetREFSceneShiftEventObserver();
 
-	if (!l_scene) { return {}; }
+	if (!l_scene) { return; }
+
+	l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
 
 	// シーン遷移マップのシリアライズ
 	l_rootJson[k_nextSceneLoadFilePathMapJsonKey] = SerializeNextSceneLoadFilePathMap(a_sceneManager);
@@ -48,8 +71,6 @@ nlohmann::json FWK::Converter::SceneManagerJsonConverter::Serialize(const SceneM
 
 	// シーンのシリアライズ
 	l_rootJson[k_sceneJsonKey] = l_scene->Serialize();
-
-	return l_rootJson;
 }
 
 void FWK::Converter::SceneManagerJsonConverter::DeserializeNextSceneLoadFilePathMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const

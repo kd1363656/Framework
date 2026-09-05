@@ -6,8 +6,8 @@ namespace FWK
 	{
 	public:
 
-		 RotationComponentConstantModeBase() = default;
-		~RotationComponentConstantModeBase() = default;
+		 RotationComponentConstantModeBase()          = default;
+		~RotationComponentConstantModeBase() override = default;
 
 		void INIT() override;
 

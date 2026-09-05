@@ -14,9 +14,9 @@ namespace FWK::Converter
 		 SceneManagerJsonConverter() = default;
 		~SceneManagerJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const;
+		void Load(SceneManager& a_sceneManager) const;
 
-		nlohmann::json Serialize(const SceneManager& a_sceneManager) const;
+		void Save(const SceneManager& a_sceneManager) const;
 
 	private:
 
@@ -24,10 +24,11 @@ namespace FWK::Converter
 
 		nlohmann::json SerializeNextSceneLoadFilePathMap(const SceneManager& a_sceneManager) const;
 
-		static constexpr std::string_view k_sceneUUIDJsonKey                = "SceneUUID";
-		static constexpr std::string_view k_sceneShiftEventObserverJsonKey  = "SceneShiftEventObserver";
-		static constexpr std::string_view k_nextSceneLoadFilePathJsonKey    = "NextSceneFilePath";
+		static constexpr std::string_view k_assetFilePathRegistryJsonKey    = "AssetFilePathRegistry";
 		static constexpr std::string_view k_nextSceneLoadFilePathMapJsonKey = "NextSceneLoadFilePathMap";
+		static constexpr std::string_view k_sceneUUIDJsonKey                = "SceneUUID";
+		static constexpr std::string_view k_nextSceneLoadFilePathJsonKey    = "NextSceneFilePath";
 		static constexpr std::string_view k_sceneJsonKey                    = "Scene";
+		static constexpr std::string_view k_sceneShiftEventObserverJsonKey  = "SceneShiftEventObserver";
 	};
 }

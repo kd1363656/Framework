@@ -14,9 +14,9 @@ namespace FWK::Converter
 		 SceneJsonConverter() = default;
 		~SceneJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene) const;
+		void Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const;
 
-		nlohmann::json Serialize(Scene& a_scene) const;
+		nlohmann::json Serialize(AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const;
 
 	private:
 
@@ -24,10 +24,9 @@ namespace FWK::Converter
 
 		nlohmann::json SerializeGameObjectList(const Scene& a_scene) const;
 
-		static constexpr std::string_view k_gameObjectListJsonKey        = "GameObjectList";
-		static constexpr std::string_view k_gameObjectJsonKey            = "GameObject";
-		static constexpr std::string_view k_sceneNameJsonKey             = "SceneName";
-		static constexpr std::string_view k_prefabSystemJsonKey          = "PrefabSystem";
-		static constexpr std::string_view k_assetFilePathRegistryJsonKey = "AssetFilePathRegistry";
+		static constexpr std::string_view k_gameObjectListJsonKey = "GameObjectList";
+		static constexpr std::string_view k_gameObjectJsonKey     = "GameObject";
+		static constexpr std::string_view k_sceneNameJsonKey      = "SceneName";
+		static constexpr std::string_view k_prefabSystemJsonKey   = "PrefabSystem";
 	};
 }

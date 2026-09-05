@@ -6,8 +6,8 @@ namespace FWK
 	{
 	public:
 
-		 RotationComponentConstantMouseMode() = default;
-		~RotationComponentConstantMouseMode() = default;
+		 RotationComponentConstantMouseMode()          = default;
+		~RotationComponentConstantMouseMode() override = default;
 
 		void INIT() override;
 

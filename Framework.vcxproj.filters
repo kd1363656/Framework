@@ -1432,6 +1432,18 @@
     <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self">
       <UniqueIdentifier>{980df63c-a707-4000-8839-3bb9427eaf4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change">
+      <UniqueIdentifier>{8905bf48-2eca-493c-8e5b-d4e0cbf4a117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add">
+      <UniqueIdentifier>{32b930e8-c553-4bc5-80fd-95dc7896cf6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete">
+      <UniqueIdentifier>{b57e048e-3877-45c5-8bf2-ae64b34c96f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath">
+      <UniqueIdentifier>{fe72b25e-0d8a-494e-a5b6-aa92119c3a52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2757,6 +2769,18 @@
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.h">
       <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3466,6 +3490,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

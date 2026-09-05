@@ -587,6 +587,10 @@
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 #include "Utility/File/SaveFileDialogUtility.h"
 
+#include "Editor/Window/AssetBrowser/Watcher/Change/AssetBrowserEditorWindowDirectoryChangeBase.h"
+#include "Editor/Window/AssetBrowser/Watcher/Change/Add/AssetBrowserEditorWindowDirectoryAddChange.h"
+#include "Editor/Window/AssetBrowser/Watcher/Change/Rename/AssetBrowserEditorWindowDirectoryRenameChange.h"
+#include "Editor/Window/AssetBrowser/Watcher/Change/Delete/AssetBrowserEditorWindowDirectoryDeleteChange.h"
 #include "Editor/Window/AssetBrowser/Watcher/AssetBrowserEditorWindowDirectoryWatcher.h"
 #include "Editor/Window/AssetBrowser/Converter/Json/AssetBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"

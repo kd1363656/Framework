@@ -31,6 +31,8 @@ namespace FWK
 
 		void SetVisible(const bool a_set);
 
+		const auto& GetREFMovement() const { return m_movement; }
+
 		int FetchVALScrollWheelValue() const;
 
 	private:
