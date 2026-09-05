@@ -1,6 +1,6 @@
 {
     "IsDisableEditor": false,
-    "MainMenubar": {
+    "MainMenuBar": {
         "MainMenuList": [
             {
                 "MainMenuTypeName": "FileMainMenuEditor"

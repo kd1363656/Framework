@@ -1,13 +1,13 @@
-﻿#include "MainMenubarEditor.h"
+﻿#include "MainMenuBarEditor.h"
 
-void FWK::Editor::MainMenubarEditor::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::Editor::MainMenuBarEditor::Deserialize(const nlohmann::json& a_rootJson)
 {
 	if (a_rootJson.is_null()) { return; }
 
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::Editor::MainMenubarEditor::Draw() const
+void FWK::Editor::MainMenuBarEditor::Draw() const
 {
 	if (!ImGui::BeginMainMenuBar()) { return; }
 
@@ -25,12 +25,12 @@ void FWK::Editor::MainMenubarEditor::Draw() const
 	ImGui::EndMainMenuBar();
 }
 
-nlohmann::json FWK::Editor::MainMenubarEditor::Serialize() const
+nlohmann::json FWK::Editor::MainMenuBarEditor::Serialize() const
 {
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Editor::MainMenubarEditor::AddEditorMainMenu(std::unique_ptr<EditorMainMenuBase>&& a_editorMainMenu)
+void FWK::Editor::MainMenuBarEditor::AddEditorMainMenu(std::unique_ptr<EditorMainMenuBase>&& a_editorMainMenu)
 {
 	if (!a_editorMainMenu) 
 	{

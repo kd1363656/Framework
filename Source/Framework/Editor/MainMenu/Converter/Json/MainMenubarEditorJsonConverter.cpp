@@ -1,26 +1,26 @@
 ﻿#include "MainMenubarEditorJsonConverter.h"
 
-void FWK::Converter::MainMenubarEditorJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Editor::MainMenubarEditor& a_mainMenubarEditor) const
+void FWK::Converter::MainMenuBarEditorJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Editor::MainMenuBarEditor& a_mainMenuBarEditor) const
 {
     // メインメニューのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_mainMenuListJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
-        DeserializeEditorMainMenu(l_json, a_mainMenubarEditor);
+        DeserializeEditorMainMenu(l_json, a_mainMenuBarEditor);
     }
 }
 
-nlohmann::json FWK::Converter::MainMenubarEditorJsonConverter::Serialize(const Editor::MainMenubarEditor& a_mainMenubarEditor) const
+nlohmann::json FWK::Converter::MainMenuBarEditorJsonConverter::Serialize(const Editor::MainMenuBarEditor& a_mainMenuBarEditor) const
 {
     nlohmann::json l_rootJson = {};
 
     // メインメニューのシリアライズ
-    l_rootJson[k_mainMenuListJsonKey] = SerializeEditormainMenu(a_mainMenubarEditor);
+    l_rootJson[k_mainMenuListJsonKey] = SerializeEditorMainMenu(a_mainMenuBarEditor);
 
     return l_rootJson;
 }
 
-void FWK::Converter::MainMenubarEditorJsonConverter::DeserializeEditorMainMenu(const nlohmann::json& a_rootJson, Editor::MainMenubarEditor& a_mainMenubarEditor) const
+void FWK::Converter::MainMenuBarEditorJsonConverter::DeserializeEditorMainMenu(const nlohmann::json& a_rootJson, Editor::MainMenuBarEditor& a_mainMenuBarEditor) const
 {
     if (a_rootJson.is_null())              { return; }
     if (!Utility::IsJsonArray(a_rootJson)) { return; }
@@ -37,15 +37,15 @@ void FWK::Converter::MainMenubarEditorJsonConverter::DeserializeEditorMainMenu(c
             continue;
         }
 
-        a_mainMenubarEditor.AddEditorMainMenu(std::move(l_editorMainMenuBase));
+        a_mainMenuBarEditor.AddEditorMainMenu(std::move(l_editorMainMenuBase));
     }
 }
 
-nlohmann::json FWK::Converter::MainMenubarEditorJsonConverter::SerializeEditormainMenu(const Editor::MainMenubarEditor& a_mainMenubarEditor) const
+nlohmann::json FWK::Converter::MainMenuBarEditorJsonConverter::SerializeEditorMainMenu(const Editor::MainMenuBarEditor& a_mainMenuBarEditor) const
 {
     nlohmann::json l_rootJsonArray = {};
 
-    const auto& l_editorMainMenuSmartPointerVectorArray = a_mainMenubarEditor.GetREFEditorMainMenuSmartPointerVectorArray();
+    const auto& l_editorMainMenuSmartPointerVectorArray = a_mainMenuBarEditor.GetREFEditorMainMenuSmartPointerVectorArray();
 
     for (const auto& l_editorMainMenuData : l_editorMainMenuSmartPointerVectorArray.GetREFArrayElementDataList())
     {

@@ -1989,10 +1989,10 @@
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.h">
+    <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.h">
       <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h">
+    <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.h">
       <Filter>Source\Framework\Editor\MainMenu</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h">
@@ -3080,10 +3080,10 @@
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp">
       <Filter>Source\Framework\Editor\MainMenu\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp">
+    <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.cpp">
       <Filter>Source\Framework\Editor\MainMenu</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp">

@@ -510,8 +510,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
-    <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.h" />
+    <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.h" />
@@ -826,8 +826,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
-    <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenubarEditorJsonConverter.cpp" />
-    <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenubarEditor.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.cpp" />

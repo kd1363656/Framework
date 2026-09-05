@@ -2,12 +2,12 @@
 
 namespace FWK::Editor
 {
-	class MainMenubarEditor
+	class MainMenuBarEditor
 	{
 	public:
 
-		 MainMenubarEditor() = default;
-		~MainMenubarEditor() = default;
+		 MainMenuBarEditor() = default;
+		~MainMenuBarEditor() = default;
 
 		void Deserialize(const nlohmann::json& a_rootJson);
 
@@ -21,7 +21,7 @@ namespace FWK::Editor
 
 	private:
 
-		Converter::MainMenubarEditorJsonConverter m_jsonConverter = {};
+		Converter::MainMenuBarEditorJsonConverter m_jsonConverter = {};
 
 		Utility::SmartPointerVectorArray<std::unique_ptr<EditorMainMenuBase>> m_editorMainMenuSmartPointerVectorArray = {};
 	};

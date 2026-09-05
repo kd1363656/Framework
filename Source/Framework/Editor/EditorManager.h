@@ -79,17 +79,14 @@ namespace FWK::Editor
 			return std::static_pointer_cast<WindowType>(l_editorWindow);
 		}
 
-		void SetSelectedGameObject(const std::weak_ptr<GameObject>& a_set) { m_selectedGameObject = a_set; }
-
 		void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
 		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
 		const auto& GetREFEditorWindowList  () const { return m_editorWindowList; }
-		const auto& GetREFMainMenubar       () const { return m_mainMenubar; }
-		const auto& GetREFSelectedGameObject() const { return m_selectedGameObject; }
-
-		auto& GetMutableREFMainMenubar() { return m_mainMenubar; }
+		const auto& GetREFMainMenuBar       () const { return m_mainMenuBar; }
+		
+		auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
 
 		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
@@ -132,11 +129,9 @@ namespace FWK::Editor
 
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
-		std::weak_ptr<GameObject> m_selectedGameObject;
-		
 		Editor::LogEditorWindow m_logEditorWindow;
 
-		Editor::MainMenubarEditor m_mainMenubar;
+		Editor::MainMenuBarEditor m_mainMenuBar;
 
 		Converter::EditorManagerJsonConverter m_jsonConverter;
 

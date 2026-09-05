@@ -242,13 +242,12 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 				}
 			}
 
-			DWORD l_transferredByteSize = k_initialTransferredByteSize;
-
 			// CancelIoEx()後、
 			// I/OSubsystemがCancelを正式に完了するまで待つ
 			// TRUE : I/Oが完了するまでここでは待機する
 			// Release時のみなので毎Frame処理には影響しない
-			if (!GetOverlappedResult(m_directoryHandle,
+			if (DWORD l_transferredByteSize = k_initialTransferredByteSize;
+				!GetOverlappedResult(m_directoryHandle,
 				                     &m_overlapped,
 				                     &l_transferredByteSize,
 				                     TRUE))
@@ -338,20 +337,18 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
 	//                         非同期I/O用OVERLAPPED、
 	//                         nullptrでCompletionRoutineは使用しない、
 	//                         FILE_NOTIFY_EXTENDED_INFORMATION形式で詳細通知を取得する);
-	const auto l_readResult = ReadDirectoryChangesExW(m_directoryHandle,
-		                                              m_notificationBufferList.data(),
-		                                              static_cast<DWORD>(m_notificationBufferList.size()),
-													  TRUE,
-												      k_directoryChangeNotificationFilter,
-												      nullptr,
-													  &m_overlapped,
-												      nullptr,
-													  ReadDirectoryNotifyExtendedInformation);
-
 	// ReadDirectoryChangesExW()は、
 	// 非同期利用の場合も監視要求のQueue登録に成功すると
 	// 非0を返す
-	if (!l_readResult)
+	if (!ReadDirectoryChangesExW(m_directoryHandle,
+		                         m_notificationBufferList.data(),
+		                         static_cast<DWORD>(m_notificationBufferList.size()),
+		                         TRUE,
+		                         k_directoryChangeNotificationFilter,
+		                         nullptr,
+		                         &m_overlapped,
+		                         nullptr,
+		                         ReadDirectoryNotifyExtendedInformation))
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの変更通知登録に失敗しました。\nWin32ErrorCode : {}", GetLastError());
 
@@ -365,9 +362,9 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
 
 bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotificationBuffer(const DWORD& a_transferredByteSize)
 {
-	const auto&       l_transferredByteSize       = static_cast<std::size_t>(a_transferredByteSize);
-	      bool        l_requiresFolderTreeRefresh = false;
-	      std::size_t l_bufferOffset              = k_initialBufferOffset;
+	const auto& l_transferredByteSize       = static_cast<std::size_t>(a_transferredByteSize);
+	      bool  l_requiresFolderTreeRefresh = false;
+	      auto  l_bufferOffset              = k_initialBufferOffset;
 
 	// FILE_NOTIFY_EXTENDED_INFORMATIONは
 	// 最後のFileNameが可変長配列になっている。
@@ -408,7 +405,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotificationB
 
 		// NextEntryOffset == NULLは
 		// 現在RecordがBuffer最後という意味
-		if (l_notificationInformation->NextEntryOffset == static_cast<DWORD>(NULL)) { return; }
+		if (l_notificationInformation->NextEntryOffset == static_cast<DWORD>(NULL)) { return l_requiresFolderTreeRefresh; }
 
 		const auto l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation->NextEntryOffset);
 

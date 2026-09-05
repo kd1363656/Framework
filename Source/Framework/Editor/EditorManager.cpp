@@ -11,11 +11,9 @@ FWK::Editor::EditorManager::EditorManager() :
 
 	m_editorWindowList(),
 
-	m_selectedGameObject(),
-
 	m_logEditorWindow(),
 
-	m_mainMenubar(),
+	m_mainMenuBar(),
 
 	m_jsonConverter(),
 
@@ -176,7 +174,7 @@ void FWK::Editor::EditorManager::DrawEditor()
 	DrawDockingSpace();
 
 	// メニューバーとウィンドウを描画
-	m_mainMenubar.Draw();
+	m_mainMenuBar.Draw();
 	DrawEditorWindow  ();
 
 	// ImGuiの描画データを確定する

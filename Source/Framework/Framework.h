@@ -62,8 +62,8 @@
 #include "Editor/Window/Viewport/Toolbar/ViewportToolbar.h"
 #include "Editor/MainMenu/EditorMainMenuBase.h"
 #include "Definition/Concept/IsDerivedBase/Editor/IsDerivedEditorMainMenuBaseConcept.h"
-#include "Editor/MainMenu/Converter/Json/MainMenubarEditorJsonConverter.h"
-#include "Editor/MainMenu/MainMenubarEditor.h"
+#include "Editor/MainMenu/Converter/Json/MainMenuBarEditorJsonConverter.h"
+#include "Editor/MainMenu/MainMenuBarEditor.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
