@@ -40,6 +40,7 @@ namespace FWK::Editor
 		void ResetPendingRename();
 
 		static constexpr std::size_t k_notificationBufferByteSize = 64ULL * 1024ULL;
+		static constexpr std::size_t k_initialBufferOffset        = 0ULL;
 
 		static constexpr DWORD k_noWaitMilliseconds                = 0UL;
 		static constexpr DWORD k_directoryChangeNotificationFilter = FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME;
