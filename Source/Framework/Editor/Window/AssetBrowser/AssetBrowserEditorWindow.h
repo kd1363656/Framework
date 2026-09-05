@@ -25,6 +25,10 @@ namespace FWK::Editor
 
 		nlohmann::json Serialize() override;
 
+		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
+
+		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
+
 	private:
 
 		void RefreshFolderTree();
@@ -42,9 +46,11 @@ namespace FWK::Editor
 
 		static constexpr float k_fileRemainingArea = 0.0F;
 
-		FolderTreeData m_rootFolderTreeData = {};
+		AssetFilePathRegistry m_assetFilePathRegistry = {};
 
 		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
+
+		FolderTreeData m_rootFolderTreeData = {};
 
 		std::filesystem::path m_currentDirectoryPath = Constant::k_assetRootFolderPath;
 

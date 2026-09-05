@@ -4,7 +4,7 @@ void FWK::PrefabSystem::INIT()
 {
 	m_prefabMap.clear();
 }
-void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry)
+void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -61,8 +61,8 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 
 	if (!l_scene) { return; }
 
-	const auto& l_assetFilePathRegistry = l_scene->GetREFAssetFilePathRegistry();
-	const auto& l_gameObjectList        = l_scene->GetREFGameObjectList       ();
+	const auto& l_assetFilePathRegistry = l_sceneManager.GetREFAssetFilePathRegistry();
+	const auto& l_gameObjectList        = l_scene->GetREFGameObjectList             ();
 
 	for (auto& [l_prefabUUID, l_prefabData] : m_prefabMap)
 	{

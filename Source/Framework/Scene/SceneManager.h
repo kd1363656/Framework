@@ -25,11 +25,14 @@ namespace FWK
 		void SaveScene() const;
 		bool SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath);
 		
-		bool AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, const std::filesystem::path& a_nextSceneLoadFilePath);
+		bool AddNextSceneLoadFilePath(const boost::uuids::uuid&    a_sceneUUID);
+		bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID);
 
 		bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID);
 		
 		bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID);
+
+		void SetCurrentSceneFilePath(const std::filesystem::path& a_set) { m_currentSceneFilePath = a_set; }
 
 		const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
 		

@@ -564,7 +564,7 @@
 #include "Component/Move/MoveComponent.h"
 
 //===============================================================================
-// アセットファイルパス管理クラス
+// アセットファイルパスレジストリー
 //===============================================================================
 #include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
 #include "Definition/Struct/Asset/AssetFilePathRegistryStruct.h"
@@ -589,7 +589,7 @@
 
 #include "Editor/Window/AssetBrowser/Watcher/Change/AssetBrowserEditorWindowDirectoryChangeBase.h"
 #include "Editor/Window/AssetBrowser/Watcher/Change/Add/AssetBrowserEditorWindowDirectoryAddChange.h"
-#include "Editor/Window/AssetBrowser/Watcher/Change/Rename/AssetBrowserEditorWindowDirectoryRenameChange.h"
+#include "Editor/Window/AssetBrowser/Watcher/Change/FilePath/AssetBrowserEditorWindowDirectoryFilePathChange.h"
 #include "Editor/Window/AssetBrowser/Watcher/Change/Delete/AssetBrowserEditorWindowDirectoryDeleteChange.h"
 #include "Editor/Window/AssetBrowser/Watcher/AssetBrowserEditorWindowDirectoryWatcher.h"
 #include "Editor/Window/AssetBrowser/Converter/Json/AssetBrowserEditorWindowJsonConverter.h"

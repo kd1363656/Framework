@@ -1,6 +1,6 @@
 ﻿#include "PrefabSystemJsonConverter.h"
 
-void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, PrefabSystem& a_prefabSystem, AssetFilePathRegistry& a_assetFilePathRegistry) const
+void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, PrefabSystem& a_prefabSystem, const AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
 	if (a_rootJson.is_null() ||
 		!Utility::IsJsonArray(a_rootJson, k_prefabMapJsonKey))

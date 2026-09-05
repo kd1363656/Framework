@@ -18,7 +18,7 @@ void FWK::Scene::INIT()
 	m_isGameObjectExecutionLevelListDirty = false;
 }
 
-void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry)
 {
 	if (a_rootJson.is_null()) 
 	{
@@ -26,8 +26,9 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 		return; 
 	}
 
-	m_jsonConverter.Deserialize(a_rootJson, *this);
+	m_jsonConverter.Deserialize(a_rootJson, a_assetFilePathRegistry, *this);
 }
+
 void FWK::Scene::PostDeserialize() const
 {
 	for (const auto& l_gameObject : m_gameObjectList)
@@ -129,9 +130,9 @@ void FWK::Scene::PostLateUpdate() const
 	}
 }
 
-nlohmann::json FWK::Scene::Serialize()
+nlohmann::json FWK::Scene::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
-	return m_jsonConverter.Serialize(*this);
+	return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
 }
 
 void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)

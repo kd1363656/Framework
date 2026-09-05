@@ -9,7 +9,7 @@ namespace FWK::Editor
 		         AssetBrowserEditorWindowDirectoryChangeBase() = default;
 		virtual ~AssetBrowserEditorWindowDirectoryChangeBase() = default;
 
-		virtual void Apply(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager) = 0;
+		virtual void Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager) = 0;
 
 		void SetFilePath(const std::filesystem::path& a_set) { m_filePath = a_set; }
 
@@ -19,7 +19,7 @@ namespace FWK::Editor
 
 		const auto& GetREFFilePath() const { return m_filePath; }
 
-		bool GetVALISDirectory() const { return m_isDirectory; }
+		bool GetVALIsDirectory() const { return m_isDirectory; }
 
 		static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath)
 		{

@@ -134,7 +134,12 @@ bool FWK::AssetFilePathRegistry::Erase(const std::filesystem::path& a_assetFileP
 
 	const auto& l_itr = m_assetFilePathToUUIDMap.find(a_assetFilePath);
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_assetFilePathToUUIDMap.end(), "指定されたAssetFilePathがAssetFilePathRegistryへ登録されていません。", false);
+	if (l_itr == m_assetFilePathToUUIDMap.end())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "指定されたAssetFilePathがAssetFilePathRegistryへ登録されていません。");
+
+		return false;
+	}
 
 	// UUID重複確認用Setから削除予定のマップのUUIDを削除
 	auto l_uuid = l_itr->second;

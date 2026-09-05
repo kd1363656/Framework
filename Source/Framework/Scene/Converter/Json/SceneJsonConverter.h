@@ -14,9 +14,9 @@ namespace FWK::Converter
 		 SceneJsonConverter() = default;
 		~SceneJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const;
+		void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const;
 
-		nlohmann::json Serialize(AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const;
+		nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, Scene& a_scene) const;
 
 	private:
 

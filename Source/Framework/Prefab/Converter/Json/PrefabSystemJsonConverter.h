@@ -15,8 +15,8 @@ namespace FWK::Converter
 		 PrefabSystemJsonConverter() = default;
 		~PrefabSystemJsonConverter() = default;
 
-		void           Deserialize(const nlohmann::json&        a_rootJson,              PrefabSystem& a_prefabSystem, AssetFilePathRegistry& a_assetFilePathRegistry) const;
-		nlohmann::json Serialize  (const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem)                                                 const;
+		void           Deserialize(const nlohmann::json&        a_rootJson,              PrefabSystem& a_prefabSystem, const AssetFilePathRegistry& a_assetFilePathRegistry) const;
+		nlohmann::json Serialize  (const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem)                                                       const;
 
 	private:
 

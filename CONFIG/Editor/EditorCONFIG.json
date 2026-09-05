@@ -1,5 +1,5 @@
 {
-    "IsDisableEditor": true,
+    "IsDisableEditor": false,
     "MainMenubar": {
         "MainMenuList": [
             {
@@ -21,7 +21,11 @@
             "WindowTypeName": "DetailsEditorWindow"
         },
         {
-            "Window": null,
+            "Window": {
+                "AssetFilePathRegistry": {
+                    "FilePathRegistryMap": []
+                }
+            },
             "WindowTypeName": "AssetBrowserEditorWindow"
         }
     ]

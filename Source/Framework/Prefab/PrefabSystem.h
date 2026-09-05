@@ -20,7 +20,7 @@ namespace FWK
 		~PrefabSystem() = default;
 
 		void INIT                         ();
-		void Deserialize                  (const nlohmann::json&            a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry);
+		void Deserialize                  (const nlohmann::json&            a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
 		void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
 
 		void RefreshAllPrefab();

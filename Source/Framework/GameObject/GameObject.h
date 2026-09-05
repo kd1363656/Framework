@@ -111,7 +111,7 @@ namespace FWK
 		const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }
 		const auto& GetREFComponentSmartPointerVectorArray() const { return m_componentSmartPointerVectorArray; }
 
-		const std::weak_ptr<Observer<Enum::ComponentEvent>>& GetVALComponentEventObserver() const { return m_componentEventObserver; }
+		const std::weak_ptr<Observer<Enum::ComponentEvent>> GetVALComponentEventObserver() const { return m_componentEventObserver; }
 
 		const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
 		const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
