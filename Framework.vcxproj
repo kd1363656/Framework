@@ -523,6 +523,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.h" />
@@ -838,6 +839,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.cpp" />

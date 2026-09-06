@@ -51,7 +51,7 @@ namespace FWK::Editor
 
 		void Release();
 
-		const auto& GetREFNotificationBufferList() const { return m_notificationBufferList; }
+		std::span<std::byte> GetVALNotificationBufferList() { return std::span<std::byte>{ m_notificationBufferList }; }
 
 	private:
 

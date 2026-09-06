@@ -2784,6 +2784,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3505,6 +3508,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
