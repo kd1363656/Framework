@@ -2772,14 +2772,14 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath</Filter>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3491,14 +3491,17 @@
     <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath</Filter>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

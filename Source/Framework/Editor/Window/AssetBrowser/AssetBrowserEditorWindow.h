@@ -48,6 +48,8 @@ namespace FWK::Editor
 
 		AssetFilePathRegistry m_assetFilePathRegistry = {};
 
+		AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
+
 		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
 		FolderTreeData m_rootFolderTreeData = {};

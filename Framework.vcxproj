@@ -840,6 +840,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Delete\AssetBrowserEditorWindowDirectoryDeleteChange.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />

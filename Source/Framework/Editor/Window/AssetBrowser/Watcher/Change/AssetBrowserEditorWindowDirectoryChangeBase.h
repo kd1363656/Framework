@@ -13,46 +13,25 @@ namespace FWK::Editor
 
 		void SetFilePath(const std::filesystem::path& a_set) { m_filePath = a_set; }
 
-		void SetIsDirectory(const bool a_set) { m_isDirectory = a_set; }
+		void SetIsDirectory(const bool a_set) { m_isDirectory     = a_set; }
+		
+		bool GetVALIsRequiresRetry() const { return m_isRequiresRetry; }
 
 	protected:
+
+		void SetIsRequiresRetry(const bool a_set) { m_isRequiresRetry = a_set; }
 
 		const auto& GetREFFilePath() const { return m_filePath; }
 
 		bool GetVALIsDirectory() const { return m_isDirectory; }
-
-		static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath)
-		{
-			if (a_filePath.empty() ||
-				a_parentDirectoryPath.empty())
-			{
-				return false;
-			}
-
-			auto l_filePathITR            = a_filePath.begin           ();
-			auto l_parentDirectoryPathITR = a_parentDirectoryPath.begin();
-
-			while (l_parentDirectoryPathITR != a_parentDirectoryPath.end())
-			{
-				if (l_filePathITR == a_filePath.end() ||
-					*l_filePathITR != *l_parentDirectoryPathITR)
-				{
-					return false; 
-				}
-
-				++l_parentDirectoryPathITR;
-				++l_filePathITR;
-			}
-
-			// Parentと完全一致でなく
-			// Parentより後にもPathComponentが存在すれば子孫
-			return l_filePathITR != a_filePath.end();
-		}
+		
+		static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath);
 
 	private:
 
 		std::filesystem::path m_filePath = {};
 
-		bool m_isDirectory = false;
+		bool m_isDirectory     = false;
+		bool m_isRequiresRetry = false;
 	};
 }

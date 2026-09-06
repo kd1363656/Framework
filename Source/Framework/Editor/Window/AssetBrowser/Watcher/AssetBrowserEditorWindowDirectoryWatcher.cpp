@@ -1,6 +1,8 @@
 ﻿#include "AssetBrowserEditorWindowDirectoryWatcher.h"
 
 FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::AssetBrowserEditorWindowDirectoryWatcher() : 
+	m_pendingFilePathChangeDataMap(),
+
 	m_directoryChangeList(),
 
 	m_notificationBufferList(),
@@ -10,13 +12,8 @@ FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::AssetBrowserEditorWindowD
 
 	m_overlapped(),
 
-	m_directoryPath           (),
-	m_pendingRenameOldFilePath(),
-
-	m_pendingRenameFileID(k_initialPendingRenameFileID),
-
-	m_isPendingRenameDirectory (false),
-	m_isPendingRename          (false),
+	m_directoryPath(),
+	
 	m_isNotificationReadPending(false)
 {}
 FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::~AssetBrowserEditorWindowDirectoryWatcher()
@@ -26,8 +23,9 @@ FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::~AssetBrowserEditorWindow
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::filesystem::path& a_directoryPath)
 {
-	// Prepare()複数呼ばれても
-	// 古い監視Handleを残さないように最初に開放する
+	// Prepare()が複数呼ばれても
+	// 古いDirectoryHandleや非同期I/Oが残らないように
+	// 最初に現在の監視上体をすべて解放する
 	Release();
 
 	std::error_code l_errorCode = {};
@@ -115,12 +113,24 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 		return false;
 	}
 
+	// 以前のFrameでPendingになったREMOVED / OLD_NAMEの期限確認
+	// File削除の場合、REMOVED -> New側追加なし -> 250ms経過 -> Delete確定となる
+	bool l_requiresFolderTreeRefresh = ProcessExpiredPendingFilePathChange();
+
 	// Eventの状態だけ確認する
 	// Timeout = 0msなのでMainThreadを停止させない
 	const auto l_waitResult = WaitForSingleObject(m_notificationEventHandle, k_noWaitMilliseconds);
 
 	// まだ通知なしの場合return
-	if (l_waitResult == WAIT_TIMEOUT) { return false; }
+	if (l_waitResult == WAIT_TIMEOUT) 
+	{
+		// Windows通知がなくても、
+		// 前Frameで削除に失敗したAddChange等の
+		// Retry処理は毎Frame実行する
+		ApplyDirectoryChangeList(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
+
+		return l_requiresFolderTreeRefresh; 
+	}
 
 	if (l_waitResult == WAIT_FAILED)
 	{
@@ -128,10 +138,17 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 
 		Release();
 
-		return false;
+		// Watcher状態が壊れたため、
+		// 念のためFolderTreeは再構築させる
+		return true;
 	}
 
-	if (l_waitResult != WAIT_OBJECT_0) { return false; }
+	if (l_waitResult != WAIT_OBJECT_0) 
+	{
+		ApplyDirectoryChangeList(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
+
+		return l_requiresFolderTreeRefresh; 
+	}
 
 	DWORD l_transferredByteSize = k_initialTransferredByteSize;
 
@@ -147,7 +164,12 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 
 		// Event確認と完了状態のタイミングがわずかにずれた場合は
 		// 次Frameで再確認すればいい
-		if (l_errorCode == ERROR_IO_INCOMPLETE) { return false; }
+		if (l_errorCode == ERROR_IO_INCOMPLETE) 
+		{
+			ApplyDirectoryChangeList(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
+
+			return l_requiresFolderTreeRefresh; 
+		}
 
 		// ERROR_IO_INCOMPLETE以外なら、
 		// 子の非同期read事態は完了扱いになる
@@ -159,11 +181,14 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherが全ての変更通知を記録できませんでした。\nAssetDirectoryの再同期が必要です。");
 
-			m_directoryChangeList.clear();
+			ResetPendingFilePathChange();
+			
+			if (!PrepareNotificationRead()) 
+			{
+				Release(); 
+			}
 
-			ResetPendingRename();
-
-			if (!PrepareNotificationRead()) { Release(); }
+			ApplyDirectoryChangeList(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
 
 			// 詳細なFolder変更も失われた可能性があるので
 			// FolderTreeは再構築させる
@@ -174,7 +199,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 
 		Release();
 
-		return false;
+		return true;
 	}
 
 	// GetOverlappedResult()で今回のRead結果を回収できた
@@ -186,21 +211,27 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 	{
 		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの変更通知Bufferから詳細情報を取得できませんでした。\n大量のFile変更によってBufferがOverflowした可能性があります。");
 
-		m_directoryChangeList.clear();
-
-		ResetPendingRename();
-
+		ResetPendingFilePathChange();
+		
 		if (!PrepareNotificationRead())
 		{
 			Release();
 		}
+
+		ApplyDirectoryChangeList(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
 
 		return true;
 	}
 
 	// Windows通知Bufferを解析し、
 	// AddChange / DeleteChange / FilePathChangeへ変換する
-	const bool l_requiresFolderTreeRefresh = ProcessNotificationBuffer(l_transferredByteSize);
+	l_requiresFolderTreeRefresh = ProcessNotificationBuffer(l_transferredByteSize) ||
+		                         l_requiresFolderTreeRefresh;
+
+	// Buffer解析中に時間が経過した可能性もあるため、
+	// もう一度Pending期限を確認する
+	l_requiresFolderTreeRefresh = ProcessExpiredPendingFilePathChange() ||
+		                          l_requiresFolderTreeRefresh;
 
 	// AddChange::Apply()が外部通知Jsonをremove()した場合、
 	// そのremove()事態も新しいDirectory変更になる
@@ -212,7 +243,12 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 	// 同じBufferをWindowsへ再度渡しても問題ない
 	ApplyDirectoryChangeList(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
 
-	if (!l_isNotificationReadPrepared) { Release(); }
+	if (!l_isNotificationReadPrepared) 
+	{
+		Release(); 
+		
+		return true;
+	}
 
 	return l_requiresFolderTreeRefresh;
 }
@@ -232,7 +268,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 			// 完了を回収する
 			if (!CancelIoEx(m_directoryHandle, &m_overlapped))
 			{
-				const DWORD l_errorCode = GetLastError();
+				const auto l_errorCode = GetLastError();
 
 				// ERROR_NOT_FOUND : Cancel対象I/Oが既に完了していた場合など
 				// 以上として扱う必要はない
@@ -246,7 +282,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 			// I/OSubsystemがCancelを正式に完了するまで待つ
 			// TRUE : I/Oが完了するまでここでは待機する
 			// Release時のみなので毎Frame処理には影響しない
-			if (DWORD l_transferredByteSize = k_initialTransferredByteSize;
+			if (auto l_transferredByteSize = k_initialTransferredByteSize;
 				!GetOverlappedResult(m_directoryHandle,
 				                     &m_overlapped,
 				                     &l_transferredByteSize,
@@ -285,13 +321,14 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 
 	m_overlapped = {};
 
-	m_notificationBufferList.fill(std::byte{});
-
-	m_directoryPath.clear      ();
 	m_directoryChangeList.clear();
 
-	ResetPendingRename();
+	m_notificationBufferList.fill(std::byte{});
 
+	m_directoryPath.clear ();
+
+	ResetPendingFilePathChange();
+	
 	m_isNotificationReadPending = false;
 }
 
@@ -363,8 +400,20 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
 bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotificationBuffer(const DWORD& a_transferredByteSize)
 {
 	const auto& l_transferredByteSize       = static_cast<std::size_t>(a_transferredByteSize);
-	      bool  l_requiresFolderTreeRefresh = false;
+	const auto& l_initialChangeListSize     = m_directoryChangeList.size();
 	      auto  l_bufferOffset              = k_initialBufferOffset;
+	      bool  l_requiresFolderTreeRefresh = false;
+
+	// Windowsから返されたByte数が
+	// 自分のBuffer容量を超えている場合は異常
+	if (l_transferredByteSize > m_notificationBufferList.size())
+	{
+		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの通知Byte数が通知Buffer容量を超えています。");
+
+		ResetPendingFilePathChange();
+
+		return true;
+	}
 
 	// FILE_NOTIFY_EXTENDED_INFORMATIONは
 	// 最後のFileNameが可変長配列になっている。
@@ -374,7 +423,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotificationB
 
 	while (l_bufferOffset < l_transferredByteSize)
 	{
-		const auto l_remainingByteSize = l_transferredByteSize - l_bufferOffset;
+		const auto& l_remainingByteSize = l_transferredByteSize - l_bufferOffset;
 
 		// 固定部分すらBuffer内に存在しなければ
 		// Windowから受け取ったDataを安全に解析できない
@@ -382,40 +431,94 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotificationB
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの通知Bufferに不正なDataが含まれています。");
 
-			break;
+			// 今回Bufferから作ったChangeだけは気
+			m_directoryChangeList.resize(l_initialChangeListSize);
+
+			ResetPendingFilePathChange();
+
+			return true;
 		}
 
-		// WindowsがBufferへ直接
-		// FILE_NOTIFY_EXTENDE_INFORMATION形式で書き込んでいるため
-		// 現座Offsetを構造体Pointerとして解釈する
-		const auto* l_notificationInformation = reinterpret_cast<const FILE_NOTIFY_EXTENDED_INFORMATION*>(m_notificationBufferList.data() + l_bufferOffset);
+		// WindowBufferは生Byte列
+		// Buffer上のAddressを直接StructPointerとして扱うのではなく
+		// 固定部分をLocal変数へコピーして読む
+		FILE_NOTIFY_EXTENDED_INFORMATION l_notificationInformation = {};
+
+		std::memcpy(&l_notificationInformation, m_notificationBufferList.data() + l_bufferOffset, l_notificationFixedByteSize);
+
+		const auto l_fileNameByteSize = static_cast<std::size_t>(l_notificationInformation.FileNameLength);
 
 		// FileNameLengthはByte数
-		// 固定Struct部分 + FileName部分が現在1Recordの実DataSize
-		const auto l_recordByteSize = l_notificationFixedByteSize + static_cast<std::size_t>(l_notificationInformation->FileNameLength);
+		// fileNameはWCHAR配列なので、
+		// sizeof(WCHAR)で割り切れなければ不正
+		if (l_notificationInformation.FileNameLength == static_cast<DWORD>(NULL) ||
+			l_notificationInformation.FileNameLength % sizeof(WCHAR) != static_cast<DWORD>(NULL))
+		{
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcher空無効なFileNameLengthを受け取りました。");
 
-		if (l_recordByteSize > l_remainingByteSize)
+			m_directoryChangeList.resize(l_initialChangeListSize);
+
+			ResetPendingFilePathChange();
+
+			return true;
+		}
+
+		// FileNameがBuffer末尾を超えないか確認する
+		if (l_fileNameByteSize > l_remainingByteSize - l_notificationFixedByteSize)
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの通知BufferにBuffer範囲外のFileNameLengthが含まれています。");
 
-			break;
+			m_directoryChangeList.resize(l_initialChangeListSize);
+
+			ResetPendingFilePathChange();
+
+			return true;
 		}
 
-		l_requiresFolderTreeRefresh = ProcessNotification(*l_notificationInformation) || l_requiresFolderTreeRefresh;
+		const auto& l_recordByteSize         = l_notificationFixedByteSize + l_fileNameByteSize;
+		const auto& l_fileNameCharacterCount = l_fileNameByteSize          / sizeof(WCHAR);
+
+		// WindowsのFileNameはNULL終端されていない
+		// fileNamelengthから正確な文字数を確保する
+		std::wstring l_relativeFilePathString(l_fileNameCharacterCount, Constant::k_wNullCharacter);
+
+		std::memcpy(l_relativeFilePathString.data(), m_notificationBufferList.data() + l_bufferOffset + l_notificationFixedByteSize, l_fileNameByteSize);
+
+		const auto& l_filePath = m_directoryPath / std::filesystem::path{ l_relativeFilePathString };
+
+		l_requiresFolderTreeRefresh = ProcessNotification(l_notificationInformation, l_filePath) ||
+			                          l_requiresFolderTreeRefresh;
 
 		// NextEntryOffset == NULLは
-		// 現在RecordがBuffer最後という意味
-		if (l_notificationInformation->NextEntryOffset == static_cast<DWORD>(NULL)) { return l_requiresFolderTreeRefresh; }
+		// 現在Recordが最後という意味
+		if (l_notificationInformation.NextEntryOffset == static_cast<DWORD>(NULL)) { return l_requiresFolderTreeRefresh; }
 
-		const auto l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation->NextEntryOffset);
+		const auto& l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation.NextEntryOffset);
 
-		// 次Record位置が現在Recordより前だったりBuffer外なら節枝
-		if (l_nextEntryOffset < l_recordByteSize ||
-			l_nextEntryOffset > l_remainingByteSize)
+		// 次Record位置が現在Record途中、Buffer末尾、Buffer外なら以上
+		if (l_nextEntryOffset <  l_recordByteSize ||
+			l_nextEntryOffset >= l_remainingByteSize)
 		{
 			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの通知Bufferに無効なNextEntryOffsetが含まれています。");
 
-			break;
+			m_directoryChangeList.resize(l_initialChangeListSize);
+
+			ResetPendingFilePathChange();
+
+			return true;
+		}
+
+		// windows通知RecordはDWORD境界で並ぶため、
+		// 昭会にAlignmentがおかしいOffsetも不正として扱う
+		if (l_nextEntryOffset % sizeof(DWORD) != static_cast<std::size_t>(NULL))
+		{
+			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの通知BufferにDWORD境界へAlignmentされていない、NextEntryOffsetが含まれています。");
+
+			m_directoryChangeList.resize(l_initialChangeListSize);
+
+			ResetPendingFilePathChange();
+
+			return true;
 		}
 
 		l_bufferOffset += l_nextEntryOffset;
@@ -423,94 +526,94 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotificationB
 
 	return l_requiresFolderTreeRefresh;
 }
-
-bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotification(const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation)
+bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotification(const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation, const std::filesystem::path& a_filePath)
 {
-	// FileNameLengthはByte数なので、
-	// WCHARのByteSizeで割り切れなければ不正
-	if (a_notificationInformation.FileNameLength == static_cast<DWORD>(NULL) ||
-		a_notificationInformation.FileNameLength & sizeof(WCHAR) != static_cast<DWORD>(NULL))
-	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherから無効なFileNameLengthを受け取りました。");
+	if (a_filePath.empty()) { return false; }
 
-		return false;
-	}
-
-	// FilenameはNULL終端されていない
-	// そのためFileNameLength / sizeof(WCHAR)で
-	// 正確な文字数を求めてwstringを作成する
-	const auto&         l_fileNameCharacterCount = static_cast<std::size_t>(a_notificationInformation.FileNameLength) / sizeof(WCHAR);
-	const std::wstring& l_relativeFilePathString = { a_notificationInformation.FileName, l_fileNameCharacterCount };
-
-	const auto l_filePath    = m_directoryPath / std::filesystem::path{ l_relativeFilePathString };
 	const bool l_isDirectory = (a_notificationInformation.FileAttributes & FILE_ATTRIBUTE_DIRECTORY) != static_cast<DWORD>(NULL);
 
 	// FILE_NOTIFY_EXTENDED_INFORMATIONには
-	// FileSystem上のFile/Directory識別子が含まれている
-	// RenameOLD/NEWが同じFileか確認するため利用する
-	const auto& l_fileID = static_cast<std::int64_t>(a_notificationInformation.FileId.QuadPart);
+	// FileSystem上のFile識別子が存在する
+	// 同じFiledIDなら
+	// Rename/Move前後の同一Fileとして扱える
+	const auto l_fileID       = static_cast<std::int64_t>(a_notificationInformation.FileId.QuadPart);
+	const auto l_creationTime = static_cast<std::int64_t>(a_notificationInformation.CreationTime.QuadPart);
 
 	switch (a_notificationInformation.Action)
 	{
 		case FILE_ACTION_ADDED:
+		case FILE_ACTION_RENAMED_NEW_NAME:
 		{
-			StoreAddChange(l_filePath, l_isDirectory);
+			// New側通知
+			// 同FileIdのOld側Pendingがあるか探す
+			if (const auto& l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.find(l_fileID);
+				l_pendingFilePathChangeITR != m_pendingFilePathChangeDataMap.end())
+			{
+				const auto& l_pendingFilePathChangeData = l_pendingFilePathChangeITR->second;
+				const bool  l_isFilePathChangeDirectory = l_pendingFilePathChangeITR->second.m_isDirectory ||
+					                                      l_isDirectory;
+
+				// OLD / NEW
+				// REMOVED / ADDED
+				// のどちらで追加されても、同FileIDなら最終的にはFilePathChangeとして扱う
+				StoreFilePathChange(l_pendingFilePathChangeITR->second.m_oldFilePath, a_filePath, l_isFilePathChangeDirectory);
+
+				m_pendingFilePathChangeDataMap.erase(l_pendingFilePathChangeITR);
+
+				return l_isFilePathChangeDirectory;
+			}
+
+			// 対応するOld側が存在しない
+			// Asset監視範囲外空新しく入ってきたFile
+			// または本当の新規作成
+			StoreAddChange(a_filePath, l_isDirectory);
 
 			return l_isDirectory;
 		}
 		break;
 
 		case FILE_ACTION_REMOVED:
-		{
-			StoreDeleteChange(l_filePath, l_isDirectory);
-
-			return l_isDirectory;
-		}
-		break;
-
 		case FILE_ACTION_RENAMED_OLD_NAME:
 		{
-			// 既に前のOLD_NAMEが残っているなら、
-			// 新しいRenameOLDを保持する前に
-			// 古いOLDをDeleteして確定する
-			const bool l_requiresFolderTreeRefresh = StorePendingRenameAsDelete();
+			// この時点では
+			// Delete/Rename/Moveのどれかかくてインしていない
+			// そのため少しの間だけPendingへ保持する
+			const auto& l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.find(l_fileID);
 
-			m_pendingRenameOldFilePath = l_filePath;
-			m_pendingRenameFileID      = l_fileID;
-			m_isPendingRenameDirectory = l_isDirectory;
-			m_isPendingRename          = true;
-			
-			// このOLD自身については
-			// NEW_NAMEが車でRenameが確定していないので
-			// まだFolderTreeRefresh判定には含めない
-			return l_requiresFolderTreeRefresh;
-		}
-		break;
-
-		case FILE_ACTION_RENAMED_NEW_NAME:
-		{
-			// OLD/NEWのFileIDが一致していっれば
-			// 同じFileまたはDirectoryのRename/Move
-			if (m_isPendingRename &&
-				m_pendingRenameFileID == l_fileID)
+			if (l_pendingFilePathChangeITR != m_pendingFilePathChangeDataMap.end())
 			{
-				const bool l_isRenameDirectory = m_isPendingRenameDirectory || l_isDirectory;
+				// 同じFileIDのOld側通知が連続した
+				// 通常はNew側通知を挟むはずだが
+				// 通知欠落や非常に高速な連続操作では
+				// 発生するかの末井がある
+				// 古いPendingをDeleteとして確定してから
+				// 新しいOld側をPendingとして保持する
+				const bool l_previousPendingIsDirectory = l_pendingFilePathChangeITR->second.m_isDirectory;
 
-				StoreFilePathChange(m_pendingRenameOldFilePath, l_filePath, l_isRenameDirectory);
+				StoreDeleteChange(l_pendingFilePathChangeITR->second.m_oldFilePath, l_previousPendingIsDirectory);
 
-				ResetPendingRename();
+				m_pendingFilePathChangeDataMap.erase(l_pendingFilePathChangeITR);
 
-				return l_isRenameDirectory;
+				PendingFilePathChangeData l_pendingFilePathChangeData = {};
+
+				l_pendingFilePathChangeData.m_oldFilePath    = a_filePath;
+				l_pendingFilePathChangeData.m_registeredTime = std::chrono::steady_clock::now();
+				l_pendingFilePathChangeData.m_isDirectory    = l_isDirectory;
+
+				m_pendingFilePathChangeDataMap.try_emplace(l_fileID, std::move(l_pendingFilePathChangeData));
+
+				return l_previousPendingIsDirectory;
 			}
 
-			// OLDがない、またはFileIDが違う
-			// PendingOLDが損じするならDeleteとして確定し、
-			// 今回NEWはAddとして扱う
-			const bool l_requiresFolderTreeRefresh = StorePendingRenameAsDelete();
+			PendingFilePathChangeData l_pendingFilepathChangeData = {};
 
-			StoreAddChange(l_filePath, l_isDirectory);
+			l_pendingFilepathChangeData.m_oldFilePath    = a_filePath;
+			l_pendingFilepathChangeData.m_registeredTime = std::chrono::steady_clock::now();
+			l_pendingFilepathChangeData.m_isDirectory    = l_isDirectory;
+			
+			m_pendingFilePathChangeDataMap.try_emplace(l_fileID, std::move(l_pendingFilepathChangeData));
 
-			return l_requiresFolderTreeRefresh || l_isDirectory;
+			return false;
 		}
 		break;
 
@@ -520,28 +623,37 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessNotification(
 
 	return false;
 }
-
-bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::StorePendingRenameAsDelete()
+bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ProcessExpiredPendingFilePathChange()
 {
-	if (!m_isPendingRename) { return false; }
+	if (m_pendingFilePathChangeDataMap.empty()) { return false; }
 
-	if (m_pendingRenameOldFilePath.empty()) 
+	const auto& l_currentTime               = std::chrono::steady_clock::now      ();
+	      auto  l_pendingFilePathChangeITR  = m_pendingFilePathChangeDataMap.begin();
+	      bool  l_requiresFolderTreeRefresh = false;
+
+	while (l_pendingFilePathChangeITR != m_pendingFilePathChangeDataMap.end())
 	{
-		ResetPendingRename();
+		const auto& l_pendingFilePathChangeData = l_pendingFilePathChangeITR->second;
 
-		return false;
+		// まだ猶予時間内なら処理を飛ばす
+		if (l_currentTime - l_pendingFilePathChangeData.m_registeredTime < k_pendingFilePathChangeGracePeriod)
+		{
+			++l_pendingFilePathChangeITR;
+
+			continue;
+		}
+
+		// 猶予時間内に同FileIDのNew側通知が来なかった
+		// 監視範囲から完全に消えたFile/DirectorとしてDeleteへ確定する
+		StoreDeleteChange(l_pendingFilePathChangeData.m_oldFilePath, l_pendingFilePathChangeData.m_isDirectory);
+
+		l_requiresFolderTreeRefresh = l_pendingFilePathChangeData.m_isDirectory ||
+			                          l_requiresFolderTreeRefresh;
+
+		l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.erase(l_pendingFilePathChangeITR);
 	}
 
-	const bool l_isDirectory = m_isPendingRenameDirectory;
-
-	// OLD_NAMEだけ存在して、
-	// 対応するNEW_NAMEを取得出来なかったため
-	// 「監視範囲から消えた」としてDeleteへ変換する
-	StoreDeleteChange(m_pendingRenameOldFilePath, m_isPendingRenameDirectory);
-
-	ResetPendingRename();
-
-	return l_isDirectory;
+	return l_requiresFolderTreeRefresh;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::StoreAddChange(const std::filesystem::path& a_filePath, const bool a_isDirectory)
@@ -593,23 +705,37 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::StoreFilePathChange(
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ApplyDirectoryChangeList(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager)
 {
-	for (const auto& l_directoryChange : m_directoryChangeList)
-	{
-		if (!l_directoryChange) { continue; }
+	// AddChangeがFile削除に失敗した場合
+	// Retryが必要なのでvectorへ移す
+	auto l_directoryChangeITR = m_directoryChangeList.begin();
 
+	while (l_directoryChangeITR != m_directoryChangeList.end())
+	{
+		auto& l_directoryChange = *l_directoryChangeITR;
+
+		if (!l_directoryChange)
+		{
+			l_directoryChangeITR = m_directoryChangeList.erase(l_directoryChangeITR);
+
+			continue;
+		}
 
 		l_directoryChange->Apply(a_assetBrowserAssetFilePathRegistry, a_sceneManager);
-	}
 
-	m_directoryChangeList.clear();
+		// trueなら次Frameでも同じChangeをもう一度Applyする
+		if (l_directoryChange->GetVALIsRequiresRetry())
+		{
+			++l_directoryChangeITR;
+
+			continue;
+		}
+
+		// 正常に完了したChangeはvectorから削除する
+		l_directoryChangeITR = m_directoryChangeList.erase(l_directoryChangeITR);
+	}
 }
 
-void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ResetPendingRename()
+void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::ResetPendingFilePathChange()
 {
-	m_pendingRenameOldFilePath.clear();
-
-	m_pendingRenameFileID = k_initialPendingRenameFileID;
-
-	m_isPendingRenameDirectory = false;
-	m_isPendingRename          = false;
+	m_pendingFilePathChangeDataMap.clear();
 }
