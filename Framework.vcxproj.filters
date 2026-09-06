@@ -1444,6 +1444,9 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath">
       <UniqueIdentifier>{fe72b25e-0d8a-494e-a5b6-aa92119c3a52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification">
+      <UniqueIdentifier>{00806c96-eb99-45af-b85c-3254f2f4a091}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2760,9 +2763,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.h">
       <Filter>Source\Framework\Component\Move\Mode</Filter>
     </ClInclude>
@@ -2780,6 +2780,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3485,9 +3488,6 @@
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
     </ClCompile>
@@ -3502,6 +3502,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,24 +10,11 @@ void FWK::Editor::AssetBrowserEditorWindow::Deserialize(const nlohmann::json& a_
 void FWK::Editor::AssetBrowserEditorWindow::PostDeserialize()
 {
 	RefreshFolderTree();
-
-	// AssetRootFolder以下のFileSystem変更監視を開始する
-	m_directoryWatcher.Prepare(Constant::k_assetRootFolderPath);
 }
 
 void FWK::Editor::AssetBrowserEditorWindow::Draw()
 {
 	auto& l_sceneManager = SceneManager::GetInstance();
-
-	// DirectoryWatcherは毎フレーム
-	// WindowsEventの状態を0msで確認する
-	// 変更がない場合は即Returnするため通常Frameでは非常に軽い
-	// FolderのAdd / Delete / Rename / Moveが発生した場合、
-	// FolderTreeを現在のFilesystem状態から更新する
-	if (m_directoryWatcher.Synchronize(m_assetFilePathRegistry, l_sceneManager))
-	{
-		RefreshFolderTree();
-	}
 
 	if (!ImGui::Begin(k_editorName.data()))
 	{
