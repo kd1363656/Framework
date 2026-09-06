@@ -245,6 +245,49 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 	return l_requiresFolderTreeRefresh;
 }
 
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ApplyDirectoryChangeList(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager)
+{
+	// ChangeListから完了済み要素をerase()しながら処理するためIteratorを使用する
+	auto l_directoryChangeITR = m_directoryChangeList.begin();
+
+	while (l_directoryChangeITR != m_directoryChangeList.end())
+	{
+		const auto& l_directoryChange = *l_directoryChangeITR;
+
+		if (!l_directoryChange)
+		{
+			l_directoryChangeITR = m_directoryChangeList.erase(l_directoryChangeITR);
+
+			continue;
+		}
+
+		l_directoryChange->Apply(a_assetFilePathRegistry, a_sceneManager);
+
+		// 例えばAddChangeが、
+		// 外部から勝手に追加されたファイルで削除したいものがあったとして
+		// std::filesystem::remove()下が
+		// 他ProcessがFileを使用中で削除できなかった場合などは
+		// Change側がRetry = trueにする
+		// この場合、次Frameでも同じChangeを再度Applyする
+		if (l_directoryChange->GetVALIsRequiresRetry()) { break; }
+
+		l_directoryChangeITR = m_directoryChangeList.erase(l_directoryChangeITR);
+	}
+}
+
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ResetPendingFilePathChange()
+{
+	m_pendingFilePathChangeDataMap.clear();
+}
+
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Release()
+{
+	ResetPendingFilePathChange();
+
+	m_directoryChangeList.clear  ();
+	m_notificationBufferList.fill(std::byte{});
+}
+
 bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessNotification(const std::filesystem::path& a_filePath, const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation)
 {
 	// 通知対処Pathが空なら
@@ -480,4 +523,46 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 	}
 
 	return false;
+}
+
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::StoreAddChange(const std::filesystem::path& a_filePath, const bool a_isDirectory)
+{
+	if (a_filePath.empty()) { return; }
+
+	auto l_directoryChange = std::make_unique<AssetBrowserEditorWindowDirectoryAddChange>();
+
+	l_directoryChange->SetFilePath   (a_filePath);
+	l_directoryChange->SetIsDirectory(a_isDirectory);
+
+	m_directoryChangeList.emplace_back(std::move(l_directoryChange));
+}
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::StoreDeleteChange(const std::filesystem::path& a_filePath, const bool a_isDirectory)
+{
+	if (a_filePath.empty()) { return; }
+
+	auto l_directoryChange = std::make_unique<AssetBrowserEditorWindowDirectoryDeleteChange>();
+
+	l_directoryChange->SetFilePath   (a_filePath);
+	l_directoryChange->SetIsDirectory(a_isDirectory);
+
+	m_directoryChangeList.emplace_back(std::move(l_directoryChange));
+}
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::StoreFilePathChange(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const bool a_isDirectory)
+{
+	if (a_oldFilePath.empty() ||
+		a_newFilePath.empty())
+	{
+		return;
+	}
+
+	// 同じファイルパスならリストに追加する意味がないからreturn
+	if (a_oldFilePath == a_newFilePath) { return; }
+
+	auto l_directoryChange = std::make_unique<AssetBrowserEditorWindowDirectoryFilePathChange>();
+
+	l_directoryChange->SetFilePath   (a_oldFilePath);
+	l_directoryChange->SetNewFilePath(a_newFilePath);
+	l_directoryChange->SetIsDirectory(a_isDirectory);
+
+	m_directoryChangeList.emplace_back(std::move(l_directoryChange));
 }

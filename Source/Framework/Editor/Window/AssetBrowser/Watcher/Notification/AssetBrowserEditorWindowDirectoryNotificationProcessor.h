@@ -51,6 +51,8 @@ namespace FWK::Editor
 
 		void Release();
 
+		const auto& GetREFNotificationBufferList() const { return m_notificationBufferList; }
+
 	private:
 
 		bool ProcessNotification(const std::filesystem::path& a_filePath, const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation);
