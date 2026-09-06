@@ -41,7 +41,7 @@ namespace FWK::Editor
 		AssetBrowserEditorWindowDirectoryNotificationProcessor& operator=(const AssetBrowserEditorWindowDirectoryNotificationProcessor&) = delete;
 		AssetBrowserEditorWindowDirectoryNotificationProcessor& operator=(AssetBrowserEditorWindowDirectoryNotificationProcessor&&)      = delete;
 
-		bool ProcessNotificationBuffer(const std::filesystem::path& a_directoryPath, const DWORD& a_transferredByteSize);
+		bool ProcessNotificationBuffer(const std::filesystem::path& a_directoryPath, const DWORD& a_writtenByteSize);
 
 		bool ProcessExpiredPendingFilePathChange();
 
