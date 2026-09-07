@@ -37,10 +37,11 @@ namespace FWK::Editor
 		void DrawFolderTree(const FolderTreeData& a_folderTreeData, bool a_isRootFolder);
 		void DrawAssetPane () const;
 
-		static constexpr std::string_view k_editorName = "アセットブラウザー";
-
 		static constexpr std::string_view k_folderPaneChildLabel = "##AssetBrowserFolderPane";
 		static constexpr std::string_view k_assetPaneChildLabel  = "##AssetBrowserAssetPane";
+
+		static constexpr std::string_view k_editorName                 = "アセットブラウザー";
+		static constexpr std::string_view k_thisWindowExplanationLabel = "アセットブラウザーでは使用したいFBXファイルをモデル描画コンポーネントに\nドラッグ&ドロップしてロードするモデルとして扱ったり、使用したいゲームオブジェクトのプレハブをドラッグ&ドロップ\nでシーンに追加したりすることができるウィンドウ。";
 
 		static constexpr float k_folderPaneWidth = 240.0F;
 

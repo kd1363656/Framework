@@ -14,7 +14,7 @@ bool FWK::Prefab::Save(const std::filesystem::path & a_filePath)
 	if (a_filePath.empty() ||
 		a_filePath.extension() != Constant::k_lowerJsonExtension) 
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "Prefabの保存先FilePathが無効です。\nFilePath : {}", a_filePath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabの保存先FilePathが無効です。\nFilePath : {}", a_filePath.string());
 
 		return false; 
 	}

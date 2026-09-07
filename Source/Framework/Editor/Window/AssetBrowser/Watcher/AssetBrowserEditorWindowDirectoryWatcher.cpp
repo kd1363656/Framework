@@ -26,7 +26,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
 
 	if (a_directoryPath.empty())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherへ空のDirectoryPathが渡されました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherへ空のDirectoryPathが渡されました。");
 
 		return;
 	}
@@ -39,7 +39,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
 	if (!std::filesystem::is_directory(a_directoryPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherの監視対象Directoryを確認できませんでした。\nDirectoryPath : {}", a_directoryPath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherの監視対象Directoryを確認できませんでした。\nDirectoryPath : {}", a_directoryPath.string());
 
 		return;
 	}
@@ -53,7 +53,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
 
 	if (l_errorCode)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでAbsolutePathを取得できませんでした。\nDirectoryPath : {}",a_directoryPath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでAbsolutePathを取得できませんでした。\nDirectoryPath : {}",a_directoryPath.string());
 
 		return;
 	}
@@ -86,7 +86,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
 
 	if (m_directoryHandle == INVALID_HANDLE_VALUE)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor,
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
 			        "DirectoryWatcherで監視Directoryを開けませんでした。\nDirectoryPath : {}\nWin32ErrorCode : {}",
 			        a_directoryPath.string(),
 			        GetLastError());
@@ -111,7 +111,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
 	// Directory監視を開始せず全Resourceを解放する
 	if (!m_notificationEventHandle)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでNotificationEventを作成できませんでした。\nWin32ErrorCode : {}", GetLastError());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでNotificationEventを作成できませんでした。\nWin32ErrorCode : {}", GetLastError());
 
 		Release();
 
@@ -166,7 +166,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 	// 現在のWatcherをReleaseして中途半端な状態を残さない
 	if (l_waitResult == WAIT_FAILED)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでNotificationEventの確認に失敗しました。\nWin32ErrorCode : {}", GetLastError());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでNotificationEventの確認に失敗しました。\nWin32ErrorCode : {}", GetLastError());
 
 		Release();
 
@@ -179,7 +179,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 	// Registryを推測で変更せず監視を終了する
 	if (l_waitResult != WAIT_OBJECT_0)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherで想定外のWaitResultを取得しました。\nWaitResult : {}", l_waitResult);
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherで想定外のWaitResultを取得しました。\nWaitResult : {}", l_waitResult);
 
 		Release();
 
@@ -223,7 +223,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 		// OLD_NAMEだけ取得New_NAMEを取りこぼす等があり得るためPendingを信用してはいけない
 		if (l_errorCode == ERROR_NOTIFY_ENUM_DIR)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherが全てのDirectory変更通知を取得できませんでした。\nAssetDirectoryの再同期が必要です。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherが全てのDirectory変更通知を取得できませんでした。\nAssetDirectoryの再同期が必要です。");
 
 			m_notificationProcessor.ResetPendingFilePathChange();
 
@@ -246,7 +246,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 		// その他の非同期I/OError
 		// HandleやOVERLAPPEDの状態を信用して監視継続すると
 		// 後続処理まで壊す可能性があるためReleaseする
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherで非同期Directory通知の取得に失敗しました。\nWin32ErrorCode : {}", l_errorCode);
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherで非同期Directory通知の取得に失敗しました。\nWin32ErrorCode : {}", l_errorCode);
 
 		Release();
 
@@ -266,7 +266,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
 	// Pendingを信用せず破棄する
 	if (l_writtenByteSize == k_initialWrittenByteSize)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherのNotificationBufferから変更内容を取得できませんでした。\nAssetDirectoryの再同期が必要です。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherのNotificationBufferから変更内容を取得できませんでした。\nAssetDirectoryの再同期が必要です。");
 
 		m_notificationProcessor.ResetPendingFilePathChange();
 
@@ -339,7 +339,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 				// つまり「Cancel対象がもう存在しない」だけなので、異常終了として扱わない
 				if (l_errorCode != ERROR_NOT_FOUND)
 				{
-					FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherで非同期Directory監視をCancelできませんでした。\nWin32ErrorCode : {}", l_errorCode);
+					FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherで非同期Directory監視をCancelできませんでした。\nWin32ErrorCode : {}", l_errorCode);
 				}
 			}
 
@@ -360,7 +360,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 				// GetOverlappedResult()でERROR_OPERATION_ABORTEDになる
 				if (l_errorCode != ERROR_OPERATION_ABORTED)
 				{
-					FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherで非同期I/Oの終了確認に失敗しました。\nWin32ErrorCode : {}",l_errorCode);
+					FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherで非同期I/Oの終了確認に失敗しました。\nWin32ErrorCode : {}",l_errorCode);
 				}
 			}
 
@@ -371,7 +371,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 		// CloseHandle(解放するHandle);
 		if (!CloseHandle(m_directoryHandle))
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでDirectoryHandleを解放できませんでした。\nWin32ErrorCode : {}",GetLastError());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでDirectoryHandleを解放できませんでした。\nWin32ErrorCode : {}",GetLastError());
 		}
 
 		// CloseHandle()後に古いHandle値を残さない
@@ -383,7 +383,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
 	{
 		if (!CloseHandle(m_notificationEventHandle))
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでNotificationEventHandleを解放できませんでした。\nWin32ErrorCode : {}", GetLastError());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでNotificationEventHandleを解放できませんでした。\nWin32ErrorCode : {}", GetLastError());
 		}
 
 		m_notificationEventHandle = nullptr;
@@ -419,7 +419,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
 	// 同時に一つだけDirectory通知Readを登録する
 	if (m_isNotificationReadPending)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherで既に非同期Directory監視が実行中です。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherで既に非同期Directory監視が実行中です。");
 
 		return false;
 	}
@@ -427,7 +427,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
 	// ResetEvent(非Signal状態へ戻すEventHandle);
 	if (!ResetEvent(m_notificationEventHandle))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでNotificationEventをResetできませんでした。\nWin32ErrorCode : {}", GetLastError());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでNotificationEventをResetできませんでした。\nWin32ErrorCode : {}", GetLastError());
 
 		return false;
 	}
@@ -462,7 +462,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationR
 		                         nullptr,
 		                         ReadDirectoryNotifyExtendedInformation))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryWatcherでDirectory変更通知を登録できませんでした。\nWin32ErrorCode : {}",GetLastError());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryWatcherでDirectory変更通知を登録できませんでした。\nWin32ErrorCode : {}",GetLastError());
 
 		return false;
 	}

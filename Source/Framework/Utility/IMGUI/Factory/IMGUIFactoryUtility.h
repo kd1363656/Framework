@@ -4,7 +4,7 @@ namespace FWK::Utility
 {
 	// ファクトリーから生成するクラスを選べるセレクター
 	template <typename FactoryType, typename Type>
-	inline bool FactoryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
+	inline bool IMGUIFactoryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
 	{
 		bool l_isCreate = false;
 
@@ -60,7 +60,7 @@ namespace FWK::Utility
 	}
 
 	template <typename FactoryType, typename Value>
-	inline bool FactoryCheckBoxSelector(const std::string_view& a_label, std::unordered_map<TypeAlias::StaticTypeID, Value>& a_selectedMap, const float a_visibleItemCount = Constant::k_defaultChildVisibleItemCount)
+	inline bool IMGUIFactoryCheckBoxSelector(const std::string_view& a_label, std::unordered_map<TypeAlias::StaticTypeID, Value>& a_selectedMap, const float a_visibleItemCount = Constant::k_imguiDefaultChildVisibleItemCount)
 	{
 		// Factoryから生成されるGameObjectは
 		// shared_ptr/weak_ptrなどのSmartPointer前提にする
@@ -90,7 +90,7 @@ namespace FWK::Utility
 		// -1.0Fを使用すると
 		// 現在利用可能な横幅いっぱいまでリストを広げる
 		if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
-			!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMAXSize, l_listHeight)))
+			!ImGui::BeginListBox(Constant::k_imguiFactoryCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
 		{
 			ImGui::EndGroup();
 			ImGui::PopID   ();
@@ -104,7 +104,7 @@ namespace FWK::Utility
 
 			if (!l_typeINFO)
 			{
-				FWK_ADD_LOG(Constant::k_debugWarningColor, "Factoryに登録されている型のTypeINFOを取得できませんでした。\nTypeName : {}", l_key);
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Factoryに登録されている型のTypeINFOを取得できませんでした。\nTypeName : {}", l_key);
 
 				continue;
 			}
@@ -135,7 +135,7 @@ namespace FWK::Utility
 
 				if (!l_instance)
 				{
-					FWK_ADD_LOG(Constant::k_debugWarningColor, "FactoryからInstanceを生成できませんでした。\nTypeName : {}", l_key);
+					FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "FactoryからInstanceを生成できませんでした。\nTypeName : {}", l_key);
 
 					continue;
 				}
@@ -145,7 +145,7 @@ namespace FWK::Utility
 
 				if (l_createdStaticTypeID != l_staticTypeID)
 				{
-					FWK_ADD_LOG(Constant::k_debugWarningColor, "Factoryから生成したInstanceのStaticTypeIDが一致しませんでした。\nTypeName : {}", l_key);
+					FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Factoryから生成したInstanceのStaticTypeIDが一致しませんでした。\nTypeName : {}", l_key);
 
 					continue;
 				}

@@ -3,7 +3,7 @@
 namespace FWK::Utility
 {
 	template <typename Type>
-	inline bool StringValueBidirectionalRegistryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
+	inline bool IMGUIStringValueBidirectionalRegistryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
 	{
 		const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
 		const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
@@ -62,7 +62,7 @@ namespace FWK::Utility
 	}
 
 	template <typename Type>
-	inline bool StringValueBidirectionalRegistryCheckBoxSelector(const std::string_view& a_label, std::vector<Type>& a_valueList, const float a_visibleItemCount = Constant::k_defaultChildVisibleItemCount)
+	inline bool IMGUIStringValueBidirectionalRegistryCheckBoxSelector(const std::string_view& a_label, std::vector<Type>& a_valueList, const float a_visibleItemCount = Constant::k_imguiDefaultChildVisibleItemCount)
 	{
 		const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
 		const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
@@ -84,7 +84,7 @@ namespace FWK::Utility
 		// -1.0Fを使用すると
 		// 現在利用可能な横幅いっぱいまでリストを広げる
 		if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
-			!ImGui::BeginListBox(Constant::k_factoryCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMAXSize, l_listHeight)))
+			!ImGui::BeginListBox(Constant::k_imguiFactoryCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
 		{
 			ImGui::EndGroup();
 			ImGui::PopID   ();

@@ -10,7 +10,7 @@ void FWK::Utility::FetchComponentEventObserverFromSelfGameObjectHelper::PostDese
 
 	if (l_componentEventObserver.expired()) 
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "コンポーネントイベントオブザーバーの取得に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントイベントオブザーバーの取得に失敗しました。");
 
 		return; 
 	}

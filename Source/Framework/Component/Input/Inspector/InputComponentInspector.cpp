@@ -367,7 +367,7 @@ void FWK::InputComponentInspector::ApplyNodePositions(const InputComponent& a_in
 void FWK::InputComponentInspector::ApplyPendingConditionNodePosition(InputComponent& a_inputComponent)
 {
 	// 配置待ちNodeが存在しなければ何もしない
-	if (m_pendingConditionNodePositionNodeID == Constant::k_invalidNodeEditorID) { return; }
+	if (m_pendingConditionNodePositionNodeID == Constant::k_imguiInvalidNodeEditorID) { return; }
 
 	auto& l_conditionList = a_inputComponent.GetMutableREFNotifyComponentEventExecutionConditionList();
 
@@ -382,14 +382,14 @@ void FWK::InputComponentInspector::ApplyPendingConditionNodePosition(InputCompon
 		// ImNodesへ設定した位置をGridSpaceとして取り直す
 		l_conditionNodeEditor.SetNodePosition(ImNodes::GetNodeGridSpacePos(l_conditionNodeEditor.GetVALNodeID()));
 
-		m_pendingConditionNodePositionNodeID       = Constant::k_invalidNodeEditorID;
+		m_pendingConditionNodePositionNodeID       = Constant::k_imguiInvalidNodeEditorID;
 		m_pendingConditionNodeCreateScreenPosition = {};
 
 		break;
 	}
 
 	// 一回反映したら予約を解除
-	m_pendingConditionNodePositionNodeID       = Constant::k_invalidNodeEditorID;
+	m_pendingConditionNodePositionNodeID       = Constant::k_imguiInvalidNodeEditorID;
 	m_pendingConditionNodeCreateScreenPosition = {};
 }
 
@@ -468,10 +468,10 @@ void FWK::InputComponentInspector::DrawConditionNodeList(InputComponent& a_input
 		ImGui::TextUnformatted       (k_inputPinLabel.data());
 		ImNodes::EndInputAttribute   ();
 
-		Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel,          l_condition.m_receiveComponentEvent);
-		Utility::StringValueBidirectionalRegistryRadioButtonSelector(k_notifyEventLaneLabel,               l_condition.m_checkEventLane);
-		ImGui::Checkbox                                             (k_expectedObserverResultLabel.data(), &l_condition.m_expectedObserverResult);
-		ImGui::PopID                                                ();
+		Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel,          l_condition.m_receiveComponentEvent);
+		Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector(k_notifyEventLaneLabel,               l_condition.m_checkEventLane);
+		ImGui::Checkbox                                                  (k_expectedObserverResultLabel.data(), &l_condition.m_expectedObserverResult);
+		ImGui::PopID                                                     ();
 
 		ImNodes::EndNode();
 	}
@@ -524,7 +524,7 @@ void FWK::InputComponentInspector::DrawConditionNodeCreatePopup(InputComponent& 
 
 	if (!l_hasUnusedComponentEvent)
 	{
-		ImGui::TextDisabled("%s", k_noUnusedComponentEventLabel.data());
+		ImGui::TextDisabled(k_noUnusedComponentEventLabel.data());
 	}
 
 	ImGui::EndListBox();
@@ -552,10 +552,10 @@ void FWK::InputComponentInspector::DrawExecuteNode(InputComponent& a_inputCompon
 	ImNodes::EndInputAttribute  ();
 
 	// セレクターからストラテジーが生成されたなら適用
-	Utility::FactoryRadioButtonSelector<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(k_componentEventNotifyStrategyRadioButtonSelectorLabel, l_notifyStrategy);
-	Utility::StringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyComponentEventLabel,                            l_execution.m_notifyComponentEvent);
-	Utility::StringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyEventLaneLabel,                                 l_execution.m_notifyEventLane);
-	ImGui::Checkbox                                                                          (k_notifyFlagLabel.data(),                               &l_execution.m_notifyFlag);
+	Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(k_componentEventNotifyStrategyRadioButtonSelectorLabel, l_notifyStrategy);
+	Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyComponentEventLabel,                            l_execution.m_notifyComponentEvent);
+	Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyEventLaneLabel,                                 l_execution.m_notifyEventLane);
+	ImGui::Checkbox                                                                               (k_notifyFlagLabel.data(),                               &l_execution.m_notifyFlag);
 
 	ImGui::PopID    ();
 	ImNodes::EndNode();
@@ -567,7 +567,7 @@ void FWK::InputComponentInspector::RequestConditionNodeCreatePopup()
 
 	if (l_rootConditionOutputPinIDList.empty()) { return; }
 
-	auto l_startedPinID = Constant::k_invalidNodeEditorID;
+	auto l_startedPinID = Constant::k_imguiInvalidNodeEditorID;
 
 	// 第二引数false
 	// 既存Linkを切り離してDropした場合は対象にせず、

@@ -27,14 +27,14 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
 	// 無効なUUIDなら登録しない
 	if (a_assetUUID.is_nil())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryに追加する予定のUUIDが無効値を示しており、AssetFilePathRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryに追加する予定のUUIDが無効値を示しており、AssetFilePathRegistryへの登録に失敗しました。");
 
 		return false;
 	}
 
 	if (a_assetFilePathRegisterType == Enum::AssetFilePathRegistryType::Invalid)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryに追加する予定のAssetFilePathRegistryTypeが無効値を示しており、AssetFilePathRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryに追加する予定のAssetFilePathRegistryTypeが無効値を示しており、AssetFilePathRegistryへの登録に失敗しました。");
 
 		return false;
 	}
@@ -42,14 +42,14 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
 	// UUIDが既に登録されているなら登録しない
 	if (m_uuidToAssetFilePathData.contains(a_assetUUID))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryに追加する予定のUUIDが既に登録されており、AssetFilePathRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryに追加する予定のUUIDが既に登録されており、AssetFilePathRegistryへの登録に失敗しました。");
 
 		return false;
 	}
 
 	if (!m_assetFilePathToUUIDMap.try_emplace(a_assetFilePath, a_assetUUID).second)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへの登録に失敗しました。");
 
 		return false;
 	}
@@ -60,7 +60,7 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
 		// 2爪のMap登録に失敗したら一つ目のマップから削除
 		m_assetFilePathToUUIDMap.erase(a_assetFilePath);
 
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryへの登録に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへの登録に失敗しました。");
 
 		return false;
 	}
@@ -82,7 +82,7 @@ bool FWK::AssetFilePathRegistry::ReplaceFilePath(const std::filesystem::path& a_
 	// 同じPathへ2つのAssetを登録できないため変更しない
 	if (m_assetFilePathToUUIDMap.contains(a_newAssetFilePath))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor,
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
 			        "AssetFilePathRegistryで変更後FilePathが既に登録されています。\nOldFilePath : {}\nNewFilePath : {}",
 			        a_oldAssetFilePath.string(),
 			        a_newAssetFilePath.string());
@@ -112,7 +112,7 @@ bool FWK::AssetFilePathRegistry::ReplaceFilePath(const std::filesystem::path& a_
 
 		m_assetFilePathToUUIDMap.insert(std::move(l_filePathNode));
 
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistry内部でUUIDとAssetFilePathDataの対応関係が不正です。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistry内部でUUIDとAssetFilePathDataの対応関係が不正です。");
 
 		return false;
 	}
@@ -136,7 +136,7 @@ bool FWK::AssetFilePathRegistry::Erase(const std::filesystem::path& a_assetFileP
 
 	if (l_itr == m_assetFilePathToUUIDMap.end())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "指定されたAssetFilePathがAssetFilePathRegistryへ登録されていません。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "指定されたAssetFilePathがAssetFilePathRegistryへ登録されていません。");
 
 		return false;
 	}

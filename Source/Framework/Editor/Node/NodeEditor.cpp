@@ -83,8 +83,8 @@ bool FWK::Editor::NodeEditor::ApplyNodePosition(const NodeEditorNode& a_nodeEdit
 
 bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_inputPinID, const TypeAlias::NodeEditorID a_outputPinID)
 {
-	if (a_inputPinID == Constant::k_invalidNodeEditorID ||
-		a_outputPinID == Constant::k_invalidNodeEditorID)
+	if (a_inputPinID == Constant::k_imguiInvalidNodeEditorID ||
+		a_outputPinID == Constant::k_imguiInvalidNodeEditorID)
 	{
 		return false;
 	}
@@ -98,7 +98,7 @@ bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_inputPinID
 	// こうすることでNodeEditor内部に同じIDが存在しないようにする
 	const auto l_linkID = m_nodeEditorAllocator.Allocate();
 
-	if (l_linkID == Constant::k_invalidNodeEditorID) { return false; }
+	if (l_linkID == Constant::k_imguiInvalidNodeEditorID) { return false; }
 
 	Struct::NodeEditorLinkData l_linkData = {};
 
@@ -116,9 +116,9 @@ bool FWK::Editor::NodeEditor::AddLink(const TypeAlias::NodeEditorID a_inputPinID
 }
 bool FWK::Editor::NodeEditor::AddLink(const Struct::NodeEditorLinkData& a_linkData)
 {
-	if (a_linkData.m_linkID == Constant::k_invalidNodeEditorID     ||
-		a_linkData.m_inputPinID == Constant::k_invalidNodeEditorID ||
-		a_linkData.m_outputPinID == Constant::k_invalidNodeEditorID)
+	if (a_linkData.m_linkID == Constant::k_imguiInvalidNodeEditorID     ||
+		a_linkData.m_inputPinID == Constant::k_imguiInvalidNodeEditorID ||
+		a_linkData.m_outputPinID == Constant::k_imguiInvalidNodeEditorID)
 	{
 		return false;
 	}

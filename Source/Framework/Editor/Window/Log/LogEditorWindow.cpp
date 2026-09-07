@@ -23,6 +23,8 @@ void FWK::Editor::LogEditorWindow::Draw()
 		return;
 	}
 
+	Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
+
 	DrawEditorOptions();
 	DrawLog          ();
 
@@ -216,5 +218,5 @@ void FWK::Editor::LogEditorWindow::ClearLog()
 	// 一行目の開始位置を保証するためにpush_back
 	m_textLineOffsets.push_back(k_ensureFirstLine);
 
-	m_textLineColorList.emplace_back(Constant::k_debugINFOColor);
+	m_textLineColorList.emplace_back(Constant::k_imguiDebugINFOColor);
 }

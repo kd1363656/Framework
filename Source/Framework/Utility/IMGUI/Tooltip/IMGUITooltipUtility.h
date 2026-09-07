@@ -2,7 +2,7 @@
 
 namespace FWK::Utility
 {
-	inline void DelayedTooltip(const std::string_view& a_tooltipText, const float a_delaySeconds = Constant::k_imguiDefaultDelayDrawSecond)
+	inline void IMGUIDelayedTooltip(const std::string_view& a_tooltipText, const float a_delaySeconds = Constant::k_imguiDefaultDelayDrawSecond)
 	{
 		if (a_tooltipText.empty()) { return; }
 

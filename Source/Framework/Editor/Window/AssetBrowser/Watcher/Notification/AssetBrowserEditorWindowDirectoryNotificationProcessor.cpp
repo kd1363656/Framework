@@ -12,7 +12,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 	// そのような状態で解析するとBuffer外Accessになる危険があるため中断する
 	if (l_writtenByteSize > m_notificationBufferList.size())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorの通知Byte数が通知Buffer容量を超えています。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知Byte数が通知Buffer容量を超えています。");
 
 		// Old側通知とNew側通知の対応関係も信用できなくなるため
 		// Pending情報を破棄する
@@ -45,7 +45,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		// 残り20Byteしかなければ通知Datが途中で切れている
 		if (l_remainingByteSize < l_notificationFixedByteSize)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorの通知Bufferに不正なDataが含まれています。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知Bufferに不正なDataが含まれています。");
 
 			// 現在のリストのサイズを過去のリストのサイズに戻す
 			m_directoryChangeList.resize(l_previousDirectoryChangeListSize);
@@ -81,7 +81,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		if (l_notificationInformation.FileNameLength == static_cast<DWORD>(NULL) ||
 			l_notificationInformation.FileNameLength % sizeof(WCHAR) != static_cast<DWORD>(NULL))
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorが無効なFileNameLengthを受け取りました。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorが無効なFileNameLengthを受け取りました。");
 
 			m_directoryChangeList.resize(l_previousDirectoryChangeListSize);
 
@@ -97,7 +97,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		// を算出している
 		if (l_fileNameByteSize > l_remainingByteSize - l_notificationFixedByteSize)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorの通知BufferにBuffer範囲外のFileNameLengthが含まれています。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知BufferにBuffer範囲外のFileNameLengthが含まれています。");
 
 			m_directoryChangeList.resize(l_previousDirectoryChangeListSize);
 
@@ -135,7 +135,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		if (l_nextEntryOffset < l_recordByteSize ||
 			l_nextEntryOffset >= l_remainingByteSize)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorの通知Bufferに無効なNextEntryOffsetが含まれています。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知Bufferに無効なNextEntryOffsetが含まれています。");
 
 			m_directoryChangeList.resize(l_previousDirectoryChangeListSize);
 
@@ -146,7 +146,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 
 		if (l_nextEntryOffset % sizeof(DWORD) != static_cast<std::size_t>(NULL))
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorの通知BufferにDWORD境界へAlignmentされていないNextEntryOffsetが含まれています。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知BufferにDWORD境界へAlignmentされていないNextEntryOffsetが含まれています。");
 
 			m_directoryChangeList.resize(l_previousDirectoryChangeListSize);
 
@@ -213,7 +213,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 				// 本当はRenameされているのにNewName通知だけ取得できなかった可能性があるため
 				// NewPathが分からない状態でRegistryを書き換えると
 				// 誤ったAsset情報になるのでここでは推測をしない
-				FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorでRenameNewName通知を取得できませんでした。\nOldFilePath : {}", l_pendingFilePathChangeData.m_oldFilePath.string());
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorでRenameNewName通知を取得できませんでした。\nOldFilePath : {}", l_pendingFilePathChangeData.m_oldFilePath.string());
 
 				// DirectoryのRenameだった場合は勿論FolderTreeを再構築する必要がある
 				// Fileの場合も通知系列が壊れている異常状態のなので、
@@ -228,7 +228,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 				// 正常な処理では発生しない
 				// 内部状態がおかしい可能性があるため、
 				// Registryを推測で変更せず警告だけ出す
-				FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorにInvalid状態のPendingFilePathChangeDataが残っています。");
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorにInvalid状態のPendingFilePathChangeDataが残っています。");
 
 				l_requiresFolderTreeRefresh = true;
 			}
@@ -369,7 +369,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 				else
 				{
 					// RenameOldNameなのに対応するNew側を正しく取得できない状態
-					FWK_ADD_LOG(Constant::k_debugWarningColor,
+					FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
 						        "DirectoryNotificationProcessorでRenameOldNameとAdd通知のFile情報が一致しませんでした。\nOldFilePath : {}\nNewFilePath : {}",
 						        l_pendingFilePathChangeData.m_oldFilePath.string(),
 						        a_filePath.string());
@@ -400,7 +400,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 			if (const auto& l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.find(l_fileID);
 				l_pendingFilePathChangeITR != m_pendingFilePathChangeDataMap.end())
 			{
-				FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorで同一FileIdのOld側通知が重複しました。\nFilePath : {}", a_filePath.string());
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorで同一FileIdのOld側通知が重複しました。\nFilePath : {}", a_filePath.string());
 
 				// 古いPendingをそのまま残して
 				// 新しい通知と誤結合する方が危険なので破棄する
@@ -448,7 +448,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 			if (const auto& l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.find(l_fileID);
 				l_pendingFilePathChangeITR != m_pendingFilePathChangeDataMap.end())
 			{
-				FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorで同一FileIdのOld側通知が重複しました。\nFilePath : {}", a_filePath.string());
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorで同一FileIdのOld側通知が重複しました。\nFilePath : {}", a_filePath.string());
 
 				m_pendingFilePathChangeDataMap.erase(l_pendingFilePathChangeITR);
 			}
@@ -480,7 +480,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 
 			if (l_pendingFilePathChangeITR == m_pendingFilePathChangeDataMap.end())
 			{
-				FWK_ADD_LOG(Constant::k_debugWarningColor, "DirectoryNotificationProcessorでRenameNewNameに対応するOld側通知を取得できませんでした。\nNewFilePath : {}", a_filePath.string());
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorでRenameNewNameに対応するOld側通知を取得できませんでした。\nNewFilePath : {}", a_filePath.string());
 
 				// FolderTreeについては実Directoryを再確認させる
 				return true;
@@ -493,7 +493,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 			if (l_pendingFilePathChangeData.m_type         != PendingFilePathChangeType::RenameOldName ||
 				l_pendingFilePathChangeData.m_creationTime != l_creationTime)
 			{
-				FWK_ADD_LOG(Constant::k_debugWarningColor,
+				FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
 					        "DirectoryNotificationProcessorでRenameOldNameとRenameNewNameの対応関係が一致しませんでした。\nOldFilePath : {}\nNewFilePath : {}",
 					        l_pendingFilePathChangeData.m_oldFilePath.string(),
 					        a_filePath.string());

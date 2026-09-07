@@ -19,7 +19,7 @@ void FWK::SceneManager::LoadScene(const std::filesystem::path& a_nextSceneLoadFi
 	// Sceneの作成に失敗していればログで出力する
 	if (!m_scene)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "Sceneが無効なためSceneのロードに失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Sceneが無効なためSceneのロードに失敗しました。");
 
 		return;
 	}
@@ -65,21 +65,21 @@ bool FWK::SceneManager::SaveScene(const std::filesystem::path& a_nextSceneLoadFi
 {
 	if (!m_scene)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンが無効なため、シーンの保存に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーンが無効なため、シーンの保存に失敗しました。");
 
 		return false;
 	}
 
 	if (a_nextSceneLoadFilePath.empty())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンの保存先ファイルパスが空のため、シーンの保存に失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーンの保存先ファイルパスが空のため、シーンの保存に失敗しました。");
 
 		return false;
 	}
 
 	if (a_nextSceneLoadFilePath.extension() != Constant::k_lowerJsonExtension)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーンの保存先ファイルがJson形式ではないため、シーンの保存に失敗しました。\nFilePath : {}", a_nextSceneLoadFilePath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーンの保存先ファイルがJson形式ではないため、シーンの保存に失敗しました。\nFilePath : {}", a_nextSceneLoadFilePath.string());
 
 		return false;
 	}
@@ -97,7 +97,7 @@ bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sce
 {
 	if (a_sceneUUID.is_nil())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたUUIDが無効です、追加しようとしたシーン名の確認をしてください。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたUUIDが無効です、追加しようとしたシーン名の確認をしてください。");
 
 		return false;
 	}
@@ -106,14 +106,14 @@ bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sce
 	
 	if (!l_assetFilePathData)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたアセットファイルパスデータが無効です、追加しようとしたシーンファイルパスの確認をしてください。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたアセットファイルパスデータが無効です、追加しようとしたシーンファイルパスの確認をしてください。");
 
 		return false;
 	}
 
 	if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "Scene以外のAssetをシーン遷移へ追加しようとしました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Scene以外のAssetをシーン遷移へ追加しようとしました。");
 
 		return false;
 	}
@@ -122,14 +122,14 @@ bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sce
 
 	if (l_nextSceneLoadFilePath.empty())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
 
 		return false;
 	}
 
 	if (!Utility::CanLoadFilePath(l_nextSceneLoadFilePath, Constant::k_lowerJsonExtension))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
 
 		return false;
 	}
@@ -140,14 +140,14 @@ bool FWK::SceneManager::AddNextSceneLoadFilePath(const std::filesystem::path& a_
 {
 	if (a_sceneUUID.is_nil())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneUUIDが無効です。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneUUIDが無効です。");
 
 		return false;
 	}
 
 	if (a_filePath.empty())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneFilePathが空です。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneFilePathが空です。");
 
 		return false;
 	}
@@ -156,7 +156,7 @@ bool FWK::SceneManager::AddNextSceneLoadFilePath(const std::filesystem::path& a_
 		a_filePath,
 		Constant::k_lowerJsonExtension))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "追加しようとしたSceneFilePathが無効です。\nFilePath : {}", a_filePath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "追加しようとしたSceneFilePathが無効です。\nFilePath : {}", a_filePath.string());
 
 		return false;
 	}
@@ -235,7 +235,7 @@ bool FWK::SceneManager::ReplaceSceneFilePath(const std::filesystem::path& a_oldS
 
 	if (l_nextSceneFilePathITR == m_nextSceneLoadFilePathMap.end())
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneManagerのAssetFilePathRegistryにはSceneが存在しますが、NextSceneLoadFilePathMapに存在しません。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneManagerのAssetFilePathRegistryにはSceneが存在しますが、NextSceneLoadFilePathMapに存在しません。");
 
 		return false;
 	}
@@ -244,7 +244,7 @@ bool FWK::SceneManager::ReplaceSceneFilePath(const std::filesystem::path& a_oldS
 	if (l_nextSceneFilePathITR->second !=
 		a_oldSceneFilePath)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryとNextSceneLoadFilePathMapのSceneFilePathが一致していません。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryとNextSceneLoadFilePathMapのSceneFilePathが一致していません。");
 
 		return false;
 	}
@@ -286,7 +286,7 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 
 	if (!l_assetFilePathData) 
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへの遷移用のUUIDが無効です、SceneManagerのマップ内部を確認してください。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "次のシーンへの遷移用のUUIDが無効です、SceneManagerのマップ内部を確認してください。");
 
 		return; 
 	}
@@ -295,7 +295,7 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 	if (l_assetFilePathData->m_assetFilePath.empty() ||
 		l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "次のシーンへの情報が無効です、SceneManagerのマップ内部を確認してください。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "次のシーンへの情報が無効です、SceneManagerのマップ内部を確認してください。");
 
 		return;
 	}

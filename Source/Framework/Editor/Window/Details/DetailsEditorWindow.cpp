@@ -9,5 +9,7 @@ void FWK::Editor::DetailsEditorWindow::Draw()
 		return;
 	}
 
+	Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
+
 	ImGui::End();
 }

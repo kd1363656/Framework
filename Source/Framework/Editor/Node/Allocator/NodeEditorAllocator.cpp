@@ -25,8 +25,8 @@ FWK::TypeAlias::NodeEditorID FWK::NodeEditorAllocator::Allocate()
 		m_freeNodeEditorIDQueue.pop();
 
 		// 有効なインデックスかどうかを確認
-		FWK_ASSERT_RETURN_VALUE_IF(l_reuseNodeEditorID >= static_cast<TypeAlias::NodeEditorID>(m_isAllocatedList.size()), "再利用しようとしたReuseNodeEditorIDが有効範囲外となっている。", Constant::k_invalidNodeEditorID);
-		FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList[l_reuseNodeEditorID],                                                "使用中のReuseNodeEditorIDを再利用しようとしています。",         Constant::k_invalidNodeEditorID);
+		FWK_ASSERT_RETURN_VALUE_IF(l_reuseNodeEditorID >= static_cast<TypeAlias::NodeEditorID>(m_isAllocatedList.size()), "再利用しようとしたReuseNodeEditorIDが有効範囲外となっている。", Constant::k_imguiInvalidNodeEditorID);
+		FWK_ASSERT_RETURN_VALUE_IF(m_isAllocatedList[l_reuseNodeEditorID],                                                "使用中のReuseNodeEditorIDを再利用しようとしています。",         Constant::k_imguiInvalidNodeEditorID);
 
 		m_isAllocatedList[l_reuseNodeEditorID] = true;
 

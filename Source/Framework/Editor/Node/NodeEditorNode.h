@@ -51,6 +51,6 @@ namespace FWK::Editor
 
 		ImVec2 m_nodePosition = {};
 
-		TypeAlias::NodeEditorID m_nodeID = Constant::k_invalidNodeEditorID;
+		TypeAlias::NodeEditorID m_nodeID = Constant::k_imguiInvalidNodeEditorID;
 	};
 }

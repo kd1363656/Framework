@@ -100,7 +100,7 @@ namespace FWK
 		ImVec2 m_conditionNodeDropScreenPosition          = {};
 		ImVec2 m_pendingConditionNodeCreateScreenPosition = {};
 
-		TypeAlias::NodeEditorID m_pendingConditionNodePositionNodeID = Constant::k_invalidNodeEditorID;
+		TypeAlias::NodeEditorID m_pendingConditionNodePositionNodeID = Constant::k_imguiInvalidNodeEditorID;
 
 		Converter::InputComponentInspectorJsonConverter m_jsonConverter = {};
 	};

@@ -25,6 +25,8 @@ void FWK::Editor::ViewportEditorWindow::Draw()
 		return; 
 	}
 
+	Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
+
 	// Viewport画像より先にツールバーを書く。
 	// これにより画面へ重ならず、Viewport上部へ工程表示される
 	m_toolbar.Draw  ();

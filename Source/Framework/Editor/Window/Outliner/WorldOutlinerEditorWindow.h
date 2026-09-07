@@ -18,7 +18,13 @@ namespace FWK::Editor
 
 	private:
 
-		static constexpr std::string_view k_editorName = "アウトライナー";
+		void DrawSceneNode     (const Scene&      a_scene)      const;
+		void DrawGameObjectNode(const GameObject& a_gameObject) const;
+
+		static constexpr std::string_view k_editorName                 = "アウトライナー";
+		static constexpr std::string_view k_emptySceneName             = "UntitledScene";
+		static constexpr std::string_view k_thisWindowExplanationLabel = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
+		static constexpr std::string_view k_noCurrentSceneLabel        = "現在読み込まれているシーンはありません。";
 		
 		FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
 	};

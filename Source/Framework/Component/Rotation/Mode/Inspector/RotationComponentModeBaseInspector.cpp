@@ -4,5 +4,5 @@ void FWK::RotationComponentModeBaseInspector::EditInspector(RotationComponentMod
 {
 	auto& l_rotationApplyAxisList = a_rotationComponentModeBase.GetMutableREFRotationApplyAxisList();
 
-	Utility::StringValueBidirectionalRegistryCheckBoxSelector(k_rotationApplyAxisCheckboxLabel, l_rotationApplyAxisList);
+	Utility::IMGUIStringValueBidirectionalRegistryCheckBoxSelector(k_rotationApplyAxisCheckboxLabel, l_rotationApplyAxisList);
 }

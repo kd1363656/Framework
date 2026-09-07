@@ -30,7 +30,8 @@ namespace FWK::Editor
 
 		void ApplyViewportAspectRatioToCamera(const ImVec2& a_viewportSize) const;
 
-		static constexpr std::string_view k_editorName = "ビューポート";
+		static constexpr std::string_view k_editorName                 = "ビューポート";
+		static constexpr std::string_view k_thisWindowExplanationLabel = "現在のシーンの描画状態を見ることができるウィンドウ。";
 
 		static constexpr float k_minViewportSize = 1.0F;
 

@@ -37,7 +37,7 @@ void FWK::Utility::AssetFilePathHelperInspector::EditInspector(AssetFilePathHelp
     // 直前に描画されたImGuiItemへFilePathがDropされた場合だけ、
     // DropされたFilePathを受け取る
     if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_assetFilePathDragAndDropPayloadLabel, l_droppedFilePath)) 
+        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetFilePathDragAndDropPayloadLabel, l_droppedFilePath)) 
     {
         return; 
     }
@@ -47,7 +47,7 @@ void FWK::Utility::AssetFilePathHelperInspector::EditInspector(AssetFilePathHelp
     // FilePathの最終的な妥当性確認はApplyAssetFilePathへ集約する
     if (!a_assetFilePathHelper.ApplyAssetFilePath(l_droppedFilePath)) 
     {
-        FWK_ADD_LOG(Constant::k_debugWarningColor, "ファイルパスがFBX形式のファイルを示しておらず読み込めませんでした。\nFilePath : {}", a_assetFilePathHelper.GetREFAssetFilePath().string());
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ファイルパスがFBX形式のファイルを示しておらず読み込めませんでした。\nFilePath : {}", a_assetFilePathHelper.GetREFAssetFilePath().string());
 
         return;
     }

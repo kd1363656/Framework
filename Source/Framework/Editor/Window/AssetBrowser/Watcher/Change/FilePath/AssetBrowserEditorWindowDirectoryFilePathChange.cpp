@@ -58,7 +58,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
 
 	if (!l_assetFilePathData)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor,
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
 			        "AssetBrowserのAssetFilePathRegistry内部で、UUIDに対応するAssetFilePathDataを取得できませんでした。\nOldFilePath : {}\nNewFilePath : {}",
 			        a_oldFilePath.string(),
 			        a_newFilePath.string());
@@ -121,14 +121,14 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyPrefabFi
 
 		if (!l_assetFilePathData)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor,"SceneManagerのAssetFilePathRegistry内部で、PrefabUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,"SceneManagerのAssetFilePathRegistry内部で、PrefabUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
 
 			return;
 		}
 
 		if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneManagerのAssetFilePathRegistryに登録されているAssetTypeがPrefabではありません。\nFilePath : {}", a_oldFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneManagerのAssetFilePathRegistryに登録されているAssetTypeがPrefabではありません。\nFilePath : {}", a_oldFilePath.string());
 
 			return;
 		}
@@ -137,7 +137,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyPrefabFi
 		// UUIDも一致していなければならない
 		if (l_copiedPrefabUUID != a_prefabUUID)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetBrowserとSceneManagerのAssetFilePathRegistryでPrefabUUIDが一致していません。\nFilePath : {}", a_oldFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserとSceneManagerのAssetFilePathRegistryでPrefabUUIDが一致していません。\nFilePath : {}", a_oldFilePath.string());
 
 			return;
 		}
@@ -186,21 +186,21 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFil
 
 		if (!l_sceneManagerAssetFilePathData)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneManagerのAssetFilePathRegistry内部で、SceneUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneManagerのAssetFilePathRegistry内部で、SceneUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
 
 			return;
 		}
 
 		if (l_sceneManagerAssetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "SceneManagerのAssetFilePathRegistryに登録されているAssetTypeがSceneではありません。\nFilePath : {}", a_oldFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneManagerのAssetFilePathRegistryに登録されているAssetTypeがSceneではありません。\nFilePath : {}", a_oldFilePath.string());
 
 			return;
 		}
 
 		if (l_nextSceneUUID != a_sceneUUID)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetBrowserとSceneManagerのAssetFilePathRegistryでSceneUUIDが一致していません。\nFilePath : {}", a_oldFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserとSceneManagerのAssetFilePathRegistryでSceneUUIDが一致していません。\nFilePath : {}", a_oldFilePath.string());
 
 			return;
 		}

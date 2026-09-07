@@ -13,7 +13,7 @@ bool FWK::Editor::NodeEditorNode::ApplyNodeID(NodeEditorAllocator& a_nodeEditorA
 
 	const auto l_nodeID = a_nodeEditorAllocator.Allocate();
 
-	if (l_nodeID == Constant::k_invalidNodeEditorID) { return false; }
+	if (l_nodeID == Constant::k_imguiInvalidNodeEditorID) { return false; }
 
 	m_nodeID = l_nodeID;
 
@@ -66,8 +66,8 @@ bool FWK::Editor::NodeEditorNode::AddInputPinID(NodeEditorAllocator& a_nodeEdito
 
 	const auto l_pinID = a_nodeEditorAllocator.Allocate();
 
-	if (l_pinID == Constant::k_invalidNodeEditorID) { return false; }
-	if (AddInputPinID(l_pinID))                     { return true; }
+	if (l_pinID == Constant::k_imguiInvalidNodeEditorID) { return false; }
+	if (AddInputPinID(l_pinID))                          { return true; }
 
 	// 追加に失敗していたらアロケーターへ戻す
 	a_nodeEditorAllocator.Release(l_pinID);
@@ -76,7 +76,7 @@ bool FWK::Editor::NodeEditorNode::AddInputPinID(NodeEditorAllocator& a_nodeEdito
 }
 bool FWK::Editor::NodeEditorNode::AddInputPinID(const TypeAlias::NodeEditorID a_pinID)
 {
-	if (a_pinID == Constant::k_invalidNodeEditorID) { return false; }
+	if (a_pinID == Constant::k_imguiInvalidNodeEditorID) { return false; }
 
 	return AddPinIDToPinIDList(a_pinID, m_inputPInIDList);
 }
@@ -87,8 +87,8 @@ bool FWK::Editor::NodeEditorNode::AddOutputPinID(NodeEditorAllocator& a_nodeEdit
 
 	const auto l_pinID = a_nodeEditorAllocator.Allocate();
 
-	if (l_pinID == Constant::k_invalidNodeEditorID) { return false; }
-	if (AddOutputPinID(l_pinID))                    { return true; }
+	if (l_pinID == Constant::k_imguiInvalidNodeEditorID) { return false; }
+	if (AddOutputPinID(l_pinID))                         { return true; }
 
 	// 追加に失敗していたらアロケーターへ戻す
 	a_nodeEditorAllocator.Release(l_pinID);
@@ -97,14 +97,14 @@ bool FWK::Editor::NodeEditorNode::AddOutputPinID(NodeEditorAllocator& a_nodeEdit
 }
 bool FWK::Editor::NodeEditorNode::AddOutputPinID(const TypeAlias::NodeEditorID a_pinID)
 {
-	if (a_pinID == Constant::k_invalidNodeEditorID) { return false; }
+	if (a_pinID == Constant::k_imguiInvalidNodeEditorID) { return false; }
 
 	return AddPinIDToPinIDList(a_pinID, m_outputPInIDList);
 }
 
 bool FWK::Editor::NodeEditorNode::FetchVALIsCreated() const
 {
-	return m_nodeID != Constant::k_invalidNodeEditorID;
+	return m_nodeID != Constant::k_imguiInvalidNodeEditorID;
 }
 
 bool FWK::Editor::NodeEditorNode::AddPinIDToPinIDList(const TypeAlias::NodeEditorID a_pinID, std::vector<TypeAlias::NodeEditorID>& a_pinIDList) const
@@ -132,5 +132,5 @@ void FWK::Editor::NodeEditorNode::Reset()
 
 	m_nodePosition = {};
 
-	m_nodeID = Constant::k_invalidNodeEditorID;
+	m_nodeID = Constant::k_imguiInvalidNodeEditorID;
 }

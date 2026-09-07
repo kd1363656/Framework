@@ -23,7 +23,7 @@ void FWK::Converter::NodeEditorNodeJsonConverter::Deserialize(const nlohmann::js
 
 	a_nodeEditorNode.SetNodePosition(l_nodePosition);
 
-	a_nodeEditorNode.SetNodeID(a_rootJson.value(k_nodeIDJsonKey, Constant::k_invalidNodeEditorID));
+	a_nodeEditorNode.SetNodeID(a_rootJson.value(k_nodeIDJsonKey, Constant::k_imguiInvalidNodeEditorID));
 }
 
 nlohmann::json FWK::Converter::NodeEditorNodeJsonConverter::Serialize(const Editor::NodeEditorNode& a_nodeEditorNode) const
@@ -57,9 +57,9 @@ void FWK::Converter::NodeEditorNodeJsonConverter::DeserializeInputPinIDList(cons
 	{
 		if (l_json.is_null()) { continue; }
 
-		const TypeAlias::NodeEditorID l_pinID = l_json.value(k_pinIDJsonKey, Constant::k_invalidNodeEditorID);
+		const TypeAlias::NodeEditorID l_pinID = l_json.value(k_pinIDJsonKey, Constant::k_imguiInvalidNodeEditorID);
 
-		if (l_pinID == Constant::k_invalidNodeEditorID) { continue; }
+		if (l_pinID == Constant::k_imguiInvalidNodeEditorID) { continue; }
 
 		a_nodeEditorNode.AddInputPinID(l_pinID);
 	}
@@ -77,9 +77,9 @@ void FWK::Converter::NodeEditorNodeJsonConverter::DeserializeOutputPinIDList(con
 	{
 		if (l_json.is_null()) { continue; }
 
-		const TypeAlias::NodeEditorID l_pinID = l_json.value(k_pinIDJsonKey, Constant::k_invalidNodeEditorID);
+		const TypeAlias::NodeEditorID l_pinID = l_json.value(k_pinIDJsonKey, Constant::k_imguiInvalidNodeEditorID);
 
-		if (l_pinID == Constant::k_invalidNodeEditorID) { continue; }
+		if (l_pinID == Constant::k_imguiInvalidNodeEditorID) { continue; }
 
 		a_nodeEditorNode.AddOutputPinID(l_pinID);
 	}
@@ -92,7 +92,7 @@ nlohmann::json FWK::Converter::NodeEditorNodeJsonConverter::SerializePinIDList(c
 	for (const auto& l_pinID : a_pidIDList)
 	{
 		// 無効な値なら処理を飛ばし保存しない
-		if (l_pinID == Constant::k_invalidNodeEditorID) { continue; }
+		if (l_pinID == Constant::k_imguiInvalidNodeEditorID) { continue; }
 
 		nlohmann::json l_json = {};
 

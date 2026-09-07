@@ -6,7 +6,7 @@ void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManage
 
 	if (!Utility::CanLoadFilePath(l_currentSceneFilePath))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "読み込めるファイルパスでないため、シーンの読み込みに失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "読み込めるファイルパスでないため、シーンの読み込みに失敗しました。");
 
 		return;
 	}
@@ -84,8 +84,6 @@ void FWK::Converter::SceneManagerJsonConverter::DeserializeNextSceneLoadFilePath
 {
 	if (a_rootJson.is_null())			   { return; }
 	if (!Utility::IsJsonArray(a_rootJson)) { return; }
-
-	const auto& l_assetFilePathRegistry = a_sceneManager.GetREFAssetFilePathRegistry();
 
 	for (const auto& l_json : a_rootJson)
 	{ 

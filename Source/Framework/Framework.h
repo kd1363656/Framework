@@ -54,6 +54,7 @@
 #include "Definition/Type/Alias/NodeEditorTypeAlias.h"
 #include "Definition/Constant/Editor/EditorConstant.h"
 #include "Definition/Constant/Utility/File/SaveFileDialogUtilityConstant.h"
+#include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Log/LogEditorWindow.h"
 #include "Editor/Window/EditorWindowBase.h"
 #include "Editor/Converter/Json/EditorManagerJsonConverter.h"
@@ -583,7 +584,6 @@
 // エディター
 //===============================================================================
 #include "Utility/IMGUI/DragDrop/IMGUIDragDropPayloadStorage.h"
-#include "Utility/IMGUI/Tooltip/IMGUITooltipUtility.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 #include "Utility/File/SaveFileDialogUtility.h"
 

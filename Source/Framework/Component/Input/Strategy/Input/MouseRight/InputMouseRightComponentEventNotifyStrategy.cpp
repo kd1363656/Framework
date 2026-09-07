@@ -6,7 +6,7 @@ void FWK::InputMouseRightComponentEventNotifyStrategy::Execute(InputComponent& a
 
 	if (!l_gameObject)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "InputComponentの所有者であるゲームオブジェクトの取得に失敗しましたゲームオブジェクト");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "InputComponentの所有者であるゲームオブジェクトの取得に失敗しましたゲームオブジェクト");
 
 		return;
 	}
@@ -15,7 +15,7 @@ void FWK::InputMouseRightComponentEventNotifyStrategy::Execute(InputComponent& a
 
 	if (!l_componentEventObserver)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "コンポーネントイベントオブザーバーが無効となっています。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントイベントオブザーバーが無効となっています。");
 
 		return;
 	}

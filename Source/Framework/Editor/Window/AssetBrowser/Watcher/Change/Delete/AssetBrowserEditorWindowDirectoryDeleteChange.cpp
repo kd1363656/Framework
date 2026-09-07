@@ -29,7 +29,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
 
 		if (!l_assetFilePathData)
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetBrowserのAssetFilePathRegistry内部で、UUIDに対応するAssetFilePathDataを取得できませんでした\nFilePath : {}。", a_deleteFilePath.string());
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserのAssetFilePathRegistry内部で、UUIDに対応するAssetFilePathDataを取得できませんでした\nFilePath : {}。", a_deleteFilePath.string());
 
 			return;
 		}

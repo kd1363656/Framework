@@ -23,6 +23,8 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
 		return;
 	}
 
+	Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
+
 	// 左ペイン、フォルダのみを表示する
 	// 左クリックで右ペインの開いているフォルダを変更したりできる
 	DrawFolderPane ();
@@ -55,7 +57,7 @@ void FWK::Editor::AssetBrowserEditorWindow::RefreshFolderTree()
 		l_errorCode ||
 		!l_isAssetRootDirectory)
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetBrowserでAsset Root Folderを読み込めませんでした。FolderPath : {}", Constant::k_assetRootFolderPath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserでAsset Root Folderを読み込めませんでした。FolderPath : {}", Constant::k_assetRootFolderPath.string());
 
 		return;
 	}

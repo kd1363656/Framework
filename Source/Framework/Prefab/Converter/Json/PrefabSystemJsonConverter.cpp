@@ -5,7 +5,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 	if (a_rootJson.is_null() ||
 		!Utility::IsJsonArray(a_rootJson, k_prefabMapJsonKey))
 	{
-		FWK_ADD_LOG(Constant::k_debugWarningColor, "RootJsonが無効か配列でないため、PrefabSystemのデシリアライズに失敗しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "RootJsonが無効か配列でないため、PrefabSystemのデシリアライズに失敗しました。");
 
 		return;
 	}
@@ -25,7 +25,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 		// このPrefab自体を登録しない
 		if (l_prefabUUID.is_nil())
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabUUIDが無効のため、PrefabDataを登録できませんでした。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効のため、PrefabDataを登録できませんでした。");
 
 			continue;
 		}
@@ -34,7 +34,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 		if (!l_assetFilePathData) 
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryにPrefabUUIDからファイルパスの取得に失敗しました。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryにPrefabUUIDからファイルパスの取得に失敗しました。");
 
 			continue;
 		}
@@ -60,7 +60,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 		// 壊れた参照として判定できる
 		if (l_prefab.GetREFJson().is_null())
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabのJsonを読み込めなかったため、PrefabDataを登録できませんでした。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabのJsonを読み込めなかったため、PrefabDataを登録できませんでした。");
 
 			continue;
 		}
@@ -69,7 +69,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
 		if (l_prefabNUMInstanceAllocatorJson.is_null())
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "PrefabInstanceNUMAllocatorのJsonが無効となっており、PrefabDataの登録に失敗しました。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabInstanceNUMAllocatorのJsonが無効となっており、PrefabDataの登録に失敗しました。");
 
 			continue;
 		}
@@ -97,7 +97,7 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
 
 		if (!l_assetFilePathData) 
 		{
-			FWK_ADD_LOG(Constant::k_debugWarningColor, "AssetFilePathRegistryにPrefabUUIDからファイルパスの取得に失敗しました。");
+			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryにPrefabUUIDからファイルパスの取得に失敗しました。");
 
 			continue;
 		}

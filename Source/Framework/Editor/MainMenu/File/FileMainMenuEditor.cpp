@@ -8,20 +8,19 @@ void FWK::Editor::FileMainMenuEditor::Draw()
 
 void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
 {
-	if (ImGui::BeginMenu(k_beginFileMenuTextString.data()))
-	{
-		if (ImGui::MenuItem(k_saveTextString.data(), k_saveShortCutString.data()))
-		{
-			// すべてのシーン情報をセーブ
-			auto& l_sceneManager = SceneManager::GetInstance();
-			
-			l_sceneManager.SaveScene();
-			
-			FWK_ADD_LOG(Constant::k_debugSuccessColor, "シーンのセーブが完了しました。");
-		}
+	if (!ImGui::BeginMenu(k_beginFileMenuTextString.data())) { return; }
 
-		ImGui::EndMenu();
+	if (ImGui::MenuItem(k_saveTextString.data(), k_saveShortCutString.data()))
+	{
+		// すべてのシーン情報をセーブ
+		const auto& l_sceneManager = SceneManager::GetInstance();
+		
+		l_sceneManager.SaveScene();
+		
+		FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
 	}
+
+	ImGui::EndMenu();
 }
 void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
 {
@@ -32,6 +31,6 @@ void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
 
 		l_sceneManager.SaveScene();
 
-		FWK_ADD_LOG(Constant::k_debugSuccessColor, "シーンのセーブが完了しました。");
+		FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
 	}
 }

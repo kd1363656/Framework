@@ -29,11 +29,11 @@ namespace FWK
 				ImGui::Separator();
 			}
 
-			const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * Constant::k_defaultChildVisibleItemCount;
+			const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * Constant::k_imguiDefaultChildVisibleItemCount;
 
 			// -1.0Fを使用すると
 			// 現在利用可能な横幅いっぱいまでリストを広げる
-			if (!ImGui::BeginListBox(k_observerSelectorCheckBoxListLabel.data(), ImVec2(Constant::k_childWindowMAXSize, l_listHeight)))
+			if (!ImGui::BeginListBox(k_observerSelectorCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
 			{
 				ImGui::EndGroup();
 				ImGui::PopID   ();

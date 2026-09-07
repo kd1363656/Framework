@@ -49,9 +49,9 @@ void FWK::Converter::NodeEditorJsonConverter::DeserializeLinkDataList(const nloh
 
 		Struct::NodeEditorLinkData l_linkData = {};
 
-		l_linkData.m_linkID      = l_json.value(k_linkIDJsonKey,      Constant::k_invalidNodeEditorID);
-		l_linkData.m_outputPinID = l_json.value(k_outputPinIDJsonKey, Constant::k_invalidNodeEditorID);
-		l_linkData.m_inputPinID  = l_json.value(k_inputPinIDJsonKey,  Constant::k_invalidNodeEditorID);
+		l_linkData.m_linkID      = l_json.value(k_linkIDJsonKey,      Constant::k_imguiInvalidNodeEditorID);
+		l_linkData.m_outputPinID = l_json.value(k_outputPinIDJsonKey, Constant::k_imguiInvalidNodeEditorID);
+		l_linkData.m_inputPinID  = l_json.value(k_inputPinIDJsonKey,  Constant::k_imguiInvalidNodeEditorID);
 
 		a_nodeEditor.AddLink(l_linkData);
 	}
