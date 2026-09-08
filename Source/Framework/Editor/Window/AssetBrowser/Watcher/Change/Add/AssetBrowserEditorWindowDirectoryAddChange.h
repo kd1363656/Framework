@@ -13,7 +13,7 @@ namespace FWK::Editor
 
 	private:
 
-		void ApplyPrefabAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_prefabUUID, SceneManager& a_sceneManager) const;
-		void ApplySceneAdd (const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID,  SceneManager& a_sceneManager) const;
+		void ApplyPrefabAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_prefabUUID, SceneManager& a_sceneManager);
+		void ApplySceneAdd (const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID,  SceneManager& a_sceneManager);
 	};
 }

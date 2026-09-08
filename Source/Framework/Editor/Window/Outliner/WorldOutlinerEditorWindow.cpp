@@ -37,7 +37,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const Scene& a_scene)
 {
 
 }
-
 void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const GameObject& a_gameObject) const
 {
 
