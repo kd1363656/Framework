@@ -83,11 +83,11 @@ namespace FWK::Editor
 
 		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
-		const auto& GetREFEditorWindowList  () const { return m_editorWindowList; }
-		const auto& GetREFMainMenuBar       () const { return m_mainMenuBar; }
+		const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
+		const auto& GetREFMainMenuBar     () const { return m_mainMenuBar; }
 		
 		auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
-
+		
 		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
 	private:
@@ -129,9 +129,9 @@ namespace FWK::Editor
 
 		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
 
-		Editor::LogEditorWindow m_logEditorWindow;
+		LogEditorWindow m_logEditorWindow;
 
-		Editor::MainMenuBarEditor m_mainMenuBar;
+		MainMenuBarEditor m_mainMenuBar;
 
 		Converter::EditorManagerJsonConverter m_jsonConverter;
 

@@ -10,7 +10,7 @@ namespace FWK
 		~Scene() = default;
 
 		void INIT		    ();
-		void Deserialize    (const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry);
+		void Deserialize    (const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
 		void PostDeserialize() const;
 
 		void EarlyUpdate   ();

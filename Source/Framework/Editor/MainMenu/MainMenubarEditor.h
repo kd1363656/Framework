@@ -17,12 +17,12 @@ namespace FWK::Editor
 
 		void AddEditorMainMenu(std::unique_ptr<EditorMainMenuBase>&& a_editorMainMenu);
 
-		const auto& GetREFEditorMainMenuSmartPointerVectorArray() const { return m_editorMainMenuSmartPointerVectorArray; }
+		const auto& GetREFEditorMainMenuList() const { return m_editorMainMenuList; }
 
 	private:
 
 		Converter::MainMenuBarEditorJsonConverter m_jsonConverter = {};
 
-		Utility::SmartPointerVectorArray<std::unique_ptr<EditorMainMenuBase>> m_editorMainMenuSmartPointerVectorArray = {};
+		std::vector<std::unique_ptr<EditorMainMenuBase>> m_editorMainMenuList = {};
 	};
 }

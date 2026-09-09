@@ -4,27 +4,26 @@ namespace FWK::Utility
 {
 	// ポインターを格納する際に重複するアドレスを持つポインタを格納しないようにするためのクラス
 	template <typename Type>
-		requires Concept::IsSmartPTRConcept<Type>
+		requires Concept::IsSmartPTRConcept<Type> &&
+	             (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak ||
+			      TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared)
 	class SmartPointerVectorArray
 	{
 	public:
 
 		struct ArrayElementData final
 		{
-			using ElementType = typename Type::element_type;
+			static constexpr std::uintptr_t k_initialTypeAddress = 0ULL;
 
 			Type m_type = {};
 
-			const ElementType* m_typeAddress = nullptr;
+			std::uintptr_t m_typeAddress = k_initialTypeAddress;
 		};
 
 	private:
 
-		using ElementType = typename Type::element_type;
-
 		static constexpr bool k_isWeakPTR   = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
 		static constexpr bool k_isSharedPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared;
-		static constexpr bool k_isUniquePTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique;
 		
 	public:
 
@@ -39,8 +38,15 @@ namespace FWK::Utility
 
 			FWK_ASSERT_RETURN_IF(!l_type, "登録対象が無効なため、VectorArrayへの登録に失敗しました。");
 
+			// weak_ptrの場合、以前登録したオブジェクトが既に破棄されている可能性がある
+			// 古いアドレス値がSetに残ったままだと、新しいオブジェクトが偶然同じアドレスを再利用した際に
+			// 重複と誤判定する可能性があるため、先に削除する
+			RemoveExpiredElements();
+
 			// シェーアードが保持している生ポインタを取得
-			const auto* const l_typeAddress = l_type.get();
+			const auto& l_typeAddress = reinterpret_cast<std::uintptr_t>(l_type.get());
+
+			if (!m_registeredAddressSet.emplace(l_typeAddress).second) { return; }
 
 			ArrayElementData l_arrayElementData = {};
 
@@ -49,7 +55,6 @@ namespace FWK::Utility
 			l_arrayElementData.m_typeAddress = l_typeAddress;
 
 			m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
-			m_registeredAddressSet.emplace	   (l_typeAddress);
 		}
 
 		// shared_ptrの場合
@@ -58,7 +63,9 @@ namespace FWK::Utility
 		{
 			FWK_ASSERT_RETURN_IF(!a_type, "登録対象が無効なため、VectorArrayへの登録に失敗しました。");
 
-			const auto* const l_typeAddress = a_type.get();
+			const auto& l_typeAddress = reinterpret_cast<std::uintptr_t>(a_type.get());
+
+			if (!m_registeredAddressSet.emplace(l_typeAddress).second) { return; }
 
 			ArrayElementData l_arrayElementData = {};
 
@@ -67,32 +74,42 @@ namespace FWK::Utility
 			l_arrayElementData.m_typeAddress = l_typeAddress;
 			
 			m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
-			m_registeredAddressSet.emplace     (l_typeAddress);
-		}
-
-		// uniqueポインタから取得
-		void Add(Type&& a_type)
-			requires k_isUniquePTR
-		{
-			FWK_ASSERT_RETURN_IF(!a_type, "登録対象が無効なため、VectorArrayへの登録に失敗しました。");
-
-			// ユニークが所持している生ポインタを取得
-			const auto* const l_typeAddress = a_type.get();
-
-			ArrayElementData l_arrayElementData = {};
-
-			// ポインタとそのポインタを格納
-			l_arrayElementData.m_type        = std::move(a_type);
-			l_arrayElementData.m_typeAddress = l_typeAddress;
-
-			m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
-			m_registeredAddressSet.emplace	   (l_typeAddress);
 		}
 
 		void Clear()
 		{
 			m_arrayElementDataList.clear();
 			m_registeredAddressSet.clear();
+		}
+
+		bool Contains(const Type& a_type)
+			requires k_isWeakPTR
+		{
+			// weak_ptrから一時的にshared_ptrを取得する
+			// 既に破棄されているオブジェクトなら登録されているとは判定しない
+			const auto& l_type = a_type.lock();
+
+			if (!l_type) { return false; }
+
+			// weak_ptrの場合は、既に破棄された要素のアドレスが
+			// unordered_set側に残っている可能性があるため先に掃除する
+			RemoveExpiredElements();
+
+			// SmartPointerVectorArrayは内部でアドレスをキーとして
+			// 重複を管理しているため、そのSetを利用して後続に検索する
+			const auto& l_typeAddress = reinterpret_cast<std::uintptr_t>(l_type.get());
+
+			return m_registeredAddressSet.contains(l_typeAddress);
+		}
+
+		bool Contains(const Type& a_type)
+			requires k_isSharedPTR
+		{
+			if (!a_type) { return false; }
+
+			const auto& l_typeAddress = reinterpret_cast<std::uintptr_t>(a_type.get());
+
+			return m_registeredAddressSet.contains(l_typeAddress);
 		}
 
 		// weak_ptrの場合の削除処理
@@ -105,20 +122,6 @@ namespace FWK::Utility
 
 				// このアドレスはオブジェクトへアクセスするために
 				// 使用せず、unordered_setからキーを削除するためだけに使う。
-				m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
-
-				return true;
-			});
-		}
-
-		// unique_ptrの場合の削除処理
-		void RemoveExpiredElements()
-			requires k_isUniquePTR
-		{
-			std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
-			{
-				if (a_arrayElementData.m_type) { return false; }
-
 				m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
 
 				return true;
@@ -189,7 +192,7 @@ namespace FWK::Utility
 		
 	private:
 
-		std::unordered_set<const ElementType*> m_registeredAddressSet = {};
+		std::unordered_set<std::uintptr_t> m_registeredAddressSet = {};
 
 		std::vector<ArrayElementData> m_arrayElementDataList = {};
 	};

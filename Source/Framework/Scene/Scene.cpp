@@ -18,7 +18,7 @@ void FWK::Scene::INIT()
 	m_isGameObjectExecutionLevelListDirty = false;
 }
 
-void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry)
+void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
 	if (a_rootJson.is_null()) 
 	{

@@ -3512,6 +3512,9 @@
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.cpp">
+      <Filter>Source\Framework\Component\Move\Mode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">

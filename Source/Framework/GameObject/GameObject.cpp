@@ -539,15 +539,20 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 
 	if (!l_scene) { return std::string{ Constant::k_imguiGameObjectString.data()}; }
 
-	const auto& l_prefabSystem = l_scene->GetREFPrefabSystem();
-	
-	const auto* l_prefab = l_prefabSystem.FindPTRPrefab(m_prefabUUID);
+	const auto& l_prefabSystem = l_scene->GetREFPrefabSystem ();
+	const auto* l_prefab       = l_prefabSystem.FindPTRPrefab(m_prefabUUID);
 
 	FWK_ASSERT_RETURN_VALUE_IF(!l_prefab, "PrefabUUIDに対応するPrefabがPrefabSystemに存在しません。", std::string{ Constant::k_imguiGameObjectString });
 
 	const auto& l_prefabName = l_prefab->GetREFPrefabName();
 
 	FWK_ASSERT_RETURN_VALUE_IF(l_prefabName.empty(), "PrefabNameが空のためGameObject名を生成できませんでした。", std::string{ Constant::k_imguiGameObjectString });
+
+	if (!m_sceneInstanceName.empty() &&
+	    m_sceneInstanceName != l_prefabName)
+	{
+		return m_sceneInstanceName;
+	}
 
 	// PrefabNameはGameObject側へ複製せず、
 	// PrefabSystemに登録されているPrefabから取得する

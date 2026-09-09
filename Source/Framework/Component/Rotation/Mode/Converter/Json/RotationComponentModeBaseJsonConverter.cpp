@@ -5,11 +5,11 @@ void FWK::Converter::RotationComponentModeBaseJsonConverter::Deserialize(const n
 	if (a_rootJson.is_null()) { return; }
 
 	// 回転を適用する軸のリストを復元する
-	if (const auto& l_json = a_rootJson.value(k_rotationApplyAxisListJsonKey, nlohmann::json{});
+	if (const auto& l_json = a_rootJson.value(k_canApplyRotationAxisListJsonKey, nlohmann::json{});
 		!l_json.is_null() &&
 		Utility::IsJsonArray(l_json))
 	{
-		DeserializeRotationApplyAxisList(l_json, a_rotationComponentModeBase);
+		DeserializeCanApplyRotationAxisList(l_json, a_rotationComponentModeBase);
 	}
 }
 
@@ -17,12 +17,12 @@ nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::Serialize
 {
 	nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_rotationApplyAxisListJsonKey] = SerializeRotationApplyAxisList(a_rotationComponentModeBase);
+	l_rootJson[k_canApplyRotationAxisListJsonKey] = SerializeCanApplyRotationAxisList(a_rotationComponentModeBase);
 
 	return l_rootJson;
 }
 
-void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeRotationApplyAxisList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const
+void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeCanApplyRotationAxisList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const
 {
 	if (a_rootJson.is_null() ||
 		!Utility::IsJsonArray(a_rootJson))
@@ -34,26 +34,26 @@ void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeRotation
 	{
 		if (l_json.is_null()) { continue; }
 
-		const auto l_rotationApplyAxis = l_json.value(k_rotationApplyAxisJsonKey, Enum::Axis::Invalid);
+		const auto l_canApplyRotationAxis = l_json.value(k_canApplyRotationAxisJsonKey, Enum::Axis::Invalid);
 
-		if (l_rotationApplyAxis == Enum::Axis::Invalid) { continue; }
+		if (l_canApplyRotationAxis == Enum::Axis::Invalid) { continue; }
 
-		a_rotationComponentModeBase.AddRotationApplyAxis(l_rotationApplyAxis);
+		a_rotationComponentModeBase.AddCanApplyRotationAxis(l_canApplyRotationAxis);
 	}
 }
 
-nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::SerializeRotationApplyAxisList(const RotationComponentModeBase& a_rotationComponentModeBase) const
+nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::SerializeCanApplyRotationAxisList(const RotationComponentModeBase& a_rotationComponentModeBase) const
 {
-	      auto  l_rootJsonArray         = nlohmann::json::array                                  ();
-	const auto& l_rotationApplyAxisList = a_rotationComponentModeBase.GetREFRotationApplyAxisList();
+		  auto  l_rootJsonArray            = nlohmann::json::array                                     ();
+	const auto& l_canApplyRotationAxisList = a_rotationComponentModeBase.GetREFCanApplyRotationAxisList();
 
-	for (const auto& l_rotationApplyAxis : l_rotationApplyAxisList)
+	for (const auto& l_canApplyRotationAxis : l_canApplyRotationAxisList)
 	{
-		if (l_rotationApplyAxis == Enum::Axis::Invalid) { continue; }
+		if (l_canApplyRotationAxis == Enum::Axis::Invalid) { continue; }
 
 		nlohmann::json l_json = {};
 
-		l_json[k_rotationApplyAxisJsonKey] = l_rotationApplyAxis;
+		l_json[k_canApplyRotationAxisJsonKey] = l_canApplyRotationAxis;
 
 		l_rootJsonArray.emplace_back(l_json);
 	}

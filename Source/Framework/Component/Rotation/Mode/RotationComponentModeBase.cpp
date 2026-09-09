@@ -2,7 +2,7 @@
 
 void FWK::RotationComponentModeBase::INIT()
 {
-	m_rotationApplyAxisList.clear();
+	m_canApplyRotationAxisList.clear();
 
 	m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
@@ -12,7 +12,7 @@ void FWK::RotationComponentModeBase::INIT()
 
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 
-	m_applyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
+	m_canApplyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
 }
 
 void FWK::RotationComponentModeBase::Deserialize(const nlohmann::json& a_rootJson)
@@ -45,23 +45,24 @@ nlohmann::json FWK::RotationComponentModeBase::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::RotationComponentModeBase::AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis)
+void FWK::RotationComponentModeBase::AddCanApplyRotationAxis(const Enum::Axis a_canApplyRotationAxis)
 {
 	// 同じ要素を含めない
-	if (std::ranges::any_of(m_rotationApplyAxisList, [a_applyRotationAxis](const auto a_containsApplyRotationAxis) 
-		                                                                  {
-																				return a_containsApplyRotationAxis == a_applyRotationAxis;
-		                                                                  }))
+	if (std::ranges::any_of(m_canApplyRotationAxisList, 
+		                   [a_canApplyRotationAxis](const auto a_containsApplyRotationAxis) 
+ 	 	                   {
+								return a_containsApplyRotationAxis == a_canApplyRotationAxis;
+		                   }))
 	{
 		return;
 	}
 
 	// jsonに保存してもビットシフトの値が変わっても問題ないように
 	// Enumをstd::vectorで保存する
-	m_rotationApplyAxisList.emplace_back(a_applyRotationAxis);
+	m_canApplyRotationAxisList.emplace_back(a_canApplyRotationAxis);
 
 	// ビットフラグを反映する
-	Utility::EnableFlag(a_applyRotationAxis, m_applyRotationAxis);
+	m_canApplyRotationAxis = Utility::EnableFlag(a_canApplyRotationAxis, m_canApplyRotationAxis);
 }
 
 bool FWK::RotationComponentModeBase::CanUpdate()

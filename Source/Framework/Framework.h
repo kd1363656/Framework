@@ -595,3 +595,4 @@
 #include "Editor/Window/AssetBrowser/Watcher/AssetBrowserEditorWindowDirectoryWatcher.h"
 #include "Editor/Window/AssetBrowser/Converter/Json/AssetBrowserEditorWindowJsonConverter.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"
+#include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"

@@ -23,11 +23,11 @@ namespace FWK
 
 		virtual nlohmann::json Serialize() const;
 
-		void AddRotationApplyAxis(const Enum::Axis a_applyRotationAxis);
+		void AddCanApplyRotationAxis(const Enum::Axis a_canApplyRotationAxis);
 
-		const auto& GetREFRotationApplyAxisList() const { return m_rotationApplyAxisList; }
+		const auto& GetREFCanApplyRotationAxisList() const { return m_canApplyRotationAxisList; }
 
-		auto& GetMutableREFRotationApplyAxisList() { return m_rotationApplyAxisList; }
+		auto& GetMutableREFCanApplyRotationAxisList() { return m_canApplyRotationAxisList; }
 
 	protected:
 
@@ -35,7 +35,7 @@ namespace FWK
 
 	private:
 
-		std::vector<Enum::Axis> m_rotationApplyAxisList = {};
+		std::vector<Enum::Axis> m_canApplyRotationAxisList = {};
 
 		Utility::FetchComponentEventObserverFromSelfGameObjectHelper m_fetchComponentEventObserverFromSelfGameObjectHelper = {};
 		Utility::FetchTransformComponentFromSelfGameObjectHelper     m_fetchTransformComponentFromSelfGameObjectHelper     = {};
@@ -46,7 +46,7 @@ namespace FWK
 
 		TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 
-		std::uint32_t m_applyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
+		std::uint32_t m_canApplyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
 
 		FWK_DEFINE_TYPE_INFO_ROOT(RotationComponentModeBase)
 	};

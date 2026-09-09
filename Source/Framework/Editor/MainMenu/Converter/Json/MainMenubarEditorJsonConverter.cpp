@@ -45,12 +45,10 @@ nlohmann::json FWK::Converter::MainMenuBarEditorJsonConverter::SerializeEditorMa
 {
     nlohmann::json l_rootJsonArray = {};
 
-    const auto& l_editorMainMenuSmartPointerVectorArray = a_mainMenuBarEditor.GetREFEditorMainMenuSmartPointerVectorArray();
+    const auto& l_editorMainMenuList = a_mainMenuBarEditor.GetREFEditorMainMenuList();
 
-    for (const auto& l_editorMainMenuData : l_editorMainMenuSmartPointerVectorArray.GetREFArrayElementDataList())
+    for (const auto& l_editorMainMenu : l_editorMainMenuList)
     {
-        const auto& l_editorMainMenu = l_editorMainMenuData.m_type;
-
         if (!l_editorMainMenu) { continue; }
 
         nlohmann::json l_json = {};
