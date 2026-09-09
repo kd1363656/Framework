@@ -22,10 +22,8 @@ void FWK::RotationComponentModeBase::Deserialize(const nlohmann::json& a_rootJso
 	m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::RotationComponentModeBase::PostDeserialize(const std::shared_ptr<GameObject>& a_owner)
+void FWK::RotationComponentModeBase::PostDeserialize(const GameObject& a_owner)
 {
-	if (!a_owner) { return; }
-
 	m_fetchComponentEventObserverFromSelfGameObjectHelper.PostDeserialize(a_owner);
 	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize    (a_owner);
 }

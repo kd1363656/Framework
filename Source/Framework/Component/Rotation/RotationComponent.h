@@ -11,6 +11,8 @@ namespace FWK
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
+		void PostDeserialize() override;
+
 		void Update() override;
 
 		void EditInspector() override;

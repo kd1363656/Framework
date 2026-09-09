@@ -560,6 +560,7 @@
 #include "Component/Rotation/Mode/Constant/Mouse/RotationComponentConstantMouseMode.h"
 #include "Component/Rotation/RotationComponent.h"
 
+#include "Component/Move/Mode/MoveComponentModeBase.h"
 #include "Component/Move/Inspector/MoveComponentInspector.h"
 #include "Component/Move/Converter/Json/MoveComponentJsonConverter.h"
 #include "Component/Move/MoveComponent.h"

@@ -7,6 +7,17 @@ void FWK::RotationComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
+void FWK::RotationComponent::PostDeserialize()
+{
+	if (!m_rotationMode) { return; }
+
+	const auto& l_owner = GetREFOwner().lock();
+
+	if (!l_owner) { return; }
+
+	m_rotationMode->PostDeserialize(*l_owner);
+}
+
 void FWK::RotationComponent::Update()
 {
 	if (!m_rotationMode) { return; }

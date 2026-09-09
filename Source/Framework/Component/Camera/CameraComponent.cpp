@@ -10,7 +10,11 @@ void FWK::CameraComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 
 void FWK::CameraComponent::PostDeserialize()
 {
-	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(GetREFOwner());
+	const auto& l_owner = GetREFOwner().lock();
+
+	if (!l_owner) { return; }
+
+	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(*l_owner);
 
 	// 早速取得したTransformComponentから行列を取得する
 	const auto& l_transformComponent = m_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent().lock();

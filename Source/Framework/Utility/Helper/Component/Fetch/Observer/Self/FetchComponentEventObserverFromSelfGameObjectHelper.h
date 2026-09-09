@@ -9,7 +9,7 @@ namespace FWK::Utility
 		 FetchComponentEventObserverFromSelfGameObjectHelper() = default;
 		~FetchComponentEventObserverFromSelfGameObjectHelper() = default;
 
-		void PostDeserialize(const std::weak_ptr<GameObject>& a_self);
+		void PostDeserialize(const GameObject& a_self);
 
 		const auto& GetREFFetchedComponentEventObserver() const { return m_fetchedComponentEventObserver; }
 

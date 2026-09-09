@@ -13,7 +13,7 @@ namespace FWK
 
 		virtual void Deserialize(const nlohmann::json& a_rootJson);
 
-		virtual void PostDeserialize(const std::shared_ptr<GameObject>& a_owner);
+		virtual void PostDeserialize(const GameObject& a_owner);
 		
 		virtual void Update() = 0;
 

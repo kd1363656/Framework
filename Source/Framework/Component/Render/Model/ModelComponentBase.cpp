@@ -18,7 +18,11 @@ void FWK::ModelComponentBase::DeserializePrefab(const nlohmann::json& a_rootJson
 }
 void FWK::ModelComponentBase::PostDeserialize()
 {
-	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(GetREFOwner());
+	const auto& l_owner = GetREFOwner().lock();
+
+	if (!l_owner) { return; }
+
+	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(*l_owner);
 }
 
 void FWK::ModelComponentBase::EditInspector()

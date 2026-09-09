@@ -9,7 +9,7 @@ namespace FWK::Utility
 		 FetchTransformComponentFromSelfGameObjectHelper() = default;
 		~FetchTransformComponentFromSelfGameObjectHelper() = default;
 
-		void PostDeserialize(const std::weak_ptr<GameObject>& a_self);
+		void PostDeserialize(const GameObject& a_self);
 
 		const auto& GetREFFetchedTransformComponent() const { return m_fetchedTransformComponent; }
 
