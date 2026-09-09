@@ -6,11 +6,13 @@ namespace FWK::Editor
 	{
 	private:
 
-		struct FolderTreeData final
+		struct AssetEntryData final
 		{
-			std::filesystem::path m_folderPath = {};
+			std::filesystem::path m_filePath = {};
 
-			std::vector<FolderTreeData> m_childFolderDataList = {};
+			std::vector<AssetEntryData> m_childEntryDataList = {};
+
+			bool m_isDirectory = false;
 		};
 
 	public:
@@ -31,29 +33,57 @@ namespace FWK::Editor
 
 	private:
 
-		void RefreshFolderTree();
+		void RefreshAssetEntryTree();
+		
+		void BuildAssetEntryDataTree(AssetEntryData& a_assetEntryData);
 
-		void DrawFolderPane();
-		void DrawFolderTree(const FolderTreeData& a_folderTreeData, bool a_isRootFolder);
-		void DrawAssetPane () const;
+		void DrawFolderPane    ();
+		void DrawFolderTree    (const AssetEntryData& a_assetEntryData);
+		void DrawAssetPane     ();
+
+		bool DrawCurrentDirectoryAssetEntryList(const AssetEntryData& a_assetEntryData);
+
+		void DrawAssetEntryCard(const AssetEntryData& a_assetEntryData) const;
+		
+		std::string FetchVALAssetEntryDisplayName(const AssetEntryData& a_assetEntryData) const;
+		std::string FetchVALAssetEntryIcon       (const AssetEntryData& a_assetEntryData) const;
 
 		static constexpr std::string_view k_folderPaneChildLabel = "##AssetBrowserFolderPane";
 		static constexpr std::string_view k_assetPaneChildLabel  = "##AssetBrowserAssetPane";
+		static constexpr std::string_view k_assetCardButtonLabel = "##AssetCard";
 
 		static constexpr std::string_view k_editorName                 = "アセットブラウザー";
+		static constexpr std::string_view k_folderPaneTitle            = "フォルダ";
+		static constexpr std::string_view k_assetPaneTitle             = "アセット";
+		static constexpr std::string_view k_assetRootUnavailableLabel  = "Assetフォルダを読み込めません。";
+		static constexpr std::string_view k_emptyDirectoryLabel        = "このフォルダは空です。";
 		static constexpr std::string_view k_thisWindowExplanationLabel = "アセットブラウザーでは使用したいFBXファイルをモデル描画コンポーネントに\nドラッグ&ドロップしてロードするモデルとして扱ったり、使用したいゲームオブジェクトのプレハブをドラッグ&ドロップ\nでシーンに追加したりすることができるウィンドウ。";
+
+		static constexpr std::wstring_view k_assetEntryNameEllipsis = L"...";
+
+		static constexpr ImVec2 k_assetCardSize = { 104.0F, 92.0F };
+
+		static constexpr std::size_t k_assetEntryNameVisibleCharacterCount      = 8ULL;
+		static constexpr std::size_t k_assetEntryNameAbbreviationCharacterCount = k_assetEntryNameVisibleCharacterCount + 1ULL;
 
 		static constexpr float k_folderPaneWidth = 240.0F;
 
 		static constexpr float k_fileRemainingArea = 0.0F;
 
+		static constexpr float k_assetCardSpacing           = 8.0F;
+		static constexpr float k_assetCardIconFontSize      = 48.0F;
+		static constexpr float k_assetCardIconTopPadding    = 8.0F;
+		static constexpr float k_assetCardTextBottomPadding = 8.0F;
+
 		AssetFilePathRegistry m_assetFilePathRegistry = {};
+
+		AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
 
 		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
-		FolderTreeData m_rootFolderTreeData = {};
-
 		std::filesystem::path m_currentDirectoryPath = Constant::k_assetRootFolderPath;
+
+		AssetEntryData m_rootAssetEntryData = {};
 
 		FWK_DEFINE_TYPE_INFO(AssetBrowserEditorWindow, EditorWindowBase)
 	};
