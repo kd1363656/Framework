@@ -9,11 +9,11 @@ void FWK::Editor::AssetBrowserEditorWindow::Deserialize(const nlohmann::json& a_
 }
 void FWK::Editor::AssetBrowserEditorWindow::PostDeserialize()
 {
-	RefreshFolderTree();
+	RefreshAssetEntryTree();
 
-	// AssetRootが正常に取得できた場合だけ、
-	// WindowのDirectory変更監視を開始する
-	if (!m_rootFolderTreeData.m_folderPath.empty())
+	// AssetRootを正常にTreeへ登録できた場合だけ、
+	// DirectoryWatcherを開始する
+	if (!m_rootAssetEntryData.m_filePath.empty())
 	{
 		m_directoryWatcher.Prepare(Constant::k_assetRootFolderPath);
 	}
@@ -21,13 +21,12 @@ void FWK::Editor::AssetBrowserEditorWindow::PostDeserialize()
 
 void FWK::Editor::AssetBrowserEditorWindow::Draw()
 {
-	// DirectoryWatcherはWindowが折りたたまれている場合でも同期する
+	// File / Directoryに変更があった場合だけ
+	// AssetEntryTreeを再構する
 	if (auto& l_sceneManager = SceneManager::GetInstance();
 		m_directoryWatcher.Synchronize(m_assetFilePathRegistry, l_sceneManager))
 	{
-		// File / Directory構造田変更された場合だけ
-		// 左右Pane用の情報を更新する
-		RefreshFolderTree();
+		RefreshAssetEntryTree();
 	}
 
 	if (!ImGui::Begin(k_editorName.data()))
@@ -55,11 +54,11 @@ nlohmann::json FWK::Editor::AssetBrowserEditorWindow::Serialize()
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Editor::AssetBrowserEditorWindow::RefreshFolderTree()
+
+void FWK::Editor::AssetBrowserEditorWindow::RefreshAssetEntryTree()
 {
-	// RefreshFolderTree()が何度も呼ばれた場合に備えて
-	// 前回作成したTreeを最初に破棄する
-	m_rootFolderTreeData = {};
+	// 前回構築したFile / DirectoryTreeを破棄する
+	m_rootAssetEntryData = {};
 
 	std::error_code l_errorCode = {};
 
@@ -67,21 +66,21 @@ void FWK::Editor::AssetBrowserEditorWindow::RefreshFolderTree()
 	if (!std::filesystem::is_directory(Constant::k_assetRootFolderPath, l_errorCode) ||
 		l_errorCode)
 	{
-		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserでAsset Root Folderを読み込めませんでした。\nFolderPath : {}", Constant::k_assetRootFolderPath.string());
+		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserでAssetRootFolderを読み込めませんでした。\nFolderPath : {}", Constant::k_assetRootFolderPath.string());
 
 		return;
 	}
 
-	// RootFolder自身をTreeの先頭として登録する
-	m_rootFolderTreeData.m_folderPath = Constant::k_assetRootFolderPath;
+	// RootはAssetDirectoryそのもの
+	m_rootAssetEntryData.m_filePath    = Constant::k_assetRootFolderPath;
+	m_rootAssetEntryData.m_isDirectory = true;
 
-	// Asset配下のDirectoryだけを再帰収集する
-	BuildFolderTreeData(m_rootFolderTreeData);
+	// Asset配下のDirectory / Fileを1つのTreeへまとめる
+	BuildAssetEntryDataTree(m_rootAssetEntryData);
 
 	l_errorCode.clear();
 
-	// 現在右Paneで開いているDirectoryが、
-	// Explorer側で削除・移動されて存在しなくなった場合は
+	// 現在開いているDirectoryが削除、移動された場合だけ
 	// AssetRootへ戻す
 	if (!std::filesystem::is_directory(m_currentDirectoryPath, l_errorCode) ||
 		l_errorCode)
@@ -90,26 +89,22 @@ void FWK::Editor::AssetBrowserEditorWindow::RefreshFolderTree()
 	}
 }
 
-void FWK::Editor::AssetBrowserEditorWindow::RefreshCurrentDirectoryEntryDataList()
+void FWK::Editor::AssetBrowserEditorWindow::BuildAssetEntryDataTree(AssetEntryData& a_assetEntryData)
 {
-	
-}
+	// FileはChildを持てないので
+	// Directoryだけを再帰操作する
+	if (!a_assetEntryData.m_isDirectory) { return; }
 
-void FWK::Editor::AssetBrowserEditorWindow::BuildFolderTreeData(FolderTreeData& a_folderTreeData)
-{
 	std::error_code l_errorCode = {};
 
-	// directory_iteratorは指定Directory直下のEntryだけを列挙する
-	// skip_permission_deniedを指定することで、
-	// Access権のないDirectoryが存在しても
-	// Editor全体を例外終了させない
-	auto l_directoryITR = std::filesystem::directory_iterator{ a_folderTreeData.m_folderPath, std::filesystem::directory_options::skip_permission_denied, l_errorCode };
+
+	auto l_directoryITR = std::filesystem::directory_iterator{ a_assetEntryData.m_filePath, std::filesystem::directory_options::skip_permission_denied, l_errorCode };
 
 	if (l_errorCode)
 	{
 		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
 			        "AssetBrowserでDirectoryを読み込めませんでした。\nDirectoryPath : {}\nErrorCode : {}",
-			        a_folderTreeData.m_folderPath.string(),
+			        a_assetEntryData.m_filePath.string(),
 			        l_errorCode.value());
 
 		return;
@@ -123,43 +118,46 @@ void FWK::Editor::AssetBrowserEditorWindow::BuildFolderTreeData(FolderTreeData& 
 	{
 		l_errorCode.clear();
 
-		// Fileは左側FolderTreeへ表示しない
-		// Directoryだけを対象にする
-		if (const auto& l_directoryEntry = *l_directoryITR;
-			l_directoryEntry.is_directory(l_errorCode) &&
-			!l_errorCode)
+		const auto& l_directoryEntry = *l_directoryITR;
+
+		AssetEntryData l_childAssetEntryData = {};
+
+		l_childAssetEntryData.m_filePath    = l_directoryEntry.path        ();
+		l_childAssetEntryData.m_isDirectory = l_directoryEntry.is_directory(l_errorCode);
+
+		if (!l_errorCode)
 		{
-			FolderTreeData l_childFolderTreeData = {};
+			// Directoryだった場合だけ
+			if (l_childAssetEntryData.m_isDirectory)
+			{
+				BuildAssetEntryDataTree(l_childAssetEntryData);
+			}
 
-			l_childFolderTreeData.m_folderPath = l_directoryEntry.path();
+			// FileでもDirectoryでも同じChild配列へ追加する
+			auto& l_childAssetEntryDataList = a_assetEntryData.m_childAssetEntryDataList;
 
-			// ChildDirectoryも同じ方法で再帰取得する
-			BuildFolderTreeData(l_childFolderTreeData);
-
-			a_folderTreeData.m_childFolderDataList.emplace_back(std::move(l_childFolderTreeData));
+			l_childAssetEntryDataList.emplace_back(std::move(l_childAssetEntryData));
 		}
 
 		l_errorCode.clear();
 
-		// error_code版increment()を使用することで
-		// Directory走査中のFileSystemErrorを例外にしない
 		l_directoryITR.increment(l_errorCode);
 
 		if (l_errorCode)
 		{
 			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-				        "AssetBrowserでDirectory走査中にErrorが発生しました。\nDirectoryPath : {}\nErrorCode : {}", 
-				        a_folderTreeData.m_folderPath.string(), 
-				        l_errorCode.value());
+			            "AssetBrowserでDirectory走査中にErrorが発生しました。\nDirectoryPath : {}\nErrorCode : {}",
+			            a_assetEntryData.m_filePath.string(),
+			            l_errorCode.value());
 
 			return;
 		}
 	}
 
 	// FileSystemが返す順番へ依存すると
-	// 起動ごとにFolder表示順が変わる可能性がある
+	// 起動ごとに表示順が変わる可能性がある
 	// FolderPath順へ並べて表示順を安定させる
-	std::ranges::sort(a_folderTreeData.m_childFolderDataList, {}, &FolderTreeData::m_folderPath);
+	std::ranges::sort(a_assetEntryData.m_childAssetEntryDataList, CompareAssetEntryData);
 }
 
 void FWK::Editor::AssetBrowserEditorWindow::DrawFolderPane()
@@ -176,11 +174,11 @@ void FWK::Editor::AssetBrowserEditorWindow::DrawFolderPane()
 		return;
 	}
 
-	ImGui::TextUnformatted(k_folderPaneTitle.data());
+	ImGui::TextUnformatted(k_folderPaneTitleLabel.data());
 	ImGui::Separator      ();
 
 	// AssetRoot事態を取得できなかった場合はTreeを描画できない
-	if (m_rootFolderTreeData.m_folderPath.empty())
+	if (m_rootAssetEntryData.m_filePath.empty())
 	{
 		ImGui::TextDisabled(k_assetRootUnavailableLabel.data());
 
@@ -189,13 +187,20 @@ void FWK::Editor::AssetBrowserEditorWindow::DrawFolderPane()
 		return;
 	}
 
-	DrawFolderTree(m_rootFolderTreeData);
+	DrawFolderTree(m_rootAssetEntryData);
 
 	ImGui::EndChild();
 }
-void FWK::Editor::AssetBrowserEditorWindow::DrawFolderTree(const FolderTreeData& a_folderTreeData)
+void FWK::Editor::AssetBrowserEditorWindow::DrawFolderTree(const AssetEntryData& a_assetEntryData)
 {
-	const bool l_hasChildFolder = !a_folderTreeData.m_childFolderDataList.empty();
+	// 左PaneではFileは描画しない
+	if (!a_assetEntryData.m_isDirectory) { return; }
+
+	const bool l_hasChildDirectory = std::ranges::any_of(a_assetEntryData.m_childAssetEntryDataList,
+		                                                 [](const AssetEntryData& a_childAssetEntryData) 
+		                                                 {
+																return a_childAssetEntryData.m_isDirectory;
+		                                                 });
 
 	ImGuiTreeNodeFlags l_treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth |
 		                                 ImGuiTreeNodeFlags_OpenOnArrow    |
@@ -203,12 +208,12 @@ void FWK::Editor::AssetBrowserEditorWindow::DrawFolderTree(const FolderTreeData&
 
 	// 現在右Paneで開いているDirectoryには
 	// ImGui標準の選択色をつける
-	if (a_folderTreeData.m_folderPath == m_currentDirectoryPath)
+	if (a_assetEntryData.m_filePath == m_currentDirectoryPath)
 	{
 		l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
 	}
 
-	if (!l_hasChildFolder)
+	if (!l_hasChildDirectory)
 	{
 		// ChildFolderが存在しないDirectoryはLeafノードとして表示する
 		l_treeNodeFlags |= ImGuiTreeNodeFlags_Leaf |
@@ -217,30 +222,29 @@ void FWK::Editor::AssetBrowserEditorWindow::DrawFolderTree(const FolderTreeData&
 
 	// WindowsのFilesystem::pathはwstringを使用する場合があるため、
 	// UTF-16 -> UTF-8へ変換してImGuiへ戻す
-	const auto& l_folderName  = Utility::WStringToString(a_folderTreeData.m_folderPath.filename().wstring());
+	const auto& l_folderName  = Utility::WStringToString(a_assetEntryData.m_filePath.filename().wstring());
 	const auto& l_folderLabel = std::format             ("{} {}", Constant::k_imguiFontAwesomeFolderIcon, l_folderName);
 
 	// 同じFolder名が別階層に存在してもImGuiIDが衝突しないようにFilePathをIDとして使用する
-	const auto& l_folderPathString = Utility::WStringToString(a_folderTreeData.m_folderPath.wstring());
+	const auto& l_folderPathString = Utility::WStringToString(a_assetEntryData.m_filePath.wstring());
 
 	ImGui::PushID(l_folderPathString.c_str());
 
 	const bool l_isTreeNodeOpen = ImGui::TreeNodeEx(l_folderLabel.c_str(), l_treeNodeFlags);
 
-	// Folder部分をClickした場合、
-	// 右Paneで表示するDirectoryを変更する
-	// Arrowを押してTreeを開閉しただけの場合は
-	// CurrentDirectoryを変更しない
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left) &&
-		!ImGui::IsItemToggledOpen())
+	// Folder名をダブルクリックした場合だけ、
+	// そのDirectoryを右Paneで開いているDirectoryとして扱う
+	// ArrowクリックではCurrentDirectoryを変更しない
+	if (ImGui::IsItemHovered() &&
+		ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 	{
-		m_currentDirectoryPath = a_folderTreeData.m_folderPath;
+		m_currentDirectoryPath = a_assetEntryData.m_filePath;
 	}
 
 	// LeafではNoTreePushOnOpenを指定しているため、
 	// TreeNodeEx()によるTreePushが発生しない
 	// そのためTreePop(9を読んではいけない
-	if (!l_hasChildFolder)
+	if (!l_hasChildDirectory)
 	{
 		ImGui::PopID();
 
@@ -255,16 +259,17 @@ void FWK::Editor::AssetBrowserEditorWindow::DrawFolderTree(const FolderTreeData&
 		return;
 	}
 
-	for (const auto& l_childFolderData : a_folderTreeData.m_childFolderDataList)
+	for (const auto& l_childAssetEntryData : a_assetEntryData.m_childAssetEntryDataList)
 	{
-		DrawFolderTree(l_childFolderData);
+		if (!l_childAssetEntryData.m_isDirectory) { continue; }
+
+		DrawFolderTree(l_childAssetEntryData);
 	}
 
 	ImGui::TreePop();
 	ImGui::PopID  ();
-
 }
-void FWK::Editor::AssetBrowserEditorWindow::DrawAssetPane() const
+void FWK::Editor::AssetBrowserEditorWindow::DrawAssetPane()
 {
 	// X = 0.0F
 	// Y = 0.0F
@@ -277,13 +282,125 @@ void FWK::Editor::AssetBrowserEditorWindow::DrawAssetPane() const
 		return;
 	}
 
-	ImGui::TextUnformatted("アセット");
+	ImGui::TextUnformatted(k_assetPaneTitleLabel.data());
+	ImGui::Separator      ();
+
+	if (!DrawCurrentDirectoryAssetEntryList(m_rootAssetEntryData))
+	{
+		ImGui::TextDisabled(k_assetRootUnavailableLabel.data());
+	}
+
 	ImGui::EndChild();
 }
 
-bool FWK::Editor::AssetBrowserEditorWindow::DrawAssetEntryCard() const
+bool FWK::Editor::AssetBrowserEditorWindow::DrawCurrentDirectoryAssetEntryList(const AssetEntryData& a_assetEntryData)
 {
+	// FileはDirectoryとして開くことができない
+	if (!a_assetEntryData.m_isDirectory) { return false; }
 
+	// CurrentDirectoryを発見した
+	if (a_assetEntryData.m_filePath == m_currentDirectoryPath)
+	{
+		const auto& l_childAssetEntryDataList = a_assetEntryData.m_childAssetEntryDataList;
 
+		// 子ファイルパスが存在しなければディレクトリのみ描画する
+		if (l_childAssetEntryDataList.empty())
+		{
+			ImGui::TextDisabled(k_emptyDirectoryLabel.data());
+
+			return true;
+		}
+
+		// 右Paneの現在利用可能な横幅を取得する
+		const float l_availableWidth = ImGui::GetContentRegionAvail().x;
+
+		// Card一枚分 + Card同士の間隔
+		const float l_assetCardPitch = k_assetCardSize.x + k_assetCardSpacing;
+		
+		const auto& l_calculatedColumnCount = static_cast<std::size_t>((l_availableWidth + k_assetCardSpacing) / l_assetCardPitch);
+
+		// WindowsがCard1毎より狭い場合
+		// 計算結果が0列になる可能性がある
+		// 0列では剰余計算などが成立しないため
+		// 最低でも1列になるよう保証する
+		const auto& l_columnCount = std::max(l_calculatedColumnCount, k_minAssetCardColumnCount);
+
+		// DirectoryCardをダブルクリックした場合の移動先
+		// Card一覧を描画している途中でCurrentDirectoryを変更せず
+		// すべてのCardを描画した後に反映する
+		std::filesystem::path l_nextDirectoryPath = {};
+
+		// CurrentDirectory直下のFile / Directoryを先頭から順番にCardとして描画する
+		// 先頭から順番にCardとして
+		for (std::size_t l_index = 0ULL; l_index < l_childAssetEntryDataList.size(); ++l_index)
+		{
+			// DirectoryCardをダブルクリックした場合だけtrueを返す
+			if (const auto& l_childAssetEntryData = l_childAssetEntryDataList[l_index];
+				DrawAssetEntryCard(l_childAssetEntryData))
+			{
+				l_nextDirectoryPath = l_childAssetEntryData.m_filePath;
+			}
+
+			// 現在のCardの次に存在するEntryのIndex
+			const auto& l_nextIndex = l_index + k_nextAssetEntryIndexOffset;
+
+			if (l_nextIndex >= l_childAssetEntryDataList.size()) { continue; }
+
+			// 次のIndexがColumn数で割り切れる場合、
+			// 現在のCardがそのDrawの最後のCardということになる
+			// 例 : 
+			// ColumnCount = 3
+			// 0 1 2
+			// 3 4 5
+			// といった並びになる
+			if (l_nextIndex % l_columnCount == k_assetCardRowEndRemainder) { continue; }
+
+			// Row最後ではないので
+			// 次のCardを現在のCardの右側へ配置する
+			ImGui::SameLine(k_assetCardsSameLineOffsetX, k_assetCardSpacing);
+		}
+
+		// DirectoryCardがダブルクリックされていた場合は、
+		// Card一覧の描画が終わった後でCurrentDirectoryを変更する
+		if (!l_nextDirectoryPath.empty())
+		{
+			m_currentDirectoryPath = std::move(l_nextDirectoryPath);
+		}
+
+		return true;
+	}
+
+	// このAssetEntryData自身がCurrentDirectoryではなかったので
+	// ChildDirectoryだけを再帰的に探索する
+	// FileはCurrentDirectoryにはなれないため探索対象外
+	for (const auto& l_childAssetEntryData : a_assetEntryData.m_childAssetEntryDataList) 
+	{
+		if (!l_childAssetEntryData.m_isDirectory) { continue; }
+
+		// Child以下でCurrentDirectoryが見つかった場合は
+		// それ以降のSiblingDirectoryを探索する必要がない
+		if (DrawCurrentDirectoryAssetEntryList(l_childAssetEntryData)) { return true; }
+	}
+
+	// このAssetEntryData以下には
+	// CurrentDirectoryが存在しなかった
 	return false;
+}
+
+bool FWK::Editor::AssetBrowserEditorWindow::DrawAssetEntryCard(const AssetEntryData& a_assetEntryData) const
+{
+	return false;
+}
+
+bool FWK::Editor::AssetBrowserEditorWindow::CompareAssetEntryData(const AssetEntryData& a_leftAssetEntryData, const AssetEntryData& a_rightAssetEntryData)
+{
+	// DirectoryとFileならDirectoryを前へ並べる
+	if (a_leftAssetEntryData.m_isDirectory !=
+		a_rightAssetEntryData.m_isDirectory)
+	{
+		return a_leftAssetEntryData.m_isDirectory;
+	}
+
+	// 同じ種類同士ならPath順へ並べる
+	return a_leftAssetEntryData.m_filePath < a_rightAssetEntryData.m_filePath;
 }
