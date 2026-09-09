@@ -80,8 +80,8 @@ namespace FWK::Utility
 
 		return ImVec2
 		{
-			l_json.value(Constant::k_xJsonKey, static_cast<float>(NULL)), 
-			l_json.value(Constant::k_yJsonKey, static_cast<float>(NULL))
+			l_json.value(Constant::k_xJsonKey, Constant::k_initialJsonIMVEC2.x), 
+			l_json.value(Constant::k_yJsonKey, Constant::k_initialJsonIMVEC2.y)
 		};
 	}
 

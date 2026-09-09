@@ -415,6 +415,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UFBXConvertUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Observer\ObserverInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h" />

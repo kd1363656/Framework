@@ -36,6 +36,8 @@ namespace FWK::Editor
 		static constexpr int k_excludeNewLineOffset = -1;
 		static constexpr int k_nextLineIndexOffset  =  1;
 
+		static constexpr int k_minTextLineOffsets = 0;
+
 		static constexpr std::size_t k_ensureFirstLine = 0ULL;
 
 		static constexpr bool k_enableCanAutoScroll     = true;

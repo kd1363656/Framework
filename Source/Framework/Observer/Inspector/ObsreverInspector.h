@@ -69,7 +69,7 @@ namespace FWK
 				else
 				{
 					// 有効から無効ならEventを監視対象から外す
-					if (a_eventMap.erase(l_enumType) != static_cast<std::uint32_t>(NULL))
+					if (a_eventMap.erase(l_enumType) != Constant::k_noErasedElementCount)
 					{
 						l_isChanged = true;
 					}

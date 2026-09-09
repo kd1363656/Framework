@@ -15,4 +15,6 @@ namespace FWK::Constant
 	inline constexpr std::string_view k_uuidJsonKey = "UUID";
 
 	inline constexpr TypeAlias::Math::Color k_whiteColor = { 1.0F, 1.0F, 1.0F, 1.0F };
+
+	inline constexpr ImVec2 k_initialJsonIMVEC2 = { 0.0F, 0.0F };
 }

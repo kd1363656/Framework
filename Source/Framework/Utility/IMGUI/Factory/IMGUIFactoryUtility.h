@@ -158,7 +158,7 @@ namespace FWK::Utility
 			}
 			else
 			{
-				if (a_selectedMap.erase(l_staticTypeID) != static_cast<std::uint32_t>(NULL))
+				if (a_selectedMap.erase(l_staticTypeID) != Constant::k_noErasedElementCount)
 				{
 					l_isChanged = true;
 				}

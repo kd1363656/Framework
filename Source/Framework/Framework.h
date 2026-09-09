@@ -450,6 +450,7 @@
 #include "Definition/Constant/Utility/Enum/EnumBitShiftUtilityConstant.h"
 #include "Utility/Enum/EnumBitShiftUtility.h"
 #include "Utility/IMGUI/Bool/IMGUIBoolToString.h"
+#include "Definition/Constant/Observer/ObserverInspectorConstant.h"
 #include "Observer/Inspector/ObsreverInspector.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Observer/Observer.h"

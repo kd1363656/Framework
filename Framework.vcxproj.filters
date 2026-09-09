@@ -1447,6 +1447,9 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification">
       <UniqueIdentifier>{00806c96-eb99-45af-b85c-3254f2f4a091}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Observer">
+      <UniqueIdentifier>{bd5dc174-08b1-4972-aa54-99341f2cdd4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2789,6 +2792,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MoveComponentModeUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Observer\ObserverInspectorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Observer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

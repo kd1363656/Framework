@@ -78,8 +78,8 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		// FileNameはWCHAR配列なので、
 		// 例えば11Byteのような値では
 		// WCHAR単位の文字列として成立しない
-		if (l_notificationInformation.FileNameLength == static_cast<DWORD>(NULL) ||
-			l_notificationInformation.FileNameLength % sizeof(WCHAR) != static_cast<DWORD>(NULL))
+		if (l_notificationInformation.FileNameLength == k_invalidNameLength ||
+			l_notificationInformation.FileNameLength % sizeof(WCHAR) != static_cast<DWORD>(Constant::k_noRemainder))
 		{
 			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorが無効なFileNameLengthを受け取りました。");
 
@@ -113,7 +113,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		// ファイルのByte数からWCHARを割って何文字必要かを算出
 		const auto& l_fileNameCharacterCount = l_fileNameByteSize / sizeof(WCHAR);
 
-		// 算出した文字列数分NULLもじでstd::wstringを初期化
+		// 算出した文字列数分ヌル文字でstd::wstringを初期化
 		std::wstring l_relativeFilePathString(l_fileNameCharacterCount, Constant::k_wNullCharacter);
 
 		// バッファーから現在のバッファー位置と構造体固定Byte数分を足した位置かファイル名のByte数分コピーして文字列をコピーする
@@ -128,7 +128,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 			                          l_requiresFolderTreeRefresh;
 
 		// 0なら現在Recordが最後に取得できるFILE_NOTIFY_EXTENDED_INFORMATION
-		if (l_notificationInformation.NextEntryOffset == static_cast<DWORD>(NULL)) { return l_requiresFolderTreeRefresh; }
+		if (l_notificationInformation.NextEntryOffset == k_invalidNextEntryOffset) { return l_requiresFolderTreeRefresh; }
 
 		const auto& l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation.NextEntryOffset);
 
@@ -144,7 +144,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 			return true;
 		}
 
-		if (l_nextEntryOffset % sizeof(DWORD) != static_cast<std::size_t>(NULL))
+		if (l_nextEntryOffset % sizeof(DWORD) != static_cast<std::size_t>(Constant::k_noRemainder))
 		{
 			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorの通知BufferにDWORD境界へAlignmentされていないNextEntryOffsetが含まれています。");
 

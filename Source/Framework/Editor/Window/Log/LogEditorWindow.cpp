@@ -41,11 +41,11 @@ void FWK::Editor::LogEditorWindow::AddLog(const TypeAlias::Math::Color& a_textCo
 	int l_oldSize = m_textBuffer.size();
 
 	// 直前のログが改行で終わっている場合
-	// m_textLineOffsetsの最後 == 現在のTextuBufferサイズとなり、
+	// m_textLineOffsetsの最後 == 現在のTextBufferサイズとなり、
 	// 「まだ何も書かれていない次の行」を表している
 	// その行へ今回のログを書き始めるため
 	// その行の色を今回指定された色へ変更する
-	if (m_textLineOffsets.Size > NULL &&
+	if (m_textLineOffsets.Size > k_minTextLineOffsets &&
 		!m_textLineColorList.empty())
 	{
 		const int l_lastLineIndex = m_textLineOffsets.Size - k_nextLineIndexOffset;

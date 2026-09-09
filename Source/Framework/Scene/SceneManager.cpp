@@ -202,7 +202,7 @@ bool FWK::SceneManager::RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_
 	// 実際に削除した要素数を返す
 	// staleなMap状態だけが残っていた場合でも
 	// ここで削除して同期状態へ戻す
-	if (m_nextSceneLoadFilePathMap.erase(a_sceneUUID) != static_cast<std::uint64_t>(NULL))
+	if (m_nextSceneLoadFilePathMap.erase(a_sceneUUID) != Constant::k_noErasedElementCount)
 	{
 		l_isRemoved = true;
 	}
