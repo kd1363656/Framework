@@ -14,7 +14,7 @@ namespace FWK
 		 RotationComponentInspector() = default;
 		~RotationComponentInspector() = default;
 
-		void EditInspector(RotationComponent& a_rotationComponent);
+		void EditInspector(RotationComponent& a_moveComponent);
 
 	private:
 

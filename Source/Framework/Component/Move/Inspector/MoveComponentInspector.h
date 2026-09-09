@@ -15,5 +15,9 @@ namespace FWK
 		~MoveComponentInspector() = default;
 
 		void EditInspector(MoveComponent& a_moveComponent);
+
+	private:
+
+		static constexpr std::string_view k_moveModeRadioButtonSelectorLabel = "移動モードラジオボタンセレクター";
 	};
 }

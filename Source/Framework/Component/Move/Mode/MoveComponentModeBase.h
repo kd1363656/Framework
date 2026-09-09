@@ -36,7 +36,7 @@ namespace FWK
 		Utility::FetchComponentEventObserverFromSelfGameObjectHelper m_fetchComponentEventObserverFromSelfGameObjectHelper = {};
 		Utility::FetchTransformComponentFromSelfGameObjectHelper     m_fetchTransformComponentFromSelfGameObjectHelper     = {};
 
-		TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
+		TypeAlias::Math::Vector3 m_moveDirection = TypeAlias::Math::Vector3::Zero;
 
 		std::uint32_t m_canApplyMoveAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
 

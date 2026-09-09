@@ -1,10 +1,10 @@
 ﻿#include "RotationComponentConstantMouseModeInspector.h"
 
-void FWK::RotationComponentConstantMouseModeInspector::EditInspector(RotationComponentConstantMouseMode& a_rotationComponentConstantMouseMode)
+void FWK::RotationComponentConstantMouseModeInspector::EditInspector(RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode)
 {
-	a_rotationComponentConstantMouseMode.RotationComponentConstantModeBase::EditInspector();
+	a_moveComponentConstantMouseMode.RotationComponentConstantModeBase::EditInspector();
 
-	auto& l_xAxisRotatableRange = a_rotationComponentConstantMouseMode.GetMutableREFXAxisRotatableRange();
+	auto& l_xAxisRotatableRange = a_moveComponentConstantMouseMode.GetMutableREFXAxisRotatableRange();
 
 	ImGui::SeparatorText(k_xAxisRotatable.data());
 

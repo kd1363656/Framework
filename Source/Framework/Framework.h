@@ -547,7 +547,7 @@
 #include "Component/Rotation/Mode/Converter/Json/RotationComponentModeBaseJsonConverter.h"
 #include "Component/Rotation/Mode/Inspector/RotationComponentModeBaseInspector.h"
 #include "Component/Rotation/Mode/RotationComponentModeBase.h"
-#include "Definition/Type/Alias/Factory/Unique/RotationComponentModeFactory.h"
+#include "Definition/Type/Alias/Factory/Unique/RotationComponentModeUniqueFactory.h"
 #include "Component/Rotation/Converter/Json/RotationComponentJsonConverter.h"
 #include "Component/Rotation/Inspector/RotationComponentInspector.h"
 #include "Definition/Constant/Component/Rotation/RotationComponentConstantModeBaseConstant.h"
@@ -561,6 +561,7 @@
 #include "Component/Rotation/RotationComponent.h"
 
 #include "Component/Move/Mode/MoveComponentModeBase.h"
+#include "Definition/Type/Alias/Factory/Unique/MoveComponentModeUniqueFactory.h"
 #include "Component/Move/Inspector/MoveComponentInspector.h"
 #include "Component/Move/Converter/Json/MoveComponentJsonConverter.h"
 #include "Component/Move/MoveComponent.h"

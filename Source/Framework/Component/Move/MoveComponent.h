@@ -11,12 +11,22 @@ namespace FWK
 
 		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
+		void PostDeserialize() override;
+
+		void Update() override;
+
 		void EditInspector() override;
 
 		nlohmann::json SerializePrefab() override;
 
+		const auto& GetREFMoveMode() const { return m_moveMode; }
+
+		auto& GetMutableREFMoveMode() { return m_moveMode; }
+
 	private:
 		
+		std::unique_ptr<MoveComponentModeBase> m_moveMode = nullptr;
+
 		MoveComponentInspector m_inspector = {};
 
 		Converter::MoveComponentJsonConverter m_jsonConverter = {};

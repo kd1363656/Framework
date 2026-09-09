@@ -2748,7 +2748,7 @@
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeUniqueFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.h">
@@ -2786,6 +2786,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MoveComponentModeUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

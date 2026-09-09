@@ -1,10 +1,10 @@
 ﻿#include "RotationComponentJsonConverter.h"
 
-void FWK::Converter::RotationComponentJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, RotationComponent& a_rotationComponent) const
+void FWK::Converter::RotationComponentJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, RotationComponent& a_moveComponent) const
 {
 	if (a_rootJson.is_null()) { return; }
 
-	auto& l_rotationMode = a_rotationComponent.GetMutableREFRotationMode();
+	auto& l_rotationMode = a_moveComponent.GetMutableREFRotationMode();
 
 	Utility::DeserializeInstanceType<TypeAlias::RotatationComponentModeUniqueFactory>(a_rootJson, k_rotationModeJsonKey, l_rotationMode);
 
@@ -16,11 +16,11 @@ void FWK::Converter::RotationComponentJsonConverter::DeserializePrefab(const nlo
 	}
 }
 
-nlohmann::json FWK::Converter::RotationComponentJsonConverter::SerializePrefab(const RotationComponent& a_rotationComponent) const
+nlohmann::json FWK::Converter::RotationComponentJsonConverter::SerializePrefab(const RotationComponent& a_moveComponent) const
 {
 	nlohmann::json l_rootJson     = {};
 	
-	if (const auto& l_rotationMode = a_rotationComponent.GetREFRotationMode())
+	if (const auto& l_rotationMode = a_moveComponent.GetREFRotationMode())
 	{
 		Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_rotationMode, k_rotationModeJsonKey));
 	

@@ -14,15 +14,15 @@ namespace FWK::Converter
 		 RotationComponentModeBaseJsonConverter() = default;
 		~RotationComponentModeBaseJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const;
+		void Deserialize(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		nlohmann::json Serialize(const RotationComponentModeBase& a_rotationComponentModeBase) const;
+		nlohmann::json Serialize(const RotationComponentModeBase& a_moveComponentModeBase) const;
 
 	private:
 
-		void DeserializeCanApplyRotationAxisList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const;
+		void DeserializeCanApplyRotationAxisList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		nlohmann::json SerializeCanApplyRotationAxisList(const RotationComponentModeBase& a_rotationComponentModeBase) const;
+		nlohmann::json SerializeCanApplyRotationAxisList(const RotationComponentModeBase& a_moveComponentModeBase) const;
 
 		static constexpr std::string_view k_canApplyRotationAxisListJsonKey = "RotationApplyAxisList";
 		static constexpr std::string_view k_canApplyRotationAxisJsonKey     = "RotationApplyAxis";

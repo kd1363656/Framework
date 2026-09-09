@@ -14,9 +14,9 @@ namespace FWK::Converter
 		 RotationComponentJsonConverter() = default;
 		~RotationComponentJsonConverter() = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson, RotationComponent& a_rotationComponent) const;
+		void DeserializePrefab(const nlohmann::json& a_rootJson, RotationComponent& a_moveComponent) const;
 		
-		nlohmann::json SerializePrefab(const RotationComponent& a_rotationComponent) const;
+		nlohmann::json SerializePrefab(const RotationComponent& a_moveComponent) const;
 
 	private:
 

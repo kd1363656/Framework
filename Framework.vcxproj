@@ -499,8 +499,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MoveComponentModeUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeFactory.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h" />
