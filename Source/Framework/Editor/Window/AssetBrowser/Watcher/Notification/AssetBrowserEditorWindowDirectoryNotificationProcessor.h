@@ -66,8 +66,9 @@ namespace FWK::Editor
 		static constexpr std::size_t k_notificationBufferByteSize = 64ULL * 1024ULL;
 		static constexpr std::size_t k_initialBufferOffset        = 0ULL;
 
-		static constexpr DWORD k_invalidNameLength      = 0UL;
-		static constexpr DWORD k_invalidNextEntryOffset = 0UL;
+		static constexpr DWORD k_invalidFileNameByteSize     = 0UL;
+		static constexpr DWORD k_lastNotificationEntryOffset = 0UL;
+		static constexpr DWORD k_noFileAttribute             = 0UL;
 
 		std::unordered_map<std::int64_t, PendingFilePathChangeData> m_pendingFilePathChangeDataMap = {};
 

@@ -78,7 +78,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 		// FileNameはWCHAR配列なので、
 		// 例えば11Byteのような値では
 		// WCHAR単位の文字列として成立しない
-		if (l_notificationInformation.FileNameLength == k_invalidNameLength ||
+		if (l_notificationInformation.FileNameLength == k_invalidFileNameByteSize ||
 			l_notificationInformation.FileNameLength % sizeof(WCHAR) != static_cast<DWORD>(Constant::k_noRemainder))
 		{
 			FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorが無効なFileNameLengthを受け取りました。");
@@ -128,7 +128,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 			                          l_requiresFolderTreeRefresh;
 
 		// 0なら現在Recordが最後に取得できるFILE_NOTIFY_EXTENDED_INFORMATION
-		if (l_notificationInformation.NextEntryOffset == k_invalidNextEntryOffset) { return l_requiresFolderTreeRefresh; }
+		if (l_notificationInformation.NextEntryOffset == k_lastNotificationEntryOffset) { return l_requiresFolderTreeRefresh; }
 
 		const auto& l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation.NextEntryOffset);
 
@@ -296,7 +296,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 
 	// FileAttributeには
 	// 通知対象がFileなのかDirectoryなのか塘路の属性がBitFlagで格納されている
-	const bool l_isDirectory = (a_notificationInformation.FileAttributes & FILE_ATTRIBUTE_DIRECTORY) != static_cast<DWORD>(NULL);
+	const bool l_isDirectory = (a_notificationInformation.FileAttributes & FILE_ATTRIBUTE_DIRECTORY) != k_noFileAttribute;
 
 	// FILE_NOTIFY_EXTENDE_INFORMATION::FileIdは
 	// fileSystemがFile/Directoryへ割り当てている識別子

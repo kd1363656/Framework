@@ -45,7 +45,7 @@ namespace FWK::Editor
 
 		bool DrawAssetEntryCard(const AssetEntryData& a_assetEntryData) const;
 		
-		static bool CompareAssetEntryData(const AssetEntryData& a_leftAssetEntryData, const AssetEntryData& a_rightAssetEntryData);
+		static bool CompareAssetEntryData (const AssetEntryData& a_leftAssetEntryData, const AssetEntryData& a_rightAssetEntryData);
 
 		std::string FetchVALAssetEntryDisplayName(const AssetEntryData& a_assetEntryData) const;
 		std::string FetchVALAssetEntryIcon       (const AssetEntryData& a_assetEntryData) const;
@@ -65,12 +65,12 @@ namespace FWK::Editor
 
 		static constexpr ImVec2 k_assetCardSize = { 104.0F, 92.0F };
 
+		static constexpr std::size_t k_assetEntryNameStartIndex                 = 0ULL;
 		static constexpr std::size_t k_assetEntryNameVisibleCharacterCount      = 8ULL;
 		static constexpr std::size_t k_assetEntryNameAbbreviationCharacterCount = k_assetEntryNameVisibleCharacterCount + 1ULL;
 		static constexpr std::size_t k_minAssetCardColumnCount                  = 1ULL;
 		static constexpr std::size_t k_nextAssetEntryIndexOffset                = 1ULL;
-		static constexpr std::size_t k_assetCardRowEndRemainder                 = 0ULL;
-
+		
 		static constexpr float k_folderPaneWidth = 240.0F;
 
 		static constexpr float k_fileRemainingArea = 0.0F;
@@ -81,6 +81,7 @@ namespace FWK::Editor
 		static constexpr float k_assetCardIconTopPadding    = 8.0F;
 		static constexpr float k_assetCardTextBottomPadding = 8.0F;
 		static constexpr float k_assetCardCenterRate        = 0.5F;
+		static constexpr float k_assetCardTextWrapWidth     = 0.0F;
 
 		AssetFilePathRegistry m_assetFilePathRegistry = {};
 

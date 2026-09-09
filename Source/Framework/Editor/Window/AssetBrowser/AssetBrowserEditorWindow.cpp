@@ -353,7 +353,7 @@ bool FWK::Editor::AssetBrowserEditorWindow::DrawCurrentDirectoryAssetEntryList(c
 			// 0 1 2
 			// 3 4 5
 			// といった並びになる
-			if (l_nextIndex % l_columnCount == k_assetCardRowEndRemainder) { continue; }
+			if (l_nextIndex % l_columnCount == Constant::k_noRemainder) { continue; }
 
 			// Row最後ではないので
 			// 次のCardを現在のCardの右側へ配置する
@@ -389,7 +389,107 @@ bool FWK::Editor::AssetBrowserEditorWindow::DrawCurrentDirectoryAssetEntryList(c
 
 bool FWK::Editor::AssetBrowserEditorWindow::DrawAssetEntryCard(const AssetEntryData& a_assetEntryData) const
 {
-	return false;
+	const auto& l_filePathString = Utility::WStringToString(a_assetEntryData.m_filePath.wstring());
+
+	// 現在のImGuiWindowへ直接
+	// Rectangle / Textなどを描画するためのDrawListを取得
+	auto* l_drawList = ImGui::GetWindowDrawList();
+
+	if (!l_drawList) { return false; }
+
+	ImGui::PushID(l_filePathString.c_str());
+
+	// InvisibleButton()は見た目を自動で描画せず
+	// 指定したSizeのMouse操作可能領域だけを作成する
+	ImGui::InvisibleButton(k_assetCardButtonLabel.data(), k_assetCardSize);
+
+	// InvisibleButtonへMouseが載っているか確認する
+	const bool l_isHovered = ImGui::IsItemHovered();
+
+	// InvisibleButtonが実際に占有した
+	// 左上・右下のScreen座標を取得する
+	const auto& l_cardMIN = ImGui::GetItemRectMin();
+	const auto& l_cardMAX = ImGui::GetItemRectMax();
+
+	// Mouseが載っているときだけImGui標準のButtonHovered色で背景を描画する
+	if (l_isHovered)
+	{
+		const auto& l_style = ImGui::GetStyle();
+
+		// 通常時はButton色
+		// Mouseが載っている場合はButtonHovered色を使用
+		const auto l_cardBackgroundColor = ImGui::GetColorU32(l_isHovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
+
+		// Card本体の背景Rectangleを描画する
+		l_drawList->AddRectFilled(l_cardMIN,
+		                          l_cardMAX,
+		                          l_cardBackgroundColor,
+		                          l_style.FrameRounding);
+
+	}
+	
+	// Directory/PNG/FBX/そのほかFileに応じた
+	// FontAwesomeIconを取得
+	const auto& l_icon = FetchVALAssetEntryIcon(a_assetEntryData);
+
+	// Card株へ表示するFile/Directory名を取得する
+	// 長すぎる名前の場合はABCDEFGH...のように省略される
+	const auto& l_displayName = FetchVALAssetEntryDisplayName(a_assetEntryData);
+
+	// FontAwesomeは既存のImGuiFontへMerge済みなので、
+	// 現在使用しているFontをそのまま利用する
+	if (auto* l_font = ImGui::GetFont();
+		l_font)
+	{
+		// 指定したFondSizeでIconを書いた場合のWidth / Heightを取得する
+		// このSizeを使ってCard中央位置を計算する
+		const auto& l_iconTextSize = l_font->CalcTextSizeA(k_assetCardIconFontSize,
+			                                               std::numeric_limits<float>::max(),
+			                                               k_assetCardTextWrapWidth,
+			                                               l_icon.data(),
+			                                               l_icon.data() + l_icon.size());
+
+		// IconのX位置をCard中央へ合わせる
+		// CardLeft + (CardWidth - IconWidth) * 0.5Fで中央位置を算出する
+		const ImVec2& l_iconPosition = { l_cardMIN.x + (k_assetCardSize.x - l_iconTextSize.x) * k_assetCardCenterRate, l_cardMIN.y + k_assetCardIconTopPadding };
+
+		// FontAwesomeIconをCard上部へ描画する
+		l_drawList->AddText(l_font,
+			                k_assetCardIconFontSize,
+			                l_iconPosition,
+			                ImGui::GetColorU32(ImGuiCol_Text),
+			                l_icon.data(),
+			                l_icon.data() + l_icon.size());
+	}
+
+	// File / Directory名を通常Fondで描画した場合の
+	// TextSizeを取得する
+	const auto& l_displayNameSize = ImGui::CalcTextSize(l_displayName.c_str());
+
+	// File / Directory名をCard下部の中央へ配置する
+	const ImVec2& l_displayNamePosition = { l_cardMIN.x + (k_assetCardSize.x - l_displayNameSize.x) * k_assetCardCenterRate, l_cardMAX.y - l_displayNameSize.y - k_assetCardTextBottomPadding };
+
+	l_drawList->AddText(l_displayNamePosition, ImGui::GetColorU32(ImGuiCol_Text), l_displayName.c_str());
+
+	// CardへMouseを乗せた状態が一定時間続いた場合、
+	// 省略されていない完全なにFile / Directory名を表示する
+	if (l_isHovered)
+	{
+		const auto& l_fullEntryName = Utility::WStringToString(a_assetEntryData.m_filePath.filename().wstring());
+
+		Utility::IMGUIDelayedTooltip(l_fullEntryName);
+	}
+
+	// DirectoryCardだけダブルクリックによる移動を許可する
+	// FileCardをダブルクリックしても
+	// 現段階では何も実行しない
+	const bool l_isDirectoryDoubleClicked = a_assetEntryData.m_isDirectory &&
+		                                    l_isHovered                    &&
+		                                    ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
+
+	ImGui::PopID();
+
+	return l_isDirectoryDoubleClicked;
 }
 
 bool FWK::Editor::AssetBrowserEditorWindow::CompareAssetEntryData(const AssetEntryData& a_leftAssetEntryData, const AssetEntryData& a_rightAssetEntryData)
@@ -403,4 +503,44 @@ bool FWK::Editor::AssetBrowserEditorWindow::CompareAssetEntryData(const AssetEnt
 
 	// 同じ種類同士ならPath順へ並べる
 	return a_leftAssetEntryData.m_filePath < a_rightAssetEntryData.m_filePath;
+}
+
+std::string FWK::Editor::AssetBrowserEditorWindow::FetchVALAssetEntryDisplayName(const AssetEntryData& a_assetEntryData) const
+{
+	// FilePathではなく最後のFile/Directory名だけを取得する
+	// Asset/Model/Character.fbx -> Character.fbx
+	const auto& l_entryName = a_assetEntryData.m_filePath.filename().wstring();
+
+	// 表示可能文字数より短い場合は
+	// 省略せずそのまま表示する
+	if (l_entryName.size() < k_assetEntryNameAbbreviationCharacterCount){ return Utility::WStringToString(l_entryName); }
+
+	// 9文字以上の場合は先頭8文字だけ取得する
+	// UTF-8へ変換したstd::stringをsubstrすると、
+	// 日本語1文字を構成する途中Byteで切断する可能性がある
+	// そんおためWindows側のwstring状態で先に切り取る
+	auto l_abbreviatedEntryName = l_entryName.substr(k_assetEntryNameStartIndex, k_assetEntryNameAbbreviationCharacterCount);
+
+	// 省略されたことが分かるように...を末尾へ追加する
+	l_abbreviatedEntryName.append(k_assetEntryNameEllipsis);
+
+	return Utility::WStringToString(l_abbreviatedEntryName);
+}
+
+std::string FWK::Editor::AssetBrowserEditorWindow::FetchVALAssetEntryIcon(const AssetEntryData& a_assetEntryData) const
+{
+	// DirectoryならFolderIcon
+	if (a_assetEntryData.m_isDirectory) { return std::string{ Constant::k_imguiFontAwesomeFolderIcon }; }
+
+	const auto& l_extension = a_assetEntryData.m_filePath.extension();
+
+	// PNG TextureならImageIcon
+	if (l_extension == Constant::k_lowerPNGExtension) { return std::string{ Constant::k_imguiFontAwesomeImageIcon }; }
+
+	// FBXModelならCubeIcon
+	if (l_extension == Constant::k_lowerFBXExtension) { return std::string{ Constant::k_imguiFontAwesomeCubeIcon }; }
+
+	// JSONなど、専用Iconをまだ用意していないFileは
+	// 汎用File Iconを使用する
+	return std::string{ Constant::k_imguiFontAwesomeFileIcon };
 }

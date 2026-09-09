@@ -45,7 +45,7 @@ void FWK::Editor::LogEditorWindow::AddLog(const TypeAlias::Math::Color& a_textCo
 	// 「まだ何も書かれていない次の行」を表している
 	// その行へ今回のログを書き始めるため
 	// その行の色を今回指定された色へ変更する
-	if (m_textLineOffsets.Size > k_minTextLineOffsets &&
+	if (m_textLineOffsets.Size > k_emptyTextLineOffsetCount &&
 		!m_textLineColorList.empty())
 	{
 		const int l_lastLineIndex = m_textLineOffsets.Size - k_nextLineIndexOffset;
