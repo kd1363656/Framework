@@ -92,6 +92,17 @@ void FWK::Scene::Update() const
 			l_gameObject->Update();
 		}
 	}
+
+	auto& l_audioManager = AudioManager::GetInstance();
+
+	static bool l_isPlay = false;
+
+	if (!l_isPlay)
+	{
+		l_audioManager.PlayOneShot("Asset/Data/Sound/UI/Click/Click.wav");
+
+		l_isPlay = true;
+	}
 }
 void FWK::Scene::LateUpdate() const
 {
