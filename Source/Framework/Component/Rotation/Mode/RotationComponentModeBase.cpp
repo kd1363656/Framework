@@ -2,7 +2,7 @@
 
 void FWK::RotationComponentModeBase::INIT()
 {
-	m_canApplyRotationAxisList.clear();
+	m_canApplyRotationAxisBitShiftFlagList.clear();
 
 	m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
@@ -12,7 +12,7 @@ void FWK::RotationComponentModeBase::INIT()
 
 	m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 
-	m_canApplyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
+	m_canApplyRotationAxisBitShiftFlag = static_cast<std::uint32_t>(Enum::AxisBitShiftFlag::Invalid);
 }
 
 void FWK::RotationComponentModeBase::Deserialize(const nlohmann::json& a_rootJson)
@@ -43,13 +43,13 @@ nlohmann::json FWK::RotationComponentModeBase::Serialize() const
 	return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::RotationComponentModeBase::AddCanApplyRotationAxis(const Enum::Axis a_canApplyRotationAxis)
+void FWK::RotationComponentModeBase::AddCanApplyRotationAxisBitShiftFlag(const Enum::AxisBitShiftFlag a_canApplyRotationAxisBitShiftFlag)
 {
 	// 同じ要素を含めない
-	if (std::ranges::any_of(m_canApplyRotationAxisList, 
-		                   [a_canApplyRotationAxis](const auto a_containsApplyRotationAxis) 
+	if (std::ranges::any_of(m_canApplyRotationAxisBitShiftFlagList, 
+		                   [a_canApplyRotationAxisBitShiftFlag](const auto a_containsApplyRotationAxisBitShiftFlag) 
  	 	                   {
-								return a_containsApplyRotationAxis == a_canApplyRotationAxis;
+								return a_containsApplyRotationAxisBitShiftFlag == a_canApplyRotationAxisBitShiftFlag;
 		                   }))
 	{
 		return;
@@ -57,10 +57,10 @@ void FWK::RotationComponentModeBase::AddCanApplyRotationAxis(const Enum::Axis a_
 
 	// jsonに保存してもビットシフトの値が変わっても問題ないように
 	// Enumをstd::vectorで保存する
-	m_canApplyRotationAxisList.emplace_back(a_canApplyRotationAxis);
+	m_canApplyRotationAxisBitShiftFlagList.emplace_back(a_canApplyRotationAxisBitShiftFlag);
 
 	// ビットフラグを反映する
-	m_canApplyRotationAxis = Utility::EnableFlag(a_canApplyRotationAxis, m_canApplyRotationAxis);
+	m_canApplyRotationAxisBitShiftFlag = Utility::EnableFlag(a_canApplyRotationAxisBitShiftFlag, m_canApplyRotationAxisBitShiftFlag);
 }
 
 bool FWK::RotationComponentModeBase::CanUpdate()
@@ -76,7 +76,7 @@ bool FWK::RotationComponentModeBase::CanUpdate()
 
 	// イベントから回転できるかどうかを取得する
 	// できないなら書いて処理を行わない
-	if (!l_fetchComponentEventObserver->IsEventMatching(Enum::ComponentEvent::CanRotation, Enum::EventLane::TriggeredKeepFrame)) { return false; }
+	if (!l_fetchComponentEventObserver->IsEventMatching(Enum::ComponentEvent::CanRotation, Enum::EventLaneBitShiftFlag::TriggeredKeepFrame)) { return false; }
 	
 	return true;
 }

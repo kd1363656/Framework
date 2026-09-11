@@ -20,11 +20,11 @@ namespace FWK::Converter
 
 	private:
 
-		void DeserializeCanApplyRotationAxisList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
+		void DeserializeCanApplyRotationAxisBitShiftFlagList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		nlohmann::json SerializeCanApplyRotationAxisList(const RotationComponentModeBase& a_moveComponentModeBase) const;
+		nlohmann::json SerializeCanApplyRotationAxisBitShiftFlagList(const RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		static constexpr std::string_view k_canApplyRotationAxisListJsonKey = "RotationApplyAxisList";
-		static constexpr std::string_view k_canApplyRotationAxisJsonKey     = "RotationApplyAxis";
+		static constexpr std::string_view k_canApplyRotationAxisBitShiftFlagListJsonKey = "RotationApplyAxisBitShiftFlagList";
+		static constexpr std::string_view k_canApplyRotationAxisJsonKey                 = "RotationApplyAxisBitShiftFlag";
 	};
 }

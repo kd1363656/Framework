@@ -28,11 +28,11 @@ namespace FWK
 			{
 				// 瞬間的に記録するイベントは毎フレーム"false"にする
 				// そうすることでそのフレームしか通知しないイベントを実現できる
-				l_value = Utility::DisableFlag(Enum::EventLane::TriggeredThisFrame, l_value);
+				l_value = Utility::DisableFlag(Enum::EventLaneBitShiftFlag::TriggeredThisFrame, l_value);
 			}
 		}
 
-		void NotifyEvent(const Type a_type, const Enum::EventLane a_eventLane, const bool a_isEnabled)
+		void NotifyEvent(const Type a_type, const Enum::EventLaneBitShiftFlag a_eventLaneBitShiftFlag, const bool a_isEnabled)
 		{
 			auto l_itr = m_eventMap.find(a_type);
 
@@ -40,21 +40,21 @@ namespace FWK
 
 			if (a_isEnabled)
 			{
-				l_itr->second = Utility::EnableFlag(a_eventLane, l_itr->second);
+				l_itr->second = Utility::EnableFlag(a_eventLaneBitShiftFlag, l_itr->second);
 			}
 			else
 			{
-				l_itr->second = Utility::DisableFlag(a_eventLane, l_itr->second);
+				l_itr->second = Utility::DisableFlag(a_eventLaneBitShiftFlag, l_itr->second);
 			}
 		}
 
-		bool IsEventMatching(const Type a_type, const Enum::EventLane a_isMatchEventLane)
+		bool IsEventMatching(const Type a_type, const Enum::EventLaneBitShiftFlag a_isMatchEventLaneBitShiftFlag)
 		{
 			auto l_itr = m_eventMap.find(a_type);
 
 			if (l_itr == m_eventMap.end()) { return false; }
 
-			return Utility::IsFlagEnabled(a_isMatchEventLane, l_itr->second);
+			return Utility::IsFlagEnabled(a_isMatchEventLaneBitShiftFlag, l_itr->second);
 		}
 
 		void EditInspector(const std::string_view& a_label)

@@ -11,7 +11,7 @@ namespace FWK::Struct
 		Editor::NodeEditorNode m_editorNodeEditor = {};
 
 		// 入力チェックをするオブザーバーの通知の種類は一つのみ取り扱いたいからEnumで管理
-		Enum::EventLane m_checkEventLane = Enum::EventLane::Invalid;
+		Enum::EventLaneBitShiftFlag m_checkEventLane = Enum::EventLaneBitShiftFlag::Invalid;
 
 		bool m_expectedObserverResult = false;
 	};
@@ -20,7 +20,7 @@ namespace FWK::Struct
 	{
 		Enum::ComponentEvent m_notifyComponentEvent = Enum::ComponentEvent::Invalid;
 
-		Enum::EventLane m_notifyEventLane = Enum::EventLane::Invalid;
+		Enum::EventLaneBitShiftFlag m_notifyEventLaneBitShiftFlag = Enum::EventLaneBitShiftFlag::Invalid;
 
 		bool m_notifyFlag = false;
 	};

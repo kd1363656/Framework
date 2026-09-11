@@ -2,7 +2,7 @@
 
 namespace FWK::Enum
 {
-	enum class Axis : std::uint32_t
+	enum class AxisBitShiftFlag : std::uint32_t
 	{
 		Invalid = 0U,
 		X       = 1U << 0U,
@@ -12,14 +12,14 @@ namespace FWK::Enum
 
 	FWK_JSON_SERIALIZE_ENUM
 	(
-		Axis,
-		FWK_JSON_ENUM_VALUE(Axis::Invalid),
-		FWK_JSON_ENUM_VALUE(Axis::X),
-		FWK_JSON_ENUM_VALUE(Axis::Y),
-		FWK_JSON_ENUM_VALUE(Axis::Z),
+		AxisBitShiftFlag,
+		FWK_JSON_ENUM_VALUE(AxisBitShiftFlag::Invalid),
+		FWK_JSON_ENUM_VALUE(AxisBitShiftFlag::X),
+		FWK_JSON_ENUM_VALUE(AxisBitShiftFlag::Y),
+		FWK_JSON_ENUM_VALUE(AxisBitShiftFlag::Z),
 	)
 }
 
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::Axis, FWK::Enum::Axis::X)
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::Axis, FWK::Enum::Axis::Y)
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::Axis, FWK::Enum::Axis::Z)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::AxisBitShiftFlag, FWK::Enum::AxisBitShiftFlag::X)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::AxisBitShiftFlag, FWK::Enum::AxisBitShiftFlag::Y)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::AxisBitShiftFlag, FWK::Enum::AxisBitShiftFlag::Z)

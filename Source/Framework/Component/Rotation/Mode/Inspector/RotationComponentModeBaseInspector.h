@@ -18,6 +18,6 @@ namespace FWK
 
 	private:
 
-		static constexpr std::string_view k_rotationApplyAxisCheckboxLabel = "回転軸適用チェックボックス";
+		static constexpr std::string_view k_rotationApplyAxisBitShiftFlagCheckboxLabel = "回転軸適用チェックボックス";
 	};
 }

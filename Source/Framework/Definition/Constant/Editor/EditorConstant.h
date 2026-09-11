@@ -21,8 +21,8 @@ namespace FWK::Constant
 
 	inline constexpr ImVec2 k_imguiDefaultChildWindowSize = { 250.0F, 180.0F };
 
-	inline constexpr ImVec2 k_imguiDefaultNodeEditorCanvasSize = { 0.0F, 0.0F };
-
+	inline constexpr ImVec2 k_imguiRemainingSize = { 0.0F, 0.0F };
+	
 	inline constexpr TypeAlias::Math::Color k_imguiDebugINFOColor = 
 	{
 		0.92F,
@@ -61,6 +61,8 @@ namespace FWK::Constant
 	// -1.0を使用することでウィンドウのX最大まで引き延ばす
 	inline constexpr float k_imguiChildWindowMAXSize           = -1.0F;
 	inline constexpr float k_imguiDefaultChildVisibleItemCount = 8.0F;
+
+	inline constexpr float k_imguiDefaultPrimaryPaneSize = 220.0F;
 
 	inline constexpr TypeAlias::NodeEditorID k_imguiInvalidNodeEditorID         = std::numeric_limits<TypeAlias::NodeEditorID>::max();
 	inline constexpr TypeAlias::NodeEditorID k_imguiDefaultNodeEditorIDCapacity = 1000;

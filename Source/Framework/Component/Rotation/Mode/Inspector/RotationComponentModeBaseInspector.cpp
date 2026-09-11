@@ -2,7 +2,7 @@
 
 void FWK::RotationComponentModeBaseInspector::EditInspector(RotationComponentModeBase& a_moveComponentModeBase)
 {
-	auto& l_canApplyRotationAxisList = a_moveComponentModeBase.GetMutableREFCanApplyRotationAxisList();
+	auto& l_canApplyRotationAxisBitShiftFlagList = a_moveComponentModeBase.GetMutableREFCanApplyRotationAxisBitShiftFlagList();
 
-	Utility::IMGUIStringValueBidirectionalRegistryCheckBoxSelector(k_rotationApplyAxisCheckboxLabel, l_canApplyRotationAxisList);
+	Utility::IMGUIStringValueBidirectionalRegistryCheckBoxSelector(k_rotationApplyAxisBitShiftFlagCheckboxLabel, l_canApplyRotationAxisBitShiftFlagList);
 }

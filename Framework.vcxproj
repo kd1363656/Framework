@@ -339,6 +339,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Framework\Asset\AssetFilePathRegistry.h" />
     <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Audio\AudioManager.h" />
     <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
@@ -432,6 +433,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Splitter\EditorWindowPaneSplitter.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DepthStencilPassTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\PipelineStateBaseEnum.h" />
@@ -458,6 +461,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Component\RotationComponentConstantMouseModeStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h" />
@@ -522,9 +526,14 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorNodeJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Node\NodeEditorNode.h" />
+    <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\AssetBrowserEditorWindowAssetPane.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\AssetBrowserEditorWindowFolderPane.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionController.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.h" />
@@ -746,6 +755,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\File\ReplaceRootFilePathUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h" />
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\DeserializeOptionalShaderUtility.h" />
@@ -788,6 +798,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp" />
     <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
@@ -839,9 +850,14 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorNodeJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Node\NodeEditorNode.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json\AssetBrowserEditorWindowJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\AssetBrowserEditorWindowAssetPane.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\AssetBrowserEditorWindowFolderPane.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionController.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\Add\AssetBrowserEditorWindowDirectoryAddChange.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.cpp" />

@@ -23,11 +23,11 @@ namespace FWK
 
 		virtual nlohmann::json Serialize() const;
 
-		void AddCanApplyRotationAxis(const Enum::Axis a_canApplyRotationAxis);
+		void AddCanApplyRotationAxisBitShiftFlag(const Enum::AxisBitShiftFlag a_canApplyRotationAxisBitShiftFlag);
 
-		const auto& GetREFCanApplyRotationAxisList() const { return m_canApplyRotationAxisList; }
+		const auto& GetREFCanApplyRotationAxisBitShiftFlagList() const { return m_canApplyRotationAxisBitShiftFlagList; }
 
-		auto& GetMutableREFCanApplyRotationAxisList() { return m_canApplyRotationAxisList; }
+		auto& GetMutableREFCanApplyRotationAxisBitShiftFlagList() { return m_canApplyRotationAxisBitShiftFlagList; }
 
 	protected:
 
@@ -35,7 +35,7 @@ namespace FWK
 
 	private:
 
-		std::vector<Enum::Axis> m_canApplyRotationAxisList = {};
+		std::vector<Enum::AxisBitShiftFlag> m_canApplyRotationAxisBitShiftFlagList = {};
 
 		Utility::FetchComponentEventObserverFromSelfGameObjectHelper m_fetchComponentEventObserverFromSelfGameObjectHelper = {};
 		Utility::FetchTransformComponentFromSelfGameObjectHelper     m_fetchTransformComponentFromSelfGameObjectHelper     = {};
@@ -46,7 +46,7 @@ namespace FWK
 
 		TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 
-		std::uint32_t m_canApplyRotationAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
+		std::uint32_t m_canApplyRotationAxisBitShiftFlag = static_cast<std::uint32_t>(Enum::AxisBitShiftFlag::Invalid);
 
 		FWK_DEFINE_TYPE_INFO_ROOT(RotationComponentModeBase)
 	};

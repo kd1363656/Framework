@@ -24,6 +24,9 @@
             "Window": {
                 "AssetFilePathRegistry": {
                     "FilePathRegistryMap": []
+                },
+                "EditorWindowPaneSplitter": {
+                    "PrimaryPaneSize": 529.0
                 }
             },
             "WindowTypeName": "AssetBrowserEditorWindow"

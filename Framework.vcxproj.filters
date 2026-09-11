@@ -1450,6 +1450,42 @@
     <Filter Include="Source\Framework\Definition\Constant\Observer">
       <UniqueIdentifier>{bd5dc174-08b1-4972-aa54-99341f2cdd4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane">
+      <UniqueIdentifier>{b5e1bcdb-da48-4abf-994a-ae3f6b6f1bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder">
+      <UniqueIdentifier>{57fddd65-5d0a-4261-8829-4e359e6c4c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset">
+      <UniqueIdentifier>{64737387-6ef1-4b5a-89bb-7f8fcd274e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Selection">
+      <UniqueIdentifier>{ae09ed66-e3d6-4d71-ae30-d2048d6dff57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Editor">
+      <UniqueIdentifier>{8dc7619f-5395-4db7-8ead-5752397905b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Editor\Window">
+      <UniqueIdentifier>{8ce53bdc-020a-4fec-9744-035ac2b73f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Splitter">
+      <UniqueIdentifier>{93a3b649-aa4c-43cc-8cd9-65cb44190994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Editor\Splitter">
+      <UniqueIdentifier>{41b0145c-1f85-4685-96f2-cca80f3c4bfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Splitter\Converter">
+      <UniqueIdentifier>{dd3472cd-9f04-442e-9a46-58e735e7221b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Splitter\Converter\Json">
+      <UniqueIdentifier>{4f990046-9b35-4dac-93a6-1f64ced8eea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Editor\Window">
+      <UniqueIdentifier>{bd1d3a0a-5b42-4922-a4bd-65a506305611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Audio">
+      <UniqueIdentifier>{1382c7a9-9810-4792-930b-eeee0e2bd3a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2796,6 +2832,36 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Observer\ObserverInspectorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Observer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\AssetBrowserEditorWindowAssetPane.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\AssetBrowserEditorWindowFolderPane.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionController.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h">
+      <Filter>Source\Framework\Editor\Splitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Splitter\EditorWindowPaneSplitter.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Splitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h">
+      <Filter>Source\Framework\Editor\Splitter\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\File\ReplaceRootFilePathUtility.h">
+      <Filter>Source\Framework\Utility\File</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Audio\AudioManager.h">
+      <Filter>Source\Framework\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3523,6 +3589,24 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.cpp">
       <Filter>Source\Framework\Component\Move\Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\AssetBrowserEditorWindowAssetPane.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\AssetBrowserEditorWindowFolderPane.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionController.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp">
+      <Filter>Source\Framework\Editor\Splitter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Splitter\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Audio\AudioManager.cpp">
+      <Filter>Source\Framework\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

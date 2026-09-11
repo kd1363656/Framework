@@ -154,7 +154,7 @@ void FWK::Editor::EditorManager::DrawEditor()
 
 	l_imguiDragDropPayloadStorage.BeginFrame();
 
-	if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_D, false)) 
+	if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_P, false)) 
 	{
 		m_isDisableDrawEditor = m_isDisableDrawEditor ? false : true;
 

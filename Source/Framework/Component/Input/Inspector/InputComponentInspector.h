@@ -71,7 +71,7 @@ namespace FWK
 		static constexpr std::string_view k_outputPinLabel                                       = "Output";
 		static constexpr std::string_view k_inputPinLabel                                        = "Input";
 		static constexpr std::string_view k_notifyComponentEventLabel                            = "ComponentEvent";
-		static constexpr std::string_view k_notifyEventLaneLabel                                 = "EventLane";
+		static constexpr std::string_view k_notifyEventLaneBitShiftFlagLabel                     = "EventLaneBitShiftFlag";
 		static constexpr std::string_view k_notifyFlagLabel                                      = "NotifyFlag";
 		static constexpr std::string_view k_componentEventNotifyStrategyRadioButtonSelectorLabel = "ComponentEventNotifyStrategyRadioButtonSelector";
 		static constexpr std::string_view k_expectedObserverResultLabel                          = "ExpectedResult";

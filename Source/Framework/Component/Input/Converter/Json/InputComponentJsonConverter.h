@@ -33,7 +33,7 @@ namespace FWK::Converter
 		static constexpr std::string_view k_expectedObserverResultJsonKey                     = "ExpectedObserverResult";
 		static constexpr std::string_view k_executionJsonKey                                  = "Execution";
 		static constexpr std::string_view k_notifyComponentEventJsonKey                       = "NotifyComponentEvent";
-		static constexpr std::string_view k_notifyEventLaneJsonKey                            = "NotifyEventLane";
+		static constexpr std::string_view k_notifyEventLaneBitShiftFlagJsonKey                = "NotifyEventLaneBitShiftFlag";
 		static constexpr std::string_view k_notifyResultJsonKey                               = "NotifyResult";
 		static constexpr std::string_view k_notifyFlagJsonKey                                 = "NotifyFlag";
 		static constexpr std::string_view k_notifyStrategyJsonKey                             = "NotifyStrategy";

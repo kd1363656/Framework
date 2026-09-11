@@ -72,7 +72,7 @@ void FWK::Converter::InputComponentJsonConverter::DeserializeNotifyComponentEven
 			l_condition.m_editorNodeEditor.Deserialize(l_nodeEditorJson);
 		}
 
-		l_condition.m_checkEventLane         = l_json.value(k_checkEventLaneJsonKey,         Enum::EventLane::Invalid);
+		l_condition.m_checkEventLane         = l_json.value(k_checkEventLaneJsonKey,         Enum::EventLaneBitShiftFlag::Invalid);
 		l_condition.m_expectedObserverResult = l_json.value(k_expectedObserverResultJsonKey, false);
 
 		a_inputComponent.AddExecutionConditionList(l_condition);
@@ -89,7 +89,7 @@ void FWK::Converter::InputComponentJsonConverter::DeserializeExecution(const nlo
 	l_execution.m_notifyComponentEvent = a_rootJson.value(k_notifyComponentEventJsonKey, Enum::ComponentEvent::Invalid);
 
 	// 通知するComponentEventのどのEventLaneか
-	l_execution.m_notifyEventLane = a_rootJson.value(k_notifyEventLaneJsonKey, Enum::EventLane::Invalid);
+	l_execution.m_notifyEventLaneBitShiftFlag = a_rootJson.value(k_notifyEventLaneBitShiftFlagJsonKey, Enum::EventLaneBitShiftFlag::Invalid);
 
 	// 通知する際のフラグがtrueかfalseか
 	l_execution.m_notifyFlag = a_rootJson.value(k_notifyFlagJsonKey, false);
@@ -120,9 +120,9 @@ nlohmann::json FWK::Converter::InputComponentJsonConverter::SerializeExecution(c
 
 	const auto& l_execution = a_inputComponent.GetREFExecution();
 	   
-	l_rootJson[k_notifyComponentEventJsonKey] = l_execution.m_notifyComponentEvent;
-	l_rootJson[k_notifyEventLaneJsonKey]      = l_execution.m_notifyEventLane;
-	l_rootJson[k_notifyFlagJsonKey]           = l_execution.m_notifyFlag;
+	l_rootJson[k_notifyComponentEventJsonKey]        = l_execution.m_notifyComponentEvent;
+	l_rootJson[k_notifyEventLaneBitShiftFlagJsonKey] = l_execution.m_notifyEventLaneBitShiftFlag;
+	l_rootJson[k_notifyFlagJsonKey]                  = l_execution.m_notifyFlag;
 	
 	return l_rootJson;
 }

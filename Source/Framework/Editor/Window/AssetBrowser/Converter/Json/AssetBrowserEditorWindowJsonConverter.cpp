@@ -12,14 +12,24 @@ void FWK::Converter::AssetBrowserEditorWindowJsonConverter::Deserialize(const nl
 
 		l_assetFilePathRegistry.Deserialize(l_json);
 	}
+
+	if (const auto& l_json = a_rootJson.value(k_editorWindowPaneSplitterJsonKey, nlohmann::json{});
+		!l_json.is_null())
+	{
+		auto& l_paneSplitter = a_assetBrowserEditorWindow.GetMutableREFPaneSplitter();
+
+		l_paneSplitter.Deserialize(l_json);
+	}
 }
 
 nlohmann::json FWK::Converter::AssetBrowserEditorWindowJsonConverter::Serialize(const Editor::AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
 	      nlohmann::json l_rootJson              = {};
 	const auto&          l_assetFilePathRegistry = a_assetBrowserEditorWindow.GetREFAssetFilePathRegistry();
+	const auto&          l_paneSplitter          = a_assetBrowserEditorWindow.GetREFPaneSplitter         ();
 
-	l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
+	l_rootJson[k_assetFilePathRegistryJsonKey]    = l_assetFilePathRegistry.Serialize();
+	l_rootJson[k_editorWindowPaneSplitterJsonKey] = l_paneSplitter.Serialize         ();
 
 	return l_rootJson;
 }

@@ -2,7 +2,7 @@
 
 namespace FWK::Enum
 {
-	enum class EventLane : std::uint32_t
+	enum class EventLaneBitShiftFlag : std::uint32_t
 	{
 		Invalid            = 0U,
 		TriggeredThisFrame = 1U << 0U,
@@ -45,8 +45,8 @@ namespace FWK::Enum
 	)
 }
 
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLane, FWK::Enum::EventLane::Invalid)
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLane, FWK::Enum::EventLane::TriggeredThisFrame)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLaneBitShiftFlag, FWK::Enum::EventLaneBitShiftFlag::Invalid)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLaneBitShiftFlag, FWK::Enum::EventLaneBitShiftFlag::TriggeredThisFrame)
 
 FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::ComponentEvent, FWK::Enum::ComponentEvent::Invalid)
 FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::ComponentEvent, FWK::Enum::ComponentEvent::InputMouseRight)

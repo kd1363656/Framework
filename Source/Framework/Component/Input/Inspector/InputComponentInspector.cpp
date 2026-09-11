@@ -469,7 +469,7 @@ void FWK::InputComponentInspector::DrawConditionNodeList(InputComponent& a_input
 		ImNodes::EndInputAttribute   ();
 
 		Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector(k_notifyComponentEventLabel,          l_condition.m_receiveComponentEvent);
-		Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector(k_notifyEventLaneLabel,               l_condition.m_checkEventLane);
+		Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector(k_notifyEventLaneBitShiftFlagLabel,   l_condition.m_checkEventLane);
 		ImGui::Checkbox                                                  (k_expectedObserverResultLabel.data(), &l_condition.m_expectedObserverResult);
 		ImGui::PopID                                                     ();
 
@@ -554,7 +554,7 @@ void FWK::InputComponentInspector::DrawExecuteNode(InputComponent& a_inputCompon
 	// セレクターからストラテジーが生成されたなら適用
 	Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(k_componentEventNotifyStrategyRadioButtonSelectorLabel, l_notifyStrategy);
 	Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyComponentEventLabel,                            l_execution.m_notifyComponentEvent);
-	Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyEventLaneLabel,                                 l_execution.m_notifyEventLane);
+	Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyEventLaneBitShiftFlagLabel,                     l_execution.m_notifyEventLaneBitShiftFlag);
 	ImGui::Checkbox                                                                               (k_notifyFlagLabel.data(),                               &l_execution.m_notifyFlag);
 
 	ImGui::PopID    ();

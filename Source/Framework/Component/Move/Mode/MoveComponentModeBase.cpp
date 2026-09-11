@@ -2,13 +2,13 @@
 
 void FWK::MoveComponentModeBase::INIT()
 {
-	m_canApplyMoveAxisList.clear();
+	m_canApplyMoveAxisBitShiftFlagList.clear();
 
 	m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
 	m_moveDirection = TypeAlias::Math::Vector3::Zero;
 
-	m_canApplyMoveAxis = static_cast<std::uint32_t>(Enum::Axis::Invalid);
+	m_canApplyMoveAxis = static_cast<std::uint32_t>(Enum::AxisBitShiftFlag::Invalid);
 }
 
 void FWK::MoveComponentModeBase::Deserialize(const nlohmann::json& a_rootJson)
@@ -42,13 +42,13 @@ nlohmann::json FWK::MoveComponentModeBase::Serialize() const
 	return nlohmann::json();
 }
 
-void FWK::MoveComponentModeBase::AddCanApplyMoveAxis(const Enum::Axis a_canApplyMoveAxis)
+void FWK::MoveComponentModeBase::AddCanApplyMoveAxisBitShiftFlag(const Enum::AxisBitShiftFlag a_canApplyMoveAxisBitShiftFlag)
 {
 	// 同じ要素を含めない
-	if (std::ranges::any_of(m_canApplyMoveAxisList, 
-		                   [a_canApplyMoveAxis](const auto a_containsApplyMoveAxis) 
+	if (std::ranges::any_of(m_canApplyMoveAxisBitShiftFlagList, 
+		                   [a_canApplyMoveAxisBitShiftFlag](const auto a_containsApplyMoveAxis) 
  	 	                   {
-								return a_containsApplyMoveAxis == a_canApplyMoveAxis;
+								return a_containsApplyMoveAxis == a_canApplyMoveAxisBitShiftFlag;
 		                   }))
 	{
 		return;
@@ -56,8 +56,8 @@ void FWK::MoveComponentModeBase::AddCanApplyMoveAxis(const Enum::Axis a_canApply
 
 	// jsonに保存してもビットシフトの値が変わっても問題ないように
 	// Enumをstd::vectorで保存する
-	m_canApplyMoveAxisList.emplace_back(a_canApplyMoveAxis);
+	m_canApplyMoveAxisBitShiftFlagList.emplace_back(a_canApplyMoveAxisBitShiftFlag);
 
 	// ビットフラグを反映する
-	m_canApplyMoveAxis = Utility::EnableFlag(a_canApplyMoveAxis, m_canApplyMoveAxis);
+	m_canApplyMoveAxis = Utility::EnableFlag(a_canApplyMoveAxisBitShiftFlag, m_canApplyMoveAxis);
 }

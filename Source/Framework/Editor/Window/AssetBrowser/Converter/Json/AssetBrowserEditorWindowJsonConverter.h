@@ -20,6 +20,7 @@ namespace FWK::Converter
 
 	private:
 
-		static constexpr std::string_view k_assetFilePathRegistryJsonKey = "AssetFilePathRegistry";
+		static constexpr std::string_view k_assetFilePathRegistryJsonKey    = "AssetFilePathRegistry";
+		static constexpr std::string_view k_editorWindowPaneSplitterJsonKey = "EditorWindowPaneSplitter";
 	};
 }

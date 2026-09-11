@@ -42,8 +42,11 @@ void FWK::InputComponent::EarlyUpdate()
 
 	// Executeノードで通知するComponentEventが設定されていなければ
 	// 通知する内容が存在しないため処理を終了する
-	if (m_execution.m_notifyComponentEvent == Enum::ComponentEvent::Invalid) { return; }
-	if (m_execution.m_notifyEventLane == Enum::EventLane::Invalid)           { return; }
+	if (m_execution.m_notifyComponentEvent == Enum::ComponentEvent::Invalid ||
+		m_execution.m_notifyEventLaneBitShiftFlag == Enum::EventLaneBitShiftFlag::Invalid) 
+	{
+		return; 
+	}
 	
 	NotifyEvent();
 }

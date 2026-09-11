@@ -27,6 +27,6 @@ void FWK::InputMouseRightComponentEventNotifyStrategy::Execute(InputComponent& a
 
 	if (l_isPressedMMouseRight)
 	{
-		l_componentEventObserver->NotifyEvent(l_execution.m_notifyComponentEvent, l_execution.m_notifyEventLane, l_execution.m_notifyFlag);
+		l_componentEventObserver->NotifyEvent(l_execution.m_notifyComponentEvent, l_execution.m_notifyEventLaneBitShiftFlag, l_execution.m_notifyFlag);
 	}
 }
