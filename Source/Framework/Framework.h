@@ -47,6 +47,13 @@
 #include "Definition/Type/Alias/DescriptorPoolTypeAlias.h"
 
 //===============================================================================
+// 音
+//===============================================================================
+#include "Definition/Constant/Audio/AudioManagerConstant.h"
+#include "Audio/Converter/Json/AudioManagerJsonConverter.h"
+#include "Audio/AudioManager.h"
+
+//===============================================================================
 // エディター
 //===============================================================================
 #include "Definition/Type/Alias/MathTypeAlias.h"

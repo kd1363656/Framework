@@ -6,8 +6,8 @@ private:
 
 	friend class SingletonBase<Application>;
 
-	 Application()          = default;
-	~Application() override = default;
+	 Application();
+	~Application() override;
 
 public:
 

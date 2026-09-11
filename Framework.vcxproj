@@ -340,6 +340,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Asset\AssetFilePathRegistry.h" />
     <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.h" />
     <ClInclude Include="Source\Framework\Audio\AudioManager.h" />
+    <ClInclude Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
@@ -394,6 +395,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Audio\AudioManagerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h" />
@@ -799,6 +801,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp" />
     <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Audio\AudioManager.cpp" />
+    <ClCompile Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />

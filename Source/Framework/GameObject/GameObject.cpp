@@ -464,7 +464,7 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
 
 	const auto& l_currentParent = l_child->GetREFParent().lock();
 
-	// すでに同じGameOBjectが親の場合は二重登録しない
+	// すでに同じGameObjectが親の場合は二重登録しない
 	if (l_currentParent == l_self) { return false; }
 
 	// 現在の親GameObjectが存在する場合は
@@ -556,7 +556,7 @@ std::string FWK::GameObject::FetchVALGameObjectName() const
 
 	// PrefabNameはGameObject側へ複製せず、
 	// PrefabSystemに登録されているPrefabから取得する
-	return std::format("{}_{}", l_prefabName, m_prefabSceneInstanceNUM);
+	return std::format("{}({})", l_prefabName, m_prefabSceneInstanceNUM);
 }
 
 bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<GameObject>& a_gameObject, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet) const

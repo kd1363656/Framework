@@ -18,10 +18,19 @@ int WINAPI WinMain(_In_     HINSTANCE,
 
 	Application::GetInstance().Execute();
 
-	// COM解放
-	CoUninitialize();
-
 	return Application::k_exitCodeSuccess;
+}
+
+Application::Application() : 
+	m_window(),
+
+	m_fpsController()
+{}
+Application::~Application()
+{
+	// COM解放
+	// XAudio2 / DirectXTKAudioを含む各Managerの破棄完了後にCOMを終了する
+	CoUninitialize();
 }
 
 void Application::Execute()
@@ -29,16 +38,19 @@ void Application::Execute()
 	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
 	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
 	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
-	auto& l_sceneManager    = FWK::SceneManager::GetInstance			 ();
+	auto& l_audioManager    = FWK::AudioManager::GetInstance             ();
+	auto& l_sceneManager    = FWK::SceneManager::GetInstance             ();
 	auto& l_inputManager    = FWK::InputManager::GetInstance             ();
 
 	l_graphicsManager.INIT();
 	l_physicsManager.INIT ();
+	l_audioManager.INIT   ();
 
 	LoadCONFIG                  ();
 	l_graphicsManager.LoadCONFIG();
 	l_editorManager.LoadCONFIG  ();
 	l_physicsManager.LoadCONFIG ();
+	l_audioManager.LoadCONFIG   ();
 	
 	PostLoadCONFIG					();
 	l_graphicsManager.PostLoadCONFIG(m_window);
@@ -62,6 +74,10 @@ void Application::Execute()
 		// falseが戻り値ならbreakする
 		if (!BeginFrame()) { break; }
 
+		// AudioEngineや内部のVoice管理やAudioDevice状態の更新は、
+		// Sceneや描画を停止している場合でも行う
+		l_audioManager.Update();
+
 		// ウィンドウのリサイズ通知が来ていたらリサイズ処理を行う
 		l_graphicsManager.ProcessWindowResizeRequest(m_window.GetREFResizeRequest());
 		l_editorManager.ProcessWindowResizeRequest  (m_window.GetREFResizeRequest());
@@ -79,7 +95,7 @@ void Application::Execute()
 		}
 
 		l_inputManager.Update();
-
+		
 		// CharacterVirtualのDraw内容も受け取るため、ここでクリア
 		l_physicsManager.ClearFrame();
 
@@ -113,6 +129,7 @@ void Application::Execute()
 	l_graphicsManager.SaveCONFIG();
 	l_editorManager.SaveCONFIG  ();
 	l_physicsManager.SaveCONFIG ();
+	l_audioManager.SaveCONFIG   ();
 }
 
 void Application::LoadCONFIG()

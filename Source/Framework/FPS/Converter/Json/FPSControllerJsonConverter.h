@@ -16,7 +16,7 @@ namespace FWK::Converter
 
 		void Deserialize(const nlohmann::json& a_rootJson, FPSController& a_fpsController) const;
 
-		nlohmann::json Serialize(const FPSController& a_fpsController)	const;
+		nlohmann::json Serialize(const FPSController& a_fpsController) const;
 
 	private:
 

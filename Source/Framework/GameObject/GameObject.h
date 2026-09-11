@@ -95,9 +95,9 @@ namespace FWK
 			{
 				l_list.reserve(l_itr->second.size());
 
-				for (const auto& l_commponent : l_itr->second)
+				for (const auto& l_component : l_itr->second)
 				{
-					l_list.emplace_back(l_commponent);
+					l_list.emplace_back(l_component);
 				}
 			}
 	

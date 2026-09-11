@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+// XAudio2が使用する数学定数を有効にする
+#define _USE_MATH_DEFINES
+
 //================================================
 // Windows
 //================================================
@@ -75,6 +78,7 @@
 //================================================
 // DirectXTK12
 //================================================
+#include <Audio.h>
 #include <SimpleMath.h>
 #include <Keyboard.h>
 #include <Mouse.h>
@@ -167,3 +171,4 @@
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "xaudio2.lib")

@@ -1486,6 +1486,15 @@
     <Filter Include="Source\Framework\Audio">
       <UniqueIdentifier>{1382c7a9-9810-4792-930b-eeee0e2bd3a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Audio">
+      <UniqueIdentifier>{25038127-3a56-440c-914a-04b0ff634c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Audio\Converter">
+      <UniqueIdentifier>{0e34abc9-baa2-4ca7-8c7c-a97a48379ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Audio\Converter\Json">
+      <UniqueIdentifier>{0f9b7552-5b24-4320-89a7-e547feb21fc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2862,6 +2871,12 @@
     <ClInclude Include="Source\Framework\Audio\AudioManager.h">
       <Filter>Source\Framework\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Audio\AudioManagerConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.h">
+      <Filter>Source\Framework\Audio\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3607,6 +3622,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Audio\AudioManager.cpp">
       <Filter>Source\Framework\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.cpp">
+      <Filter>Source\Framework\Audio\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
