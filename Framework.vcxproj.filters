@@ -1495,6 +1495,18 @@
     <Filter Include="Source\Framework\Audio\Converter\Json">
       <UniqueIdentifier>{0f9b7552-5b24-4320-89a7-e547feb21fc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Audio\SoundEffect">
+      <UniqueIdentifier>{347b7ebf-7354-4343-a244-5e10f5a50bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Audio\SoundEffect\Instance">
+      <UniqueIdentifier>{28aa5cc9-b505-4c76-a2e0-4585d1e4a322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Audio\SoundEffect\Instance\2D">
+      <UniqueIdentifier>{b26bed36-76bf-4c83-ab7b-6930667845ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Audio\SoundEffect\Instance\3D">
+      <UniqueIdentifier>{bddbc323-2246-438c-a7ef-fbe18f26961f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2877,6 +2889,24 @@
     <ClInclude Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.h">
       <Filter>Source\Framework\Audio\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Audio\SoundEffect\SoundEffect.h">
+      <Filter>Source\Framework\Audio\SoundEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\SoundEffectInstanceBase.h">
+      <Filter>Source\Framework\Audio\SoundEffect\Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\2D\SoundEffectInstance2D.h">
+      <Filter>Source\Framework\Audio\SoundEffect\Instance\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.h">
+      <Filter>Source\Framework\Audio\SoundEffect\Instance\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3625,6 +3655,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.cpp">
       <Filter>Source\Framework\Audio\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Audio\SoundEffect\SoundEffect.cpp">
+      <Filter>Source\Framework\Audio\SoundEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\SoundEffectInstanceBase.cpp">
+      <Filter>Source\Framework\Audio\SoundEffect\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\2D\SoundEffectInstance2D.cpp">
+      <Filter>Source\Framework\Audio\SoundEffect\Instance\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.cpp">
+      <Filter>Source\Framework\Audio\SoundEffect\Instance\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
