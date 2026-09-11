@@ -1507,6 +1507,9 @@
     <Filter Include="Source\Framework\Audio\SoundEffect\Instance\3D">
       <UniqueIdentifier>{bddbc323-2246-438c-a7ef-fbe18f26961f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CONFIG\Audio">
+      <UniqueIdentifier>{efb32b75-c8ea-415b-bec9-53d7dbfd50dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3737,6 +3740,9 @@
     </None>
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli">
       <Filter>Asset\Shader\Sprite\Screen</Filter>
+    </None>
+    <None Include="CONFIG\Audio\AudioCONFIG.json">
+      <Filter>CONFIG\Audio</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

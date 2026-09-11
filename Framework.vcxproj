@@ -1096,6 +1096,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="Asset\Shader\RenderTarget\Final\FinalColor.hlsli" />
     <None Include="Asset\Shader\RenderTarget\FullScreenTriangle.hlsli" />
     <None Include="Asset\Shader\Sprite\Screen\SpriteScreen.hlsli" />
+    <None Include="CONFIG\Audio\AudioCONFIG.json" />
     <None Include="CONFIG\Editor\EditorCONFIG.json" />
     <None Include="CONFIG\FPS\FPSCONFIG.json" />
     <None Include="CONFIG\Graphics\GraphicsCONFIG.json" />

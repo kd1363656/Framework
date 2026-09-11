@@ -1,5 +1,18 @@
 ﻿#include "SoundEffectInstanceBase.h"
 
+FWK::SoundEffectInstanceBase::SoundEffectInstanceBase() : 
+	m_instance(nullptr),
+
+	m_soundEffect()
+{}
+FWK::SoundEffectInstanceBase::~SoundEffectInstanceBase()
+{
+	// 再生を注視してから
+	Stop();
+
+	m_instance.reset();
+}
+
 bool FWK::SoundEffectInstanceBase::CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect)
 {
 	if (a_soundEffect.expired()) { return false; }

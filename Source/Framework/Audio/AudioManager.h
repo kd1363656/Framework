@@ -6,6 +6,8 @@ namespace FWK
 	{
 	private:
 
+		using SoundEffectMap = std::unordered_map<std::filesystem::path, std::shared_ptr<SoundEffect>>;
+
 		friend class SingletonBase<AudioManager>;
 
 		 AudioManager();
@@ -16,12 +18,21 @@ namespace FWK
 		void INIT();
 
 		void LoadCONFIG();
-		
+
 		void Update();
+
+		void StopAllSound  () const;
+		void PauseAllSound () const;
+		void ResumeAllSound() const;
 
 		void SaveCONFIG() const;
 
 		void ApplyMasterVolume(const float a_volume);
+
+		std::weak_ptr<SoundEffect> AddSoundEffect   (const std::filesystem::path&                  a_filePath);
+		void                       AddEffectInstance(const std::weak_ptr<SoundEffectInstanceBase>& a_soundEffectInstanceBase);
+
+		void ClearMappedSound();
 
 		const auto& GetREFAudioEngine() const { return m_audioEngine; }
 
@@ -33,16 +44,29 @@ namespace FWK
 
 		bool CreateAudioEngine();
 
+		void RemoveSoundEffectInstanceIfStopped();
+
+		void Release();
+
 		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Audio/AudioCONFIG.json";
 
 		static constexpr float k_minMasterVolume = 0.0F;
 		static constexpr float k_maxMasterVolume = 1.0F;
 
+		static constexpr std::size_t k_initialRemoveSoundEffectInstanceIndex   = 0ULL;
+		static constexpr std::size_t k_soundEffectInstanceBeforeEndIndexOffset = 1ULL;
+
 		static constexpr bool k_isRightHandedCoordinates = false;
+
+		SoundEffectMap m_soundEffectMap;
+
+		std::vector<std::weak_ptr<SoundEffectInstanceBase>> m_soundEffectInstanceList;
 
 		std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
 
-		Converter::AudioManagerJsonConverter m_jsonConverter = {};
+		DirectX::AudioListener m_audioListener;
+
+		Converter::AudioManagerJsonConverter m_jsonConverter;
 
 		float m_masterVolume;
 

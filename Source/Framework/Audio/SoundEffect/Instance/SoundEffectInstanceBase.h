@@ -6,8 +6,8 @@ namespace FWK
 	{
 	public:
 
-	             SoundEffectInstanceBase() = default;
-		virtual ~SoundEffectInstanceBase() = default;
+	             SoundEffectInstanceBase();
+		virtual ~SoundEffectInstanceBase();
 
 		virtual bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect);
 
