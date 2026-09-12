@@ -2,88 +2,88 @@
 
 namespace FWK
 {
-	template <typename Type>
-	class UUIDRegistry final
-	{
-	private:
+    template <typename Type>
+    class UUIDRegistry final
+    {
+    private:
 
-		using UUIDMap = std::unordered_map<boost::uuids::uuid, Type>;
+        using UUIDMap = std::unordered_map<boost::uuids::uuid, Type>;
 
-		static constexpr bool k_isWeakPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
+        static constexpr bool k_isWeakPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
 
-	public:
+    public:
 
-		 UUIDRegistry() = default;
-		~UUIDRegistry() = default;
+         UUIDRegistry() = default;
+        ~UUIDRegistry() = default;
 
-		bool Add(const Type& a_type, boost::uuids::uuid& a_uuid)
-			requires k_isWeakPTR
-		{
-			const auto& l_type = a_type.lock();
+        bool Add(const Type& a_type, boost::uuids::uuid& a_uuid)
+            requires k_isWeakPTR
+        {
+            const auto& l_type = a_type.lock();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_type, "登録対象が無効なため、UUIDMapへの登録に失敗しました。", false);
-			
-			// 既にUUIDを持っている場合
-			// Deserializeなどで復元されたUUIDなので
-			// 重複していたからと言って勝手に別UUIDへ変更しない
-			if (!a_uuid.is_nil())
-			{
-				const bool l_isInserted = m_uuidMap.try_emplace(a_uuid, a_type).second;
+            FWK_ASSERT_RETURN_VALUE_IF(!l_type, "登録対象が無効なため、UUIDMapへの登録に失敗しました。", false);
 
-				FWK_ASSERT_RETURN_VALUE_IF(!l_isInserted, "既に同じUUIDが登録されているため、UUIDMapへの登録に失敗しました。", false);
+            // 既にUUIDを持っている場合
+            // Deserializeなどで復元されたUUIDなので
+            // 重複していたからと言って勝手に別UUIDへ変更しない
+            if (!a_uuid.is_nil())
+            {
+                const bool l_isInserted = m_uuidMap.try_emplace(a_uuid, a_type).second;
 
-				return true;
-			}
+                FWK_ASSERT_RETURN_VALUE_IF(!l_isInserted, "既に同じUUIDが登録されているため、UUIDMapへの登録に失敗しました。", false);
 
-			// 新規GameObjectなど、
-			// UUIDをまだ持っていない場合のみ新規発行する
-			while (true)
-			{
-				a_uuid = UUIDManager::GetInstance().GenerateVALUUID();
+                return true;
+            }
 
-				if (a_uuid.is_nil()) { continue; }
+            // 新規GameObjectなど、
+            // UUIDをまだ持っていない場合のみ新規発行する
+            while (true)
+            {
+                a_uuid = UUIDManager::GetInstance().GenerateVALUUID();
 
-				if (m_uuidMap.try_emplace(a_uuid, a_type).second)
-				{
-					return true;
-				}
-			}
-		}
+                if (a_uuid.is_nil()) { continue; }
 
-		bool Erase(boost::uuids::uuid& a_uuid)
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(a_uuid.is_nil(), "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
+                if (m_uuidMap.try_emplace(a_uuid, a_type).second)
+                {
+                    return true;
+                }
+            }
+        }
 
-			const auto& l_itr = m_uuidMap.find(a_uuid);
+        bool Erase(boost::uuids::uuid& a_uuid)
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(a_uuid.is_nil(), "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
+            const auto& l_itr = m_uuidMap.find(a_uuid);
 
-			m_uuidMap.erase(l_itr);
+            FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
 
-			// UUIDを明示的に無効値として扱う
-			a_uuid = {};
+            m_uuidMap.erase(l_itr);
 
-			return true;
-		}
+            // UUIDを明示的に無効値として扱う
+            a_uuid = {};
 
-		void Clear()
-		{
-			m_uuidMap.clear();
-		}
+            return true;
+        }
 
-		Type FindVALRegisteredType(const boost::uuids::uuid& a_uuid) const
-		{
-			if (a_uuid.is_nil()) { return {}; }
+        void Clear()
+        {
+            m_uuidMap.clear();
+        }
 
-			const auto l_itr = m_uuidMap.find(a_uuid);
+        Type FindVALRegisteredType(const boost::uuids::uuid& a_uuid) const
+        {
+            if (a_uuid.is_nil()) { return {}; }
 
-			if (l_itr == m_uuidMap.end()) { return {}; }
+            const auto l_itr = m_uuidMap.find(a_uuid);
 
-			return l_itr->second;
-		}
+            if (l_itr == m_uuidMap.end()) { return {}; }
 
-	private:
+            return l_itr->second;
+        }
 
-		UUIDMap m_uuidMap = {};
-	};
+    private:
+
+        UUIDMap m_uuidMap = {};
+    };
 }

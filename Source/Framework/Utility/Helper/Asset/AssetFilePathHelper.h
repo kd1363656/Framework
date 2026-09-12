@@ -2,38 +2,38 @@
 
 namespace FWK::Utility
 {
-	class AssetFilePathHelper final
-	{
-	public:
+    class AssetFilePathHelper final
+    {
+    public:
 
-		 AssetFilePathHelper() = default;
-		~AssetFilePathHelper() = default;
+         AssetFilePathHelper() = default;
+        ~AssetFilePathHelper() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		nlohmann::json Serialize() const;
+        nlohmann::json Serialize() const;
 
-		void EditInspector();
+        void EditInspector();
 
-		bool ApplyAssetFilePath(const std::filesystem::path& a_set);
+        bool ApplyAssetFilePath(const std::filesystem::path& a_set);
 
-		void SetAllowedFileExtension(const std::filesystem::path& a_set) { m_allowedFileExtension = a_set; }
-		
-		void SetIsFilePathChangedDirty(const bool a_set) { m_isFilePathChangedDirty = a_set; }
+        void SetAllowedFileExtension(const std::filesystem::path& a_set) { m_allowedFileExtension = a_set; }
 
-		const auto& GetREFAssetFilePath() const { return m_assetFilePath; }
+        void SetIsFilePathChangedDirty(const bool a_set) { m_isFilePathChangedDirty = a_set; }
 
-		bool GetVALIsFilePathChangedDirty() const { return m_isFilePathChangedDirty; }
+        const auto& GetREFAssetFilePath() const { return m_assetFilePath; }
 
-	private:
+        bool GetVALIsFilePathChangedDirty() const { return m_isFilePathChangedDirty; }
 
-		AssetFilePathHelperInspector m_inspector = {};
+    private:
 
-		Converter::AssetFilePathHelperJsonConverter m_jsonConverter = {};
+        AssetFilePathHelperInspector m_inspector = {};
 
-		std::filesystem::path m_allowedFileExtension = {};
-		std::filesystem::path m_assetFilePath        = {};
+        Converter::AssetFilePathHelperJsonConverter m_jsonConverter = {};
 
-		bool m_isFilePathChangedDirty = false;
-	};
+        std::filesystem::path m_allowedFileExtension = {};
+        std::filesystem::path m_assetFilePath        = {};
+
+        bool m_isFilePathChangedDirty = false;
+    };
 }

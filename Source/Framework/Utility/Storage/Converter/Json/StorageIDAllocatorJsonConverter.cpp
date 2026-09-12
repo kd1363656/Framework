@@ -2,18 +2,18 @@
 
 void FWK::Converter::StorageIDAllocatorJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Utility::StorageIDAllocator& a_storageIDAllocator) const
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	const auto l_storageIDCapacity = a_rootJson.value(k_capacityJsonKey, Constant::k_storageIDAllocatorDefaultCreateStorageIDCapacity);
-	
-	a_storageIDAllocator.SetStorageIDCapacity(l_storageIDCapacity);
+    const auto l_storageIDCapacity = a_rootJson.value(k_capacityJsonKey, Constant::k_storageIDAllocatorDefaultCreateStorageIDCapacity);
+
+    a_storageIDAllocator.SetStorageIDCapacity(l_storageIDCapacity);
 }
 
 nlohmann::json FWK::Converter::StorageIDAllocatorJsonConverter::Serialize(const Utility::StorageIDAllocator& a_storageIDAllocator) const
 {
-	nlohmann::json l_rootJson = {};
+    nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_capacityJsonKey] = a_storageIDAllocator.GetVALStorageIDCapacity();
-	
-	return l_rootJson;
+    l_rootJson[k_capacityJsonKey] = a_storageIDAllocator.GetVALStorageIDCapacity();
+
+    return l_rootJson;
 }

@@ -2,34 +2,34 @@
 
 namespace FWK::Physics
 {
-	class PhysicsStaticBoxBody final : public PhysicsStaticBodyBase
-	{
-	private:
+    class PhysicsStaticBoxBody final : public PhysicsStaticBodyBase
+    {
+    private:
 
-		// TODO
-		friend class Scene;
+        // TODO
+        friend class Scene;
 
-	public:
+    public:
 
-		 PhysicsStaticBoxBody()          = default;
-		~PhysicsStaticBoxBody() override = default;
+         PhysicsStaticBoxBody()          = default;
+        ~PhysicsStaticBoxBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
+        bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
 
-		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
+        bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 
-		void SetHalfExtent(const TypeAlias::Math::Vector3& a_set) { m_halfExtent = a_set; }
+        void SetHalfExtent(const TypeAlias::Math::Vector3& a_set) { m_halfExtent = a_set; }
 
-		const auto& GetRERHalfExtent() const { return m_halfExtent; }
+        const auto& GetRERHalfExtent() const { return m_halfExtent; }
 
-	private:
+    private:
 
-		JPH::RefConst<JPH::Shape> CreateShape() const;
+        JPH::RefConst<JPH::Shape> CreateShape() const;
 
-		bool ApplyShapeChange();
+        bool ApplyShapeChange();
 
-		TypeAlias::Math::Vector3 m_halfExtent = { Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength };
+        TypeAlias::Math::Vector3 m_halfExtent = { Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength, Constant::k_defaultPhysicsStaticBoxBodyHalfExtentLength };
 
-		FWK_DEFINE_TYPE_INFO(PhysicsStaticBoxBody, PhysicsStaticBodyBase)
-	};
+        FWK_DEFINE_TYPE_INFO(PhysicsStaticBoxBody, PhysicsStaticBodyBase)
+    };
 }

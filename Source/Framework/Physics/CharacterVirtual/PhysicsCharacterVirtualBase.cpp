@@ -21,23 +21,23 @@ FWK::Physics::PhysicsCharacterVirtualBase::~PhysicsCharacterVirtualBase()
 bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition)
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_characterVirtual,                                                                "CharacterVirtualが既に作成されています。",                                         false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
 
-	FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
-  		                       m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians, 
+    FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
+                               m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians,
                                "CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外のため、作成に失敗しました。",
                                false);
 
     JPH::Quat l_physicsWorldRotation = { a_worldRotation.x,
-										 a_worldRotation.y,
-										 a_worldRotation.z,
-										 a_worldRotation.w };
+                                         a_worldRotation.y,
+                                         a_worldRotation.z,
+                                         a_worldRotation.w };
 
-	FWK_ASSERT_RETURN_VALUE_IF(l_physicsWorldRotation.IsNaN() ||
-		                       l_physicsWorldRotation.LengthSq() <= std::numeric_limits<float>::epsilon(),
+    FWK_ASSERT_RETURN_VALUE_IF(l_physicsWorldRotation.IsNaN() ||
+                               l_physicsWorldRotation.LengthSq() <= std::numeric_limits<float>::epsilon(),
                                "CharacterVirtualのWorldRotationが無効なため、作成に失敗しました。",
-		                       false);
+                               false);
 
     l_physicsWorldRotation = l_physicsWorldRotation.Normalized();
 
@@ -66,7 +66,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
     // MeshShapeなどを構成する三角形同士の境界で
     // ChacacterVirtualが不要に引っかかる現象を軽減する
     l_characterVirtualSettings.mEnhancedInternalEdgeRemoval = !m_isEnhancedInternalEdgeRemovalDisabled;
-    
+
     // Charactervirtualのどの範囲に接触した面を、Charactervirtualを支える床として扱うかを設定する平面
     l_characterVirtualSettings.mSupportingVolume = JPH::Plane{ JPH::Vec3::sAxisY(), -m_capsuleRadius };
 
@@ -84,7 +84,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
                                                               &l_physicsSystem };
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_characterVirtual, "Jolt側CharacterVirtualの作成に失敗しました。", false);
-    
+
     // ExtendUpdateSettingsをJoltの標準値へ戻す
     m_extendedUpdateSettings = {};
 
@@ -141,7 +141,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
                                                                *m_characterVirtual);
 
     m_characterVirtual->SetLinearVelocity(l_nextLinearVelocity);
-    
+
     // CharacterVirtualは現在のLinearVelocityをもとにExtendedUpdate()で移動する
     ApplyExtendedUpdateSettings(*m_characterVirtual, m_extendedUpdateSettings);
 
@@ -155,7 +155,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
                                        l_broadPhaseLayerFilter,
                                        l_objectLayerFilter,
                                        l_bodyFilter,
-                                       l_shapeFilter, 
+                                       l_shapeFilter,
                                        *l_tempAllocator);
 }
 
@@ -215,8 +215,8 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyWorldTransform(const TypeAl
                                          a_worldRotation.w };
 
     FWK_ASSERT_RETURN_VALUE_IF(l_physicsWorldRotation.IsNaN() ||
-                               l_physicsWorldRotation.LengthSq() <= std::numeric_limits<float>::epsilon(), 
-                               "CharacterVirtualのWorldRotationが無効なため、WorldTransformの反映に失敗しました。", 
+                               l_physicsWorldRotation.LengthSq() <= std::numeric_limits<float>::epsilon(),
+                               "CharacterVirtualのWorldRotationが無効なため、WorldTransformの反映に失敗しました。",
                                 false);
 
     l_physicsWorldRotation = l_physicsWorldRotation.Normalized();
@@ -251,7 +251,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::FetchVALIsOnGround() const
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape() const
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CapsuleHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
-	FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
 
     const JPH::CapsuleShapeSettings l_capsuleShapeSettings = { m_capsuleHalfHeightOfCylinder, m_capsuleRadius };
 
@@ -289,7 +289,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
     const auto& l_tempAllocator       = l_physicsManager.GetREFTempAllocator      ();
     const auto& l_physicsLayerSetting = l_physicsManager.GetREFPhysicsLayerSetting();
     const auto& l_physicsSystem       = l_physicsManager.GetREFPhysicsSystem      ();
-   
+
     FWK_ASSERT_RETURN_VALUE_IF(!l_tempAllocator,       "TempAllocatorが無効なため、Shape変更に失敗しました。",       false);
     FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、Shape変更に失敗しました。", false);
 
@@ -318,7 +318,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
                                      l_shapeFilter,
                                      *l_tempAllocator))
     {
-        return false; 
+        return false;
     }
 
     // Radiusが変更されると、CharacterVirtualを支える床の判定範囲も変わるため、

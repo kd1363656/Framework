@@ -2,144 +2,144 @@
 
 namespace FWK
 {
-	class Window final
-	{
-	public:
+    class Window final
+    {
+    public:
 
-		struct ClientSize final
-		{
-			UINT m_width  = k_defaultWindowWidth;
-			UINT m_height = k_defaultWindowHeight;
-		};
+        struct ClientSize final
+        {
+            UINT m_width  = k_defaultWindowWidth;
+            UINT m_height = k_defaultWindowHeight;
+        };
 
-		struct ResizeRequest final
-		{
-			ClientSize m_clientSize = { k_invalidClientWidth, k_invalidClientHeight };
+        struct ResizeRequest final
+        {
+            ClientSize m_clientSize = { k_invalidClientWidth, k_invalidClientHeight };
 
-			bool m_isRequested = false;
-			bool m_isMinimized = false;
-		};
+            bool m_isRequested = false;
+            bool m_isMinimized = false;
+        };
 
-		static constexpr UINT k_defaultWindowWidth  = 1280U;
-		static constexpr UINT k_defaultWindowHeight = 720U;
+        static constexpr UINT k_defaultWindowWidth  = 1280U;
+        static constexpr UINT k_defaultWindowHeight = 720U;
 
-		static constexpr UINT k_invalidClientWidth  = 0U;
-		static constexpr UINT k_invalidClientHeight = 0U;
+        static constexpr UINT k_invalidClientWidth  = 0U;
+        static constexpr UINT k_invalidClientHeight = 0U;
 
-	public:
+    public:
 
-		 Window();
-		~Window();
+         Window();
+        ~Window();
 
-		void LoadCONFIG    ();
-		void PostLoadCONFIG(const std::wstring& a_windowClassName, const std::string& a_titleName);
+        void LoadCONFIG    ();
+        void PostLoadCONFIG(const std::wstring& a_windowClassName, const std::string& a_titleName);
 
-		bool ProcessMessages() const;
+        bool ProcessMessages() const;
 
-		void ClearResizeRequest();
+        void ClearResizeRequest();
 
-		void SaveCONFIG() const;
+        void SaveCONFIG() const;
 
-		bool IsMinimized() const;
+        bool IsMinimized() const;
 
-		void SetupStyle(const Enum::WindowStyle a_style);
+        void SetupStyle(const Enum::WindowStyle a_style);
 
-		void SetStyle(const Enum::WindowStyle a_set) { m_style = a_set; }
+        void SetStyle(const Enum::WindowStyle a_set) { m_style = a_set; }
 
-		const auto& GetREFHWND() const { return m_hwnd; }
+        const auto& GetREFHWND() const { return m_hwnd; }
 
-		const auto& GetREFClientSize   () const { return m_clientSize; }
-		const auto& GetREFResizeRequest() const { return m_resizeRequest; }
+        const auto& GetREFClientSize   () const { return m_clientSize; }
+        const auto& GetREFResizeRequest() const { return m_resizeRequest; }
 
-		auto GetVALStyle() const { return m_style; }
+        auto GetVALStyle() const { return m_style; }
 
-		float GetVALAspectRatio() const { return m_aspectRatio; }
+        float GetVALAspectRatio() const { return m_aspectRatio; }
 
-	private:
+    private:
 
-		// Win32APIに渡すウィンドウプロシージャは通常のメンバ関数では渡せないため、
-		// static関数として定義して呼び出しの入口にする
-		static LRESULT CALLBACK CallWindowProcedure(const HWND   a_hwnd,
-												    const UINT   a_message,
-												    const WPARAM a_wPARAM,
-												    const LPARAM a_lPARAM);
+        // Win32APIに渡すウィンドウプロシージャは通常のメンバ関数では渡せないため、
+        // static関数として定義して呼び出しの入口にする
+        static LRESULT CALLBACK CallWindowProcedure(const HWND   a_hwnd,
+                                                    const UINT   a_message,
+                                                    const WPARAM a_wPARAM,
+                                                    const LPARAM a_lPARAM);
 
-		LRESULT CALLBACK WindowProcedure(const HWND   a_hwnd,
-										 const UINT   a_message,
-										 const WPARAM a_wPARAM,
-										 const LPARAM a_lPARAM);
+        LRESULT CALLBACK WindowProcedure(const HWND   a_hwnd,
+                                         const UINT   a_message,
+                                         const WPARAM a_wPARAM,
+                                         const LPARAM a_lPARAM);
 
-		bool CreateWindowInstance(const std::wstring& a_windowClassName, const std::string& a_titleName);
+        bool CreateWindowInstance(const std::wstring& a_windowClassName, const std::string& a_titleName);
 
-		void SetupNormalWindowClientSize();
+        void SetupNormalWindowClientSize();
 
-		void Release();
+        void Release();
 
-		void ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, const WPARAM& a_wPARAM);
+        void ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, const WPARAM& a_wPARAM);
 
-		void ApplyWindowStyle();
+        void ApplyWindowStyle();
 
-		void ApplyNormalWindowStyle();
-		
-		void ApplyBorderlessFullScreenWindowStyle();
+        void ApplyNormalWindowStyle();
 
-		void StoreNormalWindowRECT();
+        void ApplyBorderlessFullScreenWindowStyle();
 
-		void RequestResizeFromClientSize(const ClientSize& a_clientSize);
+        void StoreNormalWindowRECT();
 
-		HINSTANCE FetchVALInstanceHandle() const;
+        void RequestResizeFromClientSize(const ClientSize& a_clientSize);
 
-		DWORD FetchVALWindowStyle() const;
+        HINSTANCE FetchVALInstanceHandle() const;
 
-		ClientSize FetchVALCurrentClientSize() const;
+        DWORD FetchVALWindowStyle() const;
 
-		// ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
-		static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
+        ClientSize FetchVALCurrentClientSize() const;
 
-		static constexpr LRESULT k_windowProcedureHandledResult = 0;
+        // ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
+        static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
 
-		static constexpr LONG k_clientRECTLeft = 0L;
-		static constexpr LONG k_clientRECTTop  = 0L;
+        static constexpr LRESULT k_windowProcedureHandledResult = 0;
 
-		// 通常ウィンドウ
-		// タイトルバー、幅、最小化、最大化を持つ
-		static constexpr DWORD k_generalWindowStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
+        static constexpr LONG k_clientRECTLeft = 0L;
+        static constexpr LONG k_clientRECTTop  = 0L;
 
-		// 枠なしウィンドウ
-		// ボーダーレスフルスクリーンで使う
-		static constexpr DWORD k_borderlessFullScreenWindowStyle = WS_POPUP;
+        // 通常ウィンドウ
+        // タイトルバー、幅、最小化、最大化を持つ
+        static constexpr DWORD k_generalWindowStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
 
-		static constexpr UINT k_windowStyle = CS_HREDRAW | CS_VREDRAW;
+        // 枠なしウィンドウ
+        // ボーダーレスフルスクリーンで使う
+        static constexpr DWORD k_borderlessFullScreenWindowStyle = WS_POPUP;
 
-		static constexpr UINT k_timeResolutionMS = 1U;
+        static constexpr UINT k_windowStyle = CS_HREDRAW | CS_VREDRAW;
 
-		static constexpr UINT k_msgFilterMIN		  = 0U;
-		static constexpr UINT k_msgFilterMAX		  = 0U;
-		static constexpr UINT k_wmCreateHandledResult = 0U;
+        static constexpr UINT k_timeResolutionMS = 1U;
 
-		static constexpr float k_initialAspectRatio = 0.0F;
+        static constexpr UINT k_msgFilterMIN          = 0U;
+        static constexpr UINT k_msgFilterMAX          = 0U;
+        static constexpr UINT k_wmCreateHandledResult = 0U;
 
-		static constexpr int k_classExtraBytes  = 0;
-		static constexpr int k_windowExtraBytes = 0;
+        static constexpr float k_initialAspectRatio = 0.0F;
 
-		static constexpr int k_defaultWindowPositionX = 0;
-		static constexpr int k_defaultWindowPositionY = 0;
+        static constexpr int k_classExtraBytes  = 0;
+        static constexpr int k_windowExtraBytes = 0;
 
-		static constexpr int k_quitExitCode = 0;
+        static constexpr int k_defaultWindowPositionX = 0;
+        static constexpr int k_defaultWindowPositionY = 0;
 
-		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Window/WindowCONFIG.json";
+        static constexpr int k_quitExitCode = 0;
 
-		Converter::WindowJsonConverter m_jsonConverter;
+        inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Window/WindowCONFIG.json";
 
-		RECT m_normalWindowRECT;
+        Converter::WindowJsonConverter m_jsonConverter;
 
-		ClientSize    m_clientSize;
-		ResizeRequest m_resizeRequest;
+        RECT m_normalWindowRECT;
 
-		HWND m_hwnd;
+        ClientSize    m_clientSize;
+        ResizeRequest m_resizeRequest;
 
-		Enum::WindowStyle m_style;
+        HWND m_hwnd;
 
-		float m_aspectRatio;
-	};
+        Enum::WindowStyle m_style;
+
+        float m_aspectRatio;
+    };
 }

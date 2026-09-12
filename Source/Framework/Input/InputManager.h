@@ -2,27 +2,27 @@
 
 namespace FWK
 {
-	class InputManager final : public Utility::SingletonBase<InputManager>
-	{
-	private:
+    class InputManager final : public Utility::SingletonBase<InputManager>
+    {
+    private:
 
-		friend class Utility::SingletonBase<InputManager>;
+        friend class Utility::SingletonBase<InputManager>;
 
-		 InputManager()          = default;
-		~InputManager() override = default;
+         InputManager()          = default;
+        ~InputManager() override = default;
 
-	public:
+    public:
 
-		void INIT();
+        void INIT();
 
-		void Update();
+        void Update();
 
-		const auto& GetREFKeyboardController() const { return m_keyboardController; }
-		const auto& GetREFMouseController   () const { return m_mouseController; }
+        const auto& GetREFKeyboardController() const { return m_keyboardController; }
+        const auto& GetREFMouseController   () const { return m_mouseController; }
 
-	private:
+    private:
 
-		KeyboardController m_keyboardController = {};
-		MouseController    m_mouseController    = {};
-	};
+        KeyboardController m_keyboardController = {};
+        MouseController    m_mouseController    = {};
+    };
 }

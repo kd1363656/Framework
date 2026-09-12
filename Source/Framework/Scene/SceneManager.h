@@ -2,70 +2,70 @@
 
 namespace FWK
 {
-	class SceneManager final : public Utility::SingletonBase<SceneManager>
-	{
-	private:
+    class SceneManager final : public Utility::SingletonBase<SceneManager>
+    {
+    private:
 
-		using NextSceneLoadFilePathMap = std::unordered_map<boost::uuids::uuid, std::filesystem::path>;
+        using NextSceneLoadFilePathMap = std::unordered_map<boost::uuids::uuid, std::filesystem::path>;
 
-		friend class SingletonBase<SceneManager>;
+        friend class SingletonBase<SceneManager>;
 
-		 SceneManager()          = default;
-		~SceneManager() override = default;
+         SceneManager()          = default;
+        ~SceneManager() override = default;
 
-	public:
+    public:
 
-		void LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath);
-		
-		void EarlyUpdate   ();
-		void Update        () const;
-		void LateUpdate    () const;
-		void PostLateUpdate();
-		
-		void SaveScene() const;
-		bool SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath);
-		
-		bool AddNextSceneLoadFilePath(const boost::uuids::uuid&    a_sceneUUID);
-		bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID);
+        void LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath);
 
-		bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID);
-		
-		bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID);
+        void EarlyUpdate   ();
+        void Update        () const;
+        void LateUpdate    () const;
+        void PostLateUpdate();
 
-		void SetCurrentSceneFilePath(const std::filesystem::path& a_set) { m_currentSceneFilePath = a_set; }
+        void SaveScene() const;
+        bool SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath);
 
-		const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
-		
-		const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
+        bool AddNextSceneLoadFilePath(const boost::uuids::uuid&    a_sceneUUID);
+        bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID);
 
-		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
+        bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID);
 
-		const auto& GetREFCurrentSceneFilePath() const { return m_currentSceneFilePath; }
+        bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID);
 
-		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
+        void SetCurrentSceneFilePath(const std::filesystem::path& a_set) { m_currentSceneFilePath = a_set; }
 
-		auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
+        const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
 
-		std::weak_ptr<Scene> GetVALScene() const { return m_scene; }
+        const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
 
-	private:
+        const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
-		void INIT();
+        const auto& GetREFCurrentSceneFilePath() const { return m_currentSceneFilePath; }
 
-		void LoadNextSceneIfNeeded();
+        auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
-		NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
+        auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
 
-		std::shared_ptr<Scene> m_scene = nullptr;
+        std::weak_ptr<Scene> GetVALScene() const { return m_scene; }
 
-		Observer<Enum::SceneShiftEvent> m_sceneShiftEventObserver = {};
+    private:
 
-		AssetFilePathRegistry m_assetFilePathRegistry = {};
+        void INIT();
 
-		Converter::SceneManagerJsonConverter m_jsonConverter = {};
+        void LoadNextSceneIfNeeded();
 
-		std::filesystem::path m_currentSceneFilePath = {};
+        NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
 
-		boost::uuids::uuid m_nextSceneUUID = {};
-	};
+        std::shared_ptr<Scene> m_scene = nullptr;
+
+        Observer<Enum::SceneShiftEvent> m_sceneShiftEventObserver = {};
+
+        AssetFilePathRegistry m_assetFilePathRegistry = {};
+
+        Converter::SceneManagerJsonConverter m_jsonConverter = {};
+
+        std::filesystem::path m_currentSceneFilePath = {};
+
+        boost::uuids::uuid m_nextSceneUUID = {};
+    };
 }

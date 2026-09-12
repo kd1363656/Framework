@@ -2,21 +2,21 @@
 
 namespace FWK
 {
-	class UUIDManager final : public Utility::SingletonBase<UUIDManager>
-	{
-	private:
+    class UUIDManager final : public Utility::SingletonBase<UUIDManager>
+    {
+    private:
 
-		friend class Utility::SingletonBase<UUIDManager>;
+        friend class Utility::SingletonBase<UUIDManager>;
 
-		 UUIDManager() = default;
-		~UUIDManager() = default;
+         UUIDManager() = default;
+        ~UUIDManager() = default;
 
-	public:
+    public:
 
-		boost::uuids::uuid GenerateVALUUID();
+        boost::uuids::uuid GenerateVALUUID();
 
-	private:
+    private:
 
-		boost::uuids::random_generator m_randomGenerator = {};
-	};
+        boost::uuids::random_generator m_randomGenerator = {};
+    };
 }

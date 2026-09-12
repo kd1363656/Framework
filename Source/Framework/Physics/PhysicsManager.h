@@ -1,94 +1,94 @@
 ﻿#pragma once
 
-namespace FWK::Physics 
+namespace FWK::Physics
 {
-	class PhysicsManager final : public Utility::SingletonBase<PhysicsManager>
-	{
-	private:
+    class PhysicsManager final : public Utility::SingletonBase<PhysicsManager>
+    {
+    private:
 
-		friend class SingletonBase<PhysicsManager>;
+        friend class SingletonBase<PhysicsManager>;
 
-		 PhysicsManager();
-		~PhysicsManager() override;
+         PhysicsManager();
+        ~PhysicsManager() override;
 
-	public:
+    public:
 
-		void INIT      ();
-		void LoadCONFIG();
+        void INIT      ();
+        void LoadCONFIG();
 
-		void OptimizeBroadPhase();
-		
-		void ClearFrame                     ();
-		void CollectPhysicsDebugDrawCommands();
+        void OptimizeBroadPhase();
 
-		void SaveCONFIG() const;
+        void ClearFrame                     ();
+        void CollectPhysicsDebugDrawCommands();
 
-		void TogglePhysicsDebugDraw();
+        void SaveCONFIG() const;
 
-		const auto& GetREFTempAllocator      () const { return m_tempAllocator; }
-		const auto& GetREFPhysicsLayerSetting() const { return m_physicsLayerSetting; }
-		const auto& GetREFPhysicsSystem      () const { return m_physicsSystem; }
+        void TogglePhysicsDebugDraw();
 
-		void SetIsDisableDebugDraw(const bool a_set) { m_isDisableDebugDraw = a_set; }
+        const auto& GetREFTempAllocator      () const { return m_tempAllocator; }
+        const auto& GetREFPhysicsLayerSetting() const { return m_physicsLayerSetting; }
+        const auto& GetREFPhysicsSystem      () const { return m_physicsSystem; }
 
-		auto& GetMutableREFPhysicsSystem() { return m_physicsSystem; }
+        void SetIsDisableDebugDraw(const bool a_set) { m_isDisableDebugDraw = a_set; }
 
-		std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
+        auto& GetMutableREFPhysicsSystem() { return m_physicsSystem; }
 
-		bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
+        std::weak_ptr<PhysicsDebugRenderer> GetVALDebugRenderer() const { return m_debugRenderer; }
 
-	private:
+        bool GetVALIsDisableDebugDraw() const { return m_isDisableDebugDraw; }
 
-		bool SetupJoltCore();
-		bool SetupSystem  ();
-		
+    private:
+
+        bool SetupJoltCore();
+        bool SetupSystem  ();
+
 #if defined(_DEBUG)
-		static void TraceJoltMessage(const char* a_format, ...);
+        static void TraceJoltMessage(const char* a_format, ...);
 
-		void SetupJoltDebugCallback() const;
-		
-		static constexpr size_t k_joltTraceBufferSize = 2048U;
+        void SetupJoltDebugCallback() const;
+
+        static constexpr size_t k_joltTraceBufferSize = 2048U;
 
 #ifdef JPH_ENABLE_ASSERTS
 
-		static bool HandleJoltAssertFailed(const char*     a_expression,
-										   const char*     a_message,
-										   const char*     a_file,
-										   const JPH::uint a_line);
+        static bool HandleJoltAssertFailed(const char*     a_expression,
+                                           const char*     a_message,
+                                           const char*     a_file,
+                                           const JPH::uint a_line);
 #endif
 #endif
-		void Release();
+        void Release();
 
-		static constexpr JPH::uint k_maxBodyCount = 1024U;
+        static constexpr JPH::uint k_maxBodyCount = 1024U;
 
-		static constexpr JPH::uint k_bodyMutexCount = 0U;
+        static constexpr JPH::uint k_bodyMutexCount = 0U;
 
-		static constexpr JPH::uint k_maxBodyPairCount = 1024U;
-		 
-		static constexpr JPH::uint k_maxContactConstraintCount = 1024U;
+        static constexpr JPH::uint k_maxBodyPairCount = 1024U;
 
-		static constexpr uint32_t k_tempAllocatorSizeMB = 10U;
-		static constexpr uint32_t k_kiloBytePerMB       = 1024U;
-		static constexpr uint32_t k_bytePerKB           = 1024U;
+        static constexpr JPH::uint k_maxContactConstraintCount = 1024U;
 
-		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Physics/PhysicsCONFIG.json";
+        static constexpr uint32_t k_tempAllocatorSizeMB = 10U;
+        static constexpr uint32_t k_kiloBytePerMB       = 1024U;
+        static constexpr uint32_t k_bytePerKB           = 1024U;
 
-		std::unique_ptr<JPH::Factory> m_factory;
+        inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Physics/PhysicsCONFIG.json";
 
-		std::shared_ptr<JPH::TempAllocatorImpl> m_tempAllocator;
+        std::unique_ptr<JPH::Factory> m_factory;
 
-		std::shared_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
-		
-		std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
+        std::shared_ptr<JPH::TempAllocatorImpl> m_tempAllocator;
 
-		JPH::PhysicsSystem m_physicsSystem;
+        std::shared_ptr<PhysicsLayerSetting> m_physicsLayerSetting;
 
-		Converter::PhyisicsManagerJsonConverter m_jsonConverter;
+        std::shared_ptr<PhysicsDebugRenderer> m_debugRenderer;
 
-		bool m_isInitialized;
+        JPH::PhysicsSystem m_physicsSystem;
 
-		bool m_isJoltTypeRegistered;
+        Converter::PhyisicsManagerJsonConverter m_jsonConverter;
 
-		bool m_isDisableDebugDraw;
-	};
+        bool m_isInitialized;
+
+        bool m_isJoltTypeRegistered;
+
+        bool m_isDisableDebugDraw;
+    };
 }

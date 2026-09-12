@@ -2,42 +2,42 @@
 
 namespace FWK
 {
-	class GameObject;
+    class GameObject;
 }
 
 namespace FWK
 {
-	class Prefab final
-	{
-	public:
+    class Prefab final
+    {
+    public:
 
-		 Prefab() = default;
-		~Prefab() = default;
+         Prefab() = default;
+        ~Prefab() = default;
 
-		void Load(const std::filesystem::path& a_filePath);
+        void Load(const std::filesystem::path& a_filePath);
 
-		bool Save(const std::filesystem::path& a_filePath);
-		
-		void SetGameObject(const std::weak_ptr<GameObject>& a_set) { m_gameObject = a_set; }
+        bool Save(const std::filesystem::path& a_filePath);
 
-		void SetJson(const nlohmann::json& a_set) { m_json = a_set; }
+        void SetGameObject(const std::weak_ptr<GameObject>& a_set) { m_gameObject = a_set; }
 
-		void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
+        void SetJson(const nlohmann::json& a_set) { m_json = a_set; }
 
-		const auto& GetREFGameObject() const { return m_gameObject; }
+        void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
 
-		const auto& GetREFJson() const { return m_json; }
+        const auto& GetREFGameObject() const { return m_gameObject; }
 
-		const auto& GetREFPrefabName() const { return m_prefabName; }
+        const auto& GetREFJson() const { return m_json; }
 
-	private:
+        const auto& GetREFPrefabName() const { return m_prefabName; }
 
-		std::weak_ptr<GameObject> m_gameObject = {};
+    private:
 
-		Converter::PrefabJsonConverter m_jsonConverter = {};
+        std::weak_ptr<GameObject> m_gameObject = {};
 
-		nlohmann::json m_json = {};
+        Converter::PrefabJsonConverter m_jsonConverter = {};
 
-		std::string m_prefabName = {};
-	};
+        nlohmann::json m_json = {};
+
+        std::string m_prefabName = {};
+    };
 }

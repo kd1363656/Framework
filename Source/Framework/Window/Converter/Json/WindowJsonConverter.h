@@ -2,24 +2,24 @@
 
 namespace FWK
 {
-	class Window;
+    class Window;
 }
 
 namespace FWK::Converter
 {
-	class WindowJsonConverter final
-	{
-	public:
+    class WindowJsonConverter final
+    {
+    public:
 
-		 WindowJsonConverter() = default;
-		~WindowJsonConverter() = default;
+         WindowJsonConverter() = default;
+        ~WindowJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Window& a_window) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Window& a_window) const;
 
-		nlohmann::json Serialize(const Window& a_window) const;
+        nlohmann::json Serialize(const Window& a_window) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_styleTagJsonKey = "StyleTag";
-	};
+        static constexpr std::string_view k_styleTagJsonKey = "StyleTag";
+    };
 }

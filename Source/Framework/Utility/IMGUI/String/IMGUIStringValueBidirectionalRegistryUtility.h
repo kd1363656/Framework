@@ -2,130 +2,130 @@
 
 namespace FWK::Utility
 {
-	template <typename Type>
-	inline bool IMGUIStringValueBidirectionalRegistryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
-	{
-		const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
-		const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
+    template <typename Type>
+    inline bool IMGUIStringValueBidirectionalRegistryRadioButtonSelector(const std::string_view& a_label, Type& a_wantChange)
+    {
+        const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
+        const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
 
-		std::string_view l_preview = Constant::k_stringUnknown;
+        std::string_view l_preview = Constant::k_stringUnknown;
 
-		// 現在選択されているEnumに対応する文字列を取得する
-		for (const auto& [l_key, l_value] : l_stringToValueMap)
-		{
-			if (l_value != a_wantChange) { continue; }
+        // 現在選択されているEnumに対応する文字列を取得する
+        for (const auto& [l_key, l_value] : l_stringToValueMap)
+        {
+            if (l_value != a_wantChange) { continue; }
 
-			l_preview = l_key;
+            l_preview = l_key;
 
-			break;
-		}
+            break;
+        }
 
-		// 同じLabelを持つSelectorが複数存在しても
-		// ImGui内部IDが衝突しないように
-		// 選択対象の変数のアドレスをIDとして使用する
-		ImGui::PushID    (std::addressof(a_wantChange));
-		ImGui::BeginGroup();
+        // 同じLabelを持つSelectorが複数存在しても
+        // ImGui内部IDが衝突しないように
+        // 選択対象の変数のアドレスをIDとして使用する
+        ImGui::PushID    (std::addressof(a_wantChange));
+        ImGui::BeginGroup();
 
-		if (!ImGui::BeginCombo(a_label.data(), l_preview.data()))
-		{
-			ImGui::EndGroup();
-			ImGui::PopID   ();
+        if (!ImGui::BeginCombo(a_label.data(), l_preview.data()))
+        {
+            ImGui::EndGroup();
+            ImGui::PopID   ();
 
-			return false;
-		}
+            return false;
+        }
 
-		bool l_isChanged = false;
+        bool l_isChanged = false;
 
-		for (const auto& [l_key, l_value] : l_stringToValueMap)
-		{
-			const bool l_isSelected = a_wantChange == l_value;
+        for (const auto& [l_key, l_value] : l_stringToValueMap)
+        {
+            const bool l_isSelected = a_wantChange == l_value;
 
-			if (ImGui::RadioButton(l_key.c_str(), l_isSelected))
-			{
-				a_wantChange = l_value;
-				l_isChanged  = true;
-			}
+            if (ImGui::RadioButton(l_key.c_str(), l_isSelected))
+            {
+                a_wantChange = l_value;
+                l_isChanged  = true;
+            }
 
-			// 現在選択されている項目へ
-			// Comboを開いた時の先頭Focusを設定する
-			if (l_isSelected) 
-			{
-				ImGui::SetItemDefaultFocus();
-			}
-		}
+            // 現在選択されている項目へ
+            // Comboを開いた時の先頭Focusを設定する
+            if (l_isSelected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
 
-		ImGui::EndCombo();
-		ImGui::EndGroup();
-		ImGui::PopID   ();
+        ImGui::EndCombo();
+        ImGui::EndGroup();
+        ImGui::PopID   ();
 
-		return l_isChanged;
-	}
+        return l_isChanged;
+    }
 
-	template <typename Type>
-	inline bool IMGUIStringValueBidirectionalRegistryCheckBoxSelector(const std::string_view& a_label, std::vector<Type>& a_valueList, const float a_visibleItemCount = Constant::k_imguiDefaultChildVisibleItemCount)
-	{
-		const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
-		const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
-		      bool  l_isChanged                        = false;
+    template <typename Type>
+    inline bool IMGUIStringValueBidirectionalRegistryCheckBoxSelector(const std::string_view& a_label, std::vector<Type>& a_valueList, const float a_visibleItemCount = Constant::k_imguiDefaultChildVisibleItemCount)
+    {
+        const auto& l_stringValueBidirectionalRegistry = StringValueBidirectionalRegistry<Type>::GetInstance      ();
+        const auto& l_stringToValueMap                 = l_stringValueBidirectionalRegistry.GetREFStringToValueMap();
+              bool  l_isChanged                        = false;
 
-		ImGui::PushID    (std::addressof(a_valueList));
-		ImGui::BeginGroup();
+        ImGui::PushID    (std::addressof(a_valueList));
+        ImGui::BeginGroup();
 
-		// リスト前の区切り線
-		if (!a_label.empty())
-		{
-			ImGui::SeparatorText(a_label.data());
-		}
-		else
-		{
-			ImGui::Separator();
-		}
+        // リスト前の区切り線
+        if (!a_label.empty())
+        {
+            ImGui::SeparatorText(a_label.data());
+        }
+        else
+        {
+            ImGui::Separator();
+        }
 
-		// -1.0Fを使用すると
-		// 現在利用可能な横幅いっぱいまでリストを広げる
-		if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
-			!ImGui::BeginListBox(Constant::k_imguiFactoryCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
-		{
-			ImGui::EndGroup();
-			ImGui::PopID   ();
+        // -1.0Fを使用すると
+        // 現在利用可能な横幅いっぱいまでリストを広げる
+        if (const float l_listHeight = ImGui::GetTextLineHeightWithSpacing() * a_visibleItemCount;
+            !ImGui::BeginListBox(Constant::k_imguiFactoryCheckBoxListLabel.data(), ImVec2(Constant::k_imguiChildWindowMAXSize, l_listHeight)))
+        {
+            ImGui::EndGroup();
+            ImGui::PopID   ();
 
-			return false;
-		}
+            return false;
+        }
 
-		for (const auto& [l_key, l_value] : l_stringToValueMap)
-		{
-			bool l_isSelected = std::ranges::any_of(a_valueList, [&l_value](const Type& a_value) 
-				                                   {
-				                                   		return a_value == l_value; 
-				                                   });
+        for (const auto& [l_key, l_value] : l_stringToValueMap)
+        {
+            bool l_isSelected = std::ranges::any_of(a_valueList, [&l_value](const Type& a_value)
+                                                   {
+                                                        return a_value == l_value;
+                                                   });
 
-			if (!ImGui::Checkbox(l_key.c_str(), &l_isSelected)) { continue; }
+            if (!ImGui::Checkbox(l_key.c_str(), &l_isSelected)) { continue; }
 
-			if (l_isSelected)
-			{
-				a_valueList.emplace_back(l_value);
+            if (l_isSelected)
+            {
+                a_valueList.emplace_back(l_value);
 
-				l_isChanged = true;
+                l_isChanged = true;
 
-				continue;
-			}
-			else
-			{
-				const auto& l_itr = std::ranges::find_if(a_valueList, [&l_value](const auto& a_value) 
-					                                     {
-															return a_value == l_value;
-					                                     });
+                continue;
+            }
+            else
+            {
+                const auto& l_itr = std::ranges::find_if(a_valueList, [&l_value](const auto& a_value)
+                                                         {
+                                                            return a_value == l_value;
+                                                         });
 
-				a_valueList.erase(l_itr);
-				
-				l_isChanged = true;
-			}
-		}
+                a_valueList.erase(l_itr);
 
-		ImGui::EndListBox();
-		ImGui::EndGroup  ();
-		ImGui::PopID     ();
+                l_isChanged = true;
+            }
+        }
 
-		return l_isChanged;
-	}
+        ImGui::EndListBox();
+        ImGui::EndGroup  ();
+        ImGui::PopID     ();
+
+        return l_isChanged;
+    }
 }

@@ -2,7 +2,7 @@
 
 void FWK::Utility::AssetFilePathHelperInspector::EditInspector(AssetFilePathHelper& a_assetFilePathHelper) const
 {
-	std::filesystem::path l_droppedFilePath = {};
+    std::filesystem::path l_droppedFilePath = {};
 
     // 毎回PrefabInspector処理に入ったらダーティーフラグを下げておく
     a_assetFilePathHelper.SetIsFilePathChangedDirty(false);
@@ -33,19 +33,19 @@ void FWK::Utility::AssetFilePathHelperInspector::EditInspector(AssetFilePathHelp
     // Drop対象として使用する
     // そのため最初にButtonを描画してこのButton全体をAssetのDrop領域として登録する
     ImGui::Button(l_dropAreaLabel.c_str(), l_dropAreaSize);
-       
+
     // 直前に描画されたImGuiItemへFilePathがDropされた場合だけ、
     // DropされたFilePathを受け取る
     if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetFilePathDragAndDropPayloadLabel, l_droppedFilePath)) 
+        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetFilePathDragAndDropPayloadLabel, l_droppedFilePath))
     {
-        return; 
+        return;
     }
 
     if (l_droppedFilePath == l_currentAssetFilePath) { return; }
 
     // FilePathの最終的な妥当性確認はApplyAssetFilePathへ集約する
-    if (!a_assetFilePathHelper.ApplyAssetFilePath(l_droppedFilePath)) 
+    if (!a_assetFilePathHelper.ApplyAssetFilePath(l_droppedFilePath))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ファイルパスがFBX形式のファイルを示しておらず読み込めませんでした。\nFilePath : {}", a_assetFilePathHelper.GetREFAssetFilePath().string());
 

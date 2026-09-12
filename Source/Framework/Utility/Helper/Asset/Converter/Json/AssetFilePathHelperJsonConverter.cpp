@@ -2,18 +2,18 @@
 
 void FWK::Converter::AssetFilePathHelperJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Utility::AssetFilePathHelper& a_assetFilePathHelper) const
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	const std::filesystem::path& l_assetFilePath = a_rootJson.value(k_assetFilePathJsonKey.data(), std::filesystem::path{});
+    const std::filesystem::path& l_assetFilePath = a_rootJson.value(k_assetFilePathJsonKey.data(), std::filesystem::path{});
 
-	a_assetFilePathHelper.ApplyAssetFilePath(l_assetFilePath);
+    a_assetFilePathHelper.ApplyAssetFilePath(l_assetFilePath);
 }
 
 nlohmann::json FWK::Converter::AssetFilePathHelperJsonConverter::Serialize(const Utility::AssetFilePathHelper& a_assetFilePathHelper) const
 {
-	nlohmann::json l_rootJson = {};
+    nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_assetFilePathJsonKey] = a_assetFilePathHelper.GetREFAssetFilePath();
+    l_rootJson[k_assetFilePathJsonKey] = a_assetFilePathHelper.GetREFAssetFilePath();
 
-	return l_rootJson;
+    return l_rootJson;
 }

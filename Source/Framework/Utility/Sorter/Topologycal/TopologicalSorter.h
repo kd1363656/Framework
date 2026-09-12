@@ -2,17 +2,17 @@
 
 namespace FWK::Utility
 {
-	class TopologicalSorter final
-	{
-	public:
+    class TopologicalSorter final
+    {
+    public:
 
-		 TopologicalSorter() = default;
-		~TopologicalSorter() = default;
+         TopologicalSorter() = default;
+        ~TopologicalSorter() = default;
 
-		std::vector<std::size_t> Sort(const std::vector<std::vector<std::size_t>>& a_dependencyList) const;
+        std::vector<std::size_t> Sort(const std::vector<std::vector<std::size_t>>& a_dependencyList) const;
 
-	private:
+    private:
 
-		static constexpr std::size_t k_emptyInDegree = 0ULL;
-	};
+        static constexpr std::size_t k_emptyInDegree = 0ULL;
+    };
 }

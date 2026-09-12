@@ -2,33 +2,33 @@
 
 namespace FWK
 {
-	class PrefabInstanceNUMAllocator final
-	{
-	public:
+    class PrefabInstanceNUMAllocator final
+    {
+    public:
 
-		 PrefabInstanceNUMAllocator() = default;
-		~PrefabInstanceNUMAllocator() = default;
+         PrefabInstanceNUMAllocator() = default;
+        ~PrefabInstanceNUMAllocator() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		TypeAlias::PrefabSceneInstanceNUM Allocate();
+        nlohmann::json Serialize() const;
 
-		void Release(const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
+        TypeAlias::PrefabSceneInstanceNUM Allocate();
 
-		auto& GetMutableREFIsAllocatedList() { return m_isAllocatedList; }
+        void Release(const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
 
-		const auto& GetREFIsAllocatedList() const { return m_isAllocatedList; }
+        auto& GetMutableREFIsAllocatedList() { return m_isAllocatedList; }
 
-	private:
+        const auto& GetREFIsAllocatedList() const { return m_isAllocatedList; }
 
-		void RebuildFreePrefabIDQueue();
+    private:
 
-		std::vector<bool> m_isAllocatedList = {};
+        void RebuildFreePrefabIDQueue();
 
-		std::queue<TypeAlias::PrefabSceneInstanceNUM> m_freePrefabInstanceNUMQueue = {};
+        std::vector<bool> m_isAllocatedList = {};
 
-		Converter::PrefabInstanceNUMAllocatorJsonConverter m_jsonConverter = {};
-	};
+        std::queue<TypeAlias::PrefabSceneInstanceNUM> m_freePrefabInstanceNUMQueue = {};
+
+        Converter::PrefabInstanceNUMAllocatorJsonConverter m_jsonConverter = {};
+    };
 }

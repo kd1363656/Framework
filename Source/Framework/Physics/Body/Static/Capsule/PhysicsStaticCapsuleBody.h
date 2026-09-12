@@ -2,38 +2,38 @@
 
 namespace FWK::Physics
 {
-	class PhysicsStaticCapsuleBody final : public PhysicsStaticBodyBase
-	{
-	private:
+    class PhysicsStaticCapsuleBody final : public PhysicsStaticBodyBase
+    {
+    private:
 
-		// TODO
-		friend class Scene;
+        // TODO
+        friend class Scene;
 
 
-	public:
+    public:
 
-		 PhysicsStaticCapsuleBody()          = default;
-		~PhysicsStaticCapsuleBody() override = default;
+         PhysicsStaticCapsuleBody()          = default;
+        ~PhysicsStaticCapsuleBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
+        bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
 
-		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
-		
-		void SetHalfHeightOfCylinder(const float a_set) { m_halfHeightOfCylinder = a_set; }
-		void SetRadius			    (const float a_set) { m_radius               = a_set;}
+        bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 
-		float GetVALHalfHeightOfCylinder() const { return m_halfHeightOfCylinder; }
-		float GetVALRadius              () const { return m_radius; }
+        void SetHalfHeightOfCylinder(const float a_set) { m_halfHeightOfCylinder = a_set; }
+        void SetRadius              (const float a_set) { m_radius               = a_set;}
 
-	private:
+        float GetVALHalfHeightOfCylinder() const { return m_halfHeightOfCylinder; }
+        float GetVALRadius              () const { return m_radius; }
 
-		JPH::RefConst<JPH::Shape> CreateShape() const;
+    private:
 
-		bool ApplyShapeChange();
+        JPH::RefConst<JPH::Shape> CreateShape() const;
 
-		float m_halfHeightOfCylinder = Constant::k_defaultPhysicsStaticCapsuleBodyHalfHeightOfCylinder;
-		float m_radius               = Constant::k_defaultPhysicsStaticCapsuleBodyRadius;
+        bool ApplyShapeChange();
 
-		FWK_DEFINE_TYPE_INFO(PhysicsStaticCapsuleBody, PhysicsStaticBodyBase)
-	};
+        float m_halfHeightOfCylinder = Constant::k_defaultPhysicsStaticCapsuleBodyHalfHeightOfCylinder;
+        float m_radius               = Constant::k_defaultPhysicsStaticCapsuleBodyRadius;
+
+        FWK_DEFINE_TYPE_INFO(PhysicsStaticCapsuleBody, PhysicsStaticBodyBase)
+    };
 }

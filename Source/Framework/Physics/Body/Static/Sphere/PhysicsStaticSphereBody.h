@@ -2,34 +2,34 @@
 
 namespace FWK::Physics
 {
-	class PhysicsStaticSphereBody final : public PhysicsStaticBodyBase
-	{
-	private:
+    class PhysicsStaticSphereBody final : public PhysicsStaticBodyBase
+    {
+    private:
 
-		// TODO
-		friend class Scene;
+        // TODO
+        friend class Scene;
 
-	public:
+    public:
 
-		 PhysicsStaticSphereBody()          = default;
-		~PhysicsStaticSphereBody() override = default;
+         PhysicsStaticSphereBody()          = default;
+        ~PhysicsStaticSphereBody() override = default;
 
-		bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
+        bool CreateBody(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition, const bool a_isPushBackEnabled);
 
-		bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
-		
-		void SetRadius(const float a_set) { m_radius = a_set; }
+        bool ApplyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition) override;
 
-		float GetVALRadius() const { return m_radius; }
+        void SetRadius(const float a_set) { m_radius = a_set; }
 
-	private:
+        float GetVALRadius() const { return m_radius; }
 
-		JPH::RefConst<JPH::Shape> CreateShape() const;
+    private:
 
-		bool ApplyShapeChange();
+        JPH::RefConst<JPH::Shape> CreateShape() const;
 
-		float m_radius = Constant::k_defaultPhysicsStaticSphereBodyRadius;
+        bool ApplyShapeChange();
 
-		FWK_DEFINE_TYPE_INFO(PhysicsStaticSphereBody, PhysicsStaticBodyBase)
-	};
+        float m_radius = Constant::k_defaultPhysicsStaticSphereBodyRadius;
+
+        FWK_DEFINE_TYPE_INFO(PhysicsStaticSphereBody, PhysicsStaticBodyBase)
+    };
 }

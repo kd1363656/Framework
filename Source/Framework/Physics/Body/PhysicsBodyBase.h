@@ -2,46 +2,46 @@
 
 namespace FWK
 {
-	class Scene;
+    class Scene;
 }
 
 namespace FWK::Physics
 {
-	class PhysicsBodyBase
-	{
-	public:
+    class PhysicsBodyBase
+    {
+    public:
 
-				 PhysicsBodyBase();
-		virtual ~PhysicsBodyBase();
+                 PhysicsBodyBase();
+        virtual ~PhysicsBodyBase();
 
-		
-		PhysicsBodyBase(const PhysicsBodyBase&)  = delete;
-		PhysicsBodyBase(      PhysicsBodyBase&&) = delete;
 
-		PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
-		PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
+        PhysicsBodyBase(const PhysicsBodyBase&)  = delete;
+        PhysicsBodyBase(      PhysicsBodyBase&&) = delete;
 
-		virtual bool ApplyWorldTransform(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&) { return false; }
-		virtual bool ApplyWorldTransform(      TypeAlias::Math::Matrix&)                                      { return false; }
-		
-		bool ApplyIsPushBackEnabled(const bool a_isPushBackEnabled) const;
+        PhysicsBodyBase& operator=(const PhysicsBodyBase&)  = delete;
+        PhysicsBodyBase& operator=(      PhysicsBodyBase&&) = delete;
 
-		TypeAlias::Math::Vector3 FetchVALWorldPosition() const;
+        virtual bool ApplyWorldTransform(const TypeAlias::Math::Quaternion&, const TypeAlias::Math::Vector3&) { return false; }
+        virtual bool ApplyWorldTransform(      TypeAlias::Math::Matrix&)                                      { return false; }
 
-	protected:
+        bool ApplyIsPushBackEnabled(const bool a_isPushBackEnabled) const;
 
-		bool ApplyBodyShape(const JPH::RefConst<JPH::Shape>& a_shape, const JPH::EActivation a_activationMode, const bool a_isUpdateMassProperties) const;
+        TypeAlias::Math::Vector3 FetchVALWorldPosition() const;
 
-		void SetBodyID(const JPH::BodyID a_set) { m_bodyID = a_set; }
+    protected:
 
-		const auto& GetREFBodyID() const { return m_bodyID; }
+        bool ApplyBodyShape(const JPH::RefConst<JPH::Shape>& a_shape, const JPH::EActivation a_activationMode, const bool a_isUpdateMassProperties) const;
 
-	private:
+        void SetBodyID(const JPH::BodyID a_set) { m_bodyID = a_set; }
 
-		void ReleaseBody();
+        const auto& GetREFBodyID() const { return m_bodyID; }
 
-		JPH::BodyID m_bodyID;
+    private:
 
-		FWK_DEFINE_TYPE_INFO_ROOT(PhysicsBodyBase)
-	};
+        void ReleaseBody();
+
+        JPH::BodyID m_bodyID;
+
+        FWK_DEFINE_TYPE_INFO_ROOT(PhysicsBodyBase)
+    };
 }

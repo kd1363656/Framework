@@ -2,5 +2,5 @@
 
 void FWK::Utility::IMGUIDragDropPayloadStorage::Clear()
 {
-	m_payload.reset();
+    m_payload.reset();
 }

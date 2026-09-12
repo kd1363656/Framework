@@ -2,5 +2,5 @@
 
 boost::uuids::uuid FWK::UUIDManager::GenerateVALUUID()
 {
-	return m_randomGenerator();
+    return m_randomGenerator();
 }

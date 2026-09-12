@@ -2,36 +2,36 @@
 
 namespace FWK::Physics
 {
-	class PhysicsStaticMeshBody : public PhysicsStaticBodyBase
-	{
-	private:
+    class PhysicsStaticMeshBody : public PhysicsStaticBodyBase
+    {
+    private:
 
-		friend class Scene;
+        friend class Scene;
 
-	public:
+    public:
 
-		 PhysicsStaticMeshBody()          = default;
-		~PhysicsStaticMeshBody() override = default;
+         PhysicsStaticMeshBody()          = default;
+        ~PhysicsStaticMeshBody() override = default;
 
-		bool CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix);
+        bool CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix);
 
-		bool ApplyWorldTransform(TypeAlias::Math::Matrix& a_worldMatrix) override;
+        bool ApplyWorldTransform(TypeAlias::Math::Matrix& a_worldMatrix) override;
 
-	private:
+    private:
 
-		JPH::RefConst<JPH::Shape> CreateShape(const Graphics::StaticModelRecord::ModelData& a_modelData) const;
+        JPH::RefConst<JPH::Shape> CreateShape(const Graphics::StaticModelRecord::ModelData& a_modelData) const;
 
-		static constexpr float k_oppositeNormalDotThreshold = 0.0F;
+        static constexpr float k_oppositeNormalDotThreshold = 0.0F;
 
-		static constexpr std::size_t k_invalidTotalVertexCount = 0ULL;
-		static constexpr std::size_t k_invalidTotalIndexCount  = 0ULL;
+        static constexpr std::size_t k_invalidTotalVertexCount = 0ULL;
+        static constexpr std::size_t k_invalidTotalIndexCount  = 0ULL;
 
-		static constexpr std::size_t k_triangleIndexZeroOffset = 0ULL;
-		static constexpr std::size_t k_triangleIndexOneOffset  = 1ULL;
-		static constexpr std::size_t k_triangleIndexTwoOffset  = 2ULL;
+        static constexpr std::size_t k_triangleIndexZeroOffset = 0ULL;
+        static constexpr std::size_t k_triangleIndexOneOffset  = 1ULL;
+        static constexpr std::size_t k_triangleIndexTwoOffset  = 2ULL;
 
-		static constexpr JPH::uint32 k_defaultMaterialIndex = 0U;
+        static constexpr JPH::uint32 k_defaultMaterialIndex = 0U;
 
-		FWK_DEFINE_TYPE_INFO(PhysicsStaticMeshBody, PhysicsStaticBodyBase)
-	};
+        FWK_DEFINE_TYPE_INFO(PhysicsStaticMeshBody, PhysicsStaticBodyBase)
+    };
 }

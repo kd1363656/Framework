@@ -2,50 +2,50 @@
 
 namespace FWK
 {
-	class GameObject;
-	class AssetFilePathRegistry;
+    class GameObject;
+    class AssetFilePathRegistry;
 }
 
 namespace FWK
 {
-	class PrefabSystem final
-	{
-	private:
+    class PrefabSystem final
+    {
+    private:
 
-		using PrefabMap = std::unordered_map<boost::uuids::uuid, Struct::PrefabData>;
+        using PrefabMap = std::unordered_map<boost::uuids::uuid, Struct::PrefabData>;
 
-	public:
+    public:
 
-		 PrefabSystem() = default;
-		~PrefabSystem() = default;
+         PrefabSystem() = default;
+        ~PrefabSystem() = default;
 
-		void INIT                         ();
-		void Deserialize                  (const nlohmann::json&            a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
-		void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
+        void INIT                         ();
+        void Deserialize                  (const nlohmann::json&            a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
+        void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
 
-		void RefreshAllPrefab();
+        void RefreshAllPrefab();
 
-		void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData);
-		void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);
+        void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData);
+        void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);
 
-		nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry);
+        nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry);
 
-		TypeAlias::PrefabSceneInstanceNUM AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID);
+        TypeAlias::PrefabSceneInstanceNUM AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID);
 
-		void ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
+        void ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
 
-		const Prefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
+        const Prefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 
-		Prefab* FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID);
+        Prefab* FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID);
 
-		const auto& GetREFPrefabMap() const { return m_prefabMap; }
+        const auto& GetREFPrefabMap() const { return m_prefabMap; }
 
-		auto& GetMutableREFPrefabMap() { return m_prefabMap; }
+        auto& GetMutableREFPrefabMap() { return m_prefabMap; }
 
-	private:
+    private:
 
-		PrefabMap m_prefabMap = {};
+        PrefabMap m_prefabMap = {};
 
-		Converter::PrefabSystemJsonConverter m_jsonConverter = {};
-	};
+        Converter::PrefabSystemJsonConverter m_jsonConverter = {};
+    };
 }

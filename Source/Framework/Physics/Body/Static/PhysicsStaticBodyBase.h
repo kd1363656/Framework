@@ -2,23 +2,23 @@
 
 namespace FWK::Physics
 {
-	class PhysicsStaticBodyBase : public PhysicsBodyBase
-	{
-	public:
+    class PhysicsStaticBodyBase : public PhysicsBodyBase
+    {
+    public:
 
-		 PhysicsStaticBodyBase()          = default;
-		~PhysicsStaticBodyBase() override = default;
+         PhysicsStaticBodyBase()          = default;
+        ~PhysicsStaticBodyBase() override = default;
 
-	protected:
+    protected:
 
-		bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>&   a_shape, 
-			                        const TypeAlias::Math::Vector3&    a_worldPosition,
-								    const TypeAlias::Math::Quaternion& a_worldRotation, 
-			                        const bool                         a_isPushBackEnabled);
+        bool CreateAndAddStaticBody(const JPH::RefConst<JPH::Shape>&   a_shape,
+                                    const TypeAlias::Math::Vector3&    a_worldPosition,
+                                    const TypeAlias::Math::Quaternion& a_worldRotation,
+                                    const bool                         a_isPushBackEnabled);
 
-		bool ApplyStaticBodyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition);
-		bool ApplyStaticBodyShape         (const JPH::RefConst<JPH::Shape>&   a_shape);
+        bool ApplyStaticBodyWorldTransform(const TypeAlias::Math::Quaternion& a_worldRotation, const TypeAlias::Math::Vector3& a_worldPosition);
+        bool ApplyStaticBodyShape         (const JPH::RefConst<JPH::Shape>&   a_shape);
 
-		FWK_DEFINE_TYPE_INFO(PhysicsStaticBodyBase, PhysicsBodyBase)
-	};
+        FWK_DEFINE_TYPE_INFO(PhysicsStaticBodyBase, PhysicsBodyBase)
+    };
 }

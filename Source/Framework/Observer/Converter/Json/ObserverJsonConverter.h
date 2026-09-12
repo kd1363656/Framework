@@ -2,62 +2,62 @@
 
 namespace FWK
 {
-	template <typename Type>
-		requires std::is_enum_v<Type>
-	class Observer;
+    template <typename Type>
+        requires std::is_enum_v<Type>
+    class Observer;
 }
 
 namespace FWK::Converter
 {
-	template <typename Type>
-		requires std::is_enum_v<Type>
-	class ObserverJsonConverter final
-	{
-	public:
+    template <typename Type>
+        requires std::is_enum_v<Type>
+    class ObserverJsonConverter final
+    {
+    public:
 
-		 ObserverJsonConverter() = default;
-		~ObserverJsonConverter() = default;
+         ObserverJsonConverter() = default;
+        ~ObserverJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Observer<Type>& a_observer)
-		{
-			if (a_rootJson.is_null() ||
-				!Utility::IsJsonArray(a_rootJson, k_eventMapJsonKey))
-			{
-				return; 
-			}
-			
-			for (const auto& l_json : a_rootJson[k_eventMapJsonKey])
-			{
-				if (l_json.is_null()) { continue; }
+        void Deserialize(const nlohmann::json& a_rootJson, Observer<Type>& a_observer)
+        {
+            if (a_rootJson.is_null() ||
+                !Utility::IsJsonArray(a_rootJson, k_eventMapJsonKey))
+            {
+                return;
+            }
 
-				const auto l_eventEnum = l_json.value(k_eventJsonKey, Type::Invalid);
+            for (const auto& l_json : a_rootJson[k_eventMapJsonKey])
+            {
+                if (l_json.is_null()) { continue; }
 
-				a_observer.AddEvent(l_eventEnum);
-			}
-		}
+                const auto l_eventEnum = l_json.value(k_eventJsonKey, Type::Invalid);
 
-		nlohmann::json Serialize(const Observer<Type>& a_observer) const
-		{
-			nlohmann::json l_rootJson  = {};
-			auto           l_jsonArray = nlohmann::json::array();
+                a_observer.AddEvent(l_eventEnum);
+            }
+        }
 
-			for (const auto& [l_key, l_value] : a_observer.GetREFEventMap())
-			{
-				nlohmann::json l_json = {};
+        nlohmann::json Serialize(const Observer<Type>& a_observer) const
+        {
+            nlohmann::json l_rootJson  = {};
+            auto           l_jsonArray = nlohmann::json::array();
 
-				l_json[k_eventJsonKey] = l_key;
+            for (const auto& [l_key, l_value] : a_observer.GetREFEventMap())
+            {
+                nlohmann::json l_json = {};
 
-				l_jsonArray.emplace_back(l_json);
-			}
+                l_json[k_eventJsonKey] = l_key;
 
-			l_rootJson[k_eventMapJsonKey] = l_jsonArray;
+                l_jsonArray.emplace_back(l_json);
+            }
 
-			return l_rootJson;
-		}
+            l_rootJson[k_eventMapJsonKey] = l_jsonArray;
 
-	private:
+            return l_rootJson;
+        }
 
-		static constexpr std::string_view k_eventMapJsonKey = "EventMap";
-		static constexpr std::string_view k_eventJsonKey    = "Event";
-	};
+    private:
+
+        static constexpr std::string_view k_eventMapJsonKey = "EventMap";
+        static constexpr std::string_view k_eventJsonKey    = "Event";
+    };
 }

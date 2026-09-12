@@ -2,14 +2,14 @@
 
 namespace FWK
 {
-	template <typename Argument>
-	class StrategyBase
-	{
-	public:
-	
-		         StrategyBase() = default;
-		virtual ~StrategyBase() = default;
+    template <typename Argument>
+    class StrategyBase
+    {
+    public:
 
-		virtual void Execute(Argument& a_argument) = 0;
-	};
+                 StrategyBase() = default;
+        virtual ~StrategyBase() = default;
+
+        virtual void Execute(Argument& a_argument) = 0;
+    };
 }

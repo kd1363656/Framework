@@ -1,8 +1,8 @@
 ﻿#include "PhysicsCharacterVirtualAffectedByGravity.h"
 
-JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::CalculateLinearVelocity(const JPH::Vec3&                                 a_physicsGravity, 
-                                                                                          const Struct::PhysicsCharacterVirtualUpdateData& a_updateData, 
-                                                                                          const float                                      a_deltaTime, 
+JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::CalculateLinearVelocity(const JPH::Vec3&                                 a_physicsGravity,
+                                                                                          const Struct::PhysicsCharacterVirtualUpdateData& a_updateData,
+                                                                                          const float                                      a_deltaTime,
                                                                                                 JPH::CharacterVirtual&                     a_characterVirtual)
 {
     // CharacterVirtualが載っている床の速度を更新する。
@@ -65,7 +65,7 @@ void FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::ApplyExtendedUpdate
     // 床吸着距離の長さはJolt標準値を使用し
     // 方向だけをCharacterVirtualの下方向へ合わせる
     a_extendedUpdateSettings.mStickToFloorStepDown = -l_up * a_extendedUpdateSettings.mStickToFloorStepDown.Length();
-    
+
     // 現在設定されている階段昇降高さを維持したまま、
     // 方向だけをCharacterVirtualの上方向へ合わせる
     a_extendedUpdateSettings.mWalkStairsStepUp = l_up * a_extendedUpdateSettings.mWalkStairsStepUp.Length();

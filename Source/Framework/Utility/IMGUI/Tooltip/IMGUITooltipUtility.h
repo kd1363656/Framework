@@ -2,28 +2,28 @@
 
 namespace FWK::Utility
 {
-	inline void IMGUIDelayedTooltip(const std::string_view& a_tooltipText, const float a_delaySeconds = Constant::k_imguiDefaultDelayDrawSecond)
-	{
-		if (a_tooltipText.empty()) { return; }
+    inline void IMGUIDelayedTooltip(const std::string_view& a_tooltipText, const float a_delaySeconds = Constant::k_imguiDefaultDelayDrawSecond)
+    {
+        if (a_tooltipText.empty()) { return; }
 
-		auto& l_imGuiStyle = ImGui::GetStyle();
+        auto& l_imGuiStyle = ImGui::GetStyle();
 
-		// このTooltip判定にだけ指定されたHover時間を使用する
-		const float l_originalHoverDelayNormal = l_imGuiStyle.HoverDelayNormal;
+        // このTooltip判定にだけ指定されたHover時間を使用する
+        const float l_originalHoverDelayNormal = l_imGuiStyle.HoverDelayNormal;
 
-		l_imGuiStyle.HoverDelayNormal = a_delaySeconds;
+        l_imGuiStyle.HoverDelayNormal = a_delaySeconds;
 
-		const bool l_isTooltipDisplayable = ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal |
-		                                                         ImGuiHoveredFlags_NoSharedDelay);
+        const bool l_isTooltipDisplayable = ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal |
+                                                                 ImGuiHoveredFlags_NoSharedDelay);
 
-		// 他のImGuiItemへ影響させないため
-		// 元の値へ必ず戻す
-		l_imGuiStyle.HoverDelayNormal = l_originalHoverDelayNormal;
+        // 他のImGuiItemへ影響させないため
+        // 元の値へ必ず戻す
+        l_imGuiStyle.HoverDelayNormal = l_originalHoverDelayNormal;
 
-		if (!l_isTooltipDisplayable) { return; }
+        if (!l_isTooltipDisplayable) { return; }
 
-		ImGui::BeginTooltip   ();
-		ImGui::TextUnformatted(a_tooltipText.data());
-		ImGui::EndTooltip     ();
-	}
+        ImGui::BeginTooltip   ();
+        ImGui::TextUnformatted(a_tooltipText.data());
+        ImGui::EndTooltip     ();
+    }
 }
