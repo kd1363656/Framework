@@ -1459,8 +1459,20 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset">
       <UniqueIdentifier>{64737387-6ef1-4b5a-89bb-7f8fcd274e95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Selection">
-      <UniqueIdentifier>{ae09ed66-e3d6-4d71-ae30-d2048d6dff57}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard">
+      <UniqueIdentifier>{587c34ce-3883-40f4-ab50-768d158a41d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation">
+      <UniqueIdentifier>{7b8f50ff-b77c-465c-85aa-f20e199cd449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Creation">
+      <UniqueIdentifier>{687534e0-dc75-4209-b3b4-f433f44ea0bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut">
+      <UniqueIdentifier>{5b38fb76-43e8-402a-ad0d-2ae5fd740756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Popup">
+      <UniqueIdentifier>{41131ec1-d7b6-46f3-bb64-c1addaf3988a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Definition\Enum\Editor">
       <UniqueIdentifier>{8dc7619f-5395-4db7-8ead-5752397905b7}</UniqueIdentifier>
@@ -2781,9 +2793,6 @@
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Component\Rotation</Filter>
     </ClInclude>
@@ -2862,8 +2871,20 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\AssetBrowserEditorWindowFolderPane.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionController.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\FileOperation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Creation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutHandler.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Popup\AssetBrowserEditorWindowPopupDrawer.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Popup</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
@@ -2910,6 +2931,7 @@
     <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.h">
       <Filter>Source\Framework\Audio\SoundEffect\Instance\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJsonConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3587,9 +3609,6 @@
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJson.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp">
       <Filter>Source\Framework\Asset</Filter>
     </ClCompile>
@@ -3644,8 +3663,20 @@
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\AssetBrowserEditorWindowFolderPane.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionController.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\FileOperation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Creation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutHandler.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Popup\AssetBrowserEditorWindowPopupDrawer.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Popup</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp">
       <Filter>Source\Framework\Editor\Splitter</Filter>
@@ -3671,6 +3702,7 @@
     <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.cpp">
       <Filter>Source\Framework\Audio\SoundEffect\Instance\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJsonConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
