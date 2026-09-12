@@ -91,7 +91,7 @@ void Application::Execute()
 			ClearWindowResizeRequest();
 			m_fpsController.EndFrame();
 
-			continue; 
+			continue;
 		}
 
 		l_inputManager.Update();
@@ -108,7 +108,7 @@ void Application::Execute()
 		ClearWindowResizeRequest();
 
 		// JoltPhysicsのデバック命令をこのフレーム用のQueueへ集める
-	    // ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
+		// ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
 		l_physicsManager.CollectPhysicsDebugDrawCommands();
 
 		// 描画処理

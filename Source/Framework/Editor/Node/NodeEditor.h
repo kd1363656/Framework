@@ -48,11 +48,11 @@ namespace FWK::Editor
 
 		ImNodesEditorContext* m_editorContext;
 
-		NodeEditorAllocator m_nodeEditorAllocator = {};
+		NodeEditorAllocator m_nodeEditorAllocator;
 
-		std::vector<Struct::NodeEditorLinkData> m_linkDataList = {};
+		std::vector<Struct::NodeEditorLinkData> m_linkDataList;
 
-		Converter::NodeEditorJsonConverter m_jsonConverter = {};
+		Converter::NodeEditorJsonConverter m_jsonConverter;
 
 		bool m_isDrawing;
 	};

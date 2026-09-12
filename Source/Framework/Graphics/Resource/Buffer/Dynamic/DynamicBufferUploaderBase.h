@@ -92,7 +92,7 @@ namespace FWK::Graphics
 
 		UploadBuffer m_uploadBuffer;
 
-		Converter::DynamicBufferUploaderBaseJsonConverter m_jsonConverter = {};
+		Converter::DynamicBufferUploaderBaseJsonConverter m_jsonConverter;
 
 		UINT64 m_createCount;
 

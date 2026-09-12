@@ -129,9 +129,9 @@ namespace FWK
 
 		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Window/WindowCONFIG.json";
 
-		Converter::WindowJsonConverter m_jsonConverter = {};
+		Converter::WindowJsonConverter m_jsonConverter;
 
-		RECT m_normalWindowRECT = {};
+		RECT m_normalWindowRECT;
 
 		ClientSize    m_clientSize;
 		ResizeRequest m_resizeRequest;

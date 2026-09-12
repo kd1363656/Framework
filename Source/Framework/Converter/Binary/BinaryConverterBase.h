@@ -176,6 +176,6 @@ namespace FWK::Converter
 
 		std::uint64_t m_mappedDataSize;
 
-		bool m_isWritable = k_isInitialWritable;
+		bool m_isWritable;
 	};
 }

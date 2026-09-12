@@ -292,7 +292,30 @@
 	Hoge& GetMutableREFName();
 	Hoge* GetMutablePTRName();
 
-	Hoge FetchValueName() const;
+	Hoge GetVALName() const;
+}
+・特殊なメソッド名の命名(省略形はすべて大文字にするルールに従う)
+{
+	理由 : ライフサイクル系のメソッドは名前で役割を一目で判別できるようにするため
+
+	例↓
+	// 初期化処理(InitializeではなくINIT)
+	void INIT();
+
+	// コンフィグの読み込み・保存・読み込み後処理(CONFIGはすべて大文字)
+	void LoadCONFIG    ();
+	void SaveCONFIG    () const;
+	void PostLoadCONFIG();
+
+	// フレームの開始・終了
+	void BeginFrame();
+	void EndFrame  ();
+
+	// 更新系(処理順を意識して整列させる)
+	void EarlyUpdate   ();
+	void Update        ();
+	void LateUpdate    ();
+	void PostLateUpdate();
 }
 ・同じような処理を持つ関数があるならば行間を開けずに書く(ゲッターやセッターは除外)
 {
@@ -420,6 +443,11 @@
 		コンストラクタ初期化を行わない場合メンバイニシャライザを使って初期化する
 		コンストラクタ初期化ならコンストラクタでメンバを初期化する
 		理由 : コンストラクタを使用するクラスなのかそうでないクラスなのかが初期化の仕方でわかるから
+
+		・コンストラクタ初期化（メンバイニシャライザ）を行う場合は全メンバをコンストラクタ初期化すること
+		.hでのインライン初期化とコンストラクタ初期化を混在させない
+		理由 : どちらで初期化されているかが不明確になり、二重初期化になるから
+
 		例↓
 		
 		コンストラクタがDefaultの場合.h
@@ -610,4 +638,131 @@
 	{
 		...諸々の処理
 	}
+}
+12.名前空間について=========================================================================================================================================
+・ルート名前空間はFWKとする(FWKは省略形なのですべて大文字)
+・サブ名前空間はアッパーキャメルケースで書く
+・C++17のネストされた名前空間構文(namespace FWK::Sub)を使う
+{
+	理由 : 短く書けて可読性が高まるから
+
+	例↓
+	namespace FWK::Graphics
+	{
+		class GraphicsManager final : public Utility::SingletonBase<GraphicsManager>
+		{}
+	}
+
+	// 実際に使われているサブ名前空間の例
+	// FWK::Graphics, FWK::Editor, FWK::Converter, FWK::Constant, FWK::Concept,
+	// FWK::Utility, FWK::TypeAlias, FWK::Struct, FWK::Enum, FWK::TypeTrait
+}
+・前方宣言だけの場合はnamespace FWK {}で分けて書く
+{
+	例↓
+	namespace FWK
+	{
+		class GameObject;
+	}
+}
+13.クラス・構造体・Enum・コンセプト・型エイリアスの命名について=============================================================================================
+・クラス・構造体はアッパーキャメルケース
+{
+	・基底クラスにはBase接尾辞をつける
+	例↓ ComponentBase, MatrixStrategyBase, SingletonBase, BinaryConverterBase, EditorWindowBase
+
+	・管理クラスにはManager接尾辞をつける
+	例↓ GraphicsManager, EditorManager, AudioManager, SceneManager
+
+	・Json変換クラスにはJsonConverter接尾辞をつける(Iはつけない)
+	例↓ AudioManagerJsonConverter, GraphicsManagerJsonConverter, GameObjectJsonConverter
+
+	・継承させないクラスには必ずfinalをつける
+	例↓ class Application final, class CameraComponent final, class Device final
+
+	・構造体もfinalをつける
+	例↓ struct StringHash final, struct TypeINFO final
+}
+・Enumはenum classで定義し、列挙子はアッパーキャメルケース
+{
+	例↓
+	enum class WindowStyle
+	{
+		None,
+		Normal,
+		BorderlessFullScreen,
+	};
+}
+・コンセプトはIs〜Conceptという命名にする
+{
+	例↓ IsDerivedBaseConcept, IsSmartPTRConcept, IsDerivedComponentBaseConcept, IsDerivedEditorWindowBaseConcept
+}
+・型エイリアスはアッパーキャメルケース
+{
+	例↓
+	using HogeStringMap = std::unordered_map<std::string, std::string>;
+	using FactoryMap    = std::unordered_map<std::string, std::function<Type()>>;
+	using BaseType      = typename Type::element_type;
+}
+14.マクロについて=============================================================================================================================================
+・マクロ名はFWK_プレフィックスをつけ、アッパースネークケースで書く
+{
+	理由 : マクロであることが一目でわかり、名前の衝突を防ぐため
+
+	例↓
+	#define FWK_DEFINE_TYPE_INFO(Derived, Base)
+	#define FWK_DEFINE_TYPE_INFO_ROOT(Derived)
+	#define FWK_REGISTER_FACTORY_METHOD(FactoryType, DerivedType)
+	#define FWK_ADD_LOG(TextColor, Format, ...)
+	#define FWK_ASSERT_RETURN_IF(Condition, Message)
+	#define FWK_JSON_SERIALIZE_ENUM(EnumType, ...)
+}
+・クラス内部で使用するマクロは一番下に書くこと(アクセス指定子を変える可能性があるため)
+{
+	例↓
+	class Hoge final
+	{
+	private:
+
+		int m_a = 0;
+
+		FWK_DEFINE_TYPE_INFO(Hoge, HogeBase)
+	};
+}
+15.定数の修飾子について=======================================================================================================================================
+・クラススコープの定数はstatic constexprを使う
+・名前空間スコープの定数はinline constexprを使う
+・ファイルパスなど実行時に決まるものはinline static constを使う
+・定数名はk_プレフィックス(変数の命名規則を参照)
+{
+	例↓
+	// クラススコープ
+	static constexpr float k_cameraDefaultFOVYDegree = 60.0F;
+
+	// 名前空間スコープ
+	namespace FWK::Constant
+	{
+		inline constexpr float k_cameraDefaultFOVYDegree = 60.0F;
+	}
+
+	// ファイルパス
+	inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Graphics/GraphicsCONFIG.json";
+}
+16.ブレース(波括弧)の位置について=============================================================================================================================
+・関数・クラス・制御文の開きブレースは改行して次の行に書く(Allmanスタイル)
+{
+	例↓
+	void Hoge::Execute()
+	{
+		if (l_isA)
+		{
+			...
+		}
+	}
+
+	class Hoge final
+	{
+	public:
+		 Hoge() = default;
+	};
 }

@@ -1,8 +1,9 @@
 ﻿#include "PhysicsLayerSetting.h"
 
-FWK::Physics::PhysicsLayerSetting::PhysicsLayerSetting() : 
-	m_broadPhaseLayerInterface(static_cast<JPH::uint>(Enum::PhysicsObjectLayerType::Count), static_cast<JPH::uint>(Enum::PhysicsBroadPhaseLayerType::Count)),
-	m_objectLayerPairFilter   (static_cast<JPH::uint>(Enum::PhysicsObjectLayerType::Count))
+FWK::Physics::PhysicsLayerSetting::PhysicsLayerSetting() :
+	m_broadPhaseLayerInterface     (static_cast<JPH::uint>(Enum::PhysicsObjectLayerType::Count), static_cast<JPH::uint>(Enum::PhysicsBroadPhaseLayerType::Count)),
+	m_objectLayerPairFilter        (static_cast<JPH::uint>(Enum::PhysicsObjectLayerType::Count)),
+	m_objectVsBroadPhaseLayerFilter(nullptr)
 {}
 
 FWK::Physics::PhysicsLayerSetting::~PhysicsLayerSetting() = default;

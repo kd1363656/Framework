@@ -6,9 +6,9 @@ void FWK::Converter::RotationComponentConstantMouseModeJsonConverter::Deserializ
 
 	a_moveComponentConstantMouseMode.RotationComponentConstantModeBase::Deserialize(a_rootJson);
 
-	Struct::Range<float> m_xAxisRotatableRange = { a_rootJson.value(k_xAxisRotatableRangeMAXJsonKey, Constant::k_rotationComponentDefaultRotatableRangeX), a_rootJson.value(k_xAxisRotatableRangeMINJsonKey, -Constant::k_rotationComponentDefaultRotatableRangeX) };
+	Struct::Range<float> l_xAxisRotatableRange = { a_rootJson.value(k_xAxisRotatableRangeMAXJsonKey, Constant::k_rotationComponentDefaultRotatableRangeX), a_rootJson.value(k_xAxisRotatableRangeMINJsonKey, -Constant::k_rotationComponentDefaultRotatableRangeX) };
 
-	a_moveComponentConstantMouseMode.SetXAxisRotatableRange(m_xAxisRotatableRange);
+	a_moveComponentConstantMouseMode.SetXAxisRotatableRange(l_xAxisRotatableRange);
 }
 
 nlohmann::json FWK::Converter::RotationComponentConstantMouseModeJsonConverter::Serialize(const RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode) const

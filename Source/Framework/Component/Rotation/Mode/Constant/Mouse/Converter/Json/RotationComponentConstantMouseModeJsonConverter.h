@@ -14,9 +14,9 @@ namespace FWK::Converter
 		 RotationComponentConstantMouseModeJsonConverter() = default;
 		~RotationComponentConstantMouseModeJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode) const;
+		void Deserialize(const nlohmann::json& a_rootJson, RotationComponentConstantMouseMode& a_rotationComponentConstantMouseMode) const;
 
-		nlohmann::json Serialize(const RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode) const;
+		nlohmann::json Serialize(const RotationComponentConstantMouseMode& a_rotationComponentConstantMouseMode) const;
 
 	private:
 

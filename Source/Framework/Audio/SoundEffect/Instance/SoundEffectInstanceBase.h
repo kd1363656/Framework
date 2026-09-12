@@ -34,8 +34,8 @@ namespace FWK
 
 	private:
 
-		std::unique_ptr<DirectX::SoundEffectInstance> m_instance = nullptr;
+		std::unique_ptr<DirectX::SoundEffectInstance> m_instance;
 
-		std::weak_ptr<SoundEffect> m_soundEffect = {};
+		std::weak_ptr<SoundEffect> m_soundEffect;
 	};
 }

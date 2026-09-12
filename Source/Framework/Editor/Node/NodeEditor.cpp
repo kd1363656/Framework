@@ -3,6 +3,12 @@
 FWK::Editor::NodeEditor::NodeEditor() :
 	m_editorContext(nullptr),
 
+	m_nodeEditorAllocator(),
+
+	m_linkDataList(),
+
+	m_jsonConverter(),
+
 	m_isDrawing(false)
 {}
 FWK::Editor::NodeEditor::~NodeEditor()

@@ -38,8 +38,8 @@ namespace FWK::Editor
 
 		AssetBrowserEditorWindowDirectoryNotificationProcessor m_notificationProcessor;
 
-		std::filesystem::path m_directoryPath = {};
+		std::filesystem::path m_directoryPath;
 
-		bool m_isNotificationReadPending = false;
+		bool m_isNotificationReadPending;
 	};
 }

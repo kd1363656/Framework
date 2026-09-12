@@ -13,8 +13,8 @@ public:
 
 	void Execute();
 
-	const auto& GetREFWindow        () const { return m_window; }
-	const auto& GetREFFFPSController() const { return m_fpsController; }
+	const auto& GetREFWindow       () const { return m_window; }
+	const auto& GetREFFPSController() const { return m_fpsController; }
 
 	static constexpr int k_exitCodeSuccess			   =  0;
 	static constexpr int k_exitCodeCOMInitializeFailed = -1;
@@ -37,9 +37,9 @@ private:
 
 	static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Game/Stage1-1.json";
 
-	const std::wstring k_windowClassName = L"Window";
-	const std::string  k_titleName       = "MRI_FRAMEWORK";
+	static inline const std::wstring k_windowClassName = L"Window";
+	static inline const std::string  k_titleName       = "MRI_FRAMEWORK";
 
-	FWK::Window		   m_window		   = {};
-	FWK::FPSController m_fpsController = {};
+	FWK::Window		   m_window;
+	FWK::FPSController m_fpsController;
 };
