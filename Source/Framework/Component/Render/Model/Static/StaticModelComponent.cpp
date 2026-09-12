@@ -2,89 +2,89 @@
 
 void FWK::StaticModelComponent::LoadModel()
 {
-	const auto& l_assetFilePathHelper = GetVALAssetFilePathHelper().lock();
+    const auto& l_assetFilePathHelper = GetVALAssetFilePathHelper().lock();
 
-	if (!l_assetFilePathHelper) { return; }
+    if (!l_assetFilePathHelper) { return; }
 
-	const auto& l_assetFilePath = l_assetFilePathHelper->GetREFAssetFilePath();
+    const auto& l_assetFilePath = l_assetFilePathHelper->GetREFAssetFilePath();
 
-	if (l_assetFilePath.empty() ||
-		!m_model)
-	{
-		return;
-	}
+    if (l_assetFilePath.empty() ||
+        !m_model)
+    {
+        return;
+    }
 
-	m_model->Load(l_assetFilePath);
+    m_model->Load(l_assetFilePath);
 }
 
 void FWK::StaticModelComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 
-	LoadModel();
+    LoadModel();
 }
 
 void FWK::StaticModelComponent::PostDeserialize()
 {
-	ModelComponentBase::PostDeserialize();
+    ModelComponentBase::PostDeserialize();
 
-	// 初めの座標を反映するためにDrawRequestDataを更新
-	UpdateDrawRequestData();
+    // 初めの座標を反映するためにDrawRequestDataを更新
+    UpdateDrawRequestData();
 
-	for (const auto& [l_staticTypeID, l_strategy] : m_registerDrawRequestStrategyMap)
-	{
-		if (!l_strategy) { continue; }
+    for (const auto& [l_staticTypeID, l_strategy] : m_registerDrawRequestStrategyMap)
+    {
+        if (!l_strategy) { continue; }
 
-		l_strategy->Execute(*this);
-	}
+        l_strategy->Execute(*this);
+    }
 }
 
 void FWK::StaticModelComponent::PostLateUpdate()
 {
-	if (!m_drawRequestData) { return; }
+    if (!m_drawRequestData) { return; }
 
-	UpdateDrawRequestData();
+    UpdateDrawRequestData();
 }
 
 void FWK::StaticModelComponent::EditInspector()
 {
-	m_inspector.EditInspector(*this);
+    m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::StaticModelComponent::SerializePrefab()
 {
-	return m_jsonConverter.SerializePrefab(*this);
+    return m_jsonConverter.SerializePrefab(*this);
 }
 
 void FWK::StaticModelComponent::AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy)
 {
-	if (!a_registerDrawRequestStrategy) { return; }
+    if (!a_registerDrawRequestStrategy) { return; }
 
-	const auto l_staticTypeID = a_registerDrawRequestStrategy->GetREFRuntimeTypeINFO().k_staticTypeID;
+    const auto l_staticTypeID = a_registerDrawRequestStrategy->GetREFRuntimeTypeINFO().k_staticTypeID;
 
-	m_registerDrawRequestStrategyMap.try_emplace(l_staticTypeID, std::move(a_registerDrawRequestStrategy));
+    m_registerDrawRequestStrategyMap.try_emplace(l_staticTypeID, std::move(a_registerDrawRequestStrategy));
 }
 
 void FWK::StaticModelComponent::UpdateDrawRequestData()
 {
-	// 当たり判定などを行って確定したTransformComponentの現在の行列を取得し適用
-	const auto& l_transformComponent = GetREFFetchTransformComponentFromSelfGameObjectHelper().GetREFFetchedTransformComponent().lock();
+    // 当たり判定などを行って確定したTransformComponentの現在の行列を取得し適用
+    const auto& l_transformComponent = GetREFFetchTransformComponentFromSelfGameObjectHelper().GetREFFetchedTransformComponent().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "存在すべきTransformComponentが存在しておらず、StaticModelComponentのUpdateDrawRequestData処理に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_transformComponent, "存在すべきTransformComponentが存在しておらず、StaticModelComponentのUpdateDrawRequestData処理に失敗しました。");
 
-	if (!m_model ||
-		!m_drawRequestData) 
-	{
-		return; 
-	}
+    if (!m_model ||
+        !m_drawRequestData) 
+    {
+        return; 
+    }
 
-	const auto& l_matrix = l_transformComponent->GetREFMatrix();
+    const auto& l_matrix = l_transformComponent->GetREFMatrix();
 
-	// 描画に必要なデータを渡す
-	m_drawRequestData->m_worldMatrix                 = l_matrix;
-	m_drawRequestData->m_staticModelRecord           = m_model->GetREFStaticModelRecord();
-	m_drawRequestData->m_worldInverseTransposeMatrix = l_matrix.Invert                 ().Transpose();
-	m_drawRequestData->m_worldMaxScale               = Utility::CalculateWorldMaxScale (l_matrix);
+    // 描画に必要なデータを渡す
+    m_drawRequestData->m_worldMatrix                 = l_matrix;
+    m_drawRequestData->m_staticModelRecord           = m_model->GetREFStaticModelRecord();
+    m_drawRequestData->m_worldInverseTransposeMatrix = l_matrix.Invert                 ().Transpose();
+    m_drawRequestData->m_worldMaxScale               = Utility::CalculateWorldMaxScale (l_matrix);
 }

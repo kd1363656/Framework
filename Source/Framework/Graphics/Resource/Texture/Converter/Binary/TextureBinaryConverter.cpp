@@ -20,7 +20,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	if (!TryReadSingleBinaryData(l_textureBinaryHeader, l_memoryReadOffset))
 	{
 #if defined(_DEBUG)
-		const auto& l_debugLog = std::format("TextureAssetのファイルサイズがHeaderサイズよりも小さいため、PNGから再生成します。AssetFileSize : {}\n", GetREFMappedDataSize());
+		const auto& l_debugLog = std::format("TextureAssetのファイルサイズがHeaderサイズよりも小さいため、PNGから再生成します。AssetFileSize : {}\n", GetVALMappedDataSize());
 
 		OutputDebugStringA(l_debugLog.c_str());
 #endif
@@ -56,10 +56,10 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
 	}
 
 	// Headerに保存されたファイルサイズと、実際のファイルサイズが違うなら壊れている。
-	if (l_textureBinaryHeader.m_fileSize != GetREFMappedDataSize())
+	if (l_textureBinaryHeader.m_fileSize != GetVALMappedDataSize())
 	{
 #if defined(_DEBUG)
-		const auto& l_debugLog = std::format("TextureAssetのファイルサイズが一致しないため、PNGから再生成します。AssetFileSize : {}, CurrentFileSize : {}\n", l_textureBinaryHeader.m_fileSize, GetREFMappedDataSize());
+		const auto& l_debugLog = std::format("TextureAssetのファイルサイズが一致しないため、PNGから再生成します。AssetFileSize : {}, CurrentFileSize : {}\n", l_textureBinaryHeader.m_fileSize, GetVALMappedDataSize());
 
 		OutputDebugStringA(l_debugLog.c_str());
 #endif

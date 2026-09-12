@@ -2,9 +2,9 @@
 
 void FWK::ModelComponentBaseInspector::EditInspector(ModelComponentBase& a_modelComponentBase)
 {
-	const auto& l_assetFilePathHelper = a_modelComponentBase.GetVALAssetFilePathHelper().lock();
+    const auto& l_assetFilePathHelper = a_modelComponentBase.GetVALAssetFilePathHelper().lock();
 
-	if (!l_assetFilePathHelper) { return; }
+    if (!l_assetFilePathHelper) { return; }
 
-	l_assetFilePathHelper->EditInspector();
+    l_assetFilePathHelper->EditInspector();
 }

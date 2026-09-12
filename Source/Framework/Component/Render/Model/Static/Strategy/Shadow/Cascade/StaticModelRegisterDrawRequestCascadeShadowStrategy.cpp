@@ -2,5 +2,5 @@
 
 void FWK::StaticModelRegisterDrawRequestCascadeShadowStrategy::Execute(StaticModelComponent& a_staticModelComponent)
 {
-	RegisterDrawRequestData<Graphics::StaticModelCascadeShadowPerObjectDrawRequest>(a_staticModelComponent);
+    RegisterDrawRequestData<Graphics::StaticModelCascadeShadowPerObjectDrawRequest>(a_staticModelComponent);
 }

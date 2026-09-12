@@ -46,7 +46,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
     }
 
     // Headerに保存されたファイルサイズと実際の.assetサイズが違う場合は、壊れた.asssetの可能性が高いため読み込まない。
-    if (l_modelBinaryHeader.m_fileSize != GetREFMappedDataSize())
+    if (l_modelBinaryHeader.m_fileSize != GetVALMappedDataSize())
     {
         FailLoadAsset(l_staticModelData);
 

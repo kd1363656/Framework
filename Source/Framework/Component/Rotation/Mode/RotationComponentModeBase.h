@@ -2,52 +2,52 @@
 
 namespace FWK
 {
-	class RotationComponentModeBase
-	{
-	public:
+    class RotationComponentModeBase
+    {
+    public:
 
-		         RotationComponentModeBase() = default;
-		virtual ~RotationComponentModeBase() = default;
+                 RotationComponentModeBase() = default;
+        virtual ~RotationComponentModeBase() = default;
 
-		virtual void INIT();
+        virtual void INIT();
 
-		virtual void Deserialize(const nlohmann::json& a_rootJson);
+        virtual void Deserialize(const nlohmann::json& a_rootJson);
 
-		virtual void PostDeserialize(const GameObject& a_owner);
-		
-		virtual void Update() = 0;
+        virtual void PostDeserialize(const GameObject& a_owner);
+        
+        virtual void Update() = 0;
 
-		virtual void EditInspector();
+        virtual void EditInspector();
 
-		void ResetRotationDirection();
+        void ResetRotationDirection();
 
-		virtual nlohmann::json Serialize() const;
+        virtual nlohmann::json Serialize() const;
 
-		void AddCanApplyRotationAxisBitShiftFlag(const Enum::AxisBitShiftFlag a_canApplyRotationAxisBitShiftFlag);
+        void AddCanApplyRotationAxisBitShiftFlag(const Enum::AxisBitShiftFlag a_canApplyRotationAxisBitShiftFlag);
 
-		const auto& GetREFCanApplyRotationAxisBitShiftFlagList() const { return m_canApplyRotationAxisBitShiftFlagList; }
+        const auto& GetREFCanApplyRotationAxisBitShiftFlagList() const { return m_canApplyRotationAxisBitShiftFlagList; }
 
-		auto& GetMutableREFCanApplyRotationAxisBitShiftFlagList() { return m_canApplyRotationAxisBitShiftFlagList; }
+        auto& GetMutableREFCanApplyRotationAxisBitShiftFlagList() { return m_canApplyRotationAxisBitShiftFlagList; }
 
-	protected:
+    protected:
 
-		bool CanUpdate();
+        bool CanUpdate();
 
-	private:
+    private:
 
-		std::vector<Enum::AxisBitShiftFlag> m_canApplyRotationAxisBitShiftFlagList = {};
+        std::vector<Enum::AxisBitShiftFlag> m_canApplyRotationAxisBitShiftFlagList = {};
 
-		Utility::FetchComponentEventObserverFromSelfGameObjectHelper m_fetchComponentEventObserverFromSelfGameObjectHelper = {};
-		Utility::FetchTransformComponentFromSelfGameObjectHelper     m_fetchTransformComponentFromSelfGameObjectHelper     = {};
+        Utility::FetchComponentEventObserverFromSelfGameObjectHelper m_fetchComponentEventObserverFromSelfGameObjectHelper = {};
+        Utility::FetchTransformComponentFromSelfGameObjectHelper     m_fetchTransformComponentFromSelfGameObjectHelper     = {};
 
-		RotationComponentModeBaseInspector m_inspector = {};
+        RotationComponentModeBaseInspector m_inspector = {};
 
-		Converter::RotationComponentModeBaseJsonConverter m_jsonConverter = {};
+        Converter::RotationComponentModeBaseJsonConverter m_jsonConverter = {};
 
-		TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
+        TypeAlias::Math::Vector3 m_rotationDirection = TypeAlias::Math::Vector3::Zero;
 
-		std::uint32_t m_canApplyRotationAxisBitShiftFlag = static_cast<std::uint32_t>(Enum::AxisBitShiftFlag::Invalid);
+        std::uint32_t m_canApplyRotationAxisBitShiftFlag = static_cast<std::uint32_t>(Enum::AxisBitShiftFlag::Invalid);
 
-		FWK_DEFINE_TYPE_INFO_ROOT(RotationComponentModeBase)
-	};
+        FWK_DEFINE_TYPE_INFO_ROOT(RotationComponentModeBase)
+    };
 }

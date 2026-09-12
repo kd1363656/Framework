@@ -2,5 +2,5 @@
 
 void FWK::StaticModelRegisterDrawRequestStandardUnLitStrategy::Execute(StaticModelComponent& a_staticModelComponent)
 {
-	RegisterDrawRequestData<Graphics::StaticModelStandardUnLitPerObjectDrawRequest>(a_staticModelComponent);
+    RegisterDrawRequestData<Graphics::StaticModelStandardUnLitPerObjectDrawRequest>(a_staticModelComponent);
 }

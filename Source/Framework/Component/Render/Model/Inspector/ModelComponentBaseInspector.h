@@ -2,18 +2,18 @@
 
 namespace FWK
 {
-	class ModelComponentBase;
+    class ModelComponentBase;
 }
 
 namespace FWK
 {
-	class ModelComponentBaseInspector final
-	{
-	public:
+    class ModelComponentBaseInspector final
+    {
+    public:
 
-		 ModelComponentBaseInspector() = default;
-		~ModelComponentBaseInspector() = default;
+         ModelComponentBaseInspector() = default;
+        ~ModelComponentBaseInspector() = default;
 
-		void EditInspector(ModelComponentBase& a_modelComponentBase);
-	};
+        void EditInspector(ModelComponentBase& a_modelComponentBase);
+    };
 }

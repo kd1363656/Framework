@@ -3,64 +3,64 @@
 
 void FWK::CameraComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
 void FWK::CameraComponent::PostDeserialize()
 {
-	const auto& l_owner = GetREFOwner().lock();
+    const auto& l_owner = GetREFOwner().lock();
 
-	if (!l_owner) { return; }
+    if (!l_owner) { return; }
 
-	m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(*l_owner);
+    m_fetchTransformComponentFromSelfGameObjectHelper.PostDeserialize(*l_owner);
 
-	// 早速取得したTransformComponentから行列を取得する
-	const auto& l_transformComponent = m_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent().lock();
+    // 早速取得したTransformComponentから行列を取得する
+    const auto& l_transformComponent = m_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効になっています。TransformComponentは存在するべきコンポーネントです");
+    FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効になっています。TransformComponentは存在するべきコンポーネントです");
 
-	// アスペクト比率及びカメラ行列をセット
-	const auto& l_application = Application::GetInstance  ();
-	const auto& l_window      = l_application.GetREFWindow();
-	
-	m_camera.SetAspectRatio (l_window.GetVALAspectRatio());
-	m_camera.SetCameraMatrix(l_transformComponent->GetREFMatrix());
-	
-	// プロジェクション行列などを設定する
-	m_camera.Setup();
+    // アスペクト比率及びカメラ行列をセット
+    const auto& l_application = Application::GetInstance  ();
+    const auto& l_window      = l_application.GetREFWindow();
+    
+    m_camera.SetAspectRatio (l_window.GetVALAspectRatio());
+    m_camera.SetCameraMatrix(l_transformComponent->GetREFMatrix());
+    
+    // プロジェクション行列などを設定する
+    m_camera.Setup();
 }
 
 void FWK::CameraComponent::EarlyUpdate()
 {
-	const auto& l_application = Application::GetInstance    ();
-	const auto& l_window      = l_application.GetREFWindow  ();
-	
-	// リサイズ申請がされたときのみにアスペクト比率を更新する
-	if (const auto& l_resizeRequest = l_window.GetREFResizeRequest();
-		!l_resizeRequest.m_isRequested) 
-	{
-		return; 
-	}
+    const auto& l_application = Application::GetInstance    ();
+    const auto& l_window      = l_application.GetREFWindow  ();
+    
+    // リサイズ申請がされたときのみにアスペクト比率を更新する
+    if (const auto& l_resizeRequest = l_window.GetREFResizeRequest();
+        !l_resizeRequest.m_isRequested) 
+    {
+        return; 
+    }
 
-	m_camera.SetAspectRatio(l_window.GetVALAspectRatio());
+    m_camera.SetAspectRatio(l_window.GetVALAspectRatio());
 }
 void FWK::CameraComponent::PostLateUpdate()
 {
-	const auto& l_transformComponent = m_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent().lock();
+    const auto& l_transformComponent = m_fetchTransformComponentFromSelfGameObjectHelper.GetREFFetchedTransformComponent().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効になっています。TransformComponentは存在するべきコンポーネントです");
+    FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが無効になっています。TransformComponentは存在するべきコンポーネントです");
 
-	m_camera.ApplyCameraMatrix(l_transformComponent->GetREFMatrix());
+    m_camera.ApplyCameraMatrix(l_transformComponent->GetREFMatrix());
 }
 
 void FWK::CameraComponent::EditInspector()
 {
-	m_inspector.EditInspector(*this);
+    m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::CameraComponent::SerializePrefab()
 {
-	return m_jsonConverter.SerializePrefab(*this);
+    return m_jsonConverter.SerializePrefab(*this);
 }

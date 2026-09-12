@@ -2,37 +2,37 @@
 
 namespace FWK
 {
-	class RotationComponent final : public ComponentBase
-	{
-	public:
+    class RotationComponent final : public ComponentBase
+    {
+    public:
 
-		 RotationComponent() = default;
-		~RotationComponent() = default;
+         RotationComponent() = default;
+        ~RotationComponent() = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
+        void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
-		void PostDeserialize() override;
+        void PostDeserialize() override;
 
-		void Update() override;
+        void Update() override;
 
-		void EditInspector() override;
+        void EditInspector() override;
 
-		nlohmann::json SerializePrefab() override;
+        nlohmann::json SerializePrefab() override;
 
-		const auto& GetREFRotationMode() const { return m_rotationMode; }
+        const auto& GetREFRotationMode() const { return m_rotationMode; }
 
-		auto& GetMutableREFRotationMode() { return m_rotationMode; }
+        auto& GetMutableREFRotationMode() { return m_rotationMode; }
 
-	private:
-		
-		std::unique_ptr<RotationComponentModeBase> m_rotationMode = nullptr;
+    private:
+        
+        std::unique_ptr<RotationComponentModeBase> m_rotationMode = nullptr;
 
-		RotationComponentInspector m_inspector = {};
+        RotationComponentInspector m_inspector = {};
 
-		Converter::RotationComponentJsonConverter m_jsonConverter = {};
+        Converter::RotationComponentJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(RotationComponent, ComponentBase)
-	};
+        FWK_DEFINE_TYPE_INFO(RotationComponent, ComponentBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::RotationComponent)

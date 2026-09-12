@@ -2,35 +2,35 @@
 
 void FWK::MoveComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
 void FWK::MoveComponent::PostDeserialize()
 {
-	if (!m_moveMode) { return; }
+    if (!m_moveMode) { return; }
 
-	const auto& l_owner = GetREFOwner().lock();
+    const auto& l_owner = GetREFOwner().lock();
 
-	if (!l_owner) { return; }
+    if (!l_owner) { return; }
 
-	m_moveMode->PostDeserialize(*l_owner);
+    m_moveMode->PostDeserialize(*l_owner);
 }
 
 void FWK::MoveComponent::Update()
 {
-	if (!m_moveMode) { return; }
+    if (!m_moveMode) { return; }
 
-	m_moveMode->Update();
+    m_moveMode->Update();
 }
 
 void FWK::MoveComponent::EditInspector()
 {
-	m_inspector.EditInspector(*this);
+    m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::MoveComponent::SerializePrefab()
 {
-	return m_jsonConverter.SerializePrefab(*this);
+    return m_jsonConverter.SerializePrefab(*this);
 }

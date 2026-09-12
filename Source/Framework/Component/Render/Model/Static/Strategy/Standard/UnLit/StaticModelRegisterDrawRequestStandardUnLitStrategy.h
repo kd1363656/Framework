@@ -2,17 +2,17 @@
 
 namespace FWK
 {
-	class StaticModelRegisterDrawRequestStandardUnLitStrategy final : public StaticModelRegisterDrawRequestStrategyBase
-	{
-	public:
+    class StaticModelRegisterDrawRequestStandardUnLitStrategy final : public StaticModelRegisterDrawRequestStrategyBase
+    {
+    public:
 
-		 StaticModelRegisterDrawRequestStandardUnLitStrategy()          = default;
-		~StaticModelRegisterDrawRequestStandardUnLitStrategy() override = default;
+         StaticModelRegisterDrawRequestStandardUnLitStrategy()          = default;
+        ~StaticModelRegisterDrawRequestStandardUnLitStrategy() override = default;
 
-		void Execute(StaticModelComponent& a_staticModelComponent) override;
-		
-		FWK_DEFINE_TYPE_INFO(StaticModelRegisterDrawRequestStandardUnLitStrategy, StaticModelRegisterDrawRequestStrategyBase)
-	};
+        void Execute(StaticModelComponent& a_staticModelComponent) override;
+        
+        FWK_DEFINE_TYPE_INFO(StaticModelRegisterDrawRequestStandardUnLitStrategy, StaticModelRegisterDrawRequestStrategyBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::StaticModelRegisterDrawRequestStrategyBaseUniqueFactory, FWK::StaticModelRegisterDrawRequestStandardUnLitStrategy)

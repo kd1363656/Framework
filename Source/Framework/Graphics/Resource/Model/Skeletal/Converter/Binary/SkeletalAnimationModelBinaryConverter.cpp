@@ -50,7 +50,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 	}
 
 	// Header内のファイルサイズと実際のファイルサイズが違うなら壊れている可能性がある
-	if (l_modelBinaryHeader.m_fileSize != GetREFMappedDataSize())
+	if (l_modelBinaryHeader.m_fileSize != GetVALMappedDataSize())
 	{
 		FailLoadAsset(l_modelData);
 

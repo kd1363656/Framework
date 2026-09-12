@@ -2,37 +2,37 @@
 
 namespace FWK
 {
-	class MoveComponent final : public ComponentBase
-	{
-	public:
+    class MoveComponent final : public ComponentBase
+    {
+    public:
 
-		 MoveComponent() = default;
-		~MoveComponent() = default;
+         MoveComponent() = default;
+        ~MoveComponent() = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
+        void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
-		void PostDeserialize() override;
+        void PostDeserialize() override;
 
-		void Update() override;
+        void Update() override;
 
-		void EditInspector() override;
+        void EditInspector() override;
 
-		nlohmann::json SerializePrefab() override;
+        nlohmann::json SerializePrefab() override;
 
-		const auto& GetREFMoveMode() const { return m_moveMode; }
+        const auto& GetREFMoveMode() const { return m_moveMode; }
 
-		auto& GetMutableREFMoveMode() { return m_moveMode; }
+        auto& GetMutableREFMoveMode() { return m_moveMode; }
 
-	private:
-		
-		std::unique_ptr<MoveComponentModeBase> m_moveMode = nullptr;
+    private:
+        
+        std::unique_ptr<MoveComponentModeBase> m_moveMode = nullptr;
 
-		MoveComponentInspector m_inspector = {};
+        MoveComponentInspector m_inspector = {};
 
-		Converter::MoveComponentJsonConverter m_jsonConverter = {};
+        Converter::MoveComponentJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(MoveComponent, ComponentBase)
-	};
+        FWK_DEFINE_TYPE_INFO(MoveComponent, ComponentBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::MoveComponent)

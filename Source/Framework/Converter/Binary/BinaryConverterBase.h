@@ -30,10 +30,10 @@ namespace FWK::Converter
 
 		void DestroyMemoryMappedFile();
 
-		const auto& GetREFMappedDataSize() const { return m_mappedDataSize; }
+		std::uint64_t GetVALMappedDataSize() const { return m_mappedDataSize; }
 
 		template <typename Type>
-		bool TryReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffet, Type* a_destinationData) const
+		bool TryReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
 		{
 			if (a_readDataCount == k_emptyReadDataSize) { return true; }
 
@@ -43,9 +43,9 @@ namespace FWK::Converter
 			// バイナリーデータサイズを計算してからデータを読み取る
 			const auto& l_binaryDataSize = CalculateBinaryDataSize<Type>(a_readDataCount);
 
-			if (!CanReadBinaryData(a_memoryReadOffet, l_binaryDataSize)) { return false; }
+			if (!CanReadBinaryData(a_memoryReadOffset, l_binaryDataSize)) { return false; }
 
-			ReadBinaryData(a_readDataCount, a_memoryReadOffet, a_destinationData);
+			ReadBinaryData(a_readDataCount, a_memoryReadOffset, a_destinationData);
 
 			return true;
 		}

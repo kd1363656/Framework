@@ -2,55 +2,55 @@
 
 namespace FWK
 {
-	class StaticModelRegisterDrawRequestStrategyBase;
+    class StaticModelRegisterDrawRequestStrategyBase;
 }
 
 namespace FWK
 {
-	class StaticModelComponent final : public ModelComponentBase
-	{
-	public:
+    class StaticModelComponent final : public ModelComponentBase
+    {
+    public:
 
-	     StaticModelComponent()          = default;
-		~StaticModelComponent() override = default;
+         StaticModelComponent()          = default;
+        ~StaticModelComponent() override = default;
 
-		void LoadModel();
+        void LoadModel();
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
+        void DeserializePrefab(const nlohmann::json& a_rootJson) override;
 
-		void PostDeserialize() override;
+        void PostDeserialize() override;
 
-		void PostLateUpdate() override;
+        void PostLateUpdate() override;
 
-		void EditInspector() override;
+        void EditInspector() override;
 
-		nlohmann::json SerializePrefab() override;
+        nlohmann::json SerializePrefab() override;
 
-		void AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy);
-		 
-		void SetDrawRequestData(const std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData>& a_set) { m_drawRequestData = a_set; }
+        void AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy);
+         
+        void SetDrawRequestData(const std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData>& a_set) { m_drawRequestData = a_set; }
 
-		const auto& GetREFRegisterDrawRequestStrategyMap() const { return m_registerDrawRequestStrategyMap; }
+        const auto& GetREFRegisterDrawRequestStrategyMap() const { return m_registerDrawRequestStrategyMap; }
 
-		const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
+        const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
 
-		auto& GetMutableREFRegisterDrawRequestStrategyMap() { return m_registerDrawRequestStrategyMap; }
+        auto& GetMutableREFRegisterDrawRequestStrategyMap() { return m_registerDrawRequestStrategyMap; }
 
-	private:
+    private:
 
-		void UpdateDrawRequestData();
+        void UpdateDrawRequestData();
 
-		std::unordered_map<TypeAlias::StaticTypeID, std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>> m_registerDrawRequestStrategyMap = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>> m_registerDrawRequestStrategyMap = {};
 
-		std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
-		std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
+        std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
+        std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();
 
-		StaticModelComponentInspector m_inspector = {};
+        StaticModelComponentInspector m_inspector = {};
 
-		Converter::StaticModelComponentJsonConverter m_jsonConverter = {};
+        Converter::StaticModelComponentJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(StaticModelComponent, ModelComponentBase)
-	};
+        FWK_DEFINE_TYPE_INFO(StaticModelComponent, ModelComponentBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::StaticModelComponent)

@@ -2,33 +2,33 @@
 
 namespace FWK
 {
-	class RotationComponentConstantModeBase : public RotationComponentModeBase
-	{
-	public:
+    class RotationComponentConstantModeBase : public RotationComponentModeBase
+    {
+    public:
 
-		 RotationComponentConstantModeBase()          = default;
-		~RotationComponentConstantModeBase() override = default;
+         RotationComponentConstantModeBase()          = default;
+        ~RotationComponentConstantModeBase() override = default;
 
-		void INIT() override;
+        void INIT() override;
 
-		void Deserialize(const nlohmann::json& a_rootJson) override;
+        void Deserialize(const nlohmann::json& a_rootJson) override;
 
-		void EditInspector() override;
+        void EditInspector() override;
 
-		nlohmann::json Serialize() const override;
+        nlohmann::json Serialize() const override;
 
-		void SetRotationSpeed(const float a_set) { m_rotationSpeed = a_set; }
+        void SetRotationSpeed(const float a_set) { m_rotationSpeed = a_set; }
 
-		float GetVALRotationSpeed() const { return m_rotationSpeed; }
+        float GetVALRotationSpeed() const { return m_rotationSpeed; }
 
-	private:
+    private:
 
-		RotationComponentConstantModeBaseInspector m_inspector = {};
+        RotationComponentConstantModeBaseInspector m_inspector = {};
 
-		Converter::RotationComponentConstantModeBaseJsonConverter m_jsonConverter = {};
+        Converter::RotationComponentConstantModeBaseJsonConverter m_jsonConverter = {};
 
-		float m_rotationSpeed = Constant::k_rotationComponentConstantDefaultRotationSpeed;
+        float m_rotationSpeed = Constant::k_rotationComponentConstantDefaultRotationSpeed;
 
-		FWK_DEFINE_TYPE_INFO(RotationComponentConstantModeBase, RotationComponentModeBase)
-	};
+        FWK_DEFINE_TYPE_INFO(RotationComponentConstantModeBase, RotationComponentModeBase)
+    };
 }

@@ -2,24 +2,24 @@
 
 namespace FWK
 {
-	class ModelComponentBase;
+    class ModelComponentBase;
 }
 
 namespace FWK::Converter
 {
-	class ModelComponentBaseJsonConverter final
-	{
-	public:
+    class ModelComponentBaseJsonConverter final
+    {
+    public:
 
-		 ModelComponentBaseJsonConverter() = default;
-		~ModelComponentBaseJsonConverter() = default;
+         ModelComponentBaseJsonConverter() = default;
+        ~ModelComponentBaseJsonConverter() = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson, ModelComponentBase& a_modelComponentBase) const;
-		
-		nlohmann::json SerializePrefab(const ModelComponentBase& a_modelComponentBase) const;
+        void DeserializePrefab(const nlohmann::json& a_rootJson, ModelComponentBase& a_modelComponentBase) const;
+        
+        nlohmann::json SerializePrefab(const ModelComponentBase& a_modelComponentBase) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_assetFilePathHelperJsonKey = "AssetFilePathHelper";
-	};
+        static constexpr std::string_view k_assetFilePathHelperJsonKey = "AssetFilePathHelper";
+    };
 }

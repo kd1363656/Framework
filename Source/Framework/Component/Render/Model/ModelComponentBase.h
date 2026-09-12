@@ -2,38 +2,38 @@
 
 namespace FWK
 {
-	class ModelComponentBase : public ComponentBase
-	{
-	public:
+    class ModelComponentBase : public ComponentBase
+    {
+    public:
 
-		 ModelComponentBase()          = default;
-		~ModelComponentBase() override = default;
+         ModelComponentBase()          = default;
+        ~ModelComponentBase() override = default;
 
-		void INIT() override;
+        void INIT() override;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
-		void PostDeserialize  ()                                 override;
+        void DeserializePrefab(const nlohmann::json& a_rootJson) override;
+        void PostDeserialize  ()                                 override;
 
-		void EditInspector() override;
+        void EditInspector() override;
 
-		nlohmann::json SerializePrefab() override;
+        nlohmann::json SerializePrefab() override;
 
-		const auto& GetREFAssetFilePathHelper() const { return m_assetFilePathHelper; }
-	
-		std::weak_ptr<Utility::AssetFilePathHelper> GetVALAssetFilePathHelper() const { return m_assetFilePathHelper; }
+        const auto& GetREFAssetFilePathHelper() const { return m_assetFilePathHelper; }
+    
+        std::weak_ptr<Utility::AssetFilePathHelper> GetVALAssetFilePathHelper() const { return m_assetFilePathHelper; }
 
-		const auto& GetREFFetchTransformComponentFromSelfGameObjectHelper() const { return m_fetchTransformComponentFromSelfGameObjectHelper; }
+        const auto& GetREFFetchTransformComponentFromSelfGameObjectHelper() const { return m_fetchTransformComponentFromSelfGameObjectHelper; }
 
-	private:
+    private:
 
-		std::shared_ptr<Utility::AssetFilePathHelper> m_assetFilePathHelper = {};
+        std::shared_ptr<Utility::AssetFilePathHelper> m_assetFilePathHelper = {};
 
-		Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
+        Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
-		ModelComponentBaseInspector m_inspector = {};
+        ModelComponentBaseInspector m_inspector = {};
 
-		Converter::ModelComponentBaseJsonConverter m_jsonConverter = {};
+        Converter::ModelComponentBaseJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(ModelComponentBase, ComponentBase)
-	};
+        FWK_DEFINE_TYPE_INFO(ModelComponentBase, ComponentBase)
+    };
 }

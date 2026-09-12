@@ -13,7 +13,7 @@ void FWK::RotationComponentConstantModeBase::INIT()
 
 void FWK::RotationComponentConstantModeBase::Deserialize(const nlohmann::json& a_rootJson)
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }

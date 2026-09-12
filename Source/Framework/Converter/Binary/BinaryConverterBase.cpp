@@ -318,7 +318,7 @@ void FWK::Converter::BinaryConverterBase::DestroyMemoryMappedFile()
 	m_isWritable     = k_isInitialWritable;
 }
 
-bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::uint64_t & a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t & a_memoryReadOffset) const
+bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t& a_memoryReadOffset) const
 {
 	if (a_wStringBinaryFileSize == k_emptyReadDataSize) 
 	{
@@ -339,7 +339,7 @@ bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::ui
 	return true;
 }
 
-void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstring & a_wString, std::uint64_t & a_memoryWriteOffset) const
+void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const
 {
 	if (a_wString.empty()) { return; }
 
@@ -349,7 +349,7 @@ void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstr
 	// WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
 	WriteBinaryData(a_wString.size(), a_wString.data(), a_memoryWriteOffset);
 }
-void FWK::Converter::BinaryConverterBase::WriteStringBinaryData(const std::string & a_string, std::uint64_t & a_memoryWriteOffset) const
+void FWK::Converter::BinaryConverterBase::WriteStringBinaryData(const std::string& a_string, std::uint64_t& a_memoryWriteOffset) const
 {
 	if (a_string.empty()) { return; }
 

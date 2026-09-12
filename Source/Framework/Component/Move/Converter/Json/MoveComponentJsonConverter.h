@@ -2,25 +2,25 @@
 
 namespace FWK
 {
-	class MoveComponent;
+    class MoveComponent;
 }
 
 namespace FWK::Converter
 {
-	class MoveComponentJsonConverter final
-	{
-	public:
+    class MoveComponentJsonConverter final
+    {
+    public:
 
-		 MoveComponentJsonConverter() = default;
-		~MoveComponentJsonConverter() = default;
+         MoveComponentJsonConverter() = default;
+        ~MoveComponentJsonConverter() = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson, MoveComponent& a_moveComponent) const;
-		
-		nlohmann::json SerializePrefab(const MoveComponent& a_moveComponent) const;
+        void DeserializePrefab(const nlohmann::json& a_rootJson, MoveComponent& a_moveComponent) const;
+        
+        nlohmann::json SerializePrefab(const MoveComponent& a_moveComponent) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_moveModeJsonKey     = "MoveMode";
-		static constexpr std::string_view k_moveModeDataJsonKey = "MoveModeData";
-	};
+        static constexpr std::string_view k_moveModeJsonKey     = "MoveMode";
+        static constexpr std::string_view k_moveModeDataJsonKey = "MoveModeData";
+    };
 }
