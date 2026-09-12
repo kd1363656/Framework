@@ -2,19 +2,19 @@
 
 namespace FWK::Struct
 {
-	struct StaticModelLoadResult final
-	{
-		std::weak_ptr<Graphics::StaticModelRecord> m_staticModelRecord = {};
+    struct StaticModelLoadResult final
+    {
+        std::weak_ptr<Graphics::StaticModelRecord> m_staticModelRecord = {};
 
-		TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
-	};
+        TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
+    };
 
-	struct StaticModelBatchUploadRecord final
-	{
-		// StaticModelStorageへ登録するStaticModelRecord
-		std::shared_ptr<Graphics::StaticModelRecord> m_staticModelRecord = nullptr;
+    struct StaticModelBatchUploadRecord final
+    {
+        // StaticModelStorageへ登録するStaticModelRecord
+        std::shared_ptr<Graphics::StaticModelRecord> m_staticModelRecord = nullptr;
 
-		// StaticModelのBufferResourceへコピーするためのUploadCommand一覧
-		std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
-	};
+        // StaticModelのBufferResourceへコピーするためのUploadCommand一覧
+        std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
+    };
 }

@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using Microsoft::WRL::ComPtr;
+    using Microsoft::WRL::ComPtr;
 }

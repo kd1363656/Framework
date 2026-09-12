@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using MoveComponentModeUniqueFactory = GenericFactory<std::unique_ptr<MoveComponentModeBase>>;
+    using MoveComponentModeUniqueFactory = GenericFactory<std::unique_ptr<MoveComponentModeBase>>;
 }

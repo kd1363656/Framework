@@ -2,22 +2,22 @@
 
 namespace FWK::Struct
 {
-	// ※ 注意
-	// HLSLのConstantBufferは16バイト単位でパッキングされるため、
-	// C++側の構造体レイアウトも16バイト境界を意識して定義すること
-	struct CBSpritePerObject final
-	{
-		TypeAlias::Math::Color m_color = Constant::k_whiteColor;
+    // ※ 注意
+    // HLSLのConstantBufferは16バイト単位でパッキングされるため、
+    // C++側の構造体レイアウトも16バイト境界を意識して定義すること
+    struct CBSpritePerObject final
+    {
+        TypeAlias::Math::Color m_color = Constant::k_whiteColor;
 
-		TypeAlias::Math::Vector2 m_position = TypeAlias::Math::Vector2::Zero;
-		TypeAlias::Math::Vector2 m_scale    = TypeAlias::Math::Vector2::One;
+        TypeAlias::Math::Vector2 m_position = TypeAlias::Math::Vector2::Zero;
+        TypeAlias::Math::Vector2 m_scale    = TypeAlias::Math::Vector2::One;
 
-		TypeAlias::Math::Vector2 m_pivot	    = Constant::k_defaultSpritePivot;
-		TypeAlias::Math::Vector2 m_firstPadding = TypeAlias::Math::Vector2::Zero;
+        TypeAlias::Math::Vector2 m_pivot        = Constant::k_defaultSpritePivot;
+        TypeAlias::Math::Vector2 m_firstPadding = TypeAlias::Math::Vector2::Zero;
 
-		SpriteRECT m_sourceRECT = {};
+        SpriteRECT m_sourceRECT = {};
 
-		TypeAlias::DescriptorIndex m_baseColorTextureSRVIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
-		TypeAlias::Math::Vector3   m_secondPadding		      = {};
-	};
+        TypeAlias::DescriptorIndex m_baseColorTextureSRVIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::Math::Vector3   m_secondPadding            = {};
+    };
 }

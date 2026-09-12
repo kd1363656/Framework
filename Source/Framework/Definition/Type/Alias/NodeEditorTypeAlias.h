@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using NodeEditorID = int;
+    using NodeEditorID = int;
 }

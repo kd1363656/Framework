@@ -2,6 +2,6 @@
 
 namespace FWK::Concept
 {
-	template <typename Type>
-	concept IsDerivedDrawRequestPerObjectBaseConcept = IsDerivedBaseConcept<Type, Graphics::DrawRequestPerObjectBase>;
+    template <typename Type>
+    concept IsDerivedDrawRequestPerObjectBaseConcept = IsDerivedBaseConcept<Type, Graphics::DrawRequestPerObjectBase>;
 }

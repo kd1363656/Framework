@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using ComputeRequestPerObjectSharedFactory = GenericFactory<std::shared_ptr<Graphics::ComputeRequestPerObjectBase>>;
+    using ComputeRequestPerObjectSharedFactory = GenericFactory<std::shared_ptr<Graphics::ComputeRequestPerObjectBase>>;
 }

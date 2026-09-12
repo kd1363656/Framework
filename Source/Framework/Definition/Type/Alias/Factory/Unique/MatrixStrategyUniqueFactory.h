@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using MatrixStrategyUniqueFactory = GenericFactory<std::unique_ptr<MatrixStrategyBase>>;
+    using MatrixStrategyUniqueFactory = GenericFactory<std::unique_ptr<MatrixStrategyBase>>;
 }

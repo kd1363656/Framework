@@ -2,12 +2,12 @@
 
 namespace FWK::Enum
 {
-	enum class PTRKind
-	{
-		None,
-		Raw,
-		Shared,
-		Weak,
-		Unique
-	};
+    enum class PTRKind
+    {
+        None,
+        Raw,
+        Shared,
+        Weak,
+        Unique
+    };
 }

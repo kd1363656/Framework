@@ -2,9 +2,9 @@
 
 namespace FWK::Struct
 {
-	struct CBFinalColorRenderTargetPass final
-	{
-		TypeAlias::DescriptorIndex m_sceneColorTextureSRVIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
-		TypeAlias::Math::Vector3   m_padding				   = TypeAlias::Math::Vector3::Zero;
-	};
+    struct CBFinalColorRenderTargetPass final
+    {
+        TypeAlias::DescriptorIndex m_sceneColorTextureSRVIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::Math::Vector3   m_padding                   = TypeAlias::Math::Vector3::Zero;
+    };
 }

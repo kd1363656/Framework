@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using PrefabSceneInstanceNUM = std::uint32_t;
+    using PrefabSceneInstanceNUM = std::uint32_t;
 }

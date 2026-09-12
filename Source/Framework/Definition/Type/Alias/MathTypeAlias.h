@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	namespace Math = DirectX::SimpleMath;
+    namespace Math = DirectX::SimpleMath;
 }

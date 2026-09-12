@@ -2,32 +2,32 @@
 
 namespace FWK::Enum
 {
-	enum class RootSignatureType
-	{
-		Invalid,
-		SpriteScreen,
-		ModelStandard,
-		ModelCascadeShadow,
-		SkeletalAnimationVertexSkinning,
-		SkeletalAnimationMeshletBoundsUpdate,
-		FinalColor,
-		PhysicsDebug,
-		FinalPresent,
-		Count,
-	};
+    enum class RootSignatureType
+    {
+        Invalid,
+        SpriteScreen,
+        ModelStandard,
+        ModelCascadeShadow,
+        SkeletalAnimationVertexSkinning,
+        SkeletalAnimationMeshletBoundsUpdate,
+        FinalColor,
+        PhysicsDebug,
+        FinalPresent,
+        Count,
+    };
 
-	FWK_JSON_SERIALIZE_ENUM
-	(
-		RootSignatureType,
-		FWK_JSON_ENUM_VALUE(RootSignatureType::Invalid),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteScreen),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::ModelStandard),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::ModelCascadeShadow),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::SkeletalAnimationVertexSkinning),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::SkeletalAnimationMeshletBoundsUpdate),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalColor),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::PhysicsDebug),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
-		FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
-	)
+    FWK_JSON_SERIALIZE_ENUM
+    (
+        RootSignatureType,
+        FWK_JSON_ENUM_VALUE(RootSignatureType::Invalid),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::SpriteScreen),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::ModelStandard),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::ModelCascadeShadow),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::SkeletalAnimationVertexSkinning),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::SkeletalAnimationMeshletBoundsUpdate),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::FinalColor),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::PhysicsDebug),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::FinalPresent),
+        FWK_JSON_ENUM_VALUE(RootSignatureType::Count),
+    )
 }

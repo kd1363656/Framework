@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using StaticModelRegisterDrawRequestStrategyBaseUniqueFactory = GenericFactory<std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>>;
+    using StaticModelRegisterDrawRequestStrategyBaseUniqueFactory = GenericFactory<std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>>;
 }

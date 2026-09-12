@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using ComponentSharedFactory = GenericFactory<std::shared_ptr<ComponentBase>>;
+    using ComponentSharedFactory = GenericFactory<std::shared_ptr<ComponentBase>>;
 }

@@ -2,10 +2,10 @@
 
 namespace FWK::Struct
 {
-	struct PrefabData final
-	{
-		Prefab m_prefab = {};
+    struct PrefabData final
+    {
+        Prefab m_prefab = {};
 
-		PrefabInstanceNUMAllocator m_prefabInstanceNUMAllocator = {};
-	};
+        PrefabInstanceNUMAllocator m_prefabInstanceNUMAllocator = {};
+    };
 }

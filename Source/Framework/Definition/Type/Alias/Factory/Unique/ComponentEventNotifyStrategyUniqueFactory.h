@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using ComponentEventNotifyStrategyUniqueFactory = GenericFactory<std::unique_ptr<ComponentEventNotifyStrategyBase>>;
+    using ComponentEventNotifyStrategyUniqueFactory = GenericFactory<std::unique_ptr<ComponentEventNotifyStrategyBase>>;
 }

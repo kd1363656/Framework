@@ -2,17 +2,17 @@
 
 namespace FWK::Struct
 {
-	struct SkeletalAnimationModelLoadResult final
-	{
-		std::weak_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
+    struct SkeletalAnimationModelLoadResult final
+    {
+        std::weak_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
 
-		TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
-	};
+        TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
+    };
 
-	struct SkeletalAnimationModelBatchUploadRecord final
-	{
-		std::shared_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = nullptr;
+    struct SkeletalAnimationModelBatchUploadRecord final
+    {
+        std::shared_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = nullptr;
 
-		std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
-	};
+        std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
+    };
 }

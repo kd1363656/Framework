@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-	inline constexpr bool k_physicsManagerInitialIsDisableDebugDraw = false;
+    inline constexpr bool k_physicsManagerInitialIsDisableDebugDraw = false;
 }

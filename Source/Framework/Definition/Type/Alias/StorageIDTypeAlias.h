@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using StorageID = std::uint32_t;
+    using StorageID = std::uint32_t;
 }

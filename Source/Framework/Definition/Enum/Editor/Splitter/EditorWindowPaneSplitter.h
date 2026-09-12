@@ -2,9 +2,9 @@
 
 namespace FWK::Enum
 {
-	enum class EditorWindowPaneSplitterResizeAxis
-	{
-		X,
-		Y
-	};
+    enum class EditorWindowPaneSplitterResizeAxis
+    {
+        X,
+        Y
+    };
 }
