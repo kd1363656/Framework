@@ -2,19 +2,19 @@
 
 namespace FWK::Graphics
 {
-	class LightSystem final
-	{
-	public:
+    class LightSystem final
+    {
+    public:
 
-		 LightSystem() = default;
-		~LightSystem() = default;
+         LightSystem() = default;
+        ~LightSystem() = default;
 
-		void ApplyDefaultSettings();
+        void ApplyDefaultSettings();
 
-	private:
+    private:
 
-		void RegisterCBLightPass();
+        void RegisterCBLightPass();
 
-		std::shared_ptr<Struct::CBLightPass> m_cbLightPass = nullptr;
-	};
+        std::shared_ptr<Struct::CBLightPass> m_cbLightPass = nullptr;
+    };
 }

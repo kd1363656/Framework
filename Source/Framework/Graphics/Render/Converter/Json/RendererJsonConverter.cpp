@@ -2,234 +2,242 @@
 
 void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	// フレームリソースのデシリアライズ
-	// json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復元時にCount側へ展開する
-	if (const auto& l_json = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{}); 
-		!l_json.is_null())
-	{
-		DeserializeFrameResourceList(l_json, a_renderer);
-	}
+    // フレームリソースのデシリアライズ
+    // json上ではフレームリソースで管理するデータは共通のため、一つの共通設定だけ持ち、復元時にCount側へ展開する
+    if (const auto& l_json = a_rootJson.value(k_frameResourceListJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        DeserializeFrameResourceList(l_json, a_renderer);
+    }
 
-	// スワップチェインのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_swapChainJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		auto& l_swapChain = a_renderer.GetMutableREFSwapChain();
+    // スワップチェインのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_swapChainJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_swapChain = a_renderer.GetMutableREFSwapChain();
 
-		l_swapChain.Deserialize(l_json);
-	}
+        l_swapChain.Deserialize(l_json);
+    }
 
-	// ShadowContextのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_shadowContextJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		auto& l_shadowContext = a_renderer.GetMutableREFShadowContext();
+    // ShadowContextのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_shadowContextJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_shadowContext = a_renderer.GetMutableREFShadowContext();
 
-		l_shadowContext.Deserialize(l_json);
-	}
+        l_shadowContext.Deserialize(l_json);
+    }
 
-	// ルートシグネチャのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_rootSignatureMapJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		DeserializeRootSignatureMap(l_json, a_renderer);
-	}
+    // ルートシグネチャのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_rootSignatureMapJsonKey, nlohmann::json{});
+        !l_json.is_null() &&
+        Utility::IsJsonArray(l_json))
+    {
+        DeserializeRootSignatureMap(l_json, a_renderer);
+    }
 
-	// パイプラインステートのデシリアライズ
-	if (const auto& l_json = a_rootJson.value(k_pipelineStateMapJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		DeserializePipelineStateMap(l_json, a_renderer);
-	}
+    // パイプラインステートのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_pipelineStateMapJsonKey, nlohmann::json{});
+        !l_json.is_null() &&
+        Utility::IsJsonArray(l_json))
+    {
+        DeserializePipelineStateMap(l_json, a_renderer);
+    }
 
-	if (const auto& l_json = a_rootJson.value(k_renderGraphJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		auto& l_renderGraph = a_renderer.GetMutableREFRenderGraph();
+    if (const auto& l_json = a_rootJson.value(k_renderGraphJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_renderGraph = a_renderer.GetMutableREFRenderGraph();
 
-		l_renderGraph.Deserialize(l_json);
-	}
+        l_renderGraph.Deserialize(l_json);
+    }
 }
 
 nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::Renderer& a_renderer) const
 {
-	nlohmann::json l_rootJson = {};
+    nlohmann::json l_rootJson = {};
 
-	const auto& l_swapChain     = a_renderer.GetREFSwapChain    ();
-	const auto& l_shadowContext = a_renderer.GetREFShadowContext();
-	const auto& l_renderGraph   = a_renderer.GetREFRenderGraph  ();
+    const auto& l_swapChain     = a_renderer.GetREFSwapChain    ();
+    const auto& l_shadowContext = a_renderer.GetREFShadowContext();
+    const auto& l_renderGraph   = a_renderer.GetREFRenderGraph  ();
 
-	// フレームリソースのシリアライズ
-	// 同じ設定を持つFrameResourceを個別にすべて保存せず、Count + Template形式で保存
-	l_rootJson[k_frameResourceListJsonKey] = SerializeFrameResourceList(a_renderer);
+    // フレームリソースのシリアライズ
+    // 同じ設定を持つFrameResourceを個別にすべて保存せず、Count + Template形式で保存
+    l_rootJson[k_frameResourceListJsonKey] = SerializeFrameResourceList(a_renderer);
 
-	// スワップチェインのシリアライズ
-	l_rootJson[k_swapChainJsonKey] = l_swapChain.Serialize();
+    // スワップチェインのシリアライズ
+    l_rootJson[k_swapChainJsonKey] = l_swapChain.Serialize();
 
-	// ルートシグネチャマップのシリアライズ
-	l_rootJson[k_rootSignatureMapJsonKey] = SerializeRootSignatureMap(a_renderer);
+    // ルートシグネチャマップのシリアライズ
+    l_rootJson[k_rootSignatureMapJsonKey] = SerializeRootSignatureMap(a_renderer);
 
-	// パイプラインステートのシリアライズ
-	l_rootJson[k_pipelineStateMapJsonKey] = SerializePipelineStateMap(a_renderer);
+    // パイプラインステートのシリアライズ
+    l_rootJson[k_pipelineStateMapJsonKey] = SerializePipelineStateMap(a_renderer);
 
-	// ShadwoContextのシリアライズ
-	l_rootJson[k_shadowContextJsonKey] = l_shadowContext.Serialize();
+    // ShadwoContextのシリアライズ
+    l_rootJson[k_shadowContextJsonKey] = l_shadowContext.Serialize();
 
-	// RenderGraphのシリアライズ
-	l_rootJson[k_renderGraphJsonKey] = l_renderGraph.Serialize();
+    // RenderGraphのシリアライズ
+    l_rootJson[k_renderGraphJsonKey] = l_renderGraph.Serialize();
 
-	return l_rootJson;
+    return l_rootJson;
 }
 
 void FWK::Converter::RendererJsonConverter::DeserializeFrameResourceList(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
 {
-	if (a_rootJson.is_null()) { return; }
-	
-	const auto& l_frameResourceCount		= a_rootJson.value(k_frameResourceCountJsonKey,    k_defaultFrameResourceListCount);
-	const auto& l_frameResourceTemplateJson = a_rootJson.value(k_frameResourceTemplateJsonKey, nlohmann::json());
+    if (a_rootJson.is_null()) { return; }
 
-	FWK_ASSERT_RETURN_IF(l_frameResourceCount == k_emptyFrameResourceListCount, "フレームリソースの作成数が0となっており、デシリアライズ処理に失敗しました。");
+    const auto& l_frameResourceCount        = a_rootJson.value(k_frameResourceCountJsonKey,    k_defaultFrameResourceListCount);
+    const auto& l_frameResourceTemplateJson = a_rootJson.value(k_frameResourceTemplateJsonKey, nlohmann::json());
 
-	for (std::size_t l_i = 0ULL; l_i < l_frameResourceCount; ++l_i)
-	{
-		const auto& l_frameResource = std::make_shared<Graphics::FrameResource>();
+    FWK_ASSERT_RETURN_IF(l_frameResourceCount == k_emptyFrameResourceListCount, "フレームリソースの作成数が0となっており、デシリアライズ処理に失敗しました。");
 
-		// 初期化してからデシリアライズ
-		l_frameResource->INIT();
+    for (std::size_t l_i = 0ULL; l_i < l_frameResourceCount; ++l_i)
+    {
+        const auto& l_frameResource = std::make_shared<Graphics::FrameResource>();
 
-		if (!l_frameResourceTemplateJson.is_null())
-		{
-			l_frameResource->Deserialize(l_frameResourceTemplateJson);
-		}
+        // 初期化してからデシリアライズ
+        l_frameResource->INIT();
 
-		a_renderer.AddFrameResource(l_frameResource);
-	}
+        if (!l_frameResourceTemplateJson.is_null())
+        {
+            l_frameResource->Deserialize(l_frameResourceTemplateJson);
+        }
+
+        a_renderer.AddFrameResource(l_frameResource);
+    }
 }
 void FWK::Converter::RendererJsonConverter::DeserializeRootSignatureMap(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
 {
-	if (a_rootJson.is_null())		       { return; }
-	if (!Utility::IsJsonArray(a_rootJson)) { return; }
+    if (a_rootJson.is_null() ||
+        !Utility::IsJsonArray(a_rootJson))
+    {
+         return; 
+    }
+    
+    for (const auto& l_json : a_rootJson)
+    {
+        const auto l_rootSignatureType = l_json.value(k_rootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
 
-	for (const auto& l_json : a_rootJson)
-	{
-		const auto l_rootSignatureType = l_json.value(k_rootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
+        if (l_rootSignatureType == Enum::RootSignatureType::Invalid ||
+            !l_json.contains(k_rootSignatureJsonKey))
+        {
+            continue;
+        }
 
-		if (l_rootSignatureType == Enum::RootSignatureType::Invalid ||
-			!l_json.contains(k_rootSignatureJsonKey))
-		{
-			continue; 
-		}
-		
-		// ルートシグネチャのポインタを作成してレンダラー側に追加
-		const auto& l_rootSignature = std::make_shared<Graphics::RootSignature>();
+        // ルートシグネチャのポインタを作成してレンダラー側に追加
+        const auto& l_rootSignature = std::make_shared<Graphics::RootSignature>();
 
-		l_rootSignature->Deserialize(l_json[k_rootSignatureJsonKey]);
-		
-		a_renderer.AddRootSignature(l_rootSignature, l_rootSignatureType);
-	}
+        l_rootSignature->Deserialize(l_json[k_rootSignatureJsonKey]);
+
+        a_renderer.AddRootSignature(l_rootSignature, l_rootSignatureType);
+    }
 }
-void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nlohmann::json & a_rootJson, Graphics::Renderer & a_renderer) const
+void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nlohmann::json& a_rootJson, Graphics::Renderer& a_renderer) const
 {
-	if (a_rootJson.is_null())		       { return; }
-	if (!Utility::IsJsonArray(a_rootJson)) { return; }
+    if (a_rootJson.is_null() ||
+        !Utility::IsJsonArray(a_rootJson))
+    {
+        return;
+    }
 
-	for (const auto& l_json : a_rootJson)
-	{
-		const auto l_pipelineStateType = l_json.value(k_pipelineStateTypeJsonKey, Enum::PipelineStateType::Invalid);
+    for (const auto& l_json : a_rootJson)
+    {
+        const auto l_pipelineStateType = l_json.value(k_pipelineStateTypeJsonKey, Enum::PipelineStateType::Invalid);
 
-		if (l_pipelineStateType == Enum::PipelineStateType::Invalid ||
-			!l_json.contains(k_pipelineStateJsonKey))
-		{
-			continue; 
-		}
-		
-		std::shared_ptr<Graphics::PipelineStateBase> l_pipelineState = nullptr;
+        if (l_pipelineStateType == Enum::PipelineStateType::Invalid ||
+            !l_json.contains(k_pipelineStateJsonKey))
+        {
+            continue;
+        }
 
-		// PipelineStateClassNameから派生クラスを作成する
-		Utility::DeserializeInstanceType<TypeAlias::PipelineStateSharedFactory>(l_json, k_pipelineStateClassNameJsonKey, l_pipelineState);
+        std::shared_ptr<Graphics::PipelineStateBase> l_pipelineState = nullptr;
 
-		// 既存JSONにはPipelineStateClassNameがない可能性があるその場合はcontinue
-		if (!l_pipelineState) { continue; }
+        // PipelineStateClassNameから派生クラスを作成する
+        Utility::DeserializeInstanceType<TypeAlias::PipelineStateSharedFactory>(l_json, k_pipelineStateClassNameJsonKey, l_pipelineState);
 
-		l_pipelineState->Deserialize(l_json[k_pipelineStateJsonKey]);
+        // 既存JSONにはPipelineStateClassNameがない可能性があるその場合はcontinue
+        if (!l_pipelineState) { continue; }
 
-		a_renderer.AddPipelineState(l_pipelineState, l_pipelineStateType);
-	}
+        l_pipelineState->Deserialize(l_json[k_pipelineStateJsonKey]);
+
+        a_renderer.AddPipelineState(l_pipelineState, l_pipelineStateType);
+    }
 }
 
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeFrameResourceList(const Graphics::Renderer& a_renderer) const
 {
-	// フレームリソースリストの保存
-	nlohmann::json l_rootJson = {};
+    // フレームリソースリストの保存
+    nlohmann::json l_rootJson = {};
 
-	const auto& l_frameResourceList = a_renderer.GetREFFrameResourceList();
+    const auto& l_frameResourceList = a_renderer.GetREFFrameResourceList();
 
-	l_rootJson[k_frameResourceCountJsonKey] = l_frameResourceList.size();
+    l_rootJson[k_frameResourceCountJsonKey] = l_frameResourceList.size();
 
-	if (l_frameResourceList.empty())
-	{
-		l_rootJson[k_frameResourceTemplateJsonKey] = nlohmann::json();
+    if (l_frameResourceList.empty())
+    {
+        l_rootJson[k_frameResourceTemplateJsonKey] = nlohmann::json();
 
-		return l_rootJson;
-	}
-	
-	const auto& l_frameResource = l_frameResourceList.front();
+        return l_rootJson;
+    }
 
-	if (!l_frameResource)
-	{
-		l_rootJson[k_frameResourceTemplateJsonKey] = nlohmann::json();
+    const auto& l_frameResource = l_frameResourceList.front();
 
-		return l_rootJson;
-	}
+    if (!l_frameResource)
+    {
+        l_rootJson[k_frameResourceTemplateJsonKey] = nlohmann::json();
 
-	// 全フレームリソースが同じパラメータを持つ前提なのでテンプレートとして保存
-	l_rootJson[k_frameResourceTemplateJsonKey] = l_frameResource->Serialize();
+        return l_rootJson;
+    }
 
-	return l_rootJson;
+    // 全フレームリソースが同じパラメータを持つ前提なのでテンプレートとして保存
+    l_rootJson[k_frameResourceTemplateJsonKey] = l_frameResource->Serialize();
+
+    return l_rootJson;
 }
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializeRootSignatureMap(const Graphics::Renderer& a_renderer) const
 {
-	auto l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
-	const auto& l_rootSignatureMap = a_renderer.GetREFRootSignatureMap();
+    const auto& l_rootSignatureMap = a_renderer.GetREFRootSignatureMap();
 
-	for (const auto& [l_type, l_rootSignature] : l_rootSignatureMap)
-	{
-		if (!l_rootSignature) { continue; }
+    for (const auto& [l_type, l_rootSignature] : l_rootSignatureMap)
+    {
+        if (!l_rootSignature) { continue; }
 
-		nlohmann::json l_json = {};
+        nlohmann::json l_json = {};
 
-		l_json[k_rootSignatureTypeJsonKey] = l_type;
-		l_json[k_rootSignatureJsonKey]     = l_rootSignature->Serialize();
+        l_json[k_rootSignatureTypeJsonKey] = l_type;
+        l_json[k_rootSignatureJsonKey]     = l_rootSignature->Serialize();
 
-		l_rootJsonArray.emplace_back(l_json);
-	}
+        l_rootJsonArray.emplace_back(l_json);
+    }
 
-	return l_rootJsonArray;
+    return l_rootJsonArray;
 }
 nlohmann::json FWK::Converter::RendererJsonConverter::SerializePipelineStateMap(const Graphics::Renderer& a_renderer) const
 {
-	auto l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
-	const auto& l_pipelineStateMap = a_renderer.GetREFPipelineStateMap();
+    const auto& l_pipelineStateMap = a_renderer.GetREFPipelineStateMap();
 
-	for (const auto& [l_type, l_pipelineState] : l_pipelineStateMap)
-	{
-		if (!l_pipelineState) { continue; }
+    for (const auto& [l_type, l_pipelineState] : l_pipelineStateMap)
+    {
+        if (!l_pipelineState) { continue; }
 
-		nlohmann::json l_json = {};
+        nlohmann::json l_json = {};
 
-		l_json[k_pipelineStateTypeJsonKey] = l_type;
+        l_json[k_pipelineStateTypeJsonKey] = l_type;
 
-		// 実体の派生クラスの名前を保存する
-		Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_pipelineState, k_pipelineStateClassNameJsonKey));
+        // 実体の派生クラスの名前を保存する
+        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_pipelineState, k_pipelineStateClassNameJsonKey));
 
-		l_json[k_pipelineStateJsonKey] = l_pipelineState->Serialize();
+        l_json[k_pipelineStateJsonKey] = l_pipelineState->Serialize();
 
-		l_rootJsonArray.emplace_back(l_json);
-	}
+        l_rootJsonArray.emplace_back(l_json);
+    }
 
-	return l_rootJsonArray;
+    return l_rootJsonArray;
 }
