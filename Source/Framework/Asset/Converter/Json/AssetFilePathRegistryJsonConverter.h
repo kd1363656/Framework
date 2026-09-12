@@ -7,7 +7,7 @@ namespace FWK
 
 namespace FWK::Converter
 {
-    class AssetFilePathRegistryJsonConverter
+    class AssetFilePathRegistryJsonConverter final
     {
     public:
 
@@ -21,9 +21,9 @@ namespace FWK::Converter
     private:
 
         void DeserializeFilePathRegistryMap(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry) const;
-        
+
         nlohmann::json SerializeFilePathRegistryMap(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
-        
+
         static constexpr std::string_view k_filePathRegistryMapJsonKey  = "FilePathRegistryMap";
         static constexpr std::string_view k_filePathJsonKey             = "FilePath";
         static constexpr std::string_view k_uuidJsonKey                 = "UUID";

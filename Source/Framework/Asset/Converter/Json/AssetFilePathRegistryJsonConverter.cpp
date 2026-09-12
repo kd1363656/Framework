@@ -10,6 +10,7 @@ void FWK::Converter::AssetFilePathRegistryJsonConverter::Deserialize(const nlohm
         DeserializeFilePathRegistryMap(l_json, a_assetFilePathRegistry);
     }
 }
+
 nlohmann::json FWK::Converter::AssetFilePathRegistryJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
     nlohmann::json l_rootJson = {};
@@ -24,7 +25,7 @@ void FWK::Converter::AssetFilePathRegistryJsonConverter::DeserializeFilePathRegi
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson))
     {
-        return; 
+        return;
     }
 
     for (const auto& l_json : a_rootJson)
@@ -32,7 +33,7 @@ void FWK::Converter::AssetFilePathRegistryJsonConverter::DeserializeFilePathRegi
         if (l_json.is_null()) { continue; }
 
         const auto& l_uuid                 = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
-        const auto& l_filePath             = l_json.value            (k_filePathJsonKey, std::filesystem::path{});
+        const auto& l_filePath             = l_json.value            (k_filePathJsonKey,             std::filesystem::path{});
         const auto  l_filePathRegistryType = l_json.value            (k_filePathRegistryTypeJsonKey, Enum::AssetFilePathRegistryType::Invalid);
 
         // 読み込めないファイルパスがある場合はMapに追加しない
@@ -54,7 +55,7 @@ nlohmann::json FWK::Converter::AssetFilePathRegistryJsonConverter::SerializeFile
         if (l_assetUUID.is_nil() ||
             !Utility::CanLoadFilePath(l_filePath))
         {
-            continue; 
+            continue;
         }
 
         auto l_json = nlohmann::json{};

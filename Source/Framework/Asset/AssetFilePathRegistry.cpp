@@ -22,7 +22,7 @@ nlohmann::json FWK::AssetFilePathRegistry::Serialize() const
 
 bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、AssetFilePathRegistryへの登録に失敗しました。",  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、AssetFilePathRegistryへの登録に失敗しました。", false);
 
     // 無効なUUIDなら登録しない
     if (a_assetUUID.is_nil())

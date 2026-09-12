@@ -2,40 +2,40 @@
 
 namespace FWK
 {
-	class SoundEffectInstanceBase
-	{
-	public:
+    class SoundEffectInstanceBase
+    {
+    public:
 
-	             SoundEffectInstanceBase();
-		virtual ~SoundEffectInstanceBase();
+                 SoundEffectInstanceBase();
+        virtual ~SoundEffectInstanceBase();
 
-		virtual bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect);
+        virtual bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect);
 
-		void Play(const bool a_isLoop = false);
+        void Play(const bool a_isLoop = false);
 
-		void Stop();
+        void Stop();
 
-		void Pause();
+        void Pause();
 
-		void Resume();
+        void Resume();
 
-		void ApplyVolume(const float a_volume);
-		void ApplyPitch (const float a_pitch);
+        void ApplyVolume(const float a_volume);
+        void ApplyPitch (const float a_pitch);
 
-		bool IsPlaying() const;
-		bool IsPause  () const;
-		bool IsStopped() const;
+        bool IsPlaying() const;
+        bool IsPause  () const;
+        bool IsStopped() const;
 
-	protected:
+    protected:
 
-		bool CreateInstance(const DirectX::SOUND_EFFECT_INSTANCE_FLAGS a_flags);
+        bool CreateInstance(const DirectX::SOUND_EFFECT_INSTANCE_FLAGS a_flags);
 
-		const auto& GetREFInstance() const { return m_instance; }
+        const auto& GetREFInstance() const { return m_instance; }
 
-	private:
+    private:
 
-		std::unique_ptr<DirectX::SoundEffectInstance> m_instance;
+        std::unique_ptr<DirectX::SoundEffectInstance> m_instance;
 
-		std::weak_ptr<SoundEffect> m_soundEffect;
-	};
+        std::weak_ptr<SoundEffect> m_soundEffect;
+    };
 }

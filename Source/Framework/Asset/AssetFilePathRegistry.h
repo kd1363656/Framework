@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 
 namespace FWK
 {
@@ -30,7 +29,6 @@ namespace FWK
         const auto& GetREFAssetFilePathToUUIDMap() const { return m_assetFilePathToUUIDMap; }
 
     private:
-
 
         std::unordered_map<std::filesystem::path, boost::uuids::uuid>        m_assetFilePathToUUIDMap  = {};
         std::unordered_map<boost::uuids::uuid,    Struct::AssetFilePathData> m_uuidToAssetFilePathData = {};

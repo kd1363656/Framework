@@ -20,25 +20,25 @@ public:
     static constexpr int k_exitCodeCOMInitializeFailed = -1;
 
 private:
-    
+
     void LoadCONFIG    ();
     void PostLoadCONFIG();
 
     bool BeginFrame();
-    void EndFrame  ();
+
+    void EndFrame();
 
     void SaveCONFIG() const;
 
     void ClearWindowResizeRequest();
 
-    bool CanUpdateFrame() const;
-
+    bool CanUpdateFrame      () const;
     void UpdateWindowTitleBar() const;
 
-    static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Game/Stage1-1.json";
+    inline static const std::wstring k_windowClassName = L"Window";
+    inline static const std::string  k_titleName       = "MRI_FRAMEWORK";
 
-    static inline const std::wstring k_windowClassName = L"Window";
-    static inline const std::string  k_titleName       = "MRI_FRAMEWORK";
+    static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Game/Stage1-1.json";
 
     FWK::Window        m_window;
     FWK::FPSController m_fpsController;

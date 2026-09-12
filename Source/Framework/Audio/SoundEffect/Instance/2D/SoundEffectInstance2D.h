@@ -2,19 +2,19 @@
 
 namespace FWK
 {
-	class SoundEffectInstance2D final : public SoundEffectInstanceBase
-	{
-	public:
- 
-		 SoundEffectInstance2D()          = default;
-		~SoundEffectInstance2D() override = default;
+    class SoundEffectInstance2D final : public SoundEffectInstanceBase
+    {
+    public:
 
-		bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect) override;
+         SoundEffectInstance2D()          = default;
+        ~SoundEffectInstance2D() override = default;
 
-		void ApplyPan(const float a_pan);
+        bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect) override;
 
-	private:
+        void ApplyPan(const float a_pan);
 
-		static constexpr DirectX::SOUND_EFFECT_INSTANCE_FLAGS k_createInstanceFlags = DirectX::SoundEffectInstance_Default;
-	};
+    private:
+
+        static constexpr DirectX::SOUND_EFFECT_INSTANCE_FLAGS k_createInstanceFlags = DirectX::SoundEffectInstance_Default;
+    };
 }

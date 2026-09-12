@@ -2,24 +2,24 @@
 
 namespace FWK
 {
-	class AudioManager;
+    class AudioManager;
 }
 
 namespace FWK::Converter
 {
-	class AudioManagerJsonConverter final
-	{
-	public:
+    class AudioManagerJsonConverter final
+    {
+    public:
 
-		 AudioManagerJsonConverter() = default;
-		~AudioManagerJsonConverter() = default;
+         AudioManagerJsonConverter() = default;
+        ~AudioManagerJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, AudioManager& a_audioManager) const;
+        void Deserialize(const nlohmann::json& a_rootJson, AudioManager& a_audioManager) const;
 
-		nlohmann::json Serialize(const AudioManager& a_audioManager) const;
+        nlohmann::json Serialize(const AudioManager& a_audioManager) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_masterVolumeJsonKey = "MasterVolume";
-	};
+        static constexpr std::string_view k_masterVolumeJsonKey = "MasterVolume";
+    };
 }

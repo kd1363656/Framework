@@ -232,11 +232,19 @@
 	const bool l_result = l_isB &&
 						  l_isC;
 }
-・ビット演算子を使う場合は改行しない
+・ビット演算子を使う場合
 {
+	3つ以下なら改行しない
 	例↓
-	
 	const int l_num = 11 & 1;
+
+	4つ以上なら改行して縦に並べる
+	理 : 演算子が縦に並ぶことでフラグの数と内容が一目で分かるから
+	例↓
+	const int l_flags = flagA |
+						flagB |
+						flagC |
+						flagD;
 }
 ・符号の位置は合わせる
 {
@@ -246,13 +254,80 @@
 
 7.関数について===============================================================================================================================================
 ・関数の引数はデフォルト引数を使わない限り変数の書き順を参照すること
+・隣接する関数で戻り値の後にスペーシングを挟んで関数名を書く場合は一番長い戻り値型に合わせる
+{
+	理 : 戻り値型と関数名の区切りが揃うことで可読性が高まるから
+	※隣接する関数同士にのみ適用し、離している関数には適用しない
+	例↓ 隣接する場合
+	const boost::uuids::uuid*        FindPTRAssetUUID        (const std::filesystem::path& a_assetFilePath) const;
+	const Struct::AssetFilePathData* FindPTRAssetFilePathData(const boost::uuids::uuid&    a_uuid)          const;
+
+	例↓ 離している場合(合わせない)
+	void Deserialize(const nlohmann::json& a_rootJson);
+
+	nlohmann::json Serialize() const;
+}
+・隣接する関数で引数がある場合は引数の位置を合わせる
+{
+	理 : 引数の型と名前が縦に揃うことで対応関係が一目で分かるから
+	基本ルール : 第一引数の型の先頭位置を合わせ、その後に続く引数名の先頭位置も一番長い型に合わせる
+
+	例↓
+	const boost::uuids::uuid*        FindPTRAssetUUID        (const std::filesystem::path& a_assetFilePath) const;
+	const Struct::AssetFilePathData* FindPTRAssetFilePathData(const boost::uuids::uuid&    a_uuid)          const;
+
+	※constの位置、型の位置、引数名の位置、)の位置、末尾constの位置がすべて揃っている
+}
 ・もし使う関数が行間を開けていなければ()の位置を合わせる
 {
+	理 : ()の位置が揃うことで関数呼び出しの境界が一目で分かるから
+	基本ルール : 関数名が長い方の()の位置に合わせてインデントする
+
 	例↓
 	auto& l_application = Application::GetInstance();
 
 	l_application.Execute       ();
 	GraphicsManager::GetInstance().Execute();
+
+	関数呼び出し全般も同じく関数名が長い方の()に合わせる
+	理 : 隣接する呼び出しの()が揃うことで一覧性が高まるから
+	例↓
+	l_graphicsManager.INIT ();
+	l_physicsManager.INIT  ();
+	l_audioManager.INIT    ();
+
+	l_sceneManager.EarlyUpdate   ();
+	l_sceneManager.Update        ();
+	l_sceneManager.LateUpdate    ();
+	l_sceneManager.PostLateUpdate();
+
+	ローカル変数でゲッターを使う場合も同じく関数名が長い方の()に合わせる
+	理 : 隣接するゲッター呼び出しの()が揃うことで一覧性が高まるから
+	例↓
+	auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
+	auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+	auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
+	auto& l_audioManager    = FWK::AudioManager::GetInstance             ();
+	auto& l_sceneManager    = FWK::SceneManager::GetInstance             ();
+	auto& l_inputManager    = FWK::InputManager::GetInstance             ();
+
+	変数名の長さが異なる場合も()の位置は関数名が長い方に合わせる
+	例↓
+	      auto& l_inputManager       = FWK::InputManager::GetInstance         ();
+	const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
+
+	※.cppでのそのクラスの関数定義には適用しない
+	理 : 関数定義はクラス名修飾が付き名前が長くなるうえに
+	1関数につき1定義なので整列の意味が薄いから
+	例↓ (.cppの関数定義は()の位置を合わせない)
+	void Application::CanUpdateFrame() const
+	{
+		～処理～
+	}
+	void Application::UpdateWindowTitleBar() const
+	{
+		～処理～
+	}
 }
 ・関数の記述優先順位について
 {
@@ -307,9 +382,10 @@
 	void SaveCONFIG    () const;
 	void PostLoadCONFIG();
 
-	// フレームの開始・終了
+	// フレームの開始・終了(処理フローの両端なので離す)
 	void BeginFrame();
-	void EndFrame  ();
+
+	void EndFrame();
 
 	// 更新系(処理順を意識して整列させる)
 	void EarlyUpdate   ();
@@ -513,14 +589,11 @@
 	{
 	private:
 
-		int m_a = 0;
-
 		1 : シングルトンのためのコンストラクタ定義をする際は
-		メンバー変数の一番下に区切ってからコンストラクタ、デストラクタを書くこと
-		
-		//===================================
-		// シングルトン 
-		//===================================
+		そのクラスでしか使わない構造体、クラス、Enum、型エイリアスと同じ位置
+		(privateアクセス指定子の一番上)にコンストラクタ、デストラクタを書くこと
+		理 : structやenum、usingと同じくクラスの定義の一部として先頭に置くことで
+		そのクラスがシングルトンであることが一目で分かるから
 
 		フレンドクラスにしないと基底クラスのSingletonBaseがprivateアクセス指定子にアクセスできず
 		コンパイルエラーになるから
@@ -528,6 +601,14 @@
 
 		 Hoge() = default;
 		~Hoge() = default;
+
+	public:
+
+		関数の記述優先順位を参照して関数を書く
+
+	private:
+
+		int m_a = 0;
 	}
 }
 9. .cppについて==============================================================================================================================================
@@ -540,6 +621,98 @@
 	#include "Application.h"
 		
 	Application:s:Application() = default;
+}
+・処理内容が近しい関数同士は関数の間に改行を開けずに隣接させる
+{
+	理 : 関連する処理のまとまりが一目で分かるから
+	例↓
+	void Hoge::PreUpdate()
+	{
+		～処理～
+	}
+	void Hoge::Update()
+	{
+		～処理～
+	}
+
+	処理内容が異なる関数の間は改行を開ける
+	void Hoge::Execute()
+	{
+		～処理～
+	}
+
+	void Hoge::LoadCONFIG()
+	{
+		～処理～
+	}
+}
+・処理フローの両端に位置する関数は似ていても離す
+{
+	理 : Deserialize → 何らかの処理 → Serialize のように
+	処理フローの両端に位置する関数は間に別の処理が挟まるため
+	隣接させると処理の流れが誤解されるから
+
+	例↓ 離すべき例
+	void Hoge::Deserialize()
+	{
+		～処理～
+	}
+
+	void Hoge::SomeProcess()
+	{
+		～処理～
+	}
+
+	void Hoge::Serialize() const
+	{
+		～処理～
+	}
+
+	例↓ 隣接させるべき例(連続して呼ばれる処理)
+	void Hoge::LoadCONFIG    ()
+	{
+		～処理～
+	}
+	void Hoge::PostLoadCONFIG()
+	{
+		～処理～
+	}
+}
+・.hで隣接させた関数は.cppでも同じく隣接させる
+{
+	理 : ヘッダーと実装ファイルで配置の一貫性を保つことで
+	定義を確認する際に対応関係が一目で分かるから
+
+	例↓ .h
+	void PreUpdate();
+	void Update   ();
+
+	void Execute();
+
+	例↓ .cpp
+	void Hoge::PreUpdate()
+	{
+		～処理～
+	}
+	void Hoge::Update()
+	{
+		～処理～
+	}
+
+	void Hoge::Execute()
+	{
+		～処理～
+	}
+}
+・ファイルの最終行に改行を入れない
+{
+	理 : 不要な空行ができるのを防ぐため
+	例↓
+	class Hoge final
+	{
+		～処理～
+	};
+	←改行なしで終わる
 }
 10.return文について=========================================================================================================================================
 ・基本的に何もせずにreturnだけするなら一行で書き終える

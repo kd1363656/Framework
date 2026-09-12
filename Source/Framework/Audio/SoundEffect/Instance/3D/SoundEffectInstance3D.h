@@ -2,27 +2,27 @@
 
 namespace FWK
 {
-	class SoundEffectInstance3D final : public SoundEffectInstanceBase
-	{
-	public:
- 
-		 SoundEffectInstance3D()          = default;
-		~SoundEffectInstance3D() override = default;
+    class SoundEffectInstance3D final : public SoundEffectInstanceBase
+    {
+    public:
 
-		bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect) override;
+         SoundEffectInstance3D()          = default;
+        ~SoundEffectInstance3D() override = default;
 
-		void ApplyPosition           (const TypeAlias::Math::Vector3& a_position);
-		void ApplyVelocity           (const TypeAlias::Math::Vector3& a_velocity);
-		void ApplyOrientation        (const TypeAlias::Math::Vector3& a_forward, const TypeAlias::Math::Vector3& a_up);
-		void ApplyCurveDistanceScaler(const float                     a_value);
-		void Apply3D                 (const DirectX::AudioListener&   a_listener);
+        bool CreateInstance(const std::weak_ptr<SoundEffect>& a_soundEffect) override;
 
-	private:
+        void ApplyPosition           (const TypeAlias::Math::Vector3& a_position);
+        void ApplyVelocity           (const TypeAlias::Math::Vector3& a_velocity);
+        void ApplyOrientation        (const TypeAlias::Math::Vector3& a_forward, const TypeAlias::Math::Vector3& a_up);
+        void ApplyCurveDistanceScaler(const float                     a_value);
+        void Apply3D                 (const DirectX::AudioListener&   a_listener);
 
-		static constexpr DirectX::SOUND_EFFECT_INSTANCE_FLAGS k_createInstanceFlags = DirectX::SoundEffectInstance_Use3D;
+    private:
 
-		static constexpr bool k_isRightHandedCoordinates = false;
+        static constexpr DirectX::SOUND_EFFECT_INSTANCE_FLAGS k_createInstanceFlags = DirectX::SoundEffectInstance_Use3D;
 
-		DirectX::AudioEmitter m_emitter = {};
-	};
+        static constexpr bool k_isRightHandedCoordinates = false;
+
+        DirectX::AudioEmitter m_emitter = {};
+    };
 }

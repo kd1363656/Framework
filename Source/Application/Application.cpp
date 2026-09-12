@@ -23,7 +23,6 @@ int WINAPI WinMain(_In_     HINSTANCE,
 
 Application::Application() : 
     m_window(),
-
     m_fpsController()
 {}
 Application::~Application()
@@ -57,9 +56,9 @@ void Application::Execute()
 
     // MouseControllerがWindowHandleを必要とするため、
     // Window生成完了後にInputManagerを初期化する
-    l_inputManager.INIT();
+    l_inputManager.INIT ();
+    l_editorManager.INIT(m_window.GetREFHWND());
 
-    l_editorManager.INIT          (m_window.GetREFHWND());
     l_editorManager.PostLoadCONFIG();
 
     // 最初に読み込むべきシーンを読み込む
@@ -137,7 +136,6 @@ void Application::LoadCONFIG()
     m_window.LoadCONFIG       ();
     m_fpsController.LoadCONFIG();
 }
-
 void Application::PostLoadCONFIG()
 {
     m_window.PostLoadCONFIG(k_windowClassName, k_titleName);
@@ -149,12 +147,12 @@ bool Application::BeginFrame()
     m_fpsController.BeginFrame();
 
     if (!m_window.ProcessMessages() ||
-        !m_window.GetREFHWND()) 
+        !m_window.GetREFHWND())
     {
-        return false; 
+        return false;
     }
 
-          auto& l_inputManager       = FWK::InputManager::GetInstance();
+          auto& l_inputManager       = FWK::InputManager::GetInstance         ();
     const auto& l_keyboardController = l_inputManager.GetREFKeyboardController();
 
     // WindowProcedureでDirectXTK12へ入力メッセージを渡した後、
@@ -165,6 +163,7 @@ bool Application::BeginFrame()
 
     return true;
 }
+
 void Application::EndFrame()
 {
     m_fpsController.EndFrame();
@@ -191,7 +190,6 @@ bool Application::CanUpdateFrame() const
 
     return true;
 }
-
 void Application::UpdateWindowTitleBar() const
 {
     // タイトル名 + FPSのテキスト
