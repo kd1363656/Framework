@@ -7,12 +7,12 @@ namespace FWK
 
 namespace FWK::Converter
 {
-    class CameraComponentIJsonConverter final
+    class CameraComponentJsonConverter final
     {
     public:
 
-         CameraComponentIJsonConverter() = default;
-        ~CameraComponentIJsonConverter() = default;
+         CameraComponentJsonConverter() = default;
+        ~CameraComponentJsonConverter() = default;
 
         void DeserializePrefab(const nlohmann::json& a_rootJson, CameraComponent& a_cameraComponent) const;
 

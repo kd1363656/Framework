@@ -34,7 +34,7 @@ namespace FWK
 
 		const auto& GetREFDrawRequestData() const { return m_drawRequestData; }
 
-		auto& GetMutableRegisterDrawRequestStrategyMap() { return m_registerDrawRequestStrategyMap; }
+		auto& GetMutableREFRegisterDrawRequestStrategyMap() { return m_registerDrawRequestStrategyMap; }
 
 	private:
 

@@ -56,9 +56,9 @@ void FWK::TransformComponent::ApplyParent(const std::weak_ptr<GameObject>& a_par
     m_parentTransformComponent = l_parent->GetVALTransformComponent();
 
     // 親が存在するということは追従する可能性が高いため、自動的に親に追従するように行列を掛ける
-    m_matrixStrategy = std::make_unique<HierarchicalMatrixStrartegy>();
+    m_matrixStrategy = std::make_unique<HierarchicalMatrixStrategy>();
 
-    m_initializeMatrixStrategyTypeName = std::string(HierarchicalMatrixStrartegy::GetREFTypeINFO().k_name);
+    m_initializeMatrixStrategyTypeName = std::string(HierarchicalMatrixStrategy::GetREFTypeINFO().k_name);
 
     // セットした後にダーティーフラグで行列の更新が妨げられてもいいように
     // ここで一度だけ行列を更新しておく

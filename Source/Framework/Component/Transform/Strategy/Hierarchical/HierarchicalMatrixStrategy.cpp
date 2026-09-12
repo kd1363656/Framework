@@ -1,6 +1,6 @@
-﻿#include "HierarchicalMatrixStrartegy.h"
+﻿#include "HierarchicalMatrixStrategy.h"
 
-void FWK::HierarchicalMatrixStrartegy::Execute(TransformComponent& a_transformComponent)
+void FWK::HierarchicalMatrixStrategy::Execute(TransformComponent& a_transformComponent)
 {
     auto l_parent = a_transformComponent.GetREFParentTransformComponent().lock();
 

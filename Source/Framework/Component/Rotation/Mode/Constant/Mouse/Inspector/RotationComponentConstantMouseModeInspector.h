@@ -14,7 +14,7 @@ namespace FWK
          RotationComponentConstantMouseModeInspector() = default;
         ~RotationComponentConstantMouseModeInspector() = default;
 
-        void EditInspector(RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode);
+        void EditInspector(RotationComponentConstantMouseMode& a_rotationComponentConstantMouseMode);
 
     private:
 

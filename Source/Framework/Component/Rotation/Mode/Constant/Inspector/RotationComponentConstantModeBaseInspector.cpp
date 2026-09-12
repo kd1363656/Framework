@@ -1,13 +1,13 @@
 ﻿#include "RotationComponentConstantModeBaseInspector.h"
 
-void FWK::RotationComponentConstantModeBaseInspector::EditInspector(RotationComponentConstantModeBase& a_moveComponentConstantModeBase)
+void FWK::RotationComponentConstantModeBaseInspector::EditInspector(RotationComponentConstantModeBase& a_rotationComponentConstantModeBase)
 {
-    a_moveComponentConstantModeBase.RotationComponentModeBase::EditInspector();
+    a_rotationComponentConstantModeBase.RotationComponentModeBase::EditInspector();
 
-    float l_rotationSpeed = a_moveComponentConstantModeBase.GetVALRotationSpeed();
+    float l_rotationSpeed = a_rotationComponentConstantModeBase.GetVALRotationSpeed();
 
     if (ImGui::DragFloat(k_rotationSpeedLabel.data(), &l_rotationSpeed, Constant::k_imguiDefaultDragValue))
     {
-        a_moveComponentConstantModeBase.SetRotationSpeed(l_rotationSpeed);
+        a_rotationComponentConstantModeBase.SetRotationSpeed(l_rotationSpeed);
     }
 }

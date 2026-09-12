@@ -11,7 +11,7 @@ namespace FWK
 
 		void INIT() override;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+		void Deserialize(const nlohmann::json& a_rootJson) override;
 
 		void EditInspector() override;
 

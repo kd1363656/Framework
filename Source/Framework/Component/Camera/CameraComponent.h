@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-    class CameraComponent final : public FWK::ComponentBase
+    class CameraComponent final : public ComponentBase
     {
     public:
 
@@ -32,7 +32,7 @@ namespace FWK
 
         Utility::FetchTransformComponentFromSelfGameObjectHelper m_fetchTransformComponentFromSelfGameObjectHelper = {};
 
-        Converter::CameraComponentIJsonConverter m_jsonConverter = {};
+        Converter::CameraComponentJsonConverter m_jsonConverter = {};
 
         FWK_DEFINE_TYPE_INFO(CameraComponent, ComponentBase)
     };

@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-    class ComponentEventNotifyStrategyBase : public StrategyBase<FWK::InputComponent>
+    class ComponentEventNotifyStrategyBase : public StrategyBase<InputComponent>
     {
     public:
 

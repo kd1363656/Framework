@@ -37,4 +37,4 @@ namespace FWK
 	};
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RotatationComponentModeUniqueFactory, FWK::RotationComponentConstantMouseMode)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RotationComponentModeUniqueFactory, FWK::RotationComponentConstantMouseMode)

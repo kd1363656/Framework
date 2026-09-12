@@ -14,7 +14,7 @@ namespace FWK
          RotationComponentConstantModeBaseInspector() = default;
         ~RotationComponentConstantModeBaseInspector() = default;
 
-        void EditInspector(RotationComponentConstantModeBase& a_moveComponentConstantModeBase);
+        void EditInspector(RotationComponentConstantModeBase& a_rotationComponentConstantModeBase);
 
     private:
 

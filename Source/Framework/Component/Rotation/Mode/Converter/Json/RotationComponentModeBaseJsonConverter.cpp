@@ -1,6 +1,6 @@
 ﻿#include "RotationComponentModeBaseJsonConverter.h"
 
-void FWK::Converter::RotationComponentModeBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const
+void FWK::Converter::RotationComponentModeBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -9,20 +9,20 @@ void FWK::Converter::RotationComponentModeBaseJsonConverter::Deserialize(const n
 		!l_json.is_null() &&
 		Utility::IsJsonArray(l_json))
 	{
-		DeserializeCanApplyRotationAxisBitShiftFlagList(l_json, a_moveComponentModeBase);
+		DeserializeCanApplyRotationAxisBitShiftFlagList(l_json, a_rotationComponentModeBase);
 	}
 }
 
-nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::Serialize(const RotationComponentModeBase& a_moveComponentModeBase) const
+nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::Serialize(const RotationComponentModeBase& a_rotationComponentModeBase) const
 {
 	nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_canApplyRotationAxisBitShiftFlagListJsonKey] = SerializeCanApplyRotationAxisBitShiftFlagList(a_moveComponentModeBase);
+	l_rootJson[k_canApplyRotationAxisBitShiftFlagListJsonKey] = SerializeCanApplyRotationAxisBitShiftFlagList(a_rotationComponentModeBase);
 
 	return l_rootJson;
 }
 
-void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeCanApplyRotationAxisBitShiftFlagList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const
+void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeCanApplyRotationAxisBitShiftFlagList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_rotationComponentModeBase) const
 {
 	if (a_rootJson.is_null() ||
 		!Utility::IsJsonArray(a_rootJson))
@@ -38,14 +38,14 @@ void FWK::Converter::RotationComponentModeBaseJsonConverter::DeserializeCanApply
 
 		if (l_canApplyRotationAxis == Enum::AxisBitShiftFlag::Invalid) { continue; }
 
-		a_moveComponentModeBase.AddCanApplyRotationAxisBitShiftFlag(l_canApplyRotationAxis);
+		a_rotationComponentModeBase.AddCanApplyRotationAxisBitShiftFlag(l_canApplyRotationAxis);
 	}
 }
 
-nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::SerializeCanApplyRotationAxisBitShiftFlagList(const RotationComponentModeBase& a_moveComponentModeBase) const
+nlohmann::json FWK::Converter::RotationComponentModeBaseJsonConverter::SerializeCanApplyRotationAxisBitShiftFlagList(const RotationComponentModeBase& a_rotationComponentModeBase) const
 {
 		  auto  l_rootJsonArray                        = nlohmann::json::array                                             ();
-	const auto& l_canApplyRotationAxisBitShiftFlagList = a_moveComponentModeBase.GetREFCanApplyRotationAxisBitShiftFlagList();
+	const auto& l_canApplyRotationAxisBitShiftFlagList = a_rotationComponentModeBase.GetREFCanApplyRotationAxisBitShiftFlagList();
 
 	for (const auto& l_canApplyRotationAxisBitShiftFlag : l_canApplyRotationAxisBitShiftFlagList)
 	{

@@ -2,5 +2,5 @@
 
 namespace FWK::TypeAlias
 {
-	using RotatationComponentModeUniqueFactory = GenericFactory<std::unique_ptr<RotationComponentModeBase>>;
+	using RotationComponentModeUniqueFactory = GenericFactory<std::unique_ptr<RotationComponentModeBase>>;
 }

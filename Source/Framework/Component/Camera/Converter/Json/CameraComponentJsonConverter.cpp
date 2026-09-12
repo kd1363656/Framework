@@ -1,6 +1,6 @@
 ﻿#include "CameraComponentJsonConverter.h"
 
-void FWK::Converter::CameraComponentIJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, CameraComponent& a_cameraComponent) const
+void FWK::Converter::CameraComponentJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, CameraComponent& a_cameraComponent) const
 {
 	if (a_rootJson.is_null()) { return; }
 
@@ -11,7 +11,7 @@ void FWK::Converter::CameraComponentIJsonConverter::DeserializePrefab(const nloh
 	l_camera.SetNearClip   (a_rootJson.value(k_nearClipJsonKey,    Constant::k_cameraDefaultNearClip));
 }
 
-nlohmann::json FWK::Converter::CameraComponentIJsonConverter::SerializePrefab(CameraComponent& a_cameraComponent) const
+nlohmann::json FWK::Converter::CameraComponentJsonConverter::SerializePrefab(CameraComponent& a_cameraComponent) const
 {
 	nlohmann::json l_rootJson = {};
 

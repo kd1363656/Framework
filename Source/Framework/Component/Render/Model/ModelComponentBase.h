@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-	class ModelComponentBase : public FWK::ComponentBase
+	class ModelComponentBase : public ComponentBase
 	{
 	public:
 
@@ -18,7 +18,7 @@ namespace FWK
 
 		nlohmann::json SerializePrefab() override;
 
-		const auto& GetREFDrawRequestPassList() const { return m_assetFilePathHelper; }
+		const auto& GetREFAssetFilePathHelper() const { return m_assetFilePathHelper; }
 	
 		std::weak_ptr<Utility::AssetFilePathHelper> GetVALAssetFilePathHelper() const { return m_assetFilePathHelper; }
 

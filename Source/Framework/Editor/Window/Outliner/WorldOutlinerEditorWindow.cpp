@@ -14,9 +14,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 
 	// SceneManagerが現在所有しているSceneをweak_ptrから取得する
 	// lock()したshared_ptrはこのDraw()の間だけSceneの生存を保証する
-	      auto& l_editorManager       = EditorManager::GetInstance();
-	const auto& l_sceneManager        = SceneManager::GetInstance ();
-	const auto& l_scene               = l_sceneManager.GetVALScene().lock();
+	const auto& l_sceneManager = SceneManager::GetInstance ();
+	const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
 	if (!l_scene)
 	{

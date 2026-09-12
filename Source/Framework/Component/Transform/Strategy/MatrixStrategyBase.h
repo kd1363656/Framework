@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-    class MatrixStrategyBase : public StrategyBase<FWK::TransformComponent>
+    class MatrixStrategyBase : public StrategyBase<TransformComponent>
     {
     public:
 

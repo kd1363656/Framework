@@ -14,9 +14,9 @@ namespace FWK::Converter
          RotationComponentConstantModeBaseJsonConverter() = default;
         ~RotationComponentConstantModeBaseJsonConverter() = default;
 
-        void Deserialize(const nlohmann::json& a_rootJson, RotationComponentConstantModeBase& a_moveComponentConstantModeBase) const;
+        void Deserialize(const nlohmann::json& a_rootJson, RotationComponentConstantModeBase& a_rotationComponentConstantModeBase) const;
 
-        nlohmann::json Serialize(const RotationComponentConstantModeBase& a_moveComponentConstantModeBase) const;
+        nlohmann::json Serialize(const RotationComponentConstantModeBase& a_rotationComponentConstantModeBase) const;
 
     private:
 

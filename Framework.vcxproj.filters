@@ -2190,7 +2190,7 @@
     <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h">
       <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.h">
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.h">
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
@@ -3299,7 +3299,7 @@
     <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp">
       <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrartegy.cpp">
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.cpp">
       <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\StructuredBufferBase.cpp">
