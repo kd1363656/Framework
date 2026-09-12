@@ -2,42 +2,42 @@
 
 namespace FWK::Graphics
 {
-	// コピーやムーブを許可すると、複数インスタンスが同じイベントハンドルをCloseHandleする危険があるため禁止
-	class Fence final
-	{
-	public:
+    // コピーやムーブを許可すると、複数インスタンスが同じイベントハンドルをCloseHandleする危険があるため禁止
+    class Fence final
+    {
+    public:
 
-		 Fence();
-		~Fence();
+         Fence();
+        ~Fence();
 
-		Fence(const Fence&)			  = delete;
-		Fence(		Fence&&) noexcept = delete;
-		
-		Fence& operator=(const Fence&)		     = delete;
-		Fence& operator=(	   Fence&&) noexcept = delete;
+        Fence(const Fence&)           = delete;
+        Fence(      Fence&&) noexcept = delete;
 
-		bool Create(const Device& a_device);
+        Fence& operator=(const Fence&)           = delete;
+        Fence& operator=(      Fence&&) noexcept = delete;
 
-		void WaitForFenceValueIfNeeded(const UINT64& a_fenceValue);
+        bool Create(const Device& a_device);
 
-		bool IsFenceValueCompleted(const UINT64& a_fenceValue) const;
+        void WaitForFenceValueIfNeeded(const UINT64& a_fenceValue);
 
-		void SetLastSignaledFenceValue(const auto& a_set) { m_lastSignaledFenceValue = a_set; }
+        bool IsFenceValueCompleted(const UINT64& a_fenceValue) const;
 
-		UINT64 FetchVALCompletedFenceValue() const;
+        void SetLastSignaledFenceValue(const auto& a_set) { m_lastSignaledFenceValue = a_set; }
 
-		const auto& GetREFLastSignaledFenceValue() const { return m_lastSignaledFenceValue; }
+        UINT64 FetchVALCompletedFenceValue() const;
 
-		const auto& GetREFFence() const { return m_fence; }
+        const auto& GetREFLastSignaledFenceValue() const { return m_lastSignaledFenceValue; }
 
-		static constexpr UINT64 k_unusedFenceValue = 0ULL;
+        const auto& GetREFFence() const { return m_fence; }
 
-	private:
+        static constexpr UINT64 k_unusedFenceValue = 0ULL;
 
-		TypeAlias::ComPtr<ID3D12Fence1> m_fence;
+    private:
 
-		HANDLE m_event;
+        TypeAlias::ComPtr<ID3D12Fence1> m_fence;
 
-		UINT64 m_lastSignaledFenceValue;
-	};
+        HANDLE m_event;
+
+        UINT64 m_lastSignaledFenceValue;
+    };
 }

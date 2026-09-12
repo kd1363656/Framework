@@ -2,61 +2,61 @@
 
 namespace FWK::Graphics
 {
-	template <D3D12_COMMAND_LIST_TYPE CommandType>
-	class CommandAllocator final
-	{
-	public:
+    template <D3D12_COMMAND_LIST_TYPE CommandType>
+    class CommandAllocator final
+    {
+    public:
 
-		 CommandAllocator() = default;
-		~CommandAllocator() = default;
+         CommandAllocator() = default;
+        ~CommandAllocator() = default;
 
-		bool Create(const Device& a_device)
-		{
-			const auto& l_device = a_device.GetREFDevice();
+        bool Create(const Device& a_device)
+        {
+            const auto& l_device = a_device.GetREFDevice();
 
-			// デバイスが存在しないなら作成できないのでreturn
-			FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスの作成に失敗しており、コマンドアロケータの作成に失敗しました。", false);
+            // デバイスが存在しないなら作成できないのでreturn
+            FWK_ASSERT_RETURN_VALUE_IF(!l_device, "デバイスの作成に失敗しており、コマンドアロケータの作成に失敗しました。", false);
 
-			// コマンドアロケータを作成する関数
-			// CreateCommandAllocator(このコマンドアロケータが記録対象とするコマンドリストの種類(※注意 : 作成するコマンドリストの種類と合わせる必要がある)、
-			//						  受け取りたいCOMインターフェース型のID、
-			//					      作成結果のポインタを書き込むアドレス);
-			auto l_hr = l_device->CreateCommandAllocator(CommandType, IID_PPV_ARGS(m_commandAllocator.ReleaseAndGetAddressOf()));
+            // コマンドアロケータを作成する関数
+            // CreateCommandAllocator(このコマンドアロケータが記録対象とするコマンドリストの種類(※注意 : 作成するコマンドリストの種類と合わせる必要がある)、
+            //                        受け取りたいCOMインターフェース型のID、
+            //                        作成結果のポインタを書き込むアドレス);
+            auto l_hr = l_device->CreateCommandAllocator(CommandType, IID_PPV_ARGS(m_commandAllocator.ReleaseAndGetAddressOf()));
 
-			FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "コマンドアロケータの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "コマンドアロケータの作成に失敗しました。", false);
 
-			return true;
-		}
+            return true;
+        }
 
-		void Reset() const
-		{
-			FWK_ASSERT_RETURN_IF(!m_commandAllocator, "コマンドアロケータの作成に失敗しており、リセット処理に失敗しました。");
+        void Reset() const
+        {
+            FWK_ASSERT_RETURN_IF(!m_commandAllocator, "コマンドアロケータの作成に失敗しており、リセット処理に失敗しました。");
 
-			// コマンドアロケータを再利用できる状態に戻す関数
-			// Reset();
-			auto l_hr = m_commandAllocator->Reset();
+            // コマンドアロケータを再利用できる状態に戻す関数
+            // Reset();
+            auto l_hr = m_commandAllocator->Reset();
 
-			FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドアロケータのリセット処理に失敗しました。");
-		}
+            FWK_ASSERT_RETURN_IF(FAILED(l_hr), "コマンドアロケータのリセット処理に失敗しました。");
+        }
 
-		void SetSubmittedFenceValue(const auto& a_set) { m_submittedFenceValue = a_set; }
+        void SetSubmittedFenceValue(const auto& a_set) { m_submittedFenceValue = a_set; }
 
-		const auto& GetREFCommandAllocator() const { return m_commandAllocator; }
+        const auto& GetREFCommandAllocator() const { return m_commandAllocator; }
 
-		const auto& GetREFSubmittedFenceValue() const { return m_submittedFenceValue; }
+        const auto& GetREFSubmittedFenceValue() const { return m_submittedFenceValue; }
 
-		static constexpr D3D12_COMMAND_LIST_TYPE k_createCommandListTypeDirect = D3D12_COMMAND_LIST_TYPE_DIRECT;
+        static constexpr D3D12_COMMAND_LIST_TYPE k_createCommandListTypeDirect = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
-		static constexpr float k_defaultDepthClearValue = 1.0F;
+        static constexpr float k_defaultDepthClearValue = 1.0F;
 
-		static constexpr UINT8 k_defaultStencilClearValue = 0U;
+        static constexpr UINT8 k_defaultStencilClearValue = 0U;
 
-		static constexpr UINT64 k_unusedFenceValue = 0ULL;
+        static constexpr UINT64 k_unusedFenceValue = 0ULL;
 
-	private:
+    private:
 
-		TypeAlias::ComPtr<ID3D12CommandAllocator> m_commandAllocator = nullptr;
+        TypeAlias::ComPtr<ID3D12CommandAllocator> m_commandAllocator = nullptr;
 
-		UINT64 m_submittedFenceValue = k_unusedFenceValue;
-	};
+        UINT64 m_submittedFenceValue = k_unusedFenceValue;
+    };
 }
