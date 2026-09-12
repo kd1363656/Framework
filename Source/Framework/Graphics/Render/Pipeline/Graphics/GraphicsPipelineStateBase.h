@@ -2,62 +2,62 @@
 
 namespace FWK::Graphics
 {
-	class GraphicsPipelineStateBase : public PipelineStateBase
-	{
-	public:
+    class GraphicsPipelineStateBase : public PipelineStateBase
+    {
+    public:
 
-		 GraphicsPipelineStateBase()          = default;
-		~GraphicsPipelineStateBase() override = default;
-		
-		void Deserialize(const nlohmann::json& a_rootJson) override;
+         GraphicsPipelineStateBase()          = default;
+        ~GraphicsPipelineStateBase() override = default;
 
-		nlohmann::json Serialize() const override;
+        void Deserialize(const nlohmann::json& a_rootJson) override;
 
-		void AddRTVFormat(const DXGI_FORMAT a_format);
+        nlohmann::json Serialize() const override;
 
-		void SetRasterizerDesc  (const D3D12_RASTERIZER_DESC&	 a_set) { m_rasterizerDesc   = a_set; }
-		void SetBlendDesc       (const D3D12_BLEND_DESC&		 a_set) { m_blendDesc        = a_set; }
-		void SetDepthStencilDesc(const D3D12_DEPTH_STENCIL_DESC& a_set) { m_depthStencilDesc = a_set; }
-		void SetSampleDesc      (const DXGI_SAMPLE_DESC&		 a_set) { m_sampleDesc       = a_set; }
+        void AddRTVFormat(const DXGI_FORMAT a_format);
 
-		void SetPrimitiveTopologyType(const D3D12_PRIMITIVE_TOPOLOGY_TYPE a_set) { m_primitiveTopologyType = a_set; }
+        void SetRasterizerDesc  (const D3D12_RASTERIZER_DESC&    a_set) { m_rasterizerDesc   = a_set; }
+        void SetBlendDesc       (const D3D12_BLEND_DESC&         a_set) { m_blendDesc        = a_set; }
+        void SetDepthStencilDesc(const D3D12_DEPTH_STENCIL_DESC& a_set) { m_depthStencilDesc = a_set; }
+        void SetSampleDesc      (const DXGI_SAMPLE_DESC&         a_set) { m_sampleDesc       = a_set; }
 
-		void SetDSVFormat(const DXGI_FORMAT a_set) { m_dsvFormat = a_set; }
-		
-		void SetSampleMask(const UINT a_set) { m_sampleMask = a_set; }
+        void SetPrimitiveTopologyType(const D3D12_PRIMITIVE_TOPOLOGY_TYPE a_set) { m_primitiveTopologyType = a_set; }
 
-		const auto& GetREFRTVFormatList() const { return m_rtvFormatList; }
+        void SetDSVFormat(const DXGI_FORMAT a_set) { m_dsvFormat = a_set; }
 
-		const auto& GetREFRasterizerDesc  () const { return m_rasterizerDesc; }
-		const auto& GetREFBlendDesc       () const { return m_blendDesc; }
-		const auto& GetREFDepthStencilDesc() const { return m_depthStencilDesc; }
-		const auto& GetREFSampleDesc      () const { return m_sampleDesc; }
+        void SetSampleMask(const UINT a_set) { m_sampleMask = a_set; }
 
-		auto GetVALPrimitiveTopologyType() const { return m_primitiveTopologyType; }
+        const auto& GetREFRTVFormatList() const { return m_rtvFormatList; }
 
-		auto GetVALDSVFormat() const { return m_dsvFormat; }
+        const auto& GetREFRasterizerDesc  () const { return m_rasterizerDesc; }
+        const auto& GetREFBlendDesc       () const { return m_blendDesc; }
+        const auto& GetREFDepthStencilDesc() const { return m_depthStencilDesc; }
+        const auto& GetREFSampleDesc      () const { return m_sampleDesc; }
 
-		auto GetVALSampleMask() const { return m_sampleMask; }
+        auto GetVALPrimitiveTopologyType() const { return m_primitiveTopologyType; }
 
-	private:
+        auto GetVALDSVFormat() const { return m_dsvFormat; }
 
-		static constexpr UINT k_initialSampleMask = UINT_MAX;
+        auto GetVALSampleMask() const { return m_sampleMask; }
 
-		std::vector<DXGI_FORMAT> m_rtvFormatList = {};
+    private:
 
-		Converter::GraphicsPipelineStateBaseJsonConverter m_jsonConverter = {};
+        static constexpr UINT k_initialSampleMask = UINT_MAX;
 
-		D3D12_RASTERIZER_DESC    m_rasterizerDesc   = {};
-		D3D12_BLEND_DESC         m_blendDesc        = {};
-		D3D12_DEPTH_STENCIL_DESC m_depthStencilDesc = {};
-		DXGI_SAMPLE_DESC	     m_sampleDesc       = {};
+        std::vector<DXGI_FORMAT> m_rtvFormatList = {};
 
-		D3D12_PRIMITIVE_TOPOLOGY_TYPE m_primitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+        Converter::GraphicsPipelineStateBaseJsonConverter m_jsonConverter = {};
 
-		DXGI_FORMAT m_dsvFormat = DXGI_FORMAT_UNKNOWN;
+        D3D12_RASTERIZER_DESC    m_rasterizerDesc   = {};
+        D3D12_BLEND_DESC         m_blendDesc        = {};
+        D3D12_DEPTH_STENCIL_DESC m_depthStencilDesc = {};
+        DXGI_SAMPLE_DESC         m_sampleDesc       = {};
 
-		UINT m_sampleMask = k_initialSampleMask;
+        D3D12_PRIMITIVE_TOPOLOGY_TYPE m_primitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
-		FWK_DEFINE_TYPE_INFO(GraphicsPipelineStateBase, PipelineStateBase)
-	};
+        DXGI_FORMAT m_dsvFormat = DXGI_FORMAT_UNKNOWN;
+
+        UINT m_sampleMask = k_initialSampleMask;
+
+        FWK_DEFINE_TYPE_INFO(GraphicsPipelineStateBase, PipelineStateBase)
+    };
 }

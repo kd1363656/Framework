@@ -14,7 +14,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
     if (const auto& l_staticModelAssetFilePath = CreateAssetFilePath(a_filePath);
         !CreateReadMemoryMappedFile(l_staticModelAssetFilePath))
     {
-        return false; 
+        return false;
     }
 
     auto l_memoryReadOffset = k_initialMemoryReadOffset;
@@ -22,7 +22,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
     ModelBinaryHeader l_modelBinaryHeader = {};
 
     // バージョン、メッシュ数などを含むStaticModel全体Headerを読み込む
-    if (!TryReadSingleBinaryData(l_modelBinaryHeader, l_memoryReadOffset)) 
+    if (!TryReadSingleBinaryData(l_modelBinaryHeader, l_memoryReadOffset))
     {
         FailLoadAsset(l_staticModelData);
 

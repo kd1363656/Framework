@@ -2,71 +2,71 @@
 
 namespace FWK::Graphics
 {
-	class SkeletalAnimationModelSystem final
-	{
-	private:
+    class SkeletalAnimationModelSystem final
+    {
+    private:
 
-		using PendingSkeletalAnimationModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::SkeletalAnimationModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
+        using PendingSkeletalAnimationModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::SkeletalAnimationModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
 
-	public:
+    public:
 
-		 SkeletalAnimationModelSystem() = default;
-		~SkeletalAnimationModelSystem() = default;
+         SkeletalAnimationModelSystem() = default;
+        ~SkeletalAnimationModelSystem() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create     ();
+        void Deserialize(const nlohmann::json& a_rootJson);
+        bool Create     ();
 
-		Struct::SkeletalAnimationModelLoadResult LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device,
-																						  const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
-			                                                                              const std::filesystem::path&              a_filePath,
-																							    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        Struct::SkeletalAnimationModelLoadResult LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device,
+                                                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                                                                                          const std::filesystem::path&              a_filePath,
+                                                                                                TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		nlohmann::json Serialize() const;
+        nlohmann::json Serialize() const;
 
-		void RegisterPendingSkeletalAnimationModels();
+        void RegisterPendingSkeletalAnimationModels();
 
-		bool AddSkeletalAnimationModelReferenceCount(const std::weak_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord);
+        bool AddSkeletalAnimationModelReferenceCount(const std::weak_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord);
 
-		bool SubtractSkeletalAnimationModelReferenceCount(const std::weak_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
+        bool SubtractSkeletalAnimationModelReferenceCount(const std::weak_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
+        const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
 
-		const auto& GetREFModelStorage() const { return m_modelStorage; }
+        const auto& GetREFModelStorage() const { return m_modelStorage; }
 
-		auto& GetMutableREFModelStorage() { return m_modelStorage; }
+        auto& GetMutableREFModelStorage() { return m_modelStorage; }
 
-	private:
+    private:
 
-		bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
+        bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
-		bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
-			                                        const Device&                                        a_device,
-			                                        const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
-			                                        const std::filesystem::path&                         a_filePath,
-												    const TypeAlias::StorageID                           a_storageID,
-			                                              TypeAlias::CBVSRVUAVDescriptorPool&            a_cbvSRVUAVDescriptorPool);
-		
-		bool CreateSkeletalAnimationModelBatchUploadRecord(const std::shared_ptr<SkeletalAnimationModelRecord>&   a_skeletalAnimationModelRecord,
-			                                               const Device&                                          a_device,
-			                                               const GPUMemoryAllocator&                              a_gpuMemoryAllocator,
-			                                                     TypeAlias::CBVSRVUAVDescriptorPool&              a_cbvSRVUAVDescriptorPool,
-															     Struct::SkeletalAnimationModelBatchUploadRecord& a_skeletalAnimationModelBatchUploadRecord) const;
- 
-		bool TryResolveCachedSkeletalAnimationModelResult(const std::filesystem::path& a_filePath, Struct::SkeletalAnimationModelLoadResult& a_skeletalAnimationModelLoadResult);
+        bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
+                                                    const Device&                                        a_device,
+                                                    const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
+                                                    const std::filesystem::path&                         a_filePath,
+                                                    const TypeAlias::StorageID                           a_storageID,
+                                                          TypeAlias::CBVSRVUAVDescriptorPool&            a_cbvSRVUAVDescriptorPool);
 
-		PendingSkeletalAnimationModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
+        bool CreateSkeletalAnimationModelBatchUploadRecord(const std::shared_ptr<SkeletalAnimationModelRecord>&   a_skeletalAnimationModelRecord,
+                                                           const Device&                                          a_device,
+                                                           const GPUMemoryAllocator&                              a_gpuMemoryAllocator,
+                                                                 TypeAlias::CBVSRVUAVDescriptorPool&              a_cbvSRVUAVDescriptorPool,
+                                                                 Struct::SkeletalAnimationModelBatchUploadRecord& a_skeletalAnimationModelBatchUploadRecord) const;
 
-		AssetStorage<SkeletalAnimationModelRecord> m_modelStorage = {};
+        bool TryResolveCachedSkeletalAnimationModelResult(const std::filesystem::path& a_filePath, Struct::SkeletalAnimationModelLoadResult& a_skeletalAnimationModelLoadResult);
 
-		SkeletalAnimationModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+        PendingSkeletalAnimationModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
 
-		SkeletalAnimationModelFBXLoader                                  m_loader                        = {};
-		ModelMaterialRuntimeTextureBuilder<SkeletalAnimationModelRecord> m_materialRuntimeTextureBuilder = {};
+        AssetStorage<SkeletalAnimationModelRecord> m_modelStorage = {};
 
-		ModelMeshOptimizer<SkeletalAnimationModelRecord>  m_meshOptimizer  = {};
-		ModelMeshletBuilder<SkeletalAnimationModelRecord> m_meshletBuilder = {};
+        SkeletalAnimationModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
 
-		Converter::SkeletalAnimationModelSystemJsonConverter m_jsonConverter   = {};
-		Converter::SkeletalAnimationModelBinaryConverter     m_binaryConverter = {};
-	};
+        SkeletalAnimationModelFBXLoader                                  m_loader                        = {};
+        ModelMaterialRuntimeTextureBuilder<SkeletalAnimationModelRecord> m_materialRuntimeTextureBuilder = {};
+
+        ModelMeshOptimizer<SkeletalAnimationModelRecord>  m_meshOptimizer  = {};
+        ModelMeshletBuilder<SkeletalAnimationModelRecord> m_meshletBuilder = {};
+
+        Converter::SkeletalAnimationModelSystemJsonConverter m_jsonConverter   = {};
+        Converter::SkeletalAnimationModelBinaryConverter     m_binaryConverter = {};
+    };
 }

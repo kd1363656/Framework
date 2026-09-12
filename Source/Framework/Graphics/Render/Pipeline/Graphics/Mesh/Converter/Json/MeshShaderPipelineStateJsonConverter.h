@@ -2,26 +2,26 @@
 
 namespace FWK::Graphics
 {
-	class MeshShaderPipelineState;
+    class MeshShaderPipelineState;
 }
 
 namespace FWK::Converter
 {
-	class MeshShaderPipelineStateJsonConverter final
-	{
-	public:
-		
-		 MeshShaderPipelineStateJsonConverter() = default;
-		~MeshShaderPipelineStateJsonConverter() = default;
+    class MeshShaderPipelineStateJsonConverter final
+    {
+    public:
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::MeshShaderPipelineState& a_meshShaderPipelineState) const;
+         MeshShaderPipelineStateJsonConverter() = default;
+        ~MeshShaderPipelineStateJsonConverter() = default;
 
-		nlohmann::json Serialize(const Graphics::MeshShaderPipelineState& a_meshShaderPipelineState) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::MeshShaderPipelineState& a_meshShaderPipelineState) const;
 
-	private:
+        nlohmann::json Serialize(const Graphics::MeshShaderPipelineState& a_meshShaderPipelineState) const;
 
-		static constexpr std::string_view k_amplificationShaderJsonKey   = "AmplificationShader";
-		static constexpr std::string_view k_meshShaderJsonKey            = "MeshShader";
-		static constexpr std::string_view k_pixelShaderJsonKey           = "PixelShader";
-	};
+    private:
+
+        static constexpr std::string_view k_amplificationShaderJsonKey   = "AmplificationShader";
+        static constexpr std::string_view k_meshShaderJsonKey            = "MeshShader";
+        static constexpr std::string_view k_pixelShaderJsonKey           = "PixelShader";
+    };
 }

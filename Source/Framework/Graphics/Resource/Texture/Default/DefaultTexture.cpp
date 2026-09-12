@@ -12,10 +12,10 @@ nlohmann::json FWK::Graphics::DefaultTexture::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&                                                    a_device, 
-                                                                   const GPUMemoryAllocator&                                        a_gpuMemoryAllocator, 
-                                                                   const TextureBatchUploadRecordBuilder&                           a_textureBatchUploadRecordBuilder, 
-                                                                   const TypeAlias::StorageID                                       a_storageID, 
+bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&                                                    a_device,
+                                                                   const GPUMemoryAllocator&                                        a_gpuMemoryAllocator,
+                                                                   const TextureBatchUploadRecordBuilder&                           a_textureBatchUploadRecordBuilder,
+                                                                   const TypeAlias::StorageID                                       a_storageID,
                                                                          TypeAlias::CBVSRVUAVDescriptorPool&                        a_cbvSRVUAVDescriptorPool,
                                                                          TextureBatchUploadRecordBuilder::TextureBatchUploadRecord& a_textureBatchUploadRecord)
 {
@@ -71,11 +71,11 @@ std::uint8_t FWK::Graphics::DefaultTexture::FetchVALColorChannel(const Enum::Def
 bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_scratchImage) const
 {
     // DirectXTexのScratchImageに、1x1のTexture2D領域を作成する
-	// ScratchImage::Initialize2D(テクスチャフォーマット,
-	//		                      横幅,
-	//		                      縦幅,
-	//		                      配列数,
-	//		                      MIP数)
+    // ScratchImage::Initialize2D(テクスチャフォーマット,
+    //                            横幅,
+    //                            縦幅,
+    //                            配列数,
+    //                            MIP数)
     const auto l_hr = a_scratchImage.Initialize2D(m_format,
                                                   k_defaultTextureWidth,
                                                   k_defaultTextureHeight,

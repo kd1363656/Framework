@@ -2,93 +2,93 @@
 
 namespace FWK::Graphics
 {
-	class DepthStencilTexture final
-	{
-	public:
-	
-		 DepthStencilTexture() = default;
-		~DepthStencilTexture() = default;
-	
-		DepthStencilTexture(const DepthStencilTexture&)			  = delete;
-		DepthStencilTexture(	  DepthStencilTexture&&) noexcept = default;
-		
-		DepthStencilTexture& operator=(const DepthStencilTexture&)			 = delete;
-		DepthStencilTexture& operator=(		 DepthStencilTexture&&) noexcept = default;
+    class DepthStencilTexture final
+    {
+    public:
 
-		bool Create(const Device&					           a_device,
-					const GPUMemoryAllocator&		           a_gpuMemoryAllocator,
-					const Struct::DepthStencilTextureSettings& a_depthStencilTextureSettings,
-					const UINT						           a_width,
-					const UINT						           a_height,
-						  TypeAlias::DSVDescriptorPool&        a_dsvDescriptorPool,
-						  TypeAlias::CBVSRVUAVDescriptorPool&  a_cbvSRVUAVDescriptorPool);
+         DepthStencilTexture() = default;
+        ~DepthStencilTexture() = default;
 
-		bool Resize(const Device&			                  a_device,
-					const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-					const UINT64&			                  a_retiredFenceValue,
-					const UINT				                  a_width,
-					const UINT				                  a_height,
-						  TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-						  ResourceReleaseContext&		      a_resourceReleaseContext);
+        DepthStencilTexture(const DepthStencilTexture&)           = delete;
+        DepthStencilTexture(      DepthStencilTexture&&) noexcept = default;
 
-		void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
+        DepthStencilTexture& operator=(const DepthStencilTexture&)           = delete;
+        DepthStencilTexture& operator=(      DepthStencilTexture&&) noexcept = default;
 
-		TypeAlias::DescriptorIndex FetchVALDSVDescriptorIndex               (const UINT a_arrayIndex, const UINT a_mipSlice) const;
-		TypeAlias::DescriptorIndex FetchVALBaseSubresourceDSVDescriptorIndex() const;
+        bool Create(const Device&                              a_device,
+                    const GPUMemoryAllocator&                  a_gpuMemoryAllocator,
+                    const Struct::DepthStencilTextureSettings& a_depthStencilTextureSettings,
+                    const UINT                                 a_width,
+                    const UINT                                 a_height,
+                          TypeAlias::DSVDescriptorPool&        a_dsvDescriptorPool,
+                          TypeAlias::CBVSRVUAVDescriptorPool&  a_cbvSRVUAVDescriptorPool);
 
-		const auto& GetREFGPUResource() const { return m_gpuResource; }
+        bool Resize(const Device&                             a_device,
+                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                    const UINT64&                             a_retiredFenceValue,
+                    const UINT                                a_width,
+                    const UINT                                a_height,
+                          TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                          ResourceReleaseContext&             a_resourceReleaseContext);
 
-		auto GetVALCurrentResourceState() const { return m_currentResourceState; }
+        void SetCurrentResourceState(const D3D12_RESOURCE_STATES a_set) { m_currentResourceState = a_set; }
 
-		auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
+        TypeAlias::DescriptorIndex FetchVALDSVDescriptorIndex               (const UINT a_arrayIndex, const UINT a_mipSlice) const;
+        TypeAlias::DescriptorIndex FetchVALBaseSubresourceDSVDescriptorIndex() const;
 
-	private:
+        const auto& GetREFGPUResource() const { return m_gpuResource; }
 
-		bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT a_width, const UINT a_height);
+        auto GetVALCurrentResourceState() const { return m_currentResourceState; }
 
-		D3D12_DEPTH_STENCIL_VIEW_DESC   CreateDSVDesc(const UINT a_arrayIndex, const UINT a_mipSlice) const;
-		D3D12_SHADER_RESOURCE_VIEW_DESC CreateSRVDesc()                                               const;
+        auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
-		bool CreateDSVList(const Device& a_device, TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool);
-		bool CreateSRV    (const Device& a_device, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+    private:
 
-		bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
+        bool CreateGPUResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const UINT a_width, const UINT a_height);
 
-		void ReleaseCreatedDSVDescriptorIndexList(TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool);
-		void ReleaseCreatedSRVDescriptorIndex    (TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        D3D12_DEPTH_STENCIL_VIEW_DESC   CreateDSVDesc(const UINT a_arrayIndex, const UINT a_mipSlice) const;
+        D3D12_SHADER_RESOURCE_VIEW_DESC CreateSRVDesc()                                               const;
 
-		static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+        bool CreateDSVList(const Device& a_device, TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool);
+        bool CreateSRV    (const Device& a_device, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
+        bool ReserveReleaseCurrentResource(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		static constexpr UINT k_firstArrayIndex = 0U;
-		static constexpr UINT k_firstArraySlice = 0U;
-		static constexpr UINT k_firstMIPSlice   = 0U;
-		static constexpr UINT k_mostDetailedMIP = 0U;
-		static constexpr UINT k_planeSlice      = 0U;
+        void ReleaseCreatedDSVDescriptorIndexList(TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool);
+        void ReleaseCreatedSRVDescriptorIndex    (TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		static constexpr UINT k_minSampleCount = 1U;
+        static constexpr D3D12_RESOURCE_STATES k_defaultResourceState = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 
-		static constexpr UINT k_singleTextureArraySize   = 1U;
-		static constexpr UINT k_singleDSVArraySliceCount = 1U;
-		static constexpr UINT k_singleMIPLevelCount      = 1U;
-		static constexpr UINT k_nonMultisampleCount      = 1U;
-		
-		static constexpr UINT16 k_minTextureArraySize = 1U;
-		static constexpr UINT16 k_minMIPLevelCount    = 1U;
+        static constexpr FLOAT k_resourceMINLODClamp = 0.0F;
 
-		Struct::GPUResource m_gpuResource = {};
+        static constexpr UINT k_firstArrayIndex = 0U;
+        static constexpr UINT k_firstArraySlice = 0U;
+        static constexpr UINT k_firstMIPSlice   = 0U;
+        static constexpr UINT k_mostDetailedMIP = 0U;
+        static constexpr UINT k_planeSlice      = 0U;
 
-		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
+        static constexpr UINT k_minSampleCount = 1U;
 
-		std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
+        static constexpr UINT k_singleTextureArraySize   = 1U;
+        static constexpr UINT k_singleDSVArraySliceCount = 1U;
+        static constexpr UINT k_singleMIPLevelCount      = 1U;
+        static constexpr UINT k_nonMultisampleCount      = 1U;
 
-		D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
+        static constexpr UINT16 k_minTextureArraySize = 1U;
+        static constexpr UINT16 k_minMIPLevelCount    = 1U;
 
-		UINT m_width  = Constant::k_invalidTextureWidth;
-		UINT m_height = Constant::k_invalidTextureHeight;
+        Struct::GPUResource m_gpuResource = {};
 
-		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
-	};
+        Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
+
+        std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
+
+        D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
+
+        UINT m_width  = Constant::k_invalidTextureWidth;
+        UINT m_height = Constant::k_invalidTextureHeight;
+
+        TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    };
 }

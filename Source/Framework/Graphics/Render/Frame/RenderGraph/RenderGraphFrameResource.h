@@ -2,56 +2,56 @@
 
 namespace FWK::Graphics
 {
-	class RenderGraphFrameResource final
-	{
-	private:
+    class RenderGraphFrameResource final
+    {
+    private:
 
-		using RenderTargetPassTextureMap = std::unordered_map<Enum::RenderGraphRenderTargetType, std::weak_ptr<RenderTargetPassTexture>>;
-		using DepthStencilPassTextureMap = std::unordered_map<Enum::RenderGraphDepthStencilType, std::weak_ptr<DepthStencilPassTexture>>;
+        using RenderTargetPassTextureMap = std::unordered_map<Enum::RenderGraphRenderTargetType, std::weak_ptr<RenderTargetPassTexture>>;
+        using DepthStencilPassTextureMap = std::unordered_map<Enum::RenderGraphDepthStencilType, std::weak_ptr<DepthStencilPassTexture>>;
 
-	public:
+    public:
 
-		 RenderGraphFrameResource() = default;
-		~RenderGraphFrameResource() = default;
+         RenderGraphFrameResource() = default;
+        ~RenderGraphFrameResource() = default;
 
-		RenderGraphFrameResource(const RenderGraphFrameResource&)			= delete;
-		RenderGraphFrameResource(	   RenderGraphFrameResource&&) noexcept = default;
-		
-		RenderGraphFrameResource& operator=(const RenderGraphFrameResource&)		   = delete;
-		RenderGraphFrameResource& operator=(      RenderGraphFrameResource&&) noexcept = default;
+        RenderGraphFrameResource(const RenderGraphFrameResource&)           = delete;
+        RenderGraphFrameResource(      RenderGraphFrameResource&&) noexcept = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+        RenderGraphFrameResource& operator=(const RenderGraphFrameResource&)           = delete;
+        RenderGraphFrameResource& operator=(      RenderGraphFrameResource&&) noexcept = default;
 
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool Create(const Device&			  a_device,
-					const GPUMemoryAllocator& a_gpuMemoryAllocator,
-					const Window::ClientSize& a_clientSize,
-						  ResourceContext&    a_resourceContext) const;
+        nlohmann::json Serialize() const;
 
-		bool Resize(const Device&			  a_device,
-					const GPUMemoryAllocator& a_gpuMemoryAllocator,
-					const Window::ClientSize& a_clientSize,
-					const UINT64&			  a_retiredFenceValue,
-						  ResourceContext&    a_resourceContext) const;
+        bool Create(const Device&             a_device,
+                    const GPUMemoryAllocator& a_gpuMemoryAllocator,
+                    const Window::ClientSize& a_clientSize,
+                          ResourceContext&    a_resourceContext) const;
 
-		void AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture);
-		void AddDepthStencilPassTexture(const std::shared_ptr<DepthStencilPassTexture>& a_depthStencilPassTexture);
+        bool Resize(const Device&             a_device,
+                    const GPUMemoryAllocator& a_gpuMemoryAllocator,
+                    const Window::ClientSize& a_clientSize,
+                    const UINT64&             a_retiredFenceValue,
+                          ResourceContext&    a_resourceContext) const;
 
-		std::weak_ptr<RenderTargetPassTexture> FindVALRenderTargetPassTexture(const Enum::RenderGraphRenderTargetType a_renderGraphRenderTargetType) const;
-		std::weak_ptr<DepthStencilPassTexture> FindVALDepthStencilPassTexture(const Enum::RenderGraphDepthStencilType a_renderGraphDepthStencilType) const;
+        void AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture);
+        void AddDepthStencilPassTexture(const std::shared_ptr<DepthStencilPassTexture>& a_depthStencilPassTexture);
 
-		const auto& GetREFRenderTargetPassTextureList() const { return m_renderTargetPassTextureList; }
-		const auto& GetREFDepthStencilPassTextureList() const { return m_depthStencilPassTextureList; }
+        std::weak_ptr<RenderTargetPassTexture> FindVALRenderTargetPassTexture(const Enum::RenderGraphRenderTargetType a_renderGraphRenderTargetType) const;
+        std::weak_ptr<DepthStencilPassTexture> FindVALDepthStencilPassTexture(const Enum::RenderGraphDepthStencilType a_renderGraphDepthStencilType) const;
 
-	private:
+        const auto& GetREFRenderTargetPassTextureList() const { return m_renderTargetPassTextureList; }
+        const auto& GetREFDepthStencilPassTextureList() const { return m_depthStencilPassTextureList; }
 
-		RenderTargetPassTextureMap m_renderTargetPassTextureMap = {};
-		DepthStencilPassTextureMap m_depthStencilPassTextureMap = {};
+    private:
 
-		std::vector<std::shared_ptr<RenderTargetPassTexture>> m_renderTargetPassTextureList = {};
-		std::vector<std::shared_ptr<DepthStencilPassTexture>> m_depthStencilPassTextureList = {};
+        RenderTargetPassTextureMap m_renderTargetPassTextureMap = {};
+        DepthStencilPassTextureMap m_depthStencilPassTextureMap = {};
 
-		Converter::RenderGraphFrameResourceJsonConverter m_jsonConverter = {};
-	};
+        std::vector<std::shared_ptr<RenderTargetPassTexture>> m_renderTargetPassTextureList = {};
+        std::vector<std::shared_ptr<DepthStencilPassTexture>> m_depthStencilPassTextureList = {};
+
+        Converter::RenderGraphFrameResourceJsonConverter m_jsonConverter = {};
+    };
 }

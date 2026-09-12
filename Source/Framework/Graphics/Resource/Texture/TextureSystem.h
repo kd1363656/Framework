@@ -2,87 +2,87 @@
 
 namespace FWK::Graphics
 {
-	class TextureSystem
-	{
-	public:
+    class TextureSystem final
+    {
+    public:
 
-		struct TextureLoadResult final
-		{
-			std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
+        struct TextureLoadResult final
+        {
+            std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 
-			TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
+            TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
 
-			bool m_isLoadSuccess = false;
-		};
+            bool m_isLoadSuccess = false;
+        };
 
-	private:
+    private:
 
-		using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, TextureBatchUploadRecordBuilder::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
-		
-	public:
+        using PendingTextureBatchUploadRecordMap = std::unordered_map<std::wstring, TextureBatchUploadRecordBuilder::TextureBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
 
-		 TextureSystem() = default;
-		~TextureSystem() = default;
+    public:
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create	    (const Device&		   a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+         TextureSystem() = default;
+        ~TextureSystem() = default;
 
-		TextureLoadResult LoadTextureForBatchUpload(const Device&			                  a_device, 
-													const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-													const std::filesystem::path&		      a_filePath,
-													const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
-													const Enum::DefaultTextureType            a_defaultTextureType,
-														  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        void Deserialize(const nlohmann::json& a_rootJson);
+        bool Create     (const Device&         a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		nlohmann::json Serialize() const;
+        TextureLoadResult LoadTextureForBatchUpload(const Device&                             a_device,
+                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                                                    const std::filesystem::path&              a_filePath,
+                                                    const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
+                                                    const Enum::DefaultTextureType            a_defaultTextureType,
+                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		// ※ 注意
-		// UploadSystem側でテクスチャのコピーが終わっていること前提
-		void RegisterPendingTextures();
+        nlohmann::json Serialize() const;
 
-		bool AddTextureReferenceCount     (const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord);
-		bool SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
+        // ※ 注意
+        // UploadSystem側でテクスチャのコピーが終わっていること前提
+        void RegisterPendingTextures();
 
-		void ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture);
+        bool AddTextureReferenceCount     (const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord);
+        bool SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
+        void ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture);
 
-		static constexpr std::size_t k_defaultTextureTypeCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
+        std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
 
-		const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }
+        static constexpr std::size_t k_defaultTextureTypeCount = static_cast<std::size_t>(Enum::DefaultTextureType::Count);
 
-		const auto& GetREFDefaultTextureList() const { return m_defaultTextureList; }
+        const auto& GetREFPendingTextureBatchUploadRecordMap() const { return m_pendingTextureBatchUploadRecordMap; }
 
-		const auto& GetREFTextureStorage() const { return m_textureStorage; }
+        const auto& GetREFDefaultTextureList() const { return m_defaultTextureList; }
 
-		auto& GetMutableREFTextureStorage() { return m_textureStorage; }
+        const auto& GetREFTextureStorage() const { return m_textureStorage; }
 
-	private:
+        auto& GetMutableREFTextureStorage() { return m_textureStorage; }
 
-		bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+    private:
 
-		void CreateAndRegisterPendingTextureForBachUpload(const Device&				                a_device,
-														  const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-														  const std::filesystem::path&              a_filePath,
-														  const DirectX::ScratchImage&              a_scratchImage,
-														  const DirectX::TexMetadata&               a_texMetadata,
-														  	    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-														  	    TextureLoadResult&                  a_textureLoadResult);
+        bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, TextureLoadResult& a_textureLoadResult);
+        void CreateAndRegisterPendingTextureForBachUpload(const Device&                             a_device,
+                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                                                          const std::filesystem::path&              a_filePath,
+                                                          const DirectX::ScratchImage&              a_scratchImage,
+                                                          const DirectX::TexMetadata&               a_texMetadata,
+                                                                TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                                                                TextureLoadResult&                  a_textureLoadResult);
 
-		void ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, TextureLoadResult& a_textureLoadResult) const;
+        bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, TextureLoadResult& a_textureLoadResult);
 
-		PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
+        void ApplyDefaultTextureToLoadResult(const Enum::DefaultTextureType a_defaultTextureType, TextureLoadResult& a_textureLoadResult) const;
 
-		std::array<std::shared_ptr<DefaultTexture>, k_defaultTextureTypeCount> m_defaultTextureList = {};
+        PendingTextureBatchUploadRecordMap m_pendingTextureBatchUploadRecordMap = {};
 
-		AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
+        std::array<std::shared_ptr<DefaultTexture>, k_defaultTextureTypeCount> m_defaultTextureList = {};
 
-		TextureLoader					m_loader				   = {};
-		TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+        AssetStorage<Graphics::TextureRecord> m_textureStorage = {};
 
-		Converter::TextureSystemJsonConverter m_jsonConverter   = {};
-		Converter::TextureBinaryConverter     m_binaryConverter = {};
-	};
+        TextureLoader                   m_loader                   = {};
+        TextureBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+
+        Converter::TextureSystemJsonConverter m_jsonConverter   = {};
+        Converter::TextureBinaryConverter     m_binaryConverter = {};
+    };
 }

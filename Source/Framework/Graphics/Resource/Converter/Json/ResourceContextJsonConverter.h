@@ -2,32 +2,32 @@
 
 namespace FWK::Graphics
 {
-	class ResourceContext;
+    class ResourceContext;
 }
 
 namespace FWK::Converter
 {
-	class ResourceContextJsonConverter final
-	{
-	public:
+    class ResourceContextJsonConverter final
+    {
+    public:
 
-		 ResourceContextJsonConverter() = default;
-		~ResourceContextJsonConverter() = default;
+         ResourceContextJsonConverter() = default;
+        ~ResourceContextJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::ResourceContext& a_resourceContext) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::ResourceContext& a_resourceContext) const;
 
-		nlohmann::json Serialize(const Graphics::ResourceContext& a_resourceContext) const;
+        nlohmann::json Serialize(const Graphics::ResourceContext& a_resourceContext) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_rtvDescriptorPoolJsonKey       = "RTVDescriptorPool";
-		static constexpr std::string_view k_cbvSRVUAVDescriptorPoolJsonKey = "CBVSRVUAVDescriptorPool";
-		static constexpr std::string_view k_dsvDescriptorPoolJsonKey       = "DSVDescriptorPool";
+        static constexpr std::string_view k_rtvDescriptorPoolJsonKey       = "RTVDescriptorPool";
+        static constexpr std::string_view k_cbvSRVUAVDescriptorPoolJsonKey = "CBVSRVUAVDescriptorPool";
+        static constexpr std::string_view k_dsvDescriptorPoolJsonKey       = "DSVDescriptorPool";
 
-		static constexpr std::string_view k_textureSystemJsonKey                = "TextureSystem";
-		static constexpr std::string_view k_staticModelSystemJsonKey            = "StaticModelSystem";
-		static constexpr std::string_view k_skeletalAnimationModelSystemJsonKey = "SkeletalAnimationModelSystem";
+        static constexpr std::string_view k_textureSystemJsonKey                = "TextureSystem";
+        static constexpr std::string_view k_staticModelSystemJsonKey            = "StaticModelSystem";
+        static constexpr std::string_view k_skeletalAnimationModelSystemJsonKey = "SkeletalAnimationModelSystem";
 
-		static constexpr std::string_view k_uploadSystemJsonKey = "UploadSystem";
-	};
+        static constexpr std::string_view k_uploadSystemJsonKey = "UploadSystem";
+    };
 }

@@ -25,6 +25,7 @@ namespace FWK::Editor
 
         bool HasDrawableRootGameObject (const Scene&      a_scene)      const;
         bool HasDrawableChildGameObject(const GameObject& a_gameObject) const;
+        
         static constexpr std::string_view k_editorName                 = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel            = "UntitledScene";
         static constexpr std::string_view k_emptyAreaLabel             = "##WorldOutlinerEmptyArea";

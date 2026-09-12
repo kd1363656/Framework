@@ -2,50 +2,50 @@
 
 namespace FWK::Graphics
 {
-	class GraphicsManager final : public FWK::Utility::SingletonBase<GraphicsManager>
-	{
-	private:
+    class GraphicsManager final : public FWK::Utility::SingletonBase<GraphicsManager>
+    {
+    private:
 
-		friend class SingletonBase<GraphicsManager>;
+        friend class SingletonBase<GraphicsManager>;
 
-		 GraphicsManager()          = default;
-		~GraphicsManager() override = default;
+         GraphicsManager()          = default;
+        ~GraphicsManager() override = default;
 
-	public:
+    public:
 
-		void INIT		   ();
-		void LoadCONFIG	   ();
-		bool PostLoadCONFIG(const Window& a_window);
-		
-		void BeginFrame();
-		void Execute   ();
-		void EndFrame  ();
+        void INIT          ();
+        void LoadCONFIG    ();
+        bool PostLoadCONFIG(const Window& a_window);
 
-		void SaveCONFIG() const;
+        void BeginFrame();
+        void Execute   ();
+        void EndFrame  ();
 
-		void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest);
+        void SaveCONFIG() const;
 
-		const auto& GetREFDevice() const { return m_device; }
+        void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest);
 
-		const auto& GetREFRenderer		 () const { return m_renderer; }
-		const auto& GetREFResourceContext() const { return m_resourceContext; }
+        const auto& GetREFDevice() const { return m_device; }
 
-		auto& GetMutableREFRenderer		  () { return m_renderer; }
-		auto& GetMutableREFResourceContext() { return m_resourceContext; }
+        const auto& GetREFRenderer       () const { return m_renderer; }
+        const auto& GetREFResourceContext() const { return m_resourceContext; }
 
-	private:
-		
+        auto& GetMutableREFRenderer       () { return m_renderer; }
+        auto& GetMutableREFResourceContext() { return m_resourceContext; }
+
+    private:
+
 #if defined(_DEBUG)
-		bool EnableDebugLayer() const;
+        bool EnableDebugLayer() const;
 #endif
 
-		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Graphics/GraphicsCONFIG.json";
+        inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Graphics/GraphicsCONFIG.json";
 
-		Factory			m_factory		  = {};
-		Device			m_device		  = {};
-		ResourceContext m_resourceContext = {};
-		Renderer		m_renderer		  = {};
+        Factory         m_factory         = {};
+        Device          m_device          = {};
+        ResourceContext m_resourceContext = {};
+        Renderer        m_renderer        = {};
 
-		Converter::GraphicsManagerJsonConverter m_graphicsManagerJsonConverter = {};
-	};
+        Converter::GraphicsManagerJsonConverter m_graphicsManagerJsonConverter = {};
+    };
 }

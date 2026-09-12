@@ -1,6 +1,6 @@
 ﻿#include "DynamicRWStructuredBuffer.h"
 
-FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer() : 
+FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer() :
     m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
 
     m_currentResourceState(D3D12_RESOURCE_STATE_COMMON),
@@ -14,7 +14,7 @@ FWK::Graphics::DynamicRWStructuredBuffer::~DynamicRWStructuredBuffer()
     Release();
 }
 
-FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer(DynamicRWStructuredBuffer && a_other) noexcept : 
+FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer(DynamicRWStructuredBuffer && a_other) noexcept :
     StructuredBufferBase(std::move(a_other)),
 
     m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
@@ -45,7 +45,7 @@ FWK::Graphics::DynamicRWStructuredBuffer& FWK::Graphics::DynamicRWStructuredBuff
 bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext)
 {
     // 既に解放するものがなければreturn
-    if (!GetREFBufferGPUResource().m_resource && 
+    if (!GetREFBufferGPUResource().m_resource &&
         GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex &&
         m_uavDescriptorIndex       == DescriptorHeap::k_invalidDescriptorIndex)
     {
@@ -54,8 +54,8 @@ bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_re
 
     FWK_ASSERT_RETURN_VALUE_IF(!GetREFBufferGPUResource().m_resource,                                  "DynamicRWStructuredBufferのGPUResourceが無効のため、遅延解放登録に失敗しました。",        false);
     FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex, "DynamicRWStructuredBufferのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex,       "DynamicRWStructuredBufferのUAVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Fence::k_unusedFenceValue,                       "FenceValueが無効のため、DynamicRWStructuredBufferの遅延解放登録に失敗しました。",         false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex,       "DynamicRWStructuredBufferのUAVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Fence::k_unusedFenceValue,                       "FenceValueが無効のため、DynamicRWStructuredBufferの遅延解放登録に失敗しました。",         false);
 
     // UAVDescirptorIndexの遅延解放Recordを作る
     ResourceReleaseContext::DescriptorIndexReleaseRecord l_uavDescriptorIndexReleaseRecord = {};
@@ -80,7 +80,7 @@ bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_re
 void FWK::Graphics::DynamicRWStructuredBuffer::Release()
 {
     // 既に解放するものがなければreturn
-    if (!GetREFBufferGPUResource().m_resource && 
+    if (!GetREFBufferGPUResource().m_resource &&
         GetVALSRVDescriptorIndex() == DescriptorHeap::k_invalidDescriptorIndex &&
         m_uavDescriptorIndex       == DescriptorHeap::k_invalidDescriptorIndex)
     {
@@ -102,7 +102,7 @@ void FWK::Graphics::DynamicRWStructuredBuffer::Release()
     FWK_ASSERT_RETURN_IF(!ReserveRelease(l_retiredFenceValue, l_resourceReleaseContext), "DynamicRWStructuredBufferの自動遅延解放登録に失敗しました。");
 }
 
-void FWK::Graphics::DynamicRWStructuredBuffer::ReleaseImmediatelyUAVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool & a_cbvSRVUAVDescriptorPool)
+void FWK::Graphics::DynamicRWStructuredBuffer::ReleaseImmediatelyUAVDescriptorIndex(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     if (m_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return; }
 
@@ -111,7 +111,7 @@ void FWK::Graphics::DynamicRWStructuredBuffer::ReleaseImmediatelyUAVDescriptorIn
     m_uavDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 }
 
-void FWK::Graphics::DynamicRWStructuredBuffer::ReleaseImmediatelyDescriptorIndices(TypeAlias::CBVSRVUAVDescriptorPool & a_cbvSRVUAVDescriptorPool)
+void FWK::Graphics::DynamicRWStructuredBuffer::ReleaseImmediatelyDescriptorIndices(TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     // SRVは基底クラスが持っているため、基底側の即時解放関数を呼ぶ
     ReleaseImmediatelySRVDescriptorIndex(a_cbvSRVUAVDescriptorPool);
@@ -121,17 +121,17 @@ void FWK::Graphics::DynamicRWStructuredBuffer::ReleaseImmediatelyDescriptorIndic
 }
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::DynamicRWStructuredBuffer::CreateUAV(const Device&                             a_device,
-											                                               const Struct::GPUResource&                a_bufferGPUResource,
-											                                               const UINT								 a_elementCount,
-											                                               const UINT								 a_structureByteStride,
-											                                                     TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
+                                                                                           const Struct::GPUResource&                a_bufferGPUResource,
+                                                                                           const UINT                                a_elementCount,
+                                                                                           const UINT                                a_structureByteStride,
+                                                                                                 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const
 {
     const auto& l_device = a_device.GetREFDevice();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_device,                                              "デバイスが作成されておらず、DynamicRWStructuredBuffer用UAVの作成に失敗しました。",   DescriptorHeap::k_invalidDescriptorIndex);
-	FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                        "BufferResourceが無効のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。",   DescriptorHeap::k_invalidDescriptorIndex);
-	FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                "ElementCountが0のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。",        DescriptorHeap::k_invalidDescriptorIndex);
-	FWK_ASSERT_RETURN_VALUE_IF(a_structureByteStride == k_invalidStructuredByteStride, "StructureByteStrideが0のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                        "BufferResourceが無効のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。",   DescriptorHeap::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                "ElementCountが0のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。",        DescriptorHeap::k_invalidDescriptorIndex);
+    FWK_ASSERT_RETURN_VALUE_IF(a_structureByteStride == k_invalidStructuredByteStride, "StructureByteStrideが0のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
     const auto l_uavDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 

@@ -2,39 +2,39 @@
 
 namespace FWK::Graphics
 {
-	class PassTextureBase
-	{
-	public:
+    class PassTextureBase
+    {
+    public:
 
-				 PassTextureBase() = default;
-		virtual ~PassTextureBase() = default;
+                 PassTextureBase() = default;
+        virtual ~PassTextureBase() = default;
 
-		PassTextureBase(const PassTextureBase&)			  = delete;
-		PassTextureBase(	  PassTextureBase&&) noexcept = default;
-		
-		PassTextureBase& operator=(const PassTextureBase&)			 = delete;
-		PassTextureBase& operator=(		 PassTextureBase&&) noexcept = default;
+        PassTextureBase(const PassTextureBase&)           = delete;
+        PassTextureBase(      PassTextureBase&&) noexcept = default;
 
-		void SetWidth (const UINT a_set) { m_width  = a_set; }
-		void SetHeight(const UINT a_set) { m_height = a_set; }
+        PassTextureBase& operator=(const PassTextureBase&)           = delete;
+        PassTextureBase& operator=(      PassTextureBase&&) noexcept = default;
 
-		void SetIsFixedSize(const bool a_set) { m_isFixedSize = a_set; }
-		
-		auto GetVALWidth () const { return m_width; }
-		auto GetVALHeight() const { return m_height; }
+        void SetWidth (const UINT a_set) { m_width  = a_set; }
+        void SetHeight(const UINT a_set) { m_height = a_set; }
 
-		bool GetVALIsFixedSize() const { return m_isFixedSize; }
-		
-	protected:
+        void SetIsFixedSize(const bool a_set) { m_isFixedSize = a_set; }
 
-		UINT FetchVALPassTextureWidth (const UINT a_clientWidth)  const;
-		UINT FetchVALPassTextureHeight(const UINT a_clientHeight) const;
-		
-	private:
+        auto GetVALWidth () const { return m_width; }
+        auto GetVALHeight() const { return m_height; }
 
-		UINT m_width  = Constant::k_invalidTextureWidth;
-		UINT m_height = Constant::k_invalidTextureHeight;
+        bool GetVALIsFixedSize() const { return m_isFixedSize; }
 
-		bool m_isFixedSize = false;
-	};
+    protected:
+
+        UINT FetchVALPassTextureWidth (const UINT a_clientWidth)  const;
+        UINT FetchVALPassTextureHeight(const UINT a_clientHeight) const;
+
+    private:
+
+        UINT m_width  = Constant::k_invalidTextureWidth;
+        UINT m_height = Constant::k_invalidTextureHeight;
+
+        bool m_isFixedSize = false;
+    };
 }

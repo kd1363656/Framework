@@ -2,78 +2,78 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelRecord final : public AssetRecordBase
-	{
-	public:
+    class StaticModelRecord final : public AssetRecordBase
+    {
+    public:
 
-		struct ModelVertex final
-		{
-			TypeAlias::Math::Vector3 m_position = {};
-			TypeAlias::Math::Vector3 m_normal   = {};
-			TypeAlias::Math::Vector4 m_tangent  = {};
-			TypeAlias::Math::Vector2 m_uv		= {};
-		};
+        struct ModelVertex final
+        {
+            TypeAlias::Math::Vector3 m_position = {};
+            TypeAlias::Math::Vector3 m_normal   = {};
+            TypeAlias::Math::Vector4 m_tangent  = {};
+            TypeAlias::Math::Vector2 m_uv       = {};
+        };
 
-		struct ModelMesh final
-		{
-			 ModelMesh() = default;
-			~ModelMesh() = default;
+        struct ModelMesh final
+        {
+             ModelMesh() = default;
+            ~ModelMesh() = default;
 
-			ModelMesh(const ModelMesh&)           = delete;
-			ModelMesh(      ModelMesh&&) noexcept = default;
-			
-			ModelMesh& operator=(const ModelMesh&)           = delete;
-			ModelMesh& operator=(      ModelMesh&&) noexcept = default;
-			
-			std::vector<ModelVertex>   m_modelVertexList = {};
-			std::vector<std::uint32_t> m_indexList	     = {};
+            ModelMesh(const ModelMesh&)           = delete;
+            ModelMesh(      ModelMesh&&) noexcept = default;
 
-			Struct::ModelMaterial m_modelMaterial = {};
+            ModelMesh& operator=(const ModelMesh&)           = delete;
+            ModelMesh& operator=(      ModelMesh&&) noexcept = default;
 
-			// MeshShaderで描画するためのMeshletData
-			// FBX読み込み後に、meshoptimizerで作成し、.asset保存/読み込み対象にする
-			Struct::ModelMeshletData m_modelMeshletData = {};
+            std::vector<ModelVertex>   m_modelVertexList = {};
+            std::vector<std::uint32_t> m_indexList       = {};
 
-			// MeshShader描画時にGPU側で参照するBufferResource群
-			// .asset保存対象ではなく、実行時にModelDataから作成する
-			Struct::ModelMeshRuntimeDataBase m_modelMeshRuntimeData = {};
-		};
+            Struct::ModelMaterial m_modelMaterial = {};
 
-		struct ModelData final
-		{
-			 ModelData() = default;
-			~ModelData() = default;
+            // MeshShaderで描画するためのMeshletData
+            // FBX読み込み後に、meshoptimizerで作成し、.asset保存/読み込み対象にする
+            Struct::ModelMeshletData m_modelMeshletData = {};
 
-			ModelData(const ModelData&)			  = delete;
-			ModelData(      ModelData&&) noexcept = default;
+            // MeshShader描画時にGPU側で参照するBufferResource群
+            // .asset保存対象ではなく、実行時にModelDataから作成する
+            Struct::ModelMeshRuntimeDataBase m_modelMeshRuntimeData = {};
+        };
 
-			ModelData& operator=(const ModelData&)			 = delete;
-			ModelData& operator=(      ModelData&&) noexcept = default;
+        struct ModelData final
+        {
+             ModelData() = default;
+            ~ModelData() = default;
 
-			std::vector<ModelMesh> m_modelMeshList = {};
-		};
+            ModelData(const ModelData&)           = delete;
+            ModelData(      ModelData&&) noexcept = default;
 
-	public:
+            ModelData& operator=(const ModelData&)           = delete;
+            ModelData& operator=(      ModelData&&) noexcept = default;
 
-		 StaticModelRecord()		  = default;
-		~StaticModelRecord() override = default;
-		
-		StaticModelRecord(const StaticModelRecord&)			  = delete;
-		StaticModelRecord(	    StaticModelRecord&&) noexcept = default;
+            std::vector<ModelMesh> m_modelMeshList = {};
+        };
 
-		StaticModelRecord& operator=(const StaticModelRecord&)			 = delete;
-		StaticModelRecord& operator=(	   StaticModelRecord&&) noexcept = default;
+    public:
 
-		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
+         StaticModelRecord()          = default;
+        ~StaticModelRecord() override = default;
 
-		void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
+        StaticModelRecord(const StaticModelRecord&)           = delete;
+        StaticModelRecord(      StaticModelRecord&&) noexcept = default;
 
-		const auto& GetREFModelData() const { return m_modelData; }
+        StaticModelRecord& operator=(const StaticModelRecord&)           = delete;
+        StaticModelRecord& operator=(      StaticModelRecord&&) noexcept = default;
 
-		auto& GetMutableREFModelData() { return m_modelData; }
+        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 
-	private:
+        void SetModelData(ModelData&& a_set) { m_modelData = std::move(a_set); }
 
-		ModelData m_modelData = {};
-	};
+        const auto& GetREFModelData() const { return m_modelData; }
+
+        auto& GetMutableREFModelData() { return m_modelData; }
+
+    private:
+
+        ModelData m_modelData = {};
+    };
 }

@@ -2,19 +2,19 @@
 
 namespace FWK::Graphics
 {
-	class FinalPresentPass final : public RenderGraphPassBase
-	{
-	public:
+    class FinalPresentPass final : public RenderGraphPassBase
+    {
+    public:
 
-		 FinalPresentPass();
-		~FinalPresentPass() override;
+         FinalPresentPass();
+        ~FinalPresentPass() override;
 
-		void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+        void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
-	private:
+    private:
 
-		FWK_DEFINE_TYPE_INFO(FinalPresentPass, RenderGraphPassBase)
-	};
+        FWK_DEFINE_TYPE_INFO(FinalPresentPass, RenderGraphPassBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::FinalPresentPass)

@@ -2,99 +2,99 @@
 
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseGPUResourceRecord(GPUResourceReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF                 (!IsValidGPUResourceReleaseRecord(a_releaseRecord), "GPUResourceRecordが無効のため、GPUResourceRecordの遅延解放登録に失敗しました。", false);
-	m_gpuResourceReleaseRecordList.emplace_back(std::move(a_releaseRecord));
+    FWK_ASSERT_RETURN_VALUE_IF                 (!IsValidGPUResourceReleaseRecord(a_releaseRecord), "GPUResourceRecordが無効のため、GPUResourceRecordの遅延解放登録に失敗しました。", false);
+    m_gpuResourceReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
-	return true;
+    return true;
 }
 
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseRTVDescriptorIndex(DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "RTV用DescriptorIndexが無効のため、RTV用DescriptorIndexの遅延解放登録に失敗しました。", false);
-	m_rtvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
+    FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "RTV用DescriptorIndexが無効のため、RTV用DescriptorIndexの遅延解放登録に失敗しました。", false);
+    m_rtvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
-	return true;
+    return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF                              (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "CBV,SRV,UAV用DescriptorIndexが無効のため、DescriptorIndexの遅延解放登録に失敗しました。", false);
-	m_cbvSRVUAVDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
+    FWK_ASSERT_RETURN_VALUE_IF                              (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "CBV,SRV,UAV用DescriptorIndexが無効のため、DescriptorIndexの遅延解放登録に失敗しました。", false);
+    m_cbvSRVUAVDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
-	return true;
+    return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::ReserveDeferredReleaseDSVDescriptorIndex(DescriptorIndexReleaseRecord&& a_releaseRecord)
 {
-	FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "DSV用DescriptorIndexが無効のため、DSV用DescriptorIndexの遅延解放登録に失敗しました。", false);
-	m_dsvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
+    FWK_ASSERT_RETURN_VALUE_IF                        (!IsValidDescriptorIndexReleaseRecord(a_releaseRecord), "DSV用DescriptorIndexが無効のため、DSV用DescriptorIndexの遅延解放登録に失敗しました。", false);
+    m_dsvDescriptorIndexReleaseRecordList.emplace_back(std::move(a_releaseRecord));
 
-	return true;
+    return true;
 }
 
-void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue&      a_directCommandQueue, 
-	                                                                                TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
-																				    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-																					TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool)
+void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue&      a_directCommandQueue,
+                                                                                    TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+                                                                                    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                                                                                    TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool)
 {
-	const auto& l_completedFenceValue = a_directCommandQueue.FetchVALCompletedFenceValue();
+    const auto& l_completedFenceValue = a_directCommandQueue.FetchVALCompletedFenceValue();
 
-	// GPUResource本体を解放
-	// ComPtrを保持しているRecordをpop_backすることで、GPUResourceの参照が外れる。
-	ReleaseAvailableGPUResources(l_completedFenceValue);
+    // GPUResource本体を解放
+    // ComPtrを保持しているRecordをpop_backすることで、GPUResourceの参照が外れる。
+    ReleaseAvailableGPUResources(l_completedFenceValue);
 
-	// DescriptorのDescriptorIndexを、それぞれ対応するDescriptorPoolへ返す
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_rtvDescriptorIndexReleaseRecordList,       a_rtvDescriptorPool);
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_cbvSRVUAVDescriptorIndexReleaseRecordList, a_cbvSRVUAVDescriptorPool);
-	ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_dsvDescriptorIndexReleaseRecordList,       a_dsvDescriptorPool);
+    // DescriptorのDescriptorIndexを、それぞれ対応するDescriptorPoolへ返す
+    ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_rtvDescriptorIndexReleaseRecordList,       a_rtvDescriptorPool);
+    ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_cbvSRVUAVDescriptorIndexReleaseRecordList, a_cbvSRVUAVDescriptorPool);
+    ReleaseAvailableDescriptorIndices(l_completedFenceValue, m_dsvDescriptorIndexReleaseRecordList,       a_dsvDescriptorPool);
 }
 
 FWK::TypeAlias::DescriptorIndex FWK::Graphics::ResourceReleaseContext::ReleaseRenderTargetResourceImmediately(const TypeAlias::DescriptorIndex a_rtvDescriptorIndex, TypeAlias::ComPtr<ID3D12Resource2>& a_renderTargetResource, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool) const
 {
-	// 二重開放をしない
-	if (a_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return DescriptorHeap::k_invalidDescriptorIndex; }
+    // 二重開放をしない
+    if (a_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { return DescriptorHeap::k_invalidDescriptorIndex; }
 
-	// SwapChain::ResizeBackBuffer()の前は、BackBufferへの参照が残っていると失敗する
-	// そのため、ComPtrを明示的にResetして、CPU側の参照を外す
-	a_renderTargetResource.Reset();
+    // SwapChain::ResizeBackBuffer()の前は、BackBufferへの参照が残っていると失敗する
+    // そのため、ComPtrを明示的にResetして、CPU側の参照を外す
+    a_renderTargetResource.Reset();
 
-	// RTV用DescriptorIndexをDescriptorPoolへ返却する
-	a_rtvDescriptorPool.Release(a_rtvDescriptorIndex);
+    // RTV用DescriptorIndexをDescriptorPoolへ返却する
+    a_rtvDescriptorPool.Release(a_rtvDescriptorIndex);
 
-	// 戻り値として無効な値を渡して二重開放を防ぐようにする
-	return DescriptorHeap::k_invalidDescriptorIndex;
+    // 戻り値として無効な値を渡して二重開放を防ぐようにする
+    return DescriptorHeap::k_invalidDescriptorIndex;
 }
 
 bool FWK::Graphics::ResourceReleaseContext::IsValidGPUResourceReleaseRecord(const GPUResourceReleaseRecord& a_releaseRecord) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(!a_releaseRecord.m_gpuResource.m_resource,                        "無効なリソースを解放しようとしています。",                                                   false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_releaseRecord.m_gpuResource.m_resource,                        "無効なリソースを解放しようとしています。",                                                   false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue, "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
-	return true;
+    return true;
 }
 bool FWK::Graphics::ResourceReleaseContext::IsValidDescriptorIndexReleaseRecord(const DescriptorIndexReleaseRecord& a_releaseRecord) const
 {
-	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_descriptorIndex   == DescriptorHeap::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",                                 false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue,                "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_descriptorIndex   == DescriptorHeap::k_invalidDescriptorIndex, "無効なディスクリプタインデックスを解放しようとしています。",                                 false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_releaseRecord.m_retiredFenceValue == Fence::k_unusedFenceValue,                "無効なフェンス値となっており、解放のタイミングが分かりらないものを解放しようとしています。", false);
 
-	return true;
+    return true;
 }
 
 void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableGPUResources(const UINT64& a_completedFenceValue)
 {
-	std::size_t l_index = 0ULL;
+    std::size_t l_index = 0ULL;
 
-	while (l_index < m_gpuResourceReleaseRecordList.size())
-	{
-		// GPUのフェンス値より大きいフェンス値ならまだ解放しない
-		if (m_gpuResourceReleaseRecordList[l_index].m_retiredFenceValue > a_completedFenceValue)
-		{
-			++l_index;
+    while (l_index < m_gpuResourceReleaseRecordList.size())
+    {
+        // GPUのフェンス値より大きいフェンス値ならまだ解放しない
+        if (m_gpuResourceReleaseRecordList[l_index].m_retiredFenceValue > a_completedFenceValue)
+        {
+            ++l_index;
 
-			continue;
-		}
+            continue;
+        }
 
-		// 解放順は考慮しなくてよいので、末尾要素を移動してpop_backする
-		// pop_backされた要素内のComPtrは自然にReleaseされる
-		std::swap							   (m_gpuResourceReleaseRecordList[l_index], m_gpuResourceReleaseRecordList.back());
-		m_gpuResourceReleaseRecordList.pop_back();
-	}
+        // 解放順は考慮しなくてよいので、末尾要素を移動してpop_backする
+        // pop_backされた要素内のComPtrは自然にReleaseされる
+        std::swap                              (m_gpuResourceReleaseRecordList[l_index], m_gpuResourceReleaseRecordList.back());
+        m_gpuResourceReleaseRecordList.pop_back();
+    }
 }

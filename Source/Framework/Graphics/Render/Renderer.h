@@ -2,124 +2,124 @@
 
 namespace FWK::Graphics
 {
-	class Renderer final
-	{
-	private:
+    class Renderer final
+    {
+    private:
 
-		using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
-		using PipelineStateMap = std::unordered_map<Enum::PipelineStateType, std::shared_ptr<PipelineStateBase>>;
-		
-	public:
+        using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
+        using PipelineStateMap = std::unordered_map<Enum::PipelineStateType, std::shared_ptr<PipelineStateBase>>;
 
-		 Renderer() = default;
-		~Renderer() = default;
+    public:
 
-		void INIT       ();
-		void Deserialize(const nlohmann::json& a_rootJson);
+         Renderer() = default;
+        ~Renderer() = default;
 
-		bool PostDeserialize(const Device&			   a_device, 
-							 const Window&			   a_window,
-							 const Factory&			   a_factory,
-							 const Window::ClientSize& a_clientSize,
-								   ResourceContext&    a_resourceContext);
-		
-		void BeginFrame(const ResourceContext& a_resourceContext);
-		void Execute   (const ResourceContext& a_resourceContext);
-		void EndFrame  ();
+        void INIT       ();
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		nlohmann::json Serialize() const;
+        bool PostDeserialize(const Device&             a_device,
+                             const Window&             a_window,
+                             const Factory&            a_factory,
+                             const Window::ClientSize& a_clientSize,
+                                   ResourceContext&    a_resourceContext);
 
-		void Resize(const Device& a_device, const Window::ClientSize& a_clientSize, ResourceContext& a_resourceContext);
+        void BeginFrame(const ResourceContext& a_resourceContext);
+        void Execute   (const ResourceContext& a_resourceContext);
+        void EndFrame  ();
 
-		void AddFrameResource(const std::shared_ptr<FrameResource>&     a_frameResource);
-		void AddRootSignature(const std::shared_ptr<RootSignature>&     a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
-		void AddPipelineState(const std::shared_ptr<PipelineStateBase>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType);
+        nlohmann::json Serialize() const;
 
-		std::weak_ptr<RootSignature> FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const;
+        void Resize(const Device& a_device, const Window::ClientSize& a_clientSize, ResourceContext& a_resourceContext);
 
-		template <Concept::IsDerivedPipelineStateBaseConcept PipelineStateType>
-		std::weak_ptr<PipelineStateType> FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
-		{
-			const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
+        void AddFrameResource(const std::shared_ptr<FrameResource>&     a_frameResource);
+        void AddRootSignature(const std::shared_ptr<RootSignature>&     a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
+        void AddPipelineState(const std::shared_ptr<PipelineStateBase>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType);
 
-			if (l_itr == m_pipelineStateMap.end()) { return {}; }
+        std::weak_ptr<RootSignature> FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const;
 
-			auto& l_pipelineState = l_itr->second;
+        template <Concept::IsDerivedPipelineStateBaseConcept PipelineStateType>
+        std::weak_ptr<PipelineStateType> FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
+        {
+            const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
 
-			if (!l_pipelineState) { return {}; }
+            if (l_itr == m_pipelineStateMap.end()) { return {}; }
 
-			// もし基底クラスの型情報と、派生クラスの型情報が一致したらキャスト
-			// 一致しなければreturn
-			if (!Utility::IsDerivedFrom(l_pipelineState->GetREFRuntimeTypeINFO(), PipelineStateType::GetREFTypeINFO())) { return {}; }
+            auto& l_pipelineState = l_itr->second;
 
-			return std::static_pointer_cast<PipelineStateType>(l_pipelineState);
-		}
+            if (!l_pipelineState) { return {}; }
 
-		const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
-		const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
-		const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
+            // もし基底クラスの型情報と、派生クラスの型情報が一致したらキャスト
+            // 一致しなければreturn
+            if (!Utility::IsDerivedFrom(l_pipelineState->GetREFRuntimeTypeINFO(), PipelineStateType::GetREFTypeINFO())) { return {}; }
 
-		const auto& GetREFCurrentFrameResource() const { return m_currentFrameResource; }
+            return std::static_pointer_cast<PipelineStateType>(l_pipelineState);
+        }
 
-		const auto& GetREFSwapChain       () const { return m_swapChain; }
-		const auto& GetREFScreenRenderArea() const { return m_screenRenderArea; }
-		const auto& GetREFShadowContext   () const { return m_shadowContext; }
+        const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
+        const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
+        const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
 
-		const auto& GetREFRenderGraph() const { return m_renderGraph; }
-		
-		const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
-		const auto& GetREFDirectCommandList () const { return m_directCommandList; }
+        const auto& GetREFCurrentFrameResource() const { return m_currentFrameResource; }
 
-		const auto& GetREFComputeCommandQueue() const { return m_computeCommandQueue; }
-		const auto& GetREFComputeCommandList () const { return m_computeCommandList; }
+        const auto& GetREFSwapChain       () const { return m_swapChain; }
+        const auto& GetREFScreenRenderArea() const { return m_screenRenderArea; }
+        const auto& GetREFShadowContext   () const { return m_shadowContext; }
 
-		const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
+        const auto& GetREFRenderGraph() const { return m_renderGraph; }
 
-		auto& GetMutableREFSwapChain  () { return m_swapChain; }
-		auto& GetMutableREFRenderGraph() { return m_renderGraph; }
-		
-		auto& GetMutableREFShadowContext() { return m_shadowContext; }
+        const auto& GetREFDirectCommandQueue() const { return m_directCommandQueue; }
+        const auto& GetREFDirectCommandList () const { return m_directCommandList; }
 
-		auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
-		auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
+        const auto& GetREFComputeCommandQueue() const { return m_computeCommandQueue; }
+        const auto& GetREFComputeCommandList () const { return m_computeCommandList; }
 
-	private:
+        const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
 
-		bool SetupScreenRenderArea(const Window::ClientSize& a_clientSize);
+        auto& GetMutableREFSwapChain  () { return m_swapChain; }
+        auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 
-		void ResetCommandObjects(const FrameResource& a_frameResource);
+        auto& GetMutableREFShadowContext() { return m_shadowContext; }
 
-		void DecideNextFrameUseFrameResource();
+        auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
+        auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
 
-		bool PrepareForSwapChainResize();
+    private:
 
-		void SyncSpritePassDrawRequest();
+        bool SetupScreenRenderArea(const Window::ClientSize& a_clientSize);
 
-		static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
-		static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
+        void ResetCommandObjects(const FrameResource& a_frameResource);
 
-		RootSignatureMap m_rootSignatureMap = {};
-		PipelineStateMap m_pipelineStateMap = {};
+        void DecideNextFrameUseFrameResource();
 
-		std::vector<std::shared_ptr<FrameResource>> m_frameResourceList = {};
+        bool PrepareForSwapChainResize();
 
-		std::shared_ptr<Struct::CBSpritePass> m_cbSpritePass = nullptr;
+        void SyncSpritePassDrawRequest();
 
-		std::weak_ptr<FrameResource> m_currentFrameResource = {};
+        static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
+        static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
 
-		SwapChain     m_swapChain        = {};
-		RenderArea    m_screenRenderArea = {};
-		ShadowContext m_shadowContext    = {};
+        RootSignatureMap m_rootSignatureMap = {};
+        PipelineStateMap m_pipelineStateMap = {};
 
-		TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
-		TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
-		DirectCommandList              m_directCommandList   = {};
-		ComputeCommandList             m_computeCommandList  = {};
+        std::vector<std::shared_ptr<FrameResource>> m_frameResourceList = {};
 
-		RenderGraph m_renderGraph = {};
+        std::shared_ptr<Struct::CBSpritePass> m_cbSpritePass = nullptr;
 
-		Converter::RendererJsonConverter m_jsonConverter = {};
+        std::weak_ptr<FrameResource> m_currentFrameResource = {};
 
-		std::size_t m_currentFrameResourceIndex = k_initialFrameResourceIndex;
-	};
+        SwapChain     m_swapChain        = {};
+        RenderArea    m_screenRenderArea = {};
+        ShadowContext m_shadowContext    = {};
+
+        TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
+        TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
+        DirectCommandList              m_directCommandList   = {};
+        ComputeCommandList             m_computeCommandList  = {};
+
+        RenderGraph m_renderGraph = {};
+
+        Converter::RendererJsonConverter m_jsonConverter = {};
+
+        std::size_t m_currentFrameResourceIndex = k_initialFrameResourceIndex;
+    };
 }

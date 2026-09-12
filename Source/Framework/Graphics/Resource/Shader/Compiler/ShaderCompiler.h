@@ -2,24 +2,24 @@
 
 namespace FWK::Graphics
 {
-	class ShaderCompiler
-	{
-	public:
+    class ShaderCompiler final
+    {
+    public:
 
-		 ShaderCompiler() = default;
-		~ShaderCompiler() = default;
+         ShaderCompiler() = default;
+        ~ShaderCompiler() = default;
 
-		bool Create();
+        bool Create();
 
-		// コンパイル対象のシェーダーを格納するIDxcBlobを引数にしているのは
-		// しっかりコンパイルできたかどうかを"bool"で確認するため
-		// HLSLファイルを読み込み、指定エントリーポイントとシェーダーモデルでコンパイルし、
-		// DXILバイトコードを出力Blobとして返
-		TypeAlias::ComPtr<IDxcBlob> LoadBinaryFromFile(const std::wstring& a_filePath) const;
+        // コンパイル対象のシェーダーを格納するIDxcBlobを引数にしているのは
+        // しっかりコンパイルできたかどうかを"bool"で確認するため
+        // HLSLファイルを読み込み、指定エントリーポイントとシェーダーモデルでコンパイルし、
+        // DXILバイトコードを出力Blobとして返
+        TypeAlias::ComPtr<IDxcBlob> LoadBinaryFromFile(const std::wstring& a_filePath) const;
 
-	private:
+    private:
 
-		TypeAlias::ComPtr<IDxcUtils>     m_dxcUtils    = nullptr;
-		TypeAlias::ComPtr<IDxcCompiler3> m_dxcCompiler = nullptr;
-	};
+        TypeAlias::ComPtr<IDxcUtils>     m_dxcUtils    = nullptr;
+        TypeAlias::ComPtr<IDxcCompiler3> m_dxcCompiler = nullptr;
+    };
 }

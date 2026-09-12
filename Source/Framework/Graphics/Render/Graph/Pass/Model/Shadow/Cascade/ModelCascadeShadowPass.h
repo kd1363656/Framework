@@ -2,19 +2,19 @@
 
 namespace FWK::Graphics
 {
-	class ModelCascadeShadowPass final : public RenderGraphPassBase
-	{
-	public:
+    class ModelCascadeShadowPass final : public RenderGraphPassBase
+    {
+    public:
 
-		 ModelCascadeShadowPass();
-		~ModelCascadeShadowPass() override;
+         ModelCascadeShadowPass();
+        ~ModelCascadeShadowPass() override;
 
-		void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+        void Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
-	private:
+    private:
 
-		FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPass, RenderGraphPassBase)
-	};
+        FWK_DEFINE_TYPE_INFO(ModelCascadeShadowPass, RenderGraphPassBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::ModelCascadeShadowPass)

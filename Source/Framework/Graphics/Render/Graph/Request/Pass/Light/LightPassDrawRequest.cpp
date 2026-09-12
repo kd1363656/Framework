@@ -2,14 +2,14 @@
 
 bool FWK::Graphics::LightPassDrawRequest::SetupPassConstantBuffer(const RootSignature& a_rootSignature, const DirectCommandList& a_directCommandList, const FrameResource& a_frameResource)
 {
-	// 定数バッファの更新
-	UpdateConstantBuffer();
+    // 定数バッファの更新
+    UpdateConstantBuffer();
 
-	SetupConstantBuffer<LightPassDynamicConstantBufferUploader>(GetREFConstantBuffer(),
-														        a_rootSignature,
-														        a_directCommandList,
-														        a_frameResource,
-														        Enum::RootParameterType::CBLightPass);
+    SetupConstantBuffer<LightPassDynamicConstantBufferUploader>(GetREFConstantBuffer(),
+                                                                a_rootSignature,
+                                                                a_directCommandList,
+                                                                a_frameResource,
+                                                                Enum::RootParameterType::CBLightPass);
 
-	return true;
+    return true;
 }

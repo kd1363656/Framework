@@ -2,53 +2,53 @@
 
 namespace FWK::Graphics
 {
-	class UploadSystem
-	{
-	public:
-		
-		 UploadSystem() = default;
-		~UploadSystem() = default;
+    class UploadSystem final
+    {
+    public:
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create     (const Device&		   a_device);
+         UploadSystem() = default;
+        ~UploadSystem() = default;
 
-		void SubmitPendingTextureCopyBatchIfNeededAndWait           (const TextureSystem&                a_textureSystem);
-		void SubmitPendingStaticModelBatchIfNeededAndWait           (const StaticModelSystem&            a_staticModelSystem);
-		void SubmitPendingSkeletalAnimationModelBatchIfNeededAndWait(const SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem);
+        void Deserialize(const nlohmann::json& a_rootJson);
+        bool Create     (const Device&         a_device);
 
-		nlohmann::json Serialize() const;
+        void SubmitPendingTextureCopyBatchIfNeededAndWait           (const TextureSystem&                a_textureSystem);
+        void SubmitPendingStaticModelBatchIfNeededAndWait           (const StaticModelSystem&            a_staticModelSystem);
+        void SubmitPendingSkeletalAnimationModelBatchIfNeededAndWait(const SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem);
 
-		void AddCommandAllocator(const std::shared_ptr<TypeAlias::CopyCommandAllocator>& a_copyCommandAllocator);
+        nlohmann::json Serialize() const;
 
-		const auto& GetREFCopyCommandAllocatorList() const { return m_copyCommandAllocatorList; }
+        void AddCommandAllocator(const std::shared_ptr<TypeAlias::CopyCommandAllocator>& a_copyCommandAllocator);
 
-	private:
+        const auto& GetREFCopyCommandAllocatorList() const { return m_copyCommandAllocatorList; }
 
-		void BeforSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
-		void AfterSubmitResourceProcess(	  TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
+    private:
 
-		void RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList, const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const;
-		void RecordBufferCopy (const StaticStructuredBuffer::BufferUploadCommand&     a_bufferUploadCommand)																											   const;
+        void BeforSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
+        void AfterSubmitResourceProcess(      TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
 
-		std::weak_ptr<TypeAlias::CopyCommandAllocator> FetchMutablePTRCopyCommandAllocator();
+        void RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList, const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const;
+        void RecordBufferCopy (const StaticStructuredBuffer::BufferUploadCommand&     a_bufferUploadCommand)                                                                                                               const;
 
-		static constexpr std::size_t k_initialCurrentCopyCommandAllocatorIndex = 0ULL;
-		static constexpr std::size_t k_copyCommandAllocatorIndexIncrement      = 1ULL;
+        std::weak_ptr<TypeAlias::CopyCommandAllocator> FetchMutablePTRCopyCommandAllocator();
 
-		static constexpr UINT64 k_bufferCopyDestinationOffset = 0ULL;
-		static constexpr UINT64 k_bufferCopySourceOffset      = 0ULL;
+        static constexpr std::size_t k_initialCurrentCopyCommandAllocatorIndex = 0ULL;
+        static constexpr std::size_t k_copyCommandAllocatorIndexIncrement      = 1ULL;
 
-		static constexpr UINT k_defaultTextureCopyDestinationX = 0U;
-		static constexpr UINT k_defaultTextureCopyDestinationY = 0U;
-		static constexpr UINT k_defaultTextureCopyDestinationZ = 0U;
+        static constexpr UINT64 k_bufferCopyDestinationOffset = 0ULL;
+        static constexpr UINT64 k_bufferCopySourceOffset      = 0ULL;
 
-		std::vector<std::shared_ptr<TypeAlias::CopyCommandAllocator>> m_copyCommandAllocatorList = {};
+        static constexpr UINT k_defaultTextureCopyDestinationX = 0U;
+        static constexpr UINT k_defaultTextureCopyDestinationY = 0U;
+        static constexpr UINT k_defaultTextureCopyDestinationZ = 0U;
 
-		TypeAlias::CopyCommandQueue m_copyCommandQueue = {};
-		CopyCommandList             m_copyCommandList  = {};
+        std::vector<std::shared_ptr<TypeAlias::CopyCommandAllocator>> m_copyCommandAllocatorList = {};
 
-		Converter::UploadSystemJsonConverter m_jsonConverter = {};
+        TypeAlias::CopyCommandQueue m_copyCommandQueue = {};
+        CopyCommandList             m_copyCommandList  = {};
 
-		std::size_t m_currentCopyCommandAllocatorIndex = k_initialCurrentCopyCommandAllocatorIndex;
-	};
+        Converter::UploadSystemJsonConverter m_jsonConverter = {};
+
+        std::size_t m_currentCopyCommandAllocatorIndex = k_initialCurrentCopyCommandAllocatorIndex;
+    };
 }

@@ -2,37 +2,37 @@
 
 namespace FWK::Graphics
 {
-	class CascadeShadowMap;
+    class CascadeShadowMap;
 }
 
 namespace FWK::Converter
 {
-	class CascadeShadowMapJsonConverter
-	{
-	public:
-		 CascadeShadowMapJsonConverter() = default;
-		~CascadeShadowMapJsonConverter() = default;
+    class CascadeShadowMapJsonConverter final
+    {
+    public:
+         CascadeShadowMapJsonConverter() = default;
+        ~CascadeShadowMapJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::CascadeShadowMap& a_cascadeShadowMap) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::CascadeShadowMap& a_cascadeShadowMap) const;
 
-		nlohmann::json Serialize(const Graphics::CascadeShadowMap& a_cascadeShadowMap) const;
+        nlohmann::json Serialize(const Graphics::CascadeShadowMap& a_cascadeShadowMap) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_resourceFormatJsonKey    = "ResourceFormat";
-		static constexpr std::string_view k_dsvFormatJsonKey         = "DSVFormat";
-		static constexpr std::string_view k_srvFormatJsonKey         = "SRVFormat";
-		static constexpr std::string_view k_depthClearValueJsonKey   = "DepthClearValue";
-		static constexpr std::string_view k_stencilClearValueJsonKey = "StencilClearValue";
+        static constexpr std::string_view k_resourceFormatJsonKey    = "ResourceFormat";
+        static constexpr std::string_view k_dsvFormatJsonKey         = "DSVFormat";
+        static constexpr std::string_view k_srvFormatJsonKey         = "SRVFormat";
+        static constexpr std::string_view k_depthClearValueJsonKey   = "DepthClearValue";
+        static constexpr std::string_view k_stencilClearValueJsonKey = "StencilClearValue";
 
-		static constexpr std::string_view k_maxCascadeCountJsonKey = "MAXCascadeCount";
-		static constexpr std::string_view k_mipLevelsJsonKey       = "MIPLevels";
+        static constexpr std::string_view k_maxCascadeCountJsonKey = "MAXCascadeCount";
+        static constexpr std::string_view k_mipLevelsJsonKey       = "MIPLevels";
 
-		static constexpr std::string_view k_sampleCountJsonKey   = "SampleCount";
-		static constexpr std::string_view k_sampleQualityJsonKey = "SampleQuality";
+        static constexpr std::string_view k_sampleCountJsonKey   = "SampleCount";
+        static constexpr std::string_view k_sampleQualityJsonKey = "SampleQuality";
 
-		static constexpr std::string_view k_sampleDepthBiasJsonKey   = "SampleDepthBias";
-		static constexpr std::string_view k_maxShadowDistanceJsonKey = "MAXShadowDistance";
-		static constexpr std::string_view k_resolutionJsonKey        = "Resolution";
-	};
+        static constexpr std::string_view k_sampleDepthBiasJsonKey   = "SampleDepthBias";
+        static constexpr std::string_view k_maxShadowDistanceJsonKey = "MAXShadowDistance";
+        static constexpr std::string_view k_resolutionJsonKey        = "Resolution";
+    };
 }

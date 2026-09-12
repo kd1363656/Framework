@@ -2,141 +2,141 @@
 
 namespace FWK::Graphics
 {
-	template<D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
-	class DescriptorPool
-	{
-	public:
+    template<D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
+    class DescriptorPool final
+    {
+    public:
 
-		 DescriptorPool() = default;
-		~DescriptorPool() = default;
+         DescriptorPool() = default;
+        ~DescriptorPool() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson)
-		{
-			if (a_rootJson.is_null()) { return; }
+        void Deserialize(const nlohmann::json& a_rootJson)
+        {
+            if (a_rootJson.is_null()) { return; }
 
-			m_jsonConverter.Deserialize(a_rootJson, *this);
-		}
-		bool Create(const Device& a_device)
-		{
-			// DescriptorHeapの作成数はDescriptorHeapIndexAllocatorの管理数に依存させる
-			const auto l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
+            m_jsonConverter.Deserialize(a_rootJson, *this);
+        }
+        bool Create(const Device& a_device)
+        {
+            // DescriptorHeapの作成数はDescriptorHeapIndexAllocatorの管理数に依存させる
+            const auto l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
 
-			// 容量が0ならassert
-			FWK_ASSERT_RETURN_VALUE_IF(l_capacity == DescriptorHeap::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);
+            // 容量が0ならassert
+            FWK_ASSERT_RETURN_VALUE_IF(l_capacity == DescriptorHeap::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);
 
-			FWK_ASSERT_RETURN_VALUE_IF(!m_cpuDescriptorHeap.Create(a_device,
-																   HeapType, 
-																   D3D12_DESCRIPTOR_HEAP_FLAG_NONE, 
-																   l_capacity), 
-																   "CPUDescriptorHeapの生成に失敗しました。",
-																   false);
+            FWK_ASSERT_RETURN_VALUE_IF(!m_cpuDescriptorHeap.Create(a_device,
+                                                                   HeapType,
+                                                                   D3D12_DESCRIPTOR_HEAP_FLAG_NONE,
+                                                                   l_capacity),
+                                                                   "CPUDescriptorHeapの生成に失敗しました。",
+                                                                   false);
 
-			// CBV_SRV_UAV/SAMPLERの場合だけ、ShaderVisibleDescriptorHeapを自動作成する。
-			// RTV/DSVの場合は、このif constexprの中身がコンパイル時に無効化される
-			if constexpr (IsShaderVisibleSupportedDescriptorHeapType())
-			{
-				m_shaderVisibleDescriptorHeap = std::make_shared<DescriptorHeap>();
+            // CBV_SRV_UAV/SAMPLERの場合だけ、ShaderVisibleDescriptorHeapを自動作成する。
+            // RTV/DSVの場合は、このif constexprの中身がコンパイル時に無効化される
+            if constexpr (IsShaderVisibleSupportedDescriptorHeapType())
+            {
+                m_shaderVisibleDescriptorHeap = std::make_shared<DescriptorHeap>();
 
-				FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap->Create(a_device,
-																				  HeapType,
-																				  D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE,
-																				  l_capacity),
-																				  "ShaderVisibleDescriptorHeapでないためShaderVisibleDescriptorHeapの生成に失敗しました",
-																				  false);
-			}
+                FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap->Create(a_device,
+                                                                                  HeapType,
+                                                                                  D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE,
+                                                                                  l_capacity),
+                                                                                  "ShaderVisibleDescriptorHeapでないためShaderVisibleDescriptorHeapの生成に失敗しました",
+                                                                                  false);
+            }
 
-			FWK_ASSERT_RETURN_VALUE_IF(!m_descriptorIndexAllocator.Create(), "DescriptorHeapIndexAllocatorの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!m_descriptorIndexAllocator.Create(), "DescriptorHeapIndexAllocatorの作成に失敗しました。", false);
 
-			return true;
-		}
+            return true;
+        }
 
-		nlohmann::json Serialize() const
-		{
-			return m_jsonConverter.Serialize(*this);
-		}
+        nlohmann::json Serialize() const
+        {
+            return m_jsonConverter.Serialize(*this);
+        }
 
-		TypeAlias::DescriptorIndex Allocate()
-		{
-			return m_descriptorIndexAllocator.Allocate();
-		}
+        TypeAlias::DescriptorIndex Allocate()
+        {
+            return m_descriptorIndexAllocator.Allocate();
+        }
 
-		void Release(const TypeAlias::DescriptorIndex a_index)
-		{
-			FWK_ASSERT_RETURN_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexを解放しようとしており、DescriptorIndexの解放に失敗しました。");
+        void Release(const TypeAlias::DescriptorIndex a_index)
+        {
+            FWK_ASSERT_RETURN_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexを解放しようとしており、DescriptorIndexの解放に失敗しました。");
 
-			m_descriptorIndexAllocator.Release(a_index);
-		}
+            m_descriptorIndexAllocator.Release(a_index);
+        }
 
-		D3D12_CPU_DESCRIPTOR_HANDLE FetchVALCPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
-		{
-			return m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle(a_index);
-		}
-		D3D12_CPU_DESCRIPTOR_HANDLE FetchVALShaderVisibleCPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap, "ShaderVisibleDescriptorHeapが作成されておらず、ShaderVisibleDescriptorHandleの取得に失敗しました。", {});
+        D3D12_CPU_DESCRIPTOR_HANDLE FetchVALCPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
+        {
+            return m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle(a_index);
+        }
+        D3D12_CPU_DESCRIPTOR_HANDLE FetchVALShaderVisibleCPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap, "ShaderVisibleDescriptorHeapが作成されておらず、ShaderVisibleDescriptorHandleの取得に失敗しました。", {});
 
-			return m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
-		}
+            return m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
+        }
 
-		D3D12_GPU_DESCRIPTOR_HANDLE FetchVALGPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap, "ShaderVisibleDescriptorHeapが作成されておらず、GPUDescriptorHandleの取得に失敗しました。", {});
+        D3D12_GPU_DESCRIPTOR_HANDLE FetchVALGPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap, "ShaderVisibleDescriptorHeapが作成されておらず、GPUDescriptorHandleの取得に失敗しました。", {});
 
-			return m_shaderVisibleDescriptorHeap->FetchVALGPUDescriptorHandle(a_index);
-		}
+            return m_shaderVisibleDescriptorHeap->FetchVALGPUDescriptorHandle(a_index);
+        }
 
-		bool CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,				        "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました", false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
+        bool CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,                      "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました", false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
 
-			const auto& l_device = a_device.GetREFDevice();
+            const auto& l_device = a_device.GetREFDevice();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが作成されておらず、Descriptorのコピーに失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが作成されておらず、Descriptorのコピーに失敗しました。", false);
 
-			const auto l_sourceCPUDescriptorHandle      = m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle			(a_index);
-			const auto l_destinationCPUDescriptorHandle = m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
+            const auto l_sourceCPUDescriptorHandle      = m_cpuDescriptorHeap.FetchVALCPUDescriptorHandle           (a_index);
+            const auto l_destinationCPUDescriptorHandle = m_shaderVisibleDescriptorHeap->FetchVALCPUDescriptorHandle(a_index);
 
-			// CPUOnly側に作成したディスクリプタをShaderVisible側へコピーする
-			// CopyDescriptorsSimple(コピーするディスクリプタ数、
-			//						 コピー先のCPUディスクリプタハンドル、
-			//						 コピー元のCPUディスクリプタハンドル、
-			//						 コピーするディスクリプタヒープの種類);
-			l_device->CopyDescriptorsSimple(k_copyOnceDescriptorCount,
-											l_destinationCPUDescriptorHandle,
-											l_sourceCPUDescriptorHandle,
-											HeapType);
+            // CPUOnly側に作成したディスクリプタをShaderVisible側へコピーする
+            // CopyDescriptorsSimple(コピーするディスクリプタ数、
+            //                       コピー先のCPUディスクリプタハンドル、
+            //                       コピー元のCPUディスクリプタハンドル、
+            //                       コピーするディスクリプタヒープの種類);
+            l_device->CopyDescriptorsSimple(k_copyOnceDescriptorCount,
+                                            l_destinationCPUDescriptorHandle,
+                                            l_sourceCPUDescriptorHandle,
+                                            HeapType);
 
-			return true;
-		}
+            return true;
+        }
 
-		const auto& GetREFShaderVisibleDescriptorHeap() const { return m_shaderVisibleDescriptorHeap; }
+        const auto& GetREFShaderVisibleDescriptorHeap() const { return m_shaderVisibleDescriptorHeap; }
 
-		const auto& GetREFCPUDescriptorHeap       () const { return m_cpuDescriptorHeap; }
-		const auto& GetREFDescriptorIndexAllocator() const { return m_descriptorIndexAllocator; }
+        const auto& GetREFCPUDescriptorHeap       () const { return m_cpuDescriptorHeap; }
+        const auto& GetREFDescriptorIndexAllocator() const { return m_descriptorIndexAllocator; }
 
-		auto& GetMutableREFDescriptorIndexAllocator() { return m_descriptorIndexAllocator; }
+        auto& GetMutableREFDescriptorIndexAllocator() { return m_descriptorIndexAllocator; }
 
-	private:
+    private:
 
-		static constexpr bool IsShaderVisibleSupportedDescriptorHeapType()
-		{
-			if constexpr (HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV ||
-					      HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER) 
-			{
-				return true; 
-			}
-			
-			return false;
-		}
+        static constexpr bool IsShaderVisibleSupportedDescriptorHeapType()
+        {
+            if constexpr (HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV ||
+                          HeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER)
+            {
+                return true;
+            }
 
-		static constexpr UINT k_copyOnceDescriptorCount = 1U;
+            return false;
+        }
 
-		std::shared_ptr<DescriptorHeap> m_shaderVisibleDescriptorHeap = nullptr;
+        static constexpr UINT k_copyOnceDescriptorCount = 1U;
 
-		DescriptorHeap				 m_cpuDescriptorHeap	    = {};
-		DescriptorHeapIndexAllocator m_descriptorIndexAllocator = {};
+        std::shared_ptr<DescriptorHeap> m_shaderVisibleDescriptorHeap = nullptr;
 
-		Converter::DescriptorPoolJsonConverter<HeapType> m_jsonConverter = {};
-	};
+        DescriptorHeap               m_cpuDescriptorHeap        = {};
+        DescriptorHeapIndexAllocator m_descriptorIndexAllocator = {};
+
+        Converter::DescriptorPoolJsonConverter<HeapType> m_jsonConverter = {};
+    };
 }

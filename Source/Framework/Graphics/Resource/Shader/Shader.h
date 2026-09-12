@@ -2,38 +2,38 @@
 
 namespace FWK::Graphics
 {
-	class Shader final
-	{
-	public:
+    class Shader final
+    {
+    public:
 
-		 Shader() = default;
-		~Shader() = default;
-		
-		void Deserialize   (const nlohmann::json& a_rootJson);
-		bool CreateFromFile(const ShaderCompiler& a_shaderCompiler);
+         Shader() = default;
+        ~Shader() = default;
 
-		nlohmann::json Serialize() const;
+        void Deserialize   (const nlohmann::json& a_rootJson);
+        bool CreateFromFile(const ShaderCompiler& a_shaderCompiler);
 
-		void SetFilePath              (const std::filesystem::path& a_set) { m_filePath               = a_set; }
-		void SetEntryPointName        (const std::string&			a_set) { m_entryPointName         = a_set; }
-		void SetShaderModelVersionName(const std::string&			a_set) { m_shaderModelVersionName = a_set; }
+        nlohmann::json Serialize() const;
 
-		const auto& GetREFDXCBlob() const { return m_dxcBlob; }
+        void SetFilePath              (const std::filesystem::path& a_set) { m_filePath               = a_set; }
+        void SetEntryPointName        (const std::string&           a_set) { m_entryPointName         = a_set; }
+        void SetShaderModelVersionName(const std::string&           a_set) { m_shaderModelVersionName = a_set; }
 
-		const auto& GetREFFilePath              () const { return m_filePath; }
-		const auto& GetREFEntryPointName        () const { return m_entryPointName; }
-		const auto& GetREFShaderModelVersionName() const { return m_shaderModelVersionName; }
+        const auto& GetREFDXCBlob() const { return m_dxcBlob; }
 
-	private:
+        const auto& GetREFFilePath              () const { return m_filePath; }
+        const auto& GetREFEntryPointName        () const { return m_entryPointName; }
+        const auto& GetREFShaderModelVersionName() const { return m_shaderModelVersionName; }
 
-		const std::filesystem::path k_lowerCSOExtension = ".cso";
-		
-		TypeAlias::ComPtr<IDxcBlob> m_dxcBlob = nullptr;
+    private:
 
-		Converter::ShaderJsonConverter m_shaderJsonConverter = {};
+        const std::filesystem::path k_lowerCSOExtension = ".cso";
 
-		std::filesystem::path m_filePath               = {};
-		std::string           m_entryPointName         = {};
-		std::string           m_shaderModelVersionName = {};
-	};
+        TypeAlias::ComPtr<IDxcBlob> m_dxcBlob = nullptr;
+
+        Converter::ShaderJsonConverter m_shaderJsonConverter = {};
+
+        std::filesystem::path m_filePath               = {};
+        std::string           m_entryPointName         = {};
+        std::string           m_shaderModelVersionName = {};
+    };
 }

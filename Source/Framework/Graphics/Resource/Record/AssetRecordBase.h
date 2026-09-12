@@ -2,50 +2,50 @@
 
 namespace FWK::Graphics
 {
-	// SRVのインデックスなどを扱うためコピー禁止
-	class AssetRecordBase
-	{
-	public:
+    // SRVのインデックスなどを扱うためコピー禁止
+    class AssetRecordBase
+    {
+    public:
 
-				 AssetRecordBase() = default;
-		virtual ~AssetRecordBase() = default;
+                 AssetRecordBase() = default;
+        virtual ~AssetRecordBase() = default;
 
-		AssetRecordBase(const AssetRecordBase&)			  = delete;
-		AssetRecordBase(	  AssetRecordBase&&) noexcept = default;
+        AssetRecordBase(const AssetRecordBase&)           = delete;
+        AssetRecordBase(      AssetRecordBase&&) noexcept = default;
 
-		AssetRecordBase& operator=(const AssetRecordBase&)			 = delete;
-		AssetRecordBase& operator=(		 AssetRecordBase&&) noexcept = default;
+        AssetRecordBase& operator=(const AssetRecordBase&)           = delete;
+        AssetRecordBase& operator=(      AssetRecordBase&&) noexcept = default;
 
-		void AddReferenceCount();
+        void AddReferenceCount();
 
-		bool SubtractReferenceCount();
+        bool SubtractReferenceCount();
 
-		bool IsUnused() const;
+        bool IsUnused() const;
 
-		virtual bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) = 0;
+        virtual bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) = 0;
 
-		void SetFilePath(const std::wstring& a_set) { m_filePath = a_set; }
+        void SetFilePath(const std::wstring& a_set) { m_filePath = a_set; }
 
-		void SetStorageID(const TypeAlias::StorageID& a_set) { m_storageID = a_set; }
+        void SetStorageID(const TypeAlias::StorageID& a_set) { m_storageID = a_set; }
 
-		void SetReferenceCount(const std::uint32_t a_set) { m_referenceCount = a_set; };
+        void SetReferenceCount(const std::uint32_t a_set) { m_referenceCount = a_set; };
 
-		const auto& GetREFFilePath() const { return m_filePath; }
+        const auto& GetREFFilePath() const { return m_filePath; }
 
-		TypeAlias::StorageID GetVALStorageID() const { return m_storageID; }
+        TypeAlias::StorageID GetVALStorageID() const { return m_storageID; }
 
-		std::uint32_t GetVALReferenceCount() const { return m_referenceCount; }
+        std::uint32_t GetVALReferenceCount() const { return m_referenceCount; }
 
-		static constexpr UINT k_emptyAssetReferenceCount = 0U;
+        static constexpr UINT k_emptyAssetReferenceCount = 0U;
 
-		static constexpr std::uint32_t k_initialAssetReferenceCount = 1U;
+        static constexpr std::uint32_t k_initialAssetReferenceCount = 1U;
 
-	private:
+    private:
 
-		std::wstring m_filePath = {};
+        std::wstring m_filePath = {};
 
-		TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
+        TypeAlias::StorageID m_storageID = Constant::k_invalidStorageID;
 
-		std::uint32_t m_referenceCount = k_emptyAssetReferenceCount;
-	};
+        std::uint32_t m_referenceCount = k_emptyAssetReferenceCount;
+    };
 }

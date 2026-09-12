@@ -2,31 +2,31 @@
 
 namespace FWK::Graphics
 {
-	class RenderGraphFrameResource;
+    class RenderGraphFrameResource;
 }
 
 namespace FWK::Converter
 {
-	class RenderGraphFrameResourceJsonConverter final
-	{
-	public:
+    class RenderGraphFrameResourceJsonConverter final
+    {
+    public:
 
-		 RenderGraphFrameResourceJsonConverter() = default;
-		~RenderGraphFrameResourceJsonConverter() = default;
+         RenderGraphFrameResourceJsonConverter() = default;
+        ~RenderGraphFrameResourceJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
-		nlohmann::json Serialize(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+        nlohmann::json Serialize(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
-	private:
+    private:
 
-		void DeserializeRenderTargetPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
-		void DeserializeDepthStencilPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+        void DeserializeRenderTargetPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+        void DeserializeDepthStencilPassTextureList(const nlohmann::json& a_rootJson, Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
-		nlohmann::json SerializeRenderTargetPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
-		nlohmann::json SerializeDepthStencilPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+        nlohmann::json SerializeRenderTargetPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
+        nlohmann::json SerializeDepthStencilPassTextureList(const Graphics::RenderGraphFrameResource& a_renderGraphFrameResource) const;
 
-		static constexpr std::string_view k_renderTargetPassTextureListJsonKey = "RenderTargetPassTextureList";
-		static constexpr std::string_view k_depthStencilPassTextureListJsonKey = "DepthStencilPassTextureList";
-	};
+        static constexpr std::string_view k_renderTargetPassTextureListJsonKey = "RenderTargetPassTextureList";
+        static constexpr std::string_view k_depthStencilPassTextureListJsonKey = "DepthStencilPassTextureList";
+    };
 }

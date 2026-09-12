@@ -2,23 +2,23 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelBatchUploadRecordBuilder final
-	{
-	public:
+    class StaticModelBatchUploadRecordBuilder final
+    {
+    public:
 
-		 StaticModelBatchUploadRecordBuilder() = default;
-		~StaticModelBatchUploadRecordBuilder() = default;
+         StaticModelBatchUploadRecordBuilder() = default;
+        ~StaticModelBatchUploadRecordBuilder() = default;
 
-		bool CreateStaticModelBatchUploadRecord(const Device&									                a_device,
-												const GPUMemoryAllocator&					                    a_gpuMemoryAllocator,
-													  std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-													  TypeAlias::CBVSRVUAVDescriptorPool&		                a_cbvSRVUAVDescriptorPool,
-													  StaticModelRecord&			                            a_staticModelRecord) const;
+        bool CreateStaticModelBatchUploadRecord(const Device&                                                   a_device,
+                                                const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
+                                                      std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
+                                                      TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
+                                                      StaticModelRecord&                                        a_staticModelRecord) const;
 
-	private:
+    private:
 
-		void ReleaseCreatedStaticModelStructuredBuffer(std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const;
+        void ReleaseCreatedStaticModelStructuredBuffer(std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const;
 
-		ModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
-	};
+        ModelBatchUploadRecordBuilder m_batchUploadRecordBuilder = {};
+    };
 }

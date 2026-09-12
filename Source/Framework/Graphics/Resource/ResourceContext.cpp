@@ -56,10 +56,10 @@ void FWK::Graphics::ResourceContext::ProcessPendingSkeletalAnimationModelUploads
     m_skeletalAnimationModelSystem.RegisterPendingSkeletalAnimationModels();
 }
 
-void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue & a_directCommandQueue)
+void FWK::Graphics::ResourceContext::ReleaseCompletedDeferredResources(const TypeAlias::DirectCommandQueue& a_directCommandQueue)
 {
     // 参照カウントが0になったRecordからQueueへ積まれたGPUResource/SRVを、
-	// GPUのFence完了後に安全に解放する
+    // GPUのFence完了後に安全に解放する
     m_resourceReleaseContext.ReleaseAvailableDeferredResources(a_directCommandQueue,
                                                                m_rtvDescriptorPool,
                                                                m_cbvSRVUAVDescriptorPool,

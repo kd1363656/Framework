@@ -2,15 +2,15 @@
 
 namespace FWK::Graphics
 {
-	class SpriteScreenPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBSpritePerObject>
-	{
-	public:
+    class SpriteScreenPerObjectDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBSpritePerObject>
+    {
+    public:
 
-		 SpriteScreenPerObjectDynamicConstantBufferUploader()          = default;
-		~SpriteScreenPerObjectDynamicConstantBufferUploader() override = default;
+         SpriteScreenPerObjectDynamicConstantBufferUploader()          = default;
+        ~SpriteScreenPerObjectDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDynamicConstantBufferUploader, DynamicBufferUploaderBase)
-	};
+        FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDynamicConstantBufferUploader, DynamicBufferUploaderBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::SpriteScreenPerObjectDynamicConstantBufferUploader)

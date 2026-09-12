@@ -2,57 +2,57 @@
 
 namespace FWK::Graphics
 {
-	class DepthStencilPassTexture final : public PassTextureBase
-	{
-	public:
+    class DepthStencilPassTexture final : public PassTextureBase
+    {
+    public:
 
-		 DepthStencilPassTexture()          = default;
-		~DepthStencilPassTexture() override = default;
+         DepthStencilPassTexture()          = default;
+        ~DepthStencilPassTexture() override = default;
 
-		DepthStencilPassTexture(const DepthStencilPassTexture&)			  = delete;
-		DepthStencilPassTexture(	  DepthStencilPassTexture&&) noexcept = default;
-		
-		DepthStencilPassTexture& operator=(const DepthStencilPassTexture&)			 = delete;
-		DepthStencilPassTexture& operator=(		 DepthStencilPassTexture&&) noexcept = default;
+        DepthStencilPassTexture(const DepthStencilPassTexture&)           = delete;
+        DepthStencilPassTexture(      DepthStencilPassTexture&&) noexcept = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+        DepthStencilPassTexture& operator=(const DepthStencilPassTexture&)           = delete;
+        DepthStencilPassTexture& operator=(      DepthStencilPassTexture&&) noexcept = default;
 
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool Create(const Device&                             a_device,
-					const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-					const Window::ClientSize&                 a_clientSize,
-						  TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-			              TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        nlohmann::json Serialize() const;
 
-		bool Resize(const Device&                             a_device,
-					const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-					const Window::ClientSize&                 a_clientSize,
-					const UINT64&						      a_retiredFenceValue,
-						  TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-						  ResourceReleaseContext&	          a_resourceReleaseContext);
+        bool Create(const Device&                             a_device,
+                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                    const Window::ClientSize&                 a_clientSize,
+                          TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
+        bool Resize(const Device&                             a_device,
+                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                    const Window::ClientSize&                 a_clientSize,
+                    const UINT64&                             a_retiredFenceValue,
+                          TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                          ResourceReleaseContext&             a_resourceReleaseContext);
 
-		void SetRenderGraphDepthStencilType(const Enum::RenderGraphDepthStencilType a_set) { m_renderGraphDepthStencilType = a_set; }
+        void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 
-		const auto& GetREFDepthStencilTexture() const { return m_depthStencilTexture; }
+        void SetRenderGraphDepthStencilType(const Enum::RenderGraphDepthStencilType a_set) { m_renderGraphDepthStencilType = a_set; }
 
-		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
+        const auto& GetREFDepthStencilTexture() const { return m_depthStencilTexture; }
 
-		auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
+        const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
-		auto GetVALRenderGraphDepthStencilType() const { return m_renderGraphDepthStencilType; }
+        auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
 
-	private:
+        auto GetVALRenderGraphDepthStencilType() const { return m_renderGraphDepthStencilType; }
 
-		DepthStencilTexture m_depthStencilTexture = {};
+    private:
 
-		Converter::DepthStencilPassTextureJsonConverter m_jsonConverter = {};
+        DepthStencilTexture m_depthStencilTexture = {};
 
-		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
-		
-		Enum::RenderGraphDepthStencilType m_renderGraphDepthStencilType = Enum::RenderGraphDepthStencilType::Invalid;
-	};
+        Converter::DepthStencilPassTextureJsonConverter m_jsonConverter = {};
+
+        Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
+
+        Enum::RenderGraphDepthStencilType m_renderGraphDepthStencilType = Enum::RenderGraphDepthStencilType::Invalid;
+    };
 }

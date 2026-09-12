@@ -2,29 +2,29 @@
 
 namespace FWK::Graphics
 {
-	class RenderTargetPassTexture;
+    class RenderTargetPassTexture;
 }
 
 namespace FWK::Converter
 {
-	class RenderTargetPassTextureJsonConverter
-	{
-	public:
+    class RenderTargetPassTextureJsonConverter final
+    {
+    public:
 
-		 RenderTargetPassTextureJsonConverter() = default;
-		~RenderTargetPassTextureJsonConverter() = default;
+         RenderTargetPassTextureJsonConverter() = default;
+        ~RenderTargetPassTextureJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::RenderTargetPassTexture& a_renderTargetPassTexture) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::RenderTargetPassTexture& a_renderTargetPassTexture) const;
 
-		nlohmann::json Serialize(const Graphics::RenderTargetPassTexture& a_renderTargetPassTexture) const;
+        nlohmann::json Serialize(const Graphics::RenderTargetPassTexture& a_renderTargetPassTexture) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_clearColorJsonKey			       = "ClearColor";
-		static constexpr std::string_view k_formatJsonKey				       = "Format";
-		static constexpr std::string_view k_renderGraphRenderTargetTypeJsonKey = "RenderGraphRenderTargetType";
-		static constexpr std::string_view k_widthJsonKey				       = "Width";
-		static constexpr std::string_view k_heightJsonKey				       = "Height";
-		static constexpr std::string_view k_isFixedSizeJsonKey			       = "IsFixedSize";
-	};
+        static constexpr std::string_view k_clearColorJsonKey                  = "ClearColor";
+        static constexpr std::string_view k_formatJsonKey                      = "Format";
+        static constexpr std::string_view k_renderGraphRenderTargetTypeJsonKey = "RenderGraphRenderTargetType";
+        static constexpr std::string_view k_widthJsonKey                       = "Width";
+        static constexpr std::string_view k_heightJsonKey                      = "Height";
+        static constexpr std::string_view k_isFixedSizeJsonKey                 = "IsFixedSize";
+    };
 }

@@ -2,116 +2,116 @@
 
 namespace FWK::Graphics
 {
-	class Renderer;
+    class Renderer;
 }
 
 namespace FWK::Graphics
 {
-	// レンダーパスの依存関係を調べ実行順序を決める、
-	// またリソースの状態遷移が必要なら状態遷移を行う。
-	class RenderGraph
-	{
-	private:
+    // レンダーパスの依存関係を調べ実行順序を決める、
+    // またリソースの状態遷移が必要なら状態遷移を行う。
+    class RenderGraph final
+    {
+    private:
 
-		using DrawRequestPassMap         = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
-		using ComputeRequestPerObjectMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<ComputeRequestPerObjectBase>>;
-		using DrawRequestPerObjectMap    = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPerObjectBase>>;
+        using DrawRequestPassMap         = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPassBase>>;
+        using ComputeRequestPerObjectMap = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<ComputeRequestPerObjectBase>>;
+        using DrawRequestPerObjectMap    = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<DrawRequestPerObjectBase>>;
 
-	public:
+    public:
 
-		 RenderGraph() = default;
-		~RenderGraph() = default;
+         RenderGraph() = default;
+        ~RenderGraph() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		void Compile    ();
+        void Deserialize(const nlohmann::json& a_rootJson);
+        void Compile    ();
 
-		void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
-		void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer);
-		void EndFrame   (      Renderer&	    a_renderer) const;
-		
-		nlohmann::json Serialize() const;
+        void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
+        void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer);
+        void EndFrame   (      Renderer&        a_renderer) const;
 
-		void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
+        nlohmann::json Serialize() const;
 
-		void AddDrawRequestPass        (const std::shared_ptr<DrawRequestPassBase>&         a_drawRequestPass);
-		void AddComputeRequestPerObject(const std::shared_ptr<ComputeRequestPerObjectBase>& a_computeRequestPerObject);
-		void AddDrawRequestPerObject   (const std::shared_ptr<DrawRequestPerObjectBase>&    a_drawRequestPerObject);
+        void AddPass(std::unique_ptr<RenderGraphPassBase>&& a_pass);
 
-		template <Concept::IsDerivedDrawRequestPassBaseConcept DrawRequestPassType>
-		std::weak_ptr<DrawRequestPassType> FindVALDrawRequestPass() const
-		{
-			const auto l_staticTypeID = DrawRequestPassType::GetREFTypeINFO().k_staticTypeID;
+        void AddDrawRequestPass        (const std::shared_ptr<DrawRequestPassBase>&         a_drawRequestPass);
+        void AddComputeRequestPerObject(const std::shared_ptr<ComputeRequestPerObjectBase>& a_computeRequestPerObject);
+        void AddDrawRequestPerObject   (const std::shared_ptr<DrawRequestPerObjectBase>&    a_drawRequestPerObject);
 
-			const auto& l_itr = m_drawRequestPassMap.find(l_staticTypeID);
+        template <Concept::IsDerivedDrawRequestPassBaseConcept DrawRequestPassType>
+        std::weak_ptr<DrawRequestPassType> FindVALDrawRequestPass() const
+        {
+            const auto l_staticTypeID = DrawRequestPassType::GetREFTypeINFO().k_staticTypeID;
 
-			if (l_itr == m_drawRequestPassMap.end()) { return {}; }
+            const auto& l_itr = m_drawRequestPassMap.find(l_staticTypeID);
 
-			const auto l_drawRequestPass = l_itr->second.lock();
+            if (l_itr == m_drawRequestPassMap.end()) { return {}; }
 
-			if (!l_drawRequestPass) { return {}; }
+            const auto l_drawRequestPass = l_itr->second.lock();
 
-			return std::static_pointer_cast<DrawRequestPassType>(l_drawRequestPass);
-		}
+            if (!l_drawRequestPass) { return {}; }
 
-		template <Concept::IsDerivedComputeRequestPerObjectBaseConcept ComputeRequestPerObjectType>
-		std::weak_ptr<ComputeRequestPerObjectType> FindVALComputeRequestPerObject() const 
-		{
-			const auto l_staticTypeID = ComputeRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
+            return std::static_pointer_cast<DrawRequestPassType>(l_drawRequestPass);
+        }
 
-			const auto& l_itr = m_computeRequestPerObjectMap.find(l_staticTypeID);
+        template <Concept::IsDerivedComputeRequestPerObjectBaseConcept ComputeRequestPerObjectType>
+        std::weak_ptr<ComputeRequestPerObjectType> FindVALComputeRequestPerObject() const
+        {
+            const auto l_staticTypeID = ComputeRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
 
-			if (l_itr == m_computeRequestPerObjectMap.end()) { return {}; }
+            const auto& l_itr = m_computeRequestPerObjectMap.find(l_staticTypeID);
 
-			const auto& l_computeRequestPerObject = l_itr->second.lock();
+            if (l_itr == m_computeRequestPerObjectMap.end()) { return {}; }
 
-			if (!l_computeRequestPerObject) { return {}; }
+            const auto& l_computeRequestPerObject = l_itr->second.lock();
 
-			return std::static_pointer_cast<ComputeRequestPerObjectType>(l_computeRequestPerObject);
-		}
+            if (!l_computeRequestPerObject) { return {}; }
 
-		template <Concept::IsDerivedDrawRequestPerObjectBaseConcept DrawRequestPerObjectType>
-		std::weak_ptr<DrawRequestPerObjectType> FindVALDrawRequestPerObject() const
-		{
-			const auto l_staticTypeID = DrawRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
+            return std::static_pointer_cast<ComputeRequestPerObjectType>(l_computeRequestPerObject);
+        }
 
-			const auto& l_itr = m_drawRequestPerObjectMap.find(l_staticTypeID);
+        template <Concept::IsDerivedDrawRequestPerObjectBaseConcept DrawRequestPerObjectType>
+        std::weak_ptr<DrawRequestPerObjectType> FindVALDrawRequestPerObject() const
+        {
+            const auto l_staticTypeID = DrawRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
 
-			if (l_itr == m_drawRequestPerObjectMap.end()) { return {}; }
+            const auto& l_itr = m_drawRequestPerObjectMap.find(l_staticTypeID);
 
-			const auto l_drawRequestPerObject = l_itr->second.lock();
+            if (l_itr == m_drawRequestPerObjectMap.end()) { return {}; }
 
-			if (!l_drawRequestPerObject) { return {}; }
+            const auto l_drawRequestPerObject = l_itr->second.lock();
 
-			return std::static_pointer_cast<DrawRequestPerObjectType>(l_drawRequestPerObject);
-		}
+            if (!l_drawRequestPerObject) { return {}; }
 
-		const auto& GetREFPassList() const { return m_passList; }
+            return std::static_pointer_cast<DrawRequestPerObjectType>(l_drawRequestPerObject);
+        }
 
-		const auto& GetREFDrawRequestPassList        () const { return m_drawRequestPassList; }
-		const auto& GetREFComputeRequestPerObjectList() const { return m_computeRequestPerObjectList; }
-		const auto& GetREFDrawRequestPerObjectList   () const { return m_drawRequestPerObjectList; }
+        const auto& GetREFPassList() const { return m_passList; }
 
-	private:
+        const auto& GetREFDrawRequestPassList        () const { return m_drawRequestPassList; }
+        const auto& GetREFComputeRequestPerObjectList() const { return m_computeRequestPerObjectList; }
+        const auto& GetREFDrawRequestPerObjectList   () const { return m_drawRequestPerObjectList; }
 
-		void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
+    private:
 
-		void RemoveExpiredPassList();
+        void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
 
-		DrawRequestPassMap         m_drawRequestPassMap         = {};
-		ComputeRequestPerObjectMap m_computeRequestPerObjectMap = {};
-		DrawRequestPerObjectMap    m_drawRequestPerObjectMap    = {};
+        void RemoveExpiredPassList();
 
-		std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList = {};
+        DrawRequestPassMap         m_drawRequestPassMap         = {};
+        ComputeRequestPerObjectMap m_computeRequestPerObjectMap = {};
+        DrawRequestPerObjectMap    m_drawRequestPerObjectMap    = {};
 
-		std::vector<std::shared_ptr<DrawRequestPassBase>>         m_drawRequestPassList         = {};
-		std::vector<std::shared_ptr<ComputeRequestPerObjectBase>> m_computeRequestPerObjectList = {};
-		std::vector<std::shared_ptr<DrawRequestPerObjectBase>>    m_drawRequestPerObjectList    = {};
+        std::vector<std::unique_ptr<RenderGraphPassBase>> m_passList = {};
 
-		RenderGraphResourceClearer      m_resourceClearer      = {};
-		RenderGraphResourceTransitioner m_resourceTransitioner = {};
-		RenderGraphResourceBinder		m_resourceBinder	   = {};
-		RenderGraphPassSorter			m_passSorter		   = {};
+        std::vector<std::shared_ptr<DrawRequestPassBase>>         m_drawRequestPassList         = {};
+        std::vector<std::shared_ptr<ComputeRequestPerObjectBase>> m_computeRequestPerObjectList = {};
+        std::vector<std::shared_ptr<DrawRequestPerObjectBase>>    m_drawRequestPerObjectList    = {};
 
-		Converter::RenderGraphJsonConverter m_jsonConverter = {};
-	};
+        RenderGraphResourceClearer      m_resourceClearer      = {};
+        RenderGraphResourceTransitioner m_resourceTransitioner = {};
+        RenderGraphResourceBinder       m_resourceBinder       = {};
+        RenderGraphPassSorter           m_passSorter           = {};
+
+        Converter::RenderGraphJsonConverter m_jsonConverter = {};
+    };
 }

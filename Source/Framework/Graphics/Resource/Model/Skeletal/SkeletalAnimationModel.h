@@ -2,34 +2,34 @@
 
 namespace FWK::Graphics
 {
-	class SkeletalAnimationModel final
-	{
-	public:
+    class SkeletalAnimationModel final
+    {
+    public:
 
          SkeletalAnimationModel();
-		 SkeletalAnimationModel(const SkeletalAnimationModel&  a_other);
-		 SkeletalAnimationModel(      SkeletalAnimationModel&& a_other) noexcept;
-		~SkeletalAnimationModel();
+         SkeletalAnimationModel(const SkeletalAnimationModel&  a_other);
+         SkeletalAnimationModel(      SkeletalAnimationModel&& a_other) noexcept;
+        ~SkeletalAnimationModel();
 
-		SkeletalAnimationModel& operator=(const SkeletalAnimationModel&  a_other);
-		SkeletalAnimationModel& operator=(      SkeletalAnimationModel&& a_other) noexcept;
+        SkeletalAnimationModel& operator=(const SkeletalAnimationModel&  a_other);
+        SkeletalAnimationModel& operator=(      SkeletalAnimationModel&& a_other) noexcept;
 
-		bool Load(const std::filesystem::path& a_filePath);
+        bool Load(const std::filesystem::path& a_filePath);
 
-		bool IsValid() const;
+        bool IsValid() const;
 
-		const auto& GetREFSkeletalAnimationModelRecord() const { return m_skeletalAnimationModelRecord; }
+        const auto& GetREFSkeletalAnimationModelRecord() const { return m_skeletalAnimationModelRecord; }
 
-		auto GetVALStorageID() const { return m_storageID; }
+        auto GetVALStorageID() const { return m_storageID; }
 
-	private:
+    private:
 
-		void AddReferenceCount() const;
+        void AddReferenceCount() const;
 
-		void SubtractReferenceCount();
+        void SubtractReferenceCount();
 
-		std::weak_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord;
+        std::weak_ptr<Graphics::SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord;
 
-		TypeAlias::StorageID m_storageID;
-	};
+        TypeAlias::StorageID m_storageID;
+    };
 }

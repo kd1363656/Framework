@@ -2,15 +2,15 @@
 
 namespace FWK::Graphics
 {
-	class FinalColorRenderTargetPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBFinalColorRenderTargetPass>
-	{
-	public:
+    class FinalColorRenderTargetPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBFinalColorRenderTargetPass>
+    {
+    public:
 
-		 FinalColorRenderTargetPassDynamicConstantBufferUploader()          = default;
-		~FinalColorRenderTargetPassDynamicConstantBufferUploader() override = default;
+         FinalColorRenderTargetPassDynamicConstantBufferUploader()          = default;
+        ~FinalColorRenderTargetPassDynamicConstantBufferUploader() override = default;
 
-		FWK_DEFINE_TYPE_INFO(FinalColorRenderTargetPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
-	};
+        FWK_DEFINE_TYPE_INFO(FinalColorRenderTargetPassDynamicConstantBufferUploader, DynamicBufferUploaderBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DynamicBufferSharedFactory, FWK::Graphics::FinalColorRenderTargetPassDynamicConstantBufferUploader)

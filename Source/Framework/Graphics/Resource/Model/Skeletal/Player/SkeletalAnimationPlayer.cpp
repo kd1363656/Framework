@@ -5,7 +5,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     FWK_ASSERT_RETURN_VALUE_IF(!a_skeletalAnimationModel.IsValid(), "SkeletalAnimationModelが無効のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
     const auto& l_skeletalAnimationModelRecord = a_skeletalAnimationModel.GetREFSkeletalAnimationModelRecord().lock();
-    
+
     FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
           auto& l_modelData     = l_skeletalAnimationModelRecord->GetMutableREFModelData();
@@ -55,7 +55,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameResource, "FrameResourceが無効のため、SkeletalAnimationPlayerのFrameData作成に失敗しました。", false);
 
         FrameData l_frameData = {};
-        
+
         // CPUで計算したGlobalBoneMatrixを書き込む
         // Uploaderを作成する。
         // FrameDataごとにUploaderを持つことで、
@@ -63,19 +63,19 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
         // CPUからの上書きを防ぐ。
         l_frameData.m_boneMatrixBufferUploader.SetCreateCount(l_boneCount);
 
-		// CPUで計算したGlobalBoneMatrixをGPUへ渡すためのBufferを作成する。
-		// BoneMatrixBufferはModel全体で1つ持ち、
-		// Modelに含まれるBone数と同じ数のMatrixを格納する。
-		// GPUのスキニングComputeShaderはこのBufferを読み込み、
-		// 各頂点へLBSを適用する。
-        if (!l_frameData.m_boneMatrixBuffer.Create<TypeAlias::Math::Matrix>(l_device, 
+        // CPUで計算したGlobalBoneMatrixをGPUへ渡すためのBufferを作成する。
+        // BoneMatrixBufferはModel全体で1つ持ち、
+        // Modelに含まれるBone数と同じ数のMatrixを格納する。
+        // GPUのスキニングComputeShaderはこのBufferを読み込み、
+        // 各頂点へLBSを適用する。
+        if (!l_frameData.m_boneMatrixBuffer.Create<TypeAlias::Math::Matrix>(l_device,
                                                                             l_gpuMemoryAllocator,
                                                                             l_modelBoneList.size(),
                                                                             l_cbvSRVUAVDescriptorPool))
         {
             // 作成済みBufferはローカルvectorが破棄される際に解放される。
             // Playerの既存メンバにはまだ反映していないため、
-            // Playerの再作成途中で失敗しても以前の正常な状態は維持される。   
+            // Playerの再作成途中で失敗しても以前の正常な状態は維持される。
             FWK_ASSERT_RETURN_VALUE("BoneMatrix用DynamicRWStructuredBufferの作成に失敗しました。", false);
         }
 
@@ -101,25 +101,25 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
             FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "ModelMeshletListが空のため、MeshletBoundsBufferの作成に失敗しました。", false);
 
             // ComputeShaderがスキニング結果を書き込むための
-	        // VertexBufferを作成する。
+            // VertexBufferを作成する。
             DynamicRWStructuredBuffer l_skinnedVertexBuffer = {};
 
             FWK_ASSERT_RETURN_VALUE_IF(!l_skinnedVertexBuffer.Create<SkinnedVertexBufferElement>(l_device,
                                                                                                  l_gpuMemoryAllocator,
                                                                                                  l_modelMesh.m_modelVertexList.size(),
                                                                                                  l_cbvSRVUAVDescriptorPool),
-                                                                                                 "SkinnedVertex用DynamicRWStructuredBufferの作成に失敗しました。", 
+                                                                                                 "SkinnedVertex用DynamicRWStructuredBufferの作成に失敗しました。",
                                                                                                  false);
 
             // ComputeShaderが現在PoseのBoundsを書き込むための
             // MeshletBoundsBufferを作成
             DynamicRWStructuredBuffer l_meshletBoundsBuffer = {};
 
-            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create<Struct::ModelMeshletBounds>(l_device, 
+            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create<Struct::ModelMeshletBounds>(l_device,
                                                                                                  l_gpuMemoryAllocator,
                                                                                                  l_modelMeshletList.size(),
-                                                                                                 l_cbvSRVUAVDescriptorPool), 
-                                                                                                 "MeshletBounds用DynamicRWStructuredBufferの作成に失敗しました。", 
+                                                                                                 l_cbvSRVUAVDescriptorPool),
+                                                                                                 "MeshletBounds用DynamicRWStructuredBufferの作成に失敗しました。",
                                                                                                  false);
 
             l_frameData.m_skinnedVertexBufferList.emplace_back(std::move(l_skinnedVertexBuffer));
@@ -132,7 +132,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     // 全ての作成処理が成功してからメンバ変数へ反映する
     m_skeletalAnimationModelRecord = a_skeletalAnimationModel.GetREFSkeletalAnimationModelRecord();
     m_frameDataList                = std::move                                                  (l_frameDataList);
-    
+
     // 新しいModelへ切り替えたため、
     // 以前のMotion再生状態を残さないように初期化する
     ResetPlaybackState();
@@ -150,7 +150,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::PlayMotion(const std::uint32_t a_mo
 
     // 負の再生速度が指定された場合は、
     // Motion先頭ではなくMotion終端から逆再生を開始する
-    if (a_playbackSpeed < k_stoppedPlaybackSpeed) 
+    if (a_playbackSpeed < k_stoppedPlaybackSpeed)
     {
         l_animation.m_startTimeSecond = FetchMotionDurationSecond(l_animation);
     }
@@ -168,7 +168,7 @@ void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime
 
     // Motionが設定されていない場合は、
     // Create()またはStop()で設定されたBindPoseを使用する。
-	if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex) { return; }
+    if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex) { return; }
 
     // 現在Animationの再生時刻を更新する
     m_animationTimeSecond = CalculateAdvancedTimeSecond(m_animation, m_animationTimeSecond, a_deltaTime);
@@ -176,11 +176,11 @@ void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime
     if (m_isBlending)
     {
         // Blend先Animationは現在Animationとは異なる再生速度や
-		// Loop設定を持てるため、別の再生時刻として更新する。    
+        // Loop設定を持てるため、別の再生時刻として更新する。
         m_blendTargetAnimationTimeSecond = CalculateAdvancedTimeSecond(m_blendTargetAnimation, m_blendTargetAnimationTimeSecond, a_deltaTime);
 
         // Blendの進行時間はMotionの再生速度に影響させず、
-		// 実際に経過した時間によって進める
+        // 実際に経過した時間によって進める
         m_blendElapsedSecond += a_deltaTime;
 
         if (m_blendElapsedSecond >= m_blendTargetAnimation.m_blendDurationSecond)
@@ -188,9 +188,9 @@ void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime
             CompleteAnimationBlend();
         }
     }
-    
+
     // 更新したAnimation時刻から、
-	// 現在FrameResource用のGlobalBoneMatrixをCPUで計算する。
+    // 現在FrameResource用のGlobalBoneMatrixをCPUで計算する。
     FWK_ASSERT_RETURN_IF(!EvaluateCurrentPose(), "現在Poseの計算に失敗しました。");
 }
 
@@ -201,11 +201,11 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
     if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex) { return true; }
 
     // Blend中はBlend先Animationへ移行している途中なので、
-	// 現在Animationが終端へ到達していても終了扱いにしない
+    // 現在Animationが終端へ到達していても終了扱いにしない
     if (m_isBlending) { return false; }
 
     // Loop Animationは終端または先頭へ到達しても、
-	// 再生を継続するため終了状態にならない
+    // 再生を継続するため終了状態にならない
     if (m_animation.m_isLoop) { return false; }
 
     const auto l_motionDurationSecond = FetchMotionDurationSecond(m_animation);
@@ -221,15 +221,15 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
 void FWK::Graphics::SkeletalAnimationPlayer::Stop()
 {
     // ModelRecordとBoneMatrixBufferは次のMotionでも使用するため保持し、
-	// Animationの再生状態だけを初期化する
+    // Animationの再生状態だけを初期化する
     ResetPlaybackState();
 
     const auto& l_bindPoseGlobalBoneMatrixList = m_poseEvaluator.GetREFBindPoseGlobalBoneMatrixList();
 
     // FrameResourceはフレームごとに切り替わる。
-	// 現在FrameDataだけをBindPoseへ戻すと、
-	// 別のFrameResourceへ切り替わった際に停止前のPoseが再び現れてしまう。
-	// そのため、全FrameDataのCPU側GlobalBoneMatrixをBindPoseへ戻す。
+    // 現在FrameDataだけをBindPoseへ戻すと、
+    // 別のFrameResourceへ切り替わった際に停止前のPoseが再び現れてしまう。
+    // そのため、全FrameDataのCPU側GlobalBoneMatrixをBindPoseへ戻す。
     for (auto& l_frameData : m_frameDataList)
     {
         l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
@@ -250,8 +250,8 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
     const auto l_motionDurationSecond = l_motionSequenceList[a_animation.m_motionIndex].m_durationSecond;
 
     FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond,     "AnimationのStartTimeSecondが0未満のため、Animationを適用できません。",                      false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                                         "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
-	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                                         "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
 
     if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex ||
         m_animation.m_motionIndex >= l_motionSequenceList.size()                          ||
@@ -280,7 +280,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
     FWK_ASSERT_RETURN_VALUE_IF(m_isBlending, "AnimationのBlend中であるため、新しいAnimationのBlendを開始できません。", false);
 
     // 現在AnimationはBlend元として維持し、
-	// 指定されたAnimationをBlend先として設定する
+    // 指定されたAnimationをBlend先として設定する
     m_blendTargetAnimation           = a_animation;
     m_blendTargetAnimationTimeSecond = a_animation.m_startTimeSecond;
     m_blendElapsedSecond             = k_initialBlendElapsedSecond;
@@ -319,7 +319,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::FetchVALBlendWeight() const
     const auto l_blendDurationSecond = m_blendTargetAnimation.m_blendDurationSecond;
 
     // ApplyAnimation()では0秒Blendを即時切り替えとして処理しているが、
-	// 0除算を防ぐため、取得時にもBlend時間を確認する
+    // 0除算を防ぐため、取得時にもBlend時間を確認する
     if (l_blendDurationSecond <= Animation::k_initialBlendDurationSecond) { return k_completeBlendWeight; }
 
     const auto l_blendWeight = m_blendElapsedSecond / l_blendDurationSecond;
@@ -363,7 +363,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const 
     if (a_animation.m_isLoop)
     {
         // Motionの再生時間を超えた部分を余りとして求め、
-		// Motionの有効な時間範囲へ戻す
+        // Motionの有効な時間範囲へ戻す
         l_advancedTimeSecond = std::fmod(l_advancedTimeSecond, l_motionDurationSecond);
 
         // 負の再生速度ではfmodの結果が負数になることがあるため、
@@ -427,7 +427,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::FetchMotionDurationSecond(const An
     const auto& l_motionSequenceList = l_skeletalAnimationModelRecord->GetREFModelData().m_motionSequenceList;
 
     FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex, "MotionIndexが無効のため、Motionの再生時間を取得できません。",   SkeletalAnimationModelRecord::k_initialAnimationDurationSecond);
-	FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex >= l_motionSequenceList.size(),                          "MotionIndexが範囲外のため、Motionの再生時間を取得できません。", SkeletalAnimationModelRecord::k_initialAnimationDurationSecond);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex >= l_motionSequenceList.size(),                          "MotionIndexが範囲外のため、Motionの再生時間を取得できません。", SkeletalAnimationModelRecord::k_initialAnimationDurationSecond);
 
     return l_motionSequenceList[a_animation.m_motionIndex].m_durationSecond;
 }

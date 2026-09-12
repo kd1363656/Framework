@@ -204,7 +204,7 @@ bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableRootGameObject(const Sce
 }
 bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableChildGameObject(const GameObject& a_gameObject) const
 {
-    const auto& l_childSmartPointerVectorArray = a_gameObject.GetREFChildSmartPointerVectorArray();
+    const auto& l_childSmartPointerVectorArray = a_gameObject.GetREFChildSmartPointerVectorArray          ();
     const auto& l_childDataList                = l_childSmartPointerVectorArray.GetREFArrayElementDataList();
 
     // TreeNodeEx()を呼ぶより前にLeafかどうかを判断するため、

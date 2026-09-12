@@ -2,41 +2,41 @@
 
 namespace FWK::Graphics
 {
-	class DescriptorHeapIndexAllocator
-	{
-	public:
+    class DescriptorHeapIndexAllocator final
+    {
+    public:
 
-		 DescriptorHeapIndexAllocator() = default;
-		~DescriptorHeapIndexAllocator() = default;
-	
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create     ();
+         DescriptorHeapIndexAllocator() = default;
+        ~DescriptorHeapIndexAllocator() = default;
 
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
+        bool Create     ();
 
-		void Release(const TypeAlias::DescriptorIndex a_index);
+        nlohmann::json Serialize() const;
 
-		TypeAlias::DescriptorIndex Allocate();
+        void Release(const TypeAlias::DescriptorIndex a_index);
 
-		void SetCapacity(TypeAlias::DescriptorIndex a_set) { m_capacity = a_set; }
+        TypeAlias::DescriptorIndex Allocate();
 
-		auto GetVALCapacity() const { return m_capacity; }
+        void SetCapacity(TypeAlias::DescriptorIndex a_set) { m_capacity = a_set; }
 
-		static constexpr TypeAlias::DescriptorIndex k_defaultCapacity = 10000U;
+        auto GetVALCapacity() const { return m_capacity; }
 
-	private:
+        static constexpr TypeAlias::DescriptorIndex k_defaultCapacity = 10000U;
 
-		bool IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const;
+    private:
 
-		static constexpr TypeAlias::DescriptorIndex k_initialNextIndex = 0U;
+        bool IsInValidIndex(const TypeAlias::DescriptorIndex a_index) const;
 
-		std::vector<bool> m_isAllocatedIndexList = {};
+        static constexpr TypeAlias::DescriptorIndex k_initialNextIndex = 0U;
 
-		std::queue<TypeAlias::DescriptorIndex> m_reusableIndexQueue = {};
+        std::vector<bool> m_isAllocatedIndexList = {};
 
-		Converter::DescriptorHeapIndexAllocatorJsonConverter m_jsonConverter = {};
+        std::queue<TypeAlias::DescriptorIndex> m_reusableIndexQueue = {};
 
-		TypeAlias::DescriptorIndex m_capacity  = DescriptorHeap::k_invalidDescriptorIndex;
-		TypeAlias::DescriptorIndex m_nextIndex = k_initialNextIndex; 
-	};
+        Converter::DescriptorHeapIndexAllocatorJsonConverter m_jsonConverter = {};
+
+        TypeAlias::DescriptorIndex m_capacity  = DescriptorHeap::k_invalidDescriptorIndex;
+        TypeAlias::DescriptorIndex m_nextIndex = k_initialNextIndex;
+    };
 }

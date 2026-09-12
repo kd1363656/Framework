@@ -2,56 +2,56 @@
 
 namespace FWK::Graphics
 {
-	class RootSignature final
-	{
-	private:
+    class RootSignature final
+    {
+    private:
 
-		using RootParameterIndexMap = std::unordered_map<Enum::RootParameterType, UINT>;
+        using RootParameterIndexMap = std::unordered_map<Enum::RootParameterType, UINT>;
 
-	public:
-		
-		 RootSignature() = default;
-		~RootSignature() = default;
+    public:
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create		(const Device&		   a_device);
+         RootSignature() = default;
+        ~RootSignature() = default;
 
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
+        bool Create     (const Device&         a_device);
 
-		void SetRootSignatureFlags  (const D3D12_ROOT_SIGNATURE_FLAGS a_set) { m_rootSignatureFlags   = a_set; }
-		void SetRootSignatureVersion(const D3D_ROOT_SIGNATURE_VERSION a_set) { m_rootSignatureVersion = a_set; }
+        nlohmann::json Serialize() const;
 
-		UINT FindVALRootParameterIndex(const Enum::RootParameterType a_rootParameterType) const;
+        void SetRootSignatureFlags  (const D3D12_ROOT_SIGNATURE_FLAGS a_set) { m_rootSignatureFlags   = a_set; }
+        void SetRootSignatureVersion(const D3D_ROOT_SIGNATURE_VERSION a_set) { m_rootSignatureVersion = a_set; }
 
-		const auto& GetREFRootParameterIndexMap() const { return m_rootParameterIndexMap; }
+        UINT FindVALRootParameterIndex(const Enum::RootParameterType a_rootParameterType) const;
 
-		const auto& GetREFStaticSamplerDescList  () const { return m_staticSamplerDescList; }
-		const auto& GetREFRootParameterRecordList() const { return m_rootParameterRecordList; }
+        const auto& GetREFRootParameterIndexMap() const { return m_rootParameterIndexMap; }
 
-		const auto& GetREFRootSignature() const { return m_rootSignature; }
+        const auto& GetREFStaticSamplerDescList  () const { return m_staticSamplerDescList; }
+        const auto& GetREFRootParameterRecordList() const { return m_rootParameterRecordList; }
 
-		auto& GetMutableREFRootParameterIndexMap  () { return m_rootParameterIndexMap; }
-		auto& GetMutableREFRootParameterRecordList() { return m_rootParameterRecordList; }
-		auto& GetMutableREFStaticSamplerDescList  () { return m_staticSamplerDescList; }
+        const auto& GetREFRootSignature() const { return m_rootSignature; }
 
-		auto GetVALRootSignatureFlags  () const { return m_rootSignatureFlags; }
-		auto GetVALRootSignatureVersion() const { return m_rootSignatureVersion; }
+        auto& GetMutableREFRootParameterIndexMap  () { return m_rootParameterIndexMap; }
+        auto& GetMutableREFRootParameterRecordList() { return m_rootParameterRecordList; }
+        auto& GetMutableREFStaticSamplerDescList  () { return m_staticSamplerDescList; }
 
-	private:
+        auto GetVALRootSignatureFlags  () const { return m_rootSignatureFlags; }
+        auto GetVALRootSignatureVersion() const { return m_rootSignatureVersion; }
 
-		std::vector<D3D12_STATIC_SAMPLER_DESC> m_staticSamplerDescList = {};
+    private:
 
-		// D3D12_ROOT_PARAMETERは、内部にポインタを持つため要素の再確保が発生した場合に
-		// ポインタが無効になる可能性があるのでreserveするかemplace_backした後にポインタを渡す
-		std::vector<Converter::RootSignatureJsonConverter::RootParameterRecord> m_rootParameterRecordList = {};
+        std::vector<D3D12_STATIC_SAMPLER_DESC> m_staticSamplerDescList = {};
 
-		RootParameterIndexMap m_rootParameterIndexMap = {};
+        // D3D12_ROOT_PARAMETERは、内部にポインタを持つため要素の再確保が発生した場合に
+        // ポインタが無効になる可能性があるのでreserveするかemplace_backした後にポインタを渡す
+        std::vector<Converter::RootSignatureJsonConverter::RootParameterRecord> m_rootParameterRecordList = {};
 
-		TypeAlias::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
+        RootParameterIndexMap m_rootParameterIndexMap = {};
 
-		Converter::RootSignatureJsonConverter m_jsonConverter = {};
+        TypeAlias::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
 
-		D3D12_ROOT_SIGNATURE_FLAGS m_rootSignatureFlags   = {};
-		D3D_ROOT_SIGNATURE_VERSION m_rootSignatureVersion = D3D_ROOT_SIGNATURE_VERSION_1;
-	};
+        Converter::RootSignatureJsonConverter m_jsonConverter = {};
+
+        D3D12_ROOT_SIGNATURE_FLAGS m_rootSignatureFlags   = {};
+        D3D_ROOT_SIGNATURE_VERSION m_rootSignatureVersion = D3D_ROOT_SIGNATURE_VERSION_1;
+    };
 }

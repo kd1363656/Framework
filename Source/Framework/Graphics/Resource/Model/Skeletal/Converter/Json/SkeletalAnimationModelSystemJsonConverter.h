@@ -2,24 +2,24 @@
 
 namespace FWK::Graphics
 {
-	class SkeletalAnimationModelSystem;
+    class SkeletalAnimationModelSystem;
 }
 
 namespace FWK::Converter
 {
-	class SkeletalAnimationModelSystemJsonConverter final
-	{
-	public:
+    class SkeletalAnimationModelSystemJsonConverter final
+    {
+    public:
 
-		 SkeletalAnimationModelSystemJsonConverter() = default;
-		~SkeletalAnimationModelSystemJsonConverter() = default;
+         SkeletalAnimationModelSystemJsonConverter() = default;
+        ~SkeletalAnimationModelSystemJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem) const;
 
-		nlohmann::json Serialize(const Graphics::SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem) const;
+        nlohmann::json Serialize(const Graphics::SkeletalAnimationModelSystem& a_skeletalAnimationModelSystem) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_modelStorageJsonKey = "ModelStorage";
-	};
+        static constexpr std::string_view k_modelStorageJsonKey = "ModelStorage";
+    };
 }

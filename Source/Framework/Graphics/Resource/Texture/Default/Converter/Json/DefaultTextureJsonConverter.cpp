@@ -2,63 +2,63 @@
 
 void FWK::Converter::DefaultTextureJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::DefaultTexture& a_defaultTexture) const
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	const auto& l_textureName = a_rootJson.value(k_textureNameJsonKey, std::string{});
+    const auto& l_textureName = a_rootJson.value(k_textureNameJsonKey, std::string{});
 
-	a_defaultTexture.SetTextureName(Utility::StringToWString(l_textureName));
+    a_defaultTexture.SetTextureName(Utility::StringToWString(l_textureName));
 
-	const auto l_format = a_rootJson.value(k_textureFormatJsonKey, DXGI_FORMAT_R8G8B8A8_UNORM);
+    const auto l_format = a_rootJson.value(k_textureFormatJsonKey, DXGI_FORMAT_R8G8B8A8_UNORM);
 
-	a_defaultTexture.SetFormat(l_format);
+    a_defaultTexture.SetFormat(l_format);
 
-	// JsonにTextureColorがない場合は、1.0を初期値として使う
-	// これにより、Json側に色を書き忘れても真っ黒にはならない
-	if (const auto& l_json = a_rootJson.value(k_textureColorJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		const auto l_rColor = DeserializeColorChannel(l_json, k_textureColorRJsonKey, k_maxDefaultTextureColorChannelValue);
-		const auto l_gColor = DeserializeColorChannel(l_json, k_textureColorGJsonKey, k_maxDefaultTextureColorChannelValue);
-		const auto l_bColor = DeserializeColorChannel(l_json, k_textureColorBJsonKey, k_maxDefaultTextureColorChannelValue);
-		const auto l_aColor = DeserializeColorChannel(l_json, k_textureColorAJsonKey, k_maxDefaultTextureColorChannelValue);
+    // JsonにTextureColorがない場合は、1.0を初期値として使う
+    // これにより、Json側に色を書き忘れても真っ黒にはならない
+    if (const auto& l_json = a_rootJson.value(k_textureColorJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        const auto l_rColor = DeserializeColorChannel(l_json, k_textureColorRJsonKey, k_maxDefaultTextureColorChannelValue);
+        const auto l_gColor = DeserializeColorChannel(l_json, k_textureColorGJsonKey, k_maxDefaultTextureColorChannelValue);
+        const auto l_bColor = DeserializeColorChannel(l_json, k_textureColorBJsonKey, k_maxDefaultTextureColorChannelValue);
+        const auto l_aColor = DeserializeColorChannel(l_json, k_textureColorAJsonKey, k_maxDefaultTextureColorChannelValue);
 
-		a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::R, l_rColor);
-		a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::G, l_gColor);
-		a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::B, l_bColor);
-		a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::A, l_aColor);
-	}
+        a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::R, l_rColor);
+        a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::G, l_gColor);
+        a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::B, l_bColor);
+        a_defaultTexture.ApplyColorChannel(Enum::DefaultTextureColorChannel::A, l_aColor);
+    }
 }
 
 nlohmann::json FWK::Converter::DefaultTextureJsonConverter::Serialize(const Graphics::DefaultTexture& a_defaultTexture) const
 {
-	nlohmann::json l_rootJson = {};
+    nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_textureNameJsonKey] = Utility::WStringToString(a_defaultTexture.GetREFTextureName());
+    l_rootJson[k_textureNameJsonKey] = Utility::WStringToString(a_defaultTexture.GetREFTextureName());
 
-	l_rootJson[k_textureFormatJsonKey] = a_defaultTexture.GetVALFormat();
+    l_rootJson[k_textureFormatJsonKey] = a_defaultTexture.GetVALFormat();
 
-	nlohmann::json l_colorJson = {};
-	
-	l_colorJson[k_textureColorRJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::R);
-	l_colorJson[k_textureColorGJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::G);
-	l_colorJson[k_textureColorBJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::B);
-	l_colorJson[k_textureColorAJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::A);
+    nlohmann::json l_colorJson = {};
 
-	l_rootJson[k_textureColorJsonKey] = l_colorJson;
+    l_colorJson[k_textureColorRJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::R);
+    l_colorJson[k_textureColorGJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::G);
+    l_colorJson[k_textureColorBJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::B);
+    l_colorJson[k_textureColorAJsonKey] = a_defaultTexture.FetchVALColorChannel(Enum::DefaultTextureColorChannel::A);
 
-	return l_rootJson;
+    l_rootJson[k_textureColorJsonKey] = l_colorJson;
+
+    return l_rootJson;
 }
 
 std::uint8_t FWK::Converter::DefaultTextureJsonConverter::DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view a_key, const std::uint8_t a_defaultValue) const
 {
-	if (a_json.is_null()) { return k_maxDefaultTextureColorChannelValue; }
+    if (a_json.is_null()) { return k_maxDefaultTextureColorChannelValue; }
 
-	const auto l_value = a_json.value(a_key, a_defaultValue);
+    const auto l_value = a_json.value(a_key, a_defaultValue);
 
-	if (l_value > k_maxDefaultTextureColorChannelValue)
-	{
-		return k_maxDefaultTextureColorChannelValue;
-	}
+    if (l_value > k_maxDefaultTextureColorChannelValue)
+    {
+        return k_maxDefaultTextureColorChannelValue;
+    }
 
-	return l_value;
+    return l_value;
 }

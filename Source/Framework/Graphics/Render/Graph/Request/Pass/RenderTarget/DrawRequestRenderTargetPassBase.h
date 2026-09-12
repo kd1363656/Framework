@@ -2,30 +2,30 @@
 
 namespace FWK::Graphics
 {
-	template <typename ConstantBufferType, Enum::RenderGraphRenderTargetType RenderTarget>
-	class DrawRequestRenderTargetPassBase : public DrawRequestPassBase
-	{
-	public:
+    template <typename ConstantBufferType, Enum::RenderGraphRenderTargetType RenderTarget>
+    class DrawRequestRenderTargetPassBase : public DrawRequestPassBase
+    {
+    public:
 
-		 DrawRequestRenderTargetPassBase()          = default;
-		~DrawRequestRenderTargetPassBase() override = default;
+         DrawRequestRenderTargetPassBase()          = default;
+        ~DrawRequestRenderTargetPassBase() override = default;
 
-		std::weak_ptr<RenderTargetPassTexture> FetchVALRenderTargetPassTexture(const FrameResource& a_frameResource) const
-		{
-			const auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource           ();
-			const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(RenderTarget);
+        std::weak_ptr<RenderTargetPassTexture> FetchVALRenderTargetPassTexture(const FrameResource& a_frameResource) const
+        {
+            const auto& l_renderGraphFrameResource = a_frameResource.GetREFRenderGraphFrameResource           ();
+            const auto& l_renderTargetPassTexture  = l_renderGraphFrameResource.FindVALRenderTargetPassTexture(RenderTarget);
 
-			FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetPassTexture.expired(), "レンダーグラフフレームリソースのレンダーターゲットパステクスチャが無効になっており、レンダーターゲットパステクスチャの取得に失敗しました。", {});
+            FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetPassTexture.expired(), "レンダーグラフフレームリソースのレンダーターゲットパステクスチャが無効になっており、レンダーターゲットパステクスチャの取得に失敗しました。", {});
 
-			return l_renderTargetPassTexture;
-		}
+            return l_renderTargetPassTexture;
+        }
 
-	protected:
+    protected:
 
-		auto& GetMutableREFConstantBuffer() { return m_constantBuffer; }
+        auto& GetMutableREFConstantBuffer() { return m_constantBuffer; }
 
-	private:
+    private:
 
-		ConstantBufferType m_constantBuffer = {};
-	};
+        ConstantBufferType m_constantBuffer = {};
+    };
 }

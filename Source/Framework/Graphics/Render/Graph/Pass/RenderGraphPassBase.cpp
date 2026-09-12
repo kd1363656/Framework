@@ -2,181 +2,181 @@
 
 void FWK::Graphics::RenderGraphPassBase::WriteBackBuffer(const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isBackBuffer,
-					  Enum::RenderGraphRenderTargetType::None,
-					  Enum::RenderGraphDepthStencilType::None,
-		              Enum::RenderGraphShadowMapType::None,
-					  Enum::RenderGraphAccessType::Write,
-					  a_beforeUsage,
-					  a_afterUsage);
+    AddResourceAccess(k_isBackBuffer,
+                      Enum::RenderGraphRenderTargetType::None,
+                      Enum::RenderGraphDepthStencilType::None,
+                      Enum::RenderGraphShadowMapType::None,
+                      Enum::RenderGraphAccessType::Write,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 
 void FWK::Graphics::RenderGraphPassBase::ReadRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isNotBackBuffer,
-					  a_renderTargetType,
-					  Enum::RenderGraphDepthStencilType::None,
-		              Enum::RenderGraphShadowMapType::None,
-					  Enum::RenderGraphAccessType::Read,
-					  a_beforeUsage,
-					  a_afterUsage);
+    AddResourceAccess(k_isNotBackBuffer,
+                      a_renderTargetType,
+                      Enum::RenderGraphDepthStencilType::None,
+                      Enum::RenderGraphShadowMapType::None,
+                      Enum::RenderGraphAccessType::Read,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 void FWK::Graphics::RenderGraphPassBase::ReadDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isNotBackBuffer,
-					  Enum::RenderGraphRenderTargetType::None,
-					  a_depthStencilType,
-		              Enum::RenderGraphShadowMapType::None,
-					  Enum::RenderGraphAccessType::Read,
-					  a_beforeUsage,
-					  a_afterUsage);
+    AddResourceAccess(k_isNotBackBuffer,
+                      Enum::RenderGraphRenderTargetType::None,
+                      a_depthStencilType,
+                      Enum::RenderGraphShadowMapType::None,
+                      Enum::RenderGraphAccessType::Read,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 void FWK::Graphics::RenderGraphPassBase::ReadShadowMap(const Enum::RenderGraphShadowMapType a_shadowMapType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isNotBackBuffer,
-		              Enum::RenderGraphRenderTargetType::None,
-		              Enum::RenderGraphDepthStencilType::None,
-		              a_shadowMapType,
-		              Enum::RenderGraphAccessType::Read,
-		              a_beforeUsage,
-		              a_afterUsage);
+    AddResourceAccess(k_isNotBackBuffer,
+                      Enum::RenderGraphRenderTargetType::None,
+                      Enum::RenderGraphDepthStencilType::None,
+                      a_shadowMapType,
+                      Enum::RenderGraphAccessType::Read,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 
 void FWK::Graphics::RenderGraphPassBase::WriteRenderTarget(const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isNotBackBuffer,
-					  a_renderTargetType,
-					  Enum::RenderGraphDepthStencilType::None,
-		              Enum::RenderGraphShadowMapType::None,
-					  Enum::RenderGraphAccessType::Write,
-					  a_beforeUsage,
-					  a_afterUsage);
+    AddResourceAccess(k_isNotBackBuffer,
+                      a_renderTargetType,
+                      Enum::RenderGraphDepthStencilType::None,
+                      Enum::RenderGraphShadowMapType::None,
+                      Enum::RenderGraphAccessType::Write,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 void FWK::Graphics::RenderGraphPassBase::WriteDepthStencil(const Enum::RenderGraphDepthStencilType a_depthStencilType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isNotBackBuffer,
-					  Enum::RenderGraphRenderTargetType::None,
-					  a_depthStencilType,
-		              Enum::RenderGraphShadowMapType::None,
-					  Enum::RenderGraphAccessType::Write,
-					  a_beforeUsage,
-					  a_afterUsage);
+    AddResourceAccess(k_isNotBackBuffer,
+                      Enum::RenderGraphRenderTargetType::None,
+                      a_depthStencilType,
+                      Enum::RenderGraphShadowMapType::None,
+                      Enum::RenderGraphAccessType::Write,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 void FWK::Graphics::RenderGraphPassBase::WriteShadowMap(const Enum::RenderGraphShadowMapType a_shadowMapType, const Enum::RenderGraphResourceUsage a_beforeUsage, const Enum::RenderGraphResourceUsage a_afterUsage)
 {
-	AddResourceAccess(k_isNotBackBuffer,
-		              Enum::RenderGraphRenderTargetType::None,
-		              Enum::RenderGraphDepthStencilType::None,
-		              a_shadowMapType,
-		              Enum::RenderGraphAccessType::Write,
-		              a_beforeUsage,
-		              a_afterUsage);
+    AddResourceAccess(k_isNotBackBuffer,
+                      Enum::RenderGraphRenderTargetType::None,
+                      Enum::RenderGraphDepthStencilType::None,
+                      a_shadowMapType,
+                      Enum::RenderGraphAccessType::Write,
+                      a_beforeUsage,
+                      a_afterUsage);
 }
 
 std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupGraphicsRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
 {
-	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::GraphicsPipelineStateBase>(a_pipelineStateType);
-	const auto& l_pipelineState     = l_pipelineStateWeak.lock                                            ();
+    const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::GraphicsPipelineStateBase>(a_pipelineStateType);
+    const auto& l_pipelineState     = l_pipelineStateWeak.lock                                            ();
 
-	FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており、レンダーパイプラインのセットに失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するPipelineStateが無効になっており、レンダーパイプラインのセットに失敗しました。", {});
 
-	auto& l_directCommandList = a_renderer.GetMutableREFDirectCommandList();
+    auto& l_directCommandList = a_renderer.GetMutableREFDirectCommandList();
 
-	l_directCommandList.SetupRenderPipeline(l_pipelineStateWeak);
+    l_directCommandList.SetupRenderPipeline(l_pipelineStateWeak);
 
-	// 使用するルートシグネチャを戻り値にセット
-	return l_pipelineState->GetREFUseRootSignature();
+    // 使用するルートシグネチャを戻り値にセット
+    return l_pipelineState->GetREFUseRootSignature();
 }
 
 std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::RenderGraphPassBase::SetupComputeRenderPipeline(Renderer& a_renderer, const Enum::PipelineStateType a_pipelineStateType) const
 {
-	const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::ComputePipelineState>(a_pipelineStateType);
-	const auto& l_pipelineState     = l_pipelineStateWeak.lock                                       ();
+    const auto& l_pipelineStateWeak = a_renderer.FindVALPipelineState<Graphics::ComputePipelineState>(a_pipelineStateType);
+    const auto& l_pipelineState     = l_pipelineStateWeak.lock                                       ();
 
-	FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するComputePipelineStateが無効なため、ComputePipelineの設定に失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(!l_pipelineState, "指定されたPipelineStateTypeに対応するComputePipelineStateが無効なため、ComputePipelineの設定に失敗しました。", {});
 
-	auto& l_computeCommandList = a_renderer.GetMutableREFComputeCommandList();
+    auto& l_computeCommandList = a_renderer.GetMutableREFComputeCommandList();
 
-	l_computeCommandList.SetupComputePipeline(l_pipelineStateWeak);
+    l_computeCommandList.SetupComputePipeline(l_pipelineStateWeak);
 
-	return l_pipelineState->GetREFUseRootSignature();
+    return l_pipelineState->GetREFUseRootSignature();
 }
 
 void FWK::Graphics::RenderGraphPassBase::SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer)
 {
-	FWK_ASSERT_RETURN_IF(a_executionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
-						 a_executionLayer == Enum::RenderGraphPassExecutionLayer::Count,
-						 "RenderGraphPassExecutionLayerが無効となっており、RenderGraphPassExecutionLayerのセットに失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_executionLayer == Enum::RenderGraphPassExecutionLayer::Invalid ||
+                         a_executionLayer == Enum::RenderGraphPassExecutionLayer::Count,
+                         "RenderGraphPassExecutionLayerが無効となっており、RenderGraphPassExecutionLayerのセットに失敗しました。");
 
-	m_executionLayer = a_executionLayer;
+    m_executionLayer = a_executionLayer;
 }
 
-void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const bool						       a_isBackBuffer,
-														   const Enum::RenderGraphRenderTargetType a_renderTargetType,
-														   const Enum::RenderGraphDepthStencilType a_depthStencilType,
-	                                                       const Enum::RenderGraphShadowMapType    a_shadowMapType,
-														   const Enum::RenderGraphAccessType       a_accessType,
-														   const Enum::RenderGraphResourceUsage    a_beforeUsage,
-														   const Enum::RenderGraphResourceUsage    a_afterUsage)
+void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const bool                              a_isBackBuffer,
+                                                           const Enum::RenderGraphRenderTargetType a_renderTargetType,
+                                                           const Enum::RenderGraphDepthStencilType a_depthStencilType,
+                                                           const Enum::RenderGraphShadowMapType    a_shadowMapType,
+                                                           const Enum::RenderGraphAccessType       a_accessType,
+                                                           const Enum::RenderGraphResourceUsage    a_beforeUsage,
+                                                           const Enum::RenderGraphResourceUsage    a_afterUsage)
 {
-	FWK_ASSERT_RETURN_IF(a_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid ||
-						 a_renderTargetType == Enum::RenderGraphRenderTargetType::Count,
-						 "RenderGraphRenderTargetTypeが無効です、ResourceAccessの追加に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid ||
+                         a_renderTargetType == Enum::RenderGraphRenderTargetType::Count,
+                         "RenderGraphRenderTargetTypeが無効です、ResourceAccessの追加に失敗しました。");
 
-	FWK_ASSERT_RETURN_IF(a_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid ||
-						 a_depthStencilType == Enum::RenderGraphDepthStencilType::Count,
-						 "RenderDepthStencilTypeが無効です、ResourceAccessの追加に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid ||
+                         a_depthStencilType == Enum::RenderGraphDepthStencilType::Count,
+                         "RenderDepthStencilTypeが無効です、ResourceAccessの追加に失敗しました。");
 
-	FWK_ASSERT_RETURN_IF(a_shadowMapType == Enum::RenderGraphShadowMapType::Invalid ||
-		                 a_shadowMapType == Enum::RenderGraphShadowMapType::Count,
-			             "RenderGraphShadowMapTypeが無効です、ResourceAccessの追加に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_shadowMapType == Enum::RenderGraphShadowMapType::Invalid ||
+                         a_shadowMapType == Enum::RenderGraphShadowMapType::Count,
+                         "RenderGraphShadowMapTypeが無効です、ResourceAccessの追加に失敗しました。");
 
-	FWK_ASSERT_RETURN_IF(a_accessType == Enum::RenderGraphAccessType::Invalid ||
-						 a_accessType == Enum::RenderGraphAccessType::Count,
-						 "RenderGraphAccessTypeが無効です、ResourceAccessの追加に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_accessType == Enum::RenderGraphAccessType::Invalid ||
+                         a_accessType == Enum::RenderGraphAccessType::Count,
+                         "RenderGraphAccessTypeが無効です、ResourceAccessの追加に失敗しました。");
 
-	// beforeUsageはPass実行前に必ず使うStateなので、Noneは禁止
-	FWK_ASSERT_RETURN_IF(a_beforeUsage == Enum::RenderGraphResourceUsage::Invalid ||
-						 a_beforeUsage == Enum::RenderGraphResourceUsage::None    ||
-						 a_beforeUsage == Enum::RenderGraphResourceUsage::Count,
-						 "BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
+    // beforeUsageはPass実行前に必ず使うStateなので、Noneは禁止
+    FWK_ASSERT_RETURN_IF(a_beforeUsage == Enum::RenderGraphResourceUsage::Invalid ||
+                         a_beforeUsage == Enum::RenderGraphResourceUsage::None    ||
+                         a_beforeUsage == Enum::RenderGraphResourceUsage::Count,
+                         "BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
 
-	// afterUsageはNoneを許可する
-	// Noneは「Pass実行後は状態遷移しない」という意味。
-	FWK_ASSERT_RETURN_IF(a_afterUsage == Enum::RenderGraphResourceUsage::Invalid ||
-						 a_afterUsage == Enum::RenderGraphResourceUsage::Count,
-						 "AfterUsageが無効です、ResourceAccessの追加に失敗しました。");
+    // afterUsageはNoneを許可する
+    // Noneは「Pass実行後は状態遷移しない」という意味。
+    FWK_ASSERT_RETURN_IF(a_afterUsage == Enum::RenderGraphResourceUsage::Invalid ||
+                         a_afterUsage == Enum::RenderGraphResourceUsage::Count,
+                         "AfterUsageが無効です、ResourceAccessの追加に失敗しました。");
 
-	const bool l_hasRenderTarget = a_renderTargetType != Enum::RenderGraphRenderTargetType::None;
-	const bool l_hasDepthStencil = a_depthStencilType != Enum::RenderGraphDepthStencilType::None;
-	const bool l_hasShadowMap    = a_shadowMapType    != Enum::RenderGraphShadowMapType::None;
+    const bool l_hasRenderTarget = a_renderTargetType != Enum::RenderGraphRenderTargetType::None;
+    const bool l_hasDepthStencil = a_depthStencilType != Enum::RenderGraphDepthStencilType::None;
+    const bool l_hasShadowMap    = a_shadowMapType    != Enum::RenderGraphShadowMapType::None;
 
-		// 一つのResourceAccessへ複数種類のResourceが
-	// 同時指定されることを防ぐ。
-	FWK_ASSERT_RETURN_IF((a_isBackBuffer     &&
-		                 (l_hasRenderTarget  ||
-		                  l_hasDepthStencil  ||
-		                  l_hasShadowMap))   ||
-		                 (l_hasRenderTarget  &&
-		                 (l_hasDepthStencil  ||
-		                  l_hasShadowMap))   ||
-		                 (l_hasDepthStencil  &&
-		                  l_hasShadowMap)    ||
-		                 (!a_isBackBuffer    &&
-		                  !l_hasRenderTarget &&
-		                  !l_hasDepthStencil &&
-		                  !l_hasShadowMap),
-		                 "ResourceAccessへ指定されたResourceの組み合わせが無効です。");
+        // 一つのResourceAccessへ複数種類のResourceが
+    // 同時指定されることを防ぐ。
+    FWK_ASSERT_RETURN_IF((a_isBackBuffer     &&
+                         (l_hasRenderTarget  ||
+                          l_hasDepthStencil  ||
+                          l_hasShadowMap))   ||
+                         (l_hasRenderTarget  &&
+                         (l_hasDepthStencil  ||
+                          l_hasShadowMap))   ||
+                         (l_hasDepthStencil  &&
+                          l_hasShadowMap)    ||
+                         (!a_isBackBuffer    &&
+                          !l_hasRenderTarget &&
+                          !l_hasDepthStencil &&
+                          !l_hasShadowMap),
+                         "ResourceAccessへ指定されたResourceの組み合わせが無効です。");
 
-	Struct::RenderGraphResourceAccess l_resourceAccess = {};
+    Struct::RenderGraphResourceAccess l_resourceAccess = {};
 
-	l_resourceAccess.m_isBackBuffer     = a_isBackBuffer;
-	l_resourceAccess.m_renderTargetType = a_renderTargetType;
-	l_resourceAccess.m_depthStencilType = a_depthStencilType;
-	l_resourceAccess.m_shadowMapType    = a_shadowMapType;
-	l_resourceAccess.m_accessType		= a_accessType;
-	l_resourceAccess.m_beforeUsage		= a_beforeUsage;
-	l_resourceAccess.m_afterUsage		= a_afterUsage;
+    l_resourceAccess.m_isBackBuffer     = a_isBackBuffer;
+    l_resourceAccess.m_renderTargetType = a_renderTargetType;
+    l_resourceAccess.m_depthStencilType = a_depthStencilType;
+    l_resourceAccess.m_shadowMapType    = a_shadowMapType;
+    l_resourceAccess.m_accessType       = a_accessType;
+    l_resourceAccess.m_beforeUsage      = a_beforeUsage;
+    l_resourceAccess.m_afterUsage       = a_afterUsage;
 
-	m_resourceAccessList.emplace_back(l_resourceAccess);
+    m_resourceAccessList.emplace_back(l_resourceAccess);
 }

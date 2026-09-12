@@ -2,32 +2,32 @@
 
 FWK::Graphics::FinalPresentPass::FinalPresentPass()
 {
-	SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::FinalPresent);
+    SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::FinalPresent);
 
-	// ファイナルカラーテクスチャ用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
-	ReadRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
+    // ファイナルカラーテクスチャ用レンダーターゲットテクスチャのリソース状態をPIXEL_SHADER_RESOURCEに遷移してから読み取る
+    ReadRenderTarget(Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
 
-	// BackBufferのリソース状態をRENDER_TARGETにして書き込む
-	// ImGuiとの兼ね合いもあるのでここではPresent状態に戻さない
-	WriteBackBuffer(Enum::RenderGraphResourceUsage::RenderTarget);
+    // BackBufferのリソース状態をRENDER_TARGETにして書き込む
+    // ImGuiとの兼ね合いもあるのでここではPresent状態に戻さない
+    WriteBackBuffer(Enum::RenderGraphResourceUsage::RenderTarget);
 }
 FWK::Graphics::FinalPresentPass::~FinalPresentPass() = default;
 
 void FWK::Graphics::FinalPresentPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
-	const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-	// FinalPresent用のPSO/RootSignatureをセットする。
-	const auto& l_rootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::FinalPresent).lock();
+    // FinalPresent用のPSO/RootSignatureをセットする。
+    const auto& l_rootSignature = SetupGraphicsRenderPipeline(a_renderer, Enum::PipelineStateType::FinalPresent).lock();
 
-	FWK_ASSERT_RETURN_IF(!l_rootSignature, "FinalPresent用RootSignatureが無効のため、FinalPresentPassの実行に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_rootSignature, "FinalPresent用RootSignatureが無効のため、FinalPresentPassの実行に失敗しました。");
 
-	const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
+    const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在のFrameResourceが無効のため、FinalPresentPassの実行に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在のFrameResourceが無効のため、FinalPresentPassの実行に失敗しました。");
 
-	const auto& l_finalPresentDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalPresentRenderTargetPassDrawRequest>().lock();
+    const auto& l_finalPresentDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalPresentRenderTargetPassDrawRequest>().lock();
 
-	FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest,																						      "FinalPresentRenderTargetPassDrawRequestが無効のため、FinalPresentPassの実行に失敗しました。");
-	FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalPresentPass定数バッファの設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest,                                                                                              "FinalPresentRenderTargetPassDrawRequestが無効のため、FinalPresentPassの実行に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalPresentPass定数バッファの設定に失敗しました。");
 }

@@ -2,72 +2,72 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelSystem final
-	{
-	private:
+    class StaticModelSystem final
+    {
+    private:
 
-		using PendingStaticModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::StaticModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
+        using PendingStaticModelBatchUploadRecordMap = std::unordered_map<std::wstring, Struct::StaticModelBatchUploadRecord, Struct::WStringHash, std::equal_to<>>;
 
-	public:
+    public:
 
-		 StaticModelSystem() = default;
-		~StaticModelSystem() = default;
+         StaticModelSystem() = default;
+        ~StaticModelSystem() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		bool Create     ();
+        void Deserialize(const nlohmann::json& a_rootJson);
+        bool Create     ();
 
-		Struct::StaticModelLoadResult LoadStaticModelForBatchUpload(const Device&			                  a_device,
-																    const GPUMemoryAllocator&                 a_gpuMemoryAllocator, 
-																    const std::filesystem::path&              a_filePath, 
-																    	  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        Struct::StaticModelLoadResult LoadStaticModelForBatchUpload(const Device&                             a_device,
+                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                                                                    const std::filesystem::path&              a_filePath,
+                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		nlohmann::json Serialize() const;
+        nlohmann::json Serialize() const;
 
-		// ※ 注意
-		// UploadSystem側でスタティックモデルのバッファーのコピーが終わっていること前提
-		void RegisterPendingStaticModels();
+        // ※ 注意
+        // UploadSystem側でスタティックモデルのバッファーのコピーが終わっていること前提
+        void RegisterPendingStaticModels();
 
-		bool AddStaticModelReferenceCount     (const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord);
-		bool SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
+        bool AddStaticModelReferenceCount     (const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord);
+        bool SubtractStaticModelReferenceCount(const std::weak_ptr<Graphics::StaticModelRecord>& a_staticModelRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
-		const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
+        const auto& GetREFPendingModelBatchUploadRecordMap() const { return m_pendingModelBatchUploadRecordMap; }
 
-		const auto& GetREFModelStorage() const { return m_modelStorage; }
+        const auto& GetREFModelStorage() const { return m_modelStorage; }
 
-		auto& GetMutableREFModelStorage() { return m_modelStorage; }
+        auto& GetMutableREFModelStorage() { return m_modelStorage; }
 
-	private:
+    private:
 
-		bool BuildStaticModelAssetData(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord);
+        bool BuildStaticModelAssetData(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord);
 
-		void BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
-										 const Device&			                   a_device,
-										 const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-										 const std::filesystem::path&			   a_filePath,
-										 const TypeAlias::StorageID				   a_storageID,
-											   TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-											   Struct::StaticModelLoadResult&      a_staticModelLoadResult);
+        void BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
+                                         const Device&                             a_device,
+                                         const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                                         const std::filesystem::path&              a_filePath,
+                                         const TypeAlias::StorageID                a_storageID,
+                                               TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                                               Struct::StaticModelLoadResult&      a_staticModelLoadResult);
 
-		bool CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
-										   const Device&							   a_device, 
-										   const GPUMemoryAllocator&				   a_gpuMemoryAllocator, 
-										   	     TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,
-												 Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const;
+        bool CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
+                                           const Device&                               a_device,
+                                           const GPUMemoryAllocator&                   a_gpuMemoryAllocator,
+                                                 TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,
+                                                 Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const;
 
 
-		bool TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult);
+        bool TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult);
 
-		PendingStaticModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
-		
-		AssetStorage<Graphics::StaticModelRecord> m_modelStorage = {};
+        PendingStaticModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};
 
-		StaticModelFBXLoader				                  m_loader				         = {};
-		ModelMaterialRuntimeTextureBuilder<StaticModelRecord> m_materialRuntimTextureBuilder = {};
-		ModelMeshOptimizer<StaticModelRecord>                 m_meshOptimizer                = {};
-		ModelMeshletBuilder<StaticModelRecord>                m_meshletBuilder		         = {};
-		StaticModelBatchUploadRecordBuilder                   m_batchUploadRecordBuilder     = {};
+        AssetStorage<Graphics::StaticModelRecord> m_modelStorage = {};
 
-		Converter::StaticModelSystemJsonConverter m_jsonConverter   = {};
-		Converter::StaticModelBinaryConverter     m_binaryConverter = {};
-	};
+        StaticModelFBXLoader                                  m_loader                       = {};
+        ModelMaterialRuntimeTextureBuilder<StaticModelRecord> m_materialRuntimTextureBuilder = {};
+        ModelMeshOptimizer<StaticModelRecord>                 m_meshOptimizer                = {};
+        ModelMeshletBuilder<StaticModelRecord>                m_meshletBuilder               = {};
+        StaticModelBatchUploadRecordBuilder                   m_batchUploadRecordBuilder     = {};
+
+        Converter::StaticModelSystemJsonConverter m_jsonConverter   = {};
+        Converter::StaticModelBinaryConverter     m_binaryConverter = {};
+    };
 }

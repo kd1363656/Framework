@@ -11,7 +11,7 @@ bool FWK::Graphics::DescriptorHeapIndexAllocator::Create()
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_capacity == DescriptorHeap::k_invalidDescriptorIndex, "無効なIndexを割り当てようとしており作成処理に失敗しました。",        false);
     FWK_ASSERT_RETURN_VALUE_IF(m_capacity == DescriptorHeap::k_invalidDescriptorNUM,   "ディスクリプタの作成数が無効となっており、作成処理に失敗しました。", false);
-    
+
     m_nextIndex = k_initialNextIndex;
 
     // 全スロットを未使用状態で初期化する
@@ -20,7 +20,7 @@ bool FWK::Graphics::DescriptorHeapIndexAllocator::Create()
     // キューも何も保持していない状態にする
     m_reusableIndexQueue = {};
 
-	return true;
+    return true;
 }
 
 nlohmann::json FWK::Graphics::DescriptorHeapIndexAllocator::Serialize() const
@@ -35,10 +35,10 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::Descr
 
     // アロケートリストの容量を超えていたらreturn
     if (a_index > m_isAllocatedIndexList.size()) { return; }
-    
-	// 未使用スロットの二重解放を防ぐ
+
+    // 未使用スロットの二重解放を防ぐ
     FWK_ASSERT_RETURN_IF(!m_isAllocatedIndexList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");
-    
+
     m_isAllocatedIndexList[a_index] = false;
 
     m_reusableIndexQueue.push(a_index);
@@ -81,9 +81,9 @@ bool FWK::Graphics::DescriptorHeapIndexAllocator::IsInValidIndex(const TypeAlias
 {
     // 範囲外インデックスを指し示すならfalseを返す
     if (a_index >= m_capacity ||
-        a_index >= static_cast<TypeAlias::DescriptorIndex>(m_isAllocatedIndexList.size())) 
+        a_index >= static_cast<TypeAlias::DescriptorIndex>(m_isAllocatedIndexList.size()))
     {
-        return true; 
+        return true;
     }
 
     return false;

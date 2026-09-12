@@ -26,9 +26,9 @@ bool FWK::Graphics::GPUMemoryAllocator::Create(const Device& a_device)
 
     return true;
 }
-bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOURCE_DESC&  a_resourceDesc, 
-                                                              const D3D12_CLEAR_VALUE*    a_clearValue, 
-                                                              const D3D12_RESOURCE_STATES a_initialResourceState, 
+bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOURCE_DESC&  a_resourceDesc,
+                                                              const D3D12_CLEAR_VALUE*    a_clearValue,
+                                                              const D3D12_RESOURCE_STATES a_initialResourceState,
                                                                     Struct::GPUResource&  a_gpuResource) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_allocator, "D3D12MAアロケータが作成されておらず、TextureResourceの作成に失敗しました。", false);
@@ -58,9 +58,9 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOUR
 
     return true;
 }
-bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64&               a_bufferSize, 
+bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64&               a_bufferSize,
                                                              const D3D12_RESOURCE_FLAGS  a_resourceFlags,
-                                                             const D3D12_RESOURCE_STATES a_initialResourceState, 
+                                                             const D3D12_RESOURCE_STATES a_initialResourceState,
                                                                    Struct::GPUResource&  a_gpuResource) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_allocator,                                      "D3D12MAアロケータが作成されておらず、BufferResourceの作成に失敗しました。", false);

@@ -2,33 +2,33 @@
 
 namespace FWK::Graphics
 {
-	class TextureRecord final : public AssetRecordBase
-	{
-	public:
+    class TextureRecord final : public AssetRecordBase
+    {
+    public:
 
-		 TextureRecord()		  = default;
-		~TextureRecord() override = default;
+         TextureRecord()          = default;
+        ~TextureRecord() override = default;
 
-		TextureRecord(const TextureRecord&)	= delete;
-		TextureRecord(	    TextureRecord&&) = default;
+        TextureRecord(const TextureRecord&) = delete;
+        TextureRecord(      TextureRecord&&) = default;
 
-		TextureRecord& operator=(const TextureRecord&)	= delete;
-		TextureRecord& operator=(	   TextureRecord&&) = default;
+        TextureRecord& operator=(const TextureRecord&)  = delete;
+        TextureRecord& operator=(      TextureRecord&&) = default;
 
-		bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
-		
-		void SetGPUResource(Struct::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
+        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 
-		void SetSRVDescriptorIndex(const TypeAlias::StorageID a_set) { m_srvDescriptorIndex = a_set; }
+        void SetGPUResource(Struct::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
 
-		const auto& GetREFGPUResource() const { return m_gpuResource; }
+        void SetSRVDescriptorIndex(const TypeAlias::StorageID a_set) { m_srvDescriptorIndex = a_set; }
 
-		auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
+        const auto& GetREFGPUResource() const { return m_gpuResource; }
 
-	private:
+        auto GetVALSRVDescriptorIndex() const { return m_srvDescriptorIndex; }
 
-		Struct::GPUResource m_gpuResource = {};
-		
-		TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
-	};
+    private:
+
+        Struct::GPUResource m_gpuResource = {};
+
+        TypeAlias::DescriptorIndex m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
+    };
 }

@@ -2,24 +2,24 @@
 
 namespace FWK::Graphics
 {
-	class DescriptorHeapIndexAllocator;
+    class DescriptorHeapIndexAllocator;
 }
 
 namespace FWK::Converter
 {
-	class DescriptorHeapIndexAllocatorJsonConverter final
-	{
-	public:
-		
-		 DescriptorHeapIndexAllocatorJsonConverter() = default;
-		~DescriptorHeapIndexAllocatorJsonConverter() = default;
+    class DescriptorHeapIndexAllocatorJsonConverter final
+    {
+    public:
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::DescriptorHeapIndexAllocator& a_descriptorHeapIndexAllocator) const;
+         DescriptorHeapIndexAllocatorJsonConverter() = default;
+        ~DescriptorHeapIndexAllocatorJsonConverter() = default;
 
-		nlohmann::json Serialize(const Graphics::DescriptorHeapIndexAllocator& a_descriptorHeapIndexAllocator) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::DescriptorHeapIndexAllocator& a_descriptorHeapIndexAllocator) const;
 
-	private:
+        nlohmann::json Serialize(const Graphics::DescriptorHeapIndexAllocator& a_descriptorHeapIndexAllocator) const;
 
-		static constexpr std::string_view k_capacityJsonKey = "Capacity";
-	};
+    private:
+
+        static constexpr std::string_view k_capacityJsonKey = "Capacity";
+    };
 }

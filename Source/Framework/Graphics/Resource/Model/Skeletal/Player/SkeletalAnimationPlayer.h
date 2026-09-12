@@ -2,131 +2,131 @@
 
 namespace FWK::Graphics
 {
-	// 一つ一つのスケルタルアニメーションモデルのanimation進捗度などを管理するクラス
-	class SkeletalAnimationPlayer final
-	{
-	private:
+    // 一つ一つのスケルタルアニメーションモデルのanimation進捗度などを管理するクラス
+    class SkeletalAnimationPlayer final
+    {
+    private:
 
-		struct SkinnedVertexBufferElement final
-		{
-			TypeAlias::Math::Vector3 m_position = TypeAlias::Math::Vector3::Zero;
-			TypeAlias::Math::Vector3 m_normal   = TypeAlias::Math::Vector3::Zero;
-			TypeAlias::Math::Vector4 m_tangent  = TypeAlias::Math::Vector4::Zero;
-			TypeAlias::Math::Vector2 m_uv       = TypeAlias::Math::Vector2::Zero;
-		};
+        struct SkinnedVertexBufferElement final
+        {
+            TypeAlias::Math::Vector3 m_position = TypeAlias::Math::Vector3::Zero;
+            TypeAlias::Math::Vector3 m_normal   = TypeAlias::Math::Vector3::Zero;
+            TypeAlias::Math::Vector4 m_tangent  = TypeAlias::Math::Vector4::Zero;
+            TypeAlias::Math::Vector2 m_uv       = TypeAlias::Math::Vector2::Zero;
+        };
 
-	public:
+    public:
 
-		struct Animation final
-		{
-			static constexpr float k_defaultPlaybackSpeed       = 1.0F;
-			static constexpr float k_initialBlendDurationSecond = 0.0F;
-			
-			float m_startTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+        struct Animation final
+        {
+            static constexpr float k_defaultPlaybackSpeed       = 1.0F;
+            static constexpr float k_initialBlendDurationSecond = 0.0F;
 
-			float m_playbackSpeed = k_defaultPlaybackSpeed;
+            float m_startTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
 
-			float m_blendDurationSecond = k_initialBlendDurationSecond;
+            float m_playbackSpeed = k_defaultPlaybackSpeed;
 
-			std::uint32_t m_motionIndex = SkeletalAnimationPoseEvaluator::k_invalidMotionIndex;
+            float m_blendDurationSecond = k_initialBlendDurationSecond;
 
-			bool m_isLoop = false;
-		};
+            std::uint32_t m_motionIndex = SkeletalAnimationPoseEvaluator::k_invalidMotionIndex;
 
-		struct FrameData final
-		{
-			 FrameData() = default;
-	        ~FrameData() = default;
-	        
-	        FrameData(const FrameData&)          = delete;
-	        FrameData(      FrameData&& a_other) = default;
+            bool m_isLoop = false;
+        };
 
-			FrameData& operator=(const FrameData&)           = delete;
-			FrameData& operator=(      FrameData&&) noexcept = delete;
+        struct FrameData final
+        {
+             FrameData() = default;
+            ~FrameData() = default;
 
-			DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
+            FrameData(const FrameData&)          = delete;
+            FrameData(      FrameData&& a_other) = default;
 
-			SkeletalAnimationBoneMatrixBufferUploader m_boneMatrixBufferUploader = {};
-			
-			std::vector<DynamicRWStructuredBuffer> m_skinnedVertexBufferList = {};
+            FrameData& operator=(const FrameData&)           = delete;
+            FrameData& operator=(      FrameData&&) noexcept = delete;
 
-			std::vector<DynamicRWStructuredBuffer> m_meshletBoundsBufferList = {};
-			std::vector<TypeAlias::Math::Matrix>   m_globalBoneMatrixList    = {};
-		};
+            DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
 
-	public:
+            SkeletalAnimationBoneMatrixBufferUploader m_boneMatrixBufferUploader = {};
 
-		 SkeletalAnimationPlayer() = default;
-		~SkeletalAnimationPlayer() = default;
+            std::vector<DynamicRWStructuredBuffer> m_skinnedVertexBufferList = {};
 
-		SkeletalAnimationPlayer(const SkeletalAnimationPlayer&)           = delete;
-		SkeletalAnimationPlayer(      SkeletalAnimationPlayer&&) noexcept = default;
+            std::vector<DynamicRWStructuredBuffer> m_meshletBoundsBufferList = {};
+            std::vector<TypeAlias::Math::Matrix>   m_globalBoneMatrixList    = {};
+        };
 
-		SkeletalAnimationPlayer& operator=(const SkeletalAnimationPlayer&)           = delete;
-		SkeletalAnimationPlayer& operator=(      SkeletalAnimationPlayer&&) noexcept = default;
+    public:
 
-		bool Create(const SkeletalAnimationModel& a_skeletalAnimationModel);
-		
-		bool PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed);
+         SkeletalAnimationPlayer() = default;
+        ~SkeletalAnimationPlayer() = default;
 
-		void AdvanceTime(const float a_deltaTime);
+        SkeletalAnimationPlayer(const SkeletalAnimationPlayer&)           = delete;
+        SkeletalAnimationPlayer(      SkeletalAnimationPlayer&&) noexcept = default;
 
-		bool IsAnimationEnd() const;
+        SkeletalAnimationPlayer& operator=(const SkeletalAnimationPlayer&)           = delete;
+        SkeletalAnimationPlayer& operator=(      SkeletalAnimationPlayer&&) noexcept = default;
 
-		void Stop();
+        bool Create(const SkeletalAnimationModel& a_skeletalAnimationModel);
 
-		bool ApplyAnimation(const Animation& a_animation);
+        bool PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed);
 
-		const FrameData* FindPTRCurrentFrameData() const;
+        void AdvanceTime(const float a_deltaTime);
 
-		FrameData* FindMutablePTRCurrentFrameData();
+        bool IsAnimationEnd() const;
 
-		float FetchVALBlendWeight() const;
+        void Stop();
 
-		const auto& GetREFSkeletalAnimationModelRecord() const { return m_skeletalAnimationModelRecord; }
+        bool ApplyAnimation(const Animation& a_animation);
 
-		const auto& GetREFAnimation() const { return m_animation; }
+        const FrameData* FindPTRCurrentFrameData() const;
 
-		const auto& GetREFBlendTargetAnimation() const { return m_blendTargetAnimation; }
+        FrameData* FindMutablePTRCurrentFrameData();
 
-		float GetVALAnimationTimeSecond() const { return m_animationTimeSecond; }
+        float FetchVALBlendWeight() const;
 
-		float GetVALBlendTargetAnimationTimeSecond() const { return m_blendTargetAnimationTimeSecond; }
+        const auto& GetREFSkeletalAnimationModelRecord() const { return m_skeletalAnimationModelRecord; }
 
-		bool GetVALIsBlending() const { return m_isBlending; }
+        const auto& GetREFAnimation() const { return m_animation; }
 
-		static constexpr float k_initialBlendWeight = 0.0F;
+        const auto& GetREFBlendTargetAnimation() const { return m_blendTargetAnimation; }
 
-	private:
+        float GetVALAnimationTimeSecond() const { return m_animationTimeSecond; }
 
-		bool EvaluateCurrentPose();
+        float GetVALBlendTargetAnimationTimeSecond() const { return m_blendTargetAnimationTimeSecond; }
 
-		float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
+        bool GetVALIsBlending() const { return m_isBlending; }
 
-		void CompleteAnimationBlend();
+        static constexpr float k_initialBlendWeight = 0.0F;
 
-		void ResetPlaybackState();
+    private:
 
-		float FetchMotionDurationSecond(const Animation& a_animation) const;
+        bool EvaluateCurrentPose();
 
-		static constexpr float k_initialBlendElapsedSecond = 0.0F;
-		static constexpr float k_completeBlendWeight       = 1.0F;
-		static constexpr float k_stoppedPlaybackSpeed      = 0.0F;
+        float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
 
-		std::vector<FrameData> m_frameDataList = {};
+        void CompleteAnimationBlend();
 
-		std::weak_ptr<SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
-		
-		SkeletalAnimationPoseEvaluator m_poseEvaluator = {};
+        void ResetPlaybackState();
 
-		Animation m_animation            = {};
-		Animation m_blendTargetAnimation = {};
+        float FetchMotionDurationSecond(const Animation& a_animation) const;
 
-		float m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
-		float m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+        static constexpr float k_initialBlendElapsedSecond = 0.0F;
+        static constexpr float k_completeBlendWeight       = 1.0F;
+        static constexpr float k_stoppedPlaybackSpeed      = 0.0F;
 
-		float m_blendElapsedSecond = k_initialBlendElapsedSecond;
+        std::vector<FrameData> m_frameDataList = {};
 
-		bool m_isBlending = false;
-	};
+        std::weak_ptr<SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
+
+        SkeletalAnimationPoseEvaluator m_poseEvaluator = {};
+
+        Animation m_animation            = {};
+        Animation m_blendTargetAnimation = {};
+
+        float m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+        float m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+
+        float m_blendElapsedSecond = k_initialBlendElapsedSecond;
+
+        bool m_isBlending = false;
+    };
 }

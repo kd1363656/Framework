@@ -2,17 +2,17 @@
 
 namespace FWK::Graphics
 {
-	class StaticModelStandardLitPass final : public RenderGraphPassBase
-	{
-	public:
+    class StaticModelStandardLitPass final : public RenderGraphPassBase
+    {
+    public:
 
-		 StaticModelStandardLitPass();
-		~StaticModelStandardLitPass() override;
+         StaticModelStandardLitPass();
+        ~StaticModelStandardLitPass() override;
 
-		void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
+        void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
-		FWK_DEFINE_TYPE_INFO(StaticModelStandardLitPass, RenderGraphPassBase)
-	};
+        FWK_DEFINE_TYPE_INFO(StaticModelStandardLitPass, RenderGraphPassBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::StaticModelStandardLitPass)

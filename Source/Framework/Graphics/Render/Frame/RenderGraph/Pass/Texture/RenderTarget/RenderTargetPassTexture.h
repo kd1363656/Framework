@@ -2,63 +2,63 @@
 
 namespace FWK::Graphics
 {
-	class RenderTargetPassTexture final : public PassTextureBase
-	{
-	public:
+    class RenderTargetPassTexture final : public PassTextureBase
+    {
+    public:
 
-		 RenderTargetPassTexture()		    = default;
-		~RenderTargetPassTexture() override = default;
+         RenderTargetPassTexture()          = default;
+        ~RenderTargetPassTexture() override = default;
 
-		RenderTargetPassTexture(const RenderTargetPassTexture&)			  = delete;
-		RenderTargetPassTexture(	  RenderTargetPassTexture&&) noexcept = default;
-		
-		RenderTargetPassTexture& operator=(const RenderTargetPassTexture&)			 = delete;
-		RenderTargetPassTexture& operator=(		 RenderTargetPassTexture&&) noexcept = default;
+        RenderTargetPassTexture(const RenderTargetPassTexture&)           = delete;
+        RenderTargetPassTexture(      RenderTargetPassTexture&&) noexcept = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+        RenderTargetPassTexture& operator=(const RenderTargetPassTexture&)           = delete;
+        RenderTargetPassTexture& operator=(      RenderTargetPassTexture&&) noexcept = default;
 
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool Create(const Device&						      a_device,
-					const GPUMemoryAllocator&			      a_gpuMemoryAllocator,
-					const Window::ClientSize&			      a_clientSize,
-						  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
-						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        nlohmann::json Serialize() const;
 
-		bool Resize(const Device&					          a_device,
-					const GPUMemoryAllocator&		          a_gpuMemoryAllocator,
-					const Window::ClientSize&		          a_clientSize,
-					const UINT64&					          a_retiredFenceValue,
-						  TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
-						  TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-						  ResourceReleaseContext&		      a_resourceReleaseContext);
+        bool Create(const Device&                             a_device,
+                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                    const Window::ClientSize&                 a_clientSize,
+                          TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		void SetClearColor(const TypeAlias::Math::Color& a_set) { m_clearColor = a_set; }
+        bool Resize(const Device&                             a_device,
+                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                    const Window::ClientSize&                 a_clientSize,
+                    const UINT64&                             a_retiredFenceValue,
+                          TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
+                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                          ResourceReleaseContext&             a_resourceReleaseContext);
 
-		void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
+        void SetClearColor(const TypeAlias::Math::Color& a_set) { m_clearColor = a_set; }
 
-		void SetRenderGraphRenderTargetType(const Enum::RenderGraphRenderTargetType a_set) { m_renderGraphRenderTargetType = a_set; }
+        void SetFormat(const DXGI_FORMAT a_set) { m_format = a_set; }
 
-		const auto& GetREFRenderTargetTexture() const { return m_renderTargetTexture; }
+        void SetRenderGraphRenderTargetType(const Enum::RenderGraphRenderTargetType a_set) { m_renderGraphRenderTargetType = a_set; }
 
-		const auto& GetREFClearColor() const { return m_clearColor; }
+        const auto& GetREFRenderTargetTexture() const { return m_renderTargetTexture; }
 
-		auto& GetMutableREFRenderTargetTexture() { return m_renderTargetTexture; }
+        const auto& GetREFClearColor() const { return m_clearColor; }
 
-		auto GetVALFormat() const { return m_format; }
+        auto& GetMutableREFRenderTargetTexture() { return m_renderTargetTexture; }
 
-		auto GetVALRenderGraphRenderTargetType() const { return m_renderGraphRenderTargetType; }
+        auto GetVALFormat() const { return m_format; }
 
-	private:
+        auto GetVALRenderGraphRenderTargetType() const { return m_renderGraphRenderTargetType; }
 
-		RenderTargetTexture m_renderTargetTexture = {};
+    private:
 
-		Converter::RenderTargetPassTextureJsonConverter m_jsonConverter = {};
+        RenderTargetTexture m_renderTargetTexture = {};
 
-		TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
+        Converter::RenderTargetPassTextureJsonConverter m_jsonConverter = {};
 
-		DXGI_FORMAT m_format = RenderTargetTexture::k_defaultRenderTargetTextureFormat;
+        TypeAlias::Math::Color m_clearColor = DirectCommandList::k_defaultBackBufferClearColor;
 
-		Enum::RenderGraphRenderTargetType m_renderGraphRenderTargetType = Enum::RenderGraphRenderTargetType::Invalid;
-	};
+        DXGI_FORMAT m_format = RenderTargetTexture::k_defaultRenderTargetTextureFormat;
+
+        Enum::RenderGraphRenderTargetType m_renderGraphRenderTargetType = Enum::RenderGraphRenderTargetType::Invalid;
+    };
 }

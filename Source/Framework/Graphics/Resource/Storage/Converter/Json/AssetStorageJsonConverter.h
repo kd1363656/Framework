@@ -2,46 +2,46 @@
 
 namespace FWK::Graphics
 {
-	template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
-	class AssetStorage;
+    template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
+    class AssetStorage;
 }
 
 namespace FWK::Converter
-{	
-	template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
-	class AssetStorageJsonConverter final
-	{
-	public:
+{
+    template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
+    class AssetStorageJsonConverter final
+    {
+    public:
 
-		 AssetStorageJsonConverter() = default;
-		~AssetStorageJsonConverter() = default;
+         AssetStorageJsonConverter() = default;
+        ~AssetStorageJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::AssetStorage<RecordType>& a_assetStorage) const
-		{
-			if (a_rootJson.is_null()) { return; }
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::AssetStorage<RecordType>& a_assetStorage) const
+        {
+            if (a_rootJson.is_null()) { return; }
 
-			if (const auto& l_json = a_rootJson.value(k_storageIDAllocatorCapacityJsonKey, nlohmann::json{});
-				!l_json.is_null())
-			{
-				auto& l_storageIDAllocator = a_assetStorage.GetMutableREFStorageIDAllocator();
+            if (const auto& l_json = a_rootJson.value(k_storageIDAllocatorCapacityJsonKey, nlohmann::json{});
+                !l_json.is_null())
+            {
+                auto& l_storageIDAllocator = a_assetStorage.GetMutableREFStorageIDAllocator();
 
-				l_storageIDAllocator.Deserialize(l_json);
-			}
-		}
+                l_storageIDAllocator.Deserialize(l_json);
+            }
+        }
 
-		nlohmann::json Serialize(const Graphics::AssetStorage<RecordType>& a_assetStorage) const
-		{
-			nlohmann::json l_rootJson = {};
+        nlohmann::json Serialize(const Graphics::AssetStorage<RecordType>& a_assetStorage) const
+        {
+            nlohmann::json l_rootJson = {};
 
-			const auto& l_storageIDAllocator = a_assetStorage.GetREFStorageIDAllocator();
+            const auto& l_storageIDAllocator = a_assetStorage.GetREFStorageIDAllocator();
 
-			l_rootJson[k_storageIDAllocatorCapacityJsonKey] = l_storageIDAllocator.Serialize();
+            l_rootJson[k_storageIDAllocatorCapacityJsonKey] = l_storageIDAllocator.Serialize();
 
-			return l_rootJson;
-		}
+            return l_rootJson;
+        }
 
-	private:
+    private:
 
-		static constexpr std::string_view k_storageIDAllocatorCapacityJsonKey = "StorageIDAllocator";
-	};
+        static constexpr std::string_view k_storageIDAllocatorCapacityJsonKey = "StorageIDAllocator";
+    };
 }

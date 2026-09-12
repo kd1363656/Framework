@@ -2,37 +2,37 @@
 
 namespace FWK::Graphics
 {
-	template <typename ConstantBufferType>
-	class CachedPassConstantBufferDrawRequestBase : public DrawRequestPassBase
-	{
-	public:
+    template <typename ConstantBufferType>
+    class CachedPassConstantBufferDrawRequestBase : public DrawRequestPassBase
+    {
+    public:
 
-		 CachedPassConstantBufferDrawRequestBase()		    = default;
-		~CachedPassConstantBufferDrawRequestBase() override = default;
+         CachedPassConstantBufferDrawRequestBase()          = default;
+        ~CachedPassConstantBufferDrawRequestBase() override = default;
 
-		void SetSourceConstantBuffer(const std::shared_ptr<ConstantBufferType>& a_set) { m_sourceConstantBuffer = a_set; }
+        void SetSourceConstantBuffer(const std::shared_ptr<ConstantBufferType>& a_set) { m_sourceConstantBuffer = a_set; }
 
-	protected:
+    protected:
 
-		void UpdateConstantBuffer()
-		{
-			const auto& l_source = m_sourceConstantBuffer.lock();
+        void UpdateConstantBuffer()
+        {
+            const auto& l_source = m_sourceConstantBuffer.lock();
 
-			if (!l_source) { return; }
+            if (!l_source) { return; }
 
-			m_constantBuffer = *l_source;
-		}
+            m_constantBuffer = *l_source;
+        }
 
-		const auto& GetREFSourceConstantBuffer() const { return m_sourceConstantBuffer; }
-		
-		const auto& GetREFConstantBuffer() const { return m_constantBuffer; }
+        const auto& GetREFSourceConstantBuffer() const { return m_sourceConstantBuffer; }
 
-		auto& GetMutableREFConstantBuffer() { return m_constantBuffer; }
+        const auto& GetREFConstantBuffer() const { return m_constantBuffer; }
 
-	private:
+        auto& GetMutableREFConstantBuffer() { return m_constantBuffer; }
 
-		std::weak_ptr<ConstantBufferType> m_sourceConstantBuffer = {};
+    private:
 
-		ConstantBufferType m_constantBuffer = {};
-	};
+        std::weak_ptr<ConstantBufferType> m_sourceConstantBuffer = {};
+
+        ConstantBufferType m_constantBuffer = {};
+    };
 }

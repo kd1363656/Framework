@@ -2,139 +2,139 @@
 
 namespace FWK::Graphics
 {
-	template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
-	class AssetStorage final
-	{
-	private:
+    template <Concept::IsDerivedAssetRecordBaseConcept RecordType>
+    class AssetStorage final
+    {
+    private:
 
-		using RecordMap = std::unordered_map<std::wstring, std::shared_ptr<RecordType>>;
+        using RecordMap = std::unordered_map<std::wstring, std::shared_ptr<RecordType>>;
 
-	public:
+    public:
 
-		 AssetStorage() = default;
-		~AssetStorage() = default;
+         AssetStorage() = default;
+        ~AssetStorage() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson)
-		{
-			if (a_rootJson.is_null()) { return; }
+        void Deserialize(const nlohmann::json& a_rootJson)
+        {
+            if (a_rootJson.is_null()) { return; }
 
-			m_jsonConverter.Deserialize(a_rootJson, *this);
-		}
-		bool Create()
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(!m_storageIDAllocator.Create(), "StorageIDAllocatorの作成に失敗したため、AssetStorageの作成処理に失敗しました。", false);
+            m_jsonConverter.Deserialize(a_rootJson, *this);
+        }
+        bool Create()
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!m_storageIDAllocator.Create(), "StorageIDAllocatorの作成に失敗したため、AssetStorageの作成処理に失敗しました。", false);
 
-			return true;
-		}
+            return true;
+        }
 
-		nlohmann::json Serialize() const
-		{
-			return m_jsonConverter.Serialize(*this);
-		}
+        nlohmann::json Serialize() const
+        {
+            return m_jsonConverter.Serialize(*this);
+        }
 
-		TypeAlias::StorageID AllocateStorageID()
-		{
-			return m_storageIDAllocator.Allocate();
-		}
+        TypeAlias::StorageID AllocateStorageID()
+        {
+            return m_storageIDAllocator.Allocate();
+        }
 
-		void ReleaseStorageID(const TypeAlias::StorageID a_storageID)
-		{
-			m_storageIDAllocator.Release(a_storageID);
-		}
+        void ReleaseStorageID(const TypeAlias::StorageID a_storageID)
+        {
+            m_storageIDAllocator.Release(a_storageID);
+        }
 
-		bool RegisterRecord(const std::shared_ptr<RecordType>& a_record, const std::wstring& a_filePath)
-		{
-			// レコード情報が無効じゃないか、無効なストレージIDでないかをチェック
-			FWK_ASSERT_RETURN_VALUE_IF(!a_record,												    "レコードのインスタンス化がされておらず、Recordの登録に失敗しました。",			   false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(),										    "ファイルパスが空のため、Recordの登録に失敗しました。",							   false);
-			FWK_ASSERT_RETURN_VALUE_IF(a_record->GetVALStorageID() == Constant::k_invalidStorageID, "StorageIDが無効のため、Recordの登録に失敗しました。",							   false);
-			FWK_ASSERT_RETURN_VALUE_IF(m_recordMap.contains(a_filePath),							"同じファイルパスのRecordが既に登録されているため、Recordの登録に失敗しました。", false);
+        bool RegisterRecord(const std::shared_ptr<RecordType>& a_record, const std::wstring& a_filePath)
+        {
+            // レコード情報が無効じゃないか、無効なストレージIDでないかをチェック
+            FWK_ASSERT_RETURN_VALUE_IF(!a_record,                                                   "レコードのインスタンス化がされておらず、Recordの登録に失敗しました。",             false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(),                                          "ファイルパスが空のため、Recordの登録に失敗しました。",                             false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_record->GetVALStorageID() == Constant::k_invalidStorageID, "StorageIDが無効のため、Recordの登録に失敗しました。",                               false);
+            FWK_ASSERT_RETURN_VALUE_IF(m_recordMap.contains(a_filePath),                            "同じファイルパスのRecordが既に登録されているため、Recordの登録に失敗しました。", false);
 
-			const bool l_isInserted = m_recordMap.try_emplace(a_filePath, a_record).second;
+            const bool l_isInserted = m_recordMap.try_emplace(a_filePath, a_record).second;
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_isInserted, "RecordMapへのRecord登録に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_isInserted, "RecordMapへのRecord登録に失敗しました。", false);
 
-			return true;
-		}
+            return true;
+        }
 
-		bool AddReferenceCount(const std::weak_ptr<RecordType>& a_record)
-		{
-			const auto& l_record = a_record.lock();
+        bool AddReferenceCount(const std::weak_ptr<RecordType>& a_record)
+        {
+            const auto& l_record = a_record.lock();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_record, "指定されたStorageIDのRecordが見つからないため、参照数加算に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_record, "指定されたStorageIDのRecordが見つからないため、参照数加算に失敗しました。", false);
 
-			// 参照カウントを加算
-			l_record->AddReferenceCount();
+            // 参照カウントを加算
+            l_record->AddReferenceCount();
 
-			return true;
-		}
+            return true;
+        }
 
-		bool SubtractReferenceCount(const std::weak_ptr<RecordType>& a_record, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
-		{
-			const auto& l_record = a_record.lock();
+        bool SubtractReferenceCount(const std::weak_ptr<RecordType>& a_record, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
+        {
+            const auto& l_record = a_record.lock();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_record,						       "指定されたStorageIDのRecordが見つからないため、解放予約に失敗しました。", false);
-			FWK_ASSERT_RETURN_VALUE_IF(!l_record->SubtractReferenceCount(), "Recordの参照数減算に失敗ており、解放予約に失敗しました。",				  false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_record,                              "指定されたStorageIDのRecordが見つからないため、解放予約に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_record->SubtractReferenceCount(), "Recordの参照数減算に失敗ており、解放予約に失敗しました。",                  false);
 
-			// まだ利用者が残っているなら何もしない
-			if (!l_record->IsUnused()) { return true; }
+            // まだ利用者が残っているなら何もしない
+            if (!l_record->IsUnused()) { return true; }
 
-			// Record自身に、GPUResourceやDescriptorIndexを遅延解放Queueへ積ませる
-			const auto& l_lastSignaledFenceValue = a_directCommandQueue.FetchREFLastSignaledFenceValue();
+            // Record自身に、GPUResourceやDescriptorIndexを遅延解放Queueへ積ませる
+            const auto& l_lastSignaledFenceValue = a_directCommandQueue.FetchREFLastSignaledFenceValue();
 
-			FWK_ASSERT_RETURN_VALUE_IF(!l_record->ReserveRelease(l_lastSignaledFenceValue, a_resourceReleaseContext), "Record固有リソースの遅延解放登録に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_record->ReserveRelease(l_lastSignaledFenceValue, a_resourceReleaseContext), "Record固有リソースの遅延解放登録に失敗しました。", false);
 
-			const auto& l_filePath = l_record->GetREFFilePath ();
-			
-			// マップで管理していたレコードのストレージIDをリリース
-			if (const auto  l_storageID = l_record->GetVALStorageID();
-				l_storageID != Constant::k_invalidStorageID)
-			{
-				m_storageIDAllocator.Release(l_storageID);
-			}
+            const auto& l_filePath = l_record->GetREFFilePath ();
 
-			// マップから削除
-			m_recordMap.erase(l_filePath);
+            // マップで管理していたレコードのストレージIDをリリース
+            if (const auto  l_storageID = l_record->GetVALStorageID();
+                l_storageID != Constant::k_invalidStorageID)
+            {
+                m_storageIDAllocator.Release(l_storageID);
+            }
 
-			return true;
-		}
+            // マップから削除
+            m_recordMap.erase(l_filePath);
 
-		TypeAlias::StorageID FindVALStorageIDFromFilePath(const std::wstring& a_filePath) const
-		{
-			// ファイルパスからストレージクラスを取得
-			const auto& l_itr = m_recordMap.find(a_filePath);
+            return true;
+        }
 
-			if (l_itr == m_recordMap.end()) { return AssetRecordBase::k_invalidStorageID; }
+        TypeAlias::StorageID FindVALStorageIDFromFilePath(const std::wstring& a_filePath) const
+        {
+            // ファイルパスからストレージクラスを取得
+            const auto& l_itr = m_recordMap.find(a_filePath);
 
-			const auto& l_record = l_itr->second;
+            if (l_itr == m_recordMap.end()) { return AssetRecordBase::k_invalidStorageID; }
 
-			if (!l_record) { return AssetRecordBase::k_invalidStorageID; }
+            const auto& l_record = l_itr->second;
 
-			// ストレージクラスからストレージIDを取得
-			return l_record->GetVALStorageID();
-		}
+            if (!l_record) { return AssetRecordBase::k_invalidStorageID; }
 
-		std::weak_ptr<RecordType> FindVALRecord(const std::wstring& a_filePath) const
-		{
-			FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(), "ファイルパスが空のため、Recordの取得に失敗しました。", {});
+            // ストレージクラスからストレージIDを取得
+            return l_record->GetVALStorageID();
+        }
 
-			const auto& l_itr = m_recordMap.find(a_filePath);
+        std::weak_ptr<RecordType> FindVALRecord(const std::wstring& a_filePath) const
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(), "ファイルパスが空のため、Recordの取得に失敗しました。", {});
 
-			if (l_itr == m_recordMap.end()) { return {}; }
+            const auto& l_itr = m_recordMap.find(a_filePath);
 
-			return l_itr->second;
-		}
+            if (l_itr == m_recordMap.end()) { return {}; }
 
-		const auto& GetREFStorageIDAllocator() const { return m_storageIDAllocator; }
+            return l_itr->second;
+        }
 
-		auto& GetMutableREFStorageIDAllocator() { return m_storageIDAllocator; }
+        const auto& GetREFStorageIDAllocator() const { return m_storageIDAllocator; }
 
-	private:
+        auto& GetMutableREFStorageIDAllocator() { return m_storageIDAllocator; }
 
-		RecordMap m_recordMap = {};
+    private:
 
-		Utility::StorageIDAllocator m_storageIDAllocator = {};
+        RecordMap m_recordMap = {};
 
-		Converter::AssetStorageJsonConverter<RecordType> m_jsonConverter = {};
-	};
+        Utility::StorageIDAllocator m_storageIDAllocator = {};
+
+        Converter::AssetStorageJsonConverter<RecordType> m_jsonConverter = {};
+    };
 }

@@ -2,24 +2,24 @@
 
 namespace FWK::Graphics
 {
-	class ShadowContext;
+    class ShadowContext;
 }
 
 namespace FWK::Converter
 {
-	class ShadowContextJsonConverter
-	{
-	public:
+    class ShadowContextJsonConverter final
+    {
+    public:
 
-		 ShadowContextJsonConverter() = default;
-		~ShadowContextJsonConverter() = default;
+         ShadowContextJsonConverter() = default;
+        ~ShadowContextJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Graphics::ShadowContext& a_shadowContext) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Graphics::ShadowContext& a_shadowContext) const;
 
-		nlohmann::json Serialize(const Graphics::ShadowContext& a_shadowContext) const;
+        nlohmann::json Serialize(const Graphics::ShadowContext& a_shadowContext) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_cascadeShadowMapJsonKey = "CascadeShadowMap";
-	};
+        static constexpr std::string_view k_cascadeShadowMapJsonKey = "CascadeShadowMap";
+    };
 }

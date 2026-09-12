@@ -2,137 +2,137 @@
 
 namespace FWK::Graphics
 {
-	class CascadeShadowMap
-	{
-	private:
+    class CascadeShadowMap final
+    {
+    private:
 
-		struct CascadeData final
-		{
-			static constexpr float k_initialSplitDepth = 0.0F;
+        struct CascadeData final
+        {
+            static constexpr float k_initialSplitDepth = 0.0F;
 
-			Struct::CBModelCascadeShadowPass m_cbModelCascadeShadowPass = {};
-		
-			float m_splitDepth = k_initialSplitDepth;
-		};
+            Struct::CBModelCascadeShadowPass m_cbModelCascadeShadowPass = {};
 
-	public:
+            float m_splitDepth = k_initialSplitDepth;
+        };
 
-		 CascadeShadowMap() = default;
-		~CascadeShadowMap() = default;
+    public:
 
-		CascadeShadowMap(const CascadeShadowMap&)           = delete;
-		CascadeShadowMap(      CascadeShadowMap&&) noexcept = default;
+         CascadeShadowMap() = default;
+        ~CascadeShadowMap() = default;
 
-		CascadeShadowMap& operator=(const CascadeShadowMap&)           = delete;
-		CascadeShadowMap& operator=(      CascadeShadowMap&&) noexcept = default;
+        CascadeShadowMap(const CascadeShadowMap&)           = delete;
+        CascadeShadowMap(      CascadeShadowMap&&) noexcept = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+        CascadeShadowMap& operator=(const CascadeShadowMap&)           = delete;
+        CascadeShadowMap& operator=(      CascadeShadowMap&&) noexcept = default;
 
-		bool Create(const Device&                       a_device,
-			        const GPUMemoryAllocator&           a_gpuMemoryAllocator,
-			        TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
-			        TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool Update();
+        bool Create(const Device&                       a_device,
+                    const GPUMemoryAllocator&           a_gpuMemoryAllocator,
+                    TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
+                    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-		nlohmann::json Serialize() const;
+        bool Update();
 
-		void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
+        nlohmann::json Serialize() const;
 
-		void SetCBCameraPass(const std::shared_ptr<Struct::CBCameraPass>& a_set) { m_cbCameraPass = a_set; }
-		void SetCBLightPass (const std::shared_ptr<Struct::CBLightPass>&  a_set) { m_cbLightPass  = a_set; }
+        void SetDepthStencilTextureSettings(const Struct::DepthStencilTextureSettings& a_set) { m_depthStencilTextureSettings = a_set; }
 
-		void SetSampleDepthBias  (const float a_set) { m_sampleDepthBias   = a_set; }
-		void SetMAXShadowDistance(const float a_set) { m_maxShadowDistance = a_set; }
+        void SetCBCameraPass(const std::shared_ptr<Struct::CBCameraPass>& a_set) { m_cbCameraPass = a_set; }
+        void SetCBLightPass (const std::shared_ptr<Struct::CBLightPass>&  a_set) { m_cbLightPass  = a_set; }
 
-		void SetResolution(const UINT a_set) { m_resolution = a_set; }
+        void SetSampleDepthBias  (const float a_set) { m_sampleDepthBias   = a_set; }
+        void SetMAXShadowDistance(const float a_set) { m_maxShadowDistance = a_set; }
 
-		TypeAlias::DescriptorIndex FetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
+        void SetResolution(const UINT a_set) { m_resolution = a_set; }
 
-		const Struct::CBModelCascadeShadowPass* FetchPTRModelCascadeShadowPass(const UINT a_cascadeIndex) const;
+        TypeAlias::DescriptorIndex FetchVALCascadeDSVDescriptorIndex(const UINT a_cascadeIndex) const;
 
-		const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
+        const Struct::CBModelCascadeShadowPass* FetchPTRModelCascadeShadowPass(const UINT a_cascadeIndex) const;
 
-		const auto& GetREFRenderArea() const { return m_renderArea; }
+        const auto& GetREFDepthStencilTextureSettings() const { return m_depthStencilTextureSettings; }
 
-		const auto& GetREFCBCascadeShadowMapPass() const { return m_cbCascadeShadowMapPass; }
+        const auto& GetREFRenderArea() const { return m_renderArea; }
 
-		auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
+        const auto& GetREFCBCascadeShadowMapPass() const { return m_cbCascadeShadowMapPass; }
 
-		auto GetVALSampleDepthBias  () const { return m_sampleDepthBias; }
-		auto GetVALMAXShadowDistance() const { return m_maxShadowDistance; }
+        auto& GetMutableREFDepthStencilTexture() { return m_depthStencilTexture; }
 
-		auto GetVALResolution() const { return m_resolution; }
+        auto GetVALSampleDepthBias  () const { return m_sampleDepthBias; }
+        auto GetVALMAXShadowDistance() const { return m_maxShadowDistance; }
 
-	private:
+        auto GetVALResolution() const { return m_resolution; }
 
-		static constexpr std::size_t k_frustumCornerCount = 8ULL;
+    private:
 
-		static constexpr std::array<TypeAlias::Math::Vector3, k_frustumCornerCount> k_ndcFrustumCornerList = { TypeAlias::Math::Vector3{ -1.0F, -1.0F, 0.0F },
-																											   TypeAlias::Math::Vector3{  1.0F, -1.0F, 0.0F }, 
-																											   TypeAlias::Math::Vector3{ -1.0F,  1.0F, 0.0F },
-																											   TypeAlias::Math::Vector3{  1.0F,  1.0F, 0.0F },
-																											   TypeAlias::Math::Vector3{ -1.0F, -1.0F, 1.0F },
-																											   TypeAlias::Math::Vector3{  1.0F, -1.0F, 1.0F },
-																											   TypeAlias::Math::Vector3{ -1.0F,  1.0F, 1.0F },
-																											   TypeAlias::Math::Vector3{  1.0F,  1.0F, 1.0F } };
+        static constexpr std::size_t k_frustumCornerCount = 8ULL;
 
-		static constexpr float k_cascadeSplitLambda = 0.5F;
-		static constexpr float k_fullSplitWeight    = 1.0F;
+        static constexpr std::array<TypeAlias::Math::Vector3, k_frustumCornerCount> k_ndcFrustumCornerList = { TypeAlias::Math::Vector3{ -1.0F, -1.0F, 0.0F },
+                                                                                                               TypeAlias::Math::Vector3{  1.0F, -1.0F, 0.0F },
+                                                                                                               TypeAlias::Math::Vector3{ -1.0F,  1.0F, 0.0F },
+                                                                                                               TypeAlias::Math::Vector3{  1.0F,  1.0F, 0.0F },
+                                                                                                               TypeAlias::Math::Vector3{ -1.0F, -1.0F, 1.0F },
+                                                                                                               TypeAlias::Math::Vector3{  1.0F, -1.0F, 1.0F },
+                                                                                                               TypeAlias::Math::Vector3{ -1.0F,  1.0F, 1.0F },
+                                                                                                               TypeAlias::Math::Vector3{  1.0F,  1.0F, 1.0F } };
 
-		static constexpr float k_invalidClipDistance = 0.0F;
-		static constexpr float k_initialSplitRatio   = 0.0F;
-		static constexpr float k_minSampleDepthBias  = 0.0F;
+        static constexpr float k_cascadeSplitLambda = 0.5F;
+        static constexpr float k_fullSplitWeight    = 1.0F;
 
-		static constexpr float k_lightViewDistanceScale = 2.0F;
-		static constexpr float k_lightViewDepthPadding  = 10.0F;
+        static constexpr float k_invalidClipDistance = 0.0F;
+        static constexpr float k_initialSplitRatio   = 0.0F;
+        static constexpr float k_minSampleDepthBias  = 0.0F;
 
-		static constexpr float k_directionLengthSquaredEpsilon = 0.000001F;
-		static constexpr float k_parallelUpDotThreshold        = 0.99F;
+        static constexpr float k_lightViewDistanceScale = 2.0F;
+        static constexpr float k_lightViewDepthPadding  = 10.0F;
 
-		static constexpr float k_initialRadius                  = 0.0F;
-		static constexpr float k_cascadeRadiusQuantizationScale = 16.0F;
+        static constexpr float k_directionLengthSquaredEpsilon = 0.000001F;
+        static constexpr float k_parallelUpDotThreshold        = 0.99F;
 
-		static constexpr float k_orthographicDiameterScale      = 2.0F;
-		static constexpr float k_cascadeRadiusPaddingTexelCount = 1.0F;
-		static constexpr float k_worldUnitPerTexelEpsilon       = 0.000001F;
+        static constexpr float k_initialRadius                  = 0.0F;
+        static constexpr float k_cascadeRadiusQuantizationScale = 16.0F;
 
-		static constexpr std::size_t k_cascadeNumberOffset     = 1ULL;
-		static constexpr std::size_t k_frustumPlaneCornerCount = 4ULL;
-		
-		static constexpr UINT k_invalidCascadeCount = 0U;
+        static constexpr float k_orthographicDiameterScale      = 2.0F;
+        static constexpr float k_cascadeRadiusPaddingTexelCount = 1.0F;
+        static constexpr float k_worldUnitPerTexelEpsilon       = 0.000001F;
 
-		static constexpr UINT k_requiredSampleCount = 1U;
-		static constexpr UINT k_shadowMapMIPSlice   = 0U;
+        static constexpr std::size_t k_cascadeNumberOffset     = 1ULL;
+        static constexpr std::size_t k_frustumPlaneCornerCount = 4ULL;
 
-		static constexpr UINT16 k_requiredMIPLevelCount = 1U;
+        static constexpr UINT k_invalidCascadeCount = 0U;
 
-		std::vector<CascadeData> m_cascadeDataList = {};
+        static constexpr UINT k_requiredSampleCount = 1U;
+        static constexpr UINT k_shadowMapMIPSlice   = 0U;
 
-		std::weak_ptr<Struct::CBCameraPass> m_cbCameraPass = {};
-		std::weak_ptr<Struct::CBLightPass>  m_cbLightPass  = {};
+        static constexpr UINT16 k_requiredMIPLevelCount = 1U;
 
-		DepthStencilTexture m_depthStencilTexture = {};
+        std::vector<CascadeData> m_cascadeDataList = {};
 
-		RenderArea m_renderArea = {};
+        std::weak_ptr<Struct::CBCameraPass> m_cbCameraPass = {};
+        std::weak_ptr<Struct::CBLightPass>  m_cbLightPass  = {};
 
-		Converter::CascadeShadowMapJsonConverter m_jsonConverter = {};
+        DepthStencilTexture m_depthStencilTexture = {};
 
-		Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = { Constant::k_cascadeShadowMapDefaultResourceFormat,
-																			  Constant::k_cascadeShadowMapDefaultDSVFormat,
-																			  Constant::k_cascadeShadowMapDefaultSRVFormat,
-		                                                                      Constant::k_defaultDepthClearValue,
-		                                                                      Constant::k_cascadeShadowMapDefaultMAXCascadeCount,
-		                                                                      k_requiredMIPLevelCount,
-		                                                                      k_requiredSampleCount, 
-																			  Constant::k_defaultSampleQuality,
-																			  Constant::k_defaultStencilClearValue };
+        RenderArea m_renderArea = {};
 
-		Struct::CBCascadeShadowMapPass m_cbCascadeShadowMapPass = {};
+        Converter::CascadeShadowMapJsonConverter m_jsonConverter = {};
 
-		float m_sampleDepthBias   = Constant::k_cascadeShadowMapDefaultSampleDepthBias;
-		float m_maxShadowDistance = Constant::k_cascadeShadowMapDefaultMAXShadowDistance;
+        Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = { Constant::k_cascadeShadowMapDefaultResourceFormat,
+                                                                              Constant::k_cascadeShadowMapDefaultDSVFormat,
+                                                                              Constant::k_cascadeShadowMapDefaultSRVFormat,
+                                                                              Constant::k_defaultDepthClearValue,
+                                                                              Constant::k_cascadeShadowMapDefaultMAXCascadeCount,
+                                                                              k_requiredMIPLevelCount,
+                                                                              k_requiredSampleCount,
+                                                                              Constant::k_defaultSampleQuality,
+                                                                              Constant::k_defaultStencilClearValue };
 
-		UINT m_resolution = Constant::k_cascadeShadowMapDefaultResolution;
-	};
+        Struct::CBCascadeShadowMapPass m_cbCascadeShadowMapPass = {};
+
+        float m_sampleDepthBias   = Constant::k_cascadeShadowMapDefaultSampleDepthBias;
+        float m_maxShadowDistance = Constant::k_cascadeShadowMapDefaultMAXShadowDistance;
+
+        UINT m_resolution = Constant::k_cascadeShadowMapDefaultResolution;
+    };
 }

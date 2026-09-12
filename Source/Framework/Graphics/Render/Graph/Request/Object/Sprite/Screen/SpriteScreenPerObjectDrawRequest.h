@@ -2,45 +2,45 @@
 
 namespace FWK::Graphics
 {
-	class Renderer;
+    class Renderer;
 }
 
 namespace FWK::Graphics
 {
-	class SpriteScreenPerObjectDrawRequest final : public DrawRequestPerObjectBase
-	{
-	public:
+    class SpriteScreenPerObjectDrawRequest final : public DrawRequestPerObjectBase
+    {
+    public:
 
-		struct DrawRequestData final
-		{
-			std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
+        struct DrawRequestData final
+        {
+            std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 
-			TypeAlias::Math::Color m_color = Constant::k_whiteColor;
+            TypeAlias::Math::Color m_color = Constant::k_whiteColor;
 
-			TypeAlias::Math::Vector2 m_position = TypeAlias::Math::Vector2::Zero;
-			TypeAlias::Math::Vector2 m_scale    = TypeAlias::Math::Vector2::One;
-			TypeAlias::Math::Vector2 m_pivot    = Constant::k_defaultSpritePivot;
+            TypeAlias::Math::Vector2 m_position = TypeAlias::Math::Vector2::Zero;
+            TypeAlias::Math::Vector2 m_scale    = TypeAlias::Math::Vector2::One;
+            TypeAlias::Math::Vector2 m_pivot    = Constant::k_defaultSpritePivot;
 
-			Struct::SpriteRECT m_sourceRECT = {};
-		};
+            Struct::SpriteRECT m_sourceRECT = {};
+        };
 
-	public:
+    public:
 
-		 SpriteScreenPerObjectDrawRequest()          = default;
-		~SpriteScreenPerObjectDrawRequest() override = default;
+         SpriteScreenPerObjectDrawRequest()          = default;
+        ~SpriteScreenPerObjectDrawRequest() override = default;
 
-		void BeginFrame() override;
+        void BeginFrame() override;
 
-		void SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource) override;
+        void SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource) override;
 
-		void AddDrawRequestPerObject(const std::shared_ptr<DrawRequestData>& a_drawRequestData);
+        void AddDrawRequestPerObject(const std::shared_ptr<DrawRequestData>& a_drawRequestData);
 
-	private:
+    private:
 
-		Utility::SmartPointerVectorArray<std::weak_ptr<DrawRequestData>> m_drawRequestDataSmartPointerVectorArray = {};
+        Utility::SmartPointerVectorArray<std::weak_ptr<DrawRequestData>> m_drawRequestDataSmartPointerVectorArray = {};
 
-		FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDrawRequest, DrawRequestPerObjectBase)
-	};
+        FWK_DEFINE_TYPE_INFO(SpriteScreenPerObjectDrawRequest, DrawRequestPerObjectBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::DrawRequestPerObjectSharedFactory, FWK::Graphics::SpriteScreenPerObjectDrawRequest)

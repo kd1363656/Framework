@@ -2,32 +2,32 @@
 
 namespace FWK::Graphics
 {
-	class Texture final
-	{
-	public:
-		
-		 Texture();
-		 Texture(const Texture&  a_other);
-		 Texture(	   Texture&& a_other) noexcept;
-		~Texture();
+    class Texture final
+    {
+    public:
 
-		Texture& operator=(const Texture&  a_other);
-		Texture& operator=(		 Texture&& a_other) noexcept;
+         Texture();
+         Texture(const Texture&  a_other);
+         Texture(      Texture&& a_other) noexcept;
+        ~Texture();
 
-		bool Load(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace = Enum::TextureLoadColorSpace::Auto, Enum::DefaultTextureType a_defaultTextureType = Enum::DefaultTextureType::BaseColor);
+        Texture& operator=(const Texture&  a_other);
+        Texture& operator=(      Texture&& a_other) noexcept;
 
-		const auto& GetREFTextureRecord() const { return m_textureRecord; }
+        bool Load(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace = Enum::TextureLoadColorSpace::Auto, Enum::DefaultTextureType a_defaultTextureType = Enum::DefaultTextureType::BaseColor);
 
-		auto GetVALStorageID() const { return m_storageID; }
+        const auto& GetREFTextureRecord() const { return m_textureRecord; }
 
-	private:
+        auto GetVALStorageID() const { return m_storageID; }
 
-		void AddReferenceCount() const;
+    private:
 
-		void SubtractReferenceCount();
+        void AddReferenceCount() const;
 
-		std::weak_ptr<Graphics::TextureRecord> m_textureRecord;
+        void SubtractReferenceCount();
 
-		TypeAlias::StorageID m_storageID;
-	};
+        std::weak_ptr<Graphics::TextureRecord> m_textureRecord;
+
+        TypeAlias::StorageID m_storageID;
+    };
 }
