@@ -33,7 +33,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(const AssetFilePath
 
     l_rootJson[k_prefabSystemJsonKey]   = l_prefabSystem.Serialize(a_assetFilePathRegistry);
     l_rootJson[k_sceneNameJsonKey]      = l_sceneName;
-    l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList (a_scene);
+    l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList(a_scene);
 
     return l_rootJson;
 }

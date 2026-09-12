@@ -16,9 +16,12 @@ namespace FWK::Converter
 
         void Load(SceneManager& a_sceneManager) const;
 
-        void Save(const SceneManager& a_sceneManager) const;
+        void Save     (const SceneManager&         a_sceneManager) const;
+        void SaveScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_filePath) const;
 
     private:
+
+        nlohmann::json SerializeScene(const std::weak_ptr<Scene>& a_scene, const AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
         void DeserializeNextSceneLoadFilePathMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const;
 

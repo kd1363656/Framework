@@ -19,11 +19,5 @@ namespace FWK::Editor
         void Paste(const std::filesystem::path& a_destinationFolderPath, AssetBrowserEditorWindowClipboard& a_clipboard);
 
         void Duplicate(const std::vector<std::filesystem::path>& a_filePathList);
-
-    private:
-
-        static std::filesystem::path ResolveNameConflict(const std::filesystem::path& a_desiredPath);
-
-        static constexpr std::uint64_t k_initialNameConflictResolveNumber = 1ULL;
     };
 }

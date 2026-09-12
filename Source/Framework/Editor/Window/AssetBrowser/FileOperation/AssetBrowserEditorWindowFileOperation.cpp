@@ -10,7 +10,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
 
     // 同一名が存在する場合は番号付与する
     // ただし自分自身と同じ名前の場合は番号付与しない
-    const auto& l_resolvedNewFilePath = (l_newFilePath == a_targetFilePath) ? l_newFilePath : ResolveNameConflict(l_newFilePath);
+    const auto& l_resolvedNewFilePath = (l_newFilePath == a_targetFilePath) ? l_newFilePath : Utility::ResolveFilePathConflict(l_newFilePath);
 
     // ファイルシステム上でリネームする
     std::filesystem::rename(a_targetFilePath, l_resolvedNewFilePath, l_errorCode);
@@ -86,7 +86,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::filesy
         // 同名が存在する場合は番号付与したPathへ貼り付ける
         if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
         {
-            l_destinationFilePath = ResolveNameConflict(l_destinationFilePath);
+            l_destinationFilePath = Utility::ResolveFilePathConflict(l_destinationFilePath);
         }
 
         // copy()はフォルダの場合は中身も再帰的にコピーする
@@ -126,7 +126,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
     for (const auto& l_sourceFilePath : a_filePathList)
     {
         // 同じフォルダ内へ同じ名前でファイル、フォルダを複製する
-        const auto& l_duplicateFilePath = ResolveNameConflict(l_sourceFilePath);
+        const auto& l_duplicateFilePath = Utility::ResolveFilePathConflict(l_sourceFilePath);
 
         std::error_code l_errorCode = {};
 
@@ -143,34 +143,5 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
                         l_duplicateFilePath.string(),
                         l_errorCode.value());
         }
-    }
-}
-
-std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFileOperation::ResolveNameConflict(const std::filesystem::path & a_desiredPath)
-{
-    std::error_code l_errorCode = {};
-
-    // 希望するPathが存在しないならそのまま返す
-    if (!std::filesystem::exists(a_desiredPath, l_errorCode)) { return a_desiredPath; }
-
-    // ファイル名のStemと拡張子を取得
-    // 例 : "Player.png" -> stem = "Player", extension = ".png"
-    const auto& l_stem       = a_desiredPath.stem       ().string();
-    const auto& l_extension  = a_desiredPath.extension  ().string();
-    const auto& l_parentPath = a_desiredPath.parent_path();
-
-    // Player1,Player2...と番号を増やしながら存在をチェックする
-    auto l_number = k_initialNameConflictResolveNumber;
-
-    while (true)
-    {
-        // stem + 番号 + 拡張子を統合した新しいPathを作る
-        const auto& l_candidatePath = l_parentPath / (std::format("{}{}{}", l_stem, l_number, l_extension));
-
-        l_errorCode.clear();
-
-        // ファイルパスが存在しなければ他の番号と被りが発生していないため
-        // そのファイルパスを返す
-        if (!std::filesystem::exists(l_candidatePath, l_errorCode)) { return l_candidatePath; }
     }
 }

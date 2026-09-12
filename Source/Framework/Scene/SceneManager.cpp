@@ -2,7 +2,7 @@
 
 // アプリケーション起動時の初回はファイルパスに依存したファイル読み込みになるが
 // 次回からはUUIDを通したFilePathの取得になる
-void FWK::SceneManager::LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath)
+void FWK::SceneManager::Load(const std::filesystem::path& a_nextSceneLoadFilePath)
 {
     // ロード前に初期化を行う
     // (そのシーンで使用するSceneShiftMapなどの情報を消して、次のシーンでしか使用しない情報に置き換えるため)
@@ -57,40 +57,13 @@ void FWK::SceneManager::PostLateUpdate()
     LoadNextSceneIfNeeded();
 }
 
-void FWK::SceneManager::SaveScene() const
+void FWK::SceneManager::Save() const
 {
     m_jsonConverter.Save(*this);
 }
-bool FWK::SceneManager::SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath)
+void FWK::SceneManager::SaveScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_nextSceneLoadFilePath) const
 {
-    if (!m_scene)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーンが無効なため、シーンの保存に失敗しました。");
-
-        return false;
-    }
-
-    if (a_nextSceneLoadFilePath.empty())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーンの保存先ファイルパスが空のため、シーンの保存に失敗しました。");
-
-        return false;
-    }
-
-    if (a_nextSceneLoadFilePath.extension() != Constant::k_lowerJsonExtension)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーンの保存先ファイルがJson形式ではないため、シーンの保存に失敗しました。\nFilePath : {}", a_nextSceneLoadFilePath.string());
-
-        return false;
-    }
-    // Jsonファイルへの保存が完全に成功した後でのみ、
-    // 現在Sceneの正式なFilePathを変更する
-    // 保存失敗したPathを現在Sceneへ設定しないため。
-    m_currentSceneFilePath = a_nextSceneLoadFilePath;
-
-    m_jsonConverter.Save(*this);
-
-    return true;
+    m_jsonConverter.SaveScene(a_nextSceneLoadFilePath, a_scene);
 }
 
 bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)

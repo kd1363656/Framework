@@ -619,6 +619,8 @@
 #include "Editor/Window/AssetBrowser/Pane/Folder/AssetBrowserEditorWindowFolderPane.h"
 #include "Editor/Window/AssetBrowser/Pane/Asset/AssetBrowserEditorWindowAssetPane.h"
 #include "Editor/Window/AssetBrowser/Clipboard/AssetBrowserEditorWindowClipboard.h"
+#include "Definition/Constant/Utility/File/ResolveFilePathConflictUtilityConstant.h"
+#include "Utility/File/ResolveFilePathConflictUtility.h"
 #include "Editor/Window/AssetBrowser/FileOperation/AssetBrowserEditorWindowFileOperation.h"
 #include "Editor/Window/AssetBrowser/Creation/AssetBrowserEditorWindowAssetCreator.h"
 #include "Editor/Window/AssetBrowser/Shortcut/AssetBrowserEditorWindowShortcutHandler.h"

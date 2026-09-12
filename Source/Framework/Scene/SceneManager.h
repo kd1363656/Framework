@@ -15,15 +15,15 @@ namespace FWK
 
     public:
 
-        void LoadScene(const std::filesystem::path& a_nextSceneLoadFilePath);
+        void Load(const std::filesystem::path& a_nextSceneLoadFilePath);
 
         void EarlyUpdate   ();
         void Update        () const;
         void LateUpdate    () const;
         void PostLateUpdate();
 
-        void SaveScene() const;
-        bool SaveScene(const std::filesystem::path& a_nextSceneLoadFilePath);
+        void Save     ()                                                                                          const;
+        void SaveScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_nextSceneLoadFilePath) const;
 
         bool AddNextSceneLoadFilePath(const boost::uuids::uuid&    a_sceneUUID);
         bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID);
