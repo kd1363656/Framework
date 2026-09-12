@@ -61,10 +61,6 @@ void FWK::SceneManager::Save() const
 {
     m_jsonConverter.Save(*this);
 }
-void FWK::SceneManager::SaveScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_nextSceneLoadFilePath) const
-{
-    m_jsonConverter.SaveScene(a_nextSceneLoadFilePath, a_scene);
-}
 
 bool FWK::SceneManager::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)
 {

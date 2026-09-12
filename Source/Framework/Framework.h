@@ -622,6 +622,7 @@
 #include "Definition/Constant/Utility/File/ResolveFilePathConflictUtilityConstant.h"
 #include "Utility/File/ResolveFilePathConflictUtility.h"
 #include "Editor/Window/AssetBrowser/FileOperation/AssetBrowserEditorWindowFileOperation.h"
+#include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowAssetCreatorStruct.h"
 #include "Editor/Window/AssetBrowser/Creation/AssetBrowserEditorWindowAssetCreator.h"
 #include "Editor/Window/AssetBrowser/Shortcut/AssetBrowserEditorWindowShortcutHandler.h"
 #include "Editor/Window/AssetBrowser/Popup/AssetBrowserEditorWindowPopupDrawer.h"

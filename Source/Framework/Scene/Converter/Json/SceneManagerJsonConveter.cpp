@@ -1,5 +1,18 @@
 ﻿#include "SceneManagerJsonConveter.h"
 
+nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeScene(const std::weak_ptr<Scene>& a_scene, const AssetFilePathRegistry& a_assetFilePathRegistry)
+{
+          nlohmann::json l_rootJson = {};
+    const auto&          l_scene    = a_scene.lock();
+          
+    if (!l_scene) { return {}; }
+
+    // シーンのシリアライズ
+    l_rootJson[k_sceneJsonKey] = l_scene->Serialize(a_assetFilePathRegistry);
+
+    return l_rootJson;
+}
+
 void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManager) const
 {
     const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
@@ -78,27 +91,6 @@ void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_scene
     Utility::UpdateJson(l_rootJson, SerializeScene(l_scene, l_assetFilePathRegistry));
 
     Utility::SaveJsonFile(l_rootJson, l_currentSceneFilePath);
-}
-void FWK::Converter::SceneManagerJsonConverter::SaveScene(const std::weak_ptr<Scene>& a_scene, const std::filesystem::path& a_filePath) const
-{
-    AssetFilePathRegistry l_assetFilePathRegistry = {};
-
-    auto l_rootJson = SerializeScene(a_scene, l_assetFilePathRegistry);
-
-    Utility::SaveJsonFile(a_filePath, l_rootJson);
-}
-
-nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeScene(const std::weak_ptr<Scene>& a_scene, const AssetFilePathRegistry& a_assetFilePathRegistry) const
-{
-          nlohmann::json l_rootJson = {};
-    const auto&          l_scene    = a_scene.lock();
-          
-    if (!l_scene) { return {}; }
-
-    // シーンのシリアライズ
-    l_rootJson[k_sceneJsonKey] = l_scene->Serialize(a_assetFilePathRegistry);
-
-    return l_rootJson;
 }
 
 void FWK::Converter::SceneManagerJsonConverter::DeserializeNextSceneLoadFilePathMap(const nlohmann::json& a_rootJson, SceneManager& a_sceneManager) const
