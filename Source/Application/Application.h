@@ -4,42 +4,42 @@ class Application final : public FWK::Utility::SingletonBase<Application>
 {
 private:
 
-	friend class SingletonBase<Application>;
+    friend class SingletonBase<Application>;
 
-	 Application();
-	~Application() override;
+     Application();
+    ~Application() override;
 
 public:
 
-	void Execute();
+    void Execute();
 
-	const auto& GetREFWindow       () const { return m_window; }
-	const auto& GetREFFPSController() const { return m_fpsController; }
+    const auto& GetREFWindow       () const { return m_window; }
+    const auto& GetREFFPSController() const { return m_fpsController; }
 
-	static constexpr int k_exitCodeSuccess			   =  0;
-	static constexpr int k_exitCodeCOMInitializeFailed = -1;
+    static constexpr int k_exitCodeSuccess             =  0;
+    static constexpr int k_exitCodeCOMInitializeFailed = -1;
 
 private:
+    
+    void LoadCONFIG    ();
+    void PostLoadCONFIG();
 
-	void LoadCONFIG    ();
-	void PostLoadCONFIG();
+    bool BeginFrame();
+    void EndFrame  ();
 
-	bool BeginFrame();
-	void EndFrame  ();
+    void SaveCONFIG() const;
 
-	void SaveCONFIG() const;
+    void ClearWindowResizeRequest();
 
-	void ClearWindowResizeRequest();
+    bool CanUpdateFrame() const;
 
-	bool CanUpdateFrame() const;
+    void UpdateWindowTitleBar() const;
 
-	void UpdateWindowTitleBar() const;
+    static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Game/Stage1-1.json";
 
-	static constexpr std::string_view k_firstLoadSceneFilepath = "Asset/Data/Scene/Game/Stage1-1.json";
+    static inline const std::wstring k_windowClassName = L"Window";
+    static inline const std::string  k_titleName       = "MRI_FRAMEWORK";
 
-	static inline const std::wstring k_windowClassName = L"Window";
-	static inline const std::string  k_titleName       = "MRI_FRAMEWORK";
-
-	FWK::Window		   m_window;
-	FWK::FPSController m_fpsController;
+    FWK::Window        m_window;
+    FWK::FPSController m_fpsController;
 };

@@ -2,74 +2,74 @@
 
 void FWK::Converter::AssetFilePathRegistryJsonConverter::Deserialize(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	if (const auto& l_json = a_rootJson.value(k_filePathRegistryMapJsonKey, nlohmann::json{});
-		!l_json.is_null())
-	{
-		DeserializeFilePathRegistryMap(l_json, a_assetFilePathRegistry);
-	}
+    if (const auto& l_json = a_rootJson.value(k_filePathRegistryMapJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        DeserializeFilePathRegistryMap(l_json, a_assetFilePathRegistry);
+    }
 }
 nlohmann::json FWK::Converter::AssetFilePathRegistryJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
-	nlohmann::json l_rootJson = {};
+    nlohmann::json l_rootJson = {};
 
-	l_rootJson[k_filePathRegistryMapJsonKey] = SerializeFilePathRegistryMap(a_assetFilePathRegistry);
+    l_rootJson[k_filePathRegistryMapJsonKey] = SerializeFilePathRegistryMap(a_assetFilePathRegistry);
 
-	return l_rootJson;
+    return l_rootJson;
 }
 
 void FWK::Converter::AssetFilePathRegistryJsonConverter::DeserializeFilePathRegistryMap(const nlohmann::json& a_rootJson, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
-	if (a_rootJson.is_null() ||
-		!Utility::IsJsonArray(a_rootJson))
-	{
-		return; 
-	}
+    if (a_rootJson.is_null() ||
+        !Utility::IsJsonArray(a_rootJson))
+    {
+        return; 
+    }
 
-	for (const auto& l_json : a_rootJson)
-	{
-		if (l_json.is_null()) { continue; }
+    for (const auto& l_json : a_rootJson)
+    {
+        if (l_json.is_null()) { continue; }
 
-		const auto& l_uuid                 = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
-		const auto& l_filePath             = l_json.value            (k_filePathJsonKey, std::filesystem::path{});
-		const auto  l_filePathRegistryType = l_json.value            (k_filePathRegistryTypeJsonKey, Enum::AssetFilePathRegistryType::Invalid);
+        const auto& l_uuid                 = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
+        const auto& l_filePath             = l_json.value            (k_filePathJsonKey, std::filesystem::path{});
+        const auto  l_filePathRegistryType = l_json.value            (k_filePathRegistryTypeJsonKey, Enum::AssetFilePathRegistryType::Invalid);
 
-		// 読み込めないファイルパスがある場合はMapに追加しない
-		if (!Utility::CanLoadFilePath(l_filePath)) { continue; }
+        // 読み込めないファイルパスがある場合はMapに追加しない
+        if (!Utility::CanLoadFilePath(l_filePath)) { continue; }
 
-		a_assetFilePathRegistry.Add(l_filePath, l_uuid, l_filePathRegistryType);
-	}
+        a_assetFilePathRegistry.Add(l_filePath, l_uuid, l_filePathRegistryType);
+    }
 }
 
 nlohmann::json FWK::Converter::AssetFilePathRegistryJsonConverter::SerializeFilePathRegistryMap(const AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
-	auto l_rootJsonArray = nlohmann::json::array();
+    auto l_rootJsonArray = nlohmann::json::array();
 
-	const auto& l_assetFilePathToUUIDMap = a_assetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
+    const auto& l_assetFilePathToUUIDMap = a_assetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
 
-	for (const auto& [l_filePath, l_assetUUID] : l_assetFilePathToUUIDMap)
-	{
-		// UUIDが無効化読み込めるファイルパスでなければシリアライズしない
-		if (l_assetUUID.is_nil() ||
-			!Utility::CanLoadFilePath(l_filePath))
-		{
-			continue; 
-		}
+    for (const auto& [l_filePath, l_assetUUID] : l_assetFilePathToUUIDMap)
+    {
+        // UUIDが無効化読み込めるファイルパスでなければシリアライズしない
+        if (l_assetUUID.is_nil() ||
+            !Utility::CanLoadFilePath(l_filePath))
+        {
+            continue; 
+        }
 
-		auto l_json = nlohmann::json{};
+        auto l_json = nlohmann::json{};
 
-		l_json[k_filePathJsonKey]  = l_filePath;
-		Utility::UpdateJson(l_json, Utility::SerializeUUID(l_assetUUID, k_uuidJsonKey));
+        l_json[k_filePathJsonKey]  = l_filePath;
+        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_assetUUID, k_uuidJsonKey));
 
-		const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(l_assetUUID);
+        const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(l_assetUUID);
 
-		if (!l_assetFilePathData) { continue; }
+        if (!l_assetFilePathData) { continue; }
 
-		l_json[k_filePathRegistryTypeJsonKey] = l_assetFilePathData->m_type;
+        l_json[k_filePathRegistryTypeJsonKey] = l_assetFilePathData->m_type;
 
-		l_rootJsonArray.emplace_back(l_json);
-	}
+        l_rootJsonArray.emplace_back(l_json);
+    }
 
-	return l_rootJsonArray;
+    return l_rootJsonArray;
 }
