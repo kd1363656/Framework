@@ -2,46 +2,46 @@
 
 namespace FWK::Editor
 {
-	class AssetBrowserEditorWindow final : public EditorWindowBase
-	{
-	public:
+    class AssetBrowserEditorWindow final : public EditorWindowBase
+    {
+    public:
 
-		 AssetBrowserEditorWindow()          = default;
-		~AssetBrowserEditorWindow() override = default;
+         AssetBrowserEditorWindow()          = default;
+        ~AssetBrowserEditorWindow() override = default;
 
-		void Deserialize    (const nlohmann::json& a_rootJson) override;
-		void PostDeserialize()                                 override;
+        void Deserialize    (const nlohmann::json& a_rootJson) override;
+        void PostDeserialize()                                 override;
 
-		void Draw() override;
+        void Draw() override;
 
-		nlohmann::json Serialize() override;
+        nlohmann::json Serialize() override;
 
-		const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
-		const auto& GetREFPaneSplitter         () const { return m_paneSplitter; }
+        const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
+        const auto& GetREFPaneSplitter         () const { return m_paneSplitter; }
 
-		auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
-		auto& GetMutableREFPaneSplitter         () { return m_paneSplitter; }
+        auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
+        auto& GetMutableREFPaneSplitter         () { return m_paneSplitter; }
 
-	private:
+    private:
 
-		static constexpr std::string_view k_paneSplitterLabel = "##AssetBrowserEditorWindowPaneSplitter";
+        static constexpr std::string_view k_paneSplitterLabel = "##AssetBrowserEditorWindowPaneSplitter";
 
-		static constexpr std::string_view k_editorName                 = "アセットブラウザー";
-		static constexpr std::string_view k_thisWindowExplanationLabel = "アセットブラウザーでは使用したいFBXファイルをモデル描画コンポーネントに\nドラッグ&ドロップしてロードするモデルとして扱ったり、使用したいゲームオブジェクトのプレハブをドラッグ&ドロップ\nでシーンに追加したりすることができるウィンドウ。";
+        static constexpr std::string_view k_editorName                 = "アセットブラウザー";
+        static constexpr std::string_view k_thisWindowExplanationLabel = "アセットブラウザーでは使用したいFBXファイルをモデル描画コンポーネントに\nドラッグ&ドロップしてロードするモデルとして扱ったり、使用したいゲームオブジェクトのプレハブをドラッグ&ドロップ\nでシーンに追加したりすることができるウィンドウ。";
 
-		AssetFilePathRegistry m_assetFilePathRegistry = {};
+        AssetFilePathRegistry m_assetFilePathRegistry = {};
 
-		AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
+        AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
 
-		AssetBrowserEditorWindowFolderPane m_folderPane = {};
-		AssetBrowserEditorWindowAssetPane  m_assetPane  = {};
+        AssetBrowserEditorWindowFolderPane m_folderPane = {};
+        AssetBrowserEditorWindowAssetPane  m_assetPane  = {};
 
-		EditorWindowPaneSplitter m_paneSplitter = {};
+        EditorWindowPaneSplitter m_paneSplitter = {};
 
-		Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
+        Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
-		FWK_DEFINE_TYPE_INFO(AssetBrowserEditorWindow, EditorWindowBase)
-	};
+        FWK_DEFINE_TYPE_INFO(AssetBrowserEditorWindow, EditorWindowBase)
+    };
 }
 
 FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::EditorWindowSharedFactory, FWK::Editor::AssetBrowserEditorWindow)

@@ -2,14 +2,14 @@
 
 void FWK::Editor::DetailsEditorWindow::Draw()
 {
-	if (!ImGui::Begin(k_editorName.data()))
-	{
-		ImGui::End();
+    if (!ImGui::Begin(k_editorName.data()))
+    {
+        ImGui::End();
 
-		return;
-	}
+        return;
+    }
 
-	Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
+    Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
 
-	ImGui::End();
+    ImGui::End();
 }

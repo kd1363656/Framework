@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-    struct RenderGraphResourceAccess final 
+    struct RenderGraphResourceAccess final
     {
         // 今からアクセスするリソースがバックバッファなのか、
         // レンダーターゲットテクスチャなのか、デプスステンシルテクスチャなのかを決めるフラグ
@@ -12,7 +12,7 @@ namespace FWK::Struct
         bool                              m_isBackBuffer     = false;
         Enum::RenderGraphRenderTargetType m_renderTargetType = Enum::RenderGraphRenderTargetType::None;
         Enum::RenderGraphDepthStencilType m_depthStencilType = Enum::RenderGraphDepthStencilType::None;
-        
+
         Enum::RenderGraphShadowMapType m_shadowMapType = Enum::RenderGraphShadowMapType::None;
         Enum::RenderGraphAccessType    m_accessType    = Enum::RenderGraphAccessType::Invalid;
         Enum::RenderGraphResourceUsage m_beforeUsage   = Enum::RenderGraphResourceUsage::Invalid;

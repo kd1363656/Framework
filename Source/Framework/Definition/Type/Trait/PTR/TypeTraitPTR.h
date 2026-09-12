@@ -8,7 +8,7 @@ namespace FWK::TypeTrait
     {
         static constexpr Enum::PTRKind k_kind = Enum::PTRKind::None;
     };
-    
+
     template <typename Type>
     struct PTRType<Type*>
     {
@@ -20,7 +20,7 @@ namespace FWK::TypeTrait
     {
         static constexpr Enum::PTRKind k_kind = Enum::PTRKind::Shared;
     };
-    
+
     template <typename Type>
     struct PTRType<std::unique_ptr<Type>>
     {

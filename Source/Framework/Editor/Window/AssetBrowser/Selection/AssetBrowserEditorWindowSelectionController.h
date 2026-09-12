@@ -2,11 +2,11 @@
 
 namespace FWK::Editor
 {
-	class AssetBrowserEditorWindowSelectionController final
-	{
-	public:
+    class AssetBrowserEditorWindowSelectionController final
+    {
+    public:
 
-		 AssetBrowserEditorWindowSelectionController() = default;
-		~AssetBrowserEditorWindowSelectionController() = default;
-	};
+         AssetBrowserEditorWindowSelectionController() = default;
+        ~AssetBrowserEditorWindowSelectionController() = default;
+    };
 }

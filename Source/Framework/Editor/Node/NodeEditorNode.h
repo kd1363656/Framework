@@ -2,55 +2,55 @@
 
 namespace FWK::Editor
 {
-	class NodeEditorNode final
-	{
-	public:
+    class NodeEditorNode final
+    {
+    public:
 
-		 NodeEditorNode() = default;
-		~NodeEditorNode() = default;
+         NodeEditorNode() = default;
+        ~NodeEditorNode() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		bool ApplyNodeID(NodeEditorAllocator& a_nodeEditorAllocator);
+        bool ApplyNodeID(NodeEditorAllocator& a_nodeEditorAllocator);
 
-		nlohmann::json Serialize() const;
+        nlohmann::json Serialize() const;
 
-		void Release(NodeEditorAllocator& a_nodeEditorAllocator);
+        void Release(NodeEditorAllocator& a_nodeEditorAllocator);
 
-		void ReleaseInputPinIDList (NodeEditorAllocator& a_nodeEditorAllocator);
-		void ReleaseOutputPinIDList(NodeEditorAllocator& a_nodeEditorAllocator);
+        void ReleaseInputPinIDList (NodeEditorAllocator& a_nodeEditorAllocator);
+        void ReleaseOutputPinIDList(NodeEditorAllocator& a_nodeEditorAllocator);
 
-		bool AddInputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
-		bool AddInputPinID(const TypeAlias::NodeEditorID a_pinID);
+        bool AddInputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
+        bool AddInputPinID(const TypeAlias::NodeEditorID a_pinID);
 
-		bool AddOutputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
-		bool AddOutputPinID(const TypeAlias::NodeEditorID a_pinID);
+        bool AddOutputPinID(      NodeEditorAllocator&    a_nodeEditorAllocator);
+        bool AddOutputPinID(const TypeAlias::NodeEditorID a_pinID);
 
-		void SetNodeID(const TypeAlias::NodeEditorID a_set) { m_nodeID = a_set; }
+        void SetNodeID(const TypeAlias::NodeEditorID a_set) { m_nodeID = a_set; }
 
-		void SetNodePosition(const ImVec2& a_set) { m_nodePosition = a_set; }
+        void SetNodePosition(const ImVec2& a_set) { m_nodePosition = a_set; }
 
-		bool FetchVALIsCreated() const;
-		
-		auto GetVALNodeID() const { return m_nodeID; }
+        bool FetchVALIsCreated() const;
 
-		const auto& GetREFInputPinIDList () const { return m_inputPInIDList; }
-		const auto& GetREFOutputPinIDList() const { return m_outputPInIDList; }
-		const auto& GetREFNodePosition   () const { return m_nodePosition; }
+        auto GetVALNodeID() const { return m_nodeID; }
 
-	private:
+        const auto& GetREFInputPinIDList () const { return m_inputPinIDList; }
+        const auto& GetREFOutputPinIDList() const { return m_outputPinIDList; }
+        const auto& GetREFNodePosition   () const { return m_nodePosition; }
 
-		bool AddPinIDToPinIDList(const TypeAlias::NodeEditorID a_pinID, std::vector<TypeAlias::NodeEditorID>& a_pinIDList) const;
+    private:
 
-		void Reset();
+        bool AddPinIDToPinIDList(const TypeAlias::NodeEditorID a_pinID, std::vector<TypeAlias::NodeEditorID>& a_pinIDList) const;
 
-		std::vector<TypeAlias::NodeEditorID> m_inputPInIDList  = {};
-		std::vector<TypeAlias::NodeEditorID> m_outputPInIDList = {};
+        void Reset();
 
-		Converter::NodeEditorNodeJsonConverter m_jsonConverter = {};
+        std::vector<TypeAlias::NodeEditorID> m_inputPinIDList  = {};
+        std::vector<TypeAlias::NodeEditorID> m_outputPinIDList = {};
 
-		ImVec2 m_nodePosition = {};
+        Converter::NodeEditorNodeJsonConverter m_jsonConverter = {};
 
-		TypeAlias::NodeEditorID m_nodeID = Constant::k_imguiInvalidNodeEditorID;
-	};
+        ImVec2 m_nodePosition = {};
+
+        TypeAlias::NodeEditorID m_nodeID = Constant::k_imguiInvalidNodeEditorID;
+    };
 }

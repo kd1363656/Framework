@@ -11,7 +11,7 @@ namespace FWK::Enum
 
     FWK_JSON_SERIALIZE_ENUM
     (
-        WindowStyle, 
+        WindowStyle,
         FWK_JSON_ENUM_VALUE(WindowStyle::None),
         FWK_JSON_ENUM_VALUE(WindowStyle::Normal),
         FWK_JSON_ENUM_VALUE(WindowStyle::BorderlessFullScreen)

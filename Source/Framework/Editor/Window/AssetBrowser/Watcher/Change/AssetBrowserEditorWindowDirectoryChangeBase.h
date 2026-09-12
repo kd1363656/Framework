@@ -2,36 +2,36 @@
 
 namespace FWK::Editor
 {
-	class AssetBrowserEditorWindowDirectoryChangeBase
-	{
-	public:
+    class AssetBrowserEditorWindowDirectoryChangeBase
+    {
+    public:
 
-		         AssetBrowserEditorWindowDirectoryChangeBase() = default;
-		virtual ~AssetBrowserEditorWindowDirectoryChangeBase() = default;
+                 AssetBrowserEditorWindowDirectoryChangeBase() = default;
+        virtual ~AssetBrowserEditorWindowDirectoryChangeBase() = default;
 
-		virtual void Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager) = 0;
+        virtual void Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager) = 0;
 
-		void SetFilePath(const std::filesystem::path& a_set) { m_filePath = a_set; }
+        void SetFilePath(const std::filesystem::path& a_set) { m_filePath = a_set; }
 
-		void SetIsDirectory(const bool a_set) { m_isDirectory     = a_set; }
-		
-		bool GetVALIsRequiresRetry() const { return m_isRequiresRetry; }
+        void SetIsDirectory(const bool a_set) { m_isDirectory     = a_set; }
 
-	protected:
+        bool GetVALIsRequiresRetry() const { return m_isRequiresRetry; }
 
-		void SetIsRequiresRetry(const bool a_set) { m_isRequiresRetry = a_set; }
+    protected:
 
-		const auto& GetREFFilePath() const { return m_filePath; }
+        void SetIsRequiresRetry(const bool a_set) { m_isRequiresRetry = a_set; }
 
-		bool GetVALIsDirectory() const { return m_isDirectory; }
-		
-		static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath);
+        const auto& GetREFFilePath() const { return m_filePath; }
 
-	private:
+        bool GetVALIsDirectory() const { return m_isDirectory; }
 
-		std::filesystem::path m_filePath = {};
+        static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath);
 
-		bool m_isDirectory     = false;
-		bool m_isRequiresRetry = false;
-	};
+    private:
+
+        std::filesystem::path m_filePath = {};
+
+        bool m_isDirectory     = false;
+        bool m_isRequiresRetry = false;
+    };
 }

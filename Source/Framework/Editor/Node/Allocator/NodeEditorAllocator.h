@@ -2,33 +2,33 @@
 
 namespace FWK
 {
-	class NodeEditorAllocator final
-	{
-	public:
+    class NodeEditorAllocator final
+    {
+    public:
 
-		 NodeEditorAllocator() = default;
-		~NodeEditorAllocator() = default;
+         NodeEditorAllocator() = default;
+        ~NodeEditorAllocator() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson);
-		
-		nlohmann::json Serialize() const;
+        void Deserialize(const nlohmann::json& a_rootJson);
 
-		TypeAlias::NodeEditorID Allocate();
+        nlohmann::json Serialize() const;
 
-		void Release(const TypeAlias::NodeEditorID a_nodeEditorID);
+        TypeAlias::NodeEditorID Allocate();
 
-		auto& GetMutableREFIsAllocatedList() { return m_isAllocatedList; }
+        void Release(const TypeAlias::NodeEditorID a_nodeEditorID);
 
-		const auto& GetREFIsAllocatedList() const { return m_isAllocatedList; }
-		
-	private:
+        auto& GetMutableREFIsAllocatedList() { return m_isAllocatedList; }
 
-		void RebuildFreeNodeEditorIDQueue();
-		
-		std::vector<bool> m_isAllocatedList = {};
+        const auto& GetREFIsAllocatedList() const { return m_isAllocatedList; }
 
-		std::queue<TypeAlias::NodeEditorID> m_freeNodeEditorIDQueue = {};
+    private:
 
-		Converter::NodeEditorAllocatorJsonConverter m_jsonConverter = {};
-	};
+        void RebuildFreeNodeEditorIDQueue();
+
+        std::vector<bool> m_isAllocatedList = {};
+
+        std::queue<TypeAlias::NodeEditorID> m_freeNodeEditorIDQueue = {};
+
+        Converter::NodeEditorAllocatorJsonConverter m_jsonConverter = {};
+    };
 }

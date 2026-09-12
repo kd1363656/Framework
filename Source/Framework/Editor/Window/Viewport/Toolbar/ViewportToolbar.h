@@ -2,26 +2,26 @@
 
 namespace FWK::Editor
 {
-	class ViewportToolbar final
-	{
-	public:
+    class ViewportToolbar final
+    {
+    public:
 
-		 ViewportToolbar() = default;
-		~ViewportToolbar() = default;
+         ViewportToolbar() = default;
+        ~ViewportToolbar() = default;
 
-		void Draw();
+        void Draw();
 
-	private:
+    private:
 
-		void DrawDisplayOptionsButton() const;
-		void DrawDisplayOptionsPopup () const;
-		void DrawCollisionMenuItem   () const;
+        void DrawDisplayOptionsButton() const;
+        void DrawDisplayOptionsPopup () const;
+        void DrawCollisionMenuItem   () const;
 
-		static constexpr std::string_view k_toolbarChildID         = "##ViewportToolbar";
-		static constexpr std::string_view k_displayOptionsPopupID  = "##SceneViewDisplayOptionsPopup";
-		static constexpr std::string_view k_collisionMenuItemLabel = "当たり判定の可視化";
+        static constexpr std::string_view k_toolbarChildID         = "##ViewportToolbar";
+        static constexpr std::string_view k_displayOptionsPopupID  = "##SceneViewDisplayOptionsPopup";
+        static constexpr std::string_view k_collisionMenuItemLabel = "当たり判定の可視化";
 
-		static constexpr float k_toolbarHeight     = 36.0F;
-		static constexpr float k_toolbarButtonSize = 28.0F;
-	};
+        static constexpr float k_toolbarHeight     = 36.0F;
+        static constexpr float k_toolbarButtonSize = 28.0F;
+    };
 }

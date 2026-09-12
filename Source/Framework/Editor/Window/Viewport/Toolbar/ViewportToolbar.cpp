@@ -2,47 +2,47 @@
 
 void FWK::Editor::ViewportToolbar::Draw()
 {
-	if (const auto& l_toolbarSize = ImVec2{ ImGui::GetContentRegionAvail().x, k_toolbarHeight };
-		!ImGui::BeginChild(k_toolbarChildID.data(),
-						   l_toolbarSize,
-						   false,
-						   ImGuiWindowFlags_NoScrollbar | 
-						   ImGuiWindowFlags_NoScrollWithMouse))
-	{
-		ImGui::EndChild();
-		return;
-	}
+    if (const auto& l_toolbarSize = ImVec2{ ImGui::GetContentRegionAvail().x, k_toolbarHeight };
+        !ImGui::BeginChild(k_toolbarChildID.data(),
+                           l_toolbarSize,
+                           false,
+                           ImGuiWindowFlags_NoScrollbar |
+                           ImGuiWindowFlags_NoScrollWithMouse))
+    {
+        ImGui::EndChild();
+        return;
+    }
 
-	DrawDisplayOptionsButton();
+    DrawDisplayOptionsButton();
 
-	ImGui::EndChild();
+    ImGui::EndChild();
 }
 
 void FWK::Editor::ViewportToolbar::DrawDisplayOptionsButton() const
 {
-	if (ImGui::Button("表示"))
-	{
-		ImGui::OpenPopup(k_displayOptionsPopupID.data());
-	}
+    if (ImGui::Button("表示"))
+    {
+        ImGui::OpenPopup(k_displayOptionsPopupID.data());
+    }
 
-	DrawDisplayOptionsPopup();
+    DrawDisplayOptionsPopup();
 }
 void FWK::Editor::ViewportToolbar::DrawDisplayOptionsPopup() const
 {
-	if (!ImGui::BeginPopup(k_displayOptionsPopupID.data())) { return; }
+    if (!ImGui::BeginPopup(k_displayOptionsPopupID.data())) { return; }
 
-	DrawCollisionMenuItem();
+    DrawCollisionMenuItem();
 
-	ImGui::EndPopup();
+    ImGui::EndPopup();
 }
 void FWK::Editor::ViewportToolbar::DrawCollisionMenuItem() const
 {
-	auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
+    auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
 
-	const bool l_isEnabled = l_physicsManager.GetVALIsDisableDebugDraw();
+    const bool l_isEnabled = l_physicsManager.GetVALIsDisableDebugDraw();
 
-	if (ImGui::MenuItem(k_collisionMenuItemLabel.data(), nullptr, l_isEnabled))
-	{
-		l_physicsManager.TogglePhysicsDebugDraw();
-	}
+    if (ImGui::MenuItem(k_collisionMenuItemLabel.data(), nullptr, l_isEnabled))
+    {
+        l_physicsManager.TogglePhysicsDebugDraw();
+    }
 }

@@ -42,4 +42,4 @@ do                                                                   \
         return ReturnValue;                                          \
     }                                                                \
 }                                                                    \
-while (false)                                                                   
+while (false)

@@ -31,7 +31,7 @@ void FWK::Converter::MainMenuBarEditorJsonConverter::DeserializeEditorMainMenu(c
 
         Utility::DeserializeInstanceType<TypeAlias::EditorMainMenuUniqueFactory>(l_json, k_mainMenuTypeName, l_editorMainMenuBase);
 
-        if (!l_editorMainMenuBase) 
+        if (!l_editorMainMenuBase)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "EditorMainMenuが復元されておらず、追加処理に失敗しました。");
             continue;

@@ -2,29 +2,29 @@
 
 namespace FWK::Editor
 {
-	class MainMenuBarEditor;
+    class MainMenuBarEditor;
 }
 
 namespace FWK::Converter
 {
-	class MainMenuBarEditorJsonConverter
-	{
-	public:
+    class MainMenuBarEditorJsonConverter
+    {
+    public:
 
-		 MainMenuBarEditorJsonConverter() = default;
-		~MainMenuBarEditorJsonConverter() = default;
+         MainMenuBarEditorJsonConverter() = default;
+        ~MainMenuBarEditorJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Editor::MainMenuBarEditor& a_mainMenuBarEditor) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Editor::MainMenuBarEditor& a_mainMenuBarEditor) const;
 
-		nlohmann::json Serialize(const Editor::MainMenuBarEditor& a_mainMenubarEditor) const;
+        nlohmann::json Serialize(const Editor::MainMenuBarEditor& a_mainMenubarEditor) const;
 
-	private:
+    private:
 
-		void DeserializeEditorMainMenu(const nlohmann::json& a_rootJson, Editor::MainMenuBarEditor& a_mainMenuBarEditor) const;
+        void DeserializeEditorMainMenu(const nlohmann::json& a_rootJson, Editor::MainMenuBarEditor& a_mainMenuBarEditor) const;
 
-		nlohmann::json SerializeEditorMainMenu(const Editor::MainMenuBarEditor& a_mainMenuBarEditor) const;
+        nlohmann::json SerializeEditorMainMenu(const Editor::MainMenuBarEditor& a_mainMenuBarEditor) const;
 
-		static constexpr std::string_view k_mainMenuListJsonKey = "MainMenuList";
-		static constexpr std::string_view k_mainMenuTypeName    = "MainMenuTypeName";
-	};
+        static constexpr std::string_view k_mainMenuListJsonKey = "MainMenuList";
+        static constexpr std::string_view k_mainMenuTypeName    = "MainMenuTypeName";
+    };
 }

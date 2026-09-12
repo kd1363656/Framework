@@ -2,148 +2,148 @@
 
 namespace FWK
 {
-	class GameObject;
+    class GameObject;
 }
 
 namespace FWK::Editor
 {
-	class EditorManager final : public Utility::SingletonBase<EditorManager>
-	{
-	private:
+    class EditorManager final : public Utility::SingletonBase<EditorManager>
+    {
+    private:
 
-		using ImGuiSRVDescriptorIndexMap = std::unordered_map<UINT64, TypeAlias::DescriptorIndex>;
-		using EditorWindowMap			 = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>>;
+        using ImGuiSRVDescriptorIndexMap = std::unordered_map<std::uint64_t,           TypeAlias::DescriptorIndex>;
+        using EditorWindowMap            = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>>;
 
-		friend class SingletonBase<EditorManager>;
+        friend class SingletonBase<EditorManager>;
 
-		 EditorManager();
-		~EditorManager() override;
+         EditorManager();
+        ~EditorManager() override;
 
-	public:
+    public:
 
-		void INIT          (const HWND& a_hwnd);
-		void LoadCONFIG    ();
-		void PostLoadCONFIG() const;
+        void INIT          (const HWND& a_hwnd);
+        void LoadCONFIG    ();
+        void PostLoadCONFIG() const;
 
-		void DrawEditor();
-		
-		void SaveCONFIG() const;
-	
-		void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest) const;
+        void DrawEditor();
 
-		bool CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
+        void SaveCONFIG() const;
 
-		TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
+        void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest) const;
 
-		void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+        bool CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
-		template <class... Args>
-		void AddLog(const std::source_location&   a_location, 
-			        const TypeAlias::Math::Color& a_textColor,
-			        const std::string_view&       a_format, 
-			              Args&&...               a_args)
-		{
-			// a_formatとa_args...を使って、ログ本文の文字列を作成する
-			// 例 : FWK_ADD_LOG("HP = {}, Name = {}", 100, "Player");
-			// この場合はa_format = "HP = {}, Name = {}" a_args... = 100, "Player"
-			// std::make_format_args(...)はstd::vformatに渡すための「フォーマット用引数リスト」を作成する。
-			// a_args...は、受け取った可変長引数を1つずつ展開してstd::make_format_argsに渡している。
-			// 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
-			const std::string l_message = std::vformat(a_format, std::make_format_args(a_args...));
+        TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
 
-			const std::string& l_formattedLog = std::format("[{} : {}][{}]\n{}\n",
-				                                            a_location.file_name(),
-				                                            a_location.line(),
-				                                            a_location.function_name(),
-				                                            l_message);
+        void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
 
-			// 呼びだし元情報をつけてログ本文を記述
-			m_logEditorWindow.AddLog(a_textColor, l_formattedLog);
-		}
-	
-		void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
+        template <class... Args>
+        void AddLog(const std::source_location&   a_location,
+                    const TypeAlias::Math::Color& a_textColor,
+                    const std::string_view&       a_format,
+                          Args&&...               a_args)
+        {
+            // a_formatとa_args...を使って、ログ本文の文字列を作成する
+            // 例 : FWK_ADD_LOG("HP = {}, Name = {}", 100, "Player");
+            // この場合はa_format = "HP = {}, Name = {}" a_args... = 100, "Player"
+            // std::make_format_args(...)はstd::vformatに渡すための「フォーマット用引数リスト」を作成する。
+            // a_args...は、受け取った可変長引数を1つずつ展開してstd::make_format_argsに渡している。
+            // 最終的にl_messageには、"HP = 100, Name = Player"のような文字列が入る
+            const std::string l_message = std::vformat(a_format, std::make_format_args(a_args...));
 
-		template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
-		std::weak_ptr<WindowType> FindVALWindowEditor() const
-		{
-			const auto l_staticTypeID = WindowType::GetREFTypeINFO().k_staticTypeID;
+            const std::string& l_formattedLog = std::format("[{} : {}][{}]\n{}\n",
+                                                            a_location.file_name(),
+                                                            a_location.line(),
+                                                            a_location.function_name(),
+                                                            l_message);
 
-			const auto& l_itr = m_editorWindowMap.find(l_staticTypeID);
+            // 呼びだし元情報をつけてログ本文を記述
+            m_logEditorWindow.AddLog(a_textColor, l_formattedLog);
+        }
 
-			if (l_itr == m_editorWindowMap.end()) { return {}; }
+        void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
 
-			auto l_editorWindow = l_itr->second.lock();
+        template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
+        std::weak_ptr<WindowType> FindVALWindowEditor() const
+        {
+            const auto l_staticTypeID = WindowType::GetREFTypeINFO().k_staticTypeID;
 
-			if (!l_editorWindow) { return {}; }
+            const auto& l_itr = m_editorWindowMap.find(l_staticTypeID);
 
-			return std::static_pointer_cast<WindowType>(l_editorWindow);
-		}
+            if (l_itr == m_editorWindowMap.end()) { return {}; }
 
-		void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
+            auto l_editorWindow = l_itr->second.lock();
 
-		ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
+            if (!l_editorWindow) { return {}; }
 
-		const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
-		const auto& GetREFMainMenuBar     () const { return m_mainMenuBar; }
-		
-		auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
-		
-		bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
+            return std::static_pointer_cast<WindowType>(l_editorWindow);
+        }
 
-	private:
+        void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
-		static void AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE* a_outCPUHandle, D3D12_GPU_DESCRIPTOR_HANDLE* a_outGPUHandle);
+        ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
-		static void ReleaseSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE a_gpuHandle);
+        const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
+        const auto& GetREFMainMenuBar     () const { return m_mainMenuBar; }
 
-		bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
+        auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
 
-		void DrawDockingSpace() const;
-		void DrawEditorWindow();
+        bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
-		void Release();
+    private:
 
-		inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Editor/EditorCONFIG.json";
+        static void AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE* a_outCPUHandle, D3D12_GPU_DESCRIPTOR_HANDLE* a_outGPUHandle);
 
-		static constexpr const char* k_dockingWindowName = "DockSpace";
-		static constexpr const char* k_dockingSpaceName  = "DockSpace";
+        static void ReleaseSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE a_gpuHandle);
 
-		static constexpr float k_dockingWindowRounding   = 0.0F;
-		static constexpr float k_dockingWindowBorderSize = 0.0F;
+        bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
 
-		static constexpr size_t k_logBufferSize = 1024ULL;
+        void DrawDockingSpace() const;
+        void DrawEditorWindow();
 
-		static constexpr TypeAlias::DescriptorIndex k_imguiSRVDescriptorCapacity = 2560U;
-	
-		static constexpr UINT k_copySRVDescriptorCount = 1U;
+        void Release();
 
-		static constexpr int k_dockingStyleVarPopCount = 2;
+        inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Editor/EditorCONFIG.json";
 
-		ImNodesContext* m_imNodesContext;
+        static constexpr const char* k_dockingWindowName = "DockSpace";
+        static constexpr const char* k_dockingSpaceName  = "DockSpace";
 
-		TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
+        static constexpr float k_dockingWindowRounding   = 0.0F;
+        static constexpr float k_dockingWindowBorderSize = 0.0F;
 
-		ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
+        static constexpr std::size_t k_logBufferSize = 1024ULL;
 
-		EditorWindowMap m_editorWindowMap;
+        static constexpr TypeAlias::DescriptorIndex k_imguiSRVDescriptorCapacity = 2560U;
 
-		std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
+        static constexpr UINT k_copySRVDescriptorCount = 1U;
 
-		LogEditorWindow m_logEditorWindow;
+        static constexpr int k_dockingStyleVarPopCount = 2;
 
-		MainMenuBarEditor m_mainMenuBar;
+        ImNodesContext* m_imNodesContext;
 
-		Converter::EditorManagerJsonConverter m_jsonConverter;
+        TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
 
-		bool m_isInitialized;
-		bool m_isDisableDrawEditor;
-	};
+        ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
+
+        EditorWindowMap m_editorWindowMap;
+
+        std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
+
+        LogEditorWindow m_logEditorWindow;
+
+        MainMenuBarEditor m_mainMenuBar;
+
+        Converter::EditorManagerJsonConverter m_jsonConverter;
+
+        bool m_isInitialized;
+        bool m_isDisableDrawEditor;
+    };
 }
 
 // __VA_OPT(,)は可変長引数があるときだけ"","を追加するためのC++20の機能
-#define FWK_ADD_LOG(TextColor, Format, ...)																						    \
-do																														            \
-{																														            \
-	FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), TextColor, Format __VA_OPT__(,) __VA_ARGS__); \
-}																														            \
+#define FWK_ADD_LOG(TextColor, Format, ...)                                                                                         \
+do                                                                                                                                  \
+{                                                                                                                                   \
+    FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), TextColor, Format __VA_OPT__(,) __VA_ARGS__); \
+}                                                                                                                                   \
 while(false)

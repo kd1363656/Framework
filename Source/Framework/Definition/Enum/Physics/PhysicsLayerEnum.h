@@ -22,7 +22,7 @@ namespace FWK::Enum
     };
 
     // BroadPhaseLayerはJoltのBroadPhase空間分割用の大分類
-    enum class PhysicsBroadPhaseLayerType 
+    enum class PhysicsBroadPhaseLayerType
     {
         Invalid,
 

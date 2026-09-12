@@ -2,7 +2,7 @@
 
 namespace FWK::Enum
 {
-    enum class RenderGraphShadowMapType 
+    enum class RenderGraphShadowMapType
     {
         Invalid,
         None,

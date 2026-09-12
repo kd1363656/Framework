@@ -2,18 +2,18 @@
 
 namespace FWK::Editor
 {
-	class AssetBrowserEditorWindowAssetPane final
-	{
-	public:
+    class AssetBrowserEditorWindowAssetPane final
+    {
+    public:
 
-		 AssetBrowserEditorWindowAssetPane() = default;
-		~AssetBrowserEditorWindowAssetPane() = default;
+         AssetBrowserEditorWindowAssetPane() = default;
+        ~AssetBrowserEditorWindowAssetPane() = default;
 
-		void Draw();
+        void Draw();
 
-	private:
+    private:
 
-		static constexpr std::string_view k_childLabel      = "##AssetBrowserEditorWindowRightPane";
-		static constexpr std::string_view k_paneTitleLabel = "アセット";
-	};
+        static constexpr std::string_view k_childLabel      = "##AssetBrowserEditorWindowRightPane";
+        static constexpr std::string_view k_paneTitleLabel = "アセット";
+    };
 }

@@ -2,18 +2,18 @@
 
 namespace FWK::Editor
 {
-	class AssetBrowserEditorWindowDirectoryAddChange final : public AssetBrowserEditorWindowDirectoryChangeBase
-	{
-	public:
+    class AssetBrowserEditorWindowDirectoryAddChange final : public AssetBrowserEditorWindowDirectoryChangeBase
+    {
+    public:
 
-		 AssetBrowserEditorWindowDirectoryAddChange()          = default;
-		~AssetBrowserEditorWindowDirectoryAddChange() override = default;
+         AssetBrowserEditorWindowDirectoryAddChange()          = default;
+        ~AssetBrowserEditorWindowDirectoryAddChange() override = default;
 
-		void Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager) override;
+        void Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager) override;
 
-	private:
+    private:
 
-		void ApplyPrefabAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_prefabUUID, SceneManager& a_sceneManager);
-		void ApplySceneAdd (const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID,  SceneManager& a_sceneManager);
-	};
+        void ApplyPrefabAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_prefabUUID, SceneManager& a_sceneManager);
+        void ApplySceneAdd (const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID,  SceneManager& a_sceneManager);
+    };
 }

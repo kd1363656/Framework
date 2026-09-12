@@ -2,34 +2,34 @@
 
 namespace FWK::Editor
 {
-	class EditorManager;
+    class EditorManager;
 }
 
 namespace FWK::Converter
 {
-	class EditorManagerJsonConverter final
-	{
-	public:
+    class EditorManagerJsonConverter final
+    {
+    public:
 
-		 EditorManagerJsonConverter() = default;
-		~EditorManagerJsonConverter() = default;
+         EditorManagerJsonConverter() = default;
+        ~EditorManagerJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const;
+        void Deserialize(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const;
 
-		nlohmann::json Serialize(const Editor::EditorManager& a_editorManager) const;
+        nlohmann::json Serialize(const Editor::EditorManager& a_editorManager) const;
 
-	private:
+    private:
 
-		void DeserializeWindow(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const;
+        void DeserializeWindow(const nlohmann::json& a_rootJson, Editor::EditorManager& a_editorManager) const;
 
-		nlohmann::json SerializeWindow(const Editor::EditorManager& a_editorManager) const;
+        nlohmann::json SerializeWindow(const Editor::EditorManager& a_editorManager) const;
 
-		static constexpr std::string_view k_windowListJsonKey     = "WindowList";
-		static constexpr std::string_view k_windowJsonKey         = "Window";
-		static constexpr std::string_view k_windowTypeNameJsonKey = "WindowTypeName";
+        static constexpr std::string_view k_windowListJsonKey     = "WindowList";
+        static constexpr std::string_view k_windowJsonKey         = "Window";
+        static constexpr std::string_view k_windowTypeNameJsonKey = "WindowTypeName";
 
-		static constexpr std::string_view k_mainMenuBarJsonKey = "MainMenuBar";
+        static constexpr std::string_view k_mainMenuBarJsonKey = "MainMenuBar";
 
-		static constexpr std::string_view k_isDisableDrawJsonKey = "IsDisableEditor";
-	};
+        static constexpr std::string_view k_isDisableDrawJsonKey = "IsDisableEditor";
+    };
 }
