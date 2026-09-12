@@ -2,21 +2,21 @@
 
 namespace FWK::Graphics
 {
-	class Factory final
-	{
-	public:
+    class Factory final
+    {
+    public:
 
-		 Factory() = default;
-		~Factory() = default;
+         Factory() = default;
+        ~Factory() = default;
 
-		bool Create();
+        bool Create();
 
-		const auto& GetREFFactory() const { return m_factory; }
+        const auto& GetREFFactory() const { return m_factory; }
 
-	private:
+    private:
 
-		static constexpr UINT k_defaultFactoryCreateFlags = 0U;
+        static constexpr UINT k_defaultFactoryCreateFlags = 0U;
 
-		TypeAlias::ComPtr<IDXGIFactory7> m_factory = nullptr;
-	};
+        TypeAlias::ComPtr<IDXGIFactory7> m_factory = nullptr;
+    };
 }
