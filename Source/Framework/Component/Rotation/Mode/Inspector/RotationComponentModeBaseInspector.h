@@ -2,22 +2,22 @@
 
 namespace FWK
 {
-	class RotationComponentModeBase;
+    class RotationComponentModeBase;
 }
 
 namespace FWK
 {
-	class RotationComponentModeBaseInspector final
-	{
-	public:
+    class RotationComponentModeBaseInspector final
+    {
+    public:
 
-		 RotationComponentModeBaseInspector() = default;
-		~RotationComponentModeBaseInspector() = default;
+         RotationComponentModeBaseInspector() = default;
+        ~RotationComponentModeBaseInspector() = default;
 
-		void EditInspector(RotationComponentModeBase& a_moveComponentModeBase);
+        void EditInspector(RotationComponentModeBase& a_moveComponentModeBase);
 
-	private:
+    private:
 
-		static constexpr std::string_view k_rotationApplyAxisBitShiftFlagCheckboxLabel = "回転軸適用チェックボックス";
-	};
+        static constexpr std::string_view k_rotationApplyAxisBitShiftFlagCheckboxLabel = "回転軸適用チェックボックス";
+    };
 }

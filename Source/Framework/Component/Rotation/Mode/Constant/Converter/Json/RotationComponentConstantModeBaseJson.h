@@ -2,24 +2,24 @@
 
 namespace FWK
 {
-	class RotationComponentConstantModeBase;
+    class RotationComponentConstantModeBase;
 }
 
 namespace FWK::Converter
 {
-	class RotationComponentConstantModeBaseJsonConverter final
-	{
-	public:
+    class RotationComponentConstantModeBaseJsonConverter final
+    {
+    public:
 
-		 RotationComponentConstantModeBaseJsonConverter() = default;
-		~RotationComponentConstantModeBaseJsonConverter() = default;
+         RotationComponentConstantModeBaseJsonConverter() = default;
+        ~RotationComponentConstantModeBaseJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, RotationComponentConstantModeBase& a_moveComponentConstantModeBase) const;
+        void Deserialize(const nlohmann::json& a_rootJson, RotationComponentConstantModeBase& a_moveComponentConstantModeBase) const;
 
-		nlohmann::json Serialize(const RotationComponentConstantModeBase& a_moveComponentConstantModeBase) const;
+        nlohmann::json Serialize(const RotationComponentConstantModeBase& a_moveComponentConstantModeBase) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_rotationSpeedJsonKey = "RotationSpeed";
-	};
+        static constexpr std::string_view k_rotationSpeedJsonKey = "RotationSpeed";
+    };
 }

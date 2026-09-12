@@ -2,29 +2,29 @@
 
 namespace FWK
 {
-	class RotationComponentModeBase;
+    class RotationComponentModeBase;
 }
 
 namespace FWK::Converter
 {
-	class RotationComponentModeBaseJsonConverter final
-	{
-	public:
+    class RotationComponentModeBaseJsonConverter final
+    {
+    public:
 
-		 RotationComponentModeBaseJsonConverter() = default;
-		~RotationComponentModeBaseJsonConverter() = default;
+         RotationComponentModeBaseJsonConverter() = default;
+        ~RotationComponentModeBaseJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
+        void Deserialize(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		nlohmann::json Serialize(const RotationComponentModeBase& a_moveComponentModeBase) const;
+        nlohmann::json Serialize(const RotationComponentModeBase& a_moveComponentModeBase) const;
 
-	private:
+    private:
 
-		void DeserializeCanApplyRotationAxisBitShiftFlagList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
+        void DeserializeCanApplyRotationAxisBitShiftFlagList(const nlohmann::json& a_rootJson, RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		nlohmann::json SerializeCanApplyRotationAxisBitShiftFlagList(const RotationComponentModeBase& a_moveComponentModeBase) const;
+        nlohmann::json SerializeCanApplyRotationAxisBitShiftFlagList(const RotationComponentModeBase& a_moveComponentModeBase) const;
 
-		static constexpr std::string_view k_canApplyRotationAxisBitShiftFlagListJsonKey = "RotationApplyAxisBitShiftFlagList";
-		static constexpr std::string_view k_canApplyRotationAxisJsonKey                 = "RotationApplyAxisBitShiftFlag";
-	};
+        static constexpr std::string_view k_canApplyRotationAxisBitShiftFlagListJsonKey = "RotationApplyAxisBitShiftFlagList";
+        static constexpr std::string_view k_canApplyRotationAxisJsonKey                 = "RotationApplyAxisBitShiftFlag";
+    };
 }

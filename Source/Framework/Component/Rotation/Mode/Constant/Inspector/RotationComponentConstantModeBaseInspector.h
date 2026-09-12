@@ -2,22 +2,22 @@
 
 namespace FWK
 {
-	class RotationComponentConstantModeBase;
+    class RotationComponentConstantModeBase;
 }
 
 namespace FWK
 {
-	class RotationComponentConstantModeBaseInspector
-	{
-	public:
+    class RotationComponentConstantModeBaseInspector final
+    {
+    public:
 
-		 RotationComponentConstantModeBaseInspector() = default;
-		~RotationComponentConstantModeBaseInspector() = default;
+         RotationComponentConstantModeBaseInspector() = default;
+        ~RotationComponentConstantModeBaseInspector() = default;
 
-		void EditInspector(RotationComponentConstantModeBase& a_moveComponentConstantModeBase);
+        void EditInspector(RotationComponentConstantModeBase& a_moveComponentConstantModeBase);
 
-	private:
+    private:
 
-		static constexpr std::string_view k_rotationSpeedLabel = "回転スピード";
-	};
+        static constexpr std::string_view k_rotationSpeedLabel = "回転スピード";
+    };
 }

@@ -2,27 +2,27 @@
 
 namespace FWK
 {
-	class InputComponentInspector;
+    class InputComponentInspector;
 }
 
 namespace FWK::Converter
 {
-	class InputComponentInspectorJsonConverter final
-	{
-	public:
+    class InputComponentInspectorJsonConverter final
+    {
+    public:
 
-		 InputComponentInspectorJsonConverter() = default;
-		~InputComponentInspectorJsonConverter() = default;
+         InputComponentInspectorJsonConverter() = default;
+        ~InputComponentInspectorJsonConverter() = default;
 
-		void Deserialize(const nlohmann::json& a_rootJson, InputComponentInspector& a_inputComponentInspector) const;
-		
-		nlohmann::json Serialize(const InputComponentInspector& a_inputComponentInspector) const;
+        void Deserialize(const nlohmann::json& a_rootJson, InputComponentInspector& a_inputComponentInspector) const;
 
-	private:
+        nlohmann::json Serialize(const InputComponentInspector& a_inputComponentInspector) const;
 
-		static constexpr std::string_view k_nodeEditorJsonKey                  = "NodeEditor";
-		static constexpr std::string_view k_startNodeEditorNodeJsonKey         = "StartNodeEditorNode";
-		static constexpr std::string_view k_rootConditionNodeEditorNodeJsonKey = "RootConditionNodeEditorNode";
-		static constexpr std::string_view k_executeNodeEditorNodeJsonKey       = "ExecuteNodeEditorNode";
-	};	
+    private:
+
+        static constexpr std::string_view k_nodeEditorJsonKey                  = "NodeEditor";
+        static constexpr std::string_view k_startNodeEditorNodeJsonKey         = "StartNodeEditorNode";
+        static constexpr std::string_view k_rootConditionNodeEditorNodeJsonKey = "RootConditionNodeEditorNode";
+        static constexpr std::string_view k_executeNodeEditorNodeJsonKey       = "ExecuteNodeEditorNode";
+    };
 }

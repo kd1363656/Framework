@@ -2,24 +2,24 @@
 
 namespace FWK
 {
-	class RotationComponentConstantMouseMode;
+    class RotationComponentConstantMouseMode;
 }
 
 namespace FWK
 {
-	class RotationComponentConstantMouseModeInspector
-	{
-	public:
+    class RotationComponentConstantMouseModeInspector final
+    {
+    public:
 
-		 RotationComponentConstantMouseModeInspector() = default;
-		~RotationComponentConstantMouseModeInspector() = default;
+         RotationComponentConstantMouseModeInspector() = default;
+        ~RotationComponentConstantMouseModeInspector() = default;
 
-		void EditInspector(RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode);
+        void EditInspector(RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode);
 
-	private:
+    private:
 
-		static constexpr std::string_view k_xAxisRotatable    = "X軸回転可能角度";
-		static constexpr std::string_view k_xAxisRotatableMAX = "最大";
-		static constexpr std::string_view k_xAxisRotatableMIN = "最少";
-	};
+        static constexpr std::string_view k_xAxisRotatable    = "X軸回転可能角度";
+        static constexpr std::string_view k_xAxisRotatableMAX = "最大";
+        static constexpr std::string_view k_xAxisRotatableMIN = "最少";
+    };
 }

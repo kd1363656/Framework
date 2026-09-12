@@ -2,12 +2,12 @@
 
 void FWK::RotationComponentConstantMouseModeInspector::EditInspector(RotationComponentConstantMouseMode& a_moveComponentConstantMouseMode)
 {
-	a_moveComponentConstantMouseMode.RotationComponentConstantModeBase::EditInspector();
+    a_moveComponentConstantMouseMode.RotationComponentConstantModeBase::EditInspector();
 
-	auto& l_xAxisRotatableRange = a_moveComponentConstantMouseMode.GetMutableREFXAxisRotatableRange();
+    auto& l_xAxisRotatableRange = a_moveComponentConstantMouseMode.GetMutableREFXAxisRotatableRange();
 
-	ImGui::SeparatorText(k_xAxisRotatable.data());
+    ImGui::SeparatorText(k_xAxisRotatable.data());
 
-	ImGui::DragFloat(k_xAxisRotatableMAX.data(), &l_xAxisRotatableRange.m_max, Constant::k_imguiDefaultDragValue);
-	ImGui::DragFloat(k_xAxisRotatableMIN.data(), &l_xAxisRotatableRange.m_min, Constant::k_imguiDefaultDragValue);
+    ImGui::DragFloat(k_xAxisRotatableMAX.data(), &l_xAxisRotatableRange.m_max, Constant::k_imguiDefaultDragValue);
+    ImGui::DragFloat(k_xAxisRotatableMIN.data(), &l_xAxisRotatableRange.m_min, Constant::k_imguiDefaultDragValue);
 }

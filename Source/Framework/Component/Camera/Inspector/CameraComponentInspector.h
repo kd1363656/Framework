@@ -2,25 +2,25 @@
 
 namespace FWK
 {
-	class CameraComponent;
+    class CameraComponent;
 }
 
 namespace FWK
 {
-	class CameraComponentInspector final
-	{
-	public:
+    class CameraComponentInspector final
+    {
+    public:
 
-		 CameraComponentInspector() = default;
-		~CameraComponentInspector() = default;
+         CameraComponentInspector() = default;
+        ~CameraComponentInspector() = default;
 
-		void EditInspector(CameraComponent& a_cameraComponent) const;
+        void EditInspector(CameraComponent& a_cameraComponent) const;
 
-	private:
+    private:
 
-		static constexpr std::string_view k_aspectoRatioLabel = "アスペクト比 : %.2f";
-		static constexpr std::string_view k_fovYDegreeLabel   = "視野角";
-		static constexpr std::string_view k_farClipLabel      = "ファークリップ";
-		static constexpr std::string_view k_nearClipLabel     = "ニアークリップ";
-	};
+        static constexpr std::string_view k_aspectoRatioLabel = "アスペクト比 : %.2f";
+        static constexpr std::string_view k_fovYDegreeLabel   = "視野角";
+        static constexpr std::string_view k_farClipLabel      = "ファークリップ";
+        static constexpr std::string_view k_nearClipLabel     = "ニアークリップ";
+    };
 }

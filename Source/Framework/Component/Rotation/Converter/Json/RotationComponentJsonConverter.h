@@ -2,25 +2,25 @@
 
 namespace FWK
 {
-	class RotationComponent;
+    class RotationComponent;
 }
 
 namespace FWK::Converter
 {
-	class RotationComponentJsonConverter final
-	{
-	public:
+    class RotationComponentJsonConverter final
+    {
+    public:
 
-		 RotationComponentJsonConverter() = default;
-		~RotationComponentJsonConverter() = default;
+         RotationComponentJsonConverter() = default;
+        ~RotationComponentJsonConverter() = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson, RotationComponent& a_moveComponent) const;
-		
-		nlohmann::json SerializePrefab(const RotationComponent& a_moveComponent) const;
+        void DeserializePrefab(const nlohmann::json& a_rootJson, RotationComponent& a_moveComponent) const;
 
-	private:
+        nlohmann::json SerializePrefab(const RotationComponent& a_moveComponent) const;
 
-		static constexpr std::string_view k_rotationModeJsonKey     = "RotationMode";
-		static constexpr std::string_view k_rotationModeDataJsonKey = "RotationModeData";
-	};
+    private:
+
+        static constexpr std::string_view k_rotationModeJsonKey     = "RotationMode";
+        static constexpr std::string_view k_rotationModeDataJsonKey = "RotationModeData";
+    };
 }

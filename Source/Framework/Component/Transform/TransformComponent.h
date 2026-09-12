@@ -2,81 +2,81 @@
 
 namespace FWK
 {
-	class MatrixStrategyBase;
+    class MatrixStrategyBase;
 }
 
 namespace FWK
 {
-	class TransformComponent final : public ComponentBase
-	{
-	public:
+    class TransformComponent final : public ComponentBase
+    {
+    public:
 
-		 TransformComponent()          = default;
-		~TransformComponent() override = default;
+         TransformComponent()          = default;
+        ~TransformComponent() override = default;
 
-		void DeserializePrefab(const nlohmann::json& a_rootJson) override;
-		void DeserializeScene (const nlohmann::json& a_rootJson) override;
+        void DeserializePrefab(const nlohmann::json& a_rootJson) override;
+        void DeserializeScene (const nlohmann::json& a_rootJson) override;
 
-		void PostDeserialize() override;
-		
-		void PostLateUpdate() override;
+        void PostDeserialize() override;
 
-		void EditInspector() override;
+        void PostLateUpdate() override;
 
-		nlohmann::json SerializePrefab() override;
-		nlohmann::json SerializeScene () override;
+        void EditInspector() override;
 
-		TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale);    }
-		TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
-		TypeAlias::Math::Matrix CalculateTranslationMatrix() const { return TypeAlias::Math::Matrix::CreateTranslation   (m_transform.m_position); }
-	
-		void ApplyParent    (const std::weak_ptr<GameObject>& a_parentObject);
-		void ApplyStandalone();
-		
-		void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
+        nlohmann::json SerializePrefab() override;
+        nlohmann::json SerializeScene () override;
 
-		void SetTransformScale   (const TypeAlias::Math::Vector3&    a_set) { m_transform.m_scale    = a_set; }
-		void SetTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_transform.m_rotation = a_set; }
-		void SetTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_transform.m_position = a_set; }
+        TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale);    }
+        TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
+        TypeAlias::Math::Matrix CalculateTranslationMatrix() const { return TypeAlias::Math::Matrix::CreateTranslation   (m_transform.m_position); }
 
-		void SetInitializeMatrixStrategyTypeName(const std::string& a_set) { m_initializeMatrixStrategyTypeName = a_set; }
+        void ApplyParent    (const std::weak_ptr<GameObject>& a_parentObject);
+        void ApplyStandalone();
 
-		void SetInitialSettingTransformScale   (const TypeAlias::Math::Vector3&    a_set) { m_initialSettingTransform.m_scale    = a_set; }
-		void SetInitialSettingTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_initialSettingTransform.m_rotation = a_set; }
-		void SetInitialSettingTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_initialSettingTransform.m_position = a_set; }
+        void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
 
-		void SetMatrixStrategy(std::unique_ptr<MatrixStrategyBase>&& a_set) { m_matrixStrategy = std::move(a_set); }
+        void SetTransformScale   (const TypeAlias::Math::Vector3&    a_set) { m_transform.m_scale    = a_set; }
+        void SetTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_transform.m_rotation = a_set; }
+        void SetTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_transform.m_position = a_set; }
 
-		const auto& GetREFMatrix() const { return m_matrix; }
+        void SetInitializeMatrixStrategyTypeName(const std::string& a_set) { m_initializeMatrixStrategyTypeName = a_set; }
 
-		const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
+        void SetInitialSettingTransformScale   (const TypeAlias::Math::Vector3&    a_set) { m_initialSettingTransform.m_scale    = a_set; }
+        void SetInitialSettingTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_initialSettingTransform.m_rotation = a_set; }
+        void SetInitialSettingTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_initialSettingTransform.m_position = a_set; }
 
-		const auto& GetREFInitialMatrixStrategyName() const { return m_initializeMatrixStrategyTypeName; }
-		const auto& GetREFInitialSettingTransform  () const { return m_initialSettingTransform; }
+        void SetMatrixStrategy(std::unique_ptr<MatrixStrategyBase>&& a_set) { m_matrixStrategy = std::move(a_set); }
 
-		auto& GetMutableREFMatrixStrategy() { return m_matrixStrategy; }
+        const auto& GetREFMatrix() const { return m_matrix; }
 
-		auto& GetMutableREFTransform              () { return m_transform; }
-		auto& GetMutableREFInitialSettingTransform() { return m_initialSettingTransform; }
+        const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
 
-	private:
+        const auto& GetREFInitialMatrixStrategyName() const { return m_initializeMatrixStrategyTypeName; }
+        const auto& GetREFInitialSettingTransform  () const { return m_initialSettingTransform; }
 
-		void ConfirmMatrix();
+        auto& GetMutableREFMatrixStrategy() { return m_matrixStrategy; }
 
-		std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
+        auto& GetMutableREFTransform              () { return m_transform; }
+        auto& GetMutableREFInitialSettingTransform() { return m_initialSettingTransform; }
 
-		std::weak_ptr<TransformComponent> m_parentTransformComponent = {};
+    private:
 
-		Converter::TransformComponentJsonConverter m_jsonConverter = {};
-		TransformComponentInspector                m_inspector     = {};
+        void ConfirmMatrix();
 
-		std::string m_initializeMatrixStrategyTypeName = {};
+        std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
 
-		TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
+        std::weak_ptr<TransformComponent> m_parentTransformComponent = {};
 
-		Struct::Transform m_transform               = {};
-		Struct::Transform m_initialSettingTransform = {};
+        Converter::TransformComponentJsonConverter m_jsonConverter = {};
+        TransformComponentInspector                m_inspector     = {};
 
-		FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
-	};
+        std::string m_initializeMatrixStrategyTypeName = {};
+
+        TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
+
+        Struct::Transform m_transform               = {};
+        Struct::Transform m_initialSettingTransform = {};
+
+        FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
+    };
 }

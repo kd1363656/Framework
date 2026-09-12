@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-	class RotationComponentConstantMouseMode : public RotationComponentConstantModeBase
+    class RotationComponentConstantMouseMode final : public RotationComponentConstantModeBase
 	{
 	public:
 

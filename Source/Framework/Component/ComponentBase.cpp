@@ -2,13 +2,13 @@
 
 void FWK::ComponentBase::Enable()
 {
-	if (!m_isDisable) { return; }
+    if (!m_isDisable) { return; }
 
-	m_isDisable = false;
+    m_isDisable = false;
 }
 void FWK::ComponentBase::Disable()
 {
-	if (m_isDisable) { return; }
+    if (m_isDisable) { return; }
 
-	m_isDisable = true;
+    m_isDisable = true;
 }

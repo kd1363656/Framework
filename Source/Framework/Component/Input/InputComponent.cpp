@@ -2,98 +2,98 @@
 
 void FWK::InputComponent::INIT()
 {
-	m_inspector.INIT();
+    m_inspector.INIT();
 }
 
 void FWK::InputComponent::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
-	if (a_rootJson.is_null()) { return; }
+    if (a_rootJson.is_null()) { return; }
 
-	m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
 void FWK::InputComponent::PostDeserialize()
 {
-	m_inspector.PostDeserialize(*this);
+    m_inspector.PostDeserialize(*this);
 }
 
 void FWK::InputComponent::EarlyUpdate()
 {
-	const auto& l_gameObject = GetREFOwner().lock();
+    const auto& l_gameObject = GetREFOwner().lock();
 
-	if (!l_gameObject) 
-	{
-		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "InputComponentの所有者であるゲームオブジェクトの取得に失敗しましたゲームオブジェクト");
+    if (!l_gameObject)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "InputComponentの所有者であるゲームオブジェクトの取得に失敗しましたゲームオブジェクト");
 
-		return; 
-	}
+        return;
+    }
 
-	const auto& l_componentEventObserver = l_gameObject->GetVALComponentEventObserver().lock();
+    const auto& l_componentEventObserver = l_gameObject->GetVALComponentEventObserver().lock();
 
-	if (!l_componentEventObserver) 
-	{
-		FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントイベントオブザーバーが無効となっています。");
+    if (!l_componentEventObserver)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントイベントオブザーバーが無効となっています。");
 
-		return; 
-	}
+        return;
+    }
 
-	// 通知できる状態でなければreturn
-	if (!CanNotifyEvent(*l_componentEventObserver)) { return; }
+    // 通知できる状態でなければreturn
+    if (!CanNotifyEvent(*l_componentEventObserver)) { return; }
 
-	// Executeノードで通知するComponentEventが設定されていなければ
-	// 通知する内容が存在しないため処理を終了する
-	if (m_execution.m_notifyComponentEvent == Enum::ComponentEvent::Invalid ||
-		m_execution.m_notifyEventLaneBitShiftFlag == Enum::EventLaneBitShiftFlag::Invalid) 
-	{
-		return; 
-	}
-	
-	NotifyEvent();
+    // Executeノードで通知するComponentEventが設定されていなければ
+    // 通知する内容が存在しないため処理を終了する
+    if (m_execution.m_notifyComponentEvent == Enum::ComponentEvent::Invalid ||
+        m_execution.m_notifyEventLaneBitShiftFlag == Enum::EventLaneBitShiftFlag::Invalid)
+    {
+        return;
+    }
+
+    NotifyEvent();
 }
 
 nlohmann::json FWK::InputComponent::SerializePrefab()
 {
-	return m_jsonConverter.SerializePrefab(*this);
+    return m_jsonConverter.SerializePrefab(*this);
 }
 
 void FWK::InputComponent::EditInspector()
 {
-	m_inspector.EditInspector(*this);
+    m_inspector.EditInspector(*this);
 }
 
 bool FWK::InputComponent::CanNotifyEvent(Observer<Enum::ComponentEvent>& a_componentEventObserver)
 {
-	// 全ての該当するイベントレーンからの通知を確認し、期待する結果でない通知が届いていた場合falseを返す
-	if (std::ranges::any_of(m_notifyComponentEventExecutionConditionList, 
-		                   [&a_componentEventObserver](const auto& a_condition) 
-		                   {
-		                   		return a_componentEventObserver.IsEventMatching(a_condition.m_receiveComponentEvent, a_condition.m_checkEventLane) != a_condition.m_expectedObserverResult;
-		                   }))
-	{
-		return false;
-	}
+    // 全ての該当するイベントレーンからの通知を確認し、期待する結果でない通知が届いていた場合falseを返す
+    if (std::ranges::any_of(m_notifyComponentEventExecutionConditionList,
+                           [&a_componentEventObserver](const auto& a_condition)
+                           {
+                                   return a_componentEventObserver.IsEventMatching(a_condition.m_receiveComponentEvent, a_condition.m_checkEventLane) != a_condition.m_expectedObserverResult;
+                           }))
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 void FWK::InputComponent::AddExecutionConditionList(const Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>& a_executionCondition)
 {
-	// 同じ要素を持つデータを格納しない(重複するだけ無駄であるから)
-	if (std::ranges::any_of(m_notifyComponentEventExecutionConditionList,
-		                    [&a_executionCondition](const auto& a_listExecutionCondition)
-		                    {
-		                    	return a_executionCondition.m_receiveComponentEvent == a_listExecutionCondition.m_receiveComponentEvent;
-		                    }))
-	{
-		return; 
-	}
+    // 同じ要素を持つデータを格納しない(重複するだけ無駄であるから)
+    if (std::ranges::any_of(m_notifyComponentEventExecutionConditionList,
+                            [&a_executionCondition](const auto& a_listExecutionCondition)
+                            {
+                                return a_executionCondition.m_receiveComponentEvent == a_listExecutionCondition.m_receiveComponentEvent;
+                            }))
+    {
+        return;
+    }
 
-	m_notifyComponentEventExecutionConditionList.emplace_back(a_executionCondition);
+    m_notifyComponentEventExecutionConditionList.emplace_back(a_executionCondition);
 }
 
 void FWK::InputComponent::NotifyEvent()
 {
-	if (!m_notifyStrategy) { return; }
+    if (!m_notifyStrategy) { return; }
 
-	m_notifyStrategy->Execute(*this);
+    m_notifyStrategy->Execute(*this);
 }
