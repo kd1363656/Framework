@@ -2916,6 +2916,9 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowShortcutHandlerEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h">
       <Filter>Source\Framework\Editor\Splitter</Filter>
     </ClInclude>

@@ -14,12 +14,72 @@ namespace FWK::Editor
                   const std::filesystem::path&                       a_parentFolderPath,
                   const Enum::AssetBrowserPopupContextType           a_contextType,
                         AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
+                        AssetBrowserEditorWindowFileOperation&       a_fileOperation,
                         AssetBrowserEditorWindowClipboard&           a_clipboard,
-                        AssetFilePathRegistry&                       a_filePathRegistry,
+                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
                         Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
     private:
 
+        void DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
+                                  const std::filesystem::path&                       a_parentFolderPath,
+                                  const bool                                         a_canCreate,
+                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+
+        void DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
+                                  const std::filesystem::path&                       a_parentFolderPath,
+                                  const bool                                         a_canCreate,
+                                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
+                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+
+        void DrawCreateSceneMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
+                                 const std::filesystem::path&                       a_parentFolderPath,
+                                 const bool                                         a_canCreate,
+                                       AssetFilePathRegistry&                       a_assetFilePathRegistry,
+                                       Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+
+        void DrawRenameMenu(const std::filesystem::path& a_targetFilePath, const bool a_canRename, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+
+        void DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+                          const bool                                   a_hasSelection, 
+                                AssetBrowserEditorWindowFileOperation& a_fileOperation,
+                                AssetBrowserEditorWindowClipboard&     a_clipboard) const;
+
+        void DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+                         const bool                                   a_hasSelection,
+                               AssetBrowserEditorWindowFileOperation& a_fileOperation,
+                               AssetBrowserEditorWindowClipboard&     a_clipboard) const;
+
+        void DrawPasteMenu(const std::filesystem::path&                 a_parentFolderPath,
+                           const bool                                   a_canPaste,
+                                 AssetBrowserEditorWindowFileOperation& a_fileOperation,
+                                 AssetBrowserEditorWindowClipboard&     a_clipboard) const;
+
+        void DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindowFileOperation& a_fileOperation) const;
+        void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindowFileOperation& a_fileOperation) const;
+
         void StartRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+
+        static constexpr std::string_view k_createNewFolderLabel = "新規フォルダ";
+        static constexpr std::string_view k_createNewPrefabLabel = "新規プレハブ";
+        static constexpr std::string_view k_createNewSceneLabel  = "新規シーン";
+
+        static constexpr std::string_view k_renameLabel    = "名前変更";
+        static constexpr std::string_view k_copyLabel      = "コピー";
+        static constexpr std::string_view k_cutLabel       = "切り取り";
+        static constexpr std::string_view k_pasteLabel     = "貼り付け";
+        static constexpr std::string_view k_duplicateLabel = "複製";
+        static constexpr std::string_view k_deleteLabel    = "削除";
+
+        static constexpr std::string_view k_createNewFolderShortcutLabel = "Ctrl + Shift + N";
+
+        static constexpr std::string_view k_renameShortcutLabel    = "F2";
+        static constexpr std::string_view k_copyShortcutLabel      = "Ctrl + C";
+        static constexpr std::string_view k_cutShortcutLabel       = "Ctrl + X";
+        static constexpr std::string_view k_pasteShortcutLabel     = "Ctrl + V";
+        static constexpr std::string_view k_duplicateShortcutLabel = "Ctrl + D";
+        static constexpr std::string_view k_deleteShortcutLabel    = "Del";
+
+        static constexpr std::size_t k_inputBufferLastSizeOffset = 1ULL;
     };
 }

@@ -454,7 +454,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Splitter\EditorWindowPaneSplitter.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowClipboardEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowShortcutHandlerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DepthStencilPassTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\PipelineStateBaseEnum.h" />
