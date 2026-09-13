@@ -403,7 +403,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Component\Transform\TransformComponentInspectorConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\MainMenu\MainMenuBarEditorConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Node\NodeEditorStructConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\LogEditorWindowConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
@@ -424,6 +429,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\UFBXConvertUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Macros\FactoryMacrosConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Observer\ObserverInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h" />
@@ -435,7 +441,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Helper\AssetFilePathHelperInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />

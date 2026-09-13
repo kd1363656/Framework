@@ -255,7 +255,9 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 {
     if (!a_component)
     {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", FetchVALGameObjectName());
+        const auto& l_gameObjectName = std::format("{}({})", m_sceneInstanceName, m_prefabSceneInstanceNUM);
+
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", );
 
         return;
     }
@@ -518,45 +520,6 @@ void FWK::GameObject::Unparent(const std::weak_ptr<GameObject>& a_child)
 
     // 親がいなくても行列を計算できるようにする
     l_childTransformComponent->ApplyStandalone();
-}
-
-std::string FWK::GameObject::FetchVALGameObjectName() const
-{
-    // PrefabInstanceではないゲームオブジェクトは
-    // ユーザーがOutlinerのF2リネームで設定した
-    // SceneInstanceNameをそのまま表示名として使用する
-    if (m_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-    {
-        if (!m_sceneInstanceName.empty()) { return m_sceneInstanceName; }
-
-        return std::string{ Constant::k_imguiGameObjectString };
-    }
-
-    FWK_ASSERT_RETURN_VALUE_IF(m_prefabUUID.is_nil(), "PrefabInstanceNUMが有効なのにPrefabUUIDが無効になっています。", std::string{ Constant::k_imguiGameObjectString });
-
-    const auto& l_sceneManager = SceneManager::GetInstance ();
-    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
-
-    if (!l_scene) { return std::string{ Constant::k_imguiGameObjectString.data() }; }
-
-    const auto& l_prefabSystem = l_scene->GetREFPrefabSystem ();
-    const auto* l_prefab       = l_prefabSystem.FindPTRPrefab(m_prefabUUID);
-
-    FWK_ASSERT_RETURN_VALUE_IF(!l_prefab, "PrefabUUIDに対応するPrefabがPrefabSystemに存在しません。", std::string{ Constant::k_imguiGameObjectString });
-
-    const auto& l_prefabName = l_prefab->GetREFPrefabName();
-
-    FWK_ASSERT_RETURN_VALUE_IF(l_prefabName.empty(), "PrefabNameが空のためGameObject名を生成できませんでした。", std::string{ Constant::k_imguiGameObjectString });
-
-    if (!m_sceneInstanceName.empty() &&
-        m_sceneInstanceName != l_prefabName)
-    {
-        return m_sceneInstanceName;
-    }
-
-    // PrefabNameはGameObject側へ複製せず、
-    // PrefabSystemに登録されているPrefabから取得する
-    return std::format("{}({})", l_prefabName, m_prefabSceneInstanceNUM);
 }
 
 bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<GameObject>& a_gameObject, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet) const

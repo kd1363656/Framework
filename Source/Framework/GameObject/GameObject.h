@@ -104,8 +104,6 @@ namespace FWK
             return l_list;
         }
 
-        std::string FetchVALGameObjectName() const;
-
         const auto& GetREFParent() const { return m_parent; }
 
         const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }

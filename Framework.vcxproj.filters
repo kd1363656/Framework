@@ -1525,6 +1525,27 @@
     <Filter Include="Source\Framework\Definition\Constant\Utility\IMGUI">
       <UniqueIdentifier>{36d8c24a-9803-466d-9977-131f14b17f44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Utility\Helper">
+      <UniqueIdentifier>{9a839555-4a22-42bc-8e70-f9e378c117ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\Window">
+      <UniqueIdentifier>{a4cb01a2-9e97-4b2e-b332-491094bcf7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Macros">
+      <UniqueIdentifier>{a0fddf34-df8e-478d-b340-25cc1422cb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\MainMenu">
+      <UniqueIdentifier>{fe9be027-be0d-473c-8035-f843a07cc590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Component\Transform">
+      <UniqueIdentifier>{c51d85e2-95c5-4e5d-8329-8f82b7a5c4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\Splitter">
+      <UniqueIdentifier>{f411fdf0-f1c3-401c-9cb6-3113ba15f1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\Node">
+      <UniqueIdentifier>{cf6dd941-24e3-4287-a27a-f1c5cae699bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2640,9 +2661,6 @@
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Editor\EditorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
     </ClInclude>
@@ -2954,6 +2972,33 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Helper\AssetFilePathHelperInspectorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\LogEditorWindowConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Macros\FactoryMacrosConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\MainMenu\MainMenuBarEditorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Component\Transform\TransformComponentInspectorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Splitter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Node\NodeEditorStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Node</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

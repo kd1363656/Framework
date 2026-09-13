@@ -126,7 +126,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
                            ImGuiTreeNodeFlags_NoTreePushOnOpen;
     }
 
-    const auto& l_gameObjectName = l_gameObject->FetchVALGameObjectName();
+    const auto& l_gameObjectName = l_gameObject->GetREFSceneInstanceName();
 
     // 同じ名前のGameObjectが複数存在すると
     // ImGuiは同じIDのItemとして扱ってしまう
