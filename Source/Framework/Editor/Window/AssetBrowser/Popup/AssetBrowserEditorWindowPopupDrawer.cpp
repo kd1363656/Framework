@@ -296,7 +296,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::StartRename(const std::fi
     // ファイル名をバッファへコピー
     // バッファサイズを超えないようにminで制限
     // -1は終端null用
-    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - k_inputBufferLastSizeOffset);
+    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
     // std::copy_nで先頭からl_copySize分をコピー
     std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());

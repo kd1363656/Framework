@@ -79,7 +79,5 @@ namespace FWK::Editor
         static constexpr std::string_view k_pasteShortcutLabel     = "Ctrl + V";
         static constexpr std::string_view k_duplicateShortcutLabel = "Ctrl + D";
         static constexpr std::string_view k_deleteShortcutLabel    = "Del";
-
-        static constexpr std::size_t k_inputBufferLastSizeOffset = 1ULL;
     };
 }

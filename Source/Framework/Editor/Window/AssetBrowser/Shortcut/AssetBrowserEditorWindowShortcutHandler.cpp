@@ -94,7 +94,28 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const AssetBrowserEditorWindowAssetCreator& a_assetCreator, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
+    // AssetCreator::CreateFolderでフォルダを作成
+    // 戻り値がCreationResultに作成パスと成否が入っている
+    const auto& l_result = a_assetCreator.CreateFolder(a_parentFolderPath);
 
+    if (!l_result.m_isSuccess) { return; }
+
+    // 作成成功時、名前へ移行モードへ移行
+    // PopupDrawer::StartRenameと同じ処理だが、
+    // ShortcutHandlerはPopupDrawerに依存せずに独自に名前変更モードを起動する
+    a_renameState.m_targetFilePath = l_result.m_createdFilePath;
+    a_renameState.m_isActive       = true;
+
+    // InputTextの初期値としてファイル名を設定
+    const auto& l_stem = l_result.m_createdFilePath.stem().string();
+
+    // バッファをゼロクリア
+    a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
+
+    // ファイル名をバッファへコピー
+    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+
+    std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
 }
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
