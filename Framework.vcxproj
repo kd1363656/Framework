@@ -408,6 +408,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Node\NodeEditorStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\LogEditorWindowConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />

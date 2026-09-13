@@ -1,0 +1,13 @@
+﻿#pragma once
+
+namespace FWK::Constant
+{
+    inline constexpr std::size_t k_assetBrowserRenameInputTextBufferSize = 256ULL;
+
+    inline constexpr std::string_view k_imguiFontAwesomeFolderPlusIcon = "\xEF\x99\x9E";
+    inline constexpr std::string_view k_imguiFontAwesomeEditIcon       = "\xEF\x8B\x84";
+    inline constexpr std::string_view k_imguiFontAwesomeCopyIcon       = "\xEF\x83\x85";
+    inline constexpr std::string_view k_imguiFontAwesomeCutIcon        = "\xEF\x83\x84";
+    inline constexpr std::string_view k_imguiFontAwesomePasteIcon      = "\xEF\x83\xAA";
+    inline constexpr std::string_view k_imguiFontAwesomeCloneIcon      = "\xEF\x89\x8D";
+}
