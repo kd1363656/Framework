@@ -2982,6 +2982,9 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowFolderPaneConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\LogEditorWindowConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
