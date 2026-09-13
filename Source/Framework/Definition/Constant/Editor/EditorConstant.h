@@ -2,10 +2,6 @@
 
 namespace FWK::Constant
 {
-    inline constexpr std::string_view k_stringUnknown      = "Unknown";
-    inline constexpr std::string_view k_imguiIsTrueString  = "True";
-    inline constexpr std::string_view k_imguiIsFalseString = "False";
-
     inline constexpr std::string_view k_imguiGameObjectString = "GameObject";
 
     inline constexpr std::string_view k_imguiGameObjectDragDropPayloadLabel       = "ゲームオブジェクト";
@@ -60,7 +56,7 @@ namespace FWK::Constant
 
     // -1.0を使用することでウィンドウのX最大まで引き延ばす
     inline constexpr float k_imguiChildWindowMAXSize           = -1.0F;
-    inline constexpr float k_imguiDefaultChildVisibleItemCount = 8.0F;
+    inline constexpr float k_imguiDefaultChildVisibleItemCount =  8.0F;
 
     inline constexpr float k_imguiDefaultPrimaryPaneSize = 220.0F;
 

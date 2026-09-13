@@ -435,6 +435,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Math\MathAlignUpUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h" />
@@ -471,6 +473,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowAssetCreatorStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
@@ -782,7 +785,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.h" />
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.h" />
     <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h" />
-    <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToString.h" />
+    <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h" />

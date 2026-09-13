@@ -114,19 +114,13 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 
 nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::Serialize(const GameObject& a_gameObject) const
 {
-    nlohmann::json l_rootJson = {};
-
-    const auto& l_prefabUUID             = a_gameObject.GetREFPrefabUUID            ();
-    const auto  l_prefabSceneInstanceNUM = a_gameObject.GetVALPrefabSceneInstanceNUM();
-
+          nlohmann::json l_rootJson   = {};
+    const auto&          l_prefabUUID = a_gameObject.GetREFPrefabUUID();
+    
     // Prefab化されていないGameObject、もしくわシーンインスタンス名が
     // 割り当てられていないゲームオブジェクトは、
     // Sceneの保存対象にしない
-    if (l_prefabUUID.is_nil() ||
-        l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-    {
-        return {};
-    }
+    if (l_prefabUUID.is_nil()) { return {}; }
 
     // PrefabUUIDを保存
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(l_prefabUUID, Constant::k_gameObjectPrefabUUIDJsonKey));

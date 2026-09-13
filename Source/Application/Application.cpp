@@ -62,7 +62,7 @@ void Application::Execute()
     l_editorManager.PostLoadCONFIG();
 
     // 最初に読み込むべきシーンを読み込む
-    l_sceneManager.LoadScene(k_firstLoadSceneFilepath);
+    l_sceneManager.Load(k_firstLoadSceneFilepath);
 
     // while分に入る前にもう一度計測時間をリセットしておく
     m_fpsController.PostLoadCONFIG();

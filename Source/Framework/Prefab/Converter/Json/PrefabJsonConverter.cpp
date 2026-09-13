@@ -49,8 +49,7 @@ bool FWK::Converter::PrefabJsonConverter::Save(const std::filesystem::path& a_fi
         return false;
     }
 
-    if (l_gameObject->GetREFPrefabUUID().is_nil() ||
-        l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
+    if (l_gameObject->GetREFPrefabUUID().is_nil())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefab保存用GameObjectのPrefab情報が無効なため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_filePath.string());
 

@@ -462,7 +462,8 @@
 #include "Definition/Enum/Observer/ObserverEnum.h"
 #include "Definition/Constant/Utility/Enum/EnumBitShiftUtilityConstant.h"
 #include "Utility/Enum/EnumBitShiftUtility.h"
-#include "Utility/IMGUI/Bool/IMGUIBoolToString.h"
+#include "Definition/Constant/Utility/IMGUI/IMGUIBoolToStringUtilityCosntant.h"
+#include "Utility/IMGUI/Bool/IMGUIBoolToStringUtility.h"
 #include "Definition/Constant/Observer/ObserverInspectorConstant.h"
 #include "Observer/Inspector/ObsreverInspector.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
@@ -513,6 +514,7 @@
 //===============================================================================
 #include "Strategy/StrategyBase.h"
 #include "Utility/Math/MathQuaternionUtility.h"
+#include "Definition/Constant/Utility/IMGUI/IMGUIFactoryUtilityCosntant.h"
 #include "Utility/IMGUI/Factory/IMGUIFactoryUtility.h"
 #include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"

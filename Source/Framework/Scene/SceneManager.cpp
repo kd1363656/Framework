@@ -278,5 +278,5 @@ void FWK::SceneManager::LoadNextSceneIfNeeded()
 
     // シーンマネージャーのシーン遷移情報をクリアして
     // シーン遷移情報及びシーンを読み込む
-    LoadScene(l_nextSceneFilePath);
+    Load(l_nextSceneFilePath);
 }

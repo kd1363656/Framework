@@ -15,7 +15,7 @@ void FWK::Editor::FileMainMenuEditor::DrawMenuFile() const
         // すべてのシーン情報をセーブ
         const auto& l_sceneManager = SceneManager::GetInstance();
 
-        l_sceneManager.SaveScene();
+        l_sceneManager.Save();
 
         FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
     }
@@ -29,7 +29,7 @@ void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
         // すべてのシーン情報をセーブ
         auto& l_sceneManager = SceneManager::GetInstance();
 
-        l_sceneManager.SaveScene();
+        l_sceneManager.Save();
 
         FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "シーンのセーブが完了しました。");
     }
