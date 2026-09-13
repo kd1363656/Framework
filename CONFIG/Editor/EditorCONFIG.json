@@ -27,6 +27,10 @@
                 },
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 149.0
+                },
+                "FolderPane": {
+                    "CurrentFolderPath": "",
+                    "FolderOpenStateMap": []
                 }
             },
             "WindowTypeName": "AssetBrowserEditorWindow"

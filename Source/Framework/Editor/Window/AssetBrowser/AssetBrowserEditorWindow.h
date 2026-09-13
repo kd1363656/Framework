@@ -18,9 +18,11 @@ namespace FWK::Editor
 
         const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
         const auto& GetREFPaneSplitter         () const { return m_paneSplitter; }
+        const auto& GetREFFolderPane           () const { return m_folderPane; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
         auto& GetMutableREFPaneSplitter         () { return m_paneSplitter; }
+        auto& GetMutableREFFolderPane           () { return m_folderPane; }
 
     private:
 
@@ -35,6 +37,16 @@ namespace FWK::Editor
 
         AssetBrowserEditorWindowFolderPane m_folderPane = {};
         AssetBrowserEditorWindowAssetPane  m_assetPane  = {};
+
+        AssetBrowserEditorWindowClipboard       m_clipboard       = {};
+        AssetBrowserEditorWindowFileOperation   m_fileOperation   = {};
+        AssetBrowserEditorWindowShortcutHandler m_shortcutHandler = {};
+        AssetBrowserEditorWindowPopupDrawer     m_popupDrawer     = {};
+        AssetBrowserEditorWindowAssetCreator    m_assetCreator    = {};
+
+        Struct::AssetBrowserEditorWindowRenameState m_renameState = {};
+
+        Enum::AssetBrowserActivePaneType m_activePane = Enum::AssetBrowserActivePaneType::Invalid;
 
         EditorWindowPaneSplitter m_paneSplitter = {};
 

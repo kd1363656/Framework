@@ -3,6 +3,8 @@
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const AssetBrowserEditorWindowPopupDrawer& a_popupDrawer,
@@ -40,7 +42,22 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ClearSelection()
 
 nlohmann::json FWK::Editor::AssetBrowserEditorWindowFolderPane::Serialize() const
 {
-    return nlohmann::json();
+    return m_jsonConverter.Serialize(*this);
+}
+
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen)
+{
+    std::error_code l_errorCode = {};
+
+    if (a_folderPath.empty() ||
+        !std::filesystem::exists(a_folderPath, l_errorCode)) 
+    {
+        return; 
+    }
+
+    FWK_ASSERT_RETURN_IF(l_errorCode, "フォルダパスの存在確認に失敗しました。");
+
+    m_folderOpenStateMap.try_emplace(a_folderPath, a_isOpen);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const AssetBrowserEditorWindowPopupDrawer&         a_popupDrawer,

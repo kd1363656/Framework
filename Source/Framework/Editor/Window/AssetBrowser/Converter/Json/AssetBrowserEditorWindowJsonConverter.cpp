@@ -13,12 +13,22 @@ void FWK::Converter::AssetBrowserEditorWindowJsonConverter::Deserialize(const nl
         l_assetFilePathRegistry.Deserialize(l_json);
     }
 
+    // ペインスプリッターのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_editorWindowPaneSplitterJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         auto& l_paneSplitter = a_assetBrowserEditorWindow.GetMutableREFPaneSplitter();
 
         l_paneSplitter.Deserialize(l_json);
+    }
+
+    // フォルダペインのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_folderPaneJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_folderPane = a_assetBrowserEditorWindow.GetMutableREFFolderPane();
+
+        l_folderPane.Deserialize(l_json);
     }
 }
 
@@ -27,9 +37,11 @@ nlohmann::json FWK::Converter::AssetBrowserEditorWindowJsonConverter::Serialize(
           nlohmann::json l_rootJson              = {};
     const auto&          l_assetFilePathRegistry = a_assetBrowserEditorWindow.GetREFAssetFilePathRegistry();
     const auto&          l_paneSplitter          = a_assetBrowserEditorWindow.GetREFPaneSplitter         ();
+    const auto&          l_folderPane            = a_assetBrowserEditorWindow.GetREFFolderPane           ();
 
     l_rootJson[k_assetFilePathRegistryJsonKey]    = l_assetFilePathRegistry.Serialize();
     l_rootJson[k_editorWindowPaneSplitterJsonKey] = l_paneSplitter.Serialize         ();
+    l_rootJson[k_folderPaneJsonKey]               = l_folderPane.Serialize           ();
 
     return l_rootJson;
 }

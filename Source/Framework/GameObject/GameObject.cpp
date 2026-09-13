@@ -257,7 +257,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
     {
         const auto& l_gameObjectName = std::format("{}({})", m_sceneInstanceName, m_prefabSceneInstanceNUM);
 
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", );
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", l_gameObjectName);
 
         return;
     }

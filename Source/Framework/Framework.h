@@ -637,6 +637,7 @@
 #include "Editor/Splitter/Converter/Json/EditorWindowPaneSplitterJsonConverter.h"
 #include "Editor/Splitter/EditorWindowPaneSplitter.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowFolderPaneConstant.h"
+#include "Editor/Window/AssetBrowser/Pane/Folder/Converter/Json/AssetBrowserEditorWindowFolderPaneJsonConverter.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/AssetBrowserEditorWindowFolderPane.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowAssetPaneConstant.h"
 #include "Editor/Window/AssetBrowser/Pane/Asset/AssetBrowserEditorWindowAssetPane.h"

@@ -25,7 +25,11 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() const;
 
+        void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
+
         void SetCurrentFolderPath(const std::filesystem::path& a_set) { m_currentFolderPath = a_set; }
+
+        const auto& GetREFFolderOpenStateMap() const { return m_folderOpenStateMap; }
 
         const auto& GetREFSelectedFilePathList() const { return m_selectedFilePathList; }
 
@@ -56,6 +60,8 @@ namespace FWK::Editor
         std::unordered_map<std::filesystem::path, bool> m_folderOpenStateMap = {};
 
         std::vector<std::filesystem::path> m_selectedFilePathList = {};
+
+        Converter::AssetBrowserEditorWindowFolderPaneJsonConverter m_jsonConverter = {};
 
         std::filesystem::path m_rangeSelectionStartPath = {};
         std::filesystem::path m_currentFolderPath       = {};
