@@ -10,4 +10,5 @@ namespace FWK::Constant
     inline constexpr std::string_view k_imguiFontAwesomeCutIcon        = "\xEF\x83\x84";
     inline constexpr std::string_view k_imguiFontAwesomePasteIcon      = "\xEF\x83\xAA";
     inline constexpr std::string_view k_imguiFontAwesomeCloneIcon      = "\xEF\x89\x8D";
+    inline constexpr std::string_view k_imguiFontAwesomeTrashIcon      = "\xEF\x87\xB8";
 }
