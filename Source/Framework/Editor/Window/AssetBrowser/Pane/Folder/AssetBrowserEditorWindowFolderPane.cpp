@@ -220,6 +220,12 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
         ImGui::PushStyleColor(ImGuiCol_HeaderActive,  l_headerActiveColor);
     }
 
+    // リネームモードかどうか
+    // m_renameState.m_isActiveがtrueかつ
+    // 対象パスが現在描画中のノードと一致する場合
+    const bool l_isRenaming = a_renameState.m_isActive &&
+                              a_renameState.m_targetFilePath == a_currentFolderPath;
+
     // フォルダアイコン + フォルダ名のラベルを構築
     const bool  l_isOpen = IsFolderOpen(a_currentFolderPath);
     const auto& l_icon   = (l_isOpen && 
@@ -227,12 +233,103 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
 
     // フォルダ名はfilename()で取得(パスの最後の要素)
     // ルートフォルダの場合はfilename()が"Asset"になる
-    const auto& l_label = std::string{ l_icon } + " " + a_currentFolderPath.filename().string();
+    const auto& l_label = l_isRenaming ? std::string{l_icon} + k_renameInputTextLabel.data() : std::string{l_icon} + " " + a_currentFolderPath.filename().string();
 
     // TreeNodeExでノードを描画
     // 戻り値 : ノードが開かれている場合はtrue、閉じている場合はfalse
     // Leaf + NoTreePushOnOpenの場合は常にfalseが返る
     const bool l_isNodeOpen = ImGui::TreeNodeEx(l_label.c_str(), l_treeNodeFlags);
+
+    // リネームモード時は同じ行でInputTextを描画
+    // TreeNodeExのラベル部分(アイコンの右)にInputTextを重ねる
+    if (l_isRenaming)
+    {
+        // ImGui::SameLine : 同じ行に次のアイテムを配置
+        // TreeNodeExのアイコンの右側にInputTextを配置する
+        ImGui::SameLine();
+
+        // ImGui::AlignTextToFramePadding : 
+        // TreeNodeExはテキストベースで描画されるが
+        // InputTextはフレーム付きで描画されるため高さが子おtなる
+        // これを呼ぶことでInputTextの垂直位置を
+        // TreeNodeExのテキストベースラインに合わせる
+        ImGui::AlignTextToFramePadding();
+    
+        // 初回フレームのみフォーカスを当てる
+        // m_isActiveがtrueになった直後の1フレーム目は
+        // m_isFocusedがfalseのままなのでフォーカスを当てる
+        // ImGui::SetKeyboardFocusHere(0) : 次に描画されるアイテムにフォーカスを当てる
+        // InputTextの直前に呼ぶ必要がある
+        if (!a_renameState.m_isFocused)
+        {
+            ImGui::SetKeyboardFocusHere(k_keyboardFocusNextItem);
+        }
+
+        const auto& l_style = ImGui::GetStyle();
+
+        // InputTextのフレームパディングを小さくして
+        // TreeNodeExのテキスト高さに近づける
+        // デフォルトのFramePadding.yは3-4pxだが
+        // TreeNodeExはテキストベースなので高さが低い
+        // Y方向のパディングを1pxにして高さ合わせる
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignTreeNodeHight));
+
+        // InputTextの幅を残り領域いっぱいに広げる
+        ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+
+        // InputTextを描画
+        // ImGuiInputTextFlags_EnterReturnsTrue : Enter押下でtrueを返す
+        // ImGuiInputTextFlags_AutoSelectAll    : フォーカス時に全テキストを選択
+        // バッファサイズはm_inputBuffer.size()で取得
+        const bool l_isEnterPressed = ImGui::InputText(k_renameInputTextLabel.data(),
+                                                       a_renameState.m_inputBuffer.data(),
+                                                       a_renameState.m_inputBuffer.size(),
+                                                       ImGuiInputTextFlags_EnterReturnsTrue |
+                                                       ImGuiInputTextFlags_AutoSelectAll);
+
+        ImGui::PopStyleVar();
+
+        // フォーカスされたらフラグを立てる
+        if (ImGui::IsItemFocused())
+        {
+            a_renameState.m_isFocused = true;
+        }
+
+        // 空白クリック検知
+        // ImGui::IsWindowHovered   : このChildWindow上にマウスがあるか
+        // !ImGui::IsAnyItemHovered : いずれこのアイテム上にもマウスがない = 空白
+        // ImGui::IsMouseClicked    : このフレームで左クリックされた
+        // これにより空白をクリックしたときにリネームを確定する
+        const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
+                                         !ImGui::IsAnyItemHovered() &&
+                                         ImGui::IsMouseClicked(ImGuiMouseButton_Left);
+
+        // リネーム確定条件
+        // 1.Enter押下
+        // 2.フォーカル消失(別の場所をクリック等)
+        // m_isFocusedがtrue(=過去にフォーカスされた)状態で
+        // 現在フォーカスされていない場合を確定とみなす
+        if (l_isEnterPressed          ||
+           (a_renameState.m_isFocused &&
+           !ImGui::IsItemFocused())   ||
+            l_isEmptySpaceClick)
+        {
+            // InputTextの内容を取得
+            // data()で先頭ポインタを取得し、std::stringを構築
+            // から文字列の場合はリネームしない
+            if (const auto& l_newName = std::string(a_renameState.m_inputBuffer.data());
+                !l_newName.empty())
+            {
+                // FileOperation::Renameでファイルシステム上でリネーム
+                // 同名衝突時は自動で番号付与される
+                a_fileOperation.Rename(a_currentFolderPath, l_newName, a_assetFilePathRegistry);
+            }
+
+            // リネームモードを終了
+            a_renameState.m_isActive  = false;
+            a_renameState.m_isFocused = false;
+        }
+    }
 
     // 開閉状態をm_folderOpenStateMapへ反映
     // 毎フレームTreeNodeExの戻り値で更新する

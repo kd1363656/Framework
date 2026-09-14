@@ -8,6 +8,7 @@ namespace FWK::Struct
 
         std::array<char, Constant::k_assetBrowserRenameInputTextBufferSize> m_inputBuffer = {};
 
-        bool m_isActive = false;
+        bool m_isActive  = false;
+        bool m_isFocused = false;
     };
 }

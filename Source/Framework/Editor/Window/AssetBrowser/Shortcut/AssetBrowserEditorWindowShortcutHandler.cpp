@@ -116,6 +116,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
     std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
+
+    // 初回フォーカス制御用フラグをリセット
+    a_renameState.m_isFocused = false;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const

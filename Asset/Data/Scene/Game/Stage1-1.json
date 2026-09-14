@@ -1,18 +1,12 @@
-﻿{
+{
+    "AssetFilePathRegistry": {
+        "FilePathRegistryMap": []
+    },
     "NextSceneLoadFilePathMap": [],
     "Scene": {
-        "AssetFilePathRegistry": {
-            "FilePathRegistryMap": [
-                
-            ]
-        },
-        "GameObjectList": [
-            
-        ],
+        "GameObjectList": [],
         "PrefabSystem": {
-            "PrefabMap": [
-                
-            ]
+            "PrefabMap": []
         },
         "SceneName": "Stage1-1"
     },

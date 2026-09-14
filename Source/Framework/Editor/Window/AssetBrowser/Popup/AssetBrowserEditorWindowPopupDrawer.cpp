@@ -312,4 +312,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::StartRename(const std::fi
 
     // std::copy_nで先頭からl_copySize分をコピー
     std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
+
+    // 初回フォーカス制御フラグをリセット
+    // m_isActiveがtrueになった直後はフォーカスされていない状態
+    a_renameState.m_isFocused = false;
 }
