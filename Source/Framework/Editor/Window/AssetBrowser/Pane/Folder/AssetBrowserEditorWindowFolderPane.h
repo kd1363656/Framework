@@ -11,15 +11,16 @@ namespace FWK::Editor
 
         void Deserialize(const nlohmann::json& a_rootJson);
 
-        void Draw(const AssetBrowserEditorWindowPopupDrawer&         a_popupDrawer,
-                  const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                  const std::filesystem::path&                       a_assetRootFolderPath,
-                  const Enum::AssetBrowserActivePaneType             a_activePane,
-                  const float                                        a_paneWidth,
-                        AssetBrowserEditorWindowFileOperation&       a_fileOperation,
-                        AssetBrowserEditorWindowClipboard&           a_clipboard, 
-                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
-                        Struct::AssetBrowserEditorWindowRenameState& a_renameState);
+        void Draw(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
+                  const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
+                  const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
+                  const std::filesystem::path&                                                         a_assetRootFolderPath,
+                  const Enum::AssetBrowserActivePaneType                                               a_activePane,
+                  const float                                                                          a_paneWidth,
+                        AssetBrowserEditorWindowFileOperation&                                         a_fileOperation,
+                        AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
+                        AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
+                        Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState);
 
         void ClearSelection();
 
@@ -37,16 +38,17 @@ namespace FWK::Editor
 
     private:
 
-        void DrawTreeNode(const AssetBrowserEditorWindowPopupDrawer&         a_popupDrawer,
-                          const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                          const std::filesystem::path&                       a_folderPath,
-                          const std::filesystem::path&                       a_assetFolderPath,
-                          const Enum::AssetBrowserActivePaneType             a_activePane,
-                          const float                                        a_paneWidth,
-                                AssetBrowserEditorWindowFileOperation&       a_fileOperation,
-                                AssetBrowserEditorWindowClipboard&           a_clipboard, 
-                                AssetFilePathRegistry&                       a_assetFilePathRegistry,
-                                Struct::AssetBrowserEditorWindowRenameState& a_renameState);
+        void DrawTreeNode(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
+                          const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
+                          const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
+                          const std::filesystem::path&                                                         a_currentFolderPath,
+                          const std::filesystem::path&                                                         a_assetRootFolderPath,
+                          const Enum::AssetBrowserActivePaneType                                               a_activePane,
+                          const float                                                                          a_paneWidth,
+                                AssetBrowserEditorWindowFileOperation&                                         a_fileOperation,
+                                AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
+                                AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
+                                Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState);
 
         bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
 
@@ -54,8 +56,12 @@ namespace FWK::Editor
 
         void SelectFolder(const std::filesystem::path& a_folderPath, const bool a_isRangeSelection = false, const bool a_isToggleSelection = false);
 
-        static constexpr std::string_view k_childLabel      = "##AssetBrowserEditorWindowFolderPane";
-        static constexpr std::string_view k_paneTitleLabel = "ファイル";
+        static constexpr std::string_view k_childLabel                     = "##AssetBrowserEditorWindowFolderPane";
+        static constexpr std::string_view k_paneTitleLabel                 = "ファイル";
+        static constexpr std::string_view k_contextMenuOpenPopupLabel      = "##FolderContextMnuOpenPopup";
+        static constexpr std::string_view k_emptySpaceContextMenuOpenLabel = "##FolderPaneEmptyContextMenu";
+
+        static constexpr int k_treeNodePopStyleColorNUM = 3;
 
         std::unordered_map<std::filesystem::path, bool> m_folderOpenStateMap = {};
 

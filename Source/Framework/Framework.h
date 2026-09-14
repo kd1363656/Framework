@@ -630,6 +630,7 @@
 #include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowPopupDrawerEnum.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowPopupDrawerConstant.h"
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowPopupDrawerStruct.h"
+#include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowShortcutHandlerConstant.h"
 #include "Editor/Window/AssetBrowser/Shortcut/AssetBrowserEditorWindowShortcutHandler.h"
 #include "Editor/Window/AssetBrowser/Popup/AssetBrowserEditorWindowPopupDrawer.h"
 #include "Definition/Enum/Editor/Splitter/EditorWindowPaneSplitter.h"

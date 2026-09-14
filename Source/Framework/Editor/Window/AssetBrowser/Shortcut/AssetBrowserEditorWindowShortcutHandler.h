@@ -28,7 +28,5 @@ namespace FWK::Editor
         void HandlePaste    (const std::filesystem::path&              a_parentFolderPath,     AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
         void HandleDuplicate(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation&       a_fileOperation)                                                 const;
         void HandleDelete   (const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation&       a_fileOperation)                                                 const;
-
-        static constexpr std::size_t k_singleSize = 1ULL;
     };
 }

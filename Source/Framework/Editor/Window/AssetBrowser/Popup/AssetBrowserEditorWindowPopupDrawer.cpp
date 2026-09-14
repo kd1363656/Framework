@@ -1,15 +1,25 @@
 ﻿#include "AssetBrowserEditorWindowPopupDrawer.h"
 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::BeginPopup(const std::string_view& a_openPopupLabel) const
+{
+    if (a_openPopupLabel.empty()) { return; }
+
+    ImGui::OpenPopup(a_openPopupLabel.data());
+}
+
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<std::filesystem::path>&          a_selectedFilePathList,
+                                                            const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
                                                             const std::filesystem::path&                       a_targetFilePath, 
                                                             const std::filesystem::path&                       a_parentFolderPath, 
+                                                            const std::string_view&                            a_openPopupLabel,
                                                             const Enum::AssetBrowserPopupContextType           a_contextType,
-                                                                  AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
                                                                   AssetBrowserEditorWindowFileOperation&       a_fileOperation,
                                                                   AssetBrowserEditorWindowClipboard&           a_clipboard, 
                                                                   AssetFilePathRegistry&                       a_assetFilePathRegistry, 
                                                                   Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
+    if (!ImGui::BeginPopup(a_openPopupLabel.data())) { return; }
+
     // AssetPaneの空白右クリックかどうか
     const bool l_isAssetPaneEmpty = (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty);
 
@@ -88,6 +98,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
         DrawDuplicateMenu(a_selectedFilePathList, l_hasSelection, a_fileOperation);
         DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection, a_fileOperation);
     }
+
+    ImGui::EndPopup();
 }
 
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 

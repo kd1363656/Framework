@@ -20,7 +20,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     const bool l_hasSelection = !a_selectedFilePathList.empty();
 
     // 単一選択かどうか(名前変更は単一選択時のみ有効)
-    const bool l_isSingleSelection = (a_selectedFilePathList.size() == k_singleSize);
+    const bool l_isSingleSelection = (a_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize);
 
     // クリップボードが空でないか(貼り付けの判定に使用)
     const bool l_canPaste = !a_clipboard.IsEmpty();

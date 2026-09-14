@@ -9,11 +9,14 @@ namespace FWK::Editor
          AssetBrowserEditorWindowPopupDrawer() = default;
         ~AssetBrowserEditorWindowPopupDrawer() = default;
 
+        void BeginPopup(const std::string_view& a_openPopupLabel) const;
+
         void Draw(const std::vector<std::filesystem::path>&          a_selectedFilePathList,
+                  const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                   const std::filesystem::path&                       a_targetFilePath,
                   const std::filesystem::path&                       a_parentFolderPath,
+                  const std::string_view&                            a_openPopupLabel,
                   const Enum::AssetBrowserPopupContextType           a_contextType,
-                        AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                         AssetBrowserEditorWindowFileOperation&       a_fileOperation,
                         AssetBrowserEditorWindowClipboard&           a_clipboard,
                         AssetFilePathRegistry&                       a_assetFilePathRegistry,
