@@ -121,7 +121,7 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
     // ImGui::GetIO().WantTextInputはInputTextがアクティブな間trueになる
     // ImGui::IsWindowFocused : AssetBrowserウィンドウがフォーカスされているか
     // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
-    if (ImGui::IsWindowFocused() &&
+    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows) &&
         !ImGui::GetIO().WantTextInput)
     {
         switch(m_activePane)

@@ -131,7 +131,7 @@ const std::filesystem::path& FWK::Editor::AssetBrowserEditorWindowFolderPane::Fe
 {
     // 選択中フォルダが倍場合はAssetルートを返す
     // Constant::k_assetRootFolderPathはinline const なので参照返し可能
-    if (m_selectedFilePathList.empty()) { return Constant::k_assetRootFolderPath }
+    if (m_selectedFilePathList.empty()) { return Constant::k_assetRootFolderPath; }
 
     // 選択中フォルダの最後を返す
     // vector::back()は要求へのconst 参照を返すためコピー発生なし
