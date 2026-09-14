@@ -15,8 +15,8 @@ namespace FWK::Editor
                   const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
                   const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
                   const std::filesystem::path&                                                         a_assetRootFolderPath,
-                  const Enum::AssetBrowserActivePaneType                                               a_activePane,
                   const float                                                                          a_paneWidth,
+                        Enum::AssetBrowserActivePaneType&                                              a_activePane,
                         AssetBrowserEditorWindowFileOperation&                                         a_fileOperation,
                         AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
                         AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
@@ -29,6 +29,8 @@ namespace FWK::Editor
         void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
         void SetCurrentFolderPath(const std::filesystem::path& a_set) { m_currentFolderPath = a_set; }
+
+        const std::filesystem::path& FetchREFOperationTargetFolderPath() const;
 
         const auto& GetREFFolderOpenStateMap() const { return m_folderOpenStateMap; }
 

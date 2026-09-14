@@ -10,7 +10,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
 
     // 同一名が存在する場合は番号付与する
     // ただし自分自身と同じ名前の場合は番号付与しない
-    const auto& l_resolvedNewFilePath = (l_newFilePath == a_targetFilePath) ? l_newFilePath : Utility::ResolveFilePathConflict(l_newFilePath);
+    const auto& l_resolvedNewFilePath = (l_newFilePath == a_targetFilePath) ? l_newFilePath : Utility::ResolveFilePathConflictByNumberSuffix(l_newFilePath);
 
     // ファイルシステム上でリネームする
     std::filesystem::rename(a_targetFilePath, l_resolvedNewFilePath, l_errorCode);
@@ -86,7 +86,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::filesy
         // 同名が存在する場合は番号付与したPathへ貼り付ける
         if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
         {
-            l_destinationFilePath = Utility::ResolveFilePathConflict(l_destinationFilePath);
+            l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
         }
 
         // copy()はフォルダの場合は中身も再帰的にコピーする
@@ -126,7 +126,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
     for (const auto& l_sourceFilePath : a_filePathList)
     {
         // 同じフォルダ内へ同じ名前でファイル、フォルダを複製する
-        const auto& l_duplicateFilePath = Utility::ResolveFilePathConflict(l_sourceFilePath);
+        const auto& l_duplicateFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_sourceFilePath);
 
         std::error_code l_errorCode = {};
 

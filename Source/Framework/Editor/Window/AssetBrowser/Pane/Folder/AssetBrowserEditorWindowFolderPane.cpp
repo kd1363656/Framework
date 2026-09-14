@@ -11,8 +11,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
                                                            const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
                                                            const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
                                                            const std::filesystem::path&                                                         a_assetRootFolderPath, 
-                                                           const Enum::AssetBrowserActivePaneType                                               a_activePane,
                                                            const float                                                                          a_paneWidth, 
+                                                                 Enum::AssetBrowserActivePaneType&                                              a_activePane,
                                                                  AssetBrowserEditorWindowFileOperation&                                         a_fileOperation, 
                                                                  AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
                                                                  AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
@@ -28,6 +28,17 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
         ImGui::EndChild();
 
         return;
+    }
+
+    // フォルダペイン上でクリックされた場合、アクティブPaneをFolderPaneにする
+    // これによりショートカットキーがフォルダペインに送られる
+    // ImGui::IsWindowHovered : このChildWindow上にマウスがあるか
+    // ImGui::IsMouseClicked  : このフレームでクリックされたか
+    // 左クリック・右クリックどちらも出アクティブPaneを切り替える
+    if (ImGui::IsWindowHovered() &&
+        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
+    {
+        a_activePane = Enum::AssetBrowserActivePaneType::FolderPane;
     }
 
     ImGui::TextUnformatted(k_paneTitleLabel.data());
@@ -76,7 +87,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
     a_popupDrawer.Draw(m_selectedFilePathList,
                        a_assetCreator,
                        l_targetFolder,
-                       l_targetFolder.parent_path(),
+                       l_targetFolder,
                        k_emptySpaceContextMenuOpenLabel,
                        Enum::AssetBrowserPopupContextType::FolderPane_OnFolder,
                        a_fileOperation,
@@ -114,6 +125,17 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::AddFolderOpenState(const s
     FWK_ASSERT_RETURN_IF(l_errorCode, "フォルダパスの存在確認に失敗しました。");
 
     m_folderOpenStateMap.try_emplace(a_folderPath, a_isOpen);
+}
+
+const std::filesystem::path& FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchREFOperationTargetFolderPath() const
+{
+    // 選択中フォルダが倍場合はAssetルートを返す
+    // Constant::k_assetRootFolderPathはinline const なので参照返し可能
+    if (m_selectedFilePathList.empty()) { return Constant::k_assetRootFolderPath }
+
+    // 選択中フォルダの最後を返す
+    // vector::back()は要求へのconst 参照を返すためコピー発生なし
+    return m_selectedFilePathList.back();
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
@@ -200,7 +222,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
 
     // フォルダアイコン + フォルダ名のラベルを構築
     const bool  l_isOpen = IsFolderOpen(a_currentFolderPath);
-    const auto& l_icon   = l_isOpen ? Constant::k_imguiFontAwesomeFolderOpenIcon : Constant::k_imguiFontAwesomeFolderCloseIcon;
+    const auto& l_icon   = (l_isOpen && 
+                            l_hasChild) ? Constant::k_imguiFontAwesomeFolderOpenIcon : Constant::k_imguiFontAwesomeFolderCloseIcon;
 
     // フォルダ名はfilename()で取得(パスの最後の要素)
     // ルートフォルダの場合はfilename()が"Asset"になる
@@ -319,7 +342,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std
     if (l_itr == m_folderOpenStateMap.end()) 
     {
         // エントリが存在しない場合は新規作成してtrue(開く)をセット
-        m_folderOpenStateMap.emplace(a_folderPath, true);
+        m_folderOpenStateMap.try_emplace(a_folderPath, true);
 
         return;
     }
@@ -355,8 +378,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::fi
         }
         else
         {
-            // TODO : DrawTreeNode側でツリー順序を取得して範囲選択を実装する
-            // 現時点では簡易実装 : 開始地点とクリック点を両方選択
+            // 開始地点とクリック点を両方選択
             m_selectedFilePathList.clear       ();
             m_selectedFilePathList.emplace_back(m_rangeSelectionStartPath);
             m_selectedFilePathList.emplace_back(a_folderPath);

@@ -1546,6 +1546,12 @@
     <Filter Include="Source\Framework\Definition\Constant\Editor\Node">
       <UniqueIdentifier>{cf6dd941-24e3-4287-a27a-f1c5cae699bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter">
+      <UniqueIdentifier>{2be92671-8add-403d-96a9-2d4ecdd57436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json">
+      <UniqueIdentifier>{e7e431cf-225f-4a05-b7e0-898e6f4c720b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -1977,7 +1983,7 @@
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h">
       <Filter>Source\Framework\Utility\File</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\File\ResolveFilePathConflictUtility.h">
+    <ClInclude Include="Source\Framework\Utility\File\ResolveFilePathConflictByNumberSuffixUtility.h">
       <Filter>Source\Framework\Utility\File</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h">
@@ -2808,7 +2814,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictUtilityConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.h">
@@ -3006,11 +3012,17 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowClipboardEnum.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowShortcutHandlerConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowClipboardEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3785,7 +3797,9 @@
     <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJsonConverter.cpp">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">

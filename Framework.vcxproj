@@ -443,7 +443,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictUtilityConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Helper\AssetFilePathHelperInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h" />
@@ -785,7 +785,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArrayUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\File\ResolveFilePathConflictUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\File\ResolveFilePathConflictByNumberSuffixUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\Json\JsonLoadAndSaveFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\ReplaceRootFilePathUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h" />

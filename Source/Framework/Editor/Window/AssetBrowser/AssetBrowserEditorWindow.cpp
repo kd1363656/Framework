@@ -92,8 +92,8 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                       m_popupDrawer,
                       m_assetCreator,
                       Constant::k_assetRootFolderPath,
-                      m_activePane,
                       l_primaryPaneSize,
+                      m_activePane,
                       m_fileOperation,
                       m_clipboard,
                       m_assetFilePathRegistry,
@@ -102,7 +102,59 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
     // FolderPaneの右側へSplitterを配置する
     m_paneSplitter.Draw(k_paneSplitterLabel, l_availableContentRegion);
 
-    m_assetPane.Draw ();
+    m_assetPane.Draw(m_folderPane,
+                     m_assetCreator,
+                     Constant::k_assetRootFolderPath,
+                     m_activePane,
+                     m_popupDrawer,
+                     m_fileOperation,
+                     m_clipboard,
+                     m_assetFilePathRegistry,
+                     m_renameState);
+
+    // ショートカットキー処理
+    // 両Pane描画後にm_activePaneが確定しているため
+    // Window側でショートカットを一元処理する
+    // PaneDrawの引数リストを短縮できる(ShortcutHandlerを渡す必要がない)
+    // WantTextInputがtrueの間(InputText編集中は)ショートカット無効
+    // Ctrl + C / Ctrl + X / Ctrl + Vをテキスト編集に合わせるため
+    // ImGui::GetIO().WantTextInputはInputTextがアクティブな間trueになる
+    // ImGui::IsWindowFocused : AssetBrowserウィンドウがフォーカスされているか
+    // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
+    if (ImGui::IsWindowFocused() &&
+        !ImGui::GetIO().WantTextInput)
+    {
+        switch(m_activePane)
+        {
+            case Enum::AssetBrowserActivePaneType::FolderPane:
+            {
+                // m_activePaneに応じて対処Paneのコンテキストを渡す
+                // FolderPane : 選択リスト + 操作対策フォルダ(なければAssetルート)
+                // 新規フォルダ作成元・貼り付け先・リネーム対象として使う
+                // GetREFOperationTargetFolderPathはconst参照を返すためコピー発生なし
+                const auto& l_operationTargetFolderPath = m_folderPane.FetchREFOperationTargetFolderPath();
+
+                m_shortcutHandler.Handle(m_folderPane.GetREFSelectedFilePathList(),
+                                         l_operationTargetFolderPath,
+                                         l_operationTargetFolderPath,
+                                         m_activePane,
+                                         m_assetCreator,
+                                         m_fileOperation,
+                                         m_clipboard,
+                                         m_renameState);
+            }
+            break;
+
+            case Enum::AssetBrowserActivePaneType::AssetPane:
+            {
+                // TODO : アセットペイン実装後に対応
+            }
+            break;
+
+            default:
+            break;
+        }
+    }
 
     ImGui::End();
 }

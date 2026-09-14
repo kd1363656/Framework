@@ -4,7 +4,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 {
     // フォルダはAssetではないためRegistryやWatcherは関与しない
     // 単純にディスク上へフォルダを作成するだけ
-    // ResolveFilePathConflictで一意なファイルパスを作成する
+    // ResolveFilePathConflictByNumberSuffixで一意なファイルパスを作成する
     // 同名が存在する場合はNewFolder1,NewFolder2...と番号付与される
     const auto& l_folderPath = ResolveDefaultFilePath(a_parentFolderPath, {}, k_defaultFolderName);
 
@@ -71,6 +71,9 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // 全て通ればファイルへ書き込む
     if (!l_prefab.Save(l_prefabFilePath))
     {
+        // 保存に失敗したらRegistryから取り消す
+        a_assetFilePathRegistry.Erase(l_prefabFilePath);
+
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_prefabFilePath.string());
 
         return {};
@@ -139,6 +142,8 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         // ファイル書き込みに失敗した場合、
         // Registryだけにエントリが残るとWatcherが間違って
         // ファイルを削除しないようになるため、Registryから削除して登録前の状態へ戻す
+        a_assetFilePathRegistry.Erase(l_sceneFilePath);
+
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,"Sceneファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_sceneFilePath.string());
 
         return {};
@@ -157,5 +162,5 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::Resolve
     // デフォルト名 + 拡張子を統合した希望パスを作る
     const auto l_desiredFilePath = a_parentFolderPath / (std::string{ a_defaultName } + a_extension.string());
 
-    return Utility::ResolveFilePathConflict(l_desiredFilePath);
+    return Utility::ResolveFilePathConflictByNumberSuffix(l_desiredFilePath);
 }
