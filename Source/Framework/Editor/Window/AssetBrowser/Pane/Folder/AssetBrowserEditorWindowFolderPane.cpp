@@ -259,10 +259,14 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // 選択状態をフラグへ反映
     // m_selectedFilePathListにa_currentFolderPathが含まれていれば選択状態
     // std::findで線形探索(フォルダ選択は同時に数十件程度のため問題ない)
-    if (std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end())
+    const bool l_isSelected = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end();
+
+    if (l_isSelected)
     {
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
+
+    int l_popStyleColorNUM = k_initialTreeNodePopStyleColorPaneActiveNUM;
 
     // ハイライト強弱の制御
     // a_activePane == FolderPane : 強ハイライト(ImGuiのデフォルト色)
@@ -273,23 +277,21 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // ImGuiCol_HeaderHovered : ホバー時の背景色
     // ImGuiCol_HeaderActive  : クリック中の背景色
     // 3色分PushするのでPopStyleColor(3)で3つまとめて戻す
-    const bool l_isStrongHighlight = (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane);
-
-    if (!l_isStrongHighlight)
+    if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane)
     {
-        // 弱ハイライト : デフォルト色のalphaを0.5倍にする
-        auto l_headerColor        = ImGui::GetStyleColorVec4(ImGuiCol_Header);
-        auto l_headerHoveredColor = ImGui::GetStyleColorVec4(ImGuiCol_HeaderHovered);
-        auto l_headerActiveColor  = ImGui::GetStyleColorVec4(ImGuiCol_HeaderActive);
+        const auto& l_hoveredColor = l_isSelected ? Constant::k_imguiStrongBlueColor : Constant::k_imguiLightGrayColor;
 
-        l_headerColor.w        *= Constant::k_imguiHighLightHalfStrength;
-        l_headerHoveredColor.w *= Constant::k_imguiHighLightHalfStrength;
-        l_headerActiveColor.w  *= Constant::k_imguiHighLightHalfStrength;
+        ImGui::PushStyleColor(ImGuiCol_Header,        Constant::k_imguiStrongBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, l_hoveredColor);
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive,  Constant::k_imguiStrongBlueColor);
 
-        // alphaを0.5倍にして薄くする
-        ImGui::PushStyleColor(ImGuiCol_Header,        l_headerColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, l_headerHoveredColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive,  l_headerActiveColor);
+        l_popStyleColorNUM = k_treeNodePopStyleColorPaneActiveNUM;
+    }
+    else
+    {
+        ImGui::PushStyleColor(ImGuiCol_Header, Constant::k_imguiWeakBlueColor);
+
+        l_popStyleColorNUM = k_treeNodePopStyleColorPaneInactiveNUM;
     }
 
     // リネームモードかどうか
@@ -453,12 +455,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
                        Enum::AssetBrowserPopupContextType::FolderPane_OnFolder,
                        a_editorWindow);
 
-    // ハイライト色をスタックから戻す
-    if (!l_isStrongHighlight)
-    {
-        // Pushした3色分をまとめてPopする
-        ImGui::PopStyleColor(k_treeNodePopStyleColorNUM);
-    }
+    // Pushした数文をまとめてPopする
+    ImGui::PopStyleColor(l_popStyleColorNUM);
 
     // 子ディレクトリを再帰描画
     if (!l_isNodeOpen ||
