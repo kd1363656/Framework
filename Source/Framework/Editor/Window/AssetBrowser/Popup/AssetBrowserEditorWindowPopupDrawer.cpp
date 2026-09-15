@@ -23,23 +23,30 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
           auto& l_renameState            = a_editorWindow.GetMutableREFRenameState          ();
 
     // AssetPaneの空白右クリックかどうか
-    const bool l_isAssetPaneEmpty = (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty);
+    const bool l_isAssetPaneEmpty = a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
 
-    // 新規フォルダ作成が可能か
-    const bool l_canCreateFolder = (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder) ||
-                                   (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)  ||
-                                   (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty);
+    // 複数選択中かどうか
+    // 複数選択中は名前変更・新規フォルダ作成を無効にする
+    const bool l_isMultiSelection = a_selectedFilePathList.size() > Constant::k_editorSelectedFolderSingleSize;
+
+    // 新規フォルダ作成可能かどうか
+    const bool l_canCreateFolder = !l_isMultiSelection &&
+                                   (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
+                                    a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder ||
+                                    a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty);
 
     // 新規プレハブ・新規シーンが作成可能か
-    const bool l_canCreatePrefab = l_isAssetPaneEmpty;
-    const bool l_canCreateScene  = l_isAssetPaneEmpty;
+    const bool l_canCreatePrefab = l_isAssetPaneEmpty && !l_isMultiSelection;
+    const bool l_canCreateScene  = l_isAssetPaneEmpty && !l_isMultiSelection;
 
     // 名前変更可能か
     // OnFolder(両Pane)・OnFile(AssetPane)で可能
     // OnEmptyでは対象がないため不可
-    const bool l_canRename = (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder) ||
-                             (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)  ||
-                             (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFile);
+    // 複数選択中は無効
+    const bool l_canRename = !l_isMultiSelection &&
+                             (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
+                              a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
+                              a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFile);
 
     // 選択中のファイルがあるか(コピー / 切り取り / 複製 / 削除の判定に使用)
     const bool l_hasSelection = !a_selectedFilePathList.empty();

@@ -29,12 +29,8 @@
                     "PrimaryPaneSize": 440.0
                 },
                 "FolderPane": {
-                    "CurrentFolderPath": "Asset\\Model",
+                    "CurrentFolderPath": "Asset\\Data\\Font",
                     "FolderOpenStateMap": [
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
                         {
                             "FilePath": "Asset",
                             "IsOpen": true
@@ -49,7 +45,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
@@ -196,10 +192,6 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Shader\\Sprite\\Screen",
                             "IsOpen": false
                         },
@@ -230,18 +222,6 @@
                         {
                             "FilePath": "Asset\\Texture\\UI\\Title",
                             "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\NewFolder",
-                            "IsOpen": false
                         }
                     ]
                 }

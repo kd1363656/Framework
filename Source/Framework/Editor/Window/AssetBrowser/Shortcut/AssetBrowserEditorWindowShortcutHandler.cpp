@@ -19,6 +19,10 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // 単一選択かどうか(名前変更は単一選択時のみ有効)
     const bool l_isSingleSelection = (a_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize);
 
+    // 複数選択中かどうか
+    // 複数選択中は名前変更・新規フォルダ作成を無効にする
+    const bool l_isMultiSelection = a_selectedFilePathList.size() > Constant::k_editorSelectedFolderSingleSize;
+
     // クリップボードが空でないか(貼り付けの判定に使用)
           auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard    ();
           auto& l_renameState   = a_editorWindow.GetMutableREFRenameState  ();
@@ -29,9 +33,10 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // Ctrl + Shift + N : 新規フォルダ作成
     // KeyCtrlとKeyShiftが両方trueで、Nキーが押された瞬間
     // ImGui::IsKeyPressed()は押された瞬間trueを返す
-    if (l_io.KeyCtrl  &&
-        l_io.KeyShift &&
-        ImGui::IsKeyPressed(ImGuiKey_N))
+    if (l_io.KeyCtrl                    &&
+        l_io.KeyShift                   &&
+        ImGui::IsKeyPressed(ImGuiKey_N) &&
+        !l_isMultiSelection)
     {
         const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
 
@@ -42,8 +47,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // F2 : 名前変更
     // 単一選択時のみ有効
     // ImGuiKey_F2はF2キーを表す
-    if (l_isSingleSelection &&
-        ImGui::IsKeyPressed(ImGuiKey_F2))
+    if (l_isSingleSelection              &&
+        ImGui::IsKeyPressed(ImGuiKey_F2) &&
+        !l_isMultiSelection)
     {
         HandleRename(a_targetFilePath, l_renameState);
     }

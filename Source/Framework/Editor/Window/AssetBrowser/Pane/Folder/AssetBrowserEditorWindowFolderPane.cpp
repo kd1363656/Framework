@@ -100,7 +100,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(const std:
     // 先頭を現在選択中のパスとして扱う
     if (l_cursorITR == l_displayedFolderList.end())
     {
-        SelectFolder(l_displayedFolderList.front());
+        SelectFolder(a_folderHierarchyMap, l_displayedFolderList.front());
 
         return;
     }
@@ -112,7 +112,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(const std:
           auto  l_prevITR  = std::prev(l_cursorITR);
     const auto& l_prevPath = *l_prevITR;
 
-    SelectFolder(l_prevPath);
+    SelectFolder(a_folderHierarchyMap, l_prevPath);
 }
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap)
 {
@@ -136,7 +136,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(const st
     // 先頭を現在選択中のパスとして扱う
     if (l_cursorITR == l_displayedFolderList.end())
     {
-        SelectFolder(l_displayedFolderList.front());
+        SelectFolder(a_folderHierarchyMap, l_displayedFolderList.front());
 
         return;
     }
@@ -149,7 +149,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(const st
 
     const auto& l_nextPath = *l_nextITR;
 
-    SelectFolder(l_nextPath);
+    SelectFolder(a_folderHierarchyMap, l_nextPath);
 }
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen()
 {
@@ -266,8 +266,12 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
 
-    int l_popStyleColorNUM = k_initialTreeNodePopStyleColorPaneActiveNUM;
+          int   l_popStyleColorNUM = k_initialTreeNodePopStyleColorPaneActiveNUM;
+    const auto& l_clipboard        = a_editorWindow.GetREFClipboard();
+    const bool  l_isCutTarget      = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) && 
+                                      l_clipboard.Contains(a_currentFolderPath);
 
+    
     // ハイライト強弱の制御
     // a_activePane == FolderPane : 強ハイライト(ImGuiのデフォルト色)
     // a_activePane == AssetPane  : 弱ハイライト(デフォルト色のalphaを下げる)
@@ -279,19 +283,45 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // 3色分PushするのでPopStyleColor(3)で3つまとめて戻す
     if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane)
     {
-        const auto& l_hoveredColor = l_isSelected ? Constant::k_imguiStrongBlueColor : Constant::k_imguiLightGrayColor;
+        const auto&  l_headerColor       = l_isCutTarget ? Constant::k_imguiDarkBlueTranslucentColor : Constant::k_imguiStrongBlueColor;
+        const auto&  l_headerActiveColor = l_isCutTarget ? Constant::k_imguiDarkBlueTranslucentColor : Constant::k_imguiStrongBlueColor;
+              ImVec4 l_hoveredColor      = {};
 
-        ImGui::PushStyleColor(ImGuiCol_Header,        Constant::k_imguiStrongBlueColor);
+        if (l_isCutTarget)
+        {
+            l_hoveredColor = Constant::k_imguiDarkBlueTranslucentColor;
+        }
+        else if (l_isSelected)
+        {
+            l_hoveredColor = Constant::k_imguiStrongBlueColor;
+        }
+        else
+        {
+            l_hoveredColor = Constant::k_imguiLightGrayColor;
+        }
+
+        ImGui::PushStyleColor(ImGuiCol_Header,        l_headerColor);
         ImGui::PushStyleColor(ImGuiCol_HeaderHovered, l_hoveredColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive,  Constant::k_imguiStrongBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_HeaderActive,  l_headerActiveColor);
 
         l_popStyleColorNUM = k_treeNodePopStyleColorPaneActiveNUM;
     }
     else
     {
-        ImGui::PushStyleColor(ImGuiCol_Header, Constant::k_imguiWeakBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_Header, Constant::k_imguiStrongBlueTranslucentColor);
 
         l_popStyleColorNUM = k_treeNodePopStyleColorPaneInactiveNUM;
+    }
+
+    // Cut中のフォルダはアイコン・フォルダ名も半透明にする
+    /// ImGuiCol_Text : テキスト色(アイコン + フォルダ名前)
+    // PushStyleColorでテキスト色を半透明にする
+    if (l_isCutTarget)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Text, Constant::k_imguiCutTargetTextColor);
+
+        // テキスト色のPush分をPopStyleColorの数に追加する
+        ++l_popStyleColorNUM;
     }
 
     // リネームモードかどうか
@@ -429,18 +459,28 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // ImGui::GetIO().KeyCtrl  : Ctrlキーが押されているか
         const auto& l_io = ImGui::GetIO();
 
-        SelectFolder(a_currentFolderPath, l_io.KeyShift, l_io.KeyCtrl);
+        SelectFolder(l_folderHierarchyMap, 
+                     a_currentFolderPath,
+                     l_io.KeyShift,
+                     l_io.KeyCtrl);
     }
 
     const auto& l_contextMenuOpenPopupLabel = std::string{ k_contextMenuOpenPopupLabel } + a_currentFolderPath.string();
-    const auto& l_popupDrawer               = a_editorWindow.GetREFPopupDrawer();
+    const auto& l_popupDrawer               = a_editorWindow.GetREFPopupDrawer                                       ();
 
     // 右クリック : 選択 + ポップアップ
     // 仕様 : フォルダ上を右クリックで現在選択中のフォルダとして扱い
     //        右ポップアップを開く
     if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
     {
-        SelectFolder(a_currentFolderPath);
+        // 右クリックしたフォルダが既に選択リストに含まれているか確認
+        // 未選択の場合のみSelectFolderを読んで選択状態を更新する
+        // 既に選択されている場合は選択状態を維持する
+        if (const bool l_isAlreadySelected = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end();
+            !l_isAlreadySelected)
+        {
+            SelectFolder(l_folderHierarchyMap, a_currentFolderPath);
+        }
 
         // BeginPopupで右クリック用ポップアップを開く
         l_popupDrawer.BeginPopup(l_contextMenuOpenPopupLabel);
@@ -501,14 +541,14 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::BuildDisplayedFolderList(c
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::filesystem::path& a_folderPath, const bool a_isRangeSelection, const bool a_isToggleSelection)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, 
+                                                                   const std::filesystem::path&                                                         a_folderPath, 
+                                                                   const bool                                                                           a_isRangeSelection, 
+                                                                   const bool                                                                           a_isToggleSelection)
 {
     // Shift + Click : 範囲選択
     // m_rangeSelectionStartPathからa_folderPathまでの範囲を選択する
-    // ツリー上の順番で範囲を選択する必要があるが
-    // ツリー順序の取得は描画時しかできないため
-    // ここでは簡易的にa_folderPathを選択リストへ追加する
-    // 本格的な範囲選択はDrawTreeNode側で処理する
+    // ツリー上の表示順で範囲を選択する
     if (a_isRangeSelection)
     {
         // 範囲選択の開始地点が未設定の場合は単一選択として扱う
@@ -528,10 +568,45 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::fi
         }
         else
         {
-            // 開始地点とクリック点を両方選択
-            m_selectedFilePathList.clear       ();
-            m_selectedFilePathList.emplace_back(m_rangeSelectionStartPath);
-            m_selectedFilePathList.emplace_back(a_folderPath);
+            // 表示中のフォルダリストを構築
+            // BuildDisplayedFolderListは現在開いているフォルダツリーを
+            // 表示順(上から下)に並べたリストを返す
+            // これを使って開始地点からクリック店までの範囲を決定する
+            std::vector<std::filesystem::path> l_displayedFolderList = {};
+
+            BuildDisplayedFolderList(a_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
+
+            // 開始地点とクリック店のリスト内インデックスを検索
+            auto l_startITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), m_rangeSelectionStartPath);
+            auto l_endITR   = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), a_folderPath); 
+
+            // 両方がリストに存在する場合のみ範囲選択を行う
+            if (l_startITR != l_displayedFolderList.end() &&
+                l_endITR != l_displayedFolderList.end())
+            {
+                // 開始地点がクリック点より後ろの場合は入れ替える
+                // 例 : Scene(開始) -> Data(クリック)の場合は
+                // Data -> Sceneの順に選択する
+                if (l_startITR > l_endITR)
+                {
+                    std::swap(l_startITR, l_endITR);
+                }
+
+                // 開始地点からクリック店まで(両端含む)を選択リストへ追加
+                m_selectedFilePathList.clear();
+
+                for (auto l_itr = l_startITR; l_itr <= l_endITR; ++l_itr)
+                {
+                    m_selectedFilePathList.emplace_back(*l_itr);
+                }
+            }
+            else
+            {
+                // リストに存在しない場合は簡易的に二つだけ選択(フォールバック)
+                m_selectedFilePathList.clear();
+                m_selectedFilePathList.emplace_back(m_rangeSelectionStartPath);
+                m_selectedFilePathList.emplace_back(a_folderPath);
+            }
         }
 
         return;

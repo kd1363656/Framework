@@ -13,6 +13,8 @@ namespace FWK::Editor
 
         void Clear();
 
+        bool Contains(const std::filesystem::path& a_filePath) const;
+
         bool IsEmpty() const;
 
         const auto& GetREFFilePathList() const { return m_clipboardFilePathList; }

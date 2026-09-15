@@ -29,6 +29,11 @@ void FWK::Editor::AssetBrowserEditorWindowClipboard::Clear()
     m_operationType = Enum::AssetBrowserFileClipboardOperationType::Invalid;
 }
 
+bool FWK::Editor::AssetBrowserEditorWindowClipboard::Contains(const std::filesystem::path& a_filePath) const
+{
+    return m_clipboardFilePathSet.contains(a_filePath);
+}
+
 bool FWK::Editor::AssetBrowserEditorWindowClipboard::IsEmpty() const
 {
     return m_clipboardFilePathList.empty();

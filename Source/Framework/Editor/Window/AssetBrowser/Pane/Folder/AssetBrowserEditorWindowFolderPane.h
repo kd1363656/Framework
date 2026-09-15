@@ -47,7 +47,10 @@ namespace FWK::Editor
 
         void BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList);
 
-        void SelectFolder(const std::filesystem::path& a_folderPath, const bool a_isRangeSelection = false, const bool a_isToggleSelection = false);
+        void SelectFolder(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, 
+                          const std::filesystem::path&                                                         a_folderPath, 
+                          const bool                                                                           a_isRangeSelection = false, 
+                          const bool                                                                           a_isToggleSelection = false);
 
         bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
 

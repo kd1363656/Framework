@@ -26,9 +26,10 @@ namespace FWK::Editor
         const auto& GetREFFolderPane  () const { return m_folderPane; }
         const auto& GetREFPaneSplitter() const { return m_paneSplitter; }
 
-        const auto& GetREFAssetCreator() const { return m_assetCreator; }
-        const auto& GetREFPopupDrawer () const { return m_popupDrawer; }
-        const auto& GetREFRenameState () const { return m_renameState; }
+        const auto& GetREFAssetCreator () const { return m_assetCreator; }
+        const auto& GetREFFileOperation() const { return m_fileOperation; }
+        const auto& GetREFPopupDrawer  () const { return m_popupDrawer; }
+        const auto& GetREFRenameState  () const { return m_renameState; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
