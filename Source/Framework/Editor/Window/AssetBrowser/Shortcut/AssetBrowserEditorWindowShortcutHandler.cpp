@@ -94,6 +94,39 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     }
 }
 
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(AssetBrowserEditorWindow& a_editorWindow)
+{
+    const auto& l_io                 = ImGui::GetIO                           ();
+    const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
+          auto& l_folderPane         = a_editorWindow.GetMutableREFFolderPane ();
+
+    // 上下キーによる操作の反映
+    if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
+    {
+        l_folderPane.MoveSelectionUp(l_folderHierarchyMap);
+    }
+    else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
+    {
+        l_folderPane.MoveSelectionDown(l_folderHierarchyMap);
+    }
+
+    // 右キー左キーによる操作の反映
+    if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
+    {
+        l_folderPane.ForciblyFolderOpen();
+    }
+    else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
+    {
+        l_folderPane.ForciblyFolderClose();
+    }
+
+    // エンターキーで開閉の切り替え
+    if (ImGui::IsKeyPressed(ImGuiKey_Enter))
+    {
+        l_folderPane.ToggleCurrentFolderOpen();
+    }
+}
+
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const AssetBrowserEditorWindowAssetCreator& a_assetCreator, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
     // AssetCreator::CreateFolderでフォルダを作成

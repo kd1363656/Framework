@@ -103,8 +103,6 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                      m_assetFilePathRegistry,
                      m_renameState);
 
-
-
     // ショートカットキー処理
     // 両Pane描画後にm_activePaneが確定しているため
     // Window側でショートカットを一元処理する
@@ -128,7 +126,8 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 // GetREFOperationTargetFolderPathはconst参照を返すためコピー発生なし
                 const auto& l_operationTargetFolderPath = m_folderPane.FetchREFOperationTargetFolderPath();
 
-                m_shortcutHandler.Handle(m_folderPane.GetREFSelectedFilePathList(), l_operationTargetFolderPath, *this);
+                m_shortcutHandler.HandleFolderPane(*this);
+                m_shortcutHandler.Handle          (m_folderPane.GetREFSelectedFilePathList(), l_operationTargetFolderPath, *this);
             }
             break;
 

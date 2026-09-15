@@ -23,7 +23,7 @@ namespace FWK::Editor
         void ForciblyFolderOpen ();
         void ForciblyFolderClose();
 
-        void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
+        void ToggleCurrentFolderOpen();
 
         void ClearSelection();
 
@@ -50,6 +50,8 @@ namespace FWK::Editor
         void SelectFolder(const std::filesystem::path& a_folderPath, const bool a_isRangeSelection = false, const bool a_isToggleSelection = false);
 
         bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
+
+        void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
 
         static constexpr std::string_view k_childLabel                     = "##AssetBrowserEditorWindowFolderPane";
         static constexpr std::string_view k_paneTitleLabel                 = "ファイル";

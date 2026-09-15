@@ -29,28 +29,8 @@
                     "PrimaryPaneSize": 284.0
                 },
                 "FolderPane": {
-                    "CurrentFolderPath": "Asset\\NewFolder",
+                    "CurrentFolderPath": "Asset",
                     "FolderOpenStateMap": [
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
                         {
                             "FilePath": "Asset",
                             "IsOpen": true
@@ -212,35 +192,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
                             "FilePath": "Asset\\Shader\\Sprite\\Screen",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Shader\\Model\\Static\\Shadow\\Cascade",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2",
                             "IsOpen": false
                         },
                         {
@@ -265,135 +221,7 @@
                         },
                         {
                             "FilePath": "Asset\\Texture\\UI\\Title",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
                             "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder1",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder3",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder1\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder3\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
-                            "IsOpen": false
                         }
                     ]
                 }

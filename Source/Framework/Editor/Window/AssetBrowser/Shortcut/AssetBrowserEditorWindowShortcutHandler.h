@@ -16,6 +16,8 @@ namespace FWK::Editor
 
         void Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList, const std::filesystem::path& a_targetFilePath, AssetBrowserEditorWindow& a_editorWindow) const;
 
+        void HandleFolderPane(AssetBrowserEditorWindow& a_editorWindow);
+
     private:
 
         void HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const AssetBrowserEditorWindowAssetCreator& a_assetCreator, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;

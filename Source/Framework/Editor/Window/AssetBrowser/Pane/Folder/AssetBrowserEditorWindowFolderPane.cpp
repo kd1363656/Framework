@@ -172,23 +172,11 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose()
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std::filesystem::path& a_folderPath)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleCurrentFolderOpen()
 {
-    // 現在の開閉状態を反転させる
-    // m_folderOpenStateMapにエントリが存在しない場合は
-    // デフォルトで閉じているとみなし、開く(true)にする
-    const auto& l_itr = m_folderOpenStateMap.find(a_folderPath);
+    if (m_currentFolderPath.empty()) { return; }
 
-    if (l_itr == m_folderOpenStateMap.end()) 
-    {
-        // エントリが存在しない場合は新規作成してtrue(開く)をセット
-        m_folderOpenStateMap.try_emplace(a_folderPath, true);
-
-        return;
-    }
-
-    // エントリが存在する場合は反転させる
-    l_itr->second = !l_itr->second;
+    ToggleFolderOpen(m_currentFolderPath);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ClearSelection()
@@ -612,4 +600,23 @@ bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::fi
     if (l_itr == m_folderOpenStateMap.end()) { return false; }
 
     return l_itr->second;
+}
+
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std::filesystem::path& a_folderPath)
+{
+    // 現在の開閉状態を反転させる
+    // m_folderOpenStateMapにエントリが存在しない場合は
+    // デフォルトで閉じているとみなし、開く(true)にする
+    const auto& l_itr = m_folderOpenStateMap.find(a_folderPath);
+
+    if (l_itr == m_folderOpenStateMap.end()) 
+    {
+        // エントリが存在しない場合は新規作成してtrue(開く)をセット
+        m_folderOpenStateMap.try_emplace(a_folderPath, true);
+
+        return;
+    }
+
+    // エントリが存在する場合は反転させる
+    l_itr->second = !l_itr->second;
 }
