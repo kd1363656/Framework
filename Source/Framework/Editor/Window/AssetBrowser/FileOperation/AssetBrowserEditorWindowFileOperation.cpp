@@ -98,20 +98,79 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::filesy
             l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
         }
 
-        // copy()はフォルダの場合は中身も再帰的にコピーする
-        // l_sourceFilePath以下のファイルを全てl_destinationFilePathに階層ごとコピーする
-        std::filesystem::copy(l_sourceFilePath,
-                              l_destinationFilePath,
-                              std::filesystem::copy_options::recursive,
-                              l_errorCode);
+        // コピー先がコピー元の中にあるかチェック
+        // 例 : Source      = "Asset/NewFolder"
+        //      Destination = "Asset/NewFolder/NewFolder"
+        // この場合、std::filesystem::cop(recursive)は
+        // コピー先(自分自身)もコピー対象なってしまい無限再帰する
+        // これを防ぐため自分でディレクトを作成してから
+        // 中身をコピーする際にコピー先自身をスキップする
+        bool l_isDestinationInsideSource = false;
 
-        if (l_errorCode)
+        // a_destinationFolderPathの祖先を巡り
+        // l_sourceFilePathと一致するかチェック
+        for (auto l_parent = a_destinationFolderPath; !l_parent.empty(); l_parent = l_parent.parent_path())
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-                        "ファイルの貼り付けに失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
-                        l_sourceFilePath.string(),
-                        l_destinationFilePath.string(),
-                        l_errorCode.value());
+            if (l_parent != l_sourceFilePath) { continue; }
+            
+            l_isDestinationInsideSource = true;
+
+            break;
+        }
+
+        // コピー先ディレクトを先に作成する
+        // std::filesystem::copy(recursive)は内部でディレクトリを作るが
+        // 自前で再帰コピーする場合は先に作成しておく必要がある
+        if (std::filesystem::is_directory(l_sourceFilePath, l_errorCode))
+        {
+            std::filesystem::create_directory(l_destinationFilePath, l_errorCode);
+            
+            if (l_errorCode) 
+            {
+                FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                            "貼り付け先フォルダの作成に失敗しました。\nDestinationFilePath : {}\nErrorCode : {}", 
+                            l_destinationFilePath.string(), 
+                            l_errorCode.value());
+
+                continue;
+            }
+        }
+
+        // ディレクトリエントリーを再帰的にコピー
+        // std::filesystem::directory_iteratorでsource直下のエントリを走査
+        // 各エントリをdestinationへコピーする
+        // コピー先がコピー元の中にある場合はコピー先自身をスキップする
+        for (const auto& l_entry : std::filesystem::directory_iterator(l_sourceFilePath, l_errorCode))
+        {
+            const auto& l_entrySourcePath = l_entry.path                                      ();
+            const auto& l_entryDestPath   = l_destinationFilePath / l_entrySourcePath.filename();
+
+            // コピー先がコピー元の中にある場合、
+            // コピー先自身(= l_destinationFilePath)と一致するエントリはスキップ
+            // これにより無限再帰を防ぐ
+            if (l_isDestinationInsideSource &&
+                l_entrySourcePath == l_destinationFilePath)
+            {
+                continue;
+            }
+
+            // copy()はフォルダの場合は中身も再帰的にコピーする
+            // l_entrySourcePath以下のファイルをすべてl_entryDestPathに階層ごとコピーする
+            std::filesystem::copy(l_entrySourcePath,
+                                  l_entryDestPath,
+                                  std::filesystem::copy_options::recursive,
+                                  l_errorCode);
+
+            if (!l_errorCode)
+            {
+                FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                            "ファイルの貼り付けに失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
+                            l_entrySourcePath.string(),
+                            l_entryDestPath.string(),
+                            l_errorCode.value());
+
+                l_errorCode.clear();
+            }
         }
     }
 
