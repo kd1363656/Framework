@@ -29,8 +29,12 @@
                     "PrimaryPaneSize": 440.0
                 },
                 "FolderPane": {
-                    "CurrentFolderPath": "Asset\\NewFolder",
+                    "CurrentFolderPath": "Asset\\Model",
                     "FolderOpenStateMap": [
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
                         {
                             "FilePath": "Asset",
                             "IsOpen": true
@@ -73,10 +77,6 @@
                         },
                         {
                             "FilePath": "Asset\\Model\\Actor\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder1",
                             "IsOpen": false
                         },
                         {
@@ -224,10 +224,6 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder1\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Texture\\UI",
                             "IsOpen": false
                         },
@@ -240,19 +236,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder1",
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder1\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder",
+                            "FilePath": "Asset\\Model\\NewFolder",
                             "IsOpen": false
                         }
                     ]
