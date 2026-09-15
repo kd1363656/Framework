@@ -22,6 +22,13 @@ namespace FWK::Editor
                         AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
                         Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState);
 
+        void MoveSelectionUp    (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap);
+        void MoveSelectionDown  (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap);
+        void ForciblyFolderOpen ();
+        void ForciblyFolderClose();
+
+        void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
+
         void ClearSelection();
 
         nlohmann::json Serialize() const;
@@ -52,11 +59,11 @@ namespace FWK::Editor
                                 AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
                                 Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState);
 
-        bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
-
-        void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
+        void BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList);
 
         void SelectFolder(const std::filesystem::path& a_folderPath, const bool a_isRangeSelection = false, const bool a_isToggleSelection = false);
+
+        bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
 
         static constexpr std::string_view k_childLabel                     = "##AssetBrowserEditorWindowFolderPane";
         static constexpr std::string_view k_paneTitleLabel                 = "ファイル";

@@ -112,6 +112,8 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                      m_assetFilePathRegistry,
                      m_renameState);
 
+
+
     // ショートカットキー処理
     // 両Pane描画後にm_activePaneが確定しているため
     // Window側でショートカットを一元処理する
@@ -121,10 +123,11 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
     // ImGui::GetIO().WantTextInputはInputTextがアクティブな間trueになる
     // ImGui::IsWindowFocused : AssetBrowserウィンドウがフォーカスされているか
     // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
-    if (ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows) &&
-        !ImGui::GetIO().WantTextInput)
+    if (const auto& l_io = ImGui::GetIO();
+        ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows) &&
+        !l_io.WantTextInput)
     {
-        switch(m_activePane)
+        switch (m_activePane)
         {
             case Enum::AssetBrowserActivePaneType::FolderPane:
             {
@@ -134,24 +137,14 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 // GetREFOperationTargetFolderPathはconst参照を返すためコピー発生なし
                 const auto& l_operationTargetFolderPath = m_folderPane.FetchREFOperationTargetFolderPath();
 
-                m_shortcutHandler.Handle(m_folderPane.GetREFSelectedFilePathList(),
-                                         l_operationTargetFolderPath,
-                                         l_operationTargetFolderPath,
-                                         m_activePane,
-                                         m_assetCreator,
-                                         m_fileOperation,
-                                         m_clipboard,
-                                         m_renameState);
-            }
-            break;
-
-            case Enum::AssetBrowserActivePaneType::AssetPane:
-            {
-                // TODO : アセットペイン実装後に対応
+                m_shortcutHandler.Handle(m_folderPane.GetREFSelectedFilePathList(), l_operationTargetFolderPath, *this);
             }
             break;
 
             default:
+            {
+
+            }
             break;
         }
     }

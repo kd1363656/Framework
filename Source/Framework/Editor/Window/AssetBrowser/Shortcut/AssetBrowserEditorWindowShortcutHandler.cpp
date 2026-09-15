@@ -1,13 +1,6 @@
 ﻿#include "AssetBrowserEditorWindowShortcutHandler.h"
 
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vector<std::filesystem::path>&          a_selectedFilePathList, 
-                                                                  const std::filesystem::path&                       a_parentFolderPath,
-                                                                  const std::filesystem::path&                       a_targetFilePath, 
-                                                                  const Enum::AssetBrowserActivePaneType             a_activePane, 
-                                                                  const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                                                        AssetBrowserEditorWindowFileOperation&       a_fileOperation, 
-                                                                        AssetBrowserEditorWindowClipboard&           a_clipboard,
-                                                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList, const std::filesystem::path& a_targetFilePath, AssetBrowserEditorWindow& a_editorWindow) const
 {
     // アクティブPane無効の場合は何もしない
     if (a_activePane == Enum::AssetBrowserActivePaneType::Invalid) { return; }
@@ -152,11 +145,11 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::
     // 貼り付け時に元ファイルが削除される
     a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::filesystem::path& a_parentFolderPath, AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::filesystem::path& a_targetFolderPath, AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Pasteでクリップボードのファイルを現在フォルダへ張り付け
     // Cutの場合は元ファイルを削除、Copyの場合は複製
-    a_fileOperation.Paste(a_parentFolderPath, a_clipboard);
+    a_fileOperation.Paste(a_targetFolderPath, a_clipboard);
 }
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDuplicate(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation& a_fileOperation) const
 {

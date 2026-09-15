@@ -29,18 +29,38 @@
                     "PrimaryPaneSize": 284.0
                 },
                 "FolderPane": {
-                    "CurrentFolderPath": "Asset\\Data",
+                    "CurrentFolderPath": "Asset\\NewFolder",
                     "FolderOpenStateMap": [
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
                         {
                             "FilePath": "Asset",
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Scene\\Game",
+                            "FilePath": "Asset\\Data\\Font\\Icon",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Font\\Icon",
+                            "FilePath": "Asset\\Data\\Scene\\Game",
                             "IsOpen": false
                         },
                         {
@@ -52,15 +72,15 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Data\\Sound",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow\\Cascade",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Data\\Sound",
                             "IsOpen": false
                         },
                         {
@@ -192,6 +212,26 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Shader\\Sprite\\Screen",
                             "IsOpen": false
                         },
@@ -221,6 +261,58 @@
                         },
                         {
                             "FilePath": "Asset\\Texture\\UI\\Title",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder1",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder1\\NewFolder",
                             "IsOpen": false
                         }
                     ]

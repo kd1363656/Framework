@@ -115,15 +115,15 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::filesy
         }
     }
 
-    // Cut操作の場合は元ファイルを削除する
-    if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Cut)
-    {
-        for (const auto& l_sourceFilePath : l_clipboardFilePathList)
-        {
-            std::error_code l_errorCode = {};
+    // Cut操作の以外はここで処理を終わる
+    if (l_operationType != Enum::AssetBrowserFileClipboardOperationType::Cut) { return; }
 
-            std::filesystem::remove_all(l_sourceFilePath, l_errorCode);
-        }
+    // クリップボードにコピーしたコピー元ファイルを削除する
+    for (const auto& l_sourceFilePath : l_clipboardFilePathList)
+    {
+        std::error_code l_errorCode = {};
+
+        std::filesystem::remove_all(l_sourceFilePath, l_errorCode);
     }
 
     // 貼り付け完了後にClipboardをクリアする

@@ -98,6 +98,119 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
     ImGui::EndChild();
 }
 
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap)
+{
+    // 表示中ノードリストを構築
+    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
+    // Assetルートから再帰的に開いているフォルダの子を収集
+    std::vector<std::filesystem::path> l_displayedFolderList = {};
+
+    // 現在フォルダツリーで開いている部分のみ収集
+    BuildDisplayedFolderList(a_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
+
+    // ナビゲーションカーソル位置を決定
+    // m_currentFolderPathをカーソルとして使う
+    // 空の場合はリスト先頭
+    const auto& l_cursorPath = m_currentFolderPath.empty() ? l_displayedFolderList.front() : m_currentFolderPath;
+
+    // カーソル位置をリストから検索
+    auto l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
+
+    // リストに現在選択中のパスが見つからない場合は
+    // 先頭を現在選択中のパスとして扱う
+    if (l_cursorITR == l_displayedFolderList.end())
+    {
+        SelectFolder(l_displayedFolderList.front());
+
+        return;
+    }
+
+    // 既に先頭なら何もしない
+    if (l_cursorITR == l_displayedFolderList.begin()) { return; }
+
+    // 前のノードを取得
+          auto  l_prevITR  = std::prev(l_cursorITR);
+    const auto& l_prevPath = *l_prevITR;
+
+    SelectFolder(l_prevPath);
+}
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap)
+{
+    // 表示中ノードリストを構築
+    // 矢印キー押下時のみ構築するため毎フレームのオーバーヘッドなし
+    // Assetルートから再帰的に開いているフォルダの子を収集
+    std::vector<std::filesystem::path> l_displayedFolderList = {};
+
+    // 現在フォルダツリーで開いている部分のみ収集
+    BuildDisplayedFolderList(a_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
+
+    // ナビゲーションカーソル位置を決定
+    // m_currentFolderPathをカーソルとして使う
+    // 空の場合はリスト先頭
+    const auto& l_cursorPath = m_currentFolderPath.empty() ? l_displayedFolderList.front() : m_currentFolderPath;
+
+    // カーソル位置をリストから検索
+    auto l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
+
+    // リストに現在選択中のパスが見つからない場合は
+    // 先頭を現在選択中のパスとして扱う
+    if (l_cursorITR == l_displayedFolderList.end())
+    {
+        SelectFolder(l_displayedFolderList.front());
+
+        return;
+    }
+
+    // 次のノードを取得
+    auto l_nextITR = std::next(l_cursorITR);
+
+    // 既に末尾なら何もしない
+    if (l_nextITR == l_displayedFolderList.end()) { return; }
+
+    const auto& l_nextPath = *l_nextITR;
+
+    SelectFolder(l_nextPath);
+}
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen()
+{
+    const auto& l_currentPath = m_selectedFilePathList.empty() ? m_currentFolderPath : m_selectedFilePathList.back();
+
+    // 閉じている場合のみ展開する
+    if (!IsFolderOpen(l_currentPath))
+    {
+        ToggleFolderOpen(l_currentPath);
+    }
+}
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose()
+{
+    const auto& l_currentPath = m_selectedFilePathList.empty() ? m_currentFolderPath : m_selectedFilePathList.back();
+
+    // 閉じている場合のみ展開する
+    if (IsFolderOpen(l_currentPath))
+    {
+        ToggleFolderOpen(l_currentPath);
+    }
+}
+
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std::filesystem::path& a_folderPath)
+{
+    // 現在の開閉状態を反転させる
+    // m_folderOpenStateMapにエントリが存在しない場合は
+    // デフォルトで閉じているとみなし、開く(true)にする
+    const auto& l_itr = m_folderOpenStateMap.find(a_folderPath);
+
+    if (l_itr == m_folderOpenStateMap.end()) 
+    {
+        // エントリが存在しない場合は新規作成してtrue(開く)をセット
+        m_folderOpenStateMap.try_emplace(a_folderPath, true);
+
+        return;
+    }
+
+    // エントリが存在する場合は反転させる
+    l_itr->second = !l_itr->second;
+}
+
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ClearSelection()
 {
     // 選択中のファイルパスリストをクリアする
@@ -416,36 +529,27 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
     ImGui::TreePop();
 }
 
-bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::filesystem::path& a_folderPath) const
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList)
 {
-    // m_folderOpenStateMapからa_folderPathの開閉状態を取得する
-    // std::unordered_map::findはキーが存在しない場合end()を返す
-    // 存在しない場合はデフォルトで「閉じている(false)」として扱う
-    const auto& l_itr = m_folderOpenStateMap.find(a_folderPath);
+    // 自分自身をリストへ追加
+    // 呼び出し側で渡されたvectorへ表示順に追加していく
+    a_displayedList.emplace_back(a_folderPath);
 
-    // エントリが存在しない場合はfalse(閉じている)を返す
-    if (l_itr == m_folderOpenStateMap.end()) { return false; }
+    // 開いているフォルダの子は表示されないためスキップ
+    // m_folderOpenStateMapはFolderPaneのメンバなので参照可能
+    if (!IsFolderOpen(a_folderPath)) { return; }
 
-    return l_itr->second;
-}
+    // 子フォルダリストを追加
+    const auto& l_itr = a_folderHierarchyMap.find(a_folderPath);
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std::filesystem::path& a_folderPath)
-{
-    // 現在の開閉状態を反転させる
-    // m_folderOpenStateMapにエントリが存在しない場合は
-    // デフォルトで閉じているとみなし、開く(true)にする
-    const auto& l_itr = m_folderOpenStateMap.find(a_folderPath);
+    // 子がない場合は終了
+    if (l_itr == a_folderHierarchyMap.end()) { return; }
 
-    if (l_itr == m_folderOpenStateMap.end()) 
+    // 子フォルダに対して再帰的に呼びだし
+    for (const auto& l_chldPath : l_itr->second)
     {
-        // エントリが存在しない場合は新規作成してtrue(開く)をセット
-        m_folderOpenStateMap.try_emplace(a_folderPath, true);
-
-        return;
+        BuildDisplayedFolderList(a_folderHierarchyMap, l_chldPath, a_displayedList);
     }
-
-    // エントリが存在する場合は反転させる
-    l_itr->second = !l_itr->second;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::filesystem::path& a_folderPath, const bool a_isRangeSelection, const bool a_isToggleSelection)
@@ -532,4 +636,17 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::fi
 
     // 範囲選択の開始地点を更新
     m_rangeSelectionStartPath = a_folderPath;
+}
+
+bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::filesystem::path& a_folderPath) const
+{
+    // m_folderOpenStateMapからa_folderPathの開閉状態を取得する
+    // std::unordered_map::findはキーが存在しない場合end()を返す
+    // 存在しない場合はデフォルトで「閉じている(false)」として扱う
+    const auto& l_itr = m_folderOpenStateMap.find(a_folderPath);
+
+    // エントリが存在しない場合はfalse(閉じている)を返す
+    if (l_itr == m_folderOpenStateMap.end()) { return false; }
+
+    return l_itr->second;
 }
