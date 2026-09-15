@@ -2,6 +2,11 @@
 
 namespace FWK::Editor
 {
+    class AssetBrowserEditorWindow;
+}
+
+namespace FWK::Editor
+{
     class AssetBrowserEditorWindowPopupDrawer final
     {
     public:
@@ -11,32 +16,27 @@ namespace FWK::Editor
 
         void BeginPopup(const std::string_view& a_openPopupLabel) const;
 
-        void Draw(const std::vector<std::filesystem::path>&          a_selectedFilePathList,
-                  const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                  const std::filesystem::path&                       a_targetFilePath,
-                  const std::filesystem::path&                       a_parentFolderPath,
-                  const std::string_view&                            a_openPopupLabel,
-                  const Enum::AssetBrowserPopupContextType           a_contextType,
-                        AssetBrowserEditorWindowFileOperation&       a_fileOperation,
-                        AssetBrowserEditorWindowClipboard&           a_clipboard,
-                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
-                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
+        void Draw(const std::vector<std::filesystem::path>& a_selectedFilePathList, 
+                  const std::filesystem::path&              a_targetFilePath,
+                  const std::string_view&                   a_openPopupLabel,
+                  const Enum::AssetBrowserPopupContextType  a_contextType,
+                        AssetBrowserEditorWindow&           a_editorWindow) const;
 
     private:
 
         void DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                  const std::filesystem::path&                       a_parentFolderPath,
+                                  const std::filesystem::path&                       a_targetFolderPath,
                                   const bool                                         a_canCreate,
                                         Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
         void DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                  const std::filesystem::path&                       a_parentFolderPath,
+                                  const std::filesystem::path&                       a_targetFolderPath,
                                   const bool                                         a_canCreate,
                                         AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                         Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
         void DrawCreateSceneMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                 const std::filesystem::path&                       a_parentFolderPath,
+                                 const std::filesystem::path&                       a_targetFolderPath,
                                  const bool                                         a_canCreate,
                                        AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                        Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
@@ -53,7 +53,7 @@ namespace FWK::Editor
                                AssetBrowserEditorWindowFileOperation& a_fileOperation,
                                AssetBrowserEditorWindowClipboard&     a_clipboard) const;
 
-        void DrawPasteMenu(const std::filesystem::path&                 a_parentFolderPath,
+        void DrawPasteMenu(const std::filesystem::path&                 a_targetFolderPath,
                            const bool                                   a_canPaste,
                                  AssetBrowserEditorWindowFileOperation& a_fileOperation,
                                  AssetBrowserEditorWindowClipboard&     a_clipboard) const;

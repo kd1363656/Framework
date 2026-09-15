@@ -16,22 +16,31 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() override;
 
+        void SetActivePane(const Enum::AssetBrowserActivePaneType a_set) { m_activePane = a_set; }
+
         const auto& GetREFFolderHierarchyMap() const { return m_folderHierarchyMap; }
 
         const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
-        const auto& GetREFPaneSplitter         () const { return m_paneSplitter; }
-        const auto& GetREFFolderPane           () const { return m_folderPane; }
+
+        const auto& GetREFClipboard   () const { return m_clipboard; }
+        const auto& GetREFFolderPane  () const { return m_folderPane; }
+        const auto& GetREFPaneSplitter() const { return m_paneSplitter; }
+
+        const auto& GetREFAssetCreator() const { return m_assetCreator; }
+        const auto& GetREFPopupDrawer () const { return m_popupDrawer; }
+        const auto& GetREFRenameState () const { return m_renameState; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
-        auto& GetMutableREFPaneSplitter         () { return m_paneSplitter; }
-        auto& GetMutableREFFolderPane           () { return m_folderPane; }
 
-        auto& GetMutableREFRenameState    () { return m_renameState; }
+        auto& GetMutableREFFolderPane  () { return m_folderPane; }
+        auto& GetMutableREFPaneSplitter() { return m_paneSplitter; }
+
         auto& GetMutableREFClipboard      () { return m_clipboard; }
         auto& GetMutableREFFileOperation  () { return m_fileOperation; }
-        auto& GetMutableREFShortcutHandler() { return m_shortcutHandler; }
         auto& GetMutableREFPopupDrawer    () { return m_popupDrawer; }
-        auto& GetMutableREFAssetCreation  () { return m_assetCreator; }
+        auto& GetMutableREFRenameState    () { return m_renameState; }
+
+        auto GetVALActivePane() const { return m_activePane; }
 
     private:
 
@@ -48,8 +57,9 @@ namespace FWK::Editor
 
         AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
 
-        AssetBrowserEditorWindowFolderPane m_folderPane = {};
-        AssetBrowserEditorWindowAssetPane  m_assetPane  = {};
+        AssetBrowserEditorWindowFolderPane m_folderPane   = {};
+        AssetBrowserEditorWindowAssetPane  m_assetPane    = {};
+        EditorWindowPaneSplitter           m_paneSplitter = {};
 
         AssetBrowserEditorWindowClipboard       m_clipboard       = {};
         AssetBrowserEditorWindowFileOperation   m_fileOperation   = {};
@@ -61,7 +71,6 @@ namespace FWK::Editor
 
         Enum::AssetBrowserActivePaneType m_activePane = Enum::AssetBrowserActivePaneType::Invalid;
 
-        EditorWindowPaneSplitter m_paneSplitter = {};
 
         Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 

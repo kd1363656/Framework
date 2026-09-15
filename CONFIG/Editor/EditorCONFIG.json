@@ -37,11 +37,11 @@
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
@@ -56,11 +56,11 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Font\\Icon",
+                            "FilePath": "Asset\\Data\\Scene\\Game",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Scene\\Game",
+                            "FilePath": "Asset\\Data\\Font\\Icon",
                             "IsOpen": false
                         },
                         {
@@ -72,11 +72,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow\\Cascade",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow\\Cascade",
+                            "FilePath": "Asset\\Data\\Sound",
                             "IsOpen": false
                         },
                         {
@@ -212,16 +212,12 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
                             "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
@@ -232,11 +228,19 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\NewFolder\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
                             "FilePath": "Asset\\Shader\\Sprite\\Screen",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Shader\\Model\\Static\\Shadow\\Cascade",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2",
                             "IsOpen": false
                         },
                         {
@@ -268,8 +272,12 @@
                             "IsOpen": true
                         },
                         {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
@@ -277,6 +285,10 @@
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
                             "IsOpen": false
                         },
                         {
@@ -288,6 +300,10 @@
                             "IsOpen": true
                         },
                         {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
                             "IsOpen": false
                         },
@@ -297,22 +313,86 @@
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder\\NewFolder",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder1",
+                            "FilePath": "Asset\\NewFolder\\NewFolder1",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder1\\NewFolder",
+                            "FilePath": "Asset\\NewFolder\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder3",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder1\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder3\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2\\NewFolder2",
                             "IsOpen": false
                         }
                     ]

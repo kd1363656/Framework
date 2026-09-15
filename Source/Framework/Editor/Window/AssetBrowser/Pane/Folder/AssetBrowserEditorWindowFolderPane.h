@@ -2,6 +2,11 @@
 
 namespace FWK::Editor
 {
+    class AssetBrowserEditorWindow;
+}
+
+namespace FWK::Editor
+{
     class AssetBrowserEditorWindowFolderPane final
     {
     public:
@@ -11,16 +16,7 @@ namespace FWK::Editor
 
         void Deserialize(const nlohmann::json& a_rootJson);
 
-        void Draw(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
-                  const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
-                  const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
-                  const std::filesystem::path&                                                         a_assetRootFolderPath,
-                  const float                                                                          a_paneWidth,
-                        Enum::AssetBrowserActivePaneType&                                              a_activePane,
-                        AssetBrowserEditorWindowFileOperation&                                         a_fileOperation,
-                        AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
-                        AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
-                        Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState);
+        void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
         void MoveSelectionUp    (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap);
         void MoveSelectionDown  (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap);
@@ -47,17 +43,7 @@ namespace FWK::Editor
 
     private:
 
-        void DrawTreeNode(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
-                          const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
-                          const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
-                          const std::filesystem::path&                                                         a_currentFolderPath,
-                          const std::filesystem::path&                                                         a_assetRootFolderPath,
-                          const Enum::AssetBrowserActivePaneType                                               a_activePane,
-                          const float                                                                          a_paneWidth,
-                                AssetBrowserEditorWindowFileOperation&                                         a_fileOperation,
-                                AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
-                                AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
-                                Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState);
+        void DrawTreeNode(const std::filesystem::path& a_currentFolderPath, AssetBrowserEditorWindow& a_editorWindow);
 
         void BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList);
 

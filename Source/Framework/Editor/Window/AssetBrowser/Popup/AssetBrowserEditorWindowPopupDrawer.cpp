@@ -7,18 +7,20 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::BeginPopup(const std::str
     ImGui::OpenPopup(a_openPopupLabel.data());
 }
 
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<std::filesystem::path>&          a_selectedFilePathList,
-                                                            const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
-                                                            const std::filesystem::path&                       a_targetFilePath, 
-                                                            const std::filesystem::path&                       a_parentFolderPath, 
-                                                            const std::string_view&                            a_openPopupLabel,
-                                                            const Enum::AssetBrowserPopupContextType           a_contextType,
-                                                                  AssetBrowserEditorWindowFileOperation&       a_fileOperation,
-                                                                  AssetBrowserEditorWindowClipboard&           a_clipboard, 
-                                                                  AssetFilePathRegistry&                       a_assetFilePathRegistry, 
-                                                                  Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<std::filesystem::path>& a_selectedFilePathList, 
+                                                            const std::filesystem::path&              a_targetFilePath,
+                                                            const std::string_view&                   a_openPopupLabel,
+                                                            const Enum::AssetBrowserPopupContextType  a_contextType,
+                                                                  AssetBrowserEditorWindow&           a_editorWindow) const
 {
     if (!ImGui::BeginPopup(a_openPopupLabel.data())) { return; }
+
+    const auto& l_constClipboard         = a_editorWindow.GetREFClipboard                   ();
+    const auto& l_assetCreator           = a_editorWindow.GetREFAssetCreator                ();
+          auto& l_clipboard              = a_editorWindow.GetMutableREFClipboard            ();
+          auto& l_assetFilePathRegistry  = a_editorWindow.GetMutableREFAssetFilePathRegistry();
+          auto& l_fileOperation          = a_editorWindow.GetMutableREFFileOperation        ();
+          auto& l_renameState            = a_editorWindow.GetMutableREFRenameState          ();
 
     // AssetPaneの空白右クリックかどうか
     const bool l_isAssetPaneEmpty = (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty);
@@ -44,32 +46,32 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
 
     // クリップボードが空でないか(貼り付けの判定に使用)
     // Clipboard::IsEmpty()はconst参照で調べる
-    const bool l_canPaste = !a_clipboard.IsEmpty();
+    const bool l_canPaste  = !l_constClipboard.IsEmpty();
 
     // 新規フォルダ
-    DrawCreateFolderMenu(a_assetCreator,
-                         a_parentFolderPath,
+    DrawCreateFolderMenu(l_assetCreator,
+                         a_targetFilePath,
                          l_canCreateFolder,
-                         a_renameState);
+                         l_renameState);
 
     // 新規プレハブ(AssetPane_OnEmptyのみ表示)
     if (l_canCreatePrefab)
     {
-        DrawCreatePrefabMenu(a_assetCreator,
-                             a_parentFolderPath,
+        DrawCreatePrefabMenu(l_assetCreator,
+                             a_targetFilePath,
                              true,
-                             a_assetFilePathRegistry,
-                             a_renameState);
+                             l_assetFilePathRegistry,
+                             l_renameState);
     }
 
     // 新規シーン(AssetPane_OnEmptyのみ表示)
     if (l_canCreateScene)
     {
-        DrawCreateSceneMenu(a_assetCreator,
-                            a_parentFolderPath,
+        DrawCreateSceneMenu(l_assetCreator,
+                            a_targetFilePath,
                             true,
-                            a_assetFilePathRegistry,
-                            a_renameState);
+                            l_assetFilePathRegistry,
+                            l_renameState);
     }
 
     // 操作項目
@@ -78,32 +80,32 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
         // ImGui::Separatorで作成項目と走査項目の間に区切り線を引く
         ImGui::Separator();
 
-        DrawRenameMenu(a_targetFilePath, l_canRename, a_renameState);
+        DrawRenameMenu(a_targetFilePath, l_canRename, l_renameState);
 
         DrawCopyMenu(a_selectedFilePathList, 
                      l_hasSelection,
-                     a_fileOperation,
-                     a_clipboard);
+                     l_fileOperation,
+                     l_clipboard);
 
         DrawCutMenu(a_selectedFilePathList,
                     l_hasSelection,
-                    a_fileOperation,
-                    a_clipboard);
+                    l_fileOperation,
+                    l_clipboard);
 
-        DrawPasteMenu(a_parentFolderPath, 
+        DrawPasteMenu(a_targetFilePath, 
                       l_canPaste,
-                      a_fileOperation,
-                      a_clipboard);
+                      l_fileOperation,
+                      l_clipboard);
 
-        DrawDuplicateMenu(a_selectedFilePathList, l_hasSelection, a_fileOperation);
-        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection, a_fileOperation);
+        DrawDuplicateMenu(a_selectedFilePathList, l_hasSelection, l_fileOperation);
+        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection, l_fileOperation);
     }
 
     ImGui::EndPopup();
 }
 
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
-                                                                            const std::filesystem::path&                       a_parentFolderPath, 
+                                                                            const std::filesystem::path&                       a_targetFolderPath, 
                                                                             const bool                                         a_canCreate,
                                                                                   Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
@@ -124,7 +126,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
                         false, 
                         a_canCreate))
     {
-        const auto& l_result = a_assetCreator.CreateFolder(a_parentFolderPath);
+        const auto& l_result = a_assetCreator.CreateFolder(a_targetFolderPath);
 
         if (l_result.m_isSuccess)
         {
@@ -135,7 +137,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
     }   
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                                                            const std::filesystem::path&                       a_parentFolderPath, 
+                                                                            const std::filesystem::path&                       a_targetFolderPath, 
                                                                             const bool                                         a_canCreate,
                                                                                   AssetFilePathRegistry&                       a_assetFilePathRegistry, 
                                                                                   Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
@@ -149,7 +151,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(cons
     {
         // AssetCreator::CreatePrefabでプレハブファイルを作成
         // Prefab作成にはAssetFilePathRegistryが必要(UUID登録のため)
-        const auto l_result = a_assetCreator.CreatePrefab(a_parentFolderPath, a_assetFilePathRegistry);
+        const auto l_result = a_assetCreator.CreatePrefab(a_targetFolderPath, a_assetFilePathRegistry);
 
         if (l_result.m_isSuccess)
         {
@@ -158,7 +160,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(cons
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateSceneMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
-                                                                           const std::filesystem::path&                       a_parentFolderPath, 
+                                                                           const std::filesystem::path&                       a_targetFolderPath, 
                                                                            const bool                                         a_canCreate,
                                                                                  AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                                                                  Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
@@ -172,7 +174,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateSceneMenu(const
     {
         // AssetCreator::CreateSceneでシーンファイルを作成
         // Scene作成にもAssetFilePathRegistryが必要(UUID登録のため)
-        const auto& l_result = a_assetCreator.CreateScene(a_parentFolderPath, a_assetFilePathRegistry);
+        const auto& l_result = a_assetCreator.CreateScene(a_targetFolderPath, a_assetFilePathRegistry);
 
         if (l_result.m_isSuccess)
         {
@@ -234,7 +236,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::ve
         a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::filesystem::path&                 a_parentFolderPath, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::filesystem::path&                 a_targetFolderPath, 
                                                                      const bool                                   a_canPaste, 
                                                                            AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                            AssetBrowserEditorWindowClipboard&     a_clipboard) const
@@ -250,7 +252,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::
     {
         // FileOperation::Pasteでクリップボードのファイルを現在フォルダへ貼り付け
         // Cutの場合は元ファイルを削除、Copyの場合は複製
-        a_fileOperation.Paste(a_parentFolderPath, a_clipboard);
+        a_fileOperation.Paste(a_targetFolderPath, a_clipboard);
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindowFileOperation& a_fileOperation) const

@@ -3,7 +3,11 @@
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList, const std::filesystem::path& a_targetFilePath, AssetBrowserEditorWindow& a_editorWindow) const
 {
     // アクティブPane無効の場合は何もしない
-    if (a_activePane == Enum::AssetBrowserActivePaneType::Invalid) { return; }
+    if (const auto l_activePane = a_editorWindow.GetVALActivePane();
+        l_activePane == Enum::AssetBrowserActivePaneType::Invalid)
+    {
+        return; 
+    }
 
     // ImGuiの入力状態を取得
     // ImGui::GetIO()は現在のフレームの入力状態を持つImGuiIO構造体を返す
@@ -16,7 +20,10 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     const bool l_isSingleSelection = (a_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize);
 
     // クリップボードが空でないか(貼り付けの判定に使用)
-    const bool l_canPaste = !a_clipboard.IsEmpty();
+          auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard    ();
+          auto& l_renameState   = a_editorWindow.GetMutableREFRenameState  ();
+          auto& l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
+    const bool  l_canPaste      = !l_clipboard.IsEmpty                     ();
 
     // 新規作成
     // Ctrl + Shift + N : 新規フォルダ作成
@@ -26,7 +33,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         l_io.KeyShift &&
         ImGui::IsKeyPressed(ImGuiKey_N))
     {
-        HandleCreateFolder(a_parentFolderPath, a_assetCreator, a_renameState);
+        const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
+
+        HandleCreateFolder(a_targetFilePath, l_assetCreator, l_renameState);
     }
 
     // 操作
@@ -36,7 +45,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     if (l_isSingleSelection &&
         ImGui::IsKeyPressed(ImGuiKey_F2))
     {
-        HandleRename(a_targetFilePath, a_renameState);
+        HandleRename(a_targetFilePath, l_renameState);
     }
 
     // Ctrl + C : コピー
@@ -45,7 +54,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         l_io.KeyCtrl   && 
         ImGui::IsKeyPressed(ImGuiKey_C))
     {
-        HandleCopy(a_selectedFilePathList, a_fileOperation, a_clipboard);
+        HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard);
     }
 
     // Ctrl + X : 切り取り
@@ -54,7 +63,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         l_io.KeyCtrl   &&
         ImGui::IsKeyPressed(ImGuiKey_X))
     {
-        HandleCut(a_selectedFilePathList, a_fileOperation, a_clipboard);
+        HandleCut(a_selectedFilePathList, l_fileOperation, l_clipboard);
     }
 
     // Ctrl + V : 貼り付け
@@ -63,7 +72,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_V))
     {
-        HandlePaste(a_parentFolderPath, a_fileOperation, a_clipboard);
+        HandlePaste(a_targetFilePath, l_fileOperation, l_clipboard);
     }
 
     // Ctrl + D : 複製
@@ -72,7 +81,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         l_io.KeyCtrl   &&
         ImGui::IsKeyPressed(ImGuiKey_D))
     {
-        HandleDuplicate(a_selectedFilePathList, a_fileOperation);
+        HandleDuplicate(a_selectedFilePathList, l_fileOperation);
     }
 
     // Del : 削除
@@ -81,7 +90,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     if (l_hasSelection &&
         ImGui::IsKeyPressed(ImGuiKey_Delete))
     {
-        HandleDelete(a_selectedFilePathList, a_fileOperation);
+        HandleDelete(a_selectedFilePathList, l_fileOperation);
     }
 }
 

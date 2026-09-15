@@ -88,16 +88,7 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
 
     const float l_primaryPaneSize = m_paneSplitter.GetVALPrimaryPaneSize();
 
-    m_folderPane.Draw(m_folderHierarchyMap,
-                      m_popupDrawer,
-                      m_assetCreator,
-                      Constant::k_assetRootFolderPath,
-                      l_primaryPaneSize,
-                      m_activePane,
-                      m_fileOperation,
-                      m_clipboard,
-                      m_assetFilePathRegistry,
-                      m_renameState);
+    m_folderPane.Draw(*this);
 
     // FolderPaneの右側へSplitterを配置する
     m_paneSplitter.Draw(k_paneSplitterLabel, l_availableContentRegion);

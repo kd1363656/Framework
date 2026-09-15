@@ -7,20 +7,15 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Deserialize(const nlohmann
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
-                                                           const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
-                                                           const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator,
-                                                           const std::filesystem::path&                                                         a_assetRootFolderPath, 
-                                                           const float                                                                          a_paneWidth, 
-                                                                 Enum::AssetBrowserActivePaneType&                                              a_activePane,
-                                                                 AssetBrowserEditorWindowFileOperation&                                         a_fileOperation, 
-                                                                 AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
-                                                                 AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
-                                                                 Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWindow& a_editorWindow)
 {
+    const auto& l_paneSplitter = a_editorWindow.GetREFPaneSplitter   ();
+    const auto& l_popupDrawer  = a_editorWindow.GetREFPopupDrawer    ();
+    const auto  l_paneWidth    = l_paneSplitter.GetVALPrimaryPaneSize();
+
     // ImGui::BeginChild()は
     // 現在のWindowの内部にもう一つの描画領域を作成するAPI
-    if (const ImVec2 l_folderPaneSize = { a_paneWidth, Constant::k_imguiRemainingSize.y };
+    if (const ImVec2 l_folderPaneSize = { l_paneWidth, Constant::k_imguiRemainingSize.y };
         !ImGui::BeginChild(k_childLabel.data(), l_folderPaneSize, true))
     {
         // BeginChild()もBegin()と同様
@@ -38,7 +33,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
     if (ImGui::IsWindowHovered() &&
         (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
     {
-        a_activePane = Enum::AssetBrowserActivePaneType::FolderPane;
+        a_editorWindow.SetActivePane(Enum::AssetBrowserActivePaneType::FolderPane);
     }
 
     ImGui::TextUnformatted(k_paneTitleLabel.data());
@@ -48,17 +43,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
     // a_assetRootFolderPathがツリーのルート(Assetフォルダ)
     // DrawTreeNodeはa_folderPath自身を1ノード描画し
     // 開いている場合は子ディレクトリに対して再帰的にDrawTreeNodeを呼ぶ
-    DrawTreeNode(a_folderHierarchyMap,
-                 a_popupDrawer,
-                 a_assetCreator,
-                 a_assetRootFolderPath,
-                 a_assetRootFolderPath,
-                 a_activePane,
-                 a_paneWidth,
-                 a_fileOperation,
-                 a_clipboard,
-                 a_assetFilePathRegistry,
-                 a_renameState);
+    DrawTreeNode(Constant::k_assetRootFolderPath, a_editorWindow);
 
     // 空スペース右クリック
     // フォルダノード以外の空スペースを右クリックした場合
@@ -75,25 +60,20 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(const std::unordered_
     {
         // 空スペース用ポップアップ描画
         // 固定IDでよい(同時に一つしか開かないため)
-        a_popupDrawer.BeginPopup(k_emptySpaceContextMenuOpenLabel);
+        l_popupDrawer.BeginPopup(k_emptySpaceContextMenuOpenLabel);
     }
 
     // 対象フォルダ : 選択中フォルダ、なければAssetルート
-    const auto& l_targetFolder = m_selectedFilePathList.empty() ? a_assetRootFolderPath : m_selectedFilePathList.back();
+    const auto& l_targetFolder = m_selectedFilePathList.empty() ? Constant::k_assetRootFolderPath : m_selectedFilePathList.back();
 
     // 空スペース用ポップアップ描画
     // PopupDrawer : Draw内部でBeginPopup / EndPopupを呼ぶ
     // ポップアップが開いていない場合はDraw内部でreturnする
-    a_popupDrawer.Draw(m_selectedFilePathList,
-                       a_assetCreator,
-                       l_targetFolder,
+    l_popupDrawer.Draw(m_selectedFilePathList,
                        l_targetFolder,
                        k_emptySpaceContextMenuOpenLabel,
                        Enum::AssetBrowserPopupContextType::FolderPane_OnFolder,
-                       a_fileOperation,
-                       a_clipboard,
-                       a_assetFilePathRegistry,
-                       a_renameState);
+                       a_editorWindow);
 
     ImGui::EndChild();
 }
@@ -251,25 +231,16 @@ const std::filesystem::path& FWK::Editor::AssetBrowserEditorWindowFolderPane::Fe
     return m_selectedFilePathList.back();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
-                                                                   const AssetBrowserEditorWindowPopupDrawer&                                           a_popupDrawer,
-                                                                   const AssetBrowserEditorWindowAssetCreator&                                          a_assetCreator, 
-                                                                   const std::filesystem::path&                                                         a_currentFolderPath,
-                                                                   const std::filesystem::path&                                                         a_assetRootFolderPath,
-                                                                   const Enum::AssetBrowserActivePaneType                                               a_activePane,
-                                                                   const float                                                                          a_paneWidth, 
-                                                                         AssetBrowserEditorWindowFileOperation&                                         a_fileOperation, 
-                                                                         AssetBrowserEditorWindowClipboard&                                             a_clipboard, 
-                                                                         AssetFilePathRegistry&                                                         a_assetFilePathRegistry,
-                                                                         Struct::AssetBrowserEditorWindowRenameState&                                   a_renameState)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::filesystem::path& a_currentFolderPath, AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_folderHierarchyITR = a_folderHierarchyMap.find(a_currentFolderPath);
+    const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
+    const auto& l_folderHierarchyITR = l_folderHierarchyMap.find(a_currentFolderPath);
 
     // 子フォルダが存在するかどうか
     // マップにエントリが存在しない、またはエントリのvectorが空の場合は子なし
     // キーに対応したフォルダパスリストが存在し空の配列でなければ子フォルダが存在するため
     // リーフノード扱いしないかどうかの判定に使える
-    const bool l_hasChild = (l_folderHierarchyITR != a_folderHierarchyMap.end()) &&
+    const bool l_hasChild = (l_folderHierarchyITR != l_folderHierarchyMap.end()) &&
                              !l_folderHierarchyITR->second.empty();
    
     // TreeNode用Flagの組み立て
@@ -314,7 +285,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
     // ImGuiCol_HeaderHovered : ホバー時の背景色
     // ImGuiCol_HeaderActive  : クリック中の背景色
     // 3色分PushするのでPopStyleColor(3)で3つまとめて戻す
-    const bool l_isStrongHighlight = (a_activePane == Enum::AssetBrowserActivePaneType::FolderPane);
+    const bool l_isStrongHighlight = (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane);
 
     if (!l_isStrongHighlight)
     {
@@ -336,8 +307,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
     // リネームモードかどうか
     // m_renameState.m_isActiveがtrueかつ
     // 対象パスが現在描画中のノードと一致する場合
-    const bool l_isRenaming = a_renameState.m_isActive &&
-                              a_renameState.m_targetFilePath == a_currentFolderPath;
+    const auto& l_constRenameState = a_editorWindow.GetREFRenameState();
+          
+    const bool l_isRenaming = l_constRenameState.m_isActive &&
+                              l_constRenameState.m_targetFilePath == a_currentFolderPath;
 
     // フォルダアイコン + フォルダ名のラベルを構築
     const bool  l_isOpen = IsFolderOpen(a_currentFolderPath);
@@ -357,6 +330,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
     // TreeNodeExのラベル部分(アイコンの右)にInputTextを重ねる
     if (l_isRenaming)
     {
+        auto& l_assetFilePathRegistry = a_editorWindow.GetMutableREFAssetFilePathRegistry();
+        auto& l_fileOperation         = a_editorWindow.GetMutableREFFileOperation        ();
+        auto& l_renameState           = a_editorWindow.GetMutableREFRenameState          ();
+
         // ImGui::SameLine : 同じ行に次のアイテムを配置
         // TreeNodeExのアイコンの右側にInputTextを配置する
         ImGui::SameLine();
@@ -373,7 +350,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
         // m_isFocusedがfalseのままなのでフォーカスを当てる
         // ImGui::SetKeyboardFocusHere(0) : 次に描画されるアイテムにフォーカスを当てる
         // InputTextの直前に呼ぶ必要がある
-        if (!a_renameState.m_isFocused)
+        if (!l_constRenameState.m_isFocused)
         {
             ImGui::SetKeyboardFocusHere(k_keyboardFocusNextItem);
         }
@@ -395,8 +372,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
         // ImGuiInputTextFlags_AutoSelectAll    : フォーカス時に全テキストを選択
         // バッファサイズはm_inputBuffer.size()で取得
         const bool l_isEnterPressed = ImGui::InputText(k_renameInputTextLabel.data(),
-                                                       a_renameState.m_inputBuffer.data(),
-                                                       a_renameState.m_inputBuffer.size(),
+                                                       l_renameState.m_inputBuffer.data(),
+                                                       l_renameState.m_inputBuffer.size(),
                                                        ImGuiInputTextFlags_EnterReturnsTrue |
                                                        ImGuiInputTextFlags_AutoSelectAll);
 
@@ -405,7 +382,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
         // フォーカスされたらフラグを立てる
         if (ImGui::IsItemFocused())
         {
-            a_renameState.m_isFocused = true;
+            l_renameState.m_isFocused = true;
         }
 
         // 空白クリック検知
@@ -423,24 +400,24 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
         // m_isFocusedがtrue(=過去にフォーカスされた)状態で
         // 現在フォーカスされていない場合を確定とみなす
         if (l_isEnterPressed          ||
-           (a_renameState.m_isFocused &&
+           (l_renameState.m_isFocused &&
            !ImGui::IsItemFocused())   ||
             l_isEmptySpaceClick)
         {
             // InputTextの内容を取得
             // data()で先頭ポインタを取得し、std::stringを構築
             // から文字列の場合はリネームしない
-            if (const auto& l_newName = std::string(a_renameState.m_inputBuffer.data());
+            if (const auto& l_newName = std::string(l_renameState.m_inputBuffer.data());
                 !l_newName.empty())
             {
                 // FileOperation::Renameでファイルシステム上でリネーム
                 // 同名衝突時は自動で番号付与される
-                a_fileOperation.Rename(a_currentFolderPath, l_newName, a_assetFilePathRegistry);
+                l_fileOperation.Rename(a_currentFolderPath, l_newName, l_assetFilePathRegistry);
             }
 
             // リネームモードを終了
-            a_renameState.m_isActive  = false;
-            a_renameState.m_isFocused = false;
+            l_renameState.m_isActive  = false;
+            l_renameState.m_isFocused = false;
         }
     }
 
@@ -466,6 +443,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
     }
 
     const auto& l_contextMenuOpenPopupLabel = std::string{ k_contextMenuOpenPopupLabel } + a_currentFolderPath.string();
+    const auto& l_popupDrawer               = a_editorWindow.GetREFPopupDrawer();
 
     // 右クリック : 選択 + ポップアップ
     // 仕様 : フォルダ上を右クリックで現在選択中のフォルダとして扱い
@@ -475,22 +453,17 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
         SelectFolder(a_currentFolderPath);
 
         // BeginPopupで右クリック用ポップアップを開く
-        a_popupDrawer.BeginPopup(l_contextMenuOpenPopupLabel);
+        l_popupDrawer.BeginPopup(l_contextMenuOpenPopupLabel);
     }
 
     // ポップアップ描画
     // BeginPopupで指定したラベルのポップアップを開く
     // ポップアップIDはOpenPopupで指定したものと同じものを使う必要がある
-    a_popupDrawer.Draw(m_selectedFilePathList,
-                       a_assetCreator,
-                       a_currentFolderPath,
+    l_popupDrawer.Draw(m_selectedFilePathList,
                        a_currentFolderPath,
                        l_contextMenuOpenPopupLabel,
                        Enum::AssetBrowserPopupContextType::FolderPane_OnFolder,
-                       a_fileOperation,
-                       a_clipboard,
-                       a_assetFilePathRegistry,
-                       a_renameState);
+                       a_editorWindow);
 
     // ハイライト色をスタックから戻す
     if (!l_isStrongHighlight)
@@ -511,22 +484,12 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::un
     // l_hierarchyITRは必ずend()ではない
     for (const auto& l_childFolder : l_folderHierarchyITR->second)
     {
-        DrawTreeNode(a_folderHierarchyMap,
-                     a_popupDrawer,
-                     a_assetCreator,
-                     l_childFolder,
-                     a_assetRootFolderPath,
-                     a_activePane,
-                     a_paneWidth,
-                     a_fileOperation,
-                     a_clipboard,
-                     a_assetFilePathRegistry,
-                     a_renameState);
+        DrawTreeNode(l_childFolder, a_editorWindow);
     }
 
     // TreeNodeExによってインデントが一段下がっているため
     // TreePopで一段戻す
-    ImGui::TreePop();
+    ImGui::TreePop();    
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList)
