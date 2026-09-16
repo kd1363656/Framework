@@ -27,6 +27,7 @@ namespace FWK::Editor
         void DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                   const std::filesystem::path&                       a_targetFolderPath,
                                   const bool                                         a_canCreate,
+                                        AssetBrowserEditorWindowFolderPane&          a_folderPane,
                                         Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
         void DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,

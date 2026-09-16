@@ -29,6 +29,12 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // 複数選択中は名前変更・新規フォルダ作成を無効にする
     const bool l_isMultiSelection = a_selectedFilePathList.size() > Constant::k_editorSelectedFolderSingleSize;
 
+    // 対象フォルダがルートフォルダかどうか
+    const bool l_isRootFolder = a_targetFilePath == Constant::k_assetRootFolderPath;
+
+    // 選択中リストにルートフォルダが含まれているかどうか
+    const bool l_containsRoot = std::find(a_selectedFilePathList.begin(), a_selectedFilePathList.end(), Constant::k_assetRootFolderPath) != a_selectedFilePathList.end();
+
     // 新規フォルダ作成可能かどうか
     const bool l_canCreateFolder = !l_isMultiSelection &&
                                    (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
@@ -44,6 +50,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // OnEmptyでは対象がないため不可
     // 複数選択中は無効
     const bool l_canRename = !l_isMultiSelection &&
+                             !l_isRootFolder     &&
                              (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
                               a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
                               a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFile);
@@ -53,12 +60,15 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
 
     // クリップボードが空でないか(貼り付けの判定に使用)
     // Clipboard::IsEmpty()はconst参照で調べる
-    const bool l_canPaste  = !l_constClipboard.IsEmpty();
+    const bool l_canPaste = !l_constClipboard.IsEmpty();
+
+    auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
 
     // 新規フォルダ
     DrawCreateFolderMenu(l_assetCreator,
                          a_targetFilePath,
                          l_canCreateFolder,
+                         l_folderPane,
                          l_renameState);
 
     // 新規プレハブ(AssetPane_OnEmptyのみ表示)
@@ -90,12 +100,12 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
         DrawRenameMenu(a_targetFilePath, l_canRename, l_renameState);
 
         DrawCopyMenu(a_selectedFilePathList, 
-                     l_hasSelection,
+                     l_hasSelection && !l_containsRoot,
                      l_fileOperation,
                      l_clipboard);
 
         DrawCutMenu(a_selectedFilePathList,
-                    l_hasSelection,
+                    l_hasSelection && !l_containsRoot,
                     l_fileOperation,
                     l_clipboard);
 
@@ -104,8 +114,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
                       l_fileOperation,
                       l_clipboard);
 
-        DrawDuplicateMenu(a_selectedFilePathList, l_hasSelection, l_fileOperation);
-        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection, l_fileOperation);
+        DrawDuplicateMenu(a_selectedFilePathList, l_hasSelection && !l_containsRoot, l_fileOperation);
+        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection && !l_containsRoot, l_fileOperation);
     }
 
     ImGui::EndPopup();
@@ -114,6 +124,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
                                                                             const std::filesystem::path&                       a_targetFolderPath, 
                                                                             const bool                                         a_canCreate,
+                                                                                  AssetBrowserEditorWindowFolderPane&          a_folderPane,
                                                                                   Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
     // アイコン + ラベル文字列を構築
@@ -137,8 +148,21 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
 
         if (l_result.m_isSuccess)
         {
-            // 作成成功時、名前変更モードへ移行
-            // ユーザーがすぐにフォルダ名を構築できるようにする
+            // 作成したフォルダがツリーに見えるように
+            // 親フォルダを開状態にする
+            // これを行わないと親ノードが閉じたままで
+            // 新規フォルダ(とリネーム用InputText)が表示されない
+            // AssetPaneからの作成の場合もFolderPaneツリーの親を開いておくことで
+            // FolderPaneに切り替えた時に展開された状態で表示される
+            a_folderPane.ApplyFolderOpenState(a_targetFolderPath, true);
+
+            // 作成したフォルダを現在選択中のファイルパスにする
+            // 選択状態になることでハイライト表示され
+            // 次の操作(コピー/切り取り/複製等)の対象になる
+            a_folderPane.SelectSingleFolder(l_result.m_createdFilePath);
+
+            // 作成性孤児、名前変更モードへ移行
+            // ユーザーがすぐにフォルダ名を編集できるようにする
             StartRename(l_result.m_createdFilePath, a_renameState);
         }
     }   

@@ -124,7 +124,7 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 // FolderPane : 選択リスト + 操作対策フォルダ(なければAssetルート)
                 // 新規フォルダ作成元・貼り付け先・リネーム対象として使う
                 // GetREFOperationTargetFolderPathはconst参照を返すためコピー発生なし
-                const auto& l_operationTargetFolderPath = m_folderPane.FetchREFOperationTargetFolderPath();
+                const auto& l_operationTargetFolderPath = m_folderPane.FetchVALOperationTargetFolderPath();
 
                 m_shortcutHandler.HandleFolderPane(*this);
                 m_shortcutHandler.Handle          (m_folderPane.GetREFSelectedFilePathList(), l_operationTargetFolderPath, *this);
@@ -132,9 +132,6 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
             break;
 
             default:
-            {
-
-            }
             break;
         }
     }

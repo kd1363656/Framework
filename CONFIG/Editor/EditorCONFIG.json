@@ -29,7 +29,7 @@
                     "PrimaryPaneSize": 440.0
                 },
                 "FolderPane": {
-                    "CurrentFolderPath": "Asset\\Data\\Font",
+                    "CurrentFolderPath": "Asset\\Shader",
                     "FolderOpenStateMap": [
                         {
                             "FilePath": "Asset",
@@ -45,7 +45,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
@@ -68,11 +68,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -104,11 +104,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\UI\\Click",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02.fbm",
+                            "FilePath": "Asset\\Data\\Sound\\UI\\Click",
                             "IsOpen": false
                         },
                         {
@@ -116,11 +116,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Map",
+                            "FilePath": "Asset\\Shader\\PhysicsDebug",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\PhysicsDebug",
+                            "FilePath": "Asset\\Model\\Map",
                             "IsOpen": false
                         },
                         {
@@ -136,11 +136,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\RenderTarget",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Shader\\Model\\Static",
+                            "FilePath": "Asset\\Shader\\RenderTarget\\Final",
                             "IsOpen": false
                         },
                         {
@@ -148,15 +144,19 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\RenderTarget\\Final",
+                            "FilePath": "Asset\\Shader\\Model\\Static",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Sprite",
+                            "FilePath": "Asset\\Shader\\RenderTarget",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Shader\\Sprite",
                             "IsOpen": false
                         },
                         {
@@ -172,11 +172,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Shadow",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard\\Lit",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard\\Lit",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Shadow",
                             "IsOpen": false
                         },
                         {
@@ -184,11 +184,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\Lit",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\Lit",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow",
                             "IsOpen": false
                         },
                         {
@@ -196,11 +196,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\UnLit",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Shadow\\Cascade",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Shadow\\Cascade",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\UnLit",
                             "IsOpen": false
                         },
                         {

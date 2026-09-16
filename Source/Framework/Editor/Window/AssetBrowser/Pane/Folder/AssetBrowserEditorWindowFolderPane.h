@@ -18,8 +18,8 @@ namespace FWK::Editor
 
         void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
-        void MoveSelectionUp    (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap);
-        void MoveSelectionDown  (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap);
+        void MoveSelectionUp    (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const bool a_isRangeSelection = false);
+        void MoveSelectionDown  (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const bool a_isRangeSelection = false);
         void ForciblyFolderOpen ();
         void ForciblyFolderClose();
 
@@ -29,11 +29,15 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() const;
 
+        void SelectSingleFolder(const std::filesystem::path& a_folderPath);
+
+        void ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
+
         void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
         void SetCurrentFolderPath(const std::filesystem::path& a_set) { m_currentFolderPath = a_set; }
 
-        const std::filesystem::path& FetchREFOperationTargetFolderPath() const;
+        std::filesystem::path FetchVALOperationTargetFolderPath() const;
 
         const auto& GetREFFolderOpenStateMap() const { return m_folderOpenStateMap; }
 

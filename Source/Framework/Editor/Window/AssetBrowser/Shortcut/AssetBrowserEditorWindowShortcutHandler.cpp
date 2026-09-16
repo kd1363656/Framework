@@ -27,7 +27,14 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
           auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard    ();
           auto& l_renameState   = a_editorWindow.GetMutableREFRenameState  ();
           auto& l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
+          auto& l_folderPane    = a_editorWindow.GetMutableREFFolderPane   ();
     const bool  l_canPaste      = !l_clipboard.IsEmpty                     ();
+
+    // 対象フォルダがルートフォルダかどうか
+    const bool l_isRootFolder = a_targetFilePath == Constant::k_assetRootFolderPath;
+
+    // 選択中リストにルートフォルダが含まれているかどうか
+    const bool l_containsRoot = std::find(a_selectedFilePathList.begin(), a_selectedFilePathList.end(), Constant::k_assetRootFolderPath) != a_selectedFilePathList.end();
 
     // 新規作成
     // Ctrl + Shift + N : 新規フォルダ作成
@@ -40,7 +47,10 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     {
         const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
 
-        HandleCreateFolder(a_targetFilePath, l_assetCreator, l_renameState);
+        HandleCreateFolder(l_assetCreator, 
+                           a_targetFilePath,
+                           l_folderPane,
+                           l_renameState);
     }
 
     // 操作
@@ -48,6 +58,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // 単一選択時のみ有効
     // ImGuiKey_F2はF2キーを表す
     if (l_isSingleSelection              &&
+        !l_isRootFolder                  &&
         ImGui::IsKeyPressed(ImGuiKey_F2) &&
         !l_isMultiSelection)
     {
@@ -56,8 +67,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + C : コピー
     // 選択中のファイルがある場合のみ
-    if (l_hasSelection &&
-        l_io.KeyCtrl   && 
+    if (l_hasSelection  &&
+        !l_containsRoot &&
+        l_io.KeyCtrl    && 
         ImGui::IsKeyPressed(ImGuiKey_C))
     {
         HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard);
@@ -65,8 +77,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + X : 切り取り
     // 選択中のファイルがある場合のみ
-    if (l_hasSelection &&
-        l_io.KeyCtrl   &&
+    if (l_hasSelection  &&
+        !l_containsRoot &&
+        l_io.KeyCtrl    &&
         ImGui::IsKeyPressed(ImGuiKey_X))
     {
         HandleCut(a_selectedFilePathList, l_fileOperation, l_clipboard);
@@ -83,8 +96,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + D : 複製
     // 選択中のファイルがある場合のみ
-    if (l_hasSelection &&
-        l_io.KeyCtrl   &&
+    if (l_hasSelection  &&
+        !l_containsRoot &&
+        l_io.KeyCtrl    &&
         ImGui::IsKeyPressed(ImGuiKey_D))
     {
         HandleDuplicate(a_selectedFilePathList, l_fileOperation);
@@ -93,7 +107,8 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // Del : 削除
     // 選択中のファイルがある場合のみ
     // ImGuiKey_DeleteはDeleteキーを表す
-    if (l_hasSelection &&
+    if (l_hasSelection  &&
+        !l_containsRoot &&
         ImGui::IsKeyPressed(ImGuiKey_Delete))
     {
         HandleDelete(a_selectedFilePathList, l_fileOperation);
@@ -109,11 +124,13 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     // 上下キーによる操作の反映
     if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
     {
-        l_folderPane.MoveSelectionUp(l_folderHierarchyMap);
+        l_folderPane.MoveSelectionUp(l_folderHierarchyMap, l_io.KeyShift || 
+                                                           l_io.KeyCtrl);
     }
     else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
     {
-        l_folderPane.MoveSelectionDown(l_folderHierarchyMap);
+        l_folderPane.MoveSelectionDown(l_folderHierarchyMap, l_io.KeyShift ||
+                                                             l_io.KeyCtrl);
     }
 
     // 右キー左キーによる操作の反映
@@ -133,13 +150,27 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const AssetBrowserEditorWindowAssetCreator& a_assetCreator, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
+                                                                              const std::filesystem::path&                       a_parentFolderPath, 
+                                                                                    AssetBrowserEditorWindowFolderPane&          a_folderPane, 
+                                                                                    Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
     // AssetCreator::CreateFolderでフォルダを作成
     // 戻り値がCreationResultに作成パスと成否が入っている
     const auto& l_result = a_assetCreator.CreateFolder(a_parentFolderPath);
 
     if (!l_result.m_isSuccess) { return; }
+
+    // 作成したフォルダがツリーに見えるように
+    // 親フォルダを開状態にする
+    // これを行わないと親ノードが閉じたままで
+    //新規フォルダが表示されない
+    a_folderPane.ApplyFolderOpenState(a_parentFolderPath, true);
+
+    // 作成したフォルダを現在選択中のファイルパスにする
+    // 選択状態になることでハイライト表示され
+    // 次の操作(コピー/切り取り/複製等)の対象になる
+    a_folderPane.SelectSingleFolder(l_result.m_createdFilePath);
 
     // 作成成功時、名前へ移行モードへ移行
     // PopupDrawer::StartRenameと同じ処理だが、
