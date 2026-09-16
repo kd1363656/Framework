@@ -443,13 +443,120 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // Leaf + NoTreePushOnOpenの場合は常にfalseが返る
     const bool l_isNodeOpen = ImGui::TreeNodeEx(l_label.c_str(), l_treeNodeFlags);
 
+    // Drag&Drop : ドラッグ元
+    // TreeNodeExが直前に描画したアイテム
+    // DragDropSourceはこのTreeNodeExをドラッグ対象にする
+    // 選択中フォルダ(複数可)のパスをペイロードとして送信する
+    // ルートフォルダは除外する(移動するとプロジェクトが壊れるため)
+    if (!m_selectedFilePathList.empty())
+    {
+        // ルートフォルダを除外したドラッグ対象リストを構築
+        std::vector<std::filesystem::path> l_dragSourcePathList = {};
+
+        for (const auto& l_selectedPath : m_selectedFilePathList)
+        {
+            if (l_selectedPath == Constant::k_assetRootFolderPath) { continue; }
+
+            l_dragSourcePathList.emplace_back(l_selectedPath);
+        }
+
+        // 1件以上ドラッグ可能なフォルダがあれば送信
+        if (!l_dragSourcePathList.empty())
+        {
+            auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+            l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_dragSourcePathList);
+        }
+    }
+
+    // Drag & Drop : ドロップ先
+    // TreeNodeExが直前に描画したアイテムなので
+    // DragDropTargetはこのTreeNodeExをドロップ対象にする
+    // マウスのY座標でドロップ位置を3分割して判定する
+    // 上   : ドロップ不可(BanIconの表示)
+    // 中央 : フォルダの中へ移動(既存のMove)
+    // 下   : 兄弟として下へ挿入(親フォルダへ移動)
+    // TreeNodeExの矩形を取得
+    // DragDropTargetはアイテムを生成しないため
+    // GetItemRectMIN/MAXは直前のTreeNodeExの矩形を返す
+    const auto& l_itemMIN = ImGui::GetItemRectMin();
+    const auto& l_itemMAX = ImGui::GetItemRectMax();
+
+    // マウスのY座標を取得
+    const float l_mouseY = ImGui::GetMousePos().y;
+
+    // ノードの高さを三分割した境界Y座標を計算
+    const float l_itemHeight = l_itemMAX.y - l_itemMIN.y;
+    const float l_upperBound = l_itemMIN.y + l_itemHeight * Constant::k_imguiDragDropUpperZoneRatio;
+    
+    // ドラッグ中のペイロードを取得
+    // ImGui::GetDragDropPayloadはドラッグ中は非null、非ドラッグ時はnullを返す
+    // これでドラッグ中かどうかを判定し
+    // 上部ゾーンの場合はBanIconを描画する
+    const bool l_isDragging = ImGui::GetDragDropPayload() != nullptr;
+    
+    // 上 : ドロップ不可ゾーン
+    if (l_mouseY < l_upperBound)
+    {
+        // ドラッグ中かつこのノード上にマウスがある場合
+        // BanIconをマウス位置に描画してドロップ不可を示す
+        // ImGui::IsItemHovered : このTreeNodeEx上にマウスがあるか
+        if (l_isDragging &&
+            ImGui::IsItemHovered())
+        {
+            // GetForegroundDrawListは最前面に描画するDrawListを返す
+            // 他のUIより手間に描画され生田目アイコンが隠れない
+            auto* l_foregroundDrawList = ImGui::GetForegroundDrawList();
+
+            // BanIconをマウス位置の少し右下に描画
+            // マウスカーソルに重ねないようにオフセットを掛ける
+            const auto& l_iconPosition = ImGui::GetMousePos();
+            const auto& l_redColor     = Constant::k_imguiRedColor * Constant::k_imguiImVec4ToImU32;
+
+            // ImGui::GetFontSizeで現在のフォントサイズを取得
+            // BanIconを赤色で描画して禁止を明示する
+            l_foregroundDrawList->AddText(ImGui::GetFont(),
+                                          ImGui::GetFontSize(),
+                                          l_iconPosition,
+                                          IM_COL32(l_redColor.x, 
+                                                   l_redColor.y, 
+                                                   l_redColor.z, 
+                                                   l_redColor.w),
+                                          Constant::k_imguiFontAwesomeBanIcon.data(),
+                                          Constant::k_imguiFontAwesomeBanIcon.data() + Constant::k_imguiFontAwesomeBanIcon.size());
+        }
+    }
+    // 中央、下 : フォルダの中へ移動
+    else
+    {
+        std::vector<std::filesystem::path> l_droppedFilePathList = {};
+
+        auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
+        {
+            const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
+
+            // ドロップされた各フォルダをこのフォルダの中へ移動
+            for (const auto& l_droppedFilePath : l_droppedFilePathList)
+            {
+                // 自分自身へドロップした場合はスキップ
+                // 例 : Asset/DataをAsset/Datへドロップ
+                if (l_droppedFilePath != a_currentFolderPath)
+                {
+                    l_fileOperation.Move(l_droppedFilePath, a_currentFolderPath);
+                }
+            }
+        }
+    }
+
     // リネームモード時は同じ行でInputTextを描画
     // TreeNodeExのラベル部分(アイコンの右)にInputTextを重ねる
     if (l_isRenaming)
     {
-        auto& l_assetFilePathRegistry = a_editorWindow.GetMutableREFAssetFilePathRegistry();
-        auto& l_fileOperation         = a_editorWindow.GetMutableREFFileOperation        ();
-        auto& l_renameState           = a_editorWindow.GetMutableREFRenameState          ();
+              auto& l_assetFilePathRegistry = a_editorWindow.GetMutableREFAssetFilePathRegistry();
+        const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation               ();
+              auto& l_renameState           = a_editorWindow.GetMutableREFRenameState          ();
 
         // ImGui::SameLine : 同じ行に次のアイテムを配置
         // TreeNodeExのアイコンの右側にInputTextを配置する
@@ -556,10 +663,29 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // ImGui::GetIO().KeyCtrl  : Ctrlキーが押されているか
         const auto& l_io = ImGui::GetIO();
 
-        SelectFolder(l_folderHierarchyMap, 
-                     a_currentFolderPath,
-                     l_io.KeyShift,
-                     l_io.KeyCtrl);
+        // クリックしたフォルダが既に選択されているかどうか確認
+        // 既に選択されている場合は選択を維持してドラッグ開始できるようにする
+        // これにより複数選択中に選択済みをフォルダクリックしても
+        // 選択がクリアされずにドラッグ&ドロップで複数フォルダを移動できる
+        const bool l_isAlreadySelected = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end();
+
+        // Shift/Ctrl + クリック時は既存の範囲選択・トグル操作を行う
+        if (l_io.KeyShift ||
+            l_io.KeyCtrl)
+        { 
+            SelectFolder(l_folderHierarchyMap, 
+                         a_currentFolderPath,
+                         l_io.KeyShift,
+                         l_io.KeyCtrl);
+        }
+        // 修飾きーなじ + 未選択フォルダ -> 単一選択に切り替え
+        else if (!l_isAlreadySelected)
+        {
+            SelectFolder(l_folderHierarchyMap,
+                         a_currentFolderPath,
+                         false,
+                         false);
+        }
     }
 
     const auto& l_contextMenuOpenPopupLabel = std::string{ k_contextMenuOpenPopupLabel } + a_currentFolderPath.string();

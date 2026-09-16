@@ -20,6 +20,8 @@ namespace FWK::Editor
 
         void Duplicate(const std::vector<std::filesystem::path>& a_filePathList);
 
+        void Move(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_destinationFolderPath) const;
+
     private:
 
         static void CopyRecursiveSkippingDestination(const std::filesystem::path& a_source, const std::filesystem::path& a_destination, const std::filesystem::path& a_topDestination);

@@ -196,6 +196,39 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
     }
 }
 
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Move(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_destinationFolderPath) const
+{
+    // ドロップ先フォルダの中へ移動する
+    // 移動先パス = ドロップ先フォルダ / ドラッグ元フォルダ名
+    // 例 : a_sourceFilePath        = "Asset/Data"
+    //      a_destinationFolderPath = "Asset/Sound"
+    //      -> 移動先 = "Asset/Sound/Data"
+    auto l_destinationFilePath = a_destinationFolderPath / a_sourceFilePath.filename();
+
+    std::error_code l_errorCode = {};
+
+    // 同名が存在する場合は番号付与したパスへ移動(上書きしない)
+    // 例 : "Asset/Sound"にDataがすでにある->Asset/Sound/Data1
+    if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
+    {
+        l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
+    }
+
+    // std::filesystem::renameでフォルダごと移動(中身含む)
+    // 同じボリューム内ならアトミックな移動(コピー + 削除よりも高速)
+    // Asset内の移動なので同じボリューム前提
+    std::filesystem::rename(a_sourceFilePath, l_destinationFilePath, l_errorCode);
+
+    if (l_errorCode)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                    "ファイルの移動に失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
+                    a_sourceFilePath.string(),
+                    l_destinationFilePath.string(),
+                    l_errorCode.value());
+    }
+}
+
 void FWK::Editor::AssetBrowserEditorWindowFileOperation::CopyRecursiveSkippingDestination(const std::filesystem::path& a_source, const std::filesystem::path& a_destination, const std::filesystem::path& a_topDestination)
 {
     // コピー先がコピー元の中(または自分自身)にある場合の再帰コピー
