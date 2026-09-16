@@ -639,6 +639,8 @@
 #include "Editor/Splitter/EditorWindowPaneSplitter.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowFolderPaneConstant.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/Converter/Json/AssetBrowserEditorWindowFolderPaneJsonConverter.h"
+#include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowDeleteConfirmPopupStruct.h"
+#include "Editor/Window/AssetBrowser/DeleteConfirm/AssetBrowserEditorWindowDeleteConfirmPopup.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/AssetBrowserEditorWindowFolderPane.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowAssetPaneConstant.h"
 #include "Editor/Window/AssetBrowser/Breadcrumb/AssetBrowserEditorWindowAssetPaneBreadcrumb.h"

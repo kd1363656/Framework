@@ -105,7 +105,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         !l_containsRoot &&
         ImGui::IsKeyPressed(ImGuiKey_Delete))
     {
-        HandleDelete(a_selectedFilePathList, l_fileOperation);
+        HandleDelete(a_selectedFilePathList, a_editorWindow);
     }
 }
 
@@ -230,9 +230,12 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDuplicate(const
     // 同名の場合は自動で番号付与される(Player -> Player1)
     a_fileOperation.Duplicate(a_selectedFilePathList);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDelete(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation& a_fileOperation) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDelete(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindow& a_editorWindow) const
 {
-    // FileOperation::Deleteで選択中のファイルを削除
-    // std::filesystem::removeで物理削除される
-    a_fileOperation.Delete(a_selectedFilePathList);
+    // FileOperation::Deleteを直接よばす
+    // 削除確認ダイアログをリクエストする
+    // ユーザーがダイアログで削除を選んだ場合に実際の削除処理が行われる
+    auto l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
+
+    l_deleteConfirmPopup.Request(a_selectedFilePathList, a_editorWindow);
 }

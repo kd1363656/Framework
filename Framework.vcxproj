@@ -486,6 +486,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowAssetCreatorStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h" />
@@ -558,6 +559,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm\AssetBrowserEditorWindowDeleteConfirmPopup.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.h" />
@@ -894,6 +896,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm\AssetBrowserEditorWindowDeleteConfirmPopup.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.cpp" />

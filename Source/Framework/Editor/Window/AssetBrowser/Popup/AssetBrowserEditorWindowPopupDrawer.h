@@ -56,7 +56,7 @@ namespace FWK::Editor
                                  AssetBrowserEditorWindowClipboard&     a_clipboard) const;
 
         void DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindowFileOperation& a_fileOperation) const;
-        void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindowFileOperation& a_fileOperation) const;
+        void DrawDeleteMenu   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindow&              a_editorWindow) const;
 
         void StartRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 

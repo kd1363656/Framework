@@ -126,6 +126,10 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
         }
     }
 
+    // 削除確認ダイアログの描画
+    // Stateがアクティブな場合のみモーダルが表示される
+    m_deleteConfirmPopup.Draw(*this);
+
     ImGui::End();
 }
 

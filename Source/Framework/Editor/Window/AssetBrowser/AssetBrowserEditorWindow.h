@@ -28,23 +28,27 @@ namespace FWK::Editor
         const auto& GetREFFolderPane  () const { return m_folderPane; }
         const auto& GetREFPaneSplitter() const { return m_paneSplitter; }
 
-        const auto& GetREFFileOperation() const { return m_fileOperation; }
-        const auto& GetREFPopupDrawer  () const { return m_popupDrawer; }
-        const auto& GetREFAssetCreator () const { return m_assetCreator; }
+        const auto& GetREFFileOperation     () const { return m_fileOperation; }
+        const auto& GetREFPopupDrawer       () const { return m_popupDrawer; }
+        const auto& GetREFAssetCreator      () const { return m_assetCreator; }
+        const auto& GetREFDeleteConfirmPopup() const { return m_deleteConfirmPopup; }
         
         const auto& GetREFCurrentSelectFolderPath() const { return m_currentSelectFolderPath; }
 
-        const auto& GetREFRenameState  () const { return m_renameState; }
+        const auto& GetREFRenameState       () const { return m_renameState; }
+        const auto& GetREFDeleteConfirmState() const { return m_deleteConfirmState; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
         auto& GetMutableREFFolderPane  () { return m_folderPane; }
         auto& GetMutableREFPaneSplitter() { return m_paneSplitter; }
 
-        auto& GetMutableREFClipboard      () { return m_clipboard; }
-        auto& GetMutableREFFileOperation  () { return m_fileOperation; }
-        auto& GetMutableREFPopupDrawer    () { return m_popupDrawer; }
-        auto& GetMutableREFRenameState    () { return m_renameState; }
+        auto& GetMutableREFClipboard     () { return m_clipboard; }
+        auto& GetMutableREFFileOperation () { return m_fileOperation; }
+        auto& GetMutableREFPopupDrawer   () { return m_popupDrawer; }
+        
+        auto& GetMutableREFRenameState       () { return m_renameState; }
+        auto& GetMutableREFDeleteConfirmState() { return m_deleteConfirmState; }
 
         auto GetVALActivePane() const { return m_activePane; }
 
@@ -67,17 +71,19 @@ namespace FWK::Editor
         AssetBrowserEditorWindowAssetPane  m_assetPane    = {};
         EditorWindowPaneSplitter           m_paneSplitter = {};
 
-        AssetBrowserEditorWindowClipboard       m_clipboard       = {};
-        AssetBrowserEditorWindowFileOperation   m_fileOperation   = {};
-        AssetBrowserEditorWindowShortcutHandler m_shortcutHandler = {};
-        AssetBrowserEditorWindowPopupDrawer     m_popupDrawer     = {};
-        AssetBrowserEditorWindowAssetCreator    m_assetCreator    = {};
+        AssetBrowserEditorWindowClipboard          m_clipboard          = {};
+        AssetBrowserEditorWindowFileOperation      m_fileOperation      = {};
+        AssetBrowserEditorWindowShortcutHandler    m_shortcutHandler    = {};
+        AssetBrowserEditorWindowPopupDrawer        m_popupDrawer        = {};
+        AssetBrowserEditorWindowAssetCreator       m_assetCreator       = {};
+        AssetBrowserEditorWindowDeleteConfirmPopup m_deleteConfirmPopup = {};
 
         std::filesystem::path m_currentSelectFolderPath = {};
 
         Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
-        Struct::AssetBrowserEditorWindowRenameState m_renameState = {};
+        Struct::AssetBrowserEditorWindowRenameState        m_renameState        = {};
+        Struct::AssetBrowserEditorWindowDeleteConfirmState m_deleteConfirmState = {};
 
         Enum::AssetBrowserActivePaneType m_activePane = Enum::AssetBrowserActivePaneType::Invalid;
 

@@ -109,7 +109,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
                       l_clipboard);
 
         DrawDuplicateMenu(a_selectedFilePathList, l_hasSelection && !l_containsRoot, l_fileOperation);
-        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection && !l_containsRoot, l_fileOperation);
+        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection && !l_containsRoot, a_editorWindow);
     }
 
     ImGui::EndPopup();
@@ -295,7 +295,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const s
         a_fileOperation.Duplicate(a_selectedFilePathList);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDeleteMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindowFileOperation& a_fileOperation) const
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDeleteMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindow& a_editorWindow) const
 {
     // ショートカット : Del
     // 選択中のファイルがない場合はグレーアウト
@@ -306,9 +306,11 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDeleteMenu(const std:
                         false,
                         a_hasSelection))
     {
-        // FileOperation::Deleteで選択中のファイルを削除
-        // std::filesystem::removeで物理削除される
-        a_fileOperation.Delete(a_selectedFilePathList);
+        // FileOperation::Deleteを直接呼ばず
+        // 削除確認ダイアログをリクエストする
+        auto& l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
+
+        l_deleteConfirmPopup.Request(a_selectedFilePathList, a_editorWindow);
     }
 }
 

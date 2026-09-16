@@ -1555,6 +1555,9 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb">
       <UniqueIdentifier>{ee3d9af6-8008-4f5a-a028-f109eddfc923}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm">
+      <UniqueIdentifier>{6e272158-9335-4ced-825b-d0f184d921ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3030,6 +3033,12 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Breadcrumb</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm\AssetBrowserEditorWindowDeleteConfirmPopup.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3808,6 +3817,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Breadcrumb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm\AssetBrowserEditorWindowDeleteConfirmPopup.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
