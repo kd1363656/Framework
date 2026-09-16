@@ -30,8 +30,9 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ImGui::IsWindowHovered : このChildWindow上にマウスがあるか
     // ImGui::IsMouseClicked  : このフレームでクリックされたか
     // 左クリック・右クリックどちらも出アクティブPaneを切り替える
-    if (ImGui::IsWindowHovered() &&
-        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
+    if (ImGui::IsWindowHovered()                      &&
+        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || 
+            ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
     {
         a_editorWindow.SetActivePane(Enum::AssetBrowserActivePaneType::FolderPane);
     }

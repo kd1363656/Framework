@@ -13,7 +13,9 @@ namespace FWK::Editor
 
     private:
 
-        static constexpr std::string_view k_childLabel     = "##AssetBrowserEditorWindowRightPane";
+        static constexpr std::string_view k_childLabel     = "##AssetBrowserEditorWindowAssetPane";
         static constexpr std::string_view k_paneTitleLabel = "アセット";
+
+        AssetBrowserEditorWindowAssetPaneBreadcrumb m_breadcrumb = {};
     };
 }

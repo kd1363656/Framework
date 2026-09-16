@@ -641,6 +641,7 @@
 #include "Editor/Window/AssetBrowser/Pane/Folder/Converter/Json/AssetBrowserEditorWindowFolderPaneJsonConverter.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/AssetBrowserEditorWindowFolderPane.h"
 #include "Definition/Constant/Editor/Window/AssetBrowserEditorWindowAssetPaneConstant.h"
+#include "Editor/Window/AssetBrowser/Breadcrumb/AssetBrowserEditorWindowAssetPaneBreadcrumb.h"
 #include "Editor/Window/AssetBrowser/Pane/Asset/AssetBrowserEditorWindowAssetPane.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"

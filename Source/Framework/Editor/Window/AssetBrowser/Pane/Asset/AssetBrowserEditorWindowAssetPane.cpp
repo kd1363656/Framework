@@ -24,5 +24,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
     ImGui::TextUnformatted(k_paneTitleLabel.data());
     ImGui::Separator      ();
 
+    m_breadcrumb.Draw(a_editorWindow);
+
     ImGui::EndChild();
 }

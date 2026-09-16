@@ -556,6 +556,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.h" />
@@ -891,6 +892,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.cpp" />
