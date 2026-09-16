@@ -86,22 +86,12 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
     // FolderPaneを描画する前にこの現在幅を有効範囲へ補正する
     m_paneSplitter.PreparePaneSize(l_availableContentRegion);
 
-    const float l_primaryPaneSize = m_paneSplitter.GetVALPrimaryPaneSize();
-
     m_folderPane.Draw(*this);
 
     // FolderPaneの右側へSplitterを配置する
     m_paneSplitter.Draw(k_paneSplitterLabel, l_availableContentRegion);
 
-    m_assetPane.Draw(m_folderPane,
-                     m_assetCreator,
-                     Constant::k_assetRootFolderPath,
-                     m_activePane,
-                     m_popupDrawer,
-                     m_fileOperation,
-                     m_clipboard,
-                     m_assetFilePathRegistry,
-                     m_renameState);
+    m_assetPane.Draw(*this);
 
     // ショートカットキー処理
     // 両Pane描画後にm_activePaneが確定しているため

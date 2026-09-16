@@ -1,14 +1,6 @@
 ﻿#include "AssetBrowserEditorWindowAssetPane.h"
 
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(const AssetBrowserEditorWindowFolderPane&          a_folderPane,
-                                                          const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                                          const std::filesystem::path&                       a_assetRootFolderPath, 
-                                                                Enum::AssetBrowserActivePaneType&            a_activePane,
-                                                                AssetBrowserEditorWindowPopupDrawer&         a_popupDrawer,
-                                                                AssetBrowserEditorWindowFileOperation&       a_fileOperation,
-                                                                AssetBrowserEditorWindowClipboard&           a_clipboard, 
-                                                                AssetFilePathRegistry&                       a_assetFilePathRegistry, 
-                                                                Struct::AssetBrowserEditorWindowRenameState& a_renameState)
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWindow& a_editorWindow)
 {
     if (!ImGui::BeginChild(k_childLabel.data(), Constant::k_imguiRemainingSize, true))
     {
@@ -26,18 +18,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(const AssetBrowserEdit
         (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || 
          ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
     {
-        a_activePane = Enum::AssetBrowserActivePaneType::AssetPane;
+        a_editorWindow.SetActivePane(Enum::AssetBrowserActivePaneType::AssetPane);
     }
 
     ImGui::TextUnformatted(k_paneTitleLabel.data());
     ImGui::Separator      ();
 
     ImGui::EndChild();
-}
-
-bool FWK::Editor::AssetBrowserEditorWindowAssetPane::IsMultiSelection(const std::vector<std::filesystem::path>& a_selectedList) const
-{
-    // 2件以上線t買うされていれば一括選択
-    // 一括選択時は選択フォルダ全ての中点をマージ描画する
-    return a_selectedList.size() > Constant::k_editorSelectedFolderSingleSize;
 }

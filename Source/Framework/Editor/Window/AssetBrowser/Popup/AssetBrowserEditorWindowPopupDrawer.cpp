@@ -62,14 +62,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // Clipboard::IsEmpty()はconst参照で調べる
     const bool l_canPaste = !l_constClipboard.IsEmpty();
 
-    auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
-
     // 新規フォルダ
-    DrawCreateFolderMenu(l_assetCreator,
-                         a_targetFilePath,
-                         l_canCreateFolder,
-                         l_folderPane,
-                         l_renameState);
+    DrawCreateFolderMenu(a_targetFilePath, l_canCreateFolder, a_editorWindow);
 
     // 新規プレハブ(AssetPane_OnEmptyのみ表示)
     if (l_canCreatePrefab)
@@ -121,15 +115,14 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     ImGui::EndPopup();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
-                                                                            const std::filesystem::path&                       a_targetFolderPath, 
-                                                                            const bool                                         a_canCreate,
-                                                                                  AssetBrowserEditorWindowFolderPane&          a_folderPane,
-                                                                                  Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const std::filesystem::path& a_targetFolderPath, const bool a_canCreate, AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
     // アイコン + ラベル文字列を構築
-    const auto& l_label = std::string{ Constant::k_imguiFontAwesomeFolderPlusIcon } + " " + std::string{ k_createNewFolderLabel };
-    
+    const auto& l_label        = std::string{ Constant::k_imguiFontAwesomeFolderPlusIcon } + " " + std::string{ k_createNewFolderLabel };
+          auto& l_folderPane   = a_assetBrowserEditorWindow.GetMutableREFFolderPane ();
+          auto& l_assetCreator = a_assetBrowserEditorWindow.GetREFAssetCreator      ();
+          auto& l_renameState  = a_assetBrowserEditorWindow.GetMutableREFRenameState();
+
     // ImGui::MenuItem(ラベル、
     //                 ショートカット文字列、
     //                 選択状態、
@@ -144,7 +137,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
                         false, 
                         a_canCreate))
     {
-        const auto& l_result = a_assetCreator.CreateFolder(a_targetFolderPath);
+        const auto& l_result = l_assetCreator.CreateFolder(a_targetFolderPath);
 
         if (l_result.m_isSuccess)
         {
@@ -154,18 +147,18 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
             // 新規フォルダ(とリネーム用InputText)が表示されない
             // AssetPaneからの作成の場合もFolderPaneツリーの親を開いておくことで
             // FolderPaneに切り替えた時に展開された状態で表示される
-            a_folderPane.ApplyFolderOpenState(a_targetFolderPath, true);
+            l_folderPane.ApplyFolderOpenState(a_targetFolderPath, true);
 
             // 作成したフォルダを現在選択中のファイルパスにする
             // 選択状態になることでハイライト表示され
             // 次の操作(コピー/切り取り/複製等)の対象になる
-            a_folderPane.SelectSingleFolder(l_result.m_createdFilePath);
+            l_folderPane.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow);
 
             // 作成性孤児、名前変更モードへ移行
             // ユーザーがすぐにフォルダ名を編集できるようにする
-            StartRename(l_result.m_createdFilePath, a_renameState);
+            StartRename(l_result.m_createdFilePath, l_renameState);
         }
-    }   
+    }  
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                                                             const std::filesystem::path&                       a_targetFolderPath, 

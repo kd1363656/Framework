@@ -24,7 +24,6 @@ namespace FWK::Converter
 
         nlohmann::json SerializeOpenStateMap(const Editor::AssetBrowserEditorWindowFolderPane& a_assetBrowserEditorWindowFolderPane) const;
 
-        static constexpr std::string_view k_currentFolderPathJsonKey       = "CurrentFolderPath";
         static constexpr std::string_view k_folderOpenStateMapJsonKey      = "FolderOpenStateMap";
         static constexpr std::string_view k_folderOpenStateFilePathJsonKey = "FilePath";
         static constexpr std::string_view k_folderOpenStateIsOpenJsonKey   = "IsOpen";

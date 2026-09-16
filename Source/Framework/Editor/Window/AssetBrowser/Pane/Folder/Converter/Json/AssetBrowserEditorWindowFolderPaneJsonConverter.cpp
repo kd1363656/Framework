@@ -4,24 +4,6 @@ void FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Deserializ
 {
     if (a_rootJson.is_null()) { return; }
 
-    // 前のプロジェクトで参照していたフォルダパスを復元
-    auto l_currentFolderPath = a_rootJson.value(k_currentFolderPathJsonKey, std::filesystem::path{});
-
-    // 指定したパスが空、またはディスク上に存在しない場合
-    // Assetルートフォルダを現在参照中のフォルダとして扱う
-    std::error_code l_errorCode = {};
-
-    if (l_currentFolderPath.empty() ||
-        !std::filesystem::exists(l_currentFolderPath, l_errorCode))
-    {
-        l_currentFolderPath = Constant::k_assetRootFolderPath;
-    }
-
-    FWK_ASSERT_RETURN_IF(l_errorCode, "現在参照中ののフォルダパスが存在するかどうかの確認に失敗しました");
-
-    // FolderPaneのpublicセッター経由で現在参照中のフォルダをセット
-    a_assetBrowserEditorWindowFolderPane.SetCurrentFolderPath(l_currentFolderPath);
-
     // フォルダツリーの開閉状態を復元
     if (const auto& l_json = a_rootJson.value(k_folderOpenStateMapJsonKey, nlohmann::json{});
         !l_json.is_null() &&
@@ -33,10 +15,8 @@ void FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Deserializ
 
 nlohmann::json FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Serialize(const Editor::AssetBrowserEditorWindowFolderPane& a_assetBrowserEditorWindowFolderPane) const
 {
-          nlohmann::json l_rootJson        = {};
-    const auto&          l_currentFilePath = a_assetBrowserEditorWindowFolderPane.GetREfCurrentFolderPath();
+    nlohmann::json l_rootJson = {};
 
-    l_rootJson[k_currentFolderPathJsonKey]  = l_currentFilePath;
     l_rootJson[k_folderOpenStateMapJsonKey] = SerializeOpenStateMap(a_assetBrowserEditorWindowFolderPane);
 
     return l_rootJson;

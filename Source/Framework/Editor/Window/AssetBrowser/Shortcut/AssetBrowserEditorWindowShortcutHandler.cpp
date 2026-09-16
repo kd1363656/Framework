@@ -27,7 +27,6 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
           auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard    ();
           auto& l_renameState   = a_editorWindow.GetMutableREFRenameState  ();
           auto& l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
-          auto& l_folderPane    = a_editorWindow.GetMutableREFFolderPane   ();
     const bool  l_canPaste      = !l_clipboard.IsEmpty                     ();
 
     // 対象フォルダがルートフォルダかどうか
@@ -45,12 +44,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         ImGui::IsKeyPressed(ImGuiKey_N) &&
         !l_isMultiSelection)
     {
-        const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
-
-        HandleCreateFolder(l_assetCreator, 
-                           a_targetFilePath,
-                           l_folderPane,
-                           l_renameState);
+        HandleCreateFolder(a_targetFilePath, a_editorWindow);
     }
 
     // 操作
@@ -117,47 +111,47 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_io                 = ImGui::GetIO                           ();
-    const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
-          auto& l_folderPane         = a_editorWindow.GetMutableREFFolderPane ();
+    const auto& l_io         = ImGui::GetIO                          ();
+          auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
 
     // 上下キーによる操作の反映
     if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
     {
-        l_folderPane.MoveSelectionUp(l_folderHierarchyMap, l_io.KeyShift || 
-                                                           l_io.KeyCtrl);
+        l_folderPane.MoveSelectionUp(a_editorWindow, l_io.KeyShift || 
+                                                     l_io.KeyCtrl);
     }
     else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
     {
-        l_folderPane.MoveSelectionDown(l_folderHierarchyMap, l_io.KeyShift ||
-                                                             l_io.KeyCtrl);
+        l_folderPane.MoveSelectionDown(a_editorWindow, l_io.KeyShift ||
+                                                       l_io.KeyCtrl);
     }
 
     // 右キー左キーによる操作の反映
     if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
     {
-        l_folderPane.ForciblyFolderOpen();
+        l_folderPane.ForciblyFolderOpen(a_editorWindow);
     }
     else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
     {
-        l_folderPane.ForciblyFolderClose();
+        l_folderPane.ForciblyFolderClose(a_editorWindow);
     }
 
     // エンターキーで開閉の切り替え
     if (ImGui::IsKeyPressed(ImGuiKey_Enter))
     {
-        l_folderPane.ToggleCurrentFolderOpen();
+        l_folderPane.ToggleCurrentFolderOpen(a_editorWindow);
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                                                              const std::filesystem::path&                       a_parentFolderPath, 
-                                                                                    AssetBrowserEditorWindowFolderPane&          a_folderPane, 
-                                                                                    Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, AssetBrowserEditorWindow& a_editorWindow) const
 {
+    const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator     ();
+          auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane();
+          auto& l_renameState = a_editorWindow.GetMutableREFRenameState();
+
     // AssetCreator::CreateFolderでフォルダを作成
     // 戻り値がCreationResultに作成パスと成否が入っている
-    const auto& l_result = a_assetCreator.CreateFolder(a_parentFolderPath);
+    const auto& l_result = l_assetCreator.CreateFolder(a_parentFolderPath);
 
     if (!l_result.m_isSuccess) { return; }
 
@@ -165,32 +159,32 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     // 親フォルダを開状態にする
     // これを行わないと親ノードが閉じたままで
     //新規フォルダが表示されない
-    a_folderPane.ApplyFolderOpenState(a_parentFolderPath, true);
+    l_folderPane.ApplyFolderOpenState(a_parentFolderPath, true);
 
     // 作成したフォルダを現在選択中のファイルパスにする
     // 選択状態になることでハイライト表示され
     // 次の操作(コピー/切り取り/複製等)の対象になる
-    a_folderPane.SelectSingleFolder(l_result.m_createdFilePath);
+    l_folderPane.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow);
 
     // 作成成功時、名前へ移行モードへ移行
     // PopupDrawer::StartRenameと同じ処理だが、
     // ShortcutHandlerはPopupDrawerに依存せずに独自に名前変更モードを起動する
-    a_renameState.m_targetFilePath = l_result.m_createdFilePath;
-    a_renameState.m_isActive       = true;
+    l_renameState.m_targetFilePath = l_result.m_createdFilePath;
+    l_renameState.m_isActive       = true;
 
     // InputTextの初期値としてファイル名を設定
     const auto& l_stem = l_result.m_createdFilePath.stem().string();
 
     // バッファをゼロクリア
-    a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
+    l_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
 
     // ファイル名をバッファへコピー
-    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto l_copySize = std::min(l_stem.size(), l_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
-    std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
+    std::copy_n(l_stem.begin(), l_copySize, l_renameState.m_inputBuffer.begin());
 
     // 初回フォーカス制御用フラグをリセット
-    a_renameState.m_isFocused = false;
+    l_renameState.m_isFocused = false;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const

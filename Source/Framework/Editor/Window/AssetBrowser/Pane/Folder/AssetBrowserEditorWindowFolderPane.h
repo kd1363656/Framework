@@ -18,32 +18,28 @@ namespace FWK::Editor
 
         void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
-        void MoveSelectionUp    (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const bool a_isRangeSelection = false);
-        void MoveSelectionDown  (const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const bool a_isRangeSelection = false);
-        void ForciblyFolderOpen ();
-        void ForciblyFolderClose();
+        void MoveSelectionUp    (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionDown  (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void ForciblyFolderOpen (AssetBrowserEditorWindow& a_editorWindow);
+        void ForciblyFolderClose(AssetBrowserEditorWindow& a_editorWindow);
 
-        void ToggleCurrentFolderOpen();
+        void ToggleCurrentFolderOpen(AssetBrowserEditorWindow& a_editorWindow);
 
         void ClearSelection();
 
         nlohmann::json Serialize() const;
 
-        void SelectSingleFolder(const std::filesystem::path& a_folderPath);
+        void SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow);
 
         void ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
         void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
-
-        void SetCurrentFolderPath(const std::filesystem::path& a_set) { m_currentFolderPath = a_set; }
 
         std::filesystem::path FetchVALOperationTargetFolderPath() const;
 
         const auto& GetREFFolderOpenStateMap() const { return m_folderOpenStateMap; }
 
         const auto& GetREFSelectedFilePathList() const { return m_selectedFilePathList; }
-
-        const auto& GetREfCurrentFolderPath() const { return m_currentFolderPath; }
 
     private:
 
@@ -53,7 +49,8 @@ namespace FWK::Editor
 
         void SelectFolder(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, 
                           const std::filesystem::path&                                                         a_folderPath, 
-                          const bool                                                                           a_isRangeSelection = false, 
+                                AssetBrowserEditorWindow&                                                      a_editorWindow,
+                          const bool                                                                           a_isRangeSelection  = false, 
                           const bool                                                                           a_isToggleSelection = false);
 
         bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
@@ -78,6 +75,5 @@ namespace FWK::Editor
         Converter::AssetBrowserEditorWindowFolderPaneJsonConverter m_jsonConverter = {};
 
         std::filesystem::path m_rangeSelectionStartPath = {};
-        std::filesystem::path m_currentFolderPath       = {};
     };
 }

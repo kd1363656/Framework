@@ -18,6 +18,8 @@ namespace FWK::Editor
 
         void SetActivePane(const Enum::AssetBrowserActivePaneType a_set) { m_activePane = a_set; }
 
+        void SetCurrentSelectFolderPath(const std::filesystem::path& a_set) { m_currentSelectFolderPath = a_set; }
+
         const auto& GetREFFolderHierarchyMap() const { return m_folderHierarchyMap; }
 
         const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
@@ -26,9 +28,12 @@ namespace FWK::Editor
         const auto& GetREFFolderPane  () const { return m_folderPane; }
         const auto& GetREFPaneSplitter() const { return m_paneSplitter; }
 
-        const auto& GetREFAssetCreator () const { return m_assetCreator; }
         const auto& GetREFFileOperation() const { return m_fileOperation; }
         const auto& GetREFPopupDrawer  () const { return m_popupDrawer; }
+        const auto& GetREFAssetCreator () const { return m_assetCreator; }
+        
+        const auto& GetREFCurrentSelectFolderPath() const { return m_currentSelectFolderPath; }
+
         const auto& GetREFRenameState  () const { return m_renameState; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
@@ -68,12 +73,13 @@ namespace FWK::Editor
         AssetBrowserEditorWindowPopupDrawer     m_popupDrawer     = {};
         AssetBrowserEditorWindowAssetCreator    m_assetCreator    = {};
 
+        std::filesystem::path m_currentSelectFolderPath = {};
+
+        Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
+
         Struct::AssetBrowserEditorWindowRenameState m_renameState = {};
 
         Enum::AssetBrowserActivePaneType m_activePane = Enum::AssetBrowserActivePaneType::Invalid;
-
-
-        Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
 
         FWK_DEFINE_TYPE_INFO(AssetBrowserEditorWindow, EditorWindowBase)
     };
