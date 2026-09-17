@@ -1,5 +1,12 @@
 ﻿#include "AssetBrowserEditorWindowSelectionState.h"
 
+void FWK::Editor::AssetBrowserEditorWindowSelectionState::Deserialize(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Editor::AssetBrowserEditorWindowSelectionState::ClearSelection()
 {
     ClearSelectedFilePathList();
@@ -26,6 +33,11 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(con
 
     // 範囲選択の開始地点を更新
     m_rangeSelectionStartPath = a_folderPath;
+}
+
+nlohmann::json FWK::Editor::AssetBrowserEditorWindowSelectionState::Serialize() const
+{
+    return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowSelectionState::AddSelectedFilePath(const std::filesystem::path& a_set)

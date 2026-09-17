@@ -174,11 +174,10 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
     // アロケータ用基本サイズを設定してprefabSystemに設定する
     Struct::PrefabData l_prefabData = {};
 
-    auto& l_prefabInstanceNUMAllocator       = l_prefabData.m_prefabInstanceNUMAllocator;
-    auto& l_prefabInstanceNUMIsAllocatedList = l_prefabInstanceNUMAllocator.GetMutableREFIsAllocatedList();
-
+    auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
+    
     // あらかじめオーバーフローしないように要素数を確保しておく
-    l_prefabInstanceNUMIsAllocatedList.resize(Constant::k_storageIDAllocatorDefaultCreateStorageIDCapacity, false);
+    l_prefabInstanceNUMAllocator.Resize(Constant::k_storageIDAllocatorDefaultCreateStorageIDCapacity, false);
 
     // Add通知はJson生成直後に届く可能性がある
     // Prefab::Load()内部でJsonを実際に読み込ませ、

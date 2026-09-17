@@ -14,14 +14,20 @@ namespace FWK::Editor
          AssetBrowserEditorWindowSelectionState() = default;
         ~AssetBrowserEditorWindowSelectionState() = default;
         
+        void Deserialize(const nlohmann::json& a_rootJson);
+
         void ClearSelection           ();
         void ClearSelectedFilePathList();
 
         void SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow);
        
+        nlohmann::json Serialize() const;
+
         void AddSelectedFilePath(const std::filesystem::path& a_set);
 
         void EraseSelectedFilePath(const std::vector<std::filesystem::path>::const_iterator& a_itr);
+
+        void SetSelectedFilePathList(std::vector<std::filesystem::path>&& a_set) { m_selectedFilePathList = std::move(a_set); }
 
         void SetRangeSelectionStartPath(const std::filesystem::path& a_set) { m_rangeSelectionStartPath = a_set; }
         
@@ -34,7 +40,9 @@ namespace FWK::Editor
     private:
     
         std::vector<std::filesystem::path> m_selectedFilePathList = {};
-        
+
+        Converter::AssetBrowserEditorWindowSelectionStateJsonConverter m_jsonConverter = {};
+
         std::filesystem::path m_rangeSelectionStartPath = {};
     };
 }

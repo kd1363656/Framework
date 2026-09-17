@@ -11,13 +11,23 @@ void FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Deserializ
     {
         DeserializeOpenStateMap(l_json, a_assetBrowserEditorWindowFolderPane);
     }
+
+    if (const auto& l_json = a_rootJson.value(k_selectionStateJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_selectionState = a_assetBrowserEditorWindowFolderPane.GetMutableREFSelectionState();
+
+        l_selectionState.Deserialize(l_json);
+    }
 }
 
 nlohmann::json FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Serialize(const Editor::AssetBrowserEditorWindowFolderPane& a_assetBrowserEditorWindowFolderPane) const
 {
-    nlohmann::json l_rootJson = {};
+          nlohmann::json l_rootJson       = {};
+    const auto&          l_selectionState = a_assetBrowserEditorWindowFolderPane.GetREFSelectionState();
 
-    l_rootJson[k_folderOpenStateMapJsonKey] = SerializeOpenStateMap(a_assetBrowserEditorWindowFolderPane);
+    l_rootJson[k_folderOpenStateMapJsonKey] = SerializeOpenStateMap     (a_assetBrowserEditorWindowFolderPane);
+    l_rootJson[k_selectionStateJsonKey]     = l_selectionState.Serialize();
 
     return l_rootJson;
 }

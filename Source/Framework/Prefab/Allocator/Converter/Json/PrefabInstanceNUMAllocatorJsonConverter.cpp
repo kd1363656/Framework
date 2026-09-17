@@ -4,9 +4,9 @@ void FWK::Converter::PrefabInstanceNUMAllocatorJsonConverter::Deserialize(const 
 {
     if (a_rootJson.is_null()) { return; }
 
-    auto& l_isAllocatedList = a_prefabInstanceNUMAllocator.GetMutableREFIsAllocatedList();
+    auto l_isAllocatedList = a_rootJson.value(k_isAllocatedListJsonKey, std::vector<bool>());
 
-    l_isAllocatedList = a_rootJson.value(k_isAllocatedListJsonKey, std::vector<bool>());
+    a_prefabInstanceNUMAllocator.SetIsAllocatedList(std::move(l_isAllocatedList));
 }
 
 nlohmann::json FWK::Converter::PrefabInstanceNUMAllocatorJsonConverter::Serialize(const PrefabInstanceNUMAllocator& a_prefabInstanceNUMAllocator) const

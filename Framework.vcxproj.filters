@@ -1561,6 +1561,12 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Selection">
       <UniqueIdentifier>{529cbe03-909c-4ec9-a000-5e5119578656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Selection\Converter">
+      <UniqueIdentifier>{dc8368f4-0a4d-4b37-912c-03c282be6584}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json">
+      <UniqueIdentifier>{23533412-bf2b-4175-abe4-f578b5239d4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3045,6 +3051,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionState.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json\AssetBrowserEditorWindowSelectionStateJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3829,6 +3838,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionState.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json\AssetBrowserEditorWindowSelectionStateJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

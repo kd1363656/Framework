@@ -18,6 +18,11 @@ nlohmann::json FWK::PrefabInstanceNUMAllocator::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
+void FWK::PrefabInstanceNUMAllocator::Resize(const std::size_t& a_size, const bool a_setValue)
+{
+    m_isAllocatedList.resize(a_size, a_setValue);
+}
+
 FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabInstanceNUMAllocator::Allocate()
 {
     // 削除によって空いた番号が存在する場合は、
