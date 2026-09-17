@@ -21,14 +21,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
     // ImGui::BeginChild(ラベル(),
     //                   領域サイズ(枠0 = 最大サイズ、高さ0 = AutoResizeYで決定))、
     //                   ボーダー一括描画有無、
-    //                   ImGuiChildFlags_AutoResizeYで高さを内容に自動合わせ
     //                   ImGuiWindowFlags_HorizontalScrollbarで幅超過時に水平スクロール
     // 戻り値がfalseの場合は霊異記が描画されていないためEndChildしてreturn
-    if (const ImVec2& l_size = { Constant::k_imguiRemainingSize.x, ImGui::GetFrameHeight() };
-        !ImGui::BeginChild(k_childLabel.data(), 
+    if (!ImGui::BeginChild(k_childLabel.data(), 
                            Constant::k_imguiRemainingSize, 
                            false,
-                           ImGuiChildFlags_AutoResizeY |
                            ImGuiWindowFlags_HorizontalScrollbar))
     {
         ImGui::EndChild     ();
@@ -102,6 +99,10 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
         // 現在参照中のフォルダパスがAsset / Dataになる
         if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
         {
+            auto& l_folderPane     = a_editorWindow.GetMutableREFFolderPane  ();
+            auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
+
+            l_selectionState.SelectSingleFolder      (l_accumulatedPath, a_editorWindow);
             a_editorWindow.SetCurrentSelectFolderPath(l_accumulatedPath);
         }
     }
