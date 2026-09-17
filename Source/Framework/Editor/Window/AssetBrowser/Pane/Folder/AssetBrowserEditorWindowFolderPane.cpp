@@ -304,6 +304,26 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::AddFolderOpenState(const s
     m_folderOpenStateMap.try_emplace(a_folderPath, a_isOpen);
 }
 
+std::vector<std::filesystem::path> FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALDisplayedFolderList(AssetBrowserEditorWindow& a_editorWindow)
+{
+    // 戻り値となる表示中フォルダパスリスト
+    // Assetルートから再帰的に開いているフォルダの子を収集し
+    // 表示順(上から下)に並べたリストを構築する
+    std::vector<std::filesystem::path> l_displayedFolderList = {};
+
+    // フォルダ階層マップを取得
+    // BuildFolderHierarchyMapで構築された親子関係のマップ
+    // キー : 親フォルダパス、値 : 子フォルダパスリスト
+    const auto& l_folderHierarchyMap = a_editorWindow.GetREFFolderHierarchyMap();
+
+    // Assetルートから再帰的に表示中フォルダを収集
+    // BuildDisplayedFolderListはa_folderPath自身をリストへ追加した後
+    // 開いている場合は子フォルダに対して再帰的に呼び出す
+    BuildDisplayedFolderList(l_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
+
+    return l_displayedFolderList;
+}
+
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALOperationTargetFolderPath() const
 {
     // 選択中フォルダが倍場合はAssetルートを返す
@@ -681,8 +701,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
                          l_io.KeyShift,
                          l_io.KeyCtrl);
         }
-        // 修飾きーなじ + 未選択フォルダ -> 単一選択に切り替え
-        else if (!l_isAlreadySelected)
+        // 修飾キーなし + 未選択フォルダ -> 単一選択に切り替え
+        else
         {
             SelectFolder(l_folderHierarchyMap,
                          a_currentFolderPath,

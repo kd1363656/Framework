@@ -24,7 +24,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
     ImGui::TextUnformatted(k_paneTitleLabel.data());
     ImGui::Separator      ();
 
+    // パンくずリストを描画、所定フォルダパスをクリックで
+    // 現在参照中のフォルダを切り替えれる
     m_breadcrumb.Draw(a_editorWindow);
-
+   
     ImGui::EndChild();
 }

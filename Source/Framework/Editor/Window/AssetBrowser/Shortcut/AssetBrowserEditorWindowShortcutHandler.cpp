@@ -114,6 +114,28 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     const auto& l_io         = ImGui::GetIO                          ();
           auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
 
+    // Ctrl + A : 現在フォルダツリーで表示中のフォルダをすべて選択する
+    // ImGui::IsKeyPressed(ImGuiKey_A) : Aキーが押された瞬間か
+    // FetchVALDisplayedFolderList()で表示中フォルダリストを取得し
+    // SelectionState::SelectAllで全選択する
+    // ルートフォルダ(Asset)も選択対象に含まれるが
+    // 既存のHandle側でルートフォルダ含む場合は操作無効化されるため問題ない
+    if (l_io.KeyCtrl &&
+        ImGui::IsKeyPressed(ImGuiKey_A))
+    {
+        // 表示中フォルダリストを取得
+        // Assetルーっとから再帰的においているフォルダの子を収集し
+        // 表示順(上から下に)並べたリスト
+        const auto& l_displayedFolderList = l_folderPane.FetchVALDisplayedFolderList(a_editorWindow);
+
+        // SelectionStateを取得して全選択を実行
+        // SelectAll内部で選択リストをクリアしてかrあ
+        // 表示リスト全要素を追加する
+        auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
+
+        l_selectionState.SelectAll(l_displayedFolderList);
+    }
+
     // 上下キーによる操作の反映
     if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
     {

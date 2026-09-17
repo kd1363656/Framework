@@ -17,14 +17,16 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
 
     ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiStrongDarkColor);
 
+    // ImGui::GetTextLineHeight : 現在使用中のフォント1行分の高さを取得
     // パンくずリストを格納する子領域を作成
     // ImGui::BeginChild(ラベル(),
     //                   領域サイズ(枠0 = 最大サイズ、高さ0 = AutoResizeYで決定))、
     //                   ボーダー一括描画有無、
     //                   ImGuiWindowFlags_HorizontalScrollbarで幅超過時に水平スクロール
     // 戻り値がfalseの場合は霊異記が描画されていないためEndChildしてreturn
-    if (!ImGui::BeginChild(k_childLabel.data(), 
-                           Constant::k_imguiRemainingSize, 
+    if (const float l_childHeight = ImGui::GetTextLineHeight();
+        !ImGui::BeginChild(k_childLabel.data(), 
+                           ImVec2{ Constant::k_imguiRemainingSize.x, l_childHeight}, 
                            false,
                            ImGuiWindowFlags_HorizontalScrollbar))
     {

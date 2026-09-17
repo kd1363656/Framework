@@ -31,6 +31,8 @@ namespace FWK::Editor
 
         void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
+        std::vector<std::filesystem::path> FetchVALDisplayedFolderList(AssetBrowserEditorWindow& a_editorWindow);
+
         std::filesystem::path FetchVALOperationTargetFolderPath() const;
 
         const auto& GetREFFolderOpenStateMap() const { return m_folderOpenStateMap; }

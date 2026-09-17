@@ -35,6 +35,26 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(con
     m_rangeSelectionStartPath = a_folderPath;
 }
 
+void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectAll(const std::vector<std::filesystem::path>& a_displayedFilePathList)
+{
+    // 選択リストをクリアする
+    // 全選択時は既存の選択状態を破棄して表示リスト全要素を選択する
+    ClearSelectedFilePathList();
+
+    // 表示リストの全要素を直訳リストへ追加する
+    // a_displayedFilePathListは表示順(上から下)に並んでいるため
+    // 追加順も表示順になる
+    for (const auto& l_filePath : a_displayedFilePathList)
+    {
+        m_selectedFilePathList.emplace_back(l_filePath);
+    }
+
+    // 範囲選択の開始地点をクリアする
+    // 全選択時は範囲選択の基準が不要なため
+    // 次回Shift + クリック時は単一選択として扱われる
+    m_rangeSelectionStartPath.clear();
+}
+
 nlohmann::json FWK::Editor::AssetBrowserEditorWindowSelectionState::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
