@@ -427,7 +427,9 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     }
     else
     {
-        ImGui::PushStyleColor(ImGuiCol_Header, Constant::k_imguiStrongBlueTranslucentColor);
+        
+        ImGui::PushStyleColor(ImGuiCol_Header,        Constant::k_imguiStrongBlueTranslucentColor);
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, Constant::k_imguiLightGrayColor);
 
         l_popStyleColorNUM = k_treeNodePopStyleColorPaneInactiveNUM;
     }

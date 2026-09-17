@@ -64,7 +64,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel           = "##RenameInputText";
 
         static constexpr int k_treeNodePopStyleColorPaneActiveNUM        = 3;
-        static constexpr int k_treeNodePopStyleColorPaneInactiveNUM      = 1;
+        static constexpr int k_treeNodePopStyleColorPaneInactiveNUM      = 2;
         static constexpr int k_initialTreeNodePopStyleColorPaneActiveNUM = 0;
         static constexpr int k_keyboardFocusNextItem                     = 0;
 

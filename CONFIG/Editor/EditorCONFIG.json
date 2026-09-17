@@ -25,7 +25,7 @@
                 "AssetFilePathRegistry": {
                     "FilePathRegistryMap": []
                 },
-                "CurrentSelectFolderPath": "Asset\\Model",
+                "CurrentSelectFolderPath": "Asset\\Texture",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -225,9 +225,9 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Model",
+                        "RangeSelectionStartPath": "Asset\\Texture",
                         "SelectedFilePathList": [
-                            "Asset\\Model"
+                            "Asset\\Texture"
                         ]
                     }
                 }

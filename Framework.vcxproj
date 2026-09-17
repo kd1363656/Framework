@@ -562,6 +562,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json\AssetBrowserEditorWindowAssetPaneJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json\AssetBrowserEditorWindowSelectionStateJsonConverter.h" />
@@ -901,6 +902,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json\AssetBrowserEditorWindowAssetPaneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\Converter\Json\AssetBrowserEditorWindowSelectionStateJsonConverter.cpp" />
