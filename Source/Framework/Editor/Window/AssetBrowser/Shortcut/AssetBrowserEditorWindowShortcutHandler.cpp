@@ -164,7 +164,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     // 作成したフォルダを現在選択中のファイルパスにする
     // 選択状態になることでハイライト表示され
     // 次の操作(コピー/切り取り/複製等)の対象になる
-    l_folderPane.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow);
+    auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
+
+    l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow);
 
     // 作成成功時、名前へ移行モードへ移行
     // PopupDrawer::StartRenameと同じ処理だが、

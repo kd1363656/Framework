@@ -25,11 +25,7 @@ namespace FWK::Editor
 
         void ToggleCurrentFolderOpen(AssetBrowserEditorWindow& a_editorWindow);
 
-        void ClearSelection();
-
         nlohmann::json Serialize() const;
-
-        void SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow);
 
         void ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
@@ -39,7 +35,9 @@ namespace FWK::Editor
 
         const auto& GetREFFolderOpenStateMap() const { return m_folderOpenStateMap; }
 
-        const auto& GetREFSelectedFilePathList() const { return m_selectedFilePathList; }
+        const auto& GetREFSelectionState() const { return m_selectionState; }
+
+        auto& GetMutableREFSelectionState() { return m_selectionState; }
 
     private:
 
@@ -70,10 +68,8 @@ namespace FWK::Editor
 
         std::unordered_map<std::filesystem::path, bool> m_folderOpenStateMap = {};
 
-        std::vector<std::filesystem::path> m_selectedFilePathList = {};
+        AssetBrowserEditorWindowSelectionState m_selectionState = {};
 
         Converter::AssetBrowserEditorWindowFolderPaneJsonConverter m_jsonConverter = {};
-
-        std::filesystem::path m_rangeSelectionStartPath = {};
     };
 }

@@ -65,12 +65,13 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     }
 
     // 対象フォルダ : 選択中フォルダ、なければAssetルート
-    const auto& l_targetFolder = m_selectedFilePathList.empty() ? Constant::k_assetRootFolderPath : m_selectedFilePathList.back();
+    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
+    const auto& l_targetFolder         = l_selectedFilePathList.empty() ? Constant::k_assetRootFolderPath : l_selectedFilePathList.back();
 
     // 空スペース用ポップアップ描画
     // PopupDrawer : Draw内部でBeginPopup / EndPopupを呼ぶ
     // ポップアップが開いていない場合はDraw内部でreturnする
-    l_popupDrawer.Draw(m_selectedFilePathList,
+    l_popupDrawer.Draw(l_selectedFilePathList,
                        l_targetFolder,
                        k_emptySpaceContextMenuOpenLabel,
                        Enum::AssetBrowserPopupContextType::FolderPane_OnFolder,
@@ -105,10 +106,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrows
     if (l_cursorITR == l_displayedFolderList.end())
     {
         SelectFolder(l_folderHierarchyMap,
-                     l_displayedFolderList.front(),
-                     a_editorWindow,
-                     a_isRangeSelection,
-                     false);
+                    l_displayedFolderList.front(),
+                    a_editorWindow,
+                    a_isRangeSelection,
+                    false);
 
         return;
     }
@@ -128,9 +129,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrows
         // アンカーが未設定の場合は
         // 現在のカーソル位置をアンカーにする
         // これによりCtrl / Shift + 矢印を押した瞬間の位置がカアンカーになる
-        if (m_rangeSelectionStartPath.empty())
+        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
+            l_rangeSelectionStartPath.empty())
         {
-            m_rangeSelectionStartPath = l_cursorPath;
+            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
         }
 
         // カーソルを前のノードへ移動
@@ -205,9 +207,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBro
         // アンカーが未設定の場合は
         // 現在のカーソル位置をアンカーにする
         // これによりCtrl / Shift + 矢印を押した瞬間の位置がアンカーになる
-        if (m_rangeSelectionStartPath.empty())
+        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
+            l_rangeSelectionStartPath.empty())
         {
-            m_rangeSelectionStartPath = l_cursorPath;
+            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
         }
 
         // カーソルを次のノードへ移動
@@ -240,7 +243,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBro
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-    const auto& l_currentPath             = m_selectedFilePathList.empty() ? l_currentSelectFolderPath : m_selectedFilePathList.back();
+    const auto& l_selectedFilePathList    = m_selectionState.GetREFSelectedFilePathList ();
+    const auto& l_currentPath             = l_selectedFilePathList.empty() ? l_currentSelectFolderPath : l_selectedFilePathList.back();
 
     // 閉じている場合のみ展開する
     if (!IsFolderOpen(l_currentPath))
@@ -251,7 +255,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(AssetBr
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose(AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-    const auto& l_currentPath             = m_selectedFilePathList.empty() ? l_currentSelectFolderPath : m_selectedFilePathList.back();
+    const auto& l_selectedFilePathList    = m_selectionState.GetREFSelectedFilePathList ();
+    const auto& l_currentPath             = l_selectedFilePathList.empty() ? l_currentSelectFolderPath : l_selectedFilePathList.back();
 
     // 閉じている場合のみ展開する
     if (IsFolderOpen(l_currentPath))
@@ -270,32 +275,9 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleCurrentFolderOpen(As
     ToggleFolderOpen(l_currentSelectFolderPath);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ClearSelection()
-{
-    // 選択中のファイルパスリストをクリアする
-    m_selectedFilePathList.clear();
-
-    // 範囲選択の開始地点をクリアする
-    m_rangeSelectionStartPath.clear();
-}
-
 nlohmann::json FWK::Editor::AssetBrowserEditorWindowFolderPane::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
-}
-
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow)
-{
-    m_selectedFilePathList.clear       ();
-    m_selectedFilePathList.emplace_back(a_folderPath);
-    
-    // 現在フォルダを更新
-    // 単一選択時は現在フォルダを選択フォルダにする
-    // AssetPaneはこのm_currentFolderPathを参照して内容を表示する
-    a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
-
-    // 範囲選択の開始地点を更新
-    m_rangeSelectionStartPath = a_folderPath;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen)
@@ -326,11 +308,13 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALO
 {
     // 選択中フォルダが倍場合はAssetルートを返す
     // Constant::k_assetRootFolderPathはinline const なので参照返し可能
-    if (m_selectedFilePathList.empty()) { return Constant::k_assetRootFolderPath; }
+    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList ();
+
+    if (l_selectedFilePathList.empty()) { return Constant::k_assetRootFolderPath; }
 
     // 選択中フォルダの最後を返す
     // vector::back()は要求へのconst 参照を返すためコピー発生なし
-    return m_selectedFilePathList.back();
+    return l_selectedFilePathList.back();
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::filesystem::path& a_currentFolderPath, AssetBrowserEditorWindow& a_editorWindow)
@@ -373,7 +357,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // 選択状態をフラグへ反映
     // m_selectedFilePathListにa_currentFolderPathが含まれていれば選択状態
     // std::findで線形探索(フォルダ選択は同時に数十件程度のため問題ない)
-    const bool l_isSelected = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end();
+    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList ();
+    const bool  l_isSelected           = std::find(l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
 
     if (l_isSelected)
     {
@@ -465,12 +450,12 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // DragDropSourceはこのTreeNodeExをドラッグ対象にする
     // 選択中フォルダ(複数可)のパスをペイロードとして送信する
     // ルートフォルダは除外する(移動するとプロジェクトが壊れるため)
-    if (!m_selectedFilePathList.empty())
+    if (!l_selectedFilePathList.empty())
     {
         // ルートフォルダを除外したドラッグ対象リストを構築
         std::vector<std::filesystem::path> l_dragSourcePathList = {};
 
-        for (const auto& l_selectedPath : m_selectedFilePathList)
+        for (const auto& l_selectedPath : l_selectedFilePathList)
         {
             if (l_selectedPath == Constant::k_assetRootFolderPath) { continue; }
 
@@ -684,7 +669,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // 既に選択されている場合は選択を維持してドラッグ開始できるようにする
         // これにより複数選択中に選択済みをフォルダクリックしても
         // 選択がクリアされずにドラッグ&ドロップで複数フォルダを移動できる
-        const bool l_isAlreadySelected = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end();
+        const bool l_isAlreadySelected = std::find(l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
 
         // Shift/Ctrl + クリック時は既存の範囲選択・トグル操作を行う
         if (l_io.KeyShift ||
@@ -718,7 +703,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // 右クリックしたフォルダが既に選択リストに含まれているか確認
         // 未選択の場合のみSelectFolderを読んで選択状態を更新する
         // 既に選択されている場合は選択状態を維持する
-        if (const bool l_isAlreadySelected = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_currentFolderPath) != m_selectedFilePathList.end();
+        if (const bool l_isAlreadySelected = std::find(l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
             !l_isAlreadySelected)
         {
             SelectFolder(l_folderHierarchyMap, a_currentFolderPath, a_editorWindow);
@@ -731,7 +716,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // ポップアップ描画
     // BeginPopupで指定したラベルのポップアップを開く
     // ポップアップIDはOpenPopupで指定したものと同じものを使う必要がある
-    l_popupDrawer.Draw(m_selectedFilePathList,
+    l_popupDrawer.Draw(l_selectedFilePathList,
                        a_currentFolderPath,
                        l_contextMenuOpenPopupLabel,
                        Enum::AssetBrowserPopupContextType::FolderPane_OnFolder,
@@ -789,16 +774,18 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
                                                                    const bool                                                                           a_isRangeSelection, 
                                                                    const bool                                                                           a_isToggleSelection)
 {
+    const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
+
     // Shift + Click : 範囲選択
     // m_rangeSelectionStartPathからa_folderPathまでの範囲を選択する
     // ツリー上の表示順で範囲を選択する
     if (a_isRangeSelection)
     {
         // 範囲選択の開始地点が未設定の場合は単一選択として扱う
-        if (m_rangeSelectionStartPath.empty())
+        if (l_rangeSelectionStartPath.empty())
         {
             // 通常クリック : 選択をクリアして単一選択
-            SelectSingleFolder(a_folderPath, a_editorWindow);
+            m_selectionState.SelectSingleFolder(a_folderPath, a_editorWindow);
         }
         else
         {
@@ -811,7 +798,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
             BuildDisplayedFolderList(a_folderHierarchyMap, Constant::k_assetRootFolderPath, l_displayedFolderList);
 
             // 開始地点とクリック店のリスト内インデックスを検索
-            auto l_startITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), m_rangeSelectionStartPath);
+            auto l_startITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_rangeSelectionStartPath);
             auto l_endITR   = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), a_folderPath); 
 
             // 両方がリストに存在する場合のみ範囲選択を行う
@@ -827,19 +814,19 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
                 }
 
                 // 開始地点からクリック店まで(両端含む)を選択リストへ追加
-                m_selectedFilePathList.clear();
+                m_selectionState.ClearSelectedFilePathList();
 
                 for (auto l_itr = l_startITR; l_itr <= l_endITR; ++l_itr)
                 {
-                    m_selectedFilePathList.emplace_back(*l_itr);
+                    m_selectionState.AddSelectedFilePath(*l_itr);
                 }
             }
             else
             {
                 // リストに存在しない場合は簡易的に二つだけ選択(フォールバック)
-                m_selectedFilePathList.clear();
-                m_selectedFilePathList.emplace_back(m_rangeSelectionStartPath);
-                m_selectedFilePathList.emplace_back(a_folderPath);
+                m_selectionState.ClearSelectedFilePathList();
+                m_selectionState.AddSelectedFilePath      (l_rangeSelectionStartPath);
+                m_selectionState.AddSelectedFilePath      (a_folderPath);
             }
         }
 
@@ -851,30 +838,32 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
     // 選択されていない場合は選択に追加
     if (a_isToggleSelection)
     {
+        const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
+
         // std::findで選択リスト内にa_folderPathが存在するか検索
         // 選択リストはvectorなので線形探索になるが
         // フォルダ選択は同時に数十件程度のため実用上問題ない
-        if (auto l_itr = std::find(m_selectedFilePathList.begin(), m_selectedFilePathList.end(), a_folderPath);
-            l_itr != m_selectedFilePathList.end())
+        if (auto l_itr = std::find(l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_folderPath);
+            l_itr != l_selectedFilePathList.end())
         {
             // 既に選択されている場合は選択解除
-            m_selectedFilePathList.erase(l_itr);
+            m_selectionState.EraseSelectedFilePath(l_itr);
 
             // 選択解除後、残りが一つの場合は現在フォルダを更新
             // 残りが0件または複数件の場合は更新しない
             // (複数選択時は操作無効、0件時は前の現在フォルダを維持)
-            if (m_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
+            if (l_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
             {
-                a_editorWindow.SetCurrentSelectFolderPath(m_selectedFilePathList.back());
+                a_editorWindow.SetCurrentSelectFolderPath(l_selectedFilePathList.back());
             }
         }
         else
         {
             // 選択されていない場合は選択に追加
-            m_selectedFilePathList.emplace_back(a_folderPath);
+            m_selectionState.AddSelectedFilePath(a_folderPath);
 
             // 追加後、選択数が1件の場合は現在フォルダを更新
-            if (m_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
+            if (l_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
             {
                 a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
             }
@@ -884,16 +873,16 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
     }
 
     // 通常クリック : 選択をクリアして単一選択
-    m_selectedFilePathList.clear       ();
-    m_selectedFilePathList.emplace_back(a_folderPath);
-
+    m_selectionState.ClearSelectedFilePathList();
+    m_selectionState.AddSelectedFilePath      (a_folderPath);
+    
     // 現在フォルダを更新
     // 単一選択時はこ現在フォルダを選択フォルダにする
     // AssetPaneはこのm_currentFolderPathを参照して内容を表示する
     a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
 
     // 範囲選択の開始地点を更新
-    m_rangeSelectionStartPath = a_folderPath;
+    m_selectionState.SetRangeSelectionStartPath(a_folderPath);
 }
 
 bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::filesystem::path& a_folderPath) const

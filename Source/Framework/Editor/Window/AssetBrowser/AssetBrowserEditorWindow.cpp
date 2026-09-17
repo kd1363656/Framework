@@ -115,9 +115,11 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 // 新規フォルダ作成元・貼り付け先・リネーム対象として使う
                 // GetREFOperationTargetFolderPathはconst参照を返すためコピー発生なし
                 const auto& l_operationTargetFolderPath = m_folderPane.FetchVALOperationTargetFolderPath();
+                const auto& l_selectionState            = m_folderPane.GetREFSelectionState             ();
+                const auto& l_selectedFilePathList      = l_selectionState.GetREFSelectedFilePathList   ();
 
                 m_shortcutHandler.HandleFolderPane(*this);
-                m_shortcutHandler.Handle          (m_folderPane.GetREFSelectedFilePathList(), l_operationTargetFolderPath, *this);
+                m_shortcutHandler.Handle          (l_selectedFilePathList, l_operationTargetFolderPath, *this);
             }
             break;
 

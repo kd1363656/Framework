@@ -1552,11 +1552,14 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json">
       <UniqueIdentifier>{e7e431cf-225f-4a05-b7e0-898e6f4c720b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb">
-      <UniqueIdentifier>{ee3d9af6-8008-4f5a-a028-f109eddfc923}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm">
       <UniqueIdentifier>{6e272158-9335-4ced-825b-d0f184d921ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb">
+      <UniqueIdentifier>{ee3d9af6-8008-4f5a-a028-f109eddfc923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Selection">
+      <UniqueIdentifier>{529cbe03-909c-4ec9-a000-5e5119578656}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3030,14 +3033,17 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Breadcrumb</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm\AssetBrowserEditorWindowDeleteConfirmPopup.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionState.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3815,11 +3821,14 @@
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Breadcrumb</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm\AssetBrowserEditorWindowDeleteConfirmPopup.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\DeleteConfirm</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb\AssetBrowserEditorWindowAssetPaneBreadcrumb.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Breadcrumb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Selection\AssetBrowserEditorWindowSelectionState.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Selection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
