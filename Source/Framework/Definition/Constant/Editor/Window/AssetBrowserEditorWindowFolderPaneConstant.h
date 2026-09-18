@@ -16,8 +16,8 @@ namespace FWK::Constant
     inline constexpr ImVec4 k_imguiCutTargetTextColor         = { 1.0F,                     1.0F,                     1.0F,                     0.40F };
     inline constexpr ImVec4 k_imguiRedColor                   = { 1.0F,                     0.31F,                    0.31F,                    1.0F };
 
-    inline constexpr float k_imguiInputTextHightPaddingAlignTreeNodeHight = 0.50F;
-    inline constexpr float k_imguiImVec4ToImU32                           = 255.0F;
+    inline constexpr float k_imguiInputTextHightPaddingAlignHight = 0.50F;
+    inline constexpr float k_imguiImVec4ToImU32                   = 255.0F;
 
     inline constexpr float k_imguiDragDropUpperZoneRatio = 0.33F;
 }

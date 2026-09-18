@@ -610,7 +610,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // デフォルトのFramePadding.yは3-4pxだが
         // TreeNodeExはテキストベースなので高さが低い
         // Y方向のパディングを1pxにして高さ合わせる
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignTreeNodeHight));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight));
 
         // InputTextの幅を残り領域いっぱいに広げる
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
@@ -688,24 +688,11 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         const auto& l_io = ImGui::GetIO();
 
         // Shift/Ctrl + クリック時は既存の範囲選択・トグル操作を行う
-        if (l_io.KeyShift ||
-            l_io.KeyCtrl)
-        { 
-            SelectFolder(l_folderHierarchyMap, 
-                         a_currentFolderPath,
-                         a_editorWindow,
-                         l_io.KeyShift,
-                         l_io.KeyCtrl);
-        }
-        // 修飾キーなし + 未選択フォルダ -> 単一選択に切り替え
-        else
-        {
-            SelectFolder(l_folderHierarchyMap,
-                         a_currentFolderPath,
-                         a_editorWindow,
-                         false,
-                         false);
-        }
+        SelectFolder(l_folderHierarchyMap, 
+                     a_currentFolderPath,
+                     a_editorWindow,
+                     l_io.KeyShift,
+                     l_io.KeyCtrl);
     }
 
     const auto& l_contextMenuOpenPopupLabel = std::string{ k_contextMenuOpenPopupLabel } + a_currentFolderPath.string();
