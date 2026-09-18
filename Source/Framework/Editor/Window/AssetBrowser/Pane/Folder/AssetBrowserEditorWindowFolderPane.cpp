@@ -687,12 +687,6 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // ImGui::GetIO().KeyCtrl  : Ctrlキーが押されているか
         const auto& l_io = ImGui::GetIO();
 
-        // クリックしたフォルダが既に選択されているかどうか確認
-        // 既に選択されている場合は選択を維持してドラッグ開始できるようにする
-        // これにより複数選択中に選択済みをフォルダクリックしても
-        // 選択がクリアされずにドラッグ&ドロップで複数フォルダを移動できる
-        const bool l_isAlreadySelected = std::find(l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
-
         // Shift/Ctrl + クリック時は既存の範囲選択・トグル操作を行う
         if (l_io.KeyShift ||
             l_io.KeyCtrl)

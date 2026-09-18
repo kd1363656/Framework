@@ -56,8 +56,6 @@ namespace FWK::Graphics
         void RegisterCBCameraPass          ();
         void RegisterToEditorViewportWindow();
 
-        static constexpr float k_halfFOVScale = 0.5F;
-
         std::shared_ptr<Struct::CBCameraPass> m_cbCameraPass = nullptr;
 
         TypeAlias::Math::Matrix m_cameraMatrix = TypeAlias::Math::Matrix::Identity;

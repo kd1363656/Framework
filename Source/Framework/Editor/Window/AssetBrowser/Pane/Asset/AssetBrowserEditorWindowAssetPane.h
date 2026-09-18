@@ -37,7 +37,42 @@ namespace FWK::Editor
 
     private:
 
-        void DrawCard(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
+        void DrawCard          (const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
+        void DrawCardBackground(const ImVec2&                             a_cardMIN,               const ImVec2&                a_cardMAX,  ImDrawList&               a_drawList);
+
+        void DrawCardIcon(const std::filesystem::path&    a_filePath,
+                          const ImVec2&                   a_cardMIN,
+                          const ImVec2&                   a_cardMAX,
+                          const bool                      a_isCutTarget,
+                                AssetBrowserEditorWindow& a_editorWindow,
+                                ImDrawList&               a_drawList) const;
+
+        void DrawCardFileName(const std::filesystem::path& a_filePath,
+                              const ImVec2&                a_cardMIN,
+                              const ImVec2&                a_cardMAX,
+                              const bool                   a_isRenaming,
+                              const bool                   a_isCutTarget,
+                                    ImDrawList&            a_drawList) const;
+
+        void DrawCardHighlight(const ImVec2& a_cardMIN,
+                               const ImVec2& a_cardMAX,
+                               const bool    a_isSelected,
+                               const bool    a_isHovered,
+                               const bool    a_isActivePane,
+                               const bool    a_isCutTarget,
+                               ImDrawList&   a_drawList) const;
+        
+        void DrawCardRename(const std::filesystem::path&    a_filePath,
+                            const ImVec2&                   a_cardMIN,
+                            const ImVec2&                   a_cardMAX,
+                                  AssetBrowserEditorWindow& a_editorWindow);
+
+        void HandleCardClick(const std::vector<std::filesystem::path>& a_displayedFilePathList,
+                             const std::filesystem::path&              a_filePath,
+                             const bool                                a_isSelected,
+                             AssetBrowserEditorWindow&                 a_editorWindow);
+
+        void HandleCardDragDrop(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
 
         void BuildDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList);
 
@@ -64,21 +99,23 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel       = "##AssetPaneRenameInputText";
         static constexpr std::string_view k_ellipsis                   = "...";
 
-        static constexpr float k_cardWidth    = 60.0F;
-        static constexpr float k_cardHeight   = 80.0F;
-        static constexpr float k_cardSpacing  = 8.0F;
-        static constexpr float k_cardRounding = 6.0F;
-        static constexpr float k_cardPadding  = 4.0F;
-        static constexpr float k_iconRatio    = 0.5F;
-
+        static constexpr float k_cardWidth     = 60.0F;
+        static constexpr float k_cardHeight    = 80.0F;
+        static constexpr float k_cardSpacing   = 8.0F;
+        static constexpr float k_cardRounding  = 6.0F;
+        static constexpr float k_cardPadding   = 4.0F;
+        static constexpr float k_iconAreaInset = 4.0F;
+        
         static constexpr float k_selectionBorderThickness = 2.0F;
         static constexpr float k_hoverBorderThickness     = 1.5F;
+
+        static constexpr float k_doubleMagnification = 2.0F;
 
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_initialCardColumn     = 0;
 
-        AssetBrowserEditorWindowSelectionState     m_selectionState = {};
-        AssetBrowserEditorWindowAssetPaneBreadcrumb m_breadcrumb    = {};
+        AssetBrowserEditorWindowSelectionState      m_selectionState = {};
+        AssetBrowserEditorWindowAssetPaneBreadcrumb m_breadcrumb     = {};
 
         Converter::AssetBrowserEditorWindowAssetPaneJsonConverter m_jsonConverter = {};
 

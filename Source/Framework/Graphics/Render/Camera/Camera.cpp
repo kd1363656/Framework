@@ -153,7 +153,7 @@ void FWK::Graphics::Camera::UpdatePerspectiveProjectionMatrix()
     // 縦方向FOVの角度を算出する
     // FOVYは画面上端から画面下端までの全体角度なので、
     // 画面中央から上端までの片側角度にするために半分にする
-    const float l_halfFOVYRadian = l_fovYRadian * k_halfFOVScale;
+    const float l_halfFOVYRadian = l_fovYRadian * Constant::k_halfMagnification;
 
     // Z = 1.0の位置で、画面中央から上端までの高さを求める
     m_cbCameraPass->m_tanHalfFOVY = std::tan(l_halfFOVYRadian);
