@@ -115,29 +115,232 @@ nlohmann::json FWK::Editor::AssetBrowserEditorWindowAssetPane::Serialize() const
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
 {
+    std::vector<std::filesystem::path> l_displayedList = {};
+
+    // 表示中ファイルパスリストを構築
+    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
+
+    if (l_displayedList.empty()) { return; }
+
+    // カーソル位置を決定
+    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
+
+    // カーソル位置をリストから検索
+    auto l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+
+    if (l_cursorITR == l_displayedList.end())
+    {
+        // リストに見つからない場合は先頭を選択
+        m_currentCursorFilePath = l_displayedList.front();
+
+        SelectFile(l_displayedList, 
+                   l_displayedList.front(), 
+                   a_editorWindow,
+                   a_isRangeSelection,
+                   false);
+
+        return;
+    }
+
+    // 1行分(CardsPerRow)前に移動
+    const float l_availableWidth = ImGui::GetContentRegionAvail().x;
+    const auto  l_cardsPerRow    = CalculateCardPerRow         (l_availableWidth);
+
+    // インデックスを計算
+    const auto l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
+    const auto l_newIndex    = l_cursorIndex - l_cardsPerRow;
+
+    // 先頭より前なのか、サイズに収まっているかを確認する
+    if (l_newIndex >= l_displayedList.size())
+    {
+        return; 
+    }
+    
+    const auto& l_newPath = l_displayedList[l_newIndex];
+
+    // 範囲選択モード
+    if (a_isRangeSelection)
+    {
+        // アンカー未設定の場合は現在のカーソルをアンカーにする
+        if (m_selectionState.GetREFRangeSelectionStartPath().empty())
+        {
+            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
+        }
+    }
+
+    // カーソル更新
+    m_currentCursorFilePath = l_newPath;
+
+    // 選択実行
+    SelectFile(l_displayedList,
+               l_newPath,
+               a_editorWindow,
+               a_isRangeSelection,
+               false);
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
 {
+    std::vector<std::filesystem::path> l_displayedList = {};
+
+    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
+
+    if (l_displayedList.empty()) { return; }
+
+    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
+
+    auto l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+
+    if (l_cursorITR == l_displayedList.end())
+    {
+        m_currentCursorFilePath = l_displayedList.front();
+
+        SelectFile(l_displayedList,
+                   l_displayedList.front(),
+                   a_editorWindow,
+                   a_isRangeSelection,
+                   false);
+
+        return;
+    }
+
+    const float l_availableWidth = ImGui::GetContentRegionAvail            ().x;
+    const auto  l_cardsPerRow    = CalculateCardPerRow                     (l_availableWidth);
+    const auto  l_cursorIndex    = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
+    const auto  l_newIndex       = l_cursorIndex + l_cardsPerRow;
+
+    // 末尾を超えたら何もしない
+    if (l_newIndex >= l_displayedList.size()) { return; }
+
+    const auto& l_newPath = l_displayedList[l_newIndex];
+
+    if (a_isRangeSelection)
+    {
+        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
+            l_rangeSelectionStartPath.empty())
+        {
+            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
+        }
+    }
+
+    m_currentCursorFilePath = l_newPath;
+
+    SelectFile(l_displayedList,
+               l_newPath,
+               a_editorWindow,
+               a_isRangeSelection,
+               false);
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
 {
+    std::vector<std::filesystem::path> l_displayedList = {};
+
+    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
+
+    if (l_displayedList.empty()) { return; }
+
+    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
+          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+
+    if (l_cursorITR == l_displayedList.end())
+    {
+        m_currentCursorFilePath = l_displayedList.front();
+
+        SelectFile(l_displayedList, 
+                   l_displayedList.front(),
+                   a_editorWindow, 
+                   a_isRangeSelection,
+                   false);
+    }
+
+    // 既に先頭なら何もしない
+    if (l_cursorITR == l_displayedList.begin()) { return; }
+
+          auto  l_prevITR  = std::prev(l_cursorITR);
+    const auto& l_prevPath = *l_prevITR;
+
+    if (a_isRangeSelection)
+    {
+        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
+            l_rangeSelectionStartPath.empty())
+        {
+            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
+        }
+    }
+
+    m_currentCursorFilePath = l_prevPath;
+
+    SelectFile(l_displayedList, 
+               l_prevPath, 
+               a_editorWindow,
+               a_isRangeSelection,
+               false);
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionRight(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection)
 {
+    std::vector<std::filesystem::path> l_displayedList = {};
+
+    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
+
+    if (l_displayedList.empty()) { return; }
+
+    const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
+          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+
+    auto l_nextITR = std::next(l_cursorITR);
+
+    // 既に末尾なら何もしない
+    if (l_nextITR == l_displayedList.end()) { return; }
+
+    const auto& l_nextPath = *l_nextITR;
+
+    if (a_isRangeSelection)
+    {
+        if (const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
+            l_rangeSelectionStartPath.empty())
+        {
+            m_selectionState.SetRangeSelectionStartPath(l_cursorPath);
+        }
+    }
+
+    m_currentCursorFilePath = l_nextPath;
+
+    SelectFile(l_displayedList,
+               l_nextPath,
+               a_editorWindow,
+               a_isRangeSelection,
+               false);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToCurrentCursor(AssetBrowserEditorWindow& a_editorWindow)
 {
+    if (m_currentCursorFilePath.empty()) { return; }
+
+    std::error_code l_errorCode = {};
+
+    // カーソル位置がフォルダの場合のみナビゲート
+    if (std::filesystem::is_directory(m_currentCursorFilePath, l_errorCode))
+    {
+        NavigateToFolder(m_currentCursorFilePath, a_editorWindow);
+    }
 }
 
 std::vector<std::filesystem::path> FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow)
 {
-    return std::vector<std::filesystem::path>();
+    std::vector<std::filesystem::path> l_displayedList = {};
+
+    BuildDisplayedFilePathList(a_editorWindow, l_displayedList);
+
+    return l_displayedList;
 }
 
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALOperationTargetFilePath() const
 {
-    return std::filesystem::path();
+    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
+
+    if (l_selectedFilePathList.empty()) { return {}; }
+
+    // 選択中の最後を返す
+    return l_selectedFilePathList.back();
 }
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow)
@@ -285,43 +488,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::fil
                                                                         AssetBrowserEditorWindow& a_editorWindow, 
                                                                         ImDrawList&               a_drawList) const
 {
-    // アイコン領域描画(上半分)
-    // アセットペイン背景色と同じ色で上半分を塗りつぶす
-    // 領域仕様 : アイコン周りはアセットペインの背景色と同じ色
-    // カードより左右をk_iconAreaInset分縮める
-    const ImVec2& l_iconAreaMIN = { a_cardMIN.x + k_iconAreaInset, a_cardMIN.y };
-    const ImVec2& l_iconAreaMAX = { a_cardMAX.x - k_iconAreaInset, a_cardMIN.y + (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification };
 
-    // 上半分も背景色と同じなのdえ追加描画は省略可能だが
-    // 明示的にアイコン領域を示すため描画(同色なので見た目は変わらない)
-    // 将来的にアイコン領域の色を変えたい場合はここを変更する
-    const auto& l_cardBGColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
-
-    a_drawList.AddRectFilled(l_iconAreaMIN,
-                             l_iconAreaMAX,
-                             l_cardBGColor,
-                             k_cardRounding,
-                             ImDrawFlags_RoundCornersTop);
-
-    // アイコン描画
-    // ファイル種別に応じたアイコンを中央配置
-    const auto&   l_icon     = FetchIcon(a_filePath, a_editorWindow);
-    const ImVec2& l_iconSize = ImGui::CalcTextSize(l_icon.data(), l_icon.data() + l_icon.size());
-
-    // アイコンをアイコン霊異記の中央に配置
-    const ImVec2& l_iconPosition = { l_iconAreaMIN.x + (l_iconAreaMAX.x - l_iconAreaMIN.x - l_iconSize.x) * Constant::k_halfMagnification,
-                                     l_iconAreaMIN.y + (l_iconAreaMAX.y - l_iconAreaMIN.y - l_iconSize.y) * Constant::k_halfMagnification };
-
-    // アイコン色
-    // 切り取り対象の場合は半透明、それ以外は通常テキスト色
-    const auto& l_iconColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
-
-    a_drawList.AddText(ImGui::GetFont(),
-                       ImGui::GetFontSize(),
-                       l_iconPosition,
-                       l_iconColor,
-                       l_icon.data(),
-                       l_icon.data() + l_icon.size());
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std::filesystem::path& a_filePath, 
                                                                       const ImVec2&                a_cardMIN, 
@@ -582,7 +749,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList)
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList)
 {
     const auto& l_folderPane         = a_editorWindow.GetREFFolderPane             ();
     const auto& l_folderSelection    = l_folderPane.GetREFSelectionState           ();
@@ -760,4 +927,89 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToFolder(const std:
     // 新しいフォルダの内容が表示されるため
     m_selectionState.ClearSelection();
     m_currentCursorFilePath.clear  ();
+}
+
+std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::TruncateText(const std::string& a_text, const float a_maxWidth) const
+{
+    // テキスト幅が最大幅に収まる場合はそのまま消す
+    if (ImGui::CalcTextSize(a_text.c_str()).x <= a_maxWidth)
+    {
+        return a_text;
+    }
+
+    // "..."の幅を引いた残り幅に収まる文字数を返す
+    const float l_ellipsisWidth  = ImGui::CalcTextSize(k_ellipsis.data()).x;
+    const float l_availableWidth = a_maxWidth - l_ellipsisWidth;
+
+    std::string l_result = {};
+
+    for (char l_char : a_text)
+    {
+        l_result += l_char;
+
+        if (ImGui::CalcTextSize(l_result.c_str()).x > l_availableWidth)
+        {
+            // 1文字追加して超えたら、その文字を削って"..."をつける
+            l_result.pop_back();
+
+            break;
+        }
+    }
+
+    return l_result + std::string{ k_ellipsis };
+}
+
+std::uint32_t FWK::Editor::AssetBrowserEditorWindowAssetPane::CalculateCardPerRow(const float a_availableWidth) const
+{
+    // 1行に並ぶカード数 = 利用可能はあ / (カード幅 + 余白)
+    // 最低一枚は保証
+    const float l_cardFootprint = k_cardWidth + k_cardSpacing;
+          auto  l_cardsPerRow   = static_cast<std::uint32_t>(a_availableWidth / l_cardFootprint);
+
+    if (l_cardsPerRow < k_minGuaranteeCardPerRowNUM)
+    {
+        l_cardsPerRow = k_minGuaranteeCardPerRowNUM;
+    }
+
+    return l_cardsPerRow;
+}
+
+std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow) const
+{
+    // フォルダの場合
+    if (std::error_code l_errorCode = {};
+        std::filesystem::is_directory(a_filePath, l_errorCode))
+    {
+        return std::string{ Constant::k_imguiFontAwesomeFolderCloseIcon };
+    }
+
+    // ファイルの場合 : assetFilePathRegistryで種別を判定
+    const auto& l_registry = a_editorWindow.GetREFAssetFilePathRegistry();
+    const auto* l_uuid     = l_registry.FindPTRAssetUUID               (a_filePath);
+
+    if (!l_uuid) { return {}; }
+
+    const auto* l_assetFilePathData = l_registry.FindPTRAssetFilePathData(*l_uuid);
+
+    if (!l_assetFilePathData) { return {}; }
+
+    switch (l_assetFilePathData->m_type)
+    {
+        case Enum::AssetFilePathRegistryType::Prefab:
+        {
+            return std::string{ Constant::k_imguiFontAwesomeCubeIcon };
+        }
+        break;
+
+        case Enum::AssetFilePathRegistryType::Scene:
+        {
+            return std::string{ Constant::k_imguiFontAwesomeFileIcon };
+        }
+        break;
+
+        default:
+        break;
+    }
+
+    return std::string{ Constant::k_imguiFontAwesomeFileIcon };
 }

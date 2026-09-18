@@ -123,6 +123,42 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
             }
             break;
 
+            case Enum::AssetBrowserActivePaneType::AssetPane:
+            {
+                // AssetPaneのショートカット処理
+                // 捜査対象 : 選択中ファイルの最後、なければ空パス
+                // (handle内部でl_isRootFolder等の判定に使用)
+                const auto& l_operationTargetFilePath = m_assetPane.FetchVALOperationTargetFilePath();
+                const auto& l_selectionState          = m_assetPane.GetREFSelectionState           ();
+                const auto& l_selectedFilePathList    = l_selectionState.GetREFSelectedFilePathList();
+
+                // 操作対象フォルダ
+                // 選択中ファイルがある場合はその親フォルダ
+                // ない場合は現在参照中フォルダ、それも空ならAsseルート
+                std::filesystem::path l_operationTargetFolderPath = {};
+
+                if (!l_selectedFilePathList.empty())
+                {
+                    l_operationTargetFolderPath = l_operationTargetFilePath.parent_path();
+                }
+                else
+                {
+                    const auto& l_currentPath = m_currentSelectFolderPath;
+
+                    l_operationTargetFolderPath = l_currentPath.empty() ? Constant::k_assetRootFolderPath : l_currentPath;
+                }
+
+                // Handleがからパスを許容するよう、空の場合はAssetルートにフォールバック
+                if (l_operationTargetFilePath.empty())
+                {
+                    l_operationTargetFolderPath = Constant::k_assetRootFolderPath;
+                }
+
+                m_shortcutHandler.HandleAssetPane(*this);
+                m_shortcutHandler.Handle         (l_selectedFilePathList, l_operationTargetFolderPath, *this);
+            }
+            break;
+
             default:
             break;
         }

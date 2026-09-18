@@ -25,7 +25,13 @@
                 "AssetFilePathRegistry": {
                     "FilePathRegistryMap": []
                 },
-                "CurrentSelectFolderPath": "Asset\\Texture",
+                "AssetPane": {
+                    "SelectedFilePathList": {
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
+                    }
+                },
+                "CurrentSelectFolderPath": "Asset\\Data",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -65,7 +71,7 @@
                         },
                         {
                             "FilePath": "Asset\\Texture",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Model",
@@ -108,11 +114,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
@@ -204,6 +210,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Shader\\Model\\Standard\\Lit",
                             "IsOpen": false
                         },
@@ -222,13 +232,27 @@
                         {
                             "FilePath": "Asset\\Texture\\UI\\Title",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Weapon",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Weapon\\Player",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Texture",
-                        "SelectedFilePathList": [
-                            "Asset\\Texture"
-                        ]
+                        "RangeSelectionStartPath": "Asset\\Data",
+                        "SelectedFilePathList": []
                     }
                 }
             },

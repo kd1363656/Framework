@@ -165,6 +165,58 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     }
 }
 
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(AssetBrowserEditorWindow& a_editorWindow)
+{
+    const auto& l_io        = ImGui::GetIO                         ();
+          auto& l_assetPane = a_editorWindow.GetMutableREFAssetPane();
+
+    // Ctrl + A : 表っ寺中のファイルをすべて選択
+    // FetchVALDisplayedFilePathListで表示中リストを取得し
+    // SelectionState::SelectAddで全選択する
+    if (l_io.KeyCtrl &&
+        ImGui::IsKeyPressed(ImGuiKey_A))
+    {
+        const auto& l_displayedFilePathList = l_assetPane.FetchVALDisplayedFilePathList(a_editorWindow);
+
+        auto& l_selectionState = l_assetPane.GetMutableREFSelectionState();
+
+        l_selectionState.SelectAll(l_displayedFilePathList);
+    }
+
+    // 矢印キーによる操作
+    // グリッドレイアウト対応 
+    // ↑↓ : 1行分(CardsPerRow個)移動
+    // ←→ : 1カード移動
+    // Ctrl / Shift押下時は範囲選択モード
+    const bool l_isRangeSelection = l_io.KeyShift ||
+                                    l_io.KeyCtrl;
+
+    if (ImGui::IsKeyPressed(ImGuiKey_UpArrow))
+    {
+        l_assetPane.MoveSelectionUp(a_editorWindow, l_isRangeSelection);
+    }
+    else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow))
+    {
+        l_assetPane.MoveSelectionDown(a_editorWindow, l_isRangeSelection);
+    }
+
+    if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
+    {
+        l_assetPane.MoveSelectionLeft(a_editorWindow, l_isRangeSelection);
+    }
+    else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
+    {
+        l_assetPane.MoveSelectionRight(a_editorWindow, l_isRangeSelection);
+    }
+
+    // Enterキーでフォルダナビゲート
+    // カーソル位置がフォルダの場合、そのフォルダへ移動
+    if (ImGui::IsKeyPressed(ImGuiKey_Enter))
+    {
+        l_assetPane.NavigateToCurrentCursor(a_editorWindow);
+    }
+}
+
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, AssetBrowserEditorWindow& a_editorWindow) const
 {
     const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator     ();

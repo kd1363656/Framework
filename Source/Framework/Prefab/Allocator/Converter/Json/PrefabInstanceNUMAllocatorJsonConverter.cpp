@@ -4,7 +4,7 @@ void FWK::Converter::PrefabInstanceNUMAllocatorJsonConverter::Deserialize(const 
 {
     if (a_rootJson.is_null()) { return; }
 
-    auto l_isAllocatedList = a_rootJson.value(k_isAllocatedListJsonKey, std::vector<bool>());
+    auto l_isAllocatedList = a_rootJson.value(k_isAllocatedListJsonKey, std::vector<bool>{});
 
     a_prefabInstanceNUMAllocator.SetIsAllocatedList(std::move(l_isAllocatedList));
 }

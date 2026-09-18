@@ -26,6 +26,7 @@ namespace FWK::Editor
 
         const auto& GetREFClipboard   () const { return m_clipboard; }
         const auto& GetREFFolderPane  () const { return m_folderPane; }
+        const auto& GetREFAssetPane   () const { return m_assetPane; }
         const auto& GetREFPaneSplitter() const { return m_paneSplitter; }
 
         const auto& GetREFFileOperation     () const { return m_fileOperation; }
@@ -41,6 +42,7 @@ namespace FWK::Editor
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
         auto& GetMutableREFFolderPane  () { return m_folderPane; }
+        auto& GetMutableREFAssetPane   () { return m_assetPane; }
         auto& GetMutableREFPaneSplitter() { return m_paneSplitter; }
 
         auto& GetMutableREFClipboard     () { return m_clipboard; }

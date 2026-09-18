@@ -74,7 +74,7 @@ namespace FWK::Editor
 
         void HandleCardDragDrop(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
 
-        void BuildDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList);
+        void BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList);
 
         void SelectFile(const std::vector<std::filesystem::path>& a_displayedFilePathList,
                         const std::filesystem::path&              a_filePath,
@@ -87,7 +87,7 @@ namespace FWK::Editor
 
         std::string TruncateText(const std::string& a_text, const float a_maxWidth) const;
 
-        int CalculateCardPerRow(const float a_availableWidth) const;
+        std::uint32_t CalculateCardPerRow(const float a_availableWidth) const;
 
         std::string FetchIcon(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow) const;
 
@@ -102,15 +102,19 @@ namespace FWK::Editor
         static constexpr float k_cardWidth     = 60.0F;
         static constexpr float k_cardHeight    = 80.0F;
         static constexpr float k_cardSpacing   = 8.0F;
-        static constexpr float k_cardRounding  = 6.0F;
+        static constexpr float k_cardRounding  = 1.0F;
         static constexpr float k_cardPadding   = 4.0F;
         static constexpr float k_iconAreaInset = 4.0F;
+        static constexpr float k_iconMargin    = 2.0F;
+        static constexpr float k_iconWarpWidth = 0.0F;
         
         static constexpr float k_borderThickness = 2.0F;
         
         static constexpr float k_doubleMagnification = 2.0F;
 
         static constexpr ImU32 k_initialSelectionColor = 0U;
+
+        static constexpr std::uint32_t k_minGuaranteeCardPerRowNUM = 1U;
 
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_initialCardColumn     = 0;
