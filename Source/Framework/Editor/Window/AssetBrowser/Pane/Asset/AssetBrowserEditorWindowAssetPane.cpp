@@ -330,7 +330,92 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std:
                                                                       const bool                   a_isCutTarget,
                                                                             ImDrawList&            a_drawList) const
 {
+    // リネーム中はファイル名を描画しない
+    // DrawCardRenameでInputTextTextが描画されるため
+    if (a_isRenaming) { return; }
 
+    // 名前領域
+    const ImVec2& l_nameAreaMIN = { a_cardMIN.x, a_cardMIN.y + (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification };
+    const ImVec2& l_nameAreaMAX = a_cardMAX;
+
+    // ファイル名取得
+    // filename()でパスの最後の要素を取得
+    const auto& l_fileName = a_filePath.filename().string();
+
+    // 切り詰め可能幅 = カード幅 - 左右余白
+    const float l_maxNameWidth = (a_cardMAX.x - a_cardMIN.x) - k_cardPadding * k_doubleMagnification;
+
+    // テキスト切り詰め
+    const auto& l_displayName = TruncateText(l_fileName, l_maxNameWidth);
+
+    // テキスト色
+    // 切り取り対象の場合は半透明
+    const auto& l_textColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
+
+    // ファイル名を名前領域の中央に配置
+    const auto&   l_nameSize     = ImGui::CalcTextSize(l_displayName.c_str());
+    const ImVec2& l_namePosition = { l_nameAreaMIN.x + (l_nameAreaMAX.x - l_nameAreaMIN.x - l_nameSize.x) * Constant::k_halfMagnification,
+                                   l_nameAreaMIN.y + (l_nameAreaMAX.y - l_nameAreaMIN.y - l_nameSize.y) * Constant::k_halfMagnification };
+
+    a_drawList.AddText(l_namePosition, l_textColor, l_displayName.c_str());
+}
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardHighlight(const ImVec2&     a_cardMIN,
+                                                                       const ImVec2&     a_cardMAX,
+                                                                       const bool        a_isSelected, 
+                                                                       const bool        a_isHovered,
+                                                                       const bool        a_isActivePane, 
+                                                                       const bool        a_isCutTarget, 
+                                                                             ImDrawList& a_drawList) const
+{
+    // 選択中   : 強い青(アクティブ) / 半透明青(非アクティブ) / 半透明(切り取り対象)
+    // ホバー中 : 明るいグレー
+    // それ以外 : 枠なし
+    if (a_isSelected)
+    {
+        auto l_selectionColor = k_initialSelectionColor;
+
+        // 選択中の枠色を決定
+        // 切り取り対象 > アクティブペイン > 非アクティブペインの優先順位
+        if (a_isCutTarget)
+        {
+            l_selectionColor = ImGui::GetColorU32(Constant::k_imguiDarkBlueTranslucentColor);
+        }
+        else if (a_isActivePane)
+        {
+            l_selectionColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueColor);
+        }
+        else
+        {
+            l_selectionColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueTranslucentColor);
+        }
+
+        // 角丸枠線を描画
+        a_drawList.AddRect(a_cardMIN,
+                           a_cardMAX,
+                           l_selectionColor,
+                           ImDrawFlags_RoundCornersAll,
+                           k_borderThickness);
+    }
+    else if (a_isHovered)
+    {
+        // ホバー時は明るいグレーの枠
+        // k_imguiLightGrayColorはFolderPaneでも使う共通定数
+        const auto& l_hoverColor = ImGui::GetColorU32(Constant::k_imguiLightGrayColor);
+
+        a_drawList.AddRect(a_cardMIN,
+                           a_cardMAX,
+                           l_hoverColor,
+                           ImDrawFlags_RoundCornersAll,
+                           k_borderThickness);
+    }
+
+}
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::vector<std::filesystem::path>& a_displayedFilePathList,
+                                                                     const std::filesystem::path&              a_filePath, 
+                                                                     const bool                                a_isSelected, 
+                                                                           AssetBrowserEditorWindow&           a_editorWindow)
+{
+    
 }
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList)

@@ -106,10 +106,11 @@ namespace FWK::Editor
         static constexpr float k_cardPadding   = 4.0F;
         static constexpr float k_iconAreaInset = 4.0F;
         
-        static constexpr float k_selectionBorderThickness = 2.0F;
-        static constexpr float k_hoverBorderThickness     = 1.5F;
-
+        static constexpr float k_borderThickness = 2.0F;
+        
         static constexpr float k_doubleMagnification = 2.0F;
+
+        static constexpr ImU32 k_initialSelectionColor = 0U;
 
         static constexpr int k_keyboardFocusNextItem = 0;
         static constexpr int k_initialCardColumn     = 0;
