@@ -14,7 +14,7 @@ namespace FWK::Editor
         Struct::AssetBrowserEditorWindowAssetCreationResult CreateScene (const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
         void RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const;
-        void RenameScene (const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const AssetFilePathRegistry& a_assetFilePathRegistry) const;
+        void RenameScene (const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const;
 
     private:
 

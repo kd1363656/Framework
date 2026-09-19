@@ -2,6 +2,11 @@
 
 namespace FWK::Editor
 {
+    class AssetBrowserEditorWindowAssetCreator;
+}
+
+namespace FWK::Editor
+{
     class AssetBrowserEditorWindowFileOperation final
     {
     public:
@@ -9,7 +14,10 @@ namespace FWK::Editor
          AssetBrowserEditorWindowFileOperation() = default;
         ~AssetBrowserEditorWindowFileOperation() = default;
 
-        void Rename(const std::filesystem::path& a_targetFilePath, const std::string& a_newName, AssetFilePathRegistry& a_assetFilePathRegistry) const;
+        void Rename(const std::filesystem::path&                a_targetFilePath, 
+                    const std::string&                          a_newName, 
+                    const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
+                          AssetFilePathRegistry&                a_assetFilePathRegistry) const;
 
         void Delete(const std::vector<std::filesystem::path>& a_filePathList);
 

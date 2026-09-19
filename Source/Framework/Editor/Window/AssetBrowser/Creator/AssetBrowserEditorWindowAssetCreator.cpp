@@ -122,7 +122,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // SerializeSceneはstaticメソッドなのでインスタンス不要
     // 空のAssetFilePathRegistryを渡す(新規Scene用のAssetがまだないため)
     // 新規からシーンとして必要な情報の身をロードできるようにする
-    const auto& l_rootJson = Converter::SceneManagerJsonConverter::SerializeScene(l_scene);
+    const auto& l_rootJson = l_scene.Serialize();
 
     if (l_rootJson.is_null())
     {
@@ -183,9 +183,37 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::
     // UUIDはGameObjectが保持しているため変わらない
     l_prefab.Save(a_newFilePath);
 }
-void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const AssetFilePathRegistry& a_assetFilePathRegistry) const
+void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
 {
+    Scene l_scene = {};
 
+    l_scene.INIT();
+
+    auto l_deserializedJson = Utility::LoadJsonFile(a_oldFilePath);
+
+    if (l_deserializedJson.is_null()) { return; }
+
+    l_scene.Deserialize(l_deserializedJson);
+
+    const auto& l_sceneName = a_newFilePath.stem().string();
+
+    l_scene.SetSceneName(l_sceneName);
+
+    nlohmann::json l_serializedJson = {};
+
+    l_serializedJson = l_scene.Serialize();
+
+    if (l_serializedJson.is_null())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Sceneのシリアライズに失敗しました。\nFilePath : {}", a_newFilePath.string());
+
+        return;
+    }
+
+    if (!Utility::SaveJsonFile(l_serializedJson, a_newFilePath))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Sceneファイルの保存に失敗しました。\nFilePath : {}", a_newFilePath.string());
+    }
 }
 
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName)

@@ -658,9 +658,14 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             if (const auto& l_newName = std::string(l_renameState.m_inputBuffer.data());
                 !l_newName.empty())
             {
+                const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
+
                 // FileOperation::Renameでファイルシステム上でリネーム
                 // 同名衝突時は自動で番号付与される
-                l_fileOperation.Rename(a_currentFolderPath, l_newName, l_assetFilePathRegistry);
+                l_fileOperation.Rename(a_currentFolderPath, 
+                                       l_newName,
+                                       l_assetCreator,
+                                       l_assetFilePathRegistry);
             }
 
             // リネームモードを終了

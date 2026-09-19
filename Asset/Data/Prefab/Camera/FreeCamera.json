@@ -1,8 +1,8 @@
-﻿{
+{
     "Prefab": {
         "ChildList": [],
         "ComponentList": [],
-        "PrefabUUID": "0d8a8b2e-87cd-47e8-8ffc-2ef79b6a64a1",
+        "PrefabUUID": "a1c19734-73d6-4e55-900c-466fc45dd16a",
         "TransformComponent": {
             "InitialMatrixStrategyTypeName": "",
             "InitialPosition": {
@@ -23,5 +23,5 @@
             }
         }
     },
-    "PrefabName": "FreeCamera"
+    "PrefabName": "NewPrefab"
 }

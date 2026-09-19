@@ -694,16 +694,21 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     // 1.Enter押下
     // 2.フォーカス消失
     // 3.空白クリック
-    if (l_isEnterPressed            ||
-        (l_renameState.m_isFocused  &&
-            !ImGui::IsItemFocused() ||
-            l_isEmptySpaceClick))
+    if (l_isEnterPressed          ||
+       (l_renameState.m_isFocused &&
+        !ImGui::IsItemFocused()   ||
+        l_isEmptySpaceClick))
     {
         // InputTextの内容を取得
         if (const auto& l_newName = std::string(l_renameState.m_inputBuffer.data());
             !l_newName.empty())
         {
-            l_fileOperation.Rename(a_filePath, l_newName, l_assetFilePathRegistry);
+            const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
+
+            l_fileOperation.Rename(a_filePath, 
+                                   l_newName, 
+                                   l_assetCreator,
+                                   l_assetFilePathRegistry);
         }
 
         l_renameState.m_isActive  = false;

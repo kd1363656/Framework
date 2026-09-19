@@ -1,16 +1,5 @@
 ﻿#include "SceneManagerJsonConveter.h"
 
-void FWK::Converter::SceneManagerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, Scene& a_scene)
-{
-    if (a_rootJson.is_null()) { return; }
-
-    a_scene.Deserialize(a_rootJson);
-}
-nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeScene(Scene& a_scene)
-{
-    return a_scene.Serialize();
-}
-
 void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManager) const
 {
     const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
@@ -31,7 +20,8 @@ void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManage
 
     if (!l_scene) { return; }
 
-    DeserializeScene(l_rootJson, *l_scene);
+    l_scene->Deserialize(l_rootJson
+    );
 }
 
 void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const
@@ -45,5 +35,5 @@ void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_scene
         return;
     }
 
-    Utility::SaveJsonFile(SerializeScene(*l_scene), l_currentSceneFilePath);
+    Utility::SaveJsonFile(l_scene->Serialize(), l_currentSceneFilePath);
 }

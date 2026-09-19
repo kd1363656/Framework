@@ -1,6 +1,9 @@
 ﻿#include "AssetBrowserEditorWindowFileOperation.h"
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::filesystem::path& a_targetFilePath, const std::string& a_newName, AssetFilePathRegistry& a_assetFilePathRegistry) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::filesystem::path&                a_targetFilePath, 
+                                                                const std::string&                          a_newName,
+                                                                const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
+                                                                      AssetFilePathRegistry&                a_assetFilePathRegistry) const
 {
     // 新しいPath = 親フォルダ / 新しい名前 + 拡張子
     const auto& l_extension   = a_targetFilePath.extension().string();
@@ -36,6 +39,41 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
     // AssetFilePathRegistryのPathも更新する
     // Watcher経由でも通知されるが、即座にRegistryを更新しておく
     a_assetFilePathRegistry.ReplaceFilePath(a_targetFilePath, l_resolvedNewFilePath);
+
+    // JSON内部の名前情報を更新
+    // Registryからファイルの種別を取得し、
+    // 種別に応じてAssetCreatorへリネーム処理を委譲する
+    // FileOperation自身はJson内のキー名(PrefabName/SceneName)を知らないため
+    // AssetCreatorが各シリアライザ経由で更新する
+    // フォルダや非JSONファイルはJSON内部名を持たないためスキップ
+    if (l_resolvedNewFilePath.extension() != Constant::k_lowerJsonExtension) { return; }
+
+    const auto* l_uuid = a_assetFilePathRegistry.FindPTRAssetUUID(l_resolvedNewFilePath);
+
+    if (!l_uuid) { return; }
+
+    const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(*l_uuid);
+
+    if (!l_assetFilePathData) { return; }
+
+    // AssetCreator::RenamePrefab/RenameSceneは既存UUIDを保持したままJSON内の名前だけ更新する
+    switch (l_assetFilePathData->m_type)
+    {
+        case Enum::AssetFilePathRegistryType::Prefab:
+        {
+            a_assetCreator.RenamePrefab(l_resolvedNewFilePath, l_resolvedNewFilePath);
+        }
+        break;
+
+        case Enum::AssetFilePathRegistryType::Scene:
+        {
+            a_assetCreator.RenameScene(l_resolvedNewFilePath, l_resolvedNewFilePath);
+        }
+        break;
+
+        default:
+        break;
+    }
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vector<std::filesystem::path>& a_filePathList)

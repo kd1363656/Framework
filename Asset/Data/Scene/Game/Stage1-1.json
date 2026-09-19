@@ -2,14 +2,12 @@
     "AssetFilePathRegistry": {
         "FilePathRegistryMap": []
     },
+    "GameObjectList": [],
     "NextSceneLoadFilePathMap": [],
-    "Scene": {
-        "GameObjectList": [],
-        "PrefabSystem": {
-            "PrefabMap": []
-        },
-        "SceneName": "Stage1-1"
+    "PrefabSystem": {
+        "PrefabMap": []
     },
+    "SceneName": "Unknown",
     "SceneShiftEventObserver": {
         "EventMap": []
     }

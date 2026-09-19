@@ -25,14 +25,14 @@
                 "AssetFilePathRegistry": {
                     "FilePathRegistryMap": [
                         {
-                            "FilePath": "Asset\\Data\\Prefab\\Camera\\FreeCamera.json",
-                            "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
-                            "UUID": "0d8a8b2e-87cd-47e8-8ffc-2ef79b6a64a1"
-                        },
-                        {
                             "FilePath": "Asset/Data/Scene/Game/Stage1-1.json",
                             "FilePathRegistryType": "AssetFilePathRegistryType::Scene",
                             "UUID": "8c814f4b-6e0e-4eb4-8c6a-0f42a3d07912"
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Camera\\FreeCamera.json",
+                            "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                            "UUID": "a1c19734-73d6-4e55-900c-466fc45dd16a"
                         }
                     ]
                 },
@@ -42,7 +42,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Camera",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -78,7 +78,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Texture",
@@ -154,7 +154,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Shader\\RenderTarget",
@@ -270,10 +270,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\NewFolder",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Camera",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\NewFolder"
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Camera"
                             }
                         ]
                     }

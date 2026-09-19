@@ -1465,9 +1465,6 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation">
       <UniqueIdentifier>{7b8f50ff-b77c-465c-85aa-f20e199cd449}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Creation">
-      <UniqueIdentifier>{687534e0-dc75-4209-b3b4-f433f44ea0bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut">
       <UniqueIdentifier>{5b38fb76-43e8-402a-ad0d-2ae5fd740756}</UniqueIdentifier>
     </Filter>
@@ -1575,6 +1572,9 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Converter">
       <UniqueIdentifier>{d57fac8a-3538-412e-b5a5-608629586cf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Creator">
+      <UniqueIdentifier>{687534e0-dc75-4209-b3b4-f433f44ea0bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2934,9 +2934,6 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\FileOperation</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.h">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Creation</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutHandler.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
     </ClInclude>
@@ -3068,6 +3065,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Converter\BinaryConverterBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.h">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3806,9 +3806,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\FileOperation\AssetBrowserEditorWindowFileOperation.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\FileOperation</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creation\AssetBrowserEditorWindowAssetCreator.cpp">
-      <Filter>Source\Framework\Editor\Window\AssetBrowser\Creation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Shortcut\AssetBrowserEditorWindowShortcutHandler.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Shortcut</Filter>
     </ClCompile>
@@ -3859,6 +3856,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json\AssetBrowserEditorWindowAssetPaneJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.cpp">
+      <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
