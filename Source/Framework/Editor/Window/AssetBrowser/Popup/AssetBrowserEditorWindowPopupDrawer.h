@@ -60,6 +60,14 @@ namespace FWK::Editor
 
         void StartRename(const std::filesystem::path& a_targetFilePath, Struct::AssetBrowserEditorWindowRenameState& a_renameState) const;
 
+        static constexpr std::string_view k_imguiFontAwesomeFolderPlusIcon = "\xEF\x99\x9E";
+        static constexpr std::string_view k_imguiFontAwesomeEditIcon       = "\xEF\x8B\x84";
+        static constexpr std::string_view k_imguiFontAwesomeCopyIcon       = "\xEF\x83\x85";
+        static constexpr std::string_view k_imguiFontAwesomeCutIcon        = "\xEF\x83\x84";
+        static constexpr std::string_view k_imguiFontAwesomePasteIcon      = "\xEF\x83\xAA";
+        static constexpr std::string_view k_imguiFontAwesomeCloneIcon      = "\xEF\x89\x8D";
+        static constexpr std::string_view k_imguiFontAwesomeTrashIcon      = "\xEF\x87\xB8";
+    
         static constexpr std::string_view k_createNewFolderLabel = "新規フォルダ";
         static constexpr std::string_view k_createNewPrefabLabel = "新規プレハブ";
         static constexpr std::string_view k_createNewSceneLabel  = "新規シーン";

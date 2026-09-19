@@ -64,7 +64,7 @@ namespace FWK::Editor
         void DrawCardRename(const std::filesystem::path&    a_filePath,
                             const ImVec2&                   a_cardMIN,
                             const ImVec2&                   a_cardMAX,
-                                  AssetBrowserEditorWindow& a_editorWindow);
+                                  AssetBrowserEditorWindow& a_editorWindow) const;
 
         void HandleCardClick(const std::vector<std::filesystem::path>& a_displayedFilePathList,
                              const std::filesystem::path&              a_filePath,
@@ -89,6 +89,11 @@ namespace FWK::Editor
 
         std::string FetchIcon(const AssetBrowserEditorWindow& a_editorWindow, const std::filesystem::path& a_filePath) const;
 
+        static constexpr std::string_view k_imguiFontAwesomeImageIcon    = "\xEF\x80\xBE";
+        static constexpr std::string_view k_imguiFontAwesomeFBXModelIcon = "\xEF\x86\xB2";
+        static constexpr std::string_view k_imguiFontAwesomeAudioIcon    = "\xEF\x87\x87";
+        static constexpr std::string_view k_imguiFontAwesomeFileIcon     = "\xEF\x85\x9B";
+
         static constexpr std::string_view k_childLabel                 = "##AssetBrowserEditorWindowAssetPane";
         static constexpr std::string_view k_paneTitleLabel             = "アセット";
         static constexpr std::string_view k_emptySpaceContextMenuLabel = "##AssetPaneEmptyContextMenu";
@@ -97,8 +102,8 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel       = "##AssetPaneRenameInputText";
         static constexpr std::string_view k_ellipsis                   = "...";
 
-        static constexpr float k_cardWidth      = 60.0F;
-        static constexpr float k_cardHeight     = 80.0F;
+        static constexpr float k_cardWidth      = 100.0F;
+        static constexpr float k_cardHeight     = 120.0F;
         static constexpr float k_cardSpacing    = 8.0F;
         static constexpr float k_cardRounding   = 1.50F;
         static constexpr float k_cardPadding    = 4.0F;

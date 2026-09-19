@@ -23,7 +23,18 @@
         {
             "Window": {
                 "AssetFilePathRegistry": {
-                    "FilePathRegistryMap": []
+                    "FilePathRegistryMap": [
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Camera\\FreeCamera.json",
+                            "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                            "UUID": "0d8a8b2e-87cd-47e8-8ffc-2ef79b6a64a1"
+                        },
+                        {
+                            "FilePath": "Asset/Data/Scene/Game/Stage1-1.json",
+                            "FilePathRegistryType": "AssetFilePathRegistryType::Scene",
+                            "UUID": "8c814f4b-6e0e-4eb4-8c6a-0f42a3d07912"
+                        }
+                    ]
                 },
                 "AssetPane": {
                     "SelectedFilePathList": {
@@ -31,7 +42,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data\\Sound\\UI\\Click",
+                "CurrentSelectFolderPath": "Asset\\Data\\Sound\\Cobat\\Player",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -74,11 +85,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -87,7 +98,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
@@ -95,7 +106,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Run",
@@ -103,7 +114,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\UI",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font\\Cica",
@@ -114,19 +125,19 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Map",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Shader\\PhysicsDebug",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Map",
                             "IsOpen": false
                         },
                         {
@@ -142,11 +153,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\RenderTarget",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Shader\\Model\\Static",
+                            "FilePath": "Asset\\Shader\\RenderTarget\\Final",
                             "IsOpen": false
                         },
                         {
@@ -154,15 +161,23 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\RenderTarget\\Final",
+                            "FilePath": "Asset\\Shader\\Model\\Static",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Shader\\RenderTarget",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Prefab",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Shader\\Sprite",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard",
                             "IsOpen": false
                         },
                         {
@@ -174,11 +189,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Standard",
-                            "IsOpen": false
+                            "FilePath": "Asset\\Data\\Prefab\\Camera",
+                            "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Shadow",
+                            "FilePath": "Asset\\Shader\\Model\\Standard",
                             "IsOpen": false
                         },
                         {
@@ -186,11 +201,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Shadow",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard",
                             "IsOpen": false
                         },
                         {
@@ -198,11 +213,15 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Shader\\Sprite\\Screen",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\UnLit",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
                             "IsOpen": false
                         },
                         {
@@ -210,7 +229,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\UnLit",
                             "IsOpen": false
                         },
                         {
@@ -251,10 +270,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Sound\\UI\\Click",
+                        "RangeSelectionStartPath": "Asset\\Data\\Sound\\Cobat\\Player",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Sound\\UI\\Click"
+                                "SelectedFilePath": "Asset\\Data\\Sound\\Cobat\\Player"
                             }
                         ]
                     }

@@ -1,0 +1,27 @@
+﻿{
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [],
+        "PrefabUUID": "0d8a8b2e-87cd-47e8-8ffc-2ef79b6a64a1",
+        "TransformComponent": {
+            "InitialMatrixStrategyTypeName": "",
+            "InitialPosition": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialRotation": {
+                "W": 1.0,
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "InitialScale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    },
+    "PrefabName": "FreeCamera"
+}

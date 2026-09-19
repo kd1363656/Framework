@@ -509,25 +509,24 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
                                                                   const bool                      a_isCutTarget, 
                                                                         ImDrawList&               a_drawList) const
 {
-    // 上半分の内側角丸ボックス描画
+    // 上半分の内側角丸ボックスの描画
     // 外側カード(フレーム色)の上に
     // 少し縮んだ角丸ボックスをペイン背景色で描画する
-    // これにより外周(上下左右)にフレーム色のリムが残る
-    // 選択時はこのリムが青く光る
-
+    // これにより外周(上下左右)にフレームのリムが残る
+    // 選択時は子のリムが青く光る
     // 上半分の高さ
     const float l_halfHeight = (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification;
 
     // 内側ボックスの領域
-    // カード外側からk_cardInnerInset分縮める(上下左右)
-    // ただし上半分の下辺は中間地点よりk_cardInnerInset分上にする
-    // これにより上下の内側ボックス間にもフレーム色のリムが残る
+    // カード外側からk_cardInnerInset分縮める(上・左・→)
+    // 下辺は中間地点そのまま(下半分ボックスとぴったり接続)
+    // これにより中央に区切り線が入らない
     const ImVec2& l_iconBoxMIN = { a_cardMIN.x + k_cardInnerInset, a_cardMIN.y + k_cardInnerInset };
-    const ImVec2& l_iconBoxMAX = { a_cardMAX.x - k_cardInnerInset, a_cardMIN.y + l_halfHeight - k_cardInnerInset };
+    const ImVec2& l_iconBoxMAX = { a_cardMAX.x - k_cardInnerInset, a_cardMIN.y + l_halfHeight };
 
-    // 内側ボックスをペイン背景色で塗りつぶし]
+    // 内側ボックスをペイン時景色で塗りつぶし
     // これがアイコン領域の背景になる
-    const ImU32 l_paneBGColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
+    const auto l_paneBGColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
 
     a_drawList.AddRectFilled(l_iconBoxMIN,
                              l_iconBoxMAX,
@@ -537,15 +536,15 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
 
     // アイコン描画
     // ファイル種別に応じたアイコンを内側ボックスいっぱいに描画
-    const auto l_icon = FetchIcon(a_editorWindow, a_filePath);
+    const auto& l_icon = FetchIcon(a_editorWindow, a_filePath);
 
     // アイコン領域のサイズ(内側ボックスから余白を引く)
     const float l_iconAreaWidth  = l_iconBoxMAX.x - l_iconBoxMIN.x - k_iconMargin * k_doubleMagnification;
     const float l_iconAreaHeight = l_iconBoxMAX.y - l_iconBoxMIN.y - k_iconMargin * k_doubleMagnification;
 
     // アイコンのフォントサイズを領域サイズから動的に計算
-    // FontAwesomeアイコンは一文字のグリフなのdえ
-    // フォントサイズ = グリフの高さとして扱える
+    // FontAwesomeアイコンは一文字のグリフなので
+    // フォントサイズ ≒ グリフの高さとして扱える
     // 領域の幅・高さの小さい方に合わせることで
     // 縦横どちらも領域に収まる
     float l_iconFontSize = (l_iconAreaWidth < l_iconAreaHeight) ? l_iconAreaWidth : l_iconAreaHeight;
@@ -555,15 +554,15 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
     //              text_end,
     //              hide_text_after_double_hash,
     //              wrap_width);
-    // 第4引数はwarp_width(折り返し幅)であるフォントサイズではないため
-    // フォントサイズはAddText時に直後指定する
+    // 第4引数はwrap_width(折り返し幅)でありフォントサイズではないため
+    // フォントサイズはAddText時に直接指定する
     const auto& l_iconSize = ImGui::CalcTextSize(l_icon.data(), l_icon.data() + l_icon.size());
 
     // CalcTextSizeは現在のフォントサイズ基準で計算されるため
-    // 領域フォントサイズでの実際のサイズへスケール換算する
+    // 候補フォントサイズでの実際のサイズへスケール換算する
     const float l_currentFontSize = ImGui::GetFontSize();
 
-    // 領域フォントサイズでのアイコン幅・高さを計算する
+    // 候補フォントサイズでのアイコン幅・高さを計算
     // フォントサイズに比例してグリフサイズも変化する
     const float l_scaledIconWidth  = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
     const float l_scaledIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
@@ -574,7 +573,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
         l_iconFontSize = l_iconFontSize * (l_iconAreaWidth / l_scaledIconWidth);
     }
 
-    // 高さが領域を超える場合は高さ基準へ縮小
+    // 高さが領域を超えr場合は高さ基準へ縮小
     if (l_scaledIconHeight > l_iconAreaHeight)
     {
         l_iconFontSize = l_iconFontSize * (l_iconAreaHeight / l_scaledIconHeight);
@@ -585,15 +584,15 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
     const float l_finaleIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
 
     // アイコンを内側ボックスの中央に配置
-    const ImVec2& l_iconPosition = { l_iconBoxMIN.x + (l_iconBoxMAX.x - l_iconBoxMIN.x - l_finaleIconWidth)  * Constant::k_halfMagnification ,
-                                     l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finaleIconHeight) * Constant::k_halfMagnification };
+    const ImVec2 l_iconPosition = { l_iconBoxMIN.x + (l_iconBoxMAX.x - l_iconBoxMIN.x - l_finaleIconWidth) * Constant::k_halfMagnification,
+                                    l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finaleIconWidth) * Constant::k_halfMagnification };
 
     // アイコン色
     // 切り取り対象の場合は半透明、それ以外は通常テキスト色
-    const ImU32 l_iconColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
+    const auto l_iconColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
 
     // AddTextの第二引数に計算したフォントサイズを渡すことで
-    // 指定サイズへスケールで描画する
+    // 指定サイズへスケール描画する
     a_drawList.AddText(ImGui::GetFont(),
                        l_iconFontSize,
                        l_iconPosition,
@@ -609,18 +608,18 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std:
                                                                             ImDrawList&            a_drawList) const
 {
     // リネーム中はファイル名を描画しない
-    // DrawCardRenameでInputTextTextが描画されるため
     if (a_isRenaming) { return; }
 
-    // 名前領域
-    const ImVec2& l_nameAreaMIN = { a_cardMIN.x, a_cardMIN.y + (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification };
-    const ImVec2& l_nameAreaMAX = a_cardMAX;
+    // 名前領域(下半分の内側ボックス)
+    // 上辺は中間地点そのまま(上半分ボックスとぴったり接続)
+    // これにより中央に区切り線が入らない
+    const float l_halfHeight = (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification;
 
     // ファイル名取得
     // filename()でパスの最後の要素を取得
     const auto& l_fileName = a_filePath.filename().string();
 
-    // 切り詰め可能幅 = カード幅 - 左右余白
+    // 切り詰め可能幅 = 内側ボックス幅 - 左右余白
     const float l_maxNameWidth = (a_cardMAX.x - a_cardMIN.x) - k_cardPadding * k_doubleMagnification;
 
     // テキスト切り詰め
@@ -630,32 +629,35 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std:
     // 切り取り対象の場合は半透明
     const auto& l_textColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
 
-    // ファイル名を名前領域の中央に配置
-    const auto&   l_nameSize     = ImGui::CalcTextSize(l_displayName.c_str());
-    const ImVec2& l_namePosition = { l_nameAreaMIN.x + (l_nameAreaMAX.x - l_nameAreaMIN.x - l_nameSize.x) * Constant::k_halfMagnification,
-                                   l_nameAreaMIN.y + (l_nameAreaMAX.y - l_nameAreaMIN.y - l_nameSize.y) * Constant::k_halfMagnification };
+    // ファイル名を左上揃えで配置
+    // 左 : 内側ボックス左端 + k_cardPadding
+    // 上 : 内側ボックス上端 + k_cardPadding
+    const ImVec2& l_namePosition = { a_cardMIN.x + k_cardPadding, a_cardMIN.y + l_halfHeight + k_cardPadding };
 
     a_drawList.AddText(l_namePosition, l_textColor, l_displayName.c_str());
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::filesystem::path&    a_filePath,
                                                                     const ImVec2&                   a_cardMIN,
                                                                     const ImVec2&                   a_cardMAX,
-                                                                          AssetBrowserEditorWindow& a_editorWindow)
+                                                                          AssetBrowserEditorWindow& a_editorWindow) const
 {
           auto& l_assetFilePathRegistry = a_editorWindow.GetMutableREFAssetFilePathRegistry();
     const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation               ();
           auto& l_renameState           = a_editorWindow.GetMutableREFRenameState          ();
-    
-    // 名前領域(下半分)
-    // InputTextを名前領域の中央に配置する
-    const ImVec2& l_nameAreaMIN   = { a_cardMIN.x, a_cardMIN.y + (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification };
-    const auto&   l_nameAreaMAX   = a_cardMAX;
-    const ImVec2& l_inputPosition = { l_nameAreaMIN.x + k_cardPadding, l_nameAreaMIN.y + (l_nameAreaMAX.y - l_nameAreaMIN.y - ImGui::GetFrameHeight() * Constant::k_halfMagnification) };
+
+    // 名前領域(下半分の内側ボックス)
+    // DrawCardFileNameと同じ領域を使用する
+    // 上辺は中間地点そのまま(上半分ボックスとぴったり接続)
+    const float l_halfHeight = (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification;
+
+    // InputTextを左上揃えで配置
+    // DrawCardFileNameと同じ位置に合わせる
+    const ImVec2& l_inputPosition = { a_cardMIN.x + k_cardPadding, a_cardMIN.y + l_halfHeight + k_cardPadding };
 
     ImGui::SetCursorScreenPos(l_inputPosition);
 
-    // InputeTextの幅を名前領域いっぱいに
-    const float l_inputWidth = (a_cardMAX.x - a_cardMIN.x) - k_cardPadding * k_doubleMagnification;
+    // InputTextの幅を内側ボックスいっぱいにする
+    const float l_inputWidth = (a_cardMAX.x - a_cardMIN.x) - k_cardPadding * k_doubleMagnification - k_cardPadding * k_doubleMagnification;
 
     ImGui::SetNextItemWidth(l_inputWidth);
 
@@ -668,7 +670,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     // フレームパディングを小さくしてカードになじませる
     const auto& l_style = ImGui::GetStyle();
 
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight });
 
     const bool l_isEnterPressed = ImGui::InputText(k_renameInputTextLabel.data(),
                                                    l_renameState.m_inputBuffer.data(),
@@ -685,7 +687,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     }
 
     // 空白クリック検知
-    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered  () &&
+    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
                                      !ImGui::IsAnyItemHovered() &&
                                      ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
@@ -693,10 +695,10 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     // 1.Enter押下
     // 2.フォーカス消失
     // 3.空白クリック
-    if (l_isEnterPressed           ||
-        (l_renameState.m_isFocused &&
-         !ImGui::IsItemFocused())  ||
-         l_isEmptySpaceClick)
+    if (l_isEnterPressed            ||
+        (l_renameState.m_isFocused  &&
+            !ImGui::IsItemFocused() ||
+            l_isEmptySpaceClick))
     {
         // InputTextの内容を取得
         if (const auto& l_newName = std::string(l_renameState.m_inputBuffer.data());
@@ -1049,9 +1051,9 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const Asse
 
     if (l_extension.empty()) { return std::string{}; }
 
-    if      (l_extension == Constant::k_lowerFBXExtension)  { return std::string{ Constant::k_imguiFontAwesomeCubeIcon }; }
-    else if (l_extension == Constant::k_lowerPNGExtension)  { return std::string{ Constant::k_imguiFontAwesomeImageIcon }; }
-    else if (l_extension == Constant::k_lowerWAVExtension)  { return std::string{ Constant::k_imguiFontAwesomeSoundIcon }; }
+    if      (l_extension == Constant::k_lowerFBXExtension)  { return std::string{ k_imguiFontAwesomeFBXModelIcon }; }
+    else if (l_extension == Constant::k_lowerPNGExtension)  { return std::string{ k_imguiFontAwesomeImageIcon }; }
+    else if (l_extension == Constant::k_lowerWAVExtension)  { return std::string{ k_imguiFontAwesomeAudioIcon }; }
 
     // jsonファイルの場合シーンファイルなのかプレハブファイルなのかで
     // 表示するアイコンが変わるためEditor側のAssetRegistryに登録されている
@@ -1059,29 +1061,29 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const Asse
     const auto& l_registry = a_editorWindow.GetREFAssetFilePathRegistry();
     const auto* l_uuid     = l_registry.FindPTRAssetUUID               (a_filePath);
 
-    if (!l_uuid) { return {}; }
+    if (!l_uuid) { return std::string{ k_imguiFontAwesomeFileIcon }; }
 
     const auto* l_assetFilePathData = l_registry.FindPTRAssetFilePathData(*l_uuid);
 
-    if (!l_assetFilePathData) { return {}; }
+    if (!l_assetFilePathData) { return std::string{ k_imguiFontAwesomeFileIcon }; }
 
     switch (l_assetFilePathData->m_type)
     {
         case Enum::AssetFilePathRegistryType::Prefab:
         {
-            return std::string{ Constant::k_imguiFontAwesomeCubeIcon };
+            return std::string{ Constant::k_imguiFontAwesomePrefabIcon };
         }
         break;
 
         case Enum::AssetFilePathRegistryType::Scene:
         {
-            return std::string{ Constant::k_imguiFontAwesomeFileIcon };
+            return std::string{ Constant::k_imguiFontAwesomeSceneIcon };
         }
         break;
 
         default:
         {
-            return std::string{ Constant::k_imguiFontAwesomeFileIcon };
+            return std::string{ k_imguiFontAwesomeFileIcon };
         }
         break;
     }
