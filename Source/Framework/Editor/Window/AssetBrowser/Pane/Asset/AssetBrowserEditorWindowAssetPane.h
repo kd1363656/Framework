@@ -102,6 +102,8 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel       = "##AssetPaneRenameInputText";
         static constexpr std::string_view k_ellipsis                   = "...";
 
+        static constexpr ImVec4 k_cardDefaultGrayColor = { 0.22F, 0.22F, 0.22F, 1.0F };
+
         static constexpr float k_cardWidth      = 100.0F;
         static constexpr float k_cardHeight     = 120.0F;
         static constexpr float k_cardSpacing    = 8.0F;

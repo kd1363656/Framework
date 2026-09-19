@@ -475,7 +475,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
     // この色が内側ボックスの周囲(上下左右)にリムとして残り
     // 選択時に青く光る
     // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
-    auto l_frameColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
+    auto l_frameColor = ImGui::GetColorU32(k_cardDefaultGrayColor);
 
     if (a_isCutTarget)
     {

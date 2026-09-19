@@ -42,7 +42,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data\\Sound\\Cobat\\Player",
+                "CurrentSelectFolderPath": "Asset\\Data",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -62,11 +62,11 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Shader\\Model\\Skeletal\\Shadow\\Cascade",
@@ -74,7 +74,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
@@ -106,7 +106,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Run",
@@ -170,7 +170,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard",
@@ -270,10 +270,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Sound\\Cobat\\Player",
+                        "RangeSelectionStartPath": "Asset\\Data",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Sound\\Cobat\\Player"
+                                "SelectedFilePath": "Asset\\Data"
                             }
                         ]
                     }
