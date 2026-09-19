@@ -643,18 +643,25 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
                                          ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
         // リネーム確定条件
-        // 1.Enter押下
-        // 2.フォーカル消失(別の場所をクリック等)
-        // m_isFocusedがtrue(=過去にフォーカスされた)状態で
-        // 現在フォーカスされていない場合を確定とみなす
+        // 1 : Enter押下時
+        // 2 : フォーカス取得後にフォーカス消失
+        // l_isEmptySpaceClickをm_isFocusedでガードしないと
+        // 初回フレーム(フォーカス前)のクリックで
+        // ドフォルト名のまま確定してしまう
         if (l_isEnterPressed          ||
-           (l_renameState.m_isFocused &&
-           !ImGui::IsItemFocused())   ||
-            l_isEmptySpaceClick)
+           (l_renameState.m_isFocused && 
+           (!ImGui::IsItemFocused()   ||
+            l_isEmptySpaceClick)))
         {
+            // 再帰にm_isActiveをfalseにして
+            // 次フレームでリネームInputTextが描画されるようにする
+            // これによりRenameが複数回呼ばれるのを防ぐ
+            l_renameState.m_isActive  = false;
+            l_renameState.m_isFocused = false;
+
             // InputTextの内容を取得
             // data()で先頭ポインタを取得し、std::stringを構築
-            // から文字列の場合はリネームしない
+            // 空文字列の場合はリネームしない
             if (const auto& l_newName = std::string(l_renameState.m_inputBuffer.data());
                 !l_newName.empty())
             {
@@ -662,15 +669,11 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
                 // FileOperation::Renameでファイルシステム上でリネーム
                 // 同名衝突時は自動で番号付与される
-                l_fileOperation.Rename(a_currentFolderPath, 
+                l_fileOperation.Rename(a_currentFolderPath,
                                        l_newName,
                                        l_assetCreator,
                                        l_assetFilePathRegistry);
             }
-
-            // リネームモードを終了
-            l_renameState.m_isActive  = false;
-            l_renameState.m_isFocused = false;
         }
     }
 

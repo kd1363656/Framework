@@ -694,26 +694,34 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     // 1.Enter押下
     // 2.フォーカス消失
     // 3.空白クリック
+    // l_isEmptySpaceClickをm_isFocusedでガードしないと
+    // 初回フレーム(フォーカス前)のクリックで
+    // デフォルト名のまま確定してしまう
     if (l_isEnterPressed          ||
-       (l_renameState.m_isFocused &&
-        !ImGui::IsItemFocused()   ||
-        l_isEmptySpaceClick))
+       (l_renameState.m_isFocused && 
+       (!ImGui::IsItemFocused()   ||
+        l_isEmptySpaceClick)))
     {
+        // 先にm_isActiveをfalseにして
+        // 次フレームでDrawCardRenameが呼ばれないようにする
+        // これによりRenameが複数回呼ばれるのを防ぐ
+        l_renameState.m_isActive  = false;
+        l_renameState.m_isFocused = false;
+
         // InputTextの内容を取得
+        // 空文字列の場合はリネームしない
         if (const auto& l_newName = std::string(l_renameState.m_inputBuffer.data());
             !l_newName.empty())
         {
             const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator();
 
-            l_fileOperation.Rename(a_filePath, 
-                                   l_newName, 
+            l_fileOperation.Rename(a_filePath,
+                                   l_newName,
                                    l_assetCreator,
                                    l_assetFilePathRegistry);
         }
-
-        l_renameState.m_isActive  = false;
-        l_renameState.m_isFocused = false;
     }
+
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::vector<std::filesystem::path>& a_displayedFilePathList,
                                                                      const std::filesystem::path&              a_filePath, 
