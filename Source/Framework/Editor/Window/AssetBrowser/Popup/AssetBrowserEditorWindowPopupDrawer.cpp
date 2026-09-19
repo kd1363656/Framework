@@ -63,7 +63,10 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     const bool l_canPaste = !l_constClipboard.IsEmpty();
 
     // 新規フォルダ
-    DrawCreateFolderMenu(a_targetFilePath, l_canCreateFolder, a_editorWindow);
+    DrawCreateFolderMenu(a_targetFilePath,
+                         a_contextType,
+                         l_canCreateFolder,
+                         a_editorWindow);
 
     // 新規プレハブ(AssetPane_OnEmptyのみ表示)
     if (l_canCreatePrefab)
@@ -115,7 +118,10 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     ImGui::EndPopup();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const std::filesystem::path& a_targetFolderPath, const bool a_canCreate, AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const std::filesystem::path&             a_targetFolderPath, 
+                                                                            const Enum::AssetBrowserPopupContextType a_contextPopup,
+                                                                            const bool                               a_canCreate, 
+                                                                                  AssetBrowserEditorWindow&          a_assetBrowserEditorWindow) const
 {
     // アイコン + ラベル文字列を構築
     const auto& l_label        = std::string{ k_imguiFontAwesomeFolderPlusIcon } + " " + std::string{ k_createNewFolderLabel };
@@ -154,7 +160,13 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
             // 次の操作(コピー/切り取り/複製等)の対象になる
             auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
 
-            l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow);
+            // AssetPaneの空白右クリック(フォルダ未選択)から作成した場合は
+            // 現在参照中のフォルダパス(m_currentSelectFolderPath)を変更しない
+            // 新規フォルダへ移動せず現在のフォルダに留まり
+            // 新規フォルダが現在のフォルダ内に表示される
+            const bool l_updateCurrentFolderPath = a_contextPopup != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+
+            l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, l_updateCurrentFolderPath);
 
             // 作成性孤児、名前変更モードへ移行
             // ユーザーがすぐにフォルダ名を編集できるようにする

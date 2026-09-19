@@ -18,22 +18,24 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
     // ファイルシステム上でリネームする
     std::filesystem::rename(a_targetFilePath, l_resolvedNewFilePath, l_errorCode);
 
-    if (l_errorCode &&
-        a_targetFilePath == l_newFilePath)
+    if (l_errorCode)
     {
-        FWK_ADD_LOG(Constant::k_imguiDebugINFOColor,
-                    "ファイルのリネームは取り消しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
-                    a_targetFilePath.string(),
-                    l_resolvedNewFilePath.string(),
-                    l_errorCode.value());
-    }
-    else if (l_errorCode)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-                    "ファイルのリネームに失敗しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
-                    a_targetFilePath.string(),
-                    l_resolvedNewFilePath.string(),
-                    l_errorCode.value());   
+        if (a_targetFilePath == l_newFilePath)
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugINFOColor,
+                        "ファイルのリネームは取り消しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
+                        a_targetFilePath.string(),
+                        l_resolvedNewFilePath.string(),
+                        l_errorCode.value());
+        }
+        else
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                        "ファイルのリネームに失敗しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
+                        a_targetFilePath.string(),
+                        l_resolvedNewFilePath.string(),
+                        l_errorCode.value());   
+        }
     }
 
     // AssetFilePathRegistryのPathも更新する

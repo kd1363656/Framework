@@ -19,7 +19,7 @@ namespace FWK::Editor
         void ClearSelection           ();
         void ClearSelectedFilePathList();
 
-        void SelectSingleFolder(const std::filesystem::path&              a_folderPath, AssetBrowserEditorWindow& a_editorWindow);
+        void SelectSingleFolder(const std::filesystem::path&              a_folderPath, AssetBrowserEditorWindow& a_editorWindow, const bool a_updateCurrentFolderPath = true);
         void SelectAll         (const std::vector<std::filesystem::path>& a_displayedFilePathList);
 
         nlohmann::json Serialize() const;

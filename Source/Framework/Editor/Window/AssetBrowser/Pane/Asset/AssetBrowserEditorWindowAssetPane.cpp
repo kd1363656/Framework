@@ -359,6 +359,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
 
     const ImVec2& l_cardSize = { k_cardWidth, k_cardHeight };
 
+    // BeginGroupでカード全体を一つのアイテムとして扱う
+    // DrawCardRename内のInputTextがCursorPosPrevLint
+    // PrevLineSizeを更新してしまうのを防ぐ
+    ImGui::BeginGroup();
+
     // カードを上座標(Screen座標)
     // InvisibleButton描画時に取得することで
     // DrawListによる描画座標として扱う
@@ -462,6 +467,10 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
                        l_cardMAX,
                        a_editorWindow);
     }
+
+    // EndGroupでグループ全体のサイズを確定する
+    // InputTextによってずれたCursorPosPrevLine/PrevLineSizeがグループ全体の値へ復元される
+    ImGui::EndGroup();
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const ImVec2&     a_cardMIN, 
                                                                         const ImVec2&     a_cardMAX, 
@@ -721,7 +730,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
                                    l_assetFilePathRegistry);
         }
     }
-
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::vector<std::filesystem::path>& a_displayedFilePathList,
                                                                      const std::filesystem::path&              a_filePath, 

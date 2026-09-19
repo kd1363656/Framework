@@ -30,6 +30,8 @@ namespace FWK
 
         const auto& GetREFPrefabName() const { return m_prefabName; }
 
+        auto& GetMutableREFJson() { return m_json; }
+
     private:
 
         std::weak_ptr<GameObject> m_gameObject = {};

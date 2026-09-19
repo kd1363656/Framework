@@ -56,6 +56,12 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 
     l_gameObject->INIT         ();
     l_gameObject->SetPrefabUUID(l_prefabUUID);
+
+    // 親子関係が構築されていない状態なので親を考慮しない行列の掛け算を行うようにする
+    if (const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock())
+    {
+        l_transformComponent->ApplyStandalone();
+    }
     
     // Prefabを作成し、ファイルへ保存
     const auto&  l_prefabName = l_prefabFilePath.stem().string();
@@ -164,24 +170,15 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::
     // JSONからPrefabNameとGameObject情報を復元する
     Prefab l_prefab = {};
 
-    // そのプレハブの編集内容を名前だけ変えて他の
-    // パラメータを上書きしないように読みこむ
-    l_prefab.Load(a_oldFilePath);
-
     // 新しいファイル名(stem)をPrefabNameとして設定
     // 例 : "Prefab.json" -> "Prefab"
     // これがJson内の"PrefabName"フィールドに保存される
     // PrefabJsonConverter::Save内部でk_prefabNameJsonKeyを使って書き込む
     const auto& l_newPrefabName = a_newFilePath.stem().string();
 
-    // 名前だけ現在のPrefab.jsoのPrefab(stem)部分に変える
-    l_prefab.SetPrefabName(l_newPrefabName);
-
-    // 新しいパスへ保存
-    // Prefab::Save -> PrefabJsonConverter::Save -> SaveJsonFile
-    // 内部でPrefabNameとGameObjectJsonをJSONへ書き込む
-    // UUIDはGameObjectが保持しているため変わらない
-    l_prefab.Save(a_newFilePath);
+    // 古いファイルパスから新しいファイルパスに変更(NewPrefab.jsonがPrefab.jsonといった具合でファイル名が変わればパスも変わるから)
+    // 新しいプレハブ名をJSONファイルに反映する
+    Converter::PrefabJsonConverter::Rename(a_oldFilePath, a_newFilePath, l_newPrefabName);
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
 {

@@ -450,8 +450,18 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // 対象パスが現在描画中のノードと一致する場合
     const auto& l_constRenameState = a_editorWindow.GetREFRenameState();
           
-    const bool l_isRenaming = l_constRenameState.m_isActive &&
-                              l_constRenameState.m_targetFilePath == a_currentFolderPath;
+    // 対象フォルダがAssetPaneのカードとして表示されている場合は
+    // AssetPaneのDrawCardRenameでリネームをInputTextを描画するため
+    // FolderPane側では描画しない
+    // (量Paneで同時にInputTextを描画するとフォーカス競合が起きリネームが確定しなくなる)
+    // カード表示 = 対象フォルダの親が現在参照中フォルダと一致する状態
+    const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
+    const bool  l_isDisplayedAsCard       = !l_currentSelectFolderPath.empty() &&
+                                             a_currentFolderPath.parent_path() == l_currentSelectFolderPath;
+
+    const bool l_isRenaming = l_constRenameState.m_isActive                              &&
+                              l_constRenameState.m_targetFilePath == a_currentFolderPath &&
+                              !l_isDisplayedAsCard;
 
     // フォルダアイコン + フォルダ名のラベルを構築
     const bool  l_isOpen = IsFolderOpen(a_currentFolderPath);

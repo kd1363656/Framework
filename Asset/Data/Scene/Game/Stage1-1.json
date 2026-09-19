@@ -1,4 +1,4 @@
-{
+﻿{
     "AssetFilePathRegistry": {
         "FilePathRegistryMap": []
     },
@@ -7,7 +7,7 @@
     "PrefabSystem": {
         "PrefabMap": []
     },
-    "SceneName": "Unknown",
+    "SceneName": "Stage1-1",
     "SceneShiftEventObserver": {
         "EventMap": []
     }

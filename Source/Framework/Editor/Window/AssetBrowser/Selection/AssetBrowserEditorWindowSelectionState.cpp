@@ -21,15 +21,19 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::ClearSelectedFilePathL
     m_selectedFilePathList.clear();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow)
+void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow, const bool a_updateCurrentFolderPath)
 {
     m_selectedFilePathList.clear       ();
     m_selectedFilePathList.emplace_back(a_folderPath);
-    
+
+    // a_updateCurrentFolderPathがfalseなら実行しない
     // 現在フォルダを更新
     // 単一選択時は現在フォルダを選択フォルダにする
     // AssetPaneはこのm_currentFolderPathを参照して内容を表示する
-    a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
+    if (a_updateCurrentFolderPath)
+    {
+        a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
+    }
 
     // 範囲選択の開始地点を更新
     m_rangeSelectionStartPath = a_folderPath;
