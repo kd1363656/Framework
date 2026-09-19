@@ -3,22 +3,29 @@
 
 void FWK::Scene::INIT()
 {
+    m_nextSceneLoadFilePathMap.clear();
+
     m_gameObjectList.clear              ();
     m_gameObjectExecutionLevelList.clear();
 
     m_gameObjectUUIDRegistry.Clear();
 
-    m_prefabSystem.INIT               ();
+    m_prefabSystem.INIT();
+
+    m_assetFilePathRegistry.INIT();
+
     m_lightSystem.ApplyDefaultSettings();
 
     m_sceneName.clear();
+
+    m_nextSceneUUID = {};
 
     // 次にGameObjectを追加した後で、
     // 階層別実行順を再構築できるようにする。
     m_isGameObjectExecutionLevelListDirty = false;
 }
 
-void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry)
+void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null())
     {
@@ -26,7 +33,7 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePa
         return;
     }
 
-    m_jsonConverter.Deserialize(a_rootJson, a_assetFilePathRegistry, *this);
+    m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 void FWK::Scene::PostDeserialize() const
@@ -130,9 +137,9 @@ void FWK::Scene::PostLateUpdate() const
     }
 }
 
-nlohmann::json FWK::Scene::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry)
+nlohmann::json FWK::Scene::Serialize()
 {
-    return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
+    return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
@@ -163,6 +170,201 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 
     // 計算済みの階層へ直接追加する
     AddGameObjectToExecutionLevelList(a_gameObject, l_executionLevel);
+}
+
+bool FWK::Scene::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)
+{
+    if (a_sceneUUID.is_nil())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたUUIDが無効です、追加しようとしたシーン名の確認をしてください。");
+
+        return false;
+    }
+
+    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID);
+
+    if (!l_assetFilePathData)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたアセットファイルパスデータが無効です、追加しようとしたシーンファイルパスの確認をしてください。");
+
+        return false;
+    }
+
+    if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Scene以外のAssetをシーン遷移へ追加しようとしました。");
+
+        return false;
+    }
+
+    const auto& l_nextSceneLoadFilePath = l_assetFilePathData->m_assetFilePath;
+
+    if (l_nextSceneLoadFilePath.empty())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
+
+        return false;
+    }
+
+    if (!Utility::CanLoadFilePath(l_nextSceneLoadFilePath, Constant::k_lowerJsonExtension))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
+
+        return false;
+    }
+
+    return m_nextSceneLoadFilePathMap.try_emplace(a_sceneUUID, l_nextSceneLoadFilePath).second;
+}
+bool FWK::Scene::AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID)
+{
+    if (a_sceneUUID.is_nil())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneUUIDが無効です。");
+
+        return false;
+    }
+
+    if (a_filePath.empty())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneFilePathが空です。");
+
+        return false;
+    }
+
+    if (!Utility::CanLoadFilePath(
+        a_filePath,
+        Constant::k_lowerJsonExtension))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "追加しようとしたSceneFilePathが無効です。\nFilePath : {}", a_filePath.string());
+
+        return false;
+    }
+
+    // まずSceneManager側AssetRegistryへSceneとして登録する
+    if (!m_assetFilePathRegistry.Add(a_filePath, a_sceneUUID, Enum::AssetFilePathRegistryType::Scene)) { return false; }
+
+    // Registry登録に成功した後、
+    // UUIDだけ版を使ってRegistryから正式なPathを取得し、
+    // NextSceneLoadFilePathMapへ登録する
+    if (AddNextSceneLoadFilePath(a_sceneUUID)) { return true; }
+
+    // NextSceneLoadFilePathMapへの登録に失敗した場合
+    // RegistryだけにSceneが残る中途半端な状態を防ぐ
+    m_assetFilePathRegistry.Erase(a_filePath);
+
+    return false;
+}
+
+bool FWK::Scene::RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)
+{
+    if (a_sceneUUID.is_nil()) { return false; }
+
+    bool l_isRemoved = false;
+
+    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID);
+
+    if (l_assetFilePathData &&
+        l_assetFilePathData->m_type == Enum::AssetFilePathRegistryType::Scene)
+    {
+        // Erase()を呼ぶとRegistry内部Dataが消えるため、
+        // 先にPathを値として保持する。
+        const std::filesystem::path l_sceneFilePath = l_assetFilePathData->m_assetFilePath;
+
+        if (m_assetFilePathRegistry.Erase(
+            l_sceneFilePath))
+        {
+            l_isRemoved = true;
+        }
+    }
+
+    // unordered_map::erase(Key)は
+    // 実際に削除した要素数を返す
+    // staleなMap状態だけが残っていた場合でも
+    // ここで削除して同期状態へ戻す
+    if (m_nextSceneLoadFilePathMap.erase(a_sceneUUID) != Constant::k_noErasedElementCount)
+    {
+        l_isRemoved = true;
+    }
+
+    return l_isRemoved;
+}
+
+bool FWK::Scene::ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID)
+{
+    if (a_oldSceneFilePath.empty() ||
+        a_newSceneFilePath.empty() ||
+        a_sceneUUID.is_nil())
+    {
+        return false;
+    }
+
+    if (a_oldSceneFilePath == a_newSceneFilePath) { return true; }
+
+    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID);
+
+    if (!l_assetFilePathData) { return false; }
+
+    if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene ||
+        l_assetFilePathData->m_assetFilePath != a_oldSceneFilePath)
+    {
+        return false;
+    }
+
+    const auto& l_nextSceneFilePathITR = m_nextSceneLoadFilePathMap.find(a_sceneUUID);
+
+    if (l_nextSceneFilePathITR == m_nextSceneLoadFilePathMap.end())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneManagerのAssetFilePathRegistryにはSceneが存在しますが、NextSceneLoadFilePathMapに存在しません。");
+
+        return false;
+    }
+
+
+    if (l_nextSceneFilePathITR->second !=
+        a_oldSceneFilePath)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryとNextSceneLoadFilePathMapのSceneFilePathが一致していません。");
+
+        return false;
+    }
+
+    // RegistryのUUIDは変更せずPathだけ変更する
+    if (!m_assetFilePathRegistry.ReplaceFilePath(a_oldSceneFilePath, a_newSceneFilePath))
+    {
+        return false;
+    }
+
+    // Registry変更に成功した後でScene専用Indexも追従する
+    l_nextSceneFilePathITR->second = a_newSceneFilePath;
+
+    return true;
+}
+
+std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
+{
+    // 次のに移行するシーンの名前が空なら移行しない
+    if (m_nextSceneUUID.is_nil()) { return {}; }
+
+    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(m_nextSceneUUID);
+
+    if (!l_assetFilePathData)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "次のシーンへの遷移用のUUIDが無効です、SceneManagerのマップ内部を確認してください。");
+
+        return {};
+    }
+
+    // 次のシーンのファイルパスが空なら移行しない
+    if (l_assetFilePathData->m_assetFilePath.empty() ||
+        l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "次のシーンへの情報が無効です、SceneManagerのマップ内部を確認してください。");
+
+        return {};
+    }
+
+    // AssetfilePathDataから次に読み込むファイルのパスをreturn
+    return l_assetFilePathData->m_assetFilePath;
 }
 
 std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_uuid) const

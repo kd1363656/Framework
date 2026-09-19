@@ -185,29 +185,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
-    // 既存のSceneファイルを読み込む
-    // Scene::Deserializeは内部でSceneJsonConverter::Deserializeを呼び
-    // JSONからSceneNameとGameObjectListを復元する
-    // AssetFilePathRegistryは空のものを渡す
-    // (リネーム時はRegistryの内容は不要、名前変更だけが目的のため)
-    auto l_scene = std::make_shared<Scene>();
 
-    l_scene->INIT();
-
-    const auto& l_rootJson = Utility::LoadJsonFile(a_oldFilePath);
-
-    if (l_rootJson.is_null()) { return; }
-
-    // シーンクラスのデシリアライズ処理
-    // a_assetFilePathRegistryのファイルパスを参照してプレハブを読み込むため
-    // ここには必ず全てのプレハブを保存しているAssetBrowser側のFilePathRegistryを使用すること
-    Converter::SceneManagerJsonConverter::DeserializeScene(l_scene, l_rootJson, a_assetFilePathRegistry);
-
-    const auto& l_newSceneName = a_newFilePath.stem().string();
-
-    const auto& l_newRootJson = Converter::SceneManagerJsonConverter::SerializeScene(l_scene, a_assetFilePathRegistry);
-
-    Utility::SaveJsonFile(l_newRootJson);
 }
 
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName)

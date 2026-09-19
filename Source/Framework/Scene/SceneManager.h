@@ -6,8 +6,6 @@ namespace FWK
     {
     private:
 
-        using NextSceneLoadFilePathMap = std::unordered_map<boost::uuids::uuid, std::filesystem::path>;
-
         friend class SingletonBase<SceneManager>;
 
          SceneManager()          = default;
@@ -23,27 +21,8 @@ namespace FWK
         void PostLateUpdate();
 
         void Save() const;
-        
-        bool AddNextSceneLoadFilePath(const boost::uuids::uuid&    a_sceneUUID);
-        bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID);
-
-        bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID);
-
-        bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID);
-
-        void SetCurrentSceneFilePath(const std::filesystem::path& a_set) { m_currentSceneFilePath = a_set; }
-
-        const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
-
-        const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
-
-        const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
         const auto& GetREFCurrentSceneFilePath() const { return m_currentSceneFilePath; }
-
-        auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
-
-        auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
 
         std::weak_ptr<Scene> GetVALScene() const { return m_scene; }
 
@@ -53,18 +32,10 @@ namespace FWK
 
         void LoadNextSceneIfNeeded();
 
-        NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
-
         std::shared_ptr<Scene> m_scene = nullptr;
-
-        Observer<Enum::SceneShiftEvent> m_sceneShiftEventObserver = {};
-
-        AssetFilePathRegistry m_assetFilePathRegistry = {};
-
-        Converter::SceneManagerJsonConverter m_jsonConverter = {};
 
         std::filesystem::path m_currentSceneFilePath = {};
 
-        boost::uuids::uuid m_nextSceneUUID = {};
+        Converter::SceneManagerJsonConverter m_jsonConverter = {};
     };
 }
