@@ -36,7 +36,7 @@ bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesys
 
 std::filesystem::path FWK::Converter::BinaryConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
 {
-    return Utility::CreateFilePathByReplaceExtension(a_filePath, k_lowerAssetExtension);
+    return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);
 }
 
 bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::filesystem::path& a_filePath)

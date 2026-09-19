@@ -37,14 +37,21 @@ namespace FWK::Editor
 
     private:
 
-        void DrawCard          (const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
-        void DrawCardBackground(const ImVec2&                             a_cardMIN,               const ImVec2&                a_cardMAX,  ImDrawList&               a_drawList);
+        void DrawCard(const std::vector<std::filesystem::path>& a_displayedFilePathList, const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
 
-        void DrawCardIcon(const std::filesystem::path&    a_filePath,
+        void DrawCardBackground(const ImVec2&     a_cardMIN,
+                                const ImVec2&     a_cardMAX,
+                                const bool        a_isSelected,
+                                const bool        a_isHovered, 
+                                const bool        a_isActivePane,
+                                const bool        a_isCutTarget,
+                                      ImDrawList& a_drawList);
+
+        void DrawCardIcon(const AssetBrowserEditorWindow& a_editorWindow,
+                          const std::filesystem::path&    a_filePath,
                           const ImVec2&                   a_cardMIN,
                           const ImVec2&                   a_cardMAX,
                           const bool                      a_isCutTarget,
-                                AssetBrowserEditorWindow& a_editorWindow,
                                 ImDrawList&               a_drawList) const;
 
         void DrawCardFileName(const std::filesystem::path& a_filePath,
@@ -54,14 +61,6 @@ namespace FWK::Editor
                               const bool                   a_isCutTarget,
                                     ImDrawList&            a_drawList) const;
 
-        void DrawCardHighlight(const ImVec2& a_cardMIN,
-                               const ImVec2& a_cardMAX,
-                               const bool    a_isSelected,
-                               const bool    a_isHovered,
-                               const bool    a_isActivePane,
-                               const bool    a_isCutTarget,
-                               ImDrawList&   a_drawList) const;
-        
         void DrawCardRename(const std::filesystem::path&    a_filePath,
                             const ImVec2&                   a_cardMIN,
                             const ImVec2&                   a_cardMAX,
@@ -78,7 +77,6 @@ namespace FWK::Editor
 
         void SelectFile(const std::vector<std::filesystem::path>& a_displayedFilePathList,
                         const std::filesystem::path&              a_filePath,
-                              AssetBrowserEditorWindow&           a_editorWindow,
                         const bool                                a_isRangeSelection  = false,
                         const bool                                a_isToggleSelection = false);
 
@@ -89,7 +87,7 @@ namespace FWK::Editor
 
         std::uint32_t CalculateCardPerRow(const float a_availableWidth) const;
 
-        std::string FetchIcon(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow) const;
+        std::string FetchIcon(const AssetBrowserEditorWindow& a_editorWindow, const std::filesystem::path& a_filePath) const;
 
         static constexpr std::string_view k_childLabel                 = "##AssetBrowserEditorWindowAssetPane";
         static constexpr std::string_view k_paneTitleLabel             = "アセット";
@@ -99,17 +97,14 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel       = "##AssetPaneRenameInputText";
         static constexpr std::string_view k_ellipsis                   = "...";
 
-        static constexpr float k_cardWidth     = 60.0F;
-        static constexpr float k_cardHeight    = 80.0F;
-        static constexpr float k_cardSpacing   = 8.0F;
-        static constexpr float k_cardRounding  = 1.0F;
-        static constexpr float k_cardPadding   = 4.0F;
-        static constexpr float k_iconAreaInset = 4.0F;
-        static constexpr float k_iconMargin    = 2.0F;
-        static constexpr float k_iconWarpWidth = 0.0F;
-        
-        static constexpr float k_borderThickness = 2.0F;
-        
+        static constexpr float k_cardWidth      = 60.0F;
+        static constexpr float k_cardHeight     = 80.0F;
+        static constexpr float k_cardSpacing    = 8.0F;
+        static constexpr float k_cardRounding   = 1.50F;
+        static constexpr float k_cardPadding    = 4.0F;
+        static constexpr float k_cardInnerInset = 2.0F;
+        static constexpr float k_iconMargin     = 2.0F;
+
         static constexpr float k_doubleMagnification = 2.0F;
 
         static constexpr ImU32 k_initialSelectionColor = 0U;

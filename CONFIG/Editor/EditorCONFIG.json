@@ -31,7 +31,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data",
+                "CurrentSelectFolderPath": "Asset\\Data\\Sound\\UI\\Click",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -51,7 +51,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
@@ -63,7 +63,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
@@ -71,7 +71,7 @@
                         },
                         {
                             "FilePath": "Asset\\Texture",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model",
@@ -87,7 +87,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Font\\Icon\\FontAwesome",
@@ -103,7 +103,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\UI",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Font\\Cica",
@@ -251,8 +251,12 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\Data\\Sound\\UI\\Click",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\Data\\Sound\\UI\\Click"
+                            }
+                        ]
                     }
                 }
             },

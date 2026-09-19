@@ -1573,6 +1573,9 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json">
       <UniqueIdentifier>{e4d6899c-e258-406b-b5e3-b374367d269c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Converter">
+      <UniqueIdentifier>{d57fac8a-3538-412e-b5a5-608629586cf0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3062,6 +3065,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json\AssetBrowserEditorWindowAssetPaneJsonConverter.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Converter\BinaryConverterBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Converter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

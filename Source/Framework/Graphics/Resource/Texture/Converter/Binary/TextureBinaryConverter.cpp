@@ -252,7 +252,7 @@ bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::file
     const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
 
     // .assetが存在しないなら、FBXから読み込んで生成する
-    if (!Utility::CanLoadFilePath(l_textureAssetFilePath, TextureBinaryConverter::k_lowerAssetExtension)) { return false; }
+    if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
 
     if(IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
 

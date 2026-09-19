@@ -134,8 +134,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(AssetBrowse
         m_currentCursorFilePath = l_displayedList.front();
 
         SelectFile(l_displayedList, 
-                   l_displayedList.front(), 
-                   a_editorWindow,
+                   l_displayedList.front(),                    
                    a_isRangeSelection,
                    false);
 
@@ -174,7 +173,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(AssetBrowse
     // 選択実行
     SelectFile(l_displayedList,
                l_newPath,
-               a_editorWindow,
                a_isRangeSelection,
                false);
 }
@@ -196,7 +194,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(AssetBrow
 
         SelectFile(l_displayedList,
                    l_displayedList.front(),
-                   a_editorWindow,
                    a_isRangeSelection,
                    false);
 
@@ -226,7 +223,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(AssetBrow
 
     SelectFile(l_displayedList,
                l_newPath,
-               a_editorWindow,
                a_isRangeSelection,
                false);
 }
@@ -247,7 +243,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(AssetBrow
 
         SelectFile(l_displayedList, 
                    l_displayedList.front(),
-                   a_editorWindow, 
                    a_isRangeSelection,
                    false);
     }
@@ -271,7 +266,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(AssetBrow
 
     SelectFile(l_displayedList, 
                l_prevPath, 
-               a_editorWindow,
                a_isRangeSelection,
                false);
 }
@@ -306,7 +300,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionRight(AssetBro
 
     SelectFile(l_displayedList,
                l_nextPath,
-               a_editorWindow,
                a_isRangeSelection,
                false);
 }
@@ -392,15 +385,24 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
 
     if (!l_drawList) { return; }
 
-    // カード背景
-    DrawCardBackground(l_cardMIN, l_cardMAX, *l_drawList);
+    // カード背景(フレーム色)
+    // 選択/ホバー/通常に応じて外側カードの色を決定する
+    // この色が内側ボックスの周囲(上下左右)にリムとして残り
+    // 選択時に青く光る
+    DrawCardBackground(l_cardMIN,
+                       l_cardMAX, 
+                       l_isSelected,
+                       l_isHovered,
+                       l_isActivePane,
+                       l_isCutTarget,
+                       *l_drawList);
 
     // アイコン領域 + アイコン
-    DrawCardIcon(a_filePath, 
+    DrawCardIcon(a_editorWindow,
+                 a_filePath, 
                  l_cardMIN,
                  l_cardMAX,
                  l_isCutTarget,
-                 a_editorWindow,
                  *l_drawList);
 
     // ファイル名
@@ -410,15 +412,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
                      l_isRenaming,
                      l_isCutTarget,
                      *l_drawList);
-
-    // ハイライト枠
-    DrawCardHighlight(l_cardMIN,
-                      l_cardMAX,
-                      l_isSelected,
-                      l_isHovered,
-                      l_isActivePane,
-                      l_isCutTarget,
-                      *l_drawList);
 
     // 遅延ツールチップ
     // カード上にマウスが一定時間(1秒)あるとファイルパスを表示
@@ -470,25 +463,143 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
                        a_editorWindow);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const ImVec2& a_cardMIN, const ImVec2& a_cardMAX, ImDrawList& a_drawList)
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const ImVec2&     a_cardMIN, 
+                                                                        const ImVec2&     a_cardMAX, 
+                                                                        const bool        a_isSelected,
+                                                                        const bool        a_isHovered, 
+                                                                        const bool        a_isActivePane, 
+                                                                        const bool        a_isCutTarget, 
+                                                                              ImDrawList& a_drawList)
 {
-    // ペイン背景色(ImGuiCol_ChildBg)でカード全体を塗りつぶし角丸のあるカードにする
-    const auto& l_cardBGColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
+    // 外側カードをフレーム色で塗りつぶす
+    // この色が内側ボックスの周囲(上下左右)にリムとして残り
+    // 選択時に青く光る
+    // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
+    auto l_frameColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
 
+    if (a_isCutTarget)
+    {
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiDarkBlueTranslucentColor);
+    }
+    else if (a_isSelected &&
+             a_isActivePane)
+    {
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueColor);
+    }
+    else if (a_isSelected)
+    {
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueTranslucentColor);
+    }
+    else if (a_isHovered)
+    {
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiLightGrayColor);
+    }
+
+    // 外側カードは全角丸で描画
     a_drawList.AddRectFilled(a_cardMIN,
                              a_cardMAX,
-                             l_cardBGColor,
+                             l_frameColor,
                              k_cardRounding,
-                             ImDrawFlags_RoundCornersTop);
+                             ImDrawFlags_RoundCornersAll);
 }
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::filesystem::path&    a_filePath, 
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBrowserEditorWindow& a_editorWindow,
+                                                                  const std::filesystem::path&    a_filePath, 
                                                                   const ImVec2&                   a_cardMIN, 
                                                                   const ImVec2&                   a_cardMAX,
                                                                   const bool                      a_isCutTarget, 
-                                                                        AssetBrowserEditorWindow& a_editorWindow, 
                                                                         ImDrawList&               a_drawList) const
 {
+    // 上半分の内側角丸ボックス描画
+    // 外側カード(フレーム色)の上に
+    // 少し縮んだ角丸ボックスをペイン背景色で描画する
+    // これにより外周(上下左右)にフレーム色のリムが残る
+    // 選択時はこのリムが青く光る
 
+    // 上半分の高さ
+    const float l_halfHeight = (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification;
+
+    // 内側ボックスの領域
+    // カード外側からk_cardInnerInset分縮める(上下左右)
+    // ただし上半分の下辺は中間地点よりk_cardInnerInset分上にする
+    // これにより上下の内側ボックス間にもフレーム色のリムが残る
+    const ImVec2& l_iconBoxMIN = { a_cardMIN.x + k_cardInnerInset, a_cardMIN.y + k_cardInnerInset };
+    const ImVec2& l_iconBoxMAX = { a_cardMAX.x - k_cardInnerInset, a_cardMIN.y + l_halfHeight - k_cardInnerInset };
+
+    // 内側ボックスをペイン背景色で塗りつぶし]
+    // これがアイコン領域の背景になる
+    const ImU32 l_paneBGColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
+
+    a_drawList.AddRectFilled(l_iconBoxMIN,
+                             l_iconBoxMAX,
+                             l_paneBGColor,
+                             k_cardRounding,
+                             ImDrawFlags_RoundCornersTop);
+
+    // アイコン描画
+    // ファイル種別に応じたアイコンを内側ボックスいっぱいに描画
+    const auto l_icon = FetchIcon(a_editorWindow, a_filePath);
+
+    // アイコン領域のサイズ(内側ボックスから余白を引く)
+    const float l_iconAreaWidth  = l_iconBoxMAX.x - l_iconBoxMIN.x - k_iconMargin * k_doubleMagnification;
+    const float l_iconAreaHeight = l_iconBoxMAX.y - l_iconBoxMIN.y - k_iconMargin * k_doubleMagnification;
+
+    // アイコンのフォントサイズを領域サイズから動的に計算
+    // FontAwesomeアイコンは一文字のグリフなのdえ
+    // フォントサイズ = グリフの高さとして扱える
+    // 領域の幅・高さの小さい方に合わせることで
+    // 縦横どちらも領域に収まる
+    float l_iconFontSize = (l_iconAreaWidth < l_iconAreaHeight) ? l_iconAreaWidth : l_iconAreaHeight;
+
+    // 領域サイズでテキストサイズを計算
+    // CalcTextSize(text_begin,
+    //              text_end,
+    //              hide_text_after_double_hash,
+    //              wrap_width);
+    // 第4引数はwarp_width(折り返し幅)であるフォントサイズではないため
+    // フォントサイズはAddText時に直後指定する
+    const auto& l_iconSize = ImGui::CalcTextSize(l_icon.data(), l_icon.data() + l_icon.size());
+
+    // CalcTextSizeは現在のフォントサイズ基準で計算されるため
+    // 領域フォントサイズでの実際のサイズへスケール換算する
+    const float l_currentFontSize = ImGui::GetFontSize();
+
+    // 領域フォントサイズでのアイコン幅・高さを計算する
+    // フォントサイズに比例してグリフサイズも変化する
+    const float l_scaledIconWidth  = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
+    const float l_scaledIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
+
+    // 幅が領域を超える場合は幅基準へ縮小
+    if (l_scaledIconWidth > l_iconAreaWidth)
+    {
+        l_iconFontSize = l_iconFontSize * (l_iconAreaWidth / l_scaledIconWidth);
+    }
+
+    // 高さが領域を超える場合は高さ基準へ縮小
+    if (l_scaledIconHeight > l_iconAreaHeight)
+    {
+        l_iconFontSize = l_iconFontSize * (l_iconAreaHeight / l_scaledIconHeight);
+    }
+
+    // 最終的なアイコンサイズを再計算
+    const float l_finaleIconWidth  = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
+    const float l_finaleIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
+
+    // アイコンを内側ボックスの中央に配置
+    const ImVec2& l_iconPosition = { l_iconBoxMIN.x + (l_iconBoxMAX.x - l_iconBoxMIN.x - l_finaleIconWidth)  * Constant::k_halfMagnification ,
+                                     l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finaleIconHeight) * Constant::k_halfMagnification };
+
+    // アイコン色
+    // 切り取り対象の場合は半透明、それ以外は通常テキスト色
+    const ImU32 l_iconColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
+
+    // AddTextの第二引数に計算したフォントサイズを渡すことで
+    // 指定サイズへスケールで描画する
+    a_drawList.AddText(ImGui::GetFont(),
+                       l_iconFontSize,
+                       l_iconPosition,
+                       l_iconColor,
+                       l_icon.data(),
+                       l_icon.data() + l_icon.size());
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std::filesystem::path& a_filePath, 
                                                                       const ImVec2&                a_cardMIN, 
@@ -525,57 +636,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std:
                                    l_nameAreaMIN.y + (l_nameAreaMAX.y - l_nameAreaMIN.y - l_nameSize.y) * Constant::k_halfMagnification };
 
     a_drawList.AddText(l_namePosition, l_textColor, l_displayName.c_str());
-}
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardHighlight(const ImVec2&     a_cardMIN,
-                                                                       const ImVec2&     a_cardMAX,
-                                                                       const bool        a_isSelected, 
-                                                                       const bool        a_isHovered,
-                                                                       const bool        a_isActivePane, 
-                                                                       const bool        a_isCutTarget, 
-                                                                             ImDrawList& a_drawList) const
-{
-    // 選択中   : 強い青(アクティブ) / 半透明青(非アクティブ) / 半透明(切り取り対象)
-    // ホバー中 : 明るいグレー
-    // それ以外 : 枠なし
-    if (a_isSelected)
-    {
-        auto l_selectionColor = k_initialSelectionColor;
-
-        // 選択中の枠色を決定
-        // 切り取り対象 > アクティブペイン > 非アクティブペインの優先順位
-        if (a_isCutTarget)
-        {
-            l_selectionColor = ImGui::GetColorU32(Constant::k_imguiDarkBlueTranslucentColor);
-        }
-        else if (a_isActivePane)
-        {
-            l_selectionColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueColor);
-        }
-        else
-        {
-            l_selectionColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueTranslucentColor);
-        }
-
-        // 角丸枠線を描画
-        a_drawList.AddRect(a_cardMIN,
-                           a_cardMAX,
-                           l_selectionColor,
-                           ImDrawFlags_RoundCornersAll,
-                           k_borderThickness);
-    }
-    else if (a_isHovered)
-    {
-        // ホバー時は明るいグレーの枠
-        // k_imguiLightGrayColorはFolderPaneでも使う共通定数
-        const auto& l_hoverColor = ImGui::GetColorU32(Constant::k_imguiLightGrayColor);
-
-        a_drawList.AddRect(a_cardMIN,
-                           a_cardMAX,
-                           l_hoverColor,
-                           ImDrawFlags_RoundCornersAll,
-                           k_borderThickness);
-    }
-
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::filesystem::path&    a_filePath,
                                                                     const ImVec2&                   a_cardMIN,
@@ -664,7 +724,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
 
         SelectFile(a_displayedFilePathList, 
                    a_filePath,
-                   a_editorWindow,
                    l_io.KeyShift,
                    l_io.KeyCtrl);
 
@@ -672,8 +731,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
         m_currentCursorFilePath = a_filePath;
     }
 
-    // フォルダカードをダブルクリックでそのフォルダへ現在参照中のパスにする
+    // フォルダカードをダブルクリックでそのフォルダへ移動
+    // IsMouseDoubleClickedは画面全体でのダブルクリックを抽出するため、
+    // IsItemHoverdで「このカード上で」ダブルクリックされたかを判定する
     if (std::error_code l_errorCode = {};
+        ImGui::IsItemHovered()                             &&
         ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) &&
         std::filesystem::is_directory(a_filePath, l_errorCode))
     {
@@ -687,7 +749,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
     {
         if (!a_isSelected)
         {
-            SelectFile(a_displayedFilePathList, a_filePath, a_editorWindow);
+            SelectFile(a_displayedFilePathList, a_filePath);
         }
 
         // カード用コンテキストメニューを開く
@@ -815,7 +877,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::SelectFile(const std::vector<std::filesystem::path>& a_displayedFilePathList, 
                                                                 const std::filesystem::path&              a_filePath,
-                                                                     AssetBrowserEditorWindow&            a_editorWindow, 
                                                                 const bool                                a_isRangeSelection, 
                                                                 const bool                                a_isToggleSelection)
 {
@@ -898,11 +959,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::SelectFile(const std::vecto
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow)
 {
-    auto l_folderPane = a_editorWindow.GetMutableREFFolderPane();
-
-    // FolderPaneでこのフォルダを単一選択
-    // SelectSingleFolderはm_currentSelectFolderPathも更新する
-    auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
+    auto& l_folderPane = a_editorWindow.GetMutableREFFolderPane();
 
     // フォルダツリーで親階層をすべて展開
     // これを行わないと親ノードが閉じたままで
@@ -922,6 +979,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::NavigateToFolder(const std:
 
         l_parentPath = l_parentPath.parent_path();
     }
+
+    // FolderPaneでこのフォルダを単一選択
+    auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
+
+    l_selectionState.SelectSingleFolder(a_folderPath, a_editorWindow);
 
     // AssetPaneの選択状態をクリア
     // 新しいフォルダの内容が表示されるため
@@ -974,16 +1036,26 @@ std::uint32_t FWK::Editor::AssetBrowserEditorWindowAssetPane::CalculateCardPerRo
     return l_cardsPerRow;
 }
 
-std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow) const
+std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const AssetBrowserEditorWindow& a_editorWindow, const std::filesystem::path& a_filePath) const
 {
-    // フォルダの場合
+    // フォルダかどうか真っ先に比較
     if (std::error_code l_errorCode = {};
         std::filesystem::is_directory(a_filePath, l_errorCode))
     {
         return std::string{ Constant::k_imguiFontAwesomeFolderCloseIcon };
     }
 
-    // ファイルの場合 : assetFilePathRegistryで種別を判定
+    const auto& l_extension = a_filePath.extension();
+
+    if (l_extension.empty()) { return std::string{}; }
+
+    if      (l_extension == Constant::k_lowerFBXExtension)  { return std::string{ Constant::k_imguiFontAwesomeCubeIcon }; }
+    else if (l_extension == Constant::k_lowerPNGExtension)  { return std::string{ Constant::k_imguiFontAwesomeImageIcon }; }
+    else if (l_extension == Constant::k_lowerWAVExtension)  { return std::string{ Constant::k_imguiFontAwesomeSoundIcon }; }
+
+    // jsonファイルの場合シーンファイルなのかプレハブファイルなのかで
+    // 表示するアイコンが変わるためEditor側のAssetRegistryに登録されている
+    // 者のみアイコンを描画する
     const auto& l_registry = a_editorWindow.GetREFAssetFilePathRegistry();
     const auto* l_uuid     = l_registry.FindPTRAssetUUID               (a_filePath);
 
@@ -1008,8 +1080,9 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const std:
         break;
 
         default:
+        {
+            return std::string{ Constant::k_imguiFontAwesomeFileIcon };
+        }
         break;
     }
-
-    return std::string{ Constant::k_imguiFontAwesomeFileIcon };
 }
