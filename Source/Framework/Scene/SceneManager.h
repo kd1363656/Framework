@@ -22,6 +22,8 @@ namespace FWK
 
         void Save() const;
 
+        void SetCurrentSceneFilePath(const std::filesystem::path& a_set) { m_currentSceneFilePath = a_set; }
+
         const auto& GetREFCurrentSceneFilePath() const { return m_currentSceneFilePath; }
 
         std::weak_ptr<Scene> GetVALScene() const { return m_scene; }

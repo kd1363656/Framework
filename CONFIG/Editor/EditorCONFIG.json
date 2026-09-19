@@ -42,7 +42,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\NewFolder",
+                "CurrentSelectFolderPath": "Asset",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -85,11 +85,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -125,19 +125,19 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\PhysicsDebug",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model\\Map",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Shader\\PhysicsDebug",
                             "IsOpen": false
                         },
                         {
@@ -153,15 +153,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\RenderTarget\\Final",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Shader\\Model\\Shadow\\Cascade",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Shader\\Model\\Static",
+                            "FilePath": "Asset\\Data\\Prefab",
                             "IsOpen": false
                         },
                         {
@@ -169,11 +161,15 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Prefab",
+                            "FilePath": "Asset\\Shader\\Model\\Static",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard",
+                            "FilePath": "Asset\\Shader\\Model\\Shadow\\Cascade",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Shader\\RenderTarget\\Final",
                             "IsOpen": false
                         },
                         {
@@ -181,11 +177,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Shadow",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal",
+                            "FilePath": "Asset\\Shader\\Model\\Shadow",
                             "IsOpen": false
                         },
                         {
@@ -193,11 +189,11 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Standard",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard\\Lit",
+                            "FilePath": "Asset\\Shader\\Model\\Standard",
                             "IsOpen": false
                         },
                         {
@@ -205,11 +201,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard\\Lit",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\Lit",
+                            "FilePath": "Asset\\Shader\\Model\\Static\\Standard",
                             "IsOpen": false
                         },
                         {
@@ -217,11 +213,15 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\Lit",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Shader\\Sprite\\Screen",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
+                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\UnLit",
                             "IsOpen": false
                         },
                         {
@@ -229,7 +229,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Shader\\Model\\Skeletal\\Standard\\UnLit",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
                             "IsOpen": false
                         },
                         {
@@ -266,10 +266,6 @@
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder",
                             "IsOpen": false
                         }
                     ],

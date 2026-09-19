@@ -61,8 +61,8 @@ void FWK::PrefabSystem::RefreshAllPrefab()
 
     if (!l_scene) { return; }
 
-    const auto& l_assetFilePathRegistry = l_sceneManager.GetREFAssetFilePathRegistry();
-    const auto& l_gameObjectList        = l_scene->GetREFGameObjectList             ();
+    const auto& l_assetFilePathRegistry = l_scene->GetREFAssetFilePathRegistry();
+    const auto& l_gameObjectList        = l_scene->GetREFGameObjectList       ();
 
     for (auto& [l_prefabUUID, l_prefabData] : m_prefabMap)
     {
@@ -107,7 +107,7 @@ void FWK::PrefabSystem::RefreshAllPrefab()
             }
         }
 
-        // Scene上に子のPrefabの有効なGameObjectが存在しない場合は
+        // Scene上にこのPrefabの有効なGameObjectが存在しない場合は
         // Destroy済みGameObjectからPrefabファイルを書き換えない
         if (!l_isPrefabGameObjectFound) { continue; }
 

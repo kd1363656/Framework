@@ -110,11 +110,11 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     }
 
     // ローカル空Sceneを作成
-    const auto& l_sceneName = l_sceneFilePath.stem   ().string();
-          auto  l_scene     = std::make_shared<Scene>();
+    const auto&  l_sceneName = l_sceneFilePath.stem   ().string();
+          Scene  l_scene = {};
 
-    l_scene->INIT        ();
-    l_scene->SetSceneName(l_sceneName);
+    l_scene.INIT        ();
+    l_scene.SetSceneName(l_sceneName);
 
     AssetFilePathRegistry l_emptyRegistry = {};
 
@@ -122,7 +122,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // SerializeSceneはstaticメソッドなのでインスタンス不要
     // 空のAssetFilePathRegistryを渡す(新規Scene用のAssetがまだないため)
     // 新規からシーンとして必要な情報の身をロードできるようにする
-    const auto& l_rootJson = Converter::SceneManagerJsonConverter::SerializeScene(l_scene, l_emptyRegistry);
+    const auto& l_rootJson = Converter::SceneManagerJsonConverter::SerializeScene(l_scene);
 
     if (l_rootJson.is_null())
     {

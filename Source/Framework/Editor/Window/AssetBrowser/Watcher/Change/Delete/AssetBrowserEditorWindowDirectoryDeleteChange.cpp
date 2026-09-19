@@ -40,8 +40,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
             {
                 ApplyPrefabDelete(a_deleteFilePath,
                                   l_copiedAssetUUID,
-                                  a_assetBrowserAssetFilePathRegistry,
-                                  a_sceneManager);
+                                  a_sceneManager,
+                                  a_assetBrowserAssetFilePathRegistry);
 
                 return;
             }
@@ -75,8 +75,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyPrefabDelete(const std::filesystem::path& a_deleteFilePath,
                                                                                    const boost::uuids::uuid&    a_prefabUUID,
-                                                                                         AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry,
-                                                                                         SceneManager&          a_sceneManager) const
+                                                                                   const SceneManager&          a_sceneManager,
+                                                                                         AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry) const
 {
     if (a_prefabUUID.is_nil()) { return; }
 
@@ -89,16 +89,17 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyPrefabDele
         auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
 
         l_prefabSystem.RemovePrefab(a_prefabUUID);
+
+        auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
+
+        // シーンのアセットファイルパスレジストリーに要素が存在すれば削除
+        if (l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_deleteFilePath))
+        {
+            l_sceneAssetFilePathRegistry.Erase(a_deleteFilePath);
+        }
+
     }
-
-    auto& l_sceneManagerAssetFilePathRegistry = a_sceneManager.GetMutableREFAssetFilePathRegistry();
-
-    // シーンマネージャーのアセットファイルパスレジストリーに要素が存在すれば削除
-    if (l_sceneManagerAssetFilePathRegistry.FindPTRAssetUUID(a_deleteFilePath))
-    {
-        l_sceneManagerAssetFilePathRegistry.Erase(a_deleteFilePath);
-    }
-
+    
     // AssetBrowser側のAssetFilePathRegistryからも削除
     a_assetBrowserAssetFilePathRegistry.Erase(a_deleteFilePath);
 }
@@ -109,21 +110,25 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplySceneDelet
 {
     if (a_sceneUUID.is_nil()) { return; }
 
-    auto& l_sceneManagerAssetFilePathRegistry = a_sceneManager.GetMutableREFAssetFilePathRegistry();
+    const auto& l_scene = a_sceneManager.GetVALScene().lock();
 
-    if (const auto* l_sceneManagerSceneUUID = l_sceneManagerAssetFilePathRegistry.FindPTRAssetUUID(a_deleteFilePath);
+    if (!l_scene) { return; }
+
+    auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
+
+    if (const auto* l_sceneManagerSceneUUID = l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_deleteFilePath);
         l_sceneManagerSceneUUID)
     {
-        // SceneManager側AssetRegistryんいは
+        // Scene側AssetRegistryには
         // CurrentScene自身は登録せず、NextSceneだけを登録する
         const auto  l_nextSceneUUID     = *l_sceneManagerSceneUUID;
-        const auto* l_assetFilePathData = l_sceneManagerAssetFilePathRegistry.FindPTRAssetFilePathData(l_nextSceneUUID);
+        const auto* l_assetFilePathData = l_sceneAssetFilePathRegistry.FindPTRAssetFilePathData(l_nextSceneUUID);
 
         if (l_assetFilePathData &&
             l_assetFilePathData->m_type == Enum::AssetFilePathRegistryType::Scene)
         {
             // NextSceneLoadFilePathMapから削除する
-            a_sceneManager.RemoveNextSceneLoadFilePath(l_nextSceneUUID);
+            l_scene->RemoveNextSceneLoadFilePath(l_nextSceneUUID);
         }
     }
 
@@ -148,35 +153,37 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyDirectoryD
 
     const auto& l_assetBrowserAssetFilePathToUUIDMap = a_assetBrowserAssetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
 
-    for (const auto& l_assetFilePathToUUID : l_assetBrowserAssetFilePathToUUIDMap)
+    for (const auto& [l_filePath, l_uuid] : l_assetBrowserAssetFilePathToUUIDMap)
     {
-        const auto& l_assetFilePath = l_assetFilePathToUUID.first;
-
         // ファイルパスの階層よりも下でないファイルパスなら処理を飛ばす
-        if (!IsChildFilePath(l_assetFilePath, a_deleteFilePath)) { continue; }
+        if (!IsChildFilePath(l_filePath, a_deleteFilePath)) { continue; }
 
-        l_deleteAssetFilePathSet.emplace(l_assetFilePath);
+        l_deleteAssetFilePathSet.emplace(l_filePath);
     }
 
-    const auto& l_sceneManagerAssetFilePathRegistry  = a_sceneManager.GetREFAssetFilePathRegistry                      ();
-    const auto& l_sceneManagerAssetFilePathToUUIDMap = l_sceneManagerAssetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
+    const auto& l_scene = a_sceneManager.GetVALScene().lock();
 
-    for (const auto& [l_assetFilePath, l_uuid] : l_sceneManagerAssetFilePathToUUIDMap)
-    {
-        // ファイル階層がこの削除ファイルパス以下のファイルでない場合処理とを飛ばす
-        if (!IsChildFilePath(l_assetFilePath, a_deleteFilePath)) { continue; }
+    if (l_scene)
+    { 
+        const auto& l_sceneAssetFilePathRegistry  = l_scene->GetREFAssetFilePathRegistry                     ();
+        const auto& l_sceneAssetFilePathToUUIDMap = l_sceneAssetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
 
-        // unordered_setなので
-        // AssetBrowserRegistry二も同じPathが存在していても
-        // 一つだけ保持される
-        l_deleteAssetFilePathSet.emplace(l_assetFilePath);
+        for (const auto& [l_assetFilePath, l_uuid] : l_sceneAssetFilePathToUUIDMap)
+        {
+            // ファイル階層がこの削除ファイルパス以下のファイルでない場合処理とを飛ばす
+            if (!IsChildFilePath(l_assetFilePath, a_deleteFilePath)) { continue; }
+
+            // unordered_setなので
+            // AssetBrowserRegistry二も同じPathが存在していても
+            // 一つだけ保持される
+            l_deleteAssetFilePathSet.emplace(l_assetFilePath);
+        }
     }
 
-    const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
-
-    // CurrentSceneはSceneManagerRegistryに存在しない多恵
-    // Directoryは以下なら別途Pah一覧へ追加する
-    if (!l_currentSceneFilePath.empty() &&
+    // CurrentSceneはSceneRegistryに存在しないため
+    // Directory配下なら別途Pah一覧へ追加する
+    if (const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
+        !l_currentSceneFilePath.empty() &&
         IsChildFilePath(l_currentSceneFilePath, a_deleteFilePath))
     {
         l_deleteAssetFilePathSet.emplace(l_currentSceneFilePath);

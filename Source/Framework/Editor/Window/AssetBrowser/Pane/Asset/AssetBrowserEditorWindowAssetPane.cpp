@@ -580,9 +580,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
     }
 
     // 最終的なアイコンサイズを再計算
-    const float l_finaleIconWidth  = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
-    const float l_finaleIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
-
+    const float l_finaleIconWidth = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
+    
     // アイコンを内側ボックスの中央に配置
     const ImVec2 l_iconPosition = { l_iconBoxMIN.x + (l_iconBoxMAX.x - l_iconBoxMIN.x - l_finaleIconWidth) * Constant::k_halfMagnification,
                                     l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finaleIconWidth) * Constant::k_halfMagnification };
