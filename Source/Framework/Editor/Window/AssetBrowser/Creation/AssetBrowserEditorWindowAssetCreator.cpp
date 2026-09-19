@@ -157,6 +157,59 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     return l_result;
 }
 
+void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
+{
+    // 既存のPrefabファイルを読み込む
+    // Prefab::Loadは内部でPrefabJsonConverter::Loadを呼び
+    // JSONからPrefabNameとGameObject情報を復元する
+    Prefab l_prefab = {};
+
+    // そのプレハブの編集内容を名前だけ変えて他の
+    // パラメータを上書きしないように読みこむ
+    l_prefab.Load(a_oldFilePath);
+
+    // 新しいファイル名(stem)をPrefabNameとして設定
+    // 例 : "Prefab.json" -> "Prefab"
+    // これがJson内の"PrefabName"フィールドに保存される
+    // PrefabJsonConverter::Save内部でk_prefabNameJsonKeyを使って書き込む
+    const auto& l_newPrefabName = a_newFilePath.stem().string();
+
+    // 名前だけ現在のPrefab.jsoのPrefab(stem)部分に変える
+    l_prefab.SetPrefabName(l_newPrefabName);
+
+    // 新しいパスへ保存
+    // Prefab::Save -> PrefabJsonConverter::Save -> SaveJsonFile
+    // 内部でPrefabNameとGameObjectJsonをJSONへ書き込む
+    // UUIDはGameObjectが保持しているため変わらない
+    l_prefab.Save(a_newFilePath);
+}
+void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const AssetFilePathRegistry& a_assetFilePathRegistry) const
+{
+    // 既存のSceneファイルを読み込む
+    // Scene::Deserializeは内部でSceneJsonConverter::Deserializeを呼び
+    // JSONからSceneNameとGameObjectListを復元する
+    // AssetFilePathRegistryは空のものを渡す
+    // (リネーム時はRegistryの内容は不要、名前変更だけが目的のため)
+    auto l_scene = std::make_shared<Scene>();
+
+    l_scene->INIT();
+
+    const auto& l_rootJson = Utility::LoadJsonFile(a_oldFilePath);
+
+    if (l_rootJson.is_null()) { return; }
+
+    // シーンクラスのデシリアライズ処理
+    // a_assetFilePathRegistryのファイルパスを参照してプレハブを読み込むため
+    // ここには必ず全てのプレハブを保存しているAssetBrowser側のFilePathRegistryを使用すること
+    Converter::SceneManagerJsonConverter::DeserializeScene(l_scene, l_rootJson, a_assetFilePathRegistry);
+
+    const auto& l_newSceneName = a_newFilePath.stem().string();
+
+    const auto& l_newRootJson = Converter::SceneManagerJsonConverter::SerializeScene(l_scene, a_assetFilePathRegistry);
+
+    Utility::SaveJsonFile(l_newRootJson);
+}
+
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName)
 {
     // デフォルト名 + 拡張子を統合した希望パスを作る

@@ -1,5 +1,22 @@
 ﻿#include "SceneManagerJsonConveter.h"
 
+void FWK::Converter::SceneManagerJsonConverter::DeserializeScene(const std::weak_ptr<Scene>& a_scene, const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry)
+{
+    const auto& l_scene = a_scene.lock();
+
+    if (!l_scene ||
+        a_rootJson.is_null())
+    {
+        return;
+    }
+
+    const auto& l_rootJson = a_rootJson.value(k_sceneJsonKey, nlohmann::json{});
+
+    if (l_rootJson.is_null()) { return; }
+
+    l_scene->Deserialize(l_rootJson, a_assetFilePathRegistry);
+}
+
 nlohmann::json FWK::Converter::SceneManagerJsonConverter::SerializeScene(const std::weak_ptr<Scene>& a_scene, const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
           nlohmann::json l_rootJson = {};
@@ -53,15 +70,11 @@ void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManage
     }
 
     // シーンのデシリアライズ
-    if (const auto& l_json = l_rootJson.value(k_sceneJsonKey, nlohmann::json{});
-        !l_json.is_null())
-    {
-        const auto& l_scene = a_sceneManager.GetVALScene().lock();
+    const auto& l_scene = a_sceneManager.GetVALScene().lock();
 
-        if (!l_scene) { return; }
+    if (!l_scene) { return; }
 
-        l_scene->Deserialize(l_json, l_assetFilePathRegistry);
-    }
+    DeserializeScene(l_scene, l_rootJson, l_assetFilePathRegistry);
 }
 
 void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const

@@ -42,7 +42,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data",
+                "CurrentSelectFolderPath": "Asset\\NewFolder",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 440.0
                 },
@@ -62,7 +62,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
@@ -78,7 +78,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Texture",
@@ -267,13 +267,17 @@
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
                             "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data",
+                        "RangeSelectionStartPath": "Asset\\NewFolder",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data"
+                                "SelectedFilePath": "Asset\\NewFolder"
                             }
                         ]
                     }

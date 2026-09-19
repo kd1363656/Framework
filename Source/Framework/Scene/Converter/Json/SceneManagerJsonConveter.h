@@ -14,6 +14,8 @@ namespace FWK::Converter
          SceneManagerJsonConverter() = default;
         ~SceneManagerJsonConverter() = default;
 
+        static void DeserializeScene(const std::weak_ptr<Scene>& a_scene, const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
+
         static nlohmann::json SerializeScene(const std::weak_ptr<Scene>& a_scene, const AssetFilePathRegistry& a_assetFilePathRegistry);
 
         void Load(SceneManager& a_sceneManager) const;

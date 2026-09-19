@@ -70,12 +70,11 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
     {
         case Enum::AssetFilePathRegistryType::Prefab:
         {
-            ApplyPrefabFilePathChange(
-                a_oldFilePath,
-                a_newFilePath,
-                l_copiedAssetUUID,
-                a_assetBrowserAssetFilePathRegistry,
-                a_sceneManager);
+            ApplyPrefabFilePathChange(a_oldFilePath,
+                                      a_newFilePath,
+                                      l_copiedAssetUUID,
+                                      a_assetBrowserAssetFilePathRegistry,
+                                      a_sceneManager);
 
             return;
         }
@@ -83,12 +82,11 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
 
         case Enum::AssetFilePathRegistryType::Scene:
         {
-            ApplySceneFilePathChange(
-                a_oldFilePath,
-                a_newFilePath,
-                l_copiedAssetUUID,
-                a_assetBrowserAssetFilePathRegistry,
-                a_sceneManager);
+            ApplySceneFilePathChange(a_oldFilePath,
+                                     a_newFilePath,
+                                     l_copiedAssetUUID,
+                                     a_assetBrowserAssetFilePathRegistry,
+                                     a_sceneManager);
 
             return;
         }
@@ -111,9 +109,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyPrefabFi
 
     // SceneManager側RegistryにOldPathが存在する場合
     // 現在Sceneで使用中のPrefabとして登録されている
-    const auto* l_prefabUUID = l_sceneManagerAssetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
-
-    if (l_prefabUUID)
+    if (const auto* l_prefabUUID = l_sceneManagerAssetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
+        l_prefabUUID)
     {
         // Registryに書き換える前にUUIDをコピーする
         const auto  l_copiedPrefabUUID  = *l_prefabUUID;
@@ -262,11 +259,10 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyDirector
         l_oldeAssetFilePathSet.emplace(l_assetFilePath);
     }
 
-    const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
-
     // CurrentSceneはSceneManager側Registryには入らないので
     // Folderは以下なら独立して追加しておく
-    if (!l_currentSceneFilePath.empty() &&
+    if (const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
+        !l_currentSceneFilePath.empty() &&
         IsChildFilePath(l_currentSceneFilePath, a_oldFilePath))
     {
         l_oldeAssetFilePathSet.emplace(l_currentSceneFilePath);

@@ -16,7 +16,10 @@ namespace FWK::Editor
          AssetBrowserEditorWindowShortcutHandler() = default;
         ~AssetBrowserEditorWindowShortcutHandler() = default;
 
-        void Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList, const std::filesystem::path& a_targetFilePath, AssetBrowserEditorWindow& a_editorWindow) const;
+        void Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList, 
+                    const std::filesystem::path&              a_selectedFilePath, 
+                    const std::filesystem::path&              a_targetFilePath,
+                          AssetBrowserEditorWindow&           a_editorWindow) const;
 
         void HandleFolderPane(AssetBrowserEditorWindow& a_editorWindow);
         void HandleAssetPane (AssetBrowserEditorWindow& a_editorWindow);

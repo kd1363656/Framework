@@ -1,6 +1,9 @@
 ﻿#include "AssetBrowserEditorWindowShortcutHandler.h"
 
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList, const std::filesystem::path& a_targetFilePath, AssetBrowserEditorWindow& a_editorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vector<std::filesystem::path>& a_selectedFilePathList,
+                                                                  const std::filesystem::path&              a_selectedFilePath, 
+                                                                  const std::filesystem::path&              a_targetFilePath, 
+                                                                        AssetBrowserEditorWindow&           a_editorWindow) const
 {
     // アクティブPane無効の場合は何もしない
     if (const auto l_activePane = a_editorWindow.GetVALActivePane();
@@ -56,7 +59,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         ImGui::IsKeyPressed(ImGuiKey_F2) &&
         !l_isMultiSelection)
     {
-        HandleRename(a_targetFilePath, l_renameState);
+        HandleRename(a_selectedFilePath, l_renameState);
     }
 
     // Ctrl + C : コピー
@@ -108,7 +111,6 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         HandleDelete(a_selectedFilePathList, a_editorWindow);
     }
 }
-
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_io         = ImGui::GetIO                          ();

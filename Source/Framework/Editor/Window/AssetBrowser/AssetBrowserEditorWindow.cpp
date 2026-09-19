@@ -119,7 +119,10 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 const auto& l_selectedFilePathList      = l_selectionState.GetREFSelectedFilePathList   ();
 
                 m_shortcutHandler.HandleFolderPane(*this);
-                m_shortcutHandler.Handle          (l_selectedFilePathList, l_operationTargetFolderPath, *this);
+                m_shortcutHandler.Handle          (l_selectedFilePathList,
+                                                   l_operationTargetFolderPath,
+                                                   l_operationTargetFolderPath,
+                                                   *this);
             }
             break;
 
@@ -154,8 +157,16 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                     l_operationTargetFolderPath = Constant::k_assetRootFolderPath;
                 }
 
+                // リネーム対象
+                // 選択中ファイルがある場合はそのファイル自身
+                // ない場合は空パス(Handle内部でl_isSingleSelectionがfalseになるためリネーム不可)
+                const auto& l_selectedFilePath = l_operationTargetFilePath;
+
                 m_shortcutHandler.HandleAssetPane(*this);
-                m_shortcutHandler.Handle         (l_selectedFilePathList, l_operationTargetFolderPath, *this);
+                m_shortcutHandler.Handle         (l_selectedFilePathList, 
+                                                  l_selectedFilePath,
+                                                  l_operationTargetFolderPath, 
+                                                  *this);
             }
             break;
 
