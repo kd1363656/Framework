@@ -20,12 +20,13 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() const;
 
-        void MoveSelectionUp   (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionDown (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionLeft (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionRight(AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionUp   (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionDown (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionLeft (const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionRight(const AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
 
         void NavigateToCurrentCursor(AssetBrowserEditorWindow& a_editorWindow);
+        void NavigateToFolderUp     (AssetBrowserEditorWindow& a_editorWindow);
 
         std::vector<std::filesystem::path> FetchVALDisplayedFilePathList(AssetBrowserEditorWindow& a_editorWindow);
 

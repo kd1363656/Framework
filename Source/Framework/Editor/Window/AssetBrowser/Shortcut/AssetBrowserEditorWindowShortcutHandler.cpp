@@ -116,11 +116,19 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + V : 貼り付け
     // クリップボードが空でない場合のみ
+    // 貼り付け先はa_targetFilePathではなく
+    // 現在参照中のフォルダを使用する
+    // Windows Explorerと同じく現在開いているフォルダへ張り付ける
     if (l_canPaste   &&
         l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_V))
     {
-        HandlePaste(a_targetFilePath, l_fileOperation, l_clipboard);
+        // 現在参照中フォルダを取得
+        // 空の場合はAssetルートへフォールバック
+        const auto& l_currentFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
+        const auto& l_pasteTargetFolder  = l_currentFolderPath.empty() ? Constant::k_assetRootFolderPath : l_currentFolderPath;
+
+        HandlePaste(l_pasteTargetFolder, l_fileOperation, l_clipboard);
     }
 
     // Ctrl + D : 複製
@@ -248,6 +256,12 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
     if (ImGui::IsKeyPressed(ImGuiKey_Enter))
     {
         l_assetPane.NavigateToCurrentCursor(a_editorWindow);
+    }
+
+    // BackSpaceキーで一つ上の階層へ戻る
+    if (ImGui::IsKeyPressed(ImGuiKey_Backspace))
+    {
+        l_assetPane.NavigateToFolderUp(a_editorWindow);
     }
 }
 

@@ -4,8 +4,26 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Request(const std:
 {
     auto& l_deleteConfirmState = a_editorWindow.GetMutableREFDeleteConfirmState();
 
-    // 削除対象のファイルパスリストをコピー
-    l_deleteConfirmState.m_filePathList = a_filePathList;
+    // 削除対象のファイルパスリストを構築
+    // 選択されたパスがフォルダの場合はその中身を再帰的に展開して追加する
+    // Asset/Dataを選択して削除する場合
+    // Asset/Data/Dataの両方が表示される
+    // これによりユーザーは何が削除されるの化が一目で分かる
+    l_deleteConfirmState.m_filePathList.clear();
+
+    std::error_code l_errorCode = {};
+
+    for (const auto& l_filePath : a_filePathList)
+    {
+        // 選択されたファイルパス自身を追加
+        l_deleteConfirmState.m_filePathList.emplace_back(l_filePath);
+
+        // フォルダの場合は中身を再帰的に展開して追加
+        if (std::filesystem::is_directory(l_filePath, l_errorCode))
+        {
+            CollectFilePathRecursive(l_filePath, l_deleteConfirmState.m_filePathList);
+        }
+    }
 
     // 確認ダイアログをアクティブにする
     l_deleteConfirmState.m_isActive = true;
@@ -155,4 +173,23 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserE
     }
 
     ImGui::EndPopup();
+}
+
+void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::CollectFilePathRecursive(const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_filePathList) const
+{
+    std::error_code l_errorCode = {};
+
+    // directory_iteratorでa_folderPath直下のエントリを捜査
+    // エラー時はdirectory_iteratorが空になるため安全
+    for (const auto& l_entry : std::filesystem::directory_iterator(a_folderPath, l_errorCode))
+    {
+        // エントリのパスを追加
+        a_filePathList.emplace_back(l_entry.path());
+
+        // ディレクトリの場合は再帰的に中身を収集
+        if (l_entry.is_directory())
+        {
+            CollectFilePathRecursive(l_entry.path(), a_filePathList);
+        }
+    }
 }

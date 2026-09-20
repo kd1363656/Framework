@@ -106,10 +106,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrows
     if (l_cursorITR == l_displayedFolderList.end())
     {
         SelectFolder(l_folderHierarchyMap,
-                    l_displayedFolderList.front(),
-                    a_editorWindow,
-                    a_isRangeSelection,
-                    false);
+                     l_displayedFolderList.front(),
+                     a_editorWindow,
+                     a_isRangeSelection,
+                     false);
 
         return;
     }
@@ -244,24 +244,58 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(AssetBr
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
     const auto& l_selectedFilePathList    = m_selectionState.GetREFSelectedFilePathList ();
-    const auto& l_currentPath             = l_selectedFilePathList.empty() ? l_currentSelectFolderPath : l_selectedFilePathList.back();
-
-    // 閉じている場合のみ展開する
-    if (!IsFolderOpen(l_currentPath))
+    
+    // 選択中フォルダがない場合は現在参照中フォルダを対象にする
+    if (l_selectedFilePathList.empty())
     {
-        ToggleFolderOpen(l_currentPath);
+        // 閉じている場合のみ展開する
+        if (l_selectedFilePathList.empty())
+        {
+            // 閉じている場合のみ展開する
+            if (!IsFolderOpen(l_currentSelectFolderPath))
+            {
+                ToggleFolderOpen(l_currentSelectFolderPath);
+            }
+
+            return;
+        }
+    }
+
+    // 選択中フォルダがある場合は全ての選択中フォルダを開く
+    for (const auto& l_selectedPath : l_selectedFilePathList)
+    {
+        // 閉じている場合のみ展開する
+        if (!IsFolderOpen(l_selectedPath))
+        {
+            ToggleFolderOpen(l_selectedPath);
+        }
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose(AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
     const auto& l_selectedFilePathList    = m_selectionState.GetREFSelectedFilePathList ();
-    const auto& l_currentPath             = l_selectedFilePathList.empty() ? l_currentSelectFolderPath : l_selectedFilePathList.back();
-
-    // 閉じている場合のみ展開する
-    if (IsFolderOpen(l_currentPath))
+    
+    // 選択中フォルダがない場合は現在参照中フォルダを対象にする
+    if (l_selectedFilePathList.empty())
     {
-        ToggleFolderOpen(l_currentPath);
+        // 開いている場合のみ閉じる
+        if (IsFolderOpen(l_currentSelectFolderPath))
+        {
+            ToggleFolderOpen(l_currentSelectFolderPath);
+        }
+
+        return;
+    }
+
+    // 選択中フォルダがある場合は全ての選択中フォルダを閉じる
+    for (const auto& l_selectedPath : l_selectedFilePathList)
+    {
+        // 開いている場合のみ閉じる
+        if (IsFolderOpen(l_selectedPath))
+        {
+            ToggleFolderOpen(l_selectedPath);
+        }
     }
 }
 

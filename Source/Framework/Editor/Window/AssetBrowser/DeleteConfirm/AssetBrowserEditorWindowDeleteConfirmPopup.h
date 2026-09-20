@@ -20,6 +20,8 @@ namespace FWK::Editor
 
     private:
 
+        void CollectFilePathRecursive(const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_filePathList) const;
+
         static constexpr ImVec2 k_modalPopupPivot = { 0.5F, 0.5F };
 
         static constexpr std::string_view k_childLabel   = "##AssetBrowserEditorWindowDeleteConfirmFileList";

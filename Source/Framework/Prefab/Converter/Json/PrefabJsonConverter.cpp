@@ -41,6 +41,8 @@ bool FWK::Converter::PrefabJsonConverter::Rename(const std::filesystem::path& a_
     l_rootJson[k_prefabNameJsonKey] = a_newName;
 
     Utility::SaveJsonFile(l_rootJson, a_newFilePath);
+
+    return true;
 }
 
 void FWK::Converter::PrefabJsonConverter::Load(const nlohmann::json& a_rootJson, Prefab& a_prefab) const
