@@ -75,6 +75,32 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 m_folderPane.AddFolderOpenState(l_childPath, false);
             }
         }
+
+        // 現在参照中フォルダが削除されてツリーから消えた場合
+        // 一階層上の親フォルダへ戻す
+        // 親もMapに存在しない場合はAssetルートへ戻す
+        if (!m_currentSelectFolderPath.empty() &&
+            !m_folderHierarchyMap.contains(m_currentSelectFolderPath))
+        {
+            const auto& l_parentPath = m_currentSelectFolderPath.parent_path();
+
+            // 戻り先フォルダを決定
+            // 親フォルダがマップに存在すれば親フォルダへ
+            // そうでなければルートフォルダのAssetへ
+            // AssetルートはBuildFolderHierarchyMapの開始地点のため必ずマップに存在する
+            const auto& l_fallbackPath = m_folderHierarchyMap.contains(l_parentPath) ? l_parentPath : Constant::k_assetRootFolderPath;
+
+            // 現在参照中のフォルダを戻り先に更新
+            m_currentSelectFolderPath = l_fallbackPath;
+
+            // FolderPaneの選択状態も戻り咲くフォルダへ更新する
+            // ツリーノードの線t買うハイライトが戻り先フォルダに移動する
+            // SelectSingleFolderの第三引数をfalseにして
+            // 現在参照中パスの二重更新を避ける
+            auto& l_folderSelectionState = m_folderPane.GetMutableREFSelectionState();
+
+            l_folderSelectionState.SelectSingleFolder(l_fallbackPath, *this, false);
+        }
     }
 
     // GetContentRegionAvail()は、現在Cursor位置から

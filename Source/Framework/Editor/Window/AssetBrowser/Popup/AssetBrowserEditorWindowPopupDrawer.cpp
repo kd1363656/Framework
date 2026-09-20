@@ -159,14 +159,30 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
             // 選択状態になることでハイライト表示され
             // 次の操作(コピー/切り取り/複製等)の対象になる
             auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
+            
+            // コンテキストに応じて現在参照中フォルダパス(m_currentSelectFolderPath)を制御
+            // AssetPane_OnEmpty   : 変更しない(現在のフォルダに留まり新規フォルダをカード表示)
+            // AssetPane_OnFolder  : 作成先(選択フォルダ)へ移動し新規フォルダをカード表示
+            //                       AssetPaneのDrawCardRenameでリネームする
+            // FolderPane_OnFolder : 新規フォルダへ移動しFolderPaneツリーでリネームする
+            if (a_contextPopup == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)
+            {
+                // 作成先(選択フォルダ)を現在参照中フォルダにする
+                // 新規フォルダがそのフォルダ内にカードとして表示され
+                // AssetPaneのDrawCardRenameでリネーム可能になる
+                a_assetBrowserEditorWindow.SetCurrentSelectFolderPath(a_targetFolderPath);
 
-            // AssetPaneの空白右クリック(フォルダ未選択)から作成した場合は
-            // 現在参照中のフォルダパス(m_currentSelectFolderPath)を変更しない
-            // 新規フォルダへ移動せず現在のフォルダに留まり
-            // 新規フォルダが現在のフォルダ内に表示される
-            const bool l_updateCurrentFolderPath = a_contextPopup != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+                // 新規フォルダを選択(現在参照中フォルダは上で設定済みなので更新しない)
+                l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, false);
+            }
+            else
+            {
+                // AssetPaneOn_Empty    : 現在参照中フォルダを変更しない            (false)
+                // FolderPane_OnFolder : 新規フォルダを現在参照中のファイルダにする(true)
+                const bool l_updateCurrentFolderPath = a_contextPopup != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
 
-            l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, l_updateCurrentFolderPath);
+                l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, l_updateCurrentFolderPath);
+            }
 
             // 作成性孤児、名前変更モードへ移行
             // ユーザーがすぐにフォルダ名を編集できるようにする
