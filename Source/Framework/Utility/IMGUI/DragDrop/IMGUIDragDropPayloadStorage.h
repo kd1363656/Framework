@@ -51,7 +51,12 @@ namespace FWK::Utility
                 if (a_payload.expired()) { return false; }
             }
 
-            if (!ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) { return false; }
+            // ImGuiDragDropFlags_SourceNoHoldToOpenOthersを指定して
+            // ドラッグ中にTreeNodeやCollapsingHeaderをホバーした際の
+            // 自動展開挙動を無効化する
+            // これによりフォルダペインでドラッグ中に
+            // ホバーしたノードが勝手に開く現象を防ぐ
+            if (!ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceNoHoldToOpenOthers)) { return false; }
 
             // Drag開始FrameだけType本体をコピーする
             // Drag中はm_payloadを保持し続けるため

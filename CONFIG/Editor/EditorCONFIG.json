@@ -42,7 +42,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Model",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 349.0
                 },
@@ -51,6 +51,14 @@
                         {
                             "FilePath": "Asset",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder\\NewFolder1\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder1",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Game",
@@ -82,7 +90,7 @@
                         },
                         {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Model\\Actor\\Player",
@@ -167,13 +175,37 @@
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
                             "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder1\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\NewFolder\\NewFolder1",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset",
+                        "RangeSelectionStartPath": "Asset\\Model",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset"
+                                "SelectedFilePath": "Asset\\Model"
                             }
                         ]
                     }

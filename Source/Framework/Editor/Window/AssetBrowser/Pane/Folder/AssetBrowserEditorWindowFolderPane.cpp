@@ -348,14 +348,14 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // リーフノード扱いしないかどうかの判定に使える
     const bool l_hasChild = (l_folderHierarchyITR != l_folderHierarchyMap.end()) &&
                              !l_folderHierarchyITR->second.empty();
-   
+
     // TreeNode用Flagの組み立て
     // WorldOutlinerEditorWindow::DrawSceneNodeと同じパターン
     // SpanAvailWidth    : ノードのクリック範囲をウィンドウ幅いっぱいまで広げる
     // OpenOnArrow       : 矢印部分をクリックした場合のみ開閉する
     // OpenOnDoubleClick : ダブルクリックで開閉する(シングルクリックでは開閉しない)
-    ImGuiTreeNodeFlags l_treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth    |
-                                         ImGuiTreeNodeFlags_OpenOnArrow       |
+    ImGuiTreeNodeFlags l_treeNodeFlags = ImGuiTreeNodeFlags_SpanAvailWidth |
+                                         ImGuiTreeNodeFlags_OpenOnArrow    |
                                          ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
     // もし子を持たなければリーフノードとして扱う
@@ -523,20 +523,24 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     const float l_itemHeight = l_itemMAX.y - l_itemMIN.y;
     const float l_upperBound = l_itemMIN.y + l_itemHeight * Constant::k_imguiDragDropUpperZoneRatio;
     
+    const bool l_isDragging = ImGui::GetDragDropPayload() != nullptr;
+
     // ドラッグ中のペイロードを取得
     // ImGui::GetDragDropPayloadはドラッグ中は非null、非ドラッグ時はnullを返す
     // これでドラッグ中かどうかを判定し
     // 上部ゾーンの場合はBanIconを描画する
-    const bool l_isDragging = ImGui::GetDragDropPayload() != nullptr;
-    
     // 上 : ドロップ不可ゾーン
     if (l_mouseY < l_upperBound)
     {
         // ドラッグ中かつこのノード上にマウスがある場合
         // BanIconをマウス位置に描画してドロップ不可を示す
         // ImGui::IsItemHovered : このTreeNodeEx上にマウスがあるか
+        // ImGuiHoveredFlags_AllowWhenBlockedByActiveItemを指定する
+        // ドラッグ中はg.ActiveIDがドラッグ元アイテムのIDになり
+        // デフォルトのIsItemHovered()は別アイテムがActiveの間falseを返すため
+        // このフラグを付けないとドロップ先ノード上のホバー判定が取れない
         if (l_isDragging &&
-            ImGui::IsItemHovered())
+            ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
         {
             // GetForegroundDrawListは最前面に描画するDrawListを返す
             // 他のUIより手間に描画され生田目アイコンが隠れない
@@ -544,13 +548,16 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
             // BanIconをマウス位置の少し右下に描画
             // マウスカーソルに重ねないようにオフセットを掛ける
-            const auto& l_iconPosition = ImGui::GetMousePos();
-            const auto& l_redColor     = Constant::k_imguiRedColor * Constant::k_imguiImVec4ToImU32;
+            const auto& l_mousePosition = ImGui::GetMousePos();
+
+            const ImVec2& l_iconPosition  = l_mousePosition + k_banIconOffset;
+
+            const auto& l_redColor = Constant::k_imguiRedColor * Constant::k_imguiImVec4ToImU32;
 
             // ImGui::GetFontSizeで現在のフォントサイズを取得
             // BanIconを赤色で描画して禁止を明示する
             l_foregroundDrawList->AddText(ImGui::GetFont(),
-                                          ImGui::GetFontSize(),
+                                          ImGui::GetFontSize() * k_banIconSizeOffset,
                                           l_iconPosition,
                                           IM_COL32(l_redColor.x, 
                                                    l_redColor.y, 
@@ -763,7 +770,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
     // TreeNodeExによってインデントが一段下がっているため
     // TreePopで一段戻す
-    ImGui::TreePop();    
+    ImGui::TreePop();
 }
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList)
