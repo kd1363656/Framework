@@ -26,7 +26,7 @@ namespace FWK::Editor
 
     private:
 
-        void HandleCreateFolder(const std::filesystem::path& a_parentFolderPath,  AssetBrowserEditorWindow& a_editorWindow) const;
+        void HandleCreateFolder(const std::filesystem::path& a_parentFolderPath,  const Enum::AssetBrowserPopupContextType a_contextType, AssetBrowserEditorWindow& a_editorWindow) const;
 
         void HandleRename   (const std::filesystem::path&              a_targetFilePath,       Struct::AssetBrowserEditorWindowRenameState& a_renameState)                                                   const;
         void HandleCopy     (const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;

@@ -32,7 +32,11 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
           auto& l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
     const bool  l_canPaste      = !l_clipboard.IsEmpty                     ();
 
-    // 対象フォルダがルートフォルダかどうか
+    // リネーム対策がルートフォルダかどうか
+    // PopupDrawerのl_isRootFolderと同じ意味にするため
+    // リネーム対象であるa_selectedFilePathで判定する
+    // (FolderPaneではa_selectedFilePath == a_targetFilePathのため従来通り)
+    // (AssetPaneでは選択ファイルがルート化で判定する、ルートはカード表示されないため通常false)
     const bool l_isRootFolder = a_targetFilePath == Constant::k_assetRootFolderPath;
 
     // 選択中リストにルートフォルダが含まれているかどうか
@@ -42,12 +46,40 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // Ctrl + Shift + N : 新規フォルダ作成
     // KeyCtrlとKeyShiftが両方trueで、Nキーが押された瞬間
     // ImGui::IsKeyPressed()は押された瞬間trueを返す
-    if (l_io.KeyCtrl                    &&
-        l_io.KeyShift                   &&
-        ImGui::IsKeyPressed(ImGuiKey_N) &&
-        !l_isMultiSelection)
+    // アクティブPaneと選択状態からコンテキストを判定し
+    // PopupDrawerの右クリックメニューと同じ挙動にする
+    // FolderPane : FolderPane_OnFolder
+    // AssetPane + 未選択       : AssetPane_OnEmpty
+    // AssetPane + フォルダ選択 : AssetPane_OnFolder
+    // AssetPane + ファイル選択 : AssetPane_OnfFile(作成不可)
+    Enum::AssetBrowserPopupContextType l_createFolderContext = Enum::AssetBrowserPopupContextType::FolderPane_OnFolder;
+
+    if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::AssetPane)
     {
-        HandleCreateFolder(a_targetFilePath, a_editorWindow);
+        if (a_selectedFilePathList.empty())
+        {
+            l_createFolderContext = Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+        }
+        else
+        {
+            std::error_code l_errorCode = {};
+
+            l_createFolderContext = std::filesystem::is_directory(a_selectedFilePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
+        }
+    }
+
+    // 作成可能か判定
+    // AssetPane_OnFile(ファイル選択中)は作成不可
+    // PopupDrawerのl_canCreateFolderと同じ条件
+    if (l_io.KeyCtrl                                                                     &&
+        l_io.KeyShift                                                                    &&
+        ImGui::IsKeyPressed(ImGuiKey_N)                                                  &&
+        !l_isMultiSelection                                                              &&
+       (l_createFolderContext == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
+        l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
+        l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty))
+    {
+        HandleCreateFolder(a_targetFilePath, l_createFolderContext, a_editorWindow);
     }
 
     // 操作
@@ -219,7 +251,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, AssetBrowserEditorWindow& a_editorWindow) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(const std::filesystem::path& a_parentFolderPath, const Enum::AssetBrowserPopupContextType a_contextType, AssetBrowserEditorWindow& a_editorWindow) const
 {
     const auto& l_assetCreator = a_editorWindow.GetREFAssetCreator     ();
           auto& l_folderPane   = a_editorWindow.GetMutableREFFolderPane();
@@ -238,14 +270,37 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     l_folderPane.ApplyFolderOpenState(a_parentFolderPath, true);
 
     // 作成したフォルダを現在選択中のファイルパスにする
-    // 選択状態になることでハイライト表示され
-    // 次の操作(コピー/切り取り/複製等)の対象になる
+    // 選択状態になるとハイライト表示され
+    // 次の走査(コピー/切り取り/複製)の対象になる
     auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
 
-    l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow);
+    // コンテキストに応じて現在参照中のフォルダパスを制御
+    // PopupDrawer::DrawCreateFolderMenuと同じ挙動にする
+    // AssetPane_OnEmpty   : 変更しない(現在のフォルダにとどまり新規フォルダをカード表示)
+    // AssetPane_OnFolder  : 作成先(選択フォルダ)へ移動し新規フォルダをカード表示
+    //                       AssetPaneのDrawCardRenameでリネームする
+    // FolderPane_OnFolder : 新規フォルダへ移動しFolderPaneツリーでリネームする
+    if (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder)
+    {
+        // 作成先(選択フォルダ)を現在参照中フォルダにする
+        // 新規フォルダがそのフォルダ内にカードとして表示され
+        // AssetPaneのDrawCardRenameでリネーム可能になる
+        a_editorWindow.SetCurrentSelectFolderPath(a_parentFolderPath);
 
-    // 作成成功時、名前へ移行モードへ移行
-    // PopupDrawer::StartRenameと同じ処理だが、
+        // 新規フォルダを選択(現在参照中フォルダは上で設定済みなので更新しない)
+        l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow, false);
+    }
+    else
+    {
+        // AssetPane_OnEmpty   : 現在選択中フォルダを変更しない(false)
+        // FolderPane_OnFolder : 新規フォルダを現在参照中フォルダにする(true)
+        const bool l_updateCurrentFolderPath = a_contextType != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+
+        l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_editorWindow, l_updateCurrentFolderPath);
+    }
+
+    // 作成成功時、名前変更モードへ移行
+    // PopupDrawer::StartRenameと同じ処理だが
     // ShortcutHandlerはPopupDrawerに依存せずに独自に名前変更モードを起動する
     l_renameState.m_targetFilePath = l_result.m_createdFilePath;
     l_renameState.m_isActive       = true;
@@ -256,7 +311,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCreateFolder(co
     // バッファをゼロクリア
     l_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
 
-    // ファイル名をバッファへコピー
+    // ファイルっ名をバッファへコピー
     const auto l_copySize = std::min(l_stem.size(), l_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
     std::copy_n(l_stem.begin(), l_copySize, l_renameState.m_inputBuffer.begin());

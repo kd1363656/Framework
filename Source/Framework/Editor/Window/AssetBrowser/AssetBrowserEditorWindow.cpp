@@ -161,26 +161,24 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
                 const auto& l_selectionState          = m_assetPane.GetREFSelectionState           ();
                 const auto& l_selectedFilePathList    = l_selectionState.GetREFSelectedFilePathList();
 
-                // 操作対象フォルダ
-                // 選択中ファイルがある場合はその親フォルダ
-                // ない場合は現在参照中フォルダ、それも空ならAsseルート
+                // 捜査対象フォルダ
+                // PopupDrawerの右クリックメニューと同じ挙動にするため
+                // 選択中ファイルがフォルダの場合はそのフォルダ自身を捜査対象にする
+                // (新規作成・貼り付け先がそのフォルダの中になる)
+                // 選択中ファイルがファイルの場合はその親フォルダを捜査対象にする
+                // 未選択の場合は現在参照中フォルダ、それも空なAssetルート
                 std::filesystem::path l_operationTargetFolderPath = {};
-
+                std::error_code       l_errorCode                 = {};
+                
                 if (!l_selectedFilePathList.empty())
                 {
-                    l_operationTargetFolderPath = l_operationTargetFilePath.parent_path();
+                    l_operationTargetFolderPath = std::filesystem::is_directory(l_operationTargetFilePath, l_errorCode) ? l_operationTargetFilePath : l_operationTargetFilePath.parent_path();
                 }
-                else
+                else 
                 {
                     const auto& l_currentPath = m_currentSelectFolderPath;
 
                     l_operationTargetFolderPath = l_currentPath.empty() ? Constant::k_assetRootFolderPath : l_currentPath;
-                }
-
-                // Handleがからパスを許容するよう、空の場合はAssetルートにフォールバック
-                if (l_operationTargetFilePath.empty())
-                {
-                    l_operationTargetFolderPath = Constant::k_assetRootFolderPath;
                 }
 
                 // リネーム対象
