@@ -642,6 +642,7 @@
 #include "Editor/Window/AssetBrowser/Selection/Converter/Json/AssetBrowserEditorWindowSelectionStateJsonConverter.h"
 #include "Editor/Window/AssetBrowser/Selection/AssetBrowserEditorWindowSelectionState.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/Converter/Json/AssetBrowserEditorWindowFolderPaneJsonConverter.h"
+#include "Definition/Enum/Editor/Window/AssetBrowserEditorWindowDeleteConfirmPopupEnum.h"
 #include "Definition/Struct/Editor/Window/AssetBrowserEditorWindowDeleteConfirmPopupStruct.h"
 #include "Editor/Window/AssetBrowser/DeleteConfirm/AssetBrowserEditorWindowDeleteConfirmPopup.h"
 #include "Editor/Window/AssetBrowser/Pane/Folder/AssetBrowserEditorWindowFolderPane.h"

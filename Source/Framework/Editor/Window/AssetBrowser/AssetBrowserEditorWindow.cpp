@@ -130,7 +130,8 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
     // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
     if (const auto& l_io = ImGui::GetIO();
         ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows) &&
-        !l_io.WantTextInput)
+        !l_io.WantTextInput                                    &&
+        !m_deleteConfirmState.m_isActive)
     {
         switch (m_activePane)
         {

@@ -9,6 +9,14 @@ namespace FWK::Editor
 {
     class AssetBrowserEditorWindowDeleteConfirmPopup final
     {
+    private:
+
+        struct ButtonDrawResult
+        {
+            bool m_isDeleteClicked = false;
+            bool m_isCancelClicked = false;
+        };
+
     public:
 
          AssetBrowserEditorWindowDeleteConfirmPopup() = default;
@@ -19,6 +27,12 @@ namespace FWK::Editor
         void Draw(AssetBrowserEditorWindow& a_editorWindow) const;
 
     private:
+
+        void             DrawFileList(      Struct::AssetBrowserEditorWindowDeleteConfirmState& a_deleteConfirmState)                                                                          const;
+        ButtonDrawResult DrawButtons (const float                                               a_cancelButtonWidth, Struct::AssetBrowserEditorWindowDeleteConfirmState& a_deleteConfirmState) const;
+
+        void HandleKeySelection(      Struct::AssetBrowserEditorWindowDeleteConfirmState& a_deleteConfirmState)                                                                                                                   const;
+        void HandleConfirm     (const ButtonDrawResult&                                   a_buttonDrawResult, AssetBrowserEditorWindow& a_editorWindow, Struct::AssetBrowserEditorWindowDeleteConfirmState& a_deleteConfirmState) const;
 
         void CollectFilePathRecursive(const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_filePathList) const;
 
@@ -33,7 +47,10 @@ namespace FWK::Editor
         static constexpr float k_fileListChildHeight      = 300.0F;
         static constexpr float k_framePaddingBothSidesNUM = 2.0F;
 
-        static constexpr float k_popupWidth  = 500.0F;
-        static constexpr float k_popupHeight = 400.0F;
+        static constexpr float k_popupWidth            = 500.0F;
+        static constexpr float k_popupHeight           = 400.0F;
+        static constexpr float k_buttonFrameBorderSize = 2.0F;
+
+        static constexpr int k_hoveredPopStyleColorNUM = 2;
     };
 }

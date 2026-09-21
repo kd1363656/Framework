@@ -3066,6 +3066,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

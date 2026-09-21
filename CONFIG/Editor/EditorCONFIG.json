@@ -65,6 +65,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -77,15 +81,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -117,11 +117,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
@@ -161,12 +161,12 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder1",
+                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
-                            "IsOpen": false
+                            "FilePath": "Asset\\NewFolder1",
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
@@ -174,18 +174,10 @@
                         },
                         {
                             "FilePath": "Asset\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder1",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder\\NewFolder\\NewFolder1",
+                            "FilePath": "Asset\\NewFolder1\\NewFolder",
                             "IsOpen": false
                         }
                     ],
