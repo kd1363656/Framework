@@ -16,9 +16,11 @@ namespace FWK::Editor
 
         void SetSelectedGameObjectUUIDList(const std::vector<boost::uuids::uuid>& a_set) { m_selectedGameObjectUUIDList = a_set; }
 
+        void SetIsSceneSelected(const bool a_set) { m_isSceneSelected = a_set; }
+
         const auto& GetREFSelectedGameObjectUUIDList() const { return m_selectedGameObjectUUIDList; }
 
-        bool GetVALSceneSelected() const { return m_isSceneSelected; }
+        bool GetVALIsSceneSelected() const { return m_isSceneSelected; }
 
     private:
     

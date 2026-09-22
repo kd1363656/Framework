@@ -657,6 +657,8 @@
 #include "Editor/Window/AssetBrowser/Pane/Asset/Converter/Json/AssetBrowserEditorWindowAssetPaneJsonConverter.h"
 #include "Editor/Window/AssetBrowser/Pane/Asset/AssetBrowserEditorWindowAssetPane.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"
+
 #include "Editor/Window/Outliner/Selection/Command/GameObject/WorldOutlinerEditorWindowSelectGameObjectCommand.h"
+#include "Editor/Window/Outliner/Selection/Command/Scene/WorldOutlinerEditorWindowSelectSceneCommand.h"
 #include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowSelectionState.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"
