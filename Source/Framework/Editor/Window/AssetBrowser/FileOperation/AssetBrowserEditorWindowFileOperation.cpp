@@ -78,7 +78,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vector<std::filesystem::path>& a_filePathList)
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vector<std::filesystem::path>& a_filePathList) const
 {
     for (const auto& l_filePath : a_filePathList)
     {
@@ -97,109 +97,129 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vecto
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Copy(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard)
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Copy(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // ClipboardへCopy操作として設定する
     a_clipboard.Apply(a_filePathList, Enum::AssetBrowserFileClipboardOperationType::Copy);
 }
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard)
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<std::filesystem::path>& a_filePathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // ClipboardへCut操作として設定する
     a_clipboard.Apply(a_filePathList, Enum::AssetBrowserFileClipboardOperationType::Cut);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::filesystem::path& a_destinationFolderPath, AssetBrowserEditorWindowClipboard& a_clipboard)
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // Clipboardが空なら何もしない
     if (a_clipboard.IsEmpty()) { return; }
 
+    // 貼り付け先フォルダが一つもなければ何もしない
+    if (a_destinationFolderPathList.empty()) { return; }
+    
     const auto l_operationType = a_clipboard.GetVALOperationType();
 
     // 走査種別がInvalidなら何もしない
-    if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) 
-    {
-        return; 
-    }
+    if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) { return; }
 
     const auto& l_clipboardFilePathList = a_clipboard.GetREFFilePathList();
 
-    // Clipboard内の各ファイルを貼り付け先へコピーする
-    // 同名衝突時は貼り付け側に番号付与する
-    for (const auto& l_sourceFilePath : l_clipboardFilePathList)
+    // 全ての貼り付け先フォルダへ貼り付けを行ってから
+    // Cut操作のコピー元削除とClipboardクリアを行う
+    // フォルダごとにクリアすると2フォルダ目以降へ張り付けられなくなるため
+    // ここではコピーだけ行い削除/クリアはループの外で行う
+    for (const auto& l_destinationFolderPath : a_destinationFolderPathList)
     {
-        // 貼り付け先Path = コピー先フォルダ/元ファイル名
-        auto l_destinationFilePath = a_destinationFolderPath / l_sourceFilePath.filename();
-     
+        // ディレクトリでなければcontinue;
         std::error_code l_errorCode = {};
-     
-        // コピー先がコピー元の中(または自分自身)にあるかチェック
-        // 例: Source      = "Asset/NewFolder"
-        //     Destination = "Asset/NewFolder/NewFolder"
-        // この場合、std::filesystem::copy(recursive)は
-        // コピー先(自分自身)もコピー対象になってしまい無限再帰する
-        bool l_isDestinationInsideSource = false;
-     
-        // 親パスが空になるまで処理を実行する
-        for (auto l_parent = a_destinationFolderPath; !l_parent.empty(); l_parent = l_parent.parent_path())
+
+        if (!std::filesystem::is_directory(l_destinationFolderPath, l_errorCode)) { continue; }
+
+        if (l_errorCode)
         {
-            // equivalent()はOSレベルで同じファイル/ディレクトリかを判定する
-            // パスの表記揺れ(絶対/相対、スラッシュ/バックスラッシュ)を吸収する
-            if (std::filesystem::equivalent(l_parent, l_sourceFilePath, l_errorCode))
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ペースト処理に失敗しました");
+
+            continue;
+        }
+
+        l_errorCode.clear();
+
+        // Clipboard内の各ファイルを貼り付け先へコピーする
+        // 同名衝突時は貼り付け側に番号付与する
+        for (const auto& l_sourceFilePath : l_clipboardFilePathList)
+        {
+            // 貼り付け先Path = コピー先フォルダ/元ファイル名
+            auto l_destinationFilePath = l_destinationFolderPath / l_sourceFilePath.filename();
+            
+            // コピー先がコピー元の中(または自分自身)にあるかチェック
+            // 例: Source      = "Asset/NewFolder"
+            //     Destination = "Asset/NewFolder/NewFolder"
+            // この場合、std::filesystem::copy(recursive)は
+            // コピー先(自分自身)もコピー対象になってしまい無限再帰する
+            bool l_isDestinationInsideSource = false;
+            
+            // 親パスが空になるまで処理を実行する
+            for (auto l_parent = l_destinationFolderPath; !l_parent.empty(); l_parent = l_parent.parent_path())
             {
-                l_isDestinationInsideSource = true;
+                // equivalent()はOSレベルで同じファイル/ディレクトリかを判定する
+                // パスの表記揺れ(絶対/相対、スラッシュ/バックスラッシュ)を吸収する
+                if (std::filesystem::equivalent(l_parent, l_sourceFilePath, l_errorCode))
+                {
+                    l_isDestinationInsideSource = true;
+
+                    l_errorCode.clear();
+
+                    break;
+                }
 
                 l_errorCode.clear();
-
-                break;
+            }
+            
+            // 同名が存在する場合は番号付与したPathへ貼り付ける(上書きしない)
+            // 例: Asset/NewFolder を Asset に貼り付け、Asset/NewFolderが既にある -> Asset/NewFolder1 (兄弟番号付与)
+            // 内部へ貼り付ける場合も頂点のPathを番号付与する
+            if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
+            {
+                l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
             }
 
-            l_errorCode.clear();
-        }
-     
-        // 同名が存在する場合は番号付与したPathへ貼り付ける(上書きしない)
-        // 例: Asset/NewFolder を Asset に貼り付け、Asset/NewFolderが既にある -> Asset/NewFolder1 (兄弟番号付与)
-        // 内部へ貼り付ける場合も頂点のPathを番号付与する
-        if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
-        {
-            l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
-        }
-
-        if (l_isDestinationInsideSource)
-        {
-            // 自分自身の中へ貼り付ける
-            // std::filesystem::copy(recursive)はコピー先がコピー元の中にあると
-            // 無限再帰するため、自前の再帰コピー関数を使う
-            // 各レベルでコピー先ツリーの頂点と一致するエントリをスキップして爆発を防ぐ
-            // 第3引数にはコピー先ツリーの頂点(= l_destinationFilePath)を渡す
-            // 再帰の内側でも同じ頂点を引き回してスキップ判定に使う
-            // なお頂点は上で番号付与済みなのでCopyRecursiveSkippingDestination内では
-            // 頂点が存在することはなくcreatedirectoriesで新規作成される
-            CopyRecursiveSkippingDestination(l_sourceFilePath, l_destinationFilePath, l_destinationFilePath);
-        }
-        else
-        {
-            // 通常の再帰コピー
-            // コピー先はコピー元の外なので無限再帰しない
-            std::filesystem::copy(l_sourceFilePath,
-                                  l_destinationFilePath,
-                                  std::filesystem::copy_options::recursive,
-                                  l_errorCode);
-
-            if (l_errorCode)
+            if (l_isDestinationInsideSource)
             {
-                FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-                            "ファイルの貼り付けに失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
-                            l_sourceFilePath.string(),
-                            l_destinationFilePath.string(),
-                            l_errorCode.value());
+                // 自分自身の中へ貼り付ける
+                // std::filesystem::copy(recursive)はコピー先がコピー元の中にあると
+                // 無限再帰するため、自前の再帰コピー関数を使う
+                // 各レベルでコピー先ツリーの頂点と一致するエントリをスキップして爆発を防ぐ
+                // 第3引数にはコピー先ツリーの頂点(= l_destinationFilePath)を渡す
+                // 再帰の内側でも同じ頂点を引き回してスキップ判定に使う
+                // なお頂点は上で番号付与済みなのでCopyRecursiveSkippingDestination内では
+                // 頂点が存在することはなくcreatedirectoriesで新規作成される
+                CopyRecursiveSkippingDestination(l_sourceFilePath, l_destinationFilePath, l_destinationFilePath);
+            }
+            else
+            {
+                // 通常の再帰コピー
+                // コピー先はコピー元の外なので無限再帰しない
+                std::filesystem::copy(l_sourceFilePath,
+                                      l_destinationFilePath,
+                                      std::filesystem::copy_options::recursive,
+                                      l_errorCode);
+
+                if (l_errorCode)
+                {
+                    FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                                "ファイルの貼り付けに失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
+                                l_sourceFilePath.string(),
+                                l_destinationFilePath.string(),
+                                l_errorCode.value());
+                }
             }
         }
     }
 
-    // Cut操作の以外はここで処理を終わる
+    // Cut操作以外はここで処理を終了
     if (l_operationType != Enum::AssetBrowserFileClipboardOperationType::Cut) { return; }
 
-    // クリップボードにコピーしたコピー元ファイルを削除する
+    // クリップオードにコピーしたコピー元ファイルを削除する
+    // 全フォルダへ貼り付けが終わった後に行う
     for (const auto& l_sourceFilePath : l_clipboardFilePathList)
     {
         std::error_code l_errorCode = {};
@@ -207,11 +227,11 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::filesy
         std::filesystem::remove_all(l_sourceFilePath, l_errorCode);
     }
 
-    // 貼り付け完了後にClipboardをクリアする
+    // 全フォルダへの貼り付け完了後にClipboardへクリアする
     a_clipboard.Clear();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::vector<std::filesystem::path>&a_filePathList)
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::vector<std::filesystem::path>&a_filePathList) const
 {
     for (const auto& l_sourceFilePath : a_filePathList)
     {

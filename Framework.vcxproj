@@ -345,6 +345,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.h" />
     <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\SoundEffectInstanceBase.h" />
     <ClInclude Include="Source\Framework\Audio\SoundEffect\SoundEffect.h" />
+    <ClInclude Include="Source\Framework\Command\ICommand.h" />
     <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
@@ -391,6 +392,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Component\IsDerivedComponentBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorWindowBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedICommandConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedAssetRecordBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedComputeRequestPerObjectBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedDynamicBufferUploaderBaseConcept.h" />
@@ -558,6 +560,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
+    <ClInclude Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.h" />
@@ -593,6 +596,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
+    <ClInclude Include="Source\Framework\GameObject\Inspector\GameObjectInspector.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\DirectAndComputeCommandListBase.h" />
@@ -898,6 +902,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
+    <ClCompile Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.cpp" />
@@ -930,6 +935,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Inspector\GameObjectInspector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp" />

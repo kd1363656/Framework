@@ -90,6 +90,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
         !ImGui::IsAnyItemHovered() &&
         ImGui::IsMouseClicked(ImGuiMouseButton_Right))
     {
+        // 空白右クリック時は選択状態を解除
+        // 左クリック時(上のブロック)と同じ解除処理を行うことで
+        // 選択中のファイルが残ったまま空のポップアップが出るのを防ぐ
+        m_selectionState.ClearSelection();
+        m_currentCursorFilePath.clear  ();
+
         l_popupDrawer.BeginPopup(k_emptySpaceContextMenuLabel);
     }
 

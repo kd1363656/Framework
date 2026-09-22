@@ -80,6 +80,9 @@
 #include "Editor/MainMenu/Converter/Json/MainMenuBarEditorJsonConverter.h"
 #include "Definition/Constant/Editor/MainMenu/MainMenuBarEditorConstant.h"
 #include "Editor/MainMenu/MainMenuBarEditor.h"
+#include "Command/ICommand.h"
+#include "Definition/Concept/IsDerivedBase/Editor/IsDerivedICommandConcept.h"
+#include "Editor/UndoRedo/UndoRedoSystem.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
@@ -503,6 +506,7 @@
 #include "GameObject/Converter/Json/Prefab/GameObjectPrefabJsonConverter.h"
 #include "GameObject/Converter/Json/Scene/GameObjectSceneJsonConverter.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
+#include "GameObject/Inspector/GameObjectInspector.h"
 #include "GameObject/GameObject.h"
 #include "Utility/GameObject/GameObjectUtility.h"
 

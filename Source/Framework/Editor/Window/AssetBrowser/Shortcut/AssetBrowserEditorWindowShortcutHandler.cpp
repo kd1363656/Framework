@@ -27,10 +27,10 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     const bool l_isMultiSelection = a_selectedFilePathList.size() > Constant::k_editorSelectedFolderSingleSize;
 
     // クリップボードが空でないか(貼り付けの判定に使用)
-          auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard    ();
-          auto& l_renameState   = a_editorWindow.GetMutableREFRenameState  ();
-          auto& l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
-    const bool  l_canPaste      = !l_clipboard.IsEmpty                     ();
+          auto& l_clipboard     = a_editorWindow.GetMutableREFClipboard  ();
+          auto& l_renameState   = a_editorWindow.GetMutableREFRenameState();
+    const auto& l_fileOperation = a_editorWindow.GetREFFileOperation     ();
+    const bool  l_canPaste      = !l_clipboard.IsEmpty                   ();
 
     // リネーム対策がルートフォルダかどうか
     // PopupDrawerのl_isRootFolderと同じ意味にするため
@@ -123,12 +123,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
         l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_V))
     {
-        // 現在参照中フォルダを取得
-        // 空の場合はAssetルートへフォールバック
-        const auto& l_currentFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-        const auto& l_pasteTargetFolder  = l_currentFolderPath.empty() ? Constant::k_assetRootFolderPath : l_currentFolderPath;
-
-        HandlePaste(l_pasteTargetFolder, l_fileOperation, l_clipboard);
+        HandlePaste(a_selectedFilePathList, l_fileOperation, l_clipboard);
     }
 
     // Ctrl + D : 複製
@@ -353,25 +348,25 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const st
 
     std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCopy(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Copyで選択中のファイルをクリップボードへコピー
     // コピー元ファイルは削除されない
     a_fileOperation.Copy(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Cutで選択中のファイルをクリップボードへ切り取り
     // 貼り付け時に元ファイルが削除される
     a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::filesystem::path& a_targetFolderPath, AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const
 {
     // FileOperation::Pasteでクリップボードのファイルを現在フォルダへ張り付け
-    // Cutの場合は元ファイルを削除、Copyの場合は複製
-    a_fileOperation.Paste(a_targetFolderPath, a_clipboard);
+// Cutの場合は元ファイルを削除、Copyの場合は複製
+    a_fileOperation.Paste(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDuplicate(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindowFileOperation& a_fileOperation) const
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDuplicate(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation) const
 {
     // FileOperation::Duplicateで選択中のファイルを複製
     // 同名の場合は自動で番号付与される(Player -> Player1)

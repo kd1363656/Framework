@@ -1573,6 +1573,15 @@
     <Filter Include="Shader\Camera">
       <UniqueIdentifier>{dc0cb1a8-9f2c-4d66-ab3a-b06139b80ec8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Inspector">
+      <UniqueIdentifier>{7a14eabe-01aa-4056-b9eb-0e6d447d3afa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Command">
+      <UniqueIdentifier>{28ccaa15-3573-4134-be2e-a4bee94b0b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\UndoRedo">
+      <UniqueIdentifier>{8898f35f-2fb0-45e2-a38f-d6d27f5e0d56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3069,6 +3078,18 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Inspector\GameObjectInspector.h">
+      <Filter>Source\Framework\GameObject\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Command\ICommand.h">
+      <Filter>Source\Framework\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.h">
+      <Filter>Source\Framework\Editor\UndoRedo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedICommandConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3859,6 +3880,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Inspector\GameObjectInspector.cpp">
+      <Filter>Source\Framework\GameObject\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.cpp">
+      <Filter>Source\Framework\Editor\UndoRedo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
