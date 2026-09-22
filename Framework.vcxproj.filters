@@ -604,9 +604,6 @@
     <Filter Include="Source\Framework\Physics\DebugDraw\Batch">
       <UniqueIdentifier>{a5af2d25-0569-4ad7-9839-0149c3d9a767}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\Array">
-      <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\MainMenu">
       <UniqueIdentifier>{184fcadd-9b45-42f8-9601-0469ed2de2df}</UniqueIdentifier>
     </Filter>
@@ -1603,6 +1600,9 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene">
       <UniqueIdentifier>{baf16fc0-9923-4590-afc9-df873ef967fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\List">
+      <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2144,9 +2144,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArrayUtility.h">
-      <Filter>Source\Framework\Utility\Array</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Editor\IsDerivedEditorMainMenuBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Editor</Filter>
@@ -3125,6 +3122,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
+      <Filter>Source\Framework\Utility\List</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,11 @@
 ﻿#include "GameObjectPrefabJsonConverter.h"
 
-bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_ptr<GameObject>&                                        a_gameObject,
-                                                                const nlohmann::json&                                                   a_rootJson,
-                                                                      std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-                                                                      std::unordered_set<boost::uuids::uuid>&                           a_prefabUUIDSet,
-                                                                      Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-                                                                      Scene&                                                            a_scene) const
+bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_ptr<GameObject>&                                       a_gameObject,
+                                                                const nlohmann::json&                                                  a_rootJson,
+                                                                      std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
+                                                                      std::unordered_set<boost::uuids::uuid>&                          a_prefabUUIDSet,
+                                                                      Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
+                                                                      Scene&                                                           a_scene) const
 {
     if (a_rootJson.is_null()) { return false; }
 
@@ -67,7 +67,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
     l_gameObject->SetSceneInstanceName(l_prefabName);
 
     // コンポーネントのプレハブデータのデシリアライズ
-    if (!DeserializePrefabComponent(a_gameObject, l_prefabJson, a_componentSmartPointerVectorArray))
+    if (!DeserializePrefabComponent(a_gameObject, l_prefabJson, a_componentSmartPointerVectorList))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
@@ -141,7 +141,7 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::Serialize(const Ga
     return l_rootJson;
 }
 
-bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponent(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray) const
+bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponent(const std::weak_ptr<GameObject>& a_gameObject, const nlohmann::json& a_rootJson, Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList) const
 {
     const auto& l_gameObject = a_gameObject.lock();
 
@@ -190,7 +190,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponent(c
 
             // Scene情報はPrefabと同じ順番で上書きするため
             // Componentの格納順番を維持する
-            a_componentSmartPointerVectorArray.Add(l_component);
+            a_componentSmartPointerVectorList.Add(l_component);
         }
     }
 
@@ -248,7 +248,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabChildList(c
         // 孫以下でも同じ親Prefab階層を確認できる
         if (!l_child->DeserializePrefab(l_childJson,
                                         l_childDeserializeData.m_childDeserializeDataList,
-                                        l_childDeserializeData.m_componentSmartPointerVectorArray,
+                                        l_childDeserializeData.m_componentSmartPointerVectorList,
                                         a_prefabUUIDSet,
                                         a_scene))
         {
@@ -279,10 +279,11 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabCom
     }
 
     // 保存順を保つためにjson::arrayで保存
-          auto  l_componentJsonArray               = nlohmann::json::array                              ();
-    const auto& l_componentSmartPointerVectorArray = a_gameObject.GetREFComponentSmartPointerVectorArray();
+          auto  l_componentJsonArray              = nlohmann::json::array                                  ();
+    const auto& l_componentSmartPointerVectorList = a_gameObject.GetREFComponentSmartPointerVectorList     ();
+    const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList();
 
-    for (const auto& l_componentData : l_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -318,10 +319,11 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabChi
 {
     auto l_rootJsonArray = nlohmann::json::array();
 
-    const auto& l_childSmartPointerVectorArray = a_gameObject.GetREFChildSmartPointerVectorArray();
+    const auto& l_childSmartPointerVectorList = a_gameObject.GetREFChildSmartPointerVectorList     ();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
 
     // ルートから全ての子情報を再帰的に保存していく
-    for (const auto& l_childData : l_childSmartPointerVectorArray.GetREFArrayElementDataList())
+    for (const auto& l_childData : l_childDataList)
     {
         auto l_child = l_childData.m_type.lock();
 

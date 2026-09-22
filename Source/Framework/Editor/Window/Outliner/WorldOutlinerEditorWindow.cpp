@@ -143,8 +143,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     if (l_hasDrawableChildGameObject &&
         l_isGameObjectNodeOpen)
     {
-        const auto& l_childSmartPointerVectorArray = l_gameObject->GetREFChildSmartPointerVectorArray         ();
-        const auto& l_childDataList                = l_childSmartPointerVectorArray.GetREFArrayElementDataList();
+        const auto& l_childSmartPointerVectorList = l_gameObject->GetREFChildSmartPointerVectorList    ();
+        const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
 
         for (const auto& l_childData : l_childDataList)
         {
@@ -206,8 +206,8 @@ bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableRootGameObject(const Sce
 }
 bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableChildGameObject(const GameObject& a_gameObject) const
 {
-    const auto& l_childSmartPointerVectorArray = a_gameObject.GetREFChildSmartPointerVectorArray          ();
-    const auto& l_childDataList                = l_childSmartPointerVectorArray.GetREFArrayElementDataList();
+    const auto& l_childSmartPointerVectorList = a_gameObject.GetREFChildSmartPointerVectorList     ();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
 
     // TreeNodeEx()を呼ぶより前にLeafかどうかを判断するため、
     // 描画可能Childが一つ存在するかだけ確認する

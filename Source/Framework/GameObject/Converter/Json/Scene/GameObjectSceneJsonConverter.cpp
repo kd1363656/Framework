@@ -1,10 +1,10 @@
 ﻿#include "GameObjectSceneJsonConverter.h"
 
-bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::json&                                                   a_rootJson,
-                                                                     std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-                                                                     Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-                                                                     GameObject&                                                       a_gameObject,
-                                                                     Scene&                                                            a_scene) const
+bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::json&                                                  a_rootJson,
+                                                                     std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
+                                                                     Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
+                                                                     GameObject&                                                      a_gameObject,
+                                                                     Scene&                                                           a_scene) const
 {
     if (a_rootJson.is_null())
     {
@@ -33,7 +33,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
     }
 
     // コンポーネントのシーン情報のデシリアライズ
-    if (!DeserializeSceneComponent(a_rootJson, a_componentSmartPointerVectorArray, a_gameObject)) { return false; }
+    if (!DeserializeSceneComponent(a_rootJson, a_componentSmartPointerVectorList, a_gameObject)) { return false; }
 
     // 子ゲームオブジェクトのシーン情報のデシリアライズ
     if (const auto& l_childListJson = a_rootJson.value(Constant::k_gameObjectChildListJsonKey, nlohmann::json{});
@@ -100,7 +100,7 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::Serialize(const Gam
     return l_rootJson;
 }
 
-bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneComponent(const nlohmann::json& a_rootJson, Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, GameObject& a_gameObject) const
+bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneComponent(const nlohmann::json& a_rootJson, Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList, GameObject& a_gameObject) const
 {
     const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
 
@@ -119,7 +119,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneComponent(con
         !l_componentJsonArray.is_null() &&
         Utility::IsJsonArray(l_componentJsonArray))
     {
-        auto& l_componentList = a_componentSmartPointerVectorArray.GetMutableREFArrayElementDataList();
+        auto& l_componentList = a_componentSmartPointerVectorList.GetMutableREFElementDataList();
 
         // コンポーネント数が一致しない場合コンポーネントのデシリアライズを行わない
         if (l_componentJsonArray.size() != l_componentList.size())
@@ -193,7 +193,7 @@ bool FWK::Converter::GameObjectSceneJsonConverter::DeserializeSceneChildList(con
 
         if (!l_childDeserializeData.m_self->DeserializeScene(l_json,
                                                              l_childDeserializeData.m_childDeserializeDataList,
-                                                             l_childDeserializeData.m_componentSmartPointerVectorArray,
+                                                             l_childDeserializeData.m_componentSmartPointerVectorList,
                                                              a_scene))
         {
             return false;
@@ -225,9 +225,10 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::SerializeSceneCompo
     // 保存順を保つためにjson::arrayで保存
     auto l_componentJsonArray = nlohmann::json::array();
 
-    const auto& l_componentSmartPointerVectorArray = a_gameObject.GetREFComponentSmartPointerVectorArray();
+    const auto& l_componentSmartPointerVectorList = a_gameObject.GetREFComponentSmartPointerVectorList     ();
+    const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList();
 
-    for (const auto& l_componentData : l_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -255,8 +256,11 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::SerializeSceneChild
 {
     auto l_rootJsonArray = nlohmann::json::array();
 
+    const auto& l_childSmartPointerVectorList = a_gameObject.GetREFChildSmartPointerVectorList   ();
+    const auto& l_childDataList             = l_childSmartPointerVectorList.GetREFElementDataList();
+
     // ルートから全ての子情報を再帰的に保存していく
-    for (const auto& l_childData : a_gameObject.GetREFChildSmartPointerVectorArray().GetREFArrayElementDataList())
+    for (const auto& l_childData : l_childDataList)
     {
         auto l_child = l_childData.m_type.lock();
 

@@ -13,11 +13,11 @@ namespace FWK::Graphics
 
         void AddComputeRequest(const std::shared_ptr<SkeletalAnimationPlayer>& a_skeletalAnimationPlayer);
 
-        const auto& GetREFSkeletalAnimationPlayerSmartPointerVectorArray() const { return m_skeletalAnimationPlayerSmartPointerVectorArray; }
+        const auto& GetREFSkeletalAnimationPlayerSmartPointerVectorList() const { return m_skeletalAnimationPlayerSmartPointerVectorList; }
 
     private:
 
-        Utility::SmartPointerVectorArray<std::weak_ptr<SkeletalAnimationPlayer>> m_skeletalAnimationPlayerSmartPointerVectorArray = {};
+        Utility::SmartPointerVectorList<std::weak_ptr<SkeletalAnimationPlayer>> m_skeletalAnimationPlayerSmartPointerVectorList = {};
 
         FWK_DEFINE_TYPE_INFO(SkeletalAnimationPerObjectComputeRequest, ComputeRequestPerObjectBase)
     };

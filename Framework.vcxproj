@@ -799,7 +799,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Strategy\StrategyBase.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
-    <ClInclude Include="Source\Framework\Utility\Array\SmartPointerVectorArrayUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\CanLoadFileUtility.h" />
     <ClInclude Include="Source\Framework\Utility\File\ResolveFilePathConflictByNumberSuffixUtility.h" />
@@ -822,6 +821,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h" />
+    <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathAlignUpUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathMatrixUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h" />

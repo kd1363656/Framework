@@ -8,7 +8,7 @@
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Definition/Macros/Assert/AssertReturnMacros.h"
-#include "Utility/Array/SmartPointerVectorArrayUtility.h"
+#include "Utility/List/SmartPointerVectorListUtility.h"
 
 //===============================================================================
 // 型情報

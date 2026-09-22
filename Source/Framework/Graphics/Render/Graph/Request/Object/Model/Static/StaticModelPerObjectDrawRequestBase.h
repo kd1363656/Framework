@@ -19,7 +19,7 @@ namespace FWK::Graphics
 
         bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const;
 
-        Utility::SmartPointerVectorArray<std::weak_ptr<Struct::StaticModelPerObjectDrawRequestData>> m_forwardDrawRequestDataSmartPointerVectorArray = {};
+        Utility::SmartPointerVectorList<std::weak_ptr<Struct::StaticModelPerObjectDrawRequestData>> m_forwardDrawRequestDataSmartPointerVectorList = {};
 
         static constexpr UINT k_defaultDispatchMeshThreadGroupCountY = 1U;
         static constexpr UINT k_defaultDispatchMeshThreadGroupCountZ = 1U;

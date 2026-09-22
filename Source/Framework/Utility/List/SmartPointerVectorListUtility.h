@@ -7,7 +7,7 @@ namespace FWK::Utility
         requires Concept::IsSmartPTRConcept<Type> &&
                  (TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak ||
                   TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared)
-    class SmartPointerVectorArray final
+    class SmartPointerVectorList final
     {
     public:
 
@@ -27,8 +27,8 @@ namespace FWK::Utility
 
     public:
 
-         SmartPointerVectorArray() = default;
-        ~SmartPointerVectorArray() = default;
+         SmartPointerVectorList() = default;
+        ~SmartPointerVectorList() = default;
 
         // shared_ptrからweak_ptrを生成して登録する
         void Add(const Type& a_type)
@@ -54,7 +54,7 @@ namespace FWK::Utility
             l_arrayElementData.m_type        = a_type;
             l_arrayElementData.m_typeAddress = l_typeAddress;
 
-            m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
+            m_elementDataList.emplace_back(std::move(l_arrayElementData));
         }
 
         // shared_ptrの場合
@@ -73,12 +73,12 @@ namespace FWK::Utility
             l_arrayElementData.m_type        = a_type;
             l_arrayElementData.m_typeAddress = l_typeAddress;
 
-            m_arrayElementDataList.emplace_back(std::move(l_arrayElementData));
+            m_elementDataList.emplace_back(std::move(l_arrayElementData));
         }
 
         void Clear()
         {
-            m_arrayElementDataList.clear();
+            m_elementDataList.clear     ();
             m_registeredAddressSet.clear();
         }
 
@@ -95,7 +95,7 @@ namespace FWK::Utility
             // unordered_set側に残っている可能性があるため先に掃除する
             RemoveExpiredElements();
 
-            // SmartPointerVectorArrayは内部でアドレスをキーとして
+            // SmartPointerVectorListは内部でアドレスをキーとして
             // 重複を管理しているため、そのSetを利用して後続に検索する
             const auto& l_typeAddress = reinterpret_cast<std::uintptr_t>(l_type.get());
 
@@ -116,7 +116,7 @@ namespace FWK::Utility
         void RemoveExpiredElements()
             requires k_isWeakPTR
         {
-            std::erase_if(m_arrayElementDataList, [this](const ArrayElementData& a_arrayElementData)
+            std::erase_if(m_elementDataList, [this](const ArrayElementData& a_arrayElementData)
             {
                 if (!a_arrayElementData.m_type.expired()) { return false; }
 
@@ -135,7 +135,7 @@ namespace FWK::Utility
 
             if (!l_removeTarget) { return; }
 
-            std::erase_if(m_arrayElementDataList, [this, l_removeTarget](const ArrayElementData& a_arrayElementData)
+            std::erase_if(m_elementDataList, [this, l_removeTarget](const ArrayElementData& a_arrayElementData)
             {
                 const auto& l_registeredType = a_arrayElementData.m_type.lock();
 
@@ -163,7 +163,7 @@ namespace FWK::Utility
         {
             if (!a_type) { return; }
 
-            std::erase_if(m_arrayElementDataList, [this, a_type](const ArrayElementData& a_arrayElementData)
+            std::erase_if(m_elementDataList, [this, a_type](const ArrayElementData& a_arrayElementData)
             {
                 const auto& l_registeredType = a_arrayElementData.m_type;
 
@@ -186,14 +186,14 @@ namespace FWK::Utility
             });
         }
 
-        const auto& GetREFArrayElementDataList() const { return m_arrayElementDataList; }
+        const auto& GetREFElementDataList() const { return m_elementDataList; }
 
-        auto& GetMutableREFArrayElementDataList() { return m_arrayElementDataList; }
+        auto& GetMutableREFElementDataList() { return m_elementDataList; }
 
     private:
 
         std::unordered_set<std::uintptr_t> m_registeredAddressSet = {};
 
-        std::vector<ArrayElementData> m_arrayElementDataList = {};
+        std::vector<ArrayElementData> m_elementDataList = {};
     };
 }

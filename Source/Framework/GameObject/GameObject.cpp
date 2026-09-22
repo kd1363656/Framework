@@ -19,8 +19,8 @@ void FWK::GameObject::INIT()
         m_componentEventObserver->INIT();
     }
 
-    m_childSmartPointerVectorArray.Clear    ();
-    m_componentSmartPointerVectorArray.Clear();
+    m_childSmartPointerVectorList.Clear    ();
+    m_componentSmartPointerVectorList.Clear();
 
     m_jsonConverter = {};
 
@@ -43,11 +43,11 @@ void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson, std::unorder
                                 a_prefabUUIDSet,
                                 a_scene);
 }
-bool FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                   a_rootJson,
-                                              std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-                                              Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-                                              std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
-                                              Scene&                                                            a_scene)
+bool FWK::GameObject::DeserializePrefab(const nlohmann::json&                                                  a_rootJson,
+                                              std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
+                                              Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
+                                              std::unordered_set<boost::uuids::uuid>&                          a_parentPrefabUUIDSet,
+                                              Scene&                                                           a_scene)
 {
     if (a_rootJson.is_null()) { return false; }
 
@@ -55,7 +55,7 @@ bool FWK::GameObject::DeserializePrefab(const nlohmann::json&                   
                                              a_rootJson,
                                              a_childDeserializeDataList,
                                              a_parentPrefabUUIDSet,
-                                             a_componentSmartPointerVectorArray,
+                                             a_componentSmartPointerVectorList,
                                              a_scene);
 }
 
@@ -69,24 +69,26 @@ bool FWK::GameObject::DeserializePrefabInstance(const nlohmann::json& a_prefabJs
                                                      a_scene);
 }
 
-bool FWK::GameObject::DeserializeScene(const nlohmann::json&                                                   a_rootJson,
-                                             std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-                                             Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-                                             Scene&                                                            a_scene)
+bool FWK::GameObject::DeserializeScene(const nlohmann::json&                                                  a_rootJson,
+                                             std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
+                                             Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
+                                             Scene&                                                           a_scene)
 {
     if (a_rootJson.is_null()) { return false; }
 
     return m_jsonConverter.DeserializeScene(a_rootJson,
                                             a_childDeserializeDataList,
-                                            a_componentSmartPointerVectorArray,
+                                            a_componentSmartPointerVectorList,
                                             *this,
                                             a_scene);
 }
 
-void FWK::GameObject::RecursiveAddComponent(const Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList)
+void FWK::GameObject::RecursiveAddComponent(const Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList)
 {
     // 親のコンポーネントを親のコンポーネントリストに追加
-    for (const auto& l_componentData : a_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = a_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -103,7 +105,7 @@ void FWK::GameObject::RecursiveAddComponent(const Utility::SmartPointerVectorArr
         if (!l_child) { continue; }
 
         // 子のコンポーネントも再帰的に追加していく
-        l_child->RecursiveAddComponent(l_childLoad.m_componentSmartPointerVectorArray, l_childLoad.m_childDeserializeDataList);
+        l_child->RecursiveAddComponent(l_childLoad.m_componentSmartPointerVectorList, l_childLoad.m_childDeserializeDataList);
     }
 }
 bool FWK::GameObject::RecursiveAddChild(std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene)
@@ -147,7 +149,9 @@ void FWK::GameObject::PostDeserialize()
     m_transformComponent->SetOwner       (weak_from_this());
     m_transformComponent->PostDeserialize();
 
-    for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -160,7 +164,9 @@ void FWK::GameObject::PostDeserialize()
 
 void FWK::GameObject::EarlyUpdate() const
 {
-    for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -171,7 +177,9 @@ void FWK::GameObject::EarlyUpdate() const
 }
 void FWK::GameObject::Update() const
 {
-    for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -182,7 +190,9 @@ void FWK::GameObject::Update() const
 }
 void FWK::GameObject::LateUpdate() const
 {
-    for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -199,7 +209,9 @@ void FWK::GameObject::PostLateUpdate() const
     m_transformComponent->PostLateUpdate();
 
     // 行列確定後に決まる処理を更新する
-    for (const auto& l_componentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
 
@@ -216,7 +228,9 @@ void FWK::GameObject::Destroy()
     // 子も削除フラグを立てる
     // もし親が削除されて連動して消されたくないような局面が出てきたら
     // その時に処理を書き換えるようにすること、基本は親と連動して削除フラグを立てる
-    for (const auto& l_childData : m_childSmartPointerVectorArray.GetMutableREFArrayElementDataList())
+    const auto& l_childDataList = m_childSmartPointerVectorList.GetMutableREFElementDataList();
+
+    for (const auto& l_childData : l_childDataList)
     {
         auto l_child = l_childData.m_type.lock();
 
@@ -232,13 +246,15 @@ void FWK::GameObject::EditInspector()
 
     m_transformComponent->EditInspector();
 
-    for (const auto& l_compoentData : m_componentSmartPointerVectorArray.GetREFArrayElementDataList())
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
-        const auto& l_compoent = l_compoentData.m_type;
+        const auto& l_component = l_componentData.m_type;
 
-        if (!l_compoent) { continue; }
+        if (!l_component) { continue; }
 
-        l_compoent->EditInspector();
+        l_component->EditInspector();
     }
 }
 
@@ -287,7 +303,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
         return;
     }
 
-    m_componentSmartPointerVectorArray.Add(a_component);
+    m_componentSmartPointerVectorList.Add(a_component);
 }
 void FWK::GameObject::RemoveComponent(const std::weak_ptr<ComponentBase>& a_component)
 {
@@ -371,7 +387,7 @@ void FWK::GameObject::RemoveComponent(const std::weak_ptr<ComponentBase>& a_comp
 
     if (!l_isRemovedFromTypeMap) { return; }
 
-    m_componentSmartPointerVectorArray.RemoveSameElement(l_component);
+    m_componentSmartPointerVectorList.RemoveSameElement(l_component);
 }
 
 bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
@@ -489,7 +505,7 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
     l_child->SetParent(l_self);
 
     // 親GameObject側へ子GameObjectを登録する
-    m_childSmartPointerVectorArray.Add(a_child);
+    m_childSmartPointerVectorList.Add(a_child);
 
     // TransformComponentへ新しい親GameObjectを適用する。
     l_childTransformComponent->ApplyParent(l_self);
@@ -515,8 +531,8 @@ void FWK::GameObject::Unparent(const std::weak_ptr<GameObject>& a_child)
     FWK_ASSERT_RETURN_IF(!l_childTransformComponent, "子GameObjectにTransformComponentが存在しないため、親子関係を解除できませんでした。");
 
     // 子の情報を削除し、子から親の情報を削除する
-    m_childSmartPointerVectorArray.RemoveSameElement(a_child);
-    l_child->GetMutableREFParent                    ().reset();
+    m_childSmartPointerVectorList.RemoveSameElement(a_child);
+    l_child->GetMutableREFParent                   ().reset();
 
     // 親がいなくても行列を計算できるようにする
     l_childTransformComponent->ApplyStandalone();
@@ -547,19 +563,19 @@ bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<G
     // 同じPrefabUUIDが既に存在する場合は循環している
     if (!a_prefabUUIDSet.emplace(l_prefabUUID).second) { return true; }
 
-    const auto& l_childSmartPointerVectorArray = l_gameObject->GetREFChildSmartPointerVectorArray         ();
-    const auto& l_childGameObjectDataList      = l_childSmartPointerVectorArray.GetREFArrayElementDataList();
+    const auto& l_childSmartPointerVectorList = l_gameObject->GetREFChildSmartPointerVectorList     ();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
 
-    for (const auto& l_childGameObjectData : l_childGameObjectDataList)
+    for (const auto& l_childData : l_childDataList)
     {
-        if (const auto& l_childGameObject = l_childGameObjectData.m_type.lock();
-            !l_childGameObject ||
-            l_childGameObject->GetVALIsDestroyed())
+        if (const auto& l_child = l_childData.m_type.lock();
+            !l_child ||
+            l_child->GetVALIsDestroyed())
         {
             continue;
         }
 
-        if (ContainsDuplicatePrefabUUIDRecursive(l_childGameObjectData.m_type, a_prefabUUIDSet))
+        if (ContainsDuplicatePrefabUUIDRecursive(l_childData.m_type, a_prefabUUIDSet))
         {
             // 呼びだし元へ戻る前に
             // 小野GameObjectで追加したUUIDを取り除く

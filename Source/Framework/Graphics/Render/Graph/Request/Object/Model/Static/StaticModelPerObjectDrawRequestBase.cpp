@@ -3,15 +3,16 @@
 void FWK::Graphics::StaticModelPerObjectDrawRequestBase::BeginFrame()
 {
     // 参照が途切れているstd::weak_ptrを削除する
-    m_forwardDrawRequestDataSmartPointerVectorArray.RemoveExpiredElements();
+    m_forwardDrawRequestDataSmartPointerVectorList.RemoveExpiredElements();
 }
 
 void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantBuffer(const Renderer& a_renderer, const RootSignature& a_rootSignature, const FrameResource& a_frameResource)
 {
-    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+    const auto& l_directCommandList      = a_renderer.GetREFDirectCommandList                                  ();
+    const auto& l_forwardRequestDataList = m_forwardDrawRequestDataSmartPointerVectorList.GetREFElementDataList();
 
     // 描画処理を行うための定数バッファを送信していく
-    for (const auto& l_drawRequestData : m_forwardDrawRequestDataSmartPointerVectorArray.GetREFArrayElementDataList())
+    for (const auto& l_drawRequestData : l_forwardRequestDataList)
     {
         const auto& l_drawRequest = l_drawRequestData.m_type.lock();
 
@@ -108,7 +109,7 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::AddDrawRequest(const st
 {
     FWK_ASSERT_RETURN_IF(!a_drawRequestData, "DrawRequestDataが無効のため、描画申請の追加が出来ませんでした。");
 
-    m_forwardDrawRequestDataSmartPointerVectorArray.Add(a_drawRequestData);
+    m_forwardDrawRequestDataSmartPointerVectorList.Add(a_drawRequestData);
 }
 
 bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const

@@ -13,6 +13,6 @@ namespace FWK::Struct
 
         std::shared_ptr<GameObject> m_self = nullptr;
 
-        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorArray = {};
+        Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorList = {};
     };
 }

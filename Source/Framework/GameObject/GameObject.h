@@ -19,21 +19,21 @@ namespace FWK
 
         void Deserialize(const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet, Scene& a_scene);
 
-        bool DeserializePrefab(const nlohmann::json&                                                   a_rootJson,
-                                     std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-                                     Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-                                     std::unordered_set<boost::uuids::uuid>&                           a_parentPrefabUUIDSet,
-                                     Scene&                                                            a_scene);
+        bool DeserializePrefab(const nlohmann::json&                                                  a_rootJson,
+                                     std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
+                                     Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
+                                     std::unordered_set<boost::uuids::uuid>&                          a_parentPrefabUUIDSet,
+                                     Scene&                                                           a_scene);
 
         bool DeserializePrefabInstance(const nlohmann::json& a_prefabJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene);
 
-        bool DeserializeScene(const nlohmann::json&                                                   a_rootJson,
-                                    std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,
-                                    Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray,
-                                    Scene&                                                            a_scene);
+        bool DeserializeScene(const nlohmann::json&                                                  a_rootJson,
+                                    std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
+                                    Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
+                                    Scene&                                                           a_scene);
 
-        void RecursiveAddComponent(const Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorArray, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList);
-        bool RecursiveAddChild    (      std::vector<Struct::ChildDeserializeData>&                        a_childDeserializeDataList,         Scene&                                     a_scene);
+        void RecursiveAddComponent(const Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList);
+        bool RecursiveAddChild    (      std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,        Scene&                                     a_scene);
 
         void PostDeserialize();
 
@@ -106,8 +106,8 @@ namespace FWK
 
         const auto& GetREFParent() const { return m_parent; }
 
-        const auto& GetREFChildSmartPointerVectorArray    () const { return m_childSmartPointerVectorArray; }
-        const auto& GetREFComponentSmartPointerVectorArray() const { return m_componentSmartPointerVectorArray; }
+        const auto& GetREFChildSmartPointerVectorList    () const { return m_childSmartPointerVectorList; }
+        const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
 
         const std::weak_ptr<Observer<Enum::ComponentEvent>> GetVALComponentEventObserver() const { return m_componentEventObserver; }
 
@@ -144,8 +144,8 @@ namespace FWK
 
         std::weak_ptr<GameObject> m_parent = {};
 
-        Utility::SmartPointerVectorArray<std::weak_ptr<GameObject>>      m_childSmartPointerVectorArray     = {};
-        Utility::SmartPointerVectorArray<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorArray = {};
+        Utility::SmartPointerVectorList<std::weak_ptr<GameObject>>      m_childSmartPointerVectorList     = {};
+        Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorList = {};
 
         Converter::GameObjectJsonConverter m_jsonConverter = {};
 
