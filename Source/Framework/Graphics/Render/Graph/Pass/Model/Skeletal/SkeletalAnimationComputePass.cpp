@@ -32,8 +32,8 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
     FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationMeshletBoundsUpdate用DynamicConstantBufferUploaderを取得できません。");
 
-    const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorArray().GetREFArrayElementDataList();
-    const auto& l_computeCommandList                             = a_renderer.GetREFComputeCommandList                                                             ();
+    const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorList().GetREFElementDataList();
+    const auto& l_computeCommandList                             = a_renderer.GetREFComputeCommandList                                                            ();
 
     // 最初にすべてのPlayerへVertex Skinningを行う。
     // PlayerごとにVertexSkinningとBounds更新のPSOを
