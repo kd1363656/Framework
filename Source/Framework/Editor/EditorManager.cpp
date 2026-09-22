@@ -15,6 +15,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_mainMenuBar(),
 
+    m_undoRedoSystem(),
+
     m_jsonConverter(),
 
     m_isInitialized      (false),
@@ -383,8 +385,6 @@ void FWK::Editor::EditorManager::DrawEditorWindow()
 
         l_editorWindow->Draw();
     }
-
-    //ImGui::ShowDemoWindow();
 }
 
 void FWK::Editor::EditorManager::Release()

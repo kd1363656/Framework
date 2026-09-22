@@ -1,5 +1,12 @@
 ﻿#include "EditorUndoRedoSystem.h"
 
+void FWK::Editor::EditorUndoRedoSystem::Deserialize(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Editor::EditorUndoRedoSystem::Undo()
 {
     if (m_undoList.empty()) { return; }
@@ -36,4 +43,9 @@ void FWK::Editor::EditorUndoRedoSystem::Clear()
 {
     m_undoList.clear();
     m_redoList.clear();
+}
+
+nlohmann::json FWK::Editor::EditorUndoRedoSystem::Serialize() const
+{
+    return m_jsonConverter.Serialize(*this);
 }

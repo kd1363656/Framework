@@ -7,6 +7,9 @@
             }
         ]
     },
+    "UndoRedoSystem": {
+        "CapacityJsonKey": 500
+    },
     "WindowList": [
         {
             "Window": null,
@@ -38,12 +41,8 @@
                 },
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Data",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Data"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
                 "CurrentSelectFolderPath": "Asset",
@@ -69,6 +68,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -81,15 +84,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -121,11 +120,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {

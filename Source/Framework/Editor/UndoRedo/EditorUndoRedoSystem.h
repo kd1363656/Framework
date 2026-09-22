@@ -9,6 +9,8 @@ namespace FWK::Editor
          EditorUndoRedoSystem() = default;
         ~EditorUndoRedoSystem() = default;
     
+        void Deserialize(const nlohmann::json& a_rootJson);
+
         template <Concept::IsDerivedICommandConcept CommandType, typename... Args>
         void PushUndoCommand(Args&&... a_args)
         {
@@ -25,9 +27,19 @@ namespace FWK::Editor
 
         void Clear();
 
+        nlohmann::json Serialize() const;
+
+        void SetCapacity(const std::size_t& a_set) { m_capacity = a_set; }
+
+        const auto& GetREFCapacity() const { return m_capacity; }
+
     private:
-    
-        std::vector<std::unique_ptr<ICommand>> m_undoList = {};
-        std::vector<std::unique_ptr<ICommand>> m_redoList = {};
+
+        std::deque<std::unique_ptr<ICommand>> m_undoList = {};
+        std::deque<std::unique_ptr<ICommand>> m_redoList = {};
+
+        std::size_t m_capacity = Constant::k_initialEditorUndoResoSystemListCapacity;
+
+        Converter::EditorUndoRedoSystemJsonConverter m_jsonConverter = {};
     };
 }

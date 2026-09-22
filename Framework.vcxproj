@@ -410,6 +410,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\MainMenu\MainMenuBarEditorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Node\NodeEditorStructConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\UndoRedo\EditorUndoRedoSystemJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowFolderPaneConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerConstant.h" />
@@ -560,6 +561,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
     <ClInclude Include="Source\Framework\Editor\Style\EditorStyle.h" />
+    <ClInclude Include="Source\Framework\Editor\UndoRedo\Converter\Json\EditorUndoRedoSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.h" />
@@ -902,6 +904,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Style\EditorStyle.cpp" />
+    <ClCompile Include="Source\Framework\Editor\UndoRedo\Converter\Json\EditorUndoRedoSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Clipboard\AssetBrowserEditorWindowClipboard.cpp" />

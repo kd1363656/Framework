@@ -85,8 +85,10 @@ namespace FWK::Editor
 
         const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
         const auto& GetREFMainMenuBar     () const { return m_mainMenuBar; }
+        const auto& GetREFUndoRedoSystem  () const { return m_undoRedoSystem; }
 
-        auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
+        auto& GetMutableREFMainMenuBar   () { return m_mainMenuBar; }
+        auto& GetMutableREFUndoRedoSystem() { return m_undoRedoSystem; }
 
         bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
@@ -132,6 +134,8 @@ namespace FWK::Editor
         LogEditorWindow m_logEditorWindow;
 
         MainMenuBarEditor m_mainMenuBar;
+
+        EditorUndoRedoSystem m_undoRedoSystem;
 
         Converter::EditorManagerJsonConverter m_jsonConverter;
 

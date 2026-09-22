@@ -82,7 +82,9 @@
 #include "Editor/MainMenu/MainMenuBarEditor.h"
 #include "Command/ICommand.h"
 #include "Definition/Concept/IsDerivedBase/Editor/IsDerivedICommandConcept.h"
-#include "Editor/UndoRedo/UndoRedoSystem.h"
+#include "Definition/Constant/Editor/UndoRedo/EditorUndoRedoSystemJsonConverterConstant.h"
+#include "Editor/UndoRedo/Converter/Json/EditorUndoRedoSystemJsonConverter.h"
+#include "Editor/UndoRedo/EditorUndoRedoSystem.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================

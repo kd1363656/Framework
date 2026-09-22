@@ -20,6 +20,14 @@ void FWK::Converter::EditorManagerJsonConverter::Deserialize(const nlohmann::jso
         l_mainMenuBar.Deserialize(l_json);
     }
 
+    if (const auto& l_json = a_rootJson.value(k_undoRedoSystemJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
+
+        l_undoRedoSystem.Deserialize(l_json);
+    }
+
     const bool l_isDisableDrawEditor = a_rootJson.value(k_isDisableDrawJsonKey, false);
 
     a_editorManager.SetIsDisableDrawEditor(l_isDisableDrawEditor);
@@ -29,13 +37,17 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::Serialize(const Edito
 {
     nlohmann::json l_rootJson = {};
 
-    const auto& l_mainMenuBar = a_editorManager.GetREFMainMenuBar();
+    const auto& l_mainMenuBar    = a_editorManager.GetREFMainMenuBar   ();
+    const auto& l_undoRedoSystem = a_editorManager.GetREFUndoRedoSystem();
 
     // エディターウィンドウリストのシリアライズ
     l_rootJson[k_windowListJsonKey] = SerializeWindow(a_editorManager);
 
     // メインメニューバーのシリアライズ
     l_rootJson[k_mainMenuBarJsonKey] = l_mainMenuBar.Serialize();
+    
+    // アンドゥリドゥシステムのシリアライズ
+    l_rootJson[k_undoRedoSystemJsonKey] = l_undoRedoSystem.Serialize();
 
     l_rootJson[k_isDisableDrawJsonKey] = a_editorManager.GetVALIsDisableDrawEditor();
 
