@@ -1,6 +1,6 @@
 ﻿#include "WorldOutlinerEditorWindow.h"
 
-void FWK::Editor::WorldOutlinerEditorWindow::Draw()
+void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager)
 {
     // Outliner用ImGuiウィンドウを開始
     if (!ImGui::Begin(k_editorName.data()))
@@ -9,6 +9,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw()
 
         return;
     }
+
+    ReportActiveWindowIfMouseClicked(a_editorManager);
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
 
@@ -211,10 +213,10 @@ bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableChildGameObject(const Ga
     // 描画可能Childが一つ存在するかだけ確認する
     return std::ranges::any_of(l_childDataList,
                                [](const auto& a_childData)
-                              {
-                                    const auto& l_childGameObject = a_childData.m_type.lock();
-
-                                    return l_childGameObject &&
-                                           !l_childGameObject->GetVALIsDestroyed();
-                              });
+                               {
+                                     const auto& l_childGameObject = a_childData.m_type.lock();
+                               
+                                     return l_childGameObject &&
+                                            !l_childGameObject->GetVALIsDestroyed();
+                               });
 }

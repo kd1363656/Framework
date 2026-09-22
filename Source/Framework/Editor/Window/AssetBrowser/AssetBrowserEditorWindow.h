@@ -12,7 +12,7 @@ namespace FWK::Editor
         void Deserialize    (const nlohmann::json& a_rootJson) override;
         void PostDeserialize()                                 override;
 
-        void Draw() override;
+        void Draw(EditorManager& a_editorManager) override;
 
         nlohmann::json Serialize() override;
 

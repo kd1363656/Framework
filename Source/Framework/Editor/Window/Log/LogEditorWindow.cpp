@@ -14,13 +14,25 @@ FWK::Editor::LogEditorWindow::LogEditorWindow() :
 }
 FWK::Editor::LogEditorWindow::~LogEditorWindow() = default;
 
-void FWK::Editor::LogEditorWindow::Draw()
+void FWK::Editor::LogEditorWindow::Draw(EditorManager& a_editorManager)
 {
     if (!ImGui::Begin(k_editorName.data()))
     {
         ImGui::End();
 
         return;
+    }
+
+    // 現在のウィンドウ上にマウスがあり
+    // 左クリックまたは右クリックされた場合
+    // 派生クラスのStaticTypeIDを取得しそれをActiveWindowとする
+    if (ImGui::IsWindowHovered() &&
+       (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
+        ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
+    {
+        const auto& l_typeINFO = GetREFTypeINFO();
+
+        a_editorManager.SstCurrentActiveWindowStaticTpeID(l_typeINFO.k_staticTypeID);
     }
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);

@@ -33,6 +33,8 @@ namespace FWK::Editor
 
         bool CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
+        void ClearCommandHistory();
+
         TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
 
         void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
@@ -79,6 +81,8 @@ namespace FWK::Editor
             return std::static_pointer_cast<WindowType>(l_editorWindow);
         }
 
+        void SstCurrentActiveWindowStaticTpeID(const TypeAlias::StaticTypeID a_set) { m_currentActiveWindowStaticTpeID = a_set; }
+
         void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
         ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
@@ -89,6 +93,8 @@ namespace FWK::Editor
 
         auto& GetMutableREFMainMenuBar   () { return m_mainMenuBar; }
         auto& GetMutableREFUndoRedoSystem() { return m_undoRedoSystem; }
+
+        auto GetVALCurrentActiveWindowStaticTpeID() const { return m_currentActiveWindowStaticTpeID; }
 
         bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
@@ -138,6 +144,8 @@ namespace FWK::Editor
         EditorUndoRedoSystem m_undoRedoSystem;
 
         Converter::EditorManagerJsonConverter m_jsonConverter;
+
+        TypeAlias::StaticTypeID m_currentActiveWindowStaticTpeID;
 
         bool m_isInitialized;
         bool m_isDisableDrawEditor;

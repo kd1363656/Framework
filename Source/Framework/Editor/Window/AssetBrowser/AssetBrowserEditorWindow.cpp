@@ -39,7 +39,7 @@ void FWK::Editor::AssetBrowserEditorWindow::PostDeserialize()
     m_directoryWatcher.Prepare(Constant::k_assetRootFolderPath);
 }
 
-void FWK::Editor::AssetBrowserEditorWindow::Draw()
+void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
 {
     if (!ImGui::Begin(k_editorName.data()))
     {
@@ -47,6 +47,8 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
 
         return;
     }
+
+    ReportActiveWindowIfMouseClicked(a_editorManager);
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
 
@@ -129,8 +131,9 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw()
     // ImGui::IsWindowFocused : AssetBrowserウィンドウがフォーカスされているか
     // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
     if (const auto& l_io = ImGui::GetIO();
-        ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows) &&
-        !l_io.WantTextInput                                    &&
+        a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == AssetBrowserEditorWindow::GetREFTypeINFO().k_staticTypeID &&
+        ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)                                                              &&
+        !l_io.WantTextInput                                                                                                 &&
         !m_deleteConfirmState.m_isActive)
     {
         switch (m_activePane)

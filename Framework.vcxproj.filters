@@ -1591,6 +1591,18 @@
     <Filter Include="Source\Framework\Definition\Constant\Editor\UndoRedo">
       <UniqueIdentifier>{0de4d3a7-8156-498e-a91a-9ff92ddcb408}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection">
+      <UniqueIdentifier>{ac765259-24ac-42ac-95fb-a8d841af6356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command">
+      <UniqueIdentifier>{6c5c521c-a407-47e8-b898-db56978ba5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject">
+      <UniqueIdentifier>{745ac448-7d40-4372-b0e4-4fb164cbcaf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene">
+      <UniqueIdentifier>{baf16fc0-9923-4590-afc9-df873ef967fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3105,6 +3117,15 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\UndoRedo\EditorUndoRedoSystemJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\UndoRedo</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3904,6 +3925,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\UndoRedo\Converter\Json\EditorUndoRedoSystemJsonConverter.cpp">
       <Filter>Source\Framework\Editor\UndoRedo\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\EditorWindowBase.cpp">
+      <Filter>Source\Framework\Editor\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

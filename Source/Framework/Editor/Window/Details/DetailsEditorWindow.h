@@ -9,7 +9,7 @@ namespace FWK::Editor
          DetailsEditorWindow()          = default;
         ~DetailsEditorWindow() override = default;
 
-        void Draw() override;
+        void Draw(EditorManager& a_editorManager) override;
 
     private:
 

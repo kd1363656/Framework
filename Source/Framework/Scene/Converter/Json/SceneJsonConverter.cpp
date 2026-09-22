@@ -47,18 +47,18 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
     }
 
     const auto& l_sceneName = a_rootJson.value(k_sceneNameJsonKey, std::string{ Constant::k_stringUnknown });
-
+    
     a_scene.SetSceneName(l_sceneName);
 }
 
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
 {
-          nlohmann::json l_rootJson     = {};
-    const auto&          l_sceneName    = a_scene.GetREFSceneName                ();
-          auto&          l_prefabSystem = a_scene.GetMutableREFPrefabSystem      ();
-    const auto& l_assetFilePathRegistry   = a_scene.GetREFAssetFilePathRegistry  ();
-    const auto& l_sceneShiftEventObserver = a_scene.GetREFSceneShiftEventObserver();
-
+          nlohmann::json l_rootJson                = {};
+    const auto&          l_sceneName               = a_scene.GetREFSceneName              ();
+          auto&          l_prefabSystem            = a_scene.GetMutableREFPrefabSystem    ();
+    const auto&          l_assetFilePathRegistry   = a_scene.GetREFAssetFilePathRegistry  ();
+    const auto&          l_sceneShiftEventObserver = a_scene.GetREFSceneShiftEventObserver();
+    
     // アセットレジストリのデシリアライズ
     l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
 
@@ -75,7 +75,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
     l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList(a_scene);
 
     l_rootJson[k_sceneNameJsonKey] = l_sceneName;
-
+    
     return l_rootJson;
 }
 
@@ -89,11 +89,11 @@ void FWK::Converter::SceneJsonConverter::DeserializeNextSceneLoadFilePathMap(con
     
     for (const auto& l_json : a_rootJson)
     {
-        const auto& l_sceneUUID = Utility::DeserializeUUID(l_json, k_sceneUUIDJsonKey);
+        const auto& l_nextSceneUUID = Utility::DeserializeUUID(l_json, k_nextSceneUUIDJsonKey);
 
-        if (l_sceneUUID.is_nil()) { continue; }
+        if (l_nextSceneUUID.is_nil()) { continue; }
 
-        a_scene.AddNextSceneLoadFilePath(l_sceneUUID);
+        a_scene.AddNextSceneLoadFilePath(l_nextSceneUUID);
     }
 }
 void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const
@@ -160,7 +160,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeNextSceneLoadFilePat
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_sceneUUIDJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_nextSceneUUIDJsonKey));
 
         l_rootJsonArray.emplace_back(l_json);
     }

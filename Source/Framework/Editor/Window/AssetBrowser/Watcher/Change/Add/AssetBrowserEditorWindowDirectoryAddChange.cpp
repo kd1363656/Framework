@@ -234,8 +234,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(cons
 
     if (!l_scene) { return; }
 
-          auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
-    const auto& l_nextSceneLoadFilePathMap   = l_scene->GetREFNextSceneLoadFilePathMap    ();
+    const auto& l_sceneAssetFilePathRegistry = l_scene->GetREFAssetFilePathRegistry   ();
+    const auto& l_nextSceneLoadFilePathMap   = l_scene->GetREFNextSceneLoadFilePathMap();
 
     // Scene側Registryへすでに同じFilePathが存在する場合
     if (const auto* l_sceneSceneUUID = l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_filePath);

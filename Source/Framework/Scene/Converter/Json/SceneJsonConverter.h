@@ -31,7 +31,7 @@ namespace FWK::Converter
         static constexpr std::string_view k_prefabSystemJsonKey             = "PrefabSystem";
         static constexpr std::string_view k_assetFilePathRegistryJsonKey    = "AssetFilePathRegistry";
         static constexpr std::string_view k_sceneShiftEventObserverJsonKey  = "SceneShiftEventObserver";
-        static constexpr std::string_view k_sceneUUIDJsonKey                = "SceneUUID";
+        static constexpr std::string_view k_nextSceneUUIDJsonKey            = "NextSceneUUID";
         static constexpr std::string_view k_gameObjectJsonKey               = "GameObject";
         static constexpr std::string_view k_sceneNameJsonKey                = "SceneName";
     };

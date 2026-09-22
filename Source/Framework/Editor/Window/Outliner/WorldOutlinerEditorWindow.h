@@ -14,7 +14,7 @@ namespace FWK::Editor
          WorldOutlinerEditorWindow()          = default;
         ~WorldOutlinerEditorWindow() override = default;
 
-        void Draw() override;
+        void Draw(EditorManager& a_editorManager) override;
 
     private:
 
@@ -33,6 +33,8 @@ namespace FWK::Editor
         static constexpr std::string_view k_noCurrentSceneLabel        = "現在読み込まれているシーンはありません。";
 
         static constexpr float k_minEmptyAreaSize = 0.0F;
+
+        WorldOutlinerEditorWindowSelectionState m_selectionState = {};
 
         FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
     };

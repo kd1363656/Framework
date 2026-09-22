@@ -587,6 +587,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h" />
@@ -928,7 +931,11 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\EditorWindowBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp" />

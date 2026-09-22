@@ -13,12 +13,13 @@ namespace FWK
 
     public:
 
-        void Load(const std::filesystem::path& a_nextSceneLoadFilePath);
+        bool Load(const std::filesystem::path& a_nextSceneLoadFilePath);
 
-        void EarlyUpdate   ();
-        void Update        () const;
-        void LateUpdate    () const;
-        void PostLateUpdate();
+        void EarlyUpdate          ();
+        void Update               () const;
+        void LateUpdate           () const;
+        void PostLateUpdate       ();
+        bool LoadNextSceneIfNeeded();
 
         void Save() const;
 
@@ -31,8 +32,6 @@ namespace FWK
     private:
 
         void INIT();
-
-        void LoadNextSceneIfNeeded();
 
         std::shared_ptr<Scene> m_scene = nullptr;
 

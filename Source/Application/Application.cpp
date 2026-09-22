@@ -103,6 +103,12 @@ void Application::Execute()
         l_sceneManager.Update        ();
         l_sceneManager.LateUpdate    ();
         l_sceneManager.PostLateUpdate();
+        
+        // ロードが完了したということは前回のシーンのコマンド履歴も消すべきなので消す
+        if (l_sceneManager.LoadNextSceneIfNeeded())
+        {
+            l_editorManager.ClearCommandHistory();
+        }
 
         ClearWindowResizeRequest();
 

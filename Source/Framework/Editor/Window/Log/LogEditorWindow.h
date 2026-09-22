@@ -2,6 +2,11 @@
 
 namespace FWK::Editor
 {
+    class EditorManager;
+}
+
+namespace FWK::Editor
+{
     class LogEditorWindow final
     {
     public:
@@ -9,7 +14,7 @@ namespace FWK::Editor
          LogEditorWindow();
         ~LogEditorWindow();
 
-        void Draw();
+        void Draw(EditorManager& a_editorManager);
 
         void AddLog(const TypeAlias::Math::Color& a_textColor, const std::string& a_text);
 
@@ -51,5 +56,7 @@ namespace FWK::Editor
 
         bool m_canAutoScroll;
         bool m_canScrollToBottom;
+
+        FWK_DEFINE_TYPE_INFO_ROOT(LogEditorWindow);
     };
 }

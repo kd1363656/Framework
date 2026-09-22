@@ -16,7 +16,7 @@ void FWK::Editor::ViewportEditorWindow::PostDeserialize()
     SetupViewportTextureDescriptors();
 }
 
-void FWK::Editor::ViewportEditorWindow::Draw()
+void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
 {
     // Viewport用のImGuiウィンドウを開始する
     if (!ImGui::Begin(k_editorName.data()))
@@ -24,6 +24,8 @@ void FWK::Editor::ViewportEditorWindow::Draw()
         ImGui::End();
         return;
     }
+
+    ReportActiveWindowIfMouseClicked(a_editorManager);
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
 

@@ -19,6 +19,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_jsonConverter(),
 
+    m_currentActiveWindowStaticTpeID(StaticTypeIDGenerator::k_invalidStaticTypeID),
+
     m_isInitialized      (false),
     m_isDisableDrawEditor(false)
 {}
@@ -244,6 +246,11 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVS
     return true;
 }
 
+void FWK::Editor::EditorManager::ClearCommandHistory()
+{
+    m_undoRedoSystem.Clear();
+}
+
 FWK::TypeAlias::DescriptorIndex FWK::Editor::EditorManager::AllocateImGuiSRVDescriptorIndex()
 {
     const auto l_imGuiSRVDescriptorIndex = m_imGuiCBVSRVUAVDescriptorPool.Allocate();
@@ -377,13 +384,13 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
 }
 void FWK::Editor::EditorManager::DrawEditorWindow()
 {
-    m_logEditorWindow.Draw();
+    m_logEditorWindow.Draw(*this);
 
     for (const auto& l_editorWindow : m_editorWindowList)
     {
         if (!l_editorWindow) { continue; }
 
-        l_editorWindow->Draw();
+        l_editorWindow->Draw(*this);
     }
 }
 

@@ -16,7 +16,7 @@ namespace FWK::Editor
 
         void PostDeserialize() override;
 
-        void Draw() override;
+        void Draw(EditorManager& a_editorManager) override;
 
         void SetupViewportTextureDescriptors();
 
