@@ -3,7 +3,7 @@
 // 選択されたかどうかのコマンドのRedo,Undoが発生するのは選択されたときだけ
 // なのでUndoはtrue,Redoはfalseで固定
 FWK::Editor::WorldOutlinerEditorWindowSelectSceneCommand::WorldOutlinerEditorWindowSelectSceneCommand(const std::weak_ptr<WorldOutlinerEditorWindowSelectionState>& a_selectionState) :
-    m_selectionState(a_selectionState),
+    m_selectionState(a_selectionState)
 {}
 FWK::Editor::WorldOutlinerEditorWindowSelectSceneCommand::~WorldOutlinerEditorWindowSelectSceneCommand() = default;
 
