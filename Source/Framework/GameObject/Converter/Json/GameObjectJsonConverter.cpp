@@ -19,7 +19,7 @@ void FWK::Converter::GameObjectJsonConverter::Deserialize(const std::weak_ptr<Ga
     // コンポーネント、ゲームオブジェクトをPrefabをデシリアライズしてからSceneのデシリアライズを行う際に
     // 必要な子やコンポーネントの情報を保持する
     Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> l_componentLoadVectorList = {};
-    std::vector<Struct::ChildDeserializeData>                        l_childLoadList          = {};
+    std::vector<Struct::ChildDeserializeData>                       l_childLoadList           = {};
 
     // まずはプレハブからデシリアライズ
     // ここでプレハブ識別UUIDや子などのシーンに配置する
@@ -96,7 +96,7 @@ bool FWK::Converter::GameObjectJsonConverter::DeserializePrefabInstance(const st
         return false;
     }
 
-    // Component確定
+    // 再帰的にコンポーネントを追加する
     l_gameObject->RecursiveAddComponent(l_componentSmartPointerVectorList, a_childDeserializeDataList);
 
     return true;

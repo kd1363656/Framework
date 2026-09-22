@@ -76,11 +76,11 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
         return false;
     }
 
+    // コンポーネント用オブザーバのデシリアライズ
     if (const auto& l_json = l_prefabJson.value(k_componentEventObserverJsonKey, nlohmann::json{});
         !l_json.is_null() &&
         !DeserializePrefabComponentEventObserver(l_json, *l_gameObject))
     {
-        // コンポーネント用オブザーバのデシリアライズ
         // シーン情報は存在しない
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントオブザーバーのプレハブデータのデシリアライズに失敗しており、ゲームオブジェクトのプレハブデータのデシリアライズに失敗しました。");
 
@@ -154,10 +154,9 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponent(c
     // TransformComponentのPrefab情報を取得
     const auto& l_transformComponentJson = a_rootJson.value(Constant::k_gameObjectTransformComponentJsonKey, nlohmann::json{});
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_transformComponentJson.is_null(), "TransformComponentJsonが無効のため、TransformComponentのプレハブデータのデシリアライズに失敗しました。", false);
-
     // TransformComponentのプレハブデータを読み込む
-    l_transformComponent->DeserializePrefab(l_transformComponentJson);
+    l_transformComponent->DeserializePrefabUUID(l_transformComponentJson);
+    l_transformComponent->DeserializePrefab    (l_transformComponentJson);
 
     // プレハブに保存されているコンポーネントを
     // 保存されている順番のまま生成する
@@ -185,8 +184,9 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::DeserializePrefabComponent(c
             if (!l_component) { return false; }
 
             // ComponentのPrefab情報を読み込む
-            l_component->INIT             ();
-            l_component->DeserializePrefab(l_componentJson);
+            l_component->INIT                 ();
+            l_component->DeserializePrefabUUID(l_componentJson);
+            l_component->DeserializePrefab    (l_componentJson);
 
             // Scene情報はPrefabと同じ順番で上書きするため
             // Componentの格納順番を維持する
@@ -272,11 +272,12 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabCom
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのシリアライズに失敗しました。", {});
 
-    if (const auto& l_json = l_transformComponent->SerializePrefab();
-        !l_json.is_null())
-    {
-        l_rootJson[Constant::k_gameObjectTransformComponentJsonKey] = l_json;
-    }
+    nlohmann::json l_transformJson = {};
+
+    Utility::UpdateJson(l_transformJson, l_transformComponent->SerializePrefabUUID());
+    Utility::UpdateJson(l_transformJson, l_transformComponent->SerializePrefab());
+
+    l_rootJson[Constant::k_gameObjectTransformComponentJsonKey] = l_transformJson;
 
     // 保存順を保つためにjson::arrayで保存
           auto  l_componentJsonArray              = nlohmann::json::array                                  ();
@@ -294,6 +295,7 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::SerializePrefabCom
         // コンポーネントの名前とそのプレハブ情報を保存
         l_json[Constant::k_gameObjectComponentTypeNameJsonKey] = l_component->GetREFRuntimeTypeINFO().k_name;
 
+        Utility::UpdateJson(l_json, l_component->SerializePrefabUUID());
         Utility::UpdateJson(l_json, l_component->SerializePrefab());
 
         // もし出力結果がnullならcontinue

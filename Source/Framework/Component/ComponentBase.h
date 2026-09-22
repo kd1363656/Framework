@@ -16,8 +16,11 @@ namespace FWK
 
         virtual void INIT() { /*必要に応じてオーバーライドしてください*/ };
 
-        virtual void DeserializePrefab(const nlohmann::json& a_rootJson);
-        virtual void DeserializeScene (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+        // UUIDのデシリアライズ、シリアライズの書き忘れが発生しないように関数を分けておく
+        // こうすると派生クラスで書き直す必要がない
+                void DeserializePrefabUUID(const nlohmann::json& a_rootJson);
+        virtual void DeserializePrefab    (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+        virtual void DeserializeScene     (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 
         virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
@@ -28,8 +31,9 @@ namespace FWK
 
         virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
-        virtual nlohmann::json SerializePrefab() { return {}; }
-        virtual nlohmann::json SerializeScene () { return {}; }
+                nlohmann::json SerializePrefabUUID();
+        virtual nlohmann::json SerializePrefab    () { return {}; }
+        virtual nlohmann::json SerializeScene     () { return {}; }
 
         virtual bool IsAllowMultiple() const { return false; }
 
@@ -43,6 +47,8 @@ namespace FWK
         const auto& GetREFOwner() const { return m_owner; }
 
         const auto& GetREFUUID() const { return m_uuid; }
+
+        auto& GetMutableREFUUID() { return m_uuid; }
 
         bool GetVALIsDisable() const { return m_isDisable; }
 

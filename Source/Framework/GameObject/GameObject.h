@@ -80,7 +80,32 @@ namespace FWK
                 }
             }
 
-            return std::weak_ptr<ComponentType>();
+            return {};
+        }
+
+        template <Concept::IsDerivedComponentBaseConcept ComponentType>
+        std::weak_ptr<ComponentType> FindComponentFromUUID(const boost::uuids::uuid& a_uuid) const
+        {
+            const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+            if (l_componentDataList.empty()) { return {}; }
+
+            const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
+
+            for (const auto& l_component : l_componentDataList)
+            {
+                if (!l_component                                                  ||
+                    l_component->GetREFUUID().is_nil()                            ||
+                    l_component->GetREFUUID()                           != a_uuid ||
+                    l_component->GetREFRuntimeTypeINFO().k_staticTypeID != l_staticTypeID) 
+                {
+                    continue; 
+                }
+
+                return std::static_pointer_cast<ComponentType>(l_component);
+            }
+
+            return {};
         }
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
@@ -123,6 +148,8 @@ namespace FWK
         auto& GetMutableREFPrefabUUID            () { return m_prefabUUID; }
         auto& GetMutableREFComponentEventObserver() { return m_componentEventObserver; }
 
+        auto& GetMutableREFComponentUUIDRegistry () { return m_componentUUIDRegistry; }
+
         std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
         auto GetVALPrefabSceneInstanceNUM() const { return m_prefabSceneInstanceNUM; }
@@ -146,6 +173,8 @@ namespace FWK
 
         Utility::SmartPointerVectorList<std::weak_ptr<GameObject>>      m_childSmartPointerVectorList     = {};
         Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorList = {};
+
+        UUIDRegistry<std::weak_ptr<ComponentBase>> m_componentUUIDRegistry = {};
 
         Converter::GameObjectJsonConverter m_jsonConverter = {};
 

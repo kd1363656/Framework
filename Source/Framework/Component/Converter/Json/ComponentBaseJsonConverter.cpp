@@ -1,6 +1,6 @@
 ﻿#include "ComponentBaseJsonConverter.h"
 
-void FWK::Converter::ComponentBaseJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, ComponentBase& a_componentBase) const
+void FWK::Converter::ComponentBaseJsonConverter::DeserializePrefabUUID(const nlohmann::json& a_rootJson, ComponentBase& a_componentBase) const
 {
     if (a_rootJson.is_null()) { return; }
 
@@ -16,7 +16,7 @@ void FWK::Converter::ComponentBaseJsonConverter::DeserializePrefab(const nlohman
     a_componentBase.SetUUID(l_uuid);
 }
 
-nlohmann::json FWK::Converter::ComponentBaseJsonConverter::SerializePrefab(const ComponentBase& a_componentBase) const
+nlohmann::json FWK::Converter::ComponentBaseJsonConverter::SerializePrefabUUID(const ComponentBase& a_componentBase) const
 {
     nlohmann::json l_rootJson = {};
 

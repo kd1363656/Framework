@@ -3,8 +3,7 @@
 void FWK::GameObject::INIT()
 {
     m_uniqueComponentMap.clear();
-    m_multiComponentMap.clear ();
-
+    
     if (!m_transformComponent)
     {
         m_transformComponent = std::make_shared<TransformComponent>();
@@ -21,6 +20,8 @@ void FWK::GameObject::INIT()
 
     m_childSmartPointerVectorList.Clear    ();
     m_componentSmartPointerVectorList.Clear();
+
+    m_componentUUIDRegistry.Clear();
 
     m_jsonConverter = {};
 
@@ -280,8 +281,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 
     // 派生クラスの静的IDを取得(このコンポーネントを取得時に使用)
     const auto l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
-
-    bool l_canAdd = false;
+          bool l_canAdd       = false;
 
     // 複数持てるコンポーネントかどうかを判断して
     // 適切なstd::unordered_mapに割り当てる
@@ -303,6 +303,10 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
         return;
     }
 
+    const std::weak_ptr<ComponentBase> l_component = a_component;
+
+    // コンポーネントに割り当てられたUUIDを格納
+    m_componentUUIDRegistry.Add          (l_component, a_component->GetMutableREFUUID());
     m_componentSmartPointerVectorList.Add(a_component);
 }
 void FWK::GameObject::RemoveComponent(const std::weak_ptr<ComponentBase>& a_component)
