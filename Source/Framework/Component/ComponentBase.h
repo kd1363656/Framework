@@ -16,7 +16,7 @@ namespace FWK
 
         virtual void INIT() { /*必要に応じてオーバーライドしてください*/ };
 
-        virtual void DeserializePrefab(const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+        virtual void DeserializePrefab(const nlohmann::json& a_rootJson);
         virtual void DeserializeScene (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
 
         virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
@@ -38,13 +38,21 @@ namespace FWK
 
         void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
+        void SetUUID(const boost::uuids::uuid& a_set) { m_uuid = a_set; }
+
         const auto& GetREFOwner() const { return m_owner; }
+
+        const auto& GetREFUUID() const { return m_uuid; }
 
         bool GetVALIsDisable() const { return m_isDisable; }
 
     private:
 
         std::weak_ptr<GameObject> m_owner = {};
+
+        Converter::ComponentBaseJsonConverter m_jsonConverter = {};
+
+        boost::uuids::uuid m_uuid = {};
 
         bool m_isDisable = false;
 

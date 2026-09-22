@@ -350,6 +350,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
+    <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Input\InputComponent.h" />
     <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h" />
@@ -857,6 +858,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
+    <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.cpp" />

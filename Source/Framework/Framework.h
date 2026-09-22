@@ -494,6 +494,7 @@
 //===============================================================================
 // コンポーネント(基底クラス)
 //===============================================================================
+#include "Component/Converter/Json/ComponentBaseJsonConverter.h"
 #include "Component/ComponentBase.h"
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"

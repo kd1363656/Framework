@@ -1,5 +1,12 @@
 ﻿#include "ComponentBase.h"
 
+void FWK::ComponentBase::DeserializePrefab(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.DeserializePrefab(a_rootJson);
+}
+
 void FWK::ComponentBase::Enable()
 {
     if (!m_isDisable) { return; }

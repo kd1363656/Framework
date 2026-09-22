@@ -1603,6 +1603,12 @@
     <Filter Include="Source\Framework\Utility\List">
       <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Component\Converter">
+      <UniqueIdentifier>{33b68513-b0e6-4421-b836-27a869a951d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Converter\Json">
+      <UniqueIdentifier>{233933ee-16df-4376-ad89-973c14e3ee17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3126,6 +3132,9 @@
     <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
       <Filter>Source\Framework\Utility\List</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h">
+      <Filter>Source\Framework\Component\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3937,6 +3946,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
