@@ -14,6 +14,6 @@ namespace FWK
          ModelComponentBaseInspector() = default;
         ~ModelComponentBaseInspector() = default;
 
-        void EditInspector(ModelComponentBase& a_modelComponentBase);
+        void EditInspector(const ModelComponentBase& a_modelComponentBase);
     };
 }

@@ -15,4 +15,4 @@ namespace FWK
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentEventNotifyStrategyUniqueFactory, FWK::InputMouseRightComponentEventNotifyStrategy)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentEventNotifyStrategySharedFactory, FWK::InputMouseRightComponentEventNotifyStrategy)

@@ -1015,23 +1015,11 @@
     <Filter Include="Source\Framework\Component\Render\Model\Converter\Json">
       <UniqueIdentifier>{55166301-0675-4d04-828d-3e5d1725f4f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy">
-      <UniqueIdentifier>{19751565-9775-4fac-98e0-a5e6419a323f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade">
       <UniqueIdentifier>{d65e0655-113b-4e26-8967-fb284b10dd9c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Skeletal\Shadow\Cascade">
       <UniqueIdentifier>{7f668f1e-30f4-4f02-b21e-082bcf5819cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard">
-      <UniqueIdentifier>{daeb70e4-b7de-424f-abe4-7a6fe1559443}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit">
-      <UniqueIdentifier>{534b501a-1a76-4f84-bb66-9045d65968d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit">
-      <UniqueIdentifier>{3fe4fb61-5815-402f-b437-15ade6772bbe}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade">
       <UniqueIdentifier>{51eeed03-70d3-43b8-953f-36f3f2c36105}</UniqueIdentifier>
@@ -1041,12 +1029,6 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json">
       <UniqueIdentifier>{04b7eb22-e32c-49de-9040-e6b1f786f441}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow">
-      <UniqueIdentifier>{7055969d-ed69-4a3b-b529-54a654afec3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade">
-      <UniqueIdentifier>{2d61bc4f-8fad-4092-a2bb-dddff21455a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Component\Transform\Inspector">
       <UniqueIdentifier>{6bc1901b-b8ad-46d1-95a9-c7494c15b871}</UniqueIdentifier>
@@ -1596,6 +1578,24 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner\Creator">
       <UniqueIdentifier>{9cfb7017-188e-4ac5-a143-3487fd57aea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy">
+      <UniqueIdentifier>{19751565-9775-4fac-98e0-a5e6419a323f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard">
+      <UniqueIdentifier>{daeb70e4-b7de-424f-abe4-7a6fe1559443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit">
+      <UniqueIdentifier>{534b501a-1a76-4f84-bb66-9045d65968d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit">
+      <UniqueIdentifier>{3fe4fb61-5815-402f-b437-15ade6772bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow">
+      <UniqueIdentifier>{7055969d-ed69-4a3b-b529-54a654afec3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade">
+      <UniqueIdentifier>{2d61bc4f-8fad-4092-a2bb-dddff21455a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2652,9 +2652,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
       <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClInclude>
@@ -2695,16 +2692,16 @@
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.h">
       <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
@@ -2820,9 +2817,6 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h">
       <Filter>Source\Framework\Definition\Enum\Axis</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\String</Filter>
     </ClInclude>
@@ -2831,9 +2825,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.h">
       <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\ComponentEventNotifyStrategyUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h">
       <Filter>Source\Framework\Utility\File</Filter>
@@ -2880,9 +2871,6 @@
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RotationComponentModeUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.h">
       <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector</Filter>
     </ClInclude>
@@ -2918,9 +2906,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MoveComponentModeUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Observer\ObserverInspectorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Observer</Filter>
@@ -3119,6 +3104,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MatrixStrategySharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\StaticModelRegisterDrawRequestStrategySharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RotationComponentModeSharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MoveComponentModeSharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentEventNotifyStrategySharedFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3675,13 +3675,13 @@
       <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Shadow\Cascade</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\Lit</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Storategy\Standard\UnLit</Filter>
+      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.cpp">
       <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>

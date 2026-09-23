@@ -15,4 +15,4 @@ namespace FWK
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::StaticModelRegisterDrawRequestStrategyBaseUniqueFactory, FWK::StaticModelRegisterDrawRequestCascadeShadowStrategy)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::StaticModelRegisterDrawRequestStrategyBaseSharedFactory, FWK::StaticModelRegisterDrawRequestCascadeShadowStrategy)

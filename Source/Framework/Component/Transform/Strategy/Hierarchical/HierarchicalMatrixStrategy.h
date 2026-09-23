@@ -15,4 +15,4 @@ namespace FWK
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::MatrixStrategyUniqueFactory, FWK::HierarchicalMatrixStrategy)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::MatrixStrategySharedFactory, FWK::HierarchicalMatrixStrategy)

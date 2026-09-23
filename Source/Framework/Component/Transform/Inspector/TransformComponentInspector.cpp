@@ -2,11 +2,11 @@
 
 void FWK::TransformComponentInspector::EditInspector(TransformComponent& a_transformComponent)
 {
-    auto& l_transform      = a_transformComponent.GetMutableREFTransform     ();
-    auto& l_matrixStrategy = a_transformComponent.GetMutableREFMatrixStrategy();
+    auto& l_transform      = a_transformComponent.GetMutableREFTransform();
+    auto  l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy  ().lock();
 
     // 行列の計算方法を選択することができるラジオボタンリスト
-    Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy);
+    Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::MatrixStrategySharedFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy);
 
     // 位置
     ImGui::DragFloat3(k_transformPositionLabel.data(), &l_transform.m_position.x, Constant::k_imguiDefaultDragValue);

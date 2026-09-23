@@ -32,21 +32,17 @@ namespace FWK
 
       void AddExecutionConditionList(const Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>& a_executionCondition);
 
-      void SetNotifyStrategy(std::unique_ptr<ComponentEventNotifyStrategyBase>&& a_set) { m_notifyStrategy = std::move(a_set); }
-
       const auto& GetREFNotifyComponentEventExecutionConditionList() const { return m_notifyComponentEventExecutionConditionList; }
-
-      const auto& GetREFNotifyStrategy() const { return m_notifyStrategy; }
 
       const auto& GetREFInspector() const { return m_inspector; }
       const auto& GetREFExecution() const { return m_execution; }
 
       auto& GetMutableREFNotifyComponentEventExecutionConditionList() { return m_notifyComponentEventExecutionConditionList; }
 
-      auto& GetMutableREFNotifyStrategy() { return m_notifyStrategy; }
-
       auto& GetMutableREFInspector() { return m_inspector; }
       auto& GetMutableREFExecution() { return m_execution; }
+
+      std::weak_ptr<ComponentEventNotifyStrategyBase> GetVALNotifyStrategy() const { return m_notifyStrategy; }
 
    private:
 
@@ -54,7 +50,7 @@ namespace FWK
 
       std::vector<Struct::ObserverInputExecutionCondition<Enum::ComponentEvent>> m_notifyComponentEventExecutionConditionList = {};
 
-      std::unique_ptr<ComponentEventNotifyStrategyBase> m_notifyStrategy = nullptr;
+      std::shared_ptr<ComponentEventNotifyStrategyBase> m_notifyStrategy = nullptr;
 
       InputComponentInspector m_inspector = {};
 

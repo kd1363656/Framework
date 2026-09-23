@@ -28,10 +28,10 @@ void FWK::Converter::InputComponentJsonConverter::DeserializePrefab(const nlohma
         DeserializeExecution(l_json, a_inputComponent);
     }
 
-    auto& l_notifyStrategy = a_inputComponent.GetMutableREFNotifyStrategy();
+    auto l_notifyStrategy = a_inputComponent.GetVALNotifyStrategy().lock();
 
     // 通知戦略クラスの復元
-    Utility::DeserializeInstanceType<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(a_rootJson, k_notifyStrategyJsonKey, l_notifyStrategy);
+    Utility::DeserializeInstanceType<TypeAlias::ComponentEventNotifyStrategySharedFactory>(a_rootJson, k_notifyStrategyJsonKey, l_notifyStrategy);
 }
 
 nlohmann::json FWK::Converter::InputComponentJsonConverter::SerializePrefab(const InputComponent& a_inputComponent) const
@@ -39,14 +39,14 @@ nlohmann::json FWK::Converter::InputComponentJsonConverter::SerializePrefab(cons
     nlohmann::json l_rootJson = {};
 
     const auto& l_inspector      = a_inputComponent.GetREFInspector     ();
-    const auto& l_notifyStrategy = a_inputComponent.GetREFNotifyStrategy();
+    const auto& l_notifyStrategy = a_inputComponent.GetVALNotifyStrategy().lock();
 
     l_rootJson[k_inspectorJsonKey]                                  = l_inspector.Serialize                          ();
     l_rootJson[k_notifyComponentEventExecutionConditionListJsonKey] = SerializeNotifyComponentEventExecutionCondition(a_inputComponent);
     l_rootJson[k_executionJsonKey]                                  = SerializeExecution                             (a_inputComponent);
 
     Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_notifyStrategy, k_notifyStrategyJsonKey));
-
+    
     return l_rootJson;
 }
 

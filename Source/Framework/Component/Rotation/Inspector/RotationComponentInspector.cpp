@@ -2,10 +2,10 @@
 
 void FWK::RotationComponentInspector::EditInspector(RotationComponent& a_rotationComponent)
 {
-    auto& l_rotationMode = a_rotationComponent.GetMutableREFRotationMode();
+    auto l_rotationMode = a_rotationComponent.GetVALRotationMode().lock();
 
     // ラジオボタンから回転方法を選択する
-    Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::RotationComponentModeUniqueFactory>(k_rotationModeRadioButtonSelectorLabel, l_rotationMode);
+    Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::RotationComponentModeSharedFactory>(k_rotationModeRadioButtonSelectorLabel, l_rotationMode);
 
     if (l_rotationMode)
     {

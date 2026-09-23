@@ -21,11 +21,11 @@ namespace FWK
 
         const auto& GetREFMoveMode() const { return m_moveMode; }
 
-        auto& GetMutableREFMoveMode() { return m_moveMode; }
+        std::weak_ptr<MoveComponentModeBase> GetVALMoveMode() const { return m_moveMode; }
 
     private:
         
-        std::unique_ptr<MoveComponentModeBase> m_moveMode = nullptr;
+        std::shared_ptr<MoveComponentModeBase> m_moveMode = nullptr;
 
         MoveComponentInspector m_inspector = {};
 

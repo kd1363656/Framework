@@ -58,7 +58,7 @@ nlohmann::json FWK::StaticModelComponent::SerializePrefab()
     return m_jsonConverter.SerializePrefab(*this);
 }
 
-void FWK::StaticModelComponent::AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy)
+void FWK::StaticModelComponent::AddRegisterDrawRequestStrategy(const std::shared_ptr<StaticModelRegisterDrawRequestStrategyBase>& a_registerDrawRequestStrategy)
 {
     if (!a_registerDrawRequestStrategy) { return; }
 

@@ -533,7 +533,7 @@ void FWK::InputComponentInspector::DrawConditionNodeCreatePopup(InputComponent& 
 void FWK::InputComponentInspector::DrawExecuteNode(InputComponent& a_inputComponent) const
 {
           auto& l_execution      = a_inputComponent.GetMutableREFExecution     ();
-          auto& l_notifyStrategy = a_inputComponent.GetMutableREFNotifyStrategy();
+          auto  l_notifyStrategy = a_inputComponent.GetVALNotifyStrategy       ().lock();
     const auto& l_inputPinIDList = m_executeNodeEditorNode.GetREFInputPinIDList();
 
     if (l_inputPinIDList.empty()) { return; }
@@ -552,7 +552,7 @@ void FWK::InputComponentInspector::DrawExecuteNode(InputComponent& a_inputCompon
     ImNodes::EndInputAttribute  ();
 
     // セレクターからストラテジーが生成されたなら適用
-    Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::ComponentEventNotifyStrategyUniqueFactory>(k_componentEventNotifyStrategyRadioButtonSelectorLabel, l_notifyStrategy);
+    Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::ComponentEventNotifyStrategySharedFactory>(k_componentEventNotifyStrategyRadioButtonSelectorLabel, l_notifyStrategy);
     Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyComponentEventLabel,                            l_execution.m_notifyComponentEvent);
     Utility::IMGUIStringValueBidirectionalRegistryRadioButtonSelector                             (k_notifyEventLaneBitShiftFlagLabel,                     l_execution.m_notifyEventLaneBitShiftFlag);
     ImGui::Checkbox                                                                               (k_notifyFlagLabel.data(),                               &l_execution.m_notifyFlag);

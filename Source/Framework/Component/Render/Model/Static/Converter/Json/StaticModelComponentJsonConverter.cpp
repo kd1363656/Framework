@@ -38,13 +38,13 @@ void FWK::Converter::StaticModelComponentJsonConverter::DeserializeRegisterDrawR
     {
         if (l_json.is_null()) { continue; }
 
-        std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase> l_drawRequestStrategy = nullptr;
+        std::shared_ptr<StaticModelRegisterDrawRequestStrategyBase> l_drawRequestStrategy = nullptr;
 
-        Utility::DeserializeInstanceType<TypeAlias::StaticModelRegisterDrawRequestStrategyBaseUniqueFactory>(l_json, k_drawRequestStrategyJsonKey, l_drawRequestStrategy);
+        Utility::DeserializeInstanceType<TypeAlias::StaticModelRegisterDrawRequestStrategyBaseSharedFactory>(l_json, k_drawRequestStrategyJsonKey, l_drawRequestStrategy);
 
         if (!l_drawRequestStrategy) { continue; }
 
-        a_staticModelComponent.AddRegisterDrawRequestStrategy(std::move(l_drawRequestStrategy));
+        a_staticModelComponent.AddRegisterDrawRequestStrategy(l_drawRequestStrategy);
     }
 }
 

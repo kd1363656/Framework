@@ -26,7 +26,7 @@ namespace FWK
 
         nlohmann::json SerializePrefab() override;
 
-        void AddRegisterDrawRequestStrategy(std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>&& a_registerDrawRequestStrategy);
+        void AddRegisterDrawRequestStrategy(const std::shared_ptr<StaticModelRegisterDrawRequestStrategyBase>& a_registerDrawRequestStrategy);
          
         void SetDrawRequestData(const std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData>& a_set) { m_drawRequestData = a_set; }
 
@@ -40,7 +40,7 @@ namespace FWK
 
         void UpdateDrawRequestData();
 
-        std::unordered_map<TypeAlias::StaticTypeID, std::unique_ptr<StaticModelRegisterDrawRequestStrategyBase>> m_registerDrawRequestStrategyMap = {};
+        std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<StaticModelRegisterDrawRequestStrategyBase>> m_registerDrawRequestStrategyMap = {};
 
         std::shared_ptr<Graphics::StaticModel>                       m_model           = std::make_shared<Graphics::StaticModel>                      ();
         std::shared_ptr<Struct::StaticModelPerObjectDrawRequestData> m_drawRequestData = std::make_shared<Struct::StaticModelPerObjectDrawRequestData>();

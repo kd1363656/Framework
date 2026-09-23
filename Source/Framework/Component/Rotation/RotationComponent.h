@@ -19,13 +19,11 @@ namespace FWK
 
         nlohmann::json SerializePrefab() override;
 
-        const auto& GetREFRotationMode() const { return m_rotationMode; }
-
-        auto& GetMutableREFRotationMode() { return m_rotationMode; }
+        std::weak_ptr<RotationComponentModeBase> GetVALRotationMode() const { return m_rotationMode; }
 
     private:
         
-        std::unique_ptr<RotationComponentModeBase> m_rotationMode = nullptr;
+        std::shared_ptr<RotationComponentModeBase> m_rotationMode = nullptr;
 
         RotationComponentInspector m_inspector = {};
 

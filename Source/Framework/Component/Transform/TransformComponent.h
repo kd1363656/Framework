@@ -39,25 +39,21 @@ namespace FWK
         void SetTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_transform.m_rotation = a_set; }
         void SetTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_transform.m_position = a_set; }
 
-        void SetMatrixStrategy(std::unique_ptr<MatrixStrategyBase>&& a_set) { m_matrixStrategy = std::move(a_set); }
-
-        const auto& GetREFMatrixStrategy() const { return m_matrixStrategy; }
-
         const auto& GetREFMatrix() const { return m_matrix; }
 
         const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
         
         const auto& GetREFTransform() const { return m_transform; }
 
-        auto& GetMutableREFMatrixStrategy() { return m_matrixStrategy; }
-
         auto& GetMutableREFTransform() { return m_transform; }
-        
+
+        std::weak_ptr<MatrixStrategyBase> GetVALMatrixStrategy() const { return m_matrixStrategy; }
+
     private:
 
         void ConfirmMatrix();
 
-        std::unique_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
+        std::shared_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
 
         std::weak_ptr<TransformComponent> m_parentTransformComponent = {};
 

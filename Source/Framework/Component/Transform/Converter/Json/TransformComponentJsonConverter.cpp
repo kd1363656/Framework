@@ -34,13 +34,9 @@ void FWK::Converter::TransformComponentJsonConverter::CommonDeserialize(const nl
     a_transformComponent.SetTransformRotation(l_rotation);
     a_transformComponent.SetTransformPosition(l_position);
     
-    std::unique_ptr<MatrixStrategyBase> l_matrixStrategy = nullptr;
+    auto l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy().lock();
 
-    Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_matrixStrategyTypeNameJsonKey, l_matrixStrategy);
-
-    if (!l_matrixStrategy) { return; }
-
-    a_transformComponent.SetMatrixStrategy(std::move(l_matrixStrategy));
+    Utility::DeserializeInstanceType<TypeAlias::MatrixStrategySharedFactory>(a_rootJson, k_matrixStrategyTypeNameJsonKey, l_matrixStrategy);
 }
 
 nlohmann::json FWK::Converter::TransformComponentJsonConverter::CommonSerialize(const TransformComponent& a_transformComponent) const
@@ -48,11 +44,12 @@ nlohmann::json FWK::Converter::TransformComponentJsonConverter::CommonSerialize(
     nlohmann::json l_rootJson = {};
 
     const auto& l_transform      = a_transformComponent.GetREFTransform     ();
-    const auto& l_matrixStrategy = a_transformComponent.GetREFMatrixStrategy();
+    const auto& l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy().lock();
 
     Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_scale,       k_scaleJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_position,    k_positionJsonKey));
+
     Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixStrategy,     k_matrixStrategyTypeNameJsonKey));
 
     return l_rootJson;

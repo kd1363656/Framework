@@ -4,9 +4,9 @@ void FWK::Converter::RotationComponentJsonConverter::DeserializePrefab(const nlo
 {
     if (a_rootJson.is_null()) { return; }
 
-    auto& l_rotationMode = a_rotationComponent.GetMutableREFRotationMode();
+    auto l_rotationMode = a_rotationComponent.GetVALRotationMode().lock();
 
-    Utility::DeserializeInstanceType<TypeAlias::RotationComponentModeUniqueFactory>(a_rootJson, k_rotationModeJsonKey, l_rotationMode);
+    Utility::DeserializeInstanceType<TypeAlias::RotationComponentModeSharedFactory>(a_rootJson, k_rotationModeJsonKey, l_rotationMode);
 
     if (const auto& l_json = a_rootJson.value(k_rotationModeDataJsonKey, nlohmann::json{});
         l_rotationMode &&
@@ -20,7 +20,7 @@ nlohmann::json FWK::Converter::RotationComponentJsonConverter::SerializePrefab(c
 {
     nlohmann::json l_rootJson     = {};
     
-    if (const auto& l_rotationMode = a_rotationComponent.GetREFRotationMode())
+    if (const auto& l_rotationMode = a_rotationComponent.GetVALRotationMode().lock())
     {
         Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_rotationMode, k_rotationModeJsonKey));
     

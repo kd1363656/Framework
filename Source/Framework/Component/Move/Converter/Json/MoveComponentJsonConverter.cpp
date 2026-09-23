@@ -4,9 +4,9 @@ void FWK::Converter::MoveComponentJsonConverter::DeserializePrefab(const nlohman
 {
     if (a_rootJson.is_null()) { return; }
 
-    auto& l_moveMode = a_moveComponent.GetMutableREFMoveMode();
+    auto l_moveMode = a_moveComponent.GetVALMoveMode().lock();
 
-    Utility::DeserializeInstanceType<TypeAlias::MoveComponentModeUniqueFactory>(a_rootJson, k_moveModeJsonKey, l_moveMode);
+    Utility::DeserializeInstanceType<TypeAlias::MoveComponentModeSharedFactory>(a_rootJson, k_moveModeJsonKey, l_moveMode);
 
     if (const auto& l_json = a_rootJson.value(k_moveModeDataJsonKey, nlohmann::json{});
         l_moveMode &&

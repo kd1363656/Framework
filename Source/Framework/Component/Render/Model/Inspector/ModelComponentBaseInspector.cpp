@@ -1,6 +1,6 @@
 ﻿#include "ModelComponentBaseInspector.h"
 
-void FWK::ModelComponentBaseInspector::EditInspector(ModelComponentBase& a_modelComponentBase)
+void FWK::ModelComponentBaseInspector::EditInspector(const ModelComponentBase& a_modelComponentBase)
 {
     const auto& l_assetFilePathHelper = a_modelComponentBase.GetVALAssetFilePathHelper().lock();
 
