@@ -39,26 +39,20 @@ namespace FWK
         void SetTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_transform.m_rotation = a_set; }
         void SetTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_transform.m_position = a_set; }
 
-        void SetInitializeMatrixStrategyTypeName(const std::string& a_set) { m_initializeMatrixStrategyTypeName = a_set; }
-
-        void SetInitialSettingTransformScale   (const TypeAlias::Math::Vector3&    a_set) { m_initialSettingTransform.m_scale    = a_set; }
-        void SetInitialSettingTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_initialSettingTransform.m_rotation = a_set; }
-        void SetInitialSettingTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_initialSettingTransform.m_position = a_set; }
-
         void SetMatrixStrategy(std::unique_ptr<MatrixStrategyBase>&& a_set) { m_matrixStrategy = std::move(a_set); }
+
+        const auto& GetREFMatrixStrategy() const { return m_matrixStrategy; }
 
         const auto& GetREFMatrix() const { return m_matrix; }
 
         const auto& GetREFParentTransformComponent() const { return m_parentTransformComponent; }
-
-        const auto& GetREFInitialMatrixStrategyName() const { return m_initializeMatrixStrategyTypeName; }
-        const auto& GetREFInitialSettingTransform  () const { return m_initialSettingTransform; }
+        
+        const auto& GetREFTransform() const { return m_transform; }
 
         auto& GetMutableREFMatrixStrategy() { return m_matrixStrategy; }
 
-        auto& GetMutableREFTransform              () { return m_transform; }
-        auto& GetMutableREFInitialSettingTransform() { return m_initialSettingTransform; }
-
+        auto& GetMutableREFTransform() { return m_transform; }
+        
     private:
 
         void ConfirmMatrix();
@@ -70,12 +64,9 @@ namespace FWK
         Converter::TransformComponentJsonConverter m_jsonConverter = {};
         TransformComponentInspector                m_inspector     = {};
 
-        std::string m_initializeMatrixStrategyTypeName = {};
-
         TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
 
-        Struct::Transform m_transform               = {};
-        Struct::Transform m_initialSettingTransform = {};
+        Struct::Transform m_transform = {};
 
         FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
     };

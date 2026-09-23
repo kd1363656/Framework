@@ -26,9 +26,9 @@ namespace FWK::Converter
 
         nlohmann::json CommonSerialize(const TransformComponent& a_transformComponent) const;
 
-        static constexpr std::string_view k_initialScaleJsonKey                  = "InitialScale";
-        static constexpr std::string_view k_initialRotationJsonKey               = "InitialRotation";
-        static constexpr std::string_view k_initialPositionJsonKey               = "InitialPosition";
-        static constexpr std::string_view k_initialMatrixStrategyTypeNameJsonKey = "InitialMatrixStrategyTypeName";
+        static constexpr std::string_view k_scaleJsonKey                  = "Scale";
+        static constexpr std::string_view k_rotationJsonKey               = "Rotation";
+        static constexpr std::string_view k_positionJsonKey               = "Position";
+        static constexpr std::string_view k_matrixStrategyTypeNameJsonKey = "MatrixStrategyType";
     };
 }

@@ -58,8 +58,6 @@ void FWK::TransformComponent::ApplyParent(const std::weak_ptr<GameObject>& a_par
     // 親が存在するということは追従する可能性が高いため、自動的に親に追従するように行列を掛ける
     m_matrixStrategy = std::make_unique<HierarchicalMatrixStrategy>();
 
-    m_initializeMatrixStrategyTypeName = std::string(HierarchicalMatrixStrategy::GetREFTypeINFO().k_name);
-
     // セットした後にダーティーフラグで行列の更新が妨げられてもいいように
     // ここで一度だけ行列を更新しておく
     ConfirmMatrix();
@@ -73,15 +71,9 @@ void FWK::TransformComponent::ApplyStandalone()
     // Transformに前の親の回転率、スケール、座標を考慮した行列を格納する
     m_transform.m_position = l_position;
 
-    // Scene保存時にも解除後の位置を保存できるように
-    // シリアライズ対象の初期Transformにも反映する
-    m_initialSettingTransform.m_position = l_position;
-
     // 親から外れたので、
     // 単独GameObject用の行列計算方式へ戻す
     m_matrixStrategy = std::make_unique<StandaloneMatrixStrategy>();
-
-    m_initializeMatrixStrategyTypeName = std::string(StandaloneMatrixStrategy::GetREFTypeINFO().k_name);
 
     ConfirmMatrix();
 }

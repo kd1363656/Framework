@@ -26,52 +26,34 @@ void FWK::Converter::TransformComponentJsonConverter::CommonDeserialize(const nl
 {
     if (a_rootJson.is_null()) { return; }
 
-    const auto& l_scale    = Utility::DeserializeVector3   (a_rootJson, k_initialScaleJsonKey);
-    const auto& l_rotation = Utility::DeserializeQuaternion(a_rootJson, k_initialRotationJsonKey);
-    const auto& l_position = Utility::DeserializeVector3   (a_rootJson, k_initialPositionJsonKey);
-
-    a_transformComponent.SetInitialSettingTransformScale   (l_scale);
-    a_transformComponent.SetInitialSettingTransformRotation(l_rotation);
-    a_transformComponent.SetInitialSettingTransformPosition(l_position);
-    
-    // 行列合成用クラスを作成するための文字列を取得 
-    const auto& l_matrixStrategyTypeName = a_rootJson.value(k_initialMatrixStrategyTypeNameJsonKey, std::string{});
-
-    if (l_matrixStrategyTypeName.empty())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,"TransformComponentのストラテジー初期化用文字列が空になっており、ストラテジーの初期化に失敗しました。");
-
-        return;
-    }
-
-    const auto& l_factory = TypeAlias::MatrixStrategyUniqueFactory::GetInstance();
-
-    auto l_matrixStrategy = l_factory.Create(l_matrixStrategyTypeName);
-
-    if (!l_matrixStrategy)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "TransformComponentのMatrixStrategyがうまく作成されていません、jsonファイルを確認してください");
-    }
-
-    a_transformComponent.SetInitializeMatrixStrategyTypeName(l_matrixStrategyTypeName);
-    a_transformComponent.SetMatrixStrategy                  (std::move(l_matrixStrategy));
+    const auto& l_scale    = Utility::DeserializeVector3   (a_rootJson, k_scaleJsonKey);
+    const auto& l_rotation = Utility::DeserializeQuaternion(a_rootJson, k_rotationJsonKey);
+    const auto& l_position = Utility::DeserializeVector3   (a_rootJson, k_positionJsonKey);
 
     a_transformComponent.SetTransformScale   (l_scale);
     a_transformComponent.SetTransformRotation(l_rotation);
     a_transformComponent.SetTransformPosition(l_position);
+    
+    std::unique_ptr<MatrixStrategyBase> l_matrixStrategy = nullptr;
+
+    Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_matrixStrategyTypeNameJsonKey, l_matrixStrategy);
+
+    if (!l_matrixStrategy) { return; }
+
+    a_transformComponent.SetMatrixStrategy(std::move(l_matrixStrategy));
 }
 
 nlohmann::json FWK::Converter::TransformComponentJsonConverter::CommonSerialize(const TransformComponent& a_transformComponent) const
 {
     nlohmann::json l_rootJson = {};
 
-    const auto& l_initialSettingTransform = a_transformComponent.GetREFInitialSettingTransform();
+    const auto& l_transform      = a_transformComponent.GetREFTransform     ();
+    const auto& l_matrixStrategy = a_transformComponent.GetREFMatrixStrategy();
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_initialSettingTransform.m_scale,       k_initialScaleJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(l_initialSettingTransform.m_rotation, k_initialRotationJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_initialSettingTransform.m_position,    k_initialPositionJsonKey));
-
-    l_rootJson[k_initialMatrixStrategyTypeNameJsonKey] = a_transformComponent.GetREFInitialMatrixStrategyName();
+    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_scale,       k_scaleJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_position,    k_positionJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixStrategy,     k_matrixStrategyTypeNameJsonKey));
 
     return l_rootJson;
 }
