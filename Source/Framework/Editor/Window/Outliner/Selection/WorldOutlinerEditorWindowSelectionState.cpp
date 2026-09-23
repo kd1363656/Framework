@@ -10,6 +10,7 @@ void FWK::Editor::WorldOutlinerEditorWindowSelectionState::SelectSingleGameObjec
     // 選択を単一GameObjectへ置き換え
     m_selectedGameObjectUUIDList.clear       ();
     m_selectedGameObjectUUIDList.emplace_back(l_gameObject->GetREFSceneInstanceUUID());
+    m_isSceneSelected = false;
 }
 void FWK::Editor::WorldOutlinerEditorWindowSelectionState::SelectSingleScene()
 {

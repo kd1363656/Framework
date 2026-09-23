@@ -659,7 +659,12 @@
 #include "Editor/Window/AssetBrowser/Pane/Asset/AssetBrowserEditorWindowAssetPane.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"
 
-#include "Editor/Window/Outliner/Selection/Command/GameObject/WorldOutlinerEditorWindowSelectGameObjectCommand.h"
-#include "Editor/Window/Outliner/Selection/Command/Scene/WorldOutlinerEditorWindowSelectSceneCommand.h"
+#include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowClipboardEnum.h"
+#include "Editor/Window/Outliner/Clipboard/WorldOutlinerEditorWindowClipboard.h"
+
+#include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowAssetCreatorConstant.h"
+#include "Editor/Window/Outliner/Creator/WorldOutlinerEditorWindowAssetCreator.h"
+
 #include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowSelectionState.h"
+#include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowOperationEnum.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"

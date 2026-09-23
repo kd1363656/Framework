@@ -143,6 +143,8 @@ namespace FWK
 
         auto& GetMutableREFParent() { return m_parent; }
 
+        auto& GetMutableREFChildSmartPointerVectorList() { return m_childSmartPointerVectorList; }
+
         auto& GetMutableREFSceneInstanceUUID() { return m_sceneInstanceUUID; }
 
         auto& GetMutableREFPrefabUUID            () { return m_prefabUUID; }

@@ -1591,15 +1591,6 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Selection">
       <UniqueIdentifier>{ac765259-24ac-42ac-95fb-a8d841af6356}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command">
-      <UniqueIdentifier>{6c5c521c-a407-47e8-b898-db56978ba5e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject">
-      <UniqueIdentifier>{745ac448-7d40-4372-b0e4-4fb164cbcaf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene">
-      <UniqueIdentifier>{baf16fc0-9923-4590-afc9-df873ef967fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\List">
       <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
     </Filter>
@@ -1608,6 +1599,18 @@
     </Filter>
     <Filter Include="Source\Framework\Component\Converter\Json">
       <UniqueIdentifier>{233933ee-16df-4376-ad89-973c14e3ee17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Operation">
+      <UniqueIdentifier>{d38a0de5-5bb8-47b6-928e-f799fcc4a213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject">
+      <UniqueIdentifier>{8d1226cc-6b07-4e61-9610-98efee51f835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Clipboard">
+      <UniqueIdentifier>{4cf1f85d-b57e-42ef-ac51-2801f98200b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Creator">
+      <UniqueIdentifier>{9cfb7017-188e-4ac5-a143-3487fd57aea4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3123,17 +3126,29 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
       <Filter>Source\Framework\Utility\List</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h">
       <Filter>Source\Framework\Component\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Operation\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowClipboardEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Creator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3941,14 +3956,17 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection\Command\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp">
       <Filter>Source\Framework\Component\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Operation\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Creator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

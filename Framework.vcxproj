@@ -417,6 +417,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowShortcutHandlerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\LogEditorWindowConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
@@ -465,6 +466,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowPopupDrawerEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowShortcutHandlerEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowClipboardEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DepthStencilPassTextureEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\PipelineStateBaseEnum.h" />
@@ -588,8 +591,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h" />
@@ -935,8 +939,9 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\EditorWindowBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\GameObject\WorldOutlinerEditorWindowSelectGameObjectCommand.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\Command\Scene\WorldOutlinerEditorWindowSelectSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp" />
