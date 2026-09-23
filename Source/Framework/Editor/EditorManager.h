@@ -81,7 +81,7 @@ namespace FWK::Editor
             return std::static_pointer_cast<WindowType>(l_editorWindow);
         }
 
-        void SstCurrentActiveWindowStaticTpeID(const TypeAlias::StaticTypeID a_set) { m_currentActiveWindowStaticTpeID = a_set; }
+        void SetCurrentActiveWindowStaticTpeID(const TypeAlias::StaticTypeID a_set) { m_currentActiveWindowStaticTpeID = a_set; }
 
         void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 

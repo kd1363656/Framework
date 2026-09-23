@@ -22,6 +22,7 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     if (!ImGui::Begin(k_editorName.data()))
     {
         ImGui::End();
+
         return;
     }
 

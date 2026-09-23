@@ -41,12 +41,8 @@
                 },
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Camera",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Data\\Prefab\\Camera"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
                 "CurrentSelectFolderPath": "Asset\\Data\\Prefab",
@@ -141,7 +137,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab\\Camera",
