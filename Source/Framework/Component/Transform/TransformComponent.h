@@ -33,11 +33,13 @@ namespace FWK
         void ApplyParent    (const std::weak_ptr<GameObject>& a_parentObject);
         void ApplyStandalone();
 
+        void ApplyTransformScale   (const TypeAlias::Math::Vector3&    a_scale);
+        void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_rotation);
+        void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_position);
+
         void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
 
-        void SetTransformScale   (const TypeAlias::Math::Vector3&    a_set) { m_transform.m_scale    = a_set; }
-        void SetTransformRotation(const TypeAlias::Math::Quaternion& a_set) { m_transform.m_rotation = a_set; }
-        void SetTransformPosition(const TypeAlias::Math::Vector3&    a_set) { m_transform.m_position = a_set; }
+        void SetShouldUpdateMatrixDirty(const bool a_set) { m_shouldUpdateMatrixDirty = a_set; }
 
         const auto& GetREFMatrix() const { return m_matrix; }
 
@@ -63,6 +65,8 @@ namespace FWK
         TypeAlias::Math::Matrix m_matrix = TypeAlias::Math::Matrix::Identity;
 
         Struct::Transform m_transform = {};
+
+        bool m_shouldUpdateMatrixDirty = false;
 
         FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
     };

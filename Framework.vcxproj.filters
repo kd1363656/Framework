@@ -1597,6 +1597,12 @@
     <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade">
       <UniqueIdentifier>{2d61bc4f-8fad-4092-a2bb-dddff21455a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Component">
+      <UniqueIdentifier>{5e3f14f6-cf6f-4716-8bf1-fedac0b24012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Hierarchy">
+      <UniqueIdentifier>{28ae0122-dca5-46da-bf9f-8b056dbf3c8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3120,6 +3126,12 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentEventNotifyStrategySharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h">
+      <Filter>Source\Framework\GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h">
+      <Filter>Source\Framework\GameObject\Hierarchy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3931,6 +3943,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.cpp">
+      <Filter>Source\Framework\GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp">
+      <Filter>Source\Framework\GameObject\Hierarchy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

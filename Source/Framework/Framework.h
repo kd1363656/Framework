@@ -503,6 +503,8 @@
 #include "Definition/Constant/GameObject/GameObjectPrefabJsonConverterConstant.h"
 #include "GameObject/Converter/Json/Prefab/GameObjectPrefabJsonConverter.h"
 #include "GameObject/Converter/Json/Scene/GameObjectSceneJsonConverter.h"
+#include "GameObject/Component/GameObjectComponentContainer.h"
+#include "GameObject/Hierarchy/GameObjectHierarchy.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/Inspector/GameObjectInspector.h"
 #include "GameObject/GameObject.h"

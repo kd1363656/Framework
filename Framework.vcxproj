@@ -599,10 +599,12 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.h" />
     <ClInclude Include="Source\Framework\FPS\FPSController.h" />
     <ClInclude Include="Source\Framework\Framework.h" />
+    <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h" />
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h" />
     <ClInclude Include="Source\Framework\GameObject\Inspector\GameObjectInspector.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\List\CommandListBase.h" />
@@ -943,10 +945,12 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\FPS\Converter\Json\FPSControllerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Inspector\GameObjectInspector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp" />
