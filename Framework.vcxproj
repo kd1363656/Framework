@@ -445,7 +445,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticBoxBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticSphereBodyConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabInstanceNUMAllocatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
@@ -522,7 +521,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsCharacterVirtualStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Physics\PhysicsRayCastStruct.h" />
-    <ClInclude Include="Source\Framework\Definition\Struct\Prefab\PrefabSystemStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\StringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\String\WStringHashStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\CommandAllocatorTypeAlias.h" />
@@ -546,7 +544,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\StaticModelRegisterDrawRequestStrategyUniqueFactory.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\MathTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h" />
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabSceneInstanceNUMTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
@@ -791,8 +788,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.h" />
     <ClInclude Include="Source\Framework\Physics\PhysicsManager.h" />
     <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h" />
-    <ClInclude Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.h" />
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.h" />
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h" />
     <ClInclude Include="Source\Framework\Prefab\Prefab.h" />
@@ -1095,8 +1090,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Physics\Layer\PhysicsLayerSetting.cpp" />
     <ClCompile Include="Source\Framework\Physics\PhysicsManager.cpp" />
     <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp" />
-    <ClCompile Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.cpp" />
-    <ClCompile Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Prefab\Prefab.cpp" />

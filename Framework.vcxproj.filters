@@ -970,9 +970,6 @@
     <Filter Include="Source\Framework\Definition\Struct\GameObject">
       <UniqueIdentifier>{85c1dd65-757b-44c6-86ab-f6238955260b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Prefab">
-      <UniqueIdentifier>{f5070a97-60fb-47a2-9e62-5df4b20a6394}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner">
       <UniqueIdentifier>{89493100-c2bd-4e6b-911b-9c2dc32ff644}</UniqueIdentifier>
     </Filter>
@@ -1060,20 +1057,8 @@
     <Filter Include="Source\Framework\Physics\Converter\Json">
       <UniqueIdentifier>{6677586e-4982-4de7-8adc-cc25993d35cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Prefab\Allocator">
-      <UniqueIdentifier>{83af7c0a-4edc-4700-8ed3-9df37fa09303}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Prefab\Allocator\Converter">
-      <UniqueIdentifier>{a1b75ba2-0610-4e08-bfdf-186ed3d14984}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Prefab\Allocator\Converter\Json">
-      <UniqueIdentifier>{46f36a66-3a5f-4619-ac47-d65db91fc487}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Utility\Storage">
       <UniqueIdentifier>{c73ee9f8-b8c4-4d49-9ebb-169cd7e3dd04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Prefab">
-      <UniqueIdentifier>{2739b55b-e331-46be-b2fc-773f0a183410}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\GameObject">
       <UniqueIdentifier>{267ae01b-247a-4ecf-995d-4fb9d2c6299d}</UniqueIdentifier>
@@ -2616,9 +2601,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h">
       <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Prefab\PrefabSystemStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Prefab</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
@@ -2682,23 +2664,11 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.h">
-      <Filter>Source\Framework\Prefab\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.h">
-      <Filter>Source\Framework\Prefab\Allocator\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\PrefabSceneInstanceNUMTypeAlias.h">
-      <Filter>Source\Framework\Definition\Type\Alias</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Prefab\PrefabInstanceNUMAllocatorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Prefab</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectUtility.h">
       <Filter>Source\Framework\Utility\GameObject</Filter>
@@ -3685,12 +3655,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Prefab\Allocator\PrefabInstanceNUMAllocator.cpp">
-      <Filter>Source\Framework\Prefab\Allocator</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Prefab\Allocator\Converter\Json\PrefabInstanceNUMAllocatorJsonConverter.cpp">
-      <Filter>Source\Framework\Prefab\Allocator\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.cpp">
       <Filter>Source\Framework\Utility\Helper\Asset</Filter>

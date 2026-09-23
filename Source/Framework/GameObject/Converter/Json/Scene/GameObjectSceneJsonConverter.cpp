@@ -13,15 +13,6 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
         return false;
     }
 
-    const auto l_prefabSceneInstanceNUM = a_rootJson.value(k_prefabSceneInstanceNUMJsonKey, Constant::k_invalidPrefabSceneInstanceNUM);
-
-    if (l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabSceneInstanceNUMが無効のため、GameObjectのSceneデータをデシリアライズできませんでした。");
-
-        return false;
-    }
-
     // 保存していたUUIDを取得
     const auto l_sceneInstanceUUID = Utility::DeserializeUUID(a_rootJson, k_sceneInstanceUUIDJsonKey);
 
@@ -44,9 +35,6 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
         return false;
     }
 
-    // シーンに接地されているプレハブで何番目かを格納
-    a_gameObject.SetPrefabSceneInstanceNUM(l_prefabSceneInstanceNUM);
-
     // シーンに配置されているゲームオブジェクトのUUID
     // 他のゲームオブジェクトがこのゲームオブジェクトに瞬時にアクセスしたいときなどに使用する
     a_gameObject.SetSceneInstanceUUID(l_sceneInstanceUUID);
@@ -54,10 +42,10 @@ bool FWK::Converter::GameObjectSceneJsonConverter::Deserialize(const nlohmann::j
     // PrefabDeserialize時点ではPrefabNameがSceneInstanceNameへ入っている。
     // Scene側に明示的な名前が保存されている場合は、
     // Scene固有情報としてここで上書きする
-    if (const auto& l_sceneInstanceName = a_rootJson.value(k_sceneInstanceNameJsonKey, std::string{});
+    if (const auto& l_sceneInstanceName = a_rootJson.value(k_nameJsonKey, std::string{});
         !l_sceneInstanceName.empty())
     {
-        a_gameObject.SetSceneInstanceName(l_sceneInstanceName);
+        a_gameObject.SetName(l_sceneInstanceName);
     }
 
     return true;
@@ -71,10 +59,9 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::Serialize(const Gam
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのシリアライズに失敗しました。", {});
 
-    const auto& l_prefabUUID             = a_gameObject.GetREFPrefabUUID            ();
-    const auto& l_sceneInstanceUUID      = a_gameObject.GetREFSceneInstanceUUID     ();
-    const auto& l_prefabSceneInstanceNUM = a_gameObject.GetVALPrefabSceneInstanceNUM();
-    const auto& l_sceneInstanceName      = a_gameObject.GetREFSceneInstanceName     ();
+    const auto& l_prefabUUID        = a_gameObject.GetREFPrefabUUID       ();
+    const auto& l_sceneInstanceUUID = a_gameObject.GetREFSceneInstanceUUID();
+    const auto& l_sceneInstanceName = a_gameObject.GetREFName             ();
 
     if (l_prefabUUID.is_nil() ||
         l_sceneInstanceUUID.is_nil())
@@ -82,9 +69,8 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::Serialize(const Gam
         return {};
     }
 
-    // ゲームオブジェクトのシーンインスタンス名と、プレ布武シーンインスタンス番号を保存
-    l_rootJson[k_prefabSceneInstanceNUMJsonKey] = l_prefabSceneInstanceNUM;
-    l_rootJson[k_sceneInstanceNameJsonKey]      = l_sceneInstanceName;
+    // ゲームオブジェクト名を格納
+    l_rootJson[k_nameJsonKey] = l_sceneInstanceName;
 
     // Prefabを識別するためのUUID
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(l_prefabUUID, Constant::k_gameObjectPrefabUUIDJsonKey));

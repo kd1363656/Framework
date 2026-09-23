@@ -30,8 +30,7 @@ namespace FWK::Converter
         nlohmann::json SerializeSceneComponent(const GameObject& a_gameObject) const;
         nlohmann::json SerializeSceneChildList(const GameObject& a_gameObject) const;
 
-        static constexpr std::string_view k_sceneInstanceNameJsonKey      = "SceneInstanceName";
-        static constexpr std::string_view k_prefabSceneInstanceNUMJsonKey = "PrefabSceneInstanceNUM";
-        static constexpr std::string_view k_sceneInstanceUUIDJsonKey      = "SceneInstanceUUID";
+        static constexpr std::string_view k_nameJsonKey              = "Name";
+        static constexpr std::string_view k_sceneInstanceUUIDJsonKey = "SceneInstanceUUID";
     };
 }

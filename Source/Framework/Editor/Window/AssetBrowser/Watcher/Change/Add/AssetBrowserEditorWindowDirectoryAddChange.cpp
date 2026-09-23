@@ -172,21 +172,14 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
     // 同じPrefabを二重登録しない
     if (l_prefabSystem.FindPTRPrefab(a_prefabUUID)) { return; }
 
-    // シーンのプレハブシステムにないということは追加するということなので
-    // アロケータ用基本サイズを設定してprefabSystemに設定する
-    Struct::PrefabData l_prefabData = {};
-
-    auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
-    
-    // あらかじめオーバーフローしないように要素数を確保しておく
-    l_prefabInstanceNUMAllocator.Resize(Constant::k_storageIDAllocatorDefaultCreateStorageIDCapacity, false);
+    Prefab l_prefab = {};
 
     // Add通知はJson生成直後に届く可能性がある
     // Prefab::Load()内部でJsonを実際に読み込ませ、
     // 書き込み途中の不完全なPrefabをPrefabSystemへ登録しない
-    l_prefabData.m_prefab.Load(a_filePath);
+    l_prefab.Load(a_filePath);
 
-    if (l_prefabData.m_prefab.GetREFJson().is_null())
+    if (l_prefab.GetREFJson().is_null())
     {
         // SceneRegistryを今回追加した場合だけ元に戻す
         // 元から存在していたRegistry情報は削除しない
@@ -200,7 +193,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
         return;
     }
 
-    l_prefabSystem.AddPrefab(a_prefabUUID, l_prefabData);
+    l_prefabSystem.AddPrefab(a_prefabUUID, l_prefab);
 
     // Prefab作成元のGameObjectなどが既にSceneに存在する場合
     // PrefabSystemへPrefabを追加した後に代表GameObject候補として再確認する

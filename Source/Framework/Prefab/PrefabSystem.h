@@ -12,7 +12,7 @@ namespace FWK
     {
     private:
 
-        using PrefabMap = std::unordered_map<boost::uuids::uuid, Struct::PrefabData>;
+        using PrefabMap = std::unordered_map<boost::uuids::uuid, Prefab>;
 
     public:
 
@@ -23,14 +23,10 @@ namespace FWK
         void Deserialize                  (const nlohmann::json&            a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
         void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
 
-        void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData);
+        void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Prefab& a_prefab);
         void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);
 
         nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry);
-
-        TypeAlias::PrefabSceneInstanceNUM AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID);
-
-        void ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM);
 
         const Prefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 

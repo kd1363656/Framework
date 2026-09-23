@@ -42,11 +42,9 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
         // プレハブじゃないファイルパスならcontinue
         if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab) { continue; }
 
-        Struct::PrefabData l_prefabData = {};
+        Prefab l_prefab = {};
 
-              auto& l_prefab                     = l_prefabData.m_prefab;
-              auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
-        const auto& l_assetFilePath              = l_assetFilePathData->m_assetFilePath;
+        const auto& l_assetFilePath = l_assetFilePathData->m_assetFilePath;
 
         if (!Utility::CanLoadFilePath(l_assetFilePath, Constant::k_lowerJsonExtension)) { continue; }
 
@@ -65,18 +63,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
             continue;
         }
 
-        const auto& l_prefabNUMInstanceAllocatorJson =  l_json.value(k_prefabInstanceNUMAllocatorJsonKey, nlohmann::json{});
-
-        if (l_prefabNUMInstanceAllocatorJson.is_null())
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabInstanceNUMAllocatorのJsonが無効となっており、PrefabDataの登録に失敗しました。");
-
-            continue;
-        }
-
-        l_prefabInstanceNUMAllocator.Deserialize(l_prefabNUMInstanceAllocatorJson);
-
-        a_prefabSystem.AddPrefab(l_prefabUUID, l_prefabData);
+        a_prefabSystem.AddPrefab(l_prefabUUID, l_prefab);
     }
 }
 
@@ -87,7 +74,7 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
 
     auto& l_prefabMap = a_prefabSystem.GetMutableREFPrefabMap();
 
-    for (auto& [l_prefabUUID, l_prefabData] : l_prefabMap)
+    for (auto& [l_prefabUUID, l_prefab] : l_prefabMap)
     {
         // NilUUIDはPrefabMapへ本来登録されないが
         // 異常なデータをJsonへ保存されないように念のため除外する
@@ -105,12 +92,9 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
         // プレハブじゃないファイルパスならcontinue
         if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab) { continue; }
 
-              auto& l_prefab                     = l_prefabData.m_prefab;
-        const auto& l_prefabInstanceNUMAllocator = l_prefabData.m_prefabInstanceNUMAllocator;
-        const auto& l_filePath                   = l_assetFilePathData->m_assetFilePath;
-
         // 読み込めないファイルならシリアライズしない
-        if (!Utility::CanLoadFilePath(l_filePath) ||
+        if (const auto& l_filePath = l_assetFilePathData->m_assetFilePath;
+            !Utility::CanLoadFilePath(l_filePath) ||
             l_prefab.GetREFJson().is_null())
         {
             continue;
@@ -119,8 +103,7 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
         nlohmann::json l_json = {};
 
         Utility::UpdateJson(l_json, Utility::SerializeUUID(l_prefabUUID, k_prefabUUIDJsonKey));
-        l_json[k_prefabInstanceNUMAllocatorJsonKey] = l_prefabInstanceNUMAllocator.Serialize();
-
+        
         l_jsonArray.emplace_back(l_json);
     }
 

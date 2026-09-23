@@ -21,22 +21,13 @@ void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameOb
         return;
     }
 
-    const auto& l_prefabUUID             = l_gameObject->GetREFPrefabUUID            ();
-    const auto  l_prefabSceneInstanceNUM = l_gameObject->GetVALPrefabSceneInstanceNUM();
-
-    // PrefabUUIDとPrefabInstanceのNUMの両方を持つGameObjectだけを、
-    // Prefabの代表GameObject候補として扱う
-    if (l_prefabUUID.is_nil() ||
-        l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-    {
-        return;
-    }
-
+    const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
+    
     auto l_itr = m_prefabMap.find(l_prefabUUID);
 
     if (l_itr == m_prefabMap.end()) { return; }
 
-    auto& l_prefab = l_itr->second.m_prefab;
+    auto& l_prefab = l_itr->second;
 
     // 既に有効な代表GameObjectが存在しており、
     // 同じPrefabUUIDを参照している場合は
@@ -54,7 +45,7 @@ void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameOb
     l_prefab.SetGameObject(l_gameObject);
 }
 
-void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const Struct::PrefabData& a_prefabData)
+void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const Prefab& a_prefab)
 {
     if (a_prefabUUID.is_nil())
     {
@@ -63,7 +54,7 @@ void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const 
         return;
     }
 
-    if (!m_prefabMap.try_emplace(a_prefabUUID, a_prefabData).second)
+    if (!m_prefabMap.try_emplace(a_prefabUUID, a_prefab).second)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "同じPrefabUUIDが既に登録されており、PrefabSystemのプレハブマップに追加できませんでした。");
     }
@@ -88,46 +79,6 @@ nlohmann::json FWK::PrefabSystem::Serialize(const AssetFilePathRegistry& a_asset
     return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
 }
 
-FWK::TypeAlias::PrefabSceneInstanceNUM FWK::PrefabSystem::AllocatePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID)
-{
-    if (a_prefabUUID.is_nil())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効のため、PrefabInstanceNUMを発行できませんでした。");
-
-        return Constant::k_invalidPrefabSceneInstanceNUM;
-    }
-
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
-
-    if (l_itr == m_prefabMap.end())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUID : {}\nのPrefabが登録されていないため、PrefabInstanceNUMを発行できませんでした。", boost::uuids::to_string(a_prefabUUID));
-
-        return Constant::k_invalidPrefabSceneInstanceNUM;
-    }
-
-    auto& l_prefabInstanceNUMAllocator = l_itr->second.m_prefabInstanceNUMAllocator;
-
-    // 使用可能なInstanceNUMを発行
-    return l_prefabInstanceNUMAllocator.Allocate();
-}
-
-void FWK::PrefabSystem::ReleasePrefabInstanceNUM(const boost::uuids::uuid& a_prefabUUID, const TypeAlias::PrefabSceneInstanceNUM a_prefabInstanceNUM)
-{
-    if (a_prefabUUID.is_nil() ||
-        a_prefabInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-    {
-        return;
-    }
-
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
-
-    if (l_itr == m_prefabMap.end()) { return; }
-
-    auto& l_prefabInstanceNUMAllocator = l_itr->second.m_prefabInstanceNUMAllocator;
-
-    l_prefabInstanceNUMAllocator.Release(a_prefabInstanceNUM);
-}
 
 const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const
 {
@@ -138,7 +89,7 @@ const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const boost::uuids::uuid& a_
 
     if (l_itr == m_prefabMap.end()) { return nullptr; }
 
-    return &l_itr->second.m_prefab;
+    return &l_itr->second;
 }
 
 FWK::Prefab* FWK::PrefabSystem::FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID)
@@ -150,5 +101,5 @@ FWK::Prefab* FWK::PrefabSystem::FindMutablePTRPrefab(const boost::uuids::uuid& a
 
     if (l_itr == m_prefabMap.end()) { return nullptr; }
 
-    return &l_itr->second.m_prefab;
+    return &l_itr->second;
 }

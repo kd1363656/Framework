@@ -28,9 +28,7 @@ void FWK::GameObject::INIT()
     m_prefabUUID        = {};
     m_sceneInstanceUUID = {};
 
-    m_sceneInstanceName.clear();
-
-    m_prefabSceneInstanceNUM = Constant::k_invalidPrefabSceneInstanceNUM;
+    m_name.clear();
 
     m_isDestroyed = false;
 }
@@ -272,9 +270,7 @@ void FWK::GameObject::AddComponent(const std::shared_ptr<ComponentBase>& a_compo
 {
     if (!a_component)
     {
-        const auto& l_gameObjectName = std::format("{}({})", m_sceneInstanceName, m_prefabSceneInstanceNUM);
-
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObject : {}\nコンポーネントが無効となっており割り当てに失敗しました。", l_gameObjectName);
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントが無効となっており割り当てに失敗しました。");
 
         return;
     }
@@ -405,21 +401,19 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
     if (!l_self) { return false; }
 
     // 自分自身を子にするとGameObjectの親子関係が即座に循環するため許可しない
-    if (l_child == l_self) { return false; }
-
-    if (l_child->GetREFPrefabUUID().is_nil()) { return false; }
-
-    const auto& l_selfPrefabUUID              = l_self->GetREFPrefabUUID             ();
-    const auto& l_childPrefabUUID             = l_child->GetREFPrefabUUID            ();
-    const auto  l_selfPrefabSceneInstanceNUM  = l_self->GetVALPrefabSceneInstanceNUM ();
-    const auto  l_childPrefabSceneInstanceNUM = l_child->GetVALPrefabSceneInstanceNUM();
+    if (l_child == l_self ||
+        l_child->GetREFPrefabUUID().is_nil())
+    {
+        return false; 
+    }
+    
+    const auto& l_selfPrefabUUID  = l_self->GetREFPrefabUUID ();
+    const auto& l_childPrefabUUID = l_child->GetREFPrefabUUID();
 
     // Prefabの親子関係を構築するGameObjectは、
-    // PrefabUUIDとPrefabInstanceNUMの両方を有効な値として持っている必要がある
-    if (l_selfPrefabUUID.is_nil()                                                 ||
-        l_childPrefabUUID.is_nil()                                                ||
-        l_selfPrefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM ||
-        l_childPrefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
+    // PrefabUUIDを有効な値として持っている必要がある
+    if (l_selfPrefabUUID.is_nil() ||
+        l_childPrefabUUID.is_nil())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDまたはPrefabInstanceNUMが無効なため、親子関係を構築できませんでした。");
 
@@ -448,19 +442,8 @@ bool FWK::GameObject::ApplyParent(const std::weak_ptr<GameObject>& a_child)
     // まずはRootからPrefabの重複があるかどうかを確認
     while (l_parentGameObject)
     {
-        const auto& l_prefabUUID             = l_parentGameObject->GetREFPrefabUUID            ();
-        const auto  l_prefabSceneInstanceNUM = l_parentGameObject->GetVALPrefabSceneInstanceNUM();
-
-        // PrefabHierarchyを構成するGameObjectは、
-        // PrefabUUIDとPrefabInstanceNUMの両方が有効である必要がある
-        if (l_prefabUUID.is_nil() ||
-            l_prefabSceneInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "親階層にPrefabInstanceではないGameObjectが存在するため、親子関係を構築できませんでした。");
-
-            return false;
-        }
-
+        const auto& l_prefabUUID = l_parentGameObject->GetREFPrefabUUID();
+        
         // unordered_set::emplace()の戻り値を利用して、
         // contains()とemplace()を別々に呼ばず
         // 一度の検索で重複確認と登録を行う
@@ -552,16 +535,11 @@ bool FWK::GameObject::ContainsDuplicatePrefabUUIDRecursive(const std::weak_ptr<G
         return false;
     }
 
-    const auto& l_prefabUUID        = l_gameObject->GetREFPrefabUUID            ();
-    const auto  l_prefabInstanceNUM = l_gameObject->GetVALPrefabSceneInstanceNUM();
-
+    const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
+    
     // Prefab情報を持っていないGameObjectは、
     // PrefabUUIDによる循環確認の対象には含めない
-    if (l_prefabUUID.is_nil() ||
-        l_prefabInstanceNUM == Constant::k_invalidPrefabSceneInstanceNUM)
-    {
-        return false;
-    }
+    if (l_prefabUUID.is_nil()) { return false; }
 
     // 現在確認している親子経路に
     // 同じPrefabUUIDが既に存在する場合は循環している

@@ -62,9 +62,7 @@ namespace FWK
         void SetPrefabUUID       (const boost::uuids::uuid& a_set) { m_prefabUUID        = a_set; }
         void SetSceneInstanceUUID(const boost::uuids::uuid& a_set) { m_sceneInstanceUUID = a_set; }
 
-        void SetPrefabSceneInstanceNUM(const TypeAlias::PrefabSceneInstanceNUM a_set) { m_prefabSceneInstanceNUM = a_set; }
-
-        void SetSceneInstanceName(const std::string& a_set) { m_sceneInstanceName = a_set; }
+        void SetName(const std::string& a_set) { m_name = a_set; }
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
         std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -139,7 +137,7 @@ namespace FWK
         const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
         const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
 
-        const auto& GetREFSceneInstanceName() const { return m_sceneInstanceName; }
+        const auto& GetREFName() const { return m_name; }
 
         auto& GetMutableREFParent() { return m_parent; }
 
@@ -153,8 +151,6 @@ namespace FWK
         auto& GetMutableREFComponentUUIDRegistry () { return m_componentUUIDRegistry; }
 
         std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
-
-        auto GetVALPrefabSceneInstanceNUM() const { return m_prefabSceneInstanceNUM; }
 
         bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
@@ -183,9 +179,7 @@ namespace FWK
         boost::uuids::uuid m_prefabUUID        = {};
         boost::uuids::uuid m_sceneInstanceUUID = {};
 
-        TypeAlias::PrefabSceneInstanceNUM m_prefabSceneInstanceNUM = Constant::k_invalidPrefabSceneInstanceNUM;
-
-        std::string m_sceneInstanceName = {};
+        std::string m_name = {};
 
         bool m_isDestroyed = false;
     };

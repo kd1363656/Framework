@@ -63,8 +63,8 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 
     const auto& l_prefabName = l_prefab->GetREFPrefabName();
 
-    // シーンインスタンス名としてプレハブ名を格納しておく
-    l_gameObject->SetSceneInstanceName(l_prefabName);
+    // 名前としてプレハブ名を格納しておく
+    l_gameObject->SetName(l_prefabName);
 
     // コンポーネントのプレハブデータのデシリアライズ
     if (!DeserializePrefabComponent(a_gameObject, l_prefabJson, a_componentSmartPointerVectorList))

@@ -120,16 +120,6 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
         l_gameObject->INIT       ();
         l_gameObject->Deserialize(l_gameObjectJson, l_parentPrefabUUIDSet, a_scene);
 
-        // PrefabInstanceNUMがDeserializeで有効値にならず無効値のままなら
-        // Sceneへ登録しない
-        if (l_gameObject->GetREFSceneInstanceName().empty() ||
-            l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabNameまたはPrefabInstanceNUMが無効のため、GameObjectをSceneへ追加できませんでした。");
-
-            continue;
-        }
-
         // シーンに親ゲームオブジェクトを追加
         a_scene.AddGameObject(l_gameObject);
     }
@@ -184,15 +174,6 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
         // 子GameObjectは親GameObjectのChildListへ保存されているため
         // Scene直下にRootGameObjectだけを保存する
         if (!l_gameObject->GetREFParent().expired()) { continue; }
-
-        // PrefabUUIDが無効値、シーンインスタンス名が空、
-        // プレハブインスタンスナンバーが無効値ならシリアライズ処理を行わない
-        if (l_gameObject->GetREFPrefabUUID().is_nil()       ||
-            l_gameObject->GetREFSceneInstanceName().empty() ||
-            l_gameObject->GetVALPrefabSceneInstanceNUM() == Constant::k_invalidPrefabSceneInstanceNUM)
-        {
-            continue;
-        }
 
         nlohmann::json l_json = {};
 
