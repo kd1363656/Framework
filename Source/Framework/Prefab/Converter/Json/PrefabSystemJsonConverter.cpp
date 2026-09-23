@@ -116,8 +116,6 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
             continue;
         }
 
-        l_prefab.Save(l_filePath);
-
         nlohmann::json l_json = {};
 
         Utility::UpdateJson(l_json, Utility::SerializeUUID(l_prefabUUID, k_prefabUUIDJsonKey));

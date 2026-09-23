@@ -41,11 +41,18 @@
                 },
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\NewPrefab1.json",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\NewPrefab.json"
+                            },
+                            {
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\NewPrefab1.json"
+                            }
+                        ]
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Data\\Prefab",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 349.0
                 },
@@ -65,7 +72,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Texture",
@@ -137,7 +144,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab\\Camera",
@@ -173,10 +180,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset"
+                                "SelectedFilePath": "Asset\\Data\\Prefab"
                             }
                         ]
                     }
