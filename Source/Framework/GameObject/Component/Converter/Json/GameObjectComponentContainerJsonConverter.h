@@ -23,5 +23,12 @@ namespace FWK::Converter
     private:
  
         nlohmann::json SerializeRemovedUUIDList(const GameObjectComponentContainer& a_gameObjectComponentContainer) const;
+
+    private:
+
+        static constexpr std::string_view k_componentPrefabJsonKey = "Prefab";
+        
+        static constexpr std::string_view k_componentSceneJsonKey           = "Scene";
+        static constexpr std::string_view k_removedComponentUUIDListJsonKey = "RemovedComponentUUIDList";
     };
 }

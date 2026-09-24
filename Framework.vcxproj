@@ -605,7 +605,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\GameObject.h" />
-    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyConverter.h" />
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h" />
     <ClInclude Include="Source\Framework\GameObject\Inspector\GameObjectInspector.h" />
     <ClInclude Include="Source\Framework\Graphics\Command\Allocator\CommandAllocator.h" />
@@ -953,7 +953,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp" />
-    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyConverter.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Inspector\GameObjectInspector.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Command\List\Compute\ComputeCommandList.cpp" />

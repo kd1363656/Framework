@@ -12,7 +12,5 @@ namespace FWK::Struct
         std::vector<ChildDeserializeData> m_childDeserializeDataList = {};
 
         std::shared_ptr<GameObject> m_self = nullptr;
-
-        Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorList = {};
     };
 }

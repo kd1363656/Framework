@@ -9,12 +9,18 @@ namespace FWK
          GameObjectComponentContainer() = default;
         ~GameObjectComponentContainer() = default;
 
+        bool DeserializePrefab(const nlohmann::json& a_rootJson);
+        bool DeserializeScene (const nlohmann::json& a_rootJson);
+
         void Add           (const std::shared_ptr<ComponentBase>& a_component);
         void Remove        (const std::weak_ptr<ComponentBase>&   a_component);
         void MarkForRemoval(const std::weak_ptr<ComponentBase>&   a_component);
 
         void SweepRemoved();
         void Clear       ();
+
+        nlohmann::json SerializePrefab() const;
+        nlohmann::json SerializeScene () const;
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
         std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -81,8 +87,14 @@ namespace FWK
             return l_list;
         }
 
+        const auto& GetREFRemovedComponentUUIDSet() const { return m_removedComponentUUIDSet; }
+
         const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
-       
+
+        auto& GetMutableREFRemovedUUIDSet() { return m_removedComponentUUIDSet; }
+
+        auto& GetMutableREFComponentSmartPointerVectorList() { return m_componentSmartPointerVectorList; }
+
     private:
     
         std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>              m_uniqueComponentMap = {};

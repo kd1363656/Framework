@@ -505,7 +505,7 @@
 #include "GameObject/Converter/Json/Scene/GameObjectSceneJsonConverter.h"
 #include "GameObject/Component/Converter/Json/GameObjectComponentContainerJsonConverter.h"
 #include "GameObject/Component/GameObjectComponentContainer.h"
-#include "GameObject/Hierarchy/Converter/Json/GameObjectHierarchyConverter.h"
+#include "GameObject/Hierarchy/Converter/Json/GameObjectHierarchyJsonConverter.h"
 #include "GameObject/Hierarchy/GameObjectHierarchy.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "GameObject/Inspector/GameObjectInspector.h"

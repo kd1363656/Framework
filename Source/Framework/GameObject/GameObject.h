@@ -18,23 +18,19 @@ namespace FWK
         void INIT();
 
         void Deserialize(const nlohmann::json& a_rootJson, std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet, Scene& a_scene);
-
-        bool DeserializePrefab(const nlohmann::json&                                                  a_rootJson,
-                                     std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
-                                     Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
-                                     std::unordered_set<boost::uuids::uuid>&                          a_parentPrefabUUIDSet,
-                                     Scene&                                                           a_scene);
-
+ 
+        bool DeserializePrefab(const nlohmann::json&                      a_rootJson,
+                               std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
+                               std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
+                               Scene&                                     a_scene);
+         
         bool DeserializePrefabInstance(const nlohmann::json& a_prefabJson, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene);
-
-        bool DeserializeScene(const nlohmann::json&                                                  a_rootJson,
-                                    std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
-                                    Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
-                                    Scene&                                                           a_scene);
-
-        void RecursiveAddComponent(const Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList);
-        bool RecursiveAddChild    (      std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,        Scene&                                     a_scene);
-
+         
+        bool DeserializeScene(const nlohmann::json&                      a_rootJson,
+                              std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
+                              std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
+                              Scene&                                     a_scene);
+        
         void PostDeserialize();
 
         void EarlyUpdate   () const;
@@ -56,15 +52,20 @@ namespace FWK
 
         void SetName(const std::string& a_set) { m_name = a_set; }
         
+        void SetIsPrefabObserverOrigin(const bool a_set) { m_isPrefabObserverOrigin = a_set; }
+
         const std::weak_ptr<Observer<Enum::ComponentEvent>> GetVALComponentEventObserver() const { return m_componentEventObserver; }
 
         const auto& GetREFComponentContainer() const { return m_componentContainer; }
-        const auto& GetREFHierarchy         () const { return m_hierarchy; }
+
+        const auto& GetREFHierarchy() const { return m_hierarchy; }
 
         const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
         const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
 
         const auto& GetREFName() const { return m_name; }
+
+        auto& GetMutableREFComponentContainer() { return m_componentContainer; }
 
         auto& GetMutableREFHierarchy() { return m_hierarchy; }
 
@@ -75,7 +76,8 @@ namespace FWK
 
         std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
-        bool GetVALIsDestroyed() const { return m_isDestroyed; }
+        bool GetVALIsDestroyed           () const { return m_isDestroyed; }
+        bool GetVALIsPrefabObserverOrigin() const { return m_isPrefabObserverOrigin; }
 
     private:
 
@@ -84,7 +86,8 @@ namespace FWK
         std::shared_ptr<Observer<Enum::ComponentEvent>> m_componentEventObserver = nullptr;
 
         GameObjectComponentContainer m_componentContainer  = {};
-        GameObjectHierarchy          m_hierarchy           = {};
+
+        GameObjectHierarchy m_hierarchy = {};
 
         Converter::GameObjectJsonConverter m_jsonConverter = {};
 
@@ -94,6 +97,6 @@ namespace FWK
         std::string m_name = {};
 
         bool m_isDestroyed            = false;
-        bool m_isPrefabObserverOrigni = false;
+        bool m_isPrefabObserverOrigin = false;
     };
 }

@@ -1,5 +1,18 @@
 ﻿#include "GameObjectComponentContainer.h"
 
+bool FWK::GameObjectComponentContainer::DeserializePrefab(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return false; }
+
+    return m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+}
+bool FWK::GameObjectComponentContainer::DeserializeScene(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return false; }
+
+    return m_jsonConverter.DeserializeScene (a_rootJson, *this);;
+}
+
 void FWK::GameObjectComponentContainer::Add(const std::shared_ptr<ComponentBase>& a_component)
 {
     if (!a_component)
@@ -177,4 +190,13 @@ void FWK::GameObjectComponentContainer::Clear()
     m_componentSmartPointerVectorList.Clear();
 
     m_componentUUIDRegistry.Clear();
+}
+
+nlohmann::json FWK::GameObjectComponentContainer::SerializePrefab() const
+{
+    return m_jsonConverter.SerializePrefab(*this);
+}
+nlohmann::json FWK::GameObjectComponentContainer::SerializeScene() const
+{
+    return m_jsonConverter.SerializeScene (*this);;
 }

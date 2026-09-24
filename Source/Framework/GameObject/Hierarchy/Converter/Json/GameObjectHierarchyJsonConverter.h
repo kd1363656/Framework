@@ -33,5 +33,7 @@ namespace FWK::Converter
     private:
 
         nlohmann::json SerializeRemovedUUIDList(const GameObjectHierarchy& a_gameObjectHierarchy) const;
+
+        static constexpr std::string_view k_removedChildNodeUUIDListJsonKey = "RemovedChildNodeUUIDList";
     };
 }

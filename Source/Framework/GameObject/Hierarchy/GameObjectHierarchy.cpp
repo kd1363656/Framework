@@ -1,5 +1,31 @@
 ﻿#include "GameObjectHierarchy.h"
 
+bool FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json&                            a_rootJson, 
+                                                       std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet, 
+                                                       std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
+                                                       Scene&                                     a_scene)
+{
+    if (a_rootJson.is_null()) { return false; }
+
+    return m_jsonConverter.DeserializePrefab(a_rootJson,
+                                             a_prefabUUIDSet,
+                                             a_childDeserializeDataList,
+                                             a_scene);
+}
+bool FWK::GameObjectHierarchy::DeserializeScene(const nlohmann::json&                            a_rootJson, 
+                                                      std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
+                                                      std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, 
+                                                      Scene&                                     a_scene)
+{
+    if (a_rootJson.is_null()) { return false; }
+
+    return m_jsonConverter.DeserializeScene(a_rootJson,
+                                            a_prefabUUIDSet,
+                                            a_childDeserializeDataList,
+                                            *this,
+                                            a_scene);
+}
+
 bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_self, const std::weak_ptr<GameObject>& a_child)
 {
     const auto& l_child = a_child.lock();
@@ -213,6 +239,51 @@ void FWK::GameObjectHierarchy::SweepRemovedChildren()
 
         l_child->Destroy();
     }
+}
+
+nlohmann::json FWK::GameObjectHierarchy::SerializePrefab() const
+{
+    return m_jsonConverter.SerializePrefab(*this);
+}
+nlohmann::json FWK::GameObjectHierarchy::SerializeScene() const
+{
+    return m_jsonConverter.SerializeScene (*this);
+}
+
+bool FWK::GameObjectHierarchy::RecursiveAddChild(const std::weak_ptr<GameObject>& a_self, std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList, Scene& a_scene)
+{
+    bool l_isAllChildAdded = true;
+
+    // 親子関係を再帰的に構築
+    for (auto& l_childLoad : a_childDeserializeDataList)
+    {
+        const auto& l_child = l_childLoad.m_self;
+
+        if (!l_child) { continue; }
+
+        // 同じPrefab名が親経路に存在する場合や、
+        // GameObjectの親子関係を構築できなかった場合は追加しない
+        if (!Parent(a_self, l_child))
+        {
+            l_isAllChildAdded = false;
+
+            continue;
+        }
+
+        // 親子関係を構築できたGameObjectだけをSceneへ追加する
+        a_scene.AddGameObject(l_child);
+
+        // 子のPrefabUUIDがSetへ入った状態で
+        // 孫以下の親子関係を構築する
+        auto& l_childHierarchy = l_child->GetMutableREFHierarchy();
+
+        if (!l_childHierarchy.RecursiveAddChild(l_child, l_childLoad.m_childDeserializeDataList, a_scene))
+        {
+            l_isAllChildAdded = false;
+        }
+    }
+
+    return l_isAllChildAdded;
 }
 
 void FWK::GameObjectHierarchy::ResetParent()

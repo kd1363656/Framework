@@ -3147,7 +3147,7 @@
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h">
       <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyConverter.h">
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h">
       <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
@@ -3971,7 +3971,7 @@
     <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyConverter.cpp">
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
