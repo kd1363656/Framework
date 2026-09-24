@@ -80,6 +80,8 @@ namespace FWK
 
             return l_list;
         }
+
+        const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
        
     private:
     

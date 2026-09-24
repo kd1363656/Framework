@@ -111,6 +111,14 @@ bool FWK::GameObjectHierarchy::Parent(const std::weak_ptr<GameObject>& a_self, c
     // 親GameObject側へ子GameObjectを登録する
     m_childSmartPointerVectorList.Add(a_child);
 
+    // Prefab由来の子はNodeUUIDで引けるように登録する
+    // シーン追加の子はNodeUUIDを持たないため登録しない
+    if (auto& l_childNodeUUID = l_childHierarchy.GetMutableREFPrefabNodeUUID();
+        !l_childNodeUUID.is_nil())
+    {
+        m_childNodeUUIDRegistry.Add(a_child, l_childNodeUUID);
+    }
+
     return true;
 }
 void FWK::GameObjectHierarchy::Unparent(const std::weak_ptr<GameObject>& a_self, const std::weak_ptr<GameObject>& a_child)
@@ -138,10 +146,13 @@ void FWK::GameObjectHierarchy::Unparent(const std::weak_ptr<GameObject>& a_self,
 
     // Prefabの子スロットを外れる場合は削除記録へUUIDを追加し、
     // 子側のPrefabNodeUUIDは無効化する
-    if (const auto& l_childNodeUUID = l_childHierarchy.GetREFPrefabNodeUUID();
+    if (auto& l_childNodeUUID = l_childHierarchy.GetMutableREFPrefabNodeUUID();
         !l_childNodeUUID.is_nil())
     {
         m_removedChildNodeUUIDSet.emplace(l_childNodeUUID);
+
+        // Erase()は引数のUUIDを無効値に戻すので子側の無効化も兼ねる
+        m_childNodeUUIDRegistry.Erase(l_childNodeUUID);
     }
 
     // 子の情報を削除し、子から親の情報を削除する
@@ -213,6 +224,7 @@ void FWK::GameObjectHierarchy::Clear()
 {
     m_parent.reset();
 
+    m_childNodeUUIDRegistry.Clear      ();
     m_childSmartPointerVectorList.Clear();
 
     m_prefabNodeUUID = {};

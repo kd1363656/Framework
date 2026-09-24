@@ -58,7 +58,8 @@ namespace FWK
         
         const std::weak_ptr<Observer<Enum::ComponentEvent>> GetVALComponentEventObserver() const { return m_componentEventObserver; }
 
-        const auto& GetREFHierarchy() const { return m_hierarchy; }
+        const auto& GetREFComponentContainer() const { return m_componentContainer; }
+        const auto& GetREFHierarchy         () const { return m_hierarchy; }
 
         const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
         const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
@@ -92,6 +93,7 @@ namespace FWK
 
         std::string m_name = {};
 
-        bool m_isDestroyed = false;
+        bool m_isDestroyed            = false;
+        bool m_isPrefabObserverOrigni = false;
     };
 }

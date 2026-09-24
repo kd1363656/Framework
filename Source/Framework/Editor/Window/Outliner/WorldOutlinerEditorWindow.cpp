@@ -89,7 +89,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(const Scene& a_scene)
         // Scene直下にはParentを持たないRootGameObjectだけを描画する
         // Parentを持っているGameObjectは、
         // 親GameObjectのDrawGameObjectNode()から再帰的に描画する
-        if (const auto& l_parentGameObject = l_gameObject->GetREFParent();
+        const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+
+        if (const auto& l_parentGameObject = l_hierarchy.GetREFParent();
             !l_parentGameObject.expired())
         {
             continue;
@@ -143,8 +145,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     if (l_hasDrawableChildGameObject &&
         l_isGameObjectNodeOpen)
     {
-        const auto& l_childSmartPointerVectorList = l_gameObject->GetREFChildSmartPointerVectorList    ();
-        const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
+        const auto& l_childSmartPointerVectorList = l_gameObject->GetREFHierarchy().GetREFChildSmartPointerVectorList();
+        const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList              ();
 
         for (const auto& l_childData : l_childDataList)
         {
@@ -201,13 +203,13 @@ bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableRootGameObject(const Sce
                                         return false;
                                     }
 
-                                    return a_gameObject->GetREFParent().expired();
+                                    return a_gameObject->GetREFHierarchy().GetREFParent().expired();
                                });
 }
 bool FWK::Editor::WorldOutlinerEditorWindow::HasDrawableChildGameObject(const GameObject& a_gameObject) const
 {
-    const auto& l_childSmartPointerVectorList = a_gameObject.GetREFChildSmartPointerVectorList     ();
-    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
+    const auto& l_childSmartPointerVectorList = a_gameObject.GetREFHierarchy().GetREFChildSmartPointerVectorList();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList             ();
 
     // TreeNodeEx()を呼ぶより前にLeafかどうかを判断するため、
     // 描画可能Childが一つ存在するかだけ確認する

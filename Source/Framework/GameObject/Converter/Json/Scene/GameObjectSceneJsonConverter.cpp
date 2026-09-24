@@ -211,8 +211,9 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::SerializeSceneCompo
     // 保存順を保つためにjson::arrayで保存
     auto l_componentJsonArray = nlohmann::json::array();
 
-    const auto& l_componentSmartPointerVectorList = a_gameObject.GetREFComponentSmartPointerVectorList     ();
-    const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList();
+    const auto& l_componentContainer              = a_gameObject.GetREFComponentContainer                     ();
+    const auto& l_componentSmartPointerVectorList = l_componentContainer.GetREFComponentSmartPointerVectorList();
+    const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList   ();
 
     for (const auto& l_componentData : l_componentDataList)
     {
@@ -242,8 +243,9 @@ nlohmann::json FWK::Converter::GameObjectSceneJsonConverter::SerializeSceneChild
 {
     auto l_rootJsonArray = nlohmann::json::array();
 
-    const auto& l_childSmartPointerVectorList = a_gameObject.GetREFChildSmartPointerVectorList   ();
-    const auto& l_childDataList             = l_childSmartPointerVectorList.GetREFElementDataList();
+    const auto& l_childHierarchy              = a_gameObject.GetREFHierarchy                       ();
+    const auto& l_childSmartPointerVectorList = l_childHierarchy.GetREFChildSmartPointerVectorList ();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
 
     // ルートから全ての子情報を再帰的に保存していく
     for (const auto& l_childData : l_childDataList)

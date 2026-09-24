@@ -33,6 +33,8 @@ namespace FWK
 
         const auto& GetREFPrefabNodeUUID() const { return m_prefabNodeUUID; }
 
+        auto& GetMutableREFPrefabNodeUUID() { return m_prefabNodeUUID; }
+
         bool GetVALIsMarkedForUnparent() const { return m_isMarkedForUnparent; }
 
     private:
@@ -41,11 +43,13 @@ namespace FWK
 
         bool IsDescendantOf(const std::shared_ptr<GameObject>& a_ancestor) const;
 
+        std::unordered_set<boost::uuids::uuid> m_removedChildNodeUUIDSet = {};
+
         std::weak_ptr<GameObject> m_parent = {};
 
-        Utility::SmartPointerVectorList<std::weak_ptr<GameObject>> m_childSmartPointerVectorList = {};
+        UUIDRegistry<std::weak_ptr<GameObject>> m_childNodeUUIDRegistry = {};
 
-        std::unordered_set<boost::uuids::uuid> m_removedChildNodeUUIDSet = {};
+        Utility::SmartPointerVectorList<std::weak_ptr<GameObject>> m_childSmartPointerVectorList = {};
         
         boost::uuids::uuid m_prefabNodeUUID = {};
 

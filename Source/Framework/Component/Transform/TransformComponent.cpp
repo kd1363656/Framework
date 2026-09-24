@@ -20,7 +20,9 @@ void FWK::TransformComponent::PostDeserialize()
     if (!l_owner) { return; }
 
     // 親が存在するなら親のTransformComponentをキャッシュする
-    if (const auto& l_parent = l_owner->GetREFParent().lock())
+    const auto& l_hierarchy = l_owner->GetREFHierarchy();
+
+    if (const auto& l_parent = l_hierarchy.GetREFParent().lock())
     {
         m_parentTransformComponent = l_parent->GetVALTransformComponent();
     }

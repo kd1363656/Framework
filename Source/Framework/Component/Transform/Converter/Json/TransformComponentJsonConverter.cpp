@@ -30,9 +30,9 @@ void FWK::Converter::TransformComponentJsonConverter::CommonDeserialize(const nl
     const auto& l_rotation = Utility::DeserializeQuaternion(a_rootJson, k_rotationJsonKey);
     const auto& l_position = Utility::DeserializeVector3   (a_rootJson, k_positionJsonKey);
 
-    a_transformComponent.SetTransformScale   (l_scale);
-    a_transformComponent.SetTransformRotation(l_rotation);
-    a_transformComponent.SetTransformPosition(l_position);
+    a_transformComponent.ApplyTransformScale   (l_scale);
+    a_transformComponent.ApplyTransformRotation(l_rotation);
+    a_transformComponent.ApplyTransformPosition(l_position);
     
     auto l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy().lock();
 
