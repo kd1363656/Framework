@@ -41,11 +41,18 @@
                 },
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\NewFolder1",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\NewFolder1"
+                            },
+                            {
+                                "SelectedFilePath": "Asset\\NewFolder"
+                            }
+                        ]
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data\\Prefab",
+                "CurrentSelectFolderPath": "Asset",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 349.0
                 },
@@ -65,10 +72,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\Texture",
                             "IsOpen": false
                         },
                         {
@@ -84,11 +87,15 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "FilePath": "Asset\\Texture",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -120,11 +127,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
@@ -164,19 +171,31 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\NewFolder1",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
                             "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder\\NewFolder",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab",
+                        "RangeSelectionStartPath": "Asset\\NewFolder1",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Prefab"
+                                "SelectedFilePath": "Asset\\NewFolder1"
                             }
                         ]
                     }

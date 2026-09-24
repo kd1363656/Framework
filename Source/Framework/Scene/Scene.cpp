@@ -464,7 +464,8 @@ void FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObjec
 
     if (!l_gameObject) { return; }
 
-    auto l_parentGameObject = l_gameObject->GetREFParent().lock();
+    const auto& l_hierarchy        = l_gameObject->GetREFHierarchy();
+          auto  l_parentGameObject = l_hierarchy.GetREFParent     ().lock();
 
     while (l_parentGameObject)
     {
@@ -477,7 +478,9 @@ void FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObjec
 
         ++a_executionLevel;
 
-        l_parentGameObject = l_parentGameObject->GetREFParent().lock();
+        const auto& l_parentHierarchy = l_parentGameObject->GetREFHierarchy();
+
+        l_parentGameObject = l_parentHierarchy.GetREFParent().lock();
     }
 }
 

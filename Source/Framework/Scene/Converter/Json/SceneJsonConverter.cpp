@@ -173,7 +173,9 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const
 
         // 子GameObjectは親GameObjectのChildListへ保存されているため
         // Scene直下にRootGameObjectだけを保存する
-        if (!l_gameObject->GetREFParent().expired()) { continue; }
+        const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+
+        if (!l_hierarchy.GetREFParent().expired()) { continue; }
 
         nlohmann::json l_json = {};
 

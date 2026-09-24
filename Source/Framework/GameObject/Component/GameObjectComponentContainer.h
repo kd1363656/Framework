@@ -8,7 +8,7 @@ namespace FWK
 
          GameObjectComponentContainer() = default;
         ~GameObjectComponentContainer() = default;
-    
+
         void Add           (const std::shared_ptr<ComponentBase>& a_component);
         void Remove        (const std::weak_ptr<ComponentBase>&   a_component);
         void MarkForRemoval(const std::weak_ptr<ComponentBase>&   a_component);
@@ -93,5 +93,7 @@ namespace FWK
         Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorList = {};
 
         UUIDRegistry<std::weak_ptr<ComponentBase>> m_componentUUIDRegistry = {};
+
+        Converter::GameObjectComponentContainerJsonConverter m_jsonConverter = {};
     };
 }

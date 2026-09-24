@@ -1603,6 +1603,18 @@
     <Filter Include="Source\Framework\GameObject\Hierarchy">
       <UniqueIdentifier>{28ae0122-dca5-46da-bf9f-8b056dbf3c8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Converter">
+      <UniqueIdentifier>{bef5bb50-5ffc-4b4d-a059-a11a292a41e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Converter\Json">
+      <UniqueIdentifier>{0886f5c4-0cdc-42db-a204-1b09a78a539c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Hierarchy\Converter">
+      <UniqueIdentifier>{fbdf591c-cde5-4d56-96ed-4ec22d41db19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Hierarchy\Converter\Json">
+      <UniqueIdentifier>{06e6af9e-edda-419c-bc85-5450f70156b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3132,6 +3144,12 @@
     <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h">
       <Filter>Source\Framework\GameObject\Hierarchy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyConverter.h">
+      <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3949,6 +3967,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp">
       <Filter>Source\Framework\GameObject\Hierarchy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyConverter.cpp">
+      <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
