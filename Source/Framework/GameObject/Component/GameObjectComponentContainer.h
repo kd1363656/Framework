@@ -14,20 +14,22 @@ namespace FWK
 
         void AddRemovedComponentUUID(const boost::uuids::uuid& a_uuid);
 
-        void Add           (const std::shared_ptr<ComponentBase>& a_component);
+        void AddPrefabComponent(const std::shared_ptr<ComponentBase>& a_component);
+        void AddSceneComponent (const std::shared_ptr<ComponentBase>& a_component);
+
         void Remove        (const std::weak_ptr<ComponentBase>&   a_component);
         void MarkForRemoval(const std::weak_ptr<ComponentBase>&   a_component);
 
         void SweepRemoved();
         void Clear       ();
 
-        bool ContainsRemovedComponentUUID(const boost::uuids::uuid& a_uuid);
+        bool ContainsRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const;
 
         nlohmann::json SerializePrefab() const;
         nlohmann::json SerializeScene (const nlohmann::json& a_prefabComponentListJson) const;
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
-        std::weak_ptr<ComponentType> FindUniqueComponent() const
+        std::weak_ptr<ComponentType> FindVALUniqueComponent() const
         {
             const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
 
@@ -44,7 +46,7 @@ namespace FWK
         }
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
-        std::weak_ptr<ComponentType> FindComponentFromUUID(const boost::uuids::uuid& a_uuid) const
+        std::weak_ptr<ComponentType> FindVALComponentFromUUID(const boost::uuids::uuid& a_uuid) const
         {
             const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
 
@@ -71,7 +73,7 @@ namespace FWK
         }
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
-        std::vector<std::weak_ptr<ComponentType>> FindMultiComponent() const
+        std::vector<std::weak_ptr<ComponentType>> FindVALMultiComponent() const
         {
             const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
 
@@ -91,6 +93,8 @@ namespace FWK
             return l_list;
         }
 
+        std::weak_ptr<ComponentBase> FindVALComponentFromUUID(const boost::uuids::uuid& a_uuid) const;
+
         const auto& GetREFRemovedComponentUUIDSet() const { return m_removedComponentUUIDSet; }
 
         const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
@@ -99,6 +103,8 @@ namespace FWK
 
     private:
     
+        void RegisterComponent(const std::shared_ptr<ComponentBase>& a_component);
+
         std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>              m_uniqueComponentMap = {};
         std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<ComponentBase>>> m_multiComponentMap  = {};
 

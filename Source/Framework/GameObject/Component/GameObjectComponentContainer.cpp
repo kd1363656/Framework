@@ -18,7 +18,7 @@ void FWK::GameObjectComponentContainer::AddRemovedComponentUUID(const boost::uui
     // nil値ならreturn
     if (a_uuid.is_nil()) { return; }
 
-    if (m_removedComponentUUIDSet.emplace(a_uuid).second)
+    if (!m_removedComponentUUIDSet.emplace(a_uuid).second)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentContainerに登録されているRemovedUUIDで同じUUIDが選択されました。");
 
@@ -26,44 +26,24 @@ void FWK::GameObjectComponentContainer::AddRemovedComponentUUID(const boost::uui
     }
 }
 
-void FWK::GameObjectComponentContainer::Add(const std::shared_ptr<ComponentBase>& a_component)
+void FWK::GameObjectComponentContainer::AddPrefabComponent(const std::shared_ptr<ComponentBase>& a_component)
 {
-    if (!a_component)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントが無効となっており割り当てに失敗しました。");
+    if (!a_component) { return; }
 
-        return;
-    }
+    // Prefabゆらいフラグは登録とセットで管理する
+    // Scene(保存時に)差分形式で出力するか完全データで出力するかの判定に使う
+    a_component->SetIsPrefabOrigin(true);
 
-    // 派生クラスの静的IDを取得(このコンポーネントを取得時に使用)
-    const auto l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
-          bool l_canAdd       = false;
+    RegisterComponent(a_component);
+}
+void FWK::GameObjectComponentContainer::AddSceneComponent(const std::shared_ptr<ComponentBase>& a_component)
+{
+    if (!a_component) { return; }
 
-    // 複数持てるコンポーネントかどうかを判断して
-    // 適切なstd::unordered_mapに割り当てる
-    if (!a_component->IsAllowMultiple())
-    {
-        l_canAdd = m_uniqueComponentMap.try_emplace(l_staticTypeID, a_component).second;
-    }
-    else
-    {
-        m_multiComponentMap[l_staticTypeID].emplace_back(a_component);
+    // 再利用されたComponentがPrefabゆらいフラグを持ち越さないように明示する
+    a_component->SetIsPrefabOrigin(false);
 
-        l_canAdd = true;
-    }
-
-    if (!l_canAdd)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Component : {}\nコンポーネントの格納に失敗しました。", a_component->GetREFTypeINFO().k_name);
-
-        return;
-    }
-
-    const std::weak_ptr<ComponentBase> l_component = a_component;
-
-    // コンポーネントに割り当てられたUUIDを格納
-    m_componentUUIDRegistry.Add          (l_component, a_component->GetMutableREFUUID());
-    m_componentSmartPointerVectorList.Add(a_component);
+    RegisterComponent(a_component);
 }
 
 void FWK::GameObjectComponentContainer::Remove(const std::weak_ptr<ComponentBase>& a_component)
@@ -205,7 +185,7 @@ void FWK::GameObjectComponentContainer::Clear()
     m_componentUUIDRegistry.Clear();
 }
 
-bool FWK::GameObjectComponentContainer::ContainsRemovedComponentUUID(const boost::uuids::uuid& a_uuid)
+bool FWK::GameObjectComponentContainer::ContainsRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const
 {
     return m_removedComponentUUIDSet.contains(a_uuid);
 }
@@ -217,4 +197,49 @@ nlohmann::json FWK::GameObjectComponentContainer::SerializePrefab() const
 nlohmann::json FWK::GameObjectComponentContainer::SerializeScene(const nlohmann::json& a_prefabComponentListJson) const
 {
     return m_jsonConverter.SerializeScene (a_prefabComponentListJson, *this);
+}
+
+std::weak_ptr<FWK::ComponentBase> FWK::GameObjectComponentContainer::FindVALComponentFromUUID(const boost::uuids::uuid& a_uuid) const
+{
+    return m_componentUUIDRegistry.FindVALRegisteredType(a_uuid);
+}
+
+void FWK::GameObjectComponentContainer::RegisterComponent(const std::shared_ptr<ComponentBase>& a_component)
+{
+    if (!a_component)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントが無効となっており割り当てに失敗しました。");
+
+        return;
+    }
+
+    // 派生クラスの静的IDを取得(このコンポーネントを取得時に使用)
+    const auto l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
+          bool l_canAdd       = false;
+
+    // 複数持てるコンポーネントかどうかを判断して
+    // 適切なstd::unordered_mapに割り当てる
+    if (!a_component->IsAllowMultiple())
+    {
+        l_canAdd = m_uniqueComponentMap.try_emplace(l_staticTypeID, a_component).second;
+    }
+    else
+    {
+        m_multiComponentMap[l_staticTypeID].emplace_back(a_component);
+
+        l_canAdd = true;
+    }
+
+    if (!l_canAdd)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Component : {}\nコンポーネントの格納に失敗しました。", a_component->GetREFTypeINFO().k_name);
+
+        return;
+    }
+
+    const std::weak_ptr<ComponentBase> l_component = a_component;
+
+    // コンポーネントに割り当てられたUUIDを格納
+    m_componentUUIDRegistry.Add          (l_component, a_component->GetMutableREFUUID());
+    m_componentSmartPointerVectorList.Add(a_component);
 }
