@@ -38,7 +38,7 @@ namespace FWK::Converter
                                     Scene&                                     a_scene) const;
 
         nlohmann::json SerializePrefab(const GameObject& a_gameObject) const;
-        nlohmann::json SerializeScene (const GameObject& a_gameObject) const;
+        nlohmann::json SerializeScene (const GameObject& a_gameObject, const Scene& a_scene) const;
 
     private:
 

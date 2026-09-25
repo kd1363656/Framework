@@ -76,8 +76,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Deserialize(const std::weak_
 
     const auto& l_transformComponentJson = l_prefabBodyJson->value(Constant::k_gameObjectTransformComponentJsonKey, nlohmann::json{});
 
-    l_transformComponent->DeserializePrefabUUID(l_transformComponentJson);
-    l_transformComponent->DeserializePrefab    (l_transformComponentJson);
+    l_transformComponent->DeserializePrefab(l_transformComponentJson);
 
     auto& l_componentContainer = l_gameObject->GetMutableREFComponentContainer();
 
@@ -150,9 +149,8 @@ nlohmann::json FWK::Converter::GameObjectPrefabJsonConverter::Serialize(const Ga
     FWK_ASSERT_RETURN_VALUE_IF(!l_transformComponent, "TransformComponentが無効のため、ゲームオブジェクトのプレハブのシリアライズに失敗しました。", {});
      
     nlohmann::json l_transformJson = {};
-     
-    Utility::UpdateJson(l_transformJson, l_transformComponent->SerializePrefabUUID());
-    Utility::UpdateJson(l_transformJson, l_transformComponent->SerializePrefab    ());
+    
+    Utility::UpdateJson(l_transformJson, l_transformComponent->SerializePrefab());
      
     l_rootJson[Constant::k_gameObjectTransformComponentJsonKey] = l_transformJson;
      

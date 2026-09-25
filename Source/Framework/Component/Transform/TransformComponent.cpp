@@ -15,7 +15,7 @@ void FWK::TransformComponent::DeserializeScene(const nlohmann::json& a_rootJson)
 
 void FWK::TransformComponent::PostDeserialize()
 {
-    const auto& l_owner = GetREFOwner().lock();
+    const auto& l_owner = m_owner.lock();
 
     if (!l_owner) { return; }
 

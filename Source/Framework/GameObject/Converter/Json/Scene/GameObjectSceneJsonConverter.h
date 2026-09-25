@@ -14,22 +14,20 @@ namespace FWK::Converter
          GameObjectSceneJsonConverter() = default;
         ~GameObjectSceneJsonConverter() = default;
 
-        bool Deserialize(const nlohmann::json&                                                  a_rootJson,
-                               std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,
-                               Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList,
-                               GameObject&                                                      a_gameObject,
-                               Scene&                                                           a_scene) const;
+        bool Deserialize(const nlohmann::json&                      a_rootJson,
+                         std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
+                         std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
+                         GameObject&                                a_gameObject,
+                         Scene&                                     a_scene) const;
 
-        nlohmann::json Serialize(const GameObject& a_gameObject) const;
+        nlohmann::json Serialize(const GameObject& a_gameObject, const Scene& a_scene) const;
 
     private:
 
-        bool DeserializeSceneComponent(const nlohmann::json& a_rootJson,      Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>>& a_componentSmartPointerVectorList, GameObject& a_gameObject) const;
-        bool DeserializeSceneChildList(const nlohmann::json& a_rootJsonArray, std::vector<Struct::ChildDeserializeData>&                       a_childDeserializeDataList,        Scene&      a_scene)      const;
+        bool DeserializeSceneComponentEventObserver(const nlohmann::json& a_rootJson, GameObject& a_gameObject)                                                                                                   const;
 
-        nlohmann::json SerializeSceneComponent(const GameObject& a_gameObject) const;
-        nlohmann::json SerializeSceneChildList(const GameObject& a_gameObject) const;
-
+        nlohmann::json SerializeSceneComponentObserver(const GameObject& a_gameObject) const;
+        
         static constexpr std::string_view k_nameJsonKey              = "Name";
         static constexpr std::string_view k_sceneInstanceUUIDJsonKey = "SceneInstanceUUID";
     };

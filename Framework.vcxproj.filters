@@ -3150,6 +3150,9 @@
     <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h">
       <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentContainerJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

@@ -7,24 +7,24 @@ namespace FWK
 
 namespace FWK
 {
-    class TransformComponent final : public ComponentBase
+    class TransformComponent final
     {
     public:
 
-         TransformComponent()          = default;
-        ~TransformComponent() override = default;
+         TransformComponent() = default;
+        ~TransformComponent() = default;
 
-        void DeserializePrefab(const nlohmann::json& a_rootJson) override;
-        void DeserializeScene (const nlohmann::json& a_rootJson) override;
+        void DeserializePrefab(const nlohmann::json& a_rootJson);
+        void DeserializeScene (const nlohmann::json& a_rootJson);
 
-        void PostDeserialize() override;
+        void PostDeserialize();
 
-        void PostLateUpdate() override;
+        void PostLateUpdate();
 
-        void EditInspector() override;
+        void EditInspector();
 
-        nlohmann::json SerializePrefab() override;
-        nlohmann::json SerializeScene () override;
+        nlohmann::json SerializePrefab();
+        nlohmann::json SerializeScene ();
 
         TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale);    }
         TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
@@ -36,6 +36,8 @@ namespace FWK
         void ApplyTransformScale   (const TypeAlias::Math::Vector3&    a_scale);
         void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_rotation);
         void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_position);
+
+        void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
         void SetMatrix(TypeAlias::Math::Matrix&& a_set) { m_matrix = std::move(a_set); }
 
@@ -57,6 +59,8 @@ namespace FWK
 
         std::shared_ptr<MatrixStrategyBase> m_matrixStrategy = nullptr;
 
+        std::weak_ptr<GameObject> m_owner = {};
+
         std::weak_ptr<TransformComponent> m_parentTransformComponent = {};
 
         Converter::TransformComponentJsonConverter m_jsonConverter = {};
@@ -68,6 +72,6 @@ namespace FWK
 
         bool m_shouldUpdateMatrixDirty = false;
 
-        FWK_DEFINE_TYPE_INFO(TransformComponent, ComponentBase)
+        FWK_DEFINE_TYPE_INFO_SINGLE(TransformComponent)
     };
 }

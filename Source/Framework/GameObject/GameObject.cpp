@@ -7,8 +7,6 @@ void FWK::GameObject::INIT()
         m_transformComponent = std::make_shared<TransformComponent>();
     }
 
-    m_transformComponent->INIT();
-
     if (m_componentEventObserver)
     {
         m_componentEventObserver->INIT();
@@ -183,9 +181,9 @@ void FWK::GameObject::EditInspector()
     }
 }
 
-nlohmann::json FWK::GameObject::SerializeScene() const
+nlohmann::json FWK::GameObject::SerializeScene(const Scene& a_scene) const
 {
-    return m_jsonConverter.SerializeScene(*this);
+    return m_jsonConverter.SerializeScene(*this, a_scene);
 }
 nlohmann::json FWK::GameObject::SerializePrefab() const
 {

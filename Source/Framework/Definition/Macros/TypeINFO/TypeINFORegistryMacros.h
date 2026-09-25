@@ -62,3 +62,28 @@ private:                                                                        
     };                                                                                                                                                          \
                                                                                                                                                                 \
     inline static const RegisterTypeINFO k_autoRegister = {};
+
+#define FWK_DEFINE_TYPE_INFO_SINGLE(Type, BaseType)                                                                                                             \
+public:                                                                                                                                                         \
+                                                                                                                                                                \
+    static const auto& GetREFTypeINFO()                                                                                                                         \
+    {                                                                                                                                                           \
+        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ &BaseType::GetREFTypeINFO(), #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+                                                                                                                                                                \
+        return l_typeINFO;                                                                                                                                      \
+    }                                                                                                                                                           \
+                                                                                                                                                                \
+private:                                                                                                                                                        \
+                                                                                                                                                                \
+    class RegisterTypeINFO                                                                                                                                      \
+    {                                                                                                                                                           \
+    public:                                                                                                                                                     \
+                                                                                                                                                                \
+        RegisterTypeINFO()                                                                                                                                      \
+        {                                                                                                                                                       \
+            FWK::TypeINFORegistry::GetInstance().Register(GetREFTypeINFO());                                                                                    \
+        }                                                                                                                                                       \
+        ~RegisterTypeINFO() = default;                                                                                                                          \
+    };                                                                                                                                                          \
+                                                                                                                                                                \
+    inline static const RegisterTypeINFO k_autoRegister = {};

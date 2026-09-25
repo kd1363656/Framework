@@ -197,7 +197,7 @@ void FWK::GameObjectHierarchy::MarkChildForRemoval(const std::weak_ptr<GameObjec
 
     auto& l_childHierarchy = l_child->GetMutableREFHierarchy();
 
-    if (const auto& l_nodeUUID = l_child->GetREFPrefabUUID();
+    if (const auto& l_nodeUUID = l_childHierarchy.GetREFPrefabNodeUUID();
         !l_nodeUUID.is_nil())
     {
         m_removedChildNodeUUIDSet.emplace(l_nodeUUID);
@@ -260,6 +260,11 @@ bool FWK::GameObjectHierarchy::RecursiveAddChild(const std::weak_ptr<GameObject>
         const auto& l_child = l_childLoad.m_self;
 
         if (!l_child) { continue; }
+
+        const auto& l_childHierarchy = l_child->GetREFHierarchy();
+
+        // 削除予約済みの子は親子関係を構築しない
+        if (l_child->GetREFHierarchy().GetVALIsMarkedForUnparent()) { continue; }
 
         // 同じPrefab名が親経路に存在する場合や、
         // GameObjectの親子関係を構築できなかった場合は追加しない

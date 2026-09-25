@@ -6,11 +6,24 @@ bool FWK::GameObjectComponentContainer::DeserializePrefab(const nlohmann::json& 
 
     return m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
-bool FWK::GameObjectComponentContainer::DeserializeScene(const nlohmann::json& a_rootJson)
+bool FWK::GameObjectComponentContainer::DeserializeScene(const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabComponentListJson)
 {
     if (a_rootJson.is_null()) { return false; }
 
-    return m_jsonConverter.DeserializeScene (a_rootJson, *this);;
+    return m_jsonConverter.DeserializeScene(a_rootJson, a_prefabComponentListJson, *this);
+}
+
+void FWK::GameObjectComponentContainer::AddRemovedComponentUUID(const boost::uuids::uuid& a_uuid)
+{
+    // nil値ならreturn
+    if (a_uuid.is_nil()) { return; }
+
+    if (m_removedComponentUUIDSet.emplace(a_uuid).second)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentContainerに登録されているRemovedUUIDで同じUUIDが選択されました。");
+
+        return;
+    }
 }
 
 void FWK::GameObjectComponentContainer::Add(const std::shared_ptr<ComponentBase>& a_component)
@@ -134,7 +147,7 @@ void FWK::GameObjectComponentContainer::Remove(const std::weak_ptr<ComponentBase
 
     if (!l_isRemovedFromTypeMap) { return; }
 
-    // Prefab由来Componentを削除した場合アh削除記録へUUIDを追加する
+    // Prefab由来Componentを削除した場合は削除記録へUUIDを追加する
     if (l_component->GetVALIsPrefabOrigin())
     {
         m_removedComponentUUIDSet.emplace(l_component->GetREFUUID());
@@ -192,11 +205,16 @@ void FWK::GameObjectComponentContainer::Clear()
     m_componentUUIDRegistry.Clear();
 }
 
+bool FWK::GameObjectComponentContainer::ContainsRemovedComponentUUID(const boost::uuids::uuid& a_uuid)
+{
+    return m_removedComponentUUIDSet.contains(a_uuid);
+}
+
 nlohmann::json FWK::GameObjectComponentContainer::SerializePrefab() const
 {
     return m_jsonConverter.SerializePrefab(*this);
 }
-nlohmann::json FWK::GameObjectComponentContainer::SerializeScene() const
+nlohmann::json FWK::GameObjectComponentContainer::SerializeScene(const nlohmann::json& a_prefabComponentListJson) const
 {
-    return m_jsonConverter.SerializeScene (*this);;
+    return m_jsonConverter.SerializeScene (a_prefabComponentListJson, *this);
 }

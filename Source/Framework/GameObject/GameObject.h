@@ -42,8 +42,8 @@ namespace FWK
 
         void EditInspector();
 
-        nlohmann::json SerializeScene () const;
-        nlohmann::json SerializePrefab() const;
+        nlohmann::json SerializeScene (const Scene& a_scene) const;
+        nlohmann::json SerializePrefab()                     const;
 
         void SetComponentEventObserver(const std::shared_ptr<Observer<Enum::ComponentEvent>>& a_set) { m_componentEventObserver = a_set; }
 

@@ -10,7 +10,9 @@ namespace FWK
         ~GameObjectComponentContainer() = default;
 
         bool DeserializePrefab(const nlohmann::json& a_rootJson);
-        bool DeserializeScene (const nlohmann::json& a_rootJson);
+        bool DeserializeScene (const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabComponentListJson);
+
+        void AddRemovedComponentUUID(const boost::uuids::uuid& a_uuid);
 
         void Add           (const std::shared_ptr<ComponentBase>& a_component);
         void Remove        (const std::weak_ptr<ComponentBase>&   a_component);
@@ -19,8 +21,10 @@ namespace FWK
         void SweepRemoved();
         void Clear       ();
 
+        bool ContainsRemovedComponentUUID(const boost::uuids::uuid& a_uuid);
+
         nlohmann::json SerializePrefab() const;
-        nlohmann::json SerializeScene () const;
+        nlohmann::json SerializeScene (const nlohmann::json& a_prefabComponentListJson) const;
 
         template <Concept::IsDerivedComponentBaseConcept ComponentType>
         std::weak_ptr<ComponentType> FindUniqueComponent() const
@@ -90,8 +94,6 @@ namespace FWK
         const auto& GetREFRemovedComponentUUIDSet() const { return m_removedComponentUUIDSet; }
 
         const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
-
-        auto& GetMutableREFRemovedUUIDSet() { return m_removedComponentUUIDSet; }
 
         auto& GetMutableREFComponentSmartPointerVectorList() { return m_componentSmartPointerVectorList; }
 

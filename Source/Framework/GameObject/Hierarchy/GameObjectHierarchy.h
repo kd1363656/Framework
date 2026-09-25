@@ -28,7 +28,7 @@ namespace FWK
         bool Parent     (const std::weak_ptr<GameObject>& a_self, const std::weak_ptr<GameObject>& a_child);
         void Unparent   (const std::weak_ptr<GameObject>& a_self, const std::weak_ptr<GameObject>& a_child);
 
-        void MarkChildForRemoval(const std::weak_ptr<GameObject>& a_child);
+        void MarkChildForRemoval (const std::weak_ptr<GameObject>& a_child);
         void SweepRemovedChildren();
 
         nlohmann::json SerializePrefab() const;

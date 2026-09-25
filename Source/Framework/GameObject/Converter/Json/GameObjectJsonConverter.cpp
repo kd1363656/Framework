@@ -74,25 +74,12 @@ bool FWK::Converter::GameObjectJsonConverter::DeserializePrefabInstance(const st
     // Prefabの循環参照確認用
     std::unordered_set<boost::uuids::uuid> l_prefabUUIDSet = {};
 
-    // RootGameObject自身のComponentを
-    // PrefabJsonConverterが一旦ここへ生成する
-    Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> l_componentSmartPointerVectorList = {};
-
     // Prefab情報を生成
-    if (!m_prefabJsonConverter.Deserialize(a_gameObject,
-                                           a_prefabJson,
-                                           a_childDeserializeDataList,
-                                           l_prefabUUIDSet,
-                                           l_componentSmartPointerVectorList,
-                                           a_scene))
-    {
-        return false;
-    }
-
-    // 再帰的にコンポーネントを追加する
-    l_gameObject->RecursiveAddComponent(l_componentSmartPointerVectorList, a_childDeserializeDataList);
-
-    return true;
+    return m_prefabJsonConverter.Deserialize(a_gameObject,
+                                             a_prefabJson,
+                                             a_childDeserializeDataList,
+                                             l_prefabUUIDSet,
+                                             a_scene);
 }
 bool FWK::Converter::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                            a_rootJson,
                                                                      std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
@@ -103,8 +90,8 @@ bool FWK::Converter::GameObjectJsonConverter::DeserializeScene(const nlohmann::j
     if (a_rootJson.is_null()) { return false; }
 
     return m_sceneJsonConverter.Deserialize(a_rootJson,
-                                            a_childDeserializeDataList,
                                             a_prefabUUIDSet,
+                                            a_childDeserializeDataList,
                                             a_gameObject,
                                             a_scene);
 }
@@ -113,7 +100,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializePrefab(const Ga
 {
     return m_prefabJsonConverter.Serialize(a_gameObject);
 }
-nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeScene(const GameObject& a_gameObject) const
+nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeScene(const GameObject& a_gameObject, const Scene& a_scene) const
 {
     return m_sceneJsonConverter.Serialize(a_gameObject);
 }
