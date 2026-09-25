@@ -197,18 +197,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
 
     // Prefab作成元のGameObjectなどが既にSceneに存在する場合
     // PrefabSystemへPrefabを追加した後に代表GameObject候補として再確認する
-    for (const auto& l_gameObject : l_scene->GetREFGameObjectList())
-    {
-        if (!l_gameObject                     ||
-            l_gameObject->GetVALIsDestroyed() ||
-            l_gameObject->GetREFPrefabUUID() != a_prefabUUID)
-        {
-            continue;
-        }
 
-        l_prefabSystem.CachePrefabGameObjectIfNeeded(l_gameObject);
-    }
-
+    // TODO
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID, SceneManager& a_sceneManager)
 {

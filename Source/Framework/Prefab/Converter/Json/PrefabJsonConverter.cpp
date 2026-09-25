@@ -85,40 +85,10 @@ bool FWK::Converter::PrefabJsonConverter::Save(const std::filesystem::path& a_fi
         return false;
     }
 
-    const auto& l_gameObject = a_prefab.GetREFGameObject().lock();
-
-    if (!l_gameObject)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefab保存用GameObjectが存在しないため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_filePath.string());
-
-        return false;
-    }
-
-    if (l_gameObject->GetREFPrefabUUID().is_nil())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefab保存用GameObjectのPrefab情報が無効なため、Prefabファイルを保存しませんでした。\nFilePath : {}", a_filePath.string());
-
-        return false;
-    }
-
-    const auto& l_gameObjectJson = l_gameObject->SerializePrefab();
-
-    // GameObjectJsonを生成できなかった場合は、
-    // 不完全なPrefabファイルを書き込まない。
-    if (l_gameObjectJson.is_null())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectのPrefabJsonを生成できなかったため、Prefabファイルを保存できませんでした。");
-
-        return false;
-    }
-
+    // TODO
     nlohmann::json l_rootJson = {};
 
     l_rootJson[k_prefabNameJsonKey] = a_prefab.GetREFPrefabName();
-
-    // 実際のPrefabファイルには、
-    // GameObjectを復元するための情報を保存する
-    l_rootJson[k_prefabJsonKey] = l_gameObjectJson;
 
     // ファイル書き込みに失敗した場合は
     // Prefab内部のキャッシュも更新しない
@@ -128,9 +98,6 @@ bool FWK::Converter::PrefabJsonConverter::Save(const std::filesystem::path& a_fi
 
         return false;
     }
-
-    // m_jsonは常にGameObjectのプレハブ部分だけ保存する
-    a_prefab.SetJson(l_gameObjectJson);
 
     return true;
 }

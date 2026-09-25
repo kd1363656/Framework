@@ -1,106 +1,13 @@
 ﻿#include "GameObjectJsonConverter.h"
 
-void FWK::Converter::GameObjectJsonConverter::Deserialize(const std::weak_ptr<GameObject>&              a_gameObject,
-                                                          const nlohmann::json&                         a_rootJson,
-                                                                std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet,
-                                                                Scene&                                  a_scene) const
+void FWK::Converter::GameObjectJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const std::weak_ptr<GameObject>& a_gameObject)
 {
     if (a_rootJson.is_null()) { return; }
-
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ゲームオブジェクトが無効になっておりデシリアライズ処理に失敗しました。");
-
-        return;
-    }
-
-    // コンポーネント、ゲームオブジェクトをPrefabをデシリアライズしてからSceneのデシリアライズを行う際に
-    // 必要な子やコンポーネントの情報を保持する
-    std::vector<Struct::ChildDeserializeData> l_childLoadList = {};
-
-    // まずはプレハブからデシリアライズ
-    // ここでプレハブ識別UUIDや子などのシーンに配置する
-    // ゲームオブジェクトの親子構造やコンポーネントなどの型を構築してしまう
-    // プレハブを前提にコンポーネントや親子関係を構築するのでプレハブのデシリアライズに失敗したらreturn
-    if (!DeserializePrefab(a_gameObject,
-                           a_rootJson,
-                           l_childLoadList,
-                           a_prefabUUIDSet,
-                           a_scene))
-    {
-        return;
-    }
-
-    // デシリアライズし終わったコンポーネントや子ゲームオブジェクトにシーンデータを読み込ませる
-    if (!DeserializeScene(a_rootJson,
-                          a_prefabUUIDSet,
-                          l_childLoadList,
-                          *l_gameObject,
-                          a_scene))
-    {
-        return;
-    }
-
-    // 親子関係を再帰的に構築
-    l_gameObject->GetMutableREFHierarchy().RecursiveAddChild(l_gameObject, l_childLoadList, a_scene);
 }
-bool FWK::Converter::GameObjectJsonConverter::DeserializePrefab(const std::weak_ptr<GameObject>&                 a_gameObject,
-                                                                const nlohmann::json&                            a_rootJson,
-                                                                      std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-                                                                      std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
-                                                                      Scene&                                     a_scene) const
+ 
+nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObject& a_gameObject) const
 {
-    if (a_rootJson.is_null()) { return false; }
+    nlohmann::json l_rootJson = {};
 
-    return m_prefabJsonConverter.Deserialize(a_gameObject,
-                                             a_rootJson,
-                                             a_childDeserializeDataList,
-                                             a_prefabUUIDSet,
-                                             a_scene);
-}
-bool FWK::Converter::GameObjectJsonConverter::DeserializePrefabInstance(const std::weak_ptr<GameObject>&                 a_gameObject,
-                                                                        const nlohmann::json&                            a_prefabJson,
-                                                                              std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-                                                                              Scene&                                     a_scene) const
-{
-    if (a_prefabJson.is_null()) { return false; }
-
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject) { return false; }
-
-    // Prefabの循環参照確認用
-    std::unordered_set<boost::uuids::uuid> l_prefabUUIDSet = {};
-
-    // Prefab情報を生成
-    return m_prefabJsonConverter.Deserialize(a_gameObject,
-                                             a_prefabJson,
-                                             a_childDeserializeDataList,
-                                             l_prefabUUIDSet,
-                                             a_scene);
-}
-bool FWK::Converter::GameObjectJsonConverter::DeserializeScene(const nlohmann::json&                            a_rootJson,
-                                                                     std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
-                                                                     std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-                                                                     GameObject&                                a_gameObject,
-                                                                     Scene&                                     a_scene) const
-{
-    if (a_rootJson.is_null()) { return false; }
-
-    return m_sceneJsonConverter.Deserialize(a_rootJson,
-                                            a_prefabUUIDSet,
-                                            a_childDeserializeDataList,
-                                            a_gameObject,
-                                            a_scene);
-}
-
-nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializePrefab(const GameObject& a_gameObject) const
-{
-    return m_prefabJsonConverter.Serialize(a_gameObject);
-}
-nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeScene(const GameObject& a_gameObject, const Scene& a_scene) const
-{
-    return m_sceneJsonConverter.Serialize(a_gameObject);
+    return l_rootJson;
 }

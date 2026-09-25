@@ -16,7 +16,7 @@ namespace FWK
          UUIDRegistry() = default;
         ~UUIDRegistry() = default;
 
-        bool Add(const Type& a_type, boost::uuids::uuid& a_uuid)
+        bool Add(const Type& a_type, const boost::uuids::uuid& a_uuid)
             requires k_isWeakPTR
         {
             const auto& l_type = a_type.lock();
@@ -35,22 +35,10 @@ namespace FWK
                 return true;
             }
 
-            // 新規GameObjectなど、
-            // UUIDをまだ持っていない場合のみ新規発行する
-            while (true)
-            {
-                a_uuid = UUIDManager::GetInstance().GenerateVALUUID();
-
-                if (a_uuid.is_nil()) { continue; }
-
-                if (m_uuidMap.try_emplace(a_uuid, a_type).second)
-                {
-                    return true;
-                }
-            }
+            return false;
         }
 
-        bool Erase(boost::uuids::uuid& a_uuid)
+        bool Erase(const boost::uuids::uuid& a_uuid)
         {
             FWK_ASSERT_RETURN_VALUE_IF(a_uuid.is_nil(), "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
 
@@ -59,9 +47,6 @@ namespace FWK
             FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
 
             m_uuidMap.erase(l_itr);
-
-            // UUIDを明示的に無効値として扱う
-            a_uuid = {};
 
             return true;
         }

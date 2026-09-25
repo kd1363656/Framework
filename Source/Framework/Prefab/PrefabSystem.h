@@ -19,9 +19,8 @@ namespace FWK
          PrefabSystem() = default;
         ~PrefabSystem() = default;
 
-        void INIT                         ();
-        void Deserialize                  (const nlohmann::json&            a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
-        void CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject);
+        void INIT       ();
+        void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
 
         void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const Prefab& a_prefab);
         void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);

@@ -3,7 +3,6 @@
 namespace FWK
 {
     class GameObject;
-    class Scene;
 }
 
 namespace FWK::Converter
@@ -14,35 +13,9 @@ namespace FWK::Converter
 
          GameObjectJsonConverter() = default;
         ~GameObjectJsonConverter() = default;
+    
+        void Deserialize(const nlohmann::json& a_rootJson, const std::weak_ptr<GameObject>& a_gameObject);
 
-        void Deserialize(const std::weak_ptr<GameObject>&              a_gameObject,
-                         const nlohmann::json&                         a_rootJson,
-                               std::unordered_set<boost::uuids::uuid>& a_prefabUUIDSet,
-                               Scene&                                  a_scene) const;
-
-        bool DeserializePrefab(const std::weak_ptr<GameObject>&                 a_gameObject,
-                               const nlohmann::json&                            a_rootJson,
-                                     std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-                                     std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
-                                     Scene&                                     a_scene) const;
-
-        bool DeserializePrefabInstance(const std::weak_ptr<GameObject>&                 a_gameObject,
-                                       const nlohmann::json&                            a_prefabJson,
-                                             std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-                                             Scene&                                     a_scene) const;
-
-        bool DeserializeScene(const nlohmann::json&                            a_rootJson,
-                                    std::unordered_set<boost::uuids::uuid>&    a_prefabUUIDSet,
-                                    std::vector<Struct::ChildDeserializeData>& a_childDeserializeDataList,
-                                    GameObject&                                a_gameObject,
-                                    Scene&                                     a_scene) const;
-
-        nlohmann::json SerializePrefab(const GameObject& a_gameObject) const;
-        nlohmann::json SerializeScene (const GameObject& a_gameObject, const Scene& a_scene) const;
-
-    private:
-
-        GameObjectPrefabJsonConverter m_prefabJsonConverter = {};
-        GameObjectSceneJsonConverter  m_sceneJsonConverter  = {};
+        nlohmann::json Serialize(const GameObject& a_gameObject) const;
     };
 }

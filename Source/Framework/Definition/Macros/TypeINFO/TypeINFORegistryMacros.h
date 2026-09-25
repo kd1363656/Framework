@@ -63,12 +63,12 @@ private:                                                                        
                                                                                                                                                                 \
     inline static const RegisterTypeINFO k_autoRegister = {};
 
-#define FWK_DEFINE_TYPE_INFO_SINGLE(Type, BaseType)                                                                                                             \
+#define FWK_DEFINE_TYPE_INFO_SINGLE(Type)                                                                                                                       \
 public:                                                                                                                                                         \
                                                                                                                                                                 \
     static const auto& GetREFTypeINFO()                                                                                                                         \
     {                                                                                                                                                           \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ &BaseType::GetREFTypeINFO(), #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ nullptr, #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                                                 \
         return l_typeINFO;                                                                                                                                      \
     }                                                                                                                                                           \

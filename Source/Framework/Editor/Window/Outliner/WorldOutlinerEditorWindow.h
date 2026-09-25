@@ -17,15 +17,7 @@ namespace FWK::Editor
         void Draw(EditorManager& a_editorManager) override;
 
     private:
-
-        void DrawSceneNode     (const Scene&                     a_scene);
-        void DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject);
-
-        void ProcessEmptyAreaClick() const;
-
-        bool HasDrawableRootGameObject (const Scene&      a_scene)      const;
-        bool HasDrawableChildGameObject(const GameObject& a_gameObject) const;
-        
+       
         static constexpr std::string_view k_editorName                 = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel            = "UntitledScene";
         static constexpr std::string_view k_emptyAreaLabel             = "##WorldOutlinerEmptyArea";

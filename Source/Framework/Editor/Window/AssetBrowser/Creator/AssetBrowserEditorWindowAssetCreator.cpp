@@ -51,51 +51,9 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         return {};
     }
 
-    // シリアライズ用のダミーゲーむオブジェクトを作成
-    auto l_gameObject = std::make_shared<GameObject>();
+    // TODO
 
-    l_gameObject->INIT         ();
-    l_gameObject->SetPrefabUUID(l_prefabUUID);
-
-    // 親子関係が構築されていない状態なので親を考慮しない行列の掛け算を行うようにする
-    if (const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock())
-    {
-        l_transformComponent->ApplyStandalone();
-    }
-    
-    // Prefabを作成し、ファイルへ保存
-    const auto&  l_prefabName = l_prefabFilePath.stem().string();
-          Prefab l_prefab     = {};
-
-    l_prefab.SetPrefabName(l_prefabName);
-    l_prefab.SetGameObject(l_gameObject);
-
-    // Prefab()::Save内部で以下の検査を行い保存する
-    // GameObjectが有効か
-    // PrefabUUIDが非nilか
-    // SerializePrefab()が非nullか
-    // 全て通ればファイルへ書き込む
-    if (!l_prefab.Save(l_prefabFilePath))
-    {
-        // 保存に失敗したらRegistryから取り消す
-        a_assetFilePathRegistry.Erase(l_prefabFilePath);
-
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_prefabFilePath.string());
-
-        return {};
-    }
-
-    // 作成パスを返却
-    // 呼び出し側がこのパスを受け取り
-    // m_renameStateへセットしてInputTextによる名前変更モードへ移行する
-    // WatcherクラスがAdd通知意を検知 -> Registry命中 -> ApplyPrefabAdd
-    // -> SceneManager側Registryへ登録 -> PrefabSystemへPrefabData追加
-    Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
-
-    l_result.m_createdFilePath = l_prefabFilePath;
-    l_result.m_isSuccess       = true;
-
-    return l_result;
+    return {};
 }
 FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreateScene(const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {

@@ -9,7 +9,7 @@ namespace FWK::Editor
          WorldOutlinerEditorWindowSelectionState() = default;
         ~WorldOutlinerEditorWindowSelectionState() = default;
     
-        void SelectSingleGameObject(const std::weak_ptr<GameObject>& a_gameObject);
+        void SelectSingleGameObject();
         void SelectSingleScene     ();
 
         void ClearSelection();

@@ -1,28 +1,6 @@
 ﻿#include "TransformComponentJsonConverter.h"
 
-void FWK::Converter::TransformComponentJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, TransformComponent& a_transformComponent) const
-{
-    if (a_rootJson.is_null()) { return; }
-
-    CommonDeserialize(a_rootJson, a_transformComponent);
-}
-void FWK::Converter::TransformComponentJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, TransformComponent& a_transformComponent) const
-{
-    if (a_rootJson.is_null()) { return; }
-
-    CommonDeserialize(a_rootJson, a_transformComponent);
-}
-
-nlohmann::json FWK::Converter::TransformComponentJsonConverter::SerializePrefab(const TransformComponent& a_transformComponent) const
-{
-    return CommonSerialize(a_transformComponent);
-}
-nlohmann::json FWK::Converter::TransformComponentJsonConverter::SerializeScene(const TransformComponent& a_transformComponent) const
-{
-    return CommonSerialize(a_transformComponent);
-}
-
-void FWK::Converter::TransformComponentJsonConverter::CommonDeserialize(const nlohmann::json& a_rootJson, TransformComponent& a_transformComponent) const
+void FWK::Converter::TransformComponentJsonConverter::Deserialize(const nlohmann::json& a_rootJson, TransformComponent& a_transformComponent) const
 {
     if (a_rootJson.is_null()) { return; }
 
@@ -34,23 +12,28 @@ void FWK::Converter::TransformComponentJsonConverter::CommonDeserialize(const nl
     a_transformComponent.ApplyTransformRotation(l_rotation);
     a_transformComponent.ApplyTransformPosition(l_position);
     
-    auto l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy().lock();
+    auto& l_matrixStrategy = a_transformComponent.GetMutableREFMatrixStrategy();
 
-    Utility::DeserializeInstanceType<TypeAlias::MatrixStrategySharedFactory>(a_rootJson, k_matrixStrategyTypeNameJsonKey, l_matrixStrategy);
+    Utility::DeserializeInstanceType<TypeAlias::MatrixStrategyUniqueFactory>(a_rootJson, k_matrixStrategyTypeNameJsonKey, l_matrixStrategy);
+
+    if (!l_matrixStrategy)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "トランスフォームコンポーネントでMatrixStrategyのデシリアライズ、処理に失敗しました。");
+    }
 }
 
-nlohmann::json FWK::Converter::TransformComponentJsonConverter::CommonSerialize(const TransformComponent& a_transformComponent) const
+nlohmann::json FWK::Converter::TransformComponentJsonConverter::Serialize(const TransformComponent& a_transformComponent) const
 {
     nlohmann::json l_rootJson = {};
 
     const auto& l_transform      = a_transformComponent.GetREFTransform     ();
-    const auto& l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy().lock();
+    const auto& l_matrixStrategy = a_transformComponent.GetREFMatrixStrategy();
 
     Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_scale,       k_scaleJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_position,    k_positionJsonKey));
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixStrategy,     k_matrixStrategyTypeNameJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixStrategy, k_matrixStrategyTypeNameJsonKey));
 
     return l_rootJson;
 }

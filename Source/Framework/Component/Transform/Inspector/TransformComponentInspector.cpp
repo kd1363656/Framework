@@ -6,8 +6,8 @@ void FWK::TransformComponentInspector::EditInspector(TransformComponent& a_trans
     
     // 行列の計算方法を選択することができるラジオボタンリスト
     // 新しく生成されたらMatrix確定処理を実行
-    if (auto  l_matrixStrategy = a_transformComponent.GetVALMatrixStrategy  ().lock();
-        Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::MatrixStrategySharedFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy))
+    if (auto& l_matrixStrategy = a_transformComponent.GetMutableREFMatrixStrategy();
+        Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy))
     {
         l_matrixStrategy->Execute(a_transformComponent);
     }

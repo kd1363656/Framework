@@ -4,10 +4,6 @@ namespace FWK
 {
     class Scene final
     {
-    private:
-
-        using NextSceneLoadFilePathMap = std::unordered_map<boost::uuids::uuid, std::filesystem::path>;
-
     public:
 
          Scene() = default;
@@ -35,17 +31,7 @@ namespace FWK
 
         void SetSceneName(const std::string& a_set) { m_sceneName = a_set; }
 
-        void SetIsGameObjectExecutionLevelListDirty(const bool a_set) { m_isGameObjectExecutionLevelListDirty = a_set; }
-
         std::filesystem::path FetchVALNextLoadSceneFilePath() const;
-
-        std::weak_ptr<GameObject> FindVALGameObject(const boost::uuids::uuid& a_uuid) const;
-
-        const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
-
-        const auto& GetREFGameObjectList() const { return m_gameObjectList; }
-
-        const auto& GetREFSceneShiftEventObserver() const { return m_sceneShiftEventObserver; }
 
         const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
@@ -53,34 +39,26 @@ namespace FWK
 
         const auto& GetREFSceneName() const { return m_sceneName; }
 
-        auto& GetMutableREFSceneShiftEventObserver() { return m_sceneShiftEventObserver; }
-
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
         auto& GetMutableREFPrefabSystem() { return m_prefabSystem; }
 
     private:
 
-        void RemoveDestroyedGameObjects();
+        void AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel);
 
-        void RefreshGameObjectExecutionLevelListIfNeeded();
+        void RemoveDestroyedGameObjects();
 
         void RebuildGameObjectExecutionLevelList();
 
-        void CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject, std::size_t& a_executionLevel) const;
-
-        void AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel);
+        std::size_t CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject) const;
 
         static constexpr std::size_t k_initialExecutionLevel = 0ULL;
 
-        NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
-
-        std::vector<std::shared_ptr<GameObject>>            m_gameObjectList               = {};
+        std::vector<std::shared_ptr<GameObject>>            m_gameObjectList = {};
         std::vector<std::vector<std::weak_ptr<GameObject>>> m_gameObjectExecutionLevelList = {};
 
         UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
-
-        Observer<Enum::SceneShiftEvent> m_sceneShiftEventObserver = {};
 
         AssetFilePathRegistry m_assetFilePathRegistry = {};
 
@@ -94,6 +72,6 @@ namespace FWK
 
         boost::uuids::uuid m_nextSceneUUID = {};
 
-        bool m_isGameObjectExecutionLevelListDirty = false;
+        bool m_hadGameObjectListChangeDirty = false;
     };
 }

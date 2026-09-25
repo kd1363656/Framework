@@ -3,8 +3,6 @@
 
 void FWK::Scene::INIT()
 {
-    m_nextSceneLoadFilePathMap.clear();
-
     m_gameObjectList.clear              ();
     m_gameObjectExecutionLevelList.clear();
 
@@ -19,10 +17,6 @@ void FWK::Scene::INIT()
     m_sceneName.clear();
 
     m_nextSceneUUID = {};
-
-    // 次にGameObjectを追加した後で、
-    // 階層別実行順を再構築できるようにする。
-    m_isGameObjectExecutionLevelListDirty = false;
 }
 
 void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
@@ -58,14 +52,6 @@ void FWK::Scene::PostDeserialize() const
 
 void FWK::Scene::EarlyUpdate()
 {
-    // 前フレームまでに削除要求されたGameObjectを
-    // Scene所有リストから一括削除する
-    RemoveDestroyedGameObjects();
-
-    // GameObjectの追加、削除、親子変更があった場合だけ、
-    // 階層別実行順を再構築する
-    RefreshGameObjectExecutionLevelListIfNeeded();
-
     for (const auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
     {
         for (const auto& l_gameObjectWeak : l_gameObjectExecutionLevel)
@@ -150,194 +136,21 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
         return;
     }
 
-    std::size_t l_executionLevel = k_initialExecutionLevel;
-
+    
     // 親GameObjectは、子GameObjectより先に
     // Sceneへ登録されなければならない
-    CalculateGameObjectExecutionLevel(a_gameObject, l_executionLevel);
+    const auto& l_executionLevel = CalculateGameObjectExecutionLevel(a_gameObject);
 
     // GameObject自身を識別するSceneInstanceUUIDをUUIDRegistryへ登録する
     // 新規GameObjectでUUIDがnilの場合はUUIDRegistry内で新規発行する
     // Deserialize済みで既にUUIDを持っている場合は、そのUUIDを維持したまま
     // Registry内で重複していないことを確認して登録する
-    FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetMutableREFSceneInstanceUUID()),"GameObjectのSceneInstanceUUID登録に失敗したため、GameObjectをSceneへ追加できませんでした。");
+    FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetREFSceneInstanceUUID()),"GameObjectのSceneInstanceUUID登録に失敗したため、GameObjectをSceneへ追加できませんでした。");
 
     m_gameObjectList.emplace_back(a_gameObject);
 
-    // Prefabの代表GameObjectが削除などで空になっている場合だけ
-    // 今回追加したGameObjectを新しい代表として設定する
-    m_prefabSystem.CachePrefabGameObjectIfNeeded(a_gameObject);
-
     // 計算済みの階層へ直接追加する
     AddGameObjectToExecutionLevelList(a_gameObject, l_executionLevel);
-}
-
-bool FWK::Scene::AddNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)
-{
-    if (a_sceneUUID.is_nil())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたUUIDが無効です、追加しようとしたシーン名の確認をしてください。");
-
-        return false;
-    }
-
-    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID);
-
-    if (!l_assetFilePathData)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたアセットファイルパスデータが無効です、追加しようとしたシーンファイルパスの確認をしてください。");
-
-        return false;
-    }
-
-    if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Scene以外のAssetをシーン遷移へ追加しようとしました。");
-
-        return false;
-    }
-
-    const auto& l_nextSceneLoadFilePath = l_assetFilePathData->m_assetFilePath;
-
-    if (l_nextSceneLoadFilePath.empty())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスが空です、追加しようとしたシーンファイルパスの確認をしてください。");
-
-        return false;
-    }
-
-    if (!Utility::CanLoadFilePath(l_nextSceneLoadFilePath, Constant::k_lowerJsonExtension))
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "シーン遷移に追加しようとしたシーンファイルパスがjsonファイルでないか、無効な形式のファイルです、追加しようとしたシーンファイルパスの確認及びファイルの確認をしてください。");
-
-        return false;
-    }
-
-    return m_nextSceneLoadFilePathMap.try_emplace(a_sceneUUID, l_nextSceneLoadFilePath).second;
-}
-bool FWK::Scene::AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID)
-{
-    if (a_sceneUUID.is_nil())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneUUIDが無効です。");
-
-        return false;
-    }
-
-    if (a_filePath.empty())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ追加しようとしたSceneFilePathが空です。");
-
-        return false;
-    }
-
-    if (!Utility::CanLoadFilePath(
-        a_filePath,
-        Constant::k_lowerJsonExtension))
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "追加しようとしたSceneFilePathが無効です。\nFilePath : {}", a_filePath.string());
-
-        return false;
-    }
-
-    // まずSceneManager側AssetRegistryへSceneとして登録する
-    if (!m_assetFilePathRegistry.Add(a_filePath, a_sceneUUID, Enum::AssetFilePathRegistryType::Scene)) { return false; }
-
-    // Registry登録に成功した後、
-    // UUIDだけ版を使ってRegistryから正式なPathを取得し、
-    // NextSceneLoadFilePathMapへ登録する
-    if (AddNextSceneLoadFilePath(a_sceneUUID)) { return true; }
-
-    // NextSceneLoadFilePathMapへの登録に失敗した場合
-    // RegistryだけにSceneが残る中途半端な状態を防ぐ
-    m_assetFilePathRegistry.Erase(a_filePath);
-
-    return false;
-}
-
-bool FWK::Scene::RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID)
-{
-    if (a_sceneUUID.is_nil()) { return false; }
-
-    bool l_isRemoved = false;
-
-    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID);
-
-    if (l_assetFilePathData &&
-        l_assetFilePathData->m_type == Enum::AssetFilePathRegistryType::Scene)
-    {
-        // Erase()を呼ぶとRegistry内部Dataが消えるため、
-        // 先にPathを値として保持する。
-        const std::filesystem::path l_sceneFilePath = l_assetFilePathData->m_assetFilePath;
-
-        if (m_assetFilePathRegistry.Erase(
-            l_sceneFilePath))
-        {
-            l_isRemoved = true;
-        }
-    }
-
-    // unordered_map::erase(Key)は
-    // 実際に削除した要素数を返す
-    // staleなMap状態だけが残っていた場合でも
-    // ここで削除して同期状態へ戻す
-    if (m_nextSceneLoadFilePathMap.erase(a_sceneUUID) != Constant::k_noErasedElementCount)
-    {
-        l_isRemoved = true;
-    }
-
-    return l_isRemoved;
-}
-
-bool FWK::Scene::ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID)
-{
-    if (a_oldSceneFilePath.empty() ||
-        a_newSceneFilePath.empty() ||
-        a_sceneUUID.is_nil())
-    {
-        return false;
-    }
-
-    if (a_oldSceneFilePath == a_newSceneFilePath) { return true; }
-
-    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID);
-
-    if (!l_assetFilePathData) { return false; }
-
-    if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene ||
-        l_assetFilePathData->m_assetFilePath != a_oldSceneFilePath)
-    {
-        return false;
-    }
-
-    const auto& l_nextSceneFilePathITR = m_nextSceneLoadFilePathMap.find(a_sceneUUID);
-
-    if (l_nextSceneFilePathITR == m_nextSceneLoadFilePathMap.end())
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneManagerのAssetFilePathRegistryにはSceneが存在しますが、NextSceneLoadFilePathMapに存在しません。");
-
-        return false;
-    }
-
-
-    if (l_nextSceneFilePathITR->second !=
-        a_oldSceneFilePath)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryとNextSceneLoadFilePathMapのSceneFilePathが一致していません。");
-
-        return false;
-    }
-
-    // RegistryのUUIDは変更せずPathだけ変更する
-    if (!m_assetFilePathRegistry.ReplaceFilePath(a_oldSceneFilePath, a_newSceneFilePath))
-    {
-        return false;
-    }
-
-    // Registry変更に成功した後でScene専用Indexも追従する
-    l_nextSceneFilePathITR->second = a_newSceneFilePath;
-
-    return true;
 }
 
 std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
@@ -363,125 +176,8 @@ std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
         return {};
     }
 
-    // AssetfilePathDataから次に読み込むファイルのパスをreturn
+    // AssetFilePathDataから次に読み込むファイルのパスをreturn
     return l_assetFilePathData->m_assetFilePath;
-}
-
-std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_uuid) const
-{
-    return m_gameObjectUUIDRegistry.FindVALRegisteredType(a_uuid);
-}
-
-void FWK::Scene::RemoveDestroyedGameObjects()
-{
-    bool l_hasRemoveTarget = false;
-
-    // Scene所有を解除する前にUUID登録を解除する
-    for (const auto& l_gameObject : m_gameObjectList)
-    {
-        if (!l_gameObject)
-        {
-            l_hasRemoveTarget = true;
-
-            continue;
-        }
-
-        if (!l_gameObject->GetVALIsDestroyed()) { continue; }
-
-        FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Erase(l_gameObject->GetMutableREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。");
-
-        l_hasRemoveTarget = true;
-    }
-
-    if (!l_hasRemoveTarget) { return; }
-
-    // 階層実行リストから削除
-    for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
-    {
-        std::erase_if(l_gameObjectExecutionLevel, [](const auto& a_gameObjectWeak)
-        {
-            const auto& l_gameObject = a_gameObjectWeak.lock();
-
-            // weak_ptrの参照先がなくなっている場合も実行リストから削除する
-            if (!l_gameObject) { return true; }
-
-            return l_gameObject->GetVALIsDestroyed();
-        });
-    }
-
-    // Scene所有リストから削除
-    std::erase_if(m_gameObjectList, [](const auto& a_gameObject)
-    {
-        if (!a_gameObject) { return true; }
-
-        return a_gameObject->GetVALIsDestroyed();
-    });
-
-    // 後方に残った空階層を削除
-    // 階層が0,1,2,3とあった時に急に2を含む要素が
-    // 消えてしまっても問題がないようにpop_backで後ろから削除
-    while (!m_gameObjectExecutionLevelList.empty() &&
-           m_gameObjectExecutionLevelList.back().empty())
-    {
-        m_gameObjectExecutionLevelList.pop_back();
-    }
-}
-
-void FWK::Scene::RefreshGameObjectExecutionLevelListIfNeeded()
-{
-    if (!m_isGameObjectExecutionLevelListDirty) { return; }
-
-    RebuildGameObjectExecutionLevelList();
-
-    m_isGameObjectExecutionLevelListDirty = false;
-}
-
-void FWK::Scene::RebuildGameObjectExecutionLevelList()
-{
-    m_gameObjectExecutionLevelList.clear();
-
-    // UUIDRegistryには既に登録済みなので、
-    // m_gameObjectList内の順番にGameObjectの現在改装を求める
-    for (const auto& l_gameObject: m_gameObjectList)
-    {
-        if (!l_gameObject ||
-            l_gameObject->GetVALIsDestroyed())
-        {
-            continue;
-        }
-
-        std::size_t l_executionLevel = k_initialExecutionLevel;
-
-        // 階層を調べてから適した階層に追加
-        CalculateGameObjectExecutionLevel(l_gameObject, l_executionLevel);
-        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
-    }
-}
-
-void FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject, std::size_t& a_executionLevel) const
-{
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject) { return; }
-
-    const auto& l_hierarchy        = l_gameObject->GetREFHierarchy();
-          auto  l_parentGameObject = l_hierarchy.GetREFParent     ().lock();
-
-    while (l_parentGameObject)
-    {
-        if (l_parentGameObject->GetVALIsDestroyed())
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "削除予定の親GameObjectを持つGameObjectはSceneへ追加できません。");
-
-            return;
-        }
-
-        ++a_executionLevel;
-
-        const auto& l_parentHierarchy = l_parentGameObject->GetREFHierarchy();
-
-        l_parentGameObject = l_parentHierarchy.GetREFParent().lock();
-    }
 }
 
 void FWK::Scene::AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel)
@@ -495,4 +191,78 @@ void FWK::Scene::AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObjec
     }
 
     m_gameObjectExecutionLevelList[a_executionLevel].emplace_back(a_gameObject);
+}
+
+void FWK::Scene::RemoveDestroyedGameObjects()
+{
+    // Scene所有リストから削除
+    std::erase_if(m_gameObjectList, 
+                 [this](const auto& a_gameObject)
+                 {
+                     if (!a_gameObject) { return true; }
+                 
+                     a_gameObject->GetREFSceneInstanceUUID();
+
+                     if (a_gameObject->GetVALIsDestroyed())
+                     {
+                         FWK_ASSERT_RETURN_VALUE_IF(!m_gameObjectUUIDRegistry.Erase(a_gameObject->GetREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。", false);
+                     }
+                 
+                     return a_gameObject->GetVALIsDestroyed();
+                 });
+
+    // 階層実行リストから削除
+    for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
+    {
+        std::erase_if(l_gameObjectExecutionLevel, 
+                      [](const auto& a_gameObjectWeak)
+                      {
+                          const auto& l_gameObject = a_gameObjectWeak.lock();
+                      
+                          // weak_ptrの参照先がなくなっている場合も実行リストから削除する
+                          return !l_gameObject;
+                      });
+    }
+
+    // 最後尾が空にならずそれより上の階層が空になる現象などありえないため
+    // pop_backを使用する。
+    // 後方に残った空階層を削除
+    // 階層が0,1,2,3とあった時に急に2を含む要素が
+    // 消えてしまっても問題がないようにpop_backで後ろから削除
+    while (!m_gameObjectExecutionLevelList.empty() &&
+           m_gameObjectExecutionLevelList.back().empty())
+    {
+        m_gameObjectExecutionLevelList.pop_back();
+    }
+}
+
+void FWK::Scene::RebuildGameObjectExecutionLevelList()
+{
+    m_gameObjectExecutionLevelList.clear();
+
+    // UUIDRegistryには既に登録済みなので、
+    // m_gameObjectList内の順番にGameObjectの現在改装を求める
+    for (const auto& l_gameObject : m_gameObjectList)
+    {
+        if (!l_gameObject ||
+            l_gameObject->GetVALIsDestroyed())
+        {
+            continue;
+        }
+
+        const auto& l_executionLevel = CalculateGameObjectExecutionLevel(l_gameObject);
+
+        // 階層を調べてから適した階層に追加
+        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
+    }
+}
+
+std::size_t FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return k_initialExecutionLevel; }
+
+    // TODO
+    return k_initialExecutionLevel;
 }

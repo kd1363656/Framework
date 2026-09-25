@@ -6,47 +6,10 @@ namespace FWK::Enum
     {
         Invalid            = 0U,
         TriggeredThisFrame = 1U << 0U,
-        TriggeredKeepFrame = 2U << 0U,
+        KeepFrame          = 2U << 0U,
     };
-
-    enum class SceneShiftEvent
-    {
-        Invalid,
-
-        Title,
-        Game,
-        Gameover,
-    };
-
-    FWK_JSON_SERIALIZE_ENUM
-    (
-        SceneShiftEvent,
-        FWK_JSON_ENUM_VALUE(SceneShiftEvent::Invalid),
-        FWK_JSON_ENUM_VALUE(SceneShiftEvent::Title),
-        FWK_JSON_ENUM_VALUE(SceneShiftEvent::Game),
-        FWK_JSON_ENUM_VALUE(SceneShiftEvent::Gameover),
-    )
-
-    enum class ComponentEvent
-    {
-        Invalid,
-
-        InputMouseRight,
-
-        CanRotation,
-    };
-
-    FWK_JSON_SERIALIZE_ENUM
-    (
-        ComponentEvent,
-        FWK_JSON_ENUM_VALUE(ComponentEvent::Invalid),
-        FWK_JSON_ENUM_VALUE(ComponentEvent::InputMouseRight),
-        FWK_JSON_ENUM_VALUE(ComponentEvent::CanRotation),
-    )
 }
 
 FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLaneBitShiftFlag, FWK::Enum::EventLaneBitShiftFlag::Invalid)
 FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLaneBitShiftFlag, FWK::Enum::EventLaneBitShiftFlag::TriggeredThisFrame)
-
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::ComponentEvent, FWK::Enum::ComponentEvent::Invalid)
-FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::ComponentEvent, FWK::Enum::ComponentEvent::InputMouseRight)
+FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::EventLaneBitShiftFlag, FWK::Enum::EventLaneBitShiftFlag::KeepFrame)

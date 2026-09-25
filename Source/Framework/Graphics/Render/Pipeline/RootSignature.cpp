@@ -24,7 +24,7 @@ bool FWK::Graphics::RootSignature::Create(const Device& a_device)
     std::transform(m_rootParameterRecordList.begin(),
                    m_rootParameterRecordList.end(),
                    std::back_inserter(l_rootParameterList),
-                   [](const Converter::RootSignatureJsonConverter::RootParameterRecord& a_rootParameterRecord)
+                   [](const auto& a_rootParameterRecord)
                    {
                         return a_rootParameterRecord.m_rootParameter;
                    });

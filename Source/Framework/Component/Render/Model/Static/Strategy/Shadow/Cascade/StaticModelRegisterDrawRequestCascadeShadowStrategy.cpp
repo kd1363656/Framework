@@ -1,6 +1,0 @@
-﻿#include "StaticModelRegisterDrawRequestCascadeShadowStrategy.h"
-
-void FWK::StaticModelRegisterDrawRequestCascadeShadowStrategy::Execute(StaticModelComponent& a_staticModelComponent)
-{
-    RegisterDrawRequestData<Graphics::StaticModelCascadeShadowPerObjectDrawRequest>(a_staticModelComponent);
-}

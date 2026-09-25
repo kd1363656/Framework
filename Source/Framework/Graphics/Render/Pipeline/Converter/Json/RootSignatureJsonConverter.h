@@ -11,17 +11,6 @@ namespace FWK::Converter
     {
     public:
 
-        struct RootParameterRecord final
-        {
-            // 使わない可能性を考慮してディスクリプタテーブル用のD3D12_DESCRIPTOR_RANGEをまとめたリストはポインタとして保持しておく
-            // コピーコンストラクタ禁止を防ぐためにshared_ptrを使用
-            std::shared_ptr<std::vector<D3D12_DESCRIPTOR_RANGE>> m_descriptorRangeList = nullptr;
-
-            D3D12_ROOT_PARAMETER m_rootParameter = {};
-        };
-
-    public:
-
          RootSignatureJsonConverter() = default;
         ~RootSignatureJsonConverter() = default;
 
@@ -41,9 +30,9 @@ namespace FWK::Converter
         nlohmann::json SerializeRootParameterList    (const Graphics::RootSignature& a_rootSignature) const;
         nlohmann::json SerializeStaticSamplerDescList(const Graphics::RootSignature& a_rootSignature) const;
 
-        void DeserializeDescriptorRangeList(const nlohmann::json& a_rootJson, RootParameterRecord& a_rootParameterRecord) const;
+        void DeserializeDescriptorRangeList(const nlohmann::json& a_rootJson, Struct::RootParameterRecord& a_rootParameterRecord) const;
 
-        nlohmann::json SerializeDescriptorRangeList(const RootParameterRecord& a_rootParameterRecord) const;
+        nlohmann::json SerializeDescriptorRangeList(const Struct::RootParameterRecord& a_rootParameterRecord) const;
 
         // RootSignature
         static constexpr std::string_view k_rootParameterIndexMapJsonKey = "RootParameterIndexMap";

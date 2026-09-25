@@ -2,9 +2,11 @@
 
 void FWK::HierarchicalMatrixStrategy::Execute(TransformComponent& a_transformComponent)
 {
-    auto l_parent = a_transformComponent.GetREFParentTransformComponent().lock();
+    const auto& l_parentGameObject = a_transformComponent.GetREFParentGameObject().lock();
 
-    if (!l_parent) { return; }
+    if (!l_parentGameObject) { return; }
+
+    const auto& l_parent = l_parentGameObject->GetVALTransformComponent().lock();
 
     const auto& l_parentWorldPosition = l_parent->GetREFMatrix().Translation();
 

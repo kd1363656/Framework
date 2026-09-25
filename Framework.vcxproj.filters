@@ -550,12 +550,6 @@
     <Filter Include="Source\Framework\Definition\Struct\Graphics">
       <UniqueIdentifier>{77b69804-1a01-4fb3-87be-370d2dcabdd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject">
-      <UniqueIdentifier>{d89b2d13-ea76-4683-99fa-453db638096d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component">
-      <UniqueIdentifier>{998b25b3-53bc-4357-b8e6-5b3d38ef69f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Buffer\Dynamic">
       <UniqueIdentifier>{a10a3968-cfaa-4682-b40f-ecda01387ffc}</UniqueIdentifier>
     </Filter>
@@ -697,9 +691,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json">
       <UniqueIdentifier>{715f83cd-c02f-436b-a445-1139272bf252}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Transform">
-      <UniqueIdentifier>{ce11bafc-b19a-4f89-be87-540b133756fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\TypeINFO">
       <UniqueIdentifier>{1d960e7f-1593-430e-9d73-6c413e2023a9}</UniqueIdentifier>
     </Filter>
@@ -714,15 +705,6 @@
     </Filter>
     <Filter Include="Source\Framework\Strategy">
       <UniqueIdentifier>{0248cbd6-1d00-4952-a2bd-59717530d0b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Strategy">
-      <UniqueIdentifier>{1efc1502-634c-4ff0-9dd9-e1ae58f813ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Strategy\Hierarchical">
-      <UniqueIdentifier>{ec82a122-5748-4dff-b5d7-88d4f0fc783f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Strategy\Standalone">
-      <UniqueIdentifier>{0386c869-5d17-4bf7-a2d3-217b69a2e05a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\Json">
       <UniqueIdentifier>{ba990d32-9ca5-483d-a056-58a85a44c94c}</UniqueIdentifier>
@@ -856,9 +838,6 @@
     <Filter Include="Source\Framework\Physics\CharacterVirtual\Converter\Json">
       <UniqueIdentifier>{6346a33a-61c0-4e07-a9ef-1ac84dfe84d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Component">
-      <UniqueIdentifier>{e7d48df8-10d6-445b-a0e0-bfced88f619c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Shadow">
       <UniqueIdentifier>{f02050bd-b903-4ff5-b643-7121bc310987}</UniqueIdentifier>
     </Filter>
@@ -925,12 +904,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant">
       <UniqueIdentifier>{c440348c-eacf-477b-bb78-77bec2feddcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Converter">
-      <UniqueIdentifier>{71d59703-f587-4757-8a53-2cfa84389a57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\GameObject\Converter\Json">
-      <UniqueIdentifier>{be522c45-b9bc-4958-8f25-0d51c4d581f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Physics\RayCast">
       <UniqueIdentifier>{d9abc5ae-2db8-407a-8b50-c9a8344e0d04}</UniqueIdentifier>
     </Filter>
@@ -967,14 +940,8 @@
     <Filter Include="Source\Framework\Prefab\Converter\Json">
       <UniqueIdentifier>{5d63fa27-c090-46c3-94cb-c3824027c0c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\GameObject">
-      <UniqueIdentifier>{85c1dd65-757b-44c6-86ab-f6238955260b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner">
       <UniqueIdentifier>{89493100-c2bd-4e6b-911b-9c2dc32ff644}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render">
-      <UniqueIdentifier>{28a5b31c-de7d-43c6-a556-39dede09053b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\IMGUI\Bool">
       <UniqueIdentifier>{1fa2f86b-6a7e-40cd-9c51-664da9abe8fc}</UniqueIdentifier>
@@ -985,12 +952,6 @@
     <Filter Include="Source\Framework\Utility\IMGUI\DragDrop">
       <UniqueIdentifier>{714aaf33-8c33-48ad-a062-c35f888683a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model">
-      <UniqueIdentifier>{022fc1d7-deb1-4089-8fe4-0cda5b6fc546}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static">
-      <UniqueIdentifier>{c2d73838-f806-4e1d-a5eb-fc23390f988e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Viewport">
       <UniqueIdentifier>{3cffe2af-0671-4cdd-b5b3-65850c307981}</UniqueIdentifier>
     </Filter>
@@ -999,21 +960,6 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Details">
       <UniqueIdentifier>{25abc7e1-8920-44cb-8000-eaa09690e4e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Component">
-      <UniqueIdentifier>{6b69f564-47c1-4334-9646-98858e8e5971}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Converter">
-      <UniqueIdentifier>{389948ee-4640-4865-9b1d-253b4fdf0994}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Converter\Json">
-      <UniqueIdentifier>{762a418e-1cdd-4c3f-9ae5-905fd27f7a79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Converter">
-      <UniqueIdentifier>{833368f2-8c31-4336-88f8-d317f247d5e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Converter\Json">
-      <UniqueIdentifier>{55166301-0675-4d04-828d-3e5d1725f4f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade">
       <UniqueIdentifier>{d65e0655-113b-4e26-8967-fb284b10dd9c}</UniqueIdentifier>
@@ -1030,9 +976,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json">
       <UniqueIdentifier>{04b7eb22-e32c-49de-9040-e6b1f786f441}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Inspector">
-      <UniqueIdentifier>{6bc1901b-b8ad-46d1-95a9-c7494c15b871}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Physics\Converter">
       <UniqueIdentifier>{326aa83f-a32b-4e74-8f54-aea3f0955406}</UniqueIdentifier>
     </Filter>
@@ -1041,21 +984,6 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Utility\Storage">
       <UniqueIdentifier>{c73ee9f8-b8c4-4d49-9ebb-169cd7e3dd04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\GameObject">
-      <UniqueIdentifier>{267ae01b-247a-4ecf-995d-4fb9d2c6299d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper">
-      <UniqueIdentifier>{9b92d68c-fc2f-447c-a927-469ffeec4ef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Asset">
-      <UniqueIdentifier>{64a70ad1-aaad-4dce-a5ed-78e90e23b19e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Asset\Converter">
-      <UniqueIdentifier>{ebb3cd76-1914-43a2-963f-487a0a363876}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Asset\Converter\Json">
-      <UniqueIdentifier>{3b42659f-1829-40cd-b189-1e1037fa353c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Definition\Struct\Editor">
       <UniqueIdentifier>{237ff102-74b5-4d28-9941-7a9a0bd8505f}</UniqueIdentifier>
@@ -1081,59 +1009,11 @@
     <Filter Include="CONFIG\Physics">
       <UniqueIdentifier>{96061f7e-d953-463c-ada3-5c8890b30739}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Converter\Json\Prefab">
-      <UniqueIdentifier>{1bd77e02-e4b3-4423-9e18-df73d83da387}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\GameObject\Converter\Json\Scene">
-      <UniqueIdentifier>{ce1521d5-0074-4287-af70-f72c2faff802}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\GameObject">
-      <UniqueIdentifier>{d9abe8ad-05b0-41bc-9af1-7fd47978126d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor">
       <UniqueIdentifier>{6982fdce-d030-43fa-a394-b3ea6e54db1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Converter">
-      <UniqueIdentifier>{074b806e-26e3-414d-b02f-cf0b6ff4cb4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Converter\Json">
-      <UniqueIdentifier>{549ba115-093a-4775-8b89-9a807f3e3f40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Component">
-      <UniqueIdentifier>{d9f2b667-456e-43c5-9fb6-e24c825957a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch">
-      <UniqueIdentifier>{67ad9dc7-c486-4330-9569-cfcbfa528188}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Transform">
-      <UniqueIdentifier>{052a65f0-7803-4dd9-8457-ad9f5ba4084b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self">
-      <UniqueIdentifier>{e2f979f2-87a7-4eb8-ba5d-a09dc4657674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Inspector">
-      <UniqueIdentifier>{cf72dc1a-63fa-4f0f-a9d3-76a3be3caf22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Inspector">
-      <UniqueIdentifier>{6fbf7109-2aea-41d6-a19d-452ce18507f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Asset\Inspector">
-      <UniqueIdentifier>{8474e5af-6cb7-4c06-953b-17234dacc80d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Observer\Inspector">
       <UniqueIdentifier>{0dc6c2b0-c1af-4f6b-9309-936b88c05b83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Camera">
-      <UniqueIdentifier>{81b6d736-5ae1-48fb-abe1-5b28eb3e0233}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Camera\Inspector">
-      <UniqueIdentifier>{59ad939a-455f-4620-b2fa-05eb95ee09f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Camera\Converter">
-      <UniqueIdentifier>{d54ee024-84b6-45f4-938a-34e63a5dc74c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Camera\Converter\Json">
-      <UniqueIdentifier>{2730b066-ab16-445d-a09a-d943380001e8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Input">
       <UniqueIdentifier>{5a209d6f-4c92-4d22-8ce5-e982224028bc}</UniqueIdentifier>
@@ -1144,45 +1024,6 @@
     <Filter Include="Source\Framework\Input\Mouse">
       <UniqueIdentifier>{6811dd03-102e-4483-ba37-667b892a7f0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Input">
-      <UniqueIdentifier>{052dd4e3-38de-4c50-82ac-01f2dbcb74e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation">
-      <UniqueIdentifier>{b6061534-33b7-47ce-903b-f770805e2d59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Converter">
-      <UniqueIdentifier>{fd217b33-2686-489d-a0cb-a90274014f78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Converter\Json">
-      <UniqueIdentifier>{014bc86f-8e34-40fb-92be-be9e59155d3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Inspector">
-      <UniqueIdentifier>{340a7461-7ea6-4bb3-b7a5-d3c9c76c3a69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Inspector">
-      <UniqueIdentifier>{7ebcb9a1-ec92-45f2-8d61-38cec894f961}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Converter">
-      <UniqueIdentifier>{cbc688ef-c944-4a80-8017-fcf481518af8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Converter\Json">
-      <UniqueIdentifier>{17856d1f-65f9-4362-8776-e73ddbb0e679}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Move">
-      <UniqueIdentifier>{dfc4636b-c4a5-4763-874b-57b9c9d7db62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Move\Converter">
-      <UniqueIdentifier>{6ca148e7-e5a0-4bcc-986a-1825b16bc3c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Move\Converter\Json">
-      <UniqueIdentifier>{d0745a9e-765b-401d-a161-edeebbc4697d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Move\Inspector">
-      <UniqueIdentifier>{3367d8e8-f51f-4921-bab3-80e5e33006c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode">
-      <UniqueIdentifier>{c0617107-3794-4ae0-9416-89d82ec91adc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\UFBX\INC">
       <UniqueIdentifier>{d09e5349-b5fc-4858-8931-ebab903ccc91}</UniqueIdentifier>
     </Filter>
@@ -1191,12 +1032,6 @@
     </Filter>
     <Filter Include="Library\IMGUI\INC">
       <UniqueIdentifier>{61ddca0c-6710-409b-a6c5-7d1f2f765110}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Node">
-      <UniqueIdentifier>{315c738d-c35d-46ea-898e-0d36b271d554}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Node\Allocator">
-      <UniqueIdentifier>{32026bcf-23dd-47e6-8ef8-699306b46526}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\Storage">
       <UniqueIdentifier>{0d29ce88-656b-4105-b8d9-5c6432ffaf9a}</UniqueIdentifier>
@@ -1207,65 +1042,11 @@
     <Filter Include="Source\Framework\Utility\Storage\Converter\Json">
       <UniqueIdentifier>{3cf4a10f-8475-424f-a045-7b0e5887dda7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Node\Allocator\Converter">
-      <UniqueIdentifier>{78290779-2760-4f1d-b41c-7592287b42e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Node\Allocator\Converter\Json">
-      <UniqueIdentifier>{f61949f3-8c09-4496-9c6c-8f9944f6f51d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Node\Converter">
-      <UniqueIdentifier>{3c509f83-1d33-4e41-9589-8379906bc2fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Node\Converter\Json">
-      <UniqueIdentifier>{da67bd1d-dd66-4cec-a0bb-da41e68067c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Inspector\Converter">
-      <UniqueIdentifier>{efaca1d8-df6d-454f-8522-8b2b346fd176}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Inspector\Converter\Json">
-      <UniqueIdentifier>{07d136eb-d523-4773-b5bd-bca13b51f6a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Editor\Node">
-      <UniqueIdentifier>{ea83392c-f927-4bc8-8168-f184701a641e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Enum\Axis">
       <UniqueIdentifier>{bf3af4c7-afd1-4c77-a89d-b693b652e4a6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Utility\IMGUI\String">
       <UniqueIdentifier>{610f4d6b-20a0-4755-9679-8ad433aef097}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Strategy">
-      <UniqueIdentifier>{df38fd01-0d82-4a4a-b184-fd21934024c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Strategy\Input">
-      <UniqueIdentifier>{be27c63a-c064-4046-9b98-3cad105e3fd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Input\Strategy\Input\MouseRight">
-      <UniqueIdentifier>{000e3943-4836-481e-a24d-716d10010084}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Inspector">
-      <UniqueIdentifier>{a20fc715-8e53-4b34-a297-e125e18d6be8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Converter">
-      <UniqueIdentifier>{42e83e55-1743-4791-947f-eb9c4117ca61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Converter\Json">
-      <UniqueIdentifier>{74cd4bf8-a594-4870-bf72-2edb473f1d0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant">
-      <UniqueIdentifier>{ad980362-c088-4bc7-9289-16e46e820d0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Converter">
-      <UniqueIdentifier>{6f32a96e-07c4-4308-bd74-290a5889c688}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json">
-      <UniqueIdentifier>{1320c8f5-33c4-4abd-aea4-6bfc2213cf2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Component">
-      <UniqueIdentifier>{17cacd4e-b127-4e6b-9ef7-bea09d330608}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Component\Rotation">
-      <UniqueIdentifier>{c2ce45cc-6126-413e-b4fc-eb77968197c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Asset">
       <UniqueIdentifier>{056e21de-9f54-4450-9148-3100213ec0ee}</UniqueIdentifier>
@@ -1291,32 +1072,8 @@
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Converter\Json">
       <UniqueIdentifier>{64d45172-d49d-4e98-b9ae-1be2f5823c1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector">
-      <UniqueIdentifier>{ac175854-dbf0-4249-8868-693f3c04dd56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse">
-      <UniqueIdentifier>{feb2dbd6-db0b-47e1-a760-7af538f56a13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector">
-      <UniqueIdentifier>{e45be404-8e2a-4732-8df9-b03985bb2d8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter">
-      <UniqueIdentifier>{cc9c6144-ea10-4b93-b683-22145f13f822}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json">
-      <UniqueIdentifier>{457f3931-5c99-4b52-8c8b-b68ac9442798}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher">
       <UniqueIdentifier>{1fc9897b-12d2-4c86-8058-f5110edf3e23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Move\Mode">
-      <UniqueIdentifier>{7a7d3c55-1ede-4ee2-a550-a0d9b8af1dce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Observer">
-      <UniqueIdentifier>{500bb9c8-a146-4cbf-ba67-df168e48fd00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self">
-      <UniqueIdentifier>{980df63c-a707-4000-8839-3bb9427eaf4b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change">
       <UniqueIdentifier>{8905bf48-2eca-493c-8e5b-d4e0cbf4a117}</UniqueIdentifier>
@@ -1420,14 +1177,8 @@
     <Filter Include="Source\Framework\Definition\Constant\Editor\MainMenu">
       <UniqueIdentifier>{fe9be027-be0d-473c-8035-f843a07cc590}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Component\Transform">
-      <UniqueIdentifier>{c51d85e2-95c5-4e5d-8329-8f82b7a5c4fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor\Splitter">
       <UniqueIdentifier>{f411fdf0-f1c3-401c-9cb6-3113ba15f1b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Editor\Node">
-      <UniqueIdentifier>{cf6dd941-24e3-4287-a27a-f1c5cae699bb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter">
       <UniqueIdentifier>{2be92671-8add-403d-96a9-2d4ecdd57436}</UniqueIdentifier>
@@ -1537,9 +1288,6 @@
     <Filter Include="Shader\Camera">
       <UniqueIdentifier>{dc0cb1a8-9f2c-4d66-ab3a-b06139b80ec8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Inspector">
-      <UniqueIdentifier>{7a14eabe-01aa-4056-b9eb-0e6d447d3afa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Command">
       <UniqueIdentifier>{28ccaa15-3573-4134-be2e-a4bee94b0b99}</UniqueIdentifier>
     </Filter>
@@ -1561,12 +1309,6 @@
     <Filter Include="Source\Framework\Utility\List">
       <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Converter">
-      <UniqueIdentifier>{33b68513-b0e6-4421-b836-27a869a951d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Converter\Json">
-      <UniqueIdentifier>{233933ee-16df-4376-ad89-973c14e3ee17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner\Operation">
       <UniqueIdentifier>{d38a0de5-5bb8-47b6-928e-f799fcc4a213}</UniqueIdentifier>
     </Filter>
@@ -1579,41 +1321,59 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Creator">
       <UniqueIdentifier>{9cfb7017-188e-4ac5-a143-3487fd57aea4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy">
-      <UniqueIdentifier>{19751565-9775-4fac-98e0-a5e6419a323f}</UniqueIdentifier>
+    <Filter Include="Source\Framework\GameObject">
+      <UniqueIdentifier>{8d3e8c77-7d08-4c29-ba6a-cb9ce4530dee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard">
-      <UniqueIdentifier>{daeb70e4-b7de-424f-abe4-7a6fe1559443}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component">
+      <UniqueIdentifier>{664df4b3-3bb2-441b-9a10-1746ab36b605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit">
-      <UniqueIdentifier>{534b501a-1a76-4f84-bb66-9045d65968d5}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Converter">
+      <UniqueIdentifier>{47eab824-a3d3-45ab-a62b-2ac7799e827b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit">
-      <UniqueIdentifier>{3fe4fb61-5815-402f-b437-15ade6772bbe}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Converter\Json">
+      <UniqueIdentifier>{51dc18e9-b394-43ea-b06e-22a864bfa9df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow">
-      <UniqueIdentifier>{7055969d-ed69-4a3b-b529-54a654afec3b}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Transform">
+      <UniqueIdentifier>{8a0eb597-13bc-45fb-bc6a-4804448f0c56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade">
-      <UniqueIdentifier>{2d61bc4f-8fad-4092-a2bb-dddff21455a8}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Component">
+      <UniqueIdentifier>{7cc31407-b26e-48f2-aa7b-8a6d47b9f095}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Component">
-      <UniqueIdentifier>{5e3f14f6-cf6f-4716-8bf1-fedac0b24012}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Definition\Struct\Component">
+      <UniqueIdentifier>{203faadb-c166-4b3e-aeba-c23567982a36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Hierarchy">
-      <UniqueIdentifier>{28ae0122-dca5-46da-bf9f-8b056dbf3c8e}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Transform\Strategy">
+      <UniqueIdentifier>{509d48a2-1a8e-4693-989d-98a34c56290c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Component\Converter">
-      <UniqueIdentifier>{bef5bb50-5ffc-4b4d-a059-a11a292a41e2}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Transform\Strategy\Standalone">
+      <UniqueIdentifier>{712c688a-65e4-4d19-bb8e-0f60183074c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Component\Converter\Json">
-      <UniqueIdentifier>{0886f5c4-0cdc-42db-a204-1b09a78a539c}</UniqueIdentifier>
+    <Filter Include="Source\Framework\Component\Transform\Strategy\Hierarchical">
+      <UniqueIdentifier>{94fdd2a4-d209-448a-a0aa-908ea2885880}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Hierarchy\Converter">
-      <UniqueIdentifier>{fbdf591c-cde5-4d56-96ed-4ec22d41db19}</UniqueIdentifier>
+    <Filter Include="Source\Framework\GameObject\Converter">
+      <UniqueIdentifier>{3b86f976-827d-4229-ad9a-dde4b42c39ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\GameObject\Hierarchy\Converter\Json">
-      <UniqueIdentifier>{06e6af9e-edda-419c-bc85-5450f70156b4}</UniqueIdentifier>
+    <Filter Include="Source\Framework\GameObject\Converter\Json">
+      <UniqueIdentifier>{ed86737b-cfae-4499-be6c-8000befe22dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Converter">
+      <UniqueIdentifier>{4968ac69-53c4-44f3-8423-8c9a0be5bbd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Converter\Json">
+      <UniqueIdentifier>{8f3e140d-0b42-4e66-a019-d9dd3ccab5ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Component\Transform\Inspector">
+      <UniqueIdentifier>{9e242bac-e264-449c-8a30-2a6fc23873e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Component">
+      <UniqueIdentifier>{5addd33f-002c-43ca-b990-23fad4ce5f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Scene">
+      <UniqueIdentifier>{4a905274-288b-4d70-bff4-83d97da8888c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\GameObject">
+      <UniqueIdentifier>{f5e250a8-37fd-4024-97a3-fb5449304d06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1995,7 +1755,7 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Physics\PhysicsLayerEnum.h">
       <Filter>Source\Framework\Definition\Enum\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowStyleEnum.h">
+    <ClInclude Include="Source\Framework\Definition\Enum\Window\WindowEnum.h">
       <Filter>Source\Framework\Definition\Enum\Window</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\DefaultTextureEnum.h">
@@ -2099,12 +1859,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\RenderTargetFullScreenTriangleDrawConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\GameObject.h">
-      <Filter>Source\Framework\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\ComponentBase.h">
-      <Filter>Source\Framework\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
@@ -2250,9 +2004,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json\GraphicsPipelineStateBaseJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h">
-      <Filter>Source\Framework\Component\Transform</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
     </ClInclude>
@@ -2288,15 +2039,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Strategy\StrategyBase.h">
       <Filter>Source\Framework\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h">
-      <Filter>Source\Framework\Component\Transform\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h">
-      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.h">
-      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Json\JsonUtility.h">
       <Filter>Source\Framework\Utility\Json</Filter>
@@ -2478,9 +2220,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstasnt.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Component\IsDerivedComponentBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.h">
       <Filter>Source\Framework\Graphics\Render\Shadow</Filter>
     </ClInclude>
@@ -2574,9 +2313,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBModelPerObjectStructConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
-      <Filter>Source\Framework\GameObject\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Physics\RayCast\PhysicsRayCast.h">
       <Filter>Source\Framework\Physics\RayCast</Filter>
     </ClInclude>
@@ -2616,12 +2352,6 @@
     <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h">
       <Filter>Source\Framework\Prefab\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectJsonConverterStruct.h">
-      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClInclude>
@@ -2634,12 +2364,6 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.h">
-      <Filter>Source\Framework\Component\Render\Model\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\ModelComponentBase.h">
-      <Filter>Source\Framework\Component\Render\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Viewport</Filter>
     </ClInclude>
@@ -2648,15 +2372,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.h">
-      <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
@@ -2670,9 +2385,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
-      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.h">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClInclude>
@@ -2685,68 +2397,14 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Storage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectUtility.h">
-      <Filter>Source\Framework\Utility\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.h">
-      <Filter>Source\Framework\Utility\Helper\Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.h">
-      <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\Tooltip\IMGUITooltipUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Tooltip</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\UUID\UUIDManager.h">
       <Filter>Source\Framework\Utility\UUID</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.h">
-      <Filter>Source\Framework\GameObject\Converter\Json\Prefab</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectPrefabJsonConverterConstant.h">
-      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.h">
-      <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\StaticModelRegisterDrawRequestStrategyBase.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.h">
-      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Transform\Self</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.h">
-      <Filter>Source\Framework\Component\Render\Model\Static\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.h">
-      <Filter>Source\Framework\Component\Render\Model\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.h">
-      <Filter>Source\Framework\Utility\Helper\Asset\Inspector</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Observer\Inspector\ObsreverInspector.h">
       <Filter>Source\Framework\Observer\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h">
-      <Filter>Source\Framework\Component\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.h">
-      <Filter>Source\Framework\Component\Camera\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\CameraConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
@@ -2763,39 +2421,6 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\NodeEditorTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Input\InputComponent.h">
-      <Filter>Source\Framework\Component\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Component\InputComponentStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\RotationComponent.h">
-      <Filter>Source\Framework\Component\Rotation</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Rotation\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.h">
-      <Filter>Source\Framework\Component\Rotation\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.h">
-      <Filter>Source\Framework\Component\Input\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Input\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Move\MoveComponent.h">
-      <Filter>Source\Framework\Component\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Move\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.h">
-      <Filter>Source\Framework\Component\Move\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.h">
-      <Filter>Source\Framework\Component\Rotation\Mode</Filter>
-    </ClInclude>
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h">
       <Filter>Library\UFBX\INC</Filter>
     </ClInclude>
@@ -2805,44 +2430,17 @@
     <ClInclude Include="..\Library\IMGUI\INC\imnodes_internal.h">
       <Filter>Library\IMGUI\INC</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\NodeEditor.h">
-      <Filter>Source\Framework\Editor\Node</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Storage\StorageIDAllocator.h">
       <Filter>Source\Framework\Utility\Storage</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.h">
       <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.h">
-      <Filter>Source\Framework\Editor\Node\Allocator</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.h">
-      <Filter>Source\Framework\Editor\Node\Allocator\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\NodeEditorNode.h">
-      <Filter>Source\Framework\Editor\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorNodeJsonConverter.h">
-      <Filter>Source\Framework\Editor\Node\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorJsonConverter.h">
-      <Filter>Source\Framework\Editor\Node\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.h">
-      <Filter>Source\Framework\Component\Input\Inspector\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h">
       <Filter>Source\Framework\Definition\Enum\Axis</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\String\IMGUIStringValueBidirectionalRegistryUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\String</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Input\Strategy\ComponentEventNotifyStrategyBase.h">
-      <Filter>Source\Framework\Component\Input\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.h">
-      <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\File\SaveFileDialogUtility.h">
       <Filter>Source\Framework\Utility\File</Filter>
@@ -2852,18 +2450,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Component\Rotation\RotationComponentConstantModeBaseConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Component\Rotation</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h">
       <Filter>Source\Framework\Definition\Enum\Asset</Filter>
@@ -2882,30 +2468,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Component\RotationComponentConstantMouseModeStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Node\NodeEditorStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Editor\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.h">
-      <Filter>Source\Framework\Component\Move\Mode</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.h">
-      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.h">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change</Filter>
@@ -2994,9 +2556,6 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowAssetCreatorStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJsonConverter.h">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
     </ClInclude>
@@ -3024,17 +2583,11 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\MainMenu\MainMenuBarEditorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\MainMenu</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Component\Transform\TransformComponentInspectorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Component\Transform</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Splitter</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Node\NodeEditorStructConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Editor\Node</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
@@ -3078,9 +2631,6 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowDeleteConfirmPopupEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Inspector\GameObjectInspector.h">
-      <Filter>Source\Framework\GameObject\Inspector</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Command\ICommand.h">
       <Filter>Source\Framework\Command</Filter>
     </ClInclude>
@@ -3102,9 +2652,6 @@
     <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
       <Filter>Source\Framework\Utility\List</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h">
-      <Filter>Source\Framework\Component\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Window</Filter>
     </ClInclude>
@@ -3123,35 +2670,59 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MatrixStrategySharedFactory.h">
+    <ClInclude Include="Source\Framework\GameObject\GameObject.h">
+      <Filter>Source\Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\ComponentBase.h">
+      <Filter>Source\Framework\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h">
+      <Filter>Source\Framework\Component\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h">
+      <Filter>Source\Framework\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Component\IsDerivedComponentBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\StaticModelRegisterDrawRequestStrategySharedFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\RotationComponentModeSharedFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\MoveComponentModeSharedFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h">
+      <Filter>Source\Framework\Component\Transform\Strategy</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentEventNotifyStrategySharedFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h">
+      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h">
-      <Filter>Source\Framework\GameObject\Component</Filter>
+    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.h">
+      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h">
-      <Filter>Source\Framework\GameObject\Hierarchy</Filter>
+    <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h">
-      <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
+    <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h">
+      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h">
-      <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
+    <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
+      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentContainerJsonConverterConstant.h">
-      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    <ClInclude Include="Source\Framework\Definition\Constant\Component\TransformComponentInspectorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Scene\SceneEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectEnum.h">
+      <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RootSignatureStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3425,12 +2996,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\PipelineStateBase.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\GameObject.cpp">
-      <Filter>Source\Framework\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\ComponentBase.cpp">
-      <Filter>Source\Framework\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
     </ClCompile>
@@ -3527,9 +3092,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json\GraphicsPipelineStateBaseJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Pipeline\Graphics\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp">
-      <Filter>Source\Framework\Component\Transform</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Command\List\Copy\CopyCommandList.cpp">
       <Filter>Source\Framework\Graphics\Command\List\Copy</Filter>
     </ClCompile>
@@ -3538,12 +3100,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Command\List\Direct\DirectCommandList.cpp">
       <Filter>Source\Framework\Graphics\Command\List\Direct</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp">
-      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.cpp">
-      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\StructuredBufferBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer</Filter>
@@ -3629,9 +3185,6 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp">
-      <Filter>Source\Framework\GameObject\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp">
       <Filter>Source\Framework\Physics\RayCast</Filter>
     </ClCompile>
@@ -3650,12 +3203,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\StaticModelComponent.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\ModelComponentBase.cpp">
-      <Filter>Source\Framework\Component\Render\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Viewport</Filter>
     </ClCompile>
@@ -3664,12 +3211,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Converter\Json\ModelComponentBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
@@ -3683,62 +3224,14 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\AssetFilePathHelper.cpp">
-      <Filter>Source\Framework\Utility\Helper\Asset</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Converter\Json\AssetFilePathHelperJsonConverter.cpp">
-      <Filter>Source\Framework\Utility\Helper\Asset\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp">
       <Filter>Source\Framework\Utility\UUID</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Converter\Json\Prefab\GameObjectPrefabJsonConverter.cpp">
-      <Filter>Source\Framework\GameObject\Converter\Json\Prefab</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Converter\Json\Scene\GameObjectSceneJsonConverter.cpp">
-      <Filter>Source\Framework\GameObject\Converter\Json\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade\StaticModelRegisterDrawRequestCascadeShadowStrategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Shadow\Cascade</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit\StaticModelRegisterDrawRequestStandardLitStrategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\Lit</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit\StaticModelRegisterDrawRequestStandardUnLitStrategy.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Strategy\Standard\UnLit</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Converter\Json\StaticModelComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Transform\Self\FetchTransformComponentFromSelfGameObjectHelper.cpp">
-      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Transform\Self</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Static\Inspector\StaticModelComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Static\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Render\Model\Inspector\ModelComponentBaseInspector.cpp">
-      <Filter>Source\Framework\Component\Render\Model\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Asset\Inspector\AssetFilePathHelperInspector.cpp">
-      <Filter>Source\Framework\Utility\Helper\Asset\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp">
-      <Filter>Source\Framework\Component\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Camera\Inspector\CameraComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Camera\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Input\InputManager.cpp">
       <Filter>Source\Framework\Input</Filter>
@@ -3749,80 +3242,17 @@
     <ClCompile Include="Source\Framework\Input\Mouse\MouseController.cpp">
       <Filter>Source\Framework\Input\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Input\InputComponent.cpp">
-      <Filter>Source\Framework\Component\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\RotationComponent.cpp">
-      <Filter>Source\Framework\Component\Rotation</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Converter\Json\RotationComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Rotation\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Inspector\RotationComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Rotation\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Input\Inspector\InputComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Input\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Input\Converter\Json\InputComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Input\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Move\MoveComponent.cpp">
-      <Filter>Source\Framework\Component\Move</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Move\Converter\Json\MoveComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Move\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Move\Inspector\MoveComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Move\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\RotationComponentModeBase.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode</Filter>
-    </ClCompile>
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp">
       <Filter>Library\UFBX\INC</Filter>
     </ClCompile>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp">
       <Filter>Library\IMGUI\INC</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\NodeEditor.cpp">
-      <Filter>Source\Framework\Editor\Node</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Storage\StorageIDAllocator.cpp">
       <Filter>Source\Framework\Utility\Storage</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp">
       <Filter>Source\Framework\Utility\Storage\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\Allocator\NodeEditorAllocator.cpp">
-      <Filter>Source\Framework\Editor\Node\Allocator</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\Allocator\Converter\Json\NodeEditorAllocatorJsonConverter.cpp">
-      <Filter>Source\Framework\Editor\Node\Allocator\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\NodeEditorNode.cpp">
-      <Filter>Source\Framework\Editor\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorNodeJsonConverter.cpp">
-      <Filter>Source\Framework\Editor\Node\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Node\Converter\Json\NodeEditorJsonConverter.cpp">
-      <Filter>Source\Framework\Editor\Node\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Input\Inspector\Converter\Json\InputComponentInspectorJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Input\Inspector\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Input\Strategy\Input\MouseRight\InputMouseRightComponentEventNotifyStrategy.cpp">
-      <Filter>Source\Framework\Component\Input\Strategy\Input\MouseRight</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Inspector\RotationComponentModeBaseInspector.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Converter\Json\RotationComponentModeBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\RotationComponentConstantModeBase.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp">
       <Filter>Source\Framework\Asset</Filter>
@@ -3835,21 +3265,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\AssetBrowserEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Inspector\RotationComponentConstantModeBaseInspector.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\RotationComponentConstantMouseMode.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector\RotationComponentConstantMouseModeInspector.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json\RotationComponentConstantMouseModeJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Mouse\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Component\Fetch\Observer\Self\FetchComponentEventObserverFromSelfGameObjectHelper.cpp">
-      <Filter>Source\Framework\Utility\Helper\Component\Fetch\Observer\Self</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\AssetBrowserEditorWindowDirectoryChangeBase.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher\Change</Filter>
@@ -3868,9 +3283,6 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\AssetBrowserEditorWindowDirectoryWatcher.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Watcher</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Move\Mode\MoveComponentModeBase.cpp">
-      <Filter>Source\Framework\Component\Move\Mode</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Asset\AssetBrowserEditorWindowAssetPane.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Asset</Filter>
@@ -3914,9 +3326,6 @@
     <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.cpp">
       <Filter>Source\Framework\Audio\SoundEffect\Instance\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Rotation\Mode\Constant\Converter\Json\RotationComponentConstantModeBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Rotation\Mode\Constant\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json\AssetBrowserEditorWindowFolderPaneJsonConverter.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Pane\Folder\Converter\Json</Filter>
     </ClCompile>
@@ -3938,9 +3347,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Creator\AssetBrowserEditorWindowAssetCreator.cpp">
       <Filter>Source\Framework\Editor\Window\AssetBrowser\Creator</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Inspector\GameObjectInspector.cpp">
-      <Filter>Source\Framework\GameObject\Inspector</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\UndoRedo\EditorUndoRedoSystem.cpp">
       <Filter>Source\Framework\Editor\UndoRedo</Filter>
     </ClCompile>
@@ -3953,9 +3359,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Operation\GameObject</Filter>
     </ClCompile>
@@ -3965,17 +3368,32 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Creator</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.cpp">
-      <Filter>Source\Framework\GameObject\Component</Filter>
+    <ClCompile Include="Source\Framework\GameObject\GameObject.cpp">
+      <Filter>Source\Framework\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp">
-      <Filter>Source\Framework\GameObject\Hierarchy</Filter>
+    <ClCompile Include="Source\Framework\Component\ComponentBase.cpp">
+      <Filter>Source\Framework\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.cpp">
-      <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
+    <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.cpp">
-      <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
+    <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp">
+      <Filter>Source\Framework\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp">
+      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.cpp">
+      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp">
+      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
+      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

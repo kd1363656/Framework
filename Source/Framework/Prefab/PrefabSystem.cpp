@@ -11,40 +11,6 @@ void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson, const Asse
     m_jsonConverter.Deserialize(a_rootJson, *this, a_assetFilePathRegistry);
 }
 
-void FWK::PrefabSystem::CachePrefabGameObjectIfNeeded(const std::weak_ptr<GameObject>& a_gameObject)
-{
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject ||
-        l_gameObject->GetVALIsDestroyed())
-    {
-        return;
-    }
-
-    const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
-    
-    auto l_itr = m_prefabMap.find(l_prefabUUID);
-
-    if (l_itr == m_prefabMap.end()) { return; }
-
-    auto& l_prefab = l_itr->second;
-
-    // 既に有効な代表GameObjectが存在しており、
-    // 同じPrefabUUIDを参照している場合は
-    // 現在の代表GameObjectをそのまま維持する
-    if (const auto& l_cachedGameObject = l_prefab.GetREFGameObject().lock();
-        l_cachedGameObject                       &&
-        !l_cachedGameObject->GetVALIsDestroyed() &&
-        Utility::IsSamePrefab(*l_cachedGameObject, *l_gameObject))
-    {
-        return;
-    }
-
-    // キャッシュが空、削除予定、または異なるPrefabを示していた場合に
-    // 新しい代表GameObjectへ差し替える
-    l_prefab.SetGameObject(l_gameObject);
-}
-
 void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const Prefab& a_prefab)
 {
     if (a_prefabUUID.is_nil())
@@ -78,7 +44,6 @@ nlohmann::json FWK::PrefabSystem::Serialize(const AssetFilePathRegistry& a_asset
 {
     return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
 }
-
 
 const FWK::Prefab* FWK::PrefabSystem::FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const
 {

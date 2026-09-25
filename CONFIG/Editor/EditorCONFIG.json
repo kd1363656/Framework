@@ -41,15 +41,8 @@
                 },
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\NewFolder1",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\NewFolder1"
-                            },
-                            {
-                                "SelectedFilePath": "Asset\\NewFolder"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
                 "CurrentSelectFolderPath": "Asset",
@@ -171,23 +164,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder1",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder\\NewFolder",
                             "IsOpen": false
                         }
                     ],

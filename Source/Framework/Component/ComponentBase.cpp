@@ -1,15 +1,15 @@
 ﻿#include "ComponentBase.h"
 
-void FWK::ComponentBase::DeserializePrefabUUID(const nlohmann::json& a_rootJson)
+void FWK::ComponentBase::DeserializeUUID(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializePrefabUUID(a_rootJson, *this);
+    m_jsonConverter.DeserializeUUID(a_rootJson, *this);
 }
 
-nlohmann::json FWK::ComponentBase::SerializePrefabUUID()
+nlohmann::json FWK::ComponentBase::SerializeUUID()
 {
-    return m_jsonConverter.SerializePrefabUUID(*this);
+    return m_jsonConverter.SerializeUUID(*this);
 }
 
 void FWK::ComponentBase::Enable()

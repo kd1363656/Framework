@@ -14,9 +14,9 @@ namespace FWK::Converter
          ComponentBaseJsonConverter() = default;
         ~ComponentBaseJsonConverter() = default;
 
-        void DeserializePrefabUUID(const nlohmann::json& a_rootJson, ComponentBase& a_componentBase) const;
+        void DeserializeUUID(const nlohmann::json& a_rootJson, ComponentBase& a_componentBase) const;
         
-        nlohmann::json SerializePrefabUUID(const ComponentBase& a_componentBase) const;
+        nlohmann::json SerializeUUID(const ComponentBase& a_componentBase) const;
         
     private:
 

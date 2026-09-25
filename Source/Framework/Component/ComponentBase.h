@@ -18,10 +18,9 @@ namespace FWK
 
         // UUIDのデシリアライズ、シリアライズの書き忘れが発生しないように関数を分けておく
         // こうすると派生クラスで書き直す必要がない
-                void DeserializePrefabUUID(const nlohmann::json& a_rootJson);
-        virtual void DeserializePrefab    (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
-        virtual void DeserializeScene     (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
-
+                void DeserializeUUID(const nlohmann::json& a_rootJson);
+        virtual void Deserialize    (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+        
         virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
         virtual void EarlyUpdate   () { /*必要に応じてオーバーライドしてください*/ };
@@ -31,9 +30,8 @@ namespace FWK
 
         virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
-                nlohmann::json SerializePrefabUUID();
-        virtual nlohmann::json SerializePrefab    () { return {}; }
-        virtual nlohmann::json SerializeScene     () { return {}; }
+                nlohmann::json SerializeUUID();
+        virtual nlohmann::json Serialize    () { return {}; }
 
         virtual bool IsAllowMultiple() const { return false; }
 
@@ -44,19 +42,14 @@ namespace FWK
 
         void SetUUID(const boost::uuids::uuid& a_set) { m_uuid = a_set; }
 
-        void SetIsPrefabOrigin   (const bool a_set) { m_isPrefabOrigin     = a_set; }
-        void SetMarkedForRemoval (const bool a_set) { m_isMarkedForRemoval = a_set; }
-
         const auto& GetREFOwner() const { return m_owner; }
 
         const auto& GetREFUUID() const { return m_uuid; }
 
         auto& GetMutableREFUUID() { return m_uuid; }
 
-        bool GetVALIsDisable         () const { return m_isDisable; }
-        bool GetVALIsPrefabOrigin    () const { return m_isPrefabOrigin; }
-        bool GetVALIsMarkedForRemoval() const { return m_isMarkedForRemoval; }
-
+        bool GetVALIsDisable() const { return m_isDisable; }
+        
     private:
 
         std::weak_ptr<GameObject> m_owner = {};
@@ -65,10 +58,8 @@ namespace FWK
 
         boost::uuids::uuid m_uuid = {};
 
-        bool m_isDisable          = false;
-        bool m_isPrefabOrigin     = false;
-        bool m_isMarkedForRemoval = false;
-
+        bool m_isDisable = false;
+        
         FWK_DEFINE_TYPE_INFO_ROOT(ComponentBase)
     };
 }
