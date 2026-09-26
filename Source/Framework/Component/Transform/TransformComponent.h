@@ -29,6 +29,9 @@ namespace FWK
         TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }
         TypeAlias::Math::Matrix CalculateTranslationMatrix() const { return TypeAlias::Math::Matrix::CreateTranslation   (m_transform.m_position); }
 
+        void ApplyParent    (const std::weak_ptr<GameObject>& a_parentGameObject);
+        void ApplyStandalone();
+
         void ApplyTransformScale   (const TypeAlias::Math::Vector3&    a_scale);
         void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_rotation);
         void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_position);

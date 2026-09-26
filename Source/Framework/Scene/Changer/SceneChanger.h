@@ -2,12 +2,8 @@
 
 namespace FWK
 {
-    class SceneChanger
+    class SceneChanger final
     {
-    private:
-
-        using NextSceneLoadFilePathMap = std::unordered_map<boost::uuids::uuid, std::filesystem::path>;
-
     public:
     
          SceneChanger() = default;
@@ -15,26 +11,30 @@ namespace FWK
 
         void INIT();
 
-        bool AddNextSceneLoadFilePath(const AssetFilePathRegistry& a_assetFilePathRegistry, const boost::uuids::uuid& a_sceneUUID);
-        bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath,              const boost::uuids::uuid& a_sceneUUID, AssetFilePathRegistry& a_assetFilePathRegistry);
+        void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
 
-        bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID, AssetFilePathRegistry& a_assetFilePathRegistry);
+        nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
-        bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, 
-                                  const std::filesystem::path& a_newSceneFilePath, 
-                                  const boost::uuids::uuid&    a_sceneUUID,
-                                        AssetFilePathRegistry& a_assetFilePathRegistry);
+        bool AddNextSceneData(const boost::uuids::uuid& a_sceneUUID, const Struct::NextSceneData& a_nextSceneData);
+        
+        bool RemoveNextSceneData(const boost::uuids::uuid& a_sceneUUID);
+        
+        const Struct::NextSceneData* FetchPTRNexSceneData(const boost::uuids::uuid& a_sceneUUID) const;
 
-        const auto& GetREFNextSceneLoadFilePathMap() const { return m_nextSceneLoadFilePathMap; }
+        const auto& GetREFNextSceneDataMap() const { return m_nextSceneDataMap; }
 
         const auto& GetREFSceneChangeEventObserver() const { return m_sceneChangeEventObserver; }
+
+        auto& GetMutableREFNextSceneDataMap() { return m_nextSceneDataMap; }
 
         auto& GetMutableREFSceneChangeEventObserver() { return m_sceneChangeEventObserver; }
 
     private:
     
-        NextSceneLoadFilePathMap m_nextSceneLoadFilePathMap = {};
+        std::unordered_map<boost::uuids::uuid, Struct::NextSceneData> m_nextSceneDataMap = {};
 
         Observer<Enum::SceneChangeEvent> m_sceneChangeEventObserver = {};
+
+        Converter::SceneChangerJsonConverter m_jsonConverter = {};
     };
 }

@@ -14,7 +14,7 @@ void FWK::Scene::INIT()
 
     m_lightSystem.ApplyDefaultSettings();
 
-    m_sceneName.clear();
+    m_name.clear();
 
     m_nextSceneUUID = {};
 }
@@ -178,6 +178,18 @@ std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
 
     // AssetFilePathDataから次に読み込むファイルのパスをreturn
     return l_assetFilePathData->m_assetFilePath;
+}
+
+std::string FWK::Scene::FetchVALNextSceneName() const
+{
+    // 次のに移行するシーンの名前が空なら移行しない
+    if (m_nextSceneUUID.is_nil()) { return {}; }
+
+    const auto* l_nextSceneData = m_sceneChanger.FetchPTRNexSceneData(m_nextSceneUUID);
+
+    if (!l_nextSceneData) { return {}; }
+
+    return l_nextSceneData->m_name;
 }
 
 void FWK::Scene::AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel)

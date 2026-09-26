@@ -1375,6 +1375,18 @@
     <Filter Include="Source\Framework\Definition\Enum\GameObject">
       <UniqueIdentifier>{f5e250a8-37fd-4024-97a3-fb5449304d06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Scene\Changer">
+      <UniqueIdentifier>{657121c9-179c-4c51-b555-6247b7a5fa08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Scene">
+      <UniqueIdentifier>{a294b15a-8a01-4b67-8959-8228d3f40e3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Changer\Converter">
+      <UniqueIdentifier>{96d3ea76-bf22-47f8-9c0d-7aeb766e41da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Enum\Component">
+      <UniqueIdentifier>{9524ff22-15de-4bf8-819c-eeca422a3e07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2724,6 +2736,18 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\RootSignatureStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Changer\SceneChanger.h">
+      <Filter>Source\Framework\Scene\Changer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneChangerStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.h">
+      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Component\TransformComponentEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3394,6 +3418,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
       <Filter>Source\Framework\Component\Transform\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Changer\SceneChanger.cpp">
+      <Filter>Source\Framework\Scene\Changer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.cpp">
+      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

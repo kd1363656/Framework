@@ -1,6 +1,6 @@
 ﻿#include "PrefabSystemJsonConverter.h"
 
-void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, PrefabSystem& a_prefabSystem, const AssetFilePathRegistry& a_assetFilePathRegistry) const
+void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const
 {
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson, k_prefabMapJsonKey))
@@ -16,7 +16,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
     {
         if (l_json.is_null()) { continue; }
 
-        const auto& l_prefabUUID = Utility::DeserializeUUID(l_json, k_prefabUUIDJsonKey);
+        const auto& l_prefabUUID = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
 
         // 保存されていたUUIDを復元できなかった場合
         // ここで新しいUUIDを発行してはいけない
@@ -72,12 +72,12 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
     nlohmann::json l_rootJson  = {};
     auto           l_jsonArray = nlohmann::json::array();
 
-    auto& l_prefabMap = a_prefabSystem.GetMutableREFPrefabMap();
+    const auto& l_prefabMap = a_prefabSystem.GetREFPrefabMap();
 
-    for (auto& [l_prefabUUID, l_prefab] : l_prefabMap)
+    for (const auto& [l_prefabUUID, l_prefab] : l_prefabMap)
     {
-        // NilUUIDはPrefabMapへ本来登録されないが
-        // 異常なデータをJsonへ保存されないように念のため除外する
+        // nilの場合はPrefabMapへ本来登録されないが
+        // 異常なデータをJSONへ保存されないように念のため除外する
         if (l_prefabUUID.is_nil()) { continue; }
 
         const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(l_prefabUUID);
@@ -102,7 +102,7 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_prefabUUID, k_prefabUUIDJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_prefabUUID, k_uuidJsonKey));
         
         l_jsonArray.emplace_back(l_json);
     }

@@ -8,13 +8,11 @@ void FWK::HierarchicalMatrixStrategy::Execute(TransformComponent& a_transformCom
 
     const auto& l_parent = l_parentGameObject->GetVALTransformComponent().lock();
 
-    const auto& l_parentWorldPosition = l_parent->GetREFMatrix().Translation();
-
     // 親の行列が先に更新されていることを前提にしている処理です。
     auto l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
                           a_transformComponent.CalculateTranslationMatrix() *
                           a_transformComponent.CalculateRotationMatrix()    *
-                          TypeAlias::Math::Matrix::CreateTranslation(l_parentWorldPosition);
+                          l_parent->GetREFMatrix();
 
     a_transformComponent.SetMatrix(std::move(l_resultMatrix));
 }

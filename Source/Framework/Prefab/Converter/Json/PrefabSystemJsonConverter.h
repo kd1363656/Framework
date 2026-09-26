@@ -15,12 +15,13 @@ namespace FWK::Converter
          PrefabSystemJsonConverter() = default;
         ~PrefabSystemJsonConverter() = default;
 
-        void           Deserialize(const nlohmann::json&        a_rootJson,              PrefabSystem& a_prefabSystem, const AssetFilePathRegistry& a_assetFilePathRegistry) const;
-        nlohmann::json Serialize  (const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem)                                                       const;
+        void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const;
+
+        nlohmann::json Serialize  (const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const;
 
     private:
 
-        static constexpr std::string_view k_prefabMapJsonKey  = "PrefabMap";
-        static constexpr std::string_view k_prefabUUIDJsonKey = "PrefabUUID";
+        static constexpr std::string_view k_prefabMapJsonKey = "PrefabMap";
+        static constexpr std::string_view k_uuidJsonKey      = "UUID";
     };
 }

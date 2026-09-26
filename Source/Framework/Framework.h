@@ -502,6 +502,7 @@
 #include "Utility/Math/MathQuaternionUtility.h"
 #include "Definition/Constant/Utility/IMGUI/IMGUIFactoryUtilityCosntant.h"
 #include "Utility/IMGUI/Factory/IMGUIFactoryUtility.h"
+#include "Definition/Enum/Component/TransformComponentEnum.h"
 #include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
 #include "Definition/Constant/Component/TransformComponentInspectorConstant.h"
@@ -547,6 +548,9 @@
 //===============================================================================
 #include "Definition/Enum/Scene/SceneEnum.h"
 #include "Scene/Converter/Json/SceneJsonConverter.h"
+#include "Definition/Struct/Scene/SceneChangerStruct.h"
+#include "Scene/Changer/Converter/Json/SceneChangerJsonConverter.h"
+#include "Scene/Changer/SceneChanger.h"
 #include "Scene/Scene.h"
 #include "Scene/Converter/Json/SceneManagerJsonConveter.h"
 #include "Scene/SceneManager.h"

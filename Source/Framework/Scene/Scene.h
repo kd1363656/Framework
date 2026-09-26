@@ -22,25 +22,22 @@ namespace FWK
 
         void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 
-        bool AddNextSceneLoadFilePath(const boost::uuids::uuid&    a_sceneUUID);
-        bool AddNextSceneLoadFilePath(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID);
-
-        bool RemoveNextSceneLoadFilePath(const boost::uuids::uuid& a_sceneUUID);
-
-        bool ReplaceSceneFilePath(const std::filesystem::path& a_oldSceneFilePath, const std::filesystem::path& a_newSceneFilePath, const boost::uuids::uuid& a_sceneUUID);
-
-        void SetSceneName(const std::string& a_set) { m_sceneName = a_set; }
+        void SetName(const std::string& a_set) { m_name = a_set; }
 
         std::filesystem::path FetchVALNextLoadSceneFilePath() const;
 
+        std::string FetchVALNextSceneName() const;
+
         const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
+        const auto& GetREFSceneChanger() const { return m_sceneChanger; }
         const auto& GetREFPrefabSystem() const { return m_prefabSystem; }
 
-        const auto& GetREFSceneName() const { return m_sceneName; }
+        const auto& GetREFName() const { return m_name; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
+        auto& GetMutableREFSceneChanger() { return m_sceneChanger; }
         auto& GetMutableREFPrefabSystem() { return m_prefabSystem; }
 
     private:
@@ -62,13 +59,14 @@ namespace FWK
 
         AssetFilePathRegistry m_assetFilePathRegistry = {};
 
+        SceneChanger m_sceneChanger = {};
         PrefabSystem m_prefabSystem = {};
 
         Converter::SceneJsonConverter m_jsonConverter = {};
 
         Graphics::LightSystem m_lightSystem = {};
 
-        std::string m_sceneName = {};
+        std::string m_name = {};
 
         boost::uuids::uuid m_nextSceneUUID = {};
 

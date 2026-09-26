@@ -8,7 +8,7 @@ void FWK::PrefabSystem::Deserialize(const nlohmann::json& a_rootJson, const Asse
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.Deserialize(a_rootJson, *this, a_assetFilePathRegistry);
+    m_jsonConverter.Deserialize(a_rootJson, a_assetFilePathRegistry, *this);
 }
 
 void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const Prefab& a_prefab)
@@ -27,9 +27,14 @@ void FWK::PrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const 
 }
 void FWK::PrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
 {
-    // NilUUIDはPrefabSystemへ登録されないので
+    // nilの場合hはPrefabSystemへ登録されないので
     // Map検索を行わず終了する
-    if (a_prefabUUID.is_nil()) { return; }
+    if (a_prefabUUID.is_nil()) 
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効だったため、PrefabSystemのプレハブマップから削除できませんでした。");
+
+        return; 
+    }
 
     auto l_itr = m_prefabMap.find(a_prefabUUID);
 
