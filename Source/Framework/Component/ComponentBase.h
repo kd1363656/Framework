@@ -14,8 +14,7 @@ namespace FWK
                  ComponentBase() = default;
         virtual ~ComponentBase() = default;
 
-        virtual void INITBase();
-        virtual void INIT    () { /*必要に応じてオーバーライドしてください*/ };
+        virtual void INIT();
 
         virtual void Deserialize(const nlohmann::json& a_rootJson);
         

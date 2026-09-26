@@ -7,8 +7,6 @@ namespace FWK
     {
     private:
 
-        using UUIDMap = std::unordered_map<boost::uuids::uuid, Type>;
-
         static constexpr bool k_isWeakPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Weak;
 
     public:
@@ -74,6 +72,6 @@ namespace FWK
 
     private:
 
-        UUIDMap m_uuidMap = {};
+        std::unordered_map<boost::uuids::uuid, Type> m_uuidMap = {};
     };
 }

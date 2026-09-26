@@ -1405,9 +1405,6 @@
     <Filter Include="Source\Framework\GameObject\Component\Converter\Json">
       <UniqueIdentifier>{88002304-52f7-406d-a548-81b7e4989962}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\GameObject">
-      <UniqueIdentifier>{0beda582-d35f-45bb-8e93-f260d66cf899}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Component\Camera\Converter">
       <UniqueIdentifier>{eca1eb9c-59db-4635-a34f-aa2070efdf85}</UniqueIdentifier>
     </Filter>
@@ -2789,9 +2786,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h">
       <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectComponentContainerJsonConverterStruct.h">
-      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Component\ComponentBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Component</Filter>

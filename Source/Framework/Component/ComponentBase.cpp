@@ -1,6 +1,6 @@
 ﻿#include "ComponentBase.h"
 
-void FWK::ComponentBase::INITBase()
+void FWK::ComponentBase::INIT()
 {
     m_owner = {};
 
