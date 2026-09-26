@@ -346,6 +346,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\SoundEffectInstanceBase.h" />
     <ClInclude Include="Source\Framework\Audio\SoundEffect\SoundEffect.h" />
     <ClInclude Include="Source\Framework\Command\ICommand.h" />
+    <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h" />
     <ClInclude Include="Source\Framework\Component\ComponentBase.h" />
     <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h" />
@@ -802,6 +803,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\3D\SoundEffectInstance3D.cpp" />
     <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\SoundEffectInstanceBase.cpp" />
     <ClCompile Include="Source\Framework\Audio\SoundEffect\SoundEffect.cpp" />
+    <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp" />
     <ClCompile Include="Source\Framework\Component\ComponentBase.cpp" />
     <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp" />

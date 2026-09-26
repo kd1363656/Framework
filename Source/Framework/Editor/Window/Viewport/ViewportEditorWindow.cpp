@@ -60,10 +60,6 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
         return;
     }
 
-    // 現在のViewport表示領域の縦横比を、
-    // このViewportへ登録されているCameraへ毎フレーム反映する
-    ApplyViewportAspectRatioToCamera(l_viewportSize);
-
     // Viewportの表示領域全体に、取得したTextureを描画する
     DrawViewportTexture(l_viewportTextureID, l_viewportSize);
 
@@ -146,19 +142,4 @@ void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImTextureID& a
                  a_viewportSize,
                  l_uvMIN,
                  l_uvMAX);
-}
-
-void FWK::Editor::ViewportEditorWindow::ApplyViewportAspectRatioToCamera(const ImVec2& a_viewportSize) const
-{
-    FWK_ASSERT_RETURN_IF(a_viewportSize.x <= k_minViewportSize ||
-                         a_viewportSize.y <= k_minViewportSize,
-                         "Viewportの表示サイズが不正なため、CameraへAspectRatioを適用できません。");
-
-    const auto& l_currentSceneCamera = m_currentSceneCamera.lock();
-
-    if (!l_currentSceneCamera) { return; }
-
-    const float l_aspectRatio = a_viewportSize.x / a_viewportSize.y;
-
-    l_currentSceneCamera->ApplyPerspectiveAspectRatio(l_aspectRatio);
 }

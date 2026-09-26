@@ -53,9 +53,8 @@ namespace FWK::Graphics
         void UpdateViewProjectionMatrix       ();
         void UpdatePerspectiveProjectionMatrix();
 
-        void RegisterCBCameraPass          ();
-        void RegisterToEditorViewportWindow();
-
+        void RegisterCBCameraPass();
+        
         std::shared_ptr<Struct::CBCameraPass> m_cbCameraPass = nullptr;
 
         TypeAlias::Math::Matrix m_cameraMatrix = TypeAlias::Math::Matrix::Identity;

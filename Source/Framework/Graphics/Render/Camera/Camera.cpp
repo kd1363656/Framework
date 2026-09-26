@@ -15,9 +15,6 @@ void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
 
     // 定数バッファへの登録
     RegisterCBCameraPass();
-
-    // エディターにこのカメラクラスを登録
-    RegisterToEditorViewportWindow();
 }
 void FWK::Graphics::Camera::Setup()
 {
@@ -30,9 +27,6 @@ void FWK::Graphics::Camera::Setup()
 
     // 定数バッファへの登録
     RegisterCBCameraPass();
-
-    // エディターにこのカメラクラスを登録
-    RegisterToEditorViewportWindow();
 }
 
 void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)
@@ -182,14 +176,4 @@ void FWK::Graphics::Camera::RegisterCBCameraPass()
 
     // Cascade計算で使用するCameraの定数バッファを登録する
     l_cascadeShadowMap.SetCBCameraPass(m_cbCameraPass);
-}
-
-void FWK::Graphics::Camera::RegisterToEditorViewportWindow()
-{
-    const auto& l_editorManager  = Editor::EditorManager::GetInstance                               ();
-    const auto& l_viewportWindow = l_editorManager.FindVALWindowEditor<Editor::ViewportEditorWindow>().lock();
-
-    if (!l_viewportWindow) { return; }
-
-    l_viewportWindow->SetCamera(weak_from_this());
 }

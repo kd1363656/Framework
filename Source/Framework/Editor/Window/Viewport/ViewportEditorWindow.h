@@ -20,15 +20,11 @@ namespace FWK::Editor
 
         void SetupViewportTextureDescriptors();
 
-        void SetCamera(const std::weak_ptr<Graphics::Camera>& a_set) { m_currentSceneCamera = a_set; }
-
     private:
 
         ImTextureID FetchVALViewportTextureID() const;
 
         void DrawViewportTexture(const ImTextureID& a_textureID, const ImVec2& a_viewportSize) const;
-
-        void ApplyViewportAspectRatioToCamera(const ImVec2& a_viewportSize) const;
 
         static constexpr std::string_view k_editorName                 = "ビューポート";
         static constexpr std::string_view k_thisWindowExplanationLabel = "現在のシーンの描画状態を見ることができるウィンドウ。";
@@ -43,8 +39,6 @@ namespace FWK::Editor
         static constexpr ImTextureID k_invalidViewportTextureID = {};
 
         std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList = {};
-
-        std::weak_ptr<Graphics::Camera> m_currentSceneCamera = {};
 
         ViewportToolbar m_toolbar = {};
 
