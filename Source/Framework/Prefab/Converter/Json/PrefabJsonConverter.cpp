@@ -74,7 +74,7 @@ void FWK::Converter::PrefabJsonConverter::Load(const nlohmann::json& a_rootJson,
     a_prefab.SetJson(l_json);
 }
 
-bool FWK::Converter::PrefabJsonConverter::Save(const std::filesystem::path& a_filePath, Prefab& a_prefab) const
+bool FWK::Converter::PrefabJsonConverter::Save(const std::filesystem::path& a_filePath, const GameObject& a_gameObject, Prefab& a_prefab) const
 {
     // 読み込めるファイルでなければ保存しない
     if (a_filePath.empty() ||

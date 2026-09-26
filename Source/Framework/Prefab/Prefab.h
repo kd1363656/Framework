@@ -11,7 +11,7 @@ namespace FWK
 
         void Load(const std::filesystem::path& a_filePath);
 
-        bool Save(const std::filesystem::path& a_filePath);
+        bool Save(const std::filesystem::path& a_filePath, const GameObject& a_gameObject);
 
         void SetJson(const nlohmann::json& a_set) { m_json = a_set; }
 

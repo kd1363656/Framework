@@ -9,7 +9,7 @@ void FWK::Prefab::Load(const std::filesystem::path& a_filePath)
     m_jsonConverter.Load(l_rootJson, *this);
 }
 
-bool FWK::Prefab::Save(const std::filesystem::path& a_filePath)
+bool FWK::Prefab::Save(const std::filesystem::path& a_filePath, const GameObject& a_gameObject)
 {
     if (a_filePath.empty() ||
         a_filePath.extension() != Constant::k_lowerJsonExtension)
@@ -19,5 +19,5 @@ bool FWK::Prefab::Save(const std::filesystem::path& a_filePath)
         return false;
     }
 
-    return m_jsonConverter.Save(a_filePath, *this);
+    return m_jsonConverter.Save(a_filePath, a_gameObject, *this);
 }

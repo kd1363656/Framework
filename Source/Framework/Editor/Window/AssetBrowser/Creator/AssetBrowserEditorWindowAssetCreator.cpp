@@ -77,8 +77,8 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     const auto&  l_sceneName = l_sceneFilePath.stem   ().string();
           Scene  l_scene = {};
 
-    l_scene.INIT        ();
-    l_scene.SetSceneName(l_sceneName);
+    l_scene.INIT   ();
+    l_scene.SetName(l_sceneName);
 
     AssetFilePathRegistry l_emptyRegistry = {};
 
@@ -152,7 +152,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::f
 
     const auto& l_sceneName = a_newFilePath.stem().string();
 
-    l_scene.SetSceneName(l_sceneName);
+    l_scene.SetName(l_sceneName);
 
     nlohmann::json l_serializedJson = {};
 
