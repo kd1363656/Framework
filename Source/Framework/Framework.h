@@ -422,7 +422,6 @@
 #include "Graphics/Render/Graph/RenderGraph.h"
 
 // レンダーラー
-#include "Utility/TypeINFO/TypeINFOUtility.h"
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"
 #include "Graphics/Render/Renderer.h"
 
@@ -490,6 +489,7 @@
 //===============================================================================
 // コンポーネント(基底クラス)
 //===============================================================================
+#include "Definition/Constant/Component/ComponentBaseConstant.h"
 #include "Component/Converter/Json/ComponentBaseJsonConverter.h"
 #include "Component/ComponentBase.h"
 #include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
@@ -522,6 +522,9 @@
 //===============================================================================
 #include "Utility/UUID/UUIDManager.h"
 #include "Utility/UUID/UUIDRegistry.h"
+#include "Definition/Struct/GameObject/GameObjectComponentContainerJsonConverterStruct.h"
+#include "GameObject/Component/Converter/Json/GameObjectComponentContainerJsonConverter.h"
+#include "GameObject/Component/GameObjectComponentContainer.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "Definition/Enum/GameObject/GameObjectEnum.h"
 #include "GameObject/GameObject.h"
@@ -532,6 +535,12 @@
 #include "Input/Keyboard/KeyboardController.h"
 #include "Input/Mouse/MouseController.h"
 #include "Input/InputManager.h"
+
+//===============================================================================
+// カメラコンポーネント
+//===============================================================================
+#include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
+#include "Component/Camera/CameraComponent.h"
 
 //===============================================================================
 // コンポーネント

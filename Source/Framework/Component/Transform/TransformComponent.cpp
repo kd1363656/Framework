@@ -27,9 +27,18 @@ void FWK::TransformComponent::EditInspector()
     m_inspector.EditInspector(*this);
 }
 
-nlohmann::json FWK::TransformComponent::Serialize()
+nlohmann::json FWK::TransformComponent::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
+}
+
+std::shared_ptr<FWK::TransformComponent> FWK::TransformComponent::Clone() const
+{
+    auto l_clone = std::make_shared<TransformComponent>();
+
+    l_clone->Deserialize(Serialize());
+
+    return l_clone;
 }
 
 FWK::TypeAlias::Math::Matrix FWK::TransformComponent::CalculateWorldMatrixData(const Utility::EnumBitShift<Enum::ApplyCalculateWorldMatrixBitShiftFlag>& a_calculateParentWorldMatrixEnumBitShift) const

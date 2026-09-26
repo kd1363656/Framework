@@ -35,7 +35,17 @@ void FWK::CameraComponent::EditInspector()
 
 }
 
-nlohmann::json FWK::CameraComponent::Serialize()
+nlohmann::json FWK::CameraComponent::Serialize() const
 {
     return nlohmann::json();
+}
+
+std::shared_ptr<FWK::ComponentBase> FWK::CameraComponent::Clone() const
+{
+    auto l_clone = std::make_shared<CameraComponent>();
+
+    // jsonに乗る部分はDeserialize/Serializeで一括生成
+    l_clone->Deserialize(Serialize());
+
+    return l_clone;
 }

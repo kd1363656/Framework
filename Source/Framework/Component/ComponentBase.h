@@ -14,12 +14,10 @@ namespace FWK
                  ComponentBase() = default;
         virtual ~ComponentBase() = default;
 
-        virtual void INIT() { /*必要に応じてオーバーライドしてください*/ };
+        virtual void INITBase();
+        virtual void INIT    () { /*必要に応じてオーバーライドしてください*/ };
 
-        // UUIDのデシリアライズ、シリアライズの書き忘れが発生しないように関数を分けておく
-        // こうすると派生クラスで書き直す必要がない
-                void DeserializeUUID(const nlohmann::json& a_rootJson);
-        virtual void Deserialize    (const nlohmann::json&) { /*必要に応じてオーバーライドしてください*/ };
+        virtual void Deserialize(const nlohmann::json& a_rootJson);
         
         virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
@@ -30,17 +28,18 @@ namespace FWK
 
         virtual void EditInspector() { /*必要に応じてオーバーライドしてください*/ };
 
-                nlohmann::json SerializeUUID();
-        virtual nlohmann::json Serialize    () { return {}; }
+        virtual nlohmann::json Serialize() const;
+
+        virtual std::shared_ptr<ComponentBase> Clone() const = 0;
 
         virtual bool IsAllowMultiple() const { return false; }
-
-        void Enable ();
-        void Disable();
 
         void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
         void SetUUID(const boost::uuids::uuid& a_set) { m_uuid = a_set; }
+
+        void SetIsDisable      (const bool a_set) { m_isDisable       = a_set; }
+        void SetIsSerializeSkip(const bool a_set) { m_isSerializeSkip = a_set; }
 
         const auto& GetREFOwner() const { return m_owner; }
 
@@ -48,7 +47,8 @@ namespace FWK
 
         auto& GetMutableREFUUID() { return m_uuid; }
 
-        bool GetVALIsDisable() const { return m_isDisable; }
+        bool GetVALIsDisable      () const { return m_isDisable; }
+        bool GetVALIsSerializeSkip() const { return m_isSerializeSkip; }
         
     private:
 
@@ -58,7 +58,8 @@ namespace FWK
 
         boost::uuids::uuid m_uuid = {};
 
-        bool m_isDisable = false;
+        bool m_isDisable       = Constant::k_componentBaseInitialDisable;
+        bool m_isSerializeSkip = Constant::k_componentBaseInitialSerializeSkip;
         
         FWK_DEFINE_TYPE_INFO_ROOT(ComponentBase)
     };

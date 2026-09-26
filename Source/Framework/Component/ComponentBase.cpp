@@ -1,26 +1,25 @@
 ﻿#include "ComponentBase.h"
 
-void FWK::ComponentBase::DeserializeUUID(const nlohmann::json& a_rootJson)
+void FWK::ComponentBase::INITBase()
+{
+    m_owner = {};
+
+    m_jsonConverter = {};
+
+    m_uuid = {};
+
+    m_isDisable       = false;
+    m_isSerializeSkip = false;
+}
+
+void FWK::ComponentBase::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializeUUID(a_rootJson, *this);
+    m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-nlohmann::json FWK::ComponentBase::SerializeUUID()
+nlohmann::json FWK::ComponentBase::Serialize() const
 {
-    return m_jsonConverter.SerializeUUID(*this);
-}
-
-void FWK::ComponentBase::Enable()
-{
-    if (!m_isDisable) { return; }
-
-    m_isDisable = false;
-}
-void FWK::ComponentBase::Disable()
-{
-    if (m_isDisable) { return; }
-
-    m_isDisable = true;
+    return m_jsonConverter.Serialize(*this);
 }

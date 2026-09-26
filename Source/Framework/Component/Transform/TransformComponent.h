@@ -23,7 +23,9 @@ namespace FWK
 
         void EditInspector();
 
-        nlohmann::json Serialize();
+        nlohmann::json Serialize() const;
+
+        std::shared_ptr<TransformComponent> Clone() const;
 
         TypeAlias::Math::Matrix CalculateScaleMatrix      () const { return TypeAlias::Math::Matrix::CreateScale         (m_transform.m_scale); }
         TypeAlias::Math::Matrix CalculateRotationMatrix   () const { return TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation); }

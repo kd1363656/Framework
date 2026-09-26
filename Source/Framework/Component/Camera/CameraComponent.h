@@ -18,7 +18,9 @@ namespace FWK
 
         void EditInspector() override;
 
-        nlohmann::json Serialize() override;
+        nlohmann::json Serialize() const override;
+
+        std::shared_ptr<ComponentBase> Clone() const override;
 
         const auto& GetREFCamera() const { return m_camera; }
 
@@ -32,3 +34,5 @@ namespace FWK
         FWK_DEFINE_TYPE_INFO(CameraComponent, ComponentBase)
     };
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::CameraComponent)
