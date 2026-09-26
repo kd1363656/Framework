@@ -9,6 +9,8 @@ namespace FWK
          MatrixStrategyBase()          = default;
         ~MatrixStrategyBase() override = default;
 
+        virtual bool IsUseParentMatrix() { return true; }
+
         FWK_DEFINE_TYPE_INFO_ROOT(MatrixStrategyBase)
     };
 }

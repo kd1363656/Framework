@@ -18,9 +18,10 @@ namespace FWK
 
     private:
 
-        static constexpr std::string_view k_matrixStrategySelectorLabel = "行列計算方法セレクター";
-        static constexpr std::string_view k_transformPositionLabel      = "位置";
-        static constexpr std::string_view k_transformRotationLabel      = "回転";
-        static constexpr std::string_view k_transformScaleLabel         = "拡大";
+        static constexpr std::string_view k_matrixStrategySelectorLabel                                 = "行列計算方法セレクター";
+        static constexpr std::string_view k_calculateParentWorldMatrixEnumBitShiftCheckBoxSelectorLabel = "親行列計算適用セレクター";
+        static constexpr std::string_view k_transformPositionLabel                                      = "位置";
+        static constexpr std::string_view k_transformRotationLabel                                      = "回転";
+        static constexpr std::string_view k_transformScaleLabel                                         = "拡大";
     };
 }

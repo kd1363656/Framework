@@ -506,6 +506,10 @@
 #include "Definition/Struct/Component/TransformComponentStruct.h"
 #include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
 #include "Definition/Constant/Component/TransformComponentInspectorConstant.h"
+#include "Utility/IMGUI/String/IMGUIStringValueBidirectionalRegistryUtility.h"
+#include "Utility/Enum/Converter/Json/EnumBitShiftJsonConverter.h"
+#include "Utility/Enum/Inspector/EnumBitShiftInspector.h"
+#include "Utility/Enum/EnumBitShift.h"
 #include "Component/Transform/Inspector/TransformComponentInspector.h"
 #include "Component/Transform/TransformComponent.h"
 #include "Component/Transform/Strategy/MatrixStrategyBase.h"
@@ -532,7 +536,6 @@
 //===============================================================================
 // コンポーネント
 //===============================================================================
-#include "Utility/IMGUI/String/IMGUIStringValueBidirectionalRegistryUtility.h"
 #include "Definition/Enum/Axis/AxisEnum.h"
 
 //===============================================================================

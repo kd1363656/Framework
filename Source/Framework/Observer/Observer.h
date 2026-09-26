@@ -14,6 +14,12 @@ namespace FWK
         void INIT()
         {
             m_eventMap.clear();
+
+            m_inspector = {};
+
+            m_jsonConverter = {};
+
+            m_imguiSelectingEvent = Type::Invalid;
         }
         void Deserialize(const nlohmann::json& a_rootJson)
         {
@@ -77,6 +83,8 @@ namespace FWK
 
         const auto& GetREFEventMap() const { return m_eventMap; }
 
+        auto& GetMutableREFEventMap() { return m_eventMap; }
+
     private:
 
         std::unordered_map<Type, std::uint32_t> m_eventMap = {};
@@ -84,8 +92,5 @@ namespace FWK
         ObserverInspector<Type> m_inspector = {};
 
         Converter::ObserverJsonConverter<Type> m_jsonConverter = {};
-
-        // 絶対にEnum側で無効値としてInvalidを用意しておく
-        Type m_imguiSelectingEvent = Type::Invalid;
     };
 }

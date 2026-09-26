@@ -20,7 +20,7 @@ void FWK::Converter::SceneChangerJsonConverter::Deserialize(const nlohmann::json
     }
 }
 
-nlohmann::json FWK::Converter::SceneChangerJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, SceneChanger& a_sceneChanger) const
+nlohmann::json FWK::Converter::SceneChangerJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, const SceneChanger& a_sceneChanger) const
 {
     nlohmann::json l_rootJson = {};
 
@@ -86,7 +86,7 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
     }
 }
 
-nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(const AssetFilePathRegistry & a_assetFilePathRegistry, SceneChanger & a_sceneChanger) const
+nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(const AssetFilePathRegistry & a_assetFilePathRegistry, const SceneChanger & a_sceneChanger) const
 {
     auto l_rootJsonArray = nlohmann::json::array();
 

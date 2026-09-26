@@ -2,14 +2,37 @@
 
 void FWK::TransformComponentInspector::EditInspector(TransformComponent& a_transformComponent)
 {
-    auto& l_transform = a_transformComponent.GetMutableREFTransform();
-    
+    auto& l_transform                              = a_transformComponent.GetMutableREFTransform                             ();
+    auto& l_calculateParentWorldMatrixEnumBitShift = a_transformComponent.GetMutableREFCalculateParentWorldMatrixEnumBitShift();
+    auto& l_matrixStrategy                         = a_transformComponent.GetMutableREFMatrixStrategy                        ();
+
     // 行列の計算方法を選択することができるラジオボタンリスト
     // 新しく生成されたらMatrix確定処理を実行
-    if (auto& l_matrixStrategy = a_transformComponent.GetMutableREFMatrixStrategy();
-        Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy))
+    if (Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::MatrixStrategyUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixStrategy))
     {
         l_matrixStrategy->Execute(a_transformComponent);
+
+        // ヒエラルキーストラテジーかつl_calculateWorldMatrixDataが無効ならインスタンス化を行う
+        // Scale・Rotation・Translation全て適用するように設定しておく(初回は親の要素全てに追従するようにしておく)
+        if (l_matrixStrategy)
+        {
+            if (l_matrixStrategy->IsUseParentMatrix())
+            {
+                a_transformComponent.EnableAllApplyCalculateWorldMatrixFlag();
+            }
+            else
+            {
+                // 親を使わないのでnullptrにする
+                l_calculateParentWorldMatrixEnumBitShift = nullptr;
+            }
+        }
+    }
+
+    if(l_matrixStrategy                      &&
+       l_matrixStrategy->IsUseParentMatrix() &&
+       l_calculateParentWorldMatrixEnumBitShift)
+    {
+        l_calculateParentWorldMatrixEnumBitShift->EditInspector(k_calculateParentWorldMatrixEnumBitShiftCheckBoxSelectorLabel);
     }
 
     // 位置

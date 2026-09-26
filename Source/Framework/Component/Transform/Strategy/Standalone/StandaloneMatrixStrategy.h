@@ -11,6 +11,8 @@ namespace FWK
 
         void Execute(TransformComponent& a_transformComponent) override;
 
+        bool IsUseParentMatrix() override { return false; }
+
         FWK_DEFINE_TYPE_INFO(StandaloneMatrixStrategy, MatrixStrategyBase)
     };
 }

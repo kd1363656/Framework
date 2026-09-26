@@ -2,6 +2,10 @@
 
 void FWK::HierarchicalMatrixStrategy::Execute(TransformComponent& a_transformComponent)
 {
+    const auto& l_calculateParentWorldMatrixEnumBitShift = a_transformComponent.GetREFCalculateParentWorldMatrixEnumBitShift();
+
+    if (!l_calculateParentWorldMatrixEnumBitShift) { return; }
+
     const auto& l_parentGameObject = a_transformComponent.GetREFParentGameObject().lock();
 
     if (!l_parentGameObject) { return; }
@@ -12,7 +16,7 @@ void FWK::HierarchicalMatrixStrategy::Execute(TransformComponent& a_transformCom
     auto l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
                           a_transformComponent.CalculateTranslationMatrix() *
                           a_transformComponent.CalculateRotationMatrix()    *
-                          l_parent->GetREFMatrix();
+                          l_parent->CalculateWorldMatrixData(*l_calculateParentWorldMatrixEnumBitShift);
 
     a_transformComponent.SetMatrix(std::move(l_resultMatrix));
 }

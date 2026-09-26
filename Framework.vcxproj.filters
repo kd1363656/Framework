@@ -928,6 +928,15 @@
     <Filter Include="Source\Framework\Utility\Enum">
       <UniqueIdentifier>{ef4dc3ea-d32a-4f3b-b79a-6e7d900779cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\Enum\Converter">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-47a8-9b0c-d1e2f3a4b5c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Enum\Converter\Json">
+      <UniqueIdentifier>{b2c3d4e5-f6a7-48b9-8c1d-e2f3a4b5c6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Enum\Inspector">
+      <UniqueIdentifier>{c4d5e6f7-a8b9-4c0d-9e1f-a2b3c4d5e6f7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Utility\Enum">
       <UniqueIdentifier>{96a9b25b-d208-4b66-852f-ffbc3fca32b6}</UniqueIdentifier>
     </Filter>
@@ -2346,8 +2355,17 @@
     <ClInclude Include="Source\Framework\Observer\Converter\Json\ObserverJsonConverter.h">
       <Filter>Source\Framework\Observer\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShift.h">
+      <Filter>Source\Framework\Utility\Enum</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h">
       <Filter>Source\Framework\Utility\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Enum\Converter\Json\EnumBitShiftJsonConverter.h">
+      <Filter>Source\Framework\Utility\Enum\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Enum\Inspector\EnumBitShiftInspector.h">
+      <Filter>Source\Framework\Utility\Enum\Inspector</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Enum</Filter>

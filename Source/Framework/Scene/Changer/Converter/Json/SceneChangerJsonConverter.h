@@ -16,13 +16,13 @@ namespace FWK::Converter
     
         void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneChanger& a_sceneChanger) const;
 
-        nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, SceneChanger& a_sceneChanger) const;
+        nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, const SceneChanger& a_sceneChanger) const;
 
     private:
 
         void DeserializeNextSceneMap(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneChanger& a_sceneChanger) const;
 
-        nlohmann::json SerializeNextSceneMap(const AssetFilePathRegistry& a_assetFilePathRegistry, SceneChanger& a_sceneChanger) const;
+        nlohmann::json SerializeNextSceneMap(const AssetFilePathRegistry& a_assetFilePathRegistry, const SceneChanger& a_sceneChanger) const;
 
         static constexpr std::string_view k_sceneChangeEventObserverJsonKey = "SceneChangeEventObserver";
         static constexpr std::string_view k_nextSceneMapJsonKey             = "NextSceneMap";

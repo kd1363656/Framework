@@ -4,6 +4,13 @@ namespace FWK
 {
     template <typename Type>
         requires std::is_enum_v<Type>
+    class Observer;
+}
+
+namespace FWK
+{
+    template <typename Type>
+        requires std::is_enum_v<Type>
     class ObserverInspector final
     {
     public:
@@ -11,12 +18,13 @@ namespace FWK
          ObserverInspector() = default;
         ~ObserverInspector() = default;
 
-        bool EditorInspector(const std::string_view& a_label, std::unordered_map<Type, std::uint32_t>& a_eventMap)
+        bool EditorInspector(const std::string_view& a_label, Observer<Type>& a_observer)
         {
                   bool  l_isChanged                        = false;
             const auto& l_stringValueBidirectionalRegistry = Utility::StringValueBidirectionalRegistry<Type>::GetInstance();
+                  auto& l_eventMap                         = a_observer.GetMutableREFEventMap();
 
-            ImGui::PushID    (std::addressof(a_eventMap));
+            ImGui::PushID    (std::addressof(l_eventMap));
             ImGui::BeginGroup();
 
             // リスト前の区切り
@@ -48,7 +56,7 @@ namespace FWK
 
                 // EventMapに存在していれば、
                 // 現在そのEventを監視しているためCheckboxON
-                bool l_isSelected = a_eventMap.contains(l_enumType);
+                bool l_isSelected = l_eventMap.contains(l_enumType);
 
                 // CheckBoxに変更がなければ
                 // EventMapを変更する必要はない
@@ -57,7 +65,7 @@ namespace FWK
                 // 無効から有効化するならEventを監視対象へ追加
                 if (l_isSelected)
                 {
-                    const bool l_isAdded = a_eventMap.try_emplace(l_enumType, Constant::k_noFlagValue).second;
+                    const bool l_isAdded = l_eventMap.try_emplace(l_enumType, Constant::k_noFlagValue).second;
 
                     if (l_isAdded)
                     {
@@ -69,7 +77,7 @@ namespace FWK
                 else
                 {
                     // 有効から無効ならEventを監視対象から外す
-                    if (a_eventMap.erase(l_enumType) != Constant::k_noErasedElementCount)
+                    if (l_eventMap.erase(l_enumType) != Constant::k_noErasedElementCount)
                     {
                         l_isChanged = true;
                     }
