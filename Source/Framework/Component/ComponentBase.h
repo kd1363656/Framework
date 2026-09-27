@@ -37,15 +37,17 @@ namespace FWK
 
         void SetUUID(const boost::uuids::uuid& a_set) { m_uuid = a_set; }
 
-        void SetIsDisable(const bool a_set) { m_isDisable = a_set; }
-        
+        void SetIsDisable     (const bool a_set) { m_isDisable      = a_set; }
+        void SetIsPrefabOrigin(const bool a_set) { m_isPrefabOrigin = a_set; }
+
         const auto& GetREFOwner() const { return m_owner; }
 
         const auto& GetREFUUID() const { return m_uuid; }
 
         auto& GetMutableREFUUID() { return m_uuid; }
 
-        bool GetVALIsDisable() const { return m_isDisable; }
+        bool GetVALIsDisable     () const { return m_isDisable; }
+        bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
         
     private:
 
@@ -55,7 +57,8 @@ namespace FWK
 
         boost::uuids::uuid m_uuid = {};
 
-        bool m_isDisable = Constant::k_componentBaseInitialDisable;
+        bool m_isDisable      = Constant::k_componentBaseInitialValueIsDisable;
+        bool m_isPrefabOrigin = Constant::k_componentBaseInitialValueIsPrefabOrigin;
 
         FWK_DEFINE_TYPE_INFO_ROOT(ComponentBase)
     };

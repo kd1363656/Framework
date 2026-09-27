@@ -15,9 +15,11 @@ void FWK::Converter::ComponentBaseJsonConverter::Deserialize(const nlohmann::jso
         a_componentBase.SetUUID(l_uuid);
     }
 
-    const bool l_isDisable = a_rootJson.value(k_isDisableJsonKey, Constant::k_componentBaseInitialDisable);
+    const bool l_isDisable      = a_rootJson.value(k_isDisableJsonKey,      Constant::k_componentBaseInitialValueIsDisable);
+    const bool l_isPrefabOrigin = a_rootJson.value(k_isPrefabOriginJsonKey, Constant::k_componentBaseInitialValueIsPrefabOrigin);
 
-    a_componentBase.SetIsDisable(l_isDisable);
+    a_componentBase.SetIsDisable     (l_isDisable);
+    a_componentBase.SetIsPrefabOrigin(l_isPrefabOrigin);
 }
 
 nlohmann::json FWK::Converter::ComponentBaseJsonConverter::Serialize(const ComponentBase& a_componentBase) const
@@ -26,7 +28,8 @@ nlohmann::json FWK::Converter::ComponentBaseJsonConverter::Serialize(const Compo
 
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_componentBase.GetREFUUID(), k_uuidJsonKey));
 
-    l_rootJson[k_isDisableJsonKey] = a_componentBase.GetVALIsDisable();
+    l_rootJson[k_isDisableJsonKey]      = a_componentBase.GetVALIsDisable     ();
+    l_rootJson[k_isPrefabOriginJsonKey] = a_componentBase.GetVALIsPrefabOrigin();
 
     return l_rootJson;
 }

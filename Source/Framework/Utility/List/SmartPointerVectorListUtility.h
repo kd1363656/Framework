@@ -202,6 +202,11 @@ namespace FWK::Utility
             });
         }
 
+        bool IsEmpty() const
+        {
+            return m_registeredAddressSet.empty() && m_elementDataList.empty();
+        }
+
         const auto& GetREFElementDataList() const { return m_elementDataList; }
 
         auto& GetMutableREFElementDataList() { return m_elementDataList; }

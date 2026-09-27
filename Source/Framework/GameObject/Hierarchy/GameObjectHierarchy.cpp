@@ -10,11 +10,11 @@ void FWK::GameObjectHierarchy::INIT()
     m_jsonConverter = {};
 }
 
-void FWK::GameObjectHierarchy::Deserialize(const nlohmann::json& a_rootJson, const UUIDRegistry<std::weak_ptr<GameObject>>& a_gameObjectUUIDRegistry)
+void FWK::GameObjectHierarchy::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.Deserialize(a_rootJson, *this, a_gameObjectUUIDRegistry);
+    m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
 nlohmann::json FWK::GameObjectHierarchy::Serialize() const
@@ -25,6 +25,27 @@ nlohmann::json FWK::GameObjectHierarchy::Serialize() const
 void FWK::GameObjectHierarchy::CloneTo(GameObjectHierarchy& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const
 {
     a_cloneTarget.m_owner = a_cloneOwner;
+}
+
+void FWK::GameObjectHierarchy::ApplyRoot(const std::weak_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
+    const auto& l_hierarchyNodeUUID = l_gameObject->GetREFPrefabHierarchyNodeUUID();
+    const auto& l_parentHierarchy   = l_gameObject->GetREFHierarchy              ();
+    const auto& l_parent            = l_parentHierarchy.GetREFParent             ().lock();
+
+    // ヒエラルキーノードUUIDがnil値かつParentゲームオブジェクトがキャッシュされていなければ
+    // Rootゲームオブジェクトと判定する
+    if (!l_hierarchyNodeUUID.is_nil() &&
+        l_parent)
+    {
+        return;
+    }
+
+    m_root = l_gameObject;
 }
 
 bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)

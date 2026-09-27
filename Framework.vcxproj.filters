@@ -1412,13 +1412,16 @@
       <UniqueIdentifier>{917f2372-7710-48f3-b68a-40a53f012a40}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\GameObject\Hierarchy">
-      <UniqueIdentifier>{20ddde8f-a005-46e5-aa6e-ea65faaf2327}</UniqueIdentifier>
+      <UniqueIdentifier>{88317f81-3a20-4f2c-9499-15d383251236}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\GameObject\Hierarchy\Converter">
-      <UniqueIdentifier>{9661895e-3860-4157-ba74-6721ae4a1fd1}</UniqueIdentifier>
+      <UniqueIdentifier>{a31cf249-16f8-43e8-99b5-43fe4d06000b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\GameObject\Hierarchy\Converter\Json">
-      <UniqueIdentifier>{4dc80ff3-b972-4992-9462-886344842780}</UniqueIdentifier>
+      <UniqueIdentifier>{60878f48-88c2-46c3-bf71-5111152302b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\GameObject">
+      <UniqueIdentifier>{2a81fb3d-3c23-4921-83f5-4c2140d89b0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2807,6 +2810,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h">
       <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectHierarchyStruct.h">
+      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

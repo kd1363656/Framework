@@ -50,8 +50,6 @@ namespace FWK
 
         const auto& GetREFCalculateParentWorldMatrixEnumBitShift() { return m_calculateParentWorldMatrixEnumBitShift; }
 
-        const auto& GetREFParentGameObject() const { return m_parentGameObject; }
-
         const auto& GetREFMatrix() const { return m_matrix; }
 
         const auto& GetREFTransformComponent() const { return m_transform; }
@@ -74,9 +72,8 @@ namespace FWK
 
         std::unique_ptr<Utility::EnumBitShift<Enum::ApplyCalculateWorldMatrixBitShiftFlag>> m_calculateParentWorldMatrixEnumBitShift = nullptr;
 
-        std::weak_ptr<GameObject> m_owner            = {};
-        std::weak_ptr<GameObject> m_parentGameObject = {};
-
+        std::weak_ptr<GameObject> m_owner = {};
+        
         Converter::TransformComponentJsonConverter m_jsonConverter = {};
         TransformComponentInspector                m_inspector     = {};
 

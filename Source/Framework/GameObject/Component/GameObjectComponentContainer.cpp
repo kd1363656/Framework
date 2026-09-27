@@ -5,7 +5,7 @@ void FWK::GameObjectComponentContainer::INIT()
     m_uniqueComponentMap.clear();
     m_multiComponentMap.clear ();
 
-    m_removedComponentUUIDSet.clear();
+    m_prefabRemovedComponentUUIDSet.clear();
 
     m_owner = {};
 
@@ -121,11 +121,7 @@ void FWK::GameObjectComponentContainer::EditInspector() const
     {
         const auto& l_component = l_componentData.m_type;
 
-        if (!l_component ||
-            l_component->GetVALIsDisable())
-        {
-            continue;
-        }
+        if (!l_component) { continue; }
 
         l_component->EditInspector();
     }
@@ -167,7 +163,7 @@ void FWK::GameObjectComponentContainer::CloneTo(GameObjectComponentContainer& a_
 
     // 削除済みUUIDも引き継ぐ
     // Prefabインスタンスの複製でも差分の整合性が保たれるようにするため
-    a_cloneTarget.m_removedComponentUUIDSet = m_removedComponentUUIDSet;
+    a_cloneTarget.m_prefabRemovedComponentUUIDSet = m_prefabRemovedComponentUUIDSet;
 }
 
 bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<ComponentBase>& a_component)
@@ -187,7 +183,7 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<Compo
     if (const auto& l_uuid = a_component->GetREFUUID();
         l_uuid.is_nil()                          ||
         m_componentUUIDRegistry.Contains(l_uuid) ||
-        m_removedComponentUUIDSet.contains(l_uuid))
+        m_prefabRemovedComponentUUIDSet.contains(l_uuid))
     {
         const auto& l_generatedUUID = GenerateVALComponentUUID();
         
@@ -218,6 +214,12 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<Compo
     }
 
     return true;
+}
+void FWK::GameObjectComponentContainer::AddPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid)
+{
+    if (a_uuid.is_nil()) { return; }
+
+    m_prefabRemovedComponentUUIDSet.emplace(a_uuid);
 }
 
 void FWK::GameObjectComponentContainer::SweepExpiredComponents()
@@ -257,9 +259,9 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Comp
         return;
     }
 
-    const auto l_staticTypeID = l_component->GetREFRuntimeTypeINFO().k_staticTypeID;
-
-    bool l_isRemovedFromTypeMap = false;
+    const auto  l_staticTypeID         = l_component->GetREFRuntimeTypeINFO().k_staticTypeID;
+    const auto& l_uuid                 = l_component->GetREFUUID           ();
+          bool  l_isRemovedFromTypeMap = false;
 
     if (!l_component->IsAllowMultiple())
     {
@@ -328,12 +330,32 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Comp
 
     if (!l_isRemovedFromTypeMap) { return; }
 
+    // 先にコンポーネントを削除するがl_componentはローカル変数なのでスコープ内で生きており
+    // l_uuidはl_componentのメンバへの参照のため問題なし
     m_componentSmartPointerVectorList.RemoveSameElement(l_component);
+
+    // Prefab由来のComponentを削除した場合は削除済みUUIDとして記録する
+    // Prefab更新伝播時に削除意図を保持するため
+    if (l_component->GetVALIsPrefabOrigin())
+    {
+        AddPrefabRemovedComponentUUID(l_uuid);
+    }
+
+    // Registryからも削除する
+    // （削除したUUIDが「生きている」と誤認されないようにするため）
+    m_componentUUIDRegistry.Erase(l_uuid);
 }
 
-void FWK::GameObjectComponentContainer::ClearRemovedComponentUUIDSet()
+void FWK::GameObjectComponentContainer::ClearPrefabRemovedComponentUUIDSet()
 {
-    m_removedComponentUUIDSet.clear();
+    m_prefabRemovedComponentUUIDSet.clear();
+}
+
+bool FWK::GameObjectComponentContainer::IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const
+{
+    if (a_uuid.is_nil()) { return false; }
+
+    return m_prefabRemovedComponentUUIDSet.contains(a_uuid);
 }
 
 std::weak_ptr<FWK::ComponentBase> FWK::GameObjectComponentContainer::FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const
@@ -355,7 +377,7 @@ boost::uuids::uuid FWK::GameObjectComponentContainer::GenerateVALComponentUUID()
         // もしm_componentUUIDRegistryまたはm_removedComponentsUUIDSetに含まれているUUID
         // なら意図的にnil値にしてもう一度UUIDを生成する
         if (m_componentUUIDRegistry.Contains(l_uuid) ||
-            m_removedComponentUUIDSet.contains(l_uuid))
+            m_prefabRemovedComponentUUIDSet.contains(l_uuid))
         {
             l_uuid = {};
         }

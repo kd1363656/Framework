@@ -31,13 +31,16 @@ namespace FWK
 
         void CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
 
-        bool AddComponent(const std::shared_ptr<ComponentBase>& a_component);
+        bool AddComponent                 (const std::shared_ptr<ComponentBase>& a_component);
+        void AddPrefabRemovedComponentUUID(const boost::uuids::uuid&             a_uuid);
 
         void SweepExpiredComponents();
 
         void RemoveComponent(const std::weak_ptr<ComponentBase>& a_component);
         
-        void ClearRemovedComponentUUIDSet();
+        void ClearPrefabRemovedComponentUUIDSet();
+
+        bool IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const;
 
         void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
@@ -90,7 +93,7 @@ namespace FWK
         std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>              m_uniqueComponentMap = {};
         std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<ComponentBase>>> m_multiComponentMap  = {};
 
-        std::unordered_set<boost::uuids::uuid> m_removedComponentUUIDSet = {};
+        std::unordered_set<boost::uuids::uuid> m_prefabRemovedComponentUUIDSet = {};
 
         std::weak_ptr<GameObject> m_owner = {};
 

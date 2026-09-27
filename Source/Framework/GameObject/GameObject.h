@@ -31,18 +31,19 @@ namespace FWK
         void SetPrefabUUID       (const boost::uuids::uuid& a_set) { m_prefabUUID        = a_set; }
         void SetSceneInstanceUUID(const boost::uuids::uuid& a_set) { m_sceneInstanceUUID = a_set; }
 
-        const auto& GetREFName() const { return m_name; }
-
         const auto& GetREFHierarchy() const { return m_hierarchy; }
 
-        const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
-        const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
+        const auto& GetREFName() const { return m_name; }
+
+        const auto& GetREFPrefabUUID             () const { return m_prefabUUID; }
+        const auto& GetREFPrefabHierarchyNodeUUID() const { return m_prefabHierarchyNodeUUID; }
+        const auto& GetREFSceneInstanceUUID      () const { return m_sceneInstanceUUID; }
 
         auto& GetMutableREFHierarchy() { return m_hierarchy; }
 
-        std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
-
         bool GetVALIsDestroyed() const { return m_isDestroyed; }
+
+        std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
     private:
     
@@ -56,9 +57,14 @@ namespace FWK
 
         std::string m_name = {};
 
-        boost::uuids::uuid m_prefabUUID        = {};
-        boost::uuids::uuid m_sceneInstanceUUID = {};
+        // このゲームオブジェクトが子でPrefabの内部にある子である場合
+        // デシリアライズで復元時に子配列のどの部分に当たる子かを示すために
+        // boost::uuids::uuid m_prefabHierarchyNodeUUIDを使用
+        boost::uuids::uuid m_prefabUUID              = {};
+        boost::uuids::uuid m_prefabHierarchyNodeUUID = {};
+        boost::uuids::uuid m_sceneInstanceUUID       = {};
 
-        bool m_isDestroyed = false;
+        bool m_isDestroyed    = false;
+        bool m_isPrefabOrigin = false;
     };
 }
