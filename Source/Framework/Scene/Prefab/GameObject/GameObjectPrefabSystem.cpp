@@ -11,7 +11,7 @@ void FWK::GameObjectPrefabSystem::Deserialize(const nlohmann::json& a_rootJson, 
     m_jsonConverter.Deserialize(a_rootJson, a_assetFilePathRegistry, *this);
 }
 
-void FWK::GameObjectPrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const Prefab& a_prefab)
+void FWK::GameObjectPrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const GameObjectPrefab& a_prefab)
 {
     if (a_prefabUUID.is_nil())
     {

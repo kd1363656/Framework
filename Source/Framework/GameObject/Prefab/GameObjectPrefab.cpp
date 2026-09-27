@@ -9,7 +9,7 @@ void FWK::GameObjectPrefab::Load(const std::filesystem::path& a_filePath)
     m_jsonConverter.Load(l_rootJson, *this);
 }
 
-bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, const GameObject& a_gameObject)
+bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, GameObject& a_gameObject)
 {
     if (a_filePath.empty() ||
         a_filePath.extension() != Constant::k_lowerJsonExtension)
@@ -18,6 +18,13 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, const 
 
         return false;
     }
+
+    // プレハブ化処理
+    // 1. 新しいPrefabUUIDを生成する
+    auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+ 
+    const auto& l_prefabUUID = l_uuidManager.GenerateVALUUID();
+ 
 
     return m_jsonConverter.Save(a_filePath, a_gameObject, *this);
 }

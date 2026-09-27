@@ -12,9 +12,9 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::Deserialize(cons
         if (!l_elementJson.is_object()) { continue; }
  
         // 型名からファクトリー経由で生成する
-        std::shared_ptr<ComponentBase> l_component = {};
+        std::shared_ptr<GameObjectComponentBase> l_component = {};
  
-        Utility::DeserializeInstanceType<TypeAlias::ComponentSharedFactory>(l_elementJson, k_componentTypeJsonKey, l_component);
+        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_elementJson, k_componentTypeJsonKey, l_component);
  
         if (!l_component)
         {

@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-    class GameObject final : std::enable_shared_from_this<GameObject>
+    class GameObject final : public std::enable_shared_from_this<GameObject>
     {
     public:
 
@@ -26,6 +26,10 @@ namespace FWK
 
         nlohmann::json Serialize() const;
 
+        void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID);
+
+        void ClearAllPrefabRemovedUUIDSet();
+
         void SetName(const std::string& a_set) { m_name = a_set; }
 
         void SetPrefabUUID             (const boost::uuids::uuid& a_set) { m_prefabUUID              = a_set; }
@@ -34,7 +38,8 @@ namespace FWK
 
         void SetIsPrefabOrigin(const bool a_set) { m_isPrefabOrigin = a_set; }
 
-        const auto& GetREFHierarchy() const { return m_hierarchy; }
+        const auto& GetREFHierarchy         () const { return m_hierarchy; }
+        const auto& GetREFComponentContainer() const { return m_componentContainer; }
 
         const auto& GetREFName() const { return m_name; }
 
@@ -42,12 +47,13 @@ namespace FWK
         const auto& GetREFPrefabHierarchyNodeUUID() const { return m_prefabHierarchyNodeUUID; }
         const auto& GetREFSceneInstanceUUID      () const { return m_sceneInstanceUUID; }
 
-        auto& GetMutableREFHierarchy() { return m_hierarchy; }
+        auto& GetMutableREFHierarchy         () { return m_hierarchy; }
+        auto& GetMutableREFComponentContainer() { return m_componentContainer; }
+
+        std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
         bool GetVALIsDestroyed   () const { return m_isDestroyed; }
         bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
-
-        std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
     private:
     

@@ -17,5 +17,16 @@ namespace FWK::Converter
         void Deserialize(const nlohmann::json& a_rootJson, const std::weak_ptr<GameObject>& a_gameObject);
 
         nlohmann::json Serialize(const GameObject& a_gameObject) const;
+
+    private:
+
+        static constexpr std::string_view k_nameJsonKey                    = "Name";
+        static constexpr std::string_view k_prefabUUIDJsonKey              = "PrefabUUID";
+        static constexpr std::string_view k_prefabHierarchyNodeUUIDJsonKey = "PrefabHierarchyNodeUUID";
+        static constexpr std::string_view k_sceneInstanceUUIDJsonKey       = "SceneInstanceUUID";
+        static constexpr std::string_view k_isPrefabOriginJsonKey          = "IsPrefabOrigin";
+        static constexpr std::string_view k_transformJsonKey               = "Transform";
+        static constexpr std::string_view k_componentContainerJsonKey      = "ComponentContainer";
+        static constexpr std::string_view k_hierarchyJsonKey               = "Hierarchy";
     };
 }

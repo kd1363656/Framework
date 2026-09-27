@@ -104,6 +104,10 @@ void FWK::GameObjectHierarchy::ClearParent()
     // 親がいなくなったのでローカル = ワールドのStrategyへ戻す
     l_transform->ApplyStandalone();
 }
+void FWK::GameObjectHierarchy::ClearPrefabRemovedChildUUIDSet()
+{
+    m_prefabRemovedChildUUIDSet.clear();
+}
 
 void FWK::GameObjectHierarchy::ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent)
 {

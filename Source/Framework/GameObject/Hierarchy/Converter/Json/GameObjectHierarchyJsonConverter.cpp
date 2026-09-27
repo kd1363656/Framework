@@ -29,7 +29,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::Serialize(const
 
 void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializePrefabRemovedChildUUIDSet(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy)
 {
-    if (!Utility::IsJsonArray(a_rootJson, k_prefabRemovedChildUUIDSetJsonKey)) { return; }
+    if (!Utility::IsJsonArray(a_rootJson)) { return; }
     
     for (const auto& l_json : a_rootJson[k_prefabRemovedChildUUIDSetJsonKey])
     {

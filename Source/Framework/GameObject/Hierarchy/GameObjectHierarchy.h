@@ -24,7 +24,8 @@ namespace FWK
 
         bool ApplyParent(const std::weak_ptr<GameObject>& a_parent);
 
-        void ClearParent();
+        void ClearParent                   ();
+        void ClearPrefabRemovedChildUUIDSet();
 
         void ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent);
         
