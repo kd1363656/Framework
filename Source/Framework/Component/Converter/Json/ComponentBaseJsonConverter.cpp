@@ -15,12 +15,9 @@ void FWK::Converter::ComponentBaseJsonConverter::Deserialize(const nlohmann::jso
         a_componentBase.SetUUID(l_uuid);
     }
 
-    const bool l_isSerializeSkip = a_rootJson.value(k_isSerializeSkipJsonKey, Constant::k_componentBaseInitialSerializeSkip);
-    const bool l_isDisable       = a_rootJson.value(k_isDisableJsonKey,       Constant::k_componentBaseInitialDisable);
+    const bool l_isDisable = a_rootJson.value(k_isDisableJsonKey, Constant::k_componentBaseInitialDisable);
 
-    // シーンへ保存しないコンポーネントかどうかを復元する
-    a_componentBase.SetIsDisable      (l_isDisable);
-    a_componentBase.SetIsSerializeSkip(l_isSerializeSkip);
+    a_componentBase.SetIsDisable(l_isDisable);
 }
 
 nlohmann::json FWK::Converter::ComponentBaseJsonConverter::Serialize(const ComponentBase& a_componentBase) const
@@ -29,8 +26,7 @@ nlohmann::json FWK::Converter::ComponentBaseJsonConverter::Serialize(const Compo
 
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_componentBase.GetREFUUID(), k_uuidJsonKey));
 
-    l_rootJson[k_isDisableJsonKey]       = a_componentBase.GetVALIsDisable      ();
-    l_rootJson[k_isSerializeSkipJsonKey] = a_componentBase.GetVALIsSerializeSkip();
+    l_rootJson[k_isDisableJsonKey] = a_componentBase.GetVALIsDisable();
 
     return l_rootJson;
 }

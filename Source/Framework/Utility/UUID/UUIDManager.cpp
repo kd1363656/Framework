@@ -1,6 +1,6 @@
 ﻿#include "UUIDManager.h"
 
-boost::uuids::uuid FWK::UUIDManager::GenerateVALUUID()
+boost::uuids::uuid FWK::Utility::UUIDManager::GenerateVALUUID()
 {
     return m_randomGenerator();
 }

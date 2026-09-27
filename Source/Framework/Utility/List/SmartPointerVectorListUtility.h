@@ -112,6 +112,22 @@ namespace FWK::Utility
             return m_registeredAddressSet.contains(l_typeAddress);
         }
 
+        // shared_ptrの場合の削除処理
+        void RemoveExpiredElements()
+            requires k_isSharedPTR
+        {
+            std::erase_if(m_elementDataList, [this](const ArrayElementData& a_arrayElementData)
+            {
+                if (!a_arrayElementData.m_type) { return false; }
+
+                // このアドレスはオブジェクトへアクセスするために
+                // 使用せず、unordered_setからキーを削除するためだけに使う。
+                m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);
+
+                return true;
+            });
+        }
+
         // weak_ptrの場合の削除処理
         void RemoveExpiredElements()
             requires k_isWeakPTR

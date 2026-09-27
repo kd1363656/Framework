@@ -2,7 +2,11 @@
 
 void FWK::GameObject::INIT()
 {
+    m_hierarchy.INIT    ();
+    m_hierarchy.SetOwner(weak_from_this());
 
+    m_componentContainer.INIT    ();
+    m_componentContainer.SetOwner(weak_from_this());
 }
 
 void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson)

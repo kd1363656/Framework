@@ -522,9 +522,10 @@
 //===============================================================================
 #include "Utility/UUID/UUIDManager.h"
 #include "Utility/UUID/UUIDRegistry.h"
-#include "Definition/Struct/GameObject/GameObjectComponentContainerJsonConverterStruct.h"
 #include "GameObject/Component/Converter/Json/GameObjectComponentContainerJsonConverter.h"
 #include "GameObject/Component/GameObjectComponentContainer.h"
+#include "GameObject/Hierarchy/Converter/Json/GameObjectHierarchyJsonConverter.h"
+#include "GameObject/Hierarchy/GameObjectHierarchy.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "Definition/Enum/GameObject/GameObjectEnum.h"
 #include "GameObject/GameObject.h"

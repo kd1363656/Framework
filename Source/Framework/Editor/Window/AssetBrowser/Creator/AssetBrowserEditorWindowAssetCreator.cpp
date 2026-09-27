@@ -38,7 +38,8 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     const auto& l_prefabFilePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, k_defaultPrefabName);
 
     // PrefabUUIDを作成
-    const auto& l_prefabUUID = UUIDManager::GetInstance().GenerateVALUUID();
+          auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+    const auto& l_prefabUUID  = l_uuidManager.GenerateVALUUID    ();
 
     // Editor側のAssetFilePathRegistryへ先に登録
     // WatcherはRegistryへ未登録のJSOnがディスクに現れると物理削除するため
@@ -61,7 +62,8 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     const auto& l_sceneFilePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, k_defaultSceneName);
 
     // SceneUUIDを生成
-    const auto& l_sceneUUID = UUIDManager::GetInstance().GenerateVALUUID();
+          auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+    const auto& l_sceneUUID   = l_uuidManager.GenerateVALUUID    ();
 
     // AssetFilePathRegistryへ先登録
     // WatcherはRegistryへ未登録のJSONがディスクに現れると物理削除するため

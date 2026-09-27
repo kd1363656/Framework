@@ -1411,6 +1411,15 @@
     <Filter Include="Source\Framework\Component\Camera\Converter\Json">
       <UniqueIdentifier>{917f2372-7710-48f3-b68a-40a53f012a40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Hierarchy">
+      <UniqueIdentifier>{20ddde8f-a005-46e5-aa6e-ea65faaf2327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Hierarchy\Converter">
+      <UniqueIdentifier>{9661895e-3860-4157-ba74-6721ae4a1fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Hierarchy\Converter\Json">
+      <UniqueIdentifier>{4dc80ff3-b972-4992-9462-886344842780}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2793,6 +2802,12 @@
     <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h">
       <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h">
+      <Filter>Source\Framework\GameObject\Hierarchy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3481,6 +3496,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp">
       <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp">
+      <Filter>Source\Framework\GameObject\Hierarchy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

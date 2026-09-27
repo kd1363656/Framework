@@ -8,8 +8,7 @@ void FWK::ComponentBase::INIT()
 
     m_uuid = {};
 
-    m_isDisable       = false;
-    m_isSerializeSkip = false;
+    m_isDisable = false;
 }
 
 void FWK::ComponentBase::Deserialize(const nlohmann::json& a_rootJson)

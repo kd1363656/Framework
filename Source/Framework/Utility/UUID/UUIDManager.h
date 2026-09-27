@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace FWK
+namespace FWK::Utility
 {
     class UUIDManager final : public Utility::SingletonBase<UUIDManager>
     {

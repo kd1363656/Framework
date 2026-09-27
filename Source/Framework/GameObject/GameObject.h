@@ -33,18 +33,24 @@ namespace FWK
 
         const auto& GetREFName() const { return m_name; }
 
+        const auto& GetREFHierarchy() const { return m_hierarchy; }
+
         const auto& GetREFPrefabUUID       () const { return m_prefabUUID; }
         const auto& GetREFSceneInstanceUUID() const { return m_sceneInstanceUUID; }
 
-
-        bool GetVALIsDestroyed() const { return m_isDestroyed; }
+        auto& GetMutableREFHierarchy() { return m_hierarchy; }
 
         std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
+
+        bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
     private:
     
         // ポインタの共有したいが絶対に存在すべきコンポーネントなのでメンバイニシャライザで生成
         std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
+
+        GameObjectHierarchy          m_hierarchy          = {};
+        GameObjectComponentContainer m_componentContainer = {};
 
         Converter::GameObjectJsonConverter m_jsonConverter = {};
 
