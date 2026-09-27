@@ -8,7 +8,7 @@ void FWK::Scene::INIT()
 
     m_gameObjectUUIDRegistry.Clear();
 
-    m_prefabSystem.INIT();
+    m_gameObjectPrefabSystem.INIT();
 
     m_assetFilePathRegistry.INIT();
 

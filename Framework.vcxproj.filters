@@ -937,15 +937,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Utility\Enum">
       <UniqueIdentifier>{96a9b25b-d208-4b66-852f-ffbc3fca32b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Prefab">
-      <UniqueIdentifier>{f24d431d-e5f4-4817-b820-857376dba3b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Prefab\Converter">
-      <UniqueIdentifier>{298bc1cc-f625-44cf-9ee9-3583e819731d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Prefab\Converter\Json">
-      <UniqueIdentifier>{5d63fa27-c090-46c3-94cb-c3824027c0c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner">
       <UniqueIdentifier>{89493100-c2bd-4e6b-911b-9c2dc32ff644}</UniqueIdentifier>
     </Filter>
@@ -1422,6 +1413,27 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Struct\GameObject">
       <UniqueIdentifier>{2a81fb3d-3c23-4921-83f5-4c2140d89b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Prefab">
+      <UniqueIdentifier>{f24d431d-e5f4-4817-b820-857376dba3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Prefab\Converter">
+      <UniqueIdentifier>{298bc1cc-f625-44cf-9ee9-3583e819731d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Prefab\Converter\Json">
+      <UniqueIdentifier>{5d63fa27-c090-46c3-94cb-c3824027c0c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Prefab">
+      <UniqueIdentifier>{3927be87-b608-414c-9e4d-9320dab2d97f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Prefab\GameObject">
+      <UniqueIdentifier>{f8bc3948-7f74-4a71-858c-314094ce0303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Prefab\GameObject\Converter">
+      <UniqueIdentifier>{5f242846-fde0-4e6a-b157-9df7c0abdf83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json">
+      <UniqueIdentifier>{b449553f-502e-497e-b83c-876c4b988afd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2394,18 +2406,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Enum\EnumBitShiftUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Prefab\PrefabSystem.h">
-      <Filter>Source\Framework\Prefab</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Prefab\Prefab.h">
-      <Filter>Source\Framework\Prefab</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.h">
-      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.h">
-      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClInclude>
@@ -2813,6 +2813,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectHierarchyStruct.h">
       <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Prefab\GameObjectPrefab.h">
+      <Filter>Source\Framework\GameObject\Prefab</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Prefab\Converter\Json\GameObjectPrefabJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Prefab\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\GameObjectPrefabSystem.h">
+      <Filter>Source\Framework\Scene\Prefab\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.h">
+      <Filter>Source\Framework\Scene\Prefab\GameObject\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3278,18 +3290,6 @@
     <ClCompile Include="Source\Framework\Physics\RayCast\PhysicsRayCast.cpp">
       <Filter>Source\Framework\Physics\RayCast</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Prefab\PrefabSystem.cpp">
-      <Filter>Source\Framework\Prefab</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Prefab\Prefab.cpp">
-      <Filter>Source\Framework\Prefab</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabJsonConverter.cpp">
-      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Prefab\Converter\Json\PrefabSystemJsonConverter.cpp">
-      <Filter>Source\Framework\Prefab\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
     </ClCompile>
@@ -3508,6 +3508,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Prefab\GameObjectPrefab.cpp">
+      <Filter>Source\Framework\GameObject\Prefab</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Prefab\Converter\Json\GameObjectPrefabJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Prefab\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\GameObjectPrefabSystem.cpp">
+      <Filter>Source\Framework\Scene\Prefab\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Scene\Prefab\GameObject\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

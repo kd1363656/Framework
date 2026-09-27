@@ -24,12 +24,12 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
     }
 
     // プレハブシステムのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_prefabSystemJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(k_gameObjectPrefabSystemJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
-        auto& l_prefabSystem = a_scene.GetMutableREFPrefabSystem();
+        auto& l_gameObjectPrefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
 
-        l_prefabSystem.Deserialize(l_json, l_assetFilePathRegistry);
+        l_gameObjectPrefabSystem.Deserialize(l_json, l_assetFilePathRegistry);
     }
 
     // ゲームオブジェクトリストのデシリアライズ
@@ -39,10 +39,10 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
 {
           nlohmann::json l_rootJson                = {};
-    const auto&          l_name                    = a_scene.GetREFName                  ();
-    const auto&          l_sceneChanger            = a_scene.GetREFSceneChanger          ();
-          auto&          l_prefabSystem            = a_scene.GetMutableREFPrefabSystem   ();
-    const auto&          l_assetFilePathRegistry   = a_scene.GetREFAssetFilePathRegistry ();
+    const auto&          l_name                    = a_scene.GetREFName                         ();
+    const auto&          l_sceneChanger            = a_scene.GetREFSceneChanger                 ();
+          auto&          l_gameObjectPrefabSystem  = a_scene.GetMutableREFGameObjectPrefabSystem();
+    const auto&          l_assetFilePathRegistry   = a_scene.GetREFAssetFilePathRegistry        ();
     
     // アセットレジストリのデシリアライズ
     l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
@@ -51,7 +51,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
     l_rootJson[k_sceneChanger] = l_sceneChanger.Serialize(l_assetFilePathRegistry);
 
     // プレハブシステムのシリアライズ
-    l_rootJson[k_prefabSystemJsonKey] = l_prefabSystem.Serialize(l_assetFilePathRegistry);
+    l_rootJson[k_gameObjectPrefabSystemJsonKey] = l_gameObjectPrefabSystem.Serialize(l_assetFilePathRegistry);
 
     return l_rootJson;
 }

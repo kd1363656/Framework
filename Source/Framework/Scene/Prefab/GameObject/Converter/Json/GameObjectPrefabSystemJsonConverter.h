@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-    class PrefabSystem;
+    class GameObjectPrefabSystem;
     class AssetFilePathRegistry;
 }
 
@@ -15,9 +15,9 @@ namespace FWK::Converter
          PrefabSystemJsonConverter() = default;
         ~PrefabSystemJsonConverter() = default;
 
-        void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const;
+        void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, GameObjectPrefabSystem& a_gameObjectPrefabSystem) const;
 
-        nlohmann::json Serialize  (const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const;
+        nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, GameObjectPrefabSystem& a_gameObjectPrefabSystem) const;
 
     private:
 

@@ -1,11 +1,11 @@
-﻿#include "PrefabSystemJsonConverter.h"
+﻿#include "GameObjectPrefabSystemJsonConverter.h"
 
-void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const
+void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, GameObjectPrefabSystem& a_gameObjectPrefabSystem) const
 {
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson, k_prefabMapJsonKey))
     {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "RootJsonが無効か配列でないため、PrefabSystemのデシリアライズに失敗しました。");
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "RootJsonが無効か配列でないため、GameObjectPrefabSystemのデシリアライズに失敗しました。");
 
         return;
     }
@@ -20,12 +20,12 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
         // 保存されていたUUIDを復元できなかった場合
         // ここで新しいUUIDを発行してはいけない
-        // Scene上のGameObjectが保持するPrefabUUIDとの
+        // Scene上のGameObjectが保持するGameObjectPrefabUUIDとの
         // 対応関係が壊れてしまうため
-        // このPrefab自体を登録しない
+        // このGameObjectPrefab自体を登録しない
         if (l_prefabUUID.is_nil())
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効のため、PrefabDataを登録できませんでした。");
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectPrefabUUIDが無効のため、GameObjectPrefabDataを登録できませんでした。");
 
             continue;
         }
@@ -34,7 +34,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
 
         if (!l_assetFilePathData)
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryにPrefabUUIDからファイルパスの取得に失敗しました。");
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryにGameObjectPrefabUUIDからファイルパスの取得に失敗しました。");
 
             continue;
         }
@@ -42,41 +42,41 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
         // プレハブじゃないファイルパスならcontinue
         if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab) { continue; }
 
-        Prefab l_prefab = {};
+        GameObjectPrefab l_gameObjectPrefab = {};
 
         const auto& l_assetFilePath = l_assetFilePathData->m_assetFilePath;
 
         if (!Utility::CanLoadFilePath(l_assetFilePath, Constant::k_lowerJsonExtension)) { continue; }
 
-        // FilePathやPrefabNameの復元、
-        // 実Prefabファイルの読み込みはPrefab自身へ任せる
-        l_prefab.Load(l_assetFilePath);
+        // FilePathやGameObjectPrefabNameの復元、
+        // 実GameObjectPrefabファイルの読み込みはPrefab自身へ任せる
+        l_gameObjectPrefab.Load(l_assetFilePath);
 
-        // Prefabファイル自体を読み込めなかった場合は、
-        // PrefabSystemへ不完全なPrefabを登録しない
-        // Scene上のGameObjectにPrefabUUIDが残っていれば後から「PrefabUUIDはあるがPrefabSystemには存在しない」
+        // GameObjectPrefabファイル自体を読み込めなかった場合は、
+        // GameObjectPrefabSystemへ不完全なPrefabを登録しない
+        // Scene上のGameObjectにGameObjectPrefabUUIDが残っていれば後から「GameObjectPrefabUUIDはあるがGameObjectPrefabSystemには存在しない」
         // 壊れた参照として判定できる
-        if (l_prefab.GetREFJson().is_null())
+        if (l_gameObjectPrefab.GetREFJson().is_null())
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabのJsonを読み込めなかったため、PrefabDataを登録できませんでした。");
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectPrefabのJsonを読み込めなかったため、GameObjectPrefabDataを登録できませんでした。");
 
             continue;
         }
 
-        a_prefabSystem.AddPrefab(l_prefabUUID, l_prefab);
+        a_gameObjectPrefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
     }
 }
 
-nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, PrefabSystem& a_prefabSystem) const
+nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, GameObjectPrefabSystem& a_gameObjectPrefabSystem) const
 {
     nlohmann::json l_rootJson  = {};
     auto           l_jsonArray = nlohmann::json::array();
 
-    const auto& l_prefabMap = a_prefabSystem.GetREFPrefabMap();
+    const auto& l_prefabMap = a_gameObjectPrefabSystem.GetREFPrefabMap();
 
     for (const auto& [l_prefabUUID, l_prefab] : l_prefabMap)
     {
-        // nilの場合はPrefabMapへ本来登録されないが
+        // nilの場合はGameObjectPrefabMapへ本来登録されないが
         // 異常なデータをJSONへ保存されないように念のため除外する
         if (l_prefabUUID.is_nil()) { continue; }
 
@@ -84,7 +84,7 @@ nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetF
 
         if (!l_assetFilePathData)
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryにPrefabUUIDからファイルパスの取得に失敗しました。");
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryにGameObjectPrefabUUIDからファイルパスの取得に失敗しました。");
 
             continue;
         }

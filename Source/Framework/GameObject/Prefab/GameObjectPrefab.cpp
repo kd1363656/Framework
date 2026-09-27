@@ -1,6 +1,6 @@
-﻿#include "Prefab.h"
+﻿#include "GameObjectPrefab.h"
 
-void FWK::Prefab::Load(const std::filesystem::path& a_filePath)
+void FWK::GameObjectPrefab::Load(const std::filesystem::path& a_filePath)
 {
     if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension)) { return; }
 
@@ -9,12 +9,12 @@ void FWK::Prefab::Load(const std::filesystem::path& a_filePath)
     m_jsonConverter.Load(l_rootJson, *this);
 }
 
-bool FWK::Prefab::Save(const std::filesystem::path& a_filePath, const GameObject& a_gameObject)
+bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, const GameObject& a_gameObject)
 {
     if (a_filePath.empty() ||
         a_filePath.extension() != Constant::k_lowerJsonExtension)
     {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabの保存先FilePathが無効です。\nFilePath : {}", a_filePath.string());
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectPrefabの保存先FilePathが無効です。\nFilePath : {}", a_filePath.string());
 
         return false;
     }

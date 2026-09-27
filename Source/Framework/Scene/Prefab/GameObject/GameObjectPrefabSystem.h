@@ -8,16 +8,12 @@ namespace FWK
 
 namespace FWK
 {
-    class PrefabSystem final
+    class GameObjectPrefabSystem final
     {
-    private:
-
-        using PrefabMap = std::unordered_map<boost::uuids::uuid, Prefab>;
-
     public:
 
-         PrefabSystem() = default;
-        ~PrefabSystem() = default;
+         GameObjectPrefabSystem() = default;
+        ~GameObjectPrefabSystem() = default;
 
         void INIT       ();
         void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
@@ -27,9 +23,9 @@ namespace FWK
 
         nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry);
 
-        const Prefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
+        const GameObjectPrefab* FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 
-        Prefab* FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID);
+        GameObjectPrefab* FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID);
 
         const auto& GetREFPrefabMap() const { return m_prefabMap; }
 
@@ -37,7 +33,7 @@ namespace FWK
 
     private:
 
-        PrefabMap m_prefabMap = {};
+        std::unordered_map<boost::uuids::uuid, GameObjectPrefab> m_prefabMap = {};
 
         Converter::PrefabSystemJsonConverter m_jsonConverter = {};
     };

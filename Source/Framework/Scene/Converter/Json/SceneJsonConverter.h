@@ -20,10 +20,10 @@ namespace FWK::Converter
 
     private:
 
-        static constexpr std::string_view k_gameObjectListJsonKey        = "GameObjectList";
-        static constexpr std::string_view k_prefabSystemJsonKey          = "PrefabSystem";
-        static constexpr std::string_view k_sceneChanger                 = "SceneChanger";
-        static constexpr std::string_view k_assetFilePathRegistryJsonKey = "AssetFilePathRegistry";
-        static constexpr std::string_view k_gameObjectJsonKey            = "GameObject";
+        static constexpr std::string_view k_gameObjectListJsonKey         = "GameObjectList";
+        static constexpr std::string_view k_gameObjectPrefabSystemJsonKey = "GameObjectPrefabSystem";
+        static constexpr std::string_view k_sceneChanger                  = "SceneChanger";
+        static constexpr std::string_view k_assetFilePathRegistryJsonKey  = "AssetFilePathRegistry";
+        static constexpr std::string_view k_gameObjectJsonKey             = "GameObject";
     };
 }

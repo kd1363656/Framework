@@ -479,14 +479,6 @@
 #include "Observer/Observer.h"
 
 //===============================================================================
-// プレハブ
-//===============================================================================
-#include "Prefab/Converter/Json/PrefabJsonConverter.h"
-#include "Prefab/Prefab.h"
-#include "Prefab/Converter/Json/PrefabSystemJsonConverter.h"
-#include "Prefab/PrefabSystem.h"
-
-//===============================================================================
 // コンポーネント(基底クラス)
 //===============================================================================
 #include "Definition/Constant/Component/ComponentBaseConstant.h"
@@ -516,6 +508,14 @@
 #include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
 #include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
 #include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrategy.h"
+
+//===============================================================================
+// ゲームオブジェクトプレハブ
+//===============================================================================
+#include "GameObject/Prefab/Converter/Json/GameObjectPrefabJsonConverter.h"
+#include "GameObject/Prefab/GameObjectPrefab.h"
+#include "Scene/Prefab/GameObject/Converter/Json/GameObjectPrefabSystemJsonConverter.h"
+#include "Scene/Prefab/GameObject/GameObjectPrefabSystem.h"
 
 //===============================================================================
 // ゲームオブジェクト

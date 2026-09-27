@@ -30,15 +30,15 @@ namespace FWK
 
         const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
 
-        const auto& GetREFSceneChanger() const { return m_sceneChanger; }
-        const auto& GetREFPrefabSystem() const { return m_prefabSystem; }
+        const auto& GetREFSceneChanger          () const { return m_sceneChanger; }
+        const auto& GetREFGameObjectPrefabSystem() const { return m_gameObjectPrefabSystem; }
 
         const auto& GetREFName() const { return m_name; }
 
         auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
-        auto& GetMutableREFSceneChanger() { return m_sceneChanger; }
-        auto& GetMutableREFPrefabSystem() { return m_prefabSystem; }
+        auto& GetMutableREFSceneChanger          () { return m_sceneChanger; }
+        auto& GetMutableREFGameObjectPrefabSystem() { return m_gameObjectPrefabSystem; }
 
     private:
 
@@ -59,8 +59,8 @@ namespace FWK
 
         AssetFilePathRegistry m_assetFilePathRegistry = {};
 
-        SceneChanger m_sceneChanger = {};
-        PrefabSystem m_prefabSystem = {};
+        SceneChanger           m_sceneChanger           = {};
+        GameObjectPrefabSystem m_gameObjectPrefabSystem = {};
 
         Converter::SceneJsonConverter m_jsonConverter = {};
 

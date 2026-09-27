@@ -2,12 +2,12 @@
 
 namespace FWK
 {
-    class Prefab final
+    class GameObjectPrefab final
     {
     public:
 
-         Prefab() = default;
-        ~Prefab() = default;
+         GameObjectPrefab() = default;
+        ~GameObjectPrefab() = default;
 
         void Load(const std::filesystem::path& a_filePath);
 
@@ -15,20 +15,20 @@ namespace FWK
 
         void SetJson(const nlohmann::json& a_set) { m_json = a_set; }
 
-        void SetPrefabName(const std::string& a_set) { m_prefabName = a_set; }
+        void SetName(const std::string& a_set) { m_name = a_set; }
 
         const auto& GetREFJson() const { return m_json; }
 
-        const auto& GetREFPrefabName() const { return m_prefabName; }
+        const auto& GetREFName() const { return m_name; }
 
         auto& GetMutableREFJson() { return m_json; }
 
     private:
 
-        Converter::PrefabJsonConverter m_jsonConverter = {};
+        Converter::GameObjectPrefabJsonConverter m_jsonConverter = {};
 
         nlohmann::json m_json = {};
 
-        std::string m_prefabName = {};
+        std::string m_name = {};
     };
 }
