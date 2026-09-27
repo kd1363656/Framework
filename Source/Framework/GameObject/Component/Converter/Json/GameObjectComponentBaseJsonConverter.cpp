@@ -1,6 +1,6 @@
 ﻿#include "GameObjectComponentBaseJsonConverter.h"
 
-void FWK::Converter::ComponentBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectComponentBase& a_gameObjectComponentBase) const
+void FWK::Converter::GameObjectComponentBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectComponentBase& a_gameObjectComponentBase) const
 {
     if (a_rootJson.is_null()) { return; }
 
@@ -22,7 +22,7 @@ void FWK::Converter::ComponentBaseJsonConverter::Deserialize(const nlohmann::jso
     a_gameObjectComponentBase.SetIsPrefabOrigin(l_isPrefabOrigin);
 }
 
-nlohmann::json FWK::Converter::ComponentBaseJsonConverter::Serialize(const GameObjectComponentBase& a_gameObjectComponentBase) const
+nlohmann::json FWK::Converter::GameObjectComponentBaseJsonConverter::Serialize(const GameObjectComponentBase& a_gameObjectComponentBase) const
 {
     nlohmann::json l_rootJson = {};
 

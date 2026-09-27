@@ -13,7 +13,12 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 
     if (!l_owner) { return; }
 
-    const auto& l_parent = l_owner->GetVALTransformComponent();
+    const auto& l_parentHierarchy  = l_owner->GetREFHierarchy      ();
+    const auto& l_parentGameObject = l_parentHierarchy.GetREFParent().lock();
+
+    if (l_parentGameObject) { return; }
+
+    const auto& l_parent = l_parentGameObject->GetVALTransformComponent();
 
     if (l_parent.expired()) { return; }
 
@@ -25,8 +30,6 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix
     auto l_parent = m_parentTransformComponent.lock();
 
     if (!l_parent) { return; }
-
-    const auto& l_parentMatrix = l_parent->GetREFMatrix    ();
 
     // 親の行列が先に更新されていることを前提にしている処理です。
     auto l_resultMatrix = a_gameObjectTransformComponent.CalculateScaleMatrix()       *

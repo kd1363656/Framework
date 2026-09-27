@@ -26,11 +26,26 @@ namespace FWK
 
         void ClearParent();
 
+        void ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent);
+        
+        void AddPrefabRemovedUUID(const boost::uuids::uuid& a_uuid);
+
         void SetOwner (const std::weak_ptr<GameObject>& a_set) { m_owner  = a_set; }
         void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
         const auto& GetREFOwner () const { return m_owner; }
         const auto& GetREFParent() const { return m_parent; }
+
+        const auto& GetREFChildSmartPointerVectorList() const { return m_childSmartPointerVectorList; }
+
+        const auto& GetREFChildUUIDRegistry() const { return m_childUUIDRegistry; }
+
+        const auto& GetREFPrefabRemovedChildUUIDSet() const { return m_prefabRemovedChildUUIDSet; }
+
+        auto& GetMutableREFChildUUIDRegistry() { return m_childUUIDRegistry; }
+
+        auto& GetMutableREFPrefabRemovedChildUUIDSet() { return m_prefabRemovedChildUUIDSet; }
+
 
     private:
 
@@ -38,13 +53,19 @@ namespace FWK
 
         void RemoveChild(const std::weak_ptr<GameObject>& a_child);
 
+        bool IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const;
+
+        boost::uuids::uuid GenerateVALChildUUID() const;
+
         std::weak_ptr<GameObject> m_owner  = {};
         std::weak_ptr<GameObject> m_parent = {};
 
         Utility::SmartPointerVectorList<std::weak_ptr<GameObject>> m_childSmartPointerVectorList = {};
 
-        std::shared_ptr<FWK::Struct::GameObjectPrefabChildHierarchy> m_prefabChildHierarchy = nullptr;
+        UUIDRegistry<std::weak_ptr<GameObject>> m_childUUIDRegistry = {};
 
+        std::unordered_set<boost::uuids::uuid> m_prefabRemovedChildUUIDSet = {};
+        
         Converter::GameObjectHierarchyJsonConverter m_jsonConverter = {};
     };
 }

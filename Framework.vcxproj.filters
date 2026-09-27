@@ -2763,9 +2763,6 @@
     <ClInclude Include="Source\Framework\GameObject\Hierarchy\Converter\Json\GameObjectHierarchyJsonConverter.h">
       <Filter>Source\Framework\GameObject\Hierarchy\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectHierarchyStruct.h">
-      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Prefab\GameObjectPrefab.h">
       <Filter>Source\Framework\GameObject\Prefab</Filter>
     </ClInclude>

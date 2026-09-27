@@ -22,8 +22,3 @@ nlohmann::json FWK::GameObjectComponentBase::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
 }
-
-nlohmann::json FWK::GameObjectComponentBase::Serialize() const
-{
-    return nlohmann::json();
-}

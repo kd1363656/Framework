@@ -7,6 +7,10 @@ void FWK::GameObjectHierarchy::INIT()
 
     m_childSmartPointerVectorList.Clear();
 
+    m_childUUIDRegistry.Clear();
+
+    m_prefabRemovedChildUUIDSet.clear();
+
     m_jsonConverter = {};
 }
 
@@ -24,7 +28,14 @@ nlohmann::json FWK::GameObjectHierarchy::Serialize() const
 
 void FWK::GameObjectHierarchy::CloneTo(GameObjectHierarchy& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const
 {
-    a_cloneTarget.m_owner = a_cloneOwner;
+    a_cloneTarget.m_owner  = a_cloneOwner;
+    a_cloneTarget.m_parent = {};
+
+    a_cloneTarget.m_childSmartPointerVectorList.Clear();
+    a_cloneTarget.m_childUUIDRegistry.Clear          ();
+
+    // 削除済みUUIDは引き継ぐ
+    a_cloneTarget.m_prefabRemovedChildUUIDSet = m_prefabRemovedChildUUIDSet;
 }
 
 bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)
@@ -94,12 +105,119 @@ void FWK::GameObjectHierarchy::ClearParent()
     l_transform->ApplyStandalone();
 }
 
+void FWK::GameObjectHierarchy::ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent)
+{
+    const auto& l_owner  = m_owner.lock ();
+    const auto& l_parent = a_parent.lock();
+ 
+    if (!l_owner ||
+        !l_parent)
+    {
+        return; 
+    }
+ 
+    // 親子リンクを直接設定する
+    // ApplyParentと違いTransform::ApplyParentは呼ばない
+    // TransformのMatrixUpdateModeは既にDeserializeで復元済みのため
+    m_parent = a_parent;
+ 
+    auto& l_parentHierarchy = l_parent->GetMutableREFHierarchy();
+ 
+    l_parentHierarchy.AddChild(m_owner);
+}
+
+void FWK::GameObjectHierarchy::AddPrefabRemovedUUID(const boost::uuids::uuid& a_uuid)
+{
+    if (a_uuid.is_nil()) { return; }
+
+    m_prefabRemovedChildUUIDSet.emplace(a_uuid);
+}
+
 void FWK::GameObjectHierarchy::AddChild(const std::weak_ptr<GameObject>& a_child)
 {
+    const auto& l_child = a_child.lock();
+
+    if (!l_child) { return; }
+
     m_childSmartPointerVectorList.Add(a_child);
+
+    // UUIDRegistryにも登録
+    // PrefabHierarchyNodeUUIDがnilの場合は登録しない
+    // （シーンで追加した子はnilなのでUUID管理対象外）
+    auto l_uuid = l_child->GetREFPrefabHierarchyNodeUUID();
+
+    if (l_uuid.is_nil()) 
+    {
+        l_uuid = GenerateVALChildUUID();
+
+        l_child->SetPrefabHierarchyNodeUUID(l_uuid);
+    }
+    
+    m_childUUIDRegistry.Add(l_child, l_uuid);
 }
 
 void FWK::GameObjectHierarchy::RemoveChild(const std::weak_ptr<GameObject>& a_child)
 {
+    const auto& l_child = a_child.lock();
+ 
+    if (!l_child) { return; }
+
+    auto l_uuid = l_child->GetREFPrefabHierarchyNodeUUID();
+    
+    if (l_uuid.is_nil()) { return; }
+
+    // Prefab由来の子を削除した場合は削除済みUUIDとして記録する
+    // Prefab更新伝播時に削除意図を保持するため
+    // ClearParent経由の親変更も削除扱いになる
+    if (l_child->GetVALIsPrefabOrigin())
+    {
+        m_prefabRemovedChildUUIDSet.emplace(l_uuid);
+    }
+ 
+    // UUIDRegistryからも削除
+    m_childUUIDRegistry.Erase(l_uuid);
+    
     m_childSmartPointerVectorList.RemoveSameElement(a_child);
+}
+
+bool FWK::GameObjectHierarchy::IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+    const auto& l_owner   = m_owner.lock     ();
+    auto        l_current = a_gameObject.lock();
+
+    if (!l_owner) { return false; }
+
+    // a_gameObjectから親を辿ってm_ownerに到達するならa_gameObjectはm_ownerの子孫
+    while (l_current)
+    {
+        if (l_current == l_owner) { return true; }
+
+        const auto& l_currentHierarchy = l_current->GetREFHierarchy     ();
+        const auto& l_currentParent    = l_currentHierarchy.GetREFParent();
+
+        l_current = l_currentParent.lock();
+    }
+
+    return false;
+}
+
+boost::uuids::uuid FWK::GameObjectHierarchy::GenerateVALChildUUID() const
+{
+    boost::uuids::uuid l_uuid        = {};
+    auto&              l_uuidManager = Utility::UUIDManager::GetInstance();
+
+    while (l_uuid.is_nil())
+    {
+        l_uuid = l_uuidManager.GenerateVALUUID();
+
+        // m_childUUIDRegistryまたはm_prefabRemovedChildUUIDSetに含まれているUUID
+        // なら意図的にnil値にしてもう一度UUIDを生成する
+        if (m_childUUIDRegistry.Contains(l_uuid) ||
+            m_prefabRemovedChildUUIDSet.contains(l_uuid))
+        {
+            l_uuid = {};
+        }
+    }
+
+    return l_uuid;
 }
