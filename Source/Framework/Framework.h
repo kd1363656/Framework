@@ -493,7 +493,7 @@
 #include "GameObject/Component/Converter/Json/GameObjectComponentBaseJsonConverter.h"
 #include "GameObject/Component/GameObjectComponentBase.h"
 #include "Definition/Concept/IsDerivedBase/GameObject/IsDerivedGameObjectComponentBaseConcept.h"
-#include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
+#include "Definition/Type/Alias/Factory/Shared/GameObjectComponentSharedFactory.h"
 
 //===============================================================================
 // トランスフォームコンポーネント

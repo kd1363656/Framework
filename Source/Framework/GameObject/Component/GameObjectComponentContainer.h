@@ -31,12 +31,12 @@ namespace FWK
 
         void CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
 
-        bool AddComponent                 (const std::shared_ptr<ComponentBase>& a_component);
+        bool AddComponent                 (const std::shared_ptr<GameObjectComponentBase>& a_component);
         void AddPrefabRemovedComponentUUID(const boost::uuids::uuid&             a_uuid);
 
         void SweepExpiredComponents();
 
-        void RemoveComponent(const std::weak_ptr<ComponentBase>& a_component);
+        void RemoveComponent(const std::weak_ptr<GameObjectComponentBase>& a_component);
         
         void ClearPrefabRemovedComponentUUIDSet();
 
@@ -44,7 +44,7 @@ namespace FWK
 
         void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
-        template <Concept::IsDerivedComponentBaseConcept ComponentType>
+        template <Concept::IsDerivedGameObjectComponentBaseConcept ComponentType>
         std::weak_ptr<ComponentType> FindUniqueComponent() const
         {
             const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
@@ -61,7 +61,7 @@ namespace FWK
             return {};
         }
 
-        template <Concept::IsDerivedComponentBaseConcept ComponentType>
+        template <Concept::IsDerivedGameObjectComponentBaseConcept ComponentType>
         std::vector<std::weak_ptr<ComponentType>> FindMultiComponent() const
         {
             const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
@@ -82,7 +82,7 @@ namespace FWK
             return l_list;
         }
 
-        std::weak_ptr<ComponentBase> FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const;
+        std::weak_ptr<GameObjectComponentBase> FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const;
 
         const auto& GetREFComponentList() const { return m_componentSmartPointerVectorList; }
 
@@ -90,16 +90,16 @@ namespace FWK
    
         boost::uuids::uuid GenerateVALComponentUUID() const;
 
-        std::unordered_map<std::uint32_t, std::weak_ptr<ComponentBase>>              m_uniqueComponentMap = {};
-        std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<ComponentBase>>> m_multiComponentMap  = {};
+        std::unordered_map<std::uint32_t, std::weak_ptr<GameObjectComponentBase>>              m_uniqueComponentMap = {};
+        std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<GameObjectComponentBase>>> m_multiComponentMap  = {};
 
         std::unordered_set<boost::uuids::uuid> m_prefabRemovedComponentUUIDSet = {};
 
         std::weak_ptr<GameObject> m_owner = {};
 
-        Utility::SmartPointerVectorList<std::shared_ptr<ComponentBase>> m_componentSmartPointerVectorList = {};
+        Utility::SmartPointerVectorList<std::shared_ptr<GameObjectComponentBase>> m_componentSmartPointerVectorList = {};
 
-        UUIDRegistry<std::weak_ptr<ComponentBase>> m_componentUUIDRegistry = {};
+        UUIDRegistry<std::weak_ptr<GameObjectComponentBase>> m_componentUUIDRegistry = {};
 
         Converter::GameObjectComponentContainerJsonConverter m_jsonConverter = {};
     };

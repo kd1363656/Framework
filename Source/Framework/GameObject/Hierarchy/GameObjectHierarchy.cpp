@@ -27,27 +27,6 @@ void FWK::GameObjectHierarchy::CloneTo(GameObjectHierarchy& a_cloneTarget, const
     a_cloneTarget.m_owner = a_cloneOwner;
 }
 
-void FWK::GameObjectHierarchy::ApplyRoot(const std::weak_ptr<GameObject>& a_gameObject)
-{
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject) { return; }
-
-    const auto& l_hierarchyNodeUUID = l_gameObject->GetREFPrefabHierarchyNodeUUID();
-    const auto& l_parentHierarchy   = l_gameObject->GetREFHierarchy              ();
-    const auto& l_parent            = l_parentHierarchy.GetREFParent             ().lock();
-
-    // ヒエラルキーノードUUIDがnil値かつParentゲームオブジェクトがキャッシュされていなければ
-    // Rootゲームオブジェクトと判定する
-    if (!l_hierarchyNodeUUID.is_nil() &&
-        l_parent)
-    {
-        return;
-    }
-
-    m_root = l_gameObject;
-}
-
 bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)
 {
     const auto& l_owner  = m_owner.lock ();
@@ -87,7 +66,7 @@ bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_pa
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_transform, "TransformComponentが無効なため、親Transformの適用に失敗しました。", false);
 
-    l_transform->ApplyParent(a_parent);
+    l_transform->ApplyParent();
 
     return true;
 }
@@ -123,25 +102,4 @@ void FWK::GameObjectHierarchy::AddChild(const std::weak_ptr<GameObject>& a_child
 void FWK::GameObjectHierarchy::RemoveChild(const std::weak_ptr<GameObject>& a_child)
 {
     m_childSmartPointerVectorList.RemoveSameElement(a_child);
-}
-
-bool FWK::GameObjectHierarchy::IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const
-{
-    const auto& l_owner   = m_owner.lock     ();
-    auto        l_current = a_gameObject.lock();
- 
-    if (!l_owner) { return false; }
- 
-    // a_gameObjectから親を辿ってm_ownerに到達するならa_gameObjectはm_ownerの子孫
-    while (l_current)
-    {
-        if (l_current == l_owner) { return true; }
- 
-        const auto& l_currentHierarchy = l_current->GetREFHierarchy     ();
-        const auto& l_currentParent    = l_currentHierarchy.GetREFParent();
-
-        l_current = l_currentParent.lock();
-    }
- 
-    return false;
 }

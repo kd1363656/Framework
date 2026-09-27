@@ -22,7 +22,6 @@ namespace FWK
 
         void CloneTo(GameObjectHierarchy& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
 
-        void ApplyRoot  (const std::weak_ptr<GameObject>& a_gameObject);
         bool ApplyParent(const std::weak_ptr<GameObject>& a_parent);
 
         void ClearParent();
@@ -39,10 +38,7 @@ namespace FWK
 
         void RemoveChild(const std::weak_ptr<GameObject>& a_child);
 
-        bool IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const;
-
         std::weak_ptr<GameObject> m_owner  = {};
-        std::weak_ptr<GameObject> m_root   = {};
         std::weak_ptr<GameObject> m_parent = {};
 
         Utility::SmartPointerVectorList<std::weak_ptr<GameObject>> m_childSmartPointerVectorList = {};

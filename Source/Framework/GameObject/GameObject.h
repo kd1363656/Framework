@@ -29,7 +29,10 @@ namespace FWK
         void SetName(const std::string& a_set) { m_name = a_set; }
 
         void SetPrefabUUID       (const boost::uuids::uuid& a_set) { m_prefabUUID        = a_set; }
+        void SetPrefabHierarchyNodeUUID(const boost::uuids::uuid& a_set) { m_prefabHierarchyNodeUUID = a_set; }
         void SetSceneInstanceUUID(const boost::uuids::uuid& a_set) { m_sceneInstanceUUID = a_set; }
+
+        void SetIsPrefabOrigin(const bool a_set) { m_isPrefabOrigin = a_set; }
 
         const auto& GetREFHierarchy() const { return m_hierarchy; }
 
@@ -41,7 +44,8 @@ namespace FWK
 
         auto& GetMutableREFHierarchy() { return m_hierarchy; }
 
-        bool GetVALIsDestroyed() const { return m_isDestroyed; }
+        bool GetVALIsDestroyed   () const { return m_isDestroyed; }
+        bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
 
         std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 

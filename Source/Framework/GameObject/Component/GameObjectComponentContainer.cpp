@@ -166,11 +166,11 @@ void FWK::GameObjectComponentContainer::CloneTo(GameObjectComponentContainer& a_
     a_cloneTarget.m_prefabRemovedComponentUUIDSet = m_prefabRemovedComponentUUIDSet;
 }
 
-bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<ComponentBase>& a_component)
+bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameObjectComponentBase>& a_component)
 {
     if (!a_component)
     {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "登録対象のコンポーネントが無効なため,ComponentContainerへの登録に失敗しました。");
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "登録対象のコンポーネントが無効なため、ComponentContainerへの登録に失敗しました。");
 
         return false;
     }
@@ -248,7 +248,7 @@ void FWK::GameObjectComponentContainer::SweepExpiredComponents()
                   });
 }
 
-void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<ComponentBase>& a_component)
+void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<GameObjectComponentBase>& a_component)
 {
     const auto& l_component = a_component.lock();
 
@@ -358,7 +358,7 @@ bool FWK::GameObjectComponentContainer::IsPrefabRemovedComponentUUID(const boost
     return m_prefabRemovedComponentUUIDSet.contains(a_uuid);
 }
 
-std::weak_ptr<FWK::ComponentBase> FWK::GameObjectComponentContainer::FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const
+std::weak_ptr<FWK::GameObjectComponentBase> FWK::GameObjectComponentContainer::FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const
 {
     if (a_uuid.is_nil()) { return {}; }
 

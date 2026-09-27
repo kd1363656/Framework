@@ -2724,7 +2724,7 @@
     <ClInclude Include="Source\Framework\GameObject\GameObject.h">
       <Filter>Source\Framework\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\GameObjectComponentSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
