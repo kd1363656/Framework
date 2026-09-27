@@ -1,0 +1,8 @@
+﻿#include "GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.h"
+
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector::EditInspector(GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_gameObjectTransformComponentMatrixUpdateHierarchicalMode)
+{
+    auto& l_calculateParentWorldMatrixEnumBitShift = a_gameObjectTransformComponentMatrixUpdateHierarchicalMode.GetMutableREFCalculateParentWorldMatrixEnumBitShift();
+
+    l_calculateParentWorldMatrixEnumBitShift.EditInspector(k_calculateParentWorldMatrixEnumBitShiftCheckBoxSelectorLabel);
+}

@@ -43,12 +43,12 @@ namespace FWK
 
         bool GetVALIsDestroyed() const { return m_isDestroyed; }
 
-        std::weak_ptr<TransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
+        std::weak_ptr<GameObjectTransformComponent> GetVALTransformComponent() const { return m_transformComponent; }
 
     private:
     
         // ポインタの共有したいが絶対に存在すべきコンポーネントなのでメンバイニシャライザで生成
-        std::shared_ptr<TransformComponent> m_transformComponent = std::make_shared<TransformComponent>();
+        std::shared_ptr<GameObjectTransformComponent> m_transformComponent = std::make_shared<GameObjectTransformComponent>();
 
         GameObjectHierarchy          m_hierarchy          = {};
         GameObjectComponentContainer m_componentContainer = {};

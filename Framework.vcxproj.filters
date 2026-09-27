@@ -1321,50 +1321,11 @@
     <Filter Include="Source\Framework\GameObject">
       <UniqueIdentifier>{8d3e8c77-7d08-4c29-ba6a-cb9ce4530dee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component">
-      <UniqueIdentifier>{664df4b3-3bb2-441b-9a10-1746ab36b605}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Converter">
-      <UniqueIdentifier>{47eab824-a3d3-45ab-a62b-2ac7799e827b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Converter\Json">
-      <UniqueIdentifier>{51dc18e9-b394-43ea-b06e-22a864bfa9df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform">
-      <UniqueIdentifier>{8a0eb597-13bc-45fb-bc6a-4804448f0c56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\Component">
-      <UniqueIdentifier>{7cc31407-b26e-48f2-aa7b-8a6d47b9f095}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Component">
-      <UniqueIdentifier>{203faadb-c166-4b3e-aeba-c23567982a36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Strategy">
-      <UniqueIdentifier>{509d48a2-1a8e-4693-989d-98a34c56290c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Strategy\Standalone">
-      <UniqueIdentifier>{712c688a-65e4-4d19-bb8e-0f60183074c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Strategy\Hierarchical">
-      <UniqueIdentifier>{94fdd2a4-d209-448a-a0aa-908ea2885880}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\GameObject\Converter">
       <UniqueIdentifier>{3b86f976-827d-4229-ad9a-dde4b42c39ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\GameObject\Converter\Json">
       <UniqueIdentifier>{ed86737b-cfae-4499-be6c-8000befe22dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Converter">
-      <UniqueIdentifier>{4968ac69-53c4-44f3-8423-8c9a0be5bbd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Converter\Json">
-      <UniqueIdentifier>{8f3e140d-0b42-4e66-a019-d9dd3ccab5ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Transform\Inspector">
-      <UniqueIdentifier>{9e242bac-e264-449c-8a30-2a6fc23873e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Component">
-      <UniqueIdentifier>{5addd33f-002c-43ca-b990-23fad4ce5f54}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Definition\Enum\Scene">
       <UniqueIdentifier>{4a905274-288b-4d70-bff4-83d97da8888c}</UniqueIdentifier>
@@ -1384,9 +1345,6 @@
     <Filter Include="Source\Framework\Definition\Enum\Component">
       <UniqueIdentifier>{9524ff22-15de-4bf8-819c-eeca422a3e07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Component\Camera">
-      <UniqueIdentifier>{e42595c4-27e0-4697-8392-cbf13d48dfd4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\GameObject\Component">
       <UniqueIdentifier>{7c26bd25-3d7a-43f7-a0c0-8862850e181c}</UniqueIdentifier>
     </Filter>
@@ -1395,12 +1353,6 @@
     </Filter>
     <Filter Include="Source\Framework\GameObject\Component\Converter\Json">
       <UniqueIdentifier>{88002304-52f7-406d-a548-81b7e4989962}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Camera\Converter">
-      <UniqueIdentifier>{eca1eb9c-59db-4635-a34f-aa2070efdf85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Component\Camera\Converter\Json">
-      <UniqueIdentifier>{917f2372-7710-48f3-b68a-40a53f012a40}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\GameObject\Hierarchy">
       <UniqueIdentifier>{88317f81-3a20-4f2c-9499-15d383251236}</UniqueIdentifier>
@@ -1434,6 +1386,51 @@
     </Filter>
     <Filter Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json">
       <UniqueIdentifier>{b449553f-502e-497e-b83c-876c4b988afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform">
+      <UniqueIdentifier>{8a0eb597-13bc-45fb-bc6a-4804448f0c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Converter">
+      <UniqueIdentifier>{4968ac69-53c4-44f3-8423-8c9a0be5bbd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Converter\Json">
+      <UniqueIdentifier>{8f3e140d-0b42-4e66-a019-d9dd3ccab5ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Camera">
+      <UniqueIdentifier>{e42595c4-27e0-4697-8392-cbf13d48dfd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Camera\Converter">
+      <UniqueIdentifier>{eca1eb9c-59db-4635-a34f-aa2070efdf85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Camera\Converter\Json">
+      <UniqueIdentifier>{917f2372-7710-48f3-b68a-40a53f012a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\GameObject">
+      <UniqueIdentifier>{16715889-408c-46d4-9270-f22db94dde5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsDerivedBase\GameObject">
+      <UniqueIdentifier>{0f6558b6-a075-408f-b5a4-ec94d8c3d54f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode">
+      <UniqueIdentifier>{5c77eaa3-913a-49e3-abf3-752044c6ceac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Standalone">
+      <UniqueIdentifier>{cd2c2f47-b66e-4b65-b68d-f6c722314859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical">
+      <UniqueIdentifier>{7a2650ac-3849-4d47-a287-98bfd42ca0e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter">
+      <UniqueIdentifier>{55ebc51d-3033-45ce-a685-ac24ffbba4b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json">
+      <UniqueIdentifier>{f0c49ded-842a-4c26-aa57-ca3dec3ecf1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Inspector">
+      <UniqueIdentifier>{d56b833d-d6b6-48da-af37-76f721d50b69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector">
+      <UniqueIdentifier>{e37dc275-3841-41f5-a6a4-a85c0d356f9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2727,47 +2724,11 @@
     <ClInclude Include="Source\Framework\GameObject\GameObject.h">
       <Filter>Source\Framework\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\ComponentBase.h">
-      <Filter>Source\Framework\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.h">
-      <Filter>Source\Framework\Component\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\TransformComponent.h">
-      <Filter>Source\Framework\Component\Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Component\IsDerivedComponentBaseConcept.h">
-      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComponentSharedFactory.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Component\TransformComponentStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\MatrixStrategyUniqueFactory.h">
-      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\MatrixStrategyBase.h">
-      <Filter>Source\Framework\Component\Transform\Strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.h">
-      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.h">
-      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.h">
-      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Component\TransformComponentInspectorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Scene\SceneEnum.h">
       <Filter>Source\Framework\Definition\Enum\Scene</Filter>
@@ -2790,20 +2751,11 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Component\TransformComponentEnum.h">
       <Filter>Source\Framework\Definition\Enum\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Camera\CameraComponent.h">
-      <Filter>Source\Framework\Component\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h">
       <Filter>Source\Framework\GameObject\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h">
       <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Component\ComponentBaseConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.h">
-      <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.h">
       <Filter>Source\Framework\GameObject\Hierarchy</Filter>
@@ -2825,6 +2777,57 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.h">
       <Filter>Source\Framework\Scene\Prefab\GameObject\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentBase.h">
+      <Filter>Source\Framework\GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentBaseConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentInspectorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentBaseJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\GameObject\IsDerivedGameObjectComponentBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\GameObjectTransformComponent.h">
+      <Filter>Source\Framework\GameObject\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Converter\Json\GameObjectTransformComponentJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Camera\GameObjectCameraComponent.h">
+      <Filter>Source\Framework\GameObject\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Camera\Converter\Json\GameObjectCameraComponentJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Component\Camera\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\GameObjectTransformComponentMatrixUpdateModeBase.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectTransformComponentStruct.h">
+      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\GameObjectTransformComponentMatrixUpdateModeUniqueFactory.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Standalone\GameObjectTransformComponentMatrixUpdateStandaloneMode.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Standalone</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\GameObjectTransformComponentMatrixUpdateHierarchicalMode.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json\GameObjectTransformComponentHierarchicalMatrixUpdateModeJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector\GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Inspector\GameObjectTransformComponentInspector.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3461,29 +3464,8 @@
     <ClCompile Include="Source\Framework\GameObject\GameObject.cpp">
       <Filter>Source\Framework\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\ComponentBase.cpp">
-      <Filter>Source\Framework\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Converter\Json\ComponentBaseJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\TransformComponent.cpp">
-      <Filter>Source\Framework\Component\Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Standalone\StandaloneMatrixStrategy.cpp">
-      <Filter>Source\Framework\Component\Transform\Strategy\Standalone</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Strategy\Hierarchical\HierarchicalMatrixStrategy.cpp">
-      <Filter>Source\Framework\Component\Transform\Strategy\Hierarchical</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Converter\Json\TransformComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Transform\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Transform\Inspector\TransformComponentInspector.cpp">
-      <Filter>Source\Framework\Component\Transform\Inspector</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Changer\SceneChanger.cpp">
       <Filter>Source\Framework\Scene\Changer</Filter>
@@ -3491,17 +3473,11 @@
     <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Camera\CameraComponent.cpp">
-      <Filter>Source\Framework\Component\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.cpp">
       <Filter>Source\Framework\GameObject\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Component\Camera\Converter\Json\CameraComponentJsonConverter.cpp">
-      <Filter>Source\Framework\Component\Camera\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Hierarchy\GameObjectHierarchy.cpp">
       <Filter>Source\Framework\GameObject\Hierarchy</Filter>
@@ -3520,6 +3496,39 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Prefab\GameObject\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentBase.cpp">
+      <Filter>Source\Framework\GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentBaseJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Component\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\GameObjectTransformComponent.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Converter\Json\GameObjectTransformComponentJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Camera\GameObjectCameraComponent.cpp">
+      <Filter>Source\Framework\GameObject\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Camera\Converter\Json\GameObjectCameraComponentJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Component\Camera\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Standalone\GameObjectTransformComponentMatrixUpdateStandaloneMode.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Standalone</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\GameObjectTransformComponentMatrixUpdateHierarchicalMode.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json\GameObjectTransformComponentHierarchicalMatrixUpdateModeJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector\GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Inspector\GameObjectTransformComponentInspector.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

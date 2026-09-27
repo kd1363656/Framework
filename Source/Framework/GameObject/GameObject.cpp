@@ -2,6 +2,13 @@
 
 void FWK::GameObject::INIT()
 {
+    if (!m_transformComponent)
+    {
+        m_transformComponent = std::make_shared<GameObjectTransformComponent>();
+    }
+
+    m_transformComponent->SetOwner(weak_from_this());
+
     m_componentContainer.INIT    ();
     m_componentContainer.SetOwner(weak_from_this());
 }
@@ -15,12 +22,15 @@ void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson)
 
 void FWK::GameObject::PostDeserialize()
 {
-    
+    if (m_transformComponent) 
+    {
+        m_transformComponent->PostDeserialize();
+    }
 }
 
 void FWK::GameObject::EarlyUpdate() const
 {
-
+    
 }
 void FWK::GameObject::Update() const
 {
@@ -32,7 +42,10 @@ void FWK::GameObject::LateUpdate() const
 }
 void FWK::GameObject::PostLateUpdate() const
 {
-
+    if (m_transformComponent)
+    {
+        m_transformComponent->PostLateUpdate();
+    }
 }
 
 void FWK::GameObject::Destroy()
@@ -42,7 +55,10 @@ void FWK::GameObject::Destroy()
 
 void FWK::GameObject::EditInspector()
 {
-
+    if (m_transformComponent)
+    {
+        m_transformComponent->EditInspector();
+    }
 }
 
 nlohmann::json FWK::GameObject::Serialize() const

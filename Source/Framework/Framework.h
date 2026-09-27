@@ -479,12 +479,20 @@
 #include "Observer/Observer.h"
 
 //===============================================================================
+// ゲームオブジェクトプレハブ
+//===============================================================================
+#include "GameObject/Prefab/Converter/Json/GameObjectPrefabJsonConverter.h"
+#include "GameObject/Prefab/GameObjectPrefab.h"
+#include "Scene/Prefab/GameObject/Converter/Json/GameObjectPrefabSystemJsonConverter.h"
+#include "Scene/Prefab/GameObject/GameObjectPrefabSystem.h"
+
+//===============================================================================
 // コンポーネント(基底クラス)
 //===============================================================================
-#include "Definition/Constant/Component/ComponentBaseConstant.h"
-#include "Component/Converter/Json/ComponentBaseJsonConverter.h"
-#include "Component/ComponentBase.h"
-#include "Definition/Concept/IsDerivedBase/Component/IsDerivedComponentBaseConcept.h"
+#include "Definition/Constant/GameObject/GameObjectComponentBaseConstant.h"
+#include "GameObject/Component/Converter/Json/GameObjectComponentBaseJsonConverter.h"
+#include "GameObject/Component/GameObjectComponentBase.h"
+#include "Definition/Concept/IsDerivedBase/GameObject/IsDerivedGameObjectComponentBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/ComponentSharedFactory.h"
 
 //===============================================================================
@@ -495,27 +503,22 @@
 #include "Definition/Constant/Utility/IMGUI/IMGUIFactoryUtilityCosntant.h"
 #include "Utility/IMGUI/Factory/IMGUIFactoryUtility.h"
 #include "Definition/Enum/Component/TransformComponentEnum.h"
-#include "Definition/Struct/Component/TransformComponentStruct.h"
-#include "Component/Transform/Converter/Json/TransformComponentJsonConverter.h"
-#include "Definition/Constant/Component/TransformComponentInspectorConstant.h"
+#include "Definition/Struct/GameObject/GameObjectTransformComponentStruct.h"
+
+#include "GameObject/Component/Transform/Mode/GameObjectTransformComponentMatrixUpdateModeBase.h"
+#include "Definition/Type/Alias/Factory/Unique/GameObjectTransformComponentMatrixUpdateModeUniqueFactory.h"
+#include "GameObject/Component/Transform/Mode/Standalone/GameObjectTransformComponentMatrixUpdateStandaloneMode.h"
 #include "Utility/IMGUI/String/IMGUIStringValueBidirectionalRegistryUtility.h"
 #include "Utility/Enum/Converter/Json/EnumBitShiftJsonConverter.h"
 #include "Utility/Enum/Inspector/EnumBitShiftInspector.h"
 #include "Utility/Enum/EnumBitShift.h"
-#include "Component/Transform/Inspector/TransformComponentInspector.h"
-#include "Component/Transform/TransformComponent.h"
-#include "Component/Transform/Strategy/MatrixStrategyBase.h"
-#include "Definition/Type/Alias/Factory/Unique/MatrixStrategyUniqueFactory.h"
-#include "Component/Transform/Strategy/Standalone/StandaloneMatrixStrategy.h"
-#include "Component/Transform/Strategy/Hierarchical/HierarchicalMatrixStrategy.h"
-
-//===============================================================================
-// ゲームオブジェクトプレハブ
-//===============================================================================
-#include "GameObject/Prefab/Converter/Json/GameObjectPrefabJsonConverter.h"
-#include "GameObject/Prefab/GameObjectPrefab.h"
-#include "Scene/Prefab/GameObject/Converter/Json/GameObjectPrefabSystemJsonConverter.h"
-#include "Scene/Prefab/GameObject/GameObjectPrefabSystem.h"
+#include "GameObject/Component/Transform/Mode/Hierarchical/Converter/Json/GameObjectTransformComponentHierarchicalMatrixUpdateModeJsonConverter.h"
+#include "GameObject/Component/Transform/Mode/Hierarchical/Inspector/GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.h"
+#include "GameObject/Component/Transform/Mode/Hierarchical/GameObjectTransformComponentMatrixUpdateHierarchicalMode.h"
+#include "GameObject/Component/Transform/Converter/Json/GameObjectTransformComponentJsonConverter.h"
+#include "Definition/Constant/GameObject/GameObjectTransformComponentInspectorConstant.h"
+#include "GameObject/Component/Transform/Inspector/GameObjectTransformComponentInspector.h"
+#include "GameObject/Component/Transform/GameObjectTransformComponent.h"
 
 //===============================================================================
 // ゲームオブジェクト
@@ -541,8 +544,8 @@
 //===============================================================================
 // カメラコンポーネント
 //===============================================================================
-#include "Component/Camera/Converter/Json/CameraComponentJsonConverter.h"
-#include "Component/Camera/CameraComponent.h"
+#include "GameObject/Component/Camera/Converter/Json/GameObjectCameraComponentJsonConverter.h"
+#include "GameObject/Component/Camera/GameObjectCameraComponent.h"
 
 //===============================================================================
 // コンポーネント
