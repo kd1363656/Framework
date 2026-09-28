@@ -16,11 +16,17 @@ void FWK::GameObject::INIT()
     m_componentContainer.SetOwner(weak_from_this());
 }
 
-void FWK::GameObject::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::GameObject::DeserializeScene(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.Deserialize(a_rootJson, weak_from_this());
+    m_jsonConverter.DeserializeScene(a_rootJson, weak_from_this());
+}
+void FWK::GameObject::DeserializePrefab(const nlohmann::json & a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.DeserializePrefab(a_rootJson, weak_from_this());
 }
 
 void FWK::GameObject::PostDeserialize()
@@ -29,19 +35,21 @@ void FWK::GameObject::PostDeserialize()
     {
         m_transformComponent->PostDeserialize();
     }
+
+    m_componentContainer.PostDeserialize();
 }
 
 void FWK::GameObject::EarlyUpdate() const
 {
-    
+    m_componentContainer.EarlyUpdate();
 }
 void FWK::GameObject::Update() const
 {
-
+    m_componentContainer.Update();
 }
 void FWK::GameObject::LateUpdate() const
 {
-
+    m_componentContainer.LateUpdate();
 }
 void FWK::GameObject::PostLateUpdate() const
 {
@@ -53,7 +61,7 @@ void FWK::GameObject::PostLateUpdate() const
 
 void FWK::GameObject::Destroy()
 {
-
+    m_isDestroyed = true;
 }
 
 void FWK::GameObject::EditInspector()
@@ -62,6 +70,8 @@ void FWK::GameObject::EditInspector()
     {
         m_transformComponent->EditInspector();
     }
+
+    m_componentContainer.EditInspector();
 }
 
 nlohmann::json FWK::GameObject::Serialize() const

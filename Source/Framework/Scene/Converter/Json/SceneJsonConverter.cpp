@@ -14,7 +14,7 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
         l_assetFilePathRegistry.Deserialize(l_json);
     }
 
-    // シーンチェンジャーのデシリアライズ、
+    // シーンチェンジャーのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_sceneChanger, nlohmann::json{});
         !l_json.is_null())
     {
@@ -33,25 +33,43 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
     }
 
     // ゲームオブジェクトリストのデシリアライズ
-    // TODO
+    DeserializeGameObjectList(a_rootJson, a_scene);
 }
 
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
 {
-          nlohmann::json l_rootJson                = {};
-    const auto&          l_name                    = a_scene.GetREFName                         ();
-    const auto&          l_sceneChanger            = a_scene.GetREFSceneChanger                 ();
-          auto&          l_gameObjectPrefabSystem  = a_scene.GetMutableREFGameObjectPrefabSystem();
-    const auto&          l_assetFilePathRegistry   = a_scene.GetREFAssetFilePathRegistry        ();
-    
-    // アセットレジストリのデシリアライズ
+    nlohmann::json l_rootJson = {};
+ 
+    const auto& l_sceneChanger           = a_scene.GetREFSceneChanger                 ();
+          auto& l_gameObjectPrefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
+    const auto& l_assetFilePathRegistry  = a_scene.GetREFAssetFilePathRegistry        ();
+ 
+    // シーン名を保存する
+    l_rootJson[k_sceneNameJsonKey] = a_scene.GetREFName();
+ 
+    // アセットレジストリのシリアライズ
     l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
-
+ 
     // シーンチェンジャーのシリアライズ
     l_rootJson[k_sceneChanger] = l_sceneChanger.Serialize(l_assetFilePathRegistry);
-
+ 
     // プレハブシステムのシリアライズ
     l_rootJson[k_gameObjectPrefabSystemJsonKey] = l_gameObjectPrefabSystem.Serialize(l_assetFilePathRegistry);
-
+ 
+    // ゲームオブジェクトリストのシリアライズ
+    l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList(a_scene);
+ 
     return l_rootJson;
+}
+
+void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const
+{
+    if (!Utility::IsJsonArray(a_rootJson, k_gameObjectListJsonKey)) { return; }
+ 
+
+}
+
+nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const Scene& a_scene) const
+{
+    return nlohmann::json();
 }

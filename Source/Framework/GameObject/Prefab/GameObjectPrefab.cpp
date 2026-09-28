@@ -20,11 +20,20 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, GameOb
     }
 
     // プレハブ化処理
-    // 1. 新しいPrefabUUIDを生成する
+    // 新しいPrefabUUIDを生成する
     auto& l_uuidManager = Utility::UUIDManager::GetInstance();
- 
+
     const auto& l_prefabUUID = l_uuidManager.GenerateVALUUID();
- 
+
+    // 自身とすべての子をIsPrefabOrigin=trueにしてPrefabUUIDを設定する
+    // PrefabHierarchyNodeUUIDがnilなら生成する
+    // 既に別のPrefabのインスタンスである子には伝播しない
+    a_gameObject.ConvertToPrefab(l_prefabUUID);
+
+    // すべてのRemovedUUIDSetをクリアする
+    // プレハブは新しい「元」なので差分（削除）情報を保持しない
+    a_gameObject.ClearAllPrefabRemovedUUIDSet();
+
 
     return m_jsonConverter.Save(a_filePath, a_gameObject, *this);
 }

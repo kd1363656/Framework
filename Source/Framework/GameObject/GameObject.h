@@ -11,7 +11,8 @@ namespace FWK
     
         void INIT();
 
-        void Deserialize(const nlohmann::json& a_rootJson);
+        void DeserializeScene (const nlohmann::json& a_rootJson);
+        void DeserializePrefab(const nlohmann::json& a_rootJson);
 
         void PostDeserialize();
 
@@ -75,6 +76,6 @@ namespace FWK
         boost::uuids::uuid m_sceneInstanceUUID       = {};
 
         bool m_isDestroyed    = false;
-        bool m_isPrefabOrigin = false;
+        bool m_isPrefabOrigin = Constant::l_gameObjectInitialValueIsPrefabOriginValue;
     };
 }
