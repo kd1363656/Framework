@@ -3,19 +3,19 @@
 void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
     if (a_rootJson.is_null() ||
-        !Utility::IsJsonArray(a_rootJson, k_componentListJsonKey)) 
+        !Utility::IsJsonArray(a_rootJson, Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey))
     {
         return; 
     }
  
-    for (const auto& l_elementJson : a_rootJson[k_componentListJsonKey])
+    for (const auto& l_elementJson : a_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey])
     {
         if (l_elementJson.is_null()) { continue; }
  
         std::shared_ptr<GameObjectComponentBase> l_component = {};
  
         // 生成すべきコンポーネントを生成
-        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_elementJson, k_componentTypeJsonKey, l_component);
+        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_elementJson, Constant::k_gameObjectComponentContainerJsonConverterComponentTypeJsonKey, l_component);
  
         if (!l_component)
         {
@@ -24,7 +24,7 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene
             continue;
         }
  
-        const auto& l_componentJson = l_elementJson.value(k_componentDataJsonKey, nlohmann::json{});
+        const auto& l_componentJson = l_elementJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentDataJsonKey, nlohmann::json{});
  
         l_component->Deserialize(l_componentJson);
  
@@ -35,18 +35,18 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene
 void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
     if (a_rootJson.is_null() ||
-        !Utility::IsJsonArray(a_rootJson, k_componentListJsonKey))
+        !Utility::IsJsonArray(a_rootJson, Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey))
     {
         return; 
     }
  
-    for (const auto& l_json : a_rootJson[k_componentListJsonKey])
+    for (const auto& l_json : a_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey])
     {
         if (l_json.is_null()) { continue; }
  
         std::shared_ptr<GameObjectComponentBase> l_component = {};
  
-        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_json, k_componentTypeJsonKey, l_component);
+        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_json, Constant::k_gameObjectComponentContainerJsonConverterComponentTypeJsonKey, l_component);
  
         if (!l_component)
         {
@@ -55,7 +55,7 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializePrefa
             continue;
         }
  
-        const auto& l_componentJson = l_json.value(k_componentDataJsonKey, nlohmann::json{});
+        const auto& l_componentJson = l_json.value(Constant::k_gameObjectComponentContainerJsonConverterComponentDataJsonKey, nlohmann::json{});
  
         l_component->Deserialize(l_componentJson);
  
@@ -82,15 +82,15 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Serial
  
         nlohmann::json l_json = {};
  
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_component, k_componentTypeJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_component, Constant::k_gameObjectComponentContainerJsonConverterComponentTypeJsonKey));
  
         // シリアライズでデータを復元
-        l_json[k_componentDataJsonKey] = std::move(l_componentJson);
+        l_json[Constant::k_gameObjectComponentContainerJsonConverterComponentDataJsonKey] = std::move(l_componentJson);
  
         l_componentListJson.emplace_back(std::move(l_json));
     }
  
-    l_rootJson[k_componentListJsonKey] = std::move(l_componentListJson);
+    l_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey] = std::move(l_componentListJson);
  
     return l_rootJson;
 }

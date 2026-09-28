@@ -4,7 +4,7 @@ void FWK::Converter::GameObjectComponentBaseJsonConverter::Deserialize(const nlo
 {
     if (a_rootJson.is_null()) { return; }
 
-    const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, k_uuidJsonKey);
+    const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectComponentBaseUUIDJsonKey);
 
     if (l_uuid.is_nil()) 
     {
@@ -26,7 +26,7 @@ nlohmann::json FWK::Converter::GameObjectComponentBaseJsonConverter::Serialize(c
 {
     nlohmann::json l_rootJson = {};
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObjectComponentBase.GetREFUUID(), k_uuidJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObjectComponentBase.GetREFUUID(), Constant::k_gameObjectComponentBaseUUIDJsonKey));
 
     l_rootJson[k_isDisableJsonKey]      = a_gameObjectComponentBase.GetVALIsDisable     ();
     l_rootJson[k_isPrefabOriginJsonKey] = a_gameObjectComponentBase.GetVALIsPrefabOrigin();

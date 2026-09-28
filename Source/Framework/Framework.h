@@ -490,6 +490,7 @@
 // コンポーネント(基底クラス)
 //===============================================================================
 #include "Definition/Constant/GameObject/GameObjectComponentBaseConstant.h"
+#include "Definition/Constant/GameObject/GameObjectComponentBaseJsonConverterConstant.h"
 #include "GameObject/Component/Converter/Json/GameObjectComponentBaseJsonConverter.h"
 #include "GameObject/Component/GameObjectComponentBase.h"
 #include "Definition/Concept/IsDerivedBase/GameObject/IsDerivedGameObjectComponentBaseConcept.h"
@@ -525,8 +526,10 @@
 //===============================================================================
 #include "Utility/UUID/UUIDManager.h"
 #include "Utility/UUID/UUIDRegistry.h"
+#include "Definition/Constant/GameObject/GameObjectComponentContainerJsonConverterConstant.h"
 #include "GameObject/Component/Converter/Json/GameObjectComponentContainerJsonConverter.h"
 #include "GameObject/Component/GameObjectComponentContainer.h"
+#include "Definition/Constant/GameObject/GameObjectHierarchyJsonConverterConstant.h"
 #include "GameObject/Hierarchy/Converter/Json/GameObjectHierarchyJsonConverter.h"
 #include "GameObject/Hierarchy/GameObjectHierarchy.h"
 #include "Definition/Constant/GameObject/GameObjectConstant.h"

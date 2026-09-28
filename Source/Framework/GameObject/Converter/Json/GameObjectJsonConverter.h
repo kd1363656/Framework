@@ -22,7 +22,5 @@ namespace FWK::Converter
     private:
 
         void DeserializeCommon(const nlohmann::json& a_rootJson, GameObject& a_gameObject) const;
-
-        static constexpr std::string_view k_nameJsonKey = "Name";
     };
 }

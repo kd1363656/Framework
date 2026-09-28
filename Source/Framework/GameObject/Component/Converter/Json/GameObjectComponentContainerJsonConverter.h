@@ -18,11 +18,5 @@ namespace FWK::Converter
         void DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const;
 
         nlohmann::json Serialize(const GameObjectComponentContainer& a_gameObjectComponentContainer) const;
-
-    private:
-
-        static constexpr std::string_view k_componentListJsonKey = "ComponentList";
-        static constexpr std::string_view k_componentTypeJsonKey = "ComponentType";
-        static constexpr std::string_view k_componentDataJsonKey = "ComponentData";
     };
 }

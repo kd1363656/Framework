@@ -373,7 +373,10 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\LogEditorWindowConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentBaseConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentBaseJsonConverterConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentContainerJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectHierarchyJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />

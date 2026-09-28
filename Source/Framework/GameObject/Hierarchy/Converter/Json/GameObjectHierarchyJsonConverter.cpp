@@ -5,7 +5,7 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeScene(const nl
     if (a_rootJson.is_null()) { return; }
 
     // PrefabRemovedChildUUIDSetのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_prefabRemovedChildUUIDSetJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectHierarchyJsonConverterPrefabRemovedChildUUIDSetJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         DeserializePrefabRemovedChildUUIDSet(l_json, a_gameObjectHierarchy);
@@ -16,14 +16,14 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializePrefab(const n
     if (a_rootJson.is_null()) { return; }
  
     // PrefabRemovedChildUUIDSetのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_prefabRemovedChildUUIDSetJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectHierarchyJsonConverterPrefabRemovedChildUUIDSetJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         DeserializePrefabRemovedChildUUIDSet(l_json, a_gameObjectHierarchy);
     }
  
     // ChildGameObjectListのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_childGameObjectListJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectHierarchyJsonConverterChildGameObjectListJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         DeserializeChildGameObjectList(l_json, a_gameObjectHierarchy);
@@ -35,13 +35,13 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::Serialize(const
     nlohmann::json l_rootJson = {};
 
     // ChildPrefabHierarchyNodeUUIDListのシリアライズ
-    l_rootJson[k_childPrefabHierarchyNodeUUIDListJsonKey] = SerializeChildPrefabHierarchyNodeUUIDList(a_gameObjectHierarchy);
+    l_rootJson[Constant::k_gameObjectHierarchyJsonConverterChildPrefabHierarchyNodeUUIDListJsonKey] = SerializeChildPrefabHierarchyNodeUUIDList(a_gameObjectHierarchy);
 
     // PrefabRemovedChildUUIDSetのシリアライズ
-    l_rootJson[k_prefabRemovedChildUUIDSetJsonKey] = SerializePrefabRemovedChildUUIDSet(a_gameObjectHierarchy);
+    l_rootJson[Constant::k_gameObjectHierarchyJsonConverterPrefabRemovedChildUUIDSetJsonKey] = SerializePrefabRemovedChildUUIDSet(a_gameObjectHierarchy);
 
     // ChildGameObjectListのシリアライズ
-    l_rootJson[k_childGameObjectListJsonKey] = SerializeChildGameObjectList(a_gameObjectHierarchy);
+    l_rootJson[Constant::k_gameObjectHierarchyJsonConverterChildGameObjectListJsonKey] = SerializeChildGameObjectList(a_gameObjectHierarchy);
  
     return l_rootJson;
 }
@@ -57,7 +57,7 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializePrefabRemovedC
     // 配列JSONを直接ループする
     for (const auto& l_json : a_rootJson)
     {
-        const auto& l_uuid = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
+        const auto& l_uuid = Utility::DeserializeUUID(l_json, Constant::k_gameObjectHierarchyJsonConverterUUIDJsonKey);
 
         if (l_uuid.is_nil()) { continue; }
 
@@ -109,7 +109,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializePrefab
         nlohmann::json l_json = {};
 
         // 削除された子ゲームオブジェクトのUUIDを保存
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_uuid, k_uuidJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_uuid, Constant::k_gameObjectHierarchyJsonConverterUUIDJsonKey));
 
         l_removedSetJson.emplace_back(std::move(l_json));
     }
@@ -137,7 +137,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeChildP
         nlohmann::json l_json = {};
  
         // 子GameObjectとしてのUUIDを保存
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_uuid, k_uuidJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_uuid, Constant::k_gameObjectHierarchyJsonConverterUUIDJsonKey));
  
         l_childListJson.emplace_back(std::move(l_json));
     }

@@ -21,21 +21,21 @@ namespace FWK::Converter
     private:
 
         void DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const;
-
+ 
         nlohmann::json SerializeGameObjectList(const Scene& a_scene) const;
+ 
+        void ApplyJsonDiff(const nlohmann::json& a_diffJson, nlohmann::json& a_baseJson) const;
 
-        nlohmann::json DetectAndMergePrefabDiff(const GameObject& a_gameObject, const nlohmann::json& a_prefabJson) const;
-
+        nlohmann::json DetectPrefabDiff(const GameObject& a_gameObject, const nlohmann::json& a_prefabJson) const;
+ 
+        nlohmann::json DetectJsonDiff(const nlohmann::json& a_baseJson, const nlohmann::json& a_currentJson) const;
+ 
         static constexpr std::string_view k_gameObjectListJsonKey         = "GameObjectList";
         static constexpr std::string_view k_gameObjectPrefabSystemJsonKey = "GameObjectPrefabSystem";
         static constexpr std::string_view k_sceneChanger                  = "SceneChanger";
         static constexpr std::string_view k_assetFilePathRegistryJsonKey  = "AssetFilePathRegistry";
         static constexpr std::string_view k_sceneNameJsonKey              = "SceneName";
 
-        static constexpr std::string_view k_hierarchyJsonKey                        = "Hierarchy";
-        static constexpr std::string_view k_childPrefabHierarchyNodeUUIDListJsonKey = "ChildPrefabHierarchyNodeUUIDList";
-        static constexpr std::string_view k_uuidJsonKey                             = "UUID";
-
-
+        static constexpr std::string_view k_diffJsonKey = "Diff";
     };
 }

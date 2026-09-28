@@ -71,7 +71,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     nlohmann::json l_rootJson = {};
 
     // Nameのシリアライズ
-    l_rootJson[k_nameJsonKey] = a_gameObject.GetREFName();
+    l_rootJson[Constant::k_gameObjectJsonConverterNameJsonKey] = a_gameObject.GetREFName();
  
     // PrefabUUIDのシリアライズ
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey));
@@ -124,7 +124,7 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
     }
 
     // Nameのデシリアライズ
-    const auto& l_name = a_rootJson.value(k_nameJsonKey, std::string{});
+    const auto& l_name = a_rootJson.value(Constant::k_gameObjectJsonConverterNameJsonKey, std::string{});
 
     a_gameObject.SetName(l_name);
  
