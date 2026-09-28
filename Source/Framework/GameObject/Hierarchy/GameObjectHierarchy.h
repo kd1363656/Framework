@@ -16,7 +16,8 @@ namespace FWK
     
         void INIT();
 
-        void Deserialize(const nlohmann::json& a_rootJson);
+        void DeserializeScene (const nlohmann::json& a_rootJson);
+        void DeserializePrefab(const nlohmann::json& a_rootJson);
 
         nlohmann::json Serialize() const;
 
@@ -34,6 +35,8 @@ namespace FWK
         void SetOwner (const std::weak_ptr<GameObject>& a_set) { m_owner  = a_set; }
         void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
 
+        const auto& GetREFPrefabRemovedChildUUIDSet() const { return m_prefabRemovedChildUUIDSet; }
+
         const auto& GetREFOwner () const { return m_owner; }
         const auto& GetREFParent() const { return m_parent; }
 
@@ -41,12 +44,9 @@ namespace FWK
 
         const auto& GetREFChildUUIDRegistry() const { return m_childUUIDRegistry; }
 
-        const auto& GetREFPrefabRemovedChildUUIDSet() const { return m_prefabRemovedChildUUIDSet; }
-
-        auto& GetMutableREFChildUUIDRegistry() { return m_childUUIDRegistry; }
-
         auto& GetMutableREFPrefabRemovedChildUUIDSet() { return m_prefabRemovedChildUUIDSet; }
 
+        auto& GetMutableREFChildUUIDRegistry() { return m_childUUIDRegistry; }
 
     private:
 
@@ -58,6 +58,8 @@ namespace FWK
 
         boost::uuids::uuid GenerateVALChildUUID() const;
 
+        std::unordered_set<boost::uuids::uuid> m_prefabRemovedChildUUIDSet = {};
+
         std::weak_ptr<GameObject> m_owner  = {};
         std::weak_ptr<GameObject> m_parent = {};
 
@@ -65,8 +67,6 @@ namespace FWK
 
         UUIDRegistry<std::weak_ptr<GameObject>> m_childUUIDRegistry = {};
 
-        std::unordered_set<boost::uuids::uuid> m_prefabRemovedChildUUIDSet = {};
-        
         Converter::GameObjectHierarchyJsonConverter m_jsonConverter = {};
     };
 }

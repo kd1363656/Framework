@@ -2,6 +2,8 @@
 
 void FWK::GameObjectHierarchy::INIT()
 {
+    m_prefabRemovedChildUUIDSet.clear();
+
     m_parent = {};
     m_owner  = {};
 
@@ -9,16 +11,20 @@ void FWK::GameObjectHierarchy::INIT()
 
     m_childUUIDRegistry.Clear();
 
-    m_prefabRemovedChildUUIDSet.clear();
-
     m_jsonConverter = {};
 }
 
-void FWK::GameObjectHierarchy::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::GameObjectHierarchy::DeserializeScene(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.Deserialize(a_rootJson, *this);
+    m_jsonConverter.DeserializeScene(a_rootJson, *this);
+}
+void FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
 nlohmann::json FWK::GameObjectHierarchy::Serialize() const

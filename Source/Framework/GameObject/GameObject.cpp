@@ -57,6 +57,8 @@ void FWK::GameObject::PostLateUpdate() const
     {
         m_transformComponent->PostLateUpdate();
     }
+
+    m_componentContainer.PostLateUpdate();
 }
 
 void FWK::GameObject::Destroy()

@@ -16,7 +16,8 @@ namespace FWK
     
         void INIT();
 
-        void Deserialize(const nlohmann::json& a_rootJson);
+        void DeserializeScene (const nlohmann::json& a_rootJson);
+        void DeserializePrefab(const nlohmann::json& a_rootJson);
 
         void PostDeserialize();
 
@@ -24,7 +25,7 @@ namespace FWK
         void Update        () const;
         void LateUpdate    () const;
         void PostLateUpdate() const;
-
+        
         void EditInspector() const;
 
         nlohmann::json Serialize() const;
@@ -32,7 +33,7 @@ namespace FWK
         void CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
 
         bool AddComponent                 (const std::shared_ptr<GameObjectComponentBase>& a_component);
-        void AddPrefabRemovedComponentUUID(const boost::uuids::uuid&             a_uuid);
+        void AddPrefabRemovedComponentUUID(const boost::uuids::uuid&                       a_uuid);
 
         void SweepExpiredComponents();
 

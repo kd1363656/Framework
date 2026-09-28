@@ -16,11 +16,17 @@ void FWK::GameObjectComponentContainer::INIT()
     m_jsonConverter = {};
 }
 
-void FWK::GameObjectComponentContainer::Deserialize(const nlohmann::json& a_rootJson)
+void FWK::GameObjectComponentContainer::DeserializeScene(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.Deserialize(a_rootJson, *this);
+    m_jsonConverter.DeserializeScene(a_rootJson, *this);
+}
+void FWK::GameObjectComponentContainer::DeserializePrefab(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
 }
 
 void FWK::GameObjectComponentContainer::PostDeserialize()
@@ -95,6 +101,7 @@ void FWK::GameObjectComponentContainer::LateUpdate() const
         l_component->LateUpdate();
     }
 }
+
 void FWK::GameObjectComponentContainer::PostLateUpdate() const
 {
     const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();

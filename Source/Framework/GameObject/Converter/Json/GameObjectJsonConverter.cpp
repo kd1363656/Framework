@@ -8,20 +8,26 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeScene(const nlohmann::j
  
     if (!l_gameObject) { return; }
  
+    // SceneInstanceUUIDのデシリアライズ
+    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey);
+        !l_uuid.is_nil())
+    {
+        l_gameObject->SetSceneInstanceUUID(l_uuid);
+    }
     // 共通するデシリアライズ処理を実行
     DeserializeCommon(a_rootJson, *l_gameObject);
 
     // ComponentContainerのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_componentContainerJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectJsonConverterComponentContainerJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         auto& l_componentContainer = l_gameObject->GetMutableREFComponentContainer();
  
-        l_componentContainer.Deserialize(l_json);
+        l_componentContainer.DeserializeScene(l_json);
     }
  
     // Hierarchyのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_hierarchyJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectJsonConverterHierarchyJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
@@ -41,17 +47,17 @@ void FWK::Converter::GameObjectJsonConverter::DeserializePrefab(const nlohmann::
     DeserializeCommon(a_rootJson, *l_gameObject);
  
     // ComponentContainer
-    if (const auto& l_json = a_rootJson.value(k_componentContainerJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectJsonConverterComponentContainerJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         auto& l_componentContainer = l_gameObject->GetMutableREFComponentContainer();
  
-        l_componentContainer.Deserialize(l_json);
+        l_componentContainer.DeserializePrefab(l_json);
     }
  
     // Hierarchy
     // Prefab用DeserializeではChildGameObjectListから子GameObjectも生成する
-    if (const auto& l_json = a_rootJson.value(k_hierarchyJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectJsonConverterHierarchyJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
@@ -68,21 +74,21 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     l_rootJson[k_nameJsonKey] = a_gameObject.GetREFName();
  
     // PrefabUUIDのシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), k_prefabUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey));
  
     // PrefabHierarchyNodeUUIDのシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), Constant::k_gameObjectJsonConverterPrefabHierarchyNodeUUIDJsonKey));
  
     // SceneInstanceUUIDのシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), k_sceneInstanceUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
  
     // IsPrefabOriginのシリアライズ
-    l_rootJson[k_isPrefabOriginJsonKey] = a_gameObject.GetVALIsPrefabOrigin();
+    l_rootJson[Constant::k_gameObjectJsonConverterIsPrefabOriginJsonKey] = a_gameObject.GetVALIsPrefabOrigin();
  
     // Transformのシリアライズ
     if (const auto& l_transform = a_gameObject.GetVALTransformComponent().lock())
     {
-        l_rootJson[k_transformJsonKey] = l_transform->Serialize();
+        l_rootJson[Constant::k_gameObjectJsonConverterTransformComponentJsonKey] = l_transform->Serialize();
     }
     else
     {
@@ -93,10 +99,10 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     const auto& l_hierarchy          = a_gameObject.GetREFHierarchy         ();
 
     // ComponentContainerのシリアライズ
-    l_rootJson[k_componentContainerJsonKey] = l_componentContainer.Serialize();
+    l_rootJson[Constant::k_gameObjectJsonConverterComponentContainerJsonKey] = l_componentContainer.Serialize();
  
     // Hierarchyのシリアライズ
-    l_rootJson[k_hierarchyJsonKey] = l_hierarchy.Serialize();
+    l_rootJson[Constant::k_gameObjectJsonConverterHierarchyJsonKey] = l_hierarchy.Serialize();
  
     return l_rootJson;
 }
@@ -104,7 +110,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
 void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::json& a_rootJson, GameObject& a_gameObject) const
 {
     // TransformComponentのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_transformJsonKey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(Constant::k_gameObjectJsonConverterTransformComponentJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         if (const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock())
@@ -123,28 +129,21 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
     a_gameObject.SetName(l_name);
  
     // PrefabUUIDのデシリアライズ
-    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, k_prefabUUIDJsonKey);
+    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey);
         !l_uuid.is_nil())
     {
         a_gameObject.SetPrefabUUID(l_uuid);
     }
 
     // PrefabHierarchyNodeUUIDのデシリアライズ
-    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, k_prefabHierarchyNodeUUIDJsonKey);
+    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectJsonConverterPrefabHierarchyNodeUUIDJsonKey);
         !l_uuid.is_nil())
     {
         a_gameObject.SetPrefabHierarchyNodeUUID(l_uuid);
     }
- 
-    // SceneInstanceUUIDのデシリアライズ
-    if (const auto& l_uuid = Utility::DeserializeUUID(a_rootJson, k_sceneInstanceUUIDJsonKey);
-        !l_uuid.is_nil())
-    {
-        a_gameObject.SetSceneInstanceUUID(l_uuid);
-    }
- 
+
     // プレハブかどうかのデシリアライズ
-    const bool l_isPrefabOrigin = a_rootJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOriginValue);
+    const bool l_isPrefabOrigin = a_rootJson.value(Constant::k_gameObjectJsonConverterIsPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOriginValue);
 
     a_gameObject.SetIsPrefabOrigin(l_isPrefabOrigin);
  

@@ -1432,6 +1432,9 @@
     <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector">
       <UniqueIdentifier>{e37dc275-3841-41f5-a6a4-a85c0d356f9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Camera\Inspector">
+      <UniqueIdentifier>{7391d18b-b4ad-4684-93f8-526cf4b2c82a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2769,10 +2772,10 @@
     <ClInclude Include="Source\Framework\GameObject\Prefab\Converter\Json\GameObjectPrefabJsonConverter.h">
       <Filter>Source\Framework\GameObject\Prefab\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\GameObjectPrefabSystem.h">
+    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\SceneGameObjectPrefabSystem.h">
       <Filter>Source\Framework\Scene\Prefab\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.h">
+    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\SceneGameObjectPrefabSystemJsonConverter.h">
       <Filter>Source\Framework\Scene\Prefab\GameObject\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentBase.h">
@@ -2827,6 +2830,12 @@
       <Filter>Source\Framework\GameObject\Component\Transform\Inspector</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.h">
+      <Filter>Source\Framework\GameObject\Component\Camera\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
@@ -3491,10 +3500,10 @@
     <ClCompile Include="Source\Framework\GameObject\Prefab\Converter\Json\GameObjectPrefabJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Prefab\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\GameObjectPrefabSystem.cpp">
+    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\SceneGameObjectPrefabSystem.cpp">
       <Filter>Source\Framework\Scene\Prefab\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\SceneGameObjectPrefabSystemJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Prefab\GameObject\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentBase.cpp">
@@ -3529,6 +3538,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\Transform\Inspector\GameObjectTransformComponentInspector.cpp">
       <Filter>Source\Framework\GameObject\Component\Transform\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.cpp">
+      <Filter>Source\Framework\GameObject\Component\Camera\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -483,8 +483,8 @@
 //===============================================================================
 #include "GameObject/Prefab/Converter/Json/GameObjectPrefabJsonConverter.h"
 #include "GameObject/Prefab/GameObjectPrefab.h"
-#include "Scene/Prefab/GameObject/Converter/Json/GameObjectPrefabSystemJsonConverter.h"
-#include "Scene/Prefab/GameObject/GameObjectPrefabSystem.h"
+#include "Scene/Prefab/GameObject/Converter/Json/SceneGameObjectPrefabSystemJsonConverter.h"
+#include "Scene/Prefab/GameObject/SceneGameObjectPrefabSystem.h"
 
 //===============================================================================
 // コンポーネント(基底クラス)
@@ -530,6 +530,7 @@
 #include "GameObject/Hierarchy/Converter/Json/GameObjectHierarchyJsonConverter.h"
 #include "GameObject/Hierarchy/GameObjectHierarchy.h"
 #include "Definition/Constant/GameObject/GameObjectConstant.h"
+#include "Definition/Constant/GameObject/GameObjectJsonConverterConstant.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "Definition/Enum/GameObject/GameObjectEnum.h"
 #include "GameObject/GameObject.h"
@@ -545,6 +546,7 @@
 // カメラコンポーネント
 //===============================================================================
 #include "GameObject/Component/Camera/Converter/Json/GameObjectCameraComponentJsonConverter.h"
+#include "GameObject/Component/Camera/Inspector/GameObjectCameraComponentInspector.h"
 #include "GameObject/Component/Camera/GameObjectCameraComponent.h"
 
 //===============================================================================

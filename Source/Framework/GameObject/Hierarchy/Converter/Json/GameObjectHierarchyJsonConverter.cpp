@@ -1,16 +1,32 @@
 ﻿#include "GameObjectHierarchyJsonConverter.h"
 
-void FWK::Converter::GameObjectHierarchyJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy)
+void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy)
 {
     if (a_rootJson.is_null()) { return; }
 
-    // 削除済みUUID集合の復元のみ行う
-    // 子UUIDListはSceneJsonConverter側で直接JSONから読み取って構築するため
-    // ここでは復元しない
+    // PrefabRemovedChildUUIDSetのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_prefabRemovedChildUUIDSetJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         DeserializePrefabRemovedChildUUIDSet(l_json, a_gameObjectHierarchy);
+    }
+}
+void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy)
+{
+    if (a_rootJson.is_null()) { return; }
+ 
+    // PrefabRemovedChildUUIDSetのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_prefabRemovedChildUUIDSetJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        DeserializePrefabRemovedChildUUIDSet(l_json, a_gameObjectHierarchy);
+    }
+ 
+    // ChildGameObjectListのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_childGameObjectListJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        DeserializeChildGameObjectList(l_json, a_gameObjectHierarchy);
     }
 }
 
@@ -18,27 +34,65 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::Serialize(const
 {
     nlohmann::json l_rootJson = {};
 
-    // 子PrefabHierarchyNodeUUIDListのシリアライズ
+    // ChildPrefabHierarchyNodeUUIDListのシリアライズ
     l_rootJson[k_childPrefabHierarchyNodeUUIDListJsonKey] = SerializeChildPrefabHierarchyNodeUUIDList(a_gameObjectHierarchy);
 
-    // 削除済みUUID集合のシリアライズ
+    // PrefabRemovedChildUUIDSetのシリアライズ
     l_rootJson[k_prefabRemovedChildUUIDSetJsonKey] = SerializePrefabRemovedChildUUIDSet(a_gameObjectHierarchy);
 
+    // ChildGameObjectListのシリアライズ
+    l_rootJson[k_childGameObjectListJsonKey] = SerializeChildGameObjectList(a_gameObjectHierarchy);
+ 
     return l_rootJson;
 }
 
-void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializePrefabRemovedChildUUIDSet(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy)
+void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializePrefabRemovedChildUUIDSet(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy) const
 {
-    if (!Utility::IsJsonArray(a_rootJson)) { return; }
+    if (a_rootJson.is_null() ||
+        !Utility::IsJsonArray(a_rootJson)) 
+    {
+        return; 
+    }
     
-    for (const auto& l_json : a_rootJson[k_prefabRemovedChildUUIDSetJsonKey])
+    // 配列JSONを直接ループする
+    for (const auto& l_json : a_rootJson)
     {
         const auto& l_uuid = Utility::DeserializeUUID(l_json, k_uuidJsonKey);
- 
+
         if (l_uuid.is_nil()) { continue; }
-        
-        // 削除されたコンポーネントをデシリアライズ
+
         a_gameObjectHierarchy.AddPrefabRemovedUUID(l_uuid);
+    }
+}
+
+void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChildGameObjectList(const nlohmann::json& a_rootJson, GameObjectHierarchy& a_gameObjectHierarchy) const
+{
+    if (a_rootJson.is_null() || 
+        !Utility::IsJsonArray(a_rootJson)) 
+    {
+        return; 
+    }
+ 
+    const auto& l_owner = a_gameObjectHierarchy.GetREFOwner().lock();
+ 
+    if (!l_owner) { return; }
+ 
+    for (const auto& l_json : a_rootJson)
+    {
+        if (l_json.is_null()) { continue; }
+ 
+        auto l_child = std::make_shared<GameObject>();
+ 
+        l_child->INIT();
+ 
+        // Prefab用Deserializeで子GameObjectを生成する
+        // これで子GameObjectもPrefab UUIDを持つようになる
+        l_child->DeserializePrefab(l_json);
+ 
+        // ApplyParentを使わずに直接親子リンクを設定する
+        auto& l_childHierarchy = l_child->GetMutableREFHierarchy();
+
+        l_childHierarchy.ConnectParentForDeserialize(l_owner);
     }
 }
 
@@ -89,4 +143,23 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeChildP
     }
  
     return l_childListJson;
+}
+
+nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeChildGameObjectList(const GameObjectHierarchy& a_gameObjectHierarchy) const
+{
+    nlohmann::json l_childGameObjectListJson = nlohmann::json::array();
+ 
+    const auto& l_childSmartPointerVectorList = a_gameObjectHierarchy.GetREFChildSmartPointerVectorList();
+    const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList    ();
+ 
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+ 
+        if (!l_child) { continue; }
+ 
+        l_childGameObjectListJson.emplace_back(l_child->Serialize());
+    }
+ 
+    return l_childGameObjectListJson;
 }

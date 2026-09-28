@@ -33,7 +33,11 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
     }
 
     // ゲームオブジェクトリストのデシリアライズ
-    DeserializeGameObjectList(a_rootJson, a_scene);
+    if (const auto& l_json = a_rootJson.value(k_gameObjectListJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        DeserializeGameObjectList(l_json, a_scene);
+    }
 }
 
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
@@ -64,12 +68,10 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
 
 void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
-    if (!Utility::IsJsonArray(a_rootJson, k_gameObjectListJsonKey)) { return; }
- 
 
 }
 
 nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(const Scene& a_scene) const
 {
-    return nlohmann::json();
+
 }

@@ -24,6 +24,8 @@ namespace FWK::Converter
 
         nlohmann::json SerializeGameObjectList(const Scene& a_scene) const;
 
+        nlohmann::json DetectAndMergePrefabDiff(const GameObject& a_gameObject, const nlohmann::json& a_prefabJson) const;
+
         static constexpr std::string_view k_gameObjectListJsonKey         = "GameObjectList";
         static constexpr std::string_view k_gameObjectPrefabSystemJsonKey = "GameObjectPrefabSystem";
         static constexpr std::string_view k_sceneChanger                  = "SceneChanger";
@@ -33,5 +35,7 @@ namespace FWK::Converter
         static constexpr std::string_view k_hierarchyJsonKey                        = "Hierarchy";
         static constexpr std::string_view k_childPrefabHierarchyNodeUUIDListJsonKey = "ChildPrefabHierarchyNodeUUIDList";
         static constexpr std::string_view k_uuidJsonKey                             = "UUID";
+
+
     };
 }

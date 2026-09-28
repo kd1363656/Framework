@@ -1,6 +1,6 @@
-﻿#include "GameObjectPrefabSystemJsonConverter.h"
+﻿#include "SceneGameObjectPrefabSystemJsonConverter.h"
 
-void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, GameObjectPrefabSystem& a_gameObjectPrefabSystem) const
+void FWK::Converter::ScenePrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const
 {
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson, k_prefabMapJsonKey))
@@ -53,7 +53,7 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
         l_gameObjectPrefab.Load(l_assetFilePath);
 
         // GameObjectPrefabファイル自体を読み込めなかった場合は、
-        // GameObjectPrefabSystemへ不完全なPrefabを登録しない
+        // SceneGameObjectPrefabSystemへ不完全なPrefabを登録しない
         // Scene上のGameObjectにGameObjectPrefabUUIDが残っていれば後から「GameObjectPrefabUUIDはあるがGameObjectPrefabSystemには存在しない」
         // 壊れた参照として判定できる
         if (l_gameObjectPrefab.GetREFJson().is_null())
@@ -63,16 +63,16 @@ void FWK::Converter::PrefabSystemJsonConverter::Deserialize(const nlohmann::json
             continue;
         }
 
-        a_gameObjectPrefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
+        a_sceneGameObjectPrefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
     }
 }
 
-nlohmann::json FWK::Converter::PrefabSystemJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, GameObjectPrefabSystem& a_gameObjectPrefabSystem) const
+nlohmann::json FWK::Converter::ScenePrefabSystemJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const
 {
     nlohmann::json l_rootJson  = {};
     auto           l_jsonArray = nlohmann::json::array();
 
-    const auto& l_prefabMap = a_gameObjectPrefabSystem.GetREFPrefabMap();
+    const auto& l_prefabMap = a_sceneGameObjectPrefabSystem.GetREFPrefabMap();
 
     for (const auto& [l_prefabUUID, l_prefab] : l_prefabMap)
     {

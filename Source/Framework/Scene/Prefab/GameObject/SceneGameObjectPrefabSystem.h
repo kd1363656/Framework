@@ -8,12 +8,12 @@ namespace FWK
 
 namespace FWK
 {
-    class GameObjectPrefabSystem final
+    class SceneGameObjectPrefabSystem final
     {
     public:
 
-         GameObjectPrefabSystem() = default;
-        ~GameObjectPrefabSystem() = default;
+         SceneGameObjectPrefabSystem() = default;
+        ~SceneGameObjectPrefabSystem() = default;
 
         void INIT       ();
         void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
@@ -35,6 +35,6 @@ namespace FWK
 
         std::unordered_map<boost::uuids::uuid, GameObjectPrefab> m_prefabMap = {};
 
-        Converter::PrefabSystemJsonConverter m_jsonConverter = {};
+        Converter::ScenePrefabSystemJsonConverter m_jsonConverter = {};
     };
 }

@@ -1,17 +1,17 @@
-﻿#include "GameObjectPrefabSystem.h"
+﻿#include "SceneGameObjectPrefabSystem.h"
 
-void FWK::GameObjectPrefabSystem::INIT()
+void FWK::SceneGameObjectPrefabSystem::INIT()
 {
     m_prefabMap.clear();
 }
-void FWK::GameObjectPrefabSystem::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry)
+void FWK::SceneGameObjectPrefabSystem::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
     if (a_rootJson.is_null()) { return; }
 
     m_jsonConverter.Deserialize(a_rootJson, a_assetFilePathRegistry, *this);
 }
 
-void FWK::GameObjectPrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const GameObjectPrefab& a_prefab)
+void FWK::SceneGameObjectPrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUUID, const GameObjectPrefab& a_prefab)
 {
     if (a_prefabUUID.is_nil())
     {
@@ -25,7 +25,7 @@ void FWK::GameObjectPrefabSystem::AddPrefab(const boost::uuids::uuid& a_prefabUU
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "同じPrefabUUIDが既に登録されており、PrefabSystemのプレハブマップに追加できませんでした。");
     }
 }
-void FWK::GameObjectPrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
+void FWK::SceneGameObjectPrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefabUUID)
 {
     // nilの場合hはPrefabSystemへ登録されないので
     // Map検索を行わず終了する
@@ -45,12 +45,12 @@ void FWK::GameObjectPrefabSystem::RemovePrefab(const boost::uuids::uuid& a_prefa
     FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
 }
 
-nlohmann::json FWK::GameObjectPrefabSystem::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry)
+nlohmann::json FWK::SceneGameObjectPrefabSystem::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry)
 {
     return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
 }
 
-const FWK::GameObjectPrefab* FWK::GameObjectPrefabSystem::FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const
+const FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindPTRPrefab(const boost::uuids::uuid& a_prefabUUID) const
 {
     // NilUUIDからPrefabを検索することはできない
     if (a_prefabUUID.is_nil()) { return nullptr; }
@@ -62,7 +62,7 @@ const FWK::GameObjectPrefab* FWK::GameObjectPrefabSystem::FindPTRPrefab(const bo
     return &l_itr->second;
 }
 
-FWK::GameObjectPrefab* FWK::GameObjectPrefabSystem::FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID)
+FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID)
 {
     // NilUUIDからPrefabを検索することはできない
     if (a_prefabUUID.is_nil()) { return nullptr; }

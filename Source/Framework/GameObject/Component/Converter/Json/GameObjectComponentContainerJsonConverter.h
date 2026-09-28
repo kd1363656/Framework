@@ -14,7 +14,8 @@ namespace FWK::Converter
          GameObjectComponentContainerJsonConverter() = default;
         ~GameObjectComponentContainerJsonConverter() = default;
     
-        void Deserialize(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer);
+        void DeserializeScene (const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const;
+        void DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const;
 
         nlohmann::json Serialize(const GameObjectComponentContainer& a_gameObjectComponentContainer) const;
 

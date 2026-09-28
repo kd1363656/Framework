@@ -374,6 +374,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowAssetCreatorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectComponentBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\Buffer\Constant\CBCameraPassStructConstant.h" />
@@ -548,6 +549,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Framework.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Camera\Converter\Json\GameObjectCameraComponentJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Camera\GameObjectCameraComponent.h" />
+    <ClInclude Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentBaseJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.h" />
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentBase.h" />
@@ -754,8 +756,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Scene\Changer\SceneChanger.h" />
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.h" />
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h" />
-    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\GameObjectPrefabSystem.h" />
+    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\SceneGameObjectPrefabSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Scene\Prefab\GameObject\SceneGameObjectPrefabSystem.h" />
     <ClInclude Include="Source\Framework\Scene\Scene.h" />
     <ClInclude Include="Source\Framework\Scene\SceneManager.h" />
     <ClInclude Include="Source\Framework\Strategy\StrategyBase.h" />
@@ -857,6 +859,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\FPS\FPSController.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Component\Camera\Converter\Json\GameObjectCameraComponentJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Component\Camera\GameObjectCameraComponent.cpp" />
+    <ClCompile Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentBaseJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Component\Converter\Json\GameObjectComponentContainerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\GameObject\Component\GameObjectComponentBase.cpp" />
@@ -1020,8 +1023,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Changer\SceneChanger.cpp" />
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp" />
-    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\GameObjectPrefabSystemJsonConverter.cpp" />
-    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\GameObjectPrefabSystem.cpp" />
+    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\Converter\Json\SceneGameObjectPrefabSystemJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Scene\Prefab\GameObject\SceneGameObjectPrefabSystem.cpp" />
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />

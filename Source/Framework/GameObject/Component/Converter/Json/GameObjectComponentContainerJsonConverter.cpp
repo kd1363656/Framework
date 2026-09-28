@@ -1,19 +1,20 @@
 ﻿#include "GameObjectComponentContainerJsonConverter.h"
 
-void FWK::Converter::GameObjectComponentContainerJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer)
+void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    if (a_rootJson.is_null()) { return; }
-
-    // ComponentListが存在しない、または配列でないなら復元対象なし
-    if (!Utility::IsJsonArray(a_rootJson, k_componentListJsonKey)) { return; }
+    if (a_rootJson.is_null() ||
+        !Utility::IsJsonArray(a_rootJson, k_componentListJsonKey)) 
+    {
+        return; 
+    }
  
     for (const auto& l_elementJson : a_rootJson[k_componentListJsonKey])
     {
-        if (!l_elementJson.is_object()) { continue; }
+        if (l_elementJson.is_null()) { continue; }
  
-        // 型名からファクトリー経由で生成する
         std::shared_ptr<GameObjectComponentBase> l_component = {};
  
+        // 生成すべきコンポーネントを生成
         Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_elementJson, k_componentTypeJsonKey, l_component);
  
         if (!l_component)
@@ -25,10 +26,39 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::Deserialize(cons
  
         const auto& l_componentJson = l_elementJson.value(k_componentDataJsonKey, nlohmann::json{});
  
-        // デシリアライズでデータを復元
         l_component->Deserialize(l_componentJson);
  
-        // UUIDの保持・再発行判定はコンテナ側の登録経路に委ねる
+        // コンポーネントコンテナに追加
+        a_gameObjectComponentContainer.AddComponent(l_component);
+    }
+}
+void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
+{
+    if (a_rootJson.is_null() ||
+        !Utility::IsJsonArray(a_rootJson, k_componentListJsonKey))
+    {
+        return; 
+    }
+ 
+    for (const auto& l_json : a_rootJson[k_componentListJsonKey])
+    {
+        if (l_json.is_null()) { continue; }
+ 
+        std::shared_ptr<GameObjectComponentBase> l_component = {};
+ 
+        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_json, k_componentTypeJsonKey, l_component);
+ 
+        if (!l_component)
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentTypeに対応するコンポーネントをFactoryから生成できませんでした。");
+ 
+            continue;
+        }
+ 
+        const auto& l_componentJson = l_json.value(k_componentDataJsonKey, nlohmann::json{});
+ 
+        l_component->Deserialize(l_componentJson);
+ 
         a_gameObjectComponentContainer.AddComponent(l_component);
     }
 }
@@ -50,14 +80,14 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Serial
  
         Utility::UpdateJson(l_componentJson, l_component->Serialize());
  
-        nlohmann::json l_elementJson = {};
+        nlohmann::json l_json = {};
  
-        Utility::UpdateJson(l_elementJson, Utility::SerializeInstanceType(l_component, k_componentTypeJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_component, k_componentTypeJsonKey));
  
         // シリアライズでデータを復元
-        l_elementJson[k_componentDataJsonKey] = std::move(l_componentJson);
+        l_json[k_componentDataJsonKey] = std::move(l_componentJson);
  
-        l_componentListJson.emplace_back(std::move(l_elementJson));
+        l_componentListJson.emplace_back(std::move(l_json));
     }
  
     l_rootJson[k_componentListJsonKey] = std::move(l_componentListJson);

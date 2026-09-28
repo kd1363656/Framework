@@ -136,6 +136,13 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
         return;
     }
 
+    // SceneInstanceUUIDがnilの場合は新規発行する
+    if (a_gameObject->GetREFSceneInstanceUUID().is_nil())
+    {
+        auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+ 
+        a_gameObject->SetSceneInstanceUUID(l_uuidManager.GenerateVALUUID());
+    }
     
     // 親GameObjectは、子GameObjectより先に
     // Sceneへ登録されなければならない
