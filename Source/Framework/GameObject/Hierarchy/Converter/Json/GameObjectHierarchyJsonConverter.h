@@ -53,11 +53,11 @@ namespace FWK::Converter
         nlohmann::json SerializeRemovedUUIDList(const std::unordered_set<boost::uuids::uuid>& a_removedUUIDSet) const;
  
         static constexpr std::string_view k_addedJsonKey                   = "Added";
+        static constexpr std::string_view k_orderUUIDListJsonKey           = "OrderUUIDList";
         static constexpr std::string_view k_removedUUIDListJsonKey         = "RemovedUUIDList";
         static constexpr std::string_view k_removedUUIDJsonKey             = "RemovedUUID";
         static constexpr std::string_view k_modifiedJsonKey                = "Modified";
-        static constexpr std::string_view k_childListJsonKey               = "ChildList";
         static constexpr std::string_view k_prefabHierarchyNodeUUIDJsonKey = "PrefabHierarchyNodeUUID";
-        static constexpr std::string_view k_gameObjectDataJsonKey          = "GameObjectData";
+        static constexpr std::string_view k_gameObjectDataJsonKey          = "GameObjectData"
     };
 }

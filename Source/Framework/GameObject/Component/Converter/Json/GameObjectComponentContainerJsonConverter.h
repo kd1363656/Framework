@@ -38,7 +38,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_removedUUIDJsonKey     = "RemovedUUID";
         static constexpr std::string_view k_modifiedJsonKey        = "Modified";
         static constexpr std::string_view k_componentUUIDJsonKey   = "ComponentUUID";
-        static constexpr std::string_view k_componentListJsonKey   = "ComponentList";
         static constexpr std::string_view k_componentTypeJsonKey   = "ComponentType";
         static constexpr std::string_view k_componentDataJsonKey   = "ComponentData";
 

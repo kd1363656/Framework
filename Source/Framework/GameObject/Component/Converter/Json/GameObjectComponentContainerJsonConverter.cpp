@@ -2,8 +2,8 @@
 
 void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    const auto& l_sceneComponentListJson  = a_rootJson .value (k_componentListJsonKey, nlohmann::json{});
-    const auto& l_prefabComponentListJson = a_prefabJson.value(k_componentListJsonKey, nlohmann::json{});
+    const auto& l_sceneComponentListJson  = a_rootJson .value (Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
+    const auto& l_prefabComponentListJson = a_prefabJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
  
     // Prefab基底のComponentListが存在し、
     // かつシーン側が差分構造(配列以外)ならPrefab+差分マージして読む
@@ -31,7 +31,7 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene
 }
 void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    const auto& l_componentListJson = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
+    const auto& l_componentListJson = a_rootJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
 
     DeserializeComponentList(l_componentListJson, a_gameObjectComponentContainer);
 }
@@ -41,13 +41,13 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Serial
     nlohmann::json l_rootJson = {};
 
     // コンポーネントリストをシリアライズ
-    l_rootJson[k_componentListJsonKey] = SerializeComponentList(a_gameObjectComponentContainer);
+    l_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey] = SerializeComponentList(a_gameObjectComponentContainer);
 
     return l_rootJson;
 }
 nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::SerializeDiff(const nlohmann::json& a_prefabJson, const GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    const auto& l_rootJson = a_prefabJson.value(k_componentListJsonKey, nlohmann::json{});
+    const auto& l_rootJson = a_prefabJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
  
     // Prefab基底が無ければ差分は作れないので空の差分構造を返す
     if (!l_rootJson.is_array())
@@ -158,6 +158,9 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Serial
 
     for (const auto& l_uuid : a_removedUUIDSet)
     {
+        // Nil値のUUIDはまともに機能しないためcontinue
+        if (l_uuid.is_nil()) { continue; }
+
         // {"RemovedUUID": "..."} 形式で出力する(DeserializeRemovedUUIDListと対称)
         l_jsonArray.emplace_back(Utility::SerializeUUID(l_uuid, k_removedUUIDJsonKey));
     }
