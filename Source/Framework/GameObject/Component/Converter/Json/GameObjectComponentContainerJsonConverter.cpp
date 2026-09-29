@@ -310,9 +310,10 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
     const auto& l_modifiedJsonArray = a_diffJson.value(k_modifiedJsonKey,        nlohmann::json::array());
     const auto& l_addedJsonArray    = a_diffJson.value(k_addedJsonKey,           nlohmann::json::array());
  
-    // RemovedをUUIDSetへ
+    // 削除されたコンポーネントを高速で調べるためのSet
     std::unordered_set<boost::uuids::uuid> l_removedUUIDSet = {};
  
+    // 削除されたPrefabゆらいのコンポーネントをデシリアライズ
     for (const auto& l_json : l_removedJsonArray)
     {
         if (!l_json.is_object()) { continue; }
@@ -324,9 +325,10 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
         l_removedUUIDSet.emplace(l_removedUUID);
     }
  
+    // 変更があったコンポーネントをUUIDとJsonで対応付けるためのMap
     std::unordered_map<boost::uuids::uuid, const nlohmann::json*> l_modifiedMap = {};
  
-    // ModifiedをUUIDMapへ追加
+    // Modified(変更のあったコンポーネント)をUUIDMapへ追加
     for (const auto& l_json : l_modifiedJsonArray)
     {
         const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
@@ -336,6 +338,7 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
         l_modifiedMap.try_emplace(l_uuid, &l_json);
     }
  
+    // ベースJsonと変更の加わった内容を保持するための葉入れ宇
     auto l_mergedJsonArray = nlohmann::json::array();
  
     // base(Prefab側)を走査、Removedを飛ばしModifiedを差分適用する
@@ -344,6 +347,7 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
     {
         const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
  
+        // 取得したUUIDがシーン上で削除されたコンポーネントのものなら処理をスキップ
         if (l_uuid.is_nil() ||
             l_removedUUIDSet.contains(l_uuid))
         {
@@ -360,9 +364,15 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
             // 念のためヌルチェック
             if (!l_modifiedJson) { continue; }
 
-            l_mergedComponentJson[k_componentDataJsonKey] = Utility::ApplyJsonDiff(l_json.value(k_componentDataJsonKey, nlohmann::json{}), l_modifiedJson->value(k_componentDataJsonKey, nlohmann::json{}));
+            const auto& l_componentDataJson     = l_json.value         (k_componentDataJsonKey, nlohmann::json{});
+            const auto& l_componentModifiedJson = l_modifiedJson->value(k_componentDataJsonKey, nlohmann::json{});
+
+            // Prefabに保存されているコンポーネントデータとそのコンポーネントがシーンで変更された情報マージし
+            // キーはコンポーネントデータとして保存
+            l_mergedComponentJson[k_componentDataJsonKey] = Utility::ApplyJsonDiff(l_componentDataJson, l_componentModifiedJson);
         }
  
+        // マージ結果を保存
         l_mergedJsonArray.emplace_back(std::move(l_mergedComponentJson));
     }
  
@@ -373,37 +383,93 @@ void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentLi
     }
  
     // OrderUUIDListがあればマージ済みリストをその順序へ並べ替える
-    // リストに無いUUID(Prefabに後から追加されたもの等)は末尾へ
     if (const auto& l_orderJsonArray = a_diffJson.value(k_orderUUIDListJsonKey, nlohmann::json{});
         l_orderJsonArray.is_array())
     {
-        std::unordered_map<boost::uuids::uuid, std::size_t> l_orderMap   = {};
-        std::size_t                                         l_orderIndex = k_initialComponentListOrderIndex;
+        // マージ済みエントリをUUIDで引けるようにする
+        std::unordered_map<boost::uuids::uuid, nlohmann::json> l_mergedEntryMap = {};
      
-        for (const auto& l_json : l_orderJsonArray)
+        for (auto& l_json : l_mergedJsonArray)
         {
             const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
      
             if (l_uuid.is_nil()) { continue; }
      
-            l_orderMap.try_emplace(l_uuid, l_orderIndex++);
+            l_mergedEntryMap.try_emplace(l_uuid, std::move(l_json));
         }
      
-        std::stable_sort(l_mergedJsonArray.begin(), l_mergedJsonArray.end(),
-                         [&l_orderMap](const nlohmann::json& a_leftJson, const nlohmann::json& a_rightJson)
-                         {
-                             const auto& l_leftUUID  = Utility::DeserializeUUID(a_leftJson,  k_componentUUIDJsonKey);
-                             const auto& l_rightUUID = Utility::DeserializeUUID(a_rightJson, k_componentUUIDJsonKey);
-                         
-                             const auto& l_leftItr  = l_orderMap.find(l_leftUUID);
-                             const auto& l_rightItr = l_orderMap.find(l_rightUUID);
-                         
-                             // 順序リストに無いものは末尾(既存の相対順序はstable_sortで維持される)
-                             const std::size_t l_leftOrder  = l_leftItr  != l_orderMap.end() ? l_leftItr->second  : std::numeric_limits<std::size_t>::max();
-                             const std::size_t l_rightOrder = l_rightItr != l_orderMap.end() ? l_rightItr->second : std::numeric_limits<std::size_t>::max();
-                         
-                             return l_leftOrder < l_rightOrder;
-                         });
+        // OrderUUIDList(保存時の並び)の順に、現在も存在するUUIDだけ並べる
+        std::vector<boost::uuids::uuid>        l_resultOrderUUIDList = {};
+        std::unordered_set<boost::uuids::uuid> l_placedUUIDSet       = {};
+     
+        for (const auto& l_json : l_orderJsonArray)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+     
+            // マージされたマップに存在しないUUIDなら処理を飛ばす
+            // 追加されたとしたらシーンJsonにかきこまれるべきだからおかしい
+            if (l_uuid.is_nil() ||
+                !l_mergedEntryMap.contains(l_uuid))
+            {
+                continue;
+            }
+     
+            l_resultOrderUUIDList.emplace_back(l_uuid);
+            l_placedUUIDSet.emplace           (l_uuid);
+        }
+     
+        // OrderUUIDListに無いPrefab由来コンポーネント(Prefab側の後追い追加)を
+        // Prefab順で直前の既知コンポーネントの直後へ挿入する
+        boost::uuids::uuid l_anchorUUID = {};
+     
+        for (const auto& l_json : a_baseJson)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+     
+            if (l_uuid.is_nil()) { continue; }
+     
+            // 既に配置済み = 順序確定済みなのでアンカーとして記憶する
+            if (l_placedUUIDSet.contains(l_uuid))
+            {
+                l_anchorUUID = l_uuid;
+     
+                continue;
+            }
+     
+            // マージ済みに存在しない = Removed等なので対象外
+            if (!l_mergedEntryMap.contains(l_uuid)) { continue; }
+     
+            if (l_anchorUUID.is_nil())
+            {
+                // アンカーが無い = Prefab先頭への挿入
+                l_resultOrderUUIDList.insert(l_resultOrderUUIDList.begin(), l_uuid);
+            }
+            else
+            {
+                // アンカーの直後へ挿入
+                const auto& l_anchorItr = std::find(l_resultOrderUUIDList.begin(), l_resultOrderUUIDList.end(), l_anchorUUID);
+     
+                l_resultOrderUUIDList.insert(std::next(l_anchorItr), l_uuid);
+            }
+     
+            // 挿入したコンポーネント自身を次のアンカーにする
+            // (Prefab側で連続追加されたコンポーネントの順序を維持するため)
+            l_anchorUUID = l_uuid;
+     
+            l_placedUUIDSet.emplace(l_uuid);
+        }
+     
+        // 3. 確定した順序でエントリを再配置する
+        l_mergedJsonArray.clear();
+     
+        for (const auto& l_uuid : l_resultOrderUUIDList)
+        {
+            if (const auto& l_itr = l_mergedEntryMap.find(l_uuid);
+                l_itr != l_mergedEntryMap.end())
+            {
+                l_mergedJsonArray.emplace_back(std::move(l_itr->second));
+            }
+        }
     }
 
     // ベースJsonに差分をマージしたJsonをMove
