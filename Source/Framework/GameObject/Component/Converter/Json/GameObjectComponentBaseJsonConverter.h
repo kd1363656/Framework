@@ -20,6 +20,7 @@ namespace FWK::Converter
         
     private:
 
+        static constexpr std::string_view k_uuidKey               = "UUID";
         static constexpr std::string_view k_isDisableJsonKey      = "IsDisable";
         static constexpr std::string_view k_isPrefabOriginJsonKey = "IsPrefabOrigin";
     };

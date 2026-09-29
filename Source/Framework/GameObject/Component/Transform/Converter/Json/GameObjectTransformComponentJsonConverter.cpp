@@ -1,6 +1,6 @@
 ﻿#include "GameObjectTransformComponentJsonConverter.h"
 
-void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponent& a_gameObjectTransformComponent) const
+void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponent& a_transformComponent) const
 {
     if (a_rootJson.is_null()) { return; }
 
@@ -8,11 +8,11 @@ void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(cons
     const auto& l_rotation = Utility::DeserializeQuaternion(a_rootJson, k_rotationJsonKey);
     const auto& l_position = Utility::DeserializeVector3   (a_rootJson, k_positionJsonKey);
 
-    a_gameObjectTransformComponent.ApplyTransformScale   (l_scale);
-    a_gameObjectTransformComponent.ApplyTransformRotation(l_rotation);
-    a_gameObjectTransformComponent.ApplyTransformPosition(l_position);
+    a_transformComponent.ApplyTransformScale   (l_scale);
+    a_transformComponent.ApplyTransformRotation(l_rotation);
+    a_transformComponent.ApplyTransformPosition(l_position);
 
-    auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetMutableREFMatrixUpdateMode();
+    auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
 
     Utility::DeserializeInstanceType<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(a_rootJson, k_matrixUpdateModeBaseJsonKey, l_matrixUpdateMode);
 

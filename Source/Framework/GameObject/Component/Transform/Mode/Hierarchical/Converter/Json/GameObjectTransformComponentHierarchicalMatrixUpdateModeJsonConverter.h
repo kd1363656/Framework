@@ -14,9 +14,9 @@ namespace FWK::Converter
          GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter() = default;
         ~GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter() = default;
 
-        void Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_gameObjectTransformComponentMatrixUpdateHierarchicalMode) const;
+        void Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_matrixUpdateHierarchicalMode) const;
         
-        nlohmann::json Serialize(const GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_gameObjectTransformComponentMatrixUpdateHierarchicalMode) const;
+        nlohmann::json Serialize(const GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_matrixUpdateHierarchicalMode) const;
 
     private:
 

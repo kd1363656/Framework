@@ -30,10 +30,12 @@ namespace FWK
     
         Graphics::Camera m_camera = {};
 
+        GameObjectCameraComponentInspector m_inspector = {};
+
         Converter::GameObjectCameraComponentJsonConverter m_jsonConverter = {};
 
         FWK_DEFINE_TYPE_INFO(GameObjectCameraComponent, GameObjectComponentBase)
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ComponentSharedFactory, FWK::GameObjectCameraComponent)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::GameObjectComponentSharedFactory, FWK::GameObjectCameraComponent)

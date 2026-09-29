@@ -16,7 +16,7 @@ void FWK::GameObjectCameraComponent::PostDeserialize()
 void FWK::GameObjectCameraComponent::EarlyUpdate()
 {
     const auto& l_application = Application::GetInstance    ();
-    const auto& l_window = l_application.GetREFWindow  ();
+    const auto& l_window      = l_application.GetREFWindow  ();
 
     // リサイズ申請がされたときのみにアスペクト比率を更新する
     if (const auto& l_resizeRequest = l_window.GetREFResizeRequest();
@@ -34,7 +34,7 @@ void FWK::GameObjectCameraComponent::PostLateUpdate()
 
 void FWK::GameObjectCameraComponent::EditInspector()
 {
-
+    m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::GameObjectCameraComponent::Serialize() const

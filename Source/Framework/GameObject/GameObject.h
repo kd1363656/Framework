@@ -11,8 +11,12 @@ namespace FWK
     
         void INIT();
 
-        void DeserializeScene (const nlohmann::json& a_rootJson);
-        void DeserializePrefab(const nlohmann::json& a_rootJson);
+        void DeserializeScene(const nlohmann::json&              a_rootJson,
+                              const nlohmann::json&              a_baseJson,
+                              const SceneGameObjectPrefabSystem& a_prefabSystem,
+                                    Scene&                       a_scene);
+
+        void DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene);
 
         void PostDeserialize();
 
@@ -25,9 +29,13 @@ namespace FWK
 
         void EditInspector();
 
-        nlohmann::json Serialize() const;
-
+        nlohmann::json Serialize     (      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
+        nlohmann::json SerializeScene(      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
+        nlohmann::json SerializeDiff (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
+        
         void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID);
+
+        void DetachFromPrefab();
 
         void ClearAllPrefabRemovedUUIDSet();
 
@@ -38,6 +46,8 @@ namespace FWK
         void SetSceneInstanceUUID      (const boost::uuids::uuid& a_set) { m_sceneInstanceUUID       = a_set; }
 
         void SetIsPrefabOrigin(const bool a_set) { m_isPrefabOrigin = a_set; }
+
+        bool FetchVALIsPrefabInternalChild() const;
 
         const auto& GetREFHierarchy         () const { return m_hierarchy; }
         const auto& GetREFComponentContainer() const { return m_componentContainer; }
@@ -76,6 +86,6 @@ namespace FWK
         boost::uuids::uuid m_sceneInstanceUUID       = {};
 
         bool m_isDestroyed    = false;
-        bool m_isPrefabOrigin = Constant::l_gameObjectInitialValueIsPrefabOriginValue;
+        bool m_isPrefabOrigin = Constant::l_gameObjectInitialValueIsPrefabOrigin;
     };
 }

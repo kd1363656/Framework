@@ -14,7 +14,7 @@ namespace FWK
          GameObjectTransformComponentInspector() = default;
         ~GameObjectTransformComponentInspector() = default;
 
-        void EditInspector(GameObjectTransformComponent& a_gameObjectTransformComponent);
+        void EditInspector(GameObjectTransformComponent& a_transformComponent);
 
     private:
 

@@ -166,20 +166,20 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
         return;
     }
 
-    auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+    auto& l_gameObjectPrefabSystem = l_scene->GetMutableREFGameObjectPrefabSystem();
 
     // すでにPrefabSystemへ同じPrefabUUIDが存在する場合は、
     // 同じPrefabを二重登録しない
-    if (l_prefabSystem.FindPTRPrefab(a_prefabUUID)) { return; }
+    if (l_gameObjectPrefabSystem.FindPTRPrefab(a_prefabUUID)) { return; }
 
-    Prefab l_prefab = {};
+    GameObjectPrefab l_gameObjectPrefab = {};
 
     // Add通知はJson生成直後に届く可能性がある
     // Prefab::Load()内部でJsonを実際に読み込ませ、
     // 書き込み途中の不完全なPrefabをPrefabSystemへ登録しない
-    l_prefab.Load(a_filePath);
+    l_gameObjectPrefab.Load(a_filePath);
 
-    if (l_prefab.GetREFJson().is_null())
+    if (l_gameObjectPrefab.GetREFJson().is_null())
     {
         // SceneRegistryを今回追加した場合だけ元に戻す
         // 元から存在していたRegistry情報は削除しない
@@ -193,12 +193,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
         return;
     }
 
-    l_prefabSystem.AddPrefab(a_prefabUUID, l_prefab);
-
-    // Prefab作成元のGameObjectなどが既にSceneに存在する場合
-    // PrefabSystemへPrefabを追加した後に代表GameObject候補として再確認する
-
-    // TODO
+    l_gameObjectPrefabSystem.AddPrefab(a_prefabUUID, l_gameObjectPrefab);
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID, SceneManager& a_sceneManager)
 {
@@ -207,19 +202,18 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(cons
     {
         return;
     }
-
-    // 現在の設計ではCurrentScene自身を
-    // Scene側AssetFilePathRegistryへ登録していないため、
+ 
     // CurrentSceneの新規保存によるADD通知ならここでは何もしない
     if (a_sceneManager.GetREFCurrentSceneFilePath() == a_filePath) { return; }
-
+ 
     const auto& l_scene = a_sceneManager.GetVALScene().lock();
-
+ 
     if (!l_scene) { return; }
-
-    const auto& l_sceneAssetFilePathRegistry = l_scene->GetREFAssetFilePathRegistry   ();
-    const auto& l_nextSceneLoadFilePathMap   = l_scene->GetREFNextSceneLoadFilePathMap();
-
+ 
+    const auto& l_sceneAssetFilePathRegistry = l_scene->GetREFAssetFilePathRegistry ();
+          auto& l_sceneChanger               = l_scene->GetMutableREFSceneChanger   ();
+    const auto& l_nextSceneDataMap           = l_sceneChanger.GetREFNextSceneDataMap();
+ 
     // Scene側Registryへすでに同じFilePathが存在する場合
     if (const auto* l_sceneSceneUUID = l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_filePath);
         l_sceneSceneUUID)
@@ -233,47 +227,69 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(cons
             l_assetFilePathData->m_assetFilePath != a_filePath)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistryに登録されているScene情報がAssetBrowser側と一致しません。\nFilePath : {}", a_filePath.string());
-
+ 
             return;
         }
-
-        // RegistryとNextSceneMapの両方へ既に登録されている場合は何もしない
-        if (const auto& l_nextSceneLoadFilePathITR = l_nextSceneLoadFilePathMap.find(a_sceneUUID);
-            l_nextSceneLoadFilePathITR != l_nextSceneLoadFilePathMap.end())
+ 
+        // RegistryとNextSceneDataMapの両方へ既に登録されている場合は何もしない
+        if (const auto& l_nextSceneDataITR = l_nextSceneDataMap.find(a_sceneUUID);
+            l_nextSceneDataITR != l_nextSceneDataMap.end())
         {
-            if (l_nextSceneLoadFilePathITR->second != a_filePath)
+            if (l_nextSceneDataITR->second.m_filePath != a_filePath)
             {
-                FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistryとNextSceneLoadFilePathMapでSceneFilePathが一致しません。\nFilePath : {}", a_filePath.string());
+                FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistryとSceneChangerのNextSceneDataMapでSceneFilePathが一致しません。\nFilePath : {}", a_filePath.string());
             }
-
+ 
             return;
         }
-
-        // Registryだけ存在してNextSceneLoadFilePathMapに存在しない
-        // UUID版APIで不足しているMAP登録を完成させる
-        if (!l_scene->AddNextSceneLoadFilePath(a_sceneUUID) &&
+ 
+        // Registryだけ存在してNextSceneDataMapに存在しない
+        // Registryから正式なPathを引く版で不足しているMap登録を完成させる
+        if (!l_sceneChanger.AddNextSceneData(a_sceneUUID, l_sceneAssetFilePathRegistry) &&
             !Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension))
         {
             SetIsRequiresRetry(true);
         }
-
+ 
         return;
     }
-
-
+ 
+ 
     // UUIDが別FilePathとして既に登録されている場合は、
     // AddChange側で勝手にFilePathを書き換えない
     if (l_sceneAssetFilePathRegistry.FindPTRAssetFilePathData(a_sceneUUID) ||
-        l_nextSceneLoadFilePathMap.contains(a_sceneUUID))
+        l_nextSceneDataMap.contains(a_sceneUUID))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneUUIDがScene側へ別の状態で既に登録されているため、追加されたSceneを同期できません。\nFilePath : {}", a_filePath.string());
-
+ 
         return;
     }
-
-    if (!l_scene->AddNextSceneLoadFilePath(a_filePath, a_sceneUUID) &&
-        !Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension))
+ 
+    auto& l_mutableSceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
+    auto& l_mutableSceneChanger               = l_scene->GetMutableREFSceneChanger         ();
+ 
+    // まずScene側RegistryへSceneとして登録する
+    if (!l_mutableSceneAssetFilePathRegistry.Add(a_filePath, a_sceneUUID, Enum::AssetFilePathRegistryType::Scene))
     {
-        SetIsRequiresRetry(true);
+        if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension))
+        {
+            SetIsRequiresRetry(true);
+        }
+ 
+        return;
+    }
+ 
+    // Registry登録に成功した後、
+    // Registryから正式なPathを引く版でNextSceneDataMapへ登録する
+    if (!l_mutableSceneChanger.AddNextSceneData(a_sceneUUID, l_sceneAssetFilePathRegistry))
+    {
+        // NextSceneDataMapへの登録に失敗した場合
+        // RegistryだけにSceneが残る中途半端な状態を防ぐ
+        l_mutableSceneAssetFilePathRegistry.Erase(a_filePath);
+ 
+        if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension))
+        {
+            SetIsRequiresRetry(true);
+        }
     }
 }

@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-    inline constexpr bool l_gameObjectInitialValueIsPrefabOriginValue = false;
+    inline constexpr bool l_gameObjectInitialValueIsPrefabOrigin = false;
 }

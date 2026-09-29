@@ -52,9 +52,45 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         return {};
     }
 
-    // TODO
-
-    return {};
+    // 空のGameObjectを保持したPrefabファイルを作成する
+    // GameObjectはINIT内でweak_from_thisを使うため
+    // shared_ptr管理でなければbad_weak_ptrが投げられる
+    const auto& l_gameObject = std::make_shared<GameObject>();
+     
+    l_gameObject->INIT   ();
+    l_gameObject->SetName(l_prefabFilePath.stem().string());
+     
+    // 新規の空GameObjectにはPrefabインスタンスの子が存在しないため
+    // シリアライズ用の一時的なPrefabSystemで十分
+    SceneGameObjectPrefabSystem l_prefabSystem = {};
+     
+    l_prefabSystem.INIT();
+     
+    GameObjectPrefab l_gameObjectPrefab = {};
+     
+    // Save内部でConvertToPrefabが呼ばれ
+    // GameObjectと子孫へPrefabUUID/IsPrefabOriginが設定されてから
+    // GameObjectJsonConverter::Serializeでフル形式のPrefabJsonが作られる
+    if (!l_gameObjectPrefab.Save(l_prefabFilePath,
+                                 l_prefabUUID,
+                                 l_prefabSystem,
+                                 *l_gameObject))
+    {
+        // Registryだけにエントリが残るとWatcherが間違って
+        // ファイルを削除しないようになるため、Registryから削除して登録前の状態へ戻す
+        a_assetFilePathRegistry.Erase(l_prefabFilePath);
+     
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_prefabFilePath.string());
+     
+        return {};
+    }
+     
+    Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
+     
+    l_result.m_createdFilePath = l_prefabFilePath;
+    l_result.m_isSuccess       = true;
+     
+    return l_result;
 }
 FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreateScene(const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
@@ -125,11 +161,6 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 
 void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
 {
-    // 既存のPrefabファイルを読み込む
-    // Prefab::Loadは内部でPrefabJsonConverter::Loadを呼び
-    // JSONからPrefabNameとGameObject情報を復元する
-    Prefab l_prefab = {};
-
     // 新しいファイル名(stem)をPrefabNameとして設定
     // 例 : "Prefab.json" -> "Prefab"
     // これがJson内の"PrefabName"フィールドに保存される
@@ -138,7 +169,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::
 
     // 古いファイルパスから新しいファイルパスに変更(NewPrefab.jsonがPrefab.jsonといった具合でファイル名が変わればパスも変わるから)
     // 新しいプレハブ名をJSONファイルに反映する
-    Converter::PrefabJsonConverter::Rename(a_oldFilePath, a_newFilePath, l_newPrefabName);
+    Converter::GameObjectPrefabJsonConverter::Rename(a_oldFilePath, a_newFilePath, l_newPrefabName);
 }
 void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
 {

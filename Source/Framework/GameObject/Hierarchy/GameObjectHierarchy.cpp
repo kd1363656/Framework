@@ -14,22 +14,36 @@ void FWK::GameObjectHierarchy::INIT()
     m_jsonConverter = {};
 }
 
-void FWK::GameObjectHierarchy::DeserializeScene(const nlohmann::json& a_rootJson)
+void FWK::GameObjectHierarchy::DeserializeScene(const nlohmann::json&              a_rootJson, 
+                                                const nlohmann::json&              a_prefabJson,
+                                                const SceneGameObjectPrefabSystem& a_prefabSystem, 
+                                                      Scene&                       a_scene)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializeScene(a_rootJson, *this);
+    m_jsonConverter.DeserializeScene(a_rootJson, 
+                                     a_prefabJson, 
+                                     a_prefabSystem,
+                                     *this, 
+                                     a_scene);
 }
-void FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json& a_rootJson)
+void FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializePrefab(a_rootJson, *this);
+    m_jsonConverter.DeserializePrefab(a_rootJson, 
+                                      a_prefabSystem,
+                                      *this, 
+                                      a_scene);
 }
 
-nlohmann::json FWK::GameObjectHierarchy::Serialize() const
+nlohmann::json FWK::GameObjectHierarchy::Serialize(SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
-    return m_jsonConverter.Serialize(*this);
+    return m_jsonConverter.Serialize(*this, a_prefabSystem);
+}
+nlohmann::json FWK::GameObjectHierarchy::SerializeDiff(const nlohmann::json& a_prefabJson, SceneGameObjectPrefabSystem& a_prefabSystem) const
+{
+    return m_jsonConverter.SerializeDiff(a_prefabJson, *this, a_prefabSystem);
 }
 
 void FWK::GameObjectHierarchy::CloneTo(GameObjectHierarchy& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const
@@ -42,6 +56,37 @@ void FWK::GameObjectHierarchy::CloneTo(GameObjectHierarchy& a_cloneTarget, const
 
     // 削除済みUUIDは引き継ぐ
     a_cloneTarget.m_prefabRemovedChildUUIDSet = m_prefabRemovedChildUUIDSet;
+}
+
+void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const
+{
+    const auto& l_childList = m_childSmartPointerVectorList.GetREFElementDataList();
+
+    for (const auto& l_childData : l_childList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+
+        if (!l_child) { continue; }
+
+        // 既に別のPrefabのインスタンスである子には伝播しない
+        // その子は別のPrefabとして独自に更新伝播を受ける
+        // PrefabUUIDに何かしら入っている場合はPrefab
+        // なので処理を飛ばすこのゲームオブジェクトのプレハブの一部として扱わない
+        if (const auto& l_childPrefabUUID = l_child->GetREFPrefabUUID();
+            !l_childPrefabUUID.is_nil() &&
+            l_childPrefabUUID != a_prefabUUID)
+        {
+            continue;
+        }
+
+        l_child->ConvertToPrefab(a_prefabUUID);
+    }
+}
+
+void FWK::GameObjectHierarchy::DetachFromPrefab()
+{
+    // Prefab更新伝播用の削除追跡はPrefab由来ではなくなったため不要
+    m_prefabRemovedChildUUIDSet.clear();
 }
 
 bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)

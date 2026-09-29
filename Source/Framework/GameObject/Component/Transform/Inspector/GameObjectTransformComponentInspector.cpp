@@ -1,22 +1,22 @@
 ﻿#include "GameObjectTransformComponentInspector.h"
 
-void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_gameObjectTransformComponent)
+void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_transformComponent)
 {
-    auto& l_transform        = a_gameObjectTransformComponent.GetMutableREFTransform       ();
-    auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetMutableREFMatrixUpdateMode();
+    auto& l_transform        = a_transformComponent.GetMutableREFTransform       ();
+    auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
 
     // 行列の計算方法を選択することができるラジオボタンリスト
     // 新しく生成されたらMatrix確定処理を実行
     if (Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
     {
         // 関連するポインタとつなげる処理
-        l_matrixUpdateMode->PostDeserialize(a_gameObjectTransformComponent);
+        l_matrixUpdateMode->PostDeserialize(a_transformComponent);
     }
 
     // 位置
     if (ImGui::DragFloat3(k_transformPositionLabel.data(), &l_transform.m_position.x, Constant::k_imguiDefaultDragValue))
     {
-        a_gameObjectTransformComponent.SetShouldUpdateMatrixDirty(true);
+        a_transformComponent.SetShouldUpdateMatrixDirty(true);
     }
 
     // 回転
@@ -28,7 +28,7 @@ void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransfo
 
         l_transform.m_rotation = l_dragResult;
 
-        a_gameObjectTransformComponent.SetShouldUpdateMatrixDirty(true);
+        a_transformComponent.SetShouldUpdateMatrixDirty(true);
     }
 
     // 初期スポーン位置はエディターでドラッグしたときのみ決まる拡大率
@@ -36,6 +36,6 @@ void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransfo
     {
         l_transform.m_scale = l_transform.m_scale;
 
-        a_gameObjectTransformComponent.SetShouldUpdateMatrixDirty(true);
+        a_transformComponent.SetShouldUpdateMatrixDirty(true);
     }
 }

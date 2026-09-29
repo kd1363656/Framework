@@ -16,12 +16,22 @@ namespace FWK
     
         void INIT();
 
-        void DeserializeScene (const nlohmann::json& a_rootJson);
-        void DeserializePrefab(const nlohmann::json& a_rootJson);
+        void DeserializeScene (const nlohmann::json&              a_rootJson,
+                               const nlohmann::json&              a_prefabJson,
+                               const SceneGameObjectPrefabSystem& a_prefabSystem,
+                                     Scene&                       a_scene);
+ 
+        void DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene);
 
-        nlohmann::json Serialize() const;
+
+        nlohmann::json Serialize    (      SceneGameObjectPrefabSystem& a_prefabSystem)                                            const;
+        nlohmann::json SerializeDiff(const nlohmann::json&              a_prefabJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
 
         void CloneTo(GameObjectHierarchy& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
+
+        void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const;
+
+        void DetachFromPrefab();
 
         bool ApplyParent(const std::weak_ptr<GameObject>& a_parent);
 

@@ -178,6 +178,44 @@ void FWK::GameObjectComponentContainer::CloneTo(GameObjectComponentContainer& a_
     a_cloneTarget.m_prefabRemovedComponentUUIDSet = m_prefabRemovedComponentUUIDSet;
 }
 
+void FWK::GameObjectComponentContainer::ConvertToPrefab() const
+{
+    // Prefab由来Componentであることを全Componentへ設定する
+    // Instance側でPrefab由来Componentを削除したときに
+    // RemoveComponentがm_prefabRemovedComponentUUIDSetへ記録できるようにするため
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    for (auto& l_componentData : l_componentDataList)
+    {
+        const auto& l_component = l_componentData.m_type;
+
+        if (!l_component) { continue; }
+
+        l_component->SetIsPrefabOrigin(true);
+    }
+}
+
+void FWK::GameObjectComponentContainer::DetachFromPrefab()
+{
+    // 全ComponentのPrefab由来フラグを剥がす
+    // IsPrefabOriginがtrueのままだとRemoveComponent実行時に
+    // m_prefabRemovedComponentUUIDSetへ削除記録が残ってしまい、
+    // Prefab由来でもないGameObjectが削除差分を持ち続けるため
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+ 
+    for (const auto& l_componentData : l_componentDataList)
+    {
+        const auto& l_component = l_componentData.m_type;
+ 
+        if (!l_component) { continue; }
+ 
+        l_component->SetIsPrefabOrigin(Constant::k_gameObjectComponentBaseInitialValueIsPrefabOrigin);
+    }
+ 
+    // Prefab更新伝播用の削除追跡はPrefab由来ではなくなったため不要
+    m_prefabRemovedComponentUUIDSet.clear();
+}
+
 bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameObjectComponentBase>& a_component)
 {
     if (!a_component)

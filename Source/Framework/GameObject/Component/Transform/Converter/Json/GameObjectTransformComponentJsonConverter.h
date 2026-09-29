@@ -14,9 +14,9 @@ namespace FWK::Converter
          GameObjectTransformComponentJsonConverter() = default;
         ~GameObjectTransformComponentJsonConverter() = default;
 
-        void Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponent& a_gameObjectTransformComponent) const;
+        void Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponent& a_transformComponent) const;
 
-        nlohmann::json Serialize(const GameObjectTransformComponent& a_gameObjectTransformComponent) const;
+        nlohmann::json Serialize(const GameObjectTransformComponent& a_transformComponent) const;
 
     private:
     

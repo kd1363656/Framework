@@ -7,9 +7,9 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::Deserialize(
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserialize(const GameObjectTransformComponent& a_gameObjectTransformComponent)
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserialize(const GameObjectTransformComponent& a_transformComponent)
 {
-    const auto& l_owner = a_gameObjectTransformComponent.GetREFOwner().lock();
+    const auto& l_owner = a_transformComponent.GetREFOwner().lock();
 
     if (!l_owner) { return; }
 
@@ -25,15 +25,15 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
     m_parentTransformComponent = l_parent;
 }
 
-void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix(GameObjectTransformComponent& a_gameObjectTransformComponent)
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix(GameObjectTransformComponent& a_transformComponent)
 {
     // 親の行列が先に更新されていることを前提にしている処理です。
-    auto l_resultMatrix = a_gameObjectTransformComponent.CalculateScaleMatrix()       *
-                          a_gameObjectTransformComponent.CalculateRotationMatrix()    *
-                          a_gameObjectTransformComponent.CalculateTranslationMatrix() *
+    auto l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
+                          a_transformComponent.CalculateRotationMatrix()    *
+                          a_transformComponent.CalculateTranslationMatrix() *
                           CalculateParentWorldMatrix();
 
-    a_gameObjectTransformComponent.SetMatrix(std::move(l_resultMatrix));
+    a_transformComponent.SetMatrix(std::move(l_resultMatrix));
 }
 
 nlohmann::json FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::Serialize() const
@@ -41,12 +41,12 @@ nlohmann::json FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::Se
     return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_gameObjectTransformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix)
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix)
 {
     // HierarchicalではWorld = S * R * T * ParentWorld なので
     // Local = World * 親の逆行列
-    auto  l_localMatrix = a_previousWorldMatrix * a_parentWorldMatrix.Invert   ();
-    auto& l_transform   = a_gameObjectTransformComponent.GetMutableREFTransform();
+    auto  l_localMatrix = a_previousWorldMatrix * a_parentWorldMatrix.Invert();
+    auto& l_transform   = a_transformComponent.GetMutableREFTransform       ();
 
     l_localMatrix.Decompose(l_transform.m_scale, l_transform.m_rotation, l_transform.m_position);
 }

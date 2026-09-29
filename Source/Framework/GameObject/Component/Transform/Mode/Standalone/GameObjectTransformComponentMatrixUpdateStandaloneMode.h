@@ -9,8 +9,12 @@ namespace FWK
          GameObjectTransformComponentMatrixUpdateStandaloneMode()          = default;
         ~GameObjectTransformComponentMatrixUpdateStandaloneMode() override = default;
     
-        void UpdateMatrix(GameObjectTransformComponent& a_gameObjectTransformComponent) override;
+        void UpdateMatrix(GameObjectTransformComponent& a_transformComponent) override;
 
-        void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_gameObjectTransformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;
+        void PreserveWorldMatrix(const TypeAlias::Math::Matrix&, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;
+
+        FWK_DEFINE_TYPE_INFO(GameObjectTransformComponentMatrixUpdateStandaloneMode, GameObjectTransformComponentMatrixUpdateModeBase)
     };
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory, FWK::GameObjectTransformComponentMatrixUpdateStandaloneMode)

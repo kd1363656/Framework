@@ -83,12 +83,12 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyPrefabDele
     if (const auto& l_scene = a_sceneManager.GetVALScene().lock();
         l_scene)
     {
-        // PrefabSystemはPrefabUUIDをKeyとして管理している
-        // PrefabJsonそのものが削除されたので、
+        // GameObjectPrefabSystemはPrefabUUIDをKeyとして管理している
+        // GameObjectPrefabJsonそのものが削除されたので、
         // 現在Sceneで保持しているPrefab情報もUUIDで削除する
-        auto& l_prefabSystem = l_scene->GetMutableREFPrefabSystem();
+        auto& l_gameObjectPrefabSystem = l_scene->GetMutableREFGameObjectPrefabSystem();
 
-        l_prefabSystem.RemovePrefab(a_prefabUUID);
+        l_gameObjectPrefabSystem.RemovePrefab(a_prefabUUID);
 
         auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
 
@@ -127,8 +127,17 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplySceneDelet
         if (l_assetFilePathData &&
             l_assetFilePathData->m_type == Enum::AssetFilePathRegistryType::Scene)
         {
-            // NextSceneLoadFilePathMapから削除する
-            l_scene->RemoveNextSceneLoadFilePath(l_nextSceneUUID);
+            // Erase()を呼ぶとRegistry内部Dataが消えるため
+            // 先にPathを値として保持する
+            const std::filesystem::path l_sceneFilePath = l_assetFilePathData->m_assetFilePath;
+
+            // SceneChangerのNextSceneDataMapから削除する
+            auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
+                
+            l_sceneChanger.RemoveNextSceneData(l_nextSceneUUID);
+
+            // Scene側AssetFilePathRegistryからも削除する
+            l_sceneAssetFilePathRegistry.Erase(l_sceneFilePath);
         }
     }
 

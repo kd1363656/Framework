@@ -18,8 +18,6 @@ namespace FWK
             m_inspector = {};
 
             m_jsonConverter = {};
-
-            m_imguiSelectingEvent = Type::Invalid;
         }
         void Deserialize(const nlohmann::json& a_rootJson)
         {

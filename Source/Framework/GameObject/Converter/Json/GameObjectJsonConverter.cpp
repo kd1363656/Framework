@@ -177,7 +177,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDif(const nlohm
     }
  
     // IsPrefabOrigin
-    if (const bool l_isPrefabOrigin = a_baseJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOriginValue); 
+    if (const bool l_isPrefabOrigin = a_baseJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOrigin); 
         l_isPrefabOrigin != a_gameObject.GetVALIsPrefabOrigin())
     {
         l_diffJson[k_isPrefabOriginJsonKey] = a_gameObject.GetVALIsPrefabOrigin();
@@ -233,7 +233,7 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
         a_gameObject.SetName(l_name);
     }
  
-    const bool l_isPrefabOrigin = l_mergedJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOriginValue);
+    const bool l_isPrefabOrigin = l_mergedJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOrigin);
  
     a_gameObject.SetIsPrefabOrigin(l_isPrefabOrigin);
 

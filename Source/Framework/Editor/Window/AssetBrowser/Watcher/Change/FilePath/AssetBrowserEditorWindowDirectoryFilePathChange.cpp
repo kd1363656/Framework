@@ -175,20 +175,21 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFil
 
     if (!l_scene) { return; }
 
-    const auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
+    auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
 
     // Scene側AssetRegistryにはCurrentScene自身を登録せず
     // NextSceneだけを問う臆する
     const auto*              l_sceneManagerSceneUUID      = l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
           bool               l_isNextSceneFilePathChanged = false;
           boost::uuids::uuid l_nextSceneUUID              = {};
+          auto&              l_sceneChanger               = l_scene->GetMutableREFSceneChanger();
 
     if (l_sceneManagerSceneUUID)
     {
         l_nextSceneUUID = *l_sceneManagerSceneUUID;
 
         const auto* l_sceneManagerAssetFilePathData = l_sceneAssetFilePathRegistry.FindPTRAssetFilePathData(l_nextSceneUUID);
-
+              
         if (!l_sceneManagerAssetFilePathData)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistry内部で、SceneUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
@@ -210,11 +211,12 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFil
             return;
         }
 
-        // ReplaceSceneFilePath()内部で
-        // SceneAssetFilePathRegistry
-        // NextSceneLoadFilePathMapの両方を同時に変更する
-        if (!l_scene->ReplaceSceneFilePath(a_oldFilePath, a_newFilePath, l_nextSceneUUID)) { return; }
-
+        // Scene側RegistryのUUIDは変更せずPathだけ変更する
+        if (!l_sceneAssetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath)) { return; }
+         
+        // Registry変更に成功した後でSceneChanger側も追従する
+        if (!l_sceneChanger.ReplaceNextSceneFilePath(a_oldFilePath, a_newFilePath, l_nextSceneUUID)) { return; }
+         
         l_isNextSceneFilePathChanged = true;
     }
 
@@ -223,7 +225,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFil
         // NextScene側だけ変更済みならOldPathへRollbackする
         if (l_isNextSceneFilePathChanged)
         {
-            l_scene->ReplaceSceneFilePath(a_newFilePath, a_oldFilePath, l_nextSceneUUID);
+            l_sceneAssetFilePathRegistry.ReplaceFilePath(a_newFilePath, a_oldFilePath);
+            l_sceneChanger.ReplaceNextSceneFilePath     (a_newFilePath, a_oldFilePath, l_nextSceneUUID);
         }
 
         return;

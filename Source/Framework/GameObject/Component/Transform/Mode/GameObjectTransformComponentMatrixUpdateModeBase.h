@@ -20,8 +20,10 @@ namespace FWK
 
         virtual void UpdateMatrix(GameObjectTransformComponent&) = 0;
 
-        virtual nlohmann::json Serialize() const { /*必要に応じてオーバーライドしてください*/ };
+        virtual nlohmann::json Serialize() const { return {}; };
 
-        virtual void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_gameObjectTransformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) = 0;
+        virtual void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) = 0;
+
+        FWK_DEFINE_TYPE_INFO_ROOT(GameObjectTransformComponentMatrixUpdateModeBase)
     };
 }

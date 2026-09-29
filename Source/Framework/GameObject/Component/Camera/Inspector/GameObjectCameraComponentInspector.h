@@ -15,6 +15,13 @@ namespace FWK
         ~GameObjectCameraComponentInspector() = default;
     
     
-        void EditInspector(GameObjectCameraComponent& a_gameObjectCameraComponent);
+        void EditInspector(GameObjectCameraComponent& a_cameraComponent);
+
+    private:
+
+        static constexpr std::string_view k_aspectoRatioLabel = "アスペクト比 : %.2f";
+        static constexpr std::string_view k_fovYDegreeLabel   = "視野角";
+        static constexpr std::string_view k_farClipLabel      = "ファークリップ";
+        static constexpr std::string_view k_nearClipLabel     = "ニアークリップ";
     };
 }

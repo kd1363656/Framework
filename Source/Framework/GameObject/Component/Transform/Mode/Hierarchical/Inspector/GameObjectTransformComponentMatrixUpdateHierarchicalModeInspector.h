@@ -14,7 +14,7 @@ namespace FWK
          GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector() = default;
         ~GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector() = default;
     
-        void EditInspector(GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_gameObjectTransformComponentMatrixUpdateHierarchicalMode);
+        void EditInspector(GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_matrixUpdateHierarchicalMode);
 
     private:
     

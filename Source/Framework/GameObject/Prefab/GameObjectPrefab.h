@@ -2,6 +2,11 @@
 
 namespace FWK
 {
+    class SceneGameObjectPrefabSystem;
+}
+
+namespace FWK
+{
     class GameObjectPrefab final
     {
     public:
@@ -11,7 +16,10 @@ namespace FWK
 
         void Load(const std::filesystem::path& a_filePath);
 
-        bool Save(const std::filesystem::path& a_filePath, GameObject& a_gameObject);
+        bool Save(const std::filesystem::path&       a_filePath, 
+                  const boost::uuids::uuid&          a_prefabUUID,
+                        SceneGameObjectPrefabSystem& a_prefabSystem, 
+                        GameObject&                  a_gameObject);
 
         void SetJson(const nlohmann::json& a_set) { m_json = a_set; }
 

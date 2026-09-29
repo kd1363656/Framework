@@ -9,7 +9,10 @@ void FWK::GameObjectPrefab::Load(const std::filesystem::path& a_filePath)
     m_jsonConverter.Load(l_rootJson, *this);
 }
 
-bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, GameObject& a_gameObject)
+bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath, 
+                                 const boost::uuids::uuid&          a_prefabUUID, 
+                                       SceneGameObjectPrefabSystem& a_prefabSystem,
+                                       GameObject&                  a_gameObject)
 {
     if (a_filePath.empty() ||
         a_filePath.extension() != Constant::k_lowerJsonExtension)
@@ -20,20 +23,26 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path& a_filePath, GameOb
     }
 
     // プレハブ化処理
-    // 新しいPrefabUUIDを生成する
-    auto& l_uuidManager = Utility::UUIDManager::GetInstance();
-
-    const auto& l_prefabUUID = l_uuidManager.GenerateVALUUID();
-
+    // PrefabUUIDは呼び出し側(AssetFilePathRegistryへ登録済みのUUID)から受け取る
+    // ここで新規生成するとRegistry登録UUIDとノード埋め込みUUIDが不一致になる
+    if (a_prefabUUID.is_nil())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDがnilのためGameObjectPrefabを保存できません。");
+     
+        return false;
+    }
+     
     // 自身とすべての子をIsPrefabOrigin=trueにしてPrefabUUIDを設定する
     // PrefabHierarchyNodeUUIDがnilなら生成する
     // 既に別のPrefabのインスタンスである子には伝播しない
-    a_gameObject.ConvertToPrefab(l_prefabUUID);
-
+    a_gameObject.ConvertToPrefab(a_prefabUUID);
+    
     // すべてのRemovedUUIDSetをクリアする
     // プレハブは新しい「元」なので差分（削除）情報を保持しない
     a_gameObject.ClearAllPrefabRemovedUUIDSet();
 
-
-    return m_jsonConverter.Save(a_filePath, a_gameObject, *this);
+    return m_jsonConverter.Save(a_filePath, 
+                                a_prefabSystem,
+                                a_gameObject, 
+                                *this);
 }

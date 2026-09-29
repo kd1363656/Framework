@@ -58,6 +58,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_removedUUIDJsonKey             = "RemovedUUID";
         static constexpr std::string_view k_modifiedJsonKey                = "Modified";
         static constexpr std::string_view k_prefabHierarchyNodeUUIDJsonKey = "PrefabHierarchyNodeUUID";
-        static constexpr std::string_view k_gameObjectDataJsonKey          = "GameObjectData"
+        static constexpr std::string_view k_gameObjectDataJsonKey          = "GameObjectData";
     };
 }

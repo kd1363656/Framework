@@ -16,13 +16,13 @@ namespace FWK
     
         void Deserialize(const nlohmann::json& a_rootJson);
 
-        void PostDeserialize(const GameObjectTransformComponent& a_gameObjectTransformComponent) override;
+        void PostDeserialize(const GameObjectTransformComponent& a_transformComponent) override;
 
-        void UpdateMatrix(GameObjectTransformComponent& a_gameObjectTransformComponent) override;
+        void UpdateMatrix(GameObjectTransformComponent& a_transformComponent) override;
 
         nlohmann::json Serialize() const;
 
-        void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_gameObjectTransformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;
+        void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;
 
         void EnableAllApplyCalculateParentWorldMatrixFlag();;
 
@@ -41,5 +41,9 @@ namespace FWK
         GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector m_inspector = {};
 
         Converter::GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter m_jsonConverter = {};
+
+        FWK_DEFINE_TYPE_INFO(GameObjectTransformComponentMatrixUpdateHierarchicalMode, GameObjectTransformComponentMatrixUpdateModeBase)
     };
 }
+
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory, FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode)
