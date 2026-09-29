@@ -16,7 +16,7 @@ namespace FWK
     
         void INIT();
 
-        void DeserializeScene (const nlohmann::json& a_rootJson);
+        void DeserializeScene (const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabJson = nlohmann::json{});
         void DeserializePrefab(const nlohmann::json& a_rootJson);
 
         void PostDeserialize();
@@ -28,7 +28,8 @@ namespace FWK
         
         void EditInspector() const;
 
-        nlohmann::json Serialize() const;
+        nlohmann::json Serialize    ()                                   const;
+        nlohmann::json SerializeDiff(const nlohmann::json& a_prefabJson) const;
 
         void CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
 
@@ -85,7 +86,7 @@ namespace FWK
 
         std::weak_ptr<GameObjectComponentBase> FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const;
 
-        const auto& GetREFComponentList() const { return m_componentSmartPointerVectorList; }
+        const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
 
     private:
    

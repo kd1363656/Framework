@@ -26,6 +26,63 @@ namespace FWK::Utility
         a_targetJson.update(a_patchJson);
     }
 
+    // baseからcurrentへの変更部分だけを抽出する(objectは再帰、配列・スカラ・型違いは丸ごと差し替え)
+    // 変更なしの場合はNullJsonを返す
+    inline nlohmann::json DetectJsonDiff(const nlohmann::json& a_baseJson, const nlohmann::json& a_currentJson)
+    {
+        // 完全に一致するなら差分なし
+        if (a_baseJson == a_currentJson) { return nlohmann::json{}; }
+     
+        // 両方objectならキー単位で再帰比較
+        if (a_baseJson.is_object() &&
+            a_currentJson.is_object())
+        {
+            auto l_diffJson = nlohmann::json::object();
+        
+            for (const auto& [l_key, l_value] : a_currentJson.items())
+            {
+                // baseに存在しないキーは丸ごと差分
+                if (!a_baseJson.contains(l_key))
+                {
+                    l_diffJson[l_key] = l_value;
+        
+                    continue;
+                }
+        
+                const auto& l_childDiffJson = DetectJsonDiff(a_baseJson[l_key], l_value);
+        
+                if (!l_childDiffJson.is_null())
+                {
+                    l_diffJson[l_key] = l_childDiffJson;
+                }
+            }
+        
+            return l_diffJson.empty() ? nlohmann::json{} : l_diffJson;
+        }
+     
+        // object同士でなければcurrent側がそのまま差分
+        return a_currentJson;
+    }
+
+    // baseへdiffを適用してマージ結果を返す(object同士は再帰マージ、それ以外はdiff側を採用)
+    inline nlohmann::json ApplyJsonDiff(const nlohmann::json& a_baseJson, const nlohmann::json& a_diffJson)
+    {
+        if (a_diffJson.is_null()) { return a_baseJson; }
+     
+        if (a_baseJson.is_object() &&
+            a_diffJson.is_object())
+        {
+            nlohmann::json l_mergedJson = a_baseJson;
+     
+            // 第二引数trueでobject同士を再帰マージする
+            l_mergedJson.update(a_diffJson, true);
+     
+            return l_mergedJson;
+        }
+     
+        return a_diffJson;
+    }
+
     inline TypeAlias::Math::Color DeserializeColor(const nlohmann::json& a_json , const std::string_view& a_key)
     {
         // "json"を読み込めるか確認、読み込めなければ"return"

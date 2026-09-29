@@ -1,96 +1,411 @@
 ﻿#include "GameObjectComponentContainerJsonConverter.h"
 
-void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
+void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    if (a_rootJson.is_null() ||
-        !Utility::IsJsonArray(a_rootJson, Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey))
+    const auto& l_sceneComponentListJson  = a_rootJson .value (k_componentListJsonKey, nlohmann::json{});
+    const auto& l_prefabComponentListJson = a_prefabJson.value(k_componentListJsonKey, nlohmann::json{});
+ 
+    // Prefab基底のComponentListが存在し、
+    // かつシーン側が差分構造(配列以外)ならPrefab+差分マージして読む
+    // ※シーン側がnull(差分なし=Prefabに完全追従)でもこちらへ入る
+    if (l_prefabComponentListJson.is_array() &&
+        !l_sceneComponentListJson.is_array())
     {
-        return; 
+        // 削除済みUUIDをコンテナのRemovedUUIDSetへ登録
+        DeserializeRemovedUUIDList(l_sceneComponentListJson, a_gameObjectComponentContainer);
+ 
+        // Prefab側へ差分適用してマージ済みリストを作る
+        auto l_mergedListJson = l_prefabComponentListJson;
+ 
+        // 差分を適用
+        ApplyComponentListDiff(l_sceneComponentListJson, l_mergedListJson);
+ 
+        // 差分を適用した状態でコンポーネントリストをデシリアライズ
+        DeserializeComponentList(l_mergedListJson, a_gameObjectComponentContainer);
+ 
+        return;
     }
  
-    for (const auto& l_elementJson : a_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey])
-    {
-        if (l_elementJson.is_null()) { continue; }
- 
-        std::shared_ptr<GameObjectComponentBase> l_component = {};
- 
-        // 生成すべきコンポーネントを生成
-        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_elementJson, Constant::k_gameObjectComponentContainerJsonConverterComponentTypeJsonKey, l_component);
- 
-        if (!l_component)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentTypeに対応するコンポーネントをFactoryから生成できませんでした。");
- 
-            continue;
-        }
- 
-        const auto& l_componentJson = l_elementJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentDataJsonKey, nlohmann::json{});
- 
-        l_component->Deserialize(l_componentJson);
- 
-        // コンポーネントコンテナに追加
-        a_gameObjectComponentContainer.AddComponent(l_component);
-    }
+    // プレハブが読み込めなければフル差分形式で読み込む
+    DeserializeComponentList(l_sceneComponentListJson, a_gameObjectComponentContainer);
 }
 void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializePrefab(const nlohmann::json& a_rootJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    if (a_rootJson.is_null() ||
-        !Utility::IsJsonArray(a_rootJson, Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey))
-    {
-        return; 
-    }
- 
-    for (const auto& l_json : a_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey])
-    {
-        if (l_json.is_null()) { continue; }
- 
-        std::shared_ptr<GameObjectComponentBase> l_component = {};
- 
-        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_json, Constant::k_gameObjectComponentContainerJsonConverterComponentTypeJsonKey, l_component);
- 
-        if (!l_component)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentTypeに対応するコンポーネントをFactoryから生成できませんでした。");
- 
-            continue;
-        }
- 
-        const auto& l_componentJson = l_json.value(Constant::k_gameObjectComponentContainerJsonConverterComponentDataJsonKey, nlohmann::json{});
- 
-        l_component->Deserialize(l_componentJson);
- 
-        a_gameObjectComponentContainer.AddComponent(l_component);
-    }
+    const auto& l_componentListJson = a_rootJson.value(k_componentListJsonKey, nlohmann::json{});
+
+    DeserializeComponentList(l_componentListJson, a_gameObjectComponentContainer);
 }
 
 nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Serialize(const GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    nlohmann::json l_rootJson          = {};
-    nlohmann::json l_componentListJson = nlohmann::json::array();
+    nlohmann::json l_rootJson = {};
+
+    // コンポーネントリストをシリアライズ
+    l_rootJson[k_componentListJsonKey] = SerializeComponentList(a_gameObjectComponentContainer);
+
+    return l_rootJson;
+}
+nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::SerializeDiff(const nlohmann::json& a_prefabJson, const GameObjectComponentContainer& a_gameObjectComponentContainer) const
+{
+    const auto& l_rootJson = a_prefabJson.value(k_componentListJsonKey, nlohmann::json{});
  
-    const auto& l_componentList = a_gameObjectComponentContainer.GetREFComponentList().GetREFElementDataList();
+    // Prefab基底が無ければ差分は作れないので空の差分構造を返す
+    if (!l_rootJson.is_array())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefab側ComponentListが無効なため、差分シリアライズに失敗しました。");
  
-    for (const auto& l_componentData : l_componentList)
+        nlohmann::json l_emptyDiffJson = {};
+ 
+        l_emptyDiffJson[k_addedJsonKey]           = nlohmann::json::array();
+        l_emptyDiffJson[k_removedUUIDListJsonKey] = nlohmann::json::array();
+        l_emptyDiffJson[k_modifiedJsonKey]        = nlohmann::json::array();
+ 
+        return l_emptyDiffJson;
+    }
+ 
+    // 現在の全コンポーネントをフル形式配列へ
+    const auto& l_currentListJson = SerializeComponentList(a_gameObjectComponentContainer);
+ 
+    // Prefab基底との差分を検出して返す
+    return DetectComponentListDiff(l_rootJson, l_currentListJson);
+}
+
+void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeComponentList(const nlohmann::json& a_componentListJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
+{
+    if (!a_componentListJson.is_array()) { return; }
+ 
+    for (const auto& l_json : a_componentListJson)
+    {
+        std::shared_ptr<GameObjectComponentBase> l_component = nullptr;
+ 
+        // ComponentType名からFactoryで生成する
+        Utility::DeserializeInstanceType<TypeAlias::GameObjectComponentSharedFactory>(l_json, k_componentTypeJsonKey, l_component);
+ 
+        if (!l_component)
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentTypeの復元に失敗したため、コンポーネントのデシリアライズをスキップしました。");
+ 
+            continue;
+        }
+ 
+        // ComponentData内にUUID/IsDisable/IsPrefabOrigin/各プロパティが含まれる
+        l_component->Deserialize(l_json.value(k_componentDataJsonKey, nlohmann::json{}));
+ 
+        // ComponentData内にUUIDが無い場合は外側のComponentUUIDで補完する
+        if (const auto& l_componentUUID = l_component->GetREFUUID();
+            l_componentUUID.is_nil())
+        {
+            l_component->SetUUID(Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey));
+        }
+ 
+        // UUID未発行・重複・削除済みUUIDはAddComponent側で新規発行される
+        if (!a_gameObjectComponentContainer.AddComponent(l_component))
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ComponentContainerへの登録に失敗しました。");
+        }
+    }
+}
+void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeRemovedUUIDList(const nlohmann::json& a_componentListDiffJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
+{
+    const auto& l_rootJsonArray = a_componentListDiffJson.value(k_removedUUIDListJsonKey, nlohmann::json{});
+ 
+    if (!l_rootJsonArray.is_array()) { return; }
+ 
+    for (const auto& l_json : l_rootJsonArray)
+    {
+        if (l_json.is_null()) { continue; }
+
+        // {"RemovedUUID": "..."} から読み取る
+        const auto& l_removedUUID = Utility::DeserializeUUID(l_json, k_removedUUIDJsonKey);
+
+        if (l_removedUUID.is_nil()) { continue; }
+
+        // コンテナ側の削除UUIDセットへ登録する
+        // AddComponentが削除UUIDとの重複をはじくための情報になる
+        a_gameObjectComponentContainer.AddPrefabRemovedComponentUUID(l_removedUUID);
+    }
+}
+
+nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::SerializeComponentList(const GameObjectComponentContainer& a_gameObjectComponentContainer) const
+{
+          auto  l_jsonArray                       = nlohmann::json::array                                               ();
+    const auto& l_componentSmartPointerVectorList = a_gameObjectComponentContainer.GetREFComponentSmartPointerVectorList();
+    const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList             ();
+
+    for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
  
         if (!l_component) { continue; }
  
-        nlohmann::json l_componentJson = {};
- 
-        Utility::UpdateJson(l_componentJson, l_component->Serialize());
- 
         nlohmann::json l_json = {};
  
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_component, Constant::k_gameObjectComponentContainerJsonConverterComponentTypeJsonKey));
+        // Factory復元用の型名と照合用UUIDはComponentDataの外側へ
+        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_component, k_componentTypeJsonKey));
+        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_component->GetREFUUID(), k_componentUUIDJsonKey));
  
-        // シリアライズでデータを復元
-        l_json[Constant::k_gameObjectComponentContainerJsonConverterComponentDataJsonKey] = std::move(l_componentJson);
+        // Component本体のSerialize結果(UUID, IsDisable, IsPrefabOrigin, 各種プロパティを含む)
+        l_json[k_componentDataJsonKey] = l_component->Serialize();
  
-        l_componentListJson.emplace_back(std::move(l_json));
+        l_jsonArray.emplace_back(std::move(l_json));
     }
  
-    l_rootJson[Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey] = std::move(l_componentListJson);
+    return l_jsonArray;
+}
+nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::SerializeRemovedUUIDList(const std::unordered_set<boost::uuids::uuid>& a_removedUUIDSet) const
+{
+    auto l_jsonArray = nlohmann::json::array();
+
+    for (const auto& l_uuid : a_removedUUIDSet)
+    {
+        // {"RemovedUUID": "..."} 形式で出力する(DeserializeRemovedUUIDListと対称)
+        l_jsonArray.emplace_back(Utility::SerializeUUID(l_uuid, k_removedUUIDJsonKey));
+    }
+
+    return l_jsonArray;
+}
+
+nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::DetectComponentListDiff(const nlohmann::json& a_baseJson, const nlohmann::json& a_currentJson) const
+{
+    auto l_addedJsonArray    = nlohmann::json::array();
+    auto l_modifiedJsonArray = nlohmann::json::array();
+
+    // RemovedはUUIDのsetで集計してからシリアライズする
+    std::unordered_set<boost::uuids::uuid>                        l_removedUUIDSet = {};
  
-    return l_rootJson;
+    // baseをUUIDで引けるようにする
+    std::unordered_map<boost::uuids::uuid, const nlohmann::json*> l_baseMap        = {};
+    std::unordered_set<boost::uuids::uuid>                        l_matchedUUIDSet = {};
+ 
+    // a_baseJsonが配列ならUUIDからJsonの対応表を作成
+    if (a_baseJson.is_array())
+    {
+        for (const auto& l_json : a_baseJson)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+ 
+            if (l_uuid.is_nil()) { continue; }
+ 
+            l_baseMap.try_emplace(l_uuid, &l_json);
+        }
+    }
+ 
+    if (a_currentJson.is_array())
+    {
+        for (const auto& l_json : a_currentJson)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+ 
+            if (l_uuid.is_nil()) { continue; }
+ 
+            const auto& l_itr = l_baseMap.find(l_uuid);
+ 
+            // baseに存在しない = インスタンス独自の追加コンポーネント
+            if (l_itr == l_baseMap.end())
+            {
+                l_addedJsonArray.emplace_back(l_json);
+ 
+                continue;
+            }
+ 
+            l_matchedUUIDSet.emplace(l_uuid);
+ 
+            // ComponentData同士を比較して変更キーだけを差分にする
+            const auto& l_dataDiffJson = Utility::DetectJsonDiff(l_itr->second->value(k_componentDataJsonKey, nlohmann::json{}), l_json.value(k_componentDataJsonKey, nlohmann::json{}));
+ 
+            if (l_dataDiffJson.is_null()) { continue; }
+ 
+            nlohmann::json l_modifiedJson = {};
+ 
+            Utility::UpdateJson(l_modifiedJson, Utility::SerializeUUID(l_uuid, k_componentUUIDJsonKey));
+ 
+            l_modifiedJson[k_componentDataJsonKey] = l_dataDiffJson;
+ 
+            l_modifiedJsonArray.emplace_back(std::move(l_modifiedJson));
+        }
+    }
+ 
+    // baseにあってcurrentに無いUUID = インスタンスで削除済み
+    for (const auto& [l_uuid, l_json] : l_baseMap)
+    {
+        if (l_matchedUUIDSet.contains(l_uuid)) { continue; }
+
+        l_removedUUIDSet.emplace(l_uuid);
+    }
+ 
+    // 順序差分の検出
+    // 自然順 = Prefab順(Removed除く) + Added末尾
+    std::vector<boost::uuids::uuid> l_naturalOrderUUIDList = {};
+    std::vector<boost::uuids::uuid> l_currentOrderUUIDList = {};
+ 
+    if (a_baseJson.is_array())
+    {
+        for (const auto& l_json : a_baseJson)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+     
+            if (l_uuid.is_nil() ||
+                l_removedUUIDSet.contains(l_uuid))
+            {
+                continue;
+            }
+     
+            l_naturalOrderUUIDList.emplace_back(l_uuid);
+        }
+    }
+
+    if (a_currentJson.is_array())
+    {
+        for (const auto& l_json : a_currentJson)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+     
+            if (l_uuid.is_nil()) { continue; }
+     
+            // Prefabに無い = AddedのUUIDでもある
+            if (!l_baseMap.contains(l_uuid))
+            {
+                l_naturalOrderUUIDList.emplace_back(l_uuid);
+            }
+     
+            l_currentOrderUUIDList.emplace_back(l_uuid);
+        }
+    }
+
+    nlohmann::json l_diffJson = {};
+ 
+    l_diffJson[k_addedJsonKey]           = l_addedJsonArray;
+    l_diffJson[k_removedUUIDListJsonKey] = SerializeRemovedUUIDList(l_removedUUIDSet);
+    l_diffJson[k_modifiedJsonKey]        = l_modifiedJsonArray;
+
+    // 自然順と現在順が異なる場合のみ順序を保存する
+    // (一致するならPrefab側の順序変更をそのまま伝播させるため)
+    if (l_naturalOrderUUIDList != l_currentOrderUUIDList)
+    {
+        auto l_orderJsonArray = nlohmann::json::array();
+     
+        for (const auto& l_uuid : l_currentOrderUUIDList)
+        {
+            l_orderJsonArray.emplace_back(Utility::SerializeUUID(l_uuid, k_componentUUIDJsonKey));
+        }
+     
+        l_diffJson[k_orderUUIDListJsonKey] = std::move(l_orderJsonArray);
+    }
+
+
+    return l_diffJson;
+}
+
+void FWK::Converter::GameObjectComponentContainerJsonConverter::ApplyComponentListDiff(const nlohmann::json& a_diffJson, nlohmann::json& a_baseJson) const
+{
+    // baseが無効(null)なら空配列として扱う。Addedだけでも適用されるようにするため
+    if (a_baseJson.is_null())
+    {
+        a_baseJson = nlohmann::json::array();
+    }
+
+    if (!Utility::IsJsonArray(a_baseJson)) { return; }
+
+    const auto& l_removedJsonArray  = a_diffJson.value(k_removedUUIDListJsonKey, nlohmann::json::array());
+    const auto& l_modifiedJsonArray = a_diffJson.value(k_modifiedJsonKey,        nlohmann::json::array());
+    const auto& l_addedJsonArray    = a_diffJson.value(k_addedJsonKey,           nlohmann::json::array());
+ 
+    // RemovedをUUIDSetへ
+    std::unordered_set<boost::uuids::uuid> l_removedUUIDSet = {};
+ 
+    for (const auto& l_json : l_removedJsonArray)
+    {
+        if (!l_json.is_object()) { continue; }
+
+        const auto& l_removedUUID = Utility::DeserializeUUID(l_json, k_removedUUIDJsonKey);
+
+        if (l_removedUUID.is_nil()) { continue; }
+
+        l_removedUUIDSet.emplace(l_removedUUID);
+    }
+ 
+    std::unordered_map<boost::uuids::uuid, const nlohmann::json*> l_modifiedMap = {};
+ 
+    // ModifiedをUUIDMapへ追加
+    for (const auto& l_json : l_modifiedJsonArray)
+    {
+        const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+ 
+        if (l_uuid.is_nil()) { continue; }
+ 
+        l_modifiedMap.try_emplace(l_uuid, &l_json);
+    }
+ 
+    auto l_mergedJsonArray = nlohmann::json::array();
+ 
+    // base(Prefab側)を走査、Removedを飛ばしModifiedを差分適用する
+    // Prefab側の新規追加コンポーネントもここで自動的に含まれる = 変更伝播
+    for (const auto& l_json : a_baseJson)
+    {
+        const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+ 
+        if (l_uuid.is_nil() ||
+            l_removedUUIDSet.contains(l_uuid))
+        {
+            continue;
+        }
+ 
+        nlohmann::json l_mergedComponentJson = l_json;
+ 
+        if (const auto& l_itr = l_modifiedMap.find(l_uuid);
+            l_itr != l_modifiedMap.end())
+        {
+            const auto* l_modifiedJson = l_itr->second;
+
+            // 念のためヌルチェック
+            if (!l_modifiedJson) { continue; }
+
+            l_mergedComponentJson[k_componentDataJsonKey] = Utility::ApplyJsonDiff(l_json.value(k_componentDataJsonKey, nlohmann::json{}), l_modifiedJson->value(k_componentDataJsonKey, nlohmann::json{}));
+        }
+ 
+        l_mergedJsonArray.emplace_back(std::move(l_mergedComponentJson));
+    }
+ 
+    // インスタンス独自コンポーネントを末尾へ
+    for (const auto& l_json : l_addedJsonArray)
+    {
+        l_mergedJsonArray.emplace_back(l_json);
+    }
+ 
+    // OrderUUIDListがあればマージ済みリストをその順序へ並べ替える
+    // リストに無いUUID(Prefabに後から追加されたもの等)は末尾へ
+    if (const auto& l_orderJsonArray = a_diffJson.value(k_orderUUIDListJsonKey, nlohmann::json{});
+        l_orderJsonArray.is_array())
+    {
+        std::unordered_map<boost::uuids::uuid, std::size_t> l_orderMap   = {};
+        std::size_t                                         l_orderIndex = k_initialComponentListOrderIndex;
+     
+        for (const auto& l_json : l_orderJsonArray)
+        {
+            const auto& l_uuid = Utility::DeserializeUUID(l_json, k_componentUUIDJsonKey);
+     
+            if (l_uuid.is_nil()) { continue; }
+     
+            l_orderMap.try_emplace(l_uuid, l_orderIndex++);
+        }
+     
+        std::stable_sort(l_mergedJsonArray.begin(), l_mergedJsonArray.end(),
+                         [&l_orderMap](const nlohmann::json& a_leftJson, const nlohmann::json& a_rightJson)
+                         {
+                             const auto& l_leftUUID  = Utility::DeserializeUUID(a_leftJson,  k_componentUUIDJsonKey);
+                             const auto& l_rightUUID = Utility::DeserializeUUID(a_rightJson, k_componentUUIDJsonKey);
+                         
+                             const auto& l_leftItr  = l_orderMap.find(l_leftUUID);
+                             const auto& l_rightItr = l_orderMap.find(l_rightUUID);
+                         
+                             // 順序リストに無いものは末尾(既存の相対順序はstable_sortで維持される)
+                             const std::size_t l_leftOrder  = l_leftItr  != l_orderMap.end() ? l_leftItr->second  : std::numeric_limits<std::size_t>::max();
+                             const std::size_t l_rightOrder = l_rightItr != l_orderMap.end() ? l_rightItr->second : std::numeric_limits<std::size_t>::max();
+                         
+                             return l_leftOrder < l_rightOrder;
+                         });
+    }
+
+    // ベースJsonに差分をマージしたJsonをMove
+    a_baseJson = std::move(l_mergedJsonArray);
 }

@@ -16,11 +16,11 @@ void FWK::GameObjectComponentContainer::INIT()
     m_jsonConverter = {};
 }
 
-void FWK::GameObjectComponentContainer::DeserializeScene(const nlohmann::json& a_rootJson)
+void FWK::GameObjectComponentContainer::DeserializeScene(const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabJson)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializeScene(a_rootJson, *this);
+    m_jsonConverter.DeserializeScene(a_rootJson, a_prefabJson, *this);
 }
 void FWK::GameObjectComponentContainer::DeserializePrefab(const nlohmann::json& a_rootJson)
 {
@@ -137,6 +137,11 @@ void FWK::GameObjectComponentContainer::EditInspector() const
 nlohmann::json FWK::GameObjectComponentContainer::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
+}
+
+nlohmann::json FWK::GameObjectComponentContainer::SerializeDiff(const nlohmann::json& a_prefabJson) const
+{
+    return m_jsonConverter.SerializeDiff(a_prefabJson, *this);
 }
 
 void FWK::GameObjectComponentContainer::CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const
