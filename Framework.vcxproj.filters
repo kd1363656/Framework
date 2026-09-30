@@ -1327,9 +1327,6 @@
     <Filter Include="Source\Framework\Scene\Changer">
       <UniqueIdentifier>{657121c9-179c-4c51-b555-6247b7a5fa08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Struct\Scene">
-      <UniqueIdentifier>{a294b15a-8a01-4b67-8959-8228d3f40e3d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Scene\Changer\Converter">
       <UniqueIdentifier>{96d3ea76-bf22-47f8-9c0d-7aeb766e41da}</UniqueIdentifier>
     </Filter>
@@ -1443,6 +1440,9 @@
     </Filter>
     <Filter Include="CONFIG\Application">
       <UniqueIdentifier>{3ca8c6c2-eda7-47a7-a605-8b6bb290c1cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Scene">
+      <UniqueIdentifier>{0f69876e-0207-421b-966d-c5c564f4e9ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2733,7 +2733,7 @@
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
       <Filter>Source\Framework\GameObject\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Scene\SceneEnum.h">
+    <ClInclude Include="Source\Framework\Definition\Enum\Scene\SceneChangerEnum.h">
       <Filter>Source\Framework\Definition\Enum\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectEnum.h">
@@ -2744,9 +2744,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Changer\SceneChanger.h">
       <Filter>Source\Framework\Scene\Changer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Struct\Scene\SceneChangerStruct.h">
-      <Filter>Source\Framework\Definition\Struct\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.h">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
@@ -2849,6 +2846,15 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h">
       <Filter>Source\Application\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Scene\SceneJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Changer\NextScene.h">
+      <Filter>Source\Framework\Scene\Changer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.h">
+      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3559,6 +3565,12 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Converter\Json\ApplicationJsonConverter.cpp">
       <Filter>Source\Application\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Changer\NextScene.cpp">
+      <Filter>Source\Framework\Scene\Changer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.cpp">
+      <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

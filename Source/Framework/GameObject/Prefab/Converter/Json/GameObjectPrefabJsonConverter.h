@@ -20,8 +20,8 @@ namespace FWK::Converter
         void Load(const nlohmann::json& a_rootJson, GameObjectPrefab& a_gameObejctPrefab) const;
 
         bool Save(const std::filesystem::path&       a_filePath, 
+                  const GameObject&                  a_gameObject, 
                         SceneGameObjectPrefabSystem& a_prefabSystem,
-                        GameObject&                  a_gameObject, 
                         GameObjectPrefab&            a_prefab) const;
 
     private:

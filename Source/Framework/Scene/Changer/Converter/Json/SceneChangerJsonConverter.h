@@ -27,6 +27,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_sceneChangeEventObserverJsonKey = "SceneChangeEventObserver";
         static constexpr std::string_view k_nextSceneMapJsonKey             = "NextSceneMap";
         static constexpr std::string_view k_uuidJsonKey                     = "UUID";
-        static constexpr std::string_view k_nextSceneNameJsonKey            = "NextSceneName";
+        static constexpr std::string_view k_nextSceneJsonKey                = "NextScene";
     };
 }

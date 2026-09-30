@@ -20,8 +20,7 @@ void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManage
 
     if (!l_scene) { return; }
 
-    l_scene->Deserialize(l_rootJson
-    );
+    l_scene->Deserialize(l_rootJson);
 }
 
 void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const

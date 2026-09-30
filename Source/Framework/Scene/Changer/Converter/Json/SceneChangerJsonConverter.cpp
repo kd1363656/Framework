@@ -72,17 +72,16 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
         // プレハブじゃないファイルパスならcontinue
         if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene) { continue; }
 
-        Struct::NextSceneData l_nextSceneData = {};
+        NextScene l_nextScene = {};
 
         const auto& l_assetFilePath = l_assetFilePathData->m_assetFilePath;
 
         if (!Utility::CanLoadFilePath(l_assetFilePath, Constant::k_lowerJsonExtension)) { continue; }
 
-        // シーンの読み込むファイrパスと名前を
-        l_nextSceneData.m_name     = l_json.value(k_nextSceneNameJsonKey, std::string{});
-        l_nextSceneData.m_filePath = l_assetFilePath;
-        
-        a_sceneChanger.AddNextSceneData(l_sceneUUID, l_nextSceneData);
+        // 名前と次の真のJsonをロード
+        l_nextScene.Load(l_assetFilePath);
+
+        a_sceneChanger.AddNextScene(l_sceneUUID, l_nextScene);
     }
 }
 
@@ -90,9 +89,9 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
 {
     auto l_rootJsonArray = nlohmann::json::array();
 
-    auto& l_nextSceneDataMap = a_sceneChanger.GetREFNextSceneDataMap();
+    auto& l_nextSceneMap = a_sceneChanger.GetREFNextSceneMap();
 
-    for (auto& [l_sceneUUID, l_nextSceneData] : l_nextSceneDataMap)
+    for (auto& [l_sceneUUID, l_nextScene] : l_nextSceneMap)
     {
         // nilの場合はSceneChangerMapへ本来登録されないが
         // 異常なデータをJSONへ保存されないように念のため除外する
@@ -121,8 +120,6 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
 
         Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_uuidJsonKey));
         
-        l_json[k_nextSceneNameJsonKey] = l_nextSceneData.m_name;
-
         l_rootJsonArray.emplace_back(l_json);
     }
 

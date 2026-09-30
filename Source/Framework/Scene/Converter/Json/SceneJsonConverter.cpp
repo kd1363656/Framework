@@ -7,6 +7,10 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 
     const auto& l_application           = Application::GetInstance                 ();
     const auto& l_assetFilePathRegistry = l_application.GetREFAssetFilePathRegistry();
+    const auto& l_sceneName             = a_rootJson.value                         (Constant::k_sceneJsonConverterNameJsonKey, nlohmann::json{});
+
+    // シーンの名前を格納
+    a_scene.SetName(l_sceneName);
 
     // シーンチェンジャーのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_sceneChanger, nlohmann::json{});
@@ -56,7 +60,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
     const auto& l_assetFilePathRegistry  = l_application.GetREFAssetFilePathRegistry  ();
 
     // シーン名のシリアライズ
-    l_rootJson[k_sceneNameJsonKey] = a_scene.GetREFName();
+    l_rootJson[Constant::k_sceneJsonConverterNameJsonKey] = a_scene.GetREFName();
  
     // シーンチェンジャーのシリアライズ
     l_rootJson[k_sceneChanger] = l_sceneChanger.Serialize(l_assetFilePathRegistry);

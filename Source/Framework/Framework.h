@@ -567,11 +567,14 @@
 //===============================================================================
 // シーン
 //===============================================================================
-#include "Definition/Enum/Scene/SceneEnum.h"
-#include "Scene/Converter/Json/SceneJsonConverter.h"
-#include "Definition/Struct/Scene/SceneChangerStruct.h"
+#include "Definition/Constant/Scene/SceneJsonConverterConstant.h"
+#include "Scene/Changer/Converter/Json/NextSceneJsonConverter.h"
+#include "Scene/Changer/NextScene.h"
+
+#include "Definition/Enum/Scene/SceneChangerEnum.h"
 #include "Scene/Changer/Converter/Json/SceneChangerJsonConverter.h"
 #include "Scene/Changer/SceneChanger.h"
+#include "Scene/Converter/Json/SceneJsonConverter.h"
 #include "Scene/Scene.h"
 #include "Scene/Converter/Json/SceneManagerJsonConveter.h"
 #include "Scene/SceneManager.h"

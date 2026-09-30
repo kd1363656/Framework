@@ -15,25 +15,22 @@ namespace FWK
 
         nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
-        bool AddNextSceneData(const boost::uuids::uuid& a_sceneUUID, const Struct::NextSceneData& a_nextSceneData);        
-        bool AddNextSceneData(const boost::uuids::uuid& a_sceneUUID, const AssetFilePathRegistry& a_assetFilePathRegistry);
+        bool AddNextScene   (const boost::uuids::uuid& a_sceneUUID, const NextScene& a_nextScene);        
+        bool RemoveNextScene(const boost::uuids::uuid& a_sceneUUID);
+        
+        const NextScene* FetchPTRNexScene(const boost::uuids::uuid& a_sceneUUID) const;
 
-        bool RemoveNextSceneData     (const boost::uuids::uuid&    a_sceneUUID);
-        bool ReplaceNextSceneFilePath(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const boost::uuids::uuid& a_sceneUUID);
-
-        const Struct::NextSceneData* FetchPTRNexSceneData(const boost::uuids::uuid& a_sceneUUID) const;
-
-        const auto& GetREFNextSceneDataMap() const { return m_nextSceneDataMap; }
+        const auto& GetREFNextSceneMap() const { return m_nextSceneMap; }
 
         const auto& GetREFSceneChangeEventObserver() const { return m_sceneChangeEventObserver; }
 
-        auto& GetMutableREFNextSceneDataMap() { return m_nextSceneDataMap; }
+        auto& GetMutableREFNextSceneMap() { return m_nextSceneMap; }
 
         auto& GetMutableREFSceneChangeEventObserver() { return m_sceneChangeEventObserver; }
 
     private:
     
-        std::unordered_map<boost::uuids::uuid, Struct::NextSceneData> m_nextSceneDataMap = {};
+        std::unordered_map<boost::uuids::uuid, NextScene> m_nextSceneMap = {};
 
         Observer<Enum::SceneChangeEvent> m_sceneChangeEventObserver = {};
 

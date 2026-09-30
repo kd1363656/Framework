@@ -21,7 +21,7 @@ namespace FWK
                         SceneGameObjectPrefabSystem& a_prefabSystem, 
                         GameObject&                  a_gameObject);
 
-        void SetJson(const nlohmann::json& a_set) { m_json = a_set; }
+        void SetJson(nlohmann::json&& a_set) { m_json = std::move(a_set); }
 
         void SetName(const std::string& a_set) { m_name = a_set; }
 
@@ -29,14 +29,12 @@ namespace FWK
 
         const auto& GetREFName() const { return m_name; }
 
-        auto& GetMutableREFJson() { return m_json; }
-
     private:
-
-        Converter::GameObjectPrefabJsonConverter m_jsonConverter = {};
 
         nlohmann::json m_json = {};
 
         std::string m_name = {};
+
+        Converter::GameObjectPrefabJsonConverter m_jsonConverter = {};
     };
 }

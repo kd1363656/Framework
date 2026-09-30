@@ -67,16 +67,16 @@ void FWK::Converter::GameObjectPrefabJsonConverter::Load(const nlohmann::json& a
 
     a_prefab.SetName(l_name);
 
-    const auto& l_json = a_rootJson.value(k_prefabJsonKey, nlohmann::json{});
+    auto l_json = a_rootJson.value(k_prefabJsonKey, nlohmann::json{});
 
     if (l_json.is_null()) { return; }
 
-    a_prefab.SetJson(l_json);
+    a_prefab.SetJson(std::move(l_json));
 }
 
 bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::path&       a_filePath, 
+                                                         const GameObject&                  a_gameObject,
                                                                SceneGameObjectPrefabSystem& a_prefabSystem, 
-                                                               GameObject&                  a_gameObject,
                                                                GameObjectPrefab&            a_prefab) const
 {
     // 読み込めるファイルでなければ保存しない
@@ -96,9 +96,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::
     // GameObjectをシリアライズしてPrefabキーに保存する
     // ConvertToPrefabとClearAllPrefabRemovedUUIDSetは既にGameObjectPrefab::Saveで実行済み
     // ここではGameObjectの状態をそのままJSONへ出力する
-    GameObjectJsonConverter l_gameObjectJsonConverter = {};
-
-    l_rootJson[k_prefabJsonKey] = l_gameObjectJsonConverter.Serialize(a_gameObject, a_prefabSystem);
+    l_rootJson[k_prefabJsonKey] = a_gameObject.Serialize(a_prefabSystem);
 
     // ファイル書き込みに失敗した場合は
     // GameObjectPrefab内部のキャッシュも更新しない
@@ -110,7 +108,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::
     }
 
     // 保存成功したらキャッシュを更新する
-    a_prefab.SetJson(l_rootJson[k_prefabJsonKey]);
+    a_prefab.SetJson(std::move(l_rootJson[k_prefabJsonKey]));
 
     return true;
 }

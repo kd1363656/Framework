@@ -42,7 +42,7 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath,
     a_gameObject.ClearAllPrefabRemovedUUIDSet();
 
     return m_jsonConverter.Save(a_filePath, 
-                                a_prefabSystem,
                                 a_gameObject, 
+                                a_prefabSystem,
                                 *this);
 }
