@@ -33,6 +33,11 @@ namespace FWK
         nlohmann::json SerializeScene(      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeDiff (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
         
+        std::shared_ptr<GameObject> Clone(const std::weak_ptr<GameObject>& a_newParent, 
+                                                Scene&                     a_scene,
+                                          const boost::uuids::uuid&        a_prefabHierarchyNodeUUID = {},
+                                                bool                       a_isCloneSubtreeRoot      = true) const;
+        
         void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID);
 
         void DetachFromPrefab();

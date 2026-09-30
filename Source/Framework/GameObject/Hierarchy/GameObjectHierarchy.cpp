@@ -37,6 +37,26 @@ void FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json& a_rootJso
                                       a_scene);
 }
 
+void FWK::GameObjectHierarchy::PostDeserialize()
+{
+    const auto& l_gameObject = m_owner.lock();
+
+    if (!l_gameObject) { return; }
+
+    l_gameObject->PostDeserialize();
+
+    const auto& l_childDataList = m_childSmartPointerVectorList.GetMutableREFElementDataList();
+
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+
+        if (!l_child) { continue; }
+
+        l_child->PostDeserialize();
+    }
+}
+
 nlohmann::json FWK::GameObjectHierarchy::Serialize(SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     return m_jsonConverter.Serialize(*this, a_prefabSystem);
@@ -44,6 +64,46 @@ nlohmann::json FWK::GameObjectHierarchy::Serialize(SceneGameObjectPrefabSystem& 
 nlohmann::json FWK::GameObjectHierarchy::SerializeDiff(const nlohmann::json& a_prefabJson, SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     return m_jsonConverter.SerializeDiff(a_prefabJson, *this, a_prefabSystem);
+}
+
+void FWK::GameObjectHierarchy::Clone(GameObjectHierarchy& a_cloneHierarchy, Scene& a_scene) const
+{
+    // Prefab由来の子の削除追跡を複写する
+    // Prefabインスタンスのクローンでは削除意図も差分の一部のため必要
+    // 内部子のクローンでDetachされる場合はDetachFromPrefabがクリアするため無害
+    for (const auto& l_removedUUID : m_prefabRemovedChildUUIDSet)
+    {
+        a_cloneHierarchy.AddPrefabRemovedUUID(l_removedUUID);
+    }
+ 
+    // クローン側HierarchyのOwnerがクローンされた子たちの親になる
+    const auto& l_cloneParent = a_cloneHierarchy.GetREFOwner();
+ 
+    FWK_ASSERT_RETURN_IF(l_cloneParent.expired(), "クローン側HierarchyのOwnerが無効なため、子のクローンに失敗しました。");
+ 
+    const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
+ 
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+ 
+        // 無効または破棄済みの子はクローン対象から外す
+        if (!l_child ||
+            l_child->GetVALIsDestroyed())
+        {
+            continue;
+        }
+ 
+        const auto& l_childPrefabHierarchyNodeUUID = l_child->GetREFPrefabHierarchyNodeUUID();
+
+        // 子自身のCloneが生成・接続・Scene登録・子孫の再帰までを行う
+        // コピー元のPrefabHierarchyNodeUUIDを渡してPrefabノードとの照合を維持し
+        // a_isCloneSubtreeRoot = falseでルート専用後処理をスキップさせる
+        l_child->Clone(l_cloneParent,
+                       a_scene,
+                       l_childPrefabHierarchyNodeUUID,
+                       false);
+    }
 }
 
 void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const

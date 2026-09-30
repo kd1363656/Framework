@@ -72,3 +72,19 @@ const FWK::NextScene* FWK::SceneChanger::FetchPTRNexScene(const boost::uuids::uu
 
     return &l_itr->second;
 }
+
+FWK::NextScene* FWK::SceneChanger::FetchMutablePTRNextScene(const boost::uuids::uuid& a_sceneUUID)
+{
+    if (a_sceneUUID.is_nil())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneUUIDが無効だったため、SceneChangerのNextSceneMapからNextSceneの取得に失敗しました。");
+
+        return nullptr;
+    }
+
+    const auto& l_itr = m_nextSceneMap.find(a_sceneUUID);
+
+    if (l_itr == m_nextSceneMap.end()) { return nullptr; }
+
+    return &l_itr->second;
+}

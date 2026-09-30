@@ -30,8 +30,17 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
 
 void FWK::Scene::PostDeserialize() const
 {
-    for (const auto& l_gameObject : m_gameObjectList)
+    if (m_gameObjectExecutionLevelList.empty()) { return; }
+
+    // ルートGameObjectのみを対象にする
+    // 子孫は各GameObjectのHierarchy経由のPostDeserializeに任せる
+    // (全ノードを回すと再帰済みの子が二重実行される)
+    const auto& l_rootGameObjectLevel = m_gameObjectExecutionLevelList.front();
+
+    for (const auto& l_gameObjectWeak : l_rootGameObjectLevel)
     {
+        const auto& l_gameObject = l_gameObjectWeak.lock();
+
         if (!l_gameObject ||
             l_gameObject->GetVALIsDestroyed())
         {
@@ -48,8 +57,11 @@ void FWK::Scene::PostDeserialize() const
     l_physicsManager.OptimizeBroadPhase();
 }
 
-void FWK::Scene::EarlyUpdate()
+void FWK::Scene::EarlyUpdate() 
 {
+    // 削除要求があったゲームオブジェクトがあればここで削除
+    RemoveDestroyedGameObjects();
+
     for (const auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
     {
         for (const auto& l_gameObjectWeak : l_gameObjectExecutionLevel)
@@ -192,11 +204,11 @@ std::string FWK::Scene::FetchVALNextSceneName() const
     // 次のに移行するシーンの名前が空なら移行しない
     if (m_nextSceneUUID.is_nil()) { return {}; }
 
-    const auto* l_nextSceneData = m_sceneChanger.FetchPTRNexSceneData(m_nextSceneUUID);
+    const auto* l_nextScene = m_sceneChanger.FetchPTRNexScene(m_nextSceneUUID);
 
-    if (!l_nextSceneData) { return {}; }
+    if (!l_nextScene) { return {}; }
 
-    return l_nextSceneData->m_name;
+    return l_nextScene->GetREFName();
 }
 
 void FWK::Scene::AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel)

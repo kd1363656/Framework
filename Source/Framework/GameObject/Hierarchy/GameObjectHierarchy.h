@@ -23,9 +23,12 @@ namespace FWK
  
         void DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene);
 
+        void PostDeserialize();
 
         nlohmann::json Serialize    (      SceneGameObjectPrefabSystem& a_prefabSystem)                                            const;
         nlohmann::json SerializeDiff(const nlohmann::json&              a_prefabJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
+
+        void Clone(GameObjectHierarchy& a_cloneHierarchy, Scene& a_scene) const;
 
         void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 

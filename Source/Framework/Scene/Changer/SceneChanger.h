@@ -20,6 +20,8 @@ namespace FWK
         
         const NextScene* FetchPTRNexScene(const boost::uuids::uuid& a_sceneUUID) const;
 
+        NextScene* FetchMutablePTRNextScene(const boost::uuids::uuid& a_sceneUUID);
+
         const auto& GetREFNextSceneMap() const { return m_nextSceneMap; }
 
         const auto& GetREFSceneChangeEventObserver() const { return m_sceneChangeEventObserver; }

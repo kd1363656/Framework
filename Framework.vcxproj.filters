@@ -1444,6 +1444,18 @@
     <Filter Include="Source\Framework\Definition\Constant\Scene">
       <UniqueIdentifier>{0f69876e-0207-421b-966d-c5c564f4e9ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\Helper">
+      <UniqueIdentifier>{c41c13f3-fc0a-4d54-9436-333c37c37b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Converter">
+      <UniqueIdentifier>{a8d03467-fc1b-4136-afdb-daa445504b3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Inspector">
+      <UniqueIdentifier>{0a102a6b-88b7-4aa4-a262-dec3d6834846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\Helper\Converter\Json">
+      <UniqueIdentifier>{f1a688bc-d379-4874-8831-5c2d1f48dfc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2856,6 +2868,15 @@
     <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.h">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\AssetFilePathHelper.h">
+      <Filter>Source\Framework\Utility\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Inspector\AssetFilePathHelperInspector.h">
+      <Filter>Source\Framework\Utility\Helper\Inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.h">
+      <Filter>Source\Framework\Utility\Helper\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3571,6 +3592,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\AssetFilePathHelper.cpp">
+      <Filter>Source\Framework\Utility\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Inspector\AssetFilePathHelperInspector.cpp">
+      <Filter>Source\Framework\Utility\Helper\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.cpp">
+      <Filter>Source\Framework\Utility\Helper\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

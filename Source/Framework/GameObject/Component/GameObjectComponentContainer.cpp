@@ -144,6 +144,41 @@ nlohmann::json FWK::GameObjectComponentContainer::SerializeDiff(const nlohmann::
     return m_jsonConverter.SerializeDiff(a_prefabJson, *this);
 }
 
+void FWK::GameObjectComponentContainer::Clone(GameObjectComponentContainer& a_cloneComponentContainer) const
+{
+    // Prefab由来コンポーネントの削除追跡を先に複写する
+    // 削除済みUUIDを先に登録しておくことで、万が一同じUUIDを持つ
+    // コンポーネントが来た場合にAddComponent側で新規発行できる
+    // (デシリアライズ時のDeserializeRemovedUUIDListと同じ順序)
+    for (const auto& l_removedUUID : m_prefabRemovedComponentUUIDSet)
+    {
+        a_cloneComponentContainer.AddPrefabRemovedComponentUUID(l_removedUUID);
+    }
+
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+ 
+    for (const auto& l_componentData : l_componentDataList)
+    {
+        const auto& l_component = l_componentData.m_type;
+ 
+        if (!l_component) { continue; }
+ 
+        // 各ComponentのCloneがSerialize/Deserialize往復で値コピーを行う
+        // UUIDもComponentDataに含まれるためそのまま複写される
+        // (Prefab差分照合にUUIDが必要なため再発行しない)
+        const auto& l_cloneComponent = l_component->Clone();
+ 
+        if (!l_cloneComponent) { continue; }
+ 
+        // Owner設定・UUIDRegistry登録・Unique/Multiマップ振り分け・追加順序の保持はすべてAddComponentが行う
+        // クローン側のRegistryは空なのでUUIDはそのまま採用される
+        if (!a_cloneComponentContainer.AddComponent(l_cloneComponent))
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "クローンしたコンポーネントの登録に失敗しました。");
+        }
+    }
+}
+
 void FWK::GameObjectComponentContainer::ConvertToPrefab() const
 {
     // Prefab由来Componentであることを全Componentへ設定する

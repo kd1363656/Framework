@@ -132,9 +132,9 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFil
     auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
 
     // NextSceneとして登録済みのときだけSceneChanger側のFilePathも追従する
-    if (l_sceneChanger.FetchPTRNexSceneData(a_sceneUUID))
+    if (auto* l_nextScene = l_sceneChanger.FetchMutablePTRNextScene(a_sceneUUID))
     {
-        l_sceneChanger.ReplaceNextSceneFilePath(a_oldFilePath, a_newFilePath, a_sceneUUID);
+        l_nextScene->Load(a_newFilePath);
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyDirectoryFilePathChange(const std::filesystem::path& a_oldFilePath,

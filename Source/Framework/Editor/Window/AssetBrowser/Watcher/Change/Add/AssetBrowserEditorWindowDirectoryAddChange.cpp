@@ -152,25 +152,24 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(cons
  
     if (!l_scene) { return; }
  
-          auto& l_sceneChanger     = l_scene->GetMutableREFSceneChanger   ();
-    const auto& l_nextSceneDataMap = l_sceneChanger.GetREFNextSceneDataMap();
+    auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
  
-    // 既にNextSceneDataMapへ登録済みなら何もしない
-    if (const auto& l_nextSceneDataITR = l_nextSceneDataMap.find(a_sceneUUID);
-        l_nextSceneDataITR != l_nextSceneDataMap.end())
-    {
-        if (l_nextSceneDataITR->second.m_filePath != a_filePath)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryとSceneChangerのNextSceneDataMapでSceneFilePathが一致しません。\nFilePath : {}", a_filePath.string());
-        }
- 
-        return;
-    }
- 
-    // Registryから正式なPathを引く版でNextSceneDataMapへ登録する
-    if (!l_sceneChanger.AddNextSceneData(a_sceneUUID, a_assetFilePathRegistry) &&
-        !Utility::CanLoadFilePath(a_filePath, Constant::k_lowerJsonExtension))
+    // 既にNextSceneMapへ登録済みなら何もしない
+    if (l_sceneChanger.FetchPTRNexScene(a_sceneUUID)) { return; }
+
+    NextScene l_nextScene = {};
+
+    // Add通知はJson生成直後に届く可能性がある
+    // NextScene::Load()内部でJsonを実際に読み込ませ、
+    // 書き込み途中の不完全なSceneをSceneChangerへ登録しない
+    l_nextScene.Load(a_filePath);
+
+    if (l_nextScene.GetREFJson().is_null())
     {
         SetIsRequiresRetry(true);
+
+        return;
     }
+
+    l_sceneChanger.AddNextScene(a_sceneUUID, l_nextScene);
 }
