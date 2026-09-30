@@ -1,4 +1,5 @@
 ﻿#include "AssetBrowserEditorWindowFolderPane.h"
+#include "../../../../../../Application/Application.h"
 
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -629,9 +630,10 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // TreeNodeExのラベル部分(アイコンの右)にInputTextを重ねる
     if (l_isRenaming)
     {
-              auto& l_assetFilePathRegistry = a_editorWindow.GetMutableREFAssetFilePathRegistry();
-        const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation               ();
-              auto& l_renameState           = a_editorWindow.GetMutableREFRenameState          ();
+              auto& l_application           = Application::GetInstance                        ();
+              auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+        const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation              ();
+              auto& l_renameState           = a_editorWindow.GetMutableREFRenameState         ();
 
         // ImGui::SameLine : 同じ行に次のアイテムを配置
         // TreeNodeExのアイコンの右側にInputTextを配置する

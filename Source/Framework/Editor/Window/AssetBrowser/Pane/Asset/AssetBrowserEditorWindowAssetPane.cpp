@@ -1,4 +1,5 @@
 ﻿#include "AssetBrowserEditorWindowAssetPane.h"
+#include "../../../../../../Application/Application.h"
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -496,8 +497,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
                        *l_drawList);
 
     // アイコン領域 + アイコン
-    DrawCardIcon(a_editorWindow,
-                 a_filePath, 
+    DrawCardIcon(a_filePath, 
                  l_cardMIN,
                  l_cardMAX,
                  l_isCutTarget,
@@ -604,8 +604,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
                              k_cardRounding,
                              ImDrawFlags_RoundCornersAll);
 }
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBrowserEditorWindow& a_editorWindow,
-                                                                  const std::filesystem::path&    a_filePath, 
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::filesystem::path&    a_filePath, 
                                                                   const ImVec2&                   a_cardMIN, 
                                                                   const ImVec2&                   a_cardMAX,
                                                                   const bool                      a_isCutTarget, 
@@ -638,7 +637,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const AssetBro
 
     // アイコン描画
     // ファイル種別に応じたアイコンを内側ボックスいっぱいに描画
-    const auto& l_icon = FetchIcon(a_editorWindow, a_filePath);
+    const auto& l_icon = FetchIcon(a_filePath);
 
     // アイコン領域のサイズ(内側ボックスから余白を引く)
     const float l_iconAreaWidth  = l_iconBoxMAX.x - l_iconBoxMIN.x - k_iconMargin * k_doubleMagnification;
@@ -742,9 +741,10 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
                                                                     const ImVec2&                   a_cardMAX,
                                                                           AssetBrowserEditorWindow& a_editorWindow) const
 {
-          auto& l_assetFilePathRegistry = a_editorWindow.GetMutableREFAssetFilePathRegistry();
-    const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation               ();
-          auto& l_renameState           = a_editorWindow.GetMutableREFRenameState          ();
+          auto& l_application           = Application::GetInstance                        ();
+          auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+    const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation              ();
+          auto& l_renameState           = a_editorWindow.GetMutableREFRenameState         ();
 
     // 名前領域(下半分の内側ボックス)
     // DrawCardFileNameと同じ領域を使用する
@@ -1151,7 +1151,7 @@ std::uint32_t FWK::Editor::AssetBrowserEditorWindowAssetPane::CalculateCardPerRo
     return l_cardsPerRow;
 }
 
-std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const AssetBrowserEditorWindow& a_editorWindow, const std::filesystem::path& a_filePath) const
+std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const std::filesystem::path& a_filePath) const
 {
     // フォルダかどうか真っ先に比較
     if (std::error_code l_errorCode = {};
@@ -1171,12 +1171,13 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchIcon(const Asse
     // jsonファイルの場合シーンファイルなのかプレハブファイルなのかで
     // 表示するアイコンが変わるためEditor側のAssetRegistryに登録されている
     // 者のみアイコンを描画する
-    const auto& l_registry = a_editorWindow.GetREFAssetFilePathRegistry();
-    const auto* l_uuid     = l_registry.FindPTRAssetUUID               (a_filePath);
+    const auto& l_application           = Application::GetInstance                 ();
+    const auto& l_assetFilePathRegistry = l_application.GetREFAssetFilePathRegistry();
+    const auto* l_uuid                  = l_assetFilePathRegistry.FindPTRAssetUUID (a_filePath);
 
     if (!l_uuid) { return std::string{ k_imguiFontAwesomeFileIcon }; }
 
-    const auto* l_assetFilePathData = l_registry.FindPTRAssetFilePathData(*l_uuid);
+    const auto* l_assetFilePathData = l_assetFilePathRegistry.FindPTRAssetFilePathData(*l_uuid);
 
     if (!l_assetFilePathData) { return std::string{ k_imguiFontAwesomeFileIcon }; }
 

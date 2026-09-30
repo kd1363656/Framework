@@ -1065,6 +1065,7 @@ if "$(Configuration)"=="Debug" (
     <Text Include="Documents\CodingConventions.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CONFIG\Application\ApplicationCONFIG.json" />
     <None Include="CONFIG\Audio\AudioCONFIG.json" />
     <None Include="CONFIG\Editor\EditorCONFIG.json" />
     <None Include="CONFIG\FPS\FPSCONFIG.json" />

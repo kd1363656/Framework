@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-namespace FWK
+namespace FWK::Graphics
 {
-    class Graphics::LightSystem;
+    class LightSystem;
 }
 
 namespace FWK::Converter

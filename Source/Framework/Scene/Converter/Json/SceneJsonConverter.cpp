@@ -1,8 +1,12 @@
 ﻿#include "SceneJsonConverter.h"
+#include "../../../../Application/Application.h"
 
 void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
     if (a_rootJson.is_null()) { return; }
+
+    const auto& l_application           = Application::GetInstance                 ();
+    const auto& l_assetFilePathRegistry = l_application.GetREFAssetFilePathRegistry();
 
     // シーンチェンジャーのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_sceneChanger, nlohmann::json{});
@@ -47,7 +51,9 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
  
     const auto& l_sceneChanger           = a_scene.GetREFSceneChanger                 ();
           auto& l_gameObjectPrefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
-    const auto& l_lightSystem            = a_scene.GetREFLightSystem                  ();
+    const auto& l_lightSystem            = a_scene.GetREFLightSystem                  ();    
+    const auto& l_application            = Application::GetInstance                   ();
+    const auto& l_assetFilePathRegistry  = l_application.GetREFAssetFilePathRegistry  ();
 
     // シーン名のシリアライズ
     l_rootJson[k_sceneNameJsonKey] = a_scene.GetREFName();

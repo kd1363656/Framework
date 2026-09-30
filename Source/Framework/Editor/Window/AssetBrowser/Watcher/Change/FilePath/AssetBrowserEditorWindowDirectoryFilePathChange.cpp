@@ -1,6 +1,6 @@
 ﻿#include "AssetBrowserEditorWindowDirectoryFilePathChange.h"
 
-void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager)
+void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::Apply(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager)
 {
     const auto& l_oldFilePath = GetREFFilePath();
 
@@ -17,7 +17,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::Apply(AssetFi
     {
         ApplyDirectoryFilePathChange(l_oldFilePath,
                                      m_newFilePath,
-                                     a_assetBrowserAssetFilePathRegistry,
+                                     a_assetFilePathRegistry,
                                      a_sceneManager);
 
         return;
@@ -25,18 +25,18 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::Apply(AssetFi
 
     ApplyFilePathChange(l_oldFilePath,
                         m_newFilePath,
-                        a_assetBrowserAssetFilePathRegistry,
+                        a_assetFilePathRegistry,
                         a_sceneManager);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePathChange(const std::filesystem::path& a_oldFilePath,
                                                                                        const std::filesystem::path& a_newFilePath,
-                                                                                             AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry,
+                                                                                             AssetFilePathRegistry& a_assetFilePathRegistry,
                                                                                              SceneManager&          a_sceneManager) const
 {
     // AssetBrowser側RegistryはProject全体のAsset情報を持つため、
     // ここからUUIDとAssetTypeを取得して処理を分ける
-    const auto* l_assetUUID = a_assetBrowserAssetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
+    const auto* l_assetUUID = a_assetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
 
     if (!l_assetUUID)
     {
@@ -54,7 +54,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
     // ReplaceFilePath()によってRegistry内部の要素が移動するため
     // Map内部を示すPointerではなくUUIDを値として保持しておく
     const auto  l_copiedAssetUUID   = *l_assetUUID;
-    const auto* l_assetFilePathData = a_assetBrowserAssetFilePathRegistry.FindPTRAssetFilePathData(l_copiedAssetUUID);
+    const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(l_copiedAssetUUID);
 
     if (!l_assetFilePathData)
     {
@@ -73,8 +73,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
             ApplyPrefabFilePathChange(a_oldFilePath,
                                       a_newFilePath,
                                       l_copiedAssetUUID,
-                                      a_assetBrowserAssetFilePathRegistry,
-                                      a_sceneManager);
+                                      a_assetFilePathRegistry);
 
             return;
         }
@@ -85,7 +84,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
             ApplySceneFilePathChange(a_oldFilePath,
                                      a_newFilePath,
                                      l_copiedAssetUUID,
-                                     a_assetBrowserAssetFilePathRegistry,
+                                     a_assetFilePathRegistry,
                                      a_sceneManager);
 
             return;
@@ -100,183 +99,62 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
 void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyPrefabFilePathChange(const std::filesystem::path& a_oldFilePath,
                                                                                              const std::filesystem::path& a_newFilePath,
                                                                                              const boost::uuids::uuid&    a_prefabUUID,
-                                                                                                   AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry,
-                                                                                                   SceneManager&          a_sceneManager) const
+                                                                                                   AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
     if (a_prefabUUID.is_nil()) { return; }
 
-    const auto& l_scene = a_sceneManager.GetVALScene().lock();
-
-    if (!l_scene) { return; }
-
-    auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
-
-    // Scene側RegistryにOldPathが存在する場合
-    // 現在Sceneで使用中のPrefabとして登録されている
-    if (const auto* l_prefabUUID = l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
-        l_prefabUUID)
-    {
-        // Registryに書き換える前にUUIDをコピーする
-        const auto  l_copiedPrefabUUID  = *l_prefabUUID;
-        const auto* l_assetFilePathData = l_sceneAssetFilePathRegistry.FindPTRAssetFilePathData(l_copiedPrefabUUID);
-
-        if (!l_assetFilePathData)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,"SceneのAssetFilePathRegistry内部で、PrefabUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
-
-            return;
-        }
-
-        if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistryに登録されているAssetTypeがPrefabではありません。\nFilePath : {}", a_oldFilePath.string());
-
-            return;
-        }
-
-        // AssetBrowserとSceneで同じPrefabPathを示しているなら
-        // UUIDも一致していなければならない
-        if (l_copiedPrefabUUID != a_prefabUUID)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserとSceneのAssetFilePathRegistryでPrefabUUIDが一致していません。\nFilePath : {}", a_oldFilePath.string());
-
-            return;
-        }
-
-        // Scene側を先に変更する
-        if (!l_sceneAssetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath)) { return; }
-
-        // AssetBrowser側も同じPathへ変更する
-        if (!a_assetBrowserAssetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath))
-        {
-            // AssetBrowser側の変更だけ失敗した場合は、
-            // Scene側だけnewPathになる状態を防ぐためOldPathへ戻す
-            l_sceneAssetFilePathRegistry.ReplaceFilePath(a_newFilePath, a_oldFilePath);
-
-            return;
-        }
-
-        return;
-    }
-
-    // Sceneに存在しないPrefabは現在Sceneで使用していないPrefab
-    // Project全体を管理するAssetBrowser側Registryだけ変更する
-    a_assetBrowserAssetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath);
+    // PrefabSystemはPrefabUUIDをKeyとしてPrefabを保持しておりFilePathを持たないため
+    // Registryの登録Pathだけを変更すればよい
+    a_assetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath);
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplySceneFilePathChange(const std::filesystem::path& a_oldFilePath,
                                                                                             const std::filesystem::path& a_newFilePath,
                                                                                             const boost::uuids::uuid&    a_sceneUUID,
-                                                                                                  AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry,
+                                                                                                  AssetFilePathRegistry& a_assetFilePathRegistry,
                                                                                                   SceneManager&          a_sceneManager) const
 {
     if (a_sceneUUID.is_nil()) { return; }
 
-    const auto& l_scene = a_sceneManager.GetVALScene().lock();
+    // Registryの登録Pathを新しいPathへ変更する
+    if (!a_assetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath)) { return; }
 
-    if (!l_scene) { return; }
-
-    auto& l_sceneAssetFilePathRegistry = l_scene->GetMutableREFAssetFilePathRegistry();
-
-    // Scene側AssetRegistryにはCurrentScene自身を登録せず
-    // NextSceneだけを問う臆する
-    const auto*              l_sceneManagerSceneUUID      = l_sceneAssetFilePathRegistry.FindPTRAssetUUID(a_oldFilePath);
-          bool               l_isNextSceneFilePathChanged = false;
-          boost::uuids::uuid l_nextSceneUUID              = {};
-          auto&              l_sceneChanger               = l_scene->GetMutableREFSceneChanger();
-
-    if (l_sceneManagerSceneUUID)
-    {
-        l_nextSceneUUID = *l_sceneManagerSceneUUID;
-
-        const auto* l_sceneManagerAssetFilePathData = l_sceneAssetFilePathRegistry.FindPTRAssetFilePathData(l_nextSceneUUID);
-              
-        if (!l_sceneManagerAssetFilePathData)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistry内部で、SceneUUIDに対応するAssetFilePathDataを取得できませんでした。\nFilePath : {}", a_oldFilePath.string());
-
-            return;
-        }
-
-        if (l_sceneManagerAssetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneのAssetFilePathRegistryに登録されているAssetTypeがSceneではありません。\nFilePath : {}", a_oldFilePath.string());
-
-            return;
-        }
-
-        if (l_nextSceneUUID != a_sceneUUID)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserとSceneのAssetFilePathRegistryでSceneUUIDが一致していません。\nFilePath : {}", a_oldFilePath.string());
-
-            return;
-        }
-
-        // Scene側RegistryのUUIDは変更せずPathだけ変更する
-        if (!l_sceneAssetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath)) { return; }
-         
-        // Registry変更に成功した後でSceneChanger側も追従する
-        if (!l_sceneChanger.ReplaceNextSceneFilePath(a_oldFilePath, a_newFilePath, l_nextSceneUUID)) { return; }
-         
-        l_isNextSceneFilePathChanged = true;
-    }
-
-    if (!a_assetBrowserAssetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath))
-    {
-        // NextScene側だけ変更済みならOldPathへRollbackする
-        if (l_isNextSceneFilePathChanged)
-        {
-            l_sceneAssetFilePathRegistry.ReplaceFilePath(a_newFilePath, a_oldFilePath);
-            l_sceneChanger.ReplaceNextSceneFilePath     (a_newFilePath, a_oldFilePath, l_nextSceneUUID);
-        }
-
-        return;
-    }
-
-    // CurrentSceneはSceneManager側AssetRegistryには存在しないため
-    // FilePathそのものと一致によって判定する
+    // CurrentSceneはNextSceneDataMapに存在しないため
+    // FilePathそのものの一致によって判定する
     if (a_sceneManager.GetREFCurrentSceneFilePath() == a_oldFilePath)
     {
         a_sceneManager.SetCurrentSceneFilePath(a_newFilePath);
     }
 
+    const auto& l_scene = a_sceneManager.GetVALScene().lock();
+
+    if (!l_scene) { return; }
+
+    auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
+
+    // NextSceneとして登録済みのときだけSceneChanger側のFilePathも追従する
+    if (l_sceneChanger.FetchPTRNexSceneData(a_sceneUUID))
+    {
+        l_sceneChanger.ReplaceNextSceneFilePath(a_oldFilePath, a_newFilePath, a_sceneUUID);
+    }
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyDirectoryFilePathChange(const std::filesystem::path& a_oldFilePath,
                                                                                                 const std::filesystem::path& a_newFilePath,
-                                                                                                      AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry,
+                                                                                                      AssetFilePathRegistry& a_assetFilePathRegistry,
                                                                                                       SceneManager&          a_sceneManager) const
 {
     // Registryを走査中にReplaceFilePath()すると
     // unordered_map内部の要素が変更されるため、
     // まず変更対象となるOldPathだけを別Containerへコピーする
-          std::unordered_set<std::filesystem::path> l_oldeAssetFilePathSet               = {};
-    const auto&                                     l_assetBrowserAssetFilePathToUUIDMap = a_assetBrowserAssetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
+    std::unordered_set<std::filesystem::path> l_oldeAssetFilePathSet = {};
 
-    for (const auto& [l_assetFilePath, l_uuid] : l_assetBrowserAssetFilePathToUUIDMap)
+    for (const auto& [l_assetFilePath, l_uuid] : a_assetFilePathRegistry.GetREFAssetFilePathToUUIDMap())
     {
         if (!IsChildFilePath(l_assetFilePath, a_oldFilePath)) { continue; }
 
         l_oldeAssetFilePathSet.emplace(l_assetFilePath);
     }
 
-    const auto& l_scene = a_sceneManager.GetVALScene().lock();
-
-    if (l_scene) 
-    {
-        const auto& l_sceneManagerAssetFilePathRegistry  = l_scene->GetREFAssetFilePathRegistry                            ();
-        const auto& l_sceneManagerAssetFilePathToUUIDMap = l_sceneManagerAssetFilePathRegistry.GetREFAssetFilePathToUUIDMap();
-
-        for (const auto& [l_assetFilePath, l_uuid] : l_sceneManagerAssetFilePathToUUIDMap)
-        {
-            if (!IsChildFilePath(l_assetFilePath, a_oldFilePath)) { continue; }
-
-            // AssetBrowser側にも同じPathが存在する場合は
-            // unordered_setなので重複登録されない
-            l_oldeAssetFilePathSet.emplace(l_assetFilePath);
-        }
-    }
-
-    // CurrentSceneはSceneManager側Registryには入らないので
-    // Folderは以下なら独立して追加しておく
+    // CurrentSceneのPathは別途Path一覧へ追加しておく
     if (const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
         !l_currentSceneFilePath.empty() &&
         IsChildFilePath(l_currentSceneFilePath, a_oldFilePath))
@@ -287,23 +165,16 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyDirector
     for (const auto& l_oldAssetFilePath : l_oldeAssetFilePathSet)
     {
         // OldDirectoryから見た相対Pathを取得する
-        // 例 : OldeDirectory : Asset/Scene
-        //      Asset         : Asset/Scene/game/Main.json
-        //      relative      : Game/Main.json
         const auto& l_relativeAssetFilePath = l_oldAssetFilePath.lexically_relative(a_oldFilePath);
 
         if (l_relativeAssetFilePath.empty()) { continue; }
 
         // NewDirectoryへ同じ相対階層をつけなおす
-        // Asset/Scene
-        // Asset/NewScene
-        // Game/Main.json
-        // Asset/NewScene/Game/Main.jsonという形にする
         const auto& l_newAssetFilePath = a_newFilePath / l_relativeAssetFilePath;
 
         ApplyFilePathChange(l_oldAssetFilePath,
                             l_newAssetFilePath,
-                            a_assetBrowserAssetFilePathRegistry,
+                            a_assetFilePathRegistry,
                             a_sceneManager);
     }
 }

@@ -48,8 +48,7 @@ namespace FWK::Editor
                                 const bool        a_isCutTarget,
                                       ImDrawList& a_drawList);
 
-        void DrawCardIcon(const AssetBrowserEditorWindow& a_editorWindow,
-                          const std::filesystem::path&    a_filePath,
+        void DrawCardIcon(const std::filesystem::path&    a_filePath,
                           const ImVec2&                   a_cardMIN,
                           const ImVec2&                   a_cardMAX,
                           const bool                      a_isCutTarget,
@@ -88,7 +87,7 @@ namespace FWK::Editor
 
         std::uint32_t CalculateCardPerRow(const float a_availableWidth) const;
 
-        std::string FetchIcon(const AssetBrowserEditorWindow& a_editorWindow, const std::filesystem::path& a_filePath) const;
+        std::string FetchIcon(const std::filesystem::path& a_filePath) const;
 
         static constexpr std::string_view k_imguiFontAwesomeImageIcon    = "\xEF\x80\xBE";
         static constexpr std::string_view k_imguiFontAwesomeFBXModelIcon = "\xEF\x86\xB2";

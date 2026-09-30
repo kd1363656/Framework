@@ -1,5 +1,6 @@
 ﻿
 #include "AssetBrowserEditorWindow.h"
+#include "../../../../Application/Application.h"
 
 void FWK::Editor::AssetBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
 {
@@ -52,11 +53,14 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
 
+    auto& l_application           = Application::GetInstance                        ();
+    auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+
     // 毎フレームWindows通知を取得し、Changeを適用する
     // trueの場合ディレクトリ構造が変化したためm_folderHierarchyMapを再構築する
     // Synchronize内部でSceneManager::GetInstance()が必要なため取得する
     if (auto& l_sceneManager = SceneManager::GetInstance();
-        m_directoryWatcher.Synchronize(m_assetFilePathRegistry, l_sceneManager))
+        m_directoryWatcher.Synchronize(l_assetFilePathRegistry, l_sceneManager))
     {
         // ディレクトリ追加/削除/リネームがあったため
         // m_folderHierarchyMapをクリアして再構築

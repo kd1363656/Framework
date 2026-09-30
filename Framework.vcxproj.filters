@@ -1441,6 +1441,9 @@
     <Filter Include="Source\Application\Converter\Json">
       <UniqueIdentifier>{b6d03502-92e8-4e15-aade-c4ad89086b2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CONFIG\Application">
+      <UniqueIdentifier>{3ca8c6c2-eda7-47a7-a605-8b6bb290c1cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3629,6 +3632,9 @@
     </None>
     <None Include="Shader\Sprite\Screen\SpriteScreen.hlsli">
       <Filter>Shader\Sprite\Screen</Filter>
+    </None>
+    <None Include="CONFIG\Application\ApplicationCONFIG.json">
+      <Filter>CONFIG\Application</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

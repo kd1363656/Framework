@@ -4,15 +4,6 @@ void FWK::Converter::AssetBrowserEditorWindowJsonConverter::Deserialize(const nl
 {
     if (a_rootJson.is_null()) { return; }
 
-    // アセットファイルパスレジストリーのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_assetFilePathRegistryJsonKey, nlohmann::json{});
-        !l_json.is_null())
-    {
-        auto& l_assetFilePathRegistry = a_assetBrowserEditorWindow.GetMutableREFAssetFilePathRegistry();
-
-        l_assetFilePathRegistry.Deserialize(l_json);
-    }
-
     // ペインスプリッターのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_editorWindowPaneSplitterJsonKey, nlohmann::json{});
         !l_json.is_null())
@@ -60,17 +51,15 @@ void FWK::Converter::AssetBrowserEditorWindowJsonConverter::Deserialize(const nl
 
 nlohmann::json FWK::Converter::AssetBrowserEditorWindowJsonConverter::Serialize(const Editor::AssetBrowserEditorWindow& a_assetBrowserEditorWindow) const
 {
-          nlohmann::json l_rootJson              = {};
-    const auto&          l_assetFilePathRegistry = a_assetBrowserEditorWindow.GetREFAssetFilePathRegistry();
-    const auto&          l_paneSplitter          = a_assetBrowserEditorWindow.GetREFPaneSplitter         ();
-    const auto&          l_folderPane            = a_assetBrowserEditorWindow.GetREFFolderPane           ();
-    const auto&          l_assetPane             = a_assetBrowserEditorWindow.GetREFAssetPane            ();
+          nlohmann::json l_rootJson     = {};
+    const auto&          l_paneSplitter = a_assetBrowserEditorWindow.GetREFPaneSplitter();
+    const auto&          l_folderPane   = a_assetBrowserEditorWindow.GetREFFolderPane  ();
+    const auto&          l_assetPane    = a_assetBrowserEditorWindow.GetREFAssetPane   ();
 
-    l_rootJson[k_assetFilePathRegistryJsonKey]    = l_assetFilePathRegistry.Serialize                      ();
-    l_rootJson[k_editorWindowPaneSplitterJsonKey] = l_paneSplitter.Serialize                               ();
-    l_rootJson[k_currentSelectFolderPathJsonKey] = a_assetBrowserEditorWindow.GetREFCurrentSelectFolderPath();
-    l_rootJson[k_folderPaneJsonKey]               = l_folderPane.Serialize                                 ();
-    l_rootJson[k_assetPaneJsonKey]                = l_assetPane.Serialize                                  ();
+    l_rootJson[k_editorWindowPaneSplitterJsonKey] = l_paneSplitter.Serialize                                ();
+    l_rootJson[k_currentSelectFolderPathJsonKey]  = a_assetBrowserEditorWindow.GetREFCurrentSelectFolderPath();
+    l_rootJson[k_folderPaneJsonKey]               = l_folderPane.Serialize                                  ();
+    l_rootJson[k_assetPaneJsonKey]                = l_assetPane.Serialize                                   ();
 
     return l_rootJson;
 }

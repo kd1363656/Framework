@@ -40,7 +40,7 @@ namespace FWK
         auto& GetMutableREFSceneChanger          () { return m_sceneChanger; }
         auto& GetMutableREFGameObjectPrefabSystem() { return m_gameObjectPrefabSystem; }
 
-        auto& GetREFLightSystem() { return m_lightSystem; }
+        auto& GetMutableREFLightSystem() { return m_lightSystem; }
 
     private:
 

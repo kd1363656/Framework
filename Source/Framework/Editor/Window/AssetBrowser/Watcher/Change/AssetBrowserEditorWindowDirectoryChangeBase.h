@@ -9,7 +9,7 @@ namespace FWK::Editor
                  AssetBrowserEditorWindowDirectoryChangeBase() = default;
         virtual ~AssetBrowserEditorWindowDirectoryChangeBase() = default;
 
-        virtual void Apply(AssetFilePathRegistry& a_assetBrowserAssetFilePathRegistry, SceneManager& a_sceneManager) = 0;
+        virtual void Apply(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager) = 0;
 
         void SetFilePath(const std::filesystem::path& a_set) { m_filePath = a_set; }
 

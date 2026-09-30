@@ -1,4 +1,5 @@
 ﻿#include "AssetBrowserEditorWindowPopupDrawer.h"
+#include "../../../../../Application/Application.h"
 
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::BeginPopup(const std::string_view& a_openPopupLabel) const
 {
@@ -15,12 +16,13 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
 {
     if (!ImGui::BeginPopup(a_openPopupLabel.data())) { return; }
 
-    const auto& l_constClipboard         = a_editorWindow.GetREFClipboard                   ();
-    const auto& l_assetCreator           = a_editorWindow.GetREFAssetCreator                ();
-          auto& l_clipboard              = a_editorWindow.GetMutableREFClipboard            ();
-          auto& l_assetFilePathRegistry  = a_editorWindow.GetMutableREFAssetFilePathRegistry();
-          auto& l_fileOperation          = a_editorWindow.GetMutableREFFileOperation        ();
-          auto& l_renameState            = a_editorWindow.GetMutableREFRenameState          ();
+    const auto& l_constClipboard        = a_editorWindow.GetREFClipboard                  ();
+    const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+          auto& l_clipboard             = a_editorWindow.GetMutableREFClipboard           ();
+          auto& l_application           = Application::GetInstance                        ();
+          auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+          auto& l_fileOperation         = a_editorWindow.GetMutableREFFileOperation      ();
+          auto& l_renameState           = a_editorWindow.GetMutableREFRenameState        ();
 
     // AssetPaneの空白右クリックかどうか
     const bool l_isAssetPaneEmpty = a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
