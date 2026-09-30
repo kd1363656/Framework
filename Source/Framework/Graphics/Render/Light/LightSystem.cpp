@@ -1,5 +1,12 @@
 ﻿#include "LightSystem.h"
 
+void FWK::Graphics::LightSystem::Deserialize(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Graphics::LightSystem::ApplyDefaultSettings()
 {
     if (!m_cbLightPass)
@@ -23,6 +30,11 @@ void FWK::Graphics::LightSystem::ApplyDefaultSettings()
     l_ambientLight.m_intensity = Constant::k_defaultAmbientLightIntensity;
 
     RegisterCBLightPass();
+}
+
+nlohmann::json FWK::Graphics::LightSystem::Serialize() const
+{
+    return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Graphics::LightSystem::RegisterCBLightPass()

@@ -315,6 +315,7 @@
 #include "Definition/Constant/Graphics/LightSystemConstant.h"
 #include "Definition/Struct/Graphics/LightSystemStruct.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBLightStruct.h"
+#include "Graphics/Render/Light/Converter/Json/LightSystemJsonConverrter.h"
 #include "Graphics/Render/Light/LightSystem.h"
 
 // 影

@@ -643,8 +643,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\LightSystemStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Compute\ComputePipelineState.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json\ComputePipelineStateJsonConverter.h" />
@@ -927,6 +926,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Clearer\RenderGraphResourceClearer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Transitioner\RenderGraphResourceTransitioner.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Sorter\RenderGraphPassSorter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Light\LightSystem.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Compute\ComputePipelineState.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Pipeline\Compute\Converter\Json\ComputePipelineStateJsonConverter.cpp" />

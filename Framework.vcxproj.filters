@@ -331,12 +331,6 @@
     <Filter Include="Source\Framework\Graphics\Render\Light">
       <UniqueIdentifier>{e511c7bc-15d9-48c5-8b09-63bad146d696}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Light\Definition">
-      <UniqueIdentifier>{724ff765-8bff-4a01-bd8f-2444a5893a3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Light\Definition\Struct">
-      <UniqueIdentifier>{3068ec18-052d-4864-9548-db300b11434a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility">
       <UniqueIdentifier>{77c8c8ea-e154-4337-a576-64bfdb53efae}</UniqueIdentifier>
     </Filter>
@@ -1300,9 +1294,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Editor\UndoRedo">
       <UniqueIdentifier>{0de4d3a7-8156-498e-a91a-9ff92ddcb408}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection">
-      <UniqueIdentifier>{ac765259-24ac-42ac-95fb-a8d841af6356}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\List">
       <UniqueIdentifier>{7b01b175-4e78-4cd0-a1cb-e89cd68e16f2}</UniqueIdentifier>
     </Filter>
@@ -1434,6 +1425,15 @@
     </Filter>
     <Filter Include="Source\Framework\GameObject\Component\Camera\Inspector">
       <UniqueIdentifier>{7391d18b-b4ad-4684-93f8-526cf4b2c82a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Selection">
+      <UniqueIdentifier>{4dfe5c21-59f6-4a66-96a0-cbe39ef9dc22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Light\Converter">
+      <UniqueIdentifier>{15956261-e7e9-4a51-b287-2b8e0e7880fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Light\Converter\Json">
+      <UniqueIdentifier>{96f57f77-31f6-4b9e-83c3-946e604d4130}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1667,12 +1667,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Light\LightSystem.h">
       <Filter>Source\Framework\Graphics\Render\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\LightSystemStruct.h">
-      <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Light\Definition\Struct\CBLightStruct.h">
-      <Filter>Source\Framework\Graphics\Render\Light\Definition\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Singleton\SingletonBase.h">
       <Filter>Source\Framework\Utility\Singleton</Filter>
@@ -2700,9 +2694,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\UndoRedo\EditorUndoRedoSystemJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\UndoRedo</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
       <Filter>Source\Framework\Utility\List</Filter>
     </ClInclude>
@@ -2840,6 +2831,12 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectHierarchyJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.h">
+      <Filter>Source\Framework\Graphics\Render\Light\Converter\Json</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3461,9 +3458,6 @@
     <ClCompile Include="Source\Framework\Editor\Window\EditorWindowBase.cpp">
       <Filter>Source\Framework\Editor\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp">
-      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Operation\GameObject</Filter>
     </ClCompile>
@@ -3544,6 +3538,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\Camera\Inspector\GameObjectCameraComponentInspector.cpp">
       <Filter>Source\Framework\GameObject\Component\Camera\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.cpp">
+      <Filter>Source\Framework\Graphics\Render\Light\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

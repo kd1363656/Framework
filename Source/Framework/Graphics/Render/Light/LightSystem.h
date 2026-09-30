@@ -9,12 +9,22 @@ namespace FWK::Graphics
          LightSystem() = default;
         ~LightSystem() = default;
 
+        void Deserialize(const nlohmann::json& a_rootJson);
+
         void ApplyDefaultSettings();
+
+        nlohmann::json Serialize() const;
+
+        const auto& GetREFCbLightPass() const { return m_cbLightPass; }
+
+        auto& GetMutableREFCbLightPass() { return m_cbLightPass; }
 
     private:
 
         void RegisterCBLightPass();
 
         std::shared_ptr<Struct::CBLightPass> m_cbLightPass = nullptr;
+
+        Converter::LightSystemJsonConverter m_jsonConverter = {};
     };
 }

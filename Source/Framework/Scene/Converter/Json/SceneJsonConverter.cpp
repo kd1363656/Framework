@@ -40,6 +40,15 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
     {
         DeserializeGameObjectList(l_json, a_scene);
     }
+
+    // ライトシステムのデシリアライズ
+    if (const auto& l_json = a_rootJson.value(k_lightSystemJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        auto& l_lightSystem = a_scene.GetMutableREFLightSystem();
+
+        l_lightSystem.Deserialize(l_json);
+    }
 }
 
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
@@ -49,7 +58,8 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
     const auto& l_sceneChanger           = a_scene.GetREFSceneChanger                 ();
           auto& l_gameObjectPrefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
     const auto& l_assetFilePathRegistry  = a_scene.GetREFAssetFilePathRegistry        ();
- 
+    const auto& l_lightSystem            = a_scene.GetREFLightSystem                  ();
+
     // シーン名のシリアライズ
     l_rootJson[k_sceneNameJsonKey] = a_scene.GetREFName();
  
@@ -64,6 +74,9 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
  
     // ゲームオブジェクトリストのシリアライズ
     l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList(a_scene);
+
+    // ライトシステムのシリアライズ
+    l_rootJson[k_lightSystemJsonKey] = l_lightSystem.Serialize();
 
     return l_rootJson;
 }
