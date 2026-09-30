@@ -1,5 +1,16 @@
 ﻿#include "WorldOutlinerEditorWindowGameObjectOperation.h"
 
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::RenameGameObject(const std::shared_ptr<GameObject>& a_gameObject, const std::string& a_newName) const
+{
+    // 無効な対象、空文字列への変更は行わない
+    if (!a_gameObject ||
+        a_newName.empty())
+    {
+        return;
+    }
+
+    a_gameObject->SetName(a_newName);
+}
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedGameObjects(EditorGameObjectSelectionState& a_gameObjectSelectionState) const
 {
     // 選択リストは先にコピーする

@@ -24,6 +24,8 @@ namespace FWK
 
         void SetName(const std::string& a_set) { m_name = a_set; }
 
+        std::weak_ptr<GameObject> FindVALGameObject(const boost::uuids::uuid& a_sceneInstanceUUID) const;
+
         std::filesystem::path FetchVALNextLoadSceneFilePath() const;
 
         std::string FetchVALNextSceneName() const;
@@ -36,6 +38,8 @@ namespace FWK
         const auto& GetREFLightSystem() const { return m_lightSystem; }
 
         const auto& GetREFName() const { return m_name; }
+
+        auto& GetMutableREFGameObjectList() { return m_gameObjectList; }
 
         auto& GetMutableREFSceneChanger          () { return m_sceneChanger; }
         auto& GetMutableREFGameObjectPrefabSystem() { return m_gameObjectPrefabSystem; }

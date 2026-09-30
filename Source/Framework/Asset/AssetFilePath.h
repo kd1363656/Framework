@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-namespace FWK::Utility
+namespace FWK
 {
-    class AssetFilePathHelper
+    class AssetFilePath
     {
     public:
 
-         AssetFilePathHelper() = default;
-        ~AssetFilePathHelper() = default;
+         AssetFilePath() = default;
+        ~AssetFilePath() = default;
     
         void Deserialize(const nlohmann::json& a_rootJson);
 
@@ -16,10 +16,13 @@ namespace FWK::Utility
         void EditInspector();
 
         void SetAllowedFileExtension(const std::filesystem::path& a_set) { m_allowedFileExtension = a_set; }
+        void SetAssetFilePath       (const std::filesystem::path& a_set) { m_assetFilePath        = a_set; }
 
         void SetAssetFilePathUUID(const boost::uuids::uuid& a_set) { m_assetFilePathUUID = a_set; }
 
         void SetIsFilePathChangedDirty(const bool a_set) { m_isFilePathChangedDirty = a_set; }
+
+        const auto& GetREFAssetFilePath() const { return m_assetFilePath; }
 
         const auto& GetREFAssetFilePathUUID() const { return m_assetFilePathUUID; }
 
@@ -29,10 +32,11 @@ namespace FWK::Utility
     
 
         std::filesystem::path m_allowedFileExtension = {};
-        
-        Converter::AssetFilePathHelperJsonConverter m_jsonConverter = {};
+        std::filesystem::path m_assetFilePath        = {};
 
-        AssetFilePathHelperInspector m_inspector = {};
+        Converter::AssetFilePathJsonConverter m_jsonConverter = {};
+
+        AssetFilePathInspector m_inspector = {};
 
         boost::uuids::uuid m_assetFilePathUUID = {};
 

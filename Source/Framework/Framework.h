@@ -205,11 +205,17 @@
 #include "Graphics/Resource/Buffer/StructuredBufferBase.h"
 #include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
 
-// AssetFilePathHelper
-#include "Definition/Constant/Utility/Helper/AssetFilePathHelperInspectorConstant.h"
-#include "Utility/Helper/Converter/Json/AssetFilePathHelperJsonConverter.h"
-#include "Utility/Helper/Inspector/AssetFilePathHelperInspector.h"
-#include "Utility/Helper/AssetFilePathHelper.h"
+//===============================================================================
+// アセットファイルパスレジストリー
+//===============================================================================
+#include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
+#include "Definition/Struct/Asset/AssetFilePathRegistryStruct.h"
+#include "Asset/Converter/Json/AssetFilePathRegistryJsonConverter.h"
+#include "Asset/AssetFilePathRegistry.h"
+#include "Definition/Constant/Asset/AssetFilePathInspectorConstant.h"
+#include "Asset/Converter/Json/AssetFilePathJsonConverter.h"
+#include "Asset/Inspector/AssetFilePathInspector.h"
+#include "Asset/AssetFilePath.h"
 
 // テクスチャ
 #include "Definition/Enum/Graphics/TextureLoadColorSpaceEnum.h"
@@ -564,14 +570,6 @@
 #include "Definition/Enum/Axis/AxisEnum.h"
 
 //===============================================================================
-// アセットファイルパスレジストリー
-//===============================================================================
-#include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
-#include "Definition/Struct/Asset/AssetFilePathRegistryStruct.h"
-#include "Asset/Converter/Json/AssetFilePathRegistryJsonConverter.h"
-#include "Asset/AssetFilePathRegistry.h"
-
-//===============================================================================
 // シーン
 //===============================================================================
 #include "Definition/Constant/Scene/SceneJsonConverterConstant.h"
@@ -636,6 +634,7 @@
 #include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowAssetCreatorConstant.h"
 #include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowSelectionState.h"
 #include "Editor/Window/Outliner/Operation/GameObject/WorldOutlinerEditorWindowGameObjectOperation.h"
+#include "Editor/Window/Outliner/Operation/Scene/WorldOutlinerEditorWindowSceneOperation.h"
 #include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowOperationEnum.h"
 #include "Editor/Window/Outliner/Creator/WorldOutlinerEditorWindowAssetCreator.h"
 #include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStructConstant.h"

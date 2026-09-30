@@ -745,8 +745,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::CommitRename(Scene& a_scene)
     // シーン名の変更
     if (m_renameState.m_isSceneTarget)
     {
-        a_scene.SetName(l_newName);
-
+        m_sceneOperation.RenameScene(l_newName, a_scene);
+        
         return;
     }
 
@@ -755,7 +755,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::CommitRename(Scene& a_scene)
     // ゲームオブジェクトにポインタが格納されていたらゲームオブジェクトの名前をリネーム
     if (!l_targetGameObject) { return; }
 
-    l_targetGameObject->SetName(l_newName);
+    m_gameObjectOperation.RenameGameObject(l_targetGameObject, l_newName);
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const

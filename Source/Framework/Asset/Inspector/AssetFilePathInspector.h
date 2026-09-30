@@ -1,20 +1,20 @@
 ﻿#pragma once
 
-namespace FWK::Utility
+namespace FWK
 {
-    class AssetFilePathHelper;
+    class AssetFilePath;
 }
 
-namespace FWK::Utility
+namespace FWK
 {
-    class AssetFilePathHelperInspector final
+    class AssetFilePathInspector final
     {
     public:
 
-         AssetFilePathHelperInspector() = default;
-        ~AssetFilePathHelperInspector() = default;
+         AssetFilePathInspector() = default;
+        ~AssetFilePathInspector() = default;
 
-        void EditInspector(AssetFilePathHelper& a_assetFilePathHelper) const;
+        void EditInspector(AssetFilePath& a_assetFilePath) const;
 
     private:
 

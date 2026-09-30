@@ -26,6 +26,7 @@ namespace FWK::Editor
         void StartRenameByCurrentSelection(      EditorManager&               a_editorManager);
  
         const auto& GetREFSceneSelectionState() const { return m_sceneSelectionState; }
+        const auto& GetREFSceneOperation     () const { return m_sceneOperation; }
         const auto& GetREFGameObjectOperation() const { return m_gameObjectOperation; }
         const auto& GetREFAssetCreator       () const { return m_assetCreator; }
         const auto& GetREFClipboard          () const { return m_clipboard; }
@@ -74,6 +75,7 @@ namespace FWK::Editor
  
         WorldOutlinerEditorWindowSelectionState      m_sceneSelectionState = {};
         WorldOutlinerEditorWindowGameObjectOperation m_gameObjectOperation = {};
+        WorldOutlinerEditorWindowSceneOperation      m_sceneOperation      = {};
         WorldOutlinerEditorWindowClipboard           m_clipboard           = {};
         WorldOutlinerEditorWindowAssetCreator        m_assetCreator        = {};
         WorldOutlinerEditorWindowPopupDrawer         m_popupDrawer         = {};

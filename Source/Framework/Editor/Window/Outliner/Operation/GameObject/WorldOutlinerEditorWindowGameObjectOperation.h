@@ -9,7 +9,8 @@ namespace FWK::Editor
          WorldOutlinerEditorWindowGameObjectOperation() = default;
         ~WorldOutlinerEditorWindowGameObjectOperation() = default;
 
-        void DestroySelectedGameObjects(EditorGameObjectSelectionState& a_gameObjectSelectionState) const;
+        void RenameGameObject          (const std::shared_ptr<GameObject>&    a_gameObject, const std::string& a_newName) const;
+        void DestroySelectedGameObjects(      EditorGameObjectSelectionState& a_gameObjectSelectionState) const;
 
     private:
     

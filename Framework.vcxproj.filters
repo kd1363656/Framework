@@ -1156,9 +1156,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Utility\IMGUI">
       <UniqueIdentifier>{36d8c24a-9803-466d-9977-131f14b17f44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Utility\Helper">
-      <UniqueIdentifier>{9a839555-4a22-42bc-8e70-f9e378c117ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor\Window">
       <UniqueIdentifier>{a4cb01a2-9e97-4b2e-b332-491094bcf7b0}</UniqueIdentifier>
     </Filter>
@@ -1444,18 +1441,6 @@
     <Filter Include="Source\Framework\Definition\Constant\Scene">
       <UniqueIdentifier>{0f69876e-0207-421b-966d-c5c564f4e9ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\Helper">
-      <UniqueIdentifier>{c41c13f3-fc0a-4d54-9436-333c37c37b6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Converter">
-      <UniqueIdentifier>{a8d03467-fc1b-4136-afdb-daa445504b3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Inspector">
-      <UniqueIdentifier>{0a102a6b-88b7-4aa4-a262-dec3d6834846}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Utility\Helper\Converter\Json">
-      <UniqueIdentifier>{f1a688bc-d379-4874-8831-5c2d1f48dfc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Editor\Selection">
       <UniqueIdentifier>{29f03aac-a259-42db-9716-c1ace82e2f2b}</UniqueIdentifier>
     </Filter>
@@ -1464,6 +1449,15 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Outliner\Shortcut">
       <UniqueIdentifier>{93d0a431-1bb6-48c4-a9b7-ea6c78a5d6da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Operation\Scene">
+      <UniqueIdentifier>{dd7ec834-52dc-41eb-889d-df1c7ab3d9a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Asset">
+      <UniqueIdentifier>{fb9790a6-99e1-4b52-8734-20637f89b9c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Asset\Inspector">
+      <UniqueIdentifier>{5ce34741-5c7a-4b0d-9e2c-03db72554600}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2643,9 +2637,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Helper\AssetFilePathHelperInspectorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Utility\Helper</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
     </ClInclude>
@@ -2877,15 +2868,6 @@
     <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.h">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\AssetFilePathHelper.h">
-      <Filter>Source\Framework\Utility\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Inspector\AssetFilePathHelperInspector.h">
-      <Filter>Source\Framework\Utility\Helper\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.h">
-      <Filter>Source\Framework\Utility\Helper\Converter\Json</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h">
       <Filter>Source\Framework\Editor\Selection</Filter>
     </ClInclude>
@@ -2900,6 +2882,21 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Shortcut</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\Scene\WorldOutlinerEditorWindowSceneOperation.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Operation\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Asset\AssetFilePath.h">
+      <Filter>Source\Framework\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Asset\AssetFilePathInspectorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathJsonConverter.h">
+      <Filter>Source\Framework\Asset\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.h">
+      <Filter>Source\Framework\Asset\Inspector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3617,15 +3614,6 @@
     <ClCompile Include="Source\Framework\Scene\Changer\Converter\Json\NextSceneJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\AssetFilePathHelper.cpp">
-      <Filter>Source\Framework\Utility\Helper</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Inspector\AssetFilePathHelperInspector.cpp">
-      <Filter>Source\Framework\Utility\Helper\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.cpp">
-      <Filter>Source\Framework\Utility\Helper\Converter\Json</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp">
       <Filter>Source\Framework\Editor\Selection</Filter>
     </ClCompile>
@@ -3634,6 +3622,18 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Shortcut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\Scene\WorldOutlinerEditorWindowSceneOperation.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Operation\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Asset\AssetFilePath.cpp">
+      <Filter>Source\Framework\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathJsonConverter.cpp">
+      <Filter>Source\Framework\Asset\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.cpp">
+      <Filter>Source\Framework\Asset\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

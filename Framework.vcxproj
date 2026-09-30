@@ -338,8 +338,11 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="..\Library\UFBX\INC\ufbx.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Asset\AssetFilePath.h" />
     <ClInclude Include="Source\Framework\Asset\AssetFilePathRegistry.h" />
+    <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathJsonConverter.h" />
     <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.h" />
     <ClInclude Include="Source\Framework\Audio\AudioManager.h" />
     <ClInclude Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Audio\SoundEffect\Instance\2D\SoundEffectInstance2D.h" />
@@ -360,6 +363,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Asset\AssetFilePathInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\AudioManagerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h" />
@@ -410,7 +414,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\Json\JsonLoadAndSaveFileUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\SaveFileDialogUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\Helper\AssetFilePathHelperInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h" />
@@ -544,6 +547,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\Scene\WorldOutlinerEditorWindowSceneOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.h" />
@@ -784,9 +788,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\Graphics\IsSameTextureSizeUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\IsValidTextureUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Graphics\UFBXConvertUtility.h" />
-    <ClInclude Include="Source\Framework\Utility\Helper\AssetFilePathHelper.h" />
-    <ClInclude Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.h" />
-    <ClInclude Include="Source\Framework\Utility\Helper\Inspector\AssetFilePathHelperInspector.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Bool\IMGUIBoolToStringUtility.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h" />
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h" />
@@ -817,8 +818,11 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="..\Library\UFBX\INC\ufbx.cpp" />
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\Converter\Json\ApplicationJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Asset\AssetFilePath.cpp" />
     <ClCompile Include="Source\Framework\Asset\AssetFilePathRegistry.cpp" />
+    <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Asset\Converter\Json\AssetFilePathRegistryJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.cpp" />
     <ClCompile Include="Source\Framework\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Framework\Audio\Converter\Json\AudioManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\2D\SoundEffectInstance2D.cpp" />
@@ -864,6 +868,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\Scene\WorldOutlinerEditorWindowSceneOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.cpp" />
@@ -1046,9 +1051,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
-    <ClCompile Include="Source\Framework\Utility\Helper\AssetFilePathHelper.cpp" />
-    <ClCompile Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.cpp" />
-    <ClCompile Include="Source\Framework\Utility\Helper\Inspector\AssetFilePathHelperInspector.cpp" />
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />

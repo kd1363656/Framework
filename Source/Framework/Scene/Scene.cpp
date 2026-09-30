@@ -170,6 +170,11 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
     AddGameObjectToExecutionLevelList(a_gameObject, l_executionLevel);
 }
 
+std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_sceneInstanceUUID) const
+{
+    return m_gameObjectUUIDRegistry.FindVALRegisteredType(a_sceneInstanceUUID);
+}
+
 std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
 {
     // 次のに移行するシーンの名前が空なら移行しない
