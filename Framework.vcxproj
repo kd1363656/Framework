@@ -546,6 +546,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h" />
@@ -865,6 +866,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp" />

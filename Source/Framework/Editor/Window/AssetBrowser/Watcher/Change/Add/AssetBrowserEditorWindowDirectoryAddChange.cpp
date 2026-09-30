@@ -43,10 +43,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::Apply(AssetFilePat
 
                 case Enum::AssetFilePathRegistryType::Scene:
                 {
-                    ApplySceneAdd(l_filePath, 
-                                  *l_assetUUID,
-                                  a_assetFilePathRegistry,
-                                  a_sceneManager);
+                    ApplySceneAdd(l_filePath, *l_assetUUID, a_sceneManager);
 
                     return;
                 }
@@ -137,7 +134,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
  
     l_gameObjectPrefabSystem.AddPrefab(a_prefabUUID, l_gameObjectPrefab);
 }
-void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager)
+void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID, SceneManager& a_sceneManager)
 {
     if (a_filePath.empty() ||
         a_sceneUUID.is_nil())

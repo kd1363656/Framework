@@ -16,7 +16,7 @@ namespace FWK::Editor
     
         void SelectSingleScene(EditorGameObjectSelectionState& a_gameObjectSelectionState);
 
-        void ToggleSceneSelect();
+        void ToggleSceneSelect(EditorGameObjectSelectionState& a_gameObjectSelectionState);
 
         void SetIsSceneSelected(const bool a_set) { m_isSceneSelected = a_set; }
 

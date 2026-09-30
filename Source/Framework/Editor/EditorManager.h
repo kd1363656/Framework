@@ -99,7 +99,7 @@ namespace FWK::Editor
 
         auto& GetMutableREFUndoRedoSystem() { return m_undoRedoSystem; }
 
-        auto& GetMutableREFGameObjectSelectionState() const { return m_gameObjectSelectionState; }
+        auto& GetMutableREFGameObjectSelectionState() { return m_gameObjectSelectionState; }
 
         auto GetVALCurrentActiveWindowStaticTpeID() const { return m_currentActiveWindowStaticTpeID; }
 

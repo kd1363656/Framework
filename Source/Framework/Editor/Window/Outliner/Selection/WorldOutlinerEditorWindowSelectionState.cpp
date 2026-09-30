@@ -9,9 +9,14 @@ void FWK::Editor::WorldOutlinerEditorWindowSelectionState::SelectSingleScene(Edi
     a_gameObjectSelectionState.ClearSelectedGameObjectList();
 }
 
-void FWK::Editor::WorldOutlinerEditorWindowSelectionState::ToggleSceneSelect()
+void FWK::Editor::WorldOutlinerEditorWindowSelectionState::ToggleSceneSelect(EditorGameObjectSelectionState& a_gameObjectSelectionState)
 {
-    // Ctrl + クリック時の選択 / 選択解除切替
-    // GameObject選択は維持されるためSceneとGameObjectの混在選択が可能になる
     m_isSceneSelected = m_isSceneSelected ? false : true;
+
+    // Scene側を選択状態にした場合はGameObjectの選択を解除する
+    // (SceneかGameObjectのどちらか一方のみ選択できる仕様のため)
+    if (m_isSceneSelected)
+    {
+        a_gameObjectSelectionState.ClearSelectedGameObjectList();
+    }
 }

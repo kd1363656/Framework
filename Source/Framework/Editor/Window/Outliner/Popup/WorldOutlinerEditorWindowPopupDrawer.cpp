@@ -83,7 +83,7 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
     if (!l_createdGameObject) { return; }
  
     // 作成したGameObjectを選択状態にする
-    auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFSelectionState();
+    auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
  
     l_gameObjectSelectionState.SelectSingleGameObject(l_createdGameObject);
  

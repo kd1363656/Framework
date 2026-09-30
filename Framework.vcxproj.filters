@@ -1462,6 +1462,9 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Popup">
       <UniqueIdentifier>{17cb459c-d27b-4d4a-9035-8fddeedf21b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Shortcut">
+      <UniqueIdentifier>{93d0a431-1bb6-48c4-a9b7-ea6c78a5d6da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2895,6 +2898,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Popup</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Shortcut</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3625,6 +3631,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Popup</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Shortcut\WorldOutlinerEditorWindowShortcutHandler.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Shortcut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
