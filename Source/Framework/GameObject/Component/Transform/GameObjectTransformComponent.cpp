@@ -98,10 +98,6 @@ void FWK::GameObjectTransformComponent::ApplyParent()
 }
 void FWK::GameObjectTransformComponent::ApplyStandalone()
 {
-    const auto& l_ownerGameObject = m_owner.lock();
- 
-    if (!l_ownerGameObject) { return; }
- 
     // 親から自分まで行列を確定する
     ConfirmMatrixFromRootToSelf();
  

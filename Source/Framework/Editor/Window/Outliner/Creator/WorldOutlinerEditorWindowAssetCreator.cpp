@@ -13,8 +13,7 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
     // Scene::AddGameObjectは親鎖から実行レベルを計算するため
     // 接続前に登録するとルート扱いになってしまう
     // ApplyParentは親側の子リスト登録とTransformModeの切替まで一括で行う
-    if (const auto& l_parent = a_parent.lock();
-        l_parent)
+    if (const auto& l_parent = a_parent.lock())
     {
         auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
 
@@ -29,7 +28,7 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
     else
     {
         // 行列の合成を自身のみで完結するようにする(拡縮・回転・座標のすべてに依存)
-        if (const auto& l_transformComponent = l_parent->GetVALTransformComponent().lock())
+        if (const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock())
         {
             l_transformComponent->ApplyStandalone();
         }

@@ -46,3 +46,16 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleRename(WorldOu
 
     a_editorWindow.StartRenameByCurrentSelection(a_editorManager);
 }
+
+void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleDeleteGameObject(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
+{
+    // Deleteキーで選択中のGameObjectを全て破棄する
+// Scene選択は対象外(GameObjectのみが削除対象)
+    if (!ImGui::IsKeyPressed(ImGuiKey_Delete)) { return; }
+
+    auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
+
+    const auto& l_gameObjectOperation = a_editorWindow.GetREFGameObjectOperation();
+
+    l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState);
+}

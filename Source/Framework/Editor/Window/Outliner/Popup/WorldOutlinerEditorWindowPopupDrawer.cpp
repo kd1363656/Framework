@@ -46,9 +46,23 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawGameObjectPopup(cons
 
     ImGui::Separator();
 
+    // リネームポップアップの描画
     if (ImGui::MenuItem(k_renameMenuLabel.data()))
     {
         a_editorWindow.StartGameObjectRename(a_gameObject);
+    }
+
+    ImGui::Separator();
+
+    // 右クリック時点で対象ノードは選択済みになるため
+    // 選択中のGameObject全てを削除対象にする(複数選択にも対応)
+    if (ImGui::MenuItem(k_deleteMenuLabel.data()))
+    {
+        auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
+
+        const auto& l_gameObjectOperation = a_editorWindow.GetREFGameObjectOperation();
+
+        l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState);
     }
 
     ImGui::EndPopup();

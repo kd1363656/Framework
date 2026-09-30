@@ -44,8 +44,8 @@ private:
     bool CanUpdateFrame      () const;
     void UpdateWindowTitleBar() const;
 
-    inline static const std::wstring k_windowClassName = L"Window";
     inline static const std::string  k_titleName       = "MRI_FRAMEWORK";
+    inline static const std::wstring k_windowClassName = L"Window";
 
     inline static const std::filesystem::path k_configFileIOPath       = "CONFIG/Application/ApplicationCONFIG.json";
     inline static const std::filesystem::path k_firstLoadSceneFilepath = "Asset/Data/Scene/Title/Title.json";

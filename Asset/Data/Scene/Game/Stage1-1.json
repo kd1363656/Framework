@@ -7,7 +7,7 @@
     "PrefabSystem": {
         "PrefabMap": []
     },
-    "SceneName": "Stage1-1",
+    "Name": "Stage1-1",
     "SceneShiftEventObserver": {
         "EventMap": []
     }

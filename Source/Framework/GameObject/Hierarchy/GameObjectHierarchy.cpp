@@ -39,11 +39,11 @@ void FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json& a_rootJso
 
 void FWK::GameObjectHierarchy::PostDeserialize()
 {
-    const auto& l_gameObject = m_owner.lock();
-
-    if (!l_gameObject) { return; }
-
-    l_gameObject->PostDeserialize();
+    if (const auto& l_gameObject = m_owner.lock();
+        !l_gameObject) 
+    {
+        return; 
+    }
 
     const auto& l_childDataList = m_childSmartPointerVectorList.GetMutableREFElementDataList();
 

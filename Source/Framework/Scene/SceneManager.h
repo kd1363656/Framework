@@ -13,7 +13,7 @@ namespace FWK
 
     public:
 
-        bool Load(const std::filesystem::path& a_nextSceneLoadFilePath, const std::string& a_nextSceneName);
+        bool Load(const std::filesystem::path& a_nextSceneLoadFilePath);
 
         void EarlyUpdate          ();
         void Update               () const;

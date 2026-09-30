@@ -2,7 +2,7 @@
 
 // アプリケーション起動時の初回はファイルパスに依存したファイル読み込みになるが
 // 次回からはUUIDを通したFilePathの取得になる
-bool FWK::SceneManager::Load(const std::filesystem::path& a_nextSceneLoadFilePath, const std::string& a_nextSceneName)
+bool FWK::SceneManager::Load(const std::filesystem::path& a_nextSceneLoadFilePath)
 {
     // ロード前に初期化を行う
     // (そのシーンで使用するSceneShiftMapなどの情報を消して、次のシーンでしか使用しない情報に置き換えるため)
@@ -21,8 +21,6 @@ bool FWK::SceneManager::Load(const std::filesystem::path& a_nextSceneLoadFilePat
         return false;
     }
 
-    // シーンをロードしてデシリアライズした後の処理
-    m_scene->SetName        (a_nextSceneName);
     m_scene->PostDeserialize();
 
     return true;
@@ -57,7 +55,6 @@ bool FWK::SceneManager::LoadNextSceneIfNeeded()
     if (!m_scene) { return false; }
 
     const auto& l_nextSceneLoadFilePath = m_scene->FetchVALNextLoadSceneFilePath();
-    const auto& l_nextSceneName         = m_scene->FetchVALNextSceneName        ();
     
     // 毎フレーム確認してもしファイルのパスが空なら
     // ファイルパスが返されていないという意味なのでreturn;
@@ -65,7 +62,7 @@ bool FWK::SceneManager::LoadNextSceneIfNeeded()
 
     // シーンマネージャーのシーン遷移情報をクリアして
     // シーン遷移情報及びシーンを読み込む
-    Load(l_nextSceneLoadFilePath, l_nextSceneName);
+    Load(l_nextSceneLoadFilePath);
 
     return true;
 }

@@ -635,6 +635,7 @@
 #include "Editor/Window/Outliner/Clipboard/WorldOutlinerEditorWindowClipboard.h"
 #include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowAssetCreatorConstant.h"
 #include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowSelectionState.h"
+#include "Editor/Window/Outliner/Operation/GameObject/WorldOutlinerEditorWindowGameObjectOperation.h"
 #include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowOperationEnum.h"
 #include "Editor/Window/Outliner/Creator/WorldOutlinerEditorWindowAssetCreator.h"
 #include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStructConstant.h"

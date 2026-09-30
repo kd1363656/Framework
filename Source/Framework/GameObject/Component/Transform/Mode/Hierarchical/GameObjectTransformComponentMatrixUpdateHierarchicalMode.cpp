@@ -28,10 +28,10 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix(GameObjectTransformComponent& a_transformComponent)
 {
     // 親の行列が先に更新されていることを前提にしている処理です。
-    auto l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
-                          a_transformComponent.CalculateRotationMatrix()    *
-                          a_transformComponent.CalculateTranslationMatrix() *
-                          CalculateParentWorldMatrix();
+    auto&& l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
+                            a_transformComponent.CalculateRotationMatrix()    *
+                            a_transformComponent.CalculateTranslationMatrix() *
+                            CalculateParentWorldMatrix();
 
     a_transformComponent.SetMatrix(std::move(l_resultMatrix));
 }

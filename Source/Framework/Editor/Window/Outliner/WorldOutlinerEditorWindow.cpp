@@ -47,18 +47,31 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     }
 
     // シーンノードを描画する
-    // 子ノードとしてDirectionalLightとルートGameObjectが続く
-    DrawSceneNode(*l_scene, a_editorManager);
- 
-    // 何も無い空スペースの左クリック
-    // 「空のゲームオブジェクトを作成」のみを持つポップアップを開く
+    // 子ノードとしてルートGameObjectが続く
+    // ノードの行の高さを規定より大きくして見やすくする
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(ImGui::GetStyle().FramePadding.x, k_nodeFramePaddingHeight));
+    DrawSceneNode      (*l_scene, a_editorManager);
+    ImGui::PopStyleVar ();
+
+    // 何も無い空スペースのクリック判定
     // ImGui::IsWindowHovered  : このWindow上にマウスがあるか
     // ImGui::IsAnyItemHovered : いずれかのアイテム上にマウスがあるか
-    if (ImGui::IsWindowHovered()   &&
-        !ImGui::IsAnyItemHovered() &&
-        ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    if (ImGui::IsWindowHovered() &&
+        !ImGui::IsAnyItemHovered())
     {
-        m_popupDrawer.BeginPopup(k_emptySpaceContextMenuLabel);
+        // 左クリック : 全ての選択を解除する
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+        {
+            l_gameObjectSelectionState.ClearSelectedGameObjectList();
+
+            m_sceneSelectionState.SetIsSceneSelected(false);
+        }
+
+        // 右クリック : 「空のゲームオブジェクトを作成」のみを持つポップアップを開く
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+        {
+            m_popupDrawer.BeginPopup(k_emptySpaceContextMenuLabel);
+        }
     }
 
     // 空スペース用ポップアップ描画
@@ -276,6 +289,24 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
 
+    // 有効なルートGameObjectを一つでも持つか
+    // 一つも無ければ開閉矢印の無いリーフノードとして描画する
+    const bool l_hasChild = std::ranges::any_of(a_scene.GetREFGameObjectList(),
+                                                [](const auto& a_gameObject)
+                                                {
+                                                    const auto& l_hierarchy = a_gameObject->GetREFHierarchy();
+
+                                                    return a_gameObject                       &&
+                                                           !a_gameObject->GetVALIsDestroyed() &&
+                                                           l_hierarchy.GetREFParent().expired();
+                                                });
+ 
+    if (!l_hasChild)
+    {
+        l_treeNodeFlags |= ImGuiTreeNodeFlags_Leaf |
+                           ImGuiTreeNodeFlags_NoTreePushOnOpen;
+    }
+
     // リネーム中はノードのテキスト部分をInputTextへ置き換える
     const bool l_isRenaming = m_renameState.m_isActive && 
                               m_renameState.m_isSceneTarget;
@@ -333,7 +364,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         DrawRenameInputText(a_scene);
     }
 
-    if (!l_isNodeOpen) { return; }
+    if (!l_isNodeOpen ||
+        !l_hasChild) 
+    {
+        return; 
+    }
  
     // 親を持たないルートGameObjectをシーンの登録順に描画する
     for (const auto& l_gameObject : a_scene.GetREFGameObjectList())
@@ -344,10 +379,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
             continue;
         }
  
-        const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
- 
         // 親を持つGameObjectは親ノード側の再帰で描画されるためここではスキップ
-        if (!l_hierarchy.GetREFParent().expired()) { continue; }
+        if (const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+            !l_hierarchy.GetREFParent().expired())
+        {
+            continue; 
+        }
  
         DrawGameObjectNode(l_gameObject, a_scene, a_editorManager);
     }
