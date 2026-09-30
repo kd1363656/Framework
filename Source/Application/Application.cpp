@@ -1,4 +1,5 @@
 ﻿#include "Application.h"
+#include "Converter/Json/ApplicationJsonConverter.h"
 
 // SALアノテーション付きWinMain関数(各引数の意味や使用条件をコンパイラや静的解析ツールに伝えるための注釈)
 // int WINAPI WinMain(この実行ファイル自体を表すインスタンスハンドル、
@@ -22,6 +23,8 @@ int WINAPI WinMain(_In_     HINSTANCE,
 }
 
 Application::Application() : 
+    m_jsonConverter(nullptr),
+
     m_window(),
     m_fpsController()
 {}
@@ -34,6 +37,11 @@ Application::~Application()
 
 void Application::Execute()
 {
+    if (!m_jsonConverter)
+    {
+        m_jsonConverter = std::make_unique<Converter::ApplicationJsonConverter>();
+    }
+
     auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
     auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
     auto& l_editorManager   = FWK::Editor::EditorManager::GetInstance    ();
@@ -139,6 +147,13 @@ void Application::Execute()
 
 void Application::LoadCONFIG()
 {
+    if (m_jsonConverter)
+    {
+        const auto& l_rootJson = FWK::Utility::LoadJsonFile(k_configFileIOPath);
+
+        m_jsonConverter->Deserialize(l_rootJson, *this);
+    }
+
     m_window.LoadCONFIG       ();
     m_fpsController.LoadCONFIG();
 }
@@ -179,6 +194,13 @@ void Application::EndFrame()
 
 void Application::SaveCONFIG() const
 {
+    if (m_jsonConverter)
+    {
+        const auto& l_rootJson = m_jsonConverter->Serialize(*this);
+
+        FWK::Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
+    }
+
     m_window.SaveCONFIG       ();
     m_fpsController.SaveCONFIG();
 }

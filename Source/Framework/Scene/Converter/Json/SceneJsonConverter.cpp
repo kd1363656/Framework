@@ -4,16 +4,6 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 {
     if (a_rootJson.is_null()) { return; }
 
-    auto& l_assetFilePathRegistry = a_scene.GetMutableREFAssetFilePathRegistry();
-
-    // アセットファイルパスレジストリーのデシリアライズ
-    // 一番初めに行う必要がある(PrefabSystemのデシリアライズなどに影響するため)
-    if (const auto& l_json = a_rootJson.value(k_assetFilePathRegistryJsonKey, nlohmann::json{});
-        !l_json.is_null())
-    {
-        l_assetFilePathRegistry.Deserialize(l_json);
-    }
-
     // シーンチェンジャーのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_sceneChanger, nlohmann::json{});
         !l_json.is_null())
@@ -57,14 +47,10 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
  
     const auto& l_sceneChanger           = a_scene.GetREFSceneChanger                 ();
           auto& l_gameObjectPrefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
-    const auto& l_assetFilePathRegistry  = a_scene.GetREFAssetFilePathRegistry        ();
     const auto& l_lightSystem            = a_scene.GetREFLightSystem                  ();
 
     // シーン名のシリアライズ
     l_rootJson[k_sceneNameJsonKey] = a_scene.GetREFName();
- 
-    // アセットレジストリのシリアライズ
-    l_rootJson[k_assetFilePathRegistryJsonKey] = l_assetFilePathRegistry.Serialize();
  
     // シーンチェンジャーのシリアライズ
     l_rootJson[k_sceneChanger] = l_sceneChanger.Serialize(l_assetFilePathRegistry);

@@ -22,8 +22,6 @@ namespace FWK::Editor
 
         const auto& GetREFFolderHierarchyMap() const { return m_folderHierarchyMap; }
 
-        const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
-
         const auto& GetREFClipboard   () const { return m_clipboard; }
         const auto& GetREFFolderPane  () const { return m_folderPane; }
         const auto& GetREFAssetPane   () const { return m_assetPane; }
@@ -38,8 +36,6 @@ namespace FWK::Editor
 
         const auto& GetREFRenameState       () const { return m_renameState; }
         const auto& GetREFDeleteConfirmState() const { return m_deleteConfirmState; }
-
-        auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
 
         auto& GetMutableREFFolderPane  () { return m_folderPane; }
         auto& GetMutableREFAssetPane   () { return m_assetPane; }
@@ -64,8 +60,6 @@ namespace FWK::Editor
         static constexpr std::string_view k_thisWindowExplanationLabel = "アセットブラウザーでは使用したいFBXファイルをモデル描画コンポーネントに\nドラッグ&ドロップしてロードするモデルとして扱ったり、使用したいゲームオブジェクトのプレハブをドラッグ&ドロップ\nでシーンに追加したりすることができるウィンドウ。";
 
         std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>> m_folderHierarchyMap = {};
-
-        AssetFilePathRegistry m_assetFilePathRegistry = {};
 
         AssetBrowserEditorWindowDirectoryWatcher m_directoryWatcher = {};
 

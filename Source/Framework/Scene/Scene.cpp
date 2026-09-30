@@ -10,8 +10,6 @@ void FWK::Scene::INIT()
 
     m_gameObjectPrefabSystem.INIT();
 
-    m_assetFilePathRegistry.INIT();
-
     m_lightSystem.ApplyDefaultSettings();
 
     m_name.clear();
@@ -165,7 +163,9 @@ std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
     // 次のに移行するシーンの名前が空なら移行しない
     if (m_nextSceneUUID.is_nil()) { return {}; }
 
-    const auto* l_assetFilePathData = m_assetFilePathRegistry.FindPTRAssetFilePathData(m_nextSceneUUID);
+    const auto& l_application           = Application::GetInstance                        ();
+    const auto& l_assetFilePathRegistry = l_application.GetREFAssetFilePathRegistry       ();
+    const auto* l_assetFilePathData     = l_assetFilePathRegistry.FindPTRAssetFilePathData(m_nextSceneUUID);
 
     if (!l_assetFilePathData)
     {

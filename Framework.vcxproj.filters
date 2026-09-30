@@ -1435,6 +1435,12 @@
     <Filter Include="Source\Framework\Graphics\Render\Light\Converter\Json">
       <UniqueIdentifier>{96f57f77-31f6-4b9e-83c3-946e604d4130}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Application\Converter">
+      <UniqueIdentifier>{f888368a-126a-48e5-8e17-8a016a570a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Application\Converter\Json">
+      <UniqueIdentifier>{b6d03502-92e8-4e15-aade-c4ad89086b2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2838,6 +2844,9 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.h">
       <Filter>Source\Framework\Graphics\Render\Light\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h">
+      <Filter>Source\Application\Converter\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3544,6 +3553,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.cpp">
       <Filter>Source\Framework\Graphics\Render\Light\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Converter\Json\ApplicationJsonConverter.cpp">
+      <Filter>Source\Application\Converter\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

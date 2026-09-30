@@ -28,19 +28,19 @@ namespace FWK
 
         std::string FetchVALNextSceneName() const;
 
-        const auto& GetREFAssetFilePathRegistry() const { return m_assetFilePathRegistry; }
-
         const auto& GetREFGameObjectList() const { return m_gameObjectList; }
 
         const auto& GetREFSceneChanger          () const { return m_sceneChanger; }
         const auto& GetREFGameObjectPrefabSystem() const { return m_gameObjectPrefabSystem; }
 
-        const auto& GetREFName() const { return m_name; }
+        const auto& GetREFLightSystem() const { return m_lightSystem; }
 
-        auto& GetMutableREFAssetFilePathRegistry() { return m_assetFilePathRegistry; }
+        const auto& GetREFName() const { return m_name; }
 
         auto& GetMutableREFSceneChanger          () { return m_sceneChanger; }
         auto& GetMutableREFGameObjectPrefabSystem() { return m_gameObjectPrefabSystem; }
+
+        auto& GetREFLightSystem() { return m_lightSystem; }
 
     private:
 
@@ -58,8 +58,6 @@ namespace FWK
         std::vector<std::vector<std::weak_ptr<GameObject>>> m_gameObjectExecutionLevelList = {};
 
         UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
-
-        AssetFilePathRegistry m_assetFilePathRegistry = {};
 
         SceneChanger                m_sceneChanger           = {};
         SceneGameObjectPrefabSystem m_gameObjectPrefabSystem = {};
