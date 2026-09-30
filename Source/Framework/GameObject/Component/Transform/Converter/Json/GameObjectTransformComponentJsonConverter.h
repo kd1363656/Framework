@@ -23,6 +23,7 @@ namespace FWK::Converter
         static constexpr std::string_view k_scaleJsonKey                = "Scale";
         static constexpr std::string_view k_rotationJsonKey             = "Rotation";
         static constexpr std::string_view k_positionJsonKey             = "Position";
-        static constexpr std::string_view k_matrixUpdateModeBaseJsonKey = "MatrixUpdateModeBase";
+        static constexpr std::string_view k_matrixUpdateModeJsonKey     = "MatrixUpdateMode";
+        static constexpr std::string_view k_matrixUpdateModeDataJsonKey = "MatrixUpdateModeData";
     };
 }

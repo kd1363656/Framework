@@ -9,7 +9,7 @@ void FWK::Converter::GameObjectTransformComponentMatrixUpdateHierarchicalModeJso
     if (const auto& l_json = a_rootJson.value(k_calculateParentWorldMatrixEnumBitShiftJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
-        l_calculateParentWorldMatrixEnumBitShift.Deserialize(a_rootJson);
+        l_calculateParentWorldMatrixEnumBitShift.Deserialize(l_json);
     }
 }
 

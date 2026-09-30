@@ -144,40 +144,6 @@ nlohmann::json FWK::GameObjectComponentContainer::SerializeDiff(const nlohmann::
     return m_jsonConverter.SerializeDiff(a_prefabJson, *this);
 }
 
-void FWK::GameObjectComponentContainer::CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const
-{
-    a_cloneTarget.m_owner = a_cloneOwner;
-
-    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
-
-    for (const auto& l_componentData : l_componentDataList)
-    {
-        const auto& l_component = l_componentData.m_type;
-
-        if (!l_component) { continue; }
-
-        // コンポーネントごとに定義されたClone()を経由する
-        // unique_ptrメンバもSerialize/Deserialize往復で再構築される
-        auto l_cloneComponent = l_component->Clone();
-
-        if (!l_cloneComponent)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コンポーネントのCloneに失敗しました。");
-
-            continue;
-        }
-
-        // UUIDはコピー元と同じものを保持する
-        // Prefab由来コンポーネントとのリンクが維持されるようになる
-        // 複製先のレジストリは別物なので衝突せずそのまま登録される
-        a_cloneTarget.AddComponent(l_cloneComponent);
-    }
-
-    // 削除済みUUIDも引き継ぐ
-    // Prefabインスタンスの複製でも差分の整合性が保たれるようにするため
-    a_cloneTarget.m_prefabRemovedComponentUUIDSet = m_prefabRemovedComponentUUIDSet;
-}
-
 void FWK::GameObjectComponentContainer::ConvertToPrefab() const
 {
     // Prefab由来Componentであることを全Componentへ設定する

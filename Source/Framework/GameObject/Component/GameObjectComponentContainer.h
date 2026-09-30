@@ -31,8 +31,6 @@ namespace FWK
         nlohmann::json Serialize    ()                                   const;
         nlohmann::json SerializeDiff(const nlohmann::json& a_prefabJson) const;
 
-        void CloneTo(GameObjectComponentContainer& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const;
-
         void ConvertToPrefab() const;
 
         void DetachFromPrefab();

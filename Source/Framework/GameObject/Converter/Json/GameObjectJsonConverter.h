@@ -34,6 +34,7 @@ namespace FWK::Converter
 
        void DeserializeCommon(const nlohmann::json& a_rootJson, const nlohmann::json& a_baseJson, GameObject& a_gameObject) const;
 
+       static constexpr std::string_view k_transformComponentJsonKey       = "TransformComponent";
         static constexpr std::string_view k_nameJsonKey                    = "Name";
         static constexpr std::string_view k_isPrefabOriginJsonKey          = "IsPrefabOrigin";
         static constexpr std::string_view k_prefabUUIDJsonKey              = "PrefabUUID";

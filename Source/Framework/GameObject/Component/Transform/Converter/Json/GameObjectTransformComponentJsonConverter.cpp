@@ -14,12 +14,21 @@ void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(cons
 
     auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
 
-    Utility::DeserializeInstanceType<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(a_rootJson, k_matrixUpdateModeBaseJsonKey, l_matrixUpdateMode);
+    Utility::DeserializeInstanceType<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(a_rootJson, k_matrixUpdateModeJsonKey, l_matrixUpdateMode);
 
-    if (!l_matrixUpdateMode)
+    // インスタンス化出来なければreturn(デシリアライズの意味がないから)
+    if (!l_matrixUpdateMode) 
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "TransformComponentのMatrixUpdateModeのデシリアライズに失敗。");
+
+        return;
     }
+
+    const auto& l_matrixUpdateModeDataJson = a_rootJson.value(k_matrixUpdateModeDataJsonKey, nlohmann::json{});
+
+    if (l_matrixUpdateModeDataJson.is_null()) { return; }
+
+    l_matrixUpdateMode->Deserialize(l_matrixUpdateModeDataJson);
 }
 
 nlohmann::json FWK::Converter::GameObjectTransformComponentJsonConverter::Serialize(const GameObjectTransformComponent& a_gameObjectTransformComponent) const
@@ -29,12 +38,16 @@ nlohmann::json FWK::Converter::GameObjectTransformComponentJsonConverter::Serial
     const auto& l_transform        = a_gameObjectTransformComponent.GetREFTransform       ();
     const auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetREFMatrixUpdateMode();
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_scale,       k_scaleJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_scale, k_scaleJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_position,    k_positionJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_position, k_positionJsonKey));
     
+    if (!l_matrixUpdateMode) { return l_rootJson; }
+
     // 行列更新モードのシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixUpdateMode, k_matrixUpdateModeBaseJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixUpdateMode, k_matrixUpdateModeJsonKey));
+
+    l_rootJson[k_matrixUpdateModeDataJsonKey] = l_matrixUpdateMode->Serialize();
 
     return l_rootJson;
 }

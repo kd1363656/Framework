@@ -46,18 +46,6 @@ nlohmann::json FWK::GameObjectHierarchy::SerializeDiff(const nlohmann::json& a_p
     return m_jsonConverter.SerializeDiff(a_prefabJson, *this, a_prefabSystem);
 }
 
-void FWK::GameObjectHierarchy::CloneTo(GameObjectHierarchy& a_cloneTarget, const std::weak_ptr<GameObject>& a_cloneOwner) const
-{
-    a_cloneTarget.m_owner  = a_cloneOwner;
-    a_cloneTarget.m_parent = {};
-
-    a_cloneTarget.m_childSmartPointerVectorList.Clear();
-    a_cloneTarget.m_childUUIDRegistry.Clear          ();
-
-    // 削除済みUUIDは引き継ぐ
-    a_cloneTarget.m_prefabRemovedChildUUIDSet = m_prefabRemovedChildUUIDSet;
-}
-
 void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const
 {
     const auto& l_childList = m_childSmartPointerVectorList.GetREFElementDataList();

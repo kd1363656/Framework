@@ -47,7 +47,7 @@
                 },
                 "CurrentSelectFolderPath": "Asset",
                 "EditorWindowPaneSplitter": {
-                    "PrimaryPaneSize": 349.0
+                    "PrimaryPaneSize": 271.0
                 },
                 "FolderPane": {
                     "FolderOpenStateMap": [
@@ -173,10 +173,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\NewFolder1",
+                        "RangeSelectionStartPath": "Asset",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\NewFolder1"
+                                "SelectedFilePath": "Asset"
                             }
                         ]
                     }

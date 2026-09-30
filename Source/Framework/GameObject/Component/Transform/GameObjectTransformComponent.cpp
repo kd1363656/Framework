@@ -9,6 +9,10 @@ void FWK::GameObjectTransformComponent::Deserialize(const nlohmann::json& a_root
 
 void FWK::GameObjectTransformComponent::PostDeserialize()
 {
+    if (!m_matrixUpdateMode) { return; }
+
+    m_matrixUpdateMode->PostDeserialize(*this);
+
     UpdateMatrix();
 }
 
