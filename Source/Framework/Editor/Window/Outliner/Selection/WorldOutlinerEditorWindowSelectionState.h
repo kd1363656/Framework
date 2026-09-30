@@ -2,6 +2,11 @@
 
 namespace FWK::Editor
 {
+    class EditorGameObjectSelectionState;
+}
+
+namespace FWK::Editor
+{
     class WorldOutlinerEditorWindowSelectionState final : public std::enable_shared_from_this<WorldOutlinerEditorWindowSelectionState>
     {
     public:
@@ -9,7 +14,9 @@ namespace FWK::Editor
          WorldOutlinerEditorWindowSelectionState() = default;
         ~WorldOutlinerEditorWindowSelectionState() = default;
     
-        void SelectSingleScene();
+        void SelectSingleScene(EditorGameObjectSelectionState& a_gameObjectSelectionState);
+
+        void ToggleSceneSelect();
 
         void SetIsSceneSelected(const bool a_set) { m_isSceneSelected = a_set; }
 

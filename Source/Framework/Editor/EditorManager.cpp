@@ -17,6 +17,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_undoRedoSystem(),
 
+    m_gameObjectSelectionState(),
+
     m_jsonConverter(),
 
     m_currentActiveWindowStaticTpeID(StaticTypeIDGenerator::k_invalidStaticTypeID),

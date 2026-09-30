@@ -9,7 +9,7 @@ namespace FWK::Struct
 
         std::filesystem::path m_targetFilePath = {};
 
-        std::array<char, Constant::k_assetBrowserRenameInputTextBufferSize> m_inputBuffer = {};
+        std::array<char, Constant::k_imguiInputTextBufferSize> m_inputBuffer = {};
 
         bool m_isActive  = k_initialIsActive;
         bool m_isFocused = k_initialIsFocused;

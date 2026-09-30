@@ -85,6 +85,7 @@
 #include "Definition/Constant/Editor/UndoRedo/EditorUndoRedoSystemJsonConverterConstant.h"
 #include "Editor/UndoRedo/Converter/Json/EditorUndoRedoSystemJsonConverter.h"
 #include "Editor/UndoRedo/EditorUndoRedoSystem.h"
+#include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
@@ -630,13 +631,12 @@
 #include "Editor/Window/AssetBrowser/Pane/Asset/Converter/Json/AssetBrowserEditorWindowAssetPaneJsonConverter.h"
 #include "Editor/Window/AssetBrowser/Pane/Asset/AssetBrowserEditorWindowAssetPane.h"
 #include "Editor/Window/AssetBrowser/AssetBrowserEditorWindow.h"
-
 #include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowClipboardEnum.h"
 #include "Editor/Window/Outliner/Clipboard/WorldOutlinerEditorWindowClipboard.h"
-
 #include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowAssetCreatorConstant.h"
 #include "Editor/Window/Outliner/Creator/WorldOutlinerEditorWindowAssetCreator.h"
-
 #include "Editor/Window/Outliner/Selection/WorldOutlinerEditorWindowSelectionState.h"
 #include "Definition/Enum/Editor/Window/WorldOutlinerEditorWindowOperationEnum.h"
+#include "Definition/Constant/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStructConstant.h"
+#include "Definition/Struct/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStruct.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"

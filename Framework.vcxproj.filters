@@ -1456,6 +1456,12 @@
     <Filter Include="Source\Framework\Utility\Helper\Converter\Json">
       <UniqueIdentifier>{f1a688bc-d379-4874-8831-5c2d1f48dfc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Selection">
+      <UniqueIdentifier>{29f03aac-a259-42db-9716-c1ace82e2f2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Popup">
+      <UniqueIdentifier>{17cb459c-d27b-4d4a-9035-8fddeedf21b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2877,6 +2883,18 @@
     <ClInclude Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.h">
       <Filter>Source\Framework\Utility\Helper\Converter\Json</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h">
+      <Filter>Source\Framework\Editor\Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStructConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Popup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3601,6 +3619,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Helper\Converter\Json\AssetFilePathHelperJsonConverter.cpp">
       <Filter>Source\Framework\Utility\Helper\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp">
+      <Filter>Source\Framework\Editor\Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Popup\WorldOutlinerEditorWindowPopupDrawer.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Popup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

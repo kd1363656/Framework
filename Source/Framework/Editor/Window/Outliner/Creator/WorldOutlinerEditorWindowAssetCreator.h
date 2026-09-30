@@ -9,7 +9,6 @@ namespace FWK::Editor
          WorldOutlinerEditorWindowAssetCreator() = default;
         ~WorldOutlinerEditorWindowAssetCreator() = default;
     
-    private:
-    
+        std::shared_ptr<GameObject> CreateEmptyGameObject(const std::weak_ptr<GameObject>& a_parent, Scene& a_scene) const;
     };
 }

@@ -88,11 +88,18 @@ namespace FWK::Editor
         ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
         const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
-        const auto& GetREFMainMenuBar     () const { return m_mainMenuBar; }
-        const auto& GetREFUndoRedoSystem  () const { return m_undoRedoSystem; }
 
-        auto& GetMutableREFMainMenuBar   () { return m_mainMenuBar; }
+        const auto& GetREFMainMenuBar() const { return m_mainMenuBar; }
+
+        const auto& GetREFUndoRedoSystem() const { return m_undoRedoSystem; }
+
+        const auto& GetREFGameObjectSelectionState() const { return m_gameObjectSelectionState; }
+
+        auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
+
         auto& GetMutableREFUndoRedoSystem() { return m_undoRedoSystem; }
+
+        auto& GetMutableREFGameObjectSelectionState() const { return m_gameObjectSelectionState; }
 
         auto GetVALCurrentActiveWindowStaticTpeID() const { return m_currentActiveWindowStaticTpeID; }
 
@@ -142,6 +149,8 @@ namespace FWK::Editor
         MainMenuBarEditor m_mainMenuBar;
 
         EditorUndoRedoSystem m_undoRedoSystem;
+
+        EditorGameObjectSelectionState m_gameObjectSelectionState;
 
         Converter::EditorManagerJsonConverter m_jsonConverter;
 
