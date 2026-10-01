@@ -26,8 +26,6 @@ namespace FWK
         void LateUpdate    () const;
         void PostLateUpdate() const;
         
-        void EditInspector() const;
-
         nlohmann::json Serialize    ()                                   const;
         nlohmann::json SerializeDiff(const nlohmann::json& a_prefabJson) const;
 

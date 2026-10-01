@@ -80,16 +80,6 @@ void FWK::GameObject::Destroy()
     m_isDestroyed = true;
 }
 
-void FWK::GameObject::EditInspector()
-{
-    if (m_transformComponent)
-    {
-        m_transformComponent->EditInspector();
-    }
-
-    m_componentContainer.EditInspector();
-}
-
 nlohmann::json FWK::GameObject::Serialize(SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     return m_jsonConverter.Serialize(*this, a_prefabSystem);

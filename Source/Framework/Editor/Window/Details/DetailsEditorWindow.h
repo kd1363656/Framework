@@ -15,6 +15,7 @@ namespace FWK::Editor
 
         static constexpr std::string_view k_editorName                 = "詳細";
         static constexpr std::string_view k_thisWindowExplanationLabel = "各ゲームオブジェクトに割り当てられているコンポーネントやシーンのパラメータを見ることができるウィンドウ。";
+        static constexpr std::string_view k_noSelectionLabel           = "ゲームオブジェクトが選択されていません。";
 
         FWK_DEFINE_TYPE_INFO(DetailsEditorWindow, EditorWindowBase)
     };

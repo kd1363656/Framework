@@ -120,20 +120,6 @@ void FWK::GameObjectComponentContainer::PostLateUpdate() const
     }
 }
 
-void FWK::GameObjectComponentContainer::EditInspector() const
-{
-    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
-
-    for (const auto& l_componentData : l_componentDataList)
-    {
-        const auto& l_component = l_componentData.m_type;
-
-        if (!l_component) { continue; }
-
-        l_component->EditInspector();
-    }
-}
-
 nlohmann::json FWK::GameObjectComponentContainer::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);
