@@ -1459,6 +1459,12 @@
     <Filter Include="Source\Framework\Asset\Inspector">
       <UniqueIdentifier>{5ce34741-5c7a-4b0d-9e2c-03db72554600}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Selection\Command">
+      <UniqueIdentifier>{1d6a0dd7-3ad8-421f-a433-9ffad640caaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Outliner\Command">
+      <UniqueIdentifier>{7cc8958f-6243-455b-bb70-8116e75ec30c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2895,6 +2901,12 @@
     <ClInclude Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.h">
       <Filter>Source\Framework\Asset\Inspector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeGameObjectSelectionCommand.h">
+      <Filter>Source\Framework\Editor\Selection\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3631,6 +3643,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.cpp">
       <Filter>Source\Framework\Asset\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeGameObjectSelectionCommand.cpp">
+      <Filter>Source\Framework\Editor\Selection\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

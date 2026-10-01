@@ -50,6 +50,8 @@ namespace FWK::Editor
         
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene);
 
+        void PushSelectionChangeCommand(std::vector<boost::uuids::uuid>&& a_beforeUUIDList, EditorGameObjectSelectionState& a_gameObjectSelectionState, boost::uuids::uuid&& a_beforeAnchorUUID);
+
         void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
                                     Scene&                          a_scene,
                                     EditorGameObjectSelectionState& a_gameObjectSelectionState,

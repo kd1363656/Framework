@@ -11,6 +11,8 @@ namespace FWK::Editor
     
         void Deserialize(const nlohmann::json& a_rootJson);
 
+        void HandleUndoRedoShortcut();
+
         template <Concept::IsDerivedICommandConcept CommandType, typename... Args>
         void PushUndoCommand(Args&&... a_args)
         {

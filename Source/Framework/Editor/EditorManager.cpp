@@ -183,6 +183,10 @@ void FWK::Editor::EditorManager::DrawEditor()
     m_mainMenuBar.Draw();
     DrawEditorWindow  ();
 
+    // エディター処理が終わった後にUndoRedo処理の
+    // 入力を受け取る
+    m_undoRedoSystem.HandleUndoRedoShortcut();
+
     // ImGuiの描画データを確定する
     ImGui::Render();
 

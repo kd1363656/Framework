@@ -109,6 +109,46 @@ void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
     }
 }
 
+void FWK::Editor::EditorGameObjectSelectionState::RestoreState(const std::vector<boost::uuids::uuid>& a_uuidList, const boost::uuids::uuid& a_anchorUUID)
+{
+    // SceneManager経由で現在のSceneを取得する
+    auto& l_sceneManager = SceneManager::GetInstance ();
+    auto  l_scene        = l_sceneManager.GetVALScene().lock();
+ 
+    if (!l_scene) { return; }
+ 
+    // 選択リストをクリアしてからUUIDリストから再構築する
+    m_selectedGameObjectList.clear  ();
+    m_selectedGameObjectList.reserve(a_uuidList.size());
+ 
+    for (const auto& l_uuid : a_uuidList)
+    {
+        // nil UUIDは無視する
+        if (l_uuid.is_nil()) { continue; }
+ 
+        const auto& l_gameObject = l_scene->FindVALGameObject(l_uuid).lock();
+ 
+        // 破棄済みまたは存在しないGameObjectは選択対象から外す
+        if (!l_gameObject ||
+            l_gameObject->GetVALIsDestroyed())
+        {
+            continue;
+        }
+ 
+        m_selectedGameObjectList.emplace_back(l_gameObject);
+    }
+ 
+    // アンカーUUIDからGameObjectを検索して設定する
+    if (!a_anchorUUID.is_nil())
+    {
+        m_rangeSelectionAnchor = l_scene->FindVALGameObject(a_anchorUUID);
+    }
+    else
+    {
+        m_rangeSelectionAnchor = {};
+    }
+}
+
 std::weak_ptr<FWK::GameObject> FWK::Editor::EditorGameObjectSelectionState::FindVALLastSelectedGameObject() const
 {
     if (m_selectedGameObjectList.empty()) { return {}; }

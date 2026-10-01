@@ -85,6 +85,7 @@
 #include "Definition/Constant/Editor/UndoRedo/EditorUndoRedoSystemJsonConverterConstant.h"
 #include "Editor/UndoRedo/Converter/Json/EditorUndoRedoSystemJsonConverter.h"
 #include "Editor/UndoRedo/EditorUndoRedoSystem.h"
+#include "Editor/Selection/Command/ChangeGameObjectSelectionCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/EditorManager.h"
 
@@ -640,4 +641,5 @@
 #include "Definition/Struct/Editor/Window/WorldOutlinerEditorWindowPopupDrawerStruct.h"
 #include "Editor/Window/Outliner/Popup/WorldOutlinerEditorWindowPopupDrawer.h"
 #include "Editor/Window/Outliner/Shortcut/WorldOutlinerEditorWindowShortcutHandler.h"
+#include "Editor/Window/Outliner/Command/ReparentGameObjectCommand.h"
 #include "Editor/Window/Outliner/WorldOutlinerEditorWindow.h"

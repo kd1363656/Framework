@@ -7,6 +7,28 @@ void FWK::Editor::EditorUndoRedoSystem::Deserialize(const nlohmann::json& a_root
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
+void FWK::Editor::EditorUndoRedoSystem::HandleUndoRedoShortcut()
+{
+    const auto& l_io = ImGui::GetIO();
+
+    // InputText等で文字入力中はUndoRedoを処理しない
+    // 入力中にCtrl + Zがテキスト編集のUndoとして消費されるため
+    if (l_io.WantTextInput) { return; }
+
+    // Ctrl + ZでUndoを実行する
+    if (l_io.KeyCtrl &&
+        ImGui::IsKeyPressed(ImGuiKey_Z))
+    {
+        Undo();
+    }
+    // Ctrl + Y でRedoを実行する
+    else if (l_io.KeyCtrl &&
+             ImGui::IsKeyPressed(ImGuiKey_Y))
+    {
+        Redo();
+    }
+}
+
 void FWK::Editor::EditorUndoRedoSystem::Undo()
 {
     if (m_undoList.empty()) { return; }
