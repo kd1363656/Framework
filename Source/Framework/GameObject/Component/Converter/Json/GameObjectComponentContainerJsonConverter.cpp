@@ -2,9 +2,18 @@
 
 void FWK::Converter::GameObjectComponentContainerJsonConverter::DeserializeScene(const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabJson, GameObjectComponentContainer& a_gameObjectComponentContainer) const
 {
-    const auto& l_sceneComponentListJson  = a_rootJson .value (Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
-    const auto& l_prefabComponentListJson = a_prefabJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
+    nlohmann::json l_sceneComponentListJson  = {};
+    nlohmann::json l_prefabComponentListJson = {};
  
+    if (!a_rootJson.is_null())
+    {
+        l_sceneComponentListJson = a_rootJson.value  (Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
+    }
+    if (!a_prefabJson.is_null())
+    {
+        l_prefabComponentListJson = a_prefabJson.value(Constant::k_gameObjectComponentContainerJsonConverterComponentListJsonKey, nlohmann::json{});
+    }
+    
     // Prefab基底のComponentListが存在し、
     // かつシーン側が差分構造(配列以外)ならPrefab+差分マージして読む
     // ※シーン側がnull(差分なし=Prefabに完全追従)でもこちらへ入る

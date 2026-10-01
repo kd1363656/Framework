@@ -1,14 +1,42 @@
-﻿{
-    "AssetFilePathRegistry": {
-        "FilePathRegistryMap": []
-    },
+{
     "GameObjectList": [],
-    "NextSceneLoadFilePathMap": [],
-    "PrefabSystem": {
+    "GameObjectPrefabSystem": {
         "PrefabMap": []
     },
+    "LightSystem": {
+        "AmbientLight": {
+            "Color": {
+                "Color": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                }
+            },
+            "Intensity": 0.25
+        },
+        "DirectionalLight": {
+            "Color": {
+                "Color": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                }
+            },
+            "Direction": {
+                "Direction": {
+                    "X": 0.0,
+                    "Y": 0.0,
+                    "Z": 0.0
+                }
+            },
+            "Intensity": 1.0
+        }
+    },
     "Name": "Title",
-    "SceneShiftEventObserver": {
-        "EventMap": []
+    "SceneChanger": {
+        "NextSceneMap": [],
+        "SceneChangeEventObserver": {
+            "EventMap": []
+        }
     }
 }

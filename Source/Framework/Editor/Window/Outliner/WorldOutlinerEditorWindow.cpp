@@ -49,9 +49,21 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // シーンノードを描画する
     // 子ノードとしてルートGameObjectが続く
     // ノードの行の高さを規定より大きくして見やすくする
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(ImGui::GetStyle().FramePadding.x, k_nodeFramePaddingHeight));
-    DrawSceneNode      (*l_scene, a_editorManager);
-    ImGui::PopStyleVar ();
+    const auto& l_style = ImGui::GetStyle();
+
+    // シーンノードを描画する
+    // 子ノードとしてルートGameObjectが続く
+    // ノードの行の高さを規定より大きくして見やすくする
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, k_nodeFramePaddingHeight));
+
+    // ノード間の隙間をドロップゾーンの高さ分だけにするため
+    // アイテム間の垂直スペースを0にする
+    // (0にしないとノードとドロップゾーン両方にItemSpacingが掛かり間隔が開きすぎる)
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(l_style.ItemSpacing.x, Constant::k_imguiRemainingSize.y));
+
+    DrawSceneNode(*l_scene, a_editorManager);
+
+    ImGui::PopStyleVar(k_nodePopStyleNUM);
 
     // 何も無い空スペースのクリック判定
     // ImGui::IsWindowHovered  : このWindow上にマウスがあるか
@@ -320,8 +332,28 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         l_label = k_renameInputTextLabel;
     }
 
-    const auto& l_nodeLabel  = std::string{ Constant::k_imguiFontAwesomeSceneIcon } + " " + l_label;
-    const bool  l_isNodeOpen = ImGui::TreeNodeEx(l_nodeLabel.c_str(), l_treeNodeFlags);
+    const auto& l_nodeLabel = std::string{ Constant::k_imguiFontAwesomeSceneIcon } + " " + l_label;
+
+    // 前フレームでGameObjectが一つも無かった場合に
+    // 初めてGameObjectが追加されたならシーンノードを自動で開く
+    // (追加したGameObjectがノード内で見えた方が分かりやすいため)
+    if (l_hasChild &&
+        !m_wasSceneHasChild)
+    {
+        m_isSceneNodeOpen = true;
+    }
+
+    // 次フレームの比較用に今フレームの状態を保持しておく
+    m_wasSceneHasChild = l_hasChild;
+
+    // 保持している開閉状態をImGuiへ反映する
+    // GameObjectノードと同じ仕組みでユーザーが閉じた状態も維持される
+    ImGui::SetNextItemOpen(m_isSceneNodeOpen);
+
+    const bool l_isNodeOpen = ImGui::TreeNodeEx(l_nodeLabel.c_str(), l_treeNodeFlags);
+
+    // 開閉状態を保持して次フレームへ引き継ぐ
+    m_isSceneNodeOpen = l_isNodeOpen;
 
     // 左クリック : シーンを選択
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
@@ -369,6 +401,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         return; 
     }
  
+    bool l_isFirstOrder = true;
+
     // 親を持たないルートGameObjectをシーンの登録順に描画する
     for (const auto& l_gameObject : a_scene.GetREFGameObjectList())
     {
@@ -385,13 +419,21 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
             continue; 
         }
  
-        DrawGameObjectNode(l_gameObject, a_scene, a_editorManager);
+        DrawGameObjectNode(l_gameObject,
+                           a_scene,
+                           a_editorManager,
+                           l_isFirstOrder);
+
+        l_isFirstOrder = false;
     }
  
     // TreeNodeExで一段下がったインデントを戻す
     ImGui::TreePop();   
 }
-void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject, Scene& a_scene, EditorManager& a_editorManager)
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject, 
+                                                                      Scene&                     a_scene, 
+                                                                      EditorManager&             a_editorManager,
+                                                                const bool                       a_isFirstOrder)
 {
     auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
  
@@ -399,9 +441,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
 
     if (!l_gameObject) { return; }
 
-    // ノード上の隙間ドロップゾーン
-    // ここにドロップするとこのノードより上に挿入される
-    DrawGameObjectDropZone(a_gameObject, a_scene, false);
+    // シーンノード直下にゲームオブジェクトの順番を入れ替えるためのドロップゾーン
+    if (a_isFirstOrder)
+    {
+        DrawGameObjectDropZone(a_gameObject, a_scene, false);
+    }
 
     const auto& l_hierarchy                   = l_gameObject->GetREFHierarchy                      ();
     const auto& l_childSmartPointerVectorList = l_hierarchy.GetREFChildSmartPointerVectorList      ();
@@ -499,9 +543,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     {
         auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
-        auto l_forDragDropGameObject = a_gameObject;
-
-        l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, l_forDragDropGameObject);
+        l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, a_gameObject);
     }
 
     // ノード本体へのドロップ先
@@ -555,6 +597,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
                                       *this, 
                                       a_editorManager);
 
+    // ノード下の隙間ドロップゾーン
+    // ここにドロップするとこのノードより下(同じ階層)に挿入される
+    // ノードが開いている場合は子孫の描画が終わりインデントが戻った後に配置するため
+    // 子ノードの位置ではなくこのノードと同じ階層の「下」として機能する
+    DrawGameObjectDropZone(a_gameObject, a_scene, true);
+
     // 子GameObjectを再帰的に描画
     if (l_isNodeOpen &&
         l_hasChild)
@@ -574,12 +622,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
 
         ImGui::TreePop();
     }
- 
-    // ノード下の隙間ドロップゾーン
-    // ここにドロップするとこのノードより下(同じ階層)に挿入される
-    // ノードが開いている場合は子孫の描画が終わりインデントが戻った後に配置するため
-    // 子ノードの位置ではなくこのノードと同じ階層の「下」として機能する
-    DrawGameObjectDropZone(a_gameObject, a_scene, true);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
 {
@@ -641,30 +683,34 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
     // SceneInstanceUUIDと上下どちらのゾーンかを埋めて一意にする
     const auto& l_dropZoneLabel = std::string{ k_gameObjectDragDropZoneLabel } + boost::uuids::to_string(l_targetGameObject->GetREFSceneInstanceUUID()) + (a_isDropAfter ? std::string{ k_gameObjectDragDropZoneAfterLabel } : std::string{ k_gameObjectDragDropZoneBeforeLabel });
 
-    ImGui::InvisibleButton(l_dropZoneLabel.c_str(), ImVec2(-1.0F, k_dropZoneHeight));
+    ImGui::InvisibleButton(l_dropZoneLabel.c_str(), ImVec2(Constant::k_imguiRemainingSize.x, k_dropZoneHeight));
  
     // ドラッグ中のPayloadを取得
     // 非ドラッグ中はnullptr、別種別のPayloadならIsDataTypeがfalseになる
-    const auto* l_imguiDragDropPayload = ImGui::GetDragDropPayload();
-
-    const bool l_isDraggingGameObject = l_imguiDragDropPayload &&
-                                        l_imguiDragDropPayload->IsDataType(k_gameObjectDragDropPayloadLabel.data());
- 
     // ドラッグ中にホバーされたらドロップ位置が分かるようゾーンをハイライトする
     // ImGuiHoveredFlags_AllowWhenBlockedByActiveItemを指定する
     // ドラッグ中はg.ActiveIDがドラッグ元アイテムのIDになり
     // デフォルトのIsItemHovered()は別アイテムがActiveの間falseを返すため
     // このフラグを付けないとドロップ先のホバー判定が取れない
-    if (l_isDraggingGameObject &&
+    if (const auto* l_imguiDragDropPayload = ImGui::GetDragDropPayload();
+        l_imguiDragDropPayload                                                      &&
+        l_imguiDragDropPayload->IsDataType(k_gameObjectDragDropPayloadLabel.data()) &&
         ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
     {
               auto* l_drawList = ImGui::GetWindowDrawList();
-        const auto& l_itemMIN  = ImGui::GetItemRectMin   ();
-        const auto& l_itemMAX  = ImGui::GetItemRectMax   ();
         const auto& l_color    = Constant::k_imguiStrongBlueColor * Constant::k_imguiImVec4ToImU32;
  
-        l_drawList->AddRectFilled(l_itemMIN,
-                                  l_itemMAX,
+        // InvisibleButtonの矩形を取得
+        const auto& l_itemMIN = ImGui::GetItemRectMin();
+        const auto& l_itemMAX = ImGui::GetItemRectMax();
+
+        const float l_centerY = (l_itemMIN.y + l_itemMAX.y) * Constant::k_halfMagnification;
+
+        const ImVec2& l_highlightMIN = { l_itemMIN.x, l_centerY - k_dropZoneHighlightHeight * Constant::k_halfMagnification };
+        const ImVec2& l_highlightMAX = { l_itemMAX.x, l_centerY + k_dropZoneHighlightHeight * Constant::k_halfMagnification };
+
+        l_drawList->AddRectFilled(l_highlightMIN,
+                                  l_highlightMAX,
                                   IM_COL32(l_color.x,
                                            l_color.y,
                                            l_color.z,
@@ -798,10 +844,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::BuildDisplayedGameObjectList(std::v
             continue;
         }
  
-        const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
-
         // 親を持つGameObjectは親ノード側の再帰で収集されるためここではスキップ
-        if (!l_hierarchy.GetREFParent().expired()) { continue; }
+        if (const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+            !l_hierarchy.GetREFParent().expired())
+        {
+            continue; 
+        }
  
         CollectDisplayedGameObject(l_gameObject, a_displayedList);
     }

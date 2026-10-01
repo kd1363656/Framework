@@ -6,6 +6,7 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
     HandleSelectAllGameObject(a_editorWindow, a_editorManager);
     HandleArrowKey           (a_editorWindow, a_editorManager);
     HandleRename             (a_editorWindow, a_editorManager);
+    HandleDeleteGameObject   (a_editorWindow, a_editorManager);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleSelectAllGameObject(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const

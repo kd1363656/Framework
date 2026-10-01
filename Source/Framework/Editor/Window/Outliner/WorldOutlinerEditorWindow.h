@@ -38,8 +38,13 @@ namespace FWK::Editor
 
     private:
        
-        void DrawSceneNode         (Scene& a_scene, EditorManager&   a_editorManager);
-        void DrawGameObjectNode    (const std::weak_ptr<GameObject>& a_gameObject, Scene& a_scene, EditorManager& a_editorManager);
+        void DrawSceneNode(Scene& a_scene, EditorManager&   a_editorManager);
+
+        void DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject,
+                                      Scene&                     a_scene, 
+                                      EditorManager&             a_editorManager,
+                                const bool                       a_isFirstOrder = false);
+
         void DrawRenameInputText   (      Scene&                     a_scene);
         void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter) const;
         
@@ -75,13 +80,20 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel        = "##WorldOutlinerRenameInputText";
         static constexpr std::string_view k_gameObjectDragDropZoneLabel = "##WorldOutlinerGameObjectDropZone";
 
-        static constexpr float k_nodeFramePaddingHeight = 3.0F;
-        static constexpr float k_dropZoneHeight         = 1.0F;
-
+        static constexpr float k_nodeFramePaddingHeight  = 3.0F;
+        static constexpr float k_dropZoneHeight          = 3.0F;
+        static constexpr float k_dropZoneHighlightHeight = 2.0F;
+        
         static constexpr int k_keyboardFocusNextItem = 0;
+        static constexpr int k_nodePopStyleNUM       = 2;
  
+        static constexpr bool k_initialIsSceneNodeOpenValue = true;
+
         std::unordered_map<boost::uuids::uuid, bool> m_gameObjectOpenStateMap = {};
  
+        bool m_isSceneNodeOpen  = k_initialIsSceneNodeOpenValue;
+        bool m_wasSceneHasChild = false;
+
         WorldOutlinerEditorWindowSelectionState      m_sceneSelectionState = {};
         WorldOutlinerEditorWindowGameObjectOperation m_gameObjectOperation = {};
         WorldOutlinerEditorWindowSceneOperation      m_sceneOperation      = {};

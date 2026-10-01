@@ -137,13 +137,13 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
             return;
         }
  
-        const auto l_moveGameObject = *l_moveITR;
+        const auto l_moveData = *l_moveITR;
  
         l_gameObjectList.erase(l_moveITR);
  
         const auto& l_newTargetITR = std::ranges::find(l_gameObjectList, l_targetGameObject);
  
-        l_gameObjectList.insert(a_isMoveAfter ? std::next(l_newTargetITR) : l_newTargetITR, l_moveGameObject);
+        l_gameObjectList.insert(a_isMoveAfter ? std::next(l_newTargetITR) : l_newTargetITR, l_moveData);
     }
  
     // 階層が変わり得るため実行レベルを再構築する

@@ -79,7 +79,7 @@ nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) con
 
 void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohmann::json& a_rootJson, Scene& a_scene) const
 {
-    if (!a_rootJson.is_null() ||
+    if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson))
     {
         return; 

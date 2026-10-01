@@ -155,7 +155,7 @@ namespace FWK::Utility
             }
 
             // Type本来のCopyAssignmentを使用する
-            // filesyste::path/string/shared_ptr/weak_ptr/
+            // filesystem::path/string/shared_ptr/weak_ptr/
             // vector/独自Structなども正規のCopyになる
             a_outPayload = *l_payload;
 
