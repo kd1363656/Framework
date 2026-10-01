@@ -21,11 +21,11 @@ namespace FWK::Editor
                                   WorldOutlinerEditorWindow& a_editorWindow, 
                                   EditorManager&             a_editorManager) const;
 
-        void DrawGameObjectPopup(const std::shared_ptr<GameObject>& a_gameObject, 
-                                 const std::string_view&            a_popupLabel,
-                                       Scene&                       a_scene,
-                                       WorldOutlinerEditorWindow&   a_editorWindow,
-                                       EditorManager&               a_editorManager) const;
+        void DrawGameObjectPopup(const std::weak_ptr<GameObject>& a_gameObject, 
+                                 const std::string_view&          a_popupLabel,
+                                       Scene&                     a_scene,
+                                       WorldOutlinerEditorWindow& a_editorWindow,
+                                       EditorManager&             a_editorManager) const;
 
         void DrawEmptySpacePopup(const std::string_view&          a_popupLabel, 
                                        Scene&                     a_scene,

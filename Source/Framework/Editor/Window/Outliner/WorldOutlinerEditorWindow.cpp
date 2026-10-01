@@ -78,7 +78,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // ポップアップが開いていない場合はDraw内部でreturnする
     m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel, *l_scene, *this, a_editorManager);
  
-
     ImGui::End();
 }
 
@@ -94,6 +93,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_ed
 
     BuildDisplayedGameObjectList(l_displayedList, *l_scene);
 
+    if (l_displayedList.empty()) { return; }
 
           auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
     const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
@@ -111,14 +111,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionUp(EditorManager& a_ed
     }
 
     // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
-    const auto& l_cursorITR = std::find_if(l_displayedList.begin(), l_displayedList.end(),
-                                           [&l_cursor](const auto& a_gameObjectWeak)
-                                           {
-                                               return a_gameObjectWeak.lock() == l_cursor;
-                                           });
+    const auto& l_cursorITR = FindDisplayedGameObjectITR(l_displayedList, l_cursor);
 
     // リストに存在しないか既に先頭なら何もしない
-    if (l_cursorITR == l_displayedList.end()   ||
+    if (l_cursorITR == l_displayedList.end() ||
         l_cursorITR == l_displayedList.begin())
     {
         return;
@@ -164,12 +160,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_
         return;
     }
  
-    const auto& l_cursorITR = std::find_if(l_displayedList.begin(), l_displayedList.end(),
-                                           [&l_cursor](const auto& a_gameObjectWeak)
-                                           {
-                                               return a_gameObjectWeak.lock() == l_cursor;
-                                           });
- 
+    // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
+    const auto& l_cursorITR = FindDisplayedGameObjectITR(l_displayedList, l_cursor);
+
     if (l_cursorITR == l_displayedList.end()) { return; }
  
     const auto& l_nextITR = std::next(l_cursorITR);
@@ -217,7 +210,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager&
     m_sceneSelectionState.SetIsSceneSelected(false);
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(Scene& a_scene)
+void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(const Scene& a_scene)
 {
     m_renameState.m_isActive         = true;
     m_renameState.m_isFocused        = false;
@@ -226,7 +219,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(Scene& a_scene)
  
     // 現在の名前を入力バッファへ入れておく
     const auto& l_name     = a_scene.GetREFName();
-    const auto  l_copySize = std::min(l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto  l_copySize = std::min          (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
  
     std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
  
@@ -244,13 +237,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::we
     m_renameState.m_targetGameObject = l_gameObject;
  
     const auto& l_name     = l_gameObject->GetREFName();
-    const auto  l_copySize = std::min(l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto  l_copySize = std::min                (l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
  
     std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
  
     m_renameState.m_inputBuffer[l_copySize] = Constant::k_nullCharacter;
 }
-void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(EditorManager& a_editorManager)
+void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(const EditorManager& a_editorManager)
 {
     const auto& l_gameObjectSelectionState = a_editorManager.GetREFGameObjectSelectionState();
  
@@ -272,13 +265,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(Edito
     if (!l_scene) { return; }
  
     StartSceneRename(*l_scene);
-}
-
-void FWK::Editor::WorldOutlinerEditorWindow::SetupGameObjectDragSource(const std::weak_ptr<GameObject>& a_gameObject) const
-{
-    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-
-    l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, a_gameObject);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, EditorManager& a_editorManager)
@@ -303,11 +289,15 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
     const bool l_hasChild = std::ranges::any_of(a_scene.GetREFGameObjectList(),
                                                 [](const auto& a_gameObject)
                                                 {
+                                                    if (!a_gameObject ||
+                                                        a_gameObject->GetVALIsDestroyed())
+                                                    {
+                                                        return false;
+                                                    }
+
                                                     const auto& l_hierarchy = a_gameObject->GetREFHierarchy();
 
-                                                    return a_gameObject                       &&
-                                                           !a_gameObject->GetVALIsDestroyed() &&
-                                                           l_hierarchy.GetREFParent().expired();
+                                                    return l_hierarchy.GetREFParent().expired();
                                                 });
  
     if (!l_hasChild)
@@ -322,7 +312,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
  
     // シーン名が空の場合は代替名を表示する
     const auto& l_sceneName = a_scene.GetREFName();
-          auto  l_label     = l_sceneName.empty() ? std::string{ k_emptySceneLabel } : l_sceneName;
+          auto  l_label     = l_sceneName.empty () ? std::string{ k_emptySceneLabel } : l_sceneName;
  
     // 名前変更中なら名前変更中の文字列を描画
     if (l_isRenaming)
@@ -408,6 +398,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     const auto& l_gameObject = a_gameObject.lock();
 
     if (!l_gameObject) { return; }
+
+    // ノード上の隙間ドロップゾーン
+    // ここにドロップするとこのノードより上に挿入される
+    DrawGameObjectDropZone(a_gameObject, a_scene, false);
 
     const auto& l_hierarchy                   = l_gameObject->GetREFHierarchy                      ();
     const auto& l_childSmartPointerVectorList = l_hierarchy.GetREFChildSmartPointerVectorList      ();
@@ -497,7 +491,23 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     {
         m_gameObjectOpenStateMap[l_sceneInstanceUUID] = l_isNodeOpen;
     }
- 
+
+    // リネーム中でなければドラッグ元として登録する
+    // 直前のアイテム(TreeNodeEx)を対象にするため
+    // RenameInputTextなど別アイテムを挟む前に呼ぶ必要がある
+    if (!l_isRenaming)
+    {
+        auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+        auto l_forDragDropGameObject = a_gameObject;
+
+        l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, l_forDragDropGameObject);
+    }
+
+    // ノード本体へのドロップ先
+    // ここにドロップするとドロップしたGameObjectがこのノードの子になる
+    HandleGameObjectDropTarget(a_gameObject, a_scene);
+
     // リネーム中はノードのテキスト位置にInputTextを重ねる
     if (l_isRenaming)
     {
@@ -546,26 +556,30 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
                                       a_editorManager);
 
     // 子GameObjectを再帰的に描画
-    if (!l_isNodeOpen ||
-        !l_hasChild)
+    if (l_isNodeOpen &&
+        l_hasChild)
     {
-        return;
-    }
- 
-    for (const auto& l_childData : l_childDataList)
-    {
-        const auto& l_child = l_childData.m_type.lock();
- 
-        if (!l_child ||
-            l_child->GetVALIsDestroyed())
+        for (const auto& l_childData : l_childDataList)
         {
-            continue;
-        }
+            const auto& l_child = l_childData.m_type.lock();
  
-        DrawGameObjectNode(l_child, a_scene, a_editorManager);
+            if (!l_child ||
+                l_child->GetVALIsDestroyed())
+            {
+                continue;
+            }
+ 
+            DrawGameObjectNode(l_child, a_scene, a_editorManager);
+        }
+
+        ImGui::TreePop();
     }
  
-    ImGui::TreePop();
+    // ノード下の隙間ドロップゾーン
+    // ここにドロップするとこのノードより下(同じ階層)に挿入される
+    // ノードが開いている場合は子孫の描画が終わりインデントが戻った後に配置するため
+    // 子ノードの位置ではなくこのノードと同じ階層の「下」として機能する
+    DrawGameObjectDropZone(a_gameObject, a_scene, true);
 }
 void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
 {
@@ -615,14 +629,90 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
         CommitRename(a_scene);
     }
 }
-void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter)
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter) const
 {
-    
+    const auto& l_targetGameObject = a_targetGameObject.lock();
+ 
+    if (!l_targetGameObject) { return; }
+ 
+    // ノード間の隙間を表す薄いドロップゾーン
+    // InvisibleButtonは描画しないがサイズ分のレイアウトと当たり判定を持つ
+    // 「##」以降はIDのみに使われ描画されないため
+    // SceneInstanceUUIDと上下どちらのゾーンかを埋めて一意にする
+    const auto& l_dropZoneLabel = std::string{ k_gameObjectDragDropZoneLabel } + boost::uuids::to_string(l_targetGameObject->GetREFSceneInstanceUUID()) + (a_isDropAfter ? std::string{ k_gameObjectDragDropZoneAfterLabel } : std::string{ k_gameObjectDragDropZoneBeforeLabel });
+
+    ImGui::InvisibleButton(l_dropZoneLabel.c_str(), ImVec2(-1.0F, k_dropZoneHeight));
+ 
+    // ドラッグ中のPayloadを取得
+    // 非ドラッグ中はnullptr、別種別のPayloadならIsDataTypeがfalseになる
+    const auto* l_imguiDragDropPayload = ImGui::GetDragDropPayload();
+
+    const bool l_isDraggingGameObject = l_imguiDragDropPayload &&
+                                        l_imguiDragDropPayload->IsDataType(k_gameObjectDragDropPayloadLabel.data());
+ 
+    // ドラッグ中にホバーされたらドロップ位置が分かるようゾーンをハイライトする
+    // ImGuiHoveredFlags_AllowWhenBlockedByActiveItemを指定する
+    // ドラッグ中はg.ActiveIDがドラッグ元アイテムのIDになり
+    // デフォルトのIsItemHovered()は別アイテムがActiveの間falseを返すため
+    // このフラグを付けないとドロップ先のホバー判定が取れない
+    if (l_isDraggingGameObject &&
+        ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
+    {
+              auto* l_drawList = ImGui::GetWindowDrawList();
+        const auto& l_itemMIN  = ImGui::GetItemRectMin   ();
+        const auto& l_itemMAX  = ImGui::GetItemRectMax   ();
+        const auto& l_color    = Constant::k_imguiStrongBlueColor * Constant::k_imguiImVec4ToImU32;
+ 
+        l_drawList->AddRectFilled(l_itemMIN,
+                                  l_itemMAX,
+                                  IM_COL32(l_color.x,
+                                           l_color.y,
+                                           l_color.z,
+                                           l_color.w));
+    }
+ 
+    std::weak_ptr<GameObject> l_droppedGameObject = {};
+ 
+    // Drop成立時のみtrueを返す
+    // weak_ptrの参照先が既に破棄されている場合も内部で弾かれる
+    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+        !l_imguiDragDropPayloadStorage.DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+    {
+        return;
+    }
+ 
+    // 隙間ドロップはターゲットと同じ階層の兄弟として上下へ挿入する
+    // a_isDropAfter = true ならターゲットの下、false なら上
+    // ターゲットがルートならドロップ側もルート化され
+    // Scene::m_gameObjectList内の順序が入れ替わる
+    m_gameObjectOperation.MoveGameObjectSiblingOrder(a_targetGameObject,
+                                                     l_droppedGameObject,
+                                                     a_scene,
+                                                     a_isDropAfter);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene)
 {
+    std::weak_ptr<GameObject> l_droppedGameObject = {};
+ 
+    // ノード本体へのDrop成立時のみtrueを返す
+    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+        !l_imguiDragDropPayloadStorage.DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+    {
+        return; 
+    }
 
+    // ドロップ先ノードを親、ドロップしたGameObjectを子として親子関係を結ぶ
+    // 自分自身・子孫への親付けはApplyParent側で弾かれる
+    // 実行レベルの再構築もReparentGameObject内で行われる
+    m_gameObjectOperation.ReparentGameObject(a_targetGameObject, l_droppedGameObject, a_scene);
+ 
+    // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
+    if (const auto& l_targetGameObject = a_targetGameObject.lock();
+        l_targetGameObject)
+    {
+        m_gameObjectOpenStateMap[l_targetGameObject->GetREFSceneInstanceUUID()] = true;
+    }
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
@@ -654,18 +744,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
             std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
  
             BuildDisplayedGameObjectList(l_displayedList, a_scene);
- 
-            const auto l_findITR = [&l_displayedList](const std::shared_ptr<GameObject>& a_target)
-            {
-                return std::find_if(l_displayedList.begin(), l_displayedList.end(),
-                                    [&a_target](const auto& a_gameObjectWeak)
-                                    {
-                                        return a_gameObjectWeak.lock() == a_target;
-                                    });
-            };
- 
-            const auto& l_startITR = l_findITR(l_anchor);
-            const auto& l_endITR   = l_findITR(l_gameObject);
+
+            const auto& l_startITR = FindDisplayedGameObjectITR(l_displayedList, l_anchor);
+            const auto& l_endITR   = FindDisplayedGameObjectITR(l_displayedList, l_gameObject);
  
             if (l_startITR != l_displayedList.end() &&
                 l_endITR   != l_displayedList.end())
@@ -726,19 +807,25 @@ void FWK::Editor::WorldOutlinerEditorWindow::BuildDisplayedGameObjectList(std::v
     }
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::CollectDisplayedGameObject(const std::shared_ptr<GameObject>& a_gameObject, std::vector<std::weak_ptr<GameObject>>& a_displayedList) const
+void FWK::Editor::WorldOutlinerEditorWindow::CollectDisplayedGameObject(const std::weak_ptr<GameObject>& a_gameObject, std::vector<std::weak_ptr<GameObject>>& a_displayedList) const
 {
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
     a_displayedList.emplace_back(a_gameObject);
  
     // 閉じているノードの子は表示されないため収集しない
-    if (const auto& l_sceneInstanceUUID = a_gameObject->GetREFSceneInstanceUUID();
+    if (const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
         l_sceneInstanceUUID.is_nil() ||
         !IsGameObjectNodeOpen(l_sceneInstanceUUID)) 
     {
         return; 
     }
  
-    const auto& l_childDataList = a_gameObject->GetREFHierarchy().GetREFChildSmartPointerVectorList().GetREFElementDataList();
+    const auto& l_hierarchy                    = l_gameObject->GetREFHierarchy                       ();
+    const auto& l_childSmartPointerVectorArray = l_hierarchy.GetREFChildSmartPointerVectorList       ();
+    const auto& l_childDataList                = l_childSmartPointerVectorArray.GetREFElementDataList();
  
     for (const auto& l_childData : l_childDataList)
     {
@@ -790,4 +877,17 @@ bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::u
     if (l_itr == m_gameObjectOpenStateMap.end()) { return true; }
 
     return l_itr->second;
+}
+
+std::vector<std::weak_ptr<FWK::GameObject>>::const_iterator FWK::Editor::WorldOutlinerEditorWindow::FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const
+{
+    // 無効なターゲットは「見つからない」扱いにする
+    if (!a_target) { return a_displayedList.end(); }
+ 
+    // weak_ptr同士は直接比較できないためlock()したshared_ptrのアドレスで比較する
+    return std::find_if(a_displayedList.begin(), a_displayedList.end(),
+                        [&a_target](const auto& a_gameObjectWeak)
+                        {
+                            return a_gameObjectWeak.lock() == a_target;
+                        });
 }

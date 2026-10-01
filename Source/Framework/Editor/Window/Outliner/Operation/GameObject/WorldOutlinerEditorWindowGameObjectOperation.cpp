@@ -182,10 +182,10 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroyGameObjec
 
 FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const
 {
-    // 同じアドレスを持つゲームオブジェクトのイテレータ位置を返す
-    return std::find_if(a_childDataList.begin(), a_childDataList.end(),
-                        [&a_gameObject](const auto& a_childData)
-                        {
-                            return a_childData.m_type.lock() == a_gameObject.lock();
-                        });
+   // 同じアドレスを持つゲームオブジェクトのイテレータ位置を返す
+   return std::find_if(a_childDataList.begin(), a_childDataList.end(),
+                      [&a_gameObject](const auto& a_childData)
+                      {
+                          return a_childData.m_type.lock() == a_gameObject.lock();
+                      });
 }
