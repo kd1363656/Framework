@@ -42,5 +42,17 @@ namespace FWK::Editor
         static constexpr std::string_view k_createEmptyGameObjectMenuLabel = "空のゲームオブジェクトを作成";
         static constexpr std::string_view k_renameMenuLabel                = "名前変更";
         static constexpr std::string_view k_deleteMenuLabel                = "削除";
+
+        static constexpr std::string_view k_copyMenuLabel      = "コピー";
+        static constexpr std::string_view k_cutMenuLabel       = "切り取り";
+        static constexpr std::string_view k_duplicateMenuLabel = "複製";
+        static constexpr std::string_view k_pasteMenuLabel     = "貼り付け";
+
+        static constexpr std::string_view k_renameShortcutLabel    = "F2";
+        static constexpr std::string_view k_copyShortcutLabel      = "Ctrl + C";
+        static constexpr std::string_view k_cutShortcutLabel       = "Ctrl + X";
+        static constexpr std::string_view k_pasteShortcutLabel     = "Ctrl + V";
+        static constexpr std::string_view k_duplicateShortcutLabel = "Ctrl + D";
+        static constexpr std::string_view k_deleteShortcutLabel    = "Del";
     };
 }

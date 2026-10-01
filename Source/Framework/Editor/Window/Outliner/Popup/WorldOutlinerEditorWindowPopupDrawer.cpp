@@ -20,10 +20,24 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawScenePopup(const std
                                   a_editorWindow,
                                   a_editorManager);
  
+    // Clipboardが空ならPasteは無効化する
+    // 第4引数がEnabledFlag、falseならグレーアウトされて押せない
+    if (ImGui::MenuItem(k_pasteMenuLabel.data(), 
+        k_pasteShortcutLabel.data(),
+        false, 
+        !a_editorWindow.GetREFClipboard().IsEmpty()))
+    {
+        auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
+ 
+        const auto& l_gameObjectOperation = a_editorWindow.GetREFGameObjectOperation();
+ 
+        l_gameObjectOperation.PasteGameObjects(a_editorWindow.GetMutableREFClipboard(), l_gameObjectSelectionState, a_scene);
+    }
+
     ImGui::Separator();
  
     // シーン名の変更
-    if (ImGui::MenuItem(k_renameMenuLabel.data()))
+    if (ImGui::MenuItem(k_renameMenuLabel.data(), k_renameShortcutLabel.data()))
     {
         a_editorWindow.StartSceneRename(a_scene);
     }
@@ -47,21 +61,48 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawGameObjectPopup(cons
     ImGui::Separator();
 
     // リネームポップアップの描画
-    if (ImGui::MenuItem(k_renameMenuLabel.data()))
+    if (ImGui::MenuItem(k_renameMenuLabel.data(), k_renameShortcutLabel.data()))
     {
         a_editorWindow.StartGameObjectRename(a_gameObject);
     }
 
-    ImGui::Separator();
+          auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
+    const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();
 
+    // コピー
+    if (ImGui::MenuItem(k_copyMenuLabel.data(), k_copyShortcutLabel.data()))
+    {
+        l_gameObjectOperation.CopySelectedGameObjects(l_gameObjectSelectionState, a_editorWindow.GetMutableREFClipboard());
+    }
+ 
+    // 切り取り
+    if (ImGui::MenuItem(k_cutMenuLabel.data(), k_cutShortcutLabel.data()))
+    {
+        l_gameObjectOperation.CutSelectedGameObjects(a_editorWindow.GetMutableREFClipboard(), l_gameObjectSelectionState);
+    }
+ 
+    // 貼り付け
+    // Clipboardが空なら無効化する
+    // 右クリック時点で対象ノードは選択済みになるため
+    // 選択中のGameObjectそれぞれの子へ貼り付けられる
+    if (ImGui::MenuItem(k_pasteMenuLabel.data(), 
+                        k_pasteShortcutLabel.data(), 
+                        false, 
+                        !a_editorWindow.GetREFClipboard().IsEmpty()))
+    {
+        l_gameObjectOperation.PasteGameObjects(a_editorWindow.GetMutableREFClipboard(), l_gameObjectSelectionState, a_scene);
+    }
+
+    // 複製
+    if (ImGui::MenuItem(k_duplicateMenuLabel.data(), k_duplicateShortcutLabel.data()))
+    {
+        l_gameObjectOperation.DuplicateSelectedGameObjects(l_gameObjectSelectionState, a_scene);
+    }
+ 
     // 右クリック時点で対象ノードは選択済みになるため
     // 選択中のGameObject全てを削除対象にする(複数選択にも対応)
-    if (ImGui::MenuItem(k_deleteMenuLabel.data()))
+    if (ImGui::MenuItem(k_deleteMenuLabel.data(), k_deleteShortcutLabel.data()))
     {
-        auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
-
-        const auto& l_gameObjectOperation = a_editorWindow.GetREFGameObjectOperation();
-
         l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState);
     }
 
@@ -81,6 +122,16 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawEmptySpacePopup(cons
                                   a_editorWindow, 
                                   a_editorManager);
 
+    // Clipboardが空ならPasteは無効化する
+    if (const auto& l_clipboard = a_editorWindow.GetREFClipboard();
+        ImGui::MenuItem(k_pasteMenuLabel.data(), k_pasteShortcutLabel.data(), false, !l_clipboard.IsEmpty()))
+    {
+              auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
+        const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();
+
+        l_gameObjectOperation.PasteGameObjects(a_editorWindow.GetMutableREFClipboard(), l_gameObjectSelectionState, a_scene);
+    }
+
     ImGui::EndPopup();
 }
 
@@ -91,7 +142,7 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
 {
     if (!ImGui::MenuItem(k_createEmptyGameObjectMenuLabel.data())) { return; }
  
-    const auto& l_assetCreator      = a_editorWindow.GetREFAssetCreator();
+    const auto& l_assetCreator      = a_editorWindow.GetREFAssetCreator   ();
     const auto& l_createdGameObject = l_assetCreator.CreateEmptyGameObject(a_parent, a_scene);
  
     if (!l_createdGameObject) { return; }

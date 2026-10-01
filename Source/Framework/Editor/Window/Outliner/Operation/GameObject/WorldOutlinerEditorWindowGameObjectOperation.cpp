@@ -37,7 +37,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedG
     // 破棄したGameObjectの選択状態を解除する
     a_gameObjectSelectionState.ClearSelectedGameObjectList();
 }
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObject(const std::weak_ptr<GameObject>& a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene)
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObject(const std::weak_ptr<GameObject>& a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene) const
 {
     const auto& l_targetGameObject = a_targetGameObject.lock();
     const auto& l_moveGameObject   = a_moveGameObject.lock  ();
@@ -170,6 +170,10 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGame
             continue;
         }
  
+        // 親子同時選択時の重複コピーを回避する
+        // 選択リスト内に自身の祖先タイル場合、祖先のCloneにこのGameObjectも含まれているためスキップ
+        if (HasAncestorInSelection(l_selectedList, l_gameObjectWeak)) { continue; }
+
         l_uuidList.emplace_back(l_gameObject->GetREFSceneInstanceUUID());
     }
  
@@ -198,6 +202,10 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameO
             continue;
         }
  
+        // 親子同時選択時の重複コピーを回避する
+        // 選択リスト内に自身の祖先タイル場合、祖先のCloneにこのGameObjectも含まれているためスキップ
+        if (HasAncestorInSelection(l_selectedList, l_gameObjectWeak)) { continue; }
+
         l_uuidList.emplace_back(l_gameObject->GetREFSceneInstanceUUID());
     }
  
@@ -262,15 +270,16 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DuplicateSelecte
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
 {
-    // クリップボードにゲームオブジェクトのUUIDがコピーされていなければreturn
+     // クリップボードにゲームオブジェクトのUUIDがコピーされていなければreturn
     if (a_clipboard.IsEmpty()) { return; }
  
     const auto& l_uuidList      = a_clipboard.GetREFGameObjectUUIDList();
-    const auto  l_operationType = a_clipboard.GetVALOperationType();
+    const auto  l_operationType = a_clipboard.GetVALOperationType     ();
  
     // PasteしたGameObjectを選択状態にするためのリスト
     std::vector<std::weak_ptr<GameObject>> l_pastedList = {};
  
+    // UUIDListのサイズ分貼り付け用ゲームオブジェクトリストを予約
     l_pastedList.reserve(l_uuidList.size());
  
     for (const auto& l_uuid : l_uuidList)
@@ -284,8 +293,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
             continue;
         }
  
-        // ペースト先はシーンのルートとする
-        // 空スペース/シーンポップアップから呼ばれるため
+        // 常にシーンのルートとしてCloneする
+        // 選択中のGameObjectがあっても親にはしない
+        // これにより自分自身を親にする循環参照を確実に防ぐ
         const auto& l_clone = l_sourceGameObject->Clone({}, a_scene);
  
         if (!l_clone) { continue; }
