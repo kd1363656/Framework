@@ -40,7 +40,7 @@ void FWK::Editor::DetailsEditorWindow::Draw(EditorManager& a_editorManager)
     // GameObject名をヘッダとして表示(編集不可)
     // 名前変更はOutlinerのF2で行うためここでは参照表示のみ
     const auto& l_gameObjectName = l_selectedGameObject->GetREFName();
-          auto  l_headerName     = l_gameObjectName.empty          () ? std::string{ Constant::k_gameObjectString } : l_gameObjectName;
+          auto  l_headerName     = k_nameHeaderLabel.data() + l_gameObjectName.empty() ? std::string{ Constant::k_gameObjectString } : l_gameObjectName;
  
     // 名前から描画
     ImGui::TextUnformatted(l_headerName.c_str());
@@ -50,8 +50,8 @@ void FWK::Editor::DetailsEditorWindow::Draw(EditorManager& a_editorManager)
     if (const auto& l_transformComponent = l_selectedGameObject->GetVALTransformComponent().lock();
         l_transformComponent)
     {
-        if (const auto& l_headerName = l_transformComponent->GetREFTypeINFO().k_name;
-            ImGui::CollapsingHeader(l_headerName.data()))
+        if (const auto& l_componentHeaderName = l_transformComponent->GetREFTypeINFO().k_name;
+            ImGui::CollapsingHeader(l_componentHeaderName.data()))
         {
             l_transformComponent->EditInspector();
         }

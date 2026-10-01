@@ -579,9 +579,18 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
     // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
     auto l_frameColor = ImGui::GetColorU32(k_cardDefaultGrayColor);
 
-    if (a_isCutTarget)
+    if (a_isCutTarget &&
+        a_isSelected)
     {
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiDarkBlueTranslucentColor);
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueColor);
+    }
+    else if (a_isCutTarget)
+    {
+        auto l_darkGray = k_cardDefaultGrayColor;
+
+        l_darkGray.w *= Constant::k_halfMagnification;
+
+        l_frameColor = ImGui::GetColorU32(l_darkGray);
     }
     else if (a_isSelected &&
              a_isActivePane)
@@ -876,12 +885,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow)
 {
-    const auto& l_selectedFilePathList = m_selectionState.GetMutableREFSelectedFilePathList();
-
     // D&Dドラッグ元
     // 選択中ファイル/フォルダをドラッグ
     // ルートフォルダは除外(移動するとプロジェクトが壊れるため)
-    if (!l_selectedFilePathList.empty())
+    if (const auto& l_selectedFilePathList = m_selectionState.GetMutableREFSelectedFilePathList();
+        !l_selectedFilePathList.empty())
     {
         std::vector<std::filesystem::path> l_dragSourcePathList = {};
 
@@ -926,7 +934,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList)
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const
 {
     const auto& l_folderPane         = a_editorWindow.GetREFFolderPane             ();
     const auto& l_folderSelection    = l_folderPane.GetREFSelectionState           ();

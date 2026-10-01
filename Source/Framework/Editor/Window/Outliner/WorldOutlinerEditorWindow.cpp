@@ -490,19 +490,29 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // 白(デフォルト) : Prefabと無関係
     // 青             : Prefab由来、またはPrefabルート
     // 赤             : PrefabUUIDを持つがPrefabSystemに対応Prefabが見つからない
-    const auto& l_prefabUUID      = l_gameObject->GetREFPrefabUUID();
-          bool  l_isPushTextColor = false;
+    const auto& l_prefabUUID = l_gameObject->GetREFPrefabUUID();
  
+    const auto& l_style     = ImGui::GetStyle();
+          auto  l_textColor = l_style.Colors[ImGuiCol_Text];
+
     if (!l_prefabUUID.is_nil())
     {
         const auto& l_prefabSystem = a_scene.GetREFGameObjectPrefabSystem();
-        const auto& l_textColor    = l_prefabSystem.FindPTRPrefab        (l_prefabUUID) ? Constant::k_imguiWorldOutlinerPrefabGameObjectTextColor : Constant::k_imguiWorldOutlinerMissingPrefabTextColor;
-
-        ImGui::PushStyleColor(ImGuiCol_Text, l_textColor);
- 
-        l_isPushTextColor = true;
+       
+        l_textColor = l_prefabSystem.FindPTRPrefab(l_prefabUUID) ? k_prefabGameObjectTextColor : k_missingPrefabTextColor;
     }
- 
+
+    // Cut操作でクリップボードに入っているGameObjectなら文字色を暗くする
+    // 左クリックでの選択は可能なまま維持する(選択フラグには影響しない)
+    if (m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
+        m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut)
+    {
+        // 透明度含めすべて0.5を掛ける
+        l_textColor *= Constant::k_halfMagnification;
+    }
+
+    ImGui::PushStyleColor(ImGuiCol_Text, l_textColor);
+
     // このノードがリネーム対象かどうか
     const bool l_isRenaming = m_renameState.m_isActive       &&
                               !m_renameState.m_isSceneTarget &&
@@ -522,10 +532,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     const bool  l_isNodeOpen = ImGui::TreeNodeEx                       (l_nodeLabel.c_str(), l_treeNodeFlags);
 
     // テキストカラーをPushした分Popする
-    if (l_isPushTextColor)
-    {
-        ImGui::PopStyleColor();
-    }
+    ImGui::PopStyleColor();
 
     const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
 

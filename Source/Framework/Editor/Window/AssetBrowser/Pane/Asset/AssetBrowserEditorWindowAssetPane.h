@@ -73,7 +73,7 @@ namespace FWK::Editor
 
         void HandleCardDragDrop(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
 
-        void BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList);
+        void BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const;
 
         void SelectFile(const std::vector<std::filesystem::path>& a_displayedFilePathList,
                         const std::filesystem::path&              a_filePath,
