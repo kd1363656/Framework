@@ -232,16 +232,18 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(Scene& a_scene)
  
     m_renameState.m_inputBuffer[l_copySize] = Constant::k_nullCharacter;
 }
-void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::shared_ptr<GameObject>& a_gameObject)
+void FWK::Editor::WorldOutlinerEditorWindow::StartGameObjectRename(const std::weak_ptr<GameObject>& a_gameObject)
 {
-    if (!a_gameObject) { return; }
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
  
     m_renameState.m_isActive         = true;
     m_renameState.m_isFocused        = false;
     m_renameState.m_isSceneTarget    = false;
-    m_renameState.m_targetGameObject = a_gameObject;
+    m_renameState.m_targetGameObject = l_gameObject;
  
-    const auto& l_name     = a_gameObject->GetREFName();
+    const auto& l_name     = l_gameObject->GetREFName();
     const auto  l_copySize = std::min(l_name.size(), m_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
  
     std::memcpy(m_renameState.m_inputBuffer.data(), l_name.data(), l_copySize);
@@ -270,6 +272,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(Edito
     if (!l_scene) { return; }
  
     StartSceneRename(*l_scene);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::SetupGameObjectDragSource(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+    l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, a_gameObject);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, EditorManager& a_editorManager)
@@ -392,11 +401,15 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
     // TreeNodeExで一段下がったインデントを戻す
     ImGui::TreePop();   
 }
-void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::shared_ptr<GameObject>& a_gameObject, Scene& a_scene, EditorManager& a_editorManager)
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject, Scene& a_scene, EditorManager& a_editorManager)
 {
     auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
  
-    const auto& l_hierarchy                   = a_gameObject->GetREFHierarchy                      ();
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
+    const auto& l_hierarchy                   = l_gameObject->GetREFHierarchy                      ();
     const auto& l_childSmartPointerVectorList = l_hierarchy.GetREFChildSmartPointerVectorList      ();
     const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList();
  
@@ -423,7 +436,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
     }
     else
     {
-        const bool l_isNodeOpen = IsGameObjectNodeOpen(a_gameObject->GetREFSceneInstanceUUID());
+        const bool l_isNodeOpen = IsGameObjectNodeOpen(l_gameObject->GetREFSceneInstanceUUID());
 
         // 保持している開閉状態をImGuiへ反映する
         ImGui::SetNextItemOpen(l_isNodeOpen);
@@ -439,7 +452,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
     // 白(デフォルト) : Prefabと無関係
     // 青             : Prefab由来、またはPrefabルート
     // 赤             : PrefabUUIDを持つがPrefabSystemに対応Prefabが見つからない
-    const auto& l_prefabUUID      = a_gameObject->GetREFPrefabUUID();
+    const auto& l_prefabUUID      = l_gameObject->GetREFPrefabUUID();
           bool  l_isPushTextColor = false;
  
     if (!l_prefabUUID.is_nil())
@@ -455,9 +468,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
     // このノードがリネーム対象かどうか
     const bool l_isRenaming = m_renameState.m_isActive       &&
                               !m_renameState.m_isSceneTarget &&
-                              m_renameState.m_targetGameObject.lock() == a_gameObject;
+                              m_renameState.m_targetGameObject.lock() == l_gameObject;
  
-    const auto& l_name  = a_gameObject->GetREFName();
+    const auto& l_name  = l_gameObject->GetREFName();
           auto  l_label = l_name.empty            () ? std::string{ Constant::k_gameObjectString } : l_name;
  
     if (l_isRenaming)
@@ -467,7 +480,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
 
     // TreeNodeのIDはラベル文字列から作られるため同名ノードで衝突する
     // 「##」以降はIDのみに使われ描画されないのでSceneInstanceUUIDを埋めて一意にする
-    const auto& l_nodeLabel  = l_label + "##" + boost::uuids::to_string(a_gameObject->GetREFSceneInstanceUUID());
+    const auto& l_nodeLabel  = l_label + "##" + boost::uuids::to_string(l_gameObject->GetREFSceneInstanceUUID());
     const bool  l_isNodeOpen = ImGui::TreeNodeEx                       (l_nodeLabel.c_str(), l_treeNodeFlags);
 
     // テキストカラーをPushした分Popする
@@ -476,7 +489,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
         ImGui::PopStyleColor();
     }
 
-    const auto& l_sceneInstanceUUID = a_gameObject->GetREFSceneInstanceUUID();
+    const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
 
     // 開閉状態をMapへ反映する
     // BuildDisplayedGameObjectListが参照するため毎フレーム同期しておく
@@ -526,7 +539,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::share
 
     // ポップアップ描画
     // OpenPopupと同じIDスタックスコープで呼ぶ必要があるためここで行う
-    m_popupDrawer.DrawGameObjectPopup(a_gameObject, 
+    m_popupDrawer.DrawGameObjectPopup(l_gameObject, 
                                       l_contextMenuLabel, 
                                       a_scene, 
                                       *this, 
@@ -602,14 +615,25 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
         CommitRename(a_scene);
     }
 }
+void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter)
+{
+    
+}
 
-void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::shared_ptr<GameObject>&    a_gameObject,
+void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene)
+{
+
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
                                                                     Scene&                          a_scene, 
                                                                     EditorGameObjectSelectionState& a_gameObjectSelectionState, 
                                                               const bool                            a_isRangeSelection, 
                                                               const bool                            a_isToggleSelection)
 {
-    if (!a_gameObject) { return; }
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
 
     // SceneとGameObjectは排他選択のため
     // GameObjectが選択された時点でScene選択は解除する
@@ -641,7 +665,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::shared_
             };
  
             const auto& l_startITR = l_findITR(l_anchor);
-            const auto& l_endITR   = l_findITR(a_gameObject);
+            const auto& l_endITR   = l_findITR(l_gameObject);
  
             if (l_startITR != l_displayedList.end() &&
                 l_endITR   != l_displayedList.end())

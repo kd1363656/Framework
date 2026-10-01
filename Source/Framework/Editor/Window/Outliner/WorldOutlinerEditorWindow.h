@@ -21,9 +21,9 @@ namespace FWK::Editor
  
         void SelectAllGameObjects(EditorManager& a_editorManager);
  
-        void StartSceneRename             (      Scene&                       a_scene);
-        void StartGameObjectRename        (const std::shared_ptr<GameObject>& a_gameObject);
-        void StartRenameByCurrentSelection(      EditorManager&               a_editorManager);
+        void StartSceneRename             (      Scene&                     a_scene);
+        void StartGameObjectRename        (const std::weak_ptr<GameObject>& a_gameObject);
+        void StartRenameByCurrentSelection(      EditorManager&             a_editorManager);
  
         const auto& GetREFSceneSelectionState() const { return m_sceneSelectionState; }
         const auto& GetREFSceneOperation     () const { return m_sceneOperation; }
@@ -38,11 +38,16 @@ namespace FWK::Editor
 
     private:
        
-        void DrawSceneNode           (Scene& a_scene, EditorManager& a_editorManager);
-        void DrawGameObjectNode      (const std::shared_ptr<GameObject>& a_gameObject, Scene& a_scene, EditorManager& a_editorManager);
-        void DrawRenameInputText     (      Scene&                       a_scene);
- 
-        void SelectGameObject(const std::shared_ptr<GameObject>&    a_gameObject,
+        void SetupGameObjectDragSource (const std::weak_ptr<GameObject>& a_gameObject) const;
+
+        void DrawSceneNode         (Scene& a_scene, EditorManager&   a_editorManager);
+        void DrawGameObjectNode    (const std::weak_ptr<GameObject>& a_gameObject, Scene& a_scene, EditorManager& a_editorManager);
+        void DrawRenameInputText   (      Scene&                     a_scene);
+        void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter);
+        
+        void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene);
+
+        void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
                                     Scene&                          a_scene,
                                     EditorGameObjectSelectionState& a_gameObjectSelectionState,
                               const bool                            a_isRangeSelection,
@@ -50,17 +55,18 @@ namespace FWK::Editor
  
         void BuildDisplayedGameObjectList(std::vector<std::weak_ptr<GameObject>>& a_displayedList, Scene& a_scene) const;
 
-        void CollectDisplayedGameObject(const std::shared_ptr<GameObject>& a_gameObject, std::vector<std::weak_ptr<GameObject>>& a_displayedList) const;
+        void CollectDisplayedGameObject(const std::weak_ptr<GameObject>& a_gameObject, std::vector<std::weak_ptr<GameObject>>& a_displayedList) const;
  
         void CommitRename(Scene& a_scene);
  
         bool IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const;
  
          
-        static constexpr std::string_view k_editorName                 = "アウトライナー";
-        static constexpr std::string_view k_emptySceneLabel            = "Untitled";
-        static constexpr std::string_view k_thisWindowExplanationLabel = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
-        static constexpr std::string_view k_noCurrentSceneLabel        = "現在読み込まれているシーンはありません。";
+        static constexpr std::string_view k_editorName                     = "アウトライナー";
+        static constexpr std::string_view k_emptySceneLabel                = "Untitled";
+        static constexpr std::string_view k_thisWindowExplanationLabel     = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
+        static constexpr std::string_view k_noCurrentSceneLabel            = "現在読み込まれているシーンはありません。";
+        static constexpr std::string_view k_gameObjectDragDropPayloadLabel = "WorldOutlinerGameObjectDragDropPayload";
  
         static constexpr std::string_view k_sceneContextMenuLabel      = "##WorldOutlinerSceneContextMenu";
         static constexpr std::string_view k_gameObjectContextMenuLabel = "##WorldOutlinerGameObjectContextMenu";
@@ -68,6 +74,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel       = "##WorldOutlinerRenameInputText";
 
         static constexpr float k_nodeFramePaddingHeight = 5.0F;
+        static constexpr float k_dropZoneHeight         = 4.0F;
 
         static constexpr int k_keyboardFocusNextItem = 0;
  

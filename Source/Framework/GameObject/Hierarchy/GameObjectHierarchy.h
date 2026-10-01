@@ -57,6 +57,8 @@ namespace FWK
 
         auto& GetMutableREFPrefabRemovedChildUUIDSet() { return m_prefabRemovedChildUUIDSet; }
 
+        auto& GetMutableREFChildSmartPointerVectorList() { return m_childSmartPointerVectorList; }
+
         auto& GetMutableREFChildUUIDRegistry() { return m_childUUIDRegistry; }
 
     private:

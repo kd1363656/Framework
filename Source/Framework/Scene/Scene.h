@@ -20,6 +20,8 @@ namespace FWK
 
         nlohmann::json Serialize();
 
+        void RebuildGameObjectExecutionLevelList();
+
         void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 
         void SetName(const std::string& a_set) { m_name = a_set; }
@@ -51,8 +53,6 @@ namespace FWK
         void AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel);
 
         void RemoveDestroyedGameObjects();
-
-        void RebuildGameObjectExecutionLevelList();
 
         std::size_t CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject) const;
 

@@ -138,6 +138,27 @@ nlohmann::json FWK::Scene::Serialize()
     return m_jsonConverter.Serialize(*this);
 }
 
+void FWK::Scene::RebuildGameObjectExecutionLevelList()
+{
+    m_gameObjectExecutionLevelList.clear();
+
+    // UUIDRegistryには既に登録済みなので、
+    // m_gameObjectList内の順番にGameObjectの現在改装を求める
+    for (const auto& l_gameObject : m_gameObjectList)
+    {
+        if (!l_gameObject ||
+            l_gameObject->GetVALIsDestroyed())
+        {
+            continue;
+        }
+
+        const auto& l_executionLevel = CalculateGameObjectExecutionLevel(l_gameObject);
+
+        // 階層を調べてから適した階層に追加
+        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
+    }
+}
+
 void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
 {
     if (!a_gameObject)
@@ -269,27 +290,6 @@ void FWK::Scene::RemoveDestroyedGameObjects()
            m_gameObjectExecutionLevelList.back().empty())
     {
         m_gameObjectExecutionLevelList.pop_back();
-    }
-}
-
-void FWK::Scene::RebuildGameObjectExecutionLevelList()
-{
-    m_gameObjectExecutionLevelList.clear();
-
-    // UUIDRegistryには既に登録済みなので、
-    // m_gameObjectList内の順番にGameObjectの現在改装を求める
-    for (const auto& l_gameObject : m_gameObjectList)
-    {
-        if (!l_gameObject ||
-            l_gameObject->GetVALIsDestroyed())
-        {
-            continue;
-        }
-
-        const auto& l_executionLevel = CalculateGameObjectExecutionLevel(l_gameObject);
-
-        // 階層を調べてから適した階層に追加
-        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
     }
 }
 
