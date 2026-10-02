@@ -88,21 +88,52 @@ namespace FWK::Utility
         bool DragDropTarget(const std::string_view& a_label, Type& a_outPayload)
         {
             using PayloadType = std::remove_cvref_t<Type>;
-
+ 
             constexpr auto l_kind = TypeTrait::PTRType<PayloadType>::k_kind;
-
-            // 生ポインタを許可しない
-            static_assert(l_kind != Enum::PTRKind::Raw, "RawPointerはDragDropPayloadに使用できません");
-
-            // std::anyはPayloadを所有するため、
-            // Copy不可能なunique_ptrは使用できない。
+ 
+            static_assert(l_kind != Enum::PTRKind::Raw,           "RawPointerはDragDropPayloadに使用できません");
             static_assert(l_kind != Enum::PTRKind::Unique,        "std::unique_ptrはDragDropPayloadに使用できません");
             static_assert(std::is_copy_assignable_v<PayloadType>, "DragDropPayloadはCopyAssign可能である必要があります");
-
+ 
             if (!ImGui::BeginDragDropTarget()) { return false; }
+ 
+            return AcceptPayload(a_label, a_outPayload);
+        }
+ 
+        // 直前アイテムではなく指定した矩形をドロップ先にする版
+        // ペイン空白部分などアイテムが存在しない領域のドロップに使用する
+        template <typename Type>
+        bool DragDropTargetCustom(const ImRect&           a_targetRect,
+                                  const ImGuiID           a_targetID,
+                                  const std::string_view& a_label,
+                                        Type&             a_outPayload)
+        {
+            using PayloadType = std::remove_cvref_t<Type>;
+ 
+            constexpr auto l_kind = TypeTrait::PTRType<PayloadType>::k_kind;
+ 
+            static_assert(l_kind != Enum::PTRKind::Raw,           "RawPointerはDragDropPayloadに使用できません");
+            static_assert(l_kind != Enum::PTRKind::Unique,        "std::unique_ptrはDragDropPayloadに使用できません");
+            static_assert(std::is_copy_assignable_v<PayloadType>, "DragDropPayloadはCopyAssign可能である必要があります");
+ 
+            if (!ImGui::BeginDragDropTargetCustom(a_targetRect, a_targetID)) { return false; }
+ 
+            return AcceptPayload(a_label, a_outPayload);
+        }
 
+    private:
+
+        // BeginDragDropTarget/BeginDragDropTargetCustom成功後に呼ぶ共通受信処理
+        // 内部でEndDragDropTargetを必ず呼ぶ
+        template <typename Type>
+        bool AcceptPayload(const std::string_view& a_label, Type& a_outPayload)
+        {
+            using PayloadType = std::remove_cvref_t<Type>;
+ 
+            constexpr auto l_kind = TypeTrait::PTRType<PayloadType>::k_kind;
+ 
             const auto* l_imGuiPayload = ImGui::AcceptDragDropPayload(a_label.data());
-
+ 
             // Payloadを受信していない
             if (!l_imGuiPayload               ||
                 !l_imGuiPayload->IsDelivery() ||
@@ -110,64 +141,53 @@ namespace FWK::Utility
                 l_imGuiPayload->DataSize != sizeof(std::uint64_t))
             {
                 ImGui::EndDragDropTarget();
-
+ 
                 return false;
             }
-
+ 
             auto l_payloadID = k_initialPayloadID;
-
-            // ImGui側Payloadはuint64_tだけなので
-            // ByteCopyして問題ない
+ 
+            // ImGui側Payloadはuint64_tだけなのでByteCopyして問題ない
             std::memcpy(&l_payloadID, l_imGuiPayload->Data, sizeof(l_payloadID));
-
+ 
             // Framework側Storageと異なるDrag操作なら受け取らない
             if (l_payloadID != m_payloadID)
             {
                 ImGui::EndDragDropTarget();
-
+ 
                 return false;
             }
-
-            // Pointer版any_castは
-            // 格納TypeとPayloadTypeが一致しなければnullptrを返す
-            // 明示的なtypeidによる判定は不要(RTTIの使用を少しでも防ぐため)
+ 
             const auto* l_payload = std::any_cast<PayloadType>(&m_payload);
-
+ 
             if (!l_payload)
             {
                 ImGui::EndDragDropTarget();
-
+ 
                 return false;
             }
-
-            // Drag開始後にweak_ptrの参照先が破棄された場合は、
-            // Dropを成立させない
+ 
+            // Drag開始後にweak_ptrの参照先が破棄された場合はDropを成立させない
             if constexpr (l_kind == Enum::PTRKind::Weak)
             {
                 if (l_payload->expired())
                 {
                     ImGui::EndDragDropTarget();
-
+ 
                     Clear();
-
+ 
                     return false;
                 }
             }
-
-            // Type本来のCopyAssignmentを使用する
-            // filesystem::path/string/shared_ptr/weak_ptr/
-            // vector/独自Structなども正規のCopyになる
+ 
             a_outPayload = *l_payload;
-
+ 
             ImGui::EndDragDropTarget();
-
-            // Drop完了なのでFramework側Payloadも破棄する
+ 
             Clear();
-
+ 
             return true;
         }
-
-    private:
 
         void Clear();
 

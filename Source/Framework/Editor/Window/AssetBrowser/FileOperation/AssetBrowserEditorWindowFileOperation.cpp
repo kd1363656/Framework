@@ -262,10 +262,12 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Move(const std::vector<
     {
         std::error_code l_errorCode = {};
  
-        // 自分自身への移動はスキップ
-        // Asset/DataをAsset/Dataへドロップした場合
-        if (l_sourceFilePath == a_destinationFolderPath) { continue; }
- 
+        // 既に移動先フォルダの直下にある場合はスキップ
+        // 例 : AssetPane空白へドロップして
+        //      表示中フォルダ内のアイテムを同じフォルダへ移動しようとした場合
+        // このままrenameすると同名衝突で番号付与されてしまう
+        if (l_sourceFilePath.parent_path() == a_destinationFolderPath) { continue; }
+
         // 移動元が既に存在しない場合はスキップ
         // 「Asset/A」と「Asset/A/B」を同時選択して移動した場合
         // 先にAが移動するとA/Bの旧パスは存在しなくなる

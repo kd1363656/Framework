@@ -78,6 +78,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
         }
     }
 
+    // AssetPaneの空白部分へのドロップ処理
+    // FolderPane等からドラッグしたフォルダ/ファイルを
+    // 現在参照中フォルダへ移動する
+    // ドロップしてもm_currentSelectFolderPathは変更しない
+    HandlePaneBackgroundDragDrop(a_editorWindow);
+
     // 空白スペース左クリック = 選択解除
     // ImGui::IsWindowHovered   : このChildWindow上にマウスがあるか
     // !ImGui::IsAnyItemHovered : いずれのアイテム(カード)上にマウスがない = 空白
@@ -932,16 +938,51 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
         std::filesystem::is_directory(a_filePath, l_errorCode))
     {
         std::vector<std::filesystem::path> l_droppedFilePathList = {};
-
+ 
         auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-
+ 
         if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
         {
             const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
-
+ 
             l_fileOperation.Move(l_droppedFilePathList, a_filePath);
+ 
+            // 移動先フォルダを現在参照中フォルダにする
+            // NavigateToFolderがFolderPane側の選択と
+            // ツリーの親階層展開も行うため、
+            // 移動したフォルダが画面上で見える状態になる
+            NavigateToFolder(a_filePath, a_editorWindow);
         }
     }
+}
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDrop(AssetBrowserEditorWindow& a_editorWindow)
+{
+    // 現在参照中フォルダ(空ならAssetルート)を移動先にする
+    const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
+    const auto& l_destinationFolderPath   = l_currentSelectFolderPath.empty() ? Constant::k_assetRootFolderPath : l_currentSelectFolderPath;
+ 
+    std::vector<std::filesystem::path> l_droppedFilePathList = {};
+ 
+    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+ 
+    // ChildWindow全体をドロップ対象矩形にする
+    // GetCurrentWindow()->Rect()はスクリーン座標系のウィンドウ全体矩形
+    // フォルダカード上ではカード側(小さい矩形)が優先されるため
+    // ここに届くのは空白部分へのドロップのみになる
+    if (const auto* l_currentWindow = ImGui::GetCurrentWindow();
+        !l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+                                                            ImGui::GetID(k_paneBackgroundDropTargetLabel.data()),
+                                                            Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                            l_droppedFilePathList))
+    {
+        return;
+    }
+ 
+    const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
+ 
+    // 現在参照中フォルダへ移動するだけなので
+    // SelectSingleFolder/SetCurrentSelectFolderPathは呼ばない
+    l_fileOperation.Move(l_droppedFilePathList, l_destinationFolderPath);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const

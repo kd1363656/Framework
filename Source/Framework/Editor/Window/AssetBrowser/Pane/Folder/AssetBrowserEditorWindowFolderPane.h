@@ -50,8 +50,9 @@ namespace FWK::Editor
         void SelectFolder(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, 
                           const std::filesystem::path&                                                         a_folderPath, 
                                 AssetBrowserEditorWindow&                                                      a_editorWindow,
-                          const bool                                                                           a_isRangeSelection  = false, 
-                          const bool                                                                           a_isToggleSelection = false);
+                          const bool                                                                           a_isRangeSelection           = false, 
+                          const bool                                                                           a_isToggleSelection          = false,
+                          const bool                                                                           a_updateCurrentFolderPath = true);
 
         bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
 

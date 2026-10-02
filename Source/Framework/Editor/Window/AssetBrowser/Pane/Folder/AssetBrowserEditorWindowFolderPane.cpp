@@ -425,7 +425,6 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     const bool  l_isCutTarget      = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) && 
                                       l_clipboard.Contains(a_currentFolderPath);
 
-    
     // ハイライト強弱の制御
     // a_activePane == FolderPane : 強ハイライト(ImGuiのデフォルト色)
     // a_activePane == AssetPane  : 弱ハイライト(デフォルト色のalphaを下げる)
@@ -732,15 +731,16 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         m_folderOpenStateMap[a_currentFolderPath] = l_isNodeOpen;
     }
 
-    // 左クリック : 選択
-    // 仕様 : 左クリック一回で現在選択中のファイルパスとして扱う
-    //        開閉はImGuiが管理するためToggleFolderOpenは呼ばない
+    // 左ボタン押下 : 選択リストのみ更新する
+    // 押下時点ではm_currentSelectFolderPathを更新しないため
+    // 押下しただけで参照中フォルダが切り替わることはない
+    // 押下時点で選択へ反映しておかないと
+    // ドラッグ開始時にDragDropSourceへ渡すペイロードが
+    // このフォルダを含まない/空のリストになってしまう
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
-        // ImGui::GetIO().KeyShift : Shiftキーが押されているか
-        // ImGui::GetIO().KeyCtrl  : Ctrlキーが押されているか
         const auto& l_io = ImGui::GetIO();
- 
+         
         // 修飾キーなしで既選択のフォルダをクリックした場合は選択リストを更新しない
         // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
         // 複数選択を維持したままドラッグ&ドロップできるようにする
@@ -749,11 +749,34 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             l_io.KeyShift ||
             l_io.KeyCtrl)
         {
-            SelectFolder(l_folderHierarchyMap, 
+            // 第6引数false : 参照フォルダは更新せず選択リストだけ更新する
+            SelectFolder(l_folderHierarchyMap,
                          a_currentFolderPath,
                          a_editorWindow,
                          l_io.KeyShift,
-                         l_io.KeyCtrl);
+                         l_io.KeyCtrl,
+                         false);
+        }
+    }
+     
+    // 左ボタン解放 : 押下したノードの真上で解放された場合のみ参照フォルダを変更する
+    // IsItemDeactivated : このノードが押下によりActive化された後
+    //                     ボタン解放でActive解除されたフレームにtrue
+    // IsItemHovered     : 解放時にこのノード上にカーソルがあるならtrue
+    // 押下したままAssetPaneや別ノード上で解放した場合は
+    // このノードがDeactivatedにならない/Hoveredでないため
+    // 参照フォルダは変更されない
+    if (ImGui::IsItemDeactivated() &&
+        ImGui::IsItemHovered())
+    {
+        const auto& l_io = ImGui::GetIO();
+     
+        // Shift/Ctrlでの選択操作(範囲選択・トグル)では
+        // 解放時にも参照フォルダを切り替えない
+        if (!l_io.KeyShift &&
+            !l_io.KeyCtrl)
+        {
+            a_editorWindow.SetCurrentSelectFolderPath(a_currentFolderPath);
         }
     }
 
@@ -837,7 +860,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
                                                                    const std::filesystem::path&                                                         a_folderPath, 
                                                                          AssetBrowserEditorWindow&                                                      a_editorWindow,
                                                                    const bool                                                                           a_isRangeSelection, 
-                                                                   const bool                                                                           a_isToggleSelection)
+                                                                   const bool                                                                           a_isToggleSelection,
+                                                                   const bool                                                                           a_updateCurrentFolderPath)
 {
     const auto& l_rangeSelectionStartPath = m_selectionState.GetREFRangeSelectionStartPath();
 
@@ -850,7 +874,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
         if (l_rangeSelectionStartPath.empty())
         {
             // 通常クリック : 選択をクリアして単一選択
-            m_selectionState.SelectSingleFolder(a_folderPath, a_editorWindow);
+            m_selectionState.SelectSingleFolder(a_folderPath, a_editorWindow, a_updateCurrentFolderPath);
         }
         else
         {
@@ -917,7 +941,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
             // 選択解除後、残りが一つの場合は現在フォルダを更新
             // 残りが0件または複数件の場合は更新しない
             // (複数選択時は操作無効、0件時は前の現在フォルダを維持)
-            if (l_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
+            if (a_updateCurrentFolderPath &&
+                l_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
             {
                 a_editorWindow.SetCurrentSelectFolderPath(l_selectedFilePathList.back());
             }
@@ -928,7 +953,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
             m_selectionState.AddSelectedFilePath(a_folderPath);
 
             // 追加後、選択数が1件の場合は現在フォルダを更新
-            if (l_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
+            if (a_updateCurrentFolderPath &&
+                l_selectedFilePathList.size() == Constant::k_editorSelectedFolderSingleSize)
             {
                 a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
             }
@@ -942,9 +968,13 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
     m_selectionState.AddSelectedFilePath      (a_folderPath);
     
     // 現在フォルダを更新
-    // 単一選択時はこ現在フォルダを選択フォルダにする
-    // AssetPaneはこのm_currentFolderPathを参照して内容を表示する
-    a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
+    // a_updateCurrentFolderPathがfalseの場合は
+    // 選択リストのみを更新して現在フォルダは変更しない
+    // (押下時の選択更新で参照フォルダが切り替わらないようにするため)
+    if (a_updateCurrentFolderPath)
+    {
+        a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
+    }
 
     // 範囲選択の開始地点を更新
     m_selectionState.SetRangeSelectionStartPath(a_folderPath);

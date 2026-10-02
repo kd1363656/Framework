@@ -71,7 +71,8 @@ namespace FWK::Editor
                              const bool                                a_isSelected,
                              AssetBrowserEditorWindow&                 a_editorWindow);
 
-        void HandleCardDragDrop(const std::filesystem::path& a_filePath, AssetBrowserEditorWindow& a_editorWindow);
+        void HandleCardDragDrop          (const std::filesystem::path&    a_filePath, AssetBrowserEditorWindow& a_editorWindow);
+        void HandlePaneBackgroundDragDrop(      AssetBrowserEditorWindow& a_editorWindow);
 
         void BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const;
 
@@ -94,13 +95,14 @@ namespace FWK::Editor
         static constexpr std::string_view k_imguiFontAwesomeAudioIcon    = "\xEF\x87\x87";
         static constexpr std::string_view k_imguiFontAwesomeFileIcon     = "\xEF\x85\x9B";
 
-        static constexpr std::string_view k_childLabel                 = "##AssetBrowserEditorWindowAssetPane";
-        static constexpr std::string_view k_paneTitleLabel             = "アセット";
-        static constexpr std::string_view k_emptySpaceContextMenuLabel = "##AssetPaneEmptyContextMenu";
-        static constexpr std::string_view k_cardContextMenuPrefixLabel = "##AssetPaneCardContextMenu";
-        static constexpr std::string_view k_cardPrefixLabel            = "##AssetPaneCardContextMenu";
-        static constexpr std::string_view k_renameInputTextLabel       = "##AssetPaneRenameInputText";
-        static constexpr std::string_view k_ellipsis                   = "...";
+        static constexpr std::string_view k_childLabel                    = "##AssetBrowserEditorWindowAssetPane";
+        static constexpr std::string_view k_emptySpaceContextMenuLabel    = "##AssetPaneEmptyContextMenu";
+        static constexpr std::string_view k_cardContextMenuPrefixLabel    = "##AssetPaneCardContextMenu";
+        static constexpr std::string_view k_cardPrefixLabel               = "##AssetPaneCardContextMenu";
+        static constexpr std::string_view k_renameInputTextLabel          = "##AssetPaneRenameInputText";
+        static constexpr std::string_view k_paneBackgroundDropTargetLabel = "##AssetPaneBackgroundDropTarget";
+        static constexpr std::string_view k_paneTitleLabel                = "アセット";
+        static constexpr std::string_view k_ellipsis                      = "...";
 
         static constexpr ImVec4 k_cardDefaultGrayColor = { 0.22F, 0.22F, 0.22F, 1.0F };
 
