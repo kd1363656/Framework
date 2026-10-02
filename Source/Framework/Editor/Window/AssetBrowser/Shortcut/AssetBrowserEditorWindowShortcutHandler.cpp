@@ -73,7 +73,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // PopupDrawerのl_canCreateFolderと同じ条件
     if (l_io.KeyCtrl                                                                     &&
         l_io.KeyShift                                                                    &&
-        ImGui::IsKeyPressed(ImGuiKey_N)                                                  &&
+        ImGui::IsKeyPressed(ImGuiKey_N, false)                                           &&
         !l_isMultiSelection                                                              &&
        (l_createFolderContext == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
         l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
@@ -86,9 +86,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // F2 : 名前変更
     // 単一選択時のみ有効
     // ImGuiKey_F2はF2キーを表す
-    if (l_isSingleSelection              &&
-        !l_isRootFolder                  &&
-        ImGui::IsKeyPressed(ImGuiKey_F2) &&
+    if (l_isSingleSelection                     &&
+        !l_isRootFolder                         &&
+        ImGui::IsKeyPressed(ImGuiKey_F2, false) &&
         !l_isMultiSelection)
     {
         HandleRename(a_selectedFilePath, l_renameState);
@@ -99,7 +99,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     if (l_hasSelection  &&
         !l_containsRoot &&
         l_io.KeyCtrl    && 
-        ImGui::IsKeyPressed(ImGuiKey_C))
+        ImGui::IsKeyPressed(ImGuiKey_C, false))
     {
         HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard);
     }
@@ -109,7 +109,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     if (l_hasSelection  &&
         !l_containsRoot &&
         l_io.KeyCtrl    &&
-        ImGui::IsKeyPressed(ImGuiKey_X))
+        ImGui::IsKeyPressed(ImGuiKey_X, false))
     {
         HandleCut(a_selectedFilePathList, l_fileOperation, l_clipboard);
     }
@@ -121,7 +121,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // Windows Explorerと同じく現在開いているフォルダへ張り付ける
     if (l_canPaste   &&
         l_io.KeyCtrl &&
-        ImGui::IsKeyPressed(ImGuiKey_V))
+        ImGui::IsKeyPressed(ImGuiKey_V, false))
     {
         HandlePaste(a_selectedFilePathList, l_fileOperation, l_clipboard);
     }
@@ -131,7 +131,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     if (l_hasSelection  &&
         !l_containsRoot &&
         l_io.KeyCtrl    &&
-        ImGui::IsKeyPressed(ImGuiKey_D))
+        ImGui::IsKeyPressed(ImGuiKey_D, false))
     {
         HandleDuplicate(a_selectedFilePathList, l_fileOperation);
     }
@@ -141,7 +141,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // ImGuiKey_DeleteはDeleteキーを表す
     if (l_hasSelection  &&
         !l_containsRoot &&
-        ImGui::IsKeyPressed(ImGuiKey_Delete))
+        ImGui::IsKeyPressed(ImGuiKey_Delete, false))
     {
         HandleDelete(a_selectedFilePathList, a_editorWindow);
     }
@@ -158,7 +158,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     // ルートフォルダ(Asset)も選択対象に含まれるが
     // 既存のHandle側でルートフォルダ含む場合は操作無効化されるため問題ない
     if (l_io.KeyCtrl &&
-        ImGui::IsKeyPressed(ImGuiKey_A))
+        ImGui::IsKeyPressed(ImGuiKey_A, false))
     {
         // 表示中フォルダリストを取得
         // Assetルーっとから再帰的においているフォルダの子を収集し
@@ -186,17 +186,17 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleFolderPane(Asse
     }
 
     // 右キー左キーによる操作の反映
-    if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
+    if (ImGui::IsKeyPressed(ImGuiKey_RightArrow, false))
     {
         l_folderPane.ForciblyFolderOpen(a_editorWindow);
     }
-    else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
+    else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow, false))
     {
         l_folderPane.ForciblyFolderClose(a_editorWindow);
     }
 
     // エンターキーで開閉の切り替え
-    if (ImGui::IsKeyPressed(ImGuiKey_Enter))
+    if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
     {
         l_folderPane.ToggleCurrentFolderOpen(a_editorWindow);
     }
@@ -211,7 +211,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
     // FetchVALDisplayedFilePathListで表示中リストを取得し
     // SelectionState::SelectAddで全選択する
     if (l_io.KeyCtrl &&
-        ImGui::IsKeyPressed(ImGuiKey_A))
+        ImGui::IsKeyPressed(ImGuiKey_A, false))
     {
         const auto& l_displayedFilePathList = l_assetPane.FetchVALDisplayedFilePathList(a_editorWindow);
 
@@ -237,24 +237,24 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
         l_assetPane.MoveSelectionDown(a_editorWindow, l_isRangeSelection);
     }
 
-    if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
+    if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow, false))
     {
         l_assetPane.MoveSelectionLeft(a_editorWindow, l_isRangeSelection);
     }
-    else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
+    else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow, false))
     {
         l_assetPane.MoveSelectionRight(a_editorWindow, l_isRangeSelection);
     }
 
     // Enterキーでフォルダナビゲート
     // カーソル位置がフォルダの場合、そのフォルダへ移動
-    if (ImGui::IsKeyPressed(ImGuiKey_Enter))
+    if (ImGui::IsKeyPressed(ImGuiKey_Enter, false))
     {
         l_assetPane.NavigateToCurrentCursor(a_editorWindow);
     }
 
     // BackSpaceキーで一つ上の階層へ戻る
-    if (ImGui::IsKeyPressed(ImGuiKey_Backspace))
+    if (ImGui::IsKeyPressed(ImGuiKey_Backspace, false))
     {
         l_assetPane.NavigateToFolderUp(a_editorWindow);
     }
@@ -344,7 +344,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleRename(const st
     a_renameState.m_inputBuffer.fill(Constant::k_nullCharacter);
 
     // ファイル名をバッファへコピー
-    const auto& l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
+    const auto l_copySize = std::min(l_stem.size(), a_renameState.m_inputBuffer.size() - Constant::k_inputBufferLastSizeOffsetForCopy);
 
     std::copy_n(l_stem.begin(), l_copySize, a_renameState.m_inputBuffer.begin());
 }

@@ -857,7 +857,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
 
     // フォルダカードをダブルクリックでそのフォルダへ移動
     // IsMouseDoubleClickedは画面全体でのダブルクリックを抽出するため、
-    // IsItemHoverdで「このカード上で」ダブルクリックされたかを判定する
+    // IsItemHoveredで「このカード上で」ダブルクリックされたかを判定する
     if (std::error_code l_errorCode = {};
         ImGui::IsItemHovered()                             &&
         ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) &&
