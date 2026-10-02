@@ -25,12 +25,13 @@ namespace FWK
         void LateUpdate    () const;
         void PostLateUpdate() const;
 
-        void Destroy();
 
         nlohmann::json Serialize     (      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeScene(      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeDiff (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
         
+        void Destroy();
+
         std::shared_ptr<GameObject> Clone(const std::weak_ptr<GameObject>& a_newParent, 
                                                 Scene&                     a_scene,
                                           const boost::uuids::uuid&        a_prefabHierarchyNodeUUID = {},

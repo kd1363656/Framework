@@ -28,7 +28,7 @@ namespace FWK::Editor
 
         void Duplicate(const std::vector<std::filesystem::path>& a_filePathList) const;
 
-        void Move(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_destinationFolderPath) const;
+        void Move(const std::vector<std::filesystem::path>& a_sourceFilePathList, const std::filesystem::path& a_destinationFolderPath) const;
 
     private:
 

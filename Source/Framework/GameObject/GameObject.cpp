@@ -75,11 +75,6 @@ void FWK::GameObject::PostLateUpdate() const
     m_componentContainer.PostLateUpdate();
 }
 
-void FWK::GameObject::Destroy()
-{
-    m_isDestroyed = true;
-}
-
 nlohmann::json FWK::GameObject::Serialize(SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     return m_jsonConverter.Serialize(*this, a_prefabSystem);
@@ -91,6 +86,13 @@ nlohmann::json FWK::GameObject::SerializeScene(SceneGameObjectPrefabSystem& a_pr
 nlohmann::json FWK::GameObject::SerializeDiff(const nlohmann::json& a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     return m_jsonConverter.SerializeDif(a_baseJson, *this, a_prefabSystem);
+}
+
+void FWK::GameObject::Destroy()
+{
+    m_isDestroyed = true;
+
+    m_hierarchy.Destroy();
 }
 
 std::shared_ptr<FWK::GameObject> FWK::GameObject::Clone(const std::weak_ptr<GameObject>& a_newParent,
@@ -225,7 +227,7 @@ void FWK::GameObject::ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID)
 void FWK::GameObject::DetachFromPrefab()
 {
     // 子への再帰判定で使うため、先に元のPrefabUUIDを保持する
-    const auto& l_oldPrefabUUID = m_prefabUUID;
+    const auto l_oldPrefabUUID = m_prefabUUID;
  
     // Prefabとの紐付けを断つ
     // 以降このGameObjectはPrefab由来ではない通常のGameObjectとして
@@ -239,25 +241,7 @@ void FWK::GameObject::DetachFromPrefab()
  
     // ComponentContainerとHierarchyが持つPrefab追跡情報も剥がす
     m_componentContainer.DetachFromPrefab();
-    m_hierarchy.DetachFromPrefab         ();
- 
-    // 子もPrefab由来ではなくなるため再帰的に剥がす
-    // 子がPrefabUUIDを持ち続けると差分形式でシリアライズされ
-    // PrefabルートJsonを基底とした誤った差分が作られてしまう
-    const auto& l_childList = m_hierarchy.GetREFChildSmartPointerVectorList().GetREFElementDataList();
- 
-    for (const auto& l_childData : l_childList)
-    {
-        const auto& l_child = l_childData.m_type.lock();
- 
-        if (!l_child) { continue; }
- 
-        // 別Prefabのインスタンスである子は剥がさない
-        // (ネストしたPrefabインスタンスとしての紐付けは維持する)
-        if (l_child->GetREFPrefabUUID() != l_oldPrefabUUID) { continue; }
- 
-        l_child->DetachFromPrefab();
-    }
+    m_hierarchy.DetachFromPrefab         (l_oldPrefabUUID);
 }
 
 void FWK::GameObject::ClearAllPrefabRemovedUUIDSet()
@@ -267,19 +251,6 @@ void FWK::GameObject::ClearAllPrefabRemovedUUIDSet()
 
     // 自身のComponentContainerの削除済みコンポーネントUUID集合をクリアする
     m_componentContainer.ClearPrefabRemovedComponentUUIDSet();
- 
-    // 子も再帰的にクリアする
-    const auto& l_childSmartPointerVectorList = m_hierarchy.GetREFChildSmartPointerVectorList      ();
-    const auto& l_childList                   = l_childSmartPointerVectorList.GetREFElementDataList();
- 
-    for (const auto& l_childData : l_childList)
-    {
-        const auto& l_child = l_childData.m_type.lock();
- 
-        if (!l_child) { continue; }
- 
-        l_child->ClearAllPrefabRemovedUUIDSet();
-    }
 }
 
 bool FWK::GameObject::FetchVALIsPrefabInternalChild() const

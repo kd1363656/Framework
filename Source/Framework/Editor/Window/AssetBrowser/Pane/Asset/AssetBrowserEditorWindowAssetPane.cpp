@@ -47,6 +47,11 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
     const float l_availableWidth = ImGui::GetContentRegionAvail().x;
     const int   l_cardsPerRow    = CalculateCardPerRow         (l_availableWidth);
 
+    // ChildWindow内での正しい幅を基に計算した値を保持する
+    // MoveSelectionUp/DownはEndChild後に呼ばれるため
+    // ここで保持した値を参照する必要がある
+    m_lastCardsPerRow = l_cardsPerRow;
+
     // カードをグリッド描画
     // 左 -> 右に並べ、1行の枚数に達したら改行
     const auto& l_popupDrawer = a_editorWindow.GetREFPopupDrawer();
@@ -162,8 +167,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(const Asset
     }
 
     // 1行分(CardsPerRow)前に移動
-    const float l_availableWidth = ImGui::GetContentRegionAvail().x;
-    const auto  l_cardsPerRow    = CalculateCardPerRow         (l_availableWidth);
+    // CardsPerRowはChildWindow外で幅を取得すると誤計算されるため
+    // Draw時に保持した値を使用する
+    const auto l_cardsPerRow = m_lastCardsPerRow;
 
     // インデックスを計算
     const auto l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
@@ -233,10 +239,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(const Ass
         return;
     }
 
-    const float l_availableWidth = ImGui::GetContentRegionAvail            ().x;
-    const auto  l_cardsPerRow    = CalculateCardPerRow                     (l_availableWidth);
-    const auto  l_cursorIndex    = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
-    const auto  l_newIndex       = l_cursorIndex + l_cardsPerRow;
+    // CardsPerRowはChildWindow外で幅を取得すると誤計算されるため
+    // Draw時に保持した値を使用する
+    const auto l_cardsPerRow = m_lastCardsPerRow;
+     
+    const auto  l_cursorIndex = static_cast<std::uint32_t>(std::distance(l_displayedList.begin(), l_cursorITR));
+    const auto  l_newIndex    = l_cursorIndex + l_cardsPerRow;
 
     // 末尾を超えたら何もしない
     if (l_newIndex >= l_displayedList.size()) { return; }
@@ -846,12 +854,21 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
     {
         const auto& l_io = ImGui::GetIO();
 
-        SelectFile(a_displayedFilePathList, 
-                   a_filePath,
-                   l_io.KeyShift,
-                   l_io.KeyCtrl);
-
-        // カーソル位置を更新
+        // 修飾キーなしで既選択のカードをクリックした場合は選択リストを更新しない
+        // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
+        // 複数選択を維持したままドラッグ&ドロップできるようにする
+        // Ctrl + Click(トグル)・Shift + Click(範囲選択)は従来通り選択を更新する
+        if (!a_isSelected ||
+            l_io.KeyShift ||
+            l_io.KeyCtrl)
+        {
+            SelectFile(a_displayedFilePathList, 
+                       a_filePath,
+                       l_io.KeyShift,
+                       l_io.KeyCtrl);
+        }
+ 
+        // カーソル位置は選択更新の有無に関わらずクリックしたカードへ更新する
         m_currentCursorFilePath = a_filePath;
     }
 
@@ -922,14 +939,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
         {
             const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
 
-            // ドロップされた各ファイルをこのフォルダの中へ移動
-            for (const auto& l_droppedFilePath : l_droppedFilePathList)
-            {
-                // 自分自身へドロップした場合はスキップ
-                if (l_droppedFilePath == a_filePath) { continue; }
-                
-                l_fileOperation.Move(l_droppedFilePath, a_filePath);
-            }
+            l_fileOperation.Move(l_droppedFilePathList, a_filePath);
         }
     }
 }

@@ -237,11 +237,11 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleAssetPane(Asset
         l_assetPane.MoveSelectionDown(a_editorWindow, l_isRangeSelection);
     }
 
-    if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow, false))
+    if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
     {
         l_assetPane.MoveSelectionLeft(a_editorWindow, l_isRangeSelection);
     }
-    else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow, false))
+    else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
     {
         l_assetPane.MoveSelectionRight(a_editorWindow, l_isRangeSelection);
     }

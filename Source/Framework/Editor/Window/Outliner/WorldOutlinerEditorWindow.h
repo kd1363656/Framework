@@ -38,7 +38,7 @@ namespace FWK::Editor
 
     private:
        
-        void DrawSceneNode(Scene& a_scene, EditorManager&   a_editorManager);
+        void DrawSceneNode(Scene& a_scene, EditorManager& a_editorManager);
 
         void DrawGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject,
                                       Scene&                     a_scene, 

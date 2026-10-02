@@ -57,6 +57,20 @@ void FWK::GameObjectHierarchy::PostDeserialize()
     }
 }
 
+void FWK::GameObjectHierarchy::Destroy()
+{
+    const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
+ 
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+
+        if (!l_child) { continue; }
+
+        l_child->Destroy();
+    }
+}
+
 nlohmann::json FWK::GameObjectHierarchy::Serialize(SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     return m_jsonConverter.Serialize(*this, a_prefabSystem);
@@ -131,10 +145,28 @@ void FWK::GameObjectHierarchy::ConvertToPrefab(const boost::uuids::uuid& a_prefa
     }
 }
 
-void FWK::GameObjectHierarchy::DetachFromPrefab()
+void FWK::GameObjectHierarchy::DetachFromPrefab(const boost::uuids::uuid& a_oldPrefabUUID)
 {
     // Prefab更新伝播用の削除追跡はPrefab由来ではなくなったため不要
     m_prefabRemovedChildUUIDSet.clear();
+
+    // 子もPrefab由来ではなくなるため再帰的に剥がす
+    // 子がPrefabUUIDを持ち続けると差分形式でシリアライズされ
+    // PrefabルートJsonを基底とした誤った差分が作られてしまう
+    const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
+ 
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+ 
+        if (!l_child) { continue; }
+ 
+        // 別Prefabのインスタンスである子は剥がさない
+        // (ネストしたPrefabインスタンスとしての紐付けは維持する)
+        if (l_child->GetREFPrefabUUID() != a_oldPrefabUUID) { continue; }
+ 
+        l_child->DetachFromPrefab();
+    }
 }
 
 bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)
@@ -206,6 +238,18 @@ void FWK::GameObjectHierarchy::ClearParent()
 void FWK::GameObjectHierarchy::ClearPrefabRemovedChildUUIDSet()
 {
     m_prefabRemovedChildUUIDSet.clear();
+
+    // 子も再帰的にクリアする
+    const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
+ 
+    for (const auto& l_childData : l_childDataList)
+    {
+        const auto& l_child = l_childData.m_type.lock();
+ 
+        if (!l_child) { continue; }
+ 
+        l_child->ClearAllPrefabRemovedUUIDSet();
+    }
 }
 
 void FWK::GameObjectHierarchy::ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent)

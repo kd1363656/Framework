@@ -127,5 +127,7 @@ namespace FWK::Editor
         Converter::AssetBrowserEditorWindowAssetPaneJsonConverter m_jsonConverter = {};
 
         std::filesystem::path m_currentCursorFilePath = {};
+
+        std::uint32_t m_lastCardsPerRow = k_minGuaranteeCardPerRowNUM;
     };
 }

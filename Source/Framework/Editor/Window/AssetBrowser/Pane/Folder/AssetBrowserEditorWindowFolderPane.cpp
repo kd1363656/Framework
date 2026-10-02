@@ -613,16 +613,9 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         {
             const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
 
-            // ドロップされた各フォルダをこのフォルダの中へ移動
-            for (const auto& l_droppedFilePath : l_droppedFilePathList)
-            {
-                // 自分自身へドロップした場合はスキップ
-                // 例 : Asset/DataをAsset/Datへドロップ
-                if (l_droppedFilePath != a_currentFolderPath)
-                {
-                    l_fileOperation.Move(l_droppedFilePath, a_currentFolderPath);
-                }
-            }
+            // ドロップされたフォルダをこのフォルダの中へまとめて移動
+            // 自分自身へのドロップや移動先が移動元の子孫の場合はMove内部でスキップされる
+            l_fileOperation.Move(l_droppedFilePathList, a_currentFolderPath);
         }
     }
 
@@ -747,13 +740,21 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // ImGui::GetIO().KeyShift : Shiftキーが押されているか
         // ImGui::GetIO().KeyCtrl  : Ctrlキーが押されているか
         const auto& l_io = ImGui::GetIO();
-
-        // Shift/Ctrl + クリック時は既存の範囲選択・トグル操作を行う
-        SelectFolder(l_folderHierarchyMap, 
-                     a_currentFolderPath,
-                     a_editorWindow,
-                     l_io.KeyShift,
-                     l_io.KeyCtrl);
+ 
+        // 修飾キーなしで既選択のフォルダをクリックした場合は選択リストを更新しない
+        // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
+        // 複数選択を維持したままドラッグ&ドロップできるようにする
+        // Ctrl + Click(トグル)・Shift + Click(範囲選択)は従来通り選択を更新する
+        if (!l_isSelected ||
+            l_io.KeyShift ||
+            l_io.KeyCtrl)
+        {
+            SelectFolder(l_folderHierarchyMap, 
+                         a_currentFolderPath,
+                         a_editorWindow,
+                         l_io.KeyShift,
+                         l_io.KeyCtrl);
+        }
     }
 
     const auto& l_contextMenuOpenPopupLabel = std::string{ k_contextMenuOpenPopupLabel } + a_currentFolderPath.string();

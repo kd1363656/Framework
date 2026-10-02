@@ -27,15 +27,11 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\NewFolder",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\NewFolder"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Data",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 271.0
                 },
@@ -58,6 +54,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Texture",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -70,15 +70,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -94,11 +90,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
@@ -114,11 +110,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
+                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
@@ -134,12 +130,12 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\BGM",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Prefab\\Camera",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Sound\\BGM",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model\\Actor\\Player\\K02",
@@ -162,10 +158,6 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder1",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
                             "IsOpen": false
                         },
@@ -180,17 +172,13 @@
                         {
                             "FilePath": "Asset\\Data\\Sound\\Combat",
                             "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder",
-                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\NewFolder1",
+                        "RangeSelectionStartPath": "Asset\\Data",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\NewFolder1"
+                                "SelectedFilePath": "Asset\\Data"
                             }
                         ]
                     }

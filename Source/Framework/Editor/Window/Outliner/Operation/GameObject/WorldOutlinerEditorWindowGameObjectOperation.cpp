@@ -337,25 +337,6 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroyGameObjec
     // 自身を破棄
     // 実際のScene除去はScene::RemoveDestroyedGameObjects(EarlyUpdate)が行う
     l_gameObject->Destroy();
- 
-    // 子孫も全て破棄する
-    // 親だけ消して子を残すと親参照切れの孤児GameObjectが残るため
-    const auto& l_hierarchy                    = l_gameObject->GetREFHierarchy                       ();
-    const auto& l_childSmartPointerVectorArray = l_hierarchy.GetREFChildSmartPointerVectorList       ();
-    const auto& l_childDataList                = l_childSmartPointerVectorArray.GetREFElementDataList();
- 
-    for (const auto& l_childData : l_childDataList)
-    {
-        const auto& l_child = l_childData.m_type.lock();
- 
-        if (!l_child ||
-            l_child->GetVALIsDestroyed())
-        {
-            continue;
-        }
- 
-        DestroyGameObjectRecursive(l_child);
-    }
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::HasAncestorInSelection(const std::vector<std::weak_ptr<GameObject>>& a_selectedList, const std::weak_ptr<GameObject>& a_gameObject) const

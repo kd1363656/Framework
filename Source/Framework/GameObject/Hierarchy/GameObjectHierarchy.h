@@ -25,6 +25,8 @@ namespace FWK
 
         void PostDeserialize();
 
+        void Destroy();
+
         nlohmann::json Serialize    (      SceneGameObjectPrefabSystem& a_prefabSystem)                                            const;
         nlohmann::json SerializeDiff(const nlohmann::json&              a_prefabJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
 
@@ -32,7 +34,8 @@ namespace FWK
 
         void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID) const;
 
-        void DetachFromPrefab();
+        void DetachFromPrefab(const boost::uuids::uuid& a_oldPrefabUUID);
+
 
         bool ApplyParent(const std::weak_ptr<GameObject>& a_parent);
 

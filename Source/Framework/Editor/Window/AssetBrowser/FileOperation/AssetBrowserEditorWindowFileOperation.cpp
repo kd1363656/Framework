@@ -256,36 +256,82 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Move(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_destinationFolderPath) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Move(const std::vector<std::filesystem::path>& a_sourceFilePathList, const std::filesystem::path& a_destinationFolderPath) const
 {
-    // ドロップ先フォルダの中へ移動する
-    // 移動先パス = ドロップ先フォルダ / ドラッグ元フォルダ名
-    // 例 : a_sourceFilePath        = "Asset/Data"
-    //      a_destinationFolderPath = "Asset/Sound"
-    //      -> 移動先 = "Asset/Sound/Data"
-    auto l_destinationFilePath = a_destinationFolderPath / a_sourceFilePath.filename();
-
-    std::error_code l_errorCode = {};
-
-    // 同名が存在する場合は番号付与したパスへ移動(上書きしない)
-    // 例 : "Asset/Sound"にDataがすでにある->Asset/Sound/Data1
-    if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
+    for (const auto& l_sourceFilePath : a_sourceFilePathList)
     {
-        l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
-    }
-
-    // std::filesystem::renameでフォルダごと移動(中身含む)
-    // 同じボリューム内ならアトミックな移動(コピー + 削除よりも高速)
-    // Asset内の移動なので同じボリューム前提
-    std::filesystem::rename(a_sourceFilePath, l_destinationFilePath, l_errorCode);
-
-    if (l_errorCode)
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-                    "ファイルの移動に失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
-                    a_sourceFilePath.string(),
-                    l_destinationFilePath.string(),
-                    l_errorCode.value());
+        std::error_code l_errorCode = {};
+ 
+        // 自分自身への移動はスキップ
+        // Asset/DataをAsset/Dataへドロップした場合
+        if (l_sourceFilePath == a_destinationFolderPath) { continue; }
+ 
+        // 移動元が既に存在しない場合はスキップ
+        // 「Asset/A」と「Asset/A/B」を同時選択して移動した場合
+        // 先にAが移動するとA/Bの旧パスは存在しなくなる
+        if (!std::filesystem::exists(l_sourceFilePath, l_errorCode)) { continue; }
+ 
+        l_errorCode.clear();
+ 
+        // 移動先が移動元の中(または自分自身)にある場合はスキップ
+        // Asset/DataをAsset/Data/Sub へ移動すると入れ子が循環する
+        // Paste()と同様に移動先の親パスを遡り、equivalent()でOSレベルの同一判定を行う
+        bool l_isDestinationInsideSource = false;
+ 
+        auto l_parent = a_destinationFolderPath;
+        
+        while (!l_parent.empty())
+        {
+            if (std::filesystem::equivalent(l_parent, l_sourceFilePath, l_errorCode))
+            {
+                l_isDestinationInsideSource = true;
+        
+                l_errorCode.clear();
+        
+                break;
+            }
+        
+            l_errorCode.clear();
+        
+            l_parent = l_parent.parent_path();
+        }
+ 
+        if (l_isDestinationInsideSource)
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                        "移動先が移動元の中にあるため、移動をスキップしました。\nSourceFilePath : {}\nDestinationFolderPath : {}",
+                        l_sourceFilePath.string(),
+                        a_destinationFolderPath.string());
+ 
+            continue;
+        }
+ 
+        // 移動先パス = ドロップ先フォルダ / 移動元の名前
+        // 例 : l_sourceFilePath        = "Asset/Data"
+        //      a_destinationFolderPath = "Asset/Sound"
+        //      移動先                  = "Asset/Sound/Data"
+        auto l_destinationFilePath = a_destinationFolderPath / l_sourceFilePath.filename();
+ 
+        // 同名が存在する場合は番号付与したパスへ移動(上書きしない)
+        // 例 : "Asset/Sound"にDataがすでにある->Asset/Sound/Data1
+        if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
+        {
+            l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
+        }
+ 
+        // std::filesystem::renameでフォルダごと移動(中身含む)
+        // 同じボリューム内ならアトミックな移動(コピー + 削除よりも高速)
+        // Asset内の移動なので同じボリューム前提
+        std::filesystem::rename(l_sourceFilePath, l_destinationFilePath, l_errorCode);
+ 
+        if (l_errorCode)
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                        "ファイルの移動に失敗しました。\nSourceFilePath : {}\nDestinationFilePath : {}\nErrorCode : {}",
+                        l_sourceFilePath.string(),
+                        l_destinationFilePath.string(),
+                        l_errorCode.value());
+        }
     }
 }
 
