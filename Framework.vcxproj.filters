@@ -2907,6 +2907,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetCreatorConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">

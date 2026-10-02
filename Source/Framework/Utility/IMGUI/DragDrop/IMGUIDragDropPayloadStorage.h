@@ -24,63 +24,69 @@ namespace FWK::Utility
             Clear();
         }
 
-        template <typename Type>
-        bool DragDropSource(const std::string_view& a_label, const Type& a_payload)
+        template <typename BuilderType>
+            requires std::invocable<BuilderType>
+        bool DragDropSource(const std::string_view& a_label, BuilderType&& a_payloadBuilder)
         {
-            using PayloadType = std::remove_cvref_t<Type>;
-
+            // a_payloadBuilderはPayloadを生成して返す関数オブジェクト
+            // BeginDragDropSourceが成功したDrag開始Frameに一度だけ実行されるため
+            // 選択Listの構築などコストの掛かるPayload生成を遅延できる
+            // 非Drag中は実行されないので、各ノード・各フレームでの無駄な生成が消える
+            using PayloadType = std::remove_cvref_t<std::invoke_result_t<BuilderType>>;
+         
             constexpr auto l_kind = TypeTrait::PTRType<PayloadType>::k_kind;
-
+         
             // 生ポインタを許可しない
             static_assert(l_kind != Enum::PTRKind::Raw, "RawPointerはDragDropPayloadに使用できません");
-
+         
             // std::anyはPayloadを所有するため、
             // Copy不可能なunique_ptrは使用できない。
-            static_assert(l_kind != Enum::PTRKind::Unique,           "std::unique_ptrはDragDropPayloadに使用できません");
-            static_assert(std::is_copy_constructible_v<PayloadType>, "DragDropPayloadはCopyConstruct可能である必要があります");
-
-            // shared_ptrが空の場合はDragを開始しない
-            if constexpr (l_kind == Enum::PTRKind::Shared)
-            {
-                if (!a_payload) { return false; }
-            }
-
-            // weak_ptrの参照先が既にない場合もDragしない
-            if constexpr (l_kind == Enum::PTRKind::Weak)
-            {
-                if (a_payload.expired()) { return false; }
-            }
-
+            static_assert(l_kind != Enum::PTRKind::Unique, "std::unique_ptrはDragDropPayloadに使用できません");
+         
             // ImGuiDragDropFlags_SourceNoHoldToOpenOthersを指定して
             // ドラッグ中にTreeNodeやCollapsingHeaderをホバーした際の
             // 自動展開挙動を無効化する
             // これによりフォルダペインでドラッグ中に
             // ホバーしたノードが勝手に開く現象を防ぐ
             if (!ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceNoHoldToOpenOthers)) { return false; }
-
-            // Drag開始FrameだけType本体をコピーする
+         
+            // Drag開始FrameだけBuilderを実行してPayload本体を生成する
             // Drag中はm_payloadを保持し続けるため
-            // filesystem::pathやshared_ptrなどを
-            // 毎フレームコピーするこおてゃ内
+            // filesystem::pathのListやshared_ptrなどを
+            // 毎フレーム生成することはない
             if (!m_payload.has_value())
             {
-                m_payload.emplace<PayloadType>(a_payload);
-
+                // ラムダ関数を呼び出してPayloadを生成する
+                PayloadType l_payload = std::invoke(a_payloadBuilder);
+         
+                // 生成したPayloadが無効(空のList・無効なPointer等)なら
+                // Payloadを登録せずDragを成立させない
+                // m_payloadは空のまま残るため、Dragが継続している間は
+                // 毎フレームBuilderの再評価が行われる
+                if (!IsValidDragPayload(l_payload))
+                {
+                    ImGui::EndDragDropSource();
+         
+                    return false;
+                }
+         
+                m_payload = std::move(l_payload);
+         
                 ++m_payloadID;
             }
-
+         
             // DearImGuiには実際のC++オブジェクトではなく
             // Framework側Payloadを識別するIDだけを渡す
             const auto l_payloadID = m_payloadID;
-
+         
             const bool l_isPayloadSet = ImGui::SetDragDropPayload(a_label.data(),
                                                                   &l_payloadID,
                                                                   sizeof(l_payloadID),
                                                                   ImGuiCond_Once);
-
+         
             ImGui::TextUnformatted  (a_label.data());
             ImGui::EndDragDropSource();
-
+         
             return l_isPayloadSet;
         }
 
@@ -186,6 +192,34 @@ namespace FWK::Utility
  
             Clear();
  
+            return true;
+        }
+
+        template <typename Type>
+        static bool IsValidDragPayload(const Type& a_payload)
+        {
+            // 生成されたPayloadがDrag可能な有効状態かを判定する
+            constexpr auto l_kind = TypeTrait::PTRType<Type>::k_kind;
+         
+            // shared_ptrが空の場合はDragを開始しない
+            if constexpr (l_kind == Enum::PTRKind::Shared)
+            {
+                if (!a_payload) { return false; }
+            }
+         
+            // weak_ptrの参照先が既にない場合もDragしない
+            if constexpr (l_kind == Enum::PTRKind::Weak)
+            {
+                if (a_payload.expired()) { return false; }
+            }
+         
+            // Listや文字列などemptyを持つ型で
+            // 要素が一つも無い場合もDragしない
+            if constexpr (requires { { a_payload.empty() } -> std::convertible_to<bool>; })
+            {
+                if (a_payload.empty()) { return false; }
+            }
+         
             return true;
         }
 

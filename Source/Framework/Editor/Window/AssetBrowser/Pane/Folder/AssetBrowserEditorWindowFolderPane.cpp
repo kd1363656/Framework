@@ -518,23 +518,26 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // ルートフォルダは除外する(移動するとプロジェクトが壊れるため)
     if (!l_selectedFilePathList.empty())
     {
-        // ルートフォルダを除外したドラッグ対象リストを構築
-        std::vector<std::filesystem::path> l_dragSourcePathList = {};
-
-        for (const auto& l_selectedPath : l_selectedFilePathList)
-        {
-            if (l_selectedPath == Constant::k_assetRootFolderPath) { continue; }
-
-            l_dragSourcePathList.emplace_back(l_selectedPath);
-        }
-
-        // 1件以上ドラッグ可能なフォルダがあれば送信
-        if (!l_dragSourcePathList.empty())
-        {
-            auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-
-            l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_dragSourcePathList);
-        }
+        auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+     
+        // BuilderはDrag開始Frameに一度だけ実行される
+        // 各ノード・各フレームでListを構築しないようにするため遅延評価にする
+        // 空のListが返された場合はDragDropSource側でDragを成立させない
+        l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                     [&l_selectedFilePathList]
+                                                     {
+                                                         // ルートフォルダを除外したドラッグ対象リストを構築
+                                                         std::vector<std::filesystem::path> l_dragSourcePathList = {};
+     
+                                                         for (const auto& l_selectedPath : l_selectedFilePathList)
+                                                         {
+                                                             if (l_selectedPath == Constant::k_assetRootFolderPath) { continue; }
+     
+                                                             l_dragSourcePathList.emplace_back(l_selectedPath);
+                                                         }
+     
+                                                         return l_dragSourcePathList;
+                                                     });
     }
 
     // Drag & Drop : ドロップ先

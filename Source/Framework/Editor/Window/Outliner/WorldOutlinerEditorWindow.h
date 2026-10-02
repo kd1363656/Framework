@@ -75,7 +75,6 @@ namespace FWK::Editor
         static constexpr std::string_view k_emptySceneLabel                   = "Untitled";
         static constexpr std::string_view k_thisWindowExplanationLabel        = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
         static constexpr std::string_view k_noCurrentSceneLabel               = "現在読み込まれているシーンはありません。";
-        static constexpr std::string_view k_gameObjectDragDropPayloadLabel    = "GameObjectDragDropPayload";
         static constexpr std::string_view k_gameObjectDragDropZoneBeforeLabel = "Before";
         static constexpr std::string_view k_gameObjectDragDropZoneAfterLabel  = "After";
  

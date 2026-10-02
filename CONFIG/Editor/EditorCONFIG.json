@@ -27,15 +27,18 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Model\\Weapon\\NewFolder",
+                        "RangeSelectionStartPath": "Asset\\Data\\NewFolder",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Model\\Weapon\\NewFolder"
+                                "SelectedFilePath": "Asset\\Data\\NewFolder"
+                            },
+                            {
+                                "SelectedFilePath": "Asset\\Data\\NewFolder1"
                             }
                         ]
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Model\\Weapon",
+                "CurrentSelectFolderPath": "Asset",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 271.0
                 },
@@ -58,10 +61,6 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Weapon\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
                             "IsOpen": true
                         },
@@ -74,11 +73,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Weapon\\Player\\K02\\K02Sword.fbm",
+                            "FilePath": "Asset\\Texture",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture",
+                            "FilePath": "Asset\\Font\\Cica",
                             "IsOpen": false
                         },
                         {
@@ -130,6 +129,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Data\\NewFolder1",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Model\\Map",
                             "IsOpen": false
                         },
@@ -158,6 +161,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Font",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Texture\\UI\\Title",
                             "IsOpen": true
                         },
@@ -167,6 +174,10 @@
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder1",
                             "IsOpen": false
                         },
                         {
@@ -186,31 +197,31 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\NewFolder",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Weapon",
+                            "FilePath": "Asset\\Data\\NewFolder",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Weapon\\Player",
+                            "FilePath": "Asset\\NewFolder",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Weapon\\Player\\K02",
+                            "FilePath": "Asset\\Font\\Icon",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Font\\Icon\\FontAwesome",
                             "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Model",
+                        "RangeSelectionStartPath": "Asset",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Model"
+                                "SelectedFilePath": "Asset"
                             }
                         ]
                     }

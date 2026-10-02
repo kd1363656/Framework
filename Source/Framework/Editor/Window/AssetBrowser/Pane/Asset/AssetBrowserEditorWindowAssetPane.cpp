@@ -914,23 +914,27 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
     if (const auto& l_selectedFilePathList = m_selectionState.GetMutableREFSelectedFilePathList();
         !l_selectedFilePathList.empty())
     {
-        std::vector<std::filesystem::path> l_dragSourcePathList = {};
-
-        for (const auto& l_selectedPath : l_selectedFilePathList)
-        {
-            if (l_selectedPath == Constant::k_assetRootFolderPath) { continue; }
-
-            l_dragSourcePathList.emplace_back(l_selectedPath);
-        }
-
-        if (!l_dragSourcePathList.empty())
-        {
-            auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-
-            // FolderPaneと同じペイロードラベルを使用することで
-            // FolderPaneツリーノードへのドロップも可能にする
-            l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_dragSourcePathList);
-        }
+        auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+     
+        // BuilderはDrag開始Frameに一度だけ実行される
+        // 各カード・各フレームでListを構築しないようにするため遅延評価にする
+        // 空のListが返された場合はDragDropSource側でDragを成立させない
+        // FolderPaneと同じペイロードラベルを使用することで
+        // FolderPaneツリーノードへのドロップも可能にする
+        l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                     [&l_selectedFilePathList]
+                                                     {
+                                                         std::vector<std::filesystem::path> l_dragSourcePathList = {};
+     
+                                                         for (const auto& l_selectedPath : l_selectedFilePathList)
+                                                         {
+                                                             if (l_selectedPath == Constant::k_assetRootFolderPath) { continue; }
+     
+                                                             l_dragSourcePathList.emplace_back(l_selectedPath);
+                                                         }
+     
+                                                         return l_dragSourcePathList;
+                                                     });
     }
 
     // フォルダカード上にドロップされた場合、その中へ移動

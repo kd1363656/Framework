@@ -550,7 +550,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     {
         auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
 
-        l_imguiDragDropPayloadStorage.DragDropSource(k_gameObjectDragDropPayloadLabel, a_gameObject);
+        // ラムダ式ははDrag開始Frameに一度だけ実行される
+        l_imguiDragDropPayloadStorage.DragDropSource(Constant::k_gameObjectDragDropPayloadLabel,
+                                                     [&a_gameObject]
+                                                     {
+                                                         return a_gameObject;
+                                                     });
     }
 
     // ノード本体へのドロップ先
@@ -700,8 +705,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
     // デフォルトのIsItemHovered()は別アイテムがActiveの間falseを返すため
     // このフラグを付けないとドロップ先のホバー判定が取れない
     if (const auto* l_imguiDragDropPayload = ImGui::GetDragDropPayload();
-        l_imguiDragDropPayload                                                      &&
-        l_imguiDragDropPayload->IsDataType(k_gameObjectDragDropPayloadLabel.data()) &&
+        l_imguiDragDropPayload                                                                &&
+        l_imguiDragDropPayload->IsDataType(Constant::k_gameObjectDragDropPayloadLabel.data()) &&
         ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
     {
               auto* l_drawList = ImGui::GetWindowDrawList();
@@ -729,7 +734,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
     // Drop成立時のみtrueを返す
     // weak_ptrの参照先が既に破棄されている場合も内部で弾かれる
     if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-        !l_imguiDragDropPayloadStorage.DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
     {
         return;
     }
@@ -750,7 +755,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
  
     // ノード本体へのDrop成立時のみtrueを返す
     if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-        !l_imguiDragDropPayloadStorage.DragDropTarget(k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
     {
         return; 
     }
