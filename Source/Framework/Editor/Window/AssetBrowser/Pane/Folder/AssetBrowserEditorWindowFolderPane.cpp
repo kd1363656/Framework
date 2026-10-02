@@ -32,8 +32,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ImGui::IsMouseClicked  : このフレームでクリックされたか
     // 左クリック・右クリックどちらも出アクティブPaneを切り替える
     if (ImGui::IsWindowHovered()                      &&
-        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || 
-            ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
+        (ImGui::IsMouseClicked(ImGuiMouseButton_Left, false) || 
+        ImGui::IsMouseClicked(ImGuiMouseButton_Right, false)))
     {
         a_editorWindow.SetActivePane(Enum::AssetBrowserActivePaneType::FolderPane);
     }
@@ -58,7 +58,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ImGui::IsMouseClicked : このフレームで右クリックされたか
     if (ImGui::IsWindowHovered()   &&
         !ImGui::IsAnyItemHovered() &&
-        ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+        ImGui::IsMouseClicked(ImGuiMouseButton_Right, false))
     {
         // 空スペース用ポップアップ描画
         // 固定IDでよい(同時に一つしか開かないため)
@@ -241,7 +241,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBro
                      false);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(AssetBrowserEditorWindow& a_editorWindow)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(const AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
     const auto& l_selectedFilePathList    = m_selectionState.GetREFSelectedFilePathList ();
@@ -272,7 +272,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(AssetBr
         }
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose(AssetBrowserEditorWindow& a_editorWindow)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose(const AssetBrowserEditorWindow& a_editorWindow)
 {
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
     const auto& l_selectedFilePathList    = m_selectionState.GetREFSelectedFilePathList ();
@@ -300,7 +300,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderClose(AssetB
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleCurrentFolderOpen(AssetBrowserEditorWindow& a_editorWindow)
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleCurrentFolderOpen(const AssetBrowserEditorWindow& a_editorWindow)
 {
     // Window側の現在選択中パスを取得
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
@@ -339,7 +339,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::AddFolderOpenState(const s
     m_folderOpenStateMap.try_emplace(a_folderPath, a_isOpen);
 }
 
-std::vector<std::filesystem::path> FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALDisplayedFolderList(AssetBrowserEditorWindow& a_editorWindow)
+std::vector<std::filesystem::path> FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALDisplayedFolderList(const AssetBrowserEditorWindow& a_editorWindow)
 {
     // 戻り値となる表示中フォルダパスリスト
     // Assetルートから再帰的に開いているフォルダの子を収集し

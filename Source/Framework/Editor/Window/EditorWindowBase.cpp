@@ -6,8 +6,8 @@ void FWK::Editor::EditorWindowBase::ReportActiveWindowIfMouseClicked(EditorManag
     // 左クリックまたは右クリックされた場合
     // 派生クラスのStaticTypeIDを取得しそれをActiveWindowとする
     if (ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows) &&
-       (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
-        ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
+       (ImGui::IsMouseClicked(ImGuiMouseButton_Left, false) ||
+        ImGui::IsMouseClicked(ImGuiMouseButton_Right, false)))
     {
         const auto& l_typeINFO = GetREFRuntimeTypeINFO();
 

@@ -27,10 +27,10 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Model",
+                        "RangeSelectionStartPath": "Asset\\NewFolder",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Model"
+                                "SelectedFilePath": "Asset\\NewFolder"
                             }
                         ]
                     }
@@ -162,6 +162,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\NewFolder1",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
                             "IsOpen": false
                         },
@@ -176,13 +180,17 @@
                         {
                             "FilePath": "Asset\\Data\\Sound\\Combat",
                             "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\NewFolder",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset",
+                        "RangeSelectionStartPath": "Asset\\NewFolder1",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset"
+                                "SelectedFilePath": "Asset\\NewFolder1"
                             }
                         ]
                     }

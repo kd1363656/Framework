@@ -18,12 +18,12 @@ namespace FWK::Editor
 
         void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
-        void MoveSelectionUp    (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void MoveSelectionDown  (AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
-        void ForciblyFolderOpen (AssetBrowserEditorWindow& a_editorWindow);
-        void ForciblyFolderClose(AssetBrowserEditorWindow& a_editorWindow);
+        void MoveSelectionUp    (      AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void MoveSelectionDown  (      AssetBrowserEditorWindow& a_editorWindow, const bool a_isRangeSelection = false);
+        void ForciblyFolderOpen (const AssetBrowserEditorWindow& a_editorWindow);
+        void ForciblyFolderClose(const AssetBrowserEditorWindow& a_editorWindow);
 
-        void ToggleCurrentFolderOpen(AssetBrowserEditorWindow& a_editorWindow);
+        void ToggleCurrentFolderOpen(const AssetBrowserEditorWindow& a_editorWindow);
 
         nlohmann::json Serialize() const;
 
@@ -31,7 +31,7 @@ namespace FWK::Editor
 
         void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
-        std::vector<std::filesystem::path> FetchVALDisplayedFolderList(AssetBrowserEditorWindow& a_editorWindow);
+        std::vector<std::filesystem::path> FetchVALDisplayedFolderList(const AssetBrowserEditorWindow& a_editorWindow);
 
         std::filesystem::path FetchVALOperationTargetFolderPath() const;
 
