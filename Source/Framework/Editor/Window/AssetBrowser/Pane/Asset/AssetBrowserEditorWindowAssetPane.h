@@ -72,7 +72,7 @@ namespace FWK::Editor
                              AssetBrowserEditorWindow&                 a_editorWindow);
 
         void HandleCardDragDrop          (const std::filesystem::path&    a_filePath, AssetBrowserEditorWindow& a_editorWindow);
-        void HandlePaneBackgroundDragDrop(      AssetBrowserEditorWindow& a_editorWindow);
+        void HandlePaneBackgroundDragDrop(const AssetBrowserEditorWindow& a_editorWindow) const;
 
         void BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const;
 
@@ -100,7 +100,8 @@ namespace FWK::Editor
         static constexpr std::string_view k_cardContextMenuPrefixLabel    = "##AssetPaneCardContextMenu";
         static constexpr std::string_view k_cardPrefixLabel               = "##AssetPaneCardContextMenu";
         static constexpr std::string_view k_renameInputTextLabel          = "##AssetPaneRenameInputText";
-        static constexpr std::string_view k_paneBackgroundDropTargetLabel = "##AssetPaneBackgroundDropTarget";
+        static constexpr std::string_view k_paneDropTargetLabel           = "##AssetPaneDropTarget";
+        static constexpr std::string_view k_paneGameObjectDropTargetLabel = "##AssetPaneGameObjectDropTarget";
         static constexpr std::string_view k_paneTitleLabel                = "アセット";
         static constexpr std::string_view k_ellipsis                      = "...";
 

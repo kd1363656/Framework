@@ -33,8 +33,6 @@ namespace FWK::Editor
 
         void DestroyGameObjectRecursive(const std::weak_ptr<GameObject>& a_gameObject) const;
 
-        bool HasAncestorInSelection(const std::vector<std::weak_ptr<GameObject>>& a_selectedList, const std::weak_ptr<GameObject>& a_gameObject) const;
-
         ChildGameObjectDataList::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const;
     };
 }

@@ -1465,6 +1465,9 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Command">
       <UniqueIdentifier>{7cc8958f-6243-455b-bb70-8116e75ec30c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\Editor">
+      <UniqueIdentifier>{22dd4cde-ce04-4c6d-b52e-417c87936af1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -2909,6 +2912,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetCreatorConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\Editor\AssetBrowserEditorWindowAssetCreatorUtility.h">
+      <Filter>Source\Framework\Utility\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

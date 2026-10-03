@@ -66,12 +66,11 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
      
     l_prefabSystem.INIT();
      
-    GameObjectPrefab l_gameObjectPrefab = {};
-     
     // Save内部でConvertToPrefabが呼ばれ
     // GameObjectと子孫へPrefabUUID/IsPrefabOriginが設定されてから
     // GameObjectJsonConverter::Serializeでフル形式のPrefabJsonが作られる
-    if (!l_gameObjectPrefab.Save(l_prefabFilePath,
+    if (GameObjectPrefab l_gameObjectPrefab = {};
+        !l_gameObjectPrefab.Save(l_prefabFilePath,
                                  l_prefabUUID,
                                  l_prefabSystem,
                                  *l_gameObject))
@@ -98,13 +97,13 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     const auto& l_sceneFilePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, k_defaultSceneName);
 
     // SceneUUIDを生成
-          auto& l_uuidManager = Utility::UUIDManager::GetInstance();
-    const auto& l_sceneUUID   = l_uuidManager.GenerateVALUUID    ();
-
+    auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+    
     // AssetFilePathRegistryへ先登録
     // WatcherはRegistryへ未登録のJSONがディスクに現れると物理削除するため
     // ファイル書き込みの前に必ずRegistryへ登録する
-    if (!a_assetFilePathRegistry.Add(l_sceneFilePath, l_sceneUUID, Enum::AssetFilePathRegistryType::Scene))
+    if (const auto& l_sceneUUID = l_uuidManager.GenerateVALUUID    ();
+        !a_assetFilePathRegistry.Add(l_sceneFilePath, l_sceneUUID, Enum::AssetFilePathRegistryType::Scene))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへのScene登録に失敗したため、Sceneファイルを作成しませんでした。\nFilePath : {}", l_sceneFilePath.string());
 
@@ -159,6 +158,33 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     return l_result;
 }
 
+std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObjectDrop(const std::weak_ptr<GameObject>&         a_droppedGameObject, 
+                                                                                                                                                        const std::filesystem::path&             a_parentFolderPath, 
+                                                                                                                                                                          Scene&                 a_scene,
+                                                                                                                                                                          AssetFilePathRegistry& a_assetFilePathRegistry) const
+{
+    // ドロップ対象が選択リストに含まれていれば選択中全てをPrefab化対象にする
+    // 親子を同時選択していた場合は子を除外する
+    // (親のPrefab内部ノードとして既に含まれるため)
+    const auto& l_targetList = CollectPrefabTargetGameObjectList(a_droppedGameObject);
+ 
+    std::vector<Struct::AssetBrowserEditorWindowAssetCreationResult> l_resultList = {};
+ 
+    l_resultList.reserve(l_targetList.size());
+ 
+    for (const auto& l_gameObject : l_targetList)
+    {
+        const auto& l_prefab = CreatePrefabFromGameObject(l_gameObject,
+                                                          a_parentFolderPath,
+                                                          a_scene,
+                                                          a_assetFilePathRegistry);
+
+        l_resultList.emplace_back(l_prefab);
+    }
+ 
+    return l_resultList;
+}
+
 void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const
 {
     // 新しいファイル名(stem)をPrefabNameとして設定
@@ -210,4 +236,168 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::Resolve
     const auto l_desiredFilePath = a_parentFolderPath / (std::string{ a_defaultName } + a_extension.string());
 
     return Utility::ResolveFilePathConflictByNumberSuffix(l_desiredFilePath);
+}
+
+std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFileName(const std::weak_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return std::string{ k_defaultPrefabName }; }
+
+    const auto& l_name = l_gameObject->GetREFName();
+
+    if (l_name.empty()) { return std::string{ k_defaultPrefabName }; }
+
+    auto l_fileName = l_name;
+
+    for (auto& l_char : l_fileName)
+    {
+        // ファイル名に使用できない文字をアンダースコアに変換する
+        if (k_invalidFileNameCharacters.find(l_char) == std::string_view::npos) { continue; }
+        
+        l_char = k_underScoreChar;
+    }
+
+    // 末尾のドットと空白はWindowsのファイル名として使えないため取り除く
+    while (!l_fileName.empty()             &&
+           (l_fileName.back() == k_dotChar ||
+            l_fileName.back() == k_spaceChar))
+    {
+        l_fileName.pop_back();
+    }
+ 
+    if (l_fileName.empty()) { return std::string{ k_defaultPrefabName }; }
+ 
+    return l_fileName;
+}
+
+FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, 
+                                                                                                                                       const std::filesystem::path&     a_parentFolderPath, 
+                                                                                                                                             Scene&                     a_scene,
+                                                                                                                                             AssetFilePathRegistry&     a_assetFilePathRegistry) const
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    // 無効・破棄済みのGameObjectはPrefab化しない
+    if (!l_gameObject ||
+        l_gameObject->GetVALIsDestroyed())
+    {
+        return {};
+    }
+ 
+    // ファイル名はGameObject名ベースで一意化する
+    // 空名やファイル名に使えない文字は代替名・置換で回避する
+    const auto& l_prefabFilePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, FetchVALPrefabFileName(a_gameObject));
+ 
+          auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+    const auto& l_prefabUUID  = l_uuidManager.GenerateVALUUID    ();
+ 
+    // Editor側のAssetFilePathRegistryへ先に登録
+    // WatcherはRegistryへ未登録のJsonがディスクに現れると物理削除するため
+    // ファイルを書き込む前に必ずRegistryへ登録する
+    if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへのPrefab登録に失敗したため、Prefabファイルを作成しませんでした。\nFilePath : {}", l_prefabFilePath.string());
+ 
+        return {};
+    }
+
+    // 親を持つGameObjectをPrefab化する場合はPrefabのルートとして扱うため親子関係を解除する
+    // ClearParent内でTransformがStandaloneへ切り替わりワールド行列は維持される
+    // PrefabHierarchyNodeUUIDはGameObjectPrefab::Save内でnilへ戻される
+    if (auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
+        !l_hierarchy.GetREFParent().expired())
+    {
+        l_hierarchy.ClearParent();
+ 
+        // 階層の深さが変わったため実行レベルを再構築する
+        a_scene.RebuildGameObjectExecutionLevelList();
+    }
+
+    GameObjectPrefab l_gameObjectPrefab = {};
+
+    // Save内部でConvertToPrefabが呼ばれ
+    // GameObjectと子孫へPrefabUUID/IsPrefabOriginが設定されてから
+    // GameObjectJsonConverter::Serializeでフル形式のPrefabJsonが作られる
+    // シーンのPrefabSystemを渡して別Prefabのネストインスタンスを正しく差分保存する
+    auto& l_prefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
+ 
+    if (!l_gameObjectPrefab.Save(l_prefabFilePath,
+                                 l_prefabUUID,
+                                 l_prefabSystem,
+                                 *l_gameObject))
+    {
+        // Registryだけにエントリが残るとWatcherが間違って
+        // ファイルを削除しないようになるため、Registryから削除して登録前の状態へ戻す
+        a_assetFilePathRegistry.Erase(l_prefabFilePath);
+ 
+        // ConvertToPrefabでPrefabUUIDが設定済みのため
+        // 失敗時はPrefabとの紐付けを剥がして元の状態へ戻す
+        l_gameObject->DetachFromPrefab();
+ 
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_prefabFilePath.string());
+ 
+        return {};
+    }
+
+    // シーン側のPrefabSystemへも登録する
+    // 未登録のままだとScene保存時にPrefabとの差分が作れずフル形式になってしまう
+    l_prefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
+ 
+    Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
+ 
+    l_result.m_createdFilePath = l_prefabFilePath;
+    l_result.m_isSuccess       = true;
+ 
+    return l_result;
+}
+
+std::vector<std::shared_ptr<FWK::GameObject>> FWK::Editor::AssetBrowserEditorWindowAssetCreator::CollectPrefabTargetGameObjectList(const std::weak_ptr<GameObject>& a_droppedGameObject) const
+{
+    const auto& l_dropped = a_droppedGameObject.lock();
+
+    if (!l_dropped ||
+        l_dropped->GetVALIsDestroyed())
+    {
+        return {};
+    }
+
+    const auto& l_editorManager            = EditorManager::GetInstance                             ();
+    const auto& l_gameObjectSelectionState = l_editorManager.GetREFGameObjectSelectionState         ();
+    const auto& l_selectedList             = l_gameObjectSelectionState.GetREFSelectedGameObjectList();
+
+    // ドロップしたGameObjectが選択リストに含まれていなければ
+    // ドロップしたGameObjectのみをPrefab化対象にする
+    if (!std::ranges::any_of(l_selectedList,
+                             [&l_dropped](const auto& a_selectedWeak)
+                             {
+                                 return a_selectedWeak.lock() == l_dropped;
+                             }))
+    {
+        return { l_dropped }; 
+    }
+
+    std::vector<std::shared_ptr<GameObject>> l_targetList = {};
+
+    // 選択されたリスト数分要素数を予約
+    l_targetList.reserve(l_selectedList.size());
+
+    for (const auto& l_selectedWeak : l_selectedList)
+    {
+        const auto& l_selected = l_selectedWeak.lock();
+ 
+        if (!l_selected ||
+            l_selected->GetVALIsDestroyed())
+        {
+            continue;
+        }
+ 
+        // 選択リスト内に自身の祖先がいる場合は除外する
+        // 祖先側のPrefabへ内部ノードとして既に含まれるため二重にPrefab化しない
+        if (Utility::HasAncestorInList(l_selectedList, l_selected)) { continue; }
+ 
+        l_targetList.emplace_back(l_selected);
+    }
+ 
+    return l_targetList;
 }

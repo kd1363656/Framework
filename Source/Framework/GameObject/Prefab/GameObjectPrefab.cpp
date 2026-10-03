@@ -37,6 +37,14 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath,
     // 既に別のPrefabのインスタンスである子には伝播しない
     a_gameObject.ConvertToPrefab(a_prefabUUID);
     
+    // PrefabのルートノードはHierarchy内の子ではないため
+    // 子照合用のPrefabHierarchyNodeUUIDはnilへ戻す
+    // (ConvertToPrefabでnilなら自動発行されるため発行後にnilへ戻す)
+    // nilのままにすることでPrefabから生成したGameObjectを
+    // 他のGameObjectの子にした際にAddChildが毎回新規UUIDを発行でき
+    // 同一Prefab由来のインスタンス同士でUUIDが重複しない
+    a_gameObject.SetPrefabHierarchyNodeUUID({});
+
     // すべてのRemovedUUIDSetをクリアする
     // プレハブは新しい「元」なので差分（削除）情報を保持しない
     a_gameObject.ClearAllPrefabRemovedUUIDSet();

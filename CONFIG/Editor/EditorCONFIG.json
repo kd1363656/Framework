@@ -27,18 +27,15 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Data\\NewFolder",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player\\RGray.json",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\NewFolder"
-                            },
-                            {
-                                "SelectedFilePath": "Asset\\Data\\NewFolder1"
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player\\RGray.json"
                             }
                         ]
                     }
                 },
-                "CurrentSelectFolderPath": "Asset",
+                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Player",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 271.0
                 },
@@ -58,6 +55,10 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
+                            "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Texture",
                             "IsOpen": false
                         },
                         {
@@ -73,19 +74,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Font\\Cica",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -101,11 +94,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
@@ -121,15 +114,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\NewFolder1",
+                            "FilePath": "Asset\\Model\\Actor",
                             "IsOpen": false
                         },
                         {
@@ -142,15 +131,11 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Data\\Prefab\\Camera",
-                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Model\\Actor\\Player\\K02",
@@ -158,10 +143,6 @@
                         },
                         {
                             "FilePath": "Asset\\Texture\\UI",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Font",
                             "IsOpen": false
                         },
                         {
@@ -174,10 +155,6 @@
                         },
                         {
                             "FilePath": "Asset\\Model\\Weapon\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder1",
                             "IsOpen": false
                         },
                         {
@@ -197,31 +174,15 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Data\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\NewFolder",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Font\\Icon",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Font\\Icon\\FontAwesome",
-                            "IsOpen": false
+                            "FilePath": "Asset\\Data\\Prefab\\Player",
+                            "IsOpen": true
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset"
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player"
                             }
                         ]
                     }

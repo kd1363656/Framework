@@ -90,6 +90,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // ポップアップが開いていない場合はDraw内部でreturnする
     m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel, *l_scene, *this, a_editorManager);
  
+    // アセットブラウザーからのPrefabファイルのドロップ先
+    // Window内の空白へドロップされたPrefabはルートGameObjectとして生成する
+    // GameObjectノード上はノード側のドロップ先が優先されるためここには届かない
+    HandlePrefabFileDropTarget(*l_scene, a_editorManager);
+
     ImGui::End();
 }
 
@@ -389,6 +394,29 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
                                  *this, 
                                  a_editorManager);
 
+    // アセットブラウザーからのPrefabファイルのドロップ先
+    // SceneノードへドロップされたPrefabはルートGameObjectとして生成する
+
+    std::vector<std::filesystem::path> l_droppedFilePathList = {};
+ 
+    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+        l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
+    {
+        // Prefabとして登録されているファイルのみ生成対象になる
+        const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+ 
+        // 生成したGameObjectを選択状態にする
+        if (!l_createdList.empty())
+        {
+            l_gameObjectSelectionState.ClearSelectedGameObjectList();
+ 
+            for (const auto& l_created : l_createdList)
+            {
+                l_gameObjectSelectionState.AddSelectedGameObject(l_created);
+            }
+        }
+    }
+
     // リネーム中はノードのテキスト位置にInputTextを重ねる
     if (l_isRenaming)
     {
@@ -574,12 +602,44 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
         const auto& l_io = ImGui::GetIO();
- 
-        SelectGameObject(a_gameObject,
-                         a_scene,
-                         l_gameObjectSelectionState,
-                         l_io.KeyShift,
-                         l_io.KeyCtrl);
+
+        // 修飾キーなしで既選択のノードを押下した場合は選択リストを更新しない
+        // この時点で単一選択へ潰すとドラッグ対象が1件だけになってしまうため
+        // 複数選択を維持したままドラッグ&ドロップできるようにする
+        // Shift + Click(範囲選択)・Ctrl + Click(トグル)は従来通り選択を更新する
+        if (!l_gameObjectSelectionState.FindVALIsSelected(a_gameObject) ||
+            l_io.KeyShift ||
+            l_io.KeyCtrl)
+        {
+            SelectGameObject(a_gameObject,
+                             a_scene,
+                             l_gameObjectSelectionState,
+                             l_io.KeyShift,
+                             l_io.KeyCtrl);
+        }
+    }
+
+    // 左ボタン解放 : 押下したノードの真上で解放された場合のみ選択を確定する
+    // 押下時点で選択を潰さないので複数選択を維持したままドラッグ&ドロップできる
+    // ドラッグが成立していた場合はGetDragDropPayloadが非nullのため選択を更新しない
+    if (ImGui::IsItemDeactivated() &&
+        ImGui::IsItemHovered()     &&
+        !ImGui::GetDragDropPayload())
+    {
+        const auto& l_io = ImGui::GetIO();
+     
+        // Shift/Ctrlでの選択操作は押下時に更新済みのため解放時は無修飾のみ処理する
+        // 既選択ノードへの無修飾クリックは単一選択へ潰す
+        if (!l_io.KeyShift &&
+            !l_io.KeyCtrl  &&
+            l_gameObjectSelectionState.FindVALIsSelected(a_gameObject))
+        {
+            SelectGameObject(a_gameObject,
+                             a_scene,
+                             l_gameObjectSelectionState,
+                             false,
+                             false);
+        }
     }
 
     // ノードごとに一意なポップアップラベル
@@ -751,52 +811,80 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
 
 void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene)
 {
-    std::weak_ptr<GameObject> l_droppedGameObject = {};
+    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
  
     // ノード本体へのDrop成立時のみtrueを返す
-    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-        !l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+    if (std::weak_ptr<GameObject> l_droppedGameObject = {};
+        l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
     {
-        return; 
-    }
-
-    const auto& l_dropped = l_droppedGameObject.lock();
-
-    if (!l_dropped) { return; }
-
-    // UndoRedo用に変更前の親UUIDを保存する
-    const auto&              l_beforeHierarchy  = l_dropped->GetREFHierarchy    ();
-    const auto&              l_beforeParent     = l_beforeHierarchy.GetREFParent().lock();
-          boost::uuids::uuid l_beforeParentUUID = {};
-    const auto&              l_gameObjectUUID   = l_dropped->GetREFSceneInstanceUUID();
-
-    if (l_beforeParent)
-    {
-        l_beforeParentUUID = l_beforeParent->GetREFSceneInstanceUUID();
-    }
-
-    // ドロップ先ノードを親、ドロップしたGameObjectを子として親子関係を結ぶ
-    // 自分自身・子孫への親付けはApplyParent側で弾かれる
-    // 実行レベルの再構築もReparentGameObject内で行われる
-    m_gameObjectOperation.ReparentGameObject(a_targetGameObject, l_droppedGameObject, a_scene);
+        const auto& l_dropped = l_droppedGameObject.lock();
  
-    const auto&               l_afterHierarchy  = l_dropped->GetREFHierarchy   ();
-    const auto&               l_afterParent     = l_afterHierarchy.GetREFParent().lock();
-          boost::uuids::uuid  l_afterParentUUID = {};
-
-    if (l_afterParent)
-    {
-        l_afterParentUUID = l_afterParent->GetREFSceneInstanceUUID();
+        if (!l_dropped) { return; }
+ 
+        // UndoRedo用に変更前の親UUIDを保存する
+        const auto&              l_beforeHierarchy  = l_dropped->GetREFHierarchy    ();
+        const auto&              l_beforeParent     = l_beforeHierarchy.GetREFParent().lock();
+              boost::uuids::uuid l_beforeParentUUID = {};
+        const auto&              l_gameObjectUUID   = l_dropped->GetREFSceneInstanceUUID();
+ 
+        if (l_beforeParent)
+        {
+            l_beforeParentUUID = l_beforeParent->GetREFSceneInstanceUUID();
+        }
+ 
+        // ドロップ先ノードを親、ドロップしたGameObjectを子として親子関係を結ぶ
+        // 自分自身・子孫への親付けはApplyParent側で弾かれる
+        // 実行レベルの再構築もReparentGameObject内で行われる
+        m_gameObjectOperation.ReparentGameObject(a_targetGameObject, l_droppedGameObject, a_scene);
+ 
+        const auto&               l_afterHierarchy  = l_dropped->GetREFHierarchy   ();
+        const auto&               l_afterParent     = l_afterHierarchy.GetREFParent().lock();
+              boost::uuids::uuid  l_afterParentUUID = {};
+ 
+        if (l_afterParent)
+        {
+            l_afterParentUUID = l_afterParent->GetREFSceneInstanceUUID();
+        }
+ 
+        // 親子関係が実際に変更された場合のみコマンドをPushする
+        if (l_beforeParentUUID != l_afterParentUUID)
+        {
+            // EditorManager経由でUndoRedoSystemへコマンドをPushする
+            auto& l_editorManager  = EditorManager::GetInstance                 ();
+            auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+ 
+            l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObjectUUID, l_beforeParentUUID, l_afterParentUUID);
+        }
+ 
+        // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
+        if (const auto& l_targetGameObject = a_targetGameObject.lock();
+            l_targetGameObject)
+        {
+            m_gameObjectOpenStateMap[l_targetGameObject->GetREFSceneInstanceUUID()] = true;
+        }
+ 
+        return;
     }
 
-    // 親子関係が実際に変更された場合のみコマンドをPushする
-    if (l_beforeParentUUID == l_afterParentUUID) { return; }
+    // アセットブラウザーからのPrefabファイルのドロップを受け付ける
+    // ノード本体へドロップされたPrefabはこのGameObjectの子として生成する
+    std::vector<std::filesystem::path> l_droppedFilePathList = {};
 
-    // EditorManager経由でUndoRedoSystemへコマンドをPushする
-    auto& l_editorManager  = EditorManager::GetInstance                 ();
-    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+    if (!l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList)) { return; }
 
-    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObjectUUID, l_beforeParentUUID, l_afterParentUUID);
+    const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, a_targetGameObject, a_scene);
+
+    if (l_createdList.empty()) { return; }
+
+    auto& l_editorManager            = EditorManager::GetInstance                           ();
+    auto& l_gameObjectSelectionState = l_editorManager.GetMutableREFGameObjectSelectionState();
+ 
+    l_gameObjectSelectionState.ClearSelectedGameObjectList();
+ 
+    for (const auto& l_created : l_createdList)
+    {
+        l_gameObjectSelectionState.AddSelectedGameObject(l_created);
+    }
  
     // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
     if (const auto& l_targetGameObject = a_targetGameObject.lock();
@@ -805,8 +893,45 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
         m_gameObjectOpenStateMap[l_targetGameObject->GetREFSceneInstanceUUID()] = true;
     }
 }
+void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a_scene, EditorManager& a_editorManager)
+{
+    const auto* l_currentWindow = ImGui::GetCurrentWindow();
 
-void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(std::vector<boost::uuids::uuid>&& a_beforeUUIDList, EditorGameObjectSelectionState& a_gameObjectSelectionState, boost::uuids::uuid&& a_beforeAnchorUUID)
+    if (!l_currentWindow) { return; }
+
+    std::vector<std::filesystem::path> l_droppedFilePathList = {};
+
+    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+
+    // Window全体の矩形をドロップ先にする
+    // GameObjectペイロード用のDropZoneやノードのドロップ先とは
+    // ペイロードラベルが異なるため干渉しない
+    // GameObjectノード上はノード側(小さい矩形)のドロップ先が優先されるため
+    // ここに届くのは空白部分へのドロップのみになる
+    if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+                                                            ImGui::GetID(k_prefabFileDropTargetLabel.data()),
+                                                            Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                            l_droppedFilePathList))
+    {
+        return;
+    }
+
+        // Prefabとして登録されているファイルのみ生成対象になる
+    const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+ 
+    if (l_createdList.empty()) { return; }
+ 
+    auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
+ 
+    l_gameObjectSelectionState.ClearSelectedGameObjectList();
+ 
+    for (const auto& l_created : l_createdList)
+    {
+        l_gameObjectSelectionState.AddSelectedGameObject(l_created);
+    }
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(std::vector<boost::uuids::uuid>&& a_beforeUUIDList, EditorGameObjectSelectionState& a_gameObjectSelectionState, boost::uuids::uuid&& a_beforeAnchorUUID) const
 {
     // 変更後の選択状態をUUIDリストとして取得する
     const auto& l_afterList   = a_gameObjectSelectionState.GetREFSelectedGameObjectList();

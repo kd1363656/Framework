@@ -7,6 +7,11 @@
                 "UUID": "a2b50d55-3594-460e-9a92-78600beeca4a"
             },
             {
+                "FilePath": "Asset\\Data\\Prefab\\Player\\RGray.json",
+                "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                "UUID": "1a549325-b0ad-4fa5-849c-abd74638d3de"
+            },
+            {
                 "FilePath": "Asset/Data/Scene/Title/Title.json",
                 "FilePathRegistryType": "AssetFilePathRegistryType::Scene",
                 "UUID": "81d90966-31c3-400c-ae00-8c9e81706a55"

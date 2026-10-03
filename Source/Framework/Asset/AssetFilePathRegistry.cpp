@@ -24,13 +24,6 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、AssetFilePathRegistryへの登録に失敗しました。", false);
 
-    if (!Utility::CanLoadFilePath(a_assetFilePath))
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryに追加する予定のファイルパスがが無効値を示しており、AssetFilePathRegistryへの登録に失敗しました。");
-
-        return false;
-    }
-
     // 無効なUUIDなら登録しない
     if (a_assetUUID.is_nil())
     {

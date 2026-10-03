@@ -1,0 +1,32 @@
+{
+    "Name": "RGray",
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [],
+        "IsPrefabOrigin": true,
+        "Name": "RGray",
+        "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
+        "PrefabUUID": "1a549325-b0ad-4fa5-849c-abd74638d3de",
+        "SceneInstanceUUID": "62f2b45f-0556-4206-b163-5022bddbe5ab",
+        "TransformComponent": {
+            "MatrixUpdateMode": "GameObjectTransformComponentMatrixUpdateStandaloneMode",
+            "MatrixUpdateModeData": null,
+            "Position": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "Rotation": {
+                "W": 1.0,
+                "X": -0.0,
+                "Y": 0.0,
+                "Z": -0.0
+            },
+            "Scale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    }
+}

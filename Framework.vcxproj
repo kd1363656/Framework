@@ -777,6 +777,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Strategy\StrategyBase.h" />
     <ClInclude Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.h" />
     <ClInclude Include="Source\Framework\TypeINFO\StaticTypeID\StaticTypeIDGenerator.h" />
+    <ClInclude Include="Source\Framework\Utility\Editor\AssetBrowserEditorWindowAssetCreatorUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShift.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\EnumBitShiftUtility.h" />
     <ClInclude Include="Source\Framework\Utility\Enum\Converter\Json\EnumBitShiftJsonConverter.h" />

@@ -1,7 +1,29 @@
 {
-    "GameObjectList": [],
+    "GameObjectList": [
+        {
+            "Diff": {
+                "ChildList": {
+                    "Added": [],
+                    "Modified": [],
+                    "RemovedUUIDList": []
+                },
+                "ComponentList": {
+                    "Added": [],
+                    "Modified": [],
+                    "RemovedUUIDList": []
+                }
+            },
+            "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
+            "PrefabUUID": "1a549325-b0ad-4fa5-849c-abd74638d3de",
+            "SceneInstanceUUID": "62f2b45f-0556-4206-b163-5022bddbe5ab"
+        }
+    ],
     "GameObjectPrefabSystem": {
-        "PrefabMap": []
+        "PrefabMap": [
+            {
+                "UUID": "1a549325-b0ad-4fa5-849c-abd74638d3de"
+            }
+        ]
     },
     "LightSystem": {
         "AmbientLight": {

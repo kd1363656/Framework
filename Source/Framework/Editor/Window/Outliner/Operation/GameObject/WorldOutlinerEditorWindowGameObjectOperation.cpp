@@ -172,7 +172,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGame
  
         // 親子同時選択時の重複コピーを回避する
         // 選択リスト内に自身の祖先タイル場合、祖先のCloneにこのGameObjectも含まれているためスキップ
-        if (HasAncestorInSelection(l_selectedList, l_gameObjectWeak)) { continue; }
+        if (Utility::HasAncestorInList(l_selectedList, l_gameObjectWeak)) { continue; }
 
         l_uuidList.emplace_back(l_gameObject->GetREFSceneInstanceUUID());
     }
@@ -204,7 +204,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CutSelectedGameO
  
         // 親子同時選択時の重複コピーを回避する
         // 選択リスト内に自身の祖先タイル場合、祖先のCloneにこのGameObjectも含まれているためスキップ
-        if (HasAncestorInSelection(l_selectedList, l_gameObjectWeak)) { continue; }
+        if (Utility::HasAncestorInList(l_selectedList, l_gameObjectWeak)) { continue; }
 
         l_uuidList.emplace_back(l_gameObject->GetREFSceneInstanceUUID());
     }
@@ -243,7 +243,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DuplicateSelecte
  
         // 親子同時選択時の重複Clone回避
         // 選択リスト内に自分の祖先がいる場合、祖先のCloneにこのGameObjectも含まれるためスキップ
-        if (HasAncestorInSelection(l_selectedList, l_gameObjectWeak)) { continue; }
+        if (Utility::HasAncestorInList(l_selectedList, l_gameObjectWeak)) { continue; }
  
         // 元のGameObjectと同じ親の末尾にCloneを追加する
         // ルートならa_newParentを{}にしてルートリスト末尾へ追加する
@@ -337,34 +337,6 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroyGameObjec
     // 自身を破棄
     // 実際のScene除去はScene::RemoveDestroyedGameObjects(EarlyUpdate)が行う
     l_gameObject->Destroy();
-}
-
-bool FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::HasAncestorInSelection(const std::vector<std::weak_ptr<GameObject>>& a_selectedList, const std::weak_ptr<GameObject>& a_gameObject) const
-{
-    const auto& l_gameObject = a_gameObject.lock();
- 
-    if (!l_gameObject) { return false; }
- 
-    // 親を辿って選択リスト内に祖先がいるか判定する
-    auto l_current = l_gameObject->GetREFHierarchy().GetREFParent().lock();
- 
-    while (l_current)
-    {
-        // 選択リスト内に現在の祖先と同じアドレスを持つ要素があるか
-        if (std::ranges::any_of(a_selectedList,
-                               [&l_current](const auto& a_selectedWeak)
-                               {
-                                   return a_selectedWeak.lock() == l_current;
-                               }))
-        {
-            return true; 
-        }
- 
-        // さらに上の親へ
-        l_current = l_current->GetREFHierarchy().GetREFParent().lock();
-    }
- 
-    return false;
 }
 
 FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const

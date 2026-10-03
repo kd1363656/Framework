@@ -48,9 +48,10 @@ namespace FWK::Editor
         void DrawRenameInputText   (      Scene&                     a_scene);
         void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter) const;
         
-        void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene);
+        void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
+        void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
 
-        void PushSelectionChangeCommand(std::vector<boost::uuids::uuid>&& a_beforeUUIDList, EditorGameObjectSelectionState& a_gameObjectSelectionState, boost::uuids::uuid&& a_beforeAnchorUUID);
+        void PushSelectionChangeCommand(std::vector<boost::uuids::uuid>&& a_beforeUUIDList, EditorGameObjectSelectionState& a_gameObjectSelectionState, boost::uuids::uuid&& a_beforeAnchorUUID) const;
 
         void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
                                     Scene&                          a_scene,
@@ -83,6 +84,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_emptySpaceContextMenuLabel  = "##WorldOutlinerEmptySpaceContextMenu";
         static constexpr std::string_view k_renameInputTextLabel        = "##WorldOutlinerRenameInputText";
         static constexpr std::string_view k_gameObjectDragDropZoneLabel = "##WorldOutlinerGameObjectDropZone";
+        static constexpr std::string_view k_prefabFileDropTargetLabel   = "##WorldOutlinerPrefabFileDropTarget";
 
         static constexpr float k_nodeFramePaddingHeight  = 3.0F;
         static constexpr float k_dropZoneHeight          = 3.0F;

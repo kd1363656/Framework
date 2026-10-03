@@ -580,7 +580,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
         {
             // GetForegroundDrawListは最前面に描画するDrawListを返す
-            // 他のUIより手間に描画され生田目アイコンが隠れない
+            // 他のUIより手間に描画されて目アイコンが隠れない
             auto* l_foregroundDrawList = ImGui::GetForegroundDrawList();
 
             // BanIconをマウス位置の少し右下に描画
@@ -618,6 +618,29 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             // ドロップされたフォルダをこのフォルダの中へまとめて移動
             // 自分自身へのドロップや移動先が移動元の子孫の場合はMove内部でスキップされる
             l_fileOperation.Move(l_droppedFilePathList, a_currentFolderPath);
+        }
+
+        // アウトライナーからのGameObjectドロップを受け付ける
+        // ドロップされたGameObjectをこのフォルダ内へPrefabとして作成する
+        // ドロップ対象が選択に含まれていれば選択中全てがPrefab化される
+        std::weak_ptr<GameObject> l_droppedGameObject = {};
+ 
+        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+        {
+            const auto& l_sceneManager = SceneManager::GetInstance();
+            const auto& l_scene        = l_sceneManager.GetVALScene ().lock();
+ 
+            if (l_scene)
+            {
+                      auto& l_application           = Application::GetInstance                        ();
+                      auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+                const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+ 
+                l_assetCreator.CreatePrefabFromGameObjectDrop(l_droppedGameObject,
+                                                              a_currentFolderPath,
+                                                              *l_scene,
+                                                              l_assetFilePathRegistry);
+            }
         }
     }
 

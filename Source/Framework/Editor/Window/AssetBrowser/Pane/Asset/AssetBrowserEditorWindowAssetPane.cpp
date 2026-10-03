@@ -957,36 +957,95 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardDragDrop(const st
             // 移動したフォルダが画面上で見える状態になる
             NavigateToFolder(a_filePath, a_editorWindow);
         }
+
+        // アウトライナーからのGameObjectドロップを受け付ける
+        // ドロップされたGameObjectをこのフォルダ内へPrefabとして作成する
+        // ドロップ対象が選択に含まれていれば選択中全てがPrefab化される
+        std::weak_ptr<GameObject> l_droppedGameObject = {};
+ 
+        if (l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_gameObjectDragDropPayloadLabel, l_droppedGameObject))
+        {
+            const auto& l_sceneManager = SceneManager::GetInstance ();
+            const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+ 
+            if (!l_scene) { return; }
+ 
+                  auto& l_application           = Application::GetInstance                        ();
+                  auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+            const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+ 
+            const auto& l_resultList = l_assetCreator.CreatePrefabFromGameObjectDrop(l_droppedGameObject,
+                                                                                     a_filePath,
+                                                                                     *l_scene,
+                                                                                     l_assetFilePathRegistry);
+ 
+            // 一つでもPrefabが作成されたなら移動先フォルダを現在参照中フォルダにする
+            // 作成されたPrefabファイルが画面上で見える状態になる
+            if (std::ranges::any_of(l_resultList,
+                                   [](const auto& a_result)
+                                   {
+                                       return a_result.m_isSuccess;
+                                   }))
+            {
+                NavigateToFolder(a_filePath, a_editorWindow);
+            }
+        }
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDrop(AssetBrowserEditorWindow& a_editorWindow)
+void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDrop(const AssetBrowserEditorWindow& a_editorWindow) const
 {
     // 現在参照中フォルダ(空ならAssetルート)を移動先にする
-    const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-    const auto& l_destinationFolderPath   = l_currentSelectFolderPath.empty() ? Constant::k_assetRootFolderPath : l_currentSelectFolderPath;
- 
+    const auto& l_currentSelectFolderPath     = a_editorWindow.GetREFCurrentSelectFolderPath     ();
+    const auto& l_destinationFolderPath       = l_currentSelectFolderPath.empty                  () ? Constant::k_assetRootFolderPath : l_currentSelectFolderPath;
+          auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+    const auto* l_currentWindow               = ImGui::GetCurrentWindow                          ();
+
+    if (!l_currentWindow) { return; }
+
     std::vector<std::filesystem::path> l_droppedFilePathList = {};
- 
-    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
  
     // ChildWindow全体をドロップ対象矩形にする
     // GetCurrentWindow()->Rect()はスクリーン座標系のウィンドウ全体矩形
     // フォルダカード上ではカード側(小さい矩形)が優先されるため
     // ここに届くのは空白部分へのドロップのみになる
-    if (const auto* l_currentWindow = ImGui::GetCurrentWindow();
-        !l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
-                                                            ImGui::GetID(k_paneBackgroundDropTargetLabel.data()),
-                                                            Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
-                                                            l_droppedFilePathList))
+    if (l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+                                                           ImGui::GetID(k_paneDropTargetLabel.data()),
+                                                           Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                           l_droppedFilePathList))
+    {
+        const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
+ 
+        // 現在参照中フォルダへ移動するだけなので
+        // SelectSingleFolder/SetCurrentSelectFolderPathは呼ばない
+        l_fileOperation.Move(l_droppedFilePathList, l_destinationFolderPath);
+    }
+
+    // アウトライナーからのGameObjectドロップを受け付ける
+    // ドロップされたGameObjectを現在参照中フォルダへPrefabとして作成する
+    // フォルダカード上ではカード側が優先されるためここに届くのは空白部分へのドロップのみ
+    std::weak_ptr<GameObject> l_droppedGameObject = {};
+ 
+    if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+                                                            ImGui::GetID(k_paneGameObjectDropTargetLabel.data()),
+                                                            Constant::k_gameObjectDragDropPayloadLabel,
+                                                            l_droppedGameObject))
     {
         return;
     }
+
+    const auto& l_sceneManager = SceneManager::GetInstance();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
  
-    const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
+    if (!l_scene) { return; }
  
-    // 現在参照中フォルダへ移動するだけなので
-    // SelectSingleFolder/SetCurrentSelectFolderPathは呼ばない
-    l_fileOperation.Move(l_droppedFilePathList, l_destinationFolderPath);
+          auto& l_application           = Application::GetInstance                        ();
+          auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
+    const auto& l_assetCreator          = a_editorWindow.GetREFAssetCreator               ();
+ 
+    l_assetCreator.CreatePrefabFromGameObjectDrop(l_droppedGameObject,
+                                                  l_destinationFolderPath,
+                                                  *l_scene,
+                                                  l_assetFilePathRegistry);
 }
 
 void FWK::Editor::AssetBrowserEditorWindowAssetPane::BuildDisplayedFilePathList(const AssetBrowserEditorWindow& a_editorWindow, std::vector<std::filesystem::path>& a_displayedList) const
