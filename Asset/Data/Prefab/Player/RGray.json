@@ -6,8 +6,8 @@
         "IsPrefabOrigin": true,
         "Name": "RGray",
         "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
-        "PrefabUUID": "1a549325-b0ad-4fa5-849c-abd74638d3de",
-        "SceneInstanceUUID": "62f2b45f-0556-4206-b163-5022bddbe5ab",
+        "PrefabUUID": "5ac251b2-fa08-493e-8c5b-cb0e8ef95385",
+        "SceneInstanceUUID": "048572c9-f3fa-4de0-b845-834a5e209f8f",
         "TransformComponent": {
             "MatrixUpdateMode": "GameObjectTransformComponentMatrixUpdateStandaloneMode",
             "MatrixUpdateModeData": null,

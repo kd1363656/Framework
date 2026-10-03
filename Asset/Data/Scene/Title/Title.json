@@ -3,49 +3,7 @@
         {
             "Diff": {
                 "ChildList": {
-                    "Added": [
-                        {
-                            "ChildList": [],
-                            "ComponentList": [],
-                            "IsPrefabOrigin": false,
-                            "Name": "GameObject",
-                            "PrefabHierarchyNodeUUID": "d298e7ce-8c18-4a73-a7b2-bbde2dc3a8ea",
-                            "PrefabUUID": "00000000-0000-0000-0000-000000000000",
-                            "SceneInstanceUUID": "cda64169-ec37-4c7e-ac01-63259d4d6525",
-                            "TransformComponent": {
-                                "MatrixUpdateMode": "GameObjectTransformComponentMatrixUpdateHierarchicalMode",
-                                "MatrixUpdateModeData": {
-                                    "CalculateParentWorldMatrixEnumBitShift": [
-                                        {
-                                            "BitShiftFlag": "ApplyCalculateWorldMatrixBitShiftFlag::Scale"
-                                        },
-                                        {
-                                            "BitShiftFlag": "ApplyCalculateWorldMatrixBitShiftFlag::Rotation"
-                                        },
-                                        {
-                                            "BitShiftFlag": "ApplyCalculateWorldMatrixBitShiftFlag::Position"
-                                        }
-                                    ]
-                                },
-                                "Position": {
-                                    "X": 0.0,
-                                    "Y": 0.0,
-                                    "Z": 0.0
-                                },
-                                "Rotation": {
-                                    "W": 1.0,
-                                    "X": -0.0,
-                                    "Y": 0.0,
-                                    "Z": -0.0
-                                },
-                                "Scale": {
-                                    "X": 1.0,
-                                    "Y": 1.0,
-                                    "Z": 1.0
-                                }
-                            }
-                        }
-                    ],
+                    "Added": [],
                     "Modified": [],
                     "RemovedUUIDList": []
                 },
@@ -56,14 +14,14 @@
                 }
             },
             "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
-            "PrefabUUID": "1a549325-b0ad-4fa5-849c-abd74638d3de",
-            "SceneInstanceUUID": "62f2b45f-0556-4206-b163-5022bddbe5ab"
+            "PrefabUUID": "5ac251b2-fa08-493e-8c5b-cb0e8ef95385",
+            "SceneInstanceUUID": "048572c9-f3fa-4de0-b845-834a5e209f8f"
         }
     ],
     "GameObjectPrefabSystem": {
         "PrefabMap": [
             {
-                "UUID": "1a549325-b0ad-4fa5-849c-abd74638d3de"
+                "UUID": "5ac251b2-fa08-493e-8c5b-cb0e8ef95385"
             }
         ]
     },
