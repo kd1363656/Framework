@@ -53,12 +53,14 @@ namespace FWK
         void AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObject>& a_gameObject, const std::size_t& a_executionLevel);
 
         void RemoveDestroyedGameObjects();
+        void AddPendingGameObjects     ();
 
         std::size_t CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject) const;
 
         static constexpr std::size_t k_initialExecutionLevel = 0ULL;
 
-        std::vector<std::shared_ptr<GameObject>>            m_gameObjectList = {};
+        std::vector<std::shared_ptr<GameObject>>            m_gameObjectList               = {};
+        std::vector<std::shared_ptr<GameObject>>            m_pendingAddGameObjectList     = {};
         std::vector<std::vector<std::weak_ptr<GameObject>>> m_gameObjectExecutionLevelList = {};
 
         UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
@@ -73,7 +75,5 @@ namespace FWK
         std::string m_name = {};
 
         boost::uuids::uuid m_nextSceneUUID = {};
-
-        bool m_hadGameObjectListChangeDirty = false;
     };
 }

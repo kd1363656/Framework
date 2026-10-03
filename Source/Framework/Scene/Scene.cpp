@@ -4,6 +4,7 @@
 void FWK::Scene::INIT()
 {
     m_gameObjectList.clear              ();
+    m_pendingAddGameObjectList.clear    ();
     m_gameObjectExecutionLevelList.clear();
 
     m_gameObjectUUIDRegistry.Clear();
@@ -61,6 +62,9 @@ void FWK::Scene::EarlyUpdate()
 {
     // 削除要求があったゲームオブジェクトがあればここで削除
     RemoveDestroyedGameObjects();
+
+    // 追加要求があったゲームオブジェクトがあればここで追加
+    AddPendingGameObjects();
 
     for (const auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
     {
@@ -175,20 +179,14 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
         a_gameObject->SetSceneInstanceUUID(l_uuidManager.GenerateVALUUID());
     }
     
-    // 親GameObjectは、子GameObjectより先に
-    // Sceneへ登録されなければならない
-    const auto& l_executionLevel = CalculateGameObjectExecutionLevel(a_gameObject);
-
     // GameObject自身を識別するSceneInstanceUUIDをUUIDRegistryへ登録する
     // 新規GameObjectでUUIDがnilの場合はUUIDRegistry内で新規発行する
     // Deserialize済みで既にUUIDを持っている場合は、そのUUIDを維持したまま
     // Registry内で重複していないことを確認して登録する
     FWK_ASSERT_RETURN_IF(!m_gameObjectUUIDRegistry.Add(a_gameObject, a_gameObject->GetREFSceneInstanceUUID()),"GameObjectのSceneInstanceUUID登録に失敗したため、GameObjectをSceneへ追加できませんでした。");
 
-    m_gameObjectList.emplace_back(a_gameObject);
-
     // 計算済みの階層へ直接追加する
-    AddGameObjectToExecutionLevelList(a_gameObject, l_executionLevel);
+    m_pendingAddGameObjectList.emplace_back(a_gameObject);
 }
 
 std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_sceneInstanceUUID) const
@@ -291,6 +289,26 @@ void FWK::Scene::RemoveDestroyedGameObjects()
     {
         m_gameObjectExecutionLevelList.pop_back();
     }
+}
+void FWK::Scene::AddPendingGameObjects()
+{
+    // GameObjectがGameObjectを生成するトリガーだった場合でも大丈夫なように
+    // 遅延追加方式を取る
+    for (const auto& l_gameObject : m_pendingAddGameObjectList)
+    {
+        m_gameObjectList.emplace_back(l_gameObject);
+
+        // 親GameObjectは、子GameObjectより先に
+        // Sceneへ登録されなければならない
+        const auto& l_executionLevel = CalculateGameObjectExecutionLevel(l_gameObject);
+
+        // 親子階層の深さによってレイヤーを分ける親が先に実行され子が後に実行されるべきという思想の元
+        // このような形の処理を取っている
+        AddGameObjectToExecutionLevelList(l_gameObject, l_executionLevel);
+    }
+
+    // すべて追加し終われば追加予約リストをクリア
+    m_pendingAddGameObjectList.clear();
 }
 
 std::size_t FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<GameObject>& a_gameObject) const
