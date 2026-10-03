@@ -14,6 +14,17 @@ void FWK::GameObject::INIT()
 
     m_componentContainer.INIT    ();
     m_componentContainer.SetOwner(weak_from_this());
+
+    m_jsonConverter = {};
+
+    m_name = {};
+
+    m_prefabUUID              = {};
+    m_prefabHierarchyNodeUUID = {};
+    m_sceneInstanceUUID       = {};
+
+    m_isDestroyed    = false;
+    m_isPrefabOrigin = Constant::k_gameObjectInitialValueIsPrefabOrigin;
 }
 
 void FWK::GameObject::DeserializeScene(const nlohmann::json&              a_rootJson, 
@@ -83,9 +94,9 @@ nlohmann::json FWK::GameObject::SerializeScene(SceneGameObjectPrefabSystem& a_pr
 {
     return m_jsonConverter.SerializeScene(*this, a_prefabSystem);
 }
-nlohmann::json FWK::GameObject::SerializeDiff(const nlohmann::json& a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const
+nlohmann::json FWK::GameObject::SerializeDIFF(const nlohmann::json& a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
-    return m_jsonConverter.SerializeDif(a_baseJson, *this, a_prefabSystem);
+    return m_jsonConverter.SerializeDIFF(a_baseJson, *this, a_prefabSystem);
 }
 
 void FWK::GameObject::Destroy()
@@ -233,7 +244,7 @@ void FWK::GameObject::DetachFromPrefab()
     // 以降このGameObjectはPrefab由来ではない通常のGameObjectとして
     // フル形式でシリアライズされる
     m_prefabUUID     = {};
-    m_isPrefabOrigin = Constant::l_gameObjectInitialValueIsPrefabOrigin;
+    m_isPrefabOrigin = Constant::k_gameObjectInitialValueIsPrefabOrigin;
  
     // PrefabHierarchyNodeUUIDはあえて変更しない
     // 既に親のChildUUIDRegistryへこのUUIDで登録済みであり

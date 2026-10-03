@@ -27,7 +27,7 @@ void FWK::Editor::FileMainMenuEditor::UpdateShortCutKey() const
     if (ImGui::IsKeyDown(ImGuiMod_Ctrl) && ImGui::IsKeyPressed(ImGuiKey_S))
     {
         // すべてのシーン情報をセーブ
-        auto& l_sceneManager = SceneManager::GetInstance();
+        const auto& l_sceneManager = SceneManager::GetInstance();
 
         l_sceneManager.Save();
 

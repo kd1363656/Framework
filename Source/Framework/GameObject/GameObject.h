@@ -28,7 +28,7 @@ namespace FWK
 
         nlohmann::json Serialize     (      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeScene(      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
-        nlohmann::json SerializeDiff (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
+        nlohmann::json SerializeDIFF (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
         
         void Destroy();
 
@@ -90,6 +90,6 @@ namespace FWK
         boost::uuids::uuid m_sceneInstanceUUID       = {};
 
         bool m_isDestroyed    = false;
-        bool m_isPrefabOrigin = Constant::l_gameObjectInitialValueIsPrefabOrigin;
+        bool m_isPrefabOrigin = Constant::k_gameObjectInitialValueIsPrefabOrigin;
     };
 }

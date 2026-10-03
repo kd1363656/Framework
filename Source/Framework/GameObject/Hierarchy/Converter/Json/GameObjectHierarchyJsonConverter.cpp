@@ -159,7 +159,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeDiff(c
  
         Utility::UpdateJson(l_modifiedJson, Utility::SerializeUUID(l_nodeUUID, k_prefabHierarchyNodeUUIDJsonKey));
  
-        l_modifiedJson[k_gameObjectDataJsonKey] = l_child->SerializeDiff(*l_itr->second, a_prefabSystem);
+        l_modifiedJson[k_gameObjectDataJsonKey] = l_child->SerializeDIFF(*l_itr->second, a_prefabSystem);
  
         l_modifiedJsonArray.emplace_back(std::move(l_modifiedJson));
     }

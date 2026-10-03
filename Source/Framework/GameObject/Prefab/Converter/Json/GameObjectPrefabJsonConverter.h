@@ -26,7 +26,8 @@ namespace FWK::Converter
 
     private:
 
+        static void RemoveSceneInstanceUUIDRecursively(nlohmann::json& a_json);
+
         static constexpr std::string_view k_prefabJsonKey = "Prefab";
-        static constexpr std::string_view k_nameJsonKey   = "Name";
     };
 }

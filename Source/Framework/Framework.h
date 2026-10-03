@@ -546,7 +546,7 @@
 #include "Definition/Constant/GameObject/GameObjectHierarchyJsonConverterConstant.h"
 #include "GameObject/Hierarchy/Converter/Json/GameObjectHierarchyJsonConverter.h"
 #include "GameObject/Hierarchy/GameObjectHierarchy.h"
-#include "Definition/Constant/GameObject/GameObjectConstant.h"
+#include "Definition/Constant/GameObject/GameObjectJsonConverterConstant.h"
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "Definition/Enum/GameObject/GameObjectEnum.h"
 #include "GameObject/GameObject.h"

@@ -14,7 +14,7 @@ namespace FWK::Converter
          SceneManagerJsonConverter() = default;
         ~SceneManagerJsonConverter() = default;
 
-        void Load(SceneManager& a_sceneManager) const;
+        void Load(const SceneManager& a_sceneManager) const;
 
         void Save(const SceneManager& a_sceneManager) const;
     };

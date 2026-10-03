@@ -1,6 +1,6 @@
 ﻿#include "SceneManagerJsonConveter.h"
 
-void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManager) const
+void FWK::Converter::SceneManagerJsonConverter::Load(const SceneManager& a_sceneManager) const
 {
     const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
 
@@ -25,8 +25,8 @@ void FWK::Converter::SceneManagerJsonConverter::Load(SceneManager& a_sceneManage
 
 void FWK::Converter::SceneManagerJsonConverter::Save(const SceneManager& a_sceneManager) const
 {
-    const auto& l_scene                   = a_sceneManager.GetVALScene                  ().lock();
-    const auto& l_currentSceneFilePath    = a_sceneManager.GetREFCurrentSceneFilePath   ();
+    const auto& l_scene                = a_sceneManager.GetVALScene               ().lock();
+    const auto& l_currentSceneFilePath = a_sceneManager.GetREFCurrentSceneFilePath();
 
     if (!l_scene ||
         l_currentSceneFilePath.empty())

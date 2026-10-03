@@ -41,7 +41,7 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeScene(const std::weak_p
         l_gameObject->SetPrefabUUID(l_prefabUUID);
     }
  
-    if (const auto& l_sceneInstanceUUID = Utility::DeserializeUUID(a_rootJson, k_sceneInstanceUUIDJsonKey);
+    if (const auto& l_sceneInstanceUUID = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey);
         !l_sceneInstanceUUID.is_nil())
     {
         l_gameObject->SetSceneInstanceUUID(l_sceneInstanceUUID);
@@ -111,8 +111,8 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     nlohmann::json l_rootJson = {};
  
     // 名前とプレハブかどうかでシリアライズ
-    l_rootJson[k_nameJsonKey]           = a_gameObject.GetREFName          ();
-    l_rootJson[k_isPrefabOriginJsonKey] = a_gameObject.GetVALIsPrefabOrigin();
+    l_rootJson[Constant::k_gameObjectJsonConverterNameJsonKey] = a_gameObject.GetREFName          ();
+    l_rootJson[k_isPrefabOriginJsonKey]                        = a_gameObject.GetVALIsPrefabOrigin();
  
     // TransformComponentのシリアライズ
     // 常時存在するコンポーネントなのでComponentListには含めず単独キーで保存する
@@ -125,7 +125,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     // UUID群のデシリアライズ
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(),              k_prefabUUIDJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(),       k_sceneInstanceUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(),       Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
  
     // ComponentList / ChildListのデシリアライズ
     // 各Serialize()が {ComponentList:[...]} / {ChildList:[...]} を返すのでそのままマージする
@@ -159,9 +159,13 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeScene(const Gam
         return Serialize(a_gameObject, a_prefabSystem);
     }
  
-    return SerializeDif(l_prefab->GetREFJson(), a_gameObject, a_prefabSystem);
+    auto l_rootJson = SerializeDIFF(l_prefab->GetREFJson(), a_gameObject, a_prefabSystem);
+
+    l_rootJson[Constant::k_gameObjectJsonConverterNameJsonKey] = a_gameObject.GetREFName();
+
+    return l_rootJson;
 }
-nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDif(const nlohmann::json& a_baseJson, const GameObject& a_gameObject, SceneGameObjectPrefabSystem& a_prefabSystem) const
+nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDIFF(const nlohmann::json& a_baseJson, const GameObject& a_gameObject, SceneGameObjectPrefabSystem& a_prefabSystem) const
 {
     // 基底が無効なら差分は作れないのでフル形式へフォールバック
     if (a_baseJson.is_null())
@@ -179,8 +183,8 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDif(const nlohm
     if (const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
         l_transformComponent)
     {
-        const auto& l_baseTransformJson = a_baseJson.value       (k_transformComponentJsonKey, nlohmann::json{});
-        const auto& l_transformDiffJson = Utility::DetectJsonDiff(l_baseTransformJson,l_transformComponent->Serialize());
+        const auto&  l_baseTransformJson = a_baseJson.value       (k_transformComponentJsonKey, nlohmann::json{});
+              auto&& l_transformDiffJson = Utility::DetectJsonDiff(l_baseTransformJson,l_transformComponent->Serialize());
      
         if (!l_transformDiffJson.is_null())
         {
@@ -188,16 +192,15 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDif(const nlohm
         }
     }
 
-
     // Nameの差分
-    if (const auto& l_baseJsonName = a_baseJson.value(k_nameJsonKey, std::string{});
+    if (const auto& l_baseJsonName = a_baseJson.value(Constant::k_gameObjectJsonConverterNameJsonKey, std::string{});
         l_baseJsonName != a_gameObject.GetREFName())
     {
-        l_diffJson[k_nameJsonKey] = a_gameObject.GetREFName();
+        l_diffJson[Constant::k_gameObjectJsonConverterNameJsonKey] = a_gameObject.GetREFName();
     }
  
     // IsPrefabOriginの差分
-    if (const bool l_isPrefabOrigin = a_baseJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOrigin); 
+    if (const bool l_isPrefabOrigin = a_baseJson.value(k_isPrefabOriginJsonKey, Constant::k_gameObjectInitialValueIsPrefabOrigin); 
         l_isPrefabOrigin != a_gameObject.GetVALIsPrefabOrigin())
     {
         l_diffJson[k_isPrefabOriginJsonKey] = a_gameObject.GetVALIsPrefabOrigin();
@@ -220,7 +223,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDif(const nlohm
  
     // SceneInstanceUUID
     // インスタンス識別用。これが無いとロード毎に新規発行され外部参照が壊れる
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), k_sceneInstanceUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
  
     // PrefabHierarchyNodeUUID
     // 子として配置される場合の照合用
@@ -253,9 +256,8 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
     // 差分形式ではフィールド単位の差分のみが書き出されるため、
     // Prefab基底と再帰マージしてから読み込む
     // (未変更フィールドはPrefabに追従させるため)
-    const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
-     
-    if (l_transformComponent)
+    if (const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
+        l_transformComponent)
     {
         const auto& l_diffJson = a_rootJson.value    (k_diffJsonKey, nlohmann::json{});
         const auto& l_dataJson = l_diffJson.is_object() ? l_diffJson : a_rootJson;
@@ -269,14 +271,14 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
     }
 
     // 名前のデシリアライズ
-    if (const auto& l_name = l_mergedJson.value(k_nameJsonKey, std::string{});
+    if (const auto& l_name = l_mergedJson.value(Constant::k_gameObjectJsonConverterNameJsonKey, std::string{});
         !l_name.empty())
     {
         a_gameObject.SetName(l_name);
     }
  
     // プレハブかどうかのデシリアライズ
-    const bool l_isPrefabOrigin = l_mergedJson.value(k_isPrefabOriginJsonKey, Constant::l_gameObjectInitialValueIsPrefabOrigin);
+    const bool l_isPrefabOrigin = l_mergedJson.value(k_isPrefabOriginJsonKey, Constant::k_gameObjectInitialValueIsPrefabOrigin);
  
     a_gameObject.SetIsPrefabOrigin(l_isPrefabOrigin);
 
