@@ -27,12 +27,8 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player\\RGray.json",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player\\RGray.json"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
                 "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Player",
