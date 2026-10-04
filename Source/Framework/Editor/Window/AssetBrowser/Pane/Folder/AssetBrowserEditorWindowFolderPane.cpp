@@ -412,68 +412,37 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     // 選択状態をフラグへ反映
     // m_selectedFilePathListにa_currentFolderPathが含まれていれば選択状態
     // std::findで線形探索(フォルダ選択は同時に数十件程度のため問題ない)
-    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList ();
-    const bool  l_isSelected           = std::find(l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
+    const auto& l_selectedFilePathList = m_selectionState.GetREFSelectedFilePathList();
+    const bool  l_isSelected           = std::find                                  (l_selectedFilePathList.begin(), l_selectedFilePathList.end(), a_currentFolderPath) != l_selectedFilePathList.end();
 
     if (l_isSelected)
     {
         l_treeNodeFlags |= ImGuiTreeNodeFlags_Selected;
     }
 
-          int   l_popStyleColorNUM = k_initialTreeNodePopStyleColorPaneActiveNUM;
-    const auto& l_clipboard        = a_editorWindow.GetREFClipboard();
-    const bool  l_isCutTarget      = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) && 
-                                      l_clipboard.Contains(a_currentFolderPath);
+    const auto& l_clipboard   = a_editorWindow.GetREFClipboard();
+    const bool  l_isCutTarget = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) &&
+                                 l_clipboard.Contains(a_currentFolderPath);
 
     // ハイライト強弱の制御
-    // a_activePane == FolderPane : 強ハイライト(ImGuiのデフォルト色)
-    // a_activePane == AssetPane  : 弱ハイライト(デフォルト色のalphaを下げる)
-    // a_activePane == Invalid    : 弱ハイライト(AssetPaneと同じ扱い)
-    // ImGui::PushStyleColorは色をスタックへ積む
-    // ImGuiCol_Header        : 選択時の背景色
-    // ImGuiCol_HeaderHovered : ホバー時の背景色
-    // ImGuiCol_HeaderActive  : クリック中の背景色
-    // 3色分PushするのでPopStyleColor(3)で3つまとめて戻す
-    if (a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane)
-    {
-        const auto&  l_headerColor       = l_isCutTarget ? Constant::k_imguiDarkBlueTranslucentColor : Constant::k_imguiStrongBlueColor;
-        const auto&  l_headerActiveColor = l_isCutTarget ? Constant::k_imguiDarkBlueTranslucentColor : Constant::k_imguiStrongBlueColor;
-              ImVec4 l_hoveredColor      = {};
+    // 描画先ペインがアクティブなら不透明の選択色
+    // 非アクティブなら半透明の選択色となる
+    // a_activePane == Invalid    : 非アクティブと同じ扱い
+    const bool l_isActivePane = a_editorWindow.GetVALActivePane() == Enum::AssetBrowserActivePaneType::FolderPane;
 
-        if (l_isCutTarget)
-        {
-            l_hoveredColor = Constant::k_imguiDarkBlueTranslucentColor;
-        }
-        else if (l_isSelected)
-        {
-            l_hoveredColor = Constant::k_imguiStrongBlueColor;
-        }
-        else
-        {
-            l_hoveredColor = Constant::k_imguiLightGrayColor;
-        }
+    Utility::IMGUIPushItemHighlightColors(l_isSelected, l_isActivePane, l_isCutTarget);
 
-        ImGui::PushStyleColor(ImGuiCol_Header,        l_headerColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, l_hoveredColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderActive,  l_headerActiveColor);
-
-        l_popStyleColorNUM = k_treeNodePopStyleColorPaneActiveNUM;
-    }
-    else
-    {
-        
-        ImGui::PushStyleColor(ImGuiCol_Header,        Constant::k_imguiStrongBlueTranslucentColor);
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, Constant::k_imguiLightGrayColor);
-
-        l_popStyleColorNUM = k_treeNodePopStyleColorPaneInactiveNUM;
-    }
+    // IMGUIPushItemHighlightColors分 + Cut時は追加でImGuiCol_Text分
+    int l_popStyleColorNUM = Constant::k_imguiItemHighlightColorPushCount;
 
     // Cut中のフォルダはアイコン・フォルダ名も半透明にする
     /// ImGuiCol_Text : テキスト色(アイコン + フォルダ名前)
-    // PushStyleColorでテキスト色を半透明にする
+    // 半透明化はテキスト色へ半分倍率を掛けて表現する
     if (l_isCutTarget)
     {
-        ImGui::PushStyleColor(ImGuiCol_Text, Constant::k_imguiCutTargetTextColor);
+        const auto& l_style = ImGui::GetStyle();
+
+        ImGui::PushStyleColor(ImGuiCol_Text, l_style.Colors[ImGuiCol_Text] * Constant::k_halfMagnification);
 
         // テキスト色のPush分をPopStyleColorの数に追加する
         ++l_popStyleColorNUM;
@@ -589,7 +558,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
             const ImVec2& l_iconPosition  = l_mousePosition + k_banIconOffset;
 
-            const auto& l_redColor = Constant::k_imguiRedColor * Constant::k_imguiImVec4ToImU32;
+            const auto& l_redColor = Constant::k_imguiDangerColor * Constant::k_imguiImVec4ToImU32;
 
             // ImGui::GetFontSizeで現在のフォントサイズを取得
             // BanIconを赤色で描画して禁止を明示する

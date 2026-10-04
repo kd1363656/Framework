@@ -355,7 +355,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
     // GameObjectノードと同じ仕組みでユーザーが閉じた状態も維持される
     ImGui::SetNextItemOpen(m_isSceneNodeOpen);
 
+    // 選択中・ホバー中の背景色をエディタ共通ルールでPushする
+    // 他ウィンドウのアイテムと同じ選択色で描画される
+    Utility::IMGUIPushItemHighlightColors(m_sceneSelectionState.GetVALIsSceneSelected(), a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID);
+
     const bool l_isNodeOpen = ImGui::TreeNodeEx(l_nodeLabel.c_str(), l_treeNodeFlags);
+
+    Utility::IMGUIPopItemHighlightColors();
 
     // 開閉状態を保持して次フレームへ引き継ぐ
     m_isSceneNodeOpen = l_isNodeOpen;
@@ -528,10 +534,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     {
         const auto& l_prefabSystem = a_scene.GetREFGameObjectPrefabSystem();
        
-        l_textColor = l_prefabSystem.FindPTRPrefab(l_prefabUUID) ? k_prefabGameObjectTextColor : k_missingPrefabTextColor;
+        l_textColor = l_prefabSystem.FindPTRPrefab(l_prefabUUID) ? k_prefabGameObjectTextColor : Constant::k_imguiDangerColor;
     }
 
-    // Cut操作でクリップボードに入っているGameObjectなら文字色を暗くする
+    // Cut対象なら文字色を半透明にする
+    // AssetBrowserと同じくテキスト色へ半分倍率を掛けて暗くする
     // 左クリックでの選択は可能なまま維持する(選択フラグには影響しない)
     if (m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
         m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut)
@@ -541,6 +548,14 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     }
 
     ImGui::PushStyleColor(ImGuiCol_Text, l_textColor);
+
+    // 選択中・ホバー中・Cut対象の背景色をエディタ共通ルールでPushする
+    // 他ウィンドウのアイテムと同じ選択色で描画される
+    const bool l_isSelected  = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
+    const bool l_isCutTarget = m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
+                               m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut;
+
+    Utility::IMGUIPushItemHighlightColors(l_isSelected, a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == GetREFTypeINFO().k_staticTypeID, l_isCutTarget);
 
     // このノードがリネーム対象かどうか
     const bool l_isRenaming = m_renameState.m_isActive       &&
@@ -560,8 +575,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     const auto& l_nodeLabel  = l_label + "##" + boost::uuids::to_string(l_gameObject->GetREFSceneInstanceUUID());
     const bool  l_isNodeOpen = ImGui::TreeNodeEx                       (l_nodeLabel.c_str(), l_treeNodeFlags);
 
-    // テキストカラーをPushした分Popする
-    ImGui::PopStyleColor();
+    // 後からPushした順に戻す
+    // Header系3色分(IMGUIPushItemHighlightColors) → テキスト色の順でPopする
+    Utility::IMGUIPopItemHighlightColors();
+    ImGui::PopStyleColor               ();
 
     const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
 
@@ -771,7 +788,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
         ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
     {
               auto* l_drawList = ImGui::GetWindowDrawList();
-        const auto& l_color    = Constant::k_imguiStrongBlueColor * Constant::k_imguiImVec4ToImU32;
+        const auto& l_color    = Constant::k_imguiAccentColor * Constant::k_imguiImVec4ToImU32;
  
         // InvisibleButtonの矩形を取得
         const auto& l_itemMIN = ImGui::GetItemRectMin();

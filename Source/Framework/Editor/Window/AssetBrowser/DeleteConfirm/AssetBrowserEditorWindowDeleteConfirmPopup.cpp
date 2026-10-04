@@ -177,13 +177,13 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     // ImGuiStyleVar_FrameBorderSize : 枠線太さ(デフォルト0.0Fで批評委のため1.0F)
     if (l_isDeleteHovered)
     {
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiStrongBlueTranslucentColor);
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiStrongBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiAccentTranslucentColor);
+        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
         ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);
     }
     else if (l_isDeleteSelected)
     {
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiStrongBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
         ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);   
     }
 
@@ -221,13 +221,13 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     // どちらでもない   : デフォルト
     if (l_isCancelHovered)
     {
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiStrongBlueTranslucentColor);
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiStrongBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiAccentTranslucentColor);
+        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
         ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);      
     }
     else if (l_isCancelSelected)
     {
-        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiStrongBlueColor);
+        ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
         ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);  
     }
 

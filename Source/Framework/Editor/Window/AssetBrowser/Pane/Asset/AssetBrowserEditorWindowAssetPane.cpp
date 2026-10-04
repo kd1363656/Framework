@@ -593,31 +593,23 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardBackground(const Im
     // 色の優先基準 : 切り取り対象 > 選択中(AssetPaneがアクティブ) > 選択中(AssetPaneが非アクティブ) > ホバー > 通常
     auto l_frameColor = ImGui::GetColorU32(k_cardDefaultGrayColor);
 
-    if (a_isCutTarget &&
-        a_isSelected)
+    if (a_isCutTarget)
     {
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueColor);
-    }
-    else if (a_isCutTarget)
-    {
-        auto l_darkGray = k_cardDefaultGrayColor;
-
-        l_darkGray.w *= Constant::k_halfMagnification;
-
-        l_frameColor = ImGui::GetColorU32(l_darkGray);
+        // Cut対象は選択色へ半分倍率を掛けて暗くした色を使う
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemSelectedColor * Constant::k_halfMagnification);
     }
     else if (a_isSelected &&
              a_isActivePane)
     {
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueColor);
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemSelectedColor);
     }
     else if (a_isSelected)
     {
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiStrongBlueTranslucentColor);
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemSelectedInactiveColor);
     }
     else if (a_isHovered)
     {
-        l_frameColor = ImGui::GetColorU32(Constant::k_imguiLightGrayColor);
+        l_frameColor = ImGui::GetColorU32(Constant::k_imguiItemHoveredColor);
     }
 
     // 外側カードは全角丸で描画
@@ -711,8 +703,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::fil
                                     l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finaleIconWidth) * Constant::k_halfMagnification };
 
     // アイコン色
-    // 切り取り対象の場合は半透明、それ以外は通常テキスト色
-    const auto l_iconColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
+    // 切り取り対象の場合はテキスト色へ半分倍率を掛けて暗くする、それ以外は通常テキスト色
+    const auto& l_style     = ImGui::GetStyle();
+    const auto  l_iconColor = a_isCutTarget ? ImGui::GetColorU32(l_style.Colors[ImGuiCol_Text] * Constant::k_halfMagnification) : ImGui::GetColorU32(ImGuiCol_Text);
 
     // AddTextの第二引数に計算したフォントサイズを渡すことで
     // 指定サイズへスケール描画する
@@ -749,8 +742,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardFileName(const std:
     const auto& l_displayName = TruncateText(l_fileName, l_maxNameWidth);
 
     // テキスト色
-    // 切り取り対象の場合は半透明
-    const auto& l_textColor = a_isCutTarget ? ImGui::GetColorU32(Constant::k_imguiCutTargetTextColor) : ImGui::GetColorU32(ImGuiCol_Text);
+    // 切り取り対象の場合はテキスト色へ半分倍率を掛けて暗くする
+    const auto& l_style     = ImGui::GetStyle();
+    const auto& l_textColor = a_isCutTarget ? ImGui::GetColorU32(l_style.Colors[ImGuiCol_Text] * Constant::k_halfMagnification) : ImGui::GetColorU32(ImGuiCol_Text);
 
     // ファイル名を左上揃えで配置
     // 左 : 内側ボックス左端 + k_cardPadding

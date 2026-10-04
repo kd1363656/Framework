@@ -117,10 +117,10 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
     l_colorList[ImGuiCol_ScrollbarGrab] = ConvertEditorColorToIMVEC4(k_panelHoverColor);
 
     // スクロールバーのつまみにマウスが乗った時の色。
-    l_colorList[ImGuiCol_ScrollbarGrabHovered] = ConvertEditorColorToIMVEC4(k_headerHoverColor);
+    l_colorList[ImGuiCol_ScrollbarGrabHovered] = Constant::k_imguiItemHoveredColor;
 
     // スクロールバーをドラッグ中の色。
-    l_colorList[ImGuiCol_ScrollbarGrabActive] = ConvertEditorColorToIMVEC4(k_headerActiveColor);
+    l_colorList[ImGuiCol_ScrollbarGrabActive] = Constant::k_imguiItemActiveColor;
 
     // Checkboxのチェック、MenuItemのチェックなどの色。
     l_colorList[ImGuiCol_CheckMark] = ConvertEditorColorToIMVEC4(k_accentColor);
@@ -142,13 +142,15 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
 
     // TreeNode、Selectable、CollapsingHeaderなどの通常背景色。
     // Scene Hierarchyの選択行などにも影響する。
-    l_colorList[ImGuiCol_Header] = ConvertEditorColorToIMVEC4(k_headerColor);
+    // 選択色はノード単位でPushItemHighlightColorsが上書きするため
+    // ここでは未選択アイテムのニュートラルな色だけを設定する
+    l_colorList[ImGuiCol_Header] = Constant::k_imguiItemColor;
 
     // TreeNode、Selectableなどにマウスが乗った時の色。
-    l_colorList[ImGuiCol_HeaderHovered] = ConvertEditorColorToIMVEC4(k_headerHoverColor);
+    l_colorList[ImGuiCol_HeaderHovered] = Constant::k_imguiItemHoveredColor;
 
     // TreeNode、Selectableなどをクリック中、または選択中の色。
-    l_colorList[ImGuiCol_HeaderActive] = ConvertEditorColorToIMVEC4(k_headerActiveColor);
+    l_colorList[ImGuiCol_HeaderActive] = Constant::k_imguiItemActiveColor;
 
     // 区切り線の通常色。
     l_colorList[ImGuiCol_Separator] = ConvertEditorColorToIMVEC4(k_borderColor);
@@ -202,7 +204,7 @@ void FWK::Editor::EditorStyle::ApplySakuraDarkStyle()
     l_colorList[ImGuiCol_PlotHistogramHovered] = ConvertEditorColorToIMVEC4(k_accentHoverColor);
 
     // ImGui::BeginTable()使用時のヘッダー背景色。
-    l_colorList[ImGuiCol_TableHeaderBg] = ConvertEditorColorToIMVEC4(k_headerColor);
+    l_colorList[ImGuiCol_TableHeaderBg] = Constant::k_imguiItemColor;
 
     // Tableの強い境界線。
     l_colorList[ImGuiCol_TableBorderStrong] = ConvertEditorColorToIMVEC4(k_borderColor);

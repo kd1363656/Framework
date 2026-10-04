@@ -943,6 +943,9 @@
     <Filter Include="Source\Framework\Utility\IMGUI\DragDrop">
       <UniqueIdentifier>{714aaf33-8c33-48ad-a062-c35f888683a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\IMGUI\ItemHighlight">
+      <UniqueIdentifier>{9e1b7c34-2d5a-4f86-b812-4a7f3e9c1d56}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Viewport">
       <UniqueIdentifier>{3cffe2af-0671-4cdd-b5b3-65850c307981}</UniqueIdentifier>
     </Filter>
@@ -1002,6 +1005,9 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor">
       <UniqueIdentifier>{6982fdce-d030-43fa-a394-b3ea6e54db1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\Style">
+      <UniqueIdentifier>{7a3c9e12-5b84-4f21-9d68-2c6f8a1e4b07}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Observer\Inspector">
       <UniqueIdentifier>{0dc6c2b0-c1af-4f6b-9309-936b88c05b83}</UniqueIdentifier>
@@ -2442,6 +2448,9 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\Factory\IMGUIFactoryUtility.h">
       <Filter>Source\Framework\Utility\IMGUI\Factory</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\IMGUI\ItemHighlight\IMGUIItemHighlightUtility.h">
+      <Filter>Source\Framework\Utility\IMGUI\ItemHighlight</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
@@ -2643,8 +2652,14 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIItemHighlightUtilityConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Style\EditorStyleConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Style</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowAssetPaneConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Window</Filter>

@@ -15,14 +15,14 @@
             },
             "Name": "RGray",
             "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
-            "PrefabUUID": "5ac251b2-fa08-493e-8c5b-cb0e8ef95385",
+            "PrefabUUID": "55087e9c-b6a8-430d-be8a-f098ff60bfa7",
             "SceneInstanceUUID": "048572c9-f3fa-4de0-b845-834a5e209f8f"
         }
     ],
     "GameObjectPrefabSystem": {
         "PrefabMap": [
             {
-                "UUID": "5ac251b2-fa08-493e-8c5b-cb0e8ef95385"
+                "UUID": "55087e9c-b6a8-430d-be8a-f098ff60bfa7"
             }
         ]
     },

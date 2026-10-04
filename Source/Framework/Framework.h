@@ -63,6 +63,7 @@
 //===============================================================================
 // エディター
 //===============================================================================
+#include "Definition/Constant/Editor/Style/EditorStyleConstant.h"
 #include "Editor/Style/EditorStyle.h"
 #include "Definition/Type/Alias/NodeEditorTypeAlias.h"
 #include "Definition/Constant/Utility/File/SaveFileDialogUtilityConstant.h"
@@ -488,6 +489,8 @@
 #include "Utility/Enum/EnumBitShiftUtility.h"
 #include "Definition/Constant/Utility/IMGUI/IMGUIBoolToStringUtilityCosntant.h"
 #include "Utility/IMGUI/Bool/IMGUIBoolToStringUtility.h"
+#include "Definition/Constant/Utility/IMGUI/IMGUIItemHighlightUtilityConstant.h"
+#include "Utility/IMGUI/ItemHighlight/IMGUIItemHighlightUtility.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Definition/Constant/Observer/ObserverInspectorConstant.h"
 #include "Observer/Inspector/ObsreverInspector.h"

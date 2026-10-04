@@ -68,10 +68,7 @@ namespace FWK::Editor
 
         static constexpr float k_banIconSizeOffset = 2.0F;
         
-        static constexpr int k_treeNodePopStyleColorPaneActiveNUM        = 3;
-        static constexpr int k_treeNodePopStyleColorPaneInactiveNUM      = 2;
-        static constexpr int k_initialTreeNodePopStyleColorPaneActiveNUM = 0;
-        static constexpr int k_keyboardFocusNextItem                     = 0;
+        static constexpr int k_keyboardFocusNextItem = 0;
 
         std::unordered_map<std::filesystem::path, bool> m_folderOpenStateMap = {};
 

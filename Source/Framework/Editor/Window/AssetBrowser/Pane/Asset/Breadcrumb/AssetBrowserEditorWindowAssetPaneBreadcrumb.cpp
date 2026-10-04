@@ -15,7 +15,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
           std::error_code       l_errorCode   = {};
     const std::filesystem::path l_displayPath = std::filesystem::proximate(l_breadcrumbPath, std::filesystem::current_path(), l_errorCode);
 
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiStrongDarkColor);
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, Constant::k_imguiDeepDarkColor);
 
     // ImGui::GetTextLineHeight : 現在使用中のフォント1行分の高さを取得
     // パンくずリストを格納する子領域を作成
@@ -83,7 +83,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
         // ImGuiCol_HeaderHovered色をPushしてから描画
         // ImGui::PushStyleColor  : 色をスタックへ積む
         // ImGuiCol_HeaderHovered : ホバー時の背景色
-        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, Constant::k_imguiLightGrayColor);
+        ImGui::PushStyleColor(ImGuiCol_HeaderHovered, Constant::k_imguiItemHoveredColor);
 
         // Selectable描画
         ImGui::Selectable(l_selectableLabel.c_str(),

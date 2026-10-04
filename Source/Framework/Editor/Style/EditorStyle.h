@@ -23,8 +23,6 @@ namespace FWK::Editor
 
         static constexpr float k_editorGlobalScale = 1.0F;
 
-        // Unreal Engine風のシャープな角丸。
-        // UEエディタは角が立ったUIが基本だが、わずかに丸めることで柔らかさを出す。
         static constexpr float k_windowRounding    = 2.0F;
         static constexpr float k_childRounding     = 2.0F;
         static constexpr float k_frameRounding     = 2.0F;
@@ -33,8 +31,6 @@ namespace FWK::Editor
         static constexpr float k_grabRounding      = 2.0F;
         static constexpr float k_tabRounding       = 2.0F;
 
-        // UE風の控えめな枠線。
-        // UEエディタは枠線が薄く、パネルの区別は色味で表現される。
         static constexpr float k_windowBorderSize = 1.0F;
         static constexpr float k_childBorderSize  = 1.0F;
         static constexpr float k_popupBorderSize  = 1.0F;
@@ -143,24 +139,6 @@ namespace FWK::Editor
                                                                         0.95F,
                                                                         1.00F };
 
-        // ヘッダー: TreeNode/Selectableの背景。
-        // ホバー・選択時は青系でUEの選択ハイライトを再現。
-        static constexpr TypeAlias::Math::Color k_headerColor = { 0.18F,
-                                                                  0.18F,
-                                                                  0.18F,
-                                                                  1.00F };
-
-        static constexpr TypeAlias::Math::Color k_headerHoverColor = { 0.12F,
-                                                                       0.40F,
-                                                                       0.85F,
-                                                                       1.00F };
-
-        static constexpr TypeAlias::Math::Color k_headerActiveColor = { 0.15F,
-                                                                        0.50F,
-                                                                        1.00F,
-                                                                        1.00F };
-
-        // タブ: 非アクティブは暗め、アクティブは一段明るいグレー。
         static constexpr TypeAlias::Math::Color k_tabColor = { 0.12F,
                                                                0.12F,
                                                                0.12F,
