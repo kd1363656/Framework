@@ -88,22 +88,40 @@ void FWK::Editor::EditorGameObjectSelectionState::ClearSelectedGameObjectList()
 
 void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
 {
-    // 破棄済み、または参照切れのGameObjectを選択リストから取り除く
-    // Destroy()されたGameObjectはScene::EarlyUpdateでリストから外れるまで生存しているため
-    // expiredだけでなくIsDestroyedも判定対象にする
+    // 破棄済み、参照切れのGameObjectを選択状態から取り除く
+    // Undoで生成が取り消されたGameObjectはコマンドがshared_ptrを保持し続けるため
+    // 実体が消えずlock()も成功するが、SceneのUUIDRegistryからは外れている
+    // 「シーン管理下にあるか」をRegistry解決で判定して選択対象から外す
+    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+
     std::erase_if(m_selectedGameObjectList,
-                  [](const auto& a_gameObjectWeak)
+                  [&l_scene](const auto& a_gameObjectWeak)
                   {
                       const auto& l_gameObject = a_gameObjectWeak.lock();
  
-                      return !l_gameObject ||
-                             l_gameObject->GetVALIsDestroyed();
+                      // Destroy()されたGameObjectはScene::EarlyUpdateでリストから外れるまで
+                      // 生存しているためexpiredだけでなくIsDestroyedも判定対象にする
+                      if (!l_gameObject ||
+                          l_gameObject->GetVALIsDestroyed())
+                      {
+                          return true;
+                      }
+ 
+                      // Sceneそのものが無ければ全て無効扱い
+                      if (!l_scene) { return true; }
+ 
+                      // シーンのUUIDRegistryで自分自身が解決できるか確認する
+                      // 取り外されたGameObjectはRegistryから消えているため
+                      // 同一UUIDで検索しても自分が返らない
+                      return l_scene->FindVALGameObject(l_gameObject->GetREFSceneInstanceUUID()).lock() != l_gameObject;
                   });
  
-    // アンカーが無効化されていたらリセットする
+    // アンカーも同じ判定で確認する
     if (const auto& l_anchor = m_rangeSelectionAnchor.lock();
-        !l_anchor ||
-        l_anchor->GetVALIsDestroyed())
+        !l_anchor                     ||
+        !l_scene                      ||
+        l_anchor->GetVALIsDestroyed() ||
+        l_scene->FindVALGameObject(l_anchor->GetREFSceneInstanceUUID()).lock() != l_anchor)
     {
         m_rangeSelectionAnchor = {};
     }
@@ -112,8 +130,8 @@ void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
 void FWK::Editor::EditorGameObjectSelectionState::RestoreState(const std::vector<boost::uuids::uuid>& a_uuidList, const boost::uuids::uuid& a_anchorUUID)
 {
     // SceneManager経由で現在のSceneを取得する
-    auto& l_sceneManager = SceneManager::GetInstance ();
-    auto  l_scene        = l_sceneManager.GetVALScene().lock();
+    const auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
  
     if (!l_scene) { return; }
  

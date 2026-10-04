@@ -155,4 +155,19 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
     auto& l_sceneSelectionState = a_editorWindow.GetMutableREFSceneSelectionState();
 
     l_sceneSelectionState.SetIsSceneSelected(false);
+
+    // 生成をUndoRedoへ登録する
+    boost::uuids::uuid l_parentUUID = {};
+
+    if (const auto& l_parent = a_parent.lock();
+        l_parent)
+    {
+        l_parentUUID = l_parent->GetREFSceneInstanceUUID();
+    }
+
+    auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
+
+    std::vector<std::weak_ptr<GameObject>> l_createdGameObjectList = { l_createdGameObject };
+
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdGameObjectList), l_parentUUID);
 }

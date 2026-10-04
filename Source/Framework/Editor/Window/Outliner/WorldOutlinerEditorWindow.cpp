@@ -416,7 +416,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
         l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList))
     {
         // Prefabとして登録されているファイルのみ生成対象になる
-        const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+        auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
  
         // 生成したGameObjectを選択状態にする
         if (!l_createdList.empty())
@@ -427,6 +427,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
             {
                 l_gameObjectSelectionState.AddSelectedGameObject(l_created);
             }
+
+            auto& l_editorManager = EditorManager::GetInstance                  ();
+            auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), boost::uuids::uuid{});
         }
     }
 
@@ -897,7 +902,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
 
     if (!l_imguiDragDropPayloadStorage.DragDropTarget(Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel, l_droppedFilePathList)) { return; }
 
-    const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, a_targetGameObject, a_scene);
+    auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, a_targetGameObject, a_scene);
 
     if (l_createdList.empty()) { return; }
 
@@ -908,14 +913,31 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
  
     for (const auto& l_created : l_createdList)
     {
+        // プレハブファイルから作成したゲームオブジェクトを選択状態にする
         l_gameObjectSelectionState.AddSelectedGameObject(l_created);
     }
- 
+
+    // 生成をUndoRedo履歴へ登録する
+    // 親はドロップ先のGameObject
+    boost::uuids::uuid l_parentSceneInstanceUUID = {};
+
+    if (const auto& l_targetGameObject = a_targetGameObject.lock();
+        l_targetGameObject)
+    {
+        l_parentSceneInstanceUUID = l_targetGameObject->GetREFSceneInstanceUUID();
+    }
+
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), l_parentSceneInstanceUUID);
+
     // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
     if (const auto& l_targetGameObject = a_targetGameObject.lock();
         l_targetGameObject)
     {
-        m_gameObjectOpenStateMap[l_targetGameObject->GetREFSceneInstanceUUID()] = true;
+        const auto& l_sceneInstanceUUID = l_targetGameObject->GetREFSceneInstanceUUID();
+
+        m_gameObjectOpenStateMap[l_sceneInstanceUUID] = true;
     }
 }
 void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a_scene, EditorManager& a_editorManager)
@@ -941,8 +963,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
         return;
     }
 
-        // Prefabとして登録されているファイルのみ生成対象になる
-    const auto& l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
+    // Prefabとして登録されているファイルのみ生成対象になる
+    auto l_createdList = m_assetCreator.CreateGameObjectFromPrefabDrop(l_droppedFilePathList, {}, a_scene);
  
     if (l_createdList.empty()) { return; }
  
@@ -952,8 +974,15 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
  
     for (const auto& l_created : l_createdList)
     {
+        // プレハブファイルから作成したゲームオブジェクトを選択状態にする
         l_gameObjectSelectionState.AddSelectedGameObject(l_created);
     }
+
+    // 生成をUndoRedo履歴へ登録する
+    // 空白へのドロップなので親はなし(NilUUID)
+    auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), boost::uuids::uuid{});
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const

@@ -189,6 +189,39 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
     m_pendingAddGameObjectList.emplace_back(a_gameObject);
 }
 
+void FWK::Scene::RemoveGameObject(const std::weak_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
+    // 破棄フラグを立てずにシーン管理から外す
+    // 実体は呼び出し側が保持し続けるため再追加も可能
+    if (const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
+        !l_sceneInstanceUUID.is_nil())
+    {
+        m_gameObjectUUIDRegistry.Erase(l_sceneInstanceUUID);
+    }
+
+    std::erase(m_gameObjectList,           l_gameObject);
+    std::erase(m_pendingAddGameObjectList, l_gameObject);
+ 
+    // 実行階層リストからも外す
+    for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
+    {
+        std::erase_if(l_gameObjectExecutionLevel,
+                      [&l_gameObject](const auto& a_gameObjectWeak)
+                      {
+                          return a_gameObjectWeak.lock() == l_gameObject;
+                      });
+    }
+ 
+    // 親がいるなら親子関係も解除する
+    auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
+
+    l_hierarchy.ClearParent();
+}
+
 std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_sceneInstanceUUID) const
 {
     return m_gameObjectUUIDRegistry.FindVALRegisteredType(a_sceneInstanceUUID);

@@ -1,4 +1,9 @@
-#pragma once
+﻿#pragma once
+
+namespace FWK
+{
+    class GameObject;
+}
 
 namespace FWK::Editor
 {

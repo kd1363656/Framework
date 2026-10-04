@@ -31,7 +31,7 @@
                         "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data",
+                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Player",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 241.0
                 },
@@ -127,7 +127,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
@@ -175,10 +175,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data"
+                                "SelectedFilePath": "Asset\\Data\\Prefab"
                             }
                         ]
                     }
