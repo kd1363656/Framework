@@ -87,6 +87,7 @@
 #include "Editor/UndoRedo/Converter/Json/EditorUndoRedoSystemJsonConverter.h"
 #include "Editor/UndoRedo/EditorUndoRedoSystem.h"
 #include "Editor/Selection/Command/ChangeSelectionCommand.h"
+#include "Editor/Window/Command/GameObject/CreateGameObjectCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/EditorManager.h"
 

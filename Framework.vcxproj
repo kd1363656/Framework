@@ -517,6 +517,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
@@ -844,6 +845,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
