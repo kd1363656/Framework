@@ -86,7 +86,7 @@
 #include "Definition/Constant/Editor/UndoRedo/EditorUndoRedoSystemJsonConverterConstant.h"
 #include "Editor/UndoRedo/Converter/Json/EditorUndoRedoSystemJsonConverter.h"
 #include "Editor/UndoRedo/EditorUndoRedoSystem.h"
-#include "Editor/Selection/Command/ChangeGameObjectSelectionCommand.h"
+#include "Editor/Selection/Command/ChangeSelectionCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/EditorManager.h"
 
@@ -591,6 +591,8 @@
 // エディター
 //===============================================================================
 #include "Utility/IMGUI/DragDrop/IMGUIDragDropPayloadStorage.h"
+#include "Editor/Window/Details/GameObject/DetailsEditorGameObject.h"
+#include "Editor/Window/Details/Scene/DetailsEditorScene.h"
 #include "Editor/Window/Details/DetailsEditorWindow.h"
 #include "Utility/File/SaveFileDialogUtility.h"
 #include "Editor/Window/AssetBrowser/Watcher/Change/AssetBrowserEditorWindowDirectoryChangeBase.h"

@@ -1,0 +1,1 @@
+#include "DetailsEditorScene.h"

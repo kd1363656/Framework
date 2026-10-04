@@ -952,6 +952,12 @@
     <Filter Include="Source\Framework\Editor\Window\Viewport\Toolbar">
       <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Details\GameObject">
+      <UniqueIdentifier>{f4c2a817-3e9b-4d51-8a76-2b1e9c5d8f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Details\Scene">
+      <UniqueIdentifier>{a7e3d5b2-8f41-4c69-b2d4-6e8f1a3c7b95}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Details">
       <UniqueIdentifier>{25abc7e1-8920-44cb-8000-eaa09690e4e3}</UniqueIdentifier>
     </Filter>
@@ -2463,6 +2469,12 @@
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Details\GameObject\DetailsEditorGameObject.h">
+      <Filter>Source\Framework\Editor\Window\Details\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.h">
+      <Filter>Source\Framework\Editor\Window\Details\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
     </ClInclude>
@@ -2916,7 +2928,7 @@
     <ClInclude Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.h">
       <Filter>Source\Framework\Asset\Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeGameObjectSelectionCommand.h">
+    <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.h">
       <Filter>Source\Framework\Editor\Selection\Command</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.h">
@@ -3407,6 +3419,12 @@
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Details\GameObject\DetailsEditorGameObject.cpp">
+      <Filter>Source\Framework\Editor\Window\Details\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.cpp">
+      <Filter>Source\Framework\Editor\Window\Details\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade\StaticModelCascadeShadowPerObjectDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Model\Static\Shadow\Cascade</Filter>
     </ClCompile>
@@ -3668,7 +3686,7 @@
     <ClCompile Include="Source\Framework\Asset\Inspector\AssetFilePathInspector.cpp">
       <Filter>Source\Framework\Asset\Inspector</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeGameObjectSelectionCommand.cpp">
+    <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp">
       <Filter>Source\Framework\Editor\Selection\Command</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp">

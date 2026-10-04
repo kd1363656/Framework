@@ -516,7 +516,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
-    <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeGameObjectSelectionCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
@@ -545,6 +545,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.h" />
     <ClInclude Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Details\GameObject\DetailsEditorGameObject.h" />
+    <ClInclude Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.h" />
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.h" />
@@ -841,7 +843,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeGameObjectSelectionCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
@@ -870,6 +872,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Change\FilePath\AssetBrowserEditorWindowDirectoryFilePathChange.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\AssetBrowser\Watcher\Notification\AssetBrowserEditorWindowDirectoryNotificationProcessor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Details\GameObject\DetailsEditorGameObject.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\EditorWindowBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.cpp" />

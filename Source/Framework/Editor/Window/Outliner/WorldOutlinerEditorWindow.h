@@ -51,7 +51,16 @@ namespace FWK::Editor
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
         void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
 
-        void PushSelectionChangeCommand(std::vector<boost::uuids::uuid>&& a_beforeUUIDList, EditorGameObjectSelectionState& a_gameObjectSelectionState, boost::uuids::uuid&& a_beforeAnchorUUID) const;
+        void PushSelectionChangeCommand(const bool                        a_beforeIsSceneSelected,
+                                        std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
+                                        EditorGameObjectSelectionState&   a_gameObjectSelectionState,
+                                        boost::uuids::uuid&&              a_beforeAnchorUUID) const;
+
+        void SelectScene(EditorGameObjectSelectionState& a_gameObjectSelectionState, const bool a_isToggleSelection = false);
+
+        void ClearSelection(EditorGameObjectSelectionState& a_gameObjectSelectionState);
+
+        void FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const;
 
         void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
                                     Scene&                          a_scene,

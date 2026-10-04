@@ -1,30 +1,7 @@
 {
-    "GameObjectList": [
-        {
-            "Diff": {
-                "ChildList": {
-                    "Added": [],
-                    "Modified": [],
-                    "RemovedUUIDList": []
-                },
-                "ComponentList": {
-                    "Added": [],
-                    "Modified": [],
-                    "RemovedUUIDList": []
-                }
-            },
-            "Name": "RGray",
-            "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
-            "PrefabUUID": "55087e9c-b6a8-430d-be8a-f098ff60bfa7",
-            "SceneInstanceUUID": "048572c9-f3fa-4de0-b845-834a5e209f8f"
-        }
-    ],
+    "GameObjectList": [],
     "GameObjectPrefabSystem": {
-        "PrefabMap": [
-            {
-                "UUID": "55087e9c-b6a8-430d-be8a-f098ff60bfa7"
-            }
-        ]
+        "PrefabMap": []
     },
     "LightSystem": {
         "AmbientLight": {
