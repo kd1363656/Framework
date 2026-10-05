@@ -1,8 +1,16 @@
 ﻿#pragma once
 
-namespace FWK::Graphics
+namespace FWK
 {
-    class Camera;
+    namespace Graphics
+    {
+        class Camera;
+    }
+
+    namespace Editor
+    {
+        class EditorCamera;
+    }
 };
 
 namespace FWK::Editor
@@ -14,17 +22,27 @@ namespace FWK::Editor
          ViewportEditorWindow();
         ~ViewportEditorWindow() override;
 
-        void PostDeserialize() override;
+        void Deserialize    (const nlohmann::json& a_rootJson) override;
+        void PostDeserialize()                                 override;
 
         void Draw(EditorManager& a_editorManager) override;
 
+        nlohmann::json Serialize() override;
+
         void SetupViewportTextureDescriptors();
+
+        const auto& GetREFEditorCamera() const { return m_editorCamera; }
+
+        auto& GetMutableREFEditorCamera() { return m_editorCamera; }
 
     private:
 
         ImTextureID FetchVALViewportTextureID() const;
 
         void DrawViewportTexture(const ImTextureID& a_textureID, const ImVec2& a_viewportSize) const;
+
+        void RegisterEditorCamera    () const;
+        void UpdateEditorCameraInput ();
 
         static constexpr std::string_view k_editorName                 = "ビューポート";
         static constexpr std::string_view k_thisWindowExplanationLabel = "現在のシーンの描画状態を見ることができるウィンドウ。";
@@ -38,9 +56,13 @@ namespace FWK::Editor
         
         static constexpr ImTextureID k_invalidViewportTextureID = {};
 
-        std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList = {};
+        std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList;
 
-        ViewportToolbar m_toolbar = {};
+        std::unique_ptr<EditorCamera> m_editorCamera;
+
+        Converter::ViewportEditorWindowJsonConverter m_jsonConverter;
+
+        ViewportToolbar m_toolbar;
 
         FWK_DEFINE_TYPE_INFO(ViewportEditorWindow, EditorWindowBase)
     };

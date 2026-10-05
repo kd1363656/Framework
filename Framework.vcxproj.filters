@@ -961,6 +961,12 @@
     <Filter Include="Source\Framework\Editor\Window\Viewport\Toolbar">
       <UniqueIdentifier>{a2c94694-3e2c-477b-bbeb-643883ffc9e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Converter">
+      <UniqueIdentifier>{b3d7f1a2-9c4e-4a7b-8f3d-2e6c5a9d1f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Viewport\Converter\Json">
+      <UniqueIdentifier>{c4e8a2b3-7d5f-4b8c-9e4a-3f7d6b0e2a58}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Editor\Window\Details\GameObject">
       <UniqueIdentifier>{f4c2a817-3e9b-4d51-8a76-2b1e9c5d8f30}</UniqueIdentifier>
     </Filter>
@@ -2493,6 +2499,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.h">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Viewport\Converter\Json\ViewportEditorWindowJsonConverter.h">
+      <Filter>Source\Framework\Editor\Window\Viewport\Converter\Json</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Details</Filter>
     </ClInclude>
@@ -3463,6 +3472,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\Toolbar\ViewportToolbar.cpp">
       <Filter>Source\Framework\Editor\Window\Viewport\Toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Viewport\Converter\Json\ViewportEditorWindowJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Window\Viewport\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Details\DetailsEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Details</Filter>

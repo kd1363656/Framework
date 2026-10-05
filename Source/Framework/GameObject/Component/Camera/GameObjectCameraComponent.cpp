@@ -31,13 +31,23 @@ void FWK::GameObjectCameraComponent::PostLateUpdate()
 {
     const auto& l_owner = GetREFOwner().lock();
 
-    FWK_ASSERT_RETURN_IF(!l_owner);
-
+    if (!l_owner) { return; }
+    
     const auto& l_transformComponent = l_owner->GetVALTransformComponent().lock();
 
-    FWK_ASSERT_RETURN_IF(!l_transformComponent);
-
+    if (!l_transformComponent) { return; }
+    
+    // エディター表示中もシーンカメラの定数バッファ内容は最新へ保つ
+    // (カリング可視化などがシーンカメラの値を参照するため)
     m_camera.ApplyCameraMatrix(l_transformComponent->GetREFMatrix());
+
+    // エディター表示中はViewportEditorWindowがエディターカメラを登録するため、
+    // エディター非表示中のみシーンカメラを描画カメラへ登録し直す
+    if (const auto& l_editorManager = Editor::EditorManager::GetInstance();
+        l_editorManager.GetVALIsDisableDrawEditor())
+    {
+        m_camera.RegisterCBCameraPass();
+    }
 }
 
 void FWK::GameObjectCameraComponent::EditInspector()

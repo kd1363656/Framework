@@ -1,18 +1,41 @@
 ﻿#include "ViewportEditorWindow.h"
+#include "../../../../Application/Application.h"
 
-FWK::Editor::ViewportEditorWindow::ViewportEditorWindow () = default;
+FWK::Editor::ViewportEditorWindow::ViewportEditorWindow() :
+    m_imGuiSRVDescriptorIndexList(),
+
+    m_editorCamera(std::make_unique<EditorCamera>()),
+
+    m_toolbar()
+{}
 FWK::Editor::ViewportEditorWindow::~ViewportEditorWindow()
 {
+    auto& l_editorManager = EditorManager::GetInstance();
+
     for (const auto& l_srvDescriptorIndex : m_imGuiSRVDescriptorIndexList)
     {
-        EditorManager::GetInstance().ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
+        l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
     }
 
     m_imGuiSRVDescriptorIndexList.clear();
 }
 
+void FWK::Editor::ViewportEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
+{
+    if (a_rootJson.is_null()) { return; }
+
+    m_jsonConverter.Deserialize(a_rootJson, *this);
+}
+
 void FWK::Editor::ViewportEditorWindow::PostDeserialize()
 {
+    FWK_ASSERT_RETURN_IF(!m_editorCamera, "エディターカメラが無効です。");
+
+    const auto& l_application = Application::GetInstance  ();
+    const auto& l_window      = l_application.GetREFWindow();
+
+    m_editorCamera->Setup(l_window.GetVALAspectRatio());
+
     SetupViewportTextureDescriptors();
 }
 
@@ -29,6 +52,10 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     ReportActiveWindowIfMouseClicked(a_editorManager);
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
+
+    // エディター表示中はエディターカメラを描画カメラとして登録する
+    // (エディター非表示時はシーンカメラ側が自身を登録し直す)
+    RegisterEditorCamera();
 
     // Viewport画像より先にツールバーを書く。
     // これにより画面へ重ならず、Viewport上部へ工程表示される
@@ -48,6 +75,12 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
         return;
     }
 
+    // Viewport表示領域のアスペクト比にエディターカメラを追従させる
+    if (m_editorCamera)
+    {
+        m_editorCamera->ApplyAspectRatio(l_viewportSize.x / l_viewportSize.y);
+    }
+
     // RenderGraphで作成された最終カラーTextureを、ImGuiで表示できるTextureIDとして取得する
     // 今回はRenderTargetTextureの解像度変更は行わなず、既存の描画結果をViewport内に拡縮表示する
     const auto l_viewportTextureID = FetchVALViewportTextureID();
@@ -63,7 +96,15 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     // Viewportの表示領域全体に、取得したTextureを描画する
     DrawViewportTexture(l_viewportTextureID, l_viewportSize);
 
+    // Viewport画像上での入力をエディターカメラへ反映する
+    UpdateEditorCameraInput();
+
     ImGui::End();
+}
+
+nlohmann::json FWK::Editor::ViewportEditorWindow::Serialize()
+{
+    return m_jsonConverter.Serialize(*this);
 }
 
 void FWK::Editor::ViewportEditorWindow::SetupViewportTextureDescriptors()
@@ -142,4 +183,61 @@ void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImTextureID& a
                  a_viewportSize,
                  l_uvMIN,
                  l_uvMAX);
+}
+
+void FWK::Editor::ViewportEditorWindow::RegisterEditorCamera() const
+{
+    FWK_ASSERT_RETURN_IF(!m_editorCamera, "エディターカメラが無効です。");
+
+          auto& l_graphicsManager  = Graphics::GraphicsManager::GetInstance   ();
+          auto& l_renderer         = l_graphicsManager.GetMutableREFRenderer  ();
+    const auto& l_renderGraph      = l_renderer.GetREFRenderGraph             ();
+          auto& l_cascadeShadowMap = l_renderer.GetMutableREFShadowContext    ().GetMutableREFCascadeShadowMap();
+
+    const auto& l_cbCameraPass = m_editorCamera->GetREFCamera().GetREFCBCameraPass();
+
+    if (const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<Graphics::CameraPassDrawRequest>().lock();
+        l_cameraPassDrawRequest)
+    {
+        // 描画用カメラの定数バッファ参照先をエディターカメラへ差し替える
+        l_cameraPassDrawRequest->SetSourceConstantBuffer(l_cbCameraPass);
+    }
+
+    // Cascade計算に使用するカメラもエディターカメラへ合わせる
+    l_cascadeShadowMap.SetCBCameraPass(l_cbCameraPass);
+}
+
+void FWK::Editor::ViewportEditorWindow::UpdateEditorCameraInput()
+{
+    FWK_ASSERT_RETURN_IF(!m_editorCamera, "エディターカメラが無効です。");
+
+    // 直前に描画したViewport画像上で、右クリック中のみカメラを操作する
+    if (!ImGui::IsItemHovered() ||
+        !ImGui::IsMouseDown(ImGuiMouseButton_Right))
+    {
+        return;
+    }
+
+    const auto& l_io = ImGui::GetIO();
+
+    // マウスの移動量をYaw/Pitch回転へ変換する
+    m_editorCamera->Rotate(l_io.MouseDelta.x * m_editorCamera->GetVALRotateSpeed(),
+                           l_io.MouseDelta.y * m_editorCamera->GetVALRotateSpeed());
+
+    // WASD/QEでカメラローカル方向の移動量を組み立てる
+    auto l_localDirection = TypeAlias::Math::Vector3::Zero;
+
+    if (ImGui::IsKeyDown(ImGuiKey_W)) { l_localDirection.z += TypeAlias::Math::Vector3::UnitZ.z; }
+    if (ImGui::IsKeyDown(ImGuiKey_S)) { l_localDirection.z -= TypeAlias::Math::Vector3::UnitZ.z; }
+    if (ImGui::IsKeyDown(ImGuiKey_D)) { l_localDirection.x += TypeAlias::Math::Vector3::UnitX.x; }
+    if (ImGui::IsKeyDown(ImGuiKey_A)) { l_localDirection.x -= TypeAlias::Math::Vector3::UnitX.x; }
+    if (ImGui::IsKeyDown(ImGuiKey_E)) { l_localDirection.y += TypeAlias::Math::Vector3::UnitY.y; }
+    if (ImGui::IsKeyDown(ImGuiKey_Q)) { l_localDirection.y -= TypeAlias::Math::Vector3::UnitY.y; }
+
+    if (l_localDirection != TypeAlias::Math::Vector3::Zero)
+    {
+        l_localDirection.Normalize();
+
+        m_editorCamera->Move(l_localDirection, l_io.DeltaTime);
+    }
 }

@@ -22,7 +22,7 @@ void FWK::Editor::EditorCamera::Move(const TypeAlias::Math::Vector3& a_localDire
     const auto& l_rotationMatrix = TypeAlias::Math::Matrix::CreateFromQuaternion(m_transform.m_rotation);
     const auto& l_worldDirection = TypeAlias::Math::Vector3::Transform          (a_localDirection, l_rotationMatrix);
 
-    m_transform.m_position += l_worldDirection * (m_moveSpeed * a_deltaTime);
+    m_transform.m_position += l_worldDirection * m_moveSpeed * a_deltaTime;
 
     UpdateCameraTransform();
 }
@@ -61,6 +61,11 @@ void FWK::Editor::EditorCamera::ApplyTransformScale(const TypeAlias::Math::Vecto
     m_transform.m_scale = a_set;
 
     UpdateCameraTransform();
+}
+
+void FWK::Editor::EditorCamera::ApplyAspectRatio(const float a_set)
+{
+    m_camera.ApplyPerspectiveAspectRatio(a_set);
 }
 
 nlohmann::json FWK::Editor::EditorCamera::Serialize() const
