@@ -1339,9 +1339,6 @@
     <Filter Include="Source\Framework\Scene\Changer\Converter">
       <UniqueIdentifier>{96d3ea76-bf22-47f8-9c0d-7aeb766e41da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Enum\Component">
-      <UniqueIdentifier>{9524ff22-15de-4bf8-819c-eeca422a3e07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\GameObject\Component">
       <UniqueIdentifier>{7c26bd25-3d7a-43f7-a0c0-8862850e181c}</UniqueIdentifier>
     </Filter>
@@ -1485,6 +1482,12 @@
     </Filter>
     <Filter Include="Source\Framework\Utility\Editor">
       <UniqueIdentifier>{22dd4cde-ce04-4c6d-b52e-417c87936af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Factory">
+      <UniqueIdentifier>{681cec79-3025-4d78-85ab-b8852095e7bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\GameObject">
+      <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2802,9 +2805,6 @@
     <ClInclude Include="Source\Framework\Scene\Changer\Converter\Json\SceneChangerJsonConverter.h">
       <Filter>Source\Framework\Scene\Changer\Converter</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Component\TransformComponentEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\GameObjectComponentContainer.h">
       <Filter>Source\Framework\GameObject\Component</Filter>
     </ClInclude>
@@ -2951,6 +2951,18 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Factory\GameObjectComponentTaggedFactory.h">
+      <Filter>Source\Framework\GameObject\Component\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\TransformComponentEnum.h">
+      <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\GameObject\GameObjectComponentTaggedFactoryEnum.h">
+      <Filter>Source\Framework\Definition\Enum\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

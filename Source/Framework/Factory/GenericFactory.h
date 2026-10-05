@@ -14,18 +14,15 @@ namespace FWK
         // std::shared_ptr<Base> / std::unique_ptr<Base>が管理している実体型Baseを取り出す
         using BaseType = typename Type::element_type;
 
-        //=========================
-        // シングルトン
-        //=========================
-        friend class Utility::SingletonBase<GenericFactory<Type>>;
-
-         GenericFactory()          = default;
-        ~GenericFactory() override = default;
-
         static constexpr bool k_isSupportedPTR = TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Shared ||
                                                  TypeTrait::PTRType<Type>::k_kind == Enum::PTRKind::Unique;
 
         static_assert(k_isSupportedPTR, "GenericFactoryはstd::shared_ptrまたはstd::unique_ptrだけに対応しています");
+
+        friend class Utility::SingletonBase<GenericFactory<Type>>;
+
+         GenericFactory()          = default;
+        ~GenericFactory() override = default;
 
     public:
 

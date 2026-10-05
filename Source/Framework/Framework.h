@@ -338,7 +338,7 @@
 #include "Definition/Constant/Graphics/CascadeShadowMapJsonConverterConstant.h"
 #include "Graphics/Render/Shadow/Cascade/Converter/Json/CascadeShadowMapJsonConverter.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBModelCascadeShadowPassStruct.h"
-#include "Definition/Struct/Graphics/Buffer/Constant/CBCascadeShadowMapPassStruct.h""
+#include "Definition/Struct/Graphics/Buffer/Constant/CBCascadeShadowMapPassStruct.h"
 #include "Graphics/Render/Shadow/Cascade/CascadeShadowMap.h"
 #include "Graphics/Render/Shadow/Converter/Json/ShadowContextJsonConverter.h"
 #include "Graphics/Render/Shadow/ShadowContext.h"
@@ -513,6 +513,9 @@
 #include "GameObject/Component/GameObjectComponentBase.h"
 #include "Definition/Concept/IsDerivedBase/GameObject/IsDerivedGameObjectComponentBaseConcept.h"
 #include "Definition/Type/Alias/Factory/Shared/GameObjectComponentSharedFactory.h"
+#include "Definition/Enum/GameObject/GameObjectComponentTaggedFactoryEnum.h"
+#include "GameObject/Component/Factory/GameObjectComponentTaggedFactory.h"
+#include "Definition/Macros/GameObject/GameObjectComponentTaggedFactoryMacros.h"
 
 //===============================================================================
 // トランスフォームコンポーネント
@@ -521,7 +524,7 @@
 #include "Utility/Math/MathQuaternionUtility.h"
 #include "Definition/Constant/Utility/IMGUI/IMGUIFactoryUtilityCosntant.h"
 #include "Utility/IMGUI/Factory/IMGUIFactoryUtility.h"
-#include "Definition/Enum/Component/TransformComponentEnum.h"
+#include "Definition/Enum/GameObject/TransformComponentEnum.h"
 #include "Definition/Struct/GameObject/GameObjectTransformComponentStruct.h"
 
 #include "GameObject/Component/Transform/Mode/GameObjectTransformComponentMatrixUpdateModeBase.h"

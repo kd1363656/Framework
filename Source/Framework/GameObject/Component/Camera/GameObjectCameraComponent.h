@@ -38,4 +38,5 @@ namespace FWK
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::GameObjectComponentSharedFactory, FWK::GameObjectCameraComponent)
+FWK_REGISTER_FACTORY_METHOD                      (FWK::TypeAlias::GameObjectComponentSharedFactory, FWK::GameObjectCameraComponent)
+FWK_REGISTER_TAGGED_GAME_OBJECT_COMPONENT_FACTORY(FWK::Enum::GameObjectComponentFactoryTag::Camera, FWK::GameObjectCameraComponent)
