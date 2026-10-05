@@ -29,7 +29,15 @@ void FWK::GameObjectCameraComponent::EarlyUpdate()
 }
 void FWK::GameObjectCameraComponent::PostLateUpdate()
 {
+    const auto& l_owner = GetREFOwner().lock();
 
+    FWK_ASSERT_RETURN_IF(!l_owner);
+
+    const auto& l_transformComponent = l_owner->GetVALTransformComponent().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_transformComponent);
+
+    m_camera.ApplyCameraMatrix(l_transformComponent->GetREFMatrix());
 }
 
 void FWK::GameObjectCameraComponent::EditInspector()

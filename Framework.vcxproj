@@ -368,6 +368,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Converter\BinaryConverterBaseConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Camera\EditorCameraConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\MainMenu\MainMenuBarEditorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Style\EditorStyleConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h" />
@@ -512,6 +513,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StaticTypeIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h" />
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
+    <ClInclude Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Editor\Camera\EditorCamera.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.h" />
@@ -842,6 +845,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Audio\SoundEffect\Instance\SoundEffectInstanceBase.cpp" />
     <ClCompile Include="Source\Framework\Audio\SoundEffect\SoundEffect.cpp" />
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Camera\EditorCamera.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />

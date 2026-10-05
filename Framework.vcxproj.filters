@@ -298,6 +298,15 @@
     <Filter Include="Source\Framework\Editor\Style">
       <UniqueIdentifier>{60a4fdba-6280-42df-bcd7-e91454c794de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Camera">
+      <UniqueIdentifier>{5b12e62f-cec2-470b-8041-d770ae2802ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Camera\Converter">
+      <UniqueIdentifier>{77c07498-fde5-4c8f-b52d-7a998fd4cdbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Camera\Converter\Json">
+      <UniqueIdentifier>{0d9217a0-cba1-4b45-8bbb-199373f68a64}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Editor\Window">
       <UniqueIdentifier>{6aa5612a-d8a8-43b8-9a5b-a6c75fdc2fef}</UniqueIdentifier>
     </Filter>
@@ -1014,6 +1023,9 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Constant\Editor\Style">
       <UniqueIdentifier>{7a3c9e12-5b84-4f21-9d68-2c6f8a1e4b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\Camera">
+      <UniqueIdentifier>{209e76d6-2f91-46c7-b433-d48f3e06eece}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Observer\Inspector">
       <UniqueIdentifier>{0dc6c2b0-c1af-4f6b-9309-936b88c05b83}</UniqueIdentifier>
@@ -2469,6 +2481,12 @@
     <ClInclude Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.h">
       <Filter>Source\Framework\Utility\IMGUI\DragDrop</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.h">
+      <Filter>Source\Framework\Editor\Camera\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Camera\EditorCamera.h">
+      <Filter>Source\Framework\Editor\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.h">
       <Filter>Source\Framework\Editor\Window\Viewport</Filter>
     </ClInclude>
@@ -2678,6 +2696,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Camera\EditorCameraConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Style\EditorStyleConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Style</Filter>
@@ -3430,6 +3451,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\WorldOutlinerEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.cpp">
+      <Filter>Source\Framework\Editor\Camera\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Camera\EditorCamera.cpp">
+      <Filter>Source\Framework\Editor\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Viewport\ViewportEditorWindow.cpp">
       <Filter>Source\Framework\Editor\Window\Viewport</Filter>

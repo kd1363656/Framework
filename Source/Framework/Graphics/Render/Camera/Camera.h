@@ -30,6 +30,8 @@ namespace FWK::Graphics
 
         const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
 
+        const auto& GetREFCBCameraPass() const { return m_cbCameraPass; }
+
         void SetCameraMatrix(const TypeAlias::Math::Matrix& a_set) { m_cameraMatrix = a_set; }
 
         void SetAspectRatio(const float a_set) { m_aspectRatio = a_set; }
