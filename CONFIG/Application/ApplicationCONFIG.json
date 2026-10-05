@@ -2,14 +2,14 @@
     "AssetFilePathRegistry": {
         "FilePathRegistryMap": [
             {
-                "FilePath": "Asset/Data/Scene/Game/Stage1-1.json",
-                "FilePathRegistryType": "AssetFilePathRegistryType::Scene",
-                "UUID": "a2b50d55-3594-460e-9a92-78600beeca4a"
-            },
-            {
                 "FilePath": "Asset/Data/Scene/Title/Title.json",
                 "FilePathRegistryType": "AssetFilePathRegistryType::Scene",
                 "UUID": "81d90966-31c3-400c-ae00-8c9e81706a55"
+            },
+            {
+                "FilePath": "Asset\\Data\\Prefab\\Player\\Antike.json",
+                "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                "UUID": "c2e1be11-b899-4fba-a7de-673920dc829e"
             }
         ]
     }

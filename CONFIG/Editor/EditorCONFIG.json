@@ -42,16 +42,16 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Scene\\Game",
-                            "IsOpen": true
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Font\\Icon",
                             "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Font",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
@@ -62,19 +62,15 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Font",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Texture",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -127,7 +123,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
@@ -175,10 +171,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Prefab"
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player"
                             }
                         ]
                     }
