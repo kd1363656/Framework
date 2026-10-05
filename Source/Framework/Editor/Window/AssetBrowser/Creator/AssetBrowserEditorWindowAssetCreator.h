@@ -22,6 +22,8 @@ namespace FWK::Editor
         void RenamePrefab(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const;
         void RenameScene (const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath) const;
 
+        bool RegisterCopiedAsset(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_copiedFilePath, AssetFilePathRegistry& a_assetFilePathRegistry) const;
+
     private:
 
         static std::filesystem::path ResolveDefaultFilePath(const std::filesystem::path&     a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName);

@@ -16,7 +16,7 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeScene(const std::weak_p
     // 「引数のa_baseJson」か「PrefabSystemから引いたJson」のどちらかを
     // コピーせず指し替えられるようconstポインタで保持する
     const auto* l_baseJsonPtr = &a_baseJson; 
-    const auto& l_prefabUUID  = Utility::DeserializeUUID(a_rootJson, k_prefabUUIDJsonKey);
+    const auto& l_prefabUUID  = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey);
  
     // 引数でPrefab基底が渡されず、PrefabUUIDがあればPrefabSystemから取得する
     // (Prefab内部子の差分経路ではa_baseJsonが渡されるのでここには入らない)
@@ -84,7 +84,7 @@ void FWK::Converter::GameObjectJsonConverter::DeserializePrefab(const std::weak_
     // エントリ直下のメタ情報を復元
     // Prefabファイル内の各ノードにはPrefabUUIDが保存されている
     // (ConvertToPrefabで同一PrefabUUIDが子へも伝播されている)
-    if (const auto& l_prefabUUID = Utility::DeserializeUUID(a_rootJson, k_prefabUUIDJsonKey);
+    if (const auto& l_prefabUUID = Utility::DeserializeUUID(a_rootJson, Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey);
         !l_prefabUUID.is_nil())
     {
         l_gameObject->SetPrefabUUID(l_prefabUUID);
@@ -123,9 +123,9 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     }
 
     // UUID群のデシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(),              k_prefabUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey));
     Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(),       Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
  
     // ComponentList / ChildListのデシリアライズ
     // 各Serialize()が {ComponentList:[...]} / {ChildList:[...]} を返すのでそのままマージする
@@ -219,7 +219,7 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDIFF(const nloh
  
     // PrefabUUID
     // DeserializeSceneでのPrefab検索に使う
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), k_prefabUUIDJsonKey));
+    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey));
  
     // SceneInstanceUUID
     // インスタンス識別用。これが無いとロード毎に新規発行され外部参照が壊れる

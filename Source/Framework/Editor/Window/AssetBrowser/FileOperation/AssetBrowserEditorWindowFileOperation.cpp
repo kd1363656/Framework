@@ -108,57 +108,96 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<s
     a_clipboard.Apply(a_filePathList, Enum::AssetBrowserFileClipboardOperationType::Cut);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>& a_destinationFolderPathList, AssetBrowserEditorWindowClipboard& a_clipboard) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>&   a_destinationFolderPathList, 
+                                                               const AssetBrowserEditorWindowAssetCreator& a_assetCreator, 
+                                                                     AssetBrowserEditorWindowClipboard&    a_clipboard, 
+                                                                     AssetFilePathRegistry&                a_assetFilePathRegistry) const
 {
     // Clipboardが空なら何もしない
     if (a_clipboard.IsEmpty()) { return; }
 
     // 貼り付け先フォルダが一つもなければ何もしない
     if (a_destinationFolderPathList.empty()) { return; }
-    
+
     const auto l_operationType = a_clipboard.GetVALOperationType();
 
-    // 走査種別がInvalidなら何もしない
+    // 操作種別がInvalidなら何もしない
     if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) { return; }
 
     const auto& l_clipboardFilePathList = a_clipboard.GetREFFilePathList();
 
-    // 全ての貼り付け先フォルダへ貼り付けを行ってから
-    // Cut操作のコピー元削除とClipboardクリアを行う
-    // フォルダごとにクリアすると2フォルダ目以降へ張り付けられなくなるため
-    // ここではコピーだけ行い削除/クリアはループの外で行う
+    // 切り取りは「移動」であり、コピー + 削除で実装すると
+    // コピーはWatcherに未登録Jsonとして削除され、
+    // 元ファイルの削除でRegistryからもEraseされてアセットが消失する
+    // rename()ならFileIdが保たれるため、WatcherがFilePathChangeとして検知し
+    // RegistryのPathを付け替えてくれる(D&D移動と同じ経路)
+    if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Cut)
+    {
+        // 移動先は1か所しか存在できないため最初の有効なフォルダへ移動する
+        const auto& l_destinationFolderITR = std::ranges::find_if(a_destinationFolderPathList,
+                                                                  [](const std::filesystem::path& a_destinationFolderPath)
+                                                                  {
+                                                                      std::error_code l_errorCode = {};
+                                                                  
+                                                                      return std::filesystem::is_directory(a_destinationFolderPath, l_errorCode);
+                                                                  });
+        
+        if (l_destinationFolderITR == a_destinationFolderPathList.end())
+        {
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "切り取りの貼り付け先フォルダが見つかりませんでした。");
+        
+            return;
+        }
+        
+        Move(l_clipboardFilePathList, *l_destinationFolderITR);
+        
+        // 移動したファイルは元の場所に存在しないためClipboardをクリアする
+        a_clipboard.Clear();
+        
+        return;
+    }
+
     for (const auto& l_destinationFolderPath : a_destinationFolderPathList)
     {
-        // ディレクトリでなければcontinue;
         std::error_code l_errorCode = {};
 
-        if (!std::filesystem::is_directory(l_destinationFolderPath, l_errorCode)) { continue; }
+        // is_directory()はPathがフォルダかどうかを判定する
+        // error_code版を使うことで失敗時に例外を投げずl_errorCodeへ結果を格納する
+        const bool l_isDirectory = std::filesystem::is_directory(l_destinationFolderPath, l_errorCode);
 
+        // 判定そのものに失敗した場合はログを出してスキップ
+        // (先に!l_isDirectoryで弾くとエラー時もログが出ないため、エラー判定を先に行う)
         if (l_errorCode)
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ペースト処理に失敗しました");
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "ペースト処理に失敗しました。\nDestinationFolderPath : {}", l_destinationFolderPath.string());
 
             continue;
         }
 
-        l_errorCode.clear();
+        // フォルダでなければ貼り付け先にできないためスキップ
+        if (!l_isDirectory) { continue; }
 
         // Clipboard内の各ファイルを貼り付け先へコピーする
-        // 同名衝突時は貼り付け側に番号付与する
         for (const auto& l_sourceFilePath : l_clipboardFilePathList)
         {
-            // 貼り付け先Path = コピー先フォルダ/元ファイル名
+            // 貼り付け先Path = コピー先フォルダ / 元ファイル名
+            // 例 : l_sourceFilePath        = "Asset/Enemy.json"
+            //      l_destinationFolderPath = "Asset/Prefab"
+            //      貼り付け先              = "Asset/Prefab/Enemy.json"
             auto l_destinationFilePath = l_destinationFolderPath / l_sourceFilePath.filename();
-            
+
             // コピー先がコピー元の中(または自分自身)にあるかチェック
-            // 例: Source      = "Asset/NewFolder"
-            //     Destination = "Asset/NewFolder/NewFolder"
+            // 例 : Source      = "Asset/NewFolder"
+            //      Destination = "Asset/NewFolder/NewFolder"
             // この場合、std::filesystem::copy(recursive)は
             // コピー先(自分自身)もコピー対象になってしまい無限再帰する
             bool l_isDestinationInsideSource = false;
-            
-            // 親パスが空になるまで処理を実行する
-            for (auto l_parent = l_destinationFolderPath; !l_parent.empty(); l_parent = l_parent.parent_path())
+
+            auto l_parent = l_destinationFolderPath;
+
+            // 親パスが空になるまで遡る
+            // 例 : "Asset/NewFolder/Sub" -> "Asset/NewFolder" -> "Asset" -> ""
+            while (!l_parent.empty())
             {
                 // equivalent()はOSレベルで同じファイル/ディレクトリかを判定する
                 // パスの表記揺れ(絶対/相対、スラッシュ/バックスラッシュ)を吸収する
@@ -171,33 +210,36 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
                     break;
                 }
 
+                // equivalent()はどちらかのPathが存在しないとエラーになるため
+                // 判定ごとにエラーをクリアして次の親へ進む
                 l_errorCode.clear();
+
+                l_parent = l_parent.parent_path();
             }
-            
+
             // 同名が存在する場合は番号付与したPathへ貼り付ける(上書きしない)
-            // 例: Asset/NewFolder を Asset に貼り付け、Asset/NewFolderが既にある -> Asset/NewFolder1 (兄弟番号付与)
-            // 内部へ貼り付ける場合も頂点のPathを番号付与する
+            // 例 : "Asset/Prefab/Enemy.json"が既にある -> "Asset/Prefab/Enemy1.json"
             if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
             {
                 l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
             }
 
+            l_errorCode.clear();
+
             if (l_isDestinationInsideSource)
             {
-                // 自分自身の中へ貼り付ける
-                // std::filesystem::copy(recursive)はコピー先がコピー元の中にあると
-                // 無限再帰するため、自前の再帰コピー関数を使う
-                // 各レベルでコピー先ツリーの頂点と一致するエントリをスキップして爆発を防ぐ
-                // 第3引数にはコピー先ツリーの頂点(= l_destinationFilePath)を渡す
+                // 自分自身の中へ貼り付ける場合は
+                // std::filesystem::copy(recursive)だと無限再帰するため自前の再帰コピーを使う
+                // 第3引数にはコピー先ツリーの頂点(= l_destinationFilePath)を渡し
                 // 再帰の内側でも同じ頂点を引き回してスキップ判定に使う
-                // なお頂点は上で番号付与済みなのでCopyRecursiveSkippingDestination内では
-                // 頂点が存在することはなくcreatedirectoriesで新規作成される
                 CopyRecursiveSkippingDestination(l_sourceFilePath, l_destinationFilePath, l_destinationFilePath);
             }
             else
             {
                 // 通常の再帰コピー
                 // コピー先はコピー元の外なので無限再帰しない
+                // 新しいファイルとして作成されるためFileIdはコピー元と別物になり
+                // WatcherからはAdd(追加)として通知される
                 std::filesystem::copy(l_sourceFilePath,
                                       l_destinationFilePath,
                                       std::filesystem::copy_options::recursive,
@@ -212,34 +254,33 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
                                 l_errorCode.value());
                 }
             }
+
+            // コピーされたPrefab/Sceneを新しいUUIDでRegistryへ登録する
+            // Watcherの同期はAssetBrowserEditorWindow::Drawの先頭で行われるため
+            // 同じFrame内で登録しておけば、次FrameのWatcher同期時には正式なアセットとして扱われる
+            // (フォルダの一部だけコピーに成功した場合も、コピーできた分は登録しておく)
+            RegisterCopiedAssetList(l_sourceFilePath, 
+                                    l_destinationFilePath,
+                                    a_assetCreator, 
+                                    a_assetFilePathRegistry);
         }
     }
-
-    // Cut操作以外はここで処理を終了
-    if (l_operationType != Enum::AssetBrowserFileClipboardOperationType::Cut) { return; }
-
-    // クリップオードにコピーしたコピー元ファイルを削除する
-    // 全フォルダへ貼り付けが終わった後に行う
-    for (const auto& l_sourceFilePath : l_clipboardFilePathList)
-    {
-        std::error_code l_errorCode = {};
-
-        std::filesystem::remove_all(l_sourceFilePath, l_errorCode);
-    }
-
-    // 全フォルダへの貼り付け完了後にClipboardへクリアする
-    a_clipboard.Clear();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::vector<std::filesystem::path>&a_filePathList) const
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::vector<std::filesystem::path>& a_filePathList, const AssetBrowserEditorWindowAssetCreator& a_assetCreator, AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
     for (const auto& l_sourceFilePath : a_filePathList)
     {
         // 同じフォルダ内へ同じ名前でファイル、フォルダを複製する
+        // 同名は必ず存在する(自分自身)ため番号付与したPathになる
+        // 例 : "Asset/Enemy.json" -> "Asset/Enemy1.json"
         const auto& l_duplicateFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_sourceFilePath);
 
         std::error_code l_errorCode = {};
 
+        // copy_options::recursiveを指定するとフォルダの場合は中身ごと複製する
+        // 新しいファイルとして作成されるためFileIdはコピー元と別物になり
+        // WatcherからはAdd(追加)として通知される
         std::filesystem::copy(l_sourceFilePath,
                               l_duplicateFilePath,
                               std::filesystem::copy_options::recursive,
@@ -252,7 +293,16 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
                         l_sourceFilePath.string(),
                         l_duplicateFilePath.string(),
                         l_errorCode.value());
+
+            continue;
         }
+
+        // 複製されたPrefab/Sceneを新しいUUIDでRegistryへ登録する
+        // 登録しないと次FrameのWatcher同期で未登録Jsonとして物理削除されてしまう
+        RegisterCopiedAssetList(l_sourceFilePath,
+                                l_duplicateFilePath, 
+                                a_assetCreator,
+                                a_assetFilePathRegistry);
     }
 }
 
@@ -418,5 +468,72 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::CopyRecursiveSkippingDe
                             l_errorCode.value());
             }
         }
+    }
+}
+
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::RegisterCopiedAssetList(const std::filesystem::path&                a_sourceRootPath, 
+                                                                                 const std::filesystem::path&                a_copiedRootPath, 
+                                                                                 const AssetBrowserEditorWindowAssetCreator& a_assetCreator, 
+                                                                                       AssetFilePathRegistry&                a_assetFilePathRegistry)
+{
+    std::error_code l_errorCode = {};
+
+    // ファイル単体がコピーされた場合
+    // コピー先がフォルダでなければコピー元と1対1で対応するため、そのまま登録する
+    if (!std::filesystem::is_directory(a_copiedRootPath, l_errorCode))
+    {
+        // 現在AssetFilePathRegistryで管理しているPrefab/SceneはJsonのみ
+        // Json以外のファイルはアセット登録の対象外
+        if (a_copiedRootPath.extension() == Constant::k_lowerJsonExtension)
+        {
+            a_assetCreator.RegisterCopiedAsset(a_sourceRootPath, a_copiedRootPath, a_assetFilePathRegistry);
+        }
+
+        return;
+    }
+
+    // フォルダがコピーされた場合
+    // コピー先フォルダ内の全Jsonについて、対応するコピー元Pathを逆算して登録する
+    // 例 : SourceRoot = "Asset/Enemy"
+    //      CopiedRoot = "Asset/Enemy1"
+    //      "Asset/Enemy1/Boss.json" -> コピー元は "Asset/Enemy/Boss.json"
+    // recursive_directory_iteratorはフォルダ内をサブフォルダまで再帰的に列挙するイテレータ
+    // 列挙されるPathは渡したPathを先頭に付けた形("Asset/Enemy1/...")になる
+    // error_code版のコンストラクタを使い、失敗時に例外を投げないようにする
+    auto l_entryITR = std::filesystem::recursive_directory_iterator(a_copiedRootPath, l_errorCode);
+
+    // 引数無しで構築したrecursive_directory_iteratorは「列挙の終端」を表す
+    const auto l_endEntryITR = std::filesystem::recursive_directory_iterator{};
+
+    while (!l_errorCode &&
+           l_entryITR != l_endEntryITR)
+    {
+        const auto& l_copiedFilePath = l_entryITR->path();
+
+        // Json以外のファイル・フォルダは登録対象外
+        // ループ末尾でincrementするためcontinueは使わない
+        // (continueするとイテレータが進まず無限ループになる)
+        if (l_copiedFilePath.extension() == Constant::k_lowerJsonExtension)
+        {
+            // コピー先PathのRoot部分をコピー元Rootへ置き換えて
+            // コピー元のPathを求める
+            const auto& l_sourceFilePath = Utility::ReplaceRoot(l_copiedFilePath, a_copiedRootPath, a_sourceRootPath);
+
+            // コピー元がRegistryへ登録済みのアセットなら
+            // 新しいUUIDでコピー先を登録しJson内部の情報も書き換える
+            a_assetCreator.RegisterCopiedAsset(l_sourceFilePath, l_copiedFilePath, a_assetFilePathRegistry);
+        }
+
+        // 次のエントリへ進む
+        // ++演算子は失敗時に例外を投げるため、error_code版のincrementを使う
+        l_entryITR.increment(l_errorCode);
+    }
+
+    if (l_errorCode)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                    "コピーしたフォルダの走査に失敗しました。\nCopiedRootPath : {}\nErrorCode : {}",
+                    a_copiedRootPath.string(),
+                    l_errorCode.value());
     }
 }

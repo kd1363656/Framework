@@ -100,21 +100,33 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
 
         DrawCopyMenu(a_selectedFilePathList, 
                      l_fileOperation,
-                     l_hasSelection && !l_containsRoot,
+                     l_hasSelection && 
+                     !l_containsRoot,
                      l_clipboard);
 
         DrawCutMenu(a_selectedFilePathList,
                     l_fileOperation,
-                    l_hasSelection && !l_containsRoot,
+                    l_hasSelection &&
+                    !l_containsRoot,
                     l_clipboard);
 
         DrawPasteMenu(a_selectedFilePathList, 
                       l_fileOperation,
+                      l_assetCreator,
                       l_canPaste,
-                      l_clipboard);
+                      l_clipboard,
+                      l_assetFilePathRegistry);
 
-        DrawDuplicateMenu(a_selectedFilePathList, l_fileOperation,                   l_hasSelection && !l_containsRoot);
-        DrawDeleteMenu   (a_selectedFilePathList, l_hasSelection && !l_containsRoot, a_editorWindow);
+        DrawDuplicateMenu(a_selectedFilePathList,
+                          l_fileOperation,
+                          l_assetCreator,
+                          l_hasSelection &&
+                          !l_containsRoot,
+                          l_assetFilePathRegistry);
+
+        DrawDeleteMenu(a_selectedFilePathList, l_hasSelection &&
+                                               !l_containsRoot,
+                                               a_editorWindow);
     }
     else
     {
@@ -123,10 +135,12 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
         // 貼り付けのみ表示する
         ImGui::Separator();
 
-        DrawPasteMenu(a_selectedFilePathList,
+        DrawPasteMenu(a_selectedFilePathList, 
                       l_fileOperation,
+                      l_assetCreator,
                       l_canPaste,
-                      l_clipboard);
+                      l_clipboard,
+                      l_assetFilePathRegistry);
     }
 
     ImGui::EndPopup();
@@ -304,10 +318,12 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::ve
         a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList,
                                                                      const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
+                                                                     const AssetBrowserEditorWindowAssetCreator&  a_assetCreator, 
                                                                      const bool                                   a_canPaste, 
-                                                                           AssetBrowserEditorWindowClipboard&     a_clipboard) const
+                                                                           AssetBrowserEditorWindowClipboard&     a_clipboard,
+                                                                           AssetFilePathRegistry&                 a_assetFilePathRegistry) const
 {
     // ショートカット : Ctrl + V
     // クリップボードが空の場合はグレーアウト
@@ -318,12 +334,20 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::
                         false,
                         a_canPaste))
     {
-        // FileOperation::Pasteでクリップボードのファイルを現在フォルダへ貼り付け
-        // Cutの場合は元ファイルを削除、Copyの場合は複製
-        a_fileOperation.Paste(a_selectedFilePathList, a_clipboard);
+        // FileOperation::Pasteでクリップボードのファイルを貼り付け
+        // Copyの場合は新しいUUIDを発行して複製し、Registryへ登録する
+        // Cutの場合はrenameで移動し、RegistryのPathはWatcher経由で付け替えられる
+        a_fileOperation.Paste(a_selectedFilePathList, 
+                              a_assetCreator, 
+                              a_clipboard, 
+                              a_assetFilePathRegistry);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation& a_fileOperation, const bool a_hasSelection) const
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+                                                                         const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
+                                                                         const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
+                                                                         const bool                                   a_hasSelection,
+                                                                               AssetFilePathRegistry&                 a_assetFilePathRegistry) const
 {
     // ショートカット : Ctrl + D
     // 選択中のファイルがない場合はグレーアウト
@@ -336,7 +360,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const s
     {
         // FileOperation::Duplicateで選択中のファイルを複製
         // 同名の場合は自動で番号付与される(Player -> Player1)
-        a_fileOperation.Duplicate(a_selectedFilePathList);
+        // 複製されたPrefab/Sceneは新しいUUIDでRegistryへ登録される
+        a_fileOperation.Duplicate(a_selectedFilePathList, a_assetCreator, a_assetFilePathRegistry);
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDeleteMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList, const bool a_hasSelection, AssetBrowserEditorWindow& a_editorWindow) const

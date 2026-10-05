@@ -36,7 +36,6 @@ namespace FWK::Converter
 
        static constexpr std::string_view k_transformComponentJsonKey      = "TransformComponent";
        static constexpr std::string_view k_isPrefabOriginJsonKey          = "IsPrefabOrigin";
-       static constexpr std::string_view k_prefabUUIDJsonKey              = "PrefabUUID";
        static constexpr std::string_view k_prefabHierarchyNodeUUIDJsonKey = "PrefabHierarchyNodeUUID";
        static constexpr std::string_view k_diffJsonKey                    = "Diff";
     };

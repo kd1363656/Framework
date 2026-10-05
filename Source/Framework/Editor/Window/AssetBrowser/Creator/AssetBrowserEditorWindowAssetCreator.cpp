@@ -230,6 +230,70 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::f
     }
 }
 
+bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_copiedFilePath, AssetFilePathRegistry& a_assetFilePathRegistry) const
+{
+    // コピー元がRegistry未登録ならアセットではないため何もしない
+    const auto* l_sourceUUIDPTR = a_assetFilePathRegistry.FindPTRAssetUUID(a_sourceFilePath);
+
+    if (!l_sourceUUIDPTR) { return false; }
+
+    const auto* l_sourceAssetFilePathDataPTR = a_assetFilePathRegistry.FindPTRAssetFilePathData(*l_sourceUUIDPTR);
+
+    if (!l_sourceAssetFilePathDataPTR) { return false; }
+
+    // Add()でRegistryへ要素を追加する前に値としてコピーしておく
+    // (unordered_mapの要素へのポインタはAdd後も有効だが
+    //  Registryの内部実装へ依存しないよう値で保持する)
+    const auto l_sourceUUID = *l_sourceUUIDPTR;
+    const auto l_assetType  = l_sourceAssetFilePathDataPTR->m_type;
+
+    // コピー先は別アセットなので新しいUUIDを発行する
+          auto& l_uuidManager = Utility::UUIDManager::GetInstance();
+    const auto  l_copiedUUID = l_uuidManager.GenerateVALUUID     ();
+
+    // Watcherが未登録Jsonとして削除する前にRegistryへ登録する
+    if (!a_assetFilePathRegistry.Add(a_copiedFilePath, l_copiedUUID, l_assetType))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "コピーしたアセットのRegistry登録に失敗しました。\nFilePath : {}", a_copiedFilePath.string());
+
+        return false;
+    }
+
+    switch (l_assetType)
+    {
+        case Enum::AssetFilePathRegistryType::Prefab:
+        {
+            if (const auto& l_prefabName = a_copiedFilePath.stem().string(); 
+                !Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(a_copiedFilePath,
+                                                                            l_prefabName,
+                                                                            l_sourceUUID,
+                                                                            l_copiedUUID))
+            {
+               // PrefabUUIDを付け替えられなかったファイルは
+               // コピー元と同じPrefabUUIDを持つ不正なPrefabになるため
+               // Registryから外し、Watcherに未登録Jsonとして削除させる
+               a_assetFilePathRegistry.Erase(a_copiedFilePath);
+
+               return false;
+            }
+        }
+        break;
+
+        case Enum::AssetFilePathRegistryType::Scene:
+        {
+            // SceneのUUIDはRegistryのみが保持しJson内には存在しないため
+            // Json側は名前だけ更新すればよい
+            RenameScene(a_copiedFilePath, a_copiedFilePath);
+        }
+        break;
+
+        default:
+    	break;
+    }
+    
+    return true;
+}
+
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName)
 {
     // デフォルト名 + 拡張子を統合した希望パスを作る

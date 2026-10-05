@@ -45,6 +45,62 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Rename(const std::filesystem
     return true;
 }
 
+bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::filesystem::path& a_filePath, const std::string& a_newName, const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID)
+{
+    // コピーで作られたPrefabファイルはコピー元と同じPrefabUUIDを持っているため
+    // Registryへ新規登録したUUIDへ付け替えて別のPrefabとして独立させる
+    if (a_filePath.empty() ||
+        a_filePath.extension() != Constant::k_lowerJsonExtension)
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUID付け替え対象のFilePathが無効です。\nFilePath : {}", a_filePath.string());
+
+        return false;
+    }
+
+    if (a_oldPrefabUUID.is_nil() ||
+        a_newPrefabUUID.is_nil())
+    {
+    	FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効値のため、付け替えを中止しました。\nFilePath : {}", a_filePath.string());
+
+    	return false;
+    }
+    
+    if (a_newName.empty())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectPrefabの新しい名前が空のため、PrefabUUIDの付け替えを中止しました。\nFilePath : {}", a_filePath.string());
+
+        return false;
+    }
+    
+    auto l_rootJson = Utility::LoadJsonFile(a_filePath);
+
+    if (l_rootJson.is_null())
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectPrefabの読み込みに失敗したため、PrefabUUIDの付け替えを中止しました。\nFilePath : {}", a_filePath.string());
+
+        return false;
+    }
+
+    // コピー先のファイル名をPrefab名にする(Renameと同じ扱い)
+    l_rootJson[Constant::k_gameObjectJsonConverterNameJsonKey] = a_newName;
+
+    // Prefabキー以下の各ノードが持つPrefabUUIDを差し替える
+    if (const auto l_prefabJsonITR = l_rootJson.find(k_prefabJsonKey);
+        l_prefabJsonITR != l_rootJson.end())
+    {
+        ReplacePrefabUUIDRecursively(*l_prefabJsonITR, a_oldPrefabUUID, a_newPrefabUUID);
+    }
+
+    if (!Utility::SaveJsonFile(l_rootJson, a_filePath))
+    {
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUID付け替え後のJson書き込みに失敗しました。\nFilePath : {}", a_filePath.string());
+
+        return false;
+    }
+
+    return true;
+}
+
 void FWK::Converter::GameObjectPrefabJsonConverter::Load(const nlohmann::json& a_rootJson, GameObjectPrefab& a_prefab) const
 {
     if (a_rootJson.is_null())
@@ -144,5 +200,35 @@ void FWK::Converter::GameObjectPrefabJsonConverter::RemoveSceneInstanceUUIDRecur
     for (auto& l_value : a_json)
     {
         RemoveSceneInstanceUUIDRecursively(l_value);
+    }
+}
+
+void FWK::Converter::GameObjectPrefabJsonConverter::ReplacePrefabUUIDRecursively(nlohmann::json& a_json, const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID)
+{
+    // RemoveSceneInstanceUUIDRecursivelyと同じく
+    // オブジェクト・配列以外は子を持たないため終了する
+    const bool l_isObject = a_json.is_object();
+
+    if (!l_isObject &&
+        !a_json.is_array())
+    {
+        return;
+    }
+
+    if (l_isObject)
+    {
+        // コピー元PrefabのUUIDを持つノードだけを差し替える
+        // ネストされた別Prefabのインスタンスは別のPrefabUUIDを持つため対象外
+        const auto& l_prefabUUID = Utility::DeserializeUUID(a_json, Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey);
+
+        if (l_prefabUUID == a_oldPrefabUUID)
+        {
+            a_json[Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey] = boost::uuids::to_string(a_newPrefabUUID);
+        }
+    }
+
+    for (auto& l_value : a_json)
+    {
+        ReplacePrefabUUIDRecursively(l_value, a_oldPrefabUUID, a_newPrefabUUID);
     }
 }

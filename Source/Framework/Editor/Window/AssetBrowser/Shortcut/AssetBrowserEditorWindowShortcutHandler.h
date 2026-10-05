@@ -28,11 +28,21 @@ namespace FWK::Editor
 
         void HandleCreateFolder(const std::filesystem::path& a_parentFolderPath,  const Enum::AssetBrowserPopupContextType a_contextType, AssetBrowserEditorWindow& a_editorWindow) const;
 
-        void HandleRename   (const std::filesystem::path&              a_targetFilePath,             Struct::AssetBrowserEditorWindowRenameState& a_renameState)                                                   const;
-        void HandleCopy     (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
-        void HandleCut      (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
-        void HandlePaste    (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
-        void HandleDuplicate(const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation)                                                 const;
-        void HandleDelete   (const std::vector<std::filesystem::path>& a_selectedFilePathList,       AssetBrowserEditorWindow&                    a_editorWindow)                                                  const;
+        void HandleRename(const std::filesystem::path&              a_targetFilePath,             Struct::AssetBrowserEditorWindowRenameState& a_renameState)                                                   const;
+        void HandleCopy  (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
+        void HandleCut   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
+
+        void HandlePaste(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+                         const AssetBrowserEditorWindowFileOperation& a_fileOperation,
+                         const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
+                               AssetBrowserEditorWindowClipboard&     a_clipboard,
+                               AssetFilePathRegistry&                 a_assetFilePathRegistry) const;
+
+        void HandleDuplicate(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+                             const AssetBrowserEditorWindowFileOperation& a_fileOperation,
+                             const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
+                                   AssetFilePathRegistry&                 a_assetFilePathRegistry) const;
+
+        void HandleDelete(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindow& a_editorWindow) const;
     };
 }
