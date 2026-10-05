@@ -15,6 +15,10 @@ void FWK::Converter::ViewportEditorWindowJsonConverter::Deserialize(const nlohma
             l_editorCamera->Deserialize(l_json);
         }
     }
+
+    // デバッグ描画の表示状態を復元
+    a_viewportEditorWindow.SetIsDrawFrustum     (a_rootJson.value(k_isDrawFrustumJsonKey,      false));
+    a_viewportEditorWindow.SetIsDrawCulledResult(a_rootJson.value(k_isDrawCulledResultJsonKey, false));
 }
 
 nlohmann::json FWK::Converter::ViewportEditorWindowJsonConverter::Serialize(const Editor::ViewportEditorWindow& a_viewportEditorWindow) const
@@ -22,9 +26,9 @@ nlohmann::json FWK::Converter::ViewportEditorWindowJsonConverter::Serialize(cons
           nlohmann::json l_rootJson     = {};
     const auto&          l_editorCamera = a_viewportEditorWindow.GetREFEditorCamera();
 
-    if (!l_editorCamera) { return {}; }
-
-    l_rootJson[k_editorCameraJsonKey] = l_editorCamera->Serialize();
+    l_rootJson[k_editorCameraJsonKey]       = l_editorCamera ? l_editorCamera->Serialize     () : nlohmann::json{};
+    l_rootJson[k_isDrawFrustumJsonKey]      = a_viewportEditorWindow.GetVALIsDrawFrustum     ();
+    l_rootJson[k_isDrawCulledResultJsonKey] = a_viewportEditorWindow.GetVALIsDrawCulledResult();
 
     return l_rootJson;
 }

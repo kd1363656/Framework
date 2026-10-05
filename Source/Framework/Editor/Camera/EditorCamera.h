@@ -21,6 +21,7 @@ namespace FWK::Editor
         void ApplyTransformScale   (const TypeAlias::Math::Vector3&    a_set);
 
         void ApplyAspectRatio(const float a_set);
+        void ApplyFovYDegree (const float a_set);
 
         void SetMoveSpeed  (const float a_set) { m_moveSpeed   = a_set; }
         void SetRotateSpeed(const float a_set) { m_rotateSpeed = a_set; }

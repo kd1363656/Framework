@@ -68,6 +68,14 @@ void FWK::Editor::EditorCamera::ApplyAspectRatio(const float a_set)
     m_camera.ApplyPerspectiveAspectRatio(a_set);
 }
 
+void FWK::Editor::EditorCamera::ApplyFovYDegree(const float a_set)
+{
+    m_camera.ApplyProjectionMatrix(m_camera.GetVALAspectRatio(),
+                                   a_set,
+                                   m_camera.GetVALFarClip(),
+                                   m_camera.GetVALNearClip());
+}
+
 nlohmann::json FWK::Editor::EditorCamera::Serialize() const
 {
     return m_jsonConverter.Serialize(*this);

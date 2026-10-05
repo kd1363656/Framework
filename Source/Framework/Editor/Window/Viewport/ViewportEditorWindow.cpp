@@ -59,7 +59,7 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
 
     // Viewport画像より先にツールバーを書く。
     // これにより画面へ重ならず、Viewport上部へ工程表示される
-    m_toolbar.Draw  ();
+    m_toolbar.Draw  (*this);
     ImGui::Separator();
 
     // 現在のViewportウィンドウ内で、実際に画像を表示できる領域サイズを取得する

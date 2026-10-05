@@ -20,6 +20,8 @@ namespace FWK::Converter
 
     private:
 
-        static constexpr std::string_view k_editorCameraJsonKey = "EditorCamera";
+        static constexpr std::string_view k_editorCameraJsonKey       = "EditorCamera";
+        static constexpr std::string_view k_isDrawFrustumJsonKey      = "IsDrawFrustum";
+        static constexpr std::string_view k_isDrawCulledResultJsonKey = "IsDrawCulledResult";
     };
 }

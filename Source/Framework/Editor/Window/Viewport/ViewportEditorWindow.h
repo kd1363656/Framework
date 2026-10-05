@@ -35,6 +35,12 @@ namespace FWK::Editor
 
         auto& GetMutableREFEditorCamera() { return m_editorCamera; }
 
+        void SetIsDrawFrustum     (const bool a_set) { m_isDrawFrustum      = a_set; }
+        void SetIsDrawCulledResult(const bool a_set) { m_isDrawCulledResult = a_set; }
+
+        bool GetVALIsDrawFrustum     () const { return m_isDrawFrustum;      }
+        bool GetVALIsDrawCulledResult() const { return m_isDrawCulledResult; }
+
     private:
 
         ImTextureID FetchVALViewportTextureID() const;
@@ -63,6 +69,9 @@ namespace FWK::Editor
         Converter::ViewportEditorWindowJsonConverter m_jsonConverter;
 
         ViewportToolbar m_toolbar;
+
+        bool m_isDrawFrustum      = false;
+        bool m_isDrawCulledResult = false;
 
         FWK_DEFINE_TYPE_INFO(ViewportEditorWindow, EditorWindowBase)
     };

@@ -25,17 +25,19 @@
                     },
                     "RotateSpeed": 0.004999999888241291,
                     "Rotation": {
-                        "W": 1.0,
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
+                        "W": 0.9309290647506714,
+                        "X": -0.030265679582953453,
+                        "Y": 0.3637515902519226,
+                        "Z": 0.011826022528111935
                     },
                     "Scale": {
                         "X": 1.0,
                         "Y": 1.0,
                         "Z": 1.0
                     }
-                }
+                },
+                "IsDrawCulledResult": false,
+                "IsDrawFrustum": false
             },
             "WindowTypeName": "ViewportEditorWindow"
         },
@@ -74,6 +76,10 @@
                             "IsOpen": true
                         },
                         {
+                            "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
+                            "IsOpen": true
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Sound",
                             "IsOpen": false
                         },
@@ -82,19 +88,15 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Cobat\\Player",
-                            "IsOpen": true
-                        },
-                        {
                             "FilePath": "Asset\\Texture",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model",
+                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
