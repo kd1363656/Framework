@@ -117,7 +117,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
     // 長さがZeroに近いDirectionは正規化できず、
     // LightView行列も作成できない
-    FWK_ASSERT_RETURN_VALUE_IF(l_lightDirection.LengthSquared() <= k_directionLengthSquaredEpsilon, "DirectionalLightのDirectionがZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_lightDirection.LengthSquared() <= Constant::k_epsilon, "DirectionalLightのDirectionがZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
 
     // LightCameraの配置方向として使用するため、
     // Directionの長さを正規化する
@@ -140,7 +140,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     // LightView空間で使用するRight方向を作成する
     auto l_lightRight = l_lightUp.Cross(l_lightDirection);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_lightRight.LengthSquared() <= k_directionLengthSquaredEpsilon, "DirectionalLightのRight方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_lightRight.LengthSquared() <= Constant::k_epsilon, "DirectionalLightのRight方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
 
     l_lightRight.Normalize();
 
@@ -148,7 +148,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     // 実際にViewMatrixへ渡すUp方向を作り直す
     auto l_stableLightUp = l_lightDirection.Cross(l_lightRight);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_stableLightUp.LengthSquared() <= k_directionLengthSquaredEpsilon, "DirectionalLightのUp方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_stableLightUp.LengthSquared() <= Constant::k_epsilon, "DirectionalLightのUp方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
 
     l_stableLightUp.Normalize();
 
@@ -257,7 +257,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         // ShadowMap一Texel辺りのWorld空間サイズ
         const float l_worldUnitPerTexel = (l_cascadeRadius * k_orthographicDiameterScale) / l_shadowMapResolution;
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_worldUnitPerTexel <= k_worldUnitPerTexelEpsilon, "Cascade Shadow MapのWorldUnitPerTexelがZeroに近いため、更新処理に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_worldUnitPerTexel <= Constant::k_epsilon, "Cascade Shadow MapのWorldUnitPerTexelがZeroに近いため、更新処理に失敗しました。", false);
 
         // cascade中心を、固定されたLightRight/Up軸へ投影する
         // World原点を基準にした絶対座標を丸めることで

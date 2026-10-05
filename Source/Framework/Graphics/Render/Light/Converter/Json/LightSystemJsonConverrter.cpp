@@ -19,6 +19,12 @@ void FWK::Converter::LightSystemJsonConverter::Deserialize(const nlohmann::json&
         l_directionalLight.m_color     = Utility::DeserializeVector3 (l_directionalLightJson, k_colorJsonKey);
         l_directionalLight.m_intensity = l_directionalLightJson.value(k_intensityJsonKey,     Constant::k_defaultDirectionalLightIntensity);
 
+        // ディレクショナルライトには必ずベクトルを持たせる
+        if (l_directionalLight.m_direction.LengthSquared() <= Constant::k_epsilon)
+        {
+            l_directionalLight.m_direction = Constant::k_defaultDirectionalLightDirection;
+        }
+
         // ライト方向はシェーダー側で内積計算に使うため、長さ1に正規化しておく
         // 正規化していないと、方向ベクトルの長さによって明るさまで変わってしまうため
         l_directionalLight.m_direction.Normalize();

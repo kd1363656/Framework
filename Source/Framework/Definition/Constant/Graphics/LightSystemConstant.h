@@ -9,4 +9,6 @@ namespace FWK::Constant
 
     inline constexpr float k_defaultDirectionalLightIntensity = 1.0F;
     inline constexpr float k_defaultAmbientLightIntensity     = 0.25F;
+
+    static constexpr float k_epsilon = 0.000001F;
 }
