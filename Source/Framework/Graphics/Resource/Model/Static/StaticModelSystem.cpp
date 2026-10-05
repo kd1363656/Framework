@@ -39,22 +39,24 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
     // 失敗したらUFBXから読み込む
     if (!m_binaryConverter.LoadAsset(a_filePath, *l_staticModelRecord))
     {
-        // .assetが読み込めなければFBXモデルをロードする、失敗したらassert
-        FWK_ASSERT_RETURN_VALUE_IF(!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord), "StaticModel読み込みに失敗したため、バッチモデル登録に失敗しました。", l_staticModelLoadResult);
+        // FBXの読み込みに失敗した場合
+        // 割り当て済みのStorageIDを返却してからreturnする
+        // 返却しないと失敗するたびにStorageIDが使用中のまま残り、いずれ割り当てられなくなる
+        if (!m_loader.LoadStaticModelFile(a_filePath, *l_staticModelRecord))
+        {
+            m_modelStorage.ReleaseStorageID(l_allocateStorageID);
 
-        // モデルのメッシュレット生成などを行う
-        BuildStaticModelAssetData(a_filePath, *l_staticModelRecord);
+            FWK_ASSERT_RETURN_VALUE("StaticModelのFBX読み込みに失敗しました。", l_staticModelLoadResult);
+        }
 
-        // 実行時に決まる情報を作成
-        BuildStaticModelRuntimeData(l_staticModelRecord,
-                                    a_device,
-                                    a_gpuMemoryAllocator,
-                                    a_filePath,
-                                    l_allocateStorageID,
-                                    a_cbvSRVUAVDescriptorPool,
-                                    l_staticModelLoadResult);
+        // モデルの最適化・メッシュレット生成・.asset保存を行う
+        // 失敗したまま進むと壊れたデータでGPUバッファを作成してしまうため、ここで中断する
+        if (!BuildStaticModelAssetData(a_filePath, *l_staticModelRecord))
+        {
+            m_modelStorage.ReleaseStorageID(l_allocateStorageID);
 
-        return l_staticModelLoadResult;
+            FWK_ASSERT_RETURN_VALUE("StaticModelのAssetData構築に失敗しました。", l_staticModelLoadResult);
+        }
     }
 
     // 実行時に決まる情報を作成
@@ -80,11 +82,11 @@ void FWK::Graphics::StaticModelSystem::RegisterPendingStaticModels()
     {
         auto& l_staticModelRecord = l_pendingStaticModelBatchUploadRecord.m_staticModelRecord;
 
-        FWK_ASSERT_RETURN_IF(!l_staticModelRecord,                                            "TextureRecordが無効のため、バッチスタティックモデル登録に失敗しました。");
-        FWK_ASSERT_RETURN_IF(!m_modelStorage.RegisterRecord(l_staticModelRecord, l_filePath), "TextureRecordの登録に失敗したため、バッチスタティックモデル登録に失敗しました。");
+        FWK_ASSERT_RETURN_IF(!l_staticModelRecord,                                            "StaticModelRecordが無効のため、Pending中のStaticModel登録に失敗しました。");
+        FWK_ASSERT_RETURN_IF(!m_modelStorage.RegisterRecord(l_staticModelRecord, l_filePath), "StaticModelRecordのStorage登録に失敗しました。");
     }
 
-    // そのフレーム内でロードすべきテクスチャをすべてロードし終えた状態なのでクリア
+    // GPUコピー完了後はUploadBufferを保持する必要がないため破棄する
     m_pendingModelBatchUploadRecordMap.clear();
 }
 
@@ -110,7 +112,7 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
     // 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "TextureAssetの保存に失敗しました", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "StaticModelAssetの保存に失敗しました。", false)
 
     return true;
 }

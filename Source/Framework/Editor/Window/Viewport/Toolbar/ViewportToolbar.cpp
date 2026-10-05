@@ -43,9 +43,10 @@ void FWK::Editor::ViewportToolbar::DrawDisplayOptionsPopup(ViewportEditorWindow&
 }
 void FWK::Editor::ViewportToolbar::DrawCollisionMenuItem() const
 {
-    auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
-
-    const bool l_isEnabled = l_physicsManager.GetVALIsDisableDebugDraw();
+    // PhysicsManagerは「デバッグ描画が無効かどうか」(IsDisable)を保持しているため
+    // メニューのチェック表示(有効かどうか)として使うには反転させる
+          auto& l_physicsManager = Physics::PhysicsManager::GetInstance      ();
+    const bool  l_isEnabled      = !l_physicsManager.GetVALIsDisableDebugDraw();
 
     if (ImGui::MenuItem(k_collisionMenuItemLabel.data(), nullptr, l_isEnabled))
     {

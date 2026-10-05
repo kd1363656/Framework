@@ -64,7 +64,8 @@ nlohmann::json FWK::Converter::LightSystemJsonConverter::Serialize(const Graphic
     // アンビエントライトをシリアライズ
     nlohmann::json l_ambientLightJson = {};
 
-    l_ambientLightJson[k_colorJsonKey]     = Utility::SerializeVector3(l_ambientLight.m_color, k_colorJsonKey);
+    Utility::UpdateJson(l_ambientLightJson, Utility::SerializeVector3(l_ambientLight.m_color, k_colorJsonKey));
+
     l_ambientLightJson[k_intensityJsonKey] = l_ambientLight.m_intensity;
 
     l_rootJson[k_ambientLightJsonKey] = l_ambientLightJson;

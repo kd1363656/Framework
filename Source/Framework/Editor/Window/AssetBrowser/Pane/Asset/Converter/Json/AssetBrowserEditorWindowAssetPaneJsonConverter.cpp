@@ -9,7 +9,7 @@ void FWK::Converter::AssetBrowserEditorWindowAssetPaneJsonConverter::Deserialize
     {
         auto& l_selectionState = a_assetBrowserEditorWindowAssetPane.GetMutableREFSelectionState();
 
-        l_selectionState.Deserialize(a_rootJson);
+        l_selectionState.Deserialize(l_json);
     }
 }
 

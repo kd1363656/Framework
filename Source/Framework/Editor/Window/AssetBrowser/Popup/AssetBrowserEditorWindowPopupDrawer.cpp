@@ -124,9 +124,10 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
                           !l_containsRoot,
                           l_assetFilePathRegistry);
 
-        DrawDeleteMenu(a_selectedFilePathList, l_hasSelection &&
-                                               !l_containsRoot,
-                                               a_editorWindow);
+        DrawDeleteMenu(a_selectedFilePathList, 
+                       l_hasSelection &&
+                       !l_containsRoot,
+                       a_editorWindow);
     }
     else
     {

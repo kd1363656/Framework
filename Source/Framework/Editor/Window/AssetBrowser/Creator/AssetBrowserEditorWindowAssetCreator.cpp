@@ -288,7 +288,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
         break;
 
         default:
-    	break;
+        break;
     }
     
     return true;

@@ -9,6 +9,10 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
     l_gameObject->INIT   ();
     l_gameObject->SetName(std::string{ Constant::k_gameObjectString });
 
+    // 親への接続に成功したかどうか
+    // 失敗した場合はルートGameObjectとして生成する
+    bool l_isParentApplied = false;
+
     // 親がいる場合はScene登録より先に親子関係を構築する
     // Scene::AddGameObjectは親鎖から実行レベルを計算するため
     // 接続前に登録するとルート扱いになってしまう
@@ -17,17 +21,23 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
     {
         auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
 
-        l_hierarchy.ApplyParent(a_parent);
+        // GameObjectHierarchy::ApplyParentは
+        // ・旧親からの切り離し(ClearParent)
+        // ・親側の子リストへの登録(AddChild)
+        // ・自身のTransformComponent::ApplyParent()(親行列への依存切替)
+        // まで一括で行うため、ここでTransformを個別に切り替える必要はない
+        l_isParentApplied = l_hierarchy.ApplyParent(a_parent);
 
-        // 行列の合成方法を親の行列に依存するようにする(拡縮・回転・座標のすべてに依存)
-        if (const auto& l_transformComponent = l_parent->GetVALTransformComponent().lock())
+        if (!l_isParentApplied)
         {
-            l_transformComponent->ApplyParent();
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "親GameObjectへの接続に失敗したため、ルートGameObjectとして生成します。");
         }
     }
-    else
+    
+    // 親を持たない場合は
+    // 行列の合成を自身のみで完結するようにする(拡縮・回転・座標のすべてが自身のみに依存)
+    if (!l_isParentApplied)
     {
-        // 行列の合成を自身のみで完結するようにする(拡縮・回転・座標のすべてに依存)
         if (const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock())
         {
             l_transformComponent->ApplyStandalone();

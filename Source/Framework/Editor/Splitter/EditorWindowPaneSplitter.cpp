@@ -121,9 +121,10 @@ void FWK::Editor::EditorWindowPaneSplitter::Draw(const std::string_view&        
 
     // GetWindowDrawList()が返すImDrawList*はImGui所有
     // この関数内だけで一時的に参照し、保持はしない
-    auto* l_drawList = ImGui::GetWindowDrawList();
-
-    if (!l_drawList)
+    // DrawListが有効な場合のみ境界線を描画する
+    // (Begin〜Endの内側であれば通常nullにはならないが、念のため確認する)
+    if (auto* l_drawList = ImGui::GetWindowDrawList();
+        l_drawList)
     {
         // 通常はImGui標準Separator色
         ImGuiCol l_splitterColor = ImGuiCol_Separator;
@@ -161,8 +162,8 @@ void FWK::Editor::EditorWindowPaneSplitter::Draw(const std::string_view&        
 
             l_drawList->AddLine({ l_splitterMIN.x, l_splitterCenterY },
                                 { l_splitterMAX.x, l_splitterCenterY },
-                                 ImGui::GetColorU32(l_splitterColor),
-                                 k_splitterLineThickness);
+                                ImGui::GetColorU32(l_splitterColor),
+                                k_splitterLineThickness);
         }
     }
 

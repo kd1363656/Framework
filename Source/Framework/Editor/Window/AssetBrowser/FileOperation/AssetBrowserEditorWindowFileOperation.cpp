@@ -9,37 +9,40 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
     const auto& l_extension   = a_targetFilePath.extension().string();
     const auto& l_newFilePath = a_targetFilePath.parent_path() / (a_newName + l_extension);
 
-    std::error_code l_errorCode = {};
+    // 名前が変わっていなければ何もしない
+    // 例 : "Player.json"を名前変更モードにしたが、名前を変えずにEnterを押した場合
+    //      rename()を呼ぶ必要も、Registry・Json内部名を更新する必要もない
+    if (l_newFilePath == a_targetFilePath) { return; }
 
     // 同一名が存在する場合は番号付与する
-    // ただし自分自身と同じ名前の場合は番号付与しない
-    const auto& l_resolvedNewFilePath = (l_newFilePath == a_targetFilePath) ? l_newFilePath : Utility::ResolveFilePathConflictByNumberSuffix(l_newFilePath);
+    // 例 : "Enemy.json"が既にある状態で"Player.json"を"Enemy"へ変更 -> "Enemy1.json"
+    const auto& l_resolvedNewFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_newFilePath);
+
+    std::error_code l_errorCode = {};
 
     // ファイルシステム上でリネームする
+    // 同じボリューム内のrenameはファイルの中身を移動せず名前だけを変更するため
+    // FileIdが保たれ、WatcherからはFilePathChangeとして通知される
     std::filesystem::rename(a_targetFilePath, l_resolvedNewFilePath, l_errorCode);
 
+    // rename()に失敗した場合、ディスク上のファイルは元の名前のまま残っている
+    // ここで先へ進んでRegistryを更新すると
+    // 「ディスク上は旧Path、Registry上は新Path」というズレが生まれ
+    // 旧PathのJsonが未登録Json扱いになりPrefab/Sceneとして読み込めなくなるため、必ずここで中断する
     if (l_errorCode)
     {
-        if (a_targetFilePath == l_newFilePath)
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugINFOColor,
-                        "ファイルのリネームは取り消しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
-                        a_targetFilePath.string(),
-                        l_resolvedNewFilePath.string(),
-                        l_errorCode.value());
-        }
-        else
-        {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-                        "ファイルのリネームに失敗しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
-                        a_targetFilePath.string(),
-                        l_resolvedNewFilePath.string(),
-                        l_errorCode.value());   
-        }
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                    "ファイルのリネームに失敗しました。\nOldFilePath : {}\nNewFilePath : {}\nErrorCode : {}",
+                    a_targetFilePath.string(),
+                    l_resolvedNewFilePath.string(),
+                    l_errorCode.value());
+
+        return;
     }
 
     // AssetFilePathRegistryのPathも更新する
     // Watcher経由でも通知されるが、即座にRegistryを更新しておく
+    // (フォルダや非Jsonファイルは未登録のためfalseが返るが、それは正常動作)
     a_assetFilePathRegistry.ReplaceFilePath(a_targetFilePath, l_resolvedNewFilePath);
 
     // JSON内部の名前情報を更新

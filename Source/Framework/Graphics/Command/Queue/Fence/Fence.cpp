@@ -84,7 +84,7 @@ bool FWK::Graphics::Fence::IsFenceValueCompleted(const UINT64& a_fenceValue) con
     if (a_fenceValue == k_unusedFenceValue) { return true; }
 
     // フェンスが存在しなければreturn
-    FWK_ASSERT_RETURN_VALUE_IF(!m_event, "フェンスが作成されておらず、フェンス完了確認処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_fence, "フェンスが作成されておらず、フェンス完了確認処理に失敗しました。", false);
 
     return m_fence->GetCompletedValue() >= a_fenceValue;
 }

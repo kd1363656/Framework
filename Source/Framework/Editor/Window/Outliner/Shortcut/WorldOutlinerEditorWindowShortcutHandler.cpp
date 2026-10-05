@@ -16,7 +16,10 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
 
     // ShiftかCtrlを押しながらの上下キーは範囲選択
     // そうでないなら選択位置の移動
-    HandleArrowKey(a_editorWindow, a_editorManager, l_io.KeyShift && l_io.KeyCtrl);
+    HandleArrowKey(a_editorWindow, 
+                   a_editorManager,
+                   l_io.KeyShift ||
+                   l_io.KeyCtrl);
 
     // F2で選択中のGameObject、またはSceneの名前変更を開始する
     if (ImGui::IsKeyPressed(ImGuiKey_F2)) 

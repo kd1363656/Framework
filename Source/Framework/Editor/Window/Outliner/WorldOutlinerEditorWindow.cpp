@@ -452,9 +452,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
     // 親を持たないルートGameObjectをシーンの登録順に描画する
     for (const auto& l_gameObject : a_scene.GetREFGameObjectList())
     {
-        if (!l_gameObject) { return; }
-
-        if (l_gameObject->GetVALIsDestroyed())
+        if (!l_gameObject ||
+            l_gameObject->GetVALIsDestroyed())
         {
             continue;
         }
