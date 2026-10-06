@@ -106,7 +106,7 @@ void FWK::Converter::StandardPipelineStateJsonConverter::DeserializeInputLayout(
 
     for (const auto& l_json : a_rootJson)
     {
-        const auto l_semanticName = l_json.value(k_semanticNameJsonKey, std::string());
+        const auto& l_semanticName = l_json.value(k_semanticNameJsonKey, std::string());
 
         if (l_semanticName.empty()) { continue; }
 

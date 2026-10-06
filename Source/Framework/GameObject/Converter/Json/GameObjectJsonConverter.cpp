@@ -123,17 +123,17 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::Serialize(const GameObje
     }
 
     // UUID群のデシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
+    Utility::UpdateJson(Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey), l_rootJson);
  
     // ComponentList / ChildListのデシリアライズ
     // 各Serialize()が {ComponentList:[...]} / {ChildList:[...]} を返すのでそのままマージする
     auto& l_componentContainer = a_gameObject.GetREFComponentContainer();
     auto& l_hierarchy          = a_gameObject.GetREFHierarchy         ();
 
-    Utility::UpdateJson(l_rootJson, l_componentContainer.Serialize());
-    Utility::UpdateJson(l_rootJson, l_hierarchy.Serialize(a_prefabSystem));
+    Utility::UpdateJson(l_componentContainer.Serialize(), l_rootJson);
+    Utility::UpdateJson(l_hierarchy.Serialize(a_prefabSystem), l_rootJson);
  
     return l_rootJson;
 }
@@ -219,15 +219,15 @@ nlohmann::json FWK::Converter::GameObjectJsonConverter::SerializeDIFF(const nloh
  
     // PrefabUUID
     // DeserializeSceneでのPrefab検索に使う
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey));
+    Utility::UpdateJson(Utility::SerializeUUID(a_gameObject.GetREFPrefabUUID(), Constant::k_gameObjectJsonConverterPrefabUUIDJsonKey), l_rootJson);
  
     // SceneInstanceUUID
     // インスタンス識別用。これが無いとロード毎に新規発行され外部参照が壊れる
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey));
+    Utility::UpdateJson(Utility::SerializeUUID(a_gameObject.GetREFSceneInstanceUUID(), Constant::k_gameObjectJsonConverterSceneInstanceUUIDJsonKey), l_rootJson);
  
     // PrefabHierarchyNodeUUID
     // 子として配置される場合の照合用
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey));
+    Utility::UpdateJson(Utility::SerializeUUID(a_gameObject.GetREFPrefabHierarchyNodeUUID(), k_prefabHierarchyNodeUUIDJsonKey), l_rootJson);
  
     l_rootJson[k_diffJsonKey] = std::move(l_diffJson);
  
@@ -243,13 +243,13 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
  
     if (a_rootJson.is_object())
     {
-        Utility::UpdateJson(l_mergedJson, a_rootJson);
+        Utility::UpdateJson(a_rootJson, l_mergedJson);
     }
  
     if (const auto& l_diffJson = a_rootJson.value(k_diffJsonKey, nlohmann::json{});
         l_diffJson.is_object())
     {
-        Utility::UpdateJson(l_mergedJson, l_diffJson);
+        Utility::UpdateJson(l_diffJson, l_mergedJson);
     }
  
     // TransformComponentのデシリアライズ

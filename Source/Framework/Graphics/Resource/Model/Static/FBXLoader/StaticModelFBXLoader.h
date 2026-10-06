@@ -13,9 +13,9 @@ namespace FWK::Graphics
 
     private:
 
-        bool ExtractModelData          (const ufbx_scene*    a_fbxScene,            StaticModelRecord::ModelData&              a_modelData)                                          const;
-        bool ExtractModelMeshList      (const ufbx_node*     a_fbxNode,             std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList)                                      const;
-        bool ExtractModelMeshByMaterial(const std::size_t&   a_materialIndex, const ufbx_node*                                 a_fbxNode, StaticModelRecord::ModelMesh& a_modelMesh) const;
+        bool ExtractModelData          (const ufbx_scene* a_fbxScene,       StaticModelRecord::ModelData&              a_modelData)                                                const;
+        bool ExtractModelMeshList      (const ufbx_node*  a_fbxNode,        std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList)                                            const;
+        bool ExtractModelMeshByMaterial(const ufbx_node*  a_fbxNode,  const std::size_t&                               a_materialIndex, StaticModelRecord::ModelMesh& a_modelMesh) const;
 
         static constexpr std::string_view k_assetLoadSourceDebugText      = "Asset";
         static constexpr std::string_view k_ufbxLoadSourceDebugText       = "UFBX";

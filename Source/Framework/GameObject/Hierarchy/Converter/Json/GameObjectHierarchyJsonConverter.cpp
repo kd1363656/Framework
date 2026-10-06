@@ -157,7 +157,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeDiff(c
         // SceneInstanceUUID等のメタ情報も含まれるため、変更ゼロでもエントリは必ず出す
         nlohmann::json l_modifiedJson = {};
  
-        Utility::UpdateJson(l_modifiedJson, Utility::SerializeUUID(l_nodeUUID, k_prefabHierarchyNodeUUIDJsonKey));
+        Utility::UpdateJson(Utility::SerializeUUID(l_nodeUUID, k_prefabHierarchyNodeUUIDJsonKey), l_modifiedJson);
  
         l_modifiedJson[k_gameObjectDataJsonKey] = l_child->SerializeDIFF(*l_itr->second, a_prefabSystem);
  
@@ -512,7 +512,7 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const st
     }
  
     // Owner設定等の初期化が必要なのでmake_sharedで生成してINITを呼ぶ
-    auto l_child = std::make_shared<GameObject>();
+    const auto& l_child = std::make_shared<GameObject>();
  
     l_child->INIT();
  

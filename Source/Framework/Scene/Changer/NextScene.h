@@ -21,10 +21,10 @@ namespace FWK
 
     private:
     
+        Converter::NextSceneJsonConverter m_jsonConverter = {};
+
         nlohmann::json m_json = {};
 
         std::string m_name = {};
-
-        Converter::NextSceneJsonConverter m_jsonConverter = {};
     };
 }

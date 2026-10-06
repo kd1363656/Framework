@@ -78,7 +78,7 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
 
     // RenderGraphで作成された最終カラーTextureを、ImGuiで表示できるTextureIDとして取得する
     // 今回はRenderTargetTextureの解像度変更は行わなず、既存の描画結果をViewport内に拡縮表示する
-    const auto l_viewportTextureID = FetchVALViewportTextureID();
+    const auto& l_viewportTextureID = FetchVALViewportTextureID();
 
     // 無効なテクスチャなのでreturn
     if (l_viewportTextureID == k_invalidViewportTextureID)
@@ -176,8 +176,8 @@ ImTextureID FWK::Editor::ViewportEditorWindow::FetchVALViewportTextureID() const
 void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImTextureID& a_textureID, const ImVec2& a_viewportSize) const
 {
     // Texture全体を表示するため、UV範囲は左上から右下までを指定する
-    const auto l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
-    const auto l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
+    const auto& l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
+    const auto& l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
 
     // 取得したTextureをViewportの表示領域いっぱいに描画する
     // a_viewportSizeにGetContentRegionAvailの値を渡しているため、Dockingの拡縮に追従する

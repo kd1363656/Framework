@@ -52,7 +52,7 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
 
 void FWK::Graphics::DefaultTexture::ApplyColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel, const std::uint8_t a_colorValue)
 {
-    const auto l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
+    const auto& l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
     FWK_ASSERT_RETURN_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。");
 
@@ -61,7 +61,7 @@ void FWK::Graphics::DefaultTexture::ApplyColorChannel(const Enum::DefaultTexture
 
 std::uint8_t FWK::Graphics::DefaultTexture::FetchVALColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel) const
 {
-    const auto l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
+    const auto& l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue);
 

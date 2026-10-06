@@ -203,7 +203,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetCreator::RenameScene(const std::f
 
     l_scene.INIT();
 
-    auto l_deserializedJson = Utility::LoadJsonFile(a_oldFilePath);
+    const auto& l_deserializedJson = Utility::LoadJsonFile(a_oldFilePath);
 
     if (l_deserializedJson.is_null()) { return; }
 
@@ -249,7 +249,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
 
     // コピー先は別アセットなので新しいUUIDを発行する
           auto& l_uuidManager = Utility::UUIDManager::GetInstance();
-    const auto  l_copiedUUID = l_uuidManager.GenerateVALUUID     ();
+    const auto& l_copiedUUID = l_uuidManager.GenerateVALUUID     ();
 
     // Watcherが未登録Jsonとして削除する前にRegistryへ登録する
     if (!a_assetFilePathRegistry.Add(a_copiedFilePath, l_copiedUUID, l_assetType))
@@ -297,7 +297,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
 std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::ResolveDefaultFilePath(const std::filesystem::path& a_parentFolderPath, const std::filesystem::path& a_extension, const std::string_view& a_defaultName)
 {
     // デフォルト名 + 拡張子を統合した希望パスを作る
-    const auto l_desiredFilePath = a_parentFolderPath / (std::string{ a_defaultName } + a_extension.string());
+    const auto& l_desiredFilePath = a_parentFolderPath / (std::string{ a_defaultName } + a_extension.string());
 
     return Utility::ResolveFilePathConflictByNumberSuffix(l_desiredFilePath);
 }

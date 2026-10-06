@@ -94,7 +94,7 @@ bool FWK::AssetFilePathRegistry::ReplaceFilePath(const std::filesystem::path& a_
 
     // UUID -> AssetFilePathData側も同じUUIDを使って検索する
     const auto& l_assetUUID            = l_filePathNode.mapped         ();
-    const auto  l_assetFilePathDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
+    const auto& l_assetFilePathDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
 
     if (l_assetFilePathDataITR == m_uuidToAssetFilePathData.end()) 
     {

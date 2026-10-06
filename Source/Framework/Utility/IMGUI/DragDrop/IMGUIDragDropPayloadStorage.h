@@ -77,7 +77,7 @@ namespace FWK::Utility
          
             // DearImGuiには実際のC++オブジェクトではなく
             // Framework側Payloadを識別するIDだけを渡す
-            const auto l_payloadID = m_payloadID;
+            const auto& l_payloadID = m_payloadID;
          
             const bool l_isPayloadSet = ImGui::SetDragDropPayload(a_label.data(),
                                                                   &l_payloadID,
@@ -110,8 +110,8 @@ namespace FWK::Utility
         // ペイン空白部分などアイテムが存在しない領域のドロップに使用する
         template <typename Type>
         bool DragDropTargetCustom(const ImRect&           a_targetRect,
-                                  const ImGuiID           a_targetID,
                                   const std::string_view& a_label,
+                                  const ImGuiID           a_targetID,
                                         Type&             a_outPayload)
         {
             using PayloadType = std::remove_cvref_t<Type>;

@@ -82,7 +82,7 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
     // 3で割った時に余りが0出ないと三角形を構成できるインデックス数ではないためassert
     FWK_ASSERT_RETURN_IF(a_indexCount % Constant::k_triangleVertexCount != static_cast<int>(Constant::k_noRemainder), "PhysicsDebug用Index数が三角形を構成できない値です。");
 
-    const auto l_triangleCount = static_cast<std::size_t>(a_indexCount) / static_cast<std::size_t>(Constant::k_triangleVertexCount);
+    const auto& l_triangleCount = static_cast<std::size_t>(a_indexCount) / static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
     // 必要な三角形数を一度だけ作成する
     m_triangleList.resize(l_triangleCount);

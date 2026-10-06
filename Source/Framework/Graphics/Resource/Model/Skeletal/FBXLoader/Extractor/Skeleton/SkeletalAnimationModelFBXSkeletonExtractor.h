@@ -13,8 +13,8 @@ namespace FWK::Graphics
 
     private:
 
-        bool CreateBoneNodeIndexMap(      std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const std::vector<const ufbx_node*>& a_modelBoneNodeList)                                                 const;
-        bool CreateModelBone       (const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node*                     a_fbxBoneNode, SkeletalAnimationModelRecord::ModelBone& a_modelBone) const;
+        bool CreateBoneNodeIndexMap(const std::vector<const ufbx_node*>&                       a_modelBoneNodeList,       std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap)                                                       const;
+        bool CreateModelBone       (const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,  const ufbx_node*                                           a_fbxBoneNode,      SkeletalAnimationModelRecord::ModelBone& a_modelBone) const;
 
         bool CollectModelBoneNodes(const ufbx_scene* a_fbxScene, std::vector<const ufbx_node*>& a_modelBoneNodeList) const;
     };

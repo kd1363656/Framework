@@ -96,6 +96,8 @@ namespace FWK
         // ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
         static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
 
+        static constexpr float k_initialAspectRatio = 0.0F;
+
         static constexpr LRESULT k_windowProcedureHandledResult = 0;
 
         static constexpr LONG k_clientRECTLeft = 0L;
@@ -117,8 +119,6 @@ namespace FWK
         static constexpr UINT k_msgFilterMAX          = 0U;
         static constexpr UINT k_wmCreateHandledResult = 0U;
 
-        static constexpr float k_initialAspectRatio = 0.0F;
-
         static constexpr int k_classExtraBytes  = 0;
         static constexpr int k_windowExtraBytes = 0;
 
@@ -129,14 +129,14 @@ namespace FWK
 
         inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Window/WindowCONFIG.json";
 
+        HWND m_hwnd;
+
         Converter::WindowJsonConverter m_jsonConverter;
 
         RECT m_normalWindowRECT;
 
         ClientSize    m_clientSize;
         ResizeRequest m_resizeRequest;
-
-        HWND m_hwnd;
 
         Enum::WindowStyle m_style;
 

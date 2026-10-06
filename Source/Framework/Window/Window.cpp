@@ -11,14 +11,14 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND,
                                                              LPARAM);
 
 FWK::Window::Window() :
+    m_hwnd(nullptr),
+
     m_jsonConverter(),
 
     m_normalWindowRECT(),
 
     m_clientSize   (),
     m_resizeRequest(),
-
-    m_hwnd(nullptr),
 
     m_style(Enum::WindowStyle::None),
 

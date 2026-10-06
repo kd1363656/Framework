@@ -236,8 +236,8 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVS
     FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 
     // コピー元のディスクリプタヒープハンドルとコピー先のディスクリプタヒープハンドルを取得
-    const auto l_sourceCPUDescriptorHandle      = a_sourceCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
-    const auto l_destinationCPUDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
+    const auto& l_sourceCPUDescriptorHandle      = a_sourceCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_sourceSRVDescriptorIndex);
+    const auto& l_destinationCPUDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle (a_imGuiSRVDescriptorIndex);
 
     // SRVDescriptorだけをコピー
     l_device->CopyDescriptorsSimple(k_copySRVDescriptorCount,
@@ -277,7 +277,7 @@ ImTextureID FWK::Editor::EditorManager::FetchVALImGuiTextureID(const TypeAlias::
 {
     if (a_imGuiSRVDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return {}; }
 
-    const auto l_gpuDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle(a_imGuiSRVDescriptorIndex);
+    const auto& l_gpuDescriptorHandle = m_imGuiCBVSRVUAVDescriptorPool.FetchVALGPUDescriptorHandle(a_imGuiSRVDescriptorIndex);
 
     return l_gpuDescriptorHandle.ptr;
 }

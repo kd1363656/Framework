@@ -106,7 +106,7 @@ namespace FWK::Graphics
         void SignalAndTrackAllocator(CommandAllocator<CommandType>& a_commandAllocator)
         {
             // 実際にSignaleへ成功したFence値を取得する
-            const auto l_signaledFenceValue = SignalFence();
+            const auto& l_signaledFenceValue = SignalFence();
 
             FWK_ASSERT_RETURN_IF(l_signaledFenceValue == Fence::k_unusedFenceValue, "CommandAllocator追跡用のFenceSignalに処理に失敗しました。");
 

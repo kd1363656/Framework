@@ -5,9 +5,9 @@ void FWK::Graphics::CopyCommandList::Reset(const TypeAlias::CopyCommandAllocator
     CommandListBase::Reset(a_copyCommandAllocator);
 }
 
-void FWK::Graphics::CopyCommandList::CopyTextureRegion(const D3D12_TEXTURE_COPY_LOCATION& a_destination,
+void FWK::Graphics::CopyCommandList::CopyTextureRegion(const D3D12_BOX*                   a_sourceBox,
+                                                       const D3D12_TEXTURE_COPY_LOCATION& a_destination,
                                                        const D3D12_TEXTURE_COPY_LOCATION& a_source,
-                                                       const D3D12_BOX*                   a_sourceBox,
                                                        const UINT                         a_destinationX,
                                                        const UINT                         a_destinationY,
                                                        const UINT                         a_destinationZ) const

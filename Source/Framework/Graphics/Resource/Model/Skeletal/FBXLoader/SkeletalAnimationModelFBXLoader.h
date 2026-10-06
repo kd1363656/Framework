@@ -30,9 +30,9 @@ namespace FWK::Graphics
                                                const std::uint32_t                              a_bonePaletteIndex,
                                                      SkeletalAnimationModelRecord::ModelVertex& a_modelVertex) const;
 
-        bool ExtractModelMeshByMaterial(const std::size_t&                                         a_materialIndex,
+        bool ExtractModelMeshByMaterial(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                         const ufbx_node*                                           a_fbxNode,
-                                        const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
+                                        const std::size_t&                                         a_materialIndex,
                                               SkeletalAnimationModelRecord::ModelMesh&             a_modelMesh) const;
 
         bool NormalizeModelVertexBoneWeight(SkeletalAnimationModelRecord::ModelVertex& a_modelVertex) const;

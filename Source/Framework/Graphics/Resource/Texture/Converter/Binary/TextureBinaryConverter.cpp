@@ -161,7 +161,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
         }
 
         // .asset内のピクセルデータを、ScratchImageが確保した画像メモリへコピーする
-        if (!TryReadBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_memoryReadOffset, l_image.pixels))
+        if (!TryReadBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_image.pixels, l_memoryReadOffset))
         {
             DestroyMemoryMappedFile();
 
@@ -202,7 +202,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
 
     // Headerを書き込む、
     // WriteBinaryData内で、書き込んだ分だけl_memoryWriteOffsetが進む
-    WriteBinaryData(k_singleBinaryElementCount, &l_textureBinaryHeader, l_memoryWriteOffset);
+    WriteBinaryData(&l_textureBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
 
     // ScratchImageからイメージリストを取得
     const auto* l_imageList = a_scratchImage.GetImages();
@@ -214,7 +214,7 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
         FWK_ASSERT_RETURN_VALUE("TextureAssetへ保存するImage配列が無効となっており、バイナリーファイルの保存に失敗しました。", false);
     }
 
-    const auto l_imageCount = a_scratchImage.GetImageCount();
+    const auto& l_imageCount = a_scratchImage.GetImageCount();
 
     for (std::uint64_t l_imageIndex = 0ULL; l_imageIndex < l_imageCount; ++l_imageIndex)
     {
@@ -223,10 +223,10 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const std::filesys
         const auto& l_textureBinarySubresourceHeader = CreateTextureBinarySubresourceHeader(l_image);
 
         // SubresourceHeaderを書き込む
-        WriteBinaryData(k_singleBinaryElementCount, &l_textureBinarySubresourceHeader, l_memoryWriteOffset);
+        WriteBinaryData(&l_textureBinarySubresourceHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
 
         // ピクセルデータ本体を書き込む
-        WriteBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_image.pixels, l_memoryWriteOffset);
+        WriteBinaryData(l_image.pixels, l_textureBinarySubresourceHeader.m_pixelDataSize, l_memoryWriteOffset);
     }
 
     // 計算したファイルサイズと、実際に書き込んだサイズが一致するかを確認する

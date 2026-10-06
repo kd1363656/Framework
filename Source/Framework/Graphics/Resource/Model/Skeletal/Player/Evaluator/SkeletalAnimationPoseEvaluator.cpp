@@ -262,7 +262,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(Sk
             // KeyFrameListが時刻の昇順で並んでいるか検証する。
             for (auto l_keyFrameIndex = k_firstKeyFrameIndex + k_nextKeyFrameOffset; l_keyFrameIndex < l_keyFrameList.size(); ++l_keyFrameIndex)
             {
-                const auto l_previousKeyFrameIndex = l_keyFrameIndex - k_nextKeyFrameOffset;
+                const auto& l_previousKeyFrameIndex = l_keyFrameIndex - k_nextKeyFrameOffset;
 
                 FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameList[l_keyFrameIndex].m_timeSecond < l_keyFrameList[l_previousKeyFrameIndex].m_timeSecond, "KeyFrameListが時刻順に並んでいません。", false);
             }

@@ -1,9 +1,9 @@
 ﻿#include "DynamicRWStructuredBuffer.h"
 
 FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer() :
-    m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
-
     m_currentResourceState(D3D12_RESOURCE_STATE_COMMON),
+
+    m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
 
     m_elementCount(k_invalidElementCount),
 
@@ -17,9 +17,9 @@ FWK::Graphics::DynamicRWStructuredBuffer::~DynamicRWStructuredBuffer()
 FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer(DynamicRWStructuredBuffer && a_other) noexcept :
     StructuredBufferBase(std::move(a_other)),
 
-    m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
-
     m_currentResourceState(D3D12_RESOURCE_STATE_COMMON),
+
+    m_uavDescriptorIndex(DescriptorHeap::k_invalidDescriptorIndex),
 
     m_elementCount(k_invalidElementCount),
 
@@ -157,7 +157,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DynamicRWStructuredBuffer::Create
     l_uavDesc.Buffer.CounterOffsetInBytes = k_counterOffsetInBytes;
     l_uavDesc.Buffer.Flags                = D3D12_BUFFER_UAV_FLAG_NONE;
 
-    const auto l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_uavDescriptorIndex));
+    const auto& l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_uavDescriptorIndex));
 
     // CreateUnorderedAccessView(UAVとして見せたいGPUResource,
     //                           CounterResource(Append/Consume系統でなければnullptr),

@@ -78,11 +78,11 @@ namespace FWK::Graphics
         static constexpr UINT16 k_minTextureArraySize = 1U;
         static constexpr UINT16 k_minMIPLevelCount    = 1U;
 
+        std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
+
         Struct::GPUResource m_gpuResource = {};
 
         Struct::DepthStencilTextureSettings m_depthStencilTextureSettings = {};
-
-        std::vector<TypeAlias::DescriptorIndex> m_dsvDescriptorIndexList = {};
 
         D3D12_RESOURCE_STATES m_currentResourceState = k_defaultResourceState;
 

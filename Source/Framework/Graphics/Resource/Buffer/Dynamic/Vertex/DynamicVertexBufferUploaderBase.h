@@ -31,7 +31,7 @@ namespace FWK::Graphics
 
             FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == k_invalidGPUVirtualAddress, "VertexListの書き込みに失敗したため、VertexBufferViewの作成に失敗しました。", {});
 
-            const auto l_vertexBufferSize = sizeof(VertexType) * a_vertexList.size();
+            const auto& l_vertexBufferSize = sizeof(VertexType) * a_vertexList.size();
 
             D3D12_VERTEX_BUFFER_VIEW l_vertexBufferView = {};
 

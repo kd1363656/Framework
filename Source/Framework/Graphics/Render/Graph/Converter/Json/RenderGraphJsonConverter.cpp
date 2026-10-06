@@ -152,7 +152,7 @@ nlohmann::json FWK::Converter::RenderGraphJsonConverter::SerializePassList(const
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_pass, k_renderGraphPassTypeNameJsonKey));
+        Utility::UpdateJson(Utility::SerializeInstanceType(l_pass, k_renderGraphPassTypeNameJsonKey), l_json);
 
         l_rootJsonArray.emplace_back(l_json);
     }

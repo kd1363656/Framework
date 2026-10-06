@@ -220,7 +220,7 @@
 7-4. private の宣言は次の順に並べます。
        private 関数 → static constexpr 定数(k_) → メンバ変数(m_) → 型情報マクロ
      ・定数は型ごとにまとめ、型が変わるところで空行を入れます。
-     ・メンバ変数は「コンテナ・スマートポインタ → オブジェクト → Converter / Inspector → 数値 → bool」の順に並べます。
+     ・メンバ変数は「配列 → ポインタ → オブジェクト → Converter / Inspector → データ → 列挙型 → 数値 → bool」の順に並べます(第20章)。
 7-5. コンストラクタとデストラクタ
      ・コンストラクタの前に半角スペースを1つ入れて、デストラクタの ~ と位置を揃えます。
            XxxClass() = default;
@@ -460,10 +460,21 @@
          const auto& l_nodeCount = a_dependencyList.size();
      ・後で変更する変数は auto / auto& を使い、ポインタは const auto* / auto* を使います。
      ・bool / float / int などは型を明示しても構いません: const bool l_isInserted = ...;
+     ・8バイト以上の変数(std::size_t / UINT64 / double / 数学の型 / UUID / 文字列 / イテレータ / スマートポインタなど)は、
+       後で変更しないのであれば必ず const auto& で受け取ります。値で受け取ることはしません。
+         const auto& l_index        = static_cast<std::size_t>(a_defaultTextureType);
+         const auto& l_assetDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
+       ただし、std::min / std::max のように引数の参照を返す関数に一時オブジェクトを渡した場合は、
+       参照先が文の終わりで消えてしまうため値で受け取ります。
+         const auto l_copySize = std::min(l_name.size(), l_bufferSize - k_lastOffset);
+       また、元の値がこの後で変わったり消えたりするため、コピーを取っておく必要がある場合も値で受け取ります。
+         // この後eraseするとイテレータが無効化されるため、要素をコピーしておく
+         const auto l_moveData = *l_moveITR;
 10-2. 既定値で構築するときは Type l_xxx = {}; と書きます。
          nlohmann::json l_rootJson = {};
          std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
 10-3. 範囲 for は for (const auto& l_xxx : xxxList) と書き、要素を変更するときだけ auto& を使います。
+     要素が8バイト以上の場合(std::size_t の添字リストなど)に const auto で受け取ることはしません。
      map は構造化束縛を使います: for (const auto& [l_key, l_value] : l_xxxMap)
 10-4. 添字を使う for は for (std::size_t l_index = 0ULL; l_index < l_count; ++l_index) と書きます。
      添字が不要な場合は範囲 for を使ってください。
@@ -553,12 +564,21 @@
 13-1. 所有するものは std::shared_ptr / std::unique_ptr で持ち、参照するだけのものは std::weak_ptr のメンバ(m_owner / m_parent など)で持ちます。
 13-2. 生ポインタは、「見つからないかもしれない参照」を返す FindPTRXxx / FetchPTRXxx の戻り値と、外部 API とのやり取りにだけ使います。
 13-3. 自分自身を他に渡すクラスは std::enable_shared_from_this を継承し、weak_from_this() を渡します。
-13-4. 引数の渡し方
-     ・数値 / 列挙型 / HANDLE などは const の値渡しにします: const float a_value
-     ・クラス型は const 参照で渡します: const std::filesystem::path& a_filePath
+13-4. 引数の渡し方は、型の大きさで決めます。
+     ・8バイト未満の型(bool / float / int / UINT / std::uint32_t / DWORD / 列挙型 / DescriptorIndex など)は
+       const の値渡しにします: const float a_value / const Enum::XxxType a_type
+     ・8バイト以上の型は、数値であっても const 参照で渡します。
+         const std::size_t& a_index / const UINT64& a_bufferSize / const double& a_timeSecond /
+         const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress / const boost::uuids::uuid& a_uuid /
+         const std::string_view& a_key / const TypeAlias::Math::Vector3& a_position
+     ・クラス型・構造体は const 参照で渡します: const std::filesystem::path& a_filePath
+     ・生ポインタ / HANDLE / HWND は参照にせず、そのまま値で渡します: const ufbx_node* a_fbxNode
+     ・外部ライブラリが型を決めている関数(Jolt の JPH::Vec3Arg / JPH::ColorArg、ウィンドウプロシージャの WPARAM / LPARAM など)は、
+       その型のまま受け取ります。
      ・所有権を移すときは T&& で受け取り、std::move します。
      ・スマートポインタは第1章 1-4 のとおりです。
-13-5. 引数は、const の入力 → const でない参照(出力や変更する対象) → デフォルト引数 の順に並べます。
+13-5. 引数は、const の入力 → const でない参照・ポインタ(出力や変更する対象) → デフォルト引数 の順に並べます。
+     それぞれの中の順番は第20章 20-4 のとおりです。
 13-6. 出力用の参照引数には a_outXxx という名前を付けることがあります(a_outUUIDList)。
 
 
@@ -762,7 +782,87 @@
 
 
 ================================================================================
- 第20章 コードを書いたときのチェックリスト
+ 第20章 宣言と引数の並び順
+================================================================================
+
+20-1. 並び順の基本は「配列 → ポインタ → 値」です。
+       1. 配列        std::vector / std::unordered_map / std::unordered_set / std::array / std::deque などの
+                      要素をまとめて持つ型(XxxMap / XxxList などの型エイリアスも含みます)
+       2. ポインタ    std::unique_ptr / std::shared_ptr / std::weak_ptr / ComPtr / 生ポインタ / HANDLE / HWND
+       3. 値          上の2つ以外のすべて
+     値の中の順番は、メンバ変数・定数・引数ごとに 20-2 ~ 20-4 のとおりです。
+     種類が変わるところで空行を入れます。
+20-2. メンバ変数(m_)
+       1. 配列
+       2. ポインタ
+       3. オブジェクト          処理を持つクラス(XxxSystem / XxxPane / XxxBuffer / Shader など)
+       4. Converter / Inspector
+       5. データ                構造体 / 数学の型 / 文字列 / パス / UUID / nlohmann::json / D3D12 の DESC 構造体 など
+       6. 列挙型
+       7. 数値
+       8. bool
+          std::vector<std::shared_ptr<GameObject>> m_gameObjectList = {};
+
+          std::weak_ptr<GameObject> m_owner = {};
+
+          SceneChanger m_sceneChanger = {};
+
+          Converter::SceneJsonConverter m_jsonConverter = {};
+
+          std::string m_name = {};
+
+          Enum::XxxType m_type = Enum::XxxType::Invalid;
+
+          std::uint32_t m_count = k_initialCount;
+
+          bool m_isEnable = false;
+     ・Converter と Inspector の順番は決めていません。
+20-3. 定数(クラスの static constexpr と Definition/Constant の inline constexpr)
+       1. 配列(std::array / C 配列)
+       2. ポインタ
+       3. 列挙型 / 数学の型(Color / Vector など) / 文字列(std::string_view / char / wchar_t)
+       4. 浮動小数点(float / double)
+       5. 64ビットの整数(std::size_t / UINT64 / std::uint64_t)
+       6. 32ビットの整数(UINT / std::uint32_t / DWORD)
+       7. 16ビットの整数(std::uint16_t)
+       8. 8ビットの整数(std::uint8_t)
+       9. int
+      10. bool
+     ・ファイルパス(std::filesystem::path)の位置は決めていません。
+20-4. 引数(a_)
+     ・まず第13章 13-5 のとおり「const の入力 → const でない参照・ポインタ(出力や変更する対象) → デフォルト引数」に分け、
+       その中を次の順に並べます。
+       1. 配列
+       2. ポインタ
+       3. nlohmann::json
+       4. クラス・構造体・数学の型・文字列・パス・UUID(この中の順番は決めていません)
+       5. 列挙型
+       6. 数値
+       7. bool
+          void Xxx(const std::vector<std::weak_ptr<GameObject>>& a_gameObjectList,
+                   const std::weak_ptr<GameObject>&              a_parent,
+                   const nlohmann::json&                         a_rootJson,
+                   const Enum::XxxType                           a_type,
+                   const bool                                    a_isRecursive,
+                         Scene&                                  a_scene);
+     ・T&& で受け取る引数の位置は決めていません。
+20-5. ローカル変数(l_)は、使う順番(依存される側が先)に宣言します。
+20-6. 次の場合は 20-1 ~ 20-5 の順番より優先し、規約違反とはしません。
+     ・デストラクタが実行される順番や、初期化の順番を守るための並び
+       (メンバ変数は宣言の順番で初期化され、逆の順番で破棄されます。
+        依存される側を先に宣言する必要がある場合は、その順番を優先します)
+     ・デフォルト引数を使うための並び(デフォルト引数は後ろにしか置けないため)
+     ・可変長引数(パラメータパック)は最後に置きます。
+     ・後ろの定数が前の定数を使っている場合(配列の要素数など)
+     ・外部ライブラリの基底クラスをオーバーライドする関数や、外部 API に渡すコールバック関数と、
+       その引数の並びに合わせて作った関数
+       (JPH::DebugRenderer の DrawGeometry / DrawText3D / CreateTriangleBatch、ウィンドウプロシージャなど)
+     ・ポインタと要素数の組(a_vertexList と a_vertexCount など)は、組のまま続けて並べます。
+     ・GPU のメモリ配置に合わせる構造体(CBXxx / VBXxx と、その中に入れる構造体)のメンバ
+
+
+================================================================================
+ 第21章 コードを書いたときのチェックリスト
 ================================================================================
 
 [ ] BOM 付き UTF-8 / CRLF / 末尾に改行なし / インデントはスペース4つ
@@ -772,6 +872,8 @@
 [ ] コンストラクタ / デストラクタは「 X() = default;」「~X() = default;」で ~ の位置を揃えている
 [ ] public は INIT → Deserialize → Update 系 → Draw → Serialize → 操作 → Is → Set → Find → Fetch → GetREF → GetMutableREF → GetVAL の順
 [ ] private は 関数 → static constexpr k_ → m_ メンバ(初期化子は {} / nullptr / 定数) → 型情報マクロ の順
+[ ] 8バイト以上の引数は const 参照、8バイト以上のローカル変数は const auto& で受け取っている
+[ ] メンバ変数・定数・引数を第20章の順番(配列 → ポインタ → 値)で並べている
 [ ] 変数は l_ / 引数は a_ / メンバは m_ / 定数は k_(直後は小文字)、Setter の引数は a_set
 [ ] GetREF / GetMutableREF / GetVAL / FetchVAL / FindPTR を使い分け、略語は大文字(REF VAL PTR ITR INFO UUID ID MIN MAX など)
 [ ] 引数が4個以上の宣言・呼び出しは1行に1引数ずつ書き、位置を揃えている
@@ -788,7 +890,7 @@
 
 
 ================================================================================
- 第21章 統一されていない箇所(新しく書くときは避けてください)
+ 第22章 統一されていない箇所(新しく書くときは避けてください)
 ================================================================================
 
 ・public に入れ子で定義された構造体(Window::ClientSize / TextureSystem::TextureLoadResult など)

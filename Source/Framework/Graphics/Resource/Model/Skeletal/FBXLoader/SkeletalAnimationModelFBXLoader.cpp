@@ -111,9 +111,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(k_invalidMaterialIndex,
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap,
                                                                a_fbxNode,
-                                                               a_boneNodeIndexMap,
+                                                               k_invalidMaterialIndex,
                                                                l_modelMesh),
                                                                "MaterialなしModelMeshの抽出に失敗しました。",
                                                                false);
@@ -133,7 +133,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, a_boneNodeIndexMap, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap, a_fbxNode, l_materialIndex, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
 
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
         if (l_modelMesh.m_indexList.empty())       { continue; }
@@ -173,7 +173,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     // 加算によるOverflowを避けるため、まず開始Indexだけを確認する
     FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.weight_begin > a_fbxSkinDeformer->weights.count, "SkinWeightの開始Indexが範囲外です。", false);
 
-    const auto l_remainingSkinWeightCount = a_fbxSkinDeformer->weights.count - l_fbxSkinVertex.weight_begin;
+    const auto& l_remainingSkinWeightCount = a_fbxSkinDeformer->weights.count - l_fbxSkinVertex.weight_begin;
 
     FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.num_weights > l_remainingSkinWeightCount, "SkinWeight配列の参照範囲が不正です。", false);
 
@@ -298,9 +298,9 @@ void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     }
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t&                                         a_materialIndex,
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
                                                                                 const ufbx_node*                                           a_fbxNode,
-                                                                                const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
+                                                                                const std::size_t&                                         a_materialIndex,
                                                                                       SkeletalAnimationModelRecord::ModelMesh&             a_modelMesh) const
 {
     a_modelMesh.m_modelVertexList.clear();

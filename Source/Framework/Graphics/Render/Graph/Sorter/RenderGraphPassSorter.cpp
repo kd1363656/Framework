@@ -53,7 +53,7 @@ void FWK::Graphics::RenderGraphPassSorter::SortPassList(std::vector<std::unique_
 
     l_sortedPassList.reserve(l_passCount);
 
-    for (const auto l_sortedPassIndex : l_sortedPassIndexList)
+    for (const auto& l_sortedPassIndex : l_sortedPassIndexList)
     {
         FWK_ASSERT_RETURN_IF(l_sortedPassIndex >= a_passList.size(), "RenderGraphPassの並び替えIndexが範囲外となっており、RenderGraphPassの実行順解決に失敗しました。");
 
@@ -183,7 +183,7 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassDependencyEdge(const std::size
     // 同じ依存辺をに順位追加しない。
     // ResourceAccessの組み合わせによっては、
     // 同じPassの依存が複数見つかる可能性がある
-    for (const auto l_nextPassIndex : a_passDependencyList[a_beforePassIndex])
+    for (const auto& l_nextPassIndex : a_passDependencyList[a_beforePassIndex])
     {
         if (l_nextPassIndex != a_afterPassIndex) { continue; }
 

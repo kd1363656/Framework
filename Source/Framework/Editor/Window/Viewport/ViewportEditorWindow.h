@@ -68,9 +68,9 @@ namespace FWK::Editor
 
         std::unique_ptr<EditorCamera> m_editorCamera;
 
-        Converter::ViewportEditorWindowJsonConverter m_jsonConverter;
-
         ViewportToolbar m_toolbar;
+
+        Converter::ViewportEditorWindowJsonConverter m_jsonConverter;
 
         bool m_isDrawFrustum      = false;
         bool m_isDrawCulledResult = false;

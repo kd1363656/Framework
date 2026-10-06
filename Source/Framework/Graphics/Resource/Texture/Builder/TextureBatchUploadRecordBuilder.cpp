@@ -56,7 +56,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
     //       縦幅、
     //       配列数、
     //       MIP数);
-    const auto l_textureResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(a_texMetadata.format,
+    const auto& l_textureResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(a_texMetadata.format,
                                                                     a_texMetadata.width,
                                                                     static_cast<UINT>(a_texMetadata.height),
                                                                     static_cast<UINT16>(a_texMetadata.arraySize),
@@ -64,8 +64,8 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 
     // CopyCommandQueueでCopyTextureRegionのコピー先として使うため、
     // CopyCommandQueueが要求するD3D12_RESOURCE_STATE_COMMONで作成する
-    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_textureResourceDesc,
-                                                                           nullptr,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(nullptr,
+                                                                           l_textureResourceDesc,
                                                                            D3D12_RESOURCE_STATE_COMMON,
                                                                            l_gpuResource),
                                                                            "D3D12MAによるTextureResource作成処理に失敗しており、TextureResource作成処理に失敗しました。",
@@ -171,7 +171,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
         // 実際にコピーする1行当たりの有効データサイズ
         // UploadBuffer側のRowPitch全体ではなく、有効な画像データ部分だけコピーする
         // (RowPitchでアライメントするための余白を含んでいないということ)
-        const auto l_copyRowSize = l_rowSizeInBytesList[l_subresourceIndex];
+        const auto& l_copyRowSize = l_rowSizeInBytesList[l_subresourceIndex];
 
         // Depth方向にコピーする
         for (UINT l_depthIndex = 0U; l_depthIndex < l_layout.Footprint.Depth; ++l_depthIndex)
@@ -257,7 +257,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
 
     a_textureRecord.SetSRVDescriptorIndex(l_srvDescriptorIndex);
 
-    const auto l_cpuOnlyCPUHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_textureRecord.GetVALSRVDescriptorIndex());
+    const auto& l_cpuOnlyCPUHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(a_textureRecord.GetVALSRVDescriptorIndex());
 
     // 作成したビューを用いてTextureResourceとSRVを結び付ける
     // CreateShaderResourceView(SRVとして参照したいGPUResource、

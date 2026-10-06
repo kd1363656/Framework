@@ -119,7 +119,7 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
     FWK_ASSERT_RETURN_VALUE_IF(l_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid, "RenderTargetResourceTypeが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(l_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid, "DepthStencilResourceTypeが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
 
-    const auto l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
+    const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_currentFrameResource, "現在のCurrentFrameResourceが無効のため、RenderTarget + DepthStencilの描画先設定に失敗しました。", false);
 

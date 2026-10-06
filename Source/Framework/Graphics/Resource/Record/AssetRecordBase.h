@@ -26,7 +26,7 @@ namespace FWK::Graphics
 
         void SetFilePath(const std::wstring& a_set) { m_filePath = a_set; }
 
-        void SetStorageID(const TypeAlias::StorageID& a_set) { m_storageID = a_set; }
+        void SetStorageID(const TypeAlias::StorageID a_set) { m_storageID = a_set; }
 
         void SetReferenceCount(const std::uint32_t a_set) { m_referenceCount = a_set; };
 

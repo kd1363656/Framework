@@ -16,12 +16,12 @@ namespace FWK::Graphics
 
     private:
 
-        static constexpr UINT k_firstAdapterIndex = 0U;
-
 #if defined(_DEBUG)
         static constexpr std::wstring_view k_deviceDebugLogSeparator      = L"\n===================================================================\n";
         static constexpr std::wstring_view k_selectedGPUNameDebugLogLabel = L"使用GPU : ";
 #endif
+
+        static constexpr UINT k_firstAdapterIndex = 0U;
 
         TypeAlias::ComPtr<IDXGIAdapter4> m_adapter = nullptr;
         TypeAlias::ComPtr<ID3D12Device9> m_device  = nullptr;

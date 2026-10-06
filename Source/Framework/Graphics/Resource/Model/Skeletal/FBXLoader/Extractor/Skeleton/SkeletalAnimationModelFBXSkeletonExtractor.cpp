@@ -8,7 +8,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::ExtractModelBone
     std::vector<const ufbx_node*> l_modelBoneNodeList = {};
 
     FWK_ASSERT_RETURN_VALUE_IF(!CollectModelBoneNodes(a_fbxScene, l_modelBoneNodeList),          "FBXシーンからBoneNodeの収集に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(!CreateBoneNodeIndexMap(a_boneNodeIndexMap, l_modelBoneNodeList), "BoneNodeIndexMapの作成に失敗しました。",      false);
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateBoneNodeIndexMap(l_modelBoneNodeList, a_boneNodeIndexMap), "BoneNodeIndexMapの作成に失敗しました。",      false);
 
     a_modelBoneList.reserve(l_modelBoneNodeList.size());
 
@@ -26,7 +26,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::ExtractModelBone
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateBoneNodeIndexMap(std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const std::vector<const ufbx_node*>& a_modelBoneNodeList) const
+bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateBoneNodeIndexMap(const std::vector<const ufbx_node*>& a_modelBoneNodeList, std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap) const
 {
     a_boneNodeIndexMap.clear  ();
     a_boneNodeIndexMap.reserve(a_modelBoneNodeList.size());

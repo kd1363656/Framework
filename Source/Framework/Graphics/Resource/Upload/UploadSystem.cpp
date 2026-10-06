@@ -159,9 +159,9 @@ void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLAC
         // PlacedFootprint  : UploadBuffer内にあるコピー元サブリソースの配置情報
         const D3D12_TEXTURE_COPY_LOCATION l_sourceCopyLocation = { a_uploadBuffer.Get(), D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT, a_layoutList[l_subresourceIndex]};
 
-        m_copyCommandList.CopyTextureRegion(l_destinationCopyLocation,
+        m_copyCommandList.CopyTextureRegion(nullptr,
+                                            l_destinationCopyLocation,
                                             l_sourceCopyLocation,
-                                            nullptr,
                                             k_defaultTextureCopyDestinationX,
                                             k_defaultTextureCopyDestinationY,
                                             k_defaultTextureCopyDestinationZ);

@@ -36,8 +36,6 @@ namespace FWK::Graphics
 
         void BuildInputElementDescList();
 
-        Shader m_vertexShader = {};
-
         std::vector<D3D12_INPUT_ELEMENT_DESC>                                                    m_inputElementDescList = {};
         std::vector<Converter::StandardPipelineStateJsonConverter::StandardPipelineInputElement> m_inputElementList     = {};
 
@@ -45,6 +43,8 @@ namespace FWK::Graphics
         std::shared_ptr<Shader> m_domainShader   = nullptr;
         std::shared_ptr<Shader> m_geometryShader = nullptr;
         std::shared_ptr<Shader> m_pixelShader    = nullptr;
+
+        Shader m_vertexShader = {};
 
         Converter::StandardPipelineStateJsonConverter m_jsonConverter = {};
 

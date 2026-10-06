@@ -17,7 +17,7 @@ std::vector<std::size_t> FWK::Utility::TopologicalSorter::Sort(const std::vector
     // 依存関係リストから入次数を作る
     for (std::size_t l_nodeIndex = 0ULL; l_nodeIndex < l_nodeCount; ++l_nodeIndex)
     {
-        for (const auto l_nextNodeIndex : a_dependencyList[l_nodeIndex])
+        for (const auto& l_nextNodeIndex : a_dependencyList[l_nodeIndex])
         {
             FWK_ASSERT_RETURN_VALUE_IF(l_nextNodeIndex >= l_nodeCount, "トポロジカルソートの依存先Indexが範囲外です。", {});
 

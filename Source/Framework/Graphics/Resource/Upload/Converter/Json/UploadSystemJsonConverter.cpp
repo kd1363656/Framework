@@ -22,7 +22,7 @@ nlohmann::json FWK::Converter::UploadSystemJsonConverter::Serialize(const Graphi
 
 void FWK::Converter::UploadSystemJsonConverter::DeserializeCopyCommandAllocator(const nlohmann::json& a_rootJson, Graphics::UploadSystem& a_uploadSystem) const
 {
-    auto l_copyCommandAllocatorCount = a_rootJson.value(k_copyCommandAllocatorListCountJsonKey, k_defaultCopyCommandAllocatorListCount);
+    const auto& l_copyCommandAllocatorCount = a_rootJson.value(k_copyCommandAllocatorListCountJsonKey, k_defaultCopyCommandAllocatorListCount);
 
     FWK_ASSERT_RETURN_IF(l_copyCommandAllocatorCount == k_emptyCopyCommandAllocatorListCount, "コピーコマンドアロケータの作成数が0でとなっており、デシリアライズ処理に失敗しました。");
 

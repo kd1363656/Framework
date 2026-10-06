@@ -118,7 +118,7 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
 
         nlohmann::json l_json = {};
 
-        Utility::UpdateJson(l_json, Utility::SerializeUUID(l_sceneUUID, k_uuidJsonKey));
+        Utility::UpdateJson(Utility::SerializeUUID(l_sceneUUID, k_uuidJsonKey), l_json);
         
         l_rootJsonArray.emplace_back(l_json);
     }

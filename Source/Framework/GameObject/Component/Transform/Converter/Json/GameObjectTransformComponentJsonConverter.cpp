@@ -38,14 +38,14 @@ nlohmann::json FWK::Converter::GameObjectTransformComponentJsonConverter::Serial
     const auto& l_transform        = a_gameObjectTransformComponent.GetREFTransform       ();
     const auto& l_matrixUpdateMode = a_gameObjectTransformComponent.GetREFMatrixUpdateMode();
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_scale, k_scaleJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey));
-    Utility::UpdateJson(l_rootJson, Utility::SerializeVector3(l_transform.m_position, k_positionJsonKey));
+    Utility::UpdateJson(Utility::SerializeVector3(l_transform.m_scale, k_scaleJsonKey), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeVector3(l_transform.m_position, k_positionJsonKey), l_rootJson);
     
     if (!l_matrixUpdateMode) { return l_rootJson; }
 
     // 行列更新モードのシリアライズ
-    Utility::UpdateJson(l_rootJson, Utility::SerializeInstanceType(l_matrixUpdateMode, k_matrixUpdateModeJsonKey));
+    Utility::UpdateJson(Utility::SerializeInstanceType(l_matrixUpdateMode, k_matrixUpdateModeJsonKey), l_rootJson);
 
     l_rootJson[k_matrixUpdateModeDataJsonKey] = l_matrixUpdateMode->Serialize();
 

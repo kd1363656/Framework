@@ -99,11 +99,11 @@ namespace FWK
 
         std::unordered_set<boost::uuids::uuid> m_prefabRemovedComponentUUIDSet = {};
 
-        std::weak_ptr<GameObject> m_owner = {};
-
         Utility::SmartPointerVectorList<std::shared_ptr<GameObjectComponentBase>> m_componentSmartPointerVectorList = {};
 
         UUIDRegistry<std::weak_ptr<GameObjectComponentBase>> m_componentUUIDRegistry = {};
+
+        std::weak_ptr<GameObject> m_owner = {};
 
         Converter::GameObjectComponentContainerJsonConverter m_jsonConverter = {};
     };

@@ -152,7 +152,7 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
     m_pendingModelBatchUploadRecordMap.try_emplace(a_filePath.wstring(), std::move(l_staticModelBatchUploadRecord));
 }
 
-bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
+bool FWK::Graphics::StaticModelSystem::CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>&   a_staticModelRecord,
                                                                      const Device&                               a_device,
                                                                      const GPUMemoryAllocator&                   a_gpuMemoryAllocator,
                                                                            TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,

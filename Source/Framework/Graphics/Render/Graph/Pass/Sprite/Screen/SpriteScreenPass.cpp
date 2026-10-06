@@ -17,7 +17,7 @@ void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext&, Renderer& 
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
     // パイプラインステート、ルートシグネチャをセット
-    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SpriteScreen).lock();
+    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (Enum::PipelineStateType::SpriteScreen, a_renderer).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                 ();
 
     FWK_ASSERT_RETURN_IF(!l_rootSignature,        "ルートシグネチャの取得に失敗しており、ScreenSpritePassの実行に失敗しました。");

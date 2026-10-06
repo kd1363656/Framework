@@ -91,7 +91,7 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
     for (const auto& l_json : a_rootJson)
     {
         // Owner設定等の初期化が必要なのでmake_sharedで生成してINITを呼ぶ
-        auto l_gameObject = std::make_shared<GameObject>();
+        const auto& l_gameObject = std::make_shared<GameObject>();
 
         l_gameObject->INIT();
 

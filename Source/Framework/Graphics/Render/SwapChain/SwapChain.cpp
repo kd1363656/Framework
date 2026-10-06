@@ -82,7 +82,7 @@ bool FWK::Graphics::SwapChain::Resize(const Device&                       a_devi
     return true;
 }
 
-void FWK::Graphics::SwapChain::ResizeBackBufferList(const std::size_t a_backBufferNUM)
+void FWK::Graphics::SwapChain::ResizeBackBufferList(const std::size_t& a_backBufferNUM)
 {
     m_backBufferList.resize(a_backBufferNUM);
 }

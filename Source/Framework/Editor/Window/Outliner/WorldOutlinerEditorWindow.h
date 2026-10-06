@@ -46,15 +46,15 @@ namespace FWK::Editor
                                 const bool                       a_isFirstOrder = false);
 
         void DrawRenameInputText   (      Scene&                     a_scene);
-        void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, Scene& a_scene, const bool a_isDropAfter) const;
+        void DrawGameObjectDropZone(const std::weak_ptr<GameObject>& a_targetGameObject, const bool a_isDropAfter, Scene& a_scene) const;
         
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
         void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
 
-        void PushSelectionChangeCommand(const bool                        a_beforeIsSceneSelected,
-                                        std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
-                                        EditorGameObjectSelectionState&   a_gameObjectSelectionState,
-                                        boost::uuids::uuid&&              a_beforeAnchorUUID) const;
+        void PushSelectionChangeCommand(      std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
+                                        const boost::uuids::uuid&               a_beforeAnchorUUID,
+                                        const bool                              a_beforeIsSceneSelected,
+                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState) const;
 
         void SelectScene(EditorGameObjectSelectionState& a_gameObjectSelectionState, const bool a_isToggleSelection = false);
 
@@ -63,10 +63,10 @@ namespace FWK::Editor
         void FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const;
 
         void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
-                                    Scene&                          a_scene,
-                                    EditorGameObjectSelectionState& a_gameObjectSelectionState,
                               const bool                            a_isRangeSelection,
-                              const bool                            a_isToggleSelection);
+                              const bool                            a_isToggleSelection,
+                                    Scene&                          a_scene,
+                                    EditorGameObjectSelectionState& a_gameObjectSelectionState);
  
         void BuildDisplayedGameObjectList(std::vector<std::weak_ptr<GameObject>>& a_displayedList, Scene& a_scene) const;
 
@@ -105,9 +105,6 @@ namespace FWK::Editor
 
         std::unordered_map<boost::uuids::uuid, bool> m_gameObjectOpenStateMap = {};
  
-        bool m_isSceneNodeOpen  = k_initialIsSceneNodeOpenValue;
-        bool m_wasSceneHasChild = false;
-
         WorldOutlinerEditorWindowSelectionState      m_sceneSelectionState = {};
         WorldOutlinerEditorWindowGameObjectOperation m_gameObjectOperation = {};
         WorldOutlinerEditorWindowSceneOperation      m_sceneOperation      = {};
@@ -115,8 +112,11 @@ namespace FWK::Editor
         WorldOutlinerEditorWindowAssetCreator        m_assetCreator        = {};
         WorldOutlinerEditorWindowPopupDrawer         m_popupDrawer         = {};
         WorldOutlinerEditorWindowShortcutHandler     m_shortcutHandler     = {};
- 
+
         Struct::WorldOutlinerEditorWindowRenameState m_renameState = {};
+
+        bool m_isSceneNodeOpen  = k_initialIsSceneNodeOpenValue;
+        bool m_wasSceneHasChild = false;
         
         FWK_DEFINE_TYPE_INFO(WorldOutlinerEditorWindow, EditorWindowBase)
     };

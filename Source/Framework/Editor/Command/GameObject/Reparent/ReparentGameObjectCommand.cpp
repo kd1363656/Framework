@@ -1,11 +1,11 @@
 ﻿#include "ReparentGameObjectCommand.h"
 
-FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(boost::uuids::uuid a_gameObjectUUID, 
-                                                                  boost::uuids::uuid a_beforeParentUUID,
-                                                                  boost::uuids::uuid a_afterParentUUID) :
-    m_gameObjectUUID  (std::move(a_gameObjectUUID)),
-    m_beforeParentUUID(std::move(a_beforeParentUUID)),
-    m_afterParentUUID (std::move(a_afterParentUUID))
+FWK::Editor::ReparentGameObjectCommand::ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID,
+                                                                  const boost::uuids::uuid& a_beforeParentUUID,
+                                                                  const boost::uuids::uuid& a_afterParentUUID) :
+    m_gameObjectUUID  (a_gameObjectUUID),
+    m_beforeParentUUID(a_beforeParentUUID),
+    m_afterParentUUID (a_afterParentUUID)
 {}
 FWK::Editor::ReparentGameObjectCommand::~ReparentGameObjectCommand() = default;
 
@@ -24,13 +24,13 @@ void FWK::Editor::ReparentGameObjectCommand::Redo()
 void FWK::Editor::ReparentGameObjectCommand::ApplyParent(const boost::uuids::uuid& a_parentUUID)
 {
     // SceneManager経由で現在のSceneを取得する
-    auto& l_sceneManager = SceneManager::GetInstance();
-    auto  l_scene        = l_sceneManager.GetVALScene().lock();
+          auto& l_sceneManager = SceneManager::GetInstance();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
  
     if (!l_scene) { return; }
  
     // 対象GameObjectをUUIDから検索する
-    auto l_gameObject = l_scene->FindVALGameObject(m_gameObjectUUID).lock();
+    const auto& l_gameObject = l_scene->FindVALGameObject(m_gameObjectUUID).lock();
  
     if (!l_gameObject ||
         l_gameObject->GetVALIsDestroyed())

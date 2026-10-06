@@ -38,7 +38,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
     // 最初にすべてのPlayerへVertex Skinningを行う。
     // PlayerごとにVertexSkinningとBounds更新のPSOを
     // 交互に切り替えず、同じPSOの処理をまとめて実行する
-    const auto& l_vertexSkinningRootSignature = SetupComputeRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationVertexSkinning).lock();
+    const auto& l_vertexSkinningRootSignature = SetupComputeRenderPipeline(Enum::PipelineStateType::SkeletalAnimationVertexSkinning, a_renderer).lock();
 
     FWK_ASSERT_RETURN_IF(!l_vertexSkinningRootSignature, "SkeletalAnimationVertexSkinning用RootSignatureを取得できないため、VertexSkinningを実行できません。");
 
@@ -72,7 +72,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
     // 全PlayerのVertexSkinningがCommandLIstへ記録された後、
     // Bounds更新用Pipelineへ一度だけ切り替える
-    const auto& l_meshletBoundsUpdateRootSignature = SetupComputeRenderPipeline(a_renderer, Enum::PipelineStateType::SkeletalAnimationMeshletBoundsUpdate).lock();
+    const auto& l_meshletBoundsUpdateRootSignature = SetupComputeRenderPipeline(Enum::PipelineStateType::SkeletalAnimationMeshletBoundsUpdate, a_renderer).lock();
 
     FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateRootSignature, "SkeletalAnimationMeshletBoundsUpdate用RootSignatureを取得できないため、Meshlet Boundsを更新できません。");
 
@@ -218,7 +218,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
 
         FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationVertexSkinning用定数バッファの書き込みに失敗しました。", false);
 
-        a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationVertexSkinningPerObject);
+        a_computeCommandList.SetupConstantBufferView(a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationVertexSkinningPerObject, l_gpuVirtualAddress);
 
         // VertexCountをThread数で割り、
         // 完全に割り切れなかった場合だけ一つThread Groupを追加する
@@ -309,7 +309,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 
         FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationMeshletBoundsUpdate用定数バッファの書き込みに失敗しました。", false);
 
-        a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject);
+        a_computeCommandList.SetupConstantBufferView(a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject, l_gpuVirtualAddress);
 
         const auto l_meshletCount = l_meshletBoundsBuffer.GetVALElementCount();
 

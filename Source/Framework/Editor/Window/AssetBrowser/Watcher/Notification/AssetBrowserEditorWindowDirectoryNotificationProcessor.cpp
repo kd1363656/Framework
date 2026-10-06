@@ -1,6 +1,6 @@
 ﻿#include "AssetBrowserEditorWindowDirectoryNotificationProcessor.h"
 
-bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessNotificationBuffer(const std::filesystem::path& a_directoryPath, const DWORD& a_writtenByteSize)
+bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessNotificationBuffer(const std::filesystem::path& a_directoryPath, const DWORD a_writtenByteSize)
 {
     const auto& l_writtenByteSize                 = static_cast<std::size_t>  (a_writtenByteSize);
     const auto& l_previousDirectoryChangeListSize = m_directoryChangeList.size();
@@ -307,7 +307,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
     // OLD : FileId = 123;
     // NEW : FileId = 123;
     // という情報から同じFileのPathだけが変わったと判断するために使用する
-    const auto l_fileID = static_cast<std::int64_t>(a_notificationInformation.FileId.QuadPart);
+    const auto& l_fileID = static_cast<std::int64_t>(a_notificationInformation.FileId.QuadPart);
 
     // FileがFilesystemへ作成された時刻
     // FileIdを同一File判定の中心として使用し、
@@ -315,7 +315,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
     // 今回来た通知が本当に同じFileなのかを
     // 追加確認するために使用する
     // FileId一致、CreationTime一致も場合にOld側/New側を結び付ける
-    const auto l_creationTime = static_cast<std::int64_t>(a_notificationInformation.CreationTime.QuadPart);
+    const auto& l_creationTime = static_cast<std::int64_t>(a_notificationInformation.CreationTime.QuadPart);
 
     // ActionにはWindowsが検出した変更種類が格納されている
     // FILE_ACTION_ADDED            : File/Directoryが追加された

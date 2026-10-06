@@ -46,8 +46,8 @@ namespace FWK::Editor
         std::deque<std::unique_ptr<ICommand>> m_undoList = {};
         std::deque<std::unique_ptr<ICommand>> m_redoList = {};
 
-        std::size_t m_capacity = Constant::k_initialEditorUndoResoSystemListCapacity;
-
         Converter::EditorUndoRedoSystemJsonConverter m_jsonConverter = {};
+
+        std::size_t m_capacity = Constant::k_initialEditorUndoResoSystemListCapacity;
     };
 }

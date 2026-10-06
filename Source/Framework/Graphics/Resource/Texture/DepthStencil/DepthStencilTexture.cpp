@@ -170,7 +170,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
     //       サンプル数、
     //       サンプル品質、
     //       リソースフラグ);
-    const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_depthStencilTextureSettings.m_resourceFormat,
+    const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_depthStencilTextureSettings.m_resourceFormat,
                                                              a_width,
                                                              a_height,
                                                              m_depthStencilTextureSettings.m_arraySize,
@@ -179,8 +179,8 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
                                                              m_depthStencilTextureSettings.m_sampleQuality,
                                                              l_resourceFlags);
 
-    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,
-                                                                           &l_clearValue,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(&l_clearValue,
+                                                                           l_resourceDesc,
                                                                            k_defaultResourceState,
                                                                            m_gpuResource),
                                                                            "DepthStencilTexture用TextureResourceの作成に失敗しました。",

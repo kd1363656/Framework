@@ -41,7 +41,7 @@ namespace FWK::Graphics
 
             if (l_itr == m_dynamicBufferUploaderMap.end()) { return std::weak_ptr<Type>(); }
 
-            const auto l_dynamicBufferUploader = l_itr->second.lock();
+            const auto& l_dynamicBufferUploader = l_itr->second.lock();
 
             if (!l_dynamicBufferUploader) { return std::weak_ptr<Type>(); }
 

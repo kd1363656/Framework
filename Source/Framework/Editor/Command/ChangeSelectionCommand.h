@@ -6,12 +6,12 @@ namespace FWK::Editor
     {
     public:
 
-         ChangeSelectionCommand(const bool                              a_beforeIsSceneSelected,
-                                const bool                              a_afterIsSceneSelected,
-                                      std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
+         ChangeSelectionCommand(      std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
                                       std::vector<boost::uuids::uuid>&& a_afterUUIDList,
-                                      boost::uuids::uuid                a_beforeAnchorUUID,
-                                      boost::uuids::uuid                a_afterAnchorUUID);
+                                const boost::uuids::uuid&               a_beforeAnchorUUID,
+                                const boost::uuids::uuid&               a_afterAnchorUUID,
+                                const bool                              a_beforeIsSceneSelected,
+                                const bool                              a_afterIsSceneSelected);
 
         ~ChangeSelectionCommand() override;
 

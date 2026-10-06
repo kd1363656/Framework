@@ -74,9 +74,9 @@ namespace FWK::Editor
         AssetBrowserEditorWindowAssetCreator       m_assetCreator       = {};
         AssetBrowserEditorWindowDeleteConfirmPopup m_deleteConfirmPopup = {};
 
-        std::filesystem::path m_currentSelectFolderPath = {};
-
         Converter::AssetBrowserEditorWindowJsonConverter m_jsonConverter = {};
+
+        std::filesystem::path m_currentSelectFolderPath = {};
 
         Struct::AssetBrowserEditorWindowRenameState        m_renameState        = {};
         Struct::AssetBrowserEditorWindowDeleteConfirmState m_deleteConfirmState = {};

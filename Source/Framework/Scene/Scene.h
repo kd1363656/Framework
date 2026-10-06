@@ -70,9 +70,9 @@ namespace FWK
         SceneChanger                m_sceneChanger           = {};
         SceneGameObjectPrefabSystem m_gameObjectPrefabSystem = {};
 
-        Converter::SceneJsonConverter m_jsonConverter = {};
-
         Graphics::LightSystem m_lightSystem = {};
+
+        Converter::SceneJsonConverter m_jsonConverter = {};
 
         std::string m_name = {};
 

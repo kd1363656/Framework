@@ -113,9 +113,9 @@ bool FWK::Graphics::TextureSystem::SubtractTextureReferenceCount(const std::weak
     return true;
 }
 
-void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture)
+void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const std::shared_ptr<DefaultTexture>& a_defaultTexture, const Enum::DefaultTextureType a_defaultTextureType)
 {
-    const auto l_index = static_cast<std::size_t>(a_defaultTextureType);
+    const auto& l_index = static_cast<std::size_t>(a_defaultTextureType);
 
     FWK_ASSERT_RETURN_IF(!a_defaultTexture, "インスタンス化されておらず、無効なデフォルトテクスチャです。デフォルトテクスチャの反映に失敗しました。");
 
@@ -128,7 +128,7 @@ void FWK::Graphics::TextureSystem::ApplyDefaultTexture(const Enum::DefaultTextur
 
 std::weak_ptr<FWK::Graphics::TextureRecord> FWK::Graphics::TextureSystem::FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const
 {
-    const auto l_defaultTextureRecordIndex = static_cast<std::size_t>(a_defaultTextureType);
+    const auto& l_defaultTextureRecordIndex = static_cast<std::size_t>(a_defaultTextureType);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_defaultTextureRecordIndex >= m_defaultTextureList.size(), "DefaultTextureListの範囲外となっており、TextureRecordの取得に失敗しました。", {});
 

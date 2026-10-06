@@ -46,7 +46,7 @@ namespace FWK::Graphics
 
             if (l_itr == m_drawRequestPassMap.end()) { return {}; }
 
-            const auto l_drawRequestPass = l_itr->second.lock();
+            const auto& l_drawRequestPass = l_itr->second.lock();
 
             if (!l_drawRequestPass) { return {}; }
 
@@ -78,7 +78,7 @@ namespace FWK::Graphics
 
             if (l_itr == m_drawRequestPerObjectMap.end()) { return {}; }
 
-            const auto l_drawRequestPerObject = l_itr->second.lock();
+            const auto& l_drawRequestPerObject = l_itr->second.lock();
 
             if (!l_drawRequestPerObject) { return {}; }
 

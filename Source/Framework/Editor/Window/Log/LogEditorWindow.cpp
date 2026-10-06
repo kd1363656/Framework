@@ -2,10 +2,10 @@
 
 FWK::Editor::LogEditorWindow::LogEditorWindow() :
     m_textLineColorList(),
+    m_textLineOffsets  (),
 
-    m_textBuffer     (),
-    m_textFilter     (),
-    m_textLineOffsets(),
+    m_textBuffer(),
+    m_textFilter(),
 
     m_canAutoScroll    (k_enableCanAutoScroll),
     m_canScrollToBottom(k_enableCanScrollToBottom)

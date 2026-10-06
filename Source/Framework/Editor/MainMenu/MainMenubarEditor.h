@@ -21,8 +21,8 @@ namespace FWK::Editor
 
     private:
 
-        Converter::MainMenuBarEditorJsonConverter m_jsonConverter = {};
-
         std::vector<std::unique_ptr<EditorMainMenuBase>> m_editorMainMenuList = {};
+
+        Converter::MainMenuBarEditorJsonConverter m_jsonConverter = {};
     };
 }

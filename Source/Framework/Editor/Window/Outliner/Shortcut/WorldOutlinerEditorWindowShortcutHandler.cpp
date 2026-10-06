@@ -16,10 +16,10 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
 
     // ShiftかCtrlを押しながらの上下キーは範囲選択
     // そうでないなら選択位置の移動
-    HandleArrowKey(a_editorWindow, 
-                   a_editorManager,
-                   l_io.KeyShift ||
-                   l_io.KeyCtrl);
+    HandleArrowKey(l_io.KeyShift ||
+                   l_io.KeyCtrl,
+                   a_editorWindow,
+                   a_editorManager);
 
     // F2で選択中のGameObject、またはSceneの名前変更を開始する
     if (ImGui::IsKeyPressed(ImGuiKey_F2)) 
@@ -68,7 +68,7 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleSelectAllGameO
 {
     a_editorWindow.SelectAllGameObjects(a_editorManager);
 }
-void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleArrowKey(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager, const bool a_isRangeSelection) const
+void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleArrowKey(const bool a_isRangeSelection, WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
     // ImGui::IsKeyPressedは押された瞬間trueを返す
     // repeatはデフォルトtrueのため押し続ければ連続で移動する

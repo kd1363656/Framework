@@ -47,11 +47,11 @@ namespace FWK::Graphics
 
         std::weak_ptr<RootSignature> m_useRootSignature = {};
 
+        Converter::PipelineStateBaseJsonConverter m_jsonConverter = {};
+
         Enum::RootSignatureType m_useRootSignatureType = Enum::RootSignatureType::Invalid;
 
         D3D12_PIPELINE_STATE_FLAGS m_pipelineStateFlags = D3D12_PIPELINE_STATE_FLAG_NONE;
-
-        Converter::PipelineStateBaseJsonConverter m_jsonConverter = {};
 
         FWK_DEFINE_TYPE_INFO_ROOT(PipelineStateBase)
     };

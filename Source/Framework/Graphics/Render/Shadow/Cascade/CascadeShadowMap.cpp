@@ -206,7 +206,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
             // CameraFrustum全体のNearCornerから
             // 対応するFarCornerへ向かうベクトル
-            const auto l_nearToFar = l_farCorner - l_nearCorner;
+            const auto& l_nearToFar = l_farCorner - l_nearCorner;
 
             // 現在のCascadeのNear側Corner。
             // 最初のCascadeではCameraのNearPlane、

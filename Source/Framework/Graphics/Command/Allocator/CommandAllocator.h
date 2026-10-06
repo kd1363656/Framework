@@ -49,9 +49,9 @@ namespace FWK::Graphics
 
         static constexpr float k_defaultDepthClearValue = 1.0F;
 
-        static constexpr UINT8 k_defaultStencilClearValue = 0U;
-
         static constexpr UINT64 k_unusedFenceValue = 0ULL;
+
+        static constexpr UINT8 k_defaultStencilClearValue = 0U;
 
     private:
 

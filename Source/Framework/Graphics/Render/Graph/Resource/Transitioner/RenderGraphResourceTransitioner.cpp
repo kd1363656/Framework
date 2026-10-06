@@ -7,8 +7,8 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceBefor
         const auto l_beforeUsage = l_resourceAccess.m_beforeUsage;
 
         if (TransitionBackBufferResource(l_resourceAccess, l_beforeUsage,  a_renderer))             { continue; }
-        if (TransitionRenderTargetPassTextureResource(l_resourceAccess, l_beforeUsage, a_renderer)) { continue; }
-        if (TransitionDepthStencilPassTextureResource(l_resourceAccess, l_beforeUsage, a_renderer)) { continue; }
+        if (TransitionRenderTargetPassTextureResource(l_resourceAccess, a_renderer, l_beforeUsage)) { continue; }
+        if (TransitionDepthStencilPassTextureResource(l_resourceAccess, a_renderer, l_beforeUsage)) { continue; }
         if (TransitionShadowMapResource(l_resourceAccess, l_beforeUsage, a_renderer))               { continue; }
 
         FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行前の自動リソース遷移に失敗しました。");
@@ -24,8 +24,8 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionPassResourceAfter
         if (l_afterUsage == Enum::RenderGraphResourceUsage::None) { continue; }
 
         if (TransitionBackBufferResource(l_resourceAccess, l_afterUsage,  a_renderer))             { continue; }
-        if (TransitionRenderTargetPassTextureResource(l_resourceAccess, l_afterUsage, a_renderer)) { continue; }
-        if (TransitionDepthStencilPassTextureResource(l_resourceAccess, l_afterUsage, a_renderer)) { continue; }
+        if (TransitionRenderTargetPassTextureResource(l_resourceAccess, a_renderer, l_afterUsage)) { continue; }
+        if (TransitionDepthStencilPassTextureResource(l_resourceAccess, a_renderer, l_afterUsage)) { continue; }
         if (TransitionShadowMapResource(l_resourceAccess, l_afterUsage, a_renderer))               { continue; }
 
         FWK_ASSERT_RETURN("RenderGraphResourceAccessに対応するリソースが存在しないため、Pass実行後の自動リソース遷移に失敗しました。");
@@ -65,7 +65,7 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResourc
 
     return true;
 }
-bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, const Renderer& a_renderer) const
+bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Renderer& a_renderer, const Enum::RenderGraphResourceUsage a_usage) const
 {
     if (a_resourceAccess.m_renderTargetType == Enum::RenderGraphRenderTargetType::None) { return false; }
 
@@ -102,11 +102,11 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassT
 
     return true;
 }
-bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, const Renderer& a_renderer) const
+bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Renderer& a_renderer, const Enum::RenderGraphResourceUsage a_usage) const
 {
     if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None) { return false; }
 
-    const auto l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
+    const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_currentFrameResource, "現在のFrameResourceが無効のため、DepthStencilPassTextureの自動リソース遷移に失敗しました。", false);
 

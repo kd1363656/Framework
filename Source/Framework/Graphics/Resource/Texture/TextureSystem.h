@@ -43,7 +43,7 @@ namespace FWK::Graphics
         bool AddTextureReferenceCount     (const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord);
         bool SubtractTextureReferenceCount(const std::weak_ptr<Graphics::TextureRecord>& a_textureRecord, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext);
 
-        void ApplyDefaultTexture(const Enum::DefaultTextureType a_defaultTextureType, const std::shared_ptr<DefaultTexture>& a_defaultTexture);
+        void ApplyDefaultTexture(const std::shared_ptr<DefaultTexture>& a_defaultTexture, const Enum::DefaultTextureType a_defaultTextureType);
 
         std::weak_ptr<Graphics::TextureRecord> FetchVALDefaultTextureRecord(const Enum::DefaultTextureType a_defaultTextureType) const;
 

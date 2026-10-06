@@ -49,7 +49,7 @@ nlohmann::json FWK::Converter::DefaultTextureJsonConverter::Serialize(const Grap
     return l_rootJson;
 }
 
-std::uint8_t FWK::Converter::DefaultTextureJsonConverter::DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view a_key, const std::uint8_t a_defaultValue) const
+std::uint8_t FWK::Converter::DefaultTextureJsonConverter::DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view& a_key, const std::uint8_t a_defaultValue) const
 {
     if (a_json.is_null()) { return k_maxDefaultTextureColorChannelValue; }
 

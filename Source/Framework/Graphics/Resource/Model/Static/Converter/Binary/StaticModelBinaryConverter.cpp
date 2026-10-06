@@ -114,7 +114,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
     // StaticModel全体のHeaderを作成して書き込む
     const auto& l_modelBinaryHeader = CreateModelBinaryHeader(l_staticModelData, l_modelAssetFileSize);
 
-    WriteBinaryData(k_singleBinaryElementCount, &l_modelBinaryHeader, l_memoryWriteOffset);
+    WriteBinaryData(&l_modelBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
 
     // ModelMeshListを書き込む
     for (const auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)

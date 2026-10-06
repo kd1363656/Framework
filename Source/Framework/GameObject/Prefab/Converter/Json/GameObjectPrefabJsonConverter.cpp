@@ -88,7 +88,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::
     if (const auto l_prefabJsonITR = l_rootJson.find(k_prefabJsonKey);
         l_prefabJsonITR != l_rootJson.end())
     {
-        ReplacePrefabUUIDRecursively(*l_prefabJsonITR, a_oldPrefabUUID, a_newPrefabUUID);
+        ReplacePrefabUUIDRecursively(a_oldPrefabUUID, a_newPrefabUUID, *l_prefabJsonITR);
     }
 
     if (!Utility::SaveJsonFile(l_rootJson, a_filePath))
@@ -203,7 +203,7 @@ void FWK::Converter::GameObjectPrefabJsonConverter::RemoveSceneInstanceUUIDRecur
     }
 }
 
-void FWK::Converter::GameObjectPrefabJsonConverter::ReplacePrefabUUIDRecursively(nlohmann::json& a_json, const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID)
+void FWK::Converter::GameObjectPrefabJsonConverter::ReplacePrefabUUIDRecursively(const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID, nlohmann::json& a_json)
 {
     // RemoveSceneInstanceUUIDRecursivelyと同じく
     // オブジェクト・配列以外は子を持たないため終了する
@@ -229,6 +229,6 @@ void FWK::Converter::GameObjectPrefabJsonConverter::ReplacePrefabUUIDRecursively
 
     for (auto& l_value : a_json)
     {
-        ReplacePrefabUUIDRecursively(l_value, a_oldPrefabUUID, a_newPrefabUUID);
+        ReplacePrefabUUIDRecursively(a_oldPrefabUUID, a_newPrefabUUID, l_value);
     }
 }

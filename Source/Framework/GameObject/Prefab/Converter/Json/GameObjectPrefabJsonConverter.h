@@ -32,7 +32,7 @@ namespace FWK::Converter
     private:
 
         static void RemoveSceneInstanceUUIDRecursively(nlohmann::json& a_json);
-        static void ReplacePrefabUUIDRecursively      (nlohmann::json& a_json, const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID);
+        static void ReplacePrefabUUIDRecursively      (const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID, nlohmann::json& a_json);
 
         static constexpr std::string_view k_prefabJsonKey = "Prefab";
     };

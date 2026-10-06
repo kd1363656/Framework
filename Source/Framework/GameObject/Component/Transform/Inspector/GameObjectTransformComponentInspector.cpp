@@ -16,7 +16,7 @@ void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransfo
         ImGui::DragFloat3(k_transformRotationLabel.data(), &l_euler.x, Constant::k_imguiDefaultDragValue))
     {
         // オイラー角に変換していたクオータニオンを元に戻して格納
-        auto l_dragResult = Utility::EulerToQuaternion(l_euler);
+        const auto& l_dragResult = Utility::EulerToQuaternion(l_euler);
 
         l_transform.m_rotation = l_dragResult;
 

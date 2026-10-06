@@ -506,7 +506,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::RegisterCopiedAssetList
     auto l_entryITR = std::filesystem::recursive_directory_iterator(a_copiedRootPath, l_errorCode);
 
     // 引数無しで構築したrecursive_directory_iteratorは「列挙の終端」を表す
-    const auto l_endEntryITR = std::filesystem::recursive_directory_iterator{};
+    const auto& l_endEntryITR = std::filesystem::recursive_directory_iterator{};
 
     while (!l_errorCode &&
            l_entryITR != l_endEntryITR)

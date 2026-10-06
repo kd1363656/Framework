@@ -17,10 +17,10 @@ namespace FWK::Editor
         void DestroySelectedGameObjects(      EditorGameObjectSelectionState& a_gameObjectSelectionState)                                                            const;
         void ReparentGameObject        (const std::weak_ptr<GameObject>&      a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene) const;
 
-        void MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject, 
-                                        const std::weak_ptr<GameObject>& a_moveGameObject, 
-                                              Scene&                     a_scene,
-                                        const bool                       a_isMoveAfter) const;
+        void MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject,
+                                        const std::weak_ptr<GameObject>& a_moveGameObject,
+                                        const bool                       a_isMoveAfter,
+                                              Scene&                     a_scene) const;
 
         void CopySelectedGameObjects     (const EditorGameObjectSelectionState&     a_gameObjectSelectionState, WorldOutlinerEditorWindowClipboard& a_clipboard)                                const;
         void CutSelectedGameObjects      (      WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&     a_gameObjectSelectionState)                 const;

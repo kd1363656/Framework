@@ -157,7 +157,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionUp(const Asset
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
 
     // カーソル位置をリストから検索
-    auto l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     if (l_cursorITR == l_displayedList.end())
     {
@@ -231,7 +231,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(const Ass
 
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     if (l_cursorITR == l_displayedList.end())
     {
@@ -295,7 +295,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionLeft(const Ass
     }
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     if (l_cursorITR == l_displayedList.end())
     {
@@ -353,7 +353,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionRight(const As
     }
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
-          auto  l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
+    const auto& l_cursorITR  = std::find(l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
 
     // 既に末尾なら何もしない
     if (l_cursorITR == l_displayedList.end()) 
@@ -481,7 +481,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     // InvisibleButtonでインタラクティブな領域を確保
     // 実際の描画はDrawListで行うため、ボタンは透明
     // ラベルは一意になるようにファイルパスを付加
-    const auto l_label = std::string{ k_cardPrefixLabel } + a_filePath.generic_string();
+    const auto& l_label = std::string{ k_cardPrefixLabel } + a_filePath.generic_string();
 
     ImGui::InvisibleButton(l_label.c_str(), l_cardSize);
 
@@ -538,7 +538,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
         !l_isRenaming)
     {
         // ファイルパスをgeneric_stringで表示(スラッシュ区切り)
-        const auto l_tooltipText = a_filePath.generic_string();
+        const auto& l_tooltipText = a_filePath.generic_string();
 
         Utility::IMGUIDelayedTooltip(l_tooltipText);
     }
@@ -557,8 +557,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     // ポップアップDrawは毎フレーム呼ぶ(OpenPopupされていなければ内部でreturn)
     std::error_code l_errorCode = {};
 
-    const auto l_contextType      = std::filesystem::is_directory(a_filePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
-    const auto l_contextMenuLabel = std::string{ k_cardContextMenuPrefixLabel } + a_filePath.generic_string();
+    const auto  l_contextType      = std::filesystem::is_directory(a_filePath, l_errorCode) ? Enum::AssetBrowserPopupContextType::AssetPane_OnFolder : Enum::AssetBrowserPopupContextType::AssetPane_OnFile;
+    const auto& l_contextMenuLabel = std::string{ k_cardContextMenuPrefixLabel } + a_filePath.generic_string();
 
     l_popupDrawer.Draw(l_selectedFilePathList,
                        a_filePath,
@@ -1009,8 +1009,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
     // フォルダカード上ではカード側(小さい矩形)が優先されるため
     // ここに届くのは空白部分へのドロップのみになる
     if (l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
-                                                           ImGui::GetID(k_paneDropTargetLabel.data()),
                                                            Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
+                                                           ImGui::GetID(k_paneDropTargetLabel.data()),
                                                            l_droppedFilePathList))
     {
         const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
@@ -1026,8 +1026,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandlePaneBackgroundDragDro
     std::weak_ptr<GameObject> l_droppedGameObject = {};
  
     if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
-                                                            ImGui::GetID(k_paneGameObjectDropTargetLabel.data()),
                                                             Constant::k_gameObjectDragDropPayloadLabel,
+                                                            ImGui::GetID(k_paneGameObjectDropTargetLabel.data()),
                                                             l_droppedGameObject))
     {
         return;

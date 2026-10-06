@@ -21,40 +21,6 @@ namespace FWK::Editor
 
         static constexpr ImWchar k_iconGlyphRanges[] = { 0xE000, 0xF8FF, 0 };
 
-        static constexpr float k_editorGlobalScale = 1.0F;
-
-        static constexpr float k_windowRounding    = 2.0F;
-        static constexpr float k_childRounding     = 2.0F;
-        static constexpr float k_frameRounding     = 2.0F;
-        static constexpr float k_popupRounding     = 2.0F;
-        static constexpr float k_scrollbarRounding = 2.0F;
-        static constexpr float k_grabRounding      = 2.0F;
-        static constexpr float k_tabRounding       = 2.0F;
-
-        static constexpr float k_windowBorderSize = 1.0F;
-        static constexpr float k_childBorderSize  = 1.0F;
-        static constexpr float k_popupBorderSize  = 1.0F;
-        static constexpr float k_frameBorderSize  = 0.0F;
-        static constexpr float k_tabBorderSize    = 0.0F;
-
-        static constexpr float k_windowPaddingX = 8.0F;
-        static constexpr float k_windowPaddingY = 8.0F;
-
-        static constexpr float k_framePaddingX = 6.0F;
-        static constexpr float k_framePaddingY = 4.0F;
-
-        static constexpr float k_itemSpacingX = 8.0F;
-        static constexpr float k_itemSpacingY = 4.0F;
-
-        static constexpr float k_indentSpacing = 16.0F;
-        static constexpr float k_scrollbarSize = 13.0F;
-
-        static constexpr int k_fontHorizontalOversample = 3;
-        static constexpr int k_fontVerticalOversample   = 1;
-
-        // UEエディタはやや小さめのフォントサイズ。
-        static constexpr float k_editorFontSize = 12.0F;
-
         // UEエディタ風のダークグレー基調 + 青アクセント配色。
         // クリアカラー: ビューポートのクリア背景。UEはほぼ黒に近い濃グレー。
         static constexpr TypeAlias::Math::Color k_clearColor = { 0.04F,
@@ -170,5 +136,39 @@ namespace FWK::Editor
                                                                        0.45F,
                                                                        0.95F,
                                                                        1.00F };
+
+        static constexpr float k_editorGlobalScale = 1.0F;
+
+        static constexpr float k_windowRounding    = 2.0F;
+        static constexpr float k_childRounding     = 2.0F;
+        static constexpr float k_frameRounding     = 2.0F;
+        static constexpr float k_popupRounding     = 2.0F;
+        static constexpr float k_scrollbarRounding = 2.0F;
+        static constexpr float k_grabRounding      = 2.0F;
+        static constexpr float k_tabRounding       = 2.0F;
+
+        static constexpr float k_windowBorderSize = 1.0F;
+        static constexpr float k_childBorderSize  = 1.0F;
+        static constexpr float k_popupBorderSize  = 1.0F;
+        static constexpr float k_frameBorderSize  = 0.0F;
+        static constexpr float k_tabBorderSize    = 0.0F;
+
+        static constexpr float k_windowPaddingX = 8.0F;
+        static constexpr float k_windowPaddingY = 8.0F;
+
+        static constexpr float k_framePaddingX = 6.0F;
+        static constexpr float k_framePaddingY = 4.0F;
+
+        static constexpr float k_itemSpacingX = 8.0F;
+        static constexpr float k_itemSpacingY = 4.0F;
+
+        static constexpr float k_indentSpacing = 16.0F;
+        static constexpr float k_scrollbarSize = 13.0F;
+
+        // UEエディタはやや小さめのフォントサイズ。
+        static constexpr float k_editorFontSize = 12.0F;
+
+        static constexpr int k_fontHorizontalOversample = 3;
+        static constexpr int k_fontVerticalOversample   = 1;
     };
 }

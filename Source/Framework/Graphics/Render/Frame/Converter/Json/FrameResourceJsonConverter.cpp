@@ -74,7 +74,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::SerializeDynamicBuffe
         nlohmann::json l_json = {};
 
         // インスタンスを復元できるようにシリアライズ
-        Utility::UpdateJson(l_json, Utility::SerializeInstanceType(l_dynamicBufferUploader, k_dynamicBufferUploaderTypeNameJsonKey));
+        Utility::UpdateJson(Utility::SerializeInstanceType(l_dynamicBufferUploader, k_dynamicBufferUploaderTypeNameJsonKey), l_json);
 
         l_json[k_dynamicBufferUploaderJsonKey] = l_dynamicBufferUploader->Serialize();
 

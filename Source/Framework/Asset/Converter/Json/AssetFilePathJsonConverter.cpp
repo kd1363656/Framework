@@ -14,7 +14,7 @@ nlohmann::json FWK::Converter::AssetFilePathJsonConverter::Serialize(const Asset
               nlohmann::json l_rootJson          = {};
     const auto&              l_assetFilePathUUID = a_assetFilePath.GetREFAssetFilePathUUID();
 
-    Utility::UpdateJson(l_rootJson, Utility::SerializeUUID(l_assetFilePathUUID, k_assetFilePathUUIDJsonKey));
+    Utility::UpdateJson(Utility::SerializeUUID(l_assetFilePathUUID, k_assetFilePathUUIDJsonKey), l_rootJson);
 
     return l_rootJson;
 }

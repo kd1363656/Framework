@@ -77,7 +77,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
     l_clearValue.Color[k_clearColorIndexB] = m_clearColor.B();
     l_clearValue.Color[k_clearColorIndexA] = m_clearColor.A();
 
-    const auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
+    const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
                                                              a_width,
                                                              a_height,
                                                              Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
@@ -86,8 +86,8 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
                                                              Constant::k_defaultSampleQuality,
                                                              D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
-    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,
-                                                                           &l_clearValue,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(&l_clearValue,
+                                                                           l_resourceDesc,
                                                                            k_defaultResourceState,
                                                                            m_gpuResource),
                                                                            "RenderTargetTexture用TextureResourceの作成に失敗しました。",
@@ -159,7 +159,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
     l_srvDesc.Texture2D.PlaneSlice          = k_planeSlice;
     l_srvDesc.Texture2D.ResourceMinLODClamp = k_resourceMINLODClamp;
 
-    const auto l_cpuHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex);
+    const auto& l_cpuHandle = a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex);
 
     // CreateShaderResourceView(SRVを作りたい対象リソース、
     //                          SRV設定、

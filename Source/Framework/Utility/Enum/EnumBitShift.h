@@ -79,11 +79,11 @@ namespace FWK::Utility
 
     private:
 
+        std::vector<Type> m_bitShiftFlagList = {};
+
         Converter::EnumBitShiftJsonConverter<Type> m_jsonConverter = {};
 
         EnumBitShiftInspector<Type> m_inspector = {};
-    
-        std::vector<Type> m_bitShiftFlagList = {};
 
         std::uint32_t m_bitShiftFlag = static_cast<std::uint32_t>(Type::Invalid);
     };

@@ -24,7 +24,7 @@ namespace FWK::Converter
 
     private:
 
-        std::uint8_t DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view a_key, const std::uint8_t a_defaultValue) const;
+        std::uint8_t DeserializeColorChannel(const nlohmann::json& a_json, const std::string_view& a_key, const std::uint8_t a_defaultValue) const;
 
         static constexpr std::string_view k_textureNameJsonKey   = "TextureName";
         static constexpr std::string_view k_textureFormatJsonKey = "TextureFormat";

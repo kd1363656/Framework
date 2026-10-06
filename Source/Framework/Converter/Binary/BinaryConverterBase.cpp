@@ -23,8 +23,8 @@ bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesys
     std::error_code l_binaryErrorCode = {};
 
     // 元ファイルとバイナリーファイルの最終更新時刻を取得する。
-    const auto l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
-    const auto l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
+    const auto& l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
+    const auto& l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
 
     if (l_sourceErrorCode)  { return false; }
     if (l_binaryErrorCode)  { return false; }
@@ -347,7 +347,7 @@ void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstr
     // 文字列のサイズ自体はここでは書き込まないため、
     // 呼び出し側で先にヘッダーなどへCalculateWStringBinaryFileSize()の結果を保存しておく
     // WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
-    WriteBinaryData(a_wString.size(), a_wString.data(), a_memoryWriteOffset);
+    WriteBinaryData(a_wString.data(), a_wString.size(), a_memoryWriteOffset);
 }
 void FWK::Converter::BinaryConverterBase::WriteStringBinaryData(const std::string& a_string, std::uint64_t& a_memoryWriteOffset) const
 {
@@ -357,7 +357,7 @@ void FWK::Converter::BinaryConverterBase::WriteStringBinaryData(const std::strin
     // 文字列のサイズ自体はここでは書き込まないため、
     // 呼び出し側で先にヘッダーなどへCalculateWStringBinaryFileSize()の結果を保存しておく
     // WriteBinaryData内で、書き込んだバイト数分だけa_writeOffsetが進む
-    WriteBinaryData(a_string.size(), a_string.data(), a_memoryWriteOffset);
+    WriteBinaryData(a_string.data(), a_string.size(), a_memoryWriteOffset);
 }
 
 std::uint64_t FWK::Converter::BinaryConverterBase::CalculateWStringBinaryFileSize(const std::wstring& a_wString) const

@@ -56,7 +56,7 @@ nlohmann::json FWK::Graphics::ComputePipelineState::Serialize() const
 {
     auto l_rootJson = PipelineStateBase::Serialize();
 
-    Utility::UpdateJson(l_rootJson, m_jsonConverter.Serialize(*this));
+    Utility::UpdateJson(m_jsonConverter.Serialize(*this), l_rootJson);
 
     return l_rootJson;
 }

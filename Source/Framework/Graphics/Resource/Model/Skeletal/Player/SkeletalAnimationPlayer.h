@@ -44,14 +44,14 @@ namespace FWK::Graphics
             FrameData& operator=(const FrameData&)           = delete;
             FrameData& operator=(      FrameData&&) noexcept = delete;
 
-            DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
-
-            SkeletalAnimationBoneMatrixBufferUploader m_boneMatrixBufferUploader = {};
-
             std::vector<DynamicRWStructuredBuffer> m_skinnedVertexBufferList = {};
 
             std::vector<DynamicRWStructuredBuffer> m_meshletBoundsBufferList = {};
             std::vector<TypeAlias::Math::Matrix>   m_globalBoneMatrixList    = {};
+
+            DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
+
+            SkeletalAnimationBoneMatrixBufferUploader m_boneMatrixBufferUploader = {};
         };
 
     public:
@@ -67,7 +67,7 @@ namespace FWK::Graphics
 
         bool Create(const SkeletalAnimationModel& a_skeletalAnimationModel);
 
-        bool PlayMotion(const std::uint32_t a_motionIndex, const bool a_isLoop, const float a_playbackSpeed);
+        bool PlayMotion(const std::uint32_t a_motionIndex, const float a_playbackSpeed, const bool a_isLoop);
 
         void AdvanceTime(const float a_deltaTime);
 

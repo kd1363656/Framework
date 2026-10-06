@@ -23,7 +23,7 @@ void FWK::Graphics::StaticModelStandardLitPass::Execute(const ResourceContext&, 
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
     // パイプラインステート、ルートシグネチャをセット
-    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::StaticModelLit).lock();
+    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (Enum::PipelineStateType::StaticModelLit, a_renderer).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                   ();
 
     FWK_ASSERT_RETURN_IF(!l_rootSignature,        "ロートシグネチャの取得に失敗しており、StaticModelStandardLitPassの実行に失敗しました。");

@@ -18,7 +18,7 @@ FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::~SkeletalAnimationModelS
 void FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
     const auto& l_directCommandList    = a_renderer.GetREFDirectCommandList   ();
-    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SkeletalAnimationModelUnLit).lock();
+    const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (Enum::PipelineStateType::SkeletalAnimationModelUnLit, a_renderer).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                                ();
 
     FWK_ASSERT_RETURN_IF(!l_rootSignature,        "SkeletalAnimationModelUnLit用RootSignatureを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");

@@ -35,8 +35,8 @@ namespace FWK
 
         std::shared_ptr<Scene> m_scene = nullptr;
 
-        std::filesystem::path m_currentSceneFilePath = {};
-
         Converter::SceneManagerJsonConverter m_jsonConverter = {};
+
+        std::filesystem::path m_currentSceneFilePath = {};
     };
 }

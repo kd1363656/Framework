@@ -48,7 +48,7 @@ namespace FWK::Graphics
                                                TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                Struct::StaticModelLoadResult&      a_staticModelLoadResult);
 
-        bool CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>    a_staticModelRecord,
+        bool CreateStaticBatchUploadRecord(const std::shared_ptr<StaticModelRecord>&   a_staticModelRecord,
                                            const Device&                               a_device,
                                            const GPUMemoryAllocator&                   a_gpuMemoryAllocator,
                                                  TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,

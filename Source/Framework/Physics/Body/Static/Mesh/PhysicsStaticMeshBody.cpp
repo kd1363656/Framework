@@ -183,7 +183,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 
     const JPH::MeshShapeSettings l_meshShapeSettings = { std::move(l_triangleVertexList), std::move(l_indexedTriangleList) };
 
-    const auto l_shapeResult = l_meshShapeSettings.Create();
+    const auto& l_shapeResult = l_meshShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_shapeResult.HasError(), "StaticModelDataからMeshShapeを作成できておらず、MeshShapeの作成に失敗しました。", {});
 

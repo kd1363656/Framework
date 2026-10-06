@@ -78,8 +78,8 @@ void FWK::Graphics::DirectCommandList::SetupRenderTargetAndDepthStencil(const Ty
 
     FWK_ASSERT_RETURN_IF(!l_directCommandList, "DirectCommandListが無効のため、RenderTargetとDepthStencilの設定に失敗しました。");
 
-    const auto l_rtvHandle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
-    const auto l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
+    const auto& l_rtvHandle = a_rtvDescriptorPool.FetchVALCPUDescriptorHandle(a_rtvDescriptorIndex);
+    const auto& l_dsvHandle = a_dsvDescriptorPool.FetchVALCPUDescriptorHandle(a_dsvDescriptorIndex);
 
     // OMステージにレンダーターゲットを設定する関数
     // OMSetRenderTargets(設定するレンダーターゲット数、
@@ -143,7 +143,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<G
     DirectAndComputeCommandListBase::SetupPipeline(a_pipelineState);
 }
 
-void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
+void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress) const
 {
     const auto& l_directCommandList = GetREFCommandList();
 

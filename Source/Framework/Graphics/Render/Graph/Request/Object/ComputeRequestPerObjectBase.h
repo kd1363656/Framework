@@ -32,7 +32,7 @@ namespace FWK::Graphics
             //                                   CBVとして参照させるGPU仮想アドレス);
             // SetupConstantBufferView内でRootParameterTagからルートパラメータ番号を取得し、
             // 指定したRootParameterへUploadBuffer上の定数バッファを結びつける
-            a_computeCommandList.SetupConstantBufferView(l_gpuVirtualAddress, a_rootSignature, a_rootParameterType);
+            a_computeCommandList.SetupConstantBufferView(a_rootSignature, a_rootParameterType, l_gpuVirtualAddress);
         }
 
         FWK_DEFINE_TYPE_INFO_ROOT(ComputeRequestPerObjectBase)

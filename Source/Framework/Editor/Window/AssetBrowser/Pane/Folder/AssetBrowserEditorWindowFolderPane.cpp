@@ -100,7 +100,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionUp(AssetBrows
     const auto& l_cursorPath              = l_currentSelectFolderPath.empty() ? l_displayedFolderList.front() : l_currentSelectFolderPath;
 
     // カーソル位置をリストから検索
-    auto l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
+    const auto& l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
 
     // リストに現在選択中のパスが見つからない場合は
     // 先頭を現在選択中のパスとして扱う
@@ -179,7 +179,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::MoveSelectionDown(AssetBro
     const auto& l_cursorPath              = l_currentSelectFolderPath.empty() ? l_displayedFolderList.front() : l_currentSelectFolderPath;
 
     // カーソル位置をリストから検索
-    auto l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
+    const auto& l_cursorITR = std::find(l_displayedFolderList.begin(), l_displayedFolderList.end(), l_cursorPath);
 
     // リストに現在選択中のパスが見つからない場合は
     // 先頭を現在選択中のパスとして扱う

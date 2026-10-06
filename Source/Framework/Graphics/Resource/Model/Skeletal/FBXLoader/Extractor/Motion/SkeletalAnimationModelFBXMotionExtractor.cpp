@@ -88,7 +88,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
             l_keyFrameTimeSecond = a_animationDurationSecond;
         }
 
-        auto l_modelKeyFrame = CreateModelKeyFrame(a_fbxBakedNode, l_keyFrameTimeSecond);
+        const auto& l_modelKeyFrame = CreateModelKeyFrame(a_fbxBakedNode, l_keyFrameTimeSecond);
 
         a_modelBoneMotionTrack.m_keyFrameList.emplace_back(l_modelKeyFrame);
     }

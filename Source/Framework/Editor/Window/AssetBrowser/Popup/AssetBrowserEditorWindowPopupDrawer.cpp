@@ -241,7 +241,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(cons
     {
         // AssetCreator::CreatePrefabでプレハブファイルを作成
         // Prefab作成にはAssetFilePathRegistryが必要(UUID登録のため)
-        const auto l_result = a_assetCreator.CreatePrefab(a_targetFolderPath, a_assetFilePathRegistry);
+        const auto& l_result = a_assetCreator.CreatePrefab(a_targetFolderPath, a_assetFilePathRegistry);
 
         if (l_result.m_isSuccess)
         {

@@ -50,11 +50,11 @@ namespace FWK
 
         inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Audio/AudioCONFIG.json";
 
-        static constexpr std::size_t k_initialRemoveSoundEffectInstanceIndex   = 0ULL;
-        static constexpr std::size_t k_soundEffectInstanceBeforeEndIndexOffset = 1ULL;
-
         static constexpr float k_minMasterVolume = 0.0F;
         static constexpr float k_maxMasterVolume = 1.0F;
+
+        static constexpr std::size_t k_initialRemoveSoundEffectInstanceIndex   = 0ULL;
+        static constexpr std::size_t k_soundEffectInstanceBeforeEndIndexOffset = 1ULL;
 
         static constexpr bool k_isRightHandedCoordinates = false;
 

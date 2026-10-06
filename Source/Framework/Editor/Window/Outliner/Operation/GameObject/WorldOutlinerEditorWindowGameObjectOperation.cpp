@@ -64,8 +64,8 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
 
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject,
                                                                                            const std::weak_ptr<GameObject>& a_moveGameObject,
-                                                                                                 Scene&                     a_scene, 
-                                                                                           const bool                       a_isMoveAfter) const
+                                                                                           const bool                       a_isMoveAfter,
+                                                                                                 Scene&                     a_scene) const
 {
     const auto& l_targetGameObject = a_targetGameObject.lock();
     const auto& l_moveGameObject   = a_moveGameObject.lock  ();

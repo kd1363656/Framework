@@ -74,7 +74,7 @@ namespace FWK::Editor
 
             if (l_itr == m_editorWindowMap.end()) { return {}; }
 
-            auto l_editorWindow = l_itr->second.lock();
+            const auto& l_editorWindow = l_itr->second.lock();
 
             if (!l_editorWindow) { return {}; }
 

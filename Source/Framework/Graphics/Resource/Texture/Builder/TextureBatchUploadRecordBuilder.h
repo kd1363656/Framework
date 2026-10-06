@@ -70,10 +70,10 @@ namespace FWK::Graphics
         static constexpr UINT64 k_uploadBufferBeginOffset         = 0ULL;
         static constexpr UINT64 k_initialRequiredUploadBufferSize = 0ULL;
 
+        static constexpr std::size_t k_texture2DArrayMINArraySize = 2ULL;
+
         static constexpr UINT k_mostDetailedMIP = 0U;
         static constexpr UINT k_planeSlice      = 0U;
         static constexpr UINT k_firstArraySlice = 0U;
-
-        static constexpr std::size_t k_texture2DArrayMINArraySize = 2ULL;
     };
 }
