@@ -204,9 +204,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
         // Scale・Rotation・Translationへ分解して保存する。
         // AnimationTrackが存在しないBoneでは、
         // ここで作成したBindPoseLocalTransformを使用する。
-        FWK_ASSERT_RETURN_VALUE_IF(!l_modelBone.m_bindPoseLocalMatrix.Decompose(l_bindPoseLocalTransform.m_scale,
-                                                                                l_bindPoseLocalTransform.m_rotation,
-                                                                                l_bindPoseLocalTransform.m_translation),
+        FWK_ASSERT_RETURN_VALUE_IF(!l_modelBone.m_bindPoseLocalMatrix.Decompose(l_bindPoseLocalTransform.m_scale, l_bindPoseLocalTransform.m_rotation, l_bindPoseLocalTransform.m_translation),
                                                                                 "BindPoseLocalMatrixをScale、Rotation、Translationへ分解できません。",
                                                                                 false);
 

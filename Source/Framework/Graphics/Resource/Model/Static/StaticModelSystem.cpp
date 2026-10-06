@@ -13,9 +13,9 @@ bool FWK::Graphics::StaticModelSystem::Create()
     return true;
 }
 
-FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticModelForBatchUpload(const Device&                             a_device,
+FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticModelForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                                                                   const Device&                             a_device,
                                                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                                                   const std::filesystem::path&              a_filePath,
                                                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     Struct::StaticModelLoadResult l_staticModelLoadResult = {};
@@ -61,9 +61,9 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
     // 実行時に決まる情報を作成
     BuildStaticModelRuntimeData(l_staticModelRecord,
+                                a_filePath,
                                 a_device,
                                 a_gpuMemoryAllocator,
-                                a_filePath,
                                 l_allocateStorageID,
                                 a_cbvSRVUAVDescriptorPool,
                                 l_staticModelLoadResult);
@@ -112,15 +112,15 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
     // 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "StaticModelAssetの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_filePath, a_staticModelRecord), "StaticModelAssetの保存に失敗しました。", false);
 
     return true;
 }
 
 void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
+                                                                   const std::filesystem::path&              a_filePath,
                                                                    const Device&                             a_device,
                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                   const std::filesystem::path&              a_filePath,
                                                                    const TypeAlias::StorageID                a_storageID,
                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                                          Struct::StaticModelLoadResult&      a_staticModelLoadResult)

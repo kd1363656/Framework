@@ -32,10 +32,10 @@ bool FWK::Graphics::DefaultTexture::CreateTextureBatchUploadRecord(const Device&
 
     // ScratchImageからGPUTextureResource,UploadBuffer、SRVを作る
     // ここではまだCopyCommandQueueへ送らず、TextureSystemのPendingMapへ登録するためのRecordを作るだけ
-    FWK_ASSERT_RETURN_VALUE_IF(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(a_device,
-                                                                                                 a_gpuMemoryAllocator,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_textureBatchUploadRecordBuilder.CreateTextureBatchUploadRecord(l_scratchImage,
                                                                                                  m_textureName,
-                                                                                                 l_scratchImage,
+                                                                                                 a_device,
+                                                                                                 a_gpuMemoryAllocator,
                                                                                                  l_texMetadata,
                                                                                                  a_storageID,
                                                                                                  a_cbvSRVUAVDescriptorPool,

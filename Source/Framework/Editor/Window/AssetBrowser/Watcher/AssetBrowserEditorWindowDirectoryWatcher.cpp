@@ -5,11 +5,11 @@ FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::AssetBrowserEditorWindowD
     m_directoryHandle        (INVALID_HANDLE_VALUE),
     m_notificationEventHandle(nullptr),
 
+    m_directoryPath(),
+
     m_notificationProcessor(),
 
     m_overlapped(),
-
-    m_directoryPath(),
 
     m_isNotificationReadPending(false)
 {}

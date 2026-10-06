@@ -63,8 +63,7 @@ namespace FWK::Utility
 
             // 初期Folderとして指定されたPathが、
             // 実際に存在するFolderか確認する
-            if (!std::filesystem::is_directory(l_initialDirectoryPath,
-                                               l_errorCode) ||
+            if (!std::filesystem::is_directory(l_initialDirectoryPath, l_errorCode) ||
                                                l_errorCode)
             {
                 return false;

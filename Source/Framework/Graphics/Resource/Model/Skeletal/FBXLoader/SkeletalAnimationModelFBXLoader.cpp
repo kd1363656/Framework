@@ -47,7 +47,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
     // Meshより先にBoneIndexを確定する
     FWK_ASSERT_RETURN_VALUE_IF(!m_skeletonExtractor.ExtractModelBoneList(a_fbxScene, l_boneNodeIndexMap, a_modelData.m_boneList), "FBXシーンからModelBoneListの抽出に失敗しました。", false);
 
-    for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
+    for (std::size_t l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
     {
         const auto* l_fbxNode = a_fbxScene->nodes.data[l_nodeIndex];
 
@@ -77,10 +77,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
     FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "有効なSkeletalAnimationModelMeshが存在しません。", false);
 
     // FBX内のAnimationStackをMotionSequenceへ変換する
-    FWK_ASSERT_RETURN_VALUE_IF(!m_motionExtractor.ExtractModelMotionSequenceList(
-                                l_boneNodeIndexMap,
-                                a_fbxScene,
-                                a_modelData.m_motionSequenceList),
+    FWK_ASSERT_RETURN_VALUE_IF(!m_motionExtractor.ExtractModelMotionSequenceList(l_boneNodeIndexMap, a_fbxScene, a_modelData.m_motionSequenceList),
                                 "FBXシーンからMotionSequenceListの抽出に失敗しました。",
                                 false);
     return true;
@@ -133,7 +130,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     {
         Struct::SkeletalAnimationModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap, l_materialIndex, a_fbxNode, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap,
+                                                               l_materialIndex,
+                                                               a_fbxNode,
+                                                               l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
 
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
         if (l_modelMesh.m_indexList.empty())       { continue; }
@@ -185,7 +185,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
     std::uint32_t l_appliedBoneInfluenceCount = k_emptyBoneInfluenceCount;
 
-    for (auto l_skinWeightOffset = 0U; l_skinWeightOffset < l_fbxSkinVertex.num_weights; ++l_skinWeightOffset)
+    for (std::uint32_t l_skinWeightOffset = 0U; l_skinWeightOffset < l_fbxSkinVertex.num_weights; ++l_skinWeightOffset)
     {
         // ModelVertexへ格納するInfluenceはWeightが大きい先頭4件まで
         if (l_appliedBoneInfluenceCount >= k_maxBoneInfluenceCount) { break; }
@@ -340,7 +340,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
 
     l_boneIndexPaletteIndexMap.reserve(l_fbxSkinDeformer->clusters.count);
 
-    for (auto l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)
+    for (std::size_t l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)
     {
         const auto& l_fbxFace = l_fbxMesh->faces.data[l_faceIndex];
 
@@ -358,9 +358,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
                                                            l_fbxMesh,
                                                            l_fbxFace);
 
-        for (auto l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
+        for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
         {
-            for (auto l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
+            for (std::uint32_t l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
             {
                 const auto& l_indexOffset    = (l_triangleIndex * Constant::k_triangleVertexCount) + l_vertexIndex;
                 const auto  l_fbxVertexIndex = l_triangleIndexList[l_indexOffset];

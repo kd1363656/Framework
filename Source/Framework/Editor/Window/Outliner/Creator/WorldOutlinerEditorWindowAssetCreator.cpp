@@ -96,7 +96,7 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
             return nullptr;
         }
  
-        l_prefabSystem.AddPrefab(*l_prefabUUID, l_gameObjectPrefab);
+        l_prefabSystem.AddPrefab(l_gameObjectPrefab, *l_prefabUUID);
     }
 
     const auto* l_prefab = l_prefabSystem.FindPTRPrefab(*l_prefabUUID);

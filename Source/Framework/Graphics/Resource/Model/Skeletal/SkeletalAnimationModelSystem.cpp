@@ -14,9 +14,9 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::Create()
     return true;
 }
 
-FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationModelSystem::LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device,
+FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationModelSystem::LoadSkeletalAnimationModelForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                                                                                                    const Device&                             a_device,
                                                                                                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                                                                                    const std::filesystem::path&              a_filePath,
                                                                                                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     Struct::SkeletalAnimationModelLoadResult l_skeletalAnimationModelLoadResult = {};
@@ -57,9 +57,9 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
 
     // TextureとGPUBuffer用UploadCommandを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!BuildSkeletalAnimationModelRuntimeData(l_skeletalAnimationModelRecord,
+                                                                       a_filePath,
                                                                        a_device,
                                                                        a_gpuMemoryAllocator,
-                                                                       a_filePath,
                                                                        l_allocateStorageID,
                                                                        a_cbvSRVUAVDescriptorPool),
                                                                        "SkeletalAnimationModelのRuntimeData構築に失敗しました。",
@@ -119,9 +119,9 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAss
 }
 
 bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
+                                                                                         const std::filesystem::path&                         a_filePath,
                                                                                          const Device&                                        a_device,
                                                                                          const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
-                                                                                         const std::filesystem::path&                         a_filePath,
                                                                                          const TypeAlias::StorageID                           a_storageID,
                                                                                                TypeAlias::CBVSRVUAVDescriptorPool&            a_cbvSRVUAVDescriptorPool)
 {

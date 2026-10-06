@@ -15,10 +15,10 @@ namespace FWK::Graphics
 
     private:
 
-        bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage,       Renderer& a_renderer) const;
-        bool TransitionRenderTargetPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Renderer& a_renderer, const Enum::RenderGraphResourceUsage a_usage) const;
-        bool TransitionDepthStencilPassTextureResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Renderer& a_renderer, const Enum::RenderGraphResourceUsage a_usage) const;
-        bool TransitionShadowMapResource              (const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage,       Renderer& a_renderer) const;
+        bool TransitionBackBufferResource             (const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage     a_usage,                Renderer&                      a_renderer) const;
+        bool TransitionRenderTargetPassTextureResource(const Renderer&                          a_renderer,       const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage)    const;
+        bool TransitionDepthStencilPassTextureResource(const Renderer&                          a_renderer,       const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage)    const;
+        bool TransitionShadowMapResource              (const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage     a_usage,                Renderer&                      a_renderer) const;
 
         D3D12_RESOURCE_STATES ConvertVALD3D12ResourceState(const Enum::RenderGraphResourceUsage a_usage) const;
     };

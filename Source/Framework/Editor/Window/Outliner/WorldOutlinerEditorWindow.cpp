@@ -87,7 +87,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
 
     // 空スペース用ポップアップ描画
     // ポップアップが開いていない場合はDraw内部でreturnする
-    m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel, *l_scene, *this, a_editorManager);
+    m_popupDrawer.DrawEmptySpacePopup(k_emptySpaceContextMenuLabel,
+                                      *l_scene,
+                                      *this,
+                                      a_editorManager);
  
     // アセットブラウザーからのPrefabファイルのドロップ先
     // Window内の空白へドロップされたPrefabはルートGameObjectとして生成する
@@ -190,7 +193,11 @@ void FWK::Editor::WorldOutlinerEditorWindow::MoveSelectionDown(EditorManager& a_
  
     if (!l_next) { return; }
  
-    SelectGameObject(l_next, a_isRangeSelection, false, *l_scene, l_gameObjectSelectionState);
+    SelectGameObject(l_next,
+                     a_isRangeSelection,
+                     false,
+                     *l_scene,
+                     l_gameObjectSelectionState);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager& a_editorManager)
@@ -1275,8 +1282,23 @@ void FWK::Editor::WorldOutlinerEditorWindow::CommitRename(Scene& a_scene)
     // シーン名の変更
     if (m_renameState.m_isSceneTarget)
     {
+        // UndoRedo用に変更前の名前を保存する
+        // 参照で受け取るとSetNameで書き換わってしまうため値でコピーしておく
+        const auto l_beforeSceneName = a_scene.GetREFName();
+
+        // 名前が変わらない場合はリネームもコマンドのPushも行わない
+        if (l_beforeSceneName == l_newName) { return; }
+
         m_sceneOperation.RenameScene(l_newName, a_scene);
-        
+
+        // EditorManager経由でUndoRedoSystemへコマンドをPushする
+        // コマンドはSceneを所有せず参照するだけなので、SceneManagerが保持しているSceneをweak_ptrで渡す
+        const auto& l_sceneManager   = SceneManager::GetInstance                  ();
+              auto& l_editorManager  = EditorManager::GetInstance                 ();
+              auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+        l_undoRedoSystem.PushUndoCommand<RenameSceneCommand>(l_sceneManager.GetVALScene(), l_beforeSceneName, l_newName);
+
         return;
     }
 
@@ -1298,7 +1320,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::CommitRename(Scene& a_scene)
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<RenameGameObjectCommand>(l_targetGameObject->GetREFSceneInstanceUUID(), l_beforeName, l_newName);
+    l_undoRedoSystem.PushUndoCommand<RenameGameObjectCommand>(l_beforeName, l_newName, l_targetGameObject->GetREFSceneInstanceUUID());
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const

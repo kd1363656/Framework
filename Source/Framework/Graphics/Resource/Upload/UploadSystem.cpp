@@ -145,7 +145,7 @@ void FWK::Graphics::UploadSystem::RecordTextureCopy(const std::vector<D3D12_PLAC
     FWK_ASSERT_RETURN_IF(!a_uploadBuffer,      "コピー元UploadBufferが無効のため、テクスチャコピー記録に失敗しました。");
     FWK_ASSERT_RETURN_IF(a_layoutList.empty(), "サブリソース配置情報が空のため、テクスチャコピー記録処理に失敗しました。");
 
-    for (auto l_subresourceIndex = 0U; l_subresourceIndex < static_cast<UINT>(a_layoutList.size()); ++l_subresourceIndex)
+    for (UINT l_subresourceIndex = 0U; l_subresourceIndex < static_cast<UINT>(a_layoutList.size()); ++l_subresourceIndex)
     {
         // D3D12_TEXTURE_COPY_LOCATIONについての説明
         // pResource        : コピー先になるTextureResource

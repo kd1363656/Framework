@@ -249,6 +249,8 @@
      ・.cpp の初期化子リストで初期化する書き方は、新しいクラスでは使いません。
 7-7. インライン実装
      ・Getter / Setter は1行で書きます: { return m_xxx; } / { m_xxx = a_set; }
+     ・戻り値の型を auto にしてよいのは、ヘッダーに本体を書く Getter(GetREF / GetMutableREF / GetVAL)だけです。
+       Fetch / Find など .cpp に本体を書く関数は、戻り値の型を必ず書きます(本体が見えない所から呼ぶと型が決まらずコンパイルできないため)。
      ・空の仮想関数の本体には決まった文を書きます。
          virtual void Xxx() { /*必要に応じてオーバーライドしてください*/ };
      ・テンプレート関数・テンプレートクラスの本体はヘッダーに書きます。
@@ -389,6 +391,7 @@
          {
 9-7. 引数の改行
      ・宣言では、引数が3個以下なら1行で書き、4個以上なら1行に1引数ずつ書いて名前の位置を揃えます。
+       引数が3個以下のときに改行して並べることはしません(引数そのものが複数行になるラムダや && / || の条件は除きます)。
        const が付かない引数は「const 」の6文字分を空けて、型の位置を揃えます。
          void DeserializeScene(const nlohmann::json&              a_rootJson,
                                const nlohmann::json&              a_baseJson,
@@ -455,7 +458,7 @@
  第10章 変数・型・リテラル
 ================================================================================
 
-10-1. ローカル変数は auto を基本に使います。
+10-1. 関数の戻り値など、式の結果を受け取るローカル変数は auto を基本に使います。
      ・関数の戻り値は、値を返す関数であっても const auto& で受け取ります。
          const auto& l_nodeCount = a_dependencyList.size();
      ・後で変更する変数は auto / auto& を使い、ポインタは const auto* / auto* を使います。
@@ -470,13 +473,29 @@
        また、元の値がこの後で変わったり消えたりするため、コピーを取っておく必要がある場合も値で受け取ります。
          // この後eraseするとイテレータが無効化されるため、要素をコピーしておく
          const auto l_moveData = *l_moveITR;
-10-2. 既定値で構築するときは Type l_xxx = {}; と書きます。
+10-2. 変数の型名を書くか auto にするかは、右辺で型が決まっているかどうかで決めます。
+     ・右辺がリテラル(0ULL / 1.0F / 0U など)の場合は、型がサフィックスでしか決まらないため、必ず型名を書きます。
+         std::size_t l_bufferOffset = 0ULL;
+         for (std::size_t l_nodeIndex = 0ULL; l_nodeIndex < l_nodeCount; ++l_nodeIndex)
+       次のようには書きません。
+         auto l_bufferOffset = 0ULL;
+         for (auto l_nodeIndex = 0ULL; ...)
+     ・右辺が型の決まっている変数・定数・関数の戻り値などの場合は、auto で構いません。
+         auto l_number       = l_startNumber;
+         auto l_adapterIndex = k_firstAdapterIndex;
+         for (auto l_boneIndex = k_firstBoneIndex; l_boneIndex < l_boneCount; ++l_boneIndex)
+       std:: の型(std::uint32_t / std::size_t / std::string / コンテナなど)やスマートポインタ
+       (std::unique_ptr / std::shared_ptr / std::weak_ptr)も同じです。参照で受け取れる場合は const auto& で受け取ります。
+     ・ヘッダーで定義するもの(定数・メンバ変数)は、右辺に関係なく必ず型名を書きます(10-7)。
+     既定値で構築するときは Type l_xxx = {}; と書きます。
          nlohmann::json l_rootJson = {};
          std::vector<std::weak_ptr<GameObject>> l_displayedList = {};
 10-3. 範囲 for は for (const auto& l_xxx : xxxList) と書き、要素を変更するときだけ auto& を使います。
      要素が8バイト以上の場合(std::size_t の添字リストなど)に const auto で受け取ることはしません。
      map は構造化束縛を使います: for (const auto& [l_key, l_value] : l_xxxMap)
 10-4. 添字を使う for は for (std::size_t l_index = 0ULL; l_index < l_count; ++l_index) と書きます。
+     リテラルで始める添字は、比べる相手に合わせて型名を書きます(UINT / std::uint32_t など)。auto l_index = 0ULL とは書きません。
+     定数や変数で始める場合は auto で構いません: for (auto l_boneIndex = k_firstBoneIndex; ...)
      添字が不要な場合は範囲 for を使ってください。
 10-5. リテラル
      ・float には大文字の F を付け、小数点も必ず書きます: 1.0F / 0.5F
@@ -487,6 +506,7 @@
          k_firstBoneIndex = 0ULL / k_invalidStorageID = std::numeric_limits<...>::max()
      数値を直接書いてよいのは、添字 for の開始値の 0 と、パディングの 0.0F だけです。
 10-7. 定数の書き方
+     ・ヘッダーで定義する定数・メンバ変数は、auto を使わず必ず型名を書きます: inline constexpr std::size_t k_xxx = 1ULL;(constexpr auto k_xxx とは書きません)
      ・そのクラスだけで使う定数は、クラスの private に static constexpr で書きます。
      ・複数のファイルで使う定数は、Definition/Constant に inline constexpr で書きます。
      ・文字列の定数は static constexpr std::string_view で書きます。
@@ -817,25 +837,44 @@
        2. ポインタ    std::unique_ptr / std::shared_ptr / std::weak_ptr / ComPtr / 生ポインタ / HANDLE / HWND
        3. 値          上の2つ以外のすべて
      値の中の順番は、メンバ変数・定数・引数ごとに 20-2 ~ 20-4 のとおりです。
+     ・値の中のクラスと構造体は、型を定義している場所によって、ヘッダーの上から次の順に並べます。
+         外部APIのクラス → std のクラス → 自作クラス → 外部APIの構造体 → std の構造体 → 自作の構造体
+       外部APIのクラス   nlohmann::json / DirectX::ScratchImage / JPH::BodyID など
+       std のクラス      std::string / std::wstring / std::string_view / std::filesystem::path / std::chrono の型 など
+       自作クラス        Scene / Device / XxxSystem / XxxPane など(Converter / Inspector はこの最後)
+       外部APIの構造体   boost::uuids::uuid / TypeAlias::Math の型(DirectX::SimpleMath) / ImVec2 / RECT /
+                         D3D12 の DESC などの構造体 / DirectX::TexMetadata など
+       std の構造体      std::pair / std::source_location など
+       自作の構造体      Struct::Xxx / クラスの中の private の構造体 など
      種類が変わるところで空行を入れます。
 20-2. メンバ変数(m_)
        1. 配列
        2. ポインタ
-       3. オブジェクト          処理を持つクラス(XxxSystem / XxxPane / XxxBuffer / Shader など)
-       4. Converter / Inspector
-       5. データ                構造体 / 数学の型 / 文字列 / パス / UUID / nlohmann::json / D3D12 の DESC 構造体 など
-       6. 列挙型
-       7. 数値
-       8. bool
+       3. 外部APIのクラス
+       4. std のクラス
+       5. 自作クラス
+       6. Converter / Inspector
+       7. 外部APIの構造体
+       8. std の構造体
+       9. 自作の構造体
+      10. 列挙型
+      11. 数値
+      12. bool
           std::vector<std::shared_ptr<GameObject>> m_gameObjectList = {};
 
           std::weak_ptr<GameObject> m_owner = {};
+
+          nlohmann::json m_json = {};
+
+          std::string m_name = {};
 
           SceneChanger m_sceneChanger = {};
 
           Converter::SceneJsonConverter m_jsonConverter = {};
 
-          std::string m_name = {};
+          boost::uuids::uuid m_uuid = {};
+
+          Struct::XxxState m_state = {};
 
           Enum::XxxType m_type = Enum::XxxType::Invalid;
 
@@ -846,14 +885,16 @@
 20-3. 定数(クラスの static constexpr と Definition/Constant の inline constexpr)
        1. 配列(std::array / C 配列)
        2. ポインタ
-       3. 列挙型 / 数学の型(Color / Vector など) / 文字列(std::string_view / char / wchar_t)
-       4. 浮動小数点(float / double)
-       5. 64ビットの整数(std::size_t / UINT64 / std::uint64_t)
-       6. 32ビットの整数(UINT / std::uint32_t / DWORD)
-       7. 16ビットの整数(std::uint16_t)
-       8. 8ビットの整数(std::uint8_t)
-       9. int
-      10. bool
+       3. 文字列(std::string_view / char / wchar_t)などの std のクラス
+       4. 数学の型(Color / Vector / ImVec2 など)などの外部APIの構造体
+       5. 列挙型
+       6. 浮動小数点(float / double)
+       7. 64ビットの整数(std::size_t / UINT64 / std::uint64_t)
+       8. 32ビットの整数(UINT / std::uint32_t / DWORD)
+       9. 16ビットの整数(std::uint16_t)
+      10. 8ビットの整数(std::uint8_t)
+      11. int
+      12. bool
      ・ファイルパス(std::filesystem::path)の位置は決めていません。
 20-4. 引数(a_)
      ・まず修飾子の種類で、次の順に並べます。
@@ -865,14 +906,20 @@
        6. ポインタ          T*
        7. 値                const の付かない値渡し
        8. デフォルト引数
-     ・同じ種類の中は、次の順に並べます。
-       1. 配列
-       2. スマートポインタ
-       3. nlohmann::json
-       4. クラス・構造体・数学の型・文字列・パス・UUID(この中の順番は決めていません)
-       5. 列挙型
-       6. 数値
-       7. bool
+     ・同じ種類の中は、次の順に並べます(3 ~ 8 は 20-1 の型の定義場所による順番です)。
+        1. 配列
+        2. スマートポインタ
+        3. 外部APIのクラス(nlohmann::json など)
+        4. std のクラス(std::string / std::filesystem::path など)
+        5. 自作クラス
+        6. 外部APIの構造体(boost::uuids::uuid / 数学の型 / D3D12 の構造体 など)
+        7. std の構造体
+        8. 自作の構造体
+        9. 列挙型
+       10. 数値
+       11. bool
+          void Load(const std::filesystem::path& a_filePath, const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator);
+          RenameGameObjectCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID);
           void Xxx(const std::vector<std::weak_ptr<GameObject>>& a_gameObjectList,
                    const std::weak_ptr<GameObject>&              a_parent,
                    const nlohmann::json&                         a_rootJson,
@@ -907,11 +954,13 @@
 [ ] コンストラクタ / デストラクタは「 X() = default;」「~X() = default;」で ~ の位置を揃えている
 [ ] public は INIT → Deserialize → Update 系 → Draw → Serialize → 操作 → Is → Set → Find → Fetch → GetREF → GetMutableREF → GetVAL の順
 [ ] private は 関数 → static constexpr k_ → m_ メンバ(初期化子は {} / nullptr / 定数) → 型情報マクロ の順
+[ ] ヘッダーで定義するものと、リテラルで初期値を与える変数は、auto を使わず型名を書いている
 [ ] 8バイト以上の引数は const 参照、8バイト以上のローカル変数は const auto& で受け取っている
 [ ] メンバ変数・定数を第20章の順番(配列 → ポインタ → 値)で、引数を修飾子の順番(const 参照 → const ポインタ → const 値 → 参照 → 右辺値参照 → ポインタ → 値)で並べている
 [ ] 変数は l_ / 引数は a_ / メンバは m_ / 定数は k_(直後は小文字)、Setter の引数は a_set
 [ ] GetREF / GetMutableREF / GetVAL / FetchVAL / FindPTR を使い分け、略語は大文字(REF VAL PTR ITR INFO UUID ID MIN MAX など)
-[ ] 引数が4個以上の宣言・呼び出しは1行に1引数ずつ書き、位置を揃えている
+[ ] 引数が4個以上の宣言・呼び出しは1行に1引数ずつ書き、位置を揃えている(3個以下は1行で書いている)
+[ ] クラス・構造体のメンバ・引数・定数を「外部APIのクラス → std のクラス → 自作クラス → 外部APIの構造体 → std の構造体 → 自作の構造体」の順で並べている
 [ ] 続けて並ぶ = と ( を縦に揃え、const 付きと const なしの宣言は型の位置を揃えている
 [ ] Allman スタイル、波括弧は必ず付け、return / continue / break の1文だけ1行 if、else は改行
 [ ] && / || は1行に1条件、演算子は行末

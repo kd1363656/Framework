@@ -43,7 +43,7 @@ void FWK::Editor::LogEditorWindow::Draw(EditorManager& a_editorManager)
     ImGui::End();
 }
 
-void FWK::Editor::LogEditorWindow::AddLog(const TypeAlias::Math::Color& a_textColor, const std::string& a_text)
+void FWK::Editor::LogEditorWindow::AddLog(const std::string& a_text, const TypeAlias::Math::Color& a_textColor)
 {
     // 空モッジの場合は追加するものがないため終了する
     if (a_text.empty()) { return; }

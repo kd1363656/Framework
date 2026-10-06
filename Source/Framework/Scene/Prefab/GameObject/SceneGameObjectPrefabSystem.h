@@ -18,7 +18,7 @@ namespace FWK
         void INIT       ();
         void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry);
 
-        void AddPrefab   (const boost::uuids::uuid& a_prefabUUID, const GameObjectPrefab& a_prefab);
+        void AddPrefab   (const GameObjectPrefab&   a_prefab, const boost::uuids::uuid& a_prefabUUID);
         void RemovePrefab(const boost::uuids::uuid& a_prefabUUID);
 
         nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry);

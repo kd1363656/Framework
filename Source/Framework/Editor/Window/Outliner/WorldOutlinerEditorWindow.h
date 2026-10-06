@@ -81,8 +81,6 @@ namespace FWK::Editor
         
         std::vector<std::weak_ptr<GameObject>>::const_iterator FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const;
          
-        static constexpr ImVec4 k_prefabGameObjectTextColor = { 0.40F, 0.70F, 1.00F, 1.00F };
-        
         static constexpr std::string_view k_editorName                        = "アウトライナー";
         static constexpr std::string_view k_emptySceneLabel                   = "Untitled";
         static constexpr std::string_view k_thisWindowExplanationLabel        = "アウトライナーでは現在読み込んでいるシーン、シーンに含まれるゲームオブジェクトを見ることができ\n親子関係を結ぶ、名前を変える、シーンからゲームオブジェクトを削除することができるウィンドウ。";
@@ -96,6 +94,8 @@ namespace FWK::Editor
         static constexpr std::string_view k_renameInputTextLabel        = "##WorldOutlinerRenameInputText";
         static constexpr std::string_view k_gameObjectDragDropZoneLabel = "##WorldOutlinerGameObjectDropZone";
         static constexpr std::string_view k_prefabFileDropTargetLabel   = "##WorldOutlinerPrefabFileDropTarget";
+
+        static constexpr ImVec4 k_prefabGameObjectTextColor = { 0.40F, 0.70F, 1.00F, 1.00F };
 
         static constexpr float k_nodeFramePaddingHeight  = 3.0F;
         static constexpr float k_dropZoneHeight          = 3.0F;

@@ -16,8 +16,8 @@ namespace FWK::Editor
         void ApplyFileDelete(const std::filesystem::path& a_deleteFilePath, AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager) const;
 
         void ApplyPrefabDelete(const std::filesystem::path& a_deleteFilePath,
-                               const boost::uuids::uuid&    a_prefabUUID,
                                const SceneManager&          a_sceneManager,
+                               const boost::uuids::uuid&    a_prefabUUID,
                                      AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
         void ApplySceneDelete(const std::filesystem::path&  a_deleteFilePath,

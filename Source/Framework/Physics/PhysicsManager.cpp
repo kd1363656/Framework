@@ -221,7 +221,10 @@ void FWK::Physics::PhysicsManager::SetupJoltDebugCallback() const
 }
 
 #ifdef JPH_ENABLE_ASSERTS
-bool FWK::Physics::PhysicsManager::HandleJoltAssertFailed(const char* a_expression, const char* a_message, const char* a_file, const JPH::uint a_line)
+bool FWK::Physics::PhysicsManager::HandleJoltAssertFailed(const char*     a_expression,
+                                                          const char*     a_message,
+                                                          const char*     a_file,
+                                                          const JPH::uint a_line)
 {
     char l_buffer[k_joltTraceBufferSize] = {};
 

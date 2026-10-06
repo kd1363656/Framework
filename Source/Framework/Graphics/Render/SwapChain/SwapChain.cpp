@@ -219,7 +219,7 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
     l_rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
     // バックバッファーを一枚ずつ取得して、それぞれに対応するRTVを作成する
-    for (auto l_backBufferIndex = 0U; l_backBufferIndex < static_cast<UINT>(m_backBufferList.size()); ++l_backBufferIndex)
+    for (UINT l_backBufferIndex = 0U; l_backBufferIndex < static_cast<UINT>(m_backBufferList.size()); ++l_backBufferIndex)
     {
         auto& l_backBuffer = m_backBufferList[l_backBufferIndex];
 

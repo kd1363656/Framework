@@ -48,7 +48,7 @@ namespace FWK::Converter
 
         bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
 
-        bool SaveTextureAsset(const std::filesystem::path& a_filePath, const DirectX::ScratchImage& a_scratchImage);
+        bool SaveTextureAsset(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath);
 
         static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
         static constexpr std::uint64_t k_defaultTexture2DMIPLevels = 1ULL;

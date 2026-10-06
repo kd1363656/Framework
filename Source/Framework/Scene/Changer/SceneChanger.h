@@ -15,7 +15,7 @@ namespace FWK
 
         nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
-        bool AddNextScene   (const boost::uuids::uuid& a_sceneUUID, const NextScene& a_nextScene);        
+        bool AddNextScene   (const NextScene& a_nextScene, const boost::uuids::uuid& a_sceneUUID);        
         bool RemoveNextScene(const boost::uuids::uuid& a_sceneUUID);
         
         const NextScene* FetchPTRNexScene(const boost::uuids::uuid& a_sceneUUID) const;

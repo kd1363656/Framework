@@ -12,7 +12,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::ExtractModelMotion
     // アニメーション数分予約しておく(ベクター配列の再確保の発生が起きないため効率がいい)
     a_modelMotionSequenceList.reserve(a_fbxScene->anim_stacks.count);
 
-    for (auto l_animationStackIndex = 0ULL; l_animationStackIndex < a_fbxScene->anim_stacks.count; ++l_animationStackIndex)
+    for (std::size_t l_animationStackIndex = 0ULL; l_animationStackIndex < a_fbxScene->anim_stacks.count; ++l_animationStackIndex)
     {
         const auto* l_fbxAnimationStack = a_fbxScene->anim_stacks.data[l_animationStackIndex];
 
@@ -78,7 +78,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
     a_modelBoneMotionTrack.m_keyFrameList.clear  ();
     a_modelBoneMotionTrack.m_keyFrameList.reserve(l_keyFrameCount);
 
-    for (auto l_keyFrameIndex = 0ULL; l_keyFrameIndex < l_keyFrameCount; ++l_keyFrameIndex)
+    for (std::size_t l_keyFrameIndex = 0ULL; l_keyFrameIndex < l_keyFrameCount; ++l_keyFrameIndex)
     {
         double l_keyFrameTimeSecond = static_cast<double>(l_keyFrameIndex) / a_animationFrameRate;
 
@@ -115,7 +115,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
     a_modelMotionSequence.m_boneMotionTrackList.clear  ();
     a_modelMotionSequence.m_boneMotionTrackList.reserve(a_fbxBakedAnimation->nodes.count);
 
-    for (auto l_bakedNodeIndex = 0ULL; l_bakedNodeIndex < a_fbxBakedAnimation->nodes.count; ++l_bakedNodeIndex)
+    for (std::size_t l_bakedNodeIndex = 0ULL; l_bakedNodeIndex < a_fbxBakedAnimation->nodes.count; ++l_bakedNodeIndex)
     {
         const auto& l_fbxBakedNode = a_fbxBakedAnimation->nodes.data[l_bakedNodeIndex];
 

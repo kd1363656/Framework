@@ -1,9 +1,9 @@
 ﻿#include "TextureBatchUploadRecordBuilder.h"
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRecord(const Device&                             a_device,
-                                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRecord(const DirectX::ScratchImage&              a_scratchImage,
                                                                                     const std::wstring&                       a_filePath,
-                                                                                    const DirectX::ScratchImage&              a_scratchImage,
+                                                                                    const Device&                             a_device,
+                                                                                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                                                     const DirectX::TexMetadata&               a_texMetadata,
                                                                                     const TypeAlias::StorageID                a_storageID,
                                                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
@@ -23,7 +23,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 
     // ScratchImageの画像データをUploadBufferへ書き込み、UploadSystemへ渡すコピー情報を作成する
     // ここではCopyCommandQueueへ送信しない(バッチ処理を行うため)
-    FWK_ASSERT_RETURN_VALUE_IF(!CreateTextureUploadRecord(a_device, a_scratchImage, a_textureBatchUploadRecord), "テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateTextureUploadRecord(a_scratchImage, a_device, a_textureBatchUploadRecord), "テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
 
     // 作成したTextureResourceをシェーダーから参照できるように、CPUOnly側のDescriptorHeapへSRVを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!CreateTextureSRV(a_device,
@@ -76,7 +76,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
     return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const DirectX::ScratchImage& a_scratchImage, const Device& a_device, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
 {
     const auto& l_device = a_device.GetREFDevice();
 

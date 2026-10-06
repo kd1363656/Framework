@@ -57,9 +57,9 @@ namespace FWK::Graphics
 
         std::weak_ptr<Graphics::TextureRecord> m_textureRecord = {};
 
-        Converter::DefaultTextureJsonConverter m_jsonConverter = {};
-
         std::wstring m_textureName = {};
+
+        Converter::DefaultTextureJsonConverter m_jsonConverter = {};
 
         DXGI_FORMAT m_format = DXGI_FORMAT_R8G8B8A8_UNORM;
     };

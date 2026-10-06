@@ -84,7 +84,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterList(co
 
     // リサイズをjson配列の大きさで行っているのでif文で配列外かどうかのインデックス確認を行わない
     // json内部で保存されているデータをl_rootParameterListにパースする
-    for (auto l_rootParameterIndex = 0ULL; l_rootParameterIndex < l_jsonArraySize; ++l_rootParameterIndex)
+    for (std::size_t l_rootParameterIndex = 0ULL; l_rootParameterIndex < l_jsonArraySize; ++l_rootParameterIndex)
     {
         const auto& l_json = a_rootJson[l_rootParameterIndex];
 
@@ -151,7 +151,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeStaticSamplerDescLis
     l_staticSamplerDescList.resize(l_jsonArraySize);
 
     // リサイズをjson配列の大きさで行っているのでif文で配列外かどうかのインデックス確認を行わない
-    for (auto l_staticSamplerIndex = 0ULL; l_staticSamplerIndex < l_jsonArraySize; ++l_staticSamplerIndex)
+    for (std::size_t l_staticSamplerIndex = 0ULL; l_staticSamplerIndex < l_jsonArraySize; ++l_staticSamplerIndex)
     {
         const auto& l_json              = a_rootJson             [l_staticSamplerIndex];
               auto& l_staticSamplerDesc = l_staticSamplerDescList[l_staticSamplerIndex];
@@ -366,7 +366,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(
     l_descriptorRangeList->resize(l_jsonArraySize);
 
     // リサイズをjson配列の大きさで行っているのでif文で配列外かどうかのインデックス確認を行わない
-    for (auto l_i = 0ULL; l_i < l_jsonArraySize; ++l_i)
+    for (std::size_t l_i = 0ULL; l_i < l_jsonArraySize; ++l_i)
     {
         auto& l_descriptorRange = (*l_descriptorRangeList)[l_i];
 

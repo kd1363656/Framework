@@ -6,10 +6,7 @@ namespace FWK::Editor
     {
     public:
 
-         RenameGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID,
-                                 const std::string&        a_beforeName,
-                                 const std::string&        a_afterName);
-
+         RenameGameObjectCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID);
         ~RenameGameObjectCommand() override;
 
         void Undo() override;
@@ -19,9 +16,9 @@ namespace FWK::Editor
 
         void ApplyName(const std::string& a_name) const;
 
-        boost::uuids::uuid m_gameObjectUUID = {};
-
         std::string m_beforeName = {};
         std::string m_afterName  = {};
+
+        boost::uuids::uuid m_gameObjectUUID = {};
     };
 }

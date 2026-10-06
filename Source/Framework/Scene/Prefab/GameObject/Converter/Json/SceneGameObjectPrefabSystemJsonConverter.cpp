@@ -63,7 +63,7 @@ void FWK::Converter::ScenePrefabSystemJsonConverter::Deserialize(const nlohmann:
             continue;
         }
 
-        a_sceneGameObjectPrefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
+        a_sceneGameObjectPrefabSystem.AddPrefab(l_gameObjectPrefab, l_prefabUUID);
     }
 }
 

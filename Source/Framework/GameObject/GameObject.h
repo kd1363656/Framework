@@ -75,12 +75,12 @@ namespace FWK
         // ポインタの共有したいが絶対に存在すべきコンポーネントなのでメンバイニシャライザで生成
         std::shared_ptr<GameObjectTransformComponent> m_transformComponent = std::make_shared<GameObjectTransformComponent>();
 
+        std::string m_name = {};
+
         GameObjectHierarchy          m_hierarchy          = {};
         GameObjectComponentContainer m_componentContainer = {};
 
         Converter::GameObjectJsonConverter m_jsonConverter = {};
-
-        std::string m_name = {};
 
         // このゲームオブジェクトが子でPrefabの内部にある子である場合
         // デシリアライズで復元時に子配列のどの部分に当たる子かを示すために

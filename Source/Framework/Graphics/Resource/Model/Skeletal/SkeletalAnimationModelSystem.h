@@ -16,9 +16,9 @@ namespace FWK::Graphics
         void Deserialize(const nlohmann::json& a_rootJson);
         bool Create     ();
 
-        Struct::SkeletalAnimationModelLoadResult LoadSkeletalAnimationModelForBatchUpload(const Device&                             a_device,
+        Struct::SkeletalAnimationModelLoadResult LoadSkeletalAnimationModelForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                                                          const Device&                             a_device,
                                                                                           const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                                          const std::filesystem::path&              a_filePath,
                                                                                                 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         nlohmann::json Serialize() const;
@@ -40,9 +40,9 @@ namespace FWK::Graphics
         bool BuildSkeletalAnimationModelAssetData(const std::filesystem::path& a_filePath, SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
         bool BuildSkeletalAnimationModelRuntimeData(const std::shared_ptr<SkeletalAnimationModelRecord>& a_skeletalAnimationModelRecord,
+                                                    const std::filesystem::path&                         a_filePath,
                                                     const Device&                                        a_device,
                                                     const GPUMemoryAllocator&                            a_gpuMemoryAllocator,
-                                                    const std::filesystem::path&                         a_filePath,
                                                     const TypeAlias::StorageID                           a_storageID,
                                                           TypeAlias::CBVSRVUAVDescriptorPool&            a_cbvSRVUAVDescriptorPool);
 

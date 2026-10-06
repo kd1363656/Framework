@@ -21,11 +21,7 @@ namespace FWK::Utility
         return
         {
             TypeAlias::Math::Quaternion::CreateFromYawPitchRoll
-            (
-                DirectX::XMConvertToRadians(a_euler.y) ,
-                DirectX::XMConvertToRadians(a_euler.x) ,
-                DirectX::XMConvertToRadians(a_euler.z)
-            )
+            (DirectX::XMConvertToRadians(a_euler.y), DirectX::XMConvertToRadians(a_euler.x), DirectX::XMConvertToRadians(a_euler.z))
         };
     }
 }

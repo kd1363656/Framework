@@ -31,7 +31,7 @@ nlohmann::json FWK::Converter::RenderTargetPassTextureJsonConverter::Serialize(c
 {
     nlohmann::json l_rootJson = {};
 
-    Utility::UpdateJson(Utility::SerializeColor(a_renderTargetPassTexture.GetREFClearColor(), k_clearColorJsonKey), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeColor(k_clearColorJsonKey, a_renderTargetPassTexture.GetREFClearColor()), l_rootJson);
 
     l_rootJson[k_formatJsonKey]                      = a_renderTargetPassTexture.GetVALFormat                     ();
     l_rootJson[k_renderGraphRenderTargetTypeJsonKey] = a_renderTargetPassTexture.GetVALRenderGraphRenderTargetType();

@@ -62,11 +62,11 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
         FWK_ASSERT_RETURN_IF(!UploadBoneMatrix(l_computeCommandList, *l_frameData), "BoneMatrixのGPU転送に失敗しました。");
 
         // Model内の各MeshへLBSVertexSkinningを実行する。
-        FWK_ASSERT_RETURN_IF(!DispatchVertexSkinning(l_skeletalAnimationModelRecord->GetREFModelData(),
-                                                     *l_vertexSkinningRootSignature,
+        FWK_ASSERT_RETURN_IF(!DispatchVertexSkinning(*l_vertexSkinningRootSignature,
                                                      l_computeCommandList,
-                                                     *l_frameData,
-                                                     *l_vertexSkinningConstantBufferUploader),
+                                                     l_skeletalAnimationModelRecord->GetREFModelData(),
+                                                     *l_vertexSkinningConstantBufferUploader,
+                                                     *l_frameData),
                                                      "SkeletalAnimationModelのVertexSkinningに失敗しました。");
     }
 
@@ -94,11 +94,11 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
         // Model内の各Meshについて、
         // スキニング後頂点から現在PoseのMeshletBoundsを計算する。
-        FWK_ASSERT_RETURN_IF(!DispatchMeshletBoundsUpdate(l_skeletalAnimationModelRecord->GetREFModelData(),
-                                                          *l_meshletBoundsUpdateRootSignature,
+        FWK_ASSERT_RETURN_IF(!DispatchMeshletBoundsUpdate(*l_meshletBoundsUpdateRootSignature,
                                                           l_computeCommandList,
-                                                          *l_frameData,
-                                                          *l_meshletBoundsUpdateConstantBufferUploader),
+                                                          l_skeletalAnimationModelRecord->GetREFModelData(),
+                                                          *l_meshletBoundsUpdateConstantBufferUploader,
+                                                          *l_frameData),
                                                           "SkeletalAnimationModelのMeshletBounds更新に失敗しました。");
     }
 }
@@ -151,7 +151,11 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const Struct::SkeletalAnimationModelData& a_modelData, const RootSignature& a_rootSignature, const ComputeCommandList& a_computeCommandList, Struct::SkeletalAnimationPlayerFrameData& a_frameData, SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader)
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const RootSignature&                                                         a_rootSignature,
+                                                                         const ComputeCommandList&                                                    a_computeCommandList,
+                                                                         const Struct::SkeletalAnimationModelData&                                    a_modelData,
+                                                                               SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader,
+                                                                               Struct::SkeletalAnimationPlayerFrameData&                              a_frameData)
 {
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
           auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
@@ -244,11 +248,11 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const Struct::SkeletalAnimationModelData&                                         a_modelData,
-                                                                              const RootSignature&                                                              a_rootSignature,
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const RootSignature&                                                              a_rootSignature,
                                                                               const ComputeCommandList&                                                         a_computeCommandList,
-                                                                                    Struct::SkeletalAnimationPlayerFrameData&                                   a_frameData,
-                                                                                    SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader& a_constantBufferUploader) const
+                                                                              const Struct::SkeletalAnimationModelData&                                         a_modelData,
+                                                                                    SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader& a_constantBufferUploader,
+                                                                                    Struct::SkeletalAnimationPlayerFrameData&                                   a_frameData) const
 {
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
     const auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;

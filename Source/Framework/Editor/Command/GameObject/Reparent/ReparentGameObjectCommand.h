@@ -6,9 +6,7 @@ namespace FWK::Editor
     {
     public:
  
-         ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID,
-                                   const boost::uuids::uuid& a_beforeParentUUID,
-                                   const boost::uuids::uuid& a_afterParentUUID);
+         ReparentGameObjectCommand(const boost::uuids::uuid& a_gameObjectUUID, const boost::uuids::uuid& a_beforeParentUUID, const boost::uuids::uuid& a_afterParentUUID);
  
         ~ReparentGameObjectCommand() override;
  

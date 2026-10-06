@@ -96,6 +96,7 @@
 #include "Editor/Command/GameObject/Destroy/DestroyGameObjectCommand.h"
 #include "Editor/Command/GameObject/Reparent/ReparentGameObjectCommand.h"
 #include "Editor/Command/GameObject/Rename/RenameGameObjectCommand.h"
+#include "Editor/Command/Scene/Rename/RenameSceneCommand.h"
 #include "Editor/Window/Command/GameObject/CreateGameObjectCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/EditorManager.h"

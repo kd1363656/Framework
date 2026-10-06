@@ -34,11 +34,11 @@ namespace FWK::Editor
         HANDLE m_directoryHandle;
         HANDLE m_notificationEventHandle;
 
+        std::filesystem::path m_directoryPath;
+
         AssetBrowserEditorWindowDirectoryNotificationProcessor m_notificationProcessor;
 
         OVERLAPPED m_overlapped;
-
-        std::filesystem::path m_directoryPath;
 
         bool m_isNotificationReadPending;
     };

@@ -136,7 +136,7 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeBlendDes
     {
         const auto& l_jsonArray = a_rootJson[k_renderTargetJsonKey];
 
-        for (auto l_renderTargetIndex = 0U; l_renderTargetIndex < l_jsonArray.size(); ++l_renderTargetIndex)
+        for (UINT l_renderTargetIndex = 0U; l_renderTargetIndex < l_jsonArray.size(); ++l_renderTargetIndex)
         {
             if (l_renderTargetIndex >= D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT)
             {

@@ -45,7 +45,7 @@ namespace FWK::Editor
 
         ImTextureID FetchVALViewportTextureID() const;
 
-        void DrawViewportTexture(const ImTextureID& a_textureID, const ImVec2& a_viewportSize) const;
+        void DrawViewportTexture(const ImVec2& a_viewportSize, const ImTextureID& a_textureID) const;
 
         void RegisterEditorCamera    () const;
         void UpdateEditorCameraInput ();

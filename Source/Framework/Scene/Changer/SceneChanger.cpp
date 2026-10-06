@@ -19,7 +19,7 @@ nlohmann::json FWK::SceneChanger::Serialize(const AssetFilePathRegistry& a_asset
     return m_jsonConverter.Serialize(a_assetFilePathRegistry, *this);
 }
 
-bool FWK::SceneChanger::AddNextScene(const boost::uuids::uuid& a_sceneUUID, const NextScene& a_nextScene)
+bool FWK::SceneChanger::AddNextScene(const NextScene& a_nextScene, const boost::uuids::uuid& a_sceneUUID)
 {
     if (a_sceneUUID.is_nil())
     {

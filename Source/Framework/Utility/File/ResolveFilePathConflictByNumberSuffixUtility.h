@@ -3,9 +3,10 @@
 namespace FWK::Utility
 {
     // 指定したFilePathが既に存在する場合、
-    // 番号を付与した一意なFilePathを返す
-    // 例: "Player.png"が既に存在する場合 -> "Player1.png"を返す
-    //     "Player1.png"も存在する場合    -> "Player2.png"を返す
+    // Unityと同じ「名前 (番号)」の形で番号を付与した一意なFilePathを返す
+    // 例: "Player.png"が既に存在する場合     -> "Player (1).png"を返す
+    //     "Player (1).png"も存在する場合     -> "Player (2).png"を返す
+    //     "K02.png"が既に存在する場合        -> "K02 (1).png"を返す(名前の末尾の数字は番号として扱わない)
     // 存在しない場合はそのまま返す
     inline std::filesystem::path ResolveFilePathConflictByNumberSuffix(const std::filesystem::path& a_desiredPath)
     {
@@ -20,49 +21,46 @@ namespace FWK::Utility
         const auto& l_extension  = a_desiredPath.extension ().string();
         const auto& l_parentPath = a_desiredPath.parent_path();
 
-        // Stemの末尾に数値がついている場合は、その数字を取り出して
+        // Stemの末尾が" (数字)"の形になっている場合だけ、その数字を番号として取り出して
         // 次の番号から検索を開始する
-        // 例 : "Player1" -> baseName = "Player", StartNumber = 2
-        // 例 : "Player"  -> baseName = "Player", StartNumber = 1
-        // これにより複数の複製で"Player1"にならず"Player2"になる
+        // 例 : "Player (1)" -> baseName = "Player", StartNumber = 2
+        // 例 : "Player"     -> baseName = "Player", StartNumber = 1
+        // 例 : "K02"        -> baseName = "K02",    StartNumber = 1
+        // これにより複数の複製で"Player (1)"にならず"Player (2)"になり、
+        // 名前の一部として付けた数字("K02"の"02")が番号として書き換えられることもない
         std::string l_baseName    = l_stem;
         auto        l_startNumber = Constant::k_initialNumberSuffixForFilePathConflict;
 
-        // Stemの末尾から数字部分を探す
-        // 末尾が数字でない場合はbaseName = stem,startNumber = 1のまま
-        if (!l_stem.empty())
+        // 最後に出てくる" ("の位置を探す
+        // 末尾が")"で終わっていない場合は番号付きの名前ではない
+        if (const auto& l_openPosition = l_stem.rfind(Constant::k_numberSuffixOpenStringForFilePathConflict);
+            l_openPosition != std::string::npos &&
+            l_stem.ends_with(Constant::k_numberSuffixCloseStringForFilePathConflict))
         {
-            auto l_digitBegin = l_stem.rbegin();
-            
-            // 末尾から数字である限り進む
-            // std::isdigitで数字化を判定
-            // unsigned_charへcastして渡す(符号付きcharの負値対策)
-            while (l_digitBegin != l_stem.rend() &&
-                std::isdigit(static_cast<unsigned char>(*l_digitBegin)))
-            {
-                ++l_digitBegin;
-            }
+            // " ("と")"に挟まれた部分を取り出す
+            // 例 : "Player (12)" -> "12"
+            const auto& l_numberBegin  = l_openPosition + Constant::k_numberSuffixOpenStringForFilePathConflict.size();
+            const auto& l_numberLength = l_stem.size() - l_numberBegin - Constant::k_numberSuffixCloseStringForFilePathConflict.size();
+            const auto& l_numberString = l_stem.substr(l_numberBegin, l_numberLength);
 
-            // 数字部分が見つかり、かつ数字の前に非数字文字列がある場合
-            // (全体が数字(123)の場合は元のstemをbaseNameとして使う)
-            // l_digitBeginが数字部分の先頭(正順で見て)を指している
-            // l_digitBeginがrendでなければ数字部分あり
-            // l_digitBeginがrbeginでなければ数字の前に文字あり
-            if (l_digitBegin != l_stem.rbegin() &&
-                l_digitBegin != l_stem.rend())
-            {
-                // baseName = 数字部分を除いた前半
-                // 逆順イテレータl_digitBeginは正順で見て数字部分の先頭を指す
-                // l_digitBegin.base()で正規イテレータへ変換
-                // 例 : "Player1"の"l_digitBegin"は'1'を示す(逆順)
-                // .base()は'1'の次を示す(正順)
-                // なのでbegin()からbase()の前までが"Player"
-                l_baseName = std::string(l_stem.begin(), l_digitBegin.base());
+            // 括弧の中がすべて数字の場合だけ番号として扱う
+            // "Player (abc)"のような名前は、名前全体をbaseNameとして扱う
+            // std::isdigitで数字かを判定し、unsigned_charへcastして渡す(符号付きcharの負値対策)
+            const bool l_isNumberSuffix = !l_numberString.empty() &&
+                                          std::ranges::all_of(l_numberString,
+                                                              [](const char a_character)
+                                                              {
+                                                                  return static_cast<bool>(std::isdigit(static_cast<unsigned char>(a_character)));
+                                                              });
 
-                // 数字部分を数値へ変換して + 1
+            if (l_isNumberSuffix)
+            {
+                // baseName = " (数字)"を除いた前半
+                // 例 : "Player (1)" -> "Player"
+                l_baseName.resize(l_openPosition);
+
+                // 括弧の中の数字を数値へ変換して + 1
                 // 例 : "1" -> "2", "11" -> "12"
-                const auto& l_numberString = std::string(l_digitBegin.base(), l_stem.end());
-
                 l_startNumber = std::stoull(l_numberString) + Constant::k_nextNumberSuffixOffsetForFilePathConflict;
             }
         }
@@ -71,10 +69,12 @@ namespace FWK::Utility
 
         while (true)
         {
-            // baseName + 番号 + 拡張子を結合した新しいPathを作る
-            const auto& l_candidatePath = l_parentPath / (std::format("{}{}{}", 
+            // baseName + " (" + 番号 + ")" + 拡張子を結合した新しいPathを作る
+            const auto& l_candidatePath = l_parentPath / (std::format("{}{}{}{}{}",
                                                           l_baseName,
+                                                          Constant::k_numberSuffixOpenStringForFilePathConflict,
                                                           l_number,
+                                                          Constant::k_numberSuffixCloseStringForFilePathConflict,
                                                           l_extension));
 
             l_errorCode.clear();

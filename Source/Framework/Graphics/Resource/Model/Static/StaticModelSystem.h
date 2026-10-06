@@ -16,9 +16,9 @@ namespace FWK::Graphics
         void Deserialize(const nlohmann::json& a_rootJson);
         bool Create     ();
 
-        Struct::StaticModelLoadResult LoadStaticModelForBatchUpload(const Device&                             a_device,
+        Struct::StaticModelLoadResult LoadStaticModelForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                                    const Device&                             a_device,
                                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                                    const std::filesystem::path&              a_filePath,
                                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         nlohmann::json Serialize() const;
@@ -41,9 +41,9 @@ namespace FWK::Graphics
         bool BuildStaticModelAssetData(const std::filesystem::path& a_filePath, StaticModelRecord& a_staticModelRecord);
 
         void BuildStaticModelRuntimeData(const std::shared_ptr<StaticModelRecord>& a_staticModelRecord,
+                                         const std::filesystem::path&              a_filePath,
                                          const Device&                             a_device,
                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                         const std::filesystem::path&              a_filePath,
                                          const TypeAlias::StorageID                a_storageID,
                                                TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                Struct::StaticModelLoadResult&      a_staticModelLoadResult);

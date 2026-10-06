@@ -111,7 +111,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
         return;
     }
  
-    l_gameObjectPrefabSystem.AddPrefab(a_prefabUUID, l_gameObjectPrefab);
+    l_gameObjectPrefabSystem.AddPrefab(l_gameObjectPrefab, a_prefabUUID);
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID, SceneManager& a_sceneManager)
 {
@@ -147,5 +147,5 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(cons
         return;
     }
 
-    l_sceneChanger.AddNextScene(a_sceneUUID, l_nextScene);
+    l_sceneChanger.AddNextScene(l_nextScene, a_sceneUUID);
 }

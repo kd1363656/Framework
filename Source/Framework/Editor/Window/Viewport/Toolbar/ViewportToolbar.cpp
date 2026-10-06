@@ -91,21 +91,34 @@ void FWK::Editor::ViewportToolbar::DrawCameraPopup(EditorCamera& a_editorCamera)
 
     // 視野角の変更
     if (float l_fovYDegree = l_camera.GetVALFovYDegree();
-        ImGui::DragFloat(k_fovYDegreeLabel.data(), &l_fovYDegree, Constant::k_imguiDefaultDragValue, k_fovYDegreeMIN, k_fovYDegreeMAX))
+        ImGui::DragFloat(k_fovYDegreeLabel.data(),
+                         &l_fovYDegree,
+                         Constant::k_imguiDefaultDragValue,
+                         k_fovYDegreeMIN,
+                         k_fovYDegreeMAX))
     {
         a_editorCamera.ApplyFovYDegree(l_fovYDegree);
     }
 
     // カメラ移動速度の変更
     if (float l_moveSpeed = a_editorCamera.GetVALMoveSpeed();
-        ImGui::DragFloat(k_moveSpeedLabel.data(), &l_moveSpeed, Constant::k_imguiDefaultDragValue, k_moveSpeedMIN, k_moveSpeedMAX))
+        ImGui::DragFloat(k_moveSpeedLabel.data(),
+                         &l_moveSpeed,
+                         Constant::k_imguiDefaultDragValue,
+                         k_moveSpeedMIN,
+                         k_moveSpeedMAX))
     {
         a_editorCamera.SetMoveSpeed(l_moveSpeed);
     }
 
     // カメラ回転速度の変更
     if (float l_rotateSpeed = a_editorCamera.GetVALRotateSpeed();
-        ImGui::DragFloat(k_rotateSpeedLabel.data(), &l_rotateSpeed, k_rotateSpeedDragValue, k_rotateSpeedMIN, k_rotateSpeedMAX, "%.4f"))
+        ImGui::DragFloat(k_rotateSpeedLabel.data(),
+                         &l_rotateSpeed,
+                         k_rotateSpeedDragValue,
+                         k_rotateSpeedMIN,
+                         k_rotateSpeedMAX,
+                         "%.4f"))
     {
         a_editorCamera.SetRotateSpeed(l_rotateSpeed);
     }

@@ -31,10 +31,10 @@ namespace FWK
 
     private:
 
-        Converter::GameObjectPrefabJsonConverter m_jsonConverter = {};
-
         nlohmann::json m_json = {};
 
         std::string m_name = {};
+
+        Converter::GameObjectPrefabJsonConverter m_jsonConverter = {};
     };
 }

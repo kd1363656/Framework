@@ -16,9 +16,9 @@ namespace FWK::Graphics
         void Deserialize(const nlohmann::json& a_rootJson);
         bool Create     (const Device&         a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-        Struct::TextureLoadResult LoadTextureForBatchUpload(const Device&                             a_device,
+        Struct::TextureLoadResult LoadTextureForBatchUpload(const std::filesystem::path&              a_filePath,
+                                                            const Device&                             a_device,
                                                             const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                            const std::filesystem::path&              a_filePath,
                                                             const Enum::TextureLoadColorSpace         a_textureLoadColorSpace,
                                                             const Enum::DefaultTextureType            a_defaultTextureType,
                                                                   TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
@@ -50,10 +50,10 @@ namespace FWK::Graphics
 
         bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-        void CreateAndRegisterPendingTextureForBachUpload(const Device&                             a_device,
-                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+        void CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&              a_scratchImage,
                                                           const std::filesystem::path&              a_filePath,
-                                                          const DirectX::ScratchImage&              a_scratchImage,
+                                                          const Device&                             a_device,
+                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                           const DirectX::TexMetadata&               a_texMetadata,
                                                                 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                                 Struct::TextureLoadResult&          a_textureLoadResult);

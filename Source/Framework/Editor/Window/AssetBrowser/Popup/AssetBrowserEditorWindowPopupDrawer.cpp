@@ -80,8 +80,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // 新規プレハブ(AssetPane_OnEmptyのみ表示)
     if (l_canCreatePrefab)
     {
-        DrawCreatePrefabMenu(l_assetCreator,
-                             a_targetFilePath,
+        DrawCreatePrefabMenu(a_targetFilePath,
+                             l_assetCreator,
                              true,
                              l_assetFilePathRegistry,
                              l_renameState);
@@ -90,8 +90,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // 新規シーン(AssetPane_OnEmptyのみ表示)
     if (l_canCreateScene)
     {
-        DrawCreateSceneMenu(l_assetCreator,
-                            a_targetFilePath,
+        DrawCreateSceneMenu(a_targetFilePath,
+                            l_assetCreator,
                             true,
                             l_assetFilePathRegistry,
                             l_renameState);
@@ -226,10 +226,10 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
         }
     }  
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
-                                                                            const std::filesystem::path&                       a_targetFolderPath, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(const std::filesystem::path&                       a_targetFolderPath,
+                                                                            const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                                                             const bool                                         a_canCreate,
-                                                                                  AssetFilePathRegistry&                       a_assetFilePathRegistry, 
+                                                                                  AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                                                                   Struct::AssetBrowserEditorWindowRenameState& a_renameState) const
 {
     const auto& l_label = std::string{ Constant::k_imguiFontAwesomePrefabIcon } + " " + std::string{ k_createNewPrefabLabel };
@@ -249,8 +249,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(cons
         }
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateSceneMenu(const AssetBrowserEditorWindowAssetCreator&        a_assetCreator, 
-                                                                           const std::filesystem::path&                       a_targetFolderPath, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateSceneMenu(const std::filesystem::path&                       a_targetFolderPath,
+                                                                           const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
                                                                            const bool                                         a_canCreate,
                                                                                  AssetFilePathRegistry&                       a_assetFilePathRegistry,
                                                                                  Struct::AssetBrowserEditorWindowRenameState& a_renameState) const

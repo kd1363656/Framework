@@ -406,7 +406,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 
     // シーン側のPrefabSystemへも登録する
     // 未登録のままだとScene保存時にPrefabとの差分が作れずフル形式になってしまう
-    l_prefabSystem.AddPrefab(l_prefabUUID, l_gameObjectPrefab);
+    l_prefabSystem.AddPrefab(l_gameObjectPrefab, l_prefabUUID);
  
     Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
  

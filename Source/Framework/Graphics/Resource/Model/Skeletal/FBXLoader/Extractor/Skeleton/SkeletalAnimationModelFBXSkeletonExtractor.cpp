@@ -31,7 +31,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateBoneNodeIn
     a_boneNodeIndexMap.clear  ();
     a_boneNodeIndexMap.reserve(a_modelBoneNodeList.size());
 
-    for (auto l_boneNodeIndex = 0ULL; l_boneNodeIndex < a_modelBoneNodeList.size(); ++l_boneNodeIndex)
+    for (std::size_t l_boneNodeIndex = 0ULL; l_boneNodeIndex < a_modelBoneNodeList.size(); ++l_boneNodeIndex)
     {
         const auto* l_fbxBoneNode = a_modelBoneNodeList[l_boneNodeIndex];
 
@@ -84,7 +84,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CollectModelBone
 
     std::unordered_set<const ufbx_node*> l_registeredBoneNodeSet = {};
 
-    for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
+    for (std::size_t l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
     {
         const auto* l_fbxNode = a_fbxScene->nodes.data[l_nodeIndex];
 
@@ -103,7 +103,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CollectModelBone
         FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinDeformer,                        "ufbx_skin_deformerがnullptrです。",         false);
         FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinDeformer->clusters.count == 0ULL, "SkinDeformerにSkinClusterが存在しません。", false);
 
-        for (auto l_clusterIndex = 0ULL; l_clusterIndex < l_fbxSkinDeformer->clusters.count; ++l_clusterIndex)
+        for (std::size_t l_clusterIndex = 0ULL; l_clusterIndex < l_fbxSkinDeformer->clusters.count; ++l_clusterIndex)
         {
             const auto* l_fbxSkinCluster = l_fbxSkinDeformer->clusters.data[l_clusterIndex];
 

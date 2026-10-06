@@ -74,9 +74,9 @@ bool FWK::Graphics::SkeletalAnimationModel::Load(const std::filesystem::path& a_
     const auto& l_gpuMemoryAllocator           = l_resourceContext.GetREFGPUMemoryAllocator                 ();
           auto& l_cbvSRVUAVDescriptorPool      = l_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool     ();
 
-    const auto& l_skeletalAnimationModelLoadResult = l_skeletalAnimationModelSystem.LoadSkeletalAnimationModelForBatchUpload(l_device,
+    const auto& l_skeletalAnimationModelLoadResult = l_skeletalAnimationModelSystem.LoadSkeletalAnimationModelForBatchUpload(a_filePath,
+                                                                                                                             l_device,
                                                                                                                              l_gpuMemoryAllocator,
-                                                                                                                             a_filePath,
                                                                                                                              l_cbvSRVUAVDescriptorPool);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_skeletalAnimationModelLoadResult.m_storageID == Constant::k_invalidStorageID, "SkeletalAnimationModelの読み込みに失敗しました。",                                           false);

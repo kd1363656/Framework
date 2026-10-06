@@ -45,7 +45,10 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Rename(const std::filesystem
     return true;
 }
 
-bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::filesystem::path& a_filePath, const std::string& a_newName, const boost::uuids::uuid& a_oldPrefabUUID, const boost::uuids::uuid& a_newPrefabUUID)
+bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::filesystem::path& a_filePath,
+                                                                     const std::string&           a_newName,
+                                                                     const boost::uuids::uuid&    a_oldPrefabUUID,
+                                                                     const boost::uuids::uuid&    a_newPrefabUUID)
 {
     // コピーで作られたPrefabファイルはコピー元と同じPrefabUUIDを持っているため
     // Registryへ新規登録したUUIDへ付け替えて別のPrefabとして独立させる

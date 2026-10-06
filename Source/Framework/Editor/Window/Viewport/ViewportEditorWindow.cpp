@@ -89,7 +89,7 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     }
 
     // Viewportの表示領域全体に、取得したTextureを描画する
-    DrawViewportTexture(l_viewportTextureID, l_viewportSize);
+    DrawViewportTexture(l_viewportSize, l_viewportTextureID);
 
     // Viewport画像上での入力をエディターカメラへ反映する
     UpdateEditorCameraInput();
@@ -173,7 +173,7 @@ ImTextureID FWK::Editor::ViewportEditorWindow::FetchVALViewportTextureID() const
     return l_editorManager.FetchVALImGuiTextureID(m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex]);
 }
 
-void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImTextureID& a_textureID, const ImVec2& a_viewportSize) const
+void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImVec2& a_viewportSize, const ImTextureID& a_textureID) const
 {
     // Texture全体を表示するため、UV範囲は左上から右下までを指定する
     const auto& l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);

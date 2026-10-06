@@ -849,6 +849,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationPlayerStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\SmartPointerVectorListStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFORegistryStruct.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -1108,6 +1109,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>

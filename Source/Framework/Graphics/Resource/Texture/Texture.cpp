@@ -72,9 +72,9 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
 
     // ロードタイプに応じたテクスチャの読み込みを行い
     // テクスチャのGPUリソース作成の一括登録申請用の処理を行う
-    const auto& l_textureLoadResult = l_textureSystem.LoadTextureForBatchUpload(l_device,
+    const auto& l_textureLoadResult = l_textureSystem.LoadTextureForBatchUpload(a_filePath,
+                                                                                l_device,
                                                                                 l_gpuMemoryAllocator,
-                                                                                a_filePath,
                                                                                 a_textureLoadColorSpace,
                                                                                 a_defaultTextureType,
                                                                                 l_cbvSRVUAVDescriptorPool);

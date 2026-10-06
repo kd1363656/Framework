@@ -34,9 +34,9 @@ nlohmann::json FWK::Converter::EditorCameraJsonConverter::Serialize(const Editor
     const auto& l_transform = a_editorCamera.GetREFTransform();
     const auto& l_camera    = a_editorCamera.GetREFCamera   ();
 
-    Utility::UpdateJson(Utility::SerializeVector3   (l_transform.m_scale,    k_scaleJsonKey),    l_rootJson);
-    Utility::UpdateJson(Utility::SerializeQuaternion(l_transform.m_rotation, k_rotationJsonKey), l_rootJson);
-    Utility::UpdateJson(Utility::SerializeVector3   (l_transform.m_position, k_positionJsonKey), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeVector3   (k_scaleJsonKey,    l_transform.m_scale),    l_rootJson);
+    Utility::UpdateJson(Utility::SerializeQuaternion(k_rotationJsonKey, l_transform.m_rotation), l_rootJson);
+    Utility::UpdateJson(Utility::SerializeVector3   (k_positionJsonKey, l_transform.m_position), l_rootJson);
 
     l_rootJson[k_fovYDegreeJsonKey] = l_camera.GetVALFovYDegree();
     l_rootJson[k_farClipJsonKey]    = l_camera.GetVALFarClip   ();

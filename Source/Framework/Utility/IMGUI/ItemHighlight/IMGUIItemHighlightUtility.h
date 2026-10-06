@@ -2,9 +2,7 @@
 
 namespace FWK::Utility
 {
-    inline void IMGUIPushItemHighlightColors(const bool a_isSelected,
-                                             const bool a_isActiveTarget,
-                                             const bool a_isCutTarget = false)
+    inline void IMGUIPushItemHighlightColors(const bool a_isSelected, const bool a_isActiveTarget, const bool a_isCutTarget = false)
     {
         // デフォルトは未選択アイテムのニュートラルなグレー系
         ImVec4 l_headerColor  = Constant::k_imguiItemColor;

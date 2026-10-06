@@ -16,7 +16,7 @@ namespace FWK::Editor
 
         void Draw(EditorManager& a_editorManager);
 
-        void AddLog(const TypeAlias::Math::Color& a_textColor, const std::string& a_text);
+        void AddLog(const std::string& a_text, const TypeAlias::Math::Color& a_textColor);
 
     private:
 

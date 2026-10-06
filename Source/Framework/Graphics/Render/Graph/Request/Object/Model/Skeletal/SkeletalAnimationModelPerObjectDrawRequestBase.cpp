@@ -53,7 +53,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
         const float l_worldMaxScale        = Utility::CalculateWorldMaxScale         (l_drawRequest->m_worldMatrix);
         const float l_worldOrientationSign = l_drawRequest->m_worldMatrix.Determinant() < Constant::k_modelWorldOrientationDeterminantBoundary ? Constant::k_mirrorModelWorldOrientationSign : Constant::k_normalModelWorldOrientationSign;
 
-        for (auto l_modelMeshIndex = 0ULL; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
+        for (std::size_t l_modelMeshIndex = 0ULL; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
         {
             const auto& l_modelMesh                = l_modelMeshList[l_modelMeshIndex];
             const auto& l_modelMeshletData         = l_modelMesh.m_modelMeshletData;

@@ -67,14 +67,14 @@ namespace FWK
 
         UUIDRegistry<std::weak_ptr<GameObject>> m_gameObjectUUIDRegistry = {};
 
+        std::string m_name = {};
+
         SceneChanger                m_sceneChanger           = {};
         SceneGameObjectPrefabSystem m_gameObjectPrefabSystem = {};
 
         Graphics::LightSystem m_lightSystem = {};
 
         Converter::SceneJsonConverter m_jsonConverter = {};
-
-        std::string m_name = {};
 
         boost::uuids::uuid m_nextSceneUUID = {};
     };

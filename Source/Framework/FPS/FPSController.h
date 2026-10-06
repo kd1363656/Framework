@@ -42,10 +42,10 @@ namespace FWK
 
         inline static const std::filesystem::path k_configFileIOPath = "CONFIG/FPS/FPSCONFIG.json";
 
-        Converter::FPSControllerJsonConverter m_jsonConverter = {};
-
         std::chrono::steady_clock::time_point m_previousTime   = std::chrono::steady_clock::now();
         std::chrono::steady_clock::time_point m_frameBeginTime = std::chrono::steady_clock::now();
+
+        Converter::FPSControllerJsonConverter m_jsonConverter = {};
 
         float m_timeScale       = k_defaultTimeScale;
         float m_deltaTime       = k_initialDeltaTime;

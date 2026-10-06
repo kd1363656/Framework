@@ -37,7 +37,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
     // Nodeを走査してMeshが接続されているNodeだけを処理する
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
 
-    for (auto l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
+    for (std::size_t l_nodeIndex = 0ULL; l_nodeIndex < a_fbxScene->nodes.count; ++l_nodeIndex)
     {
         // FBXのノード情報を取得
         // ノードにはメッシュ、ライト、カメラ、ボーンなどの情報が入っている
@@ -160,7 +160,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
     // 1三角形は3頂点なので、最大三角形数 * 3の頂点インデックス配列を用意する
     l_triangleIndexList.resize(l_triangleIndexListSize);
 
-    for (auto l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)
+    for (std::size_t l_faceIndex = 0ULL; l_faceIndex < l_fbxMesh->faces.count; ++l_faceIndex)
     {
         // 面情報を取得
         const auto& l_fbxFace = l_fbxMesh->faces.data[l_faceIndex];
@@ -185,9 +185,9 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
                                                            l_fbxMesh,
                                                            l_fbxFace);
 
-        for (auto l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
+        for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
         {
-            for (auto l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
+            for (std::uint32_t l_vertexIndex = 0U; l_vertexIndex < Constant::k_triangleVertexCount; ++l_vertexIndex)
             {
                 // l_triangleIndexListには、三角形化後のufbx側頂点インデックスが入っている
                 // 三角形番号 * 3 + 頂点番号で、現在処理している三角形の頂点インデックスを取り出す

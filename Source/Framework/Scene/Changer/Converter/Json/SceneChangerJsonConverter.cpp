@@ -81,7 +81,7 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
         // 名前と次の真のJsonをロード
         l_nextScene.Load(l_assetFilePath);
 
-        a_sceneChanger.AddNextScene(l_sceneUUID, l_nextScene);
+        a_sceneChanger.AddNextScene(l_nextScene, l_sceneUUID);
     }
 }
 

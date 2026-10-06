@@ -31,12 +31,12 @@ namespace FWK
     private:
     
 
+        std::filesystem::path m_allowedFileExtension = {};
+        std::filesystem::path m_assetFilePath        = {};
+
         Converter::AssetFilePathJsonConverter m_jsonConverter = {};
 
         AssetFilePathInspector m_inspector = {};
-
-        std::filesystem::path m_allowedFileExtension = {};
-        std::filesystem::path m_assetFilePath        = {};
 
         boost::uuids::uuid m_assetFilePathUUID = {};
 

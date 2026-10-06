@@ -40,9 +40,9 @@ namespace FWK::Editor
         void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
 
         template <class... Args>
-        void AddLog(const std::source_location&   a_location,
+        void AddLog(const std::string_view&       a_format,
                     const TypeAlias::Math::Color& a_textColor,
-                    const std::string_view&       a_format,
+                    const std::source_location&   a_location,
                           Args&&...               a_args)
         {
             // a_formatとa_args...を使って、ログ本文の文字列を作成する
@@ -60,7 +60,7 @@ namespace FWK::Editor
                                                             l_message);
 
             // 呼びだし元情報をつけてログ本文を記述
-            m_logEditorWindow.AddLog(a_textColor, l_formattedLog);
+            m_logEditorWindow.AddLog(l_formattedLog, a_textColor);
         }
 
         void AddEditorWindow(const std::shared_ptr<EditorWindowBase>& a_editorWindow);
@@ -165,6 +165,6 @@ namespace FWK::Editor
 #define FWK_ADD_LOG(TextColor, Format, ...)                                                                                         \
 do                                                                                                                                  \
 {                                                                                                                                   \
-    FWK::Editor::EditorManager::GetInstance().AddLog(std::source_location::current(), TextColor, Format __VA_OPT__(,) __VA_ARGS__); \
+    FWK::Editor::EditorManager::GetInstance().AddLog(Format, TextColor, std::source_location::current() __VA_OPT__(,) __VA_ARGS__); \
 }                                                                                                                                   \
 while(false)
