@@ -1,17 +1,9 @@
 ﻿#include "GameObjectTransformComponentInspector.h"
 
-void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_transformComponent)
+void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransformComponent& a_transformComponent) const
 {
     auto& l_transform        = a_transformComponent.GetMutableREFTransform       ();
     auto& l_matrixUpdateMode = a_transformComponent.GetMutableREFMatrixUpdateMode();
-
-    // 行列の計算方法を選択することができるラジオボタンリスト
-    // 新しく生成されたらMatrix確定処理を実行
-    if (Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
-    {
-        // 関連するポインタとつなげる処理
-        l_matrixUpdateMode->PostDeserialize(a_transformComponent);
-    }
 
     // 位置
     if (ImGui::DragFloat3(k_transformPositionLabel.data(), &l_transform.m_position.x, Constant::k_imguiDefaultDragValue))
@@ -37,5 +29,22 @@ void FWK::GameObjectTransformComponentInspector::EditInspector(GameObjectTransfo
         l_transform.m_scale = l_transform.m_scale;
 
         a_transformComponent.SetShouldUpdateMatrixDirty(true);
+    }
+
+    ImGui::SeparatorText(k_matrixStrategyInspectorLabel.data());
+
+    // 行列の計算方法を選択することができるラジオボタンリスト
+    // 新しく生成されたらMatrix確定処理を実行
+    if (Utility::IMGUIFactoryRadioButtonSelector<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(k_matrixStrategySelectorLabel, l_matrixUpdateMode))
+    {
+        // 関連するポインタとつなげる処理
+        l_matrixUpdateMode->PostDeserialize(a_transformComponent);
+    }
+
+
+    // MatrixUpdateModeの編集インスペクターを存在していたら描画
+    if (l_matrixUpdateMode)
+    {
+        l_matrixUpdateMode->EditInspector();
     }
 }

@@ -531,6 +531,9 @@
 #include "Definition/Enum/GameObject/TransformComponentEnum.h"
 #include "Definition/Struct/GameObject/GameObjectTransformComponentStruct.h"
 
+#include "Definition/Constant/GameObject/GameObjectTransformComponentMatrixUpdateModeBaseJsonConverterConstant.h"
+#include "GameObject/Component/Transform/Mode/Converter/Json/GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter.h"
+#include "GameObject/Component/Transform/Mode/Inspector/GameObjectTransformComponentMatrixUpdateModeBaseInspector.h"
 #include "GameObject/Component/Transform/Mode/GameObjectTransformComponentMatrixUpdateModeBase.h"
 #include "Definition/Type/Alias/Factory/Unique/GameObjectTransformComponentMatrixUpdateModeUniqueFactory.h"
 #include "GameObject/Component/Transform/Mode/Standalone/GameObjectTransformComponentMatrixUpdateStandaloneMode.h"

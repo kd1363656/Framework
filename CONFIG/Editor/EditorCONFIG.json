@@ -64,7 +64,7 @@
                         ]
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Player",
+                "CurrentSelectFolderPath": "Asset\\Model",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 241.0
                 },
@@ -80,7 +80,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font",
@@ -95,15 +95,7 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Texture",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player",
                             "IsOpen": false
                         },
                         {
@@ -139,55 +131,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Model\\Actor",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02\\K02.fbm",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Map",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Map\\RoadSide",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Actor\\Player\\K02",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Texture\\UI",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Texture\\UI\\Title",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon\\Player",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model\\Weapon\\Player\\K02\\K02Sword.fbm",
                             "IsOpen": false
                         },
                         {
@@ -204,10 +152,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Player",
+                        "RangeSelectionStartPath": "Asset\\Model",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Prefab\\Player"
+                                "SelectedFilePath": "Asset\\Model"
                             }
                         ]
                     }

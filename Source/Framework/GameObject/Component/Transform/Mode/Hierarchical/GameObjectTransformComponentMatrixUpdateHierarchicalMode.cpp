@@ -28,12 +28,31 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix(GameObjectTransformComponent& a_transformComponent)
 {
     // 親の行列が先に更新されていることを前提にしている処理です。
-    auto&& l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
-                            a_transformComponent.CalculateRotationMatrix()    *
-                            a_transformComponent.CalculateTranslationMatrix() *
-                            CalculateParentWorldMatrix();
+    auto l_resultMatrix = TypeAlias::Math::Matrix::Identity;
+
+    // 回転してから移動するか、移動してから回転する違い
+    // 移動してから回転する挙動は原点を中心に回転する
+    if (GetVALIsRotateAroundPosition())
+    {
+        l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
+                         a_transformComponent.CalculateTranslationMatrix() *
+                         a_transformComponent.CalculateRotationMatrix()    *
+                         CalculateParentWorldMatrix();
+    }
+    else
+    {
+        l_resultMatrix = a_transformComponent.CalculateScaleMatrix()       *
+                         a_transformComponent.CalculateRotationMatrix()    *
+                         a_transformComponent.CalculateTranslationMatrix() *
+                         CalculateParentWorldMatrix();
+    }
 
     a_transformComponent.SetMatrix(std::move(l_resultMatrix));
+}
+
+void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::EditInspector()
+{
+    m_inspector.EditInspector(*this);
 }
 
 nlohmann::json FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::Serialize() const

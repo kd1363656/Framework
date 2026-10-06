@@ -1516,6 +1516,18 @@
     <Filter Include="Source\Framework\Definition\Macros\GameObject">
       <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Model">
+      <UniqueIdentifier>{321c9469-7fa2-46ef-ab01-7ee7eadd85c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Converter">
+      <UniqueIdentifier>{3aa7dbbe-c352-4394-b253-c4ad78e4ff9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Converter\Json">
+      <UniqueIdentifier>{b35949a9-77ba-4b36-923e-723439d643e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Inspector">
+      <UniqueIdentifier>{c20d3d92-0a2b-465e-bf91-5124c82dc8ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3009,6 +3021,15 @@
     <ClInclude Include="Source\Framework\Definition\Macros\GameObject\GameObjectComponentTaggedFactoryMacros.h">
       <Filter>Source\Framework\Definition\Macros\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Converter\Json\GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\GameObject\GameObjectTransformComponentMatrixUpdateModeBaseJsonConverterConstant.h">
+      <Filter>Source\Framework\Definition\Constant\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Inspector\GameObjectTransformComponentMatrixUpdateModeBaseInspector.h">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Inspector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3772,6 +3793,15 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Converter\Json\GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\GameObjectTransformComponentMatrixUpdateModeBase.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Inspector\GameObjectTransformComponentMatrixUpdateModeBaseInspector.cpp">
+      <Filter>Source\Framework\GameObject\Component\Transform\Mode\Inspector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

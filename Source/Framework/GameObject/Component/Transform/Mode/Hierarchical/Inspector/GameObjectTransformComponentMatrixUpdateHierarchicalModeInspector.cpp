@@ -4,5 +4,9 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector::Edi
 {
     auto& l_calculateParentWorldMatrixEnumBitShift = a_matrixUpdateHierarchicalMode.GetMutableREFCalculateParentWorldMatrixEnumBitShift();
 
+    // 行列の乗算で使用するEnumをセレクターから決める
     l_calculateParentWorldMatrixEnumBitShift.EditInspector(k_calculateParentWorldMatrixEnumBitShiftCheckBoxSelectorLabel);
+
+    // Transformの後にRotationを掛けるのかそれともRotationの後にTransformを掛けるのかをチェックボックスで選択
+    a_matrixUpdateHierarchicalMode.GameObjectTransformComponentMatrixUpdateModeBase::EditInspector();
 }

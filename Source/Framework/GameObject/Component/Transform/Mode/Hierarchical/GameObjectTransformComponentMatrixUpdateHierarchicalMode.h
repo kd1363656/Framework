@@ -20,6 +20,8 @@ namespace FWK
 
         void UpdateMatrix(GameObjectTransformComponent& a_transformComponent) override;
 
+        void EditInspector() override;
+
         nlohmann::json Serialize() const;
 
         void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;

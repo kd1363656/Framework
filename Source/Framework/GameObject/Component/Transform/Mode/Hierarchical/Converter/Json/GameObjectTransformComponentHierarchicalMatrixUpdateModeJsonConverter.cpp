@@ -4,6 +4,8 @@ void FWK::Converter::GameObjectTransformComponentMatrixUpdateHierarchicalModeJso
 {
     if (a_rootJson.is_null()) { return; }
 
+    a_matrixUpdateHierarchicalMode.GameObjectTransformComponentMatrixUpdateModeBase::Deserialize(a_rootJson);
+
     auto& l_calculateParentWorldMatrixEnumBitShift = a_matrixUpdateHierarchicalMode.GetMutableREFCalculateParentWorldMatrixEnumBitShift();
 
     if (const auto& l_json = a_rootJson.value(k_calculateParentWorldMatrixEnumBitShiftJsonKey, nlohmann::json{});
@@ -15,7 +17,7 @@ void FWK::Converter::GameObjectTransformComponentMatrixUpdateHierarchicalModeJso
 
 nlohmann::json FWK::Converter::GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter::Serialize(const GameObjectTransformComponentMatrixUpdateHierarchicalMode& a_matrixUpdateHierarchicalMode) const
 {
-    nlohmann::json l_rootJson = {};
+    nlohmann::json l_rootJson = a_matrixUpdateHierarchicalMode.GameObjectTransformComponentMatrixUpdateModeBase::Serialize();
 
     const auto& l_calculateParentWorldMatrixEnumBitShift = a_matrixUpdateHierarchicalMode.GetREFCalculateParentWorldMatrixEnumBitShift();
 
