@@ -34,7 +34,7 @@ void FWK::Graphics::DescriptorHeapIndexAllocator::Release(const TypeAlias::Descr
     FWK_ASSERT_RETURN_IF(IsInValidIndex(a_index), "解放しようとしたIndexが確保範囲外となっており、解放処理に失敗しました。。");
 
     // アロケートリストの容量を超えていたらreturn
-    if (a_index > m_isAllocatedIndexList.size()) { return; }
+    if (a_index >= m_isAllocatedIndexList.size()) { return; }
 
     // 未使用スロットの二重解放を防ぐ
     FWK_ASSERT_RETURN_IF(!m_isAllocatedIndexList[a_index], "未使用のIndexを解放しようとしており、解放処理に失敗しました。。");

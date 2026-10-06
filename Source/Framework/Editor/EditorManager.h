@@ -140,11 +140,11 @@ namespace FWK::Editor
 
         ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
 
+        LogEditorWindow m_logEditorWindow;
+
         EditorWindowMap m_editorWindowMap;
 
         std::vector<std::shared_ptr<FWK::Editor::EditorWindowBase>> m_editorWindowList;
-
-        LogEditorWindow m_logEditorWindow;
 
         MainMenuBarEditor m_mainMenuBar;
 

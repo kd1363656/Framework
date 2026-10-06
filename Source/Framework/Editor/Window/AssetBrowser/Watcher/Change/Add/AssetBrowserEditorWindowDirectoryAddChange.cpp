@@ -74,30 +74,9 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::Apply(AssetFilePat
     }
 
     // AssetBrowser側でFilePath -> UUID -> AssetFilePathDataの正式な対応関係を確認できないJsonは
-    // Editor管理外から追加されたFileとして物理削除する
-    std::error_code l_errorCode = {};
-
-    if (std::filesystem::remove(l_filePath, l_errorCode))
-    {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetBrowserのAssetFilePathRegistryへ正式登録されていないJsonが追加されたため削除しました。\nFilePath : {}", l_filePath.string());
-
-        return;
-    }
-
-    // remove()がfalseでもErrorがなければ、
-    // 他の処理などによって既にFileが消えているためRetry不要
-    if (!l_errorCode) { return; }
-
-    // Explorerなど別ProcessがFileをまだ使用している場合、
-    // ADD通知を受けたFrameでは削除できない可能性がある
-    // その場合はDirectoryNotificationProcessorによって
-    // 次FrameでもこのChangeを再実行してもらう
-    FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
-                "AssetBrowserのAssetFilePathRegistryへ正式登録されていないJsonを削除できなかったため、次Frameで再試行します。\nFilePath : {}\nErrorCode : {}",
-                l_filePath.string(),
-                l_errorCode.value());
-
-    SetIsRequiresRetry(true);
+    // git pullやExplorerでのコピーなど、Editor管理外から追加されたFileの可能性がある
+    // ユーザーのFileを勝手に物理削除せず、Registry管理外のJsonとして警告だけ出す
+    FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへ登録されていないJsonが追加されました。Prefab/Sceneとしては扱われません。\nFilePath : {}", l_filePath.string());
 }
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(const std::filesystem::path& a_filePath, const SceneManager& a_sceneManager, const boost::uuids::uuid& a_prefabUUID)

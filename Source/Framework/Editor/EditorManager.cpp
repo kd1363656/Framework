@@ -7,11 +7,11 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_imGuiSRVDescriptorIndexMap(),
 
+    m_logEditorWindow(),
+
     m_editorWindowMap(),
 
     m_editorWindowList(),
-
-    m_logEditorWindow(),
 
     m_mainMenuBar(),
 

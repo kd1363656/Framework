@@ -58,7 +58,13 @@ void FWK::Editor::ReparentGameObjectCommand::ApplyParent(const boost::uuids::uui
  
     // Hierarchy::ApplyParentで親子関係を変更する
     // 循環参照チェックはApplyParent内部で行われる
-    auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
- 
-    l_hierarchy.ApplyParent(l_parent);
+    if (auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
+        !l_hierarchy.ApplyParent(l_parent))
+    {
+        return; 
+    }
+
+    // 階層の深さが変わったため実行レベルを再構築する
+    // (WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObjectと同じ後処理)
+    l_scene->RebuildGameObjectExecutionLevelList();
 }

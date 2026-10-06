@@ -89,17 +89,24 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
 
     for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
     {
-        const auto l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Constant::k_triangleVertexCount);
-
-        FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexZeroOffset >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");
-        FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexOneOffset  >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");
-        FWK_ASSERT_RETURN_IF(a_indexList[l_baseIndex] + k_vertexTwoOffset  >= static_cast<JPH::uint32>(a_vertexCount), "PhysicsDebug用IndexがVertex数の範囲を超えています。");
+        const auto& l_baseIndex = l_triangleIndex * static_cast<std::size_t>(Constant::k_triangleVertexCount);
 
         // 各頂点に対応するインデックスを取得
-        const auto l_vertexZeroIndex = a_indexList[l_baseIndex + k_vertexZeroOffset];
-        const auto l_vertexOneIndex  = a_indexList[l_baseIndex + k_vertexOneOffset];
-        const auto l_vertexTwoIndex  = a_indexList[l_baseIndex + k_vertexTwoOffset];
+        const auto& l_vertexZeroIndex = a_indexList[l_baseIndex + k_vertexZeroOffset];
+        const auto& l_vertexOneIndex  = a_indexList[l_baseIndex + k_vertexOneOffset];
+        const auto& l_vertexTwoIndex  = a_indexList[l_baseIndex + k_vertexTwoOffset];
 
+        // 取得したインデックスそのものがVertex数の範囲内かを確認する
+        // 範囲外なら途中まで作成した三角形を残さないようクリアしてから中断する
+        if (l_vertexZeroIndex >= static_cast<JPH::uint32>(a_vertexCount) ||
+            l_vertexOneIndex  >= static_cast<JPH::uint32>(a_vertexCount) ||
+            l_vertexTwoIndex  >= static_cast<JPH::uint32>(a_vertexCount))
+        {
+            m_triangleList.clear();
+
+            FWK_ASSERT_RETURN("PhysicsDebug用IndexがVertex数の範囲を超えています。");
+        }
+        
         auto& l_triangle = m_triangleList[l_triangleIndex];
 
         // インデックスから頂点を取得

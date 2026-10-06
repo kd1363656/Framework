@@ -76,11 +76,8 @@ void FWK::Utility::StorageIDAllocator::Release(const TypeAlias::StorageID a_stor
 
 bool FWK::Utility::StorageIDAllocator::IsValidStorageID(const TypeAlias::StorageID a_storageID) const
 {
-    // 範囲外インデックスを指し示すならfalseを返す
-    FWK_ASSERT_RETURN_VALUE_IF(a_storageID >= m_storageIDCapacity ||
-                               a_storageID >= static_cast<TypeAlias::StorageID>(m_isAllocatedList.size()),
-                               "ストレージIDが無効な値であることを検知しました。",
-                               false);
-
-    return true;
+    // 範囲判定のみ行い、assertは呼び出し側で行う
+    // Allocate()の空き確認のように「範囲外」が正常系の判定にも使われるため
+    return a_storageID < m_storageIDCapacity &&
+           a_storageID < static_cast<TypeAlias::StorageID>(m_isAllocatedList.size());
 }

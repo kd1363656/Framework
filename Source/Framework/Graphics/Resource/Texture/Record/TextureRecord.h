@@ -19,7 +19,7 @@ namespace FWK::Graphics
 
         void SetGPUResource(Struct::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
 
-        void SetSRVDescriptorIndex(const TypeAlias::StorageID a_set) { m_srvDescriptorIndex = a_set; }
+        void SetSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_set) { m_srvDescriptorIndex = a_set; }
 
         const auto& GetREFGPUResource() const { return m_gpuResource; }
 

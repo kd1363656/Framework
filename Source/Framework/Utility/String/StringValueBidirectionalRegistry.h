@@ -21,11 +21,12 @@ namespace FWK::Utility
         {
             FWK_ASSERT_RETURN_IF(a_key.empty(), "文字列が空になっており、値の登録に失敗しました。");
 
-            bool l_isFailedRegister = m_stringToValueMap.try_emplace(a_key, a_type).second;
+            const bool l_isStringToValueInserted = m_stringToValueMap.try_emplace(a_key,  a_type).second;
+            const bool l_isValueToStringInserted = m_valueToStringMap.try_emplace(a_type, a_key).second;
 
-            l_isFailedRegister = m_valueToStringMap.try_emplace(a_type, a_key).second;
-
-            FWK_ASSERT_RETURN_IF(!l_isFailedRegister, "登録する際のキーが重複しており、値の登録に失敗しました。");
+            FWK_ASSERT_RETURN_IF(!l_isStringToValueInserted ||
+                                 !l_isValueToStringInserted,
+                                 "登録する際のキーまたは値が重複しており、値の登録に失敗しました。");
         }
 
         const Type FindVALValueByKey(const std::string_view& a_key) const
@@ -33,7 +34,7 @@ namespace FWK::Utility
             const auto& l_itr = m_stringToValueMap.find(a_key);
 
             // 該当する名前の値を取得できなければreturn;
-            if (l_itr == m_stringToValueMap.end()) { return nullptr; }
+            if (l_itr == m_stringToValueMap.end()) { return {}; }
 
             return l_itr->second;
         }
@@ -43,7 +44,7 @@ namespace FWK::Utility
             const auto& l_itr = m_valueToStringMap.find(a_type);
 
             // 該当する名前の値を取得できなければreturn;
-            if (l_itr == m_valueToStringMap.end()) { return nullptr; }
+            if (l_itr == m_valueToStringMap.end()) { return {}; }
 
             return l_itr->second;
         }

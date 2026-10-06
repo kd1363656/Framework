@@ -104,11 +104,11 @@ namespace FWK::Graphics
             // ファイルパスからストレージクラスを取得
             const auto& l_itr = m_recordMap.find(a_filePath);
 
-            if (l_itr == m_recordMap.end()) { return AssetRecordBase::k_invalidStorageID; }
+            if (l_itr == m_recordMap.end()) { return Constant::k_invalidStorageID; }
 
             const auto& l_record = l_itr->second;
 
-            if (!l_record) { return AssetRecordBase::k_invalidStorageID; }
+            if (!l_record) { return Constant::k_invalidStorageID; }
 
             // ストレージクラスからストレージIDを取得
             return l_record->GetVALStorageID();
