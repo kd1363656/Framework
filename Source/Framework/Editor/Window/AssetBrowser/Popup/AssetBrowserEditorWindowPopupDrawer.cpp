@@ -21,8 +21,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
           auto& l_clipboard             = a_editorWindow.GetMutableREFClipboard           ();
           auto& l_application           = Application::GetInstance                        ();
           auto& l_assetFilePathRegistry = l_application.GetMutableREFAssetFilePathRegistry();
-          auto& l_fileOperation         = a_editorWindow.GetMutableREFFileOperation      ();
-          auto& l_renameState           = a_editorWindow.GetMutableREFRenameState        ();
+    const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation              ();
+          auto& l_renameState           = a_editorWindow.GetMutableREFRenameState         ();
 
     // AssetPaneの空白右クリックかどうか
     const bool l_isAssetPaneEmpty = a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
@@ -64,6 +64,13 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // Clipboard::IsEmpty()はconst参照で調べる
     const bool l_canPaste = !l_constClipboard.IsEmpty();
 
+    // 貼り付け先フォルダ
+    // 右クリックした対象がファイルならその親フォルダ、フォルダならそのフォルダ自身へ貼り付ける
+    // 例 : AssetPane_OnFile   -> a_targetFilePath = "Asset/Prefab/Enemy.json" -> 貼り付け先 "Asset/Prefab"
+    //      AssetPane_OnFolder -> a_targetFilePath = "Asset/Prefab"            -> 貼り付け先 "Asset/Prefab"
+    //      AssetPane_OnEmpty  -> a_targetFilePath = 現在参照中フォルダ        -> 貼り付け先 そのまま
+    const std::vector<std::filesystem::path> l_pasteDestinationFolderPathList = { (a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFile) ? a_targetFilePath.parent_path() : a_targetFilePath };
+
     // 新規フォルダ
     DrawCreateFolderMenu(a_targetFilePath,
                          a_contextType,
@@ -93,7 +100,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // 操作項目
     if (!l_isAssetPaneEmpty)
     {
-        // ImGui::Separatorで作成項目と走査項目の間に区切り線を引く
+        // ImGui::Separatorで作成項目と操作項目の間に区切り線を引く
         ImGui::Separator();
 
         DrawRenameMenu(a_targetFilePath, l_canRename, l_renameState);
@@ -110,7 +117,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
                     !l_containsRoot,
                     l_clipboard);
 
-        DrawPasteMenu(a_selectedFilePathList, 
+        DrawPasteMenu(l_pasteDestinationFolderPathList, 
                       l_fileOperation,
                       l_assetCreator,
                       l_canPaste,
@@ -136,7 +143,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
         // 貼り付けのみ表示する
         ImGui::Separator();
 
-        DrawPasteMenu(a_selectedFilePathList, 
+        DrawPasteMenu(l_pasteDestinationFolderPathList, 
                       l_fileOperation,
                       l_assetCreator,
                       l_canPaste,
@@ -295,7 +302,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::v
                         false,
                         a_hasSelection))
     {
-        // FileOperation::Copyで選択中のファイルをクリックボードへコピー
+        // FileOperation::Copyで選択中のファイルをクリップボードへコピー
         // コピー元ファイルは削除されない
         a_fileOperation.Copy(a_selectedFilePathList, a_clipboard);
     }
@@ -314,12 +321,12 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::ve
                         false,
                         a_hasSelection))
     {
-        // FileOperation::Cutで選択中のファイルをクリックボードへ切り取り
+        // FileOperation::Cutで選択中のファイルをクリップボードへ切り取り
         // 貼り付け時に元ファイルが削除される
         a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>& a_selectedFilePathList,
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>&    a_destinationFolderPathList,
                                                                      const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                      const AssetBrowserEditorWindowAssetCreator&  a_assetCreator, 
                                                                      const bool                                   a_canPaste, 
@@ -338,7 +345,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::
         // FileOperation::Pasteでクリップボードのファイルを貼り付け
         // Copyの場合は新しいUUIDを発行して複製し、Registryへ登録する
         // Cutの場合はrenameで移動し、RegistryのPathはWatcher経由で付け替えられる
-        a_fileOperation.Paste(a_selectedFilePathList, 
+        a_fileOperation.Paste(a_destinationFolderPathList,
                               a_assetCreator, 
                               a_clipboard, 
                               a_assetFilePathRegistry);

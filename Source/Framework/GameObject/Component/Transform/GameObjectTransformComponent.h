@@ -54,7 +54,7 @@ namespace FWK
 
         const auto& GetREFTransform() const { return m_transform; }
 
-        auto& GetMutableREFMatrixUpdateMode() { return m_matrixUpdateMode;; }
+        auto& GetMutableREFMatrixUpdateMode() { return m_matrixUpdateMode; }
 
         auto& GetMutableREFTransform() { return m_transform; }
 

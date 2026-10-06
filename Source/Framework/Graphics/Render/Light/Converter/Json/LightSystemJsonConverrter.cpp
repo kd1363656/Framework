@@ -16,8 +16,12 @@ void FWK::Converter::LightSystemJsonConverter::Deserialize(const nlohmann::json&
         auto& l_directionalLight = l_cbLightPass->m_directionalLight;
 
         l_directionalLight.m_direction = Utility::DeserializeVector3 (l_directionalLightJson, k_directionJsonKey);
-        l_directionalLight.m_color     = Utility::DeserializeVector3 (l_directionalLightJson, k_colorJsonKey);
         l_directionalLight.m_intensity = l_directionalLightJson.value(k_intensityJsonKey,     Constant::k_defaultDirectionalLightIntensity);
+
+        if (l_directionalLightJson.contains(k_colorJsonKey))
+        {
+            l_directionalLight.m_color     = Utility::DeserializeVector3 (l_directionalLightJson, k_colorJsonKey);
+        }
 
         // ディレクショナルライトには必ずベクトルを持たせる
         if (l_directionalLight.m_direction.LengthSquared() <= Constant::k_epsilon)
@@ -36,8 +40,12 @@ void FWK::Converter::LightSystemJsonConverter::Deserialize(const nlohmann::json&
     {
         auto& l_ambientLight = l_cbLightPass->m_ambientLight;
 
-        l_ambientLight.m_color     = Utility::DeserializeVector3(l_ambientLightJson, k_colorJsonKey);
         l_ambientLight.m_intensity = l_ambientLightJson.value   (k_intensityJsonKey, Constant::k_defaultAmbientLightIntensity);
+
+        if (l_ambientLightJson.contains(k_colorJsonKey))
+        {
+            l_ambientLight.m_color = Utility::DeserializeVector3(l_ambientLightJson, k_colorJsonKey);
+        }
     }
 }
 

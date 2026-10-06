@@ -22,8 +22,8 @@ void FWK::GameObjectCameraComponentInspector::EditInspector(GameObjectCameraComp
     if (float l_nearClip = l_camera.GetVALNearClip();
         ImGui::DragFloat(k_nearClipLabel.data(), &l_nearClip, Constant::k_imguiDefaultDragValue))
     {
-        l_camera.SetFarClip(l_nearClip);
-        l_camera.Setup     ();
+        l_camera.SetNearClip(l_nearClip);
+        l_camera.Setup      ();
     }
 
     // ファークリップの変更

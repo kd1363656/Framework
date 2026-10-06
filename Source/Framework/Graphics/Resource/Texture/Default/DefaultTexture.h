@@ -8,8 +8,8 @@ namespace FWK::Graphics
 
     public:
 
-                 DefaultTexture() = default;
-        virtual ~DefaultTexture() = default;
+         DefaultTexture() = default;
+        ~DefaultTexture() = default;
 
         void Deserialize(const nlohmann::json& a_rootJson);
 

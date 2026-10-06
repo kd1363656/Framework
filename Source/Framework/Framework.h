@@ -495,7 +495,7 @@
 #include "Utility/IMGUI/ItemHighlight/IMGUIItemHighlightUtility.h"
 #include "Observer/Converter/Json/ObserverJsonConverter.h"
 #include "Definition/Constant/Observer/ObserverInspectorConstant.h"
-#include "Observer/Inspector/ObsreverInspector.h"
+#include "Observer/Inspector/ObserverInspector.h"
 #include "Observer/Observer.h"
 
 //===============================================================================

@@ -10,14 +10,9 @@ FWK::Editor::ViewportEditorWindow::ViewportEditorWindow() :
 {}
 FWK::Editor::ViewportEditorWindow::~ViewportEditorWindow()
 {
-    auto& l_editorManager = EditorManager::GetInstance();
-
-    for (const auto& l_srvDescriptorIndex : m_imGuiSRVDescriptorIndexList)
-    {
-        l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
-    }
-
-    m_imGuiSRVDescriptorIndexList.clear();
+    // 確保したImGui用SRVDescriptorIndexをすべて返却する
+    // (SetupViewportTextureDescriptorsでも同じ返却処理を使うため関数にまとめている)
+    ReleaseViewportTextureDescriptors();
 }
 
 void FWK::Editor::ViewportEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
@@ -109,7 +104,14 @@ nlohmann::json FWK::Editor::ViewportEditorWindow::Serialize()
 
 void FWK::Editor::ViewportEditorWindow::SetupViewportTextureDescriptors()
 {
-    m_imGuiSRVDescriptorIndexList.clear();
+    // 以前確保したImGui用SRVDescriptorIndexを返却してから確保し直す
+    // この関数はウィンドウのリサイズごとにEditorManager::ProcessWindowResizeRequestから呼ばれるため
+    // clear()だけだと確保済みIndexがPoolへ返却されないまま新しいIndexを確保し続け、
+    // リサイズを繰り返すとImGui用SRVDescriptorPoolを使い切ってしまう
+    // (FrameResource3個分 × 約850回のリサイズで2560個を使い切る)
+    // リサイズ時はRenderer::Resize内でGPUの完了を待っているため、
+    // 返却したIndexがすぐ再利用されても描画中のDescriptorを上書きすることはない
+    ReleaseViewportTextureDescriptors();
 
     // GraphicsManagerからRendererへアクセスし、現在フレームのRendererGraphリソースを取得する
     const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
@@ -240,4 +242,19 @@ void FWK::Editor::ViewportEditorWindow::UpdateEditorCameraInput()
 
         m_editorCamera->Move(l_localDirection, l_io.DeltaTime);
     }
+}
+
+void FWK::Editor::ViewportEditorWindow::ReleaseViewportTextureDescriptors()
+{
+    auto& l_editorManager = EditorManager::GetInstance();
+
+    // 確保済みのImGui用SRVDescriptorIndexをすべてPoolへ返却する
+    // 無効値(確保に失敗したIndex)はReleaseImGuiSRVDescriptorIndex内部で無視される
+    for (const auto& l_srvDescriptorIndex : m_imGuiSRVDescriptorIndexList)
+    {
+        l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
+    }
+
+    // 返却したIndexを参照しないようリストも空にする
+    m_imGuiSRVDescriptorIndexList.clear();
 }

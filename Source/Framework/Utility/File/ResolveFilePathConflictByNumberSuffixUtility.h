@@ -45,14 +45,14 @@ namespace FWK::Utility
 
             // 数字部分が見つかり、かつ数字の前に非数字文字列がある場合
             // (全体が数字(123)の場合は元のstemをbaseNameとして使う)
-            // l_digitBeginが数字部分の先頭(gy買う順で見て)を指している
+            // l_digitBeginが数字部分の先頭(正順で見て)を指している
             // l_digitBeginがrendでなければ数字部分あり
             // l_digitBeginがrbeginでなければ数字の前に文字あり
             if (l_digitBegin != l_stem.rbegin() &&
                 l_digitBegin != l_stem.rend())
             {
                 // baseName = 数字部分を除いた前半
-                // 逆順イテレータl_digitBeginは清純で見て数字部分の先頭を指す
+                // 逆順イテレータl_digitBeginは正順で見て数字部分の先頭を指す
                 // l_digitBegin.base()で正規イテレータへ変換
                 // 例 : "Player1"の"l_digitBegin"は'1'を示す(逆順)
                 // .base()は'1'の次を示す(正順)

@@ -32,7 +32,7 @@ namespace FWK::Editor
         void HandleCopy  (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
         void HandleCut   (const std::vector<std::filesystem::path>& a_selectedFilePathList, const AssetBrowserEditorWindowFileOperation&       a_fileOperation, AssetBrowserEditorWindowClipboard& a_clipboard) const;
 
-        void HandlePaste(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+        void HandlePaste(const std::vector<std::filesystem::path>&    a_destinationFolderPathList,
                          const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                          const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
                                AssetBrowserEditorWindowClipboard&     a_clipboard,

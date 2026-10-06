@@ -118,8 +118,11 @@ namespace FWK::Utility
         {
             std::erase_if(m_elementDataList, [this](const ArrayElementData& a_arrayElementData)
             {
-                if (!a_arrayElementData.m_type) { return false; }
-
+                // std::erase_ifはラムダがtrueを返した要素を削除する
+                // 有効なshared_ptrなら残す(falseを返す)
+                // 以前は!m_typeでfalseを返していたため、有効な要素が全て削除されていた
+                if (a_arrayElementData.m_type) { return false; }
+                
                 // このアドレスはオブジェクトへアクセスするために
                 // 使用せず、unordered_setからキーを削除するためだけに使う。
                 m_registeredAddressSet.erase(a_arrayElementData.m_typeAddress);

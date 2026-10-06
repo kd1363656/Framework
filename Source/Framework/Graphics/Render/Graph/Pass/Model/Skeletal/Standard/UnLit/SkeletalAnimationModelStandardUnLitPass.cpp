@@ -21,8 +21,8 @@ void FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::Execute(const Resou
     const auto& l_rootSignature        = SetupGraphicsRenderPipeline          (a_renderer, Enum::PipelineStateType::SkeletalAnimationModelUnLit).lock();
     const auto& l_currentFrameResource = a_renderer.GetREFCurrentFrameResource().lock                                                                ();
 
-    FWK_ASSERT_RETURN_IF(!l_rootSignature,        "SkeletalAnimationModelLit用RootSignatureを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。" );
-    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在FrameResourceを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。" );
+    FWK_ASSERT_RETURN_IF(!l_rootSignature,        "SkeletalAnimationModelUnLit用RootSignatureを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
+    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在FrameResourceを取得できないため、SkeletalAnimationModelStandardUnLitPassを実行できません。");
 
     const auto& l_cameraPassDrawRequest                                   = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>                                       ().lock();
     const auto& l_skeletalAnimationModelStandardUnLitPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelStandardUnLitPerObjectDrawRequest>().lock();

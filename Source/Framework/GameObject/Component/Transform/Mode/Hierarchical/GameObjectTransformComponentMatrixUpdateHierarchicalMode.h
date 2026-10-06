@@ -24,7 +24,7 @@ namespace FWK
 
         void PreserveWorldMatrix(const TypeAlias::Math::Matrix& a_parentWorldMatrix, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;
 
-        void EnableAllApplyCalculateParentWorldMatrixFlag();;
+        void EnableAllApplyCalculateParentWorldMatrixFlag();
 
         const auto& GetREFCalculateParentWorldMatrixEnumBitShift() const { return m_calculateParentWorldMatrixEnumBitShift; }
 

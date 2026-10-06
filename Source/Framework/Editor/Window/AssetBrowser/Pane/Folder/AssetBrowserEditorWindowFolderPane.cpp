@@ -250,16 +250,12 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ForciblyFolderOpen(const A
     if (l_selectedFilePathList.empty())
     {
         // 閉じている場合のみ展開する
-        if (l_selectedFilePathList.empty())
+        if (!IsFolderOpen(l_currentSelectFolderPath))
         {
-            // 閉じている場合のみ展開する
-            if (!IsFolderOpen(l_currentSelectFolderPath))
-            {
-                ToggleFolderOpen(l_currentSelectFolderPath);
-            }
-
-            return;
+            ToggleFolderOpen(l_currentSelectFolderPath);
         }
+
+        return;
     }
 
     // 選択中フォルダがある場合は全ての選択中フォルダを開く

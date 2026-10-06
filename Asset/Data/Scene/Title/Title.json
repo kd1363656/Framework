@@ -1,34 +1,10 @@
-﻿{
-    "GameObjectList": [
-        {
-            "Diff": {
-                "ChildList": {
-                    "Added": [],
-                    "Modified": [],
-                    "RemovedUUIDList": []
-                },
-                "ComponentList": {
-                    "Added": [],
-                    "Modified": [],
-                    "RemovedUUIDList": []
-                }
-            },
-            "Name": "Antike",
-            "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
-            "PrefabUUID": "c2e1be11-b899-4fba-a7de-673920dc829e",
-            "SceneInstanceUUID": "195756b3-8916-43b0-85df-d7bcc327f4b9"
-        }
-    ],
+{
+    "GameObjectList": [],
     "GameObjectPrefabSystem": {
-        "PrefabMap": [
-            {
-                "UUID": "c2e1be11-b899-4fba-a7de-673920dc829e"
-            }
-        ]
+        "PrefabMap": []
     },
     "LightSystem": {
         "AmbientLight": {
-            
             "Color": {
                 "X": 1.0,
                 "Y": 1.0,
@@ -43,9 +19,9 @@
                 "Z": 1.0
             },
             "Direction": {
-                "X":  0.5,
-                "Y": -1.0,
-                "Z":  0.5
+                "X": 0.40824827551841736,
+                "Y": -0.8164965510368347,
+                "Z": 0.40824827551841736
             },
             "Intensity": 1.0
         }

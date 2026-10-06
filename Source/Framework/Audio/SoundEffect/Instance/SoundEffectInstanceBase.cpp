@@ -7,7 +7,7 @@ FWK::SoundEffectInstanceBase::SoundEffectInstanceBase() :
 {}
 FWK::SoundEffectInstanceBase::~SoundEffectInstanceBase()
 {
-    // 再生を注視してから
+    // 再生を停止してから
     Stop();
 
     m_instance.reset();
@@ -70,7 +70,7 @@ void FWK::SoundEffectInstanceBase::ApplyPitch(const float a_pitch)
 {
     if (!m_instance) { return; }
 
-    // DirectXTKのVolumeとして扱える範囲へ制限する
+    // DirectXTKのPitchとして扱える範囲へ制限する
     const float l_pitch = std::clamp(a_pitch, Constant::k_soundEffectInstanceMINPitch, Constant::k_soundEffectInstanceMAXPitch);
 
     m_instance->SetPitch(l_pitch);
@@ -108,6 +108,11 @@ bool FWK::SoundEffectInstanceBase::CreateInstance(const DirectX::SOUND_EFFECT_IN
     if (!l_soundEffect) { return false; }
 
     m_instance = l_soundEffect->CreateInstance(a_flags);
+
+    // SoundEffect::CreateInstance()は音声データが読み込まれていない場合などにnullptrを返す
+    // 生成に失敗しているのにtrueを返すと、Play()を呼んでも何も起きない状態になるため
+    // 実際に生成できたかを確認する
+    FWK_ASSERT_RETURN_VALUE_IF(!m_instance, "DirectXTKのSoundEffectInstanceの作成に失敗しました。", false);
 
     return true;
 }

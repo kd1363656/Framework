@@ -53,7 +53,7 @@ namespace FWK::Editor
                          const bool                                   a_hasSelection,
                                AssetBrowserEditorWindowClipboard&     a_clipboard) const;
 
-        void DrawPasteMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+        void DrawPasteMenu(const std::vector<std::filesystem::path>&    a_destinationFolderPathList,
                            const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                            const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
                            const bool                                   a_canPaste,

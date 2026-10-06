@@ -36,7 +36,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     const auto& l_fileOperation         = a_editorWindow.GetREFFileOperation              ();
     const bool  l_canPaste              = !l_clipboard.IsEmpty                            ();
 
-    // リネーム対策がルートフォルダかどうか
+    // リネーム対象がルートフォルダかどうか
     // PopupDrawerのl_isRootFolderと同じ意味にするため
     // リネーム対象であるa_selectedFilePathで判定する
     // (FolderPaneではa_selectedFilePath == a_targetFilePathのため従来通り)
@@ -120,14 +120,19 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + V : 貼り付け
     // クリップボードが空でない場合のみ
-    // 貼り付け先はa_targetFilePathではなく
-    // 現在参照中のフォルダを使用する
-    // Windows Explorerと同じく現在開いているフォルダへ張り付ける
+    // 貼り付け先はa_targetFilePath(操作対象フォルダ)を使用する
+    // a_targetFilePathはAssetBrowserEditorWindow::Draw側で
+    // 右クリックメニューと同じ規則で計算済み
+    // FolderPane : 選択中フォルダ(なければAssetルート)
+    // AssetPane  : フォルダ選択中ならそのフォルダ、ファイル選択中ならその親フォルダ、
+    //              未選択なら現在参照中フォルダ
     if (l_canPaste   &&
         l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_V, false))
     {
-        HandlePaste(a_selectedFilePathList,
+        const std::vector<std::filesystem::path> l_pasteDestinationFolderPathList = { a_targetFilePath };
+ 
+        HandlePaste(l_pasteDestinationFolderPathList,
                     l_fileOperation,
                     l_assetCreator,
                     l_clipboard,
@@ -371,7 +376,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleCut(const std::
     // 貼り付け時に元ファイルが削除される
     a_fileOperation.Cut(a_selectedFilePathList, a_clipboard);
 }
-void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std::vector<std::filesystem::path>&    a_destinationFolderPathList,
                                                                        const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
                                                                        const AssetBrowserEditorWindowAssetCreator&  a_assetCreator, 
                                                                              AssetBrowserEditorWindowClipboard&     a_clipboard, 
@@ -380,7 +385,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandlePaste(const std
     // FileOperation::Pasteでクリップボードのファイルを貼り付け
     // Copyの場合は新しいUUIDを発行して複製し、Registryへ登録する
     // Cutの場合はrenameで移動し、RegistryのPathはWatcher経由で付け替えられる
-    a_fileOperation.Paste(a_selectedFilePathList, 
+    a_fileOperation.Paste(a_destinationFolderPathList, 
                           a_assetCreator, 
                           a_clipboard, 
                           a_assetFilePathRegistry);
@@ -397,10 +402,10 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDuplicate(const
 }
 void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::HandleDelete(const std::vector<std::filesystem::path>& a_selectedFilePathList, AssetBrowserEditorWindow& a_editorWindow) const
 {
-    // FileOperation::Deleteを直接よばす
+    // FileOperation::Deleteを直接呼ばず
     // 削除確認ダイアログをリクエストする
     // ユーザーがダイアログで削除を選んだ場合に実際の削除処理が行われる
-    auto l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
+    const auto& l_deleteConfirmPopup = a_editorWindow.GetREFDeleteConfirmPopup();
 
     l_deleteConfirmPopup.Request(a_selectedFilePathList, a_editorWindow);
 }

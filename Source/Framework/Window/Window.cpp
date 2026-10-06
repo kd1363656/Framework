@@ -399,6 +399,12 @@ void FWK::Window::Release()
     // まだウィンドウが作成されていないなら、解放するものがないので終了
     if (!m_hwnd) { return; }
 
+    // PostLoadCONFIG()のtimeBeginPeriod()で変更したタイマー精度を元に戻す
+    // timeBeginPeriod()はOS全体のタイマー割り込み周期を変更するため、
+    // 同じ値でtimeEndPeriod()を必ず対で呼ぶ必要がある
+    // (timeBeginPeriodはウィンドウ作成後に呼んでいるため、ウィンドウが存在する場合のみ戻す)
+    timeEndPeriod(k_timeResolutionMS);
+
     // Windowsに、このウィンドウを閉じて破棄してもらう
     DestroyWindow(m_hwnd);
 

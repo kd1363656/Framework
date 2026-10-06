@@ -23,7 +23,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
     //                   領域サイズ(枠0 = 最大サイズ、高さ0 = AutoResizeYで決定))、
     //                   ボーダー一括描画有無、
     //                   ImGuiWindowFlags_HorizontalScrollbarで幅超過時に水平スクロール
-    // 戻り値がfalseの場合は霊異記が描画されていないためEndChildしてreturn
+    // 戻り値がfalseの場合は領域が描画されていないためEndChildしてreturn
     if (const float l_childHeight = ImGui::GetTextLineHeight();
         !ImGui::BeginChild(k_childLabel.data(), 
                            ImVec2{ Constant::k_imguiRemainingSize.x, l_childHeight}, 

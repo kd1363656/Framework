@@ -60,9 +60,9 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::
     if (a_oldPrefabUUID.is_nil() ||
         a_newPrefabUUID.is_nil())
     {
-    	FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効値のため、付け替えを中止しました。\nFilePath : {}", a_filePath.string());
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効値のため、付け替えを中止しました。\nFilePath : {}", a_filePath.string());
 
-    	return false;
+        return false;
     }
     
     if (a_newName.empty())

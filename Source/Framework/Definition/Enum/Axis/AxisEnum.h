@@ -6,8 +6,8 @@ namespace FWK::Enum
     {
         Invalid = 0U,
         X       = 1U << 0U,
-        Y       = 2U << 0U,
-        Z       = 3U << 0U
+        Y       = 1U << 1U,
+        Z       = 1U << 2U
     };
 
     FWK_JSON_SERIALIZE_ENUM

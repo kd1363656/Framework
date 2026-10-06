@@ -29,8 +29,17 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
 
-void FWK::Scene::PostDeserialize() const
+void FWK::Scene::PostDeserialize()
 {
+    // Deserialize中にAddGameObject()されたGameObjectは
+    // まだm_pendingAddGameObjectList(追加予約リスト)に入っているだけで
+    // 実行レベルリスト(m_gameObjectExecutionLevelList)には登録されていない
+    // (実行レベルリストへの登録は通常EarlyUpdate()内のAddPendingGameObjects()で行われる)
+    // このままだと下のemptyチェックで必ずreturnし、
+    // ロードしたGameObjectのPostDeserializeが一度も呼ばれないため、先に追加予約を反映する
+    // 反映後は追加予約リストが空になるため、次のEarlyUpdateで二重に追加されることはない
+    AddPendingGameObjects();
+
     if (m_gameObjectExecutionLevelList.empty()) { return; }
 
     // ルートGameObjectのみを対象にする
@@ -147,7 +156,7 @@ void FWK::Scene::RebuildGameObjectExecutionLevelList()
     m_gameObjectExecutionLevelList.clear();
 
     // UUIDRegistryには既に登録済みなので、
-    // m_gameObjectList内の順番にGameObjectの現在改装を求める
+    // m_gameObjectList内の順番にGameObjectの現在階層を求める
     for (const auto& l_gameObject : m_gameObjectList)
     {
         if (!l_gameObject ||

@@ -18,7 +18,7 @@ namespace FWK
          ObserverInspector() = default;
         ~ObserverInspector() = default;
 
-        bool EditorInspector(const std::string_view& a_label, Observer<Type>& a_observer)
+        bool EditInspector(const std::string_view& a_label, Observer<Type>& a_observer)
         {
                   bool  l_isChanged                        = false;
             const auto& l_stringValueBidirectionalRegistry = Utility::StringValueBidirectionalRegistry<Type>::GetInstance();

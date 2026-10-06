@@ -11,7 +11,7 @@ namespace FWK
 
         void INIT           ();
         void Deserialize    (const nlohmann::json& a_rootJson);
-        void PostDeserialize() const;
+        void PostDeserialize();
 
         void EarlyUpdate   ();
         void Update        () const;

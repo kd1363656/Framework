@@ -40,7 +40,7 @@ void FWK::Editor::EditorWindowPaneSplitter::PreparePaneSize(const ImVec2&       
         // SecondaryPane側の領域を優先して残す
         m_primaryPaneSize = l_maxPrimaryPaneSize;
 
-        // ImGui::BeginChild()では0.0Fに特別な意味(ウィンドウ霊異記がサイズになる)があるため
+        // ImGui::BeginChild()では0.0Fに特別な意味(ウィンドウ領域がサイズになる)があるため
         // 完全な0以下にはしない
         if (m_primaryPaneSize < k_minDrawablePaneSize)
         {

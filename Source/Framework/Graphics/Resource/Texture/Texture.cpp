@@ -19,7 +19,7 @@ FWK::Graphics::Texture::Texture(Texture&& a_other) noexcept :
 }
 FWK::Graphics::Texture::~Texture()
 {
-    SubtractReferenceCount();;
+    SubtractReferenceCount();
 }
 
 FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(const Texture& a_other)
@@ -27,7 +27,7 @@ FWK::Graphics::Texture& FWK::Graphics::Texture::operator=(const Texture& a_other
     if (this == &a_other) { return *this; }
 
     // 所持しているテクスチャをの参照数を減算
-    SubtractReferenceCount();;
+    SubtractReferenceCount();
 
     // コピー元と同じTextureRecordを参照する
     m_storageID     = a_other.m_storageID;

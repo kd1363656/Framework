@@ -22,6 +22,10 @@ namespace FWK::Editor
             // 派生クラスをunique_ptrで生成してUndoスタックへ積む
             // std::make_unique + std::forwardで完全転送
             m_undoList.emplace_back(std::make_unique<CommandType>(std::forward<Args>(a_args)...));
+
+            // Undo履歴がCapacity(EditorCONFIG.jsonで設定)を超えた場合は
+            // 最も古いコマンドから破棄する
+            TrimUndoListToCapacity();
         }
 
         void Undo();
@@ -36,6 +40,8 @@ namespace FWK::Editor
         const auto& GetREFCapacity() const { return m_capacity; }
 
     private:
+
+        void TrimUndoListToCapacity();
 
         std::deque<std::unique_ptr<ICommand>> m_undoList = {};
         std::deque<std::unique_ptr<ICommand>> m_redoList = {};

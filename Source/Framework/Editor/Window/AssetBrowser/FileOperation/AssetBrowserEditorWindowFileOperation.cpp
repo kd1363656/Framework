@@ -87,7 +87,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vecto
     {
         std::error_code l_errorCode = {};
 
-        // remove_all()はファイル・フォルダ問わず作成する
+        // remove_all()はファイル・フォルダ問わず削除する
         // フォルダの場合は中身も再帰的に削除する
         if (!std::filesystem::remove_all(l_filePath, l_errorCode) &&
             l_errorCode)
@@ -485,12 +485,12 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::RegisterCopiedAssetList
     // コピー先がフォルダでなければコピー元と1対1で対応するため、そのまま登録する
     if (!std::filesystem::is_directory(a_copiedRootPath, l_errorCode))
     {
-        // 現在AssetFilePathRegistryで管理しているPrefab/SceneはJsonのみ
-        // Json以外のファイルはアセット登録の対象外
-        if (a_copiedRootPath.extension() == Constant::k_lowerJsonExtension)
-        {
-            a_assetCreator.RegisterCopiedAsset(a_sourceRootPath, a_copiedRootPath, a_assetFilePathRegistry);
-        }
+        // コピーに失敗してファイルが存在しない、普通のファイルじゃない場合は登録しない
+        // 登録すると存在しないPathがRegistryに残ってしまう
+        // (is_directory()は存在しないPathでもエラーにならずfalseを返すため、別途確認する)
+        if (!Utility::CanLoadFilePath(a_copiedRootPath, Constant::k_lowerJsonExtension)) { return; }
+        
+        a_assetCreator.RegisterCopiedAsset(a_sourceRootPath, a_copiedRootPath, a_assetFilePathRegistry);
 
         return;
     }

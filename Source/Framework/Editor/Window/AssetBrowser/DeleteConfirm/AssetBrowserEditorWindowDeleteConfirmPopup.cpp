@@ -298,7 +298,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::HandleConfirm(cons
     {
         // fileOperationはEditorWindowが所有しているため
         // コピーせず参照として取得する
-        auto l_fileOperation = a_editorWindow.GetMutableREFFileOperation();
+        const auto& l_fileOperation = a_editorWindow.GetREFFileOperation();
 
         // 確認対象となっているファイル・フォルダを削除する
         l_fileOperation.Delete(a_deleteConfirmState.m_filePathList);

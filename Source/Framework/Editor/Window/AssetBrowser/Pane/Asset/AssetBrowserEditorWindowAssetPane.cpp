@@ -468,17 +468,17 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     const ImVec2& l_cardSize = { k_cardWidth, k_cardHeight };
 
     // BeginGroupでカード全体を一つのアイテムとして扱う
-    // DrawCardRename内のInputTextがCursorPosPrevLint
+    // DrawCardRename内のInputTextがCursorPosPrevLine/
     // PrevLineSizeを更新してしまうのを防ぐ
     ImGui::BeginGroup();
 
-    // カードを上座標(Screen座標)
+    // カードの左上座標(Screen座標)
     // InvisibleButton描画時に取得することで
     // DrawListによる描画座標として扱う
     const auto&   l_cardMIN = ImGui::GetCursorScreenPos();
     const ImVec2& l_cardMAX = { l_cardMIN.x + l_cardSize.x, l_cardMIN.y + l_cardSize.y };
 
-    // InvisibleButtonでインタラクティブな霊異記を確保
+    // InvisibleButtonでインタラクティブな領域を確保
     // 実際の描画はDrawListで行うため、ボタンは透明
     // ラベルは一意になるようにファイルパスを付加
     const auto l_label = std::string{ k_cardPrefixLabel } + a_filePath.generic_string();
@@ -496,7 +496,12 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     // GetWindowDrawListは現在のChildWindowのDrawListを渡す
     auto* l_drawList = ImGui::GetWindowDrawList();
 
-    if (!l_drawList) { return; }
+    if (!l_drawList) 
+    {
+        ImGui::EndGroup();
+
+        return; 
+    }
 
     // カード背景(フレーム色)
     // 選択/ホバー/通常に応じて外側カードの色を決定する
@@ -546,7 +551,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
                     l_isSelected,
                     a_editorWindow);
 
-    // フォルダがファイル化でコンテキスト種別を切り替え
+    // フォルダかファイルかでコンテキスト種別を切り替え
     // OnFolder : 新規フォルダ作成 + 操作系メニュー
     // OnFile   : 操作系メニューのみ
     // ポップアップDrawは毎フレーム呼ぶ(OpenPopupされていなければ内部でreturn)
@@ -629,18 +634,18 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::fil
     // 外側カード(フレーム色)の上に
     // 少し縮んだ角丸ボックスをペイン背景色で描画する
     // これにより外周(上下左右)にフレームのリムが残る
-    // 選択時は子のリムが青く光る
+    // 選択時はこのリムが青く光る
     // 上半分の高さ
     const float l_halfHeight = (a_cardMAX.y - a_cardMIN.y) * Constant::k_halfMagnification;
 
     // 内側ボックスの領域
-    // カード外側からk_cardInnerInset分縮める(上・左・→)
+    // カード外側からk_cardInnerInset分縮める(上・左・右)
     // 下辺は中間地点そのまま(下半分ボックスとぴったり接続)
     // これにより中央に区切り線が入らない
     const ImVec2& l_iconBoxMIN = { a_cardMIN.x + k_cardInnerInset, a_cardMIN.y + k_cardInnerInset };
     const ImVec2& l_iconBoxMAX = { a_cardMAX.x - k_cardInnerInset, a_cardMIN.y + l_halfHeight };
 
-    // 内側ボックスをペイン時景色で塗りつぶし
+    // 内側ボックスをペイン背景色で塗りつぶし
     // これがアイコン領域の背景になる
     const auto l_paneBGColor = ImGui::GetColorU32(ImGuiCol_ChildBg);
 
@@ -689,19 +694,20 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardIcon(const std::fil
         l_iconFontSize = l_iconFontSize * (l_iconAreaWidth / l_scaledIconWidth);
     }
 
-    // 高さが領域を超えr場合は高さ基準へ縮小
+    // 高さが領域を超える場合は高さ基準へ縮小
     if (l_scaledIconHeight > l_iconAreaHeight)
     {
         l_iconFontSize = l_iconFontSize * (l_iconAreaHeight / l_scaledIconHeight);
     }
 
-    // 最終的なアイコンサイズを再計算
-    const float l_finaleIconWidth = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
-    
-    // アイコンを内側ボックスの中央に配置
-    const ImVec2 l_iconPosition = { l_iconBoxMIN.x + (l_iconBoxMAX.x - l_iconBoxMIN.x - l_finaleIconWidth) * Constant::k_halfMagnification,
-                                    l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finaleIconWidth) * Constant::k_halfMagnification };
+    // 横方向の中央寄せには幅、縦方向の中央寄せには高さを使う
+    const float l_finalIconWidth  = l_iconSize.x * (l_iconFontSize / l_currentFontSize);
+    const float l_finalIconHeight = l_iconSize.y * (l_iconFontSize / l_currentFontSize);
 
+    // アイコンを内側ボックスの中央に配置
+    const ImVec2 l_iconPosition = { l_iconBoxMIN.x + (l_iconBoxMAX.x - l_iconBoxMIN.x - l_finalIconWidth)  * Constant::k_halfMagnification,
+                                    l_iconBoxMIN.y + (l_iconBoxMAX.y - l_iconBoxMIN.y - l_finalIconHeight) * Constant::k_halfMagnification };
+    
     // アイコン色
     // 切り取り対象の場合はテキスト色へ半分倍率を掛けて暗くする、それ以外は通常テキスト色
     const auto& l_style     = ImGui::GetStyle();

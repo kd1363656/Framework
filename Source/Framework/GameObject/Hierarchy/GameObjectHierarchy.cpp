@@ -230,10 +230,12 @@ void FWK::GameObjectHierarchy::ClearParent()
 
     if (!l_owner) { return; }
 
-    const auto& l_transform = l_owner->GetVALTransformComponent().lock();
+    const auto& l_transformComponent = l_owner->GetVALTransformComponent().lock();
+
+    FWK_ASSERT_RETURN_IF(!l_transformComponent, "TransformComponentが存在していません、絶対に存在するべきコンポーネントです。");
 
     // 親がいなくなったのでローカル = ワールドのStrategyへ戻す
-    l_transform->ApplyStandalone();
+    l_transformComponent->ApplyStandalone();
 }
 void FWK::GameObjectHierarchy::ClearPrefabRemovedChildUUIDSet()
 {

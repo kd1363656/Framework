@@ -2,18 +2,18 @@
 
 namespace FWK::Editor
 {
-	class AssetBrowserEditorWindowAssetPaneBreadcrumb final
-	{
-	public:
+    class AssetBrowserEditorWindowAssetPaneBreadcrumb final
+    {
+    public:
 
-		 AssetBrowserEditorWindowAssetPaneBreadcrumb() = default;
-		~AssetBrowserEditorWindowAssetPaneBreadcrumb() = default;
+         AssetBrowserEditorWindowAssetPaneBreadcrumb() = default;
+        ~AssetBrowserEditorWindowAssetPaneBreadcrumb() = default;
+        
+        void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
-		void Draw(AssetBrowserEditorWindow& a_editorWindow);
+    private:
 
-	private:
-
-		static constexpr std::string_view k_childLabel     = "##AssetBrowserEditorWindowAssetPaneBreadcrumb";
-		static constexpr std::string_view k_separatorLabel = " / ";
-	};
+        static constexpr std::string_view k_childLabel     = "##AssetBrowserEditorWindowAssetPaneBreadcrumb";
+        static constexpr std::string_view k_separatorLabel = " / ";
+    };
 }

@@ -112,7 +112,7 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
     // 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "StaticModelAssetの保存に失敗しました。", false)
+    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_staticModelRecord, a_filePath), "StaticModelAssetの保存に失敗しました。", false);
 
     return true;
 }

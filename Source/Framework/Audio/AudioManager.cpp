@@ -125,11 +125,15 @@ void FWK::AudioManager::SaveCONFIG() const
 
 void FWK::AudioManager::ApplyMasterVolume(const float a_volume)
 {
-    if (!m_audioEngine) { return; }
-
     // AudioEngine生成前にVolumeだけを設定された場合でも、
     // m_masterVolumeには値を保持しておく
+    // CreateAudioEngine()内でm_masterVolumeをAudioEngineへ反映するため、
+    // 後からAudioEngineが生成されても値が引き継がれる
     m_masterVolume = std::clamp(a_volume, k_minMasterVolume, k_maxMasterVolume);
+
+    // AudioEngineが存在しなければ反映先が無いため、値の保持だけで終了する
+    // (先にreturnすると値まで保持されなくなるため、必ず代入の後で判定する)
+    if (!m_audioEngine) { return; }
 
     m_audioEngine->SetMasterVolume(m_masterVolume);
 }
@@ -205,10 +209,10 @@ void FWK::AudioManager::RemoveSoundEffectInstanceIfStopped()
 
     while (l_index < m_soundEffectInstanceList.size())
     {
-        // インスタンスが既に破棄されている、
-        // または再生が停止している場合は管理リストから削除
+        // インスタンスが有効、かつ再生が停止していない(再生中・一時停止中)なら
+        // 管理リストに残して次の要素へ進む
         if (const auto& l_soundInstance = m_soundEffectInstanceList[l_index].lock();
-            !l_soundInstance ||
+            l_soundInstance &&
             !l_soundInstance->IsStopped())
         {
             ++l_index;

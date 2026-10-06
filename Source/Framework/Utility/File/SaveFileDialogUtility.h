@@ -75,6 +75,12 @@ namespace FWK::Utility
             TypeAlias::ComPtr<IShellItem> l_initialDirectoryItem = nullptr;
 
             if (FAILED(SHCreateItemFromParsingName(l_initialDirectoryPath.c_str(), nullptr, IID_PPV_ARGS(&l_initialDirectoryItem)))) { return false; }
+
+            // 作成したIShellItemをダイアログの初期表示Folderとして設定する
+            // SetFolder()        -> 毎回このFolderから開く
+            // SetDefaultFolder() -> 前回使ったFolderの記録が無い場合だけこのFolderから開く
+            // (以前はIShellItemを作成するだけでダイアログへ渡しておらず、初期Folderが反映されていなかった)
+            if (FAILED(l_fileDialog->SetFolder(l_initialDirectoryItem.Get()))) { return false; }
         }
 
         // 実際に保存ダイアログを表示する

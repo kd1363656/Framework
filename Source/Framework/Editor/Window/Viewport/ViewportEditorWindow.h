@@ -50,6 +50,8 @@ namespace FWK::Editor
         void RegisterEditorCamera    () const;
         void UpdateEditorCameraInput ();
 
+        void ReleaseViewportTextureDescriptors();
+
         static constexpr std::string_view k_editorName                 = "ビューポート";
         static constexpr std::string_view k_thisWindowExplanationLabel = "現在のシーンの描画状態を見ることができるウィンドウ。";
 
