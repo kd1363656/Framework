@@ -466,6 +466,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\WorldOutlinerEditorWindowPopupDrawerStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\DestroyGameObjectCommandStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectTransformComponentStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCameraPassStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h" />
@@ -521,7 +522,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\EditorMainMenuBase.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
-    <ClInclude Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\ChangeSelectionCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
@@ -556,7 +558,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Window\EditorWindowBase.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Log\LogEditorWindow.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.h" />
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Operation\Scene\WorldOutlinerEditorWindowSceneOperation.h" />
@@ -853,7 +855,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\MainMenuBarEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Selection\Command\ChangeSelectionCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\ChangeSelectionCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
@@ -888,7 +891,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Window\EditorWindowBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Log\LogEditorWindow.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Clipboard\WorldOutlinerEditorWindowClipboard.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Outliner\Command\ReparentGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Creator\WorldOutlinerEditorWindowAssetCreator.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\GameObject\WorldOutlinerEditorWindowGameObjectOperation.cpp" />
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Operation\Scene\WorldOutlinerEditorWindowSceneOperation.cpp" />
