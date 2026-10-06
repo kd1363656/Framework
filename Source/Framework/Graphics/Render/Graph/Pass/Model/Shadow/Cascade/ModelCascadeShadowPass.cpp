@@ -80,8 +80,8 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         FWK_ASSERT_RETURN_IF(!l_staticModelRootSignature, "StaticModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
 
         // StaticModelShadowの定数バッファを書き込む
-        l_directCommandList.SetupConstantBufferView                                 (*l_staticModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass, l_gpuVirtualAddress);
-        l_staticModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,                  *l_staticModelRootSignature,                       *l_currentFrameResource);
+        l_directCommandList.SetupConstantBufferView                                 (*l_staticModelRootSignature, l_gpuVirtualAddress,         Enum::RootParameterType::CBModelCascadeShadowPass);
+        l_staticModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,                  *l_staticModelRootSignature, *l_currentFrameResource);
 
         const auto& l_skeletalAnimationModelRootSignature = SetupGraphicsRenderPipeline(Enum::PipelineStateType::SkeletalAnimationModelCascadeShadow, a_renderer).lock();
 
@@ -92,7 +92,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         FWK_ASSERT_RETURN_IF(l_staticModelRootSignature != l_skeletalAnimationModelRootSignature, "StaticとSkeletalのCascade Shadow Pipeline Stateが異なるRootSignatureを使用しています。");
 
         // SkeletalAnimationShadowの定数バッファを書き込む
-        l_directCommandList.SetupConstantBufferView                                            (*l_skeletalAnimationModelRootSignature, Enum::RootParameterType::CBModelCascadeShadowPass, l_gpuVirtualAddress);
-        l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,                             *l_skeletalAnimationModelRootSignature,            *l_currentFrameResource);
+        l_directCommandList.SetupConstantBufferView                                            (*l_skeletalAnimationModelRootSignature, l_gpuVirtualAddress,                    Enum::RootParameterType::CBModelCascadeShadowPass);
+        l_skeletalAnimationModelCascadeShadowPerObjectDrawRequest->SetupPerObjectConstantBuffer(a_renderer,                             *l_skeletalAnimationModelRootSignature, *l_currentFrameResource);
     }
 }

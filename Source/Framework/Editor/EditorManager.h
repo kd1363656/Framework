@@ -29,7 +29,7 @@ namespace FWK::Editor
 
         void SaveCONFIG() const;
 
-        void ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest) const;
+        void ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest) const;
 
         bool CopyGraphicsSRVDescriptor(const TypeAlias::CBVSRVUAVDescriptorPool& a_sourceCBVSRVUAVDescriptorPool, const TypeAlias::DescriptorIndex a_sourceSRVDescriptorIndex, const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 

@@ -114,7 +114,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
     // StaticModel全体のHeaderを作成して書き込む
     const auto& l_modelBinaryHeader = CreateModelBinaryHeader(l_staticModelData, l_modelAssetFileSize);
 
-    WriteBinaryData(&l_modelBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
+    WriteBinaryData(k_singleBinaryElementCount, &l_modelBinaryHeader, l_memoryWriteOffset);
 
     // ModelMeshListを書き込む
     for (const auto& l_staticModelMesh : l_staticModelData.m_modelMeshList)
@@ -136,7 +136,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const Graphics::Stati
     return true;
 }
 
-void FWK::Converter::StaticModelBinaryConverter::FailLoadAsset(Graphics::StaticModelRecord::ModelData& a_modelData)
+void FWK::Converter::StaticModelBinaryConverter::FailLoadAsset(Struct::StaticModelData& a_modelData)
 {
     // 中途半端に読み込んだModelMeshが残らないように空にする。
     a_modelData.m_modelMeshList.clear();
@@ -145,7 +145,7 @@ void FWK::Converter::StaticModelBinaryConverter::FailLoadAsset(Graphics::StaticM
     DestroyMemoryMappedFile();
 }
 
-FWK::Converter::StaticModelBinaryConverter::ModelBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateModelBinaryHeader(const Graphics::StaticModelRecord::ModelData& a_modelData, const std::uint64_t& a_fileSize) const
+FWK::Converter::StaticModelBinaryConverter::ModelBinaryHeader FWK::Converter::StaticModelBinaryConverter::CreateModelBinaryHeader(const Struct::StaticModelData& a_modelData, const std::uint64_t& a_fileSize) const
 {
     ModelBinaryHeader l_modelBinaryHeader = {};
 
@@ -157,7 +157,7 @@ FWK::Converter::StaticModelBinaryConverter::ModelBinaryHeader FWK::Converter::St
     return l_modelBinaryHeader;
 }
 
-std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateAssetFileSize(const Graphics::StaticModelRecord::ModelData& a_modelData) const
+std::uint64_t FWK::Converter::StaticModelBinaryConverter::CalculateAssetFileSize(const Struct::StaticModelData& a_modelData) const
 {
     // Meshが一つもないStaticModelDataは.asset化しない
     if (a_modelData.m_modelMeshList.empty()) { return BinaryConverterBase::k_emptyAssetFileSize; }

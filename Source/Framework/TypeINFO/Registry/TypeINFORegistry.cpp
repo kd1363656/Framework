@@ -1,6 +1,6 @@
 ﻿#include "TypeINFORegistry.h"
 
-void FWK::TypeINFORegistry::Register(const TypeINFO& a_typeINFO)
+void FWK::TypeINFORegistry::Register(const Struct::TypeINFO& a_typeINFO)
 {
     FWK_ASSERT_RETURN_IF(a_typeINFO.k_staticTypeID == StaticTypeIDGenerator::k_invalidStaticTypeID, "無効なStaticTypeIDを検出しており、型情報の登録に失敗しました。");
     FWK_ASSERT_RETURN_IF(a_typeINFO.k_name.empty(),                                                 "文字列が空になっており、型情報の登録に失敗しました。");
@@ -17,7 +17,7 @@ void FWK::TypeINFORegistry::Register(const TypeINFO& a_typeINFO)
     m_typeINFOStaticTypeIDMap.try_emplace(a_typeINFO.k_staticTypeID, &a_typeINFO);
 }
 
-const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindPTRByName(const std::string_view& a_name) const
+const FWK::Struct::TypeINFO* FWK::TypeINFORegistry::FindPTRByName(const std::string_view& a_name) const
 {
     const auto& l_itr = m_typeINFONameMap.find(a_name);
 
@@ -26,7 +26,7 @@ const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindPTRByName(cons
 
     return l_itr->second;
 }
-const FWK::TypeINFORegistry::TypeINFO* FWK::TypeINFORegistry::FindPTRByID(const TypeAlias::StaticTypeID a_staticTypeID) const
+const FWK::Struct::TypeINFO* FWK::TypeINFORegistry::FindPTRByID(const TypeAlias::StaticTypeID a_staticTypeID) const
 {
     const auto& l_itr = m_typeINFOStaticTypeIDMap.find(a_staticTypeID);
 

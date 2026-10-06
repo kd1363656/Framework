@@ -179,8 +179,8 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
                                                              m_depthStencilTextureSettings.m_sampleQuality,
                                                              l_resourceFlags);
 
-    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(&l_clearValue,
-                                                                           l_resourceDesc,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,
+                                                                           &l_clearValue,
                                                                            k_defaultResourceState,
                                                                            m_gpuResource),
                                                                            "DepthStencilTexture用TextureResourceの作成に失敗しました。",
@@ -386,7 +386,7 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
                                "SRVを使用するDepthStencilTextureのSRVDescriptorIndexが無効です。",
                                false);
 
-    ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
+    Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
     l_gpuResourceReleaseRecord.m_gpuResource       = std::move(m_gpuResource);
     l_gpuResourceReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
@@ -397,7 +397,7 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     // GPUが古いTextureを使用し終わった同じFenceValueで全てのDSVDescriptorIndexも遅延解放する
     for (const auto l_dsvDescriptorIndex : m_dsvDescriptorIndexList)
     {
-        ResourceReleaseContext::DescriptorIndexReleaseRecord l_dsvDescriptorIndexReleaseRecord = {};
+        Struct::DescriptorIndexReleaseRecord l_dsvDescriptorIndexReleaseRecord = {};
 
         l_dsvDescriptorIndexReleaseRecord.m_descriptorIndex   = l_dsvDescriptorIndex;
         l_dsvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
@@ -409,7 +409,7 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
     // SRVDescriptorIndexも同じFenceValueで遅延解放する
     if (l_isSRVRequired)
     {
-        ResourceReleaseContext::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
+        Struct::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
 
         l_srvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_srvDescriptorIndex;
         l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;

@@ -1,6 +1,6 @@
 ﻿#include "PhysicsStaticMeshBody.h"
 
-bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
+bool FWK::Physics::PhysicsStaticMeshBody::CreateBody(const Struct::StaticModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix)
 {
     TypeAlias::Math::Vector3    l_worldScale    = TypeAlias::Math::Vector3::Zero;
     TypeAlias::Math::Quaternion l_worldRotation = TypeAlias::Math::Quaternion::Identity;
@@ -95,7 +95,7 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
     return ApplyStaticBodyWorldTransform(l_worldRotation, l_worldPosition);
 }
 
-JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Graphics::StaticModelRecord::ModelData& a_modelData) const
+JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Struct::StaticModelData& a_modelData) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
 

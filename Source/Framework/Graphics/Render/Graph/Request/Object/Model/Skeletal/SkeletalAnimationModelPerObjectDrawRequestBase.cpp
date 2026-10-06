@@ -141,7 +141,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::AddDrawReque
     m_forwardDrawRequestDataSmartPointerVectorList.Add(a_drawRequestData);
 }
 
-bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
+bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::SkeletalAnimationModelMesh& a_modelMesh) const
 {
     const auto& l_modelMeshletList = a_modelMesh.m_modelMeshletData.m_meshletList;
 

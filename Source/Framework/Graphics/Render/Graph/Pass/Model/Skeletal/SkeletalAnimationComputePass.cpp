@@ -103,7 +103,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
     }
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const ComputeCommandList& a_computeCommandList, SkeletalAnimationPlayer::FrameData& a_frameData) const
+bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const ComputeCommandList& a_computeCommandList, Struct::SkeletalAnimationPlayerFrameData& a_frameData) const
 {
     const auto& l_globalBoneMatrixList     = a_frameData.m_globalBoneMatrixList;
           auto& l_boneMatrixBuffer         = a_frameData.m_boneMatrixBuffer;
@@ -151,7 +151,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const SkeletalAnimationModelRecord::ModelData& a_modelData, const RootSignature& a_rootSignature, const ComputeCommandList& a_computeCommandList, SkeletalAnimationPlayer::FrameData& a_frameData, SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader)
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const Struct::SkeletalAnimationModelData& a_modelData, const RootSignature& a_rootSignature, const ComputeCommandList& a_computeCommandList, Struct::SkeletalAnimationPlayerFrameData& a_frameData, SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader)
 {
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
           auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
@@ -218,7 +218,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
 
         FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationVertexSkinning用定数バッファの書き込みに失敗しました。", false);
 
-        a_computeCommandList.SetupConstantBufferView(a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationVertexSkinningPerObject, l_gpuVirtualAddress);
+        a_computeCommandList.SetupConstantBufferView(a_rootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBSkeletalAnimationVertexSkinningPerObject);
 
         // VertexCountをThread数で割り、
         // 完全に割り切れなかった場合だけ一つThread Groupを追加する
@@ -244,10 +244,10 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const S
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const SkeletalAnimationModelRecord::ModelData&                                    a_modelData,
+bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(const Struct::SkeletalAnimationModelData&                                         a_modelData,
                                                                               const RootSignature&                                                              a_rootSignature,
                                                                               const ComputeCommandList&                                                         a_computeCommandList,
-                                                                                    SkeletalAnimationPlayer::FrameData&                                         a_frameData,
+                                                                                    Struct::SkeletalAnimationPlayerFrameData&                                   a_frameData,
                                                                                     SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader& a_constantBufferUploader) const
 {
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
@@ -309,7 +309,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 
         FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == DynamicBufferUploaderBase::k_invalidGPUVirtualAddress, "SkeletalAnimationMeshletBoundsUpdate用定数バッファの書き込みに失敗しました。", false);
 
-        a_computeCommandList.SetupConstantBufferView(a_rootSignature, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject, l_gpuVirtualAddress);
+        a_computeCommandList.SetupConstantBufferView(a_rootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject);
 
         const auto l_meshletCount = l_meshletBoundsBuffer.GetVALElementCount();
 

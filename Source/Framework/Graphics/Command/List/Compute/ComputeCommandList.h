@@ -17,7 +17,7 @@ namespace FWK::Graphics
 
         void SetupComputePipeline(const std::weak_ptr<ComputePipelineState>& a_pipelineState);
 
-        void SetupConstantBufferView(const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress) const override;
+        void SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const override;
 
         template <typename RootConstantType>
         void SetupRoot32BitConstants(const RootConstantType& a_rootConstantData, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
@@ -33,8 +33,8 @@ namespace FWK::Graphics
 
             constexpr auto l_rootConstantCount = static_cast<UINT>(sizeof(RootConstantType) / sizeof(std::uint32_t));
 
-            SetupRoot32BitConstants(&a_rootConstantData,
-                                    a_rootSignature,
+            SetupRoot32BitConstants(a_rootSignature,
+                                    &a_rootConstantData,
                                     a_rootParameterType,
                                     l_rootConstantCount,
                                     k_rootConstantStartOffset);
@@ -48,8 +48,8 @@ namespace FWK::Graphics
 
     private:
 
-        void SetupRoot32BitConstants(const void*                   a_rootConstantData,
-                                     const RootSignature&          a_rootSignature,
+        void SetupRoot32BitConstants(const RootSignature&          a_rootSignature,
+                                     const void*                   a_rootConstantData,
                                      const Enum::RootParameterType a_rootParameterType,
                                      const UINT                    a_rootConstantCount,
                                      const UINT                    a_destinationOffset) const;

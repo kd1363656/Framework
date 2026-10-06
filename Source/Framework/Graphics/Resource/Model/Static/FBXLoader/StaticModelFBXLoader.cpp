@@ -27,7 +27,7 @@ bool FWK::Graphics::StaticModelFBXLoader::LoadStaticModelFile(const std::filesys
     return true;
 }
 
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, StaticModelRecord::ModelData& a_modelData) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, Struct::StaticModelData& a_modelData) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene, "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。", false);
 
@@ -52,7 +52,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
             continue;
         }
 
-        std::vector<StaticModelRecord::ModelMesh> l_modelMeshList = {};
+        std::vector<Struct::StaticModelMesh> l_modelMeshList = {};
 
         // ufbx_mesh 1つを、自作フレームワーク側のModelMeshへ変換する
         // 1つのufbx_meshに複数のMaterialがある場合、MaterialごとにModelMeshを分割する
@@ -71,7 +71,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
 
     return true;
 }
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* a_fbxNode, std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* a_fbxNode, std::vector<Struct::StaticModelMesh>& a_modelMeshList) const
 {
     // もし前回モデルを読み込んでいたらそのモデルのメッシュ情報が残ってしまうのでリストをクリア
     a_modelMeshList.clear();
@@ -85,9 +85,9 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
     // MaterialがないMeshの場合は、MaterialなしのModelMeshとして1つだけ作成する
     if (l_fbxMesh->materials.count == Constant::k_emptyModelMeshCount)
     {
-        StaticModelRecord::ModelMesh l_modelMesh = {};
+        Struct::StaticModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_fbxNode, k_invalidMaterialIndex, l_modelMesh), "MaterialなしModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(k_invalidMaterialIndex, a_fbxNode, l_modelMesh), "MaterialなしModelMeshの抽出に失敗しました。", false);
 
         if (!l_modelMesh.m_modelVertexList.empty() &&
             !l_modelMesh.m_indexList.empty())
@@ -103,10 +103,10 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 
     for (std::size_t l_materialIndex = 0ULL; l_materialIndex < l_fbxMesh->materials.count; ++l_materialIndex)
     {
-        StaticModelRecord::ModelMesh l_modelMesh = {};
+        Struct::StaticModelMesh l_modelMesh = {};
 
         // 現在のMaterialIndexを使用しているFaceだけを集めて、1つのModelMeshにする
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_fbxNode, l_materialIndex, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(l_materialIndex, a_fbxNode, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
 
         // このMaterialを使用しているFaceがなければ描画対象にしない
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
@@ -125,7 +125,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshList(const ufbx_node* 
 
     return true;
 }
-bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const ufbx_node* a_fbxNode, const std::size_t& a_materialIndex, StaticModelRecord::ModelMesh& a_modelMesh) const
+bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::size_t& a_materialIndex, const ufbx_node* a_fbxNode, Struct::StaticModelMesh& a_modelMesh) const
 {
     // モデルメッシュの初期化
     a_modelMesh.m_modelVertexList.clear();
@@ -197,7 +197,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const ufbx_
                 const auto& l_indexOffset    = (l_triangleIndex * Constant::k_triangleVertexCount) + l_vertexIndex;
                 const auto  l_fbxVertexIndex = l_triangleIndexList[l_indexOffset];
 
-                StaticModelRecord::ModelVertex l_modelVertex = {};
+                Struct::StaticModelVertex l_modelVertex = {};
 
                 // ufbx_load_opts側で、+XRight/+YForward/+Z Upとcm->m変換を行っている。
                 // ここではさらにNodeTransformをgeometry_to_worldで反映する。

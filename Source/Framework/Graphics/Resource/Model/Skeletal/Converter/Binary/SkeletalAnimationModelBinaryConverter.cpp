@@ -111,7 +111,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
         // InValidは親を持たないRootBoneを表す
         // Invalid以外なら、BoneList上の有効なIndexでなければならない
-        if (l_modelBoneBinaryHeader.m_parentBoneIndex != Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex &&
+        if (l_modelBoneBinaryHeader.m_parentBoneIndex != Constant::k_invalidBoneIndex &&
             l_modelBoneBinaryHeader.m_parentBoneIndex >= l_modelBinaryHeader.m_boneCount)
         {
             FailLoadAsset(l_modelData);
@@ -231,7 +231,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
     // 全体Headerを書き込む
     const auto& l_modelBinaryHeader = CreateModelBinaryHeader(l_modelData, l_modelAssetFileSize);
 
-    WriteBinaryData(&l_modelBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
+    WriteBinaryData(k_singleBinaryElementCount, &l_modelBinaryHeader, l_memoryWriteOffset);
 
     // 各ModelMeshについて、
     // 共通MeshデータとInverseBindPose配列を書き込む
@@ -246,13 +246,13 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
         const auto& l_modelBoneBinaryHeader = CreateModelBoneBinaryHeader(l_modelBone);
 
         // Bone単位Header
-        WriteBinaryData(&l_modelBoneBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_modelBoneBinaryHeader, l_memoryWriteOffset);
 
         // Bone名
         WriteWStringBinaryData(l_modelBone.m_boneName, l_memoryWriteOffset);
 
         // BindPoseLocalMatrix
-        WriteBinaryData(&l_modelBone.m_bindPoseLocalMatrix, k_singleBinaryElementCount, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_modelBone.m_bindPoseLocalMatrix, l_memoryWriteOffset);
     }
 
     // MotionSequenceListを書き込む
@@ -261,7 +261,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
         const auto& l_modelMotionSequenceBinaryHeader = CreateMotionSequenceBinaryHeader(l_modelMotionSequence);
 
         // MotionSequence単位Header
-        WriteBinaryData(&l_modelMotionSequenceBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
+        WriteBinaryData(k_singleBinaryElementCount, &l_modelMotionSequenceBinaryHeader, l_memoryWriteOffset);
 
         // Motion名
         WriteWStringBinaryData(l_modelMotionSequence.m_motionName, l_memoryWriteOffset);
@@ -272,10 +272,10 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
             const auto& l_modelBoneMotionTrackBinaryHeader = CreateModelBoneMotionTrackBinaryHeader(l_modelBoneMotionTrack);
 
             // BoneMotionTrack単位Header
-            WriteBinaryData(&l_modelBoneMotionTrackBinaryHeader, k_singleBinaryElementCount, l_memoryWriteOffset);
+            WriteBinaryData(k_singleBinaryElementCount, &l_modelBoneMotionTrackBinaryHeader, l_memoryWriteOffset);
 
             // KeyFrame配列
-            WriteBinaryData(l_modelBoneMotionTrack.m_keyFrameList.data(), l_modelBoneMotionTrackBinaryHeader.m_keyFrameCount, l_memoryWriteOffset);
+            WriteBinaryData(l_modelBoneMotionTrackBinaryHeader.m_keyFrameCount, l_modelBoneMotionTrack.m_keyFrameList.data(), l_memoryWriteOffset);
         }
     }
 
@@ -292,7 +292,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
     return true;
 }
 
-void FWK::Converter::SkeletalAnimationModelBinaryConverter::FailLoadAsset(Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData)
+void FWK::Converter::SkeletalAnimationModelBinaryConverter::FailLoadAsset(Struct::SkeletalAnimationModelData& a_modelData)
 {
     // 中途半端に読み込んだデータが残らないように空にする
     a_modelData.m_modelMeshList.clear     ();
@@ -303,7 +303,7 @@ void FWK::Converter::SkeletalAnimationModelBinaryConverter::FailLoadAsset(Graphi
     DestroyMemoryMappedFile();
 }
 
-FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData, const std::uint64_t& a_fileSize) const
+FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBinaryHeader(const Struct::SkeletalAnimationModelData& a_modelData, const std::uint64_t& a_fileSize) const
 {
     ModelBinaryHeader l_modelBinaryHeader = {};
 
@@ -317,7 +317,7 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBinaryHeader FWK::Co
     return l_modelBinaryHeader;
 }
 
-FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBoneBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBone& a_modelBone) const
+FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBoneBinaryHeader(const Struct::SkeletalAnimationModelBone& a_modelBone) const
 {
     ModelBoneBinaryHeader l_modelBoneBinaryHeader = {};
 
@@ -327,7 +327,7 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneBinaryHeader FWK
     return l_modelBoneBinaryHeader;
 }
 
-FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelMotionSequenceBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateMotionSequenceBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelMotionSequence& a_modelMotionSequence) const
+FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelMotionSequenceBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateMotionSequenceBinaryHeader(const Struct::SkeletalAnimationModelMotionSequence& a_modelMotionSequence) const
 {
     ModelMotionSequenceBinaryHeader l_modelMotionSequenceBinaryHeader = {};
 
@@ -339,7 +339,7 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelMotionSequenceBinary
     return l_modelMotionSequenceBinaryHeader;
 }
 
-FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneMotionTrackBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBoneMotionTrackBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBoneMotionTrack& a_modelBoneMotionTrack) const
+FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneMotionTrackBinaryHeader FWK::Converter::SkeletalAnimationModelBinaryConverter::CreateModelBoneMotionTrackBinaryHeader(const Struct::SkeletalAnimationModelBoneMotionTrack& a_modelBoneMotionTrack) const
 {
     ModelBoneMotionTrackBinaryHeader l_modelMotionTrackBinaryHeader = {};
 
@@ -349,7 +349,7 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBoneMotionTrackBinar
     return l_modelMotionTrackBinaryHeader;
 }
 
-bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBinaryData(const std::uint64_t& a_boneCount, Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryReadOffset) const
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBinaryData(const std::uint64_t& a_boneCount, Struct::SkeletalAnimationModelMesh& a_modelMesh, std::uint64_t& a_memoryReadOffset) const
 {
     // ModelVertex,Index,Material,Meshletを、共通基底クラスの基底クラスの既存処理で読み込む
     if (!TryReadModelMeshBinaryDataCommon(a_modelMesh, a_memoryReadOffset)) { return false; }
@@ -377,7 +377,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBina
     return IsValidModelMesh(a_modelMesh, a_boneCount);
 }
 
-void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMeshBinaryData(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const
+void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMeshBinaryData(const Struct::SkeletalAnimationModelMesh& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const
 {
     // ModelVertex、Index、Material、Meshletは、
     // 共通基底クラスの気損処理で書き込む
@@ -387,13 +387,13 @@ void FWK::Converter::SkeletalAnimationModelBinaryConverter::WriteModelMeshBinary
 
     // 単一パラメータなので、Header構造体を使用せず、
     // Palette数を直接書きこむ
-    WriteBinaryData(&l_bonePaletteCount, k_singleBinaryElementCount, a_memoryWriteOffset);
+    WriteBinaryData(k_singleBinaryElementCount, &l_bonePaletteCount, a_memoryWriteOffset);
 
     // Mesh固有のInverseBindPose配列を書き込む
-    WriteBinaryData(a_modelMesh.m_bonePaletteList.data(), l_bonePaletteCount, a_memoryWriteOffset);
+    WriteBinaryData(l_bonePaletteCount, a_modelMesh.m_bonePaletteList.data(), a_memoryWriteOffset);
 }
 
-std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateModelMeshBinaryFileSize(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const
+std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateModelMeshBinaryFileSize(const Struct::SkeletalAnimationModelMesh& a_modelMesh) const
 {
     // ModelVertex,Index,Material,Meshletの共通サイズ
     auto l_modelMeshBinaryFileSize = CalculateModelMeshBinaryFileSizeCommon(a_modelMesh);
@@ -402,12 +402,12 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateMo
     l_modelMeshBinaryFileSize += CalculateBinaryDataSize<std::uint64_t>(k_singleBinaryElementCount);
 
     // このMeshが実際に使用するBoneだけを保持する
-    l_modelMeshBinaryFileSize += CalculateBinaryDataSize<Graphics::SkeletalAnimationModelRecord::ModelBonePaletteElement>(a_modelMesh.m_bonePaletteList.size());
+    l_modelMeshBinaryFileSize += CalculateBinaryDataSize<Struct::SkeletalAnimationModelBonePaletteElement>(a_modelMesh.m_bonePaletteList.size());
 
     return l_modelMeshBinaryFileSize;
 }
 
-std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAssetFileSize(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData) const
+std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAssetFileSize(const Struct::SkeletalAnimationModelData& a_modelData) const
 {
     // Meshが一つもないModelDataは.asset化しない
     if (a_modelData.m_modelMeshList.empty()) { return k_emptyAssetFileSize; }
@@ -431,7 +431,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 
     for (const auto& l_modelBone : a_modelData.m_boneList)
     {
-        if (l_modelBone.m_parentBoneIndex !=Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex &&
+        if (l_modelBone.m_parentBoneIndex !=Constant::k_invalidBoneIndex &&
             l_modelBone.m_parentBoneIndex >= l_boneCount)
         {
             return k_emptyAssetFileSize;
@@ -463,14 +463,14 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
             l_modelAssetFileSize += CalculateBinaryDataSize<ModelBoneMotionTrackBinaryHeader>(k_singleBinaryElementCount);
 
             // KeyFrame配列
-            l_modelAssetFileSize += CalculateBinaryDataSize<Graphics::SkeletalAnimationModelRecord::ModelKeyFrame>(l_modelBoneMotionTrack.m_keyFrameList.size());
+            l_modelAssetFileSize += CalculateBinaryDataSize<Struct::SkeletalAnimationModelKeyFrame>(l_modelBoneMotionTrack.m_keyFrameList.size());
         }
     }
 
     return l_modelAssetFileSize;
 }
 
-bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(const Struct::SkeletalAnimationModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const
 {
     if (a_modelMesh.m_modelVertexList.empty()) { return false; }
     if (a_modelMesh.m_indexList.empty())       { return false; }

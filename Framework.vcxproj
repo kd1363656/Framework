@@ -833,6 +833,22 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.h" />
     <ClInclude Include="Source\Framework\Window\Window.h" />
     <ClInclude Include="Source\PCH.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelRecordConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ResourceReleaseContextStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureBatchUploadRecordBuilderStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\StaticStructuredBufferStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SwapChainJsonConverterStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StandardPipelineStateJsonConverterStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteScreenPerObjectDrawRequestStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelRecordStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelRecordStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationPlayerStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\SmartPointerVectorListStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFORegistryStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -1091,6 +1107,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Utility\UUID\UUIDManager.cpp" />
     <ClCompile Include="Source\Framework\Window\Converter\Json\WindowJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>

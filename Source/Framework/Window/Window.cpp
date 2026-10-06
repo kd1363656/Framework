@@ -250,7 +250,7 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
         {
             // WM_SIZEのLPARAMには、クライアント領域の横幅と縦幅がまとめて入っている。
             // LOWORDで下位側の値、横幅を取り出し、HIWORDで上位側の値、縦幅を取り出す。
-            const ClientSize l_changedClientSize = { static_cast<UINT>(LOWORD(a_lPARAM)) , static_cast<UINT>(HIWORD(a_lPARAM)) };
+            const Struct::WindowClientSize l_changedClientSize = { static_cast<UINT>(LOWORD(a_lPARAM)) , static_cast<UINT>(HIWORD(a_lPARAM)) };
 
             ApplyClientSizeFromWMSize(l_changedClientSize, a_wPARAM);
         }
@@ -413,7 +413,7 @@ void FWK::Window::Release()
     m_hwnd = nullptr;
 }
 
-void FWK::Window::ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, const WPARAM& a_wPARAM)
+void FWK::Window::ApplyClientSizeFromWMSize(const Struct::WindowClientSize& a_clientSize, const WPARAM& a_wPARAM)
 {
     const bool l_isMinimized = a_wPARAM == SIZE_MINIMIZED;
 
@@ -429,8 +429,8 @@ void FWK::Window::ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, cons
         return;
     }
 
-    if (a_clientSize.m_width  == k_invalidClientWidth ||
-        a_clientSize.m_height == k_invalidClientHeight)
+    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
+        a_clientSize.m_height == Constant::k_invalidClientHeight)
     {
         return;
     }
@@ -475,8 +475,8 @@ void FWK::Window::ApplyNormalWindowStyle()
     const auto l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
     const auto l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
 
-    if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > k_invalidClientWidth &&
-                                          l_saveWindowHeight > k_invalidClientWidth;
+    if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > Constant::k_invalidClientWidth &&
+                                          l_saveWindowHeight > Constant::k_invalidClientHeight;
         l_hasSavedWindowRECT)
     {
         // ボーダーレスフルスクリーンへ移る前の通常ウィンドウ位置へ戻す
@@ -554,10 +554,10 @@ void FWK::Window::StoreNormalWindowRECT()
     m_normalWindowRECT = l_windowRECT;
 }
 
-void FWK::Window::RequestResizeFromClientSize(const ClientSize& a_clientSize)
+void FWK::Window::RequestResizeFromClientSize(const Struct::WindowClientSize& a_clientSize)
 {
-    if (a_clientSize.m_width  == k_invalidClientWidth ||
-        a_clientSize.m_height == k_invalidClientHeight)
+    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
+        a_clientSize.m_height == Constant::k_invalidClientHeight)
     {
         return;
     }
@@ -590,7 +590,7 @@ DWORD FWK::Window::FetchVALWindowStyle() const
     FWK_ASSERT_RETURN_VALUE("ウィンドウスタイルの取得に失敗しました。", k_generalWindowStyle);
 }
 
-FWK::Window::ClientSize FWK::Window::FetchVALCurrentClientSize() const
+FWK::Struct::WindowClientSize FWK::Window::FetchVALCurrentClientSize() const
 {
     if (!m_hwnd) { return m_clientSize; }
 
@@ -600,7 +600,7 @@ FWK::Window::ClientSize FWK::Window::FetchVALCurrentClientSize() const
     if (!GetClientRect(m_hwnd, &l_clientRECT)) { return m_clientSize; }
 
     // ウィンドウの左端、右端、上端、下端の差分からサイズを取得
-    const ClientSize l_clientSize =
+    const Struct::WindowClientSize l_clientSize =
     {
         static_cast<UINT>(l_clientRECT.right  - l_clientRECT.left),
         static_cast<UINT>(l_clientRECT.bottom - l_clientRECT.top)

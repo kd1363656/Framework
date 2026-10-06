@@ -8,12 +8,12 @@ bool FWK::Graphics::TextureRecord::ReserveRelease(const UINT64& a_retiredFenceVa
 
     // GPUResourceはQueueへ所有権を移す
     // Queue内のRecordが消えるタイミングでComPtrが自然にReleaseされる
-    ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
+    Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
     l_gpuResourceReleaseRecord.m_gpuResource       = std::move(m_gpuResource);
     l_gpuResourceReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-    ResourceReleaseContext::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
+    Struct::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
 
     l_srvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_srvDescriptorIndex;
     l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;

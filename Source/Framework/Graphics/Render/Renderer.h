@@ -17,11 +17,11 @@ namespace FWK::Graphics
         void INIT       ();
         void Deserialize(const nlohmann::json& a_rootJson);
 
-        bool PostDeserialize(const Device&             a_device,
-                             const Window&             a_window,
-                             const Factory&            a_factory,
-                             const Window::ClientSize& a_clientSize,
-                                   ResourceContext&    a_resourceContext);
+        bool PostDeserialize(const Device&                   a_device,
+                             const Window&                   a_window,
+                             const Factory&                  a_factory,
+                             const Struct::WindowClientSize& a_clientSize,
+                                   ResourceContext&          a_resourceContext);
 
         void BeginFrame(const ResourceContext& a_resourceContext);
         void Execute   (const ResourceContext& a_resourceContext);
@@ -29,7 +29,7 @@ namespace FWK::Graphics
 
         nlohmann::json Serialize() const;
 
-        void Resize(const Device& a_device, const Window::ClientSize& a_clientSize, ResourceContext& a_resourceContext);
+        void Resize(const Device& a_device, const Struct::WindowClientSize& a_clientSize, ResourceContext& a_resourceContext);
 
         void AddFrameResource(const std::shared_ptr<FrameResource>&     a_frameResource);
         void AddRootSignature(const std::shared_ptr<RootSignature>&     a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
@@ -100,7 +100,7 @@ namespace FWK::Graphics
 
     private:
 
-        bool SetupScreenRenderArea(const Window::ClientSize& a_clientSize);
+        bool SetupScreenRenderArea(const Struct::WindowClientSize& a_clientSize);
 
         void ResetCommandObjects(const FrameResource& a_frameResource);
 

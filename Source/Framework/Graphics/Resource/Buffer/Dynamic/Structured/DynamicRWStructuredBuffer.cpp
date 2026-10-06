@@ -58,7 +58,7 @@ bool FWK::Graphics::DynamicRWStructuredBuffer::ReserveRelease(const UINT64& a_re
     FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue == Fence::k_unusedFenceValue,                       "FenceValueが無効のため、DynamicRWStructuredBufferの遅延解放登録に失敗しました。",         false);
 
     // UAVDescirptorIndexの遅延解放Recordを作る
-    ResourceReleaseContext::DescriptorIndexReleaseRecord l_uavDescriptorIndexReleaseRecord = {};
+    Struct::DescriptorIndexReleaseRecord l_uavDescriptorIndexReleaseRecord = {};
 
     l_uavDescriptorIndexReleaseRecord.m_descriptorIndex   = m_uavDescriptorIndex;
     l_uavDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;

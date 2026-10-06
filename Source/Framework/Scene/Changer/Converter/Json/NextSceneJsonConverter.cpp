@@ -45,7 +45,7 @@ bool FWK::Converter::NextSceneJsonConverter::Rename(const std::filesystem::path&
     return true;
 }
 
-void FWK::Converter::NextSceneJsonConverter::Load(nlohmann::json&& a_rootJson, NextScene& a_nextScene) const
+void FWK::Converter::NextSceneJsonConverter::Load(NextScene& a_nextScene, nlohmann::json&& a_rootJson) const
 {
     if (a_rootJson.is_null())
     {

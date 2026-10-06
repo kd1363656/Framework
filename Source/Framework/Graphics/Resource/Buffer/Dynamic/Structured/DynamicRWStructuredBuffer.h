@@ -47,9 +47,9 @@ namespace FWK::Graphics
 
             // UAVとして書き込むBufferなので、
             // D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESSを指定する
-            FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS,
+            FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(l_bufferSize,
+                                                                                  D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS,
                                                                                   D3D12_RESOURCE_STATE_COMMON,
-                                                                                  l_bufferSize,
                                                                                   l_bufferGPUResource),
                                                                                   "DynamicRWStructuredBuffer用GPUResourceの作成に失敗しました。。",
                                                                                   false);

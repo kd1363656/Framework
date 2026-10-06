@@ -1,6 +1,6 @@
 ﻿#include "SkeletalAnimationModelFBXSkeletonExtractor.h"
 
-bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::ExtractModelBoneList(const ufbx_scene* a_fbxScene, std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, std::vector<SkeletalAnimationModelRecord::ModelBone>& a_modelBoneList) const
+bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::ExtractModelBoneList(const ufbx_scene* a_fbxScene, std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, std::vector<Struct::SkeletalAnimationModelBone>& a_modelBoneList) const
 {
     a_boneNodeIndexMap.clear();
     a_modelBoneList.clear   ();
@@ -14,7 +14,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::ExtractModelBone
 
     for (const auto* l_fbxBoneNode : l_modelBoneNodeList)
     {
-        SkeletalAnimationModelRecord::ModelBone l_modelBone = {};
+        Struct::SkeletalAnimationModelBone l_modelBone = {};
 
         FWK_ASSERT_RETURN_VALUE_IF(!CreateModelBone(a_boneNodeIndexMap, l_fbxBoneNode, l_modelBone), "ufbx_nodeからModelBoneへの変換に失敗しました", false);
 
@@ -45,7 +45,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateBoneNodeIn
 
     return true;
 }
-bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateModelBone(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node* a_fbxBoneNode, SkeletalAnimationModelRecord::ModelBone& a_modelBone) const
+bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateModelBone(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node* a_fbxBoneNode, Struct::SkeletalAnimationModelBone& a_modelBone) const
 {
     a_modelBone = {};
 
@@ -61,7 +61,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CreateModelBone(
     if (!l_fbxParentBoneNode ||
          l_fbxParentBoneNode->is_root)
     {
-        a_modelBone.m_parentBoneIndex = SkeletalAnimationModelRecord::k_invalidBoneIndex;
+        a_modelBone.m_parentBoneIndex = Constant::k_invalidBoneIndex;
 
         return true;
     }

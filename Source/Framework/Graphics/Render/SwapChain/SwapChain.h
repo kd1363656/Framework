@@ -27,7 +27,7 @@ namespace FWK::Graphics
         // 呼び出す前にGPUとの完全同期を取ること
         bool Resize(const Device&                       a_device,
                     const ResourceReleaseContext&       a_resourceReleaseContext,
-                    const Window::ClientSize&           a_clientSize,
+                    const Struct::WindowClientSize&     a_clientSize,
                           TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
         void ResizeBackBufferList(const std::size_t& a_backBufferNUM);
@@ -52,7 +52,7 @@ namespace FWK::Graphics
         bool CreateSwapChain     (const Window& a_window, const Factory&                    a_factory, const TypeAlias::DirectCommandQueue& a_directCommandQueue);
         bool CreateBackBufferList(const Device& a_device, TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool);
 
-        bool IsValidBackBufferSize(const Window::ClientSize& a_clientSize) const;
+        bool IsValidBackBufferSize(const Struct::WindowClientSize& a_clientSize) const;
 
         // ID3D12Deviceを使って作るコマンドキューなどの各種GPUオブジェクトで
         // 共通使用する既定のGPUノード指定値
@@ -65,7 +65,7 @@ namespace FWK::Graphics
         static constexpr UINT k_swapChainPresentFlagNone = 0U;
         static constexpr UINT k_swapChainDescFlags       = 0U;
 
-        std::vector<Converter::SwapChainJsonConverter::BackBuffer> m_backBufferList = {};
+        std::vector<Struct::SwapChainBackBuffer> m_backBufferList = {};
 
         TypeAlias::ComPtr<IDXGISwapChain4> m_swapChain = nullptr;
 

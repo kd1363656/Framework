@@ -39,7 +39,7 @@ namespace FWK::Graphics
             //                                   CBVとして参照させるGPU仮想アドレス);
             // SetupConstantBufferView内でRootParameterTagからルートパラメータ番号を取得し、
             // 指定したRootParameterへUploadBuffer上の定数バッファを結びつける
-            a_directCommandList.SetupConstantBufferView(a_rootSignature, a_rootParameterType, l_gpuVirtualAddress);
+            a_directCommandList.SetupConstantBufferView(a_rootSignature, l_gpuVirtualAddress, a_rootParameterType);
         }
 
         TypeAlias::DescriptorIndex FetchTextureSRVDescriptorIndex(const std::weak_ptr<TextureRecord>& a_textureRecord) const;

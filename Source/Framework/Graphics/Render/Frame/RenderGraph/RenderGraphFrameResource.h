@@ -24,16 +24,16 @@ namespace FWK::Graphics
 
         nlohmann::json Serialize() const;
 
-        bool Create(const Device&             a_device,
-                    const GPUMemoryAllocator& a_gpuMemoryAllocator,
-                    const Window::ClientSize& a_clientSize,
-                          ResourceContext&    a_resourceContext) const;
+        bool Create(const Device&                   a_device,
+                    const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                    const Struct::WindowClientSize& a_clientSize,
+                          ResourceContext&          a_resourceContext) const;
 
-        bool Resize(const Device&             a_device,
-                    const GPUMemoryAllocator& a_gpuMemoryAllocator,
-                    const Window::ClientSize& a_clientSize,
-                    const UINT64&             a_retiredFenceValue,
-                          ResourceContext&    a_resourceContext) const;
+        bool Resize(const Device&                   a_device,
+                    const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                    const Struct::WindowClientSize& a_clientSize,
+                    const UINT64&                   a_retiredFenceValue,
+                          ResourceContext&          a_resourceContext) const;
 
         void AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture);
         void AddDepthStencilPassTexture(const std::shared_ptr<DepthStencilPassTexture>& a_depthStencilPassTexture);

@@ -6,28 +6,6 @@ namespace FWK
     {
     public:
 
-        struct ClientSize final
-        {
-            UINT m_width  = k_defaultWindowWidth;
-            UINT m_height = k_defaultWindowHeight;
-        };
-
-        struct ResizeRequest final
-        {
-            ClientSize m_clientSize = { k_invalidClientWidth, k_invalidClientHeight };
-
-            bool m_isRequested = false;
-            bool m_isMinimized = false;
-        };
-
-        static constexpr UINT k_defaultWindowWidth  = 1280U;
-        static constexpr UINT k_defaultWindowHeight = 720U;
-
-        static constexpr UINT k_invalidClientWidth  = 0U;
-        static constexpr UINT k_invalidClientHeight = 0U;
-
-    public:
-
          Window();
         ~Window();
 
@@ -75,7 +53,7 @@ namespace FWK
 
         void Release();
 
-        void ApplyClientSizeFromWMSize(const ClientSize& a_clientSize, const WPARAM& a_wPARAM);
+        void ApplyClientSizeFromWMSize(const Struct::WindowClientSize& a_clientSize, const WPARAM& a_wPARAM);
 
         void ApplyWindowStyle();
 
@@ -85,13 +63,13 @@ namespace FWK
 
         void StoreNormalWindowRECT();
 
-        void RequestResizeFromClientSize(const ClientSize& a_clientSize);
+        void RequestResizeFromClientSize(const Struct::WindowClientSize& a_clientSize);
 
         HINSTANCE FetchVALInstanceHandle() const;
 
         DWORD FetchVALWindowStyle() const;
 
-        ClientSize FetchVALCurrentClientSize() const;
+        Struct::WindowClientSize FetchVALCurrentClientSize() const;
 
         // ウィンドウのタイトルバー、最小化、最大化機能を持たせウィンドウのサイズ変更機能を除外したスタイル
         static constexpr std::wstring_view k_windowInstancePropertyName = L"GameWindowInstance";
@@ -135,8 +113,8 @@ namespace FWK
 
         RECT m_normalWindowRECT;
 
-        ClientSize    m_clientSize;
-        ResizeRequest m_resizeRequest;
+        Struct::WindowClientSize    m_clientSize;
+        Struct::WindowResizeRequest m_resizeRequest;
 
         Enum::WindowStyle m_style;
 

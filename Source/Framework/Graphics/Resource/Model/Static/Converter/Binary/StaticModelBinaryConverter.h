@@ -26,11 +26,11 @@ namespace FWK::Converter
 
     private:
 
-        void FailLoadAsset(Graphics::StaticModelRecord::ModelData& a_modelData);
+        void FailLoadAsset(Struct::StaticModelData& a_modelData);
 
-        ModelBinaryHeader CreateModelBinaryHeader(const Graphics::StaticModelRecord::ModelData& a_modelData, const std::uint64_t& a_fileSize) const;
+        ModelBinaryHeader CreateModelBinaryHeader(const Struct::StaticModelData& a_modelData, const std::uint64_t& a_fileSize) const;
 
-        std::uint64_t CalculateAssetFileSize(const Graphics::StaticModelRecord::ModelData& a_modelData) const;
+        std::uint64_t CalculateAssetFileSize(const Struct::StaticModelData& a_modelData) const;
 
         // 'S' = 0x53, 'T' = 0x54のため、0x5354で"ST"を表す
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5354U;

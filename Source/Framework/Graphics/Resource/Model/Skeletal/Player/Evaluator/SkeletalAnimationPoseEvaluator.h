@@ -24,16 +24,16 @@ namespace FWK::Graphics
         SkeletalAnimationPoseEvaluator& operator=(const SkeletalAnimationPoseEvaluator&)           = delete;
         SkeletalAnimationPoseEvaluator& operator=(      SkeletalAnimationPoseEvaluator&&) noexcept = default;
 
-        bool Create(SkeletalAnimationModelRecord::ModelData& a_modelData);
+        bool Create(Struct::SkeletalAnimationModelData& a_modelData);
 
-        bool EvaluatePose(const SkeletalAnimationModelRecord::ModelData& a_modelData,
-                          const float                                    a_animationTimeSecond,
-                          const float                                    a_blendTargetAnimationTimeSecond,
-                          const float                                    a_blendWeight,
-                          const std::uint32_t                            a_motionIndex,
-                          const std::uint32_t                            a_blendTargetMotionIndex,
-                          const bool                                     a_isBlending,
-                                std::vector<TypeAlias::Math::Matrix>&    a_globalBoneMatrixList) const;
+        bool EvaluatePose(const Struct::SkeletalAnimationModelData&   a_modelData,
+                          const float                                 a_animationTimeSecond,
+                          const float                                 a_blendTargetAnimationTimeSecond,
+                          const float                                 a_blendWeight,
+                          const std::uint32_t                         a_motionIndex,
+                          const std::uint32_t                         a_blendTargetMotionIndex,
+                          const bool                                  a_isBlending,
+                                std::vector<TypeAlias::Math::Matrix>& a_globalBoneMatrixList) const;
 
         const auto& GetREFBindPoseGlobalBoneMatrixList() const { return m_bindPoseGlobalBoneMatrixList; }
 
@@ -41,13 +41,13 @@ namespace FWK::Graphics
 
     private:
 
-        bool                    CreateAnimationLookupData(      SkeletalAnimationModelRecord::ModelData& a_modelData, std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList) const;
-        TypeAlias::Math::Matrix CreateLocalMatrix        (const LocalTransform&                          a_localTransform)                                                                                                                            const;
+        bool                    CreateAnimationLookupData(      std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList, Struct::SkeletalAnimationModelData& a_modelData) const;
+        TypeAlias::Math::Matrix CreateLocalMatrix        (const LocalTransform&              a_localTransform)                                                                                                                                        const;
 
-        LocalTransform SampleLocalTransform(const SkeletalAnimationModelRecord::ModelMotionSequence& a_motionSequence,
-                                            const float                                              a_timeSecond,
-                                            const std::uint32_t                                      a_motionIndex,
-                                            const std::uint32_t                                      a_boneIndex) const;
+        LocalTransform SampleLocalTransform(const Struct::SkeletalAnimationModelMotionSequence& a_motionSequence,
+                                            const float                                         a_timeSecond,
+                                            const std::uint32_t                                 a_motionIndex,
+                                            const std::uint32_t                                 a_boneIndex) const;
 
         LocalTransform InterpolateLocalTransform(const LocalTransform& a_startLocalTransform, const LocalTransform& a_endLocalTransform, const float a_interpolationWeight) const;
 

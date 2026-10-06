@@ -12,10 +12,10 @@ nlohmann::json FWK::Graphics::RenderGraphFrameResource::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&             a_device,
-                                                     const GPUMemoryAllocator& a_gpuMemoryAllocator,
-                                                     const Window::ClientSize& a_clientSize,
-                                                           ResourceContext&    a_resourceContext) const
+bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&                   a_device,
+                                                     const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                                                     const Struct::WindowClientSize& a_clientSize,
+                                                           ResourceContext&          a_resourceContext) const
 {
     auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
     auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
@@ -50,11 +50,11 @@ bool FWK::Graphics::RenderGraphFrameResource::Create(const Device&             a
     return true;
 }
 
-bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&              a_device,
-                                                     const GPUMemoryAllocator&  a_gpuMemoryAllocator,
-                                                     const Window::ClientSize&  a_clientSize,
-                                                     const UINT64&              a_retiredFenceValue,
-                                                            ResourceContext&    a_resourceContext) const
+bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&                   a_device,
+                                                     const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                                                     const Struct::WindowClientSize& a_clientSize,
+                                                     const UINT64&                   a_retiredFenceValue,
+                                                           ResourceContext&          a_resourceContext) const
 {
     auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
     auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();

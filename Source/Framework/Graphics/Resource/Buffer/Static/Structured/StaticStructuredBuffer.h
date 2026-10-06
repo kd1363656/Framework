@@ -6,27 +6,6 @@ namespace FWK::Graphics
     {
     public:
 
-        struct BufferUploadRecord final
-        {
-            // DEFAULTヒープ上のBufferResourceへコピーするための中間バッファ
-            Graphics::UploadBuffer m_uploadBuffer = {};
-
-            // コピーするバッファサイズ
-            UINT64 m_bufferSize = Graphics::UploadBuffer::k_invalidBufferSize;
-        };
-
-        struct BufferUploadCommand final
-        {
-            // Upload先のDEFAULTヒープ上
-            // CopyBufferRegionではAllocationを使用しないため、GPUResource全体ではなくD3D12Resource2のみを保存する
-            TypeAlias::ComPtr<ID3D12Resource2> m_destinationBufferResource = nullptr;
-
-            // バッファーへコピーするためのUpload情報
-            BufferUploadRecord m_bufferUploadRecord = {};
-        };
-
-    public:
-
          StaticStructuredBuffer();
         ~StaticStructuredBuffer() override;
 
@@ -37,11 +16,11 @@ namespace FWK::Graphics
         StaticStructuredBuffer& operator=(      StaticStructuredBuffer&& a_other) noexcept;
 
         template <typename Type>
-        bool Create(const std::vector<Type>&                  a_bufferList,
-                    const Device&                             a_device,
-                    const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                          std::vector<BufferUploadCommand>&   a_bufferUploadCommandList,
-                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
+        bool Create(const std::vector<Type>&                        a_bufferList,
+                    const Device&                                   a_device,
+                    const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
+                          std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
+                          TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool)
         {
             // ストラクチャードバッファーを作成するための条件がそろっているのかどうかを確認する
             FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                                                   "BufferListが空のため、StaticStructuredBufferの作成に失敗しました。",                                          false);
@@ -59,14 +38,14 @@ namespace FWK::Graphics
             Struct::GPUResource l_bufferGPUResource = {};
 
             // リソース作成のためのメモリ領域を確保
-            FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(D3D12_RESOURCE_FLAG_NONE,
+            FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateBufferResource(l_bufferSize,
+                                                                                  D3D12_RESOURCE_FLAG_NONE,
                                                                                   D3D12_RESOURCE_STATE_COMMON,
-                                                                                  l_bufferSize,
                                                                                   l_bufferGPUResource),
                                                                                   "StaticStructuredBuffer用GPUResourceの作成に失敗しました。",
                                                                                   false);
 
-            BufferUploadCommand l_bufferUploadCommand = {};
+            Struct::BufferUploadCommand l_bufferUploadCommand = {};
 
             // バッファーのアップロード先のデフォルトヒープにリソースを作成
             FWK_ASSERT_RETURN_VALUE_IF(!CreateBufferUploadCommand(a_bufferList,
@@ -101,11 +80,11 @@ namespace FWK::Graphics
     private:
 
         template <typename Type>
-        bool CreateBufferUploadCommand(const std::vector<Type>&   a_bufferList,
-                                       const Device&              a_device,
-                                       const Struct::GPUResource& a_bufferGPUResource,
-                                       const UINT64&              a_bufferSize,
-                                             BufferUploadCommand& a_bufferUploadCommand)
+        bool CreateBufferUploadCommand(const std::vector<Type>&           a_bufferList,
+                                       const Device&                      a_device,
+                                       const Struct::GPUResource&         a_bufferGPUResource,
+                                       const UINT64&                      a_bufferSize,
+                                             Struct::BufferUploadCommand& a_bufferUploadCommand)
         {
             FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                   "StaticStructuredBuffer用GPUResourceが無効のため、UploadCommandの作成に失敗しました。", false);
             FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                              "BufferListが空のため、UploadCommandの作成に失敗しました。",                           false);

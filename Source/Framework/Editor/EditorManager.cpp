@@ -206,7 +206,7 @@ void FWK::Editor::EditorManager::SaveCONFIG() const
     Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest) const
+void FWK::Editor::EditorManager::ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest) const
 {
     // window側でサイズ変更が起きていない場合は、何もしない
     if (!a_windowResizeRequest.m_isRequested ||

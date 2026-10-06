@@ -17,45 +17,6 @@ namespace FWK::Graphics
 
     public:
 
-        struct Animation final
-        {
-            static constexpr float k_defaultPlaybackSpeed       = 1.0F;
-            static constexpr float k_initialBlendDurationSecond = 0.0F;
-
-            float m_startTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
-
-            float m_playbackSpeed = k_defaultPlaybackSpeed;
-
-            float m_blendDurationSecond = k_initialBlendDurationSecond;
-
-            std::uint32_t m_motionIndex = SkeletalAnimationPoseEvaluator::k_invalidMotionIndex;
-
-            bool m_isLoop = false;
-        };
-
-        struct FrameData final
-        {
-             FrameData() = default;
-            ~FrameData() = default;
-
-            FrameData(const FrameData&)          = delete;
-            FrameData(      FrameData&& a_other) = default;
-
-            FrameData& operator=(const FrameData&)           = delete;
-            FrameData& operator=(      FrameData&&) noexcept = delete;
-
-            std::vector<DynamicRWStructuredBuffer> m_skinnedVertexBufferList = {};
-
-            std::vector<DynamicRWStructuredBuffer> m_meshletBoundsBufferList = {};
-            std::vector<TypeAlias::Math::Matrix>   m_globalBoneMatrixList    = {};
-
-            DynamicRWStructuredBuffer m_boneMatrixBuffer = {};
-
-            SkeletalAnimationBoneMatrixBufferUploader m_boneMatrixBufferUploader = {};
-        };
-
-    public:
-
          SkeletalAnimationPlayer() = default;
         ~SkeletalAnimationPlayer() = default;
 
@@ -75,11 +36,11 @@ namespace FWK::Graphics
 
         void Stop();
 
-        bool ApplyAnimation(const Animation& a_animation);
+        bool ApplyAnimation(const Struct::SkeletalAnimationPlayerAnimation& a_animation);
 
-        const FrameData* FindPTRCurrentFrameData() const;
+        const Struct::SkeletalAnimationPlayerFrameData* FindPTRCurrentFrameData() const;
 
-        FrameData* FindMutablePTRCurrentFrameData();
+        Struct::SkeletalAnimationPlayerFrameData* FindMutablePTRCurrentFrameData();
 
         float FetchVALBlendWeight() const;
 
@@ -101,29 +62,29 @@ namespace FWK::Graphics
 
         bool EvaluateCurrentPose();
 
-        float CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
+        float CalculateAdvancedTimeSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation, const float a_timeSecond, const float a_deltaTime) const;
 
         void CompleteAnimationBlend();
 
         void ResetPlaybackState();
 
-        float FetchMotionDurationSecond(const Animation& a_animation) const;
+        float FetchMotionDurationSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation) const;
 
         static constexpr float k_initialBlendElapsedSecond = 0.0F;
         static constexpr float k_completeBlendWeight       = 1.0F;
         static constexpr float k_stoppedPlaybackSpeed      = 0.0F;
 
-        std::vector<FrameData> m_frameDataList = {};
+        std::vector<Struct::SkeletalAnimationPlayerFrameData> m_frameDataList = {};
 
         std::weak_ptr<SkeletalAnimationModelRecord> m_skeletalAnimationModelRecord = {};
 
         SkeletalAnimationPoseEvaluator m_poseEvaluator = {};
 
-        Animation m_animation            = {};
-        Animation m_blendTargetAnimation = {};
+        Struct::SkeletalAnimationPlayerAnimation m_animation            = {};
+        Struct::SkeletalAnimationPlayerAnimation m_blendTargetAnimation = {};
 
-        float m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
-        float m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+        float m_animationTimeSecond            = Constant::k_initialAnimationTimeSecond;
+        float m_blendTargetAnimationTimeSecond = Constant::k_initialAnimationTimeSecond;
 
         float m_blendElapsedSecond = k_initialBlendElapsedSecond;
 

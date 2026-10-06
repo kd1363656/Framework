@@ -13,18 +13,18 @@ namespace FWK::Graphics
 
     private:
 
-        bool UploadBoneMatrix(const ComputeCommandList& a_computeCommandList, SkeletalAnimationPlayer::FrameData& a_frameData) const;
+        bool UploadBoneMatrix(const ComputeCommandList& a_computeCommandList, Struct::SkeletalAnimationPlayerFrameData& a_frameData) const;
 
-        bool DispatchVertexSkinning(const SkeletalAnimationModelRecord::ModelData&                               a_modelData,
+        bool DispatchVertexSkinning(const Struct::SkeletalAnimationModelData&                                    a_modelData,
                                     const RootSignature&                                                         a_rootSignature,
                                     const ComputeCommandList&                                                    a_computeCommandList,
-                                          SkeletalAnimationPlayer::FrameData&                                    a_frameData,
+                                          Struct::SkeletalAnimationPlayerFrameData&                              a_frameData,
                                           SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader);
 
-        bool DispatchMeshletBoundsUpdate(const SkeletalAnimationModelRecord::ModelData&                                    a_modelData,
+        bool DispatchMeshletBoundsUpdate(const Struct::SkeletalAnimationModelData&                                         a_modelData,
                                          const RootSignature&                                                              a_rootSignature,
                                          const ComputeCommandList&                                                         a_computeCommandList,
-                                               SkeletalAnimationPlayer::FrameData&                                         a_frameData,
+                                               Struct::SkeletalAnimationPlayerFrameData&                                   a_frameData,
                                                SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader& a_constantBufferUploader) const;
 
         static constexpr UINT64 k_boneMatrixBufferCopyDestinationOffset = 0ULL;

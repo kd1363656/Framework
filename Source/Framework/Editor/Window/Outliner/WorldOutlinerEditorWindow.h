@@ -24,6 +24,9 @@ namespace FWK::Editor
         void StartSceneRename             (const Scene&                     a_scene);
         void StartGameObjectRename        (const std::weak_ptr<GameObject>& a_gameObject);
         void StartRenameByCurrentSelection(const EditorManager&             a_editorManager);
+
+        void OpenSceneNode     ();
+        void OpenGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject);
  
         const auto& GetREFSceneSelectionState() const { return m_sceneSelectionState; }
         const auto& GetREFSceneOperation     () const { return m_sceneOperation; }
@@ -51,10 +54,10 @@ namespace FWK::Editor
         void HandleGameObjectDropTarget(const std::weak_ptr<GameObject>& a_targetGameObject, Scene&         a_scene);
         void HandlePrefabFileDropTarget(      Scene&                     a_scene,            EditorManager& a_editorManager);
 
-        void PushSelectionChangeCommand(      std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
-                                        const boost::uuids::uuid&               a_beforeAnchorUUID,
+        void PushSelectionChangeCommand(const boost::uuids::uuid&               a_beforeAnchorUUID,
                                         const bool                              a_beforeIsSceneSelected,
-                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState) const;
+                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState,
+                                              std::vector<boost::uuids::uuid>&& a_beforeUUIDList) const;
 
         void SelectScene(EditorGameObjectSelectionState& a_gameObjectSelectionState, const bool a_isToggleSelection = false);
 

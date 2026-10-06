@@ -86,8 +86,8 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
                                                              Constant::k_defaultSampleQuality,
                                                              D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
-    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(&l_clearValue,
-                                                                           l_resourceDesc,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,
+                                                                           &l_clearValue,
                                                                            k_defaultResourceState,
                                                                            m_gpuResource),
                                                                            "RenderTargetTexture用TextureResourceの作成に失敗しました。",
@@ -185,17 +185,17 @@ bool FWK::Graphics::RenderTargetTexture::ReserveReleaseCurrentResource(const UIN
     FWK_ASSERT_RETURN_VALUE_IF(m_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RenderTargetTextureのSRVDescriptorIndexが無効のため、遅延解放登録に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(a_retiredFenceValue  == Fence::k_unusedFenceValue,                "FenceValueが無効のため、RenderTargetTextureの遅延解放登録に失敗しました。",         false);
 
-    ResourceReleaseContext::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
+    Struct::GPUResourceReleaseRecord l_gpuResourceReleaseRecord = {};
 
     l_gpuResourceReleaseRecord.m_gpuResource       = std::move(m_gpuResource);
     l_gpuResourceReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-    ResourceReleaseContext::DescriptorIndexReleaseRecord l_rtvDescriptorIndexReleaseRecord = {};
+    Struct::DescriptorIndexReleaseRecord l_rtvDescriptorIndexReleaseRecord = {};
 
     l_rtvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_rtvDescriptorIndex;
     l_rtvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;
 
-    ResourceReleaseContext::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
+    Struct::DescriptorIndexReleaseRecord l_srvDescriptorIndexReleaseRecord = {};
 
     l_srvDescriptorIndexReleaseRecord.m_descriptorIndex   = m_srvDescriptorIndex;
     l_srvDescriptorIndexReleaseRecord.m_retiredFenceValue = a_retiredFenceValue;

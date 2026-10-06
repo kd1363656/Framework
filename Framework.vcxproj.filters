@@ -1528,6 +1528,21 @@
     <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Inspector">
       <UniqueIdentifier>{c20d3d92-0a2b-465e-bf91-5124c82dc8ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Rename">
+      <UniqueIdentifier>{af3d01c8-9f81-4398-9707-835bcd484697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Window">
+      <UniqueIdentifier>{fd9bf028-00f4-4606-b91b-a79b34da2d30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Window">
+      <UniqueIdentifier>{6f6217f0-26ef-4be8-84e8-85f0689a26bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\Utility">
+      <UniqueIdentifier>{af78b180-8e00-4421-bf5c-41d0fa30ec98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Struct\TypeINFO">
+      <UniqueIdentifier>{79461564-7f04-4e77-8504-e0600c323922}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3030,6 +3045,54 @@
     <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Inspector\GameObjectTransformComponentMatrixUpdateModeBaseInspector.h">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Inspector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Window\WindowConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelRecordConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Window\WindowStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureSystemStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ResourceReleaseContextStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\TextureBatchUploadRecordBuilderStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\StaticStructuredBufferStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SwapChainJsonConverterStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StandardPipelineStateJsonConverterStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SpriteScreenPerObjectDrawRequestStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\StaticModelRecordStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationModelRecordStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\SkeletalAnimationPlayerStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Utility\SmartPointerVectorListStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFORegistryStruct.h">
+      <Filter>Source\Framework\Definition\Struct\TypeINFO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3802,6 +3865,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Inspector\GameObjectTransformComponentMatrixUpdateModeBaseInspector.cpp">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Inspector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Rename</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

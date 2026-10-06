@@ -234,10 +234,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager&
     m_sceneSelectionState.SetIsSceneSelected(false);
 
     // 選択変更後の状態を取得してコマンドをPushする
-    PushSelectionChangeCommand(std::move(l_beforeUUIDList),
-                               l_beforeAnchorUUID,
+    PushSelectionChangeCommand(l_beforeAnchorUUID,
                                l_beforeIsSceneSelected,
-                               l_gameObjectSelectionState);
+                               l_gameObjectSelectionState,
+                               std::move(l_beforeUUIDList));
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::StartSceneRename(const Scene& a_scene)
@@ -295,6 +295,21 @@ void FWK::Editor::WorldOutlinerEditorWindow::StartRenameByCurrentSelection(const
     if (!l_scene) { return; }
  
     StartSceneRename(*l_scene);
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::OpenSceneNode()
+{
+    // DrawSceneNodeでSetNextItemOpenに渡されるため、次のフレームからシーンのノードが開いた状態で描画される
+    m_isSceneNodeOpen = true;
+}
+void FWK::Editor::WorldOutlinerEditorWindow::OpenGameObjectNode(const std::weak_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
+    // DrawGameObjectNodeはこのMapの値をSetNextItemOpenに渡すため、次のフレームからノードが開いた状態で描画される
+    m_gameObjectOpenStateMap[l_gameObject->GetREFSceneInstanceUUID()] = true;
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, EditorManager& a_editorManager)
@@ -431,7 +446,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
             auto& l_editorManager = EditorManager::GetInstance                  ();
             auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), boost::uuids::uuid{});
+            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(boost::uuids::uuid{}, std::move(l_createdList));
         }
     }
 
@@ -928,7 +943,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
 
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), l_parentSceneInstanceUUID);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_parentSceneInstanceUUID, std::move(l_createdList));
 
     // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
     if (const auto& l_targetGameObject = a_targetGameObject.lock();
@@ -981,7 +996,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
     // 空白へのドロップなので親はなし(NilUUID)
     auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdList), boost::uuids::uuid{});
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(boost::uuids::uuid{}, std::move(l_createdList));
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const
@@ -1010,10 +1025,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const Edi
     }
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(      std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
-                                                                        const boost::uuids::uuid&               a_beforeAnchorUUID,
+void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(const boost::uuids::uuid&               a_beforeAnchorUUID,
                                                                         const bool                              a_beforeIsSceneSelected,
-                                                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState) const
+                                                                              EditorGameObjectSelectionState&   a_gameObjectSelectionState,
+                                                                              std::vector<boost::uuids::uuid>&& a_beforeUUIDList) const
 {
     // 変更後の選択状態をUUIDリストとして取得する
     std::vector<boost::uuids::uuid> l_afterUUIDList   = {};
@@ -1035,12 +1050,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(      st
     auto& l_editorManager  = EditorManager::GetInstance                 ();
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<ChangeSelectionCommand>(std::move(a_beforeUUIDList),
-                                                             std::move(l_afterUUIDList),
-                                                             a_beforeAnchorUUID,
+    l_undoRedoSystem.PushUndoCommand<ChangeSelectionCommand>(a_beforeAnchorUUID,
                                                              l_afterAnchorUUID,
                                                              a_beforeIsSceneSelected,
-                                                             l_afterIsSceneSelected);
+                                                             l_afterIsSceneSelected,
+                                                             std::move(a_beforeUUIDList),
+                                                             std::move(l_afterUUIDList));
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectScene(EditorGameObjectSelectionState& a_gameObjectSelectionState, const bool a_isToggleSelection)
@@ -1064,10 +1079,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectScene(EditorGameObjectSelecti
     }
 
     // 選択変更後の状態を取得してコマンドをPushする
-    PushSelectionChangeCommand(std::move(l_beforeUUIDList),
-                               l_beforeAnchorUUID,
+    PushSelectionChangeCommand(l_beforeAnchorUUID,
                                l_beforeIsSceneSelected,
-                               a_gameObjectSelectionState);
+                               a_gameObjectSelectionState,
+                               std::move(l_beforeUUIDList));
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::ClearSelection(EditorGameObjectSelectionState& a_gameObjectSelectionState)
@@ -1085,10 +1100,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::ClearSelection(EditorGameObjectSele
     m_sceneSelectionState.SetIsSceneSelected(false);
 
     // 選択されているものがあった場合のみコマンドがPushされる
-    PushSelectionChangeCommand(std::move(l_beforeUUIDList),
-                               l_beforeAnchorUUID,
+    PushSelectionChangeCommand(l_beforeAnchorUUID,
                                l_beforeIsSceneSelected,
-                               a_gameObjectSelectionState);
+                               a_gameObjectSelectionState,
+                               std::move(l_beforeUUIDList));
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
@@ -1156,10 +1171,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
         }
 
         // 選択変更後の状態を取得してコマンドをPushする
-        PushSelectionChangeCommand(std::move(l_beforeUUIDList),
-                                   l_beforeAnchorUUID,
+        PushSelectionChangeCommand(l_beforeAnchorUUID,
                                    l_beforeIsSceneSelected,
-                                   a_gameObjectSelectionState);
+                                   a_gameObjectSelectionState,
+                                   std::move(l_beforeUUIDList));
  
         return;
     }
@@ -1171,10 +1186,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
         a_gameObjectSelectionState.ToggleSelectedGameObject(a_gameObject);
 
         // 選択変更後の状態を取得してコマンドをPushする
-        PushSelectionChangeCommand(std::move(l_beforeUUIDList),
-                                   l_beforeAnchorUUID,
+        PushSelectionChangeCommand(l_beforeAnchorUUID,
                                    l_beforeIsSceneSelected,
-                                   a_gameObjectSelectionState);
+                                   a_gameObjectSelectionState,
+                                   std::move(l_beforeUUIDList));
 
         return;
     }
@@ -1183,10 +1198,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
     a_gameObjectSelectionState.SelectSingleGameObject(a_gameObject);
 
     // 選択変更後の状態を取得してコマンドをPushする
-    PushSelectionChangeCommand(std::move(l_beforeUUIDList),
-                               l_beforeAnchorUUID,
+    PushSelectionChangeCommand(l_beforeAnchorUUID,
                                l_beforeIsSceneSelected,
-                               a_gameObjectSelectionState);
+                               a_gameObjectSelectionState,
+                               std::move(l_beforeUUIDList));
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::BuildDisplayedGameObjectList(std::vector<std::weak_ptr<GameObject>>& a_displayedList, Scene& a_scene) const
@@ -1270,7 +1285,20 @@ void FWK::Editor::WorldOutlinerEditorWindow::CommitRename(Scene& a_scene)
     // ゲームオブジェクトにポインタが格納されていたらゲームオブジェクトの名前をリネーム
     if (!l_targetGameObject) { return; }
 
+    // UndoRedo用に変更前の名前を保存する
+    // 参照で受け取るとSetNameで書き換わってしまうため値でコピーしておく
+    const auto l_beforeName = l_targetGameObject->GetREFName();
+
+    // 名前が変わらない場合はリネームもコマンドのPushも行わない
+    if (l_beforeName == l_newName) { return; }
+
     m_gameObjectOperation.RenameGameObject(l_targetGameObject, l_newName);
+
+    // EditorManager経由でUndoRedoSystemへコマンドをPushする
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<RenameGameObjectCommand>(l_targetGameObject->GetREFSceneInstanceUUID(), l_beforeName, l_newName);
 }
 
 bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const

@@ -1,6 +1,6 @@
 ﻿#include "CreateGameObjectCommand.h"
 
-FWK::Editor::CreateGameObjectCommand::CreateGameObjectCommand(std::vector<std::weak_ptr<GameObject>>&& a_createdGameObjectList, const boost::uuids::uuid& a_parentUUID) :
+FWK::Editor::CreateGameObjectCommand::CreateGameObjectCommand(const boost::uuids::uuid& a_parentUUID, std::vector<std::weak_ptr<GameObject>>&& a_createdGameObjectList) :
     m_parentUUID(a_parentUUID)
 {
     // Undoでシーンから取り外しても実体が消えないようshared_ptrで保持する

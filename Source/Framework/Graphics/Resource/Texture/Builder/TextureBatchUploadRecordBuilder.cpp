@@ -7,7 +7,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
                                                                                     const DirectX::TexMetadata&               a_texMetadata,
                                                                                     const TypeAlias::StorageID                a_storageID,
                                                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                                                                                          TextureBatchUploadRecord&           a_textureBatchUploadRecord) const
+                                                                                          Struct::TextureBatchUploadRecord&   a_textureBatchUploadRecord) const
 {
     auto& l_textureRecord = a_textureBatchUploadRecord.m_textureRecord;
 
@@ -64,8 +64,8 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
 
     // CopyCommandQueueでCopyTextureRegionのコピー先として使うため、
     // CopyCommandQueueが要求するD3D12_RESOURCE_STATE_COMMONで作成する
-    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(nullptr,
-                                                                           l_textureResourceDesc,
+    FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_textureResourceDesc,
+                                                                           nullptr,
                                                                            D3D12_RESOURCE_STATE_COMMON,
                                                                            l_gpuResource),
                                                                            "D3D12MAによるTextureResource作成処理に失敗しており、TextureResource作成処理に失敗しました。",
@@ -76,7 +76,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
     return true;
 }
 
-bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, TextureBatchUploadRecord& a_textureBatchUploadRecord) const
+bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(const Device& a_device, const DirectX::ScratchImage& a_scratchImage, Struct::TextureBatchUploadRecord& a_textureBatchUploadRecord) const
 {
     const auto& l_device = a_device.GetREFDevice();
 

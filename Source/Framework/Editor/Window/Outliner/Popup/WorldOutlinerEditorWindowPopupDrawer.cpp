@@ -169,5 +169,19 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
 
     std::vector<std::weak_ptr<GameObject>> l_createdGameObjectList = { l_createdGameObject };
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(std::move(l_createdGameObjectList), l_parentUUID);
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_parentUUID, std::move(l_createdGameObjectList));
+
+    // 作成したGameObjectのノードが見えるように親のノードを開く
+    // 親がいない場合はシーン直下に作成されるため、シーンのノードを開く
+    if (l_parentUUID.is_nil())
+    {
+        a_editorWindow.OpenSceneNode();
+    }
+    else
+    {
+        a_editorWindow.OpenGameObjectNode(a_parent);
+    }
+
+    // 作成したGameObjectをそのまま名前変更できる状態にする
+    a_editorWindow.StartGameObjectRename(l_createdGameObject);
 }

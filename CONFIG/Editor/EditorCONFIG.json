@@ -66,7 +66,7 @@
                 },
                 "CurrentSelectFolderPath": "Asset\\Model",
                 "EditorWindowPaneSplitter": {
-                    "PrimaryPaneSize": 241.0
+                    "PrimaryPaneSize": 422.0
                 },
                 "FolderPane": {
                     "FolderOpenStateMap": [
@@ -83,6 +83,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Font",
                             "IsOpen": false
                         },
@@ -92,10 +96,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -111,11 +111,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {

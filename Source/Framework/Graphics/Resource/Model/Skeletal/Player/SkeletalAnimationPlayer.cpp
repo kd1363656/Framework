@@ -39,7 +39,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     // Playerの再作成途中で失敗しても、
     // 現在Playerが保持している正常なFrameDataを壊さないように、
     // 新しいFrameDataは一度ローカル変数へ作成する
-    std::vector<FrameData> l_frameDataList = {};
+    std::vector<Struct::SkeletalAnimationPlayerFrameData> l_frameDataList = {};
 
     // フレームリソースの数だけ容量を予約
     l_frameDataList.reserve(l_frameResourceList.size());
@@ -54,7 +54,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     {
         FWK_ASSERT_RETURN_VALUE_IF(!l_frameResource, "FrameResourceが無効のため、SkeletalAnimationPlayerのFrameData作成に失敗しました。", false);
 
-        FrameData l_frameData = {};
+        Struct::SkeletalAnimationPlayerFrameData l_frameData = {};
 
         // CPUで計算したGlobalBoneMatrixを書き込む
         // Uploaderを作成する。
@@ -142,7 +142,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
 bool FWK::Graphics::SkeletalAnimationPlayer::PlayMotion(const std::uint32_t a_motionIndex, const float a_playbackSpeed, const bool a_isLoop)
 {
-    Animation l_animation = {};
+    Struct::SkeletalAnimationPlayerAnimation l_animation = {};
 
     l_animation.m_motionIndex   = a_motionIndex;
     l_animation.m_playbackSpeed = a_playbackSpeed;
@@ -157,7 +157,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::PlayMotion(const std::uint32_t a_mo
 
     // PlayMotion()ではBlendを行わず
     // 指定Motionへ即時に切り替える
-    l_animation.m_blendDurationSecond = Animation::k_initialBlendDurationSecond;
+    l_animation.m_blendDurationSecond = Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond;
 
     return ApplyAnimation(l_animation);
 }
@@ -211,7 +211,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
     const auto l_motionDurationSecond = FetchMotionDurationSecond(m_animation);
 
     // 負の再生速度ではMotion先頭へ到達した時点で終了する
-    if (m_animation.m_playbackSpeed < k_stoppedPlaybackSpeed) { return m_animationTimeSecond <= SkeletalAnimationModelRecord::k_initialAnimationTimeSecond; }
+    if (m_animation.m_playbackSpeed < k_stoppedPlaybackSpeed) { return m_animationTimeSecond <= Constant::k_initialAnimationTimeSecond; }
 
     // 通常再生または停止状態では、
     // Motion終端へ到達した時点で終了する
@@ -236,7 +236,7 @@ void FWK::Graphics::SkeletalAnimationPlayer::Stop()
     }
 }
 
-bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_animation)
+bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Struct::SkeletalAnimationPlayerAnimation& a_animation)
 {
     const auto& l_skeletalAnimationModelRecord = m_skeletalAnimationModelRecord.lock();
 
@@ -249,24 +249,24 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
 
     const auto l_motionDurationSecond = l_motionSequenceList[a_animation.m_motionIndex].m_durationSecond;
 
-    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond,     "AnimationのStartTimeSecondが0未満のため、Animationを適用できません。",                      false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                                         "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond < Constant::k_initialAnimationTimeSecond,     "AnimationのStartTimeSecondが0未満のため、Animationを適用できません。",                      false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_startTimeSecond > l_motionDurationSecond,                     "AnimationのStartTimeSecondがMotionの再生時間を超えているため、Animationを適用できません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < Constant::k_initialAnimationTimeSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
 
     if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex ||
         m_animation.m_motionIndex >= l_motionSequenceList.size()                          ||
-        a_animation.m_blendDurationSecond == Animation::k_initialBlendDurationSecond)
+        a_animation.m_blendDurationSecond == Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond)
     {
         m_animation = a_animation;
 
         // 現在Animationへ移した後は、
         // このAnimation自身のBlend時間は使用しない。
-        m_animation.m_blendDurationSecond = Animation::k_initialBlendDurationSecond;
+        m_animation.m_blendDurationSecond = Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond;
 
         m_animationTimeSecond = a_animation.m_startTimeSecond;
 
         m_blendTargetAnimation           = {};
-        m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+        m_blendTargetAnimationTimeSecond = Constant::k_initialAnimationTimeSecond;
         m_blendElapsedSecond             = k_initialBlendElapsedSecond;
 
         m_isBlending = false;
@@ -290,7 +290,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Animation& a_a
     return true;
 }
 
-const FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FindPTRCurrentFrameData() const
+const FWK::Struct::SkeletalAnimationPlayerFrameData* FWK::Graphics::SkeletalAnimationPlayer::FindPTRCurrentFrameData() const
 {
     const auto& l_graphicsManager           = GraphicsManager::GetInstance              ();
     const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
@@ -301,7 +301,7 @@ const FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::Skeletal
     return &m_frameDataList[l_currentFrameResourceIndex];
 }
 
-FWK::Graphics::SkeletalAnimationPlayer::FrameData* FWK::Graphics::SkeletalAnimationPlayer::FindMutablePTRCurrentFrameData()
+FWK::Struct::SkeletalAnimationPlayerFrameData* FWK::Graphics::SkeletalAnimationPlayer::FindMutablePTRCurrentFrameData()
 {
     const auto& l_graphicsManager           = GraphicsManager::GetInstance              ();
     const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
@@ -320,7 +320,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::FetchVALBlendWeight() const
 
     // ApplyAnimation()では0秒Blendを即時切り替えとして処理しているが、
     // 0除算を防ぐため、取得時にもBlend時間を確認する
-    if (l_blendDurationSecond <= Animation::k_initialBlendDurationSecond) { return k_completeBlendWeight; }
+    if (l_blendDurationSecond <= Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond) { return k_completeBlendWeight; }
 
     const auto l_blendWeight = m_blendElapsedSecond / l_blendDurationSecond;
 
@@ -350,13 +350,13 @@ bool FWK::Graphics::SkeletalAnimationPlayer::EvaluateCurrentPose()
                                         l_frameData->m_globalBoneMatrixList);
 }
 
-float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const Animation& a_animation, const float a_timeSecond, const float a_deltaTime) const
+float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation, const float a_timeSecond, const float a_deltaTime) const
 {
     const auto l_motionDurationSecond = FetchMotionDurationSecond(a_animation);
 
     // 再生時間が0秒のMotionは時刻を進められないため、
     // 0秒の固定Poseとして扱う
-    if (l_motionDurationSecond <= SkeletalAnimationModelRecord::k_initialAnimationDurationSecond) { return SkeletalAnimationModelRecord::k_initialAnimationTimeSecond; }
+    if (l_motionDurationSecond <= Constant::k_initialAnimationDurationSecond) { return Constant::k_initialAnimationTimeSecond; }
 
     auto l_advancedTimeSecond = a_timeSecond + a_deltaTime * a_animation.m_playbackSpeed;
 
@@ -368,7 +368,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const 
 
         // 負の再生速度ではfmodの結果が負数になることがあるため、
         // Motionの再生時間をs加算して有効な時刻へ戻す
-        if (l_advancedTimeSecond < SkeletalAnimationModelRecord::k_initialAnimationTimeSecond)
+        if (l_advancedTimeSecond < Constant::k_initialAnimationTimeSecond)
         {
             l_advancedTimeSecond += l_motionDurationSecond;
         }
@@ -377,7 +377,7 @@ float FWK::Graphics::SkeletalAnimationPlayer::CalculateAdvancedTimeSecond(const 
     }
 
     // 非LoopAnimationはMotion先頭より前へ進めない
-    if (l_advancedTimeSecond <= SkeletalAnimationModelRecord::k_initialAnimationTimeSecond) { return SkeletalAnimationModelRecord::k_initialAnimationTimeSecond; }
+    if (l_advancedTimeSecond <= Constant::k_initialAnimationTimeSecond) { return Constant::k_initialAnimationTimeSecond; }
 
     // 非LoopAnimationはMotion終端より先へ進めない
     if (l_advancedTimeSecond >= l_motionDurationSecond) { return l_motionDurationSecond; }
@@ -396,10 +396,10 @@ void FWK::Graphics::SkeletalAnimationPlayer::CompleteAnimationBlend()
 
     // 現在Animationへ移動した後は、
     // Animation自身のBlend時間を使用しない
-    m_animation.m_blendDurationSecond = Animation::k_initialBlendDurationSecond;
+    m_animation.m_blendDurationSecond = Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond;
 
     m_blendTargetAnimation           = {};
-    m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+    m_blendTargetAnimationTimeSecond = Constant::k_initialAnimationTimeSecond;
     m_blendElapsedSecond             = k_initialBlendElapsedSecond;
 
     m_isBlending = false;
@@ -410,24 +410,24 @@ void FWK::Graphics::SkeletalAnimationPlayer::ResetPlaybackState()
     m_animation            = {};
     m_blendTargetAnimation = {};
 
-    m_animationTimeSecond            = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
-    m_blendTargetAnimationTimeSecond = SkeletalAnimationModelRecord::k_initialAnimationTimeSecond;
+    m_animationTimeSecond            = Constant::k_initialAnimationTimeSecond;
+    m_blendTargetAnimationTimeSecond = Constant::k_initialAnimationTimeSecond;
 
     m_blendElapsedSecond = k_initialBlendElapsedSecond;
 
     m_isBlending = false;
 }
 
-float FWK::Graphics::SkeletalAnimationPlayer::FetchMotionDurationSecond(const Animation& a_animation) const
+float FWK::Graphics::SkeletalAnimationPlayer::FetchMotionDurationSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation) const
 {
     const auto& l_skeletalAnimationModelRecord = m_skeletalAnimationModelRecord.lock();
 
-    FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、Motionの再生時間を取得できません。", SkeletalAnimationModelRecord::k_initialAnimationDurationSecond);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_skeletalAnimationModelRecord, "SkeletalAnimationModelRecordが無効のため、Motionの再生時間を取得できません。", Constant::k_initialAnimationDurationSecond);
 
     const auto& l_motionSequenceList = l_skeletalAnimationModelRecord->GetREFModelData().m_motionSequenceList;
 
-    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex, "MotionIndexが無効のため、Motionの再生時間を取得できません。",   SkeletalAnimationModelRecord::k_initialAnimationDurationSecond);
-    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex >= l_motionSequenceList.size(),                          "MotionIndexが範囲外のため、Motionの再生時間を取得できません。", SkeletalAnimationModelRecord::k_initialAnimationDurationSecond);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex, "MotionIndexが無効のため、Motionの再生時間を取得できません。",   Constant::k_initialAnimationDurationSecond);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_motionIndex >= l_motionSequenceList.size(),                          "MotionIndexが範囲外のため、Motionの再生時間を取得できません。", Constant::k_initialAnimationDurationSecond);
 
     return l_motionSequenceList[a_animation.m_motionIndex].m_durationSecond;
 }

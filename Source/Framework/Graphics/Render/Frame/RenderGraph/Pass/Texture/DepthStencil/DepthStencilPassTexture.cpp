@@ -14,7 +14,7 @@ nlohmann::json FWK::Graphics::DepthStencilPassTexture::Serialize() const
 
 bool FWK::Graphics::DepthStencilPassTexture::Create(const Device&                             a_device,
                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                    const Window::ClientSize&                 a_clientSize,
+                                                    const Struct::WindowClientSize&           a_clientSize,
                                                           TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
@@ -40,7 +40,7 @@ bool FWK::Graphics::DepthStencilPassTexture::Create(const Device&               
 
 bool FWK::Graphics::DepthStencilPassTexture::Resize(const Device&                             a_device,
                                                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                    const Window::ClientSize&                 a_clientSize,
+                                                    const Struct::WindowClientSize&           a_clientSize,
                                                     const UINT64&                             a_retiredFenceValue,
                                                           TypeAlias::DSVDescriptorPool&       a_dsvDescriptorPool,
                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,

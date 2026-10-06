@@ -6,28 +6,11 @@ namespace FWK::Graphics
     {
     public:
 
-        struct DeferredResourceReleaseRecordBase
-        {
-            UINT64 m_retiredFenceValue = Fence::k_unusedFenceValue;
-        };
+        bool ReserveDeferredReleaseGPUResourceRecord(Struct::GPUResourceReleaseRecord&& a_releaseRecord);
 
-        struct DescriptorIndexReleaseRecord final : public DeferredResourceReleaseRecordBase
-        {
-            TypeAlias::DescriptorIndex m_descriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
-        };
-
-        struct GPUResourceReleaseRecord final : public DeferredResourceReleaseRecordBase
-        {
-            Struct::GPUResource m_gpuResource = {};
-        };
-
-    public:
-
-        bool ReserveDeferredReleaseGPUResourceRecord(GPUResourceReleaseRecord&& a_releaseRecord);
-
-        bool ReserveDeferredReleaseRTVDescriptorIndex      (DescriptorIndexReleaseRecord&& a_releaseRecord);
-        bool ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(DescriptorIndexReleaseRecord&& a_releaseRecord);
-        bool ReserveDeferredReleaseDSVDescriptorIndex      (DescriptorIndexReleaseRecord&& a_releaseRecord);
+        bool ReserveDeferredReleaseRTVDescriptorIndex      (Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+        bool ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
+        bool ReserveDeferredReleaseDSVDescriptorIndex      (Struct::DescriptorIndexReleaseRecord&& a_releaseRecord);
 
         void ReleaseAvailableDeferredResources(const TypeAlias::DirectCommandQueue&      a_directCommandQueue,
                                                      TypeAlias::RTVDescriptorPool&       a_rtvDescriptorPool,
@@ -39,13 +22,13 @@ namespace FWK::Graphics
 
     private:
 
-        bool IsValidGPUResourceReleaseRecord    (const GPUResourceReleaseRecord&     a_releaseRecord) const;
-        bool IsValidDescriptorIndexReleaseRecord(const DescriptorIndexReleaseRecord& a_releaseRecord) const;
+        bool IsValidGPUResourceReleaseRecord    (const Struct::GPUResourceReleaseRecord&     a_releaseRecord) const;
+        bool IsValidDescriptorIndexReleaseRecord(const Struct::DescriptorIndexReleaseRecord& a_releaseRecord) const;
 
         void ReleaseAvailableGPUResources(const UINT64& a_completedFenceValue);
 
         template <D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
-        void ReleaseAvailableDescriptorIndices(const UINT64& a_completedFenceValue, std::vector<DescriptorIndexReleaseRecord>& a_releaseRecordList, DescriptorPool<HeapType>& a_descriptorPool)
+        void ReleaseAvailableDescriptorIndices(const UINT64& a_completedFenceValue, std::vector<Struct::DescriptorIndexReleaseRecord>& a_releaseRecordList, DescriptorPool<HeapType>& a_descriptorPool)
         {
             std::size_t l_index = 0ULL;
 
@@ -72,10 +55,10 @@ namespace FWK::Graphics
             }
         }
 
-        std::vector<GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
+        std::vector<Struct::GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
 
-        std::vector<DescriptorIndexReleaseRecord> m_rtvDescriptorIndexReleaseRecordList       = {};
-        std::vector<DescriptorIndexReleaseRecord> m_cbvSRVUAVDescriptorIndexReleaseRecordList = {};
-        std::vector<DescriptorIndexReleaseRecord> m_dsvDescriptorIndexReleaseRecordList       = {};
+        std::vector<Struct::DescriptorIndexReleaseRecord> m_rtvDescriptorIndexReleaseRecordList       = {};
+        std::vector<Struct::DescriptorIndexReleaseRecord> m_cbvSRVUAVDescriptorIndexReleaseRecordList = {};
+        std::vector<Struct::DescriptorIndexReleaseRecord> m_dsvDescriptorIndexReleaseRecordList       = {};
     };
 }

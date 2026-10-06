@@ -112,7 +112,7 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::AddDrawRequest(const st
     m_forwardDrawRequestDataSmartPointerVectorList.Add(a_drawRequestData);
 }
 
-bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Graphics::StaticModelRecord::ModelMesh& a_modelMesh) const
+bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
 {
     const auto& l_modelMeshletList = a_modelMesh.m_modelMeshletData.m_meshletList;
 

@@ -13,13 +13,13 @@ namespace FWK::Physics
          PhysicsStaticMeshBody()          = default;
         ~PhysicsStaticMeshBody() override = default;
 
-        bool CreateBody(const Graphics::StaticModelRecord::ModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix);
+        bool CreateBody(const Struct::StaticModelData& a_modelData, const bool a_isPushBackEnabled, TypeAlias::Math::Matrix& a_worldMatrix);
 
         bool ApplyWorldTransform(TypeAlias::Math::Matrix& a_worldMatrix) override;
 
     private:
 
-        JPH::RefConst<JPH::Shape> CreateShape(const Graphics::StaticModelRecord::ModelData& a_modelData) const;
+        JPH::RefConst<JPH::Shape> CreateShape(const Struct::StaticModelData& a_modelData) const;
 
         static constexpr float k_oppositeNormalDotThreshold = 0.0F;
 

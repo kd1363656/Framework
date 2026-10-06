@@ -13,12 +13,12 @@ public:                                                                         
                                                                                                                                             \
     static const auto& GetREFTypeINFO()                                                                                                     \
     {                                                                                                                                       \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ nullptr, #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::Struct::TypeINFO{ #Type, nullptr, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                             \
         return l_typeINFO;                                                                                                                  \
     }                                                                                                                                       \
                                                                                                                                             \
-    virtual const FWK::TypeINFORegistry::TypeINFO& GetREFRuntimeTypeINFO() const { return GetREFTypeINFO(); }                               \
+    virtual const FWK::Struct::TypeINFO& GetREFRuntimeTypeINFO() const { return GetREFTypeINFO(); }                               \
                                                                                                                                             \
 private:                                                                                                                                    \
                                                                                                                                             \
@@ -41,12 +41,12 @@ public:                                                                         
                                                                                                                                                                 \
     static const auto& GetREFTypeINFO()                                                                                                                         \
     {                                                                                                                                                           \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ &BaseType::GetREFTypeINFO(), #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::Struct::TypeINFO{ #Type, &BaseType::GetREFTypeINFO(), FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                                                 \
         return l_typeINFO;                                                                                                                                      \
     }                                                                                                                                                           \
                                                                                                                                                                 \
-    const FWK::TypeINFORegistry::TypeINFO& GetREFRuntimeTypeINFO() const override { return GetREFTypeINFO(); }                                                  \
+    const FWK::Struct::TypeINFO& GetREFRuntimeTypeINFO() const override { return GetREFTypeINFO(); }                                                  \
                                                                                                                                                                 \
 private:                                                                                                                                                        \
                                                                                                                                                                 \
@@ -68,7 +68,7 @@ public:                                                                         
                                                                                                                                                                 \
     static const auto& GetREFTypeINFO()                                                                                                                         \
     {                                                                                                                                                           \
-        static const auto l_typeINFO = FWK::TypeINFORegistry::TypeINFO{ nullptr, #Type, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
+        static const auto l_typeINFO = FWK::Struct::TypeINFO{ #Type, nullptr, FWK::StaticTypeIDGenerator::GetVALTypeID<Type>() }; \
                                                                                                                                                                 \
         return l_typeINFO;                                                                                                                                      \
     }                                                                                                                                                           \

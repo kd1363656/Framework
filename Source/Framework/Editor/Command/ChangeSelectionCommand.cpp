@@ -1,11 +1,11 @@
 #include "ChangeSelectionCommand.h"
 
-FWK::Editor::ChangeSelectionCommand::ChangeSelectionCommand(      std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
-                                                                  std::vector<boost::uuids::uuid>&& a_afterUUIDList,
-                                                            const boost::uuids::uuid&               a_beforeAnchorUUID,
+FWK::Editor::ChangeSelectionCommand::ChangeSelectionCommand(const boost::uuids::uuid&               a_beforeAnchorUUID,
                                                             const boost::uuids::uuid&               a_afterAnchorUUID,
                                                             const bool                              a_beforeIsSceneSelected,
-                                                            const bool                              a_afterIsSceneSelected) :
+                                                            const bool                              a_afterIsSceneSelected,
+                                                                  std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
+                                                                  std::vector<boost::uuids::uuid>&& a_afterUUIDList) :
     m_beforeUUIDList       (std::move(a_beforeUUIDList)),
     m_afterUUIDList        (std::move(a_afterUUIDList)),
     m_beforeAnchorUUID     (a_beforeAnchorUUID),

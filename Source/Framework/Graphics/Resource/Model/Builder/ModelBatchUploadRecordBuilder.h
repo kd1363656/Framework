@@ -10,12 +10,12 @@ namespace FWK::Graphics
         ~ModelBatchUploadRecordBuilder() = default;
 
         template <typename ModelMeshType>
-        bool CreateModelMeshBatchUploadRecord(const Device&                                                   a_device,
-                                              const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
-                                              const ModelMeshType&                                            a_modelMesh,
-                                                    std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-                                                    TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
-                                                    Struct::ModelMeshRuntimeDataBase&                         a_modelMeshRuntimeData) const
+        bool CreateModelMeshBatchUploadRecord(const Device&                                   a_device,
+                                              const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
+                                              const ModelMeshType&                            a_modelMesh,
+                                                    std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
+                                                    TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool,
+                                                    Struct::ModelMeshRuntimeDataBase&         a_modelMeshRuntimeData) const
         {
             const auto& l_modelMeshletData     = a_modelMesh.m_modelMeshletData;
 

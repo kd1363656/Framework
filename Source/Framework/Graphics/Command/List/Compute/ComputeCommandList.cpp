@@ -24,7 +24,7 @@ void FWK::Graphics::ComputeCommandList::SetupComputePipeline(const std::weak_ptr
     DirectAndComputeCommandListBase::SetupPipeline(a_pipelineState);
 }
 
-void FWK::Graphics::ComputeCommandList::SetupConstantBufferView(const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress) const
+void FWK::Graphics::ComputeCommandList::SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const
 {
     const auto& l_computeCommandList = GetREFCommandList();
 
@@ -52,8 +52,8 @@ void FWK::Graphics::ComputeCommandList::SetupRootSignature(ID3D12GraphicsCommand
     a_commandList.SetComputeRootSignature(&a_rootSignature);
 }
 
-void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const void*                   a_rootConstantData,
-                                                                const RootSignature&          a_rootSignature,
+void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignature&          a_rootSignature,
+                                                                const void*                   a_rootConstantData,
                                                                 const Enum::RootParameterType a_rootParameterType,
                                                                 const UINT                    a_rootConstantCount,
                                                                 const UINT                    a_destinationOffset) const

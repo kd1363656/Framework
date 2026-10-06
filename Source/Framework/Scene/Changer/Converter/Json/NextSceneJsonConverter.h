@@ -16,7 +16,7 @@ namespace FWK::Converter
 
         static bool Rename(const std::filesystem::path& a_oldFilePath, const std::filesystem::path& a_newFilePath, const std::string& a_newName);
 
-        void Load(nlohmann::json&& a_rootJson, NextScene& a_nextScene) const;
+        void Load(NextScene& a_nextScene, nlohmann::json&& a_rootJson) const;
 
     private:
 

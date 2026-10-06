@@ -17,7 +17,7 @@ namespace FWK::Graphics
 
     private:
 
-        bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const;
+        bool DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::SkeletalAnimationModelMesh& a_modelMesh) const;
 
         Utility::SmartPointerVectorList<std::weak_ptr<Struct::SkeletalAnimationModelPerObjectDrawRequestData>> m_forwardDrawRequestDataSmartPointerVectorList = {};
 

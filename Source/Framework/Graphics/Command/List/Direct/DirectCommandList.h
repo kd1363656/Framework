@@ -30,7 +30,7 @@ namespace FWK::Graphics
 
         void SetupRenderPipeline(const std::weak_ptr<GraphicsPipelineStateBase>& a_pipelineState);
 
-        void SetupConstantBufferView(const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress) const override;
+        void SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const override;
 
         void SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const;
 

@@ -1,10 +1,10 @@
 ﻿#include "StaticModelBatchUploadRecordBuilder.h"
 
-bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchUploadRecord(const Device&                                                    a_device,
-                                                                                            const GPUMemoryAllocator&                                        a_gpuMemoryAllocator,
-                                                                                                   std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-                                                                                                   TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
-                                                                                                   StaticModelRecord&                                        a_staticModelRecord) const
+bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchUploadRecord(const Device&                                   a_device,
+                                                                                            const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
+                                                                                                  std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
+                                                                                                  TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool,
+                                                                                                  StaticModelRecord&                        a_staticModelRecord) const
 {
     auto& l_modelMeshList = a_staticModelRecord.GetMutableREFModelData().m_modelMeshList;
 
@@ -37,7 +37,7 @@ bool FWK::Graphics::StaticModelBatchUploadRecordBuilder::CreateStaticModelBatchU
     return true;
 }
 
-void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBuffer(std::vector<StaticModelRecord::ModelMesh>& a_modelMeshList) const
+void FWK::Graphics::StaticModelBatchUploadRecordBuilder::ReleaseCreatedStaticModelStructuredBuffer(std::vector<Struct::StaticModelMesh>& a_modelMeshList) const
 {
     for (auto& l_modelMesh : a_modelMeshList)
     {

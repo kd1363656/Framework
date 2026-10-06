@@ -9,15 +9,15 @@ namespace FWK::Graphics
          SkeletalAnimationModelBatchUploadRecordBuilder() = default;
         ~SkeletalAnimationModelBatchUploadRecordBuilder() = default;
 
-        bool CreateSkeletalAnimationModelBatchUploadRecord(const Device&                                                   a_device,
-                                                           const GPUMemoryAllocator&                                       a_gpuMemoryAllocator,
-                                                                 std::vector<StaticStructuredBuffer::BufferUploadCommand>& a_bufferUploadCommandList,
-                                                                 TypeAlias::CBVSRVUAVDescriptorPool&                       a_cbvSRVUAVDescriptorPool,
-                                                                 SkeletalAnimationModelRecord&                             a_skeletalAnimationModelRecord) const;
+        bool CreateSkeletalAnimationModelBatchUploadRecord(const Device&                                   a_device,
+                                                           const GPUMemoryAllocator&                       a_gpuMemoryAllocator,
+                                                                 std::vector<Struct::BufferUploadCommand>& a_bufferUploadCommandList,
+                                                                 TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool,
+                                                                 SkeletalAnimationModelRecord&             a_skeletalAnimationModelRecord) const;
 
     private:
 
-        void ReleaseCreatedSkeletalAnimationModelStructuredBuffer(std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const;
+        void ReleaseCreatedSkeletalAnimationModelStructuredBuffer(std::vector<Struct::SkeletalAnimationModelMesh>& a_modelMeshList) const;
 
         static constexpr std::size_t k_initialKeyFrameIndex        = 0ULL;
         static constexpr std::size_t k_previousKeyFrameIndexOffset = 1ULL;

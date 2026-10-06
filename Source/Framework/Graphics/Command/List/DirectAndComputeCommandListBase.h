@@ -41,7 +41,7 @@ namespace FWK::Graphics
             l_directCommandList->SetDescriptorHeaps(k_setDescriptorHeapNUM, l_descriptorHeapList);
         }
 
-        virtual void SetupConstantBufferView(const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress) const = 0;
+        virtual void SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const = 0;
 
     protected:
 

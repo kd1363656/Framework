@@ -33,7 +33,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::LoadSkeletalAnimationModelF
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, SkeletalAnimationModelRecord::ModelData& a_modelData) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx_scene* a_fbxScene, Struct::SkeletalAnimationModelData& a_modelData) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,                                                  "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。",            false);
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyUFBXElementCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
@@ -60,7 +60,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
         // SkinDeformerを持たないMeshは対象外
         if (l_fbxMesh->skin_deformers.count == Constant::k_emptyUFBXElementCount) { continue; }
 
-        std::vector<SkeletalAnimationModelRecord::ModelMesh> l_modelMeshList = {};
+        std::vector<Struct::SkeletalAnimationModelMesh> l_modelMeshList = {};
 
         FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_boneNodeIndexMap, l_fbxNode, l_modelMeshList), "ufbx_nodeからModelMeshListの抽出に失敗しました。", false);
 
@@ -86,7 +86,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node* a_fbxNode, std::vector<SkeletalAnimationModelRecord::ModelMesh>& a_modelMeshList) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node* a_fbxNode, std::vector<Struct::SkeletalAnimationModelMesh>& a_modelMeshList) const
 {
     a_modelMeshList.clear();
 
@@ -109,11 +109,11 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     // Materialがない場合は全Faceを一つのModelMeshへ変換する
     if (l_fbxMesh->materials.count == Constant::k_emptyUFBXElementCount)
     {
-        SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
+        Struct::SkeletalAnimationModelMesh l_modelMesh = {};
 
         FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap,
-                                                               a_fbxNode,
                                                                k_invalidMaterialIndex,
+                                                               a_fbxNode,
                                                                l_modelMesh),
                                                                "MaterialなしModelMeshの抽出に失敗しました。",
                                                                false);
@@ -131,9 +131,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
 
     for (std::size_t l_materialIndex = 0ULL; l_materialIndex < l_fbxMesh->materials.count; ++l_materialIndex)
     {
-        SkeletalAnimationModelRecord::ModelMesh l_modelMesh = {};
+        Struct::SkeletalAnimationModelMesh l_modelMesh = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap, a_fbxNode, l_materialIndex, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshByMaterial(a_boneNodeIndexMap, l_materialIndex, a_fbxNode, l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
 
         if (l_modelMesh.m_modelVertexList.empty()) { continue; }
         if (l_modelMesh.m_indexList.empty())       { continue; }
@@ -151,13 +151,13 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
 
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluence(const std::unordered_map<const ufbx_node*, std::uint32_t>&                a_boneNodeIndexMap,
-                                                                                   const ufbx_mesh*                                                          a_fbxMesh,
-                                                                                   const ufbx_skin_deformer*                                                 a_fbxSkinDeformer,
-                                                                                   const std::uint32_t                                                       a_fbxVertexIndex,
-                                                                                         std::unordered_map<std::uint32_t, std::uint32_t>&                   a_boneIndexPaletteIndexMap,
-                                                                                         std::vector<SkeletalAnimationModelRecord::ModelBonePaletteElement>& a_bonePaletteList,
-                                                                                         SkeletalAnimationModelRecord::ModelVertex&                          a_modelVertex) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluence(const std::unordered_map<const ufbx_node*, std::uint32_t>&           a_boneNodeIndexMap,
+                                                                                   const ufbx_mesh*                                                     a_fbxMesh,
+                                                                                   const ufbx_skin_deformer*                                            a_fbxSkinDeformer,
+                                                                                   const std::uint32_t                                                  a_fbxVertexIndex,
+                                                                                         std::unordered_map<std::uint32_t, std::uint32_t>&              a_boneIndexPaletteIndexMap,
+                                                                                         std::vector<Struct::SkeletalAnimationModelBonePaletteElement>& a_bonePaletteList,
+                                                                                         Struct::SkeletalAnimationModelVertex&                          a_modelVertex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh,                                          "BoneInfluenceを取得するufbx_meshがnullptrです。",          false);
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxSkinDeformer,                                  "BoneInfluenceを取得するufbx_skin_deformerがnullptrです。", false);
@@ -178,10 +178,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinVertex.num_weights > l_remainingSkinWeightCount, "SkinWeight配列の参照範囲が不正です。", false);
 
     a_modelVertex.m_boneWeight            = {};
-    a_modelVertex.m_bonePaletteIndexZero  = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-    a_modelVertex.m_bonePaletteIndexOne   = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-    a_modelVertex.m_bonePaletteIndexTwo   = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
-    a_modelVertex.m_bonePaletteIndexThree = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexZero  = Constant::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexOne   = Constant::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexTwo   = Constant::k_invalidPaletteIndex;
+    a_modelVertex.m_bonePaletteIndexThree = Constant::k_invalidPaletteIndex;
 
     std::uint32_t l_appliedBoneInfluenceCount = k_emptyBoneInfluenceCount;
 
@@ -209,7 +209,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 
         const auto l_modelBoneIndex = l_boneNodeIndexITR->second;
 
-        std::uint32_t l_bonePaletteIndex = SkeletalAnimationModelRecord::k_invalidPaletteIndex;
+        std::uint32_t l_bonePaletteIndex = Constant::k_invalidPaletteIndex;
 
         // 既にPaletteへ登録しているBoneなら既存Indexを使用する
         if (const auto& l_bonePaletteIndexITR = a_boneIndexPaletteIndexMap.find(l_modelBoneIndex);
@@ -222,7 +222,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
             // このMeshで初めて使用するBoneをPaletteへ登録する
             l_bonePaletteIndex = static_cast<std::uint32_t>(a_bonePaletteList.size());
 
-            SkeletalAnimationModelRecord::ModelBonePaletteElement l_bonePaletteElement = {};
+            Struct::SkeletalAnimationModelBonePaletteElement l_bonePaletteElement = {};
 
             l_bonePaletteElement.m_inverseBindPoseMatrix = Utility::ConvertUFBXMatrixToMatrix(l_fbxSkinCluster->geometry_to_bone);
             l_bonePaletteElement.m_boneIndex             = l_modelBoneIndex;
@@ -255,10 +255,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     // Weightが大きい先頭4件が必ず合計値が1.0Fになるように正規化する
     return NormalizeModelVertexBoneWeight(a_modelVertex);
 }
-void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluenceSlot(const float                                      a_boneWeight,
-                                                                                       const std::uint32_t                              a_slotIndex,
-                                                                                       const std::uint32_t                              a_bonePaletteIndex,
-                                                                                             SkeletalAnimationModelRecord::ModelVertex& a_modelVertex) const
+void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluenceSlot(const float                                 a_boneWeight,
+                                                                                       const std::uint32_t                         a_slotIndex,
+                                                                                       const std::uint32_t                         a_bonePaletteIndex,
+                                                                                             Struct::SkeletalAnimationModelVertex& a_modelVertex) const
 {
     switch(a_slotIndex)
     {
@@ -299,9 +299,9 @@ void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
 }
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
-                                                                                const ufbx_node*                                           a_fbxNode,
                                                                                 const std::size_t&                                         a_materialIndex,
-                                                                                      SkeletalAnimationModelRecord::ModelMesh&             a_modelMesh) const
+                                                                                const ufbx_node*                                           a_fbxNode,
+                                                                                      Struct::SkeletalAnimationModelMesh&             a_modelMesh) const
 {
     a_modelMesh.m_modelVertexList.clear();
     a_modelMesh.m_bonePaletteList.clear();
@@ -367,7 +367,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
 
                 FWK_ASSERT_RETURN_VALUE_IF(l_fbxVertexIndex >= l_fbxMesh->vertex_indices.count, "三角形化後のVertexIndexが範囲外です。", false);
 
-                SkeletalAnimationModelRecord::ModelVertex l_modelVertex = {};
+                Struct::SkeletalAnimationModelVertex l_modelVertex = {};
 
                 // 頂点はMeshローカル空間のまま保持する
                 l_modelVertex.m_position = FetchLocalVertexPosition(l_fbxMesh, l_fbxVertexIndex);
@@ -395,7 +395,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
     return true;
 }
 
-bool FWK::Graphics::SkeletalAnimationModelFBXLoader::NormalizeModelVertexBoneWeight(SkeletalAnimationModelRecord::ModelVertex& a_modelVertex) const
+bool FWK::Graphics::SkeletalAnimationModelFBXLoader::NormalizeModelVertexBoneWeight(Struct::SkeletalAnimationModelVertex& a_modelVertex) const
 {
     const auto l_boneWeightSum = a_modelVertex.m_boneWeight.x + a_modelVertex.m_boneWeight.y + a_modelVertex.m_boneWeight.z + a_modelVertex.m_boneWeight.w;
 

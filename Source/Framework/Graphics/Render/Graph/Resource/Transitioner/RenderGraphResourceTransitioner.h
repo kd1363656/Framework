@@ -11,7 +11,7 @@ namespace FWK::Graphics
 
         void TransitionPassResourceBefore(const RenderGraphPassBase& a_pass,              Renderer&             a_renderer)                                                                const;
         void TransitionPassResourceAfter (const RenderGraphPassBase& a_pass,              Renderer&             a_renderer)                                                                const;
-        void TransitionBackBufferResource(const DirectCommandList&   a_directCommandList, D3D12_RESOURCE_STATES a_afterState, Converter::SwapChainJsonConverter::BackBuffer& a_backBuffer) const;
+        void TransitionBackBufferResource(const DirectCommandList&   a_directCommandList, const D3D12_RESOURCE_STATES a_afterState, Struct::SwapChainBackBuffer& a_backBuffer) const;
 
     private:
 

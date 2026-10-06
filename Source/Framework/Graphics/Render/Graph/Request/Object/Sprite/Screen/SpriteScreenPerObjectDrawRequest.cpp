@@ -47,7 +47,7 @@ void FWK::Graphics::SpriteScreenPerObjectDrawRequest::SetupPerObjectConstantBuff
     }
 }
 
-void FWK::Graphics::SpriteScreenPerObjectDrawRequest::AddDrawRequestPerObject(const std::shared_ptr<DrawRequestData>&a_drawRequestData)
+void FWK::Graphics::SpriteScreenPerObjectDrawRequest::AddDrawRequestPerObject(const std::shared_ptr<Struct::SpriteScreenDrawRequestData>&a_drawRequestData)
 {
     m_drawRequestDataSmartPointerVectorList.Add(a_drawRequestData);
 }

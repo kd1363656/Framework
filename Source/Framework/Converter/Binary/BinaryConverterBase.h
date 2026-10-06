@@ -33,7 +33,7 @@ namespace FWK::Converter
         std::uint64_t GetVALMappedDataSize() const { return m_mappedDataSize; }
 
         template <typename Type>
-        bool TryReadBinaryData(const std::uint64_t& a_readDataCount, Type* a_destinationData, std::uint64_t& a_memoryReadOffset) const
+        bool TryReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
         {
             if (a_readDataCount == k_emptyReadDataSize) { return true; }
 
@@ -61,7 +61,7 @@ namespace FWK::Converter
             // 読み込むサイズ分リストを確保
             a_destinationDataList.resize(a_readDataCount);
 
-            if (!TryReadBinaryData(a_readDataCount, a_destinationDataList.data(), a_memoryReadOffset)) 
+            if (!TryReadBinaryData(a_readDataCount, a_memoryReadOffset, a_destinationDataList.data())) 
             {
                 a_destinationDataList.clear();
 
@@ -74,11 +74,11 @@ namespace FWK::Converter
         template <typename Type>
         bool TryReadSingleBinaryData(Type& a_destinationData, std::uint64_t& a_memoryReadOffset) const
         {
-            return TryReadBinaryData(k_singleBinaryElementCount, &a_destinationData, a_memoryReadOffset);
+            return TryReadBinaryData(k_singleBinaryElementCount, a_memoryReadOffset, &a_destinationData);
         }
 
         template <typename Type>
-        void WriteBinaryData(const Type* a_sourceData, const std::uint64_t& a_writeDataCount, std::uint64_t& a_memoryWriteOffset) const
+        void WriteBinaryData(const std::uint64_t& a_writeDataCount, const Type* a_sourceData, std::uint64_t& a_memoryWriteOffset) const
         {
             // 書き込みデータの型サイズと個数から、実際にコピーするバイト数を計算する
             const auto& l_writeDataSize = CalculateBinaryDataSize<Type>(a_writeDataCount);

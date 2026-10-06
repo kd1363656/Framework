@@ -6,5 +6,5 @@ void FWK::NextScene::Load(const std::filesystem::path& a_filePath)
 
     auto&& l_rootJson = Utility::LoadJsonFile(a_filePath);
 
-    m_jsonConverter.Load(std::move(l_rootJson), *this);
+    m_jsonConverter.Load(*this, std::move(l_rootJson));
 }

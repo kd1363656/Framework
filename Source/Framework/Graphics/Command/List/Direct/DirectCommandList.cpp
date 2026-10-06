@@ -143,7 +143,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<G
     DirectAndComputeCommandListBase::SetupPipeline(a_pipelineState);
 }
 
-void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress) const
+void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const
 {
     const auto& l_directCommandList = GetREFCommandList();
 

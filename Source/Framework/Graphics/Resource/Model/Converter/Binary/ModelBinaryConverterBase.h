@@ -120,20 +120,20 @@ namespace FWK::Converter
 
             // ModelMesh単位Headerを書き込む
             // この後に続く可変長配列やTexturePathのサイズ情報を持つ
-            WriteBinaryData(&l_modelMeshBinaryHeader, k_singleBinaryElementCount, a_memoryWriteOffset);
+            WriteBinaryData(k_singleBinaryElementCount, &l_modelMeshBinaryHeader, a_memoryWriteOffset);
 
             // ModelMeshの頂点配列を書き込む
-            WriteBinaryData(a_modelMesh.m_modelVertexList.data(), l_modelMeshBinaryHeader.m_vertexCount, a_memoryWriteOffset);
+            WriteBinaryData(l_modelMeshBinaryHeader.m_vertexCount, a_modelMesh.m_modelVertexList.data(), a_memoryWriteOffset);
 
             // 通常Index配列を書き込む
-            WriteBinaryData(a_modelMesh.m_indexList.data(),       l_modelMeshBinaryHeader.m_indexCount,  a_memoryWriteOffset);
+            WriteBinaryData(l_modelMeshBinaryHeader.m_indexCount,  a_modelMesh.m_indexList.data(),       a_memoryWriteOffset);
 
             const auto& l_modelMaterialAssetData = a_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
 
             // MaterialのPBR係数を書き込む
-            WriteBinaryData(&l_modelMaterialAssetData.m_baseColorFactor, k_singleBinaryElementCount, a_memoryWriteOffset);
-            WriteBinaryData(&l_modelMaterialAssetData.m_roughnessFactor, k_singleBinaryElementCount, a_memoryWriteOffset);
-            WriteBinaryData(&l_modelMaterialAssetData.m_metallicFactor,  k_singleBinaryElementCount, a_memoryWriteOffset);
+            WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_baseColorFactor, a_memoryWriteOffset);
+            WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_roughnessFactor, a_memoryWriteOffset);
+            WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_metallicFactor,  a_memoryWriteOffset);
 
 
             // Materialが参照するTexturePathを書き込む
@@ -146,16 +146,16 @@ namespace FWK::Converter
             const auto& l_modelMeshletData = a_modelMesh.m_modelMeshletData;
 
             // Meshlet本体を書き込む
-            WriteBinaryData(l_modelMeshletData.m_meshletList.data(), l_modelMeshBinaryHeader.m_meshletCount, a_memoryWriteOffset);
+            WriteBinaryData(l_modelMeshBinaryHeader.m_meshletCount, l_modelMeshletData.m_meshletList.data(), a_memoryWriteOffset);
 
             // Meshlet内LocalVertexIndexからModelVertexIndexへ変換するIndex配列を書き込む
-            WriteBinaryData(l_modelMeshletData.m_uniqueVertexIndexList.data(), l_modelMeshBinaryHeader.m_uniqueVertexIndexCount, a_memoryWriteOffset);
+            WriteBinaryData(l_modelMeshBinaryHeader.m_uniqueVertexIndexCount, l_modelMeshletData.m_uniqueVertexIndexList.data(), a_memoryWriteOffset);
 
             // Meshlet内の三角形Index情報を書き込む
-            WriteBinaryData(l_modelMeshletData.m_primitiveIndexList.data(), l_modelMeshBinaryHeader.m_primitiveIndexCount, a_memoryWriteOffset);
+            WriteBinaryData(l_modelMeshBinaryHeader.m_primitiveIndexCount, l_modelMeshletData.m_primitiveIndexList.data(), a_memoryWriteOffset);
 
             // Meshlet単位のカリング用Boundsを書き込む
-            WriteBinaryData(l_modelMeshletData.m_meshletBoundsList.data(), l_modelMeshBinaryHeader.m_meshletBoundsCount, a_memoryWriteOffset);
+            WriteBinaryData(l_modelMeshBinaryHeader.m_meshletBoundsCount, l_modelMeshletData.m_meshletBoundsList.data(), a_memoryWriteOffset);
         }
 
         template <typename ModelMeshType>

@@ -12,7 +12,7 @@ namespace FWK::Struct
     struct StaticModelBatchUploadRecord final
     {
         // StaticModelのBufferResourceへコピーするためのUploadCommand一覧
-        std::vector<Graphics::StaticStructuredBuffer::BufferUploadCommand> m_bufferUploadCommandList = {};
+        std::vector<Struct::BufferUploadCommand> m_bufferUploadCommandList = {};
 
         // StaticModelStorageへ登録するStaticModelRecord
         std::shared_ptr<Graphics::StaticModelRecord> m_staticModelRecord = nullptr;

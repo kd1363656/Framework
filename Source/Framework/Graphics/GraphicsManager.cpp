@@ -68,7 +68,7 @@ void FWK::Graphics::GraphicsManager::SaveCONFIG() const
     Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-void FWK::Graphics::GraphicsManager::ProcessWindowResizeRequest(const Window::ResizeRequest& a_windowResizeRequest)
+void FWK::Graphics::GraphicsManager::ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest)
 {
     // window側でサイズ変更が起きていない場合は、何もしない
     // 最小化中はクライアント領域が0になることがある

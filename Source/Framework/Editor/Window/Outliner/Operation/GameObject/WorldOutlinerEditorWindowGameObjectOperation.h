@@ -6,7 +6,7 @@ namespace FWK::Editor
     {
     private:
 
-        using ChildGameObjectDataList = std::vector<Utility::SmartPointerVectorList<std::weak_ptr<GameObject>>::ArrayElementData>;
+        using ChildGameObjectDataList = std::vector<Struct::SmartPointerVectorListArrayElementData<std::weak_ptr<GameObject>>>;
 
     public:
 

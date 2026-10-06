@@ -8,6 +8,7 @@
 #include "Definition/Type/Trait/PTR/TypeTraitPTR.h"
 #include "Definition/Concept/IsSmartPTR/IsSmartPTRConcept.h"
 #include "Definition/Macros/Assert/AssertReturnMacros.h"
+#include "Definition/Struct/Utility/SmartPointerVectorListStruct.h"
 #include "Utility/List/SmartPointerVectorListUtility.h"
 
 //===============================================================================
@@ -16,6 +17,7 @@
 #include "Definition/Type/Alias/StaticTypeIDTypeAlias.h"
 #include "TypeINFO/StaticTypeID/StaticTypeIDGenerator.h"
 #include "Definition/Struct/String/StringHashStruct.h"
+#include "Definition/Struct/TypeINFO/TypeINFORegistryStruct.h"
 #include "TypeINFO/Registry/TypeINFORegistry.h"
 #include "Definition/Macros/TypeINFO/TypeINFORegistryMacros.h"
 
@@ -30,6 +32,8 @@
 #include "Utility/File/CanLoadFileUtility.h"
 #include "Definition/Constant/Utility/File/Json/JsonLoadAndSaveFileUtilityConstant.h"
 #include "Utility/File/Json/JsonLoadAndSaveFileUtility.h"
+#include "Definition/Constant/Window/WindowConstant.h"
+#include "Definition/Struct/Window/WindowStruct.h"
 #include "Window/Window.h"
 
 //===============================================================================
@@ -91,6 +95,7 @@
 #include "Definition/Struct/Editor/Command/DestroyGameObjectCommandStruct.h"
 #include "Editor/Command/GameObject/Destroy/DestroyGameObjectCommand.h"
 #include "Editor/Command/GameObject/Reparent/ReparentGameObjectCommand.h"
+#include "Editor/Command/GameObject/Rename/RenameGameObjectCommand.h"
 #include "Editor/Window/Command/GameObject/CreateGameObjectCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Editor/EditorManager.h"
@@ -153,6 +158,7 @@
 #include "Utility/Graphics/DeserializeOptionalShaderUtility.h"
 #include "Graphics/Render/Pipeline/Graphics/Converter/Json/GraphicsPipelineStateBaseJsonConverter.h"
 #include "Graphics/Render/Pipeline/Graphics/GraphicsPipelineStateBase.h"
+#include "Definition/Struct/Graphics/StandardPipelineStateJsonConverterStruct.h"
 #include "Graphics/Render/Pipeline/Graphics/Standard/Converter/Json/StandardPipelineStateJsonConverter.h"
 #include "Graphics/Render/Pipeline/Graphics/Standard/StandardPipelineState.h"
 #include "Graphics/Render/Pipeline/Graphics/Mesh/Converter/Json/MeshShaderPipelineStateJsonConverter.h"
@@ -175,6 +181,7 @@
 
 //リソースリリースクラス
 #include "Definition/Struct/Graphics/GPUResourceStruct.h"
+#include "Definition/Struct/Graphics/ResourceReleaseContextStruct.h"
 #include "Graphics/Resource/ReleaseContext/ResourceReleaseContext.h"
 
 // レコードクラス
@@ -189,6 +196,7 @@
 
 // スワップチェイン
 #include "Definition/Constant/Graphics/SwapChainJsonConverterConstasnt.h"
+#include "Definition/Struct/Graphics/SwapChainJsonConverterStruct.h"
 #include "Graphics/Render/SwapChain/Converter/Json/SwapChainJsonConverter.h"
 #include "Graphics/Render/SwapChain/SwapChain.h"
 
@@ -210,6 +218,7 @@
 
 // ストラクチャードバッファー
 #include "Graphics/Resource/Buffer/StructuredBufferBase.h"
+#include "Definition/Struct/Graphics/Buffer/StaticStructuredBufferStruct.h"
 #include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
 
 //===============================================================================
@@ -230,6 +239,7 @@
 #include "Definition/Constant/Graphics/TextureBinaryConverterConstant.h"
 #include "Graphics/Resource/Texture/Converter/Binary/TextureBinaryConverter.h"
 #include "Graphics/Resource/Texture/Record/TextureRecord.h"
+#include "Definition/Struct/Graphics/TextureBatchUploadRecordBuilderStruct.h"
 #include "Graphics/Resource/Texture/Builder/TextureBatchUploadRecordBuilder.h"
 #include "Graphics/Resource/Texture/Converter/Json/TextureSystemJsonConverter.h"
 #include "Definition/Enum/Graphics/DefaultTextureEnum.h"
@@ -243,6 +253,7 @@
 #include "Definition/Struct/Graphics/DepthStencilTextureStruct.h"
 #include "Graphics/Resource/Texture/DepthStencil/DepthStencilTexture.h"
 #include "Definition/Struct/String/WStringHashStruct.h"
+#include "Definition/Struct/Graphics/TextureSystemStruct.h"
 #include "Graphics/Resource/Texture/TextureSystem.h"
 #include "Graphics/Resource/Texture/Texture.h"
 
@@ -250,6 +261,7 @@
 #include "Definition/Struct/Graphics/ModelCommonStruct.h"
 #include "Definition/Constant/Graphics/FBXModelLoaderBaseConstant.h"
 #include "Graphics/Resource/Model/FBXLoader/FBXModelLoaderBase.h"
+#include "Definition/Struct/Graphics/StaticModelRecordStruct.h"
 #include "Graphics/Resource/Model/Static/Record/StaticModelRecord.h"
 #include "Definition/Constant/Graphics/TriangleVertexCountConstant.h"
 #include "Definition/Constant/Graphics/ModelBinaryConverterConstant.h"
@@ -271,6 +283,8 @@
 
 // モデル(SkeletalAnimation)
 #include "Graphics/Resource/Buffer/Dynamic/Structured/DynamicRWStructuredBuffer.h"
+#include "Definition/Constant/Graphics/SkeletalAnimationModelRecordConstant.h"
+#include "Definition/Struct/Graphics/SkeletalAnimationModelRecordStruct.h"
 #include "Graphics/Resource/Model/Skeletal/Record/SkeletalAnimationModelRecord.h"
 #include "Graphics/Resource/Model/Skeletal/Converter/Binary/SkeletalAnimationModelBinaryConverter.h"
 #include "Definition/Constant/Graphics/SkeletalAnimationModelFBXMotionExtractorConstant.h"
@@ -297,6 +311,7 @@
 // モデルのアニメーション管理クラス
 #include "Graphics/Resource/Model/Skeletal/Player/Evaluator/SkeletalAnimationPoseEvaluator.h"
 #include "Graphics/Resource/Model/Skeletal/Player/Buffer/SkeletalAnimationBoneMatrixBufferUploader.h"
+#include "Definition/Struct/Graphics/SkeletalAnimationPlayerStruct.h"
 #include "Graphics/Resource/Model/Skeletal/Player/SkeletalAnimationPlayer.h"
 
 // 定数バッファークラス
@@ -396,6 +411,7 @@
 #include "Definition/Struct/Graphics/SpriteRECTStruct.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Constant/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
+#include "Definition/Struct/Graphics/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
 #include "Definition/Constant/Graphics/ModelPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Constant/Graphics/Buffer/Constant/CBModelPerObjectStructConstant.h"

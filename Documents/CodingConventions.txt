@@ -16,7 +16,7 @@
 1-3. 構造体を class の public に入れ子で定義しないでください。
      ・そのクラスの中だけで使う構造体は private に入れ子で定義します。
      ・外部(呼び出し側)でも使う構造体は Source/Framework/Definition/Struct/<分類>/XxxStruct.h に
-       namespace FWK::Struct で定義します。
+       namespace FWK::Struct で定義します(詳しくは第14章 14-3)。
 1-4. スマートポインタを引数で受け取るときは、次のように使い分けます。
      ・参照するだけの場合は const std::weak_ptr<T>& で受け取ります。
      ・所有を共有・保持する場合(リストに格納する、寿命を延ばすなど)は const std::shared_ptr<T>& で受け取ります。
@@ -577,8 +577,8 @@
        その型のまま受け取ります。
      ・所有権を移すときは T&& で受け取り、std::move します。
      ・スマートポインタは第1章 1-4 のとおりです。
-13-5. 引数は、const の入力 → const でない参照・ポインタ(出力や変更する対象) → デフォルト引数 の順に並べます。
-     それぞれの中の順番は第20章 20-4 のとおりです。
+13-5. 引数は、修飾子の種類ごとに次の順で並べます(詳しくは第20章 20-4)。
+       const 参照 → const ポインタ → const 値 → 参照 → 右辺値参照(T&&) → ポインタ → 値 → デフォルト引数
 13-6. 出力用の参照引数には a_outXxx という名前を付けることがあります(a_outUUIDList)。
 
 
@@ -620,7 +620,33 @@
      ・ビットフラグは XxxBitShiftFlag : std::uint32_t { Invalid = 0U, X = 1U << 0U, Y = 1U << 1U, ... } の形で書きます。
      ・インスペクタで文字列から選ぶ列挙型は、namespace の外に次の登録を書きます。
          FWK_REGISTER_STRING_VALUE_BIDIRECTIONAL_REGISTRY(FWK::Enum::Xxx, FWK::Enum::Xxx::Value)
-14-3. 構造体(Struct)は第7章 7-11 のとおりです。
+14-3. 構造体(Struct)の書き方は第7章 7-11 のとおりです。置き場所は次のように決めます。
+     ・class の中に入れ子で定義してよいのは、そのクラスの中(private)だけで使う構造体だけです。
+       public / protected に入れ子の構造体を置くことはしません。外から使う構造体はすべて Definition/Struct に置きます。
+     ・ファイルは Source/Framework/Definition/Struct/<分類>/<所有クラス名>Struct.h に作ります。
+         分類     : 所有クラスがある最上位のフォルダ名(Graphics / Editor / Physics / Window / Utility / TypeINFO など)
+                    同じ種類の構造体がまとまっているフォルダがある場合はそこに入れます(Graphics/Buffer など)。
+         ファイル : 1つの所有クラスで使う構造体は、1つのファイルにまとめて書きます。
+           例) Window の構造体             → Definition/Struct/Window/WindowStruct.h
+               StaticStructuredBuffer の構造体 → Definition/Struct/Graphics/Buffer/StaticStructuredBufferStruct.h
+     ・namespace FWK::Struct に書きます。同じ namespace の中で名前が重ならないように、
+       ModelMesh / ClientSize のような一般的な名前には所有クラスや機能の名前を頭に付けます。
+         StaticModelRecord::ModelMesh       → Struct::StaticModelMesh
+         Window::ClientSize                 → Struct::WindowClientSize
+         SwapChainJsonConverter::BackBuffer → Struct::SwapChainBackBuffer
+       もともと内容が分かる名前(TextureLoadResult / BufferUploadCommand など)はそのままの名前で構いません。
+     ・テンプレートクラスの型引数を使う構造体は、template の構造体にします。
+         template <typename Type>
+         struct SmartPointerVectorListArrayElementData final { ... };
+     ・構造体が使う定数は、構造体のヘッダーより前に読み込まれる Definition/Constant に置きます。
+       構造体は所有クラスより先に読み込まれるため、所有クラスの static constexpr 定数は使えません。
+         Window の k_defaultWindowWidth など → Definition/Constant/Window/WindowConstant.h
+     ・Framework.h では、所有クラスのヘッダーの直前に #include します(定数ヘッダーがあればその前)。
+     ・フィルターはフォルダと同じ名前にし、まだ無い場合は作ります(Source\Framework\Definition\Struct\Window など)。
+     ・テンプレートで複数のクラスを同じように扱うため、所有クラス側から構造体を同じ名前で参照する必要がある場合は、
+       所有クラスの public に型の別名を置きます。
+         using ModelVertex = Struct::StaticModelVertex;
+         using ModelMesh   = Struct::StaticModelMesh;
 14-4. 型エイリアス(TypeAlias)
          namespace FWK::TypeAlias
          {
@@ -830,10 +856,18 @@
       10. bool
      ・ファイルパス(std::filesystem::path)の位置は決めていません。
 20-4. 引数(a_)
-     ・まず第13章 13-5 のとおり「const の入力 → const でない参照・ポインタ(出力や変更する対象) → デフォルト引数」に分け、
-       その中を次の順に並べます。
+     ・まず修飾子の種類で、次の順に並べます。
+       1. const 参照        const T& / const std::weak_ptr<T>& / const nlohmann::json& / const std::size_t&
+       2. const ポインタ    const T*
+       3. const 値          const bool / const Enum::XxxType / const float / const UINT
+       4. 参照              T&(出力や変更する対象)
+       5. 右辺値参照        T&&(所有権を受け取るもの)
+       6. ポインタ          T*
+       7. 値                const の付かない値渡し
+       8. デフォルト引数
+     ・同じ種類の中は、次の順に並べます。
        1. 配列
-       2. ポインタ
+       2. スマートポインタ
        3. nlohmann::json
        4. クラス・構造体・数学の型・文字列・パス・UUID(この中の順番は決めていません)
        5. 列挙型
@@ -842,10 +876,11 @@
           void Xxx(const std::vector<std::weak_ptr<GameObject>>& a_gameObjectList,
                    const std::weak_ptr<GameObject>&              a_parent,
                    const nlohmann::json&                         a_rootJson,
+                   const ufbx_node*                              a_fbxNode,
                    const Enum::XxxType                           a_type,
                    const bool                                    a_isRecursive,
-                         Scene&                                  a_scene);
-     ・T&& で受け取る引数の位置は決めていません。
+                         Scene&                                  a_scene,
+                         std::vector<boost::uuids::uuid>&&       a_uuidList);
 20-5. ローカル変数(l_)は、使う順番(依存される側が先)に宣言します。
 20-6. 次の場合は 20-1 ~ 20-5 の順番より優先し、規約違反とはしません。
      ・デストラクタが実行される順番や、初期化の順番を守るための並び
@@ -873,7 +908,7 @@
 [ ] public は INIT → Deserialize → Update 系 → Draw → Serialize → 操作 → Is → Set → Find → Fetch → GetREF → GetMutableREF → GetVAL の順
 [ ] private は 関数 → static constexpr k_ → m_ メンバ(初期化子は {} / nullptr / 定数) → 型情報マクロ の順
 [ ] 8バイト以上の引数は const 参照、8バイト以上のローカル変数は const auto& で受け取っている
-[ ] メンバ変数・定数・引数を第20章の順番(配列 → ポインタ → 値)で並べている
+[ ] メンバ変数・定数を第20章の順番(配列 → ポインタ → 値)で、引数を修飾子の順番(const 参照 → const ポインタ → const 値 → 参照 → 右辺値参照 → ポインタ → 値)で並べている
 [ ] 変数は l_ / 引数は a_ / メンバは m_ / 定数は k_(直後は小文字)、Setter の引数は a_set
 [ ] GetREF / GetMutableREF / GetVAL / FetchVAL / FindPTR を使い分け、略語は大文字(REF VAL PTR ITR INFO UUID ID MIN MAX など)
 [ ] 引数が4個以上の宣言・呼び出しは1行に1引数ずつ書き、位置を揃えている
@@ -893,8 +928,6 @@
  第22章 統一されていない箇所(新しく書くときは避けてください)
 ================================================================================
 
-・public に入れ子で定義された構造体(Window::ClientSize / TextureSystem::TextureLoadResult など)
-  → 第1章 1-3 のとおり private か Definition/Struct に置きます。
 ・メンバ変数を宣言だけして、.cpp の初期化子リストで初期化しているクラス
   (EditorManager / AudioManager / PhysicsManager / Window / BinaryConverterBase など)
   → 宣言の位置で初期化します。

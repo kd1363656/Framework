@@ -13,11 +13,11 @@ void FWK::Graphics::Renderer::Deserialize(const nlohmann::json& a_rootJson)
 
     m_jsonConverter.Deserialize(a_rootJson, *this);
 }
-bool FWK::Graphics::Renderer::PostDeserialize(const Device&             a_device,
-                                              const Window&             a_window,
-                                              const Factory&            a_factory,
-                                              const Window::ClientSize& a_clientSize,
-                                                    ResourceContext&    a_resourceContext)
+bool FWK::Graphics::Renderer::PostDeserialize(const Device&                   a_device,
+                                              const Window&                   a_window,
+                                              const Factory&                  a_factory,
+                                              const Struct::WindowClientSize& a_clientSize,
+                                                    ResourceContext&          a_resourceContext)
 {
     // フレームリソースがないとコマンドアロケーターを使えないため"return"
     FWK_ASSERT_RETURN_VALUE_IF(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
@@ -174,7 +174,7 @@ nlohmann::json FWK::Graphics::Renderer::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Graphics::Renderer::Resize(const Device& a_device, const Window::ClientSize& a_clientSize, ResourceContext& a_resourceContext)
+void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::WindowClientSize& a_clientSize, ResourceContext& a_resourceContext)
 {
     // スワップチェインのリサイズ前にGPUとの同期をとるなど必要な処理を行う
     PrepareForSwapChainResize();
@@ -239,7 +239,7 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRoot
     return l_itr->second;
 }
 
-bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Window::ClientSize& a_clientSize)
+bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Struct::WindowClientSize& a_clientSize)
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_cbSpritePass, "SpritePass用ConstantBufferが作成されておらず、ScreenRenderAreaの設定処理に失敗しました。", false);
 

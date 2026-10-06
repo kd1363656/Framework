@@ -15,16 +15,16 @@ namespace FWK::Graphics
 
         void INIT();
 
-        bool Create(const Device&             a_device,
-                    const GPUMemoryAllocator& a_gpuMemoryAllocator,
-                    const Window::ClientSize& a_clientSize,
-                          ResourceContext&    a_resourceContext);
+        bool Create(const Device&                   a_device,
+                    const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                    const Struct::WindowClientSize& a_clientSize,
+                          ResourceContext&          a_resourceContext);
 
-        bool Resize(const Device&             a_device,
-                    const GPUMemoryAllocator& a_gpuMemoryAllocator,
-                    const Window::ClientSize& a_clientSize,
-                    const UINT64&             a_retiredFenceValue,
-                          ResourceContext&    a_resourceContext) const;
+        bool Resize(const Device&                   a_device,
+                    const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                    const Struct::WindowClientSize& a_clientSize,
+                    const UINT64&                   a_retiredFenceValue,
+                          ResourceContext&          a_resourceContext) const;
 
         void Deserialize(const nlohmann::json& a_rootJson);
 

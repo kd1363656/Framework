@@ -21,13 +21,13 @@ namespace FWK::Converter
         {
             std::uint64_t m_boneNameSize = k_emptyBoneNameSize;
 
-            std::uint32_t m_parentBoneIndex = Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex;
+            std::uint32_t m_parentBoneIndex = Constant::k_invalidBoneIndex;
         };
 
         struct ModelMotionSequenceBinaryHeader final
         {
-            float m_durationSecond = Graphics::SkeletalAnimationModelRecord::k_initialAnimationDurationSecond;
-            float m_frameRate      = Graphics::SkeletalAnimationModelRecord::k_defaultAnimationFrameRate;
+            float m_durationSecond = Constant::k_initialAnimationDurationSecond;
+            float m_frameRate      = Constant::k_defaultAnimationFrameRate;
 
             std::uint64_t m_motionNameSize = k_emptyMotionNameSize;
 
@@ -38,7 +38,7 @@ namespace FWK::Converter
         {
             std::uint64_t m_keyFrameCount = k_emptyKeyFrameCount;
 
-            std::uint32_t m_boneIndex = Graphics::SkeletalAnimationModelRecord::k_invalidBoneIndex;
+            std::uint32_t m_boneIndex = Constant::k_invalidBoneIndex;
         };
 
     public:
@@ -55,25 +55,25 @@ namespace FWK::Converter
 
     private:
 
-        void FailLoadAsset(Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData);
+        void FailLoadAsset(Struct::SkeletalAnimationModelData& a_modelData);
 
-        ModelBinaryHeader CreateModelBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData, const std::uint64_t& a_fileSize) const;
+        ModelBinaryHeader CreateModelBinaryHeader(const Struct::SkeletalAnimationModelData& a_modelData, const std::uint64_t& a_fileSize) const;
 
-        ModelBoneBinaryHeader CreateModelBoneBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBone& a_modelBone) const;
+        ModelBoneBinaryHeader CreateModelBoneBinaryHeader(const Struct::SkeletalAnimationModelBone& a_modelBone) const;
 
-        ModelMotionSequenceBinaryHeader CreateMotionSequenceBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelMotionSequence& a_modelMotionSequence) const;
+        ModelMotionSequenceBinaryHeader CreateMotionSequenceBinaryHeader(const Struct::SkeletalAnimationModelMotionSequence& a_modelMotionSequence) const;
 
-        ModelBoneMotionTrackBinaryHeader CreateModelBoneMotionTrackBinaryHeader(const Graphics::SkeletalAnimationModelRecord::ModelBoneMotionTrack& a_modelBoneMotionTrack) const;
+        ModelBoneMotionTrackBinaryHeader CreateModelBoneMotionTrackBinaryHeader(const Struct::SkeletalAnimationModelBoneMotionTrack& a_modelBoneMotionTrack) const;
 
-        bool TryReadModelMeshBinaryData(const std::uint64_t& a_boneCount, Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryReadOffset) const;
+        bool TryReadModelMeshBinaryData(const std::uint64_t& a_boneCount, Struct::SkeletalAnimationModelMesh& a_modelMesh, std::uint64_t& a_memoryReadOffset) const;
 
-        void WriteModelMeshBinaryData(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const;
+        void WriteModelMeshBinaryData(const Struct::SkeletalAnimationModelMesh& a_modelMesh, std::uint64_t& a_memoryWriteOffset) const;
 
-        std::uint64_t CalculateModelMeshBinaryFileSize(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh) const;
+        std::uint64_t CalculateModelMeshBinaryFileSize(const Struct::SkeletalAnimationModelMesh& a_modelMesh) const;
 
-        std::uint64_t CalculateAssetFileSize(const Graphics::SkeletalAnimationModelRecord::ModelData& a_modelData) const;
+        std::uint64_t CalculateAssetFileSize(const Struct::SkeletalAnimationModelData& a_modelData) const;
 
-        bool IsValidModelMesh(const Graphics::SkeletalAnimationModelRecord::ModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const;
+        bool IsValidModelMesh(const Struct::SkeletalAnimationModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const;
 
         static constexpr std::uint64_t k_emptyBoneNameSize         = 0ULL;
         static constexpr std::uint64_t k_emptyMotionNameSize       = 0ULL;

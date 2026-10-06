@@ -32,7 +32,7 @@ namespace FWK::Graphics
             // 指定したRootParameterへUploadBuffer上の定数バッファを結びつける
             // SetGraphicsRootConstantBufferView(ルートパラメータ番号、
             //                                   CBVとして参照させるGPU仮想アドレス);
-            a_directCommandList.SetupConstantBufferView(a_rootSignature, a_rootParameterType, l_gpuVirtualAddress);
+            a_directCommandList.SetupConstantBufferView(a_rootSignature, l_gpuVirtualAddress, a_rootParameterType);
         }
 
         FWK_DEFINE_TYPE_INFO_ROOT(DrawRequestPassBase)
