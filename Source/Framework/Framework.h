@@ -101,6 +101,11 @@
 #include "Editor/Command/GameObject/Create/CreateGameObjectCommand.h"
 #include "Editor/Command/GameObject/PasteCut/PasteCutGameObjectCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
+#include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
+#include "Definition/Struct/Graphics/Buffer/Vertex/VBEditorCameraDebugStruct.h"
+#include "Definition/Constant/Editor/DebugRenderer/EditorDebugRendererConstant.h"
+#include "Editor/DebugRenderer/Queue/EditorDebugRendererQueue.h"
+#include "Editor/DebugRenderer/EditorDebugRenderer.h"
 #include "Editor/EditorManager.h"
 
 //===============================================================================
@@ -114,7 +119,6 @@
 // エディター(ファクトリーを介さないといけないもの)
 //===============================================================================
 #include "Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactory.h"
-#include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"
 #include "Utility/UUID/UUIDUtility.h"
 #include "Utility/Json/JsonUtility.h"
 #include "Editor/Window/Viewport/ViewportEditorWindow.h"
@@ -347,6 +351,7 @@
 // カメラ
 #include "Definition/Constant/Graphics/Buffer/Constant/CBCameraPassStructConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBCameraPassStruct.h"
+#include "Definition/Struct/Graphics/Buffer/Constant/CBCullingCameraPassStruct.h"
 #include "Definition/Constant/Graphics/CameraConstant.h"
 #include "Graphics/Render/Camera/Camera.h"
 #include "Definition/Enum/Graphics/CameraViewModeEnum.h"
@@ -378,6 +383,8 @@
 #include "Graphics/Render/Graph/Request/Pass/Sprite/Screen/SpriteScreenPassDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Pass/Camera/Buffer/Constant/CameraPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Camera/CameraPassDrawRequest.h"
+#include "Graphics/Render/Graph/Request/Pass/Camera/Culling/Buffer/Constant/CullingCameraPassConstantBufferUploader.h"
+#include "Graphics/Render/Graph/Request/Pass/Camera/Culling/CullingCameraPassDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Pass/Light/Buffer/Constant/LightPassConstantBufferUploader.h"
 #include "Graphics/Render/Graph/Request/Pass/Light/LightPassDrawRequest.h"
 #include "Graphics/Render/Graph/Request/Pass/Shadow/Cascade/Buffer/Constant/CascadeShadowMapPassConstantBufferUploader.h"
@@ -451,8 +458,10 @@
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/UnLit/SkeletalAnimationModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/Standard/Lit/SkeletalAnimationModelStandardLitPass.h"
 #include "Definition/Struct/Graphics/Buffer/Vertex/VBPhysicsDebugStruct.h"
-#include "Graphics/Render/Graph/Pass/PhysicsDebug/Buffer/PhysicsDebugDynamicVertexBufferUploader.h"
-#include "Graphics/Render/Graph/Pass/PhysicsDebug/PhysicsDebugPass.h"
+#include "Graphics/Render/Graph/Pass/Debug/Physics/Buffer/PhysicsDebugDynamicVertexBufferUploader.h"
+#include "Graphics/Render/Graph/Pass/Debug/Physics/PhysicsDebugPass.h"
+#include "Graphics/Render/Graph/Pass/Debug/Editor/Buffer/EditorDebugDynamicVertexBufferUploader.h"
+#include "Graphics/Render/Graph/Pass/Debug/Editor/EditorDebugPass.h"
 
 // トポロジカルソート便利クラス
 #include "Utility/Sorter/Topologycal/TopologicalSorter.h"

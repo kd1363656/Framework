@@ -19,8 +19,8 @@ namespace FWK::Editor
 
     private:
 
-        std::vector<std::shared_ptr<GameObject>> m_createdGameObjectList    = {};
-        std::vector<std::shared_ptr<GameObject>> m_descendantGameObjectList = {};
-        std::vector<boost::uuids::uuid>          m_parentUUIDList           = {};
+        std::vector<std::shared_ptr<GameObject>> m_createdGameObjectList;
+        std::vector<std::shared_ptr<GameObject>> m_descendantGameObjectList;
+        std::vector<boost::uuids::uuid>          m_parentUUIDList;
     };
 }

@@ -17,9 +17,9 @@ namespace FWK::Editor
 
         void ApplyState(const Struct::ReparentGameObjectState& a_state);
 
-        boost::uuids::uuid m_gameObjectUUID = {};
+        boost::uuids::uuid m_gameObjectUUID;
 
-        Struct::ReparentGameObjectState m_beforeState = {};
-        Struct::ReparentGameObjectState m_afterState  = {};
+        Struct::ReparentGameObjectState m_beforeState;
+        Struct::ReparentGameObjectState m_afterState;
     };
 }

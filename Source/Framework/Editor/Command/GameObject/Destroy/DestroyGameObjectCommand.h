@@ -15,6 +15,6 @@ namespace FWK::Editor
     private:
 
         // 1回の削除操作で取り外したGameObjectの記録(複数選択時は複数)
-        std::vector<Struct::DestroyedGameObjectRecord> m_destroyedGameObjectRecordList = {};
+        std::vector<Struct::DestroyedGameObjectRecord> m_destroyedGameObjectRecordList;
     };
 }

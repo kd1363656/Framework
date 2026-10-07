@@ -19,6 +19,8 @@ FWK::Editor::EditorManager::EditorManager() :
 
     m_gameObjectSelectionState(),
 
+    m_editorDebugRenderer(),
+
     m_jsonConverter(),
 
     m_currentActiveWindowStaticTpeID(StaticTypeIDGenerator::k_invalidStaticTypeID),
@@ -199,6 +201,21 @@ void FWK::Editor::EditorManager::DrawEditor()
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), l_directCommandList.GetREFCommandList().Get());
 }
 
+void FWK::Editor::EditorManager::CollectEditorDebugDrawCommands()
+{
+    // 視錐台の可視化のスイッチは、ビューポートが持っている
+    // エディターが非表示のとき、ビューポートが無いときは、視錐台を描かない
+    const auto& l_viewportEditorWindow = FindVALWindowEditor<ViewportEditorWindow>().lock();
+
+    const bool l_isDrawFrustum = !m_isDisableDrawEditor &&
+                                 l_viewportEditorWindow &&
+                                 l_viewportEditorWindow->GetVALIsDrawFrustum();
+
+    // 描画の前に、このフレームに描く線をEditorDebugRendererへ集める
+    // (描画の後に集めると、カメラを動かしたときに線が1フレーム遅れて見えてしまうため)
+    m_editorDebugRenderer.CollectDebugDrawCommands(m_gameObjectSelectionState, l_isDrawFrustum);
+}
+
 void FWK::Editor::EditorManager::SaveCONFIG() const
 {
     const auto& l_rootJson = m_jsonConverter.Serialize(*this);
@@ -231,7 +248,7 @@ bool FWK::Editor::EditorManager::CopyGraphicsSRVDescriptor(const TypeAlias::CBVS
 
     const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
     const auto& l_deviceWrapper   = l_graphicsManager.GetREFDevice        ();
-    const auto& l_device          = l_deviceWrapper.GetREFDevice              ();
+    const auto& l_device          = l_deviceWrapper.GetREFDevice          ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_device, "Deviceが無効のため、ImGui用SRVDescriptorのコピー処理に失敗しました。", false);
 

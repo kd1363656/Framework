@@ -268,21 +268,6 @@ void FWK::Graphics::Renderer::PreparePreviewRenderView(const Device& a_device, R
     m_isPreviewViewActive = true;
 }
 
-const FWK::Graphics::RenderView& FWK::Graphics::Renderer::FetchREFActiveRenderView() const
-{
-    // 現在描画しているビューの種類は、現在のフレームリソースが覚えている
-    // プレビューを描画中なら、プレビュー用のビューを返す
-    if (const auto& l_currentFrameResource = m_currentFrameResource.lock();
-        l_currentFrameResource &&
-        l_currentFrameResource->GetVALActiveViewType() == Enum::RenderViewType::Preview)
-    {
-        return m_previewRenderView;
-    }
-
-    // それ以外はメインビュー
-    return m_mainRenderView;
-}
-
 void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)
 {
     FWK_ASSERT_RETURN_IF(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
@@ -311,6 +296,21 @@ std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRoot
     if (l_itr == m_rootSignatureMap.end()) { return {}; }
 
     return l_itr->second;
+}
+
+const FWK::Graphics::RenderView& FWK::Graphics::Renderer::FetchREFActiveRenderView() const
+{
+    // 現在描画しているビューの種類は、現在のフレームリソースが覚えている
+    // プレビューを描画中なら、プレビュー用のビューを返す
+    if (const auto& l_currentFrameResource = m_currentFrameResource.lock();
+        l_currentFrameResource &&
+        l_currentFrameResource->GetVALActiveViewType() == Enum::RenderViewType::Preview)
+    {
+        return m_previewRenderView;
+    }
+
+    // それ以外はメインビュー
+    return m_mainRenderView;
 }
 
 bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Struct::WindowClientSize& a_clientSize)

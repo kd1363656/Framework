@@ -27,6 +27,8 @@ namespace FWK::Editor
 
         void DrawEditor();
 
+        void CollectEditorDebugDrawCommands();
+
         void SaveCONFIG() const;
 
         void ProcessWindowResizeRequest(const Struct::WindowResizeRequest& a_windowResizeRequest) const;
@@ -95,6 +97,8 @@ namespace FWK::Editor
 
         const auto& GetREFGameObjectSelectionState() const { return m_gameObjectSelectionState; }
 
+        const auto& GetREFEditorDebugRenderer() const { return m_editorDebugRenderer; }
+
         auto& GetMutableREFMainMenuBar() { return m_mainMenuBar; }
 
         auto& GetMutableREFUndoRedoSystem() { return m_undoRedoSystem; }
@@ -151,6 +155,8 @@ namespace FWK::Editor
         EditorUndoRedoSystem m_undoRedoSystem;
 
         EditorGameObjectSelectionState m_gameObjectSelectionState;
+
+        EditorDebugRenderer m_editorDebugRenderer;
 
         Converter::EditorManagerJsonConverter m_jsonConverter;
 

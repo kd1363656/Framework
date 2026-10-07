@@ -32,15 +32,18 @@ void FWK::Graphics::SkeletalAnimationModelStandardLitPass::Execute(const Resourc
     FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在FrameResourceを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。" );
 
     const auto& l_cameraPassDrawRequest                                 = a_renderGraph.FindVALDrawRequestPass     <CameraPassDrawRequest>                                ().lock();
+    const auto& l_cullingCameraPassDrawRequest                          = a_renderGraph.FindVALDrawRequestPass     <CullingCameraPassDrawRequest>                         ().lock();
     const auto& l_lightPassDrawRequest                                  = a_renderGraph.FindVALDrawRequestPass     <LightPassDrawRequest>                                 ().lock();
     const auto& l_cascadeShadowMapPassDrawRequest                       = a_renderGraph.FindVALDrawRequestPass     <CascadeShadowMapPassDrawRequest>                      ().lock();
     const auto& l_skeletalAnimationModelStandardLitPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<SkeletalAnimationModelStandardLitPerObjectDrawRequest>().lock();
 
     FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest,                                                                                                    "CameraPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest,                                                                                             "CullingCameraPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest,                                                                                                     "LightPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest,                                                                                          "CascadeShadowMapPassDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelStandardLitPerObjectDrawRequest,                                                                    "SkeletalAnimationModelStandardLitPerObjectDrawRequestを取得できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),           "Camera定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
+    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),    "カリング用カメラ定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),            "Light定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "CascadeShadowMap定数を設定できないため、SkeletalAnimationModelStandardLitPassを実行できません。");
 

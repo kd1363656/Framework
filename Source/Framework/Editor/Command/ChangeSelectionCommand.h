@@ -20,13 +20,13 @@ namespace FWK::Editor
 
     private:
 
-        std::vector<boost::uuids::uuid> m_beforeUUIDList = {};
-        std::vector<boost::uuids::uuid> m_afterUUIDList  = {};
+        std::vector<boost::uuids::uuid> m_beforeUUIDList;
+        std::vector<boost::uuids::uuid> m_afterUUIDList;
 
-        boost::uuids::uuid m_beforeAnchorUUID = {};
-        boost::uuids::uuid m_afterAnchorUUID  = {};
+        boost::uuids::uuid m_beforeAnchorUUID;
+        boost::uuids::uuid m_afterAnchorUUID;
 
-        bool m_beforeIsSceneSelected = false;
-        bool m_afterIsSceneSelected  = false;
+        bool m_beforeIsSceneSelected;
+        bool m_afterIsSceneSelected;
     };
 }

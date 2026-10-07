@@ -28,6 +28,8 @@
 1-5. ファイルを追加したときは、次の3箇所に必ず登録してください。
      ・Framework.vcxproj         : <ClInclude Include="Source\..."/> / <ClCompile Include="Source\..."/>
      ・Framework.vcxproj.filters : <Filter Include="Source\..."> の定義と、各ファイルの <Filter>Source\...</Filter>
+       フィルターの名前と階層は、実際のフォルダとまったく同じにします(親のフィルターも定義します)。
+       ファイルやフォルダを移動したときは、vcxproj・filters・Framework.h のパスも、同時に更新します。
      ・Source/Framework/Framework.h : 依存関係の順番に合う位置に #include
 
 
@@ -55,6 +57,9 @@
        Inspector/           XxxInspector
        Buffer/Constant/     XxxDynamicConstantBufferUploader
        Builder/ Loader/ Record/ Mode/ Popup/ Shortcut/ Clipboard/ Selection/ Factory/ など
+     ・同じ種類のものが複数あるときは、種類のフォルダの下に、対象ごとのフォルダを作って分けます。
+         Graphics/Render/Graph/Pass/Debug/Physics/  PhysicsDebugPass
+         Graphics/Render/Graph/Pass/Debug/Editor/   EditorDebugPass(PhysicsDebug / EditorDebug と横に並べません)
      ・1つのファイルのためだけの下位フォルダは作りません。同じ機能のフォルダにそのまま置きます。
          Graphics/Render/Camera/CameraContext.h(Camera/Context/ の下には置きません)
      ・UndoRedo のコマンドは、ウィンドウの下ではなく Editor/Command/<対象>/<操作>/XxxCommand.h に置きます。
@@ -237,15 +242,18 @@
        EarlyUpdate / Update / LateUpdate / PostLateUpdate / BeginFrame / Execute / EndFrame
        Draw / EditInspector
        Serialize
-       その他の操作 (Clone / Add / Remove / Apply / Convert など)
+       その他の処理関数 (Clone / Add / Remove / Convert / Request / Prepare / Handle など)
        Is / Can / Has
+       Apply
        Set
-       Find
-       Fetch
+       Fetch / Find (この2つの間の順番は決めていません)
        GetREF
        GetMutableREF
+       GetPTR
+       GetMutablePTR
        GetVAL
        public の static constexpr 定数
+     ・.cpp の関数の定義も、ヘッダーで宣言した順に書きます(第8章 8-2)。
 7-4. private の宣言は次の順に並べます。
        private 関数 → static constexpr 定数(k_) → メンバ変数(m_) → 型情報マクロ
      ・定数は型ごとにまとめ、型が変わるところで空行を入れます。
@@ -268,14 +276,23 @@
           XxxClass& operator=(const XxxClass&)           = delete;
           XxxClass& operator=(      XxxClass&&) noexcept = default;
 7-6. メンバ変数の初期化
-     ・すべてのメンバ変数を、宣言の位置で初期化します(既定メンバ初期化子)。
+     ・コンストラクタを = default にするクラスは、すべてのメンバ変数を宣言の位置で初期化します(既定メンバ初期化子)。
          クラス / 構造体 / コンテナ / weak_ptr   = {}
          shared_ptr / unique_ptr / ComPtr        = nullptr
          数値 / bool / 列挙型                    名前付きの定数で初期化します
                                                  = k_initialXxx / = Constant::k_defaultXxx
                                                  bool は = false か定数を使い、= true は直接書きません
                                                  列挙型は = Enum::XxxType::Invalid
-     ・.cpp の初期化子リストで初期化する書き方は、新しいクラスでは使いません。
+     ・コンストラクタで初期化するクラス(引数を受け取るなど、= default ではないコンストラクタを書くクラス)は、
+       すべてのメンバ変数を、.cpp のコンストラクタの初期化子リストで初期化します。
+       この場合、メンバ変数の宣言には既定メンバ初期化子(= {} など)を書きません。
+       一部のメンバだけを初期化子リストに書き、残りを既定メンバ初期化子にする、という混ぜ方はしません。
+         m_beforeName(a_beforeName),
+         m_afterName (a_afterName),
+
+         m_gameObjectUUID(a_gameObjectUUID)
+     ・初期化子リストは、メンバ変数の宣言順に書き、種類が変わるところで空行を入れ、( の位置を揃えます(第8章 8-4)。
+       受け取る値がないメンバも、省略せず m_xxx() と書いて初期化します。
 7-7. インライン実装
      ・Getter / Setter は1行で書きます: { return m_xxx; } / { m_xxx = a_set; }
      ・戻り値の型を auto にしてよいのは、ヘッダーに本体を書く Getter(GetREF / GetMutableREF / GetVAL)だけです。
@@ -343,6 +360,8 @@
      ・JSON の変換は m_jsonConverter、インスペクタの表示は m_inspector としてメンバに持ち、処理を任せます。
      ・エディターウィンドウは Pane / Clipboard / FileOperation / ShortcutHandler / PopupDrawer / AssetCreator
        などのメンバクラスに分けます。
+     ・入力でカメラを動かす処理(移動・回転の更新)は、ウィンドウではなく、カメラのクラス(EditorCamera)が持ちます。
+       ウィンドウは「操作してよい状態か(ビューポート画像の上にマウスがあるか)」だけを判断して、EditorCamera::HandleInput へ渡します。
 
 
 ================================================================================
@@ -403,10 +422,10 @@
 9-1. 波括弧は Allman スタイルで、独立した行に書きます。
 9-2. if / for / while / switch の後ろには半角スペースを1つ入れます: if (
 9-3. if / for / while の本体には、必ず {} を付けます。
-     ・本体が return / continue / break の1文だけの場合は、1行で書きます。
+     ・本体が return または continue の1文だけの場合は、1行で書いて構いません。
+       break の1文だけの場合を含め、それ以外の本体は、必ずブロックで書きます。
          if (!l_scene) { return; }
          if (l_inDegreeList[l_nodeIndex] != k_emptyInDegree) { continue; }
-     ・それ以外の場合はブロックで書きます。
 9-4. else は } の次の行に書きます。} else とは書きません。
          if (l_newParent)
          {
@@ -443,6 +462,10 @@
                                            k_startVertexLocation,
                                            k_startInstanceLocation);
      ・3個以下でも、引数の中に複数行にわたる条件がある場合は1行に1引数ずつ書きます。
+     ・引数が2~3個のときは、式が長くなっても改行して並べません。長すぎる場合は、先に変数へ受けてから渡します。
+         NG : Rotate(l_io.MouseDelta.x * m_rotateSpeed,
+                     l_io.MouseDelta.y * m_rotateSpeed);
+         OK : Rotate(l_io.MouseDelta.x * m_rotateSpeed, l_io.MouseDelta.y * m_rotateSpeed);
 9-8. 縦揃え
      ・続けて並ぶ代入や初期化は、= の位置を揃えます。
      ・続けて並ぶ関数呼び出しは、( の位置を揃えます。
@@ -556,6 +579,10 @@
      ・そのクラスだけで使う定数は、クラスの private に static constexpr で書きます。
      ・複数のファイルで使う定数は、Definition/Constant に inline constexpr で書きます。
      ・文字列の定数は static constexpr std::string_view で書きます。
+     ・列挙型の値や、ImGui / D3D12 などが用意している定数(ImDrawFlags_None など)のためだけに、static constexpr の定数は作りません。
+       使う場所で、その値をそのまま書きます。
+         NG : static constexpr ImDrawFlags k_borderFlags = ImDrawFlags_None;
+         OK : l_drawList->AddRect(l_min, l_max, l_color, k_rounding, ImDrawFlags_None, k_thickness);
      ・ファイルパスは inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Xxx/XxxCONFIG.json"; と書きます。
      ・定数の名前は次の形をよく使います。
          k_defaultXxx / k_initialXxx / k_invalidXxx / k_emptyXxx / k_minXxx / k_maxXxx / k_xxxCount
@@ -883,6 +910,10 @@
        (DynamicConstantBufferAdvancingWritePositionUploaderBase)にします。
        CreateCount(GraphicsCONFIG.json)には、「1フレームで書き込む回数 × ビューの数」以上の値を書きます。
        固定位置だと、後から書いた別のビューの値を、GPU が先に描いたビューでも読んでしまうためです。
+18-6. 頂点バッファ(VB)・定数バッファ(CB)の構造体は、用途ごとに専用のものを作り、他のパスの構造体を再利用しません。
+     ・中身が同じでも、別の名前の構造体にします(VBPhysicsDebug と VBEditorCameraDebug など)。
+       片方だけを変更したときに、もう片方の描画が壊れるのを防ぐためです。
+     ・パイプラインステートなどを共有していて、レイアウトを合わせる必要がある場合は、static_assert で大きさの一致を確認します。
 
 
 ================================================================================
@@ -1042,7 +1073,7 @@
 [ ] 引数が4個以上の宣言・呼び出しは1行に1引数ずつ書き、位置を揃えている(3個以下は1行で書いている)
 [ ] クラス・構造体のメンバ・引数・定数を「外部APIのクラス → std のクラス → 自作クラス → 外部APIの構造体 → std の構造体 → 自作の構造体」の順で並べている
 [ ] 続けて並ぶ = と ( を縦に揃え、const 付きと const なしの宣言は型の位置を揃えている
-[ ] Allman スタイル、波括弧は必ず付け、return / continue / break の1文だけ1行 if、else は改行
+[ ] Allman スタイル、波括弧は必ず付け、return / continue の1文だけは1行 if で書いてよい(break や他の文はブロック)、else は改行
 [ ] && / || は1行に1条件、演算子は行末
 [ ] return の前、FWK_ASSERT の後、1行 if の後、文の種類が変わるところに空行がある
 [ ] 数値はすべて k_ の定数(接尾辞は大文字の F / U / ULL)、文字列は std::string_view の定数

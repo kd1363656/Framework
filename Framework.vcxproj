@@ -633,8 +633,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer\PhysicsDebugDynamicVertexBufferUploader.h" />
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\Buffer\PhysicsDebugDynamicVertexBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\PhysicsDebugPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\RenderGraph.h" />
@@ -857,6 +857,15 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\CameraViewModeEnum.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\View\RenderView.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderViewTypeEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\DebugRenderer\EditorDebugRendererConstant.h" />
+    <ClInclude Include="Source\Framework\Editor\DebugRenderer\Queue\EditorDebugRendererQueue.h" />
+    <ClInclude Include="Source\Framework\Editor\DebugRenderer\EditorDebugRenderer.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\Buffer\EditorDebugDynamicVertexBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\EditorDebugPass.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBEditorCameraDebugStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCullingCameraPassStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant\CullingCameraPassConstantBufferUploader.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -983,7 +992,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\UnLit\StaticModelStandardUnLitPass.cpp" />
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\PhysicsDebugPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Sprite\Screen\SpriteScreenPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\RenderGraph.cpp" />
@@ -1120,6 +1129,10 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\View\RenderView.cpp" />
+    <ClCompile Include="Source\Framework\Editor\DebugRenderer\Queue\EditorDebugRendererQueue.cpp" />
+    <ClCompile Include="Source\Framework\Editor\DebugRenderer\EditorDebugRenderer.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\EditorDebugPass.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
@@ -1155,6 +1168,7 @@ if "$(Configuration)"=="Debug" (
     <None Include="CONFIG\Physics\PhysicsCONFIG.json" />
     <None Include="CONFIG\Window\WindowCONFIG.json" />
     <None Include="Shader\Camera\CameraPass.hlsli" />
+    <None Include="Shader\Camera\CullingCameraPass.hlsli" />
     <None Include="Shader\Model\Model.hlsli" />
     <None Include="Shader\Model\ModelMeshlet.hlsli" />
     <None Include="Shader\Model\ModelMeshletCulling.hlsli" />

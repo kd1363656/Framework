@@ -1,6 +1,6 @@
 ﻿#ifndef MODEL_MESHLET_CULLING_HLSLI
 #define MODEL_MESHLET_CULLING_HLSLI
-#include "../Camera/CameraPass.hlsli"
+#include "../Camera/CullingCameraPass.hlsli"
 #include "Model.hlsli"
 
 // ConeAxisを正規化できる長さか判定するための値
@@ -19,8 +19,8 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
 {
     // DirectXの左手系座標ではカメラ前方が+Z
     // Sphere全体がNearより手前に、Farより奥にあるなら見えない
-    if (a_viewCenter.z + a_worldRadius < g_nearClip ||
-        a_viewCenter.z - a_worldRadius > g_farClip)
+    if (a_viewCenter.z + a_worldRadius < g_cullingNearClip ||
+        a_viewCenter.z - a_worldRadius > g_cullingFarClip)
     {
         return false;
     }
@@ -29,14 +29,14 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
     // そのままcenter.z * tanFovを使うと、見える範囲が小さすぎて誤カリングする。
     // そこで、横幅・縦幅の判定に使うZは最低でもnearClipにする
     // これは近距離では安全側に倒して消しすぎない為の処理
-    const float l_frustumTestDepth = max(a_viewCenter.z, g_nearClip);
+    const float l_frustumTestDepth = max(a_viewCenter.z, g_cullingNearClip);
     
     // View空間のZ位置における、画面右端までの距離
     // Zが大きいほど、見える横幅は広がる
-    const float l_halfViewWidth = l_frustumTestDepth * g_tanHalfFOVX;
+    const float l_halfViewWidth = l_frustumTestDepth * g_cullingTanHalfFOVX;
     
     // Frustum側面は斜めのPlaneなのでSphere半径を少し補正する
-    const float l_horizontalPlaneRadius = CalculateModelFrustumPlaneRadius(a_worldRadius, g_tanHalfFOVX);
+    const float l_horizontalPlaneRadius = CalculateModelFrustumPlaneRadius(a_worldRadius, g_cullingTanHalfFOVX);
     
     // Sphere全体が左外側、右外側にあるなら見えない。
     if (a_viewCenter.x + l_horizontalPlaneRadius < -l_halfViewWidth ||
@@ -47,8 +47,8 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
     
     // View空間のz位置における、画面上端までの距離。
     // Zが大きいほど、みえる縦幅は広がる
-    const float l_halfViewHeight      = l_frustumTestDepth * g_tanHalfFOVY;
-    const float l_verticalPlaneRadius = CalculateModelFrustumPlaneRadius(a_worldRadius, g_tanHalfFOVY);
+    const float l_halfViewHeight      = l_frustumTestDepth * g_cullingTanHalfFOVY;
+    const float l_verticalPlaneRadius = CalculateModelFrustumPlaneRadius(a_worldRadius, g_cullingTanHalfFOVY);
     
     // Sphere全体が下外側、上外側にあるなら見えない
     if (a_viewCenter.y + l_verticalPlaneRadius < -l_halfViewHeight ||
@@ -63,7 +63,7 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
 // カメラがMeshletのBoundingSphere内に入っているか判定する。
 bool IsCameraInsideModelMeshletBoundingSphere(const float3 a_worldCenter, const float a_worldRadius)
 {
-    const float3 l_cameraToCenter        = a_worldCenter - g_cameraWorldPosition;
+    const float3 l_cameraToCenter        = a_worldCenter - g_cullingCameraWorldPosition;
     const float  l_cameraDistanceSquared = dot(l_cameraToCenter, l_cameraToCenter);
 
     // 境界付近の誤差で判定が揺れないよう、
@@ -86,7 +86,7 @@ bool IsVisibleModelMeshletByFrustum(const ModelMeshletBounds a_modelMeshletBound
 
     const float4 l_worldCenterPosition = float4(l_worldCenter, k_modelPositionElementW);
     
-    const float4 l_viewCenter = mul(l_worldCenterPosition, g_viewMatrix);
+    const float4 l_viewCenter = mul(l_worldCenterPosition, g_cullingViewMatrix);
     
     return IsVisibleViewSpaceBoundingSphere(l_viewCenter.xyz, l_worldRadius);
 }
@@ -113,7 +113,7 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
     // transpose(inverse(WorldMatrix))が格納されている
     // 再びtransposeしてWorld逆行列へ戻し
     // カメラをModelLocal空間へ変換する
-    const float4 l_worldCameraPosition = float4(g_cameraWorldPosition, k_modelPositionElementW);
+    const float4 l_worldCameraPosition = float4(g_cullingCameraWorldPosition, k_modelPositionElementW);
     const float4 l_localCameraPosition = float4(mul(l_worldCameraPosition, transpose(g_worldInverseTransposeMatrix)));
     
     // BoundingSphere式で使用するCenter - Camera

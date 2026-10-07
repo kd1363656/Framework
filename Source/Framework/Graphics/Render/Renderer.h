@@ -35,8 +35,6 @@ namespace FWK::Graphics
 
         void PreparePreviewRenderView(const Device& a_device, ResourceContext& a_resourceContext);
 
-        const RenderView& FetchREFActiveRenderView() const;
-
         void AddFrameResource(const std::shared_ptr<FrameResource>&     a_frameResource);
         void AddRootSignature(const std::shared_ptr<RootSignature>&     a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
         void AddPipelineState(const std::shared_ptr<PipelineStateBase>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType);
@@ -76,6 +74,8 @@ namespace FWK::Graphics
             return std::static_pointer_cast<PipelineStateType>(l_pipelineState);
         }
 
+        const RenderView& FetchREFActiveRenderView() const;
+
         const auto& GetREFFrameResourceList() const { return m_frameResourceList; }
         const auto& GetREFRootSignatureMap () const { return m_rootSignatureMap; }
         const auto& GetREFPipelineStateMap () const { return m_pipelineStateMap; }
@@ -98,8 +98,6 @@ namespace FWK::Graphics
 
         const auto& GetREFPreviewClientSize() const { return m_previewClientSize; }
 
-        bool GetVALIsPreviewViewActive() const { return m_isPreviewViewActive; }
-
         auto& GetMutableREFSwapChain  () { return m_swapChain; }
         auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 
@@ -108,6 +106,8 @@ namespace FWK::Graphics
 
         auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
         auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
+
+        bool GetVALIsPreviewViewActive() const { return m_isPreviewViewActive; }
 
     private:
 

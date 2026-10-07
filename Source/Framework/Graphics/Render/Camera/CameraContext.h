@@ -22,13 +22,18 @@ namespace FWK::Graphics
 
         void SetViewMode(const Enum::CameraViewMode a_set) { m_viewMode = a_set; }
 
+        void SetIsCullingBySceneCamera(const bool a_set) { m_isCullingBySceneCamera = a_set; }
+
     private:
 
-        std::weak_ptr<Struct::CBCameraPass> FetchVALViewCamera() const;
+        std::weak_ptr<Struct::CBCameraPass> FetchVALViewCamera   () const;
+        std::weak_ptr<Struct::CBCameraPass> FetchVALCullingCamera() const;
 
         std::weak_ptr<Struct::CBCameraPass> m_debugCamera = {};
         std::weak_ptr<Struct::CBCameraPass> m_sceneCamera = {};
 
         Enum::CameraViewMode m_viewMode = Enum::CameraViewMode::Scene;
+
+        bool m_isCullingBySceneCamera = false;
     };
 }

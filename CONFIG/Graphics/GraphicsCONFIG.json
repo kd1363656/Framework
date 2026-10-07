@@ -30,6 +30,12 @@
                     },
                     {
                         "DynamicBufferUploader": {
+                            "CreateCount": 16
+                        },
+                        "DynamicBufferUploaderTypeName": "CullingCameraPassDynamicConstantBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
                             "CreateCount": 1
                         },
                         "DynamicBufferUploaderTypeName": "FinalPresentRenderTargetPassDynamicConstantBufferUploader"
@@ -57,6 +63,12 @@
                             "CreateCount": 300000
                         },
                         "DynamicBufferUploaderTypeName": "PhysicsDebugDynamicVertexBufferUploader"
+                    },
+                    {
+                        "DynamicBufferUploader": {
+                            "CreateCount": 4096
+                        },
+                        "DynamicBufferUploaderTypeName": "EditorDebugDynamicVertexBufferUploader"
                     },
                     {
                         "DynamicBufferUploader": {
@@ -1834,6 +1846,9 @@
                     "DrawRequestPassTypeName": "CameraPassDrawRequest"
                 },
                 {
+                    "DrawRequestPassTypeName": "CullingCameraPassDrawRequest"
+                },
+                {
                     "DrawRequestPassTypeName": "LightPassDrawRequest"
                 },
                 {
@@ -1899,6 +1914,9 @@
                 },
                 {
                     "RenderGraphPassTypeName": "PhysicsDebugPass"
+                },
+                {
+                    "RenderGraphPassTypeName": "EditorDebugPass"
                 },
                 {
                     "RenderGraphPassTypeName": "FinalPresentPass"
@@ -2010,6 +2028,10 @@
                         {
                             "Index": 3,
                             "RootParameterType": "RootParameterType::CBCascadeShadowMapPass"
+                        },
+                        {
+                            "Index": 4,
+                            "RootParameterType": "RootParameterType::CBCullingCameraPass"
                         }
                     ],
                     "RootParameterList": [
@@ -2036,6 +2058,12 @@
                             "RegisterSpace": 0,
                             "ShaderRegister": 3,
                             "ShaderVisibility": "D3D12_SHADER_VISIBILITY_PIXEL"
+                        },
+                        {
+                            "ParameterType": "D3D12_ROOT_PARAMETER_TYPE_CBV",
+                            "RegisterSpace": 0,
+                            "ShaderRegister": 4,
+                            "ShaderVisibility": "D3D12_SHADER_VISIBILITY_AMPLIFICATION"
                         }
                     ],
                     "RootSignatureFlags": "D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED",

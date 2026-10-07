@@ -33,15 +33,18 @@ void FWK::Graphics::StaticModelStandardLitPass::Execute(const ResourceContext&, 
     FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在のフレームリソースの取得に失敗しており、StaticModelStandardLitPassの実行に失敗しました。");
 
     const auto& l_cameraPassDrawRequest                   = a_renderGraph.FindVALDrawRequestPass     <CameraPassDrawRequest>                     ().lock();
+    const auto& l_cullingCameraPassDrawRequest            = a_renderGraph.FindVALDrawRequestPass     <CullingCameraPassDrawRequest>              ().lock();
     const auto& l_lightPassDrawRequest                    = a_renderGraph.FindVALDrawRequestPass     <LightPassDrawRequest>                      ().lock();
     const auto& l_cascadeShadowMapPassDrawRequest         = a_renderGraph.FindVALDrawRequestPass     <CascadeShadowMapPassDrawRequest>           ().lock();
     const auto& l_staticModelStandardPerObjectDrawRequest = a_renderGraph.FindVALDrawRequestPerObject<StaticModelStandardLitPerObjectDrawRequest>().lock();
 
     FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest,                                                                                                    "カメラパスのポインタが無効になっており、StaticModelStandardLitPassの実行に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest,                                                                                             "CullingCameraPassDrawRequestを取得できないため、StaticModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest,                                                                                                     "ライトパスのポインタが無効になっており、StaticModelStandardLitPassの実行に失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest,                                                                                          "CascadeShadowMapPassDrawRequestが無効のため、StaticModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_staticModelStandardPerObjectDrawRequest,                                                                                  "StaticModelStandardPerObjectDrawRequestが無効のため、StaticModelStandardLitPassの実行に失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_cameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),           "カメラ定数の設定が出来ておらず、StaticModelStandardLitPassの実行に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_cullingCameraPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),    "カリング用カメラ定数を設定できないため、StaticModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_cascadeShadowMapPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "CascadeShadowMap定数の設定ができないため、StaticModelStandardLitPassを実行できません。");
     FWK_ASSERT_RETURN_IF(!l_lightPassDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource),            "ライト定数の設定が出来ておらず、StaticModelStandardLitPassの実行に失敗しました。");
 

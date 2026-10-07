@@ -16,9 +16,9 @@ namespace FWK::Editor
 
         void ApplyName(const std::string& a_name) const;
 
-        std::string m_beforeName = {};
-        std::string m_afterName  = {};
+        std::string m_beforeName;
+        std::string m_afterName;
 
-        boost::uuids::uuid m_gameObjectUUID = {};
+        boost::uuids::uuid m_gameObjectUUID;
     };
 }

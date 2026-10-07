@@ -54,6 +54,7 @@ namespace FWK::Enum
         Sprite,
         PostEffect,
         PhysicsDebug,
+        EditorDebug,
         FinalPresent,
         Count
     };
@@ -68,6 +69,7 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Sprite),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::PostEffect),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::PhysicsDebug),
+        FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::EditorDebug),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::FinalPresent),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Count)
     )

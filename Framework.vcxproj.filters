@@ -583,7 +583,10 @@
     <Filter Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant">
       <UniqueIdentifier>{f2d4c96e-2aa4-472d-bea6-2aeeff715a35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Debug">
+      <UniqueIdentifier>{aa265494-2a80-486c-9d69-47a49c093bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics">
       <UniqueIdentifier>{ccbfcb87-3a65-4d27-aeb8-400c45a6bccb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Physics\DebugDraw">
@@ -787,7 +790,7 @@
     <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer">
       <UniqueIdentifier>{b6746b3f-d558-4f03-a555-f9ecf11d4f0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer">
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\Buffer">
       <UniqueIdentifier>{c52abb80-953f-4316-8b1d-dacbe3ce670f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Object\Model\Buffer">
@@ -1501,12 +1504,6 @@
     <Filter Include="Source\Framework\Definition\Struct\Editor\Command">
       <UniqueIdentifier>{8bb5d3e5-b3c7-481c-bc7f-75a542e756af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Command">
-      <UniqueIdentifier>{3f9a2e67-8b41-4d5c-9a2e-7c1f4b8d5e60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\Editor\Window\Command\GameObject">
-      <UniqueIdentifier>{8d4b6f12-5c93-4a7e-b3d1-9f2e6a4c7b18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Utility\Editor">
       <UniqueIdentifier>{22dd4cde-ce04-4c6d-b52e-417c87936af1}</UniqueIdentifier>
     </Filter>
@@ -1515,9 +1512,6 @@
     </Filter>
     <Filter Include="Source\Framework\Definition\Macros\GameObject">
       <UniqueIdentifier>{32307e8a-e037-4f3d-a17f-d17a075fd860}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Framework\GameObject\Component\Model">
-      <UniqueIdentifier>{321c9469-7fa2-46ef-ab01-7ee7eadd85c9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\GameObject\Component\Transform\Mode\Converter">
       <UniqueIdentifier>{3aa7dbbe-c352-4394-b253-c4ad78e4ff9f}</UniqueIdentifier>
@@ -1560,6 +1554,30 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\View">
       <UniqueIdentifier>{35204a99-d89b-4368-a227-55d72c37c5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Constant\Editor\DebugRenderer">
+      <UniqueIdentifier>{1455ed12-6206-4482-9e1d-7c8d5f232a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\DebugRenderer">
+      <UniqueIdentifier>{76448def-415a-4fe2-b351-d2aa7232dfb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\DebugRenderer\Queue">
+      <UniqueIdentifier>{adfdb660-c74f-4422-8d63-240b46c898a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor">
+      <UniqueIdentifier>{708b7194-d09d-4124-82f9-a0d26c3f2862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\Buffer">
+      <UniqueIdentifier>{a1bd9bab-afd8-4bfa-899e-914ca2d4a003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling">
+      <UniqueIdentifier>{efeb6b39-de74-4a89-bf5d-37ed22b58313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer">
+      <UniqueIdentifier>{2723e0ac-eb97-4fdd-b059-9678cec95f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant">
+      <UniqueIdentifier>{24a1123d-3ec2-4bdf-b7bd-fe12f1fe19a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -2076,8 +2094,8 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBPhysicsDebugStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\PhysicsDebugPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
@@ -2349,8 +2367,8 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\Buffer\SkeletalAnimationBoneMatrixBufferUploader.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer\PhysicsDebugDynamicVertexBufferUploader.h">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\Buffer</Filter>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\Buffer\PhysicsDebugDynamicVertexBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex\DynamicVertexBufferAdvancingWritePositionUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Vertex</Filter>
@@ -3135,6 +3153,33 @@
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderViewTypeEnum.h">
       <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\DebugRenderer\EditorDebugRendererConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Editor\DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\DebugRenderer\Queue\EditorDebugRendererQueue.h">
+      <Filter>Source\Framework\Editor\DebugRenderer\Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\DebugRenderer\EditorDebugRenderer.h">
+      <Filter>Source\Framework\Editor\DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\Buffer\EditorDebugDynamicVertexBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\EditorDebugPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Vertex\VBEditorCameraDebugStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCullingCameraPassStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant\CullingCameraPassConstantBufferUploader.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3416,8 +3461,8 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StaticStructuredBuffer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Static\Structured</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug\PhysicsDebugPass.cpp">
-      <Filter>Source\Framework\Graphics\Render\Graph\Pass\PhysicsDebug</Filter>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics\PhysicsDebugPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Physics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
@@ -3923,6 +3968,18 @@
     <ClCompile Include="Source\Framework\Graphics\Render\View\RenderView.cpp">
       <Filter>Source\Framework\Graphics\Render\View</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\DebugRenderer\Queue\EditorDebugRendererQueue.cpp">
+      <Filter>Source\Framework\Editor\DebugRenderer\Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\DebugRenderer\EditorDebugRenderer.cpp">
+      <Filter>Source\Framework\Editor\DebugRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\EditorDebugPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -3949,6 +4006,9 @@
       <Filter>CONFIG\Audio</Filter>
     </None>
     <None Include="Shader\Camera\CameraPass.hlsli">
+      <Filter>Shader\Camera</Filter>
+    </None>
+    <None Include="Shader\Camera\CullingCameraPass.hlsli">
       <Filter>Shader\Camera</Filter>
     </None>
     <None Include="Shader\Model\Model.hlsli">

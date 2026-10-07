@@ -1,6 +1,9 @@
 ﻿#include "CreateGameObjectCommand.h"
 
-FWK::Editor::CreateGameObjectCommand::CreateGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList)
+FWK::Editor::CreateGameObjectCommand::CreateGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList) :
+    m_createdGameObjectList   (),
+    m_descendantGameObjectList(),
+    m_parentUUIDList          ()
 {
     // Undoでシーンから取り外しても実体が消えないようshared_ptrで保持する
     m_createdGameObjectList.reserve(a_createdGameObjectList.size());

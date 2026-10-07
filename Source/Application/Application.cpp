@@ -124,6 +124,10 @@ void Application::Execute()
         // ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
         l_physicsManager.CollectPhysicsDebugDrawCommands();
 
+        // エディター用のデバッグ描画(選択中のカメラの視錐台など)の線を、このフレーム用のQueueへ集める
+        // ここで集めた線を、後続のEditorDebugPassがFinalColorへ描画する
+        l_editorManager.CollectEditorDebugDrawCommands();
+
         // エディターの表示状態に合わせて、描画に使うカメラを切り替える
         // エディター表示中 : デバッグカメラ(エディターカメラ) / エディター非表示 : シーンカメラ
         auto& l_renderer       = l_graphicsManager.GetMutableREFRenderer    ();
@@ -131,6 +135,13 @@ void Application::Execute()
         auto& l_cameraContext  = l_mainRenderView.GetMutableREFCameraContext();
 
         l_cameraContext.SetViewMode(l_editorManager.GetVALIsDisableDrawEditor() ? FWK::Enum::CameraViewMode::Scene : FWK::Enum::CameraViewMode::Debug);
+
+        // ビューポートの「カリング結果の確認」がONのとき、カリングだけをシーンカメラ基準にする
+        // 描画はエディターカメラのままなので、シーンカメラに映らない物が消える様子を確認できる
+        // エディター非表示のときはデバッグモードにならないため、CameraContext側でシーンカメラ基準にはならない
+        const auto& l_viewportEditorWindow = l_editorManager.FindVALWindowEditor<FWK::Editor::ViewportEditorWindow>().lock();
+
+        l_cameraContext.SetIsCullingBySceneCamera(l_viewportEditorWindow && l_viewportEditorWindow->GetVALIsDrawCulledResult());
 
         // 描画処理
         l_graphicsManager.BeginFrame();

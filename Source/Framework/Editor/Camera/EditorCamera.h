@@ -13,8 +13,9 @@ namespace FWK::Editor
 
         void Setup(const float a_aspectRatio);
 
-        void Move  (const TypeAlias::Math::Vector3& a_localDirection, const float a_deltaTime);
-        void Rotate(const float                     a_yawRadian,      const float a_pitchRadian);
+        void HandleInput(const bool a_isHovered);
+
+        nlohmann::json Serialize() const;
 
         void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_set);
         void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_set);
@@ -35,9 +36,10 @@ namespace FWK::Editor
         float GetVALMoveSpeed  () const { return m_moveSpeed;   }
         float GetVALRotateSpeed() const { return m_rotateSpeed; }
 
-        nlohmann::json Serialize() const;
-
     private:
+
+        void Move  (const TypeAlias::Math::Vector3& a_localDirection, const float a_deltaTime);
+        void Rotate(const float                     a_yawRadian,      const float a_pitchRadian);
 
         TypeAlias::Math::Matrix CalculateCameraMatrix() const;
 

@@ -16,6 +16,15 @@ bool FWK::Graphics::CameraContext::ApplyViewCamera(const RenderGraph& a_renderGr
         l_cameraPassDrawRequest->SetSourceConstantBuffer(l_viewCamera);
     }
 
+    // カリング用カメラ(どのカメラの視錐台でカリングするか)を決めて、カリング用の定数バッファの参照先を差し替える
+    // 描画用のカメラとは別の定数バッファ(b4)なので、
+    // カリングだけシーンカメラ基準にしても、画面に映る範囲(ViewProjectionMatrix)は描画用カメラのままになる
+    if (const auto& l_cullingCameraPassDrawRequest = a_renderGraph.FindVALDrawRequestPass<CullingCameraPassDrawRequest>().lock();
+        l_cullingCameraPassDrawRequest)
+    {
+        l_cullingCameraPassDrawRequest->SetSourceCamera(FetchVALCullingCamera());
+    }
+
     // Cascade計算に使用するカメラも、描画に使うカメラへ合わせる
     auto& l_cascadeShadowMap = a_shadowContext.GetMutableREFCascadeShadowMap();
 
@@ -37,4 +46,20 @@ std::weak_ptr<FWK::Struct::CBCameraPass> FWK::Graphics::CameraContext::FetchVALV
 
     // 優先するカメラが無い、または消えている場合は、もう片方のカメラを使う
     return l_fallbackCamera;
+}
+std::weak_ptr<FWK::Struct::CBCameraPass> FWK::Graphics::CameraContext::FetchVALCullingCamera() const
+{
+    // カリングを描画用とは別のカメラで行うのは、エディターのデバッグ表示中だけ
+    // デバッグモードはエディターが表示されているときにだけなるため、ゲーム実行時はここに入らない
+    // デバッグモードで、カリング結果の確認がONで、シーンカメラが使えるなら、シーンカメラでカリングする
+    // 描画はエディターカメラのまま、「シーンカメラに映る物だけが描かれる」様子をエディターカメラから確認できる
+    if (m_viewMode == Enum::CameraViewMode::Debug &&
+        m_isCullingBySceneCamera && 
+        !m_sceneCamera.expired())
+    {
+        return m_sceneCamera; 
+    }
+
+    // それ以外は、描画に使うカメラでカリングする(今までと同じ動き)
+    return FetchVALViewCamera();
 }

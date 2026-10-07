@@ -6,10 +6,12 @@ FWK::Editor::ChangeSelectionCommand::ChangeSelectionCommand(const boost::uuids::
                                                             const bool                              a_afterIsSceneSelected,
                                                                   std::vector<boost::uuids::uuid>&& a_beforeUUIDList,
                                                                   std::vector<boost::uuids::uuid>&& a_afterUUIDList) :
-    m_beforeUUIDList       (std::move(a_beforeUUIDList)),
-    m_afterUUIDList        (std::move(a_afterUUIDList)),
-    m_beforeAnchorUUID     (a_beforeAnchorUUID),
-    m_afterAnchorUUID      (a_afterAnchorUUID),
+    m_beforeUUIDList(std::move(a_beforeUUIDList)),
+    m_afterUUIDList (std::move(a_afterUUIDList)),
+
+    m_beforeAnchorUUID(a_beforeAnchorUUID),
+    m_afterAnchorUUID (a_afterAnchorUUID),
+
     m_beforeIsSceneSelected(a_beforeIsSceneSelected),
     m_afterIsSceneSelected (a_afterIsSceneSelected)
 {}
@@ -37,7 +39,7 @@ void FWK::Editor::ChangeSelectionCommand::Undo()
 void FWK::Editor::ChangeSelectionCommand::Redo()
 {
     // 変更後の選択状態へ進める
-    auto& l_editorManager  = EditorManager::GetInstance();
+    auto& l_editorManager  = EditorManager::GetInstance                           ();
     auto& l_selectionState = l_editorManager.GetMutableREFGameObjectSelectionState();
 
     l_selectionState.RestoreState(m_afterUUIDList, m_afterAnchorUUID);

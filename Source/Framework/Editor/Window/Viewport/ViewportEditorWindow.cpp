@@ -7,7 +7,12 @@ FWK::Editor::ViewportEditorWindow::ViewportEditorWindow() :
 
     m_editorCamera(std::make_unique<EditorCamera>()),
 
-    m_toolbar()
+    m_toolbar(),
+
+    m_jsonConverter(),
+
+    m_isDrawFrustum     (false),
+    m_isDrawCulledResult(false)
 {}
 FWK::Editor::ViewportEditorWindow::~ViewportEditorWindow()
 {
@@ -99,8 +104,12 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     // カメラを持つGameObjectを選択している間は、そのカメラの映像をプレビューとして描くようRendererへ依頼する
     RequestCameraPreview(a_editorManager, l_viewportSize);
 
-    // Viewport画像上での入力をエディターカメラへ反映する
-    UpdateEditorCameraInput();
+    // Viewport画像上での入力(右クリック中の移動・回転)は、エディターカメラ自身が処理する
+    // ビューポート画像の上にマウスがあるか(直前のItemがビューポート画像)は、ウィンドウ側が判断して渡す
+    if (m_editorCamera)
+    {
+        m_editorCamera->HandleInput(ImGui::IsItemHovered());
+    }
 
     ImGui::End();
 }
@@ -267,7 +276,7 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
                         l_previewMAX,
                         l_borderColor,
                         k_cameraPreviewBorderRounding,
-                        k_cameraPreviewBorderFlags,
+                        ImDrawFlags_None,
                         k_cameraPreviewBorderThickness);
 }
 
@@ -325,41 +334,6 @@ void FWK::Editor::ViewportEditorWindow::RegisterDebugCamera() const
     const auto& l_camera = m_editorCamera->GetREFCamera();
 
     l_cameraContext.SetDebugCamera(l_camera.GetREFCBCameraPass());
-}
-
-void FWK::Editor::ViewportEditorWindow::UpdateEditorCameraInput()
-{
-    FWK_ASSERT_RETURN_IF(!m_editorCamera, "エディターカメラが無効です。");
-
-    // 直前に描画したViewport画像上で、右クリック中のみカメラを操作する
-    if (!ImGui::IsItemHovered() ||
-        !ImGui::IsMouseDown(ImGuiMouseButton_Right))
-    {
-        return;
-    }
-
-    const auto& l_io = ImGui::GetIO();
-
-    // マウスの移動量をYaw/Pitch回転へ変換する
-    m_editorCamera->Rotate(l_io.MouseDelta.x * m_editorCamera->GetVALRotateSpeed(),
-                           l_io.MouseDelta.y * m_editorCamera->GetVALRotateSpeed());
-
-    // WASD/QEでカメラローカル方向の移動量を組み立てる
-    auto l_localDirection = TypeAlias::Math::Vector3::Zero;
-
-    if (ImGui::IsKeyDown(ImGuiKey_W)) { l_localDirection.z += TypeAlias::Math::Vector3::UnitZ.z; }
-    if (ImGui::IsKeyDown(ImGuiKey_S)) { l_localDirection.z -= TypeAlias::Math::Vector3::UnitZ.z; }
-    if (ImGui::IsKeyDown(ImGuiKey_D)) { l_localDirection.x += TypeAlias::Math::Vector3::UnitX.x; }
-    if (ImGui::IsKeyDown(ImGuiKey_A)) { l_localDirection.x -= TypeAlias::Math::Vector3::UnitX.x; }
-    if (ImGui::IsKeyDown(ImGuiKey_E)) { l_localDirection.y += TypeAlias::Math::Vector3::UnitY.y; }
-    if (ImGui::IsKeyDown(ImGuiKey_Q)) { l_localDirection.y -= TypeAlias::Math::Vector3::UnitY.y; }
-
-    if (l_localDirection != TypeAlias::Math::Vector3::Zero)
-    {
-        l_localDirection.Normalize();
-
-        m_editorCamera->Move(l_localDirection, l_io.DeltaTime);
-    }
 }
 
 void FWK::Editor::ViewportEditorWindow::ReleaseViewportTextureDescriptors()

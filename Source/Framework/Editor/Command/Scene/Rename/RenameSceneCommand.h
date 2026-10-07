@@ -22,9 +22,9 @@ namespace FWK::Editor
 
         void ApplyName(const std::string& a_name) const;
 
-        std::weak_ptr<Scene> m_scene = {};
+        std::weak_ptr<Scene> m_scene;
 
-        std::string m_beforeName = {};
-        std::string m_afterName  = {};
+        std::string m_beforeName;
+        std::string m_afterName;
     };
 }
