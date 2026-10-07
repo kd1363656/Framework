@@ -12,9 +12,6 @@ void FWK::Graphics::Camera::Setup(const TypeAlias::Math::Matrix& a_cameraMatrix,
                      a_fovYDegree,
                      a_farClip,
                      a_nearClip);
-
-    // 定数バッファへの登録
-    RegisterCBCameraPass();
 }
 void FWK::Graphics::Camera::Setup()
 {
@@ -24,28 +21,6 @@ void FWK::Graphics::Camera::Setup()
                      m_fovYDegree,
                      m_farClip,
                      m_nearClip);
-
-    // 定数バッファへの登録
-    RegisterCBCameraPass();
-}
-
-void FWK::Graphics::Camera::RegisterCBCameraPass()
-{
-          auto& l_graphicsManager  = FWK::Graphics::GraphicsManager::GetInstance  ();
-          auto& l_renderer         = l_graphicsManager.GetMutableREFRenderer      ();
-    const auto& l_renderGraph      = l_renderer.GetREFRenderGraph                 ();
-          auto& l_shadowContext    = l_renderer.GetMutableREFShadowContext        ();
-          auto& l_cascadeShadowMap = l_shadowContext.GetMutableREFCascadeShadowMap();
-
-    if (const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
-        l_cameraPassDrawRequest)
-    {
-        // 定数バッファの変更を反映するためにカメラクラスの定数バッファデータを送信する
-        l_cameraPassDrawRequest->SetSourceConstantBuffer(m_cbCameraPass);
-    }
-
-    // Cascade計算で使用するCameraの定数バッファを登録する
-    l_cascadeShadowMap.SetCBCameraPass(m_cbCameraPass);
 }
 
 void FWK::Graphics::Camera::ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix)

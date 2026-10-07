@@ -31,6 +31,10 @@ void FWK::Editor::ViewportEditorWindow::PostDeserialize()
 
     m_editorCamera->Setup(l_window.GetVALAspectRatio());
 
+    // エディターカメラをデバッグカメラとして登録する
+    // エディターカメラの定数バッファはウィンドウが生きている間は変わらないため、ここで1回だけ登録する
+    RegisterDebugCamera();
+
     SetupViewportTextureDescriptors();
 }
 
@@ -47,10 +51,6 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     ReportActiveWindowIfMouseClicked(a_editorManager);
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
-
-    // エディター表示中はエディターカメラを描画カメラとして登録する
-    // (エディター非表示時はシーンカメラ側が自身を登録し直す)
-    RegisterEditorCamera();
 
     // Viewport画像より先にツールバーを書く。
     // これにより画面へ重ならず、Viewport上部へ工程表示される
@@ -187,26 +187,19 @@ void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImVec2& a_view
                  l_uvMAX);
 }
 
-void FWK::Editor::ViewportEditorWindow::RegisterEditorCamera() const
+void FWK::Editor::ViewportEditorWindow::RegisterDebugCamera() const
 {
     FWK_ASSERT_RETURN_IF(!m_editorCamera, "エディターカメラが無効です。");
 
-          auto& l_graphicsManager  = Graphics::GraphicsManager::GetInstance   ();
-          auto& l_renderer         = l_graphicsManager.GetMutableREFRenderer  ();
-    const auto& l_renderGraph      = l_renderer.GetREFRenderGraph             ();
-          auto& l_cascadeShadowMap = l_renderer.GetMutableREFShadowContext    ().GetMutableREFCascadeShadowMap();
+    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+    auto& l_cameraContext   = l_renderer.GetMutableREFCameraContext  ();
 
-    const auto& l_cbCameraPass = m_editorCamera->GetREFCamera().GetREFCBCameraPass();
+    // エディターカメラをデバッグカメラとして登録する
+    // 描画にデバッグカメラとシーンカメラのどちらを使うかは、CameraContextがモードに合わせて決める
+    const auto& l_camera = m_editorCamera->GetREFCamera();
 
-    if (const auto& l_cameraPassDrawRequest = l_renderGraph.FindVALDrawRequestPass<Graphics::CameraPassDrawRequest>().lock();
-        l_cameraPassDrawRequest)
-    {
-        // 描画用カメラの定数バッファ参照先をエディターカメラへ差し替える
-        l_cameraPassDrawRequest->SetSourceConstantBuffer(l_cbCameraPass);
-    }
-
-    // Cascade計算に使用するカメラもエディターカメラへ合わせる
-    l_cascadeShadowMap.SetCBCameraPass(l_cbCameraPass);
+    l_cameraContext.SetDebugCamera(l_camera.GetREFCBCameraPass());
 }
 
 void FWK::Editor::ViewportEditorWindow::UpdateEditorCameraInput()

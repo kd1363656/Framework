@@ -124,6 +124,13 @@ void Application::Execute()
         // ここで集めたLineListを、後続のPhysicsDebugPassがFinalColorへ描画する
         l_physicsManager.CollectPhysicsDebugDrawCommands();
 
+        // エディターの表示状態に合わせて、描画に使うカメラを切り替える
+        // エディター表示中 : デバッグカメラ(エディターカメラ) / エディター非表示 : シーンカメラ
+        auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
+        auto& l_cameraContext = l_renderer.GetMutableREFCameraContext  ();
+
+        l_cameraContext.SetViewMode(l_editorManager.GetVALIsDisableDrawEditor() ? FWK::Enum::CameraViewMode::Scene : FWK::Enum::CameraViewMode::Debug);
+
         // 描画処理
         l_graphicsManager.BeginFrame();
         l_graphicsManager.Execute   ();

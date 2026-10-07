@@ -41,13 +41,13 @@ void FWK::GameObjectCameraComponent::PostLateUpdate()
     // (カリング可視化などがシーンカメラの値を参照するため)
     m_camera.ApplyCameraMatrix(l_transformComponent->GetREFMatrix());
 
-    // エディター表示中はViewportEditorWindowがエディターカメラを登録するため、
-    // エディター非表示中のみシーンカメラを描画カメラへ登録し直す
-    if (const auto& l_editorManager = Editor::EditorManager::GetInstance();
-        l_editorManager.GetVALIsDisableDrawEditor())
-    {
-        m_camera.RegisterCBCameraPass();
-    }
+    // シーンカメラとしてCameraContextへ登録する
+    // 描画にシーンカメラとデバッグカメラのどちらを使うかは、CameraContextがモードに合わせて決める
+    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+    auto& l_cameraContext   = l_renderer.GetMutableREFCameraContext  ();
+
+    l_cameraContext.SetSceneCamera(m_camera.GetREFCBCameraPass());
 }
 
 void FWK::GameObjectCameraComponent::EditInspector()

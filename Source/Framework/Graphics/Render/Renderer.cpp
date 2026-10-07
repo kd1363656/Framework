@@ -108,6 +108,9 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
     // ConstantBufferUploaderの書き込みインデックスを先頭に戻す
     l_currentFrameResource->BeginFrame();
 
+    // 描画に使うカメラを、現在のモードに合わせて描画用の定数バッファとCascade計算へ反映する
+    m_cameraContext.ApplyViewCamera(m_renderGraph, m_shadowContext);
+
     // リソース遷移の実行
     m_renderGraph.BeginFrame(a_resourceContext, *this);
 }

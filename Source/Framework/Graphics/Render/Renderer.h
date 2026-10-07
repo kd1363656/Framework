@@ -79,6 +79,7 @@ namespace FWK::Graphics
         const auto& GetREFSwapChain       () const { return m_swapChain; }
         const auto& GetREFScreenRenderArea() const { return m_screenRenderArea; }
         const auto& GetREFShadowContext   () const { return m_shadowContext; }
+        const auto& GetREFCameraContext   () const { return m_cameraContext; }
 
         const auto& GetREFRenderGraph() const { return m_renderGraph; }
 
@@ -94,6 +95,7 @@ namespace FWK::Graphics
         auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 
         auto& GetMutableREFShadowContext() { return m_shadowContext; }
+        auto& GetMutableREFCameraContext() { return m_cameraContext; }
 
         auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
         auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
@@ -125,6 +127,7 @@ namespace FWK::Graphics
         SwapChain     m_swapChain        = {};
         RenderArea    m_screenRenderArea = {};
         ShadowContext m_shadowContext    = {};
+        CameraContext m_cameraContext    = {};
 
         TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
         TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};

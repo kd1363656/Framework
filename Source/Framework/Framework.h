@@ -348,6 +348,8 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBCameraPassStruct.h"
 #include "Definition/Constant/Graphics/CameraConstant.h"
 #include "Graphics/Render/Camera/Camera.h"
+#include "Definition/Enum/Graphics/CameraViewModeEnum.h"
+#include "Graphics/Render/Camera/CameraContext.h"
 
 // ライト
 #include "Definition/Constant/Graphics/LightSystemConstant.h"

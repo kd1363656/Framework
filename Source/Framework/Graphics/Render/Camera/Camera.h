@@ -17,8 +17,6 @@ namespace FWK::Graphics
 
         void Setup();
 
-        void RegisterCBCameraPass();
-
         void ApplyCameraMatrix(const TypeAlias::Math::Matrix& a_cameraMatrix);
 
         void ApplyProjectionMatrix(const float a_aspectRatio,

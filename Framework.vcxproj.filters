@@ -1558,6 +1558,9 @@
     <Filter Include="Source\Framework\Editor\Command\GameObject\PasteCut">
       <UniqueIdentifier>{69da4178-36c9-48a1-933d-a3c3ca2d3c83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Camera\Context">
+      <UniqueIdentifier>{637cbba7-444f-47ae-a893-471ae68299b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3120,6 +3123,12 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\ReparentGameObjectCommandStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\CameraViewModeEnum.h">
+      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Camera\Context\CameraContext.h">
+      <Filter>Source\Framework\Graphics\Render\Camera\Context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -3901,6 +3910,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Camera\Context\CameraContext.cpp">
+      <Filter>Source\Framework\Graphics\Render\Camera\Context</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -611,6 +611,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Graphics\Hardware\Device\Device.h" />
     <ClInclude Include="Source\Framework\Graphics\Hardware\Factory\Factory.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Camera\Camera.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\Camera\CameraContext.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h" />
@@ -853,6 +854,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectHierarchyUtility.h" />
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\ReparentGameObjectCommandStruct.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\CameraViewModeEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -959,6 +961,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Graphics\Hardware\Device\Device.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Hardware\Factory\Factory.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\Camera\CameraContext.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Converter\Json\RendererJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Frame\FrameResource.cpp" />
