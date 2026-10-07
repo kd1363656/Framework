@@ -12,6 +12,11 @@
 ================================================================================
 
 1-1. ヘッダー(.h)にはコメントを書きません。説明が必要な内容は .cpp 側に書きます。
+     ・コメントを書いてはいけないのは「関数の外側」です。
+       クラス・構造体・列挙型・定数・メンバ変数・関数の宣言(シグネチャ)の前後や行末には、コメントを書きません。
+     ・テンプレートや inline のように、そのヘッダーに処理の本体を書かなければならない関数の「中」は例外です。
+       .cpp と同じように、処理にコメントを書きます(第16章 16-4 / 16-8)。
+       それ以外のもの(.cpp に書けるもの)の中身を、コメントを書くためにヘッダーへ書くことはしません。
 1-2. .h / .cpp ともに、ファイルの最後の行の後ろには改行を入れません。
 1-3. 構造体を class の public に入れ子で定義しないでください。
      ・そのクラスの中だけで使う構造体は private に入れ子で定義します。
@@ -50,6 +55,18 @@
        Inspector/           XxxInspector
        Buffer/Constant/     XxxDynamicConstantBufferUploader
        Builder/ Loader/ Record/ Mode/ Popup/ Shortcut/ Clipboard/ Selection/ Factory/ など
+     ・UndoRedo のコマンドは、ウィンドウの下ではなく Editor/Command/<対象>/<操作>/XxxCommand.h に置きます。
+         Editor/Command/GameObject/Create/CreateGameObjectCommand.h
+         Editor/Command/GameObject/Destroy/DestroyGameObjectCommand.h
+     ・コマンドは、操作を終えてから EditorUndoRedoSystem::PushUndoCommand<XxxCommand>(...) で履歴へ積みます。
+       履歴へ積む場所は、操作を行う関数の中の1箇所だけにします。
+     ・Undo で位置(並び順)を元に戻すコマンドは、添字(index)をメンバに持ちません。
+       変更前と変更後の「親の UUID」と「兄弟の UUID の並び」を記録し、Undo / Redo のときに UUID から並びを組み直します。
+       リストの内容が多少変わっていても位置がずれず、範囲外の添字によるエラーも起きません。
+         Struct::ReparentGameObjectState(m_parentUUID / m_siblingUUIDList)
+         Utility::FetchVALReparentGameObjectState / Utility::ApplyGameObjectSiblingOrder
+     ・1回の操作で複数のコマンドが必要なときは、既存のコマンドをメンバに持つコマンドにまとめて、1回の Undo で戻せるようにします。
+         PasteCutGameObjectCommand(CreateGameObjectCommand と DestroyGameObjectCommand をメンバに持ちます)
 3-4. 定数・列挙型・構造体などの定義は Source/Framework/Definition/ にまとめます。
      ファイル名は「その定義を使うクラスの名前」に種別を付けたものにします。
        Definition/Constant/<分類>/<クラス名>Constant.h   namespace FWK::Constant
@@ -60,6 +77,10 @@
        Definition/Macros/.../XxxMacros.h
      関連する定義であれば、1つのファイルに複数書いて構いません。
 3-5. 汎用的な関数は Utility/<分類>/XxxUtility.h に inline 関数として書きます(namespace FWK::Utility)。
+     ・複数のクラスや関数から使う処理だけを Utility にします。
+         Utility::CollectDescendantGameObjectList(CreateGameObjectCommand と Operation から使います)
+     ・1つのクラスの中でしか使わない処理は、そのクラスの private の関数として書きます。
+         WorldOutlinerEditorWindowGameObjectOperation::FetchVALDestroyedGameObjectRecord
 3-6. シェーダーのファイル名は <名前>_<ステージ>.hlsl(AS / MS / PS / VS / CS)にします。共通部分は .hlsli に書きます。
 
 
@@ -326,6 +347,17 @@
      ただし、関連が強い関数は空行を入れずに続けて書きます。
        コンストラクタとその直後のデストラクタ / EarlyUpdate・Update・LateUpdate・PostLateUpdate /
        LoadCONFIG・PostLoadCONFIG / DeserializeScene・DeserializePrefab / Undo・Redo / Add・Subtract など
+     ・この例外は .cpp に書くクラスのメンバ関数だけに使います。
+       Utility のように inline の関数が並ぶヘッダーでは、関連が強い関数でも必ず空行を1行入れて区切ります。
+         inline void CollectDescendantGameObjectList(...)
+         {
+             ...
+         }
+
+         inline void DetachGameObjectSubtree(...)
+         {
+             ...
+         }
 8-4. 初期化子リストを使う場合は次のように書きます。
        FWK::Converter::BinaryConverterBase::BinaryConverterBase() :
            m_fileHandle       (INVALID_HANDLE_VALUE),
@@ -409,6 +441,12 @@
          m_hierarchy.INIT    ();
          m_hierarchy.SetOwner(weak_from_this());
      ・右辺が関数呼び出しの代入が続くときは、= と右辺の ( の両方を揃えます。
+       呼び出し元の変数名や関数名の長さが違っても、最初の ( の位置を揃えます。
+         const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+         const auto& l_parent    = l_hierarchy.GetREFParent     ().lock();
+       関数呼び出しだけの行が続くときも、( の位置を揃えます。
+         l_rootSlotList.emplace_back(l_i);
+         l_rootList.emplace_back    (l_gameObject);
          auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
          auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
      ・const 付きと const なしの宣言が並ぶときは、const なしの行を6文字下げて型の位置を揃えます。
@@ -535,6 +573,15 @@
      dynamic_cast は使いません。型の判定には TypeINFO の k_staticTypeID を使います。
 11-7. インクリメントは前置(++l_xxx)で書きます。
 11-8. ラムダ式
+     ・ラムダ式は std の検索・並べ替えなどのアルゴリズム(find_if / any_of / erase_if / stable_sort など)に渡す述語としてだけ使います。
+       それ以外の用途(変数に入れて呼び出す、処理のまとまりを分ける など)では使わず、関数にします。
+       複数の関数から使うなら Utility、1つのクラスの中でだけ使うならそのクラスの private の関数です(第3章 3-5)。
+         ラムダの中の処理が長くなる場合も、処理を関数にして、ラムダからはその関数を呼ぶだけにします。
+           std::ranges::stable_sort(l_rootList,
+                                    [&l_rankMap](const auto& a_left, const auto& a_right)
+                                    {
+                                        return FetchVALGameObjectSiblingRank(l_rankMap, a_left) < FetchVALGameObjectSiblingRank(l_rankMap, a_right);
+                                    });
      ・キャプチャは [&l_gameObject] / [this] / [] のように明示します。[&] や [=] は使いません。
      ・ラムダの引数にも a_ を付けます。
      ・ラムダを引数として渡すときは改行し、{ を [ の位置に揃えます。
@@ -595,7 +642,12 @@
      ・生ポインタ / HANDLE / HWND は参照にせず、そのまま値で渡します: const ufbx_node* a_fbxNode
      ・外部ライブラリが型を決めている関数(Jolt の JPH::Vec3Arg / JPH::ColorArg、ウィンドウプロシージャの WPARAM / LPARAM など)は、
        その型のまま受け取ります。
-     ・所有権を移すときは T&& で受け取り、std::move します。
+     ・所有権を移すときだけ T&& で受け取り、呼び出し側で std::move します。
+         DestroyGameObjectCommand(std::vector<Struct::DestroyedGameObjectRecord>&& a_destroyedGameObjectRecordList);
+     ・渡された中身を読むだけのとき、または自分の型へ変換して保持するだけのときは、T&& にせず const 参照で受け取ります。
+       この場合、呼び出し側も std::move は書きません。
+         CreateGameObjectCommand(const std::vector<std::weak_ptr<GameObject>>& a_createdGameObjectList);
+         l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
      ・スマートポインタは第1章 1-4 のとおりです。
 13-5. 引数は、修飾子の種類ごとに次の順で並べます(詳しくは第20章 20-4)。
        const 参照 → const ポインタ → const 値 → 参照 → 右辺値参照(T&&) → ポインタ → 値 → デフォルト引数
@@ -776,7 +828,13 @@
 
          // コマンドキューの優先度を指定する
          l_desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
-16-8. ヘッダーにはコメントを書きません(第1章 1-1)。
+16-8. ヘッダーの関数の外側にはコメントを書きません(第1章 1-1)。
+      ただし、テンプレートや inline のようにヘッダーに処理の本体を書かなければならない関数(Utility の inline 関数など)の中は、
+      初学者でも分かるように .cpp と同じ詳しさでコメントを書きます。
+        ・関数の最初に、その関数が「何をするのか」「引数と結果がどういう意味か」を書きます。
+        ・weak_ptr の lock()・イテレータ・再帰呼び出し・stable_sort などの、初学者がつまずきやすい書き方には理由を書きます。
+        ・並べ替えのように手順がある処理は、「1. ~ 2. ~」と番号を付け、具体的な例(例 : ...)を添えます。
+        ・関数の宣言(シグネチャ)の前や、行末にはコメントを書きません。
 
 
 ================================================================================
@@ -907,8 +965,8 @@
        7. 値                const の付かない値渡し
        8. デフォルト引数
      ・同じ種類の中は、次の順に並べます(3 ~ 8 は 20-1 の型の定義場所による順番です)。
-        1. 配列
-        2. スマートポインタ
+        1. 配列(std::vector / std::unordered_map / std::unordered_set / std::array / std::deque など。範囲は 20-1 のとおりです)
+        2. スマートポインタ(std::weak_ptr / std::shared_ptr / std::unique_ptr など)
         3. 外部APIのクラス(nlohmann::json など)
         4. std のクラス(std::string / std::filesystem::path など)
         5. 自作クラス
@@ -920,6 +978,7 @@
        11. bool
           void Load(const std::filesystem::path& a_filePath, const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator);
           RenameGameObjectCommand(const std::string& a_beforeName, const std::string& a_afterName, const boost::uuids::uuid& a_gameObjectUUID);
+          std::size_t FetchVALXxxRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::weak_ptr<GameObject>& a_gameObject);
           void Xxx(const std::vector<std::weak_ptr<GameObject>>& a_gameObjectList,
                    const std::weak_ptr<GameObject>&              a_parent,
                    const nlohmann::json&                         a_rootJson,

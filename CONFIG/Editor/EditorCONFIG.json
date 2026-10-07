@@ -53,11 +53,18 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\Data\\NewFolder (1)",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\Data\\NewFolder"
+                            },
+                            {
+                                "SelectedFilePath": "Asset\\Data\\NewFolder (1)"
+                            }
+                        ]
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data\\Prefab",
+                "CurrentSelectFolderPath": "Asset\\Data",
                 "EditorWindowPaneSplitter": {
                     "PrimaryPaneSize": 422.0
                 },
@@ -76,10 +83,6 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Model",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Font",
                             "IsOpen": false
                         },
@@ -89,6 +92,10 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -104,11 +111,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
@@ -125,7 +132,7 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
@@ -142,13 +149,21 @@
                         {
                             "FilePath": "Asset\\Data\\Prefab\\Player",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\NewFolder",
+                            "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\NewFolder (1)",
+                            "IsOpen": false
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab",
+                        "RangeSelectionStartPath": "Asset\\Data\\NewFolder (1)",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\Prefab"
+                                "SelectedFilePath": "Asset\\Data\\NewFolder (1)"
                             }
                         ]
                     }

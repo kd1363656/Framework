@@ -1549,6 +1549,15 @@
     <Filter Include="Source\Framework\Editor\Command\Scene\Rename">
       <UniqueIdentifier>{3ee093e4-402a-4f7b-bf0d-0f1d02b8afff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\GameObject">
+      <UniqueIdentifier>{8de7417b-cf47-42bf-90fd-454e4074a1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Create">
+      <UniqueIdentifier>{13cf3505-36a8-4e6e-b0d6-fab598b0bac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\PasteCut">
+      <UniqueIdentifier>{69da4178-36c9-48a1-933d-a3c3ca2d3c83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3015,8 +3024,8 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\DestroyGameObjectCommandStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h">
-      <Filter>Source\Framework\Editor\Window\Command\GameObject</Filter>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
@@ -3101,6 +3110,15 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\Scene\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectHierarchyUtility.h">
+      <Filter>Source\Framework\Utility\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\ReparentGameObjectCommandStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Editor\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3860,8 +3878,8 @@
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Destroy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp">
-      <Filter>Source\Framework\Editor\Window\Command\GameObject</Filter>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
@@ -3880,6 +3898,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp">
       <Filter>Source\Framework\Editor\Command\Scene\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\PasteCut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

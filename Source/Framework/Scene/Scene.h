@@ -24,7 +24,8 @@ namespace FWK
 
         void AddGameObject(const std::shared_ptr<GameObject>& a_gameObject);
 
-        void RemoveGameObject(const std::weak_ptr<GameObject>& a_gameObject);
+        void RemoveGameObject    (const std::weak_ptr<GameObject>& a_gameObject);
+        void UnregisterGameObject(const std::weak_ptr<GameObject>& a_gameObject);
 
         void SetName(const std::string& a_set) { m_name = a_set; }
 

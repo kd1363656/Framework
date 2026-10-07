@@ -204,8 +204,23 @@ void FWK::Scene::RemoveGameObject(const std::weak_ptr<GameObject>& a_gameObject)
 
     if (!l_gameObject) { return; }
 
+    // シーン管理から外す
+    UnregisterGameObject(l_gameObject);
+
+    // 親がいるなら親子関係も解除する
+    auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
+
+    l_hierarchy.ClearParent();
+}
+void FWK::Scene::UnregisterGameObject(const std::weak_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
     // 破棄フラグを立てずにシーン管理から外す
     // 実体は呼び出し側が保持し続けるため再追加も可能
+    // 親子関係は解除しないため、子孫に使えば階層を保ったまま取り外せる
     if (const auto& l_sceneInstanceUUID = l_gameObject->GetREFSceneInstanceUUID();
         !l_sceneInstanceUUID.is_nil())
     {
@@ -224,11 +239,6 @@ void FWK::Scene::RemoveGameObject(const std::weak_ptr<GameObject>& a_gameObject)
                           return a_gameObjectWeak.lock() == l_gameObject;
                       });
     }
- 
-    // 親がいるなら親子関係も解除する
-    auto& l_hierarchy = l_gameObject->GetMutableREFHierarchy();
-
-    l_hierarchy.ClearParent();
 }
 
 std::weak_ptr<FWK::GameObject> FWK::Scene::FindVALGameObject(const boost::uuids::uuid& a_sceneInstanceUUID) const

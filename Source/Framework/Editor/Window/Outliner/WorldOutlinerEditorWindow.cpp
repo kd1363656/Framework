@@ -431,7 +431,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
 
     // アセットブラウザーからのPrefabファイルのドロップ先
     // SceneノードへドロップされたPrefabはルートGameObjectとして生成する
-
     std::vector<std::filesystem::path> l_droppedFilePathList = {};
  
     if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
@@ -450,10 +449,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
                 l_gameObjectSelectionState.AddSelectedGameObject(l_created);
             }
 
-            auto& l_editorManager = EditorManager::GetInstance                  ();
+            auto& l_editorManager  = EditorManager::GetInstance                 ();
             auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(boost::uuids::uuid{}, std::move(l_createdList));
+            l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
         }
     }
 
@@ -764,7 +763,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
     const auto& l_style = ImGui::GetStyle();
 
     // InputTextのフレームパディングを小さくしてTreeNodeExのテキスト高さに近づける
-    ImGui::PushStyleVar   (ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight));
+    ImGui::PushStyleVar    (ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHightPaddingAlignHight));
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 
     const bool l_isEnterPressed = ImGui::InputText(k_renameInputTextLabel.data(),
@@ -872,40 +871,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
  
         if (!l_dropped) { return; }
  
-        // UndoRedo用に変更前の親UUIDを保存する
-        const auto&              l_beforeHierarchy  = l_dropped->GetREFHierarchy    ();
-        const auto&              l_beforeParent     = l_beforeHierarchy.GetREFParent().lock();
-              boost::uuids::uuid l_beforeParentUUID = {};
-        const auto&              l_gameObjectUUID   = l_dropped->GetREFSceneInstanceUUID();
- 
-        if (l_beforeParent)
-        {
-            l_beforeParentUUID = l_beforeParent->GetREFSceneInstanceUUID();
-        }
- 
         // ドロップ先ノードを親、ドロップしたGameObjectを子として親子関係を結ぶ
         // 自分自身・子孫への親付けはApplyParent側で弾かれる
-        // 実行レベルの再構築もReparentGameObject内で行われる
+        // 実行レベルの再構築とUndoRedo履歴への登録もReparentGameObject内で行われる
         m_gameObjectOperation.ReparentGameObject(a_targetGameObject, l_droppedGameObject, a_scene);
- 
-        const auto&               l_afterHierarchy  = l_dropped->GetREFHierarchy   ();
-        const auto&               l_afterParent     = l_afterHierarchy.GetREFParent().lock();
-              boost::uuids::uuid  l_afterParentUUID = {};
- 
-        if (l_afterParent)
-        {
-            l_afterParentUUID = l_afterParent->GetREFSceneInstanceUUID();
-        }
- 
-        // 親子関係が実際に変更された場合のみコマンドをPushする
-        if (l_beforeParentUUID != l_afterParentUUID)
-        {
-            // EditorManager経由でUndoRedoSystemへコマンドをPushする
-            auto& l_editorManager  = EditorManager::GetInstance                 ();
-            auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
- 
-            l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObjectUUID, l_beforeParentUUID, l_afterParentUUID);
-        }
  
         // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
         if (const auto& l_targetGameObject = a_targetGameObject.lock();
@@ -939,18 +908,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandleGameObjectDropTarget(const st
     }
 
     // 生成をUndoRedo履歴へ登録する
-    // 親はドロップ先のGameObject
-    boost::uuids::uuid l_parentSceneInstanceUUID = {};
-
-    if (const auto& l_targetGameObject = a_targetGameObject.lock();
-        l_targetGameObject)
-    {
-        l_parentSceneInstanceUUID = l_targetGameObject->GetREFSceneInstanceUUID();
-    }
-
     auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_parentSceneInstanceUUID, std::move(l_createdList));
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
 
     // 子が追加されたのでドロップ先ノードを開いた状態にして結果を見せる
     if (const auto& l_targetGameObject = a_targetGameObject.lock();
@@ -969,14 +929,13 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
 
     std::vector<std::filesystem::path> l_droppedFilePathList = {};
 
-    auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
-
     // Window全体の矩形をドロップ先にする
     // GameObjectペイロード用のDropZoneやノードのドロップ先とは
     // ペイロードラベルが異なるため干渉しない
     // GameObjectノード上はノード側(小さい矩形)のドロップ先が優先されるため
     // ここに届くのは空白部分へのドロップのみになる
-    if (!l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
+    if (auto& l_imguiDragDropPayloadStorage = Utility::IMGUIDragDropPayloadStorage::GetInstance();
+        !l_imguiDragDropPayloadStorage.DragDropTargetCustom(l_currentWindow->Rect(),
                                                             Constant::k_imguiAssetBrowserFolderDragAndDropPayloadLabel,
                                                             ImGui::GetID(k_prefabFileDropTargetLabel.data()),
                                                             l_droppedFilePathList))
@@ -1000,10 +959,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
     }
 
     // 生成をUndoRedo履歴へ登録する
-    // 空白へのドロップなので親はなし(NilUUID)
     auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(boost::uuids::uuid{}, std::move(l_createdList));
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const

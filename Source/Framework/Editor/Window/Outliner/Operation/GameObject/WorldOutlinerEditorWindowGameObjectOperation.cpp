@@ -13,28 +13,48 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::RenameGameObject
 
     l_gameObject->SetName(a_newName);
 }
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedGameObjects(EditorGameObjectSelectionState& a_gameObjectSelectionState) const
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroySelectedGameObjects(EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
 {
-    // 選択リストは先にコピーする
-    // 破棄処理中に選択リスト側が変化しても安全にするため
-    const auto l_targetList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
- 
-    for (const auto& l_targetWeak : l_targetList)
+    const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
+
+    if (l_selectedList.empty()) { return; }
+
+    // 選択されているルートごとに、取り外すサブツリーと元の親を記録する
+    std::vector<Struct::DestroyedGameObjectRecord> l_destroyedGameObjectRecordList = {};
+
+    l_destroyedGameObjectRecordList.reserve(l_selectedList.size());
+
+    for (const auto& l_targetWeak : l_selectedList)
     {
         const auto& l_target = l_targetWeak.lock();
- 
-        // 親子を同時選択していた場合、親側の再帰で既に破棄済みならスキップ
+
         if (!l_target ||
             l_target->GetVALIsDestroyed())
         {
             continue;
         }
- 
-        // 再帰的に子ゲームオブジェクトも削除する
-        DestroyGameObjectRecursive(l_target);
+
+        // 親子を同時選択していた場合、子は親のサブツリーに含まれているためスキップ
+        if (Utility::HasAncestorInList(l_selectedList, l_targetWeak)) { continue; }
+
+        auto l_record = FetchVALDestroyedGameObjectRecord(l_targetWeak);
+
+        // 破棄ではなくシーン管理から取り外す
+        // 実体はコマンド側のshared_ptrが保持し続けるためUndoで復元できる
+        Utility::DetachGameObjectSubtree(l_record.m_detachedSubtreeGameObjectList, a_scene);
+
+        l_destroyedGameObjectRecordList.emplace_back(std::move(l_record));
     }
- 
-    // 破棄したGameObjectの選択状態を解除する
+
+    if (l_destroyedGameObjectRecordList.empty()) { return; }
+
+    // 取り外しをUndoRedo履歴へ登録する
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<DestroyGameObjectCommand>(std::move(l_destroyedGameObjectRecordList));
+
+    // 取り外したGameObjectの選択状態を解除する
     a_gameObjectSelectionState.ClearSelectedGameObjectList();
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObject(const std::weak_ptr<GameObject>& a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene) const
@@ -50,6 +70,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
         return;
     }
  
+    // UndoRedo用に変更前の親と兄弟の並びを記録する
+    const auto& l_beforeState = Utility::FetchVALReparentGameObjectState(l_moveGameObject, a_scene);
+
     // 自分自身・子孫への親付けガード、旧親からの除去、
     // TransformのHierarchical化はApplyParent側で行われる
     if (auto& l_moveGameObjectHierarchy = l_moveGameObject->GetMutableREFHierarchy();
@@ -60,6 +83,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
  
     // 階層の深さが変わったため実行レベルを再構築する
     a_scene.RebuildGameObjectExecutionLevelList();
+
+    // 親や兄弟の並びが変わっていればUndoRedo履歴へ登録する
+    PushReparentGameObjectCommand(l_moveGameObject, a_scene, l_beforeState);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject,
@@ -77,6 +103,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
         return;
     }
  
+    // UndoRedo用に変更前の親と兄弟の並びを記録する
+    const auto& l_beforeState = Utility::FetchVALReparentGameObjectState(l_moveGameObject, a_scene);
+
     // ドロップ先と同じ階層に合わせる
     // ターゲットがルートならmove側もルート化、子ならその親の子になる
     const auto& l_targetHierarchy = l_targetGameObject->GetREFHierarchy();
@@ -148,6 +177,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
  
     // 階層が変わり得るため実行レベルを再構築する
     a_scene.RebuildGameObjectExecutionLevelList();
+
+    // 親や兄弟の並びが変わっていればUndoRedo履歴へ登録する
+    PushReparentGameObjectCommand(l_moveGameObject, a_scene, l_beforeState);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::CopySelectedGameObjects(const EditorGameObjectSelectionState& a_gameObjectSelectionState, WorldOutlinerEditorWindowClipboard& a_clipboard) const
@@ -267,6 +299,13 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DuplicateSelecte
     {
         a_gameObjectSelectionState.AddSelectedGameObject(l_duplicated);
     }
+
+    // 複製を生成としてUndoRedo履歴へ登録する
+    // 複製ごとに親が異なっていてもコマンド側がUndo時にそれぞれの親を記録する
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_duplicatedList);
 }
 void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects(WorldOutlinerEditorWindowClipboard& a_clipboard, EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene) const
 {
@@ -281,6 +320,9 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
  
     // UUIDListのサイズ分貼り付け用ゲームオブジェクトリストを予約
     l_pastedList.reserve(l_uuidList.size());
+
+    // Cut操作で取り外した元のGameObjectの記録
+    std::vector<Struct::DestroyedGameObjectRecord> l_cutSourceRecordList = {};
  
     for (const auto& l_uuid : l_uuidList)
     {
@@ -302,11 +344,15 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
  
         l_pastedList.emplace_back(l_clone);
  
-        // Cut操作なら元のGameObjectを破棄する
-        // Clone後に破棄するためCloneには影響しない
+        // Cut操作なら元のGameObjectをシーンから取り外す
+        // Undoで戻せるよう破棄はせず、Clone後に取り外すためCloneには影響しない
         if (l_operationType == Enum::WorldOutlinerClipboardOperationType::Cut)
         {
-            l_sourceGameObject->Destroy();
+            auto l_record = FetchVALDestroyedGameObjectRecord(l_sourceGameObject);
+
+            Utility::DetachGameObjectSubtree(l_record.m_detachedSubtreeGameObjectList, a_scene);
+
+            l_cutSourceRecordList.emplace_back(std::move(l_record));
         }
     }
  
@@ -326,17 +372,70 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
     {
         a_gameObjectSelectionState.AddSelectedGameObject(l_pasted);
     }
+
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    // Cut操作の貼り付けは「複製の生成」と「元の取り外し」を1回のUndoで戻せるようまとめて登録する
+    if (l_operationType == Enum::WorldOutlinerClipboardOperationType::Cut)
+    {
+        l_undoRedoSystem.PushUndoCommand<PasteCutGameObjectCommand>(l_pastedList, std::move(l_cutSourceRecordList));
+
+        return;
+    }
+
+    // Copy操作の貼り付けを生成としてUndoRedo履歴へ登録する
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_pastedList);
 }
 
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::DestroyGameObjectRecursive(const std::weak_ptr<GameObject>& a_gameObject) const
+FWK::Struct::DestroyedGameObjectRecord FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FetchVALDestroyedGameObjectRecord(const std::weak_ptr<GameObject>& a_gameObject) const
+{
+    Struct::DestroyedGameObjectRecord l_record = {};
+
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return l_record; }
+
+    // 先頭を取り外すルート、その後ろに子孫を親→子の順で並べる
+    auto& l_subtreeList = l_record.m_detachedSubtreeGameObjectList;
+
+    l_subtreeList.emplace_back(l_gameObject);
+
+    Utility::CollectDescendantGameObjectList(l_gameObject, l_subtreeList);
+
+    // 親がいなければnilのまま(ルート)
+    const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+
+    if (const auto& l_parent = l_hierarchy.GetREFParent().lock();
+        l_parent)
+    {
+        l_record.m_parentUUID = l_parent->GetREFSceneInstanceUUID();
+    }
+
+    return l_record;
+}
+
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentGameObjectCommand(const std::weak_ptr<GameObject>& a_gameObject, const Scene& a_scene, const Struct::ReparentGameObjectState& a_beforeState) const
 {
     const auto& l_gameObject = a_gameObject.lock();
 
     if (!l_gameObject) { return; }
 
-    // 自身を破棄
-    // 実際のScene除去はScene::RemoveDestroyedGameObjects(EarlyUpdate)が行う
-    l_gameObject->Destroy();
+    // 変更後の親と兄弟の並びを記録する
+    const auto& l_afterState = Utility::FetchVALReparentGameObjectState(l_gameObject, a_scene);
+
+    // 親も兄弟の並びも変わらなかった場合はコマンドをPushしない
+    if (a_beforeState.m_parentUUID      == l_afterState.m_parentUUID      &&
+        a_beforeState.m_siblingUUIDList == l_afterState.m_siblingUUIDList)
+    {
+        return;
+    }
+
+    // EditorManager経由でUndoRedoSystemへコマンドをPushする
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObject->GetREFSceneInstanceUUID(), a_beforeState, l_afterState);
 }
 
 FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const

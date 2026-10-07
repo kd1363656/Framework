@@ -88,16 +88,21 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleRename(WorldOu
 
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleDeleteGameObject(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
+    const auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
+
+    if (!l_scene) { return; }
+
           auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
     const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();
 
-    l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState);
+    l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState, *l_scene);
 }
 
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleCopy(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
     const auto& l_gameObjectSelectionState = a_editorManager.GetREFGameObjectSelectionState();
-    const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation     ();
+    const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation      ();
  
     l_gameObjectOperation.CopySelectedGameObjects(l_gameObjectSelectionState, a_editorWindow.GetMutableREFClipboard());
 }

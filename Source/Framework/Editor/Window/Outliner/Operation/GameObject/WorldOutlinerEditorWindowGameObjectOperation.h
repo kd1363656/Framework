@@ -14,7 +14,7 @@ namespace FWK::Editor
         ~WorldOutlinerEditorWindowGameObjectOperation() = default;
 
         void RenameGameObject          (const std::weak_ptr<GameObject>&      a_gameObject, const std::string& a_newName)                                            const;
-        void DestroySelectedGameObjects(      EditorGameObjectSelectionState& a_gameObjectSelectionState)                                                            const;
+        void DestroySelectedGameObjects(      EditorGameObjectSelectionState& a_gameObjectSelectionState, Scene& a_scene)                                            const;
         void ReparentGameObject        (const std::weak_ptr<GameObject>&      a_targetGameObject, const std::weak_ptr<GameObject>& a_moveGameObject, Scene& a_scene) const;
 
         void MoveGameObjectSiblingOrder(const std::weak_ptr<GameObject>& a_targetGameObject,
@@ -31,7 +31,9 @@ namespace FWK::Editor
     
         static constexpr std::size_t k_rootPasteParentCount = 1ULL;
 
-        void DestroyGameObjectRecursive(const std::weak_ptr<GameObject>& a_gameObject) const;
+        Struct::DestroyedGameObjectRecord FetchVALDestroyedGameObjectRecord(const std::weak_ptr<GameObject>& a_gameObject) const;
+
+        void PushReparentGameObjectCommand(const std::weak_ptr<GameObject>& a_gameObject, const Scene& a_scene, const Struct::ReparentGameObjectState& a_beforeState) const;
 
         ChildGameObjectDataList::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const;
     };

@@ -47,6 +47,22 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // 開いている場合は子ディレクトリに対して再帰的にDrawTreeNodeを呼ぶ
     DrawTreeNode(Constant::k_assetRootFolderPath, a_editorWindow);
 
+    // 空スペース左クリック = 選択解除
+    // フォルダノード以外の空スペースを左クリックした場合、フォルダの選択を解除する
+    // Ctrl + Aで全選択した状態からでも、空スペースをクリックすれば解除できる
+    // ImGui::IsWindowHovered  : マウスが子のChildWindow上にあるか
+    // ImGui::IsAnyItemHovered : いずれかのアイテム上にマウスがあるか
+    // ノード上のクリックはDrawTreeNode側で選択を更新するため、ここでは空スペースの場合のみ解除する
+    // ImGui::IsMouseClicked : このフレームで左クリックされたか
+    // ClearSelectionは選択リストと範囲選択の開始地点の両方を消す
+    // 現在参照中のフォルダ(m_currentSelectFolderPath)は変更しないため、AssetPaneの表示は変わらない
+    if (ImGui::IsWindowHovered()   &&
+        !ImGui::IsAnyItemHovered() &&
+        ImGui::IsMouseClicked(ImGuiMouseButton_Left, false))
+    {
+        m_selectionState.ClearSelection();
+    }
+
     // 空スペース右クリック
     // フォルダノード以外の空スペースを右クリックした場合
     // 選択中フォルダのコンテキストメニューを開く

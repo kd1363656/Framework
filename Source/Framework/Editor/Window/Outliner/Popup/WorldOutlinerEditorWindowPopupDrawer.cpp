@@ -103,7 +103,7 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawGameObjectPopup(cons
     // 選択中のGameObject全てを削除対象にする(複数選択にも対応)
     if (ImGui::MenuItem(k_deleteMenuLabel.data(), k_deleteShortcutLabel.data()))
     {
-        l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState);
+        l_gameObjectOperation.DestroySelectedGameObjects(l_gameObjectSelectionState, a_scene);
     }
 
     ImGui::EndPopup();
@@ -159,7 +159,7 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
 
     l_sceneSelectionState.SetIsSceneSelected(false);
 
-    // 生成をUndoRedoへ登録する
+    // 作成したGameObjectのノードを開くために親のUUIDを取得する
     boost::uuids::uuid l_parentUUID = {};
 
     if (const auto& l_parent = a_parent.lock();
@@ -168,11 +168,12 @@ void FWK::Editor::WorldOutlinerEditorWindowPopupDrawer::DrawCreateEmptyGameObjec
         l_parentUUID = l_parent->GetREFSceneInstanceUUID();
     }
 
+    // 生成をUndoRedoへ登録する
     auto& l_undoRedoSystem = a_editorManager.GetMutableREFUndoRedoSystem();
 
     std::vector<std::weak_ptr<GameObject>> l_createdGameObjectList = { l_createdGameObject };
 
-    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_parentUUID, std::move(l_createdGameObjectList));
+    l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdGameObjectList);
 
     // 作成したGameObjectのノードが見えるように親のノードを開く
     // 親がいない場合はシーン直下に作成されるため、シーンのノードを開く

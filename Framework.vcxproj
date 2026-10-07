@@ -517,6 +517,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h" />
     <ClInclude Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Camera\EditorCamera.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.h" />
@@ -525,7 +526,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h" />
     <ClInclude Include="Source\Framework\Editor\Command\ChangeSelectionCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.h" />
-    <ClInclude Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h" />
@@ -850,6 +850,9 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\SmartPointerVectorListStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFORegistryStruct.h" />
     <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectHierarchyUtility.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\ReparentGameObjectCommandStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -870,6 +873,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Converter\Binary\BinaryConverterBase.cpp" />
     <ClCompile Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Camera\EditorCamera.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />
@@ -877,7 +881,6 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\ChangeSelectionCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Destroy\DestroyGameObjectCommand.cpp" />
-    <ClCompile Include="Source\Framework\Editor\Window\Command\GameObject\CreateGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Selection\EditorGameObjectSelectionState.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.cpp" />
@@ -1110,6 +1113,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Window\Window.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
