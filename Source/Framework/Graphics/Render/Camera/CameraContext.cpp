@@ -1,12 +1,13 @@
 ﻿#include "CameraContext.h"
 
-void FWK::Graphics::CameraContext::ApplyViewCamera(const RenderGraph& a_renderGraph, ShadowContext& a_shadowContext) const
+bool FWK::Graphics::CameraContext::ApplyViewCamera(const RenderGraph& a_renderGraph, ShadowContext& a_shadowContext) const
 {
     // 現在のモードに合わせて、描画に使うカメラの定数バッファを決める
     const auto& l_viewCamera = FetchVALViewCamera().lock();
 
     // 使えるカメラが1つもない場合は、これまでの登録をそのままにする
-    if (!l_viewCamera) { return; }
+    // 呼び出し側が「このビューは描画しない」と判断できるように、falseを返す
+    if (!l_viewCamera) { return false; }
 
     // 描画用カメラの定数バッファ参照先を、決めたカメラへ差し替える
     if (const auto& l_cameraPassDrawRequest = a_renderGraph.FindVALDrawRequestPass<CameraPassDrawRequest>().lock();
@@ -19,6 +20,8 @@ void FWK::Graphics::CameraContext::ApplyViewCamera(const RenderGraph& a_renderGr
     auto& l_cascadeShadowMap = a_shadowContext.GetMutableREFCascadeShadowMap();
 
     l_cascadeShadowMap.SetCBCameraPass(l_viewCamera);
+
+    return true;
 }
 
 std::weak_ptr<FWK::Struct::CBCameraPass> FWK::Graphics::CameraContext::FetchVALViewCamera() const

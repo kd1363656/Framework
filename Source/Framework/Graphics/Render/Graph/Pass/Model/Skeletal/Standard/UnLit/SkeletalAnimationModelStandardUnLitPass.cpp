@@ -6,6 +6,9 @@ FWK::Graphics::SkeletalAnimationModelStandardUnLitPass::SkeletalAnimationModelSt
     // 通常のModel描画として実行する
     SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::Model);
 
+    // プレビューなど、メイン以外のビューでもこのパスを実行する
+    SetupViewScope(Enum::RenderGraphPassViewScope::AllViews);
+
     // SkeletalAnimationModelの描画結果を
     // SceneColorRenderTargetへ書き込む
     WriteRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::RenderTarget);

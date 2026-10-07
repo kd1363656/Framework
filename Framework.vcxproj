@@ -855,6 +855,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\ReparentGameObjectCommandStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Graphics\CameraViewModeEnum.h" />
+    <ClInclude Include="Source\Framework\Graphics\Render\View\RenderView.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\RenderViewTypeEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -1117,6 +1119,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Rename\RenameGameObjectCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Render\View\RenderView.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>

@@ -31,6 +31,12 @@ namespace FWK::Graphics
 
         void Resize(const Device& a_device, const Struct::WindowClientSize& a_clientSize, ResourceContext& a_resourceContext);
 
+        void RequestPreviewRenderView(const std::weak_ptr<Struct::CBCameraPass>& a_camera, const Struct::WindowClientSize& a_previewClientSize);
+
+        void PreparePreviewRenderView(const Device& a_device, ResourceContext& a_resourceContext);
+
+        const RenderView& FetchREFActiveRenderView() const;
+
         void AddFrameResource(const std::shared_ptr<FrameResource>&     a_frameResource);
         void AddRootSignature(const std::shared_ptr<RootSignature>&     a_rootSignature, const Enum::RootSignatureType a_rootSignatureType);
         void AddPipelineState(const std::shared_ptr<PipelineStateBase>& a_pipelineState, const Enum::PipelineStateType a_pipelineStateType);
@@ -76,10 +82,9 @@ namespace FWK::Graphics
 
         const auto& GetREFCurrentFrameResource() const { return m_currentFrameResource; }
 
-        const auto& GetREFSwapChain       () const { return m_swapChain; }
-        const auto& GetREFScreenRenderArea() const { return m_screenRenderArea; }
-        const auto& GetREFShadowContext   () const { return m_shadowContext; }
-        const auto& GetREFCameraContext   () const { return m_cameraContext; }
+        const auto& GetREFSwapChain     () const { return m_swapChain; }
+        const auto& GetREFShadowContext () const { return m_shadowContext; }
+        const auto& GetREFMainRenderView() const { return m_mainRenderView; }
 
         const auto& GetREFRenderGraph() const { return m_renderGraph; }
 
@@ -91,11 +96,15 @@ namespace FWK::Graphics
 
         const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
 
+        const auto& GetREFPreviewClientSize() const { return m_previewClientSize; }
+
+        bool GetVALIsPreviewViewActive() const { return m_isPreviewViewActive; }
+
         auto& GetMutableREFSwapChain  () { return m_swapChain; }
         auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 
-        auto& GetMutableREFShadowContext() { return m_shadowContext; }
-        auto& GetMutableREFCameraContext() { return m_cameraContext; }
+        auto& GetMutableREFShadowContext () { return m_shadowContext; }
+        auto& GetMutableREFMainRenderView() { return m_mainRenderView; }
 
         auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
         auto& GetMutableREFComputeCommandList() { return m_computeCommandList; }
@@ -112,6 +121,8 @@ namespace FWK::Graphics
 
         void SyncSpritePassDrawRequest();
 
+        void ExecutePreviewView(const ResourceContext& a_resourceContext, FrameResource& a_frameResource);
+
         static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
         static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;
 
@@ -124,10 +135,10 @@ namespace FWK::Graphics
 
         std::weak_ptr<FrameResource> m_currentFrameResource = {};
 
-        SwapChain     m_swapChain        = {};
-        RenderArea    m_screenRenderArea = {};
-        ShadowContext m_shadowContext    = {};
-        CameraContext m_cameraContext    = {};
+        SwapChain     m_swapChain         = {};
+        ShadowContext m_shadowContext     = {};
+        RenderView    m_mainRenderView    = {};
+        RenderView    m_previewRenderView = {};
 
         TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
         TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
@@ -138,6 +149,11 @@ namespace FWK::Graphics
 
         Converter::RendererJsonConverter m_jsonConverter = {};
 
+        Struct::WindowClientSize m_previewClientSize = {};
+
         std::size_t m_currentFrameResourceIndex = k_initialFrameResourceIndex;
+
+        bool m_isPreviewRequested  = false;
+        bool m_isPreviewViewActive = false;
     };
 }

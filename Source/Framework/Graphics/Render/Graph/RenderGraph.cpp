@@ -36,7 +36,7 @@ void FWK::Graphics::RenderGraph::BeginFrame(const ResourceContext& a_resourceCon
     // 現在のフレームリソースが持つPassTextureをClearする
     m_resourceClearer.ClearCurrentFramePassTextureList(a_resourceContext, a_renderer);
 }
-void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, Renderer& a_renderer)
+void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContext, const Enum::RenderViewType a_viewType, Renderer& a_renderer)
 {
     const auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetREFCBVSRVUAVDescriptorPool();
     const auto& l_directCommandList       = a_renderer.GetREFDirectCommandList             ();
@@ -51,9 +51,29 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
     // ComputeCommandListへも設定する
     l_computeCommandList.SetupDescriptorHeap(l_cbvSRVUAVDescriptorPool);
 
+    // メインビューのテクスチャは、BeginFrameでクリア済み
+    // メイン以外のビューは、描き始める前に、このビューのテクスチャをクリアする
+    // (描画対象のテクスチャは、呼び出し側が切り替えたこのビューのものになっている)
+    if (a_viewType != Enum::RenderViewType::Main)
+    {
+        // 前のフレームで、ImGuiが読めるようPIXEL_SHADER_RESOURCEにしたFinalColorを、
+        // クリアと書き込みができるRENDER_TARGETへ戻す
+        // (すでにRENDER_TARGETなら、何もしない)
+        m_resourceTransitioner.TransitionRenderTargetPassTexture(a_renderer,
+                                                                 Enum::RenderGraphRenderTargetType::FinalColor,
+                                                                 Enum::RenderGraphResourceUsage::RenderTarget);
+
+        m_resourceClearer.ClearCurrentFramePassTextureList(a_resourceContext, a_renderer);
+    }
+
+    // パスを実行順(m_passListはCompileで実行順に並べ替え済み)に1つずつ実行する
     for (const auto& l_pass : m_passList)
     {
         if (!l_pass) { continue; }
+
+        // このビューでは実行しないパスは飛ばす
+        // 例 : プレビューのビューでは、エディター専用の線の描画などは実行しない
+        if (!ShouldExecutePass(*l_pass, a_viewType)) { continue; }
 
         // Pass実行前に、ResourceAccessのbeforeUsageへ遷移する
         m_resourceTransitioner.TransitionPassResourceBefore(*l_pass, a_renderer);
@@ -65,6 +85,15 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
 
         // Pass実行後に、ResourceAccessのafterUsageへ遷移する
         m_resourceTransitioner.TransitionPassResourceAfter(*l_pass, a_renderer);
+    }
+
+    // メイン以外のビューは、描き終えたFinalColorを、ImGuiが画面に表示できる状態にして終える
+    // (メインビューのFinalColorは、FinalPresentPassが読んで画面へ出すため、ここでは何もしない)
+    if (a_viewType != Enum::RenderViewType::Main)
+    {
+        m_resourceTransitioner.TransitionRenderTargetPassTexture(a_renderer,
+                                                                 Enum::RenderGraphRenderTargetType::FinalColor,
+                                                                 Enum::RenderGraphResourceUsage::PixelShaderResource);
     }
 }
 void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
@@ -135,8 +164,8 @@ void FWK::Graphics::RenderGraph::AddDrawRequestPerObject(const std::shared_ptr<D
 
 void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const
 {
-          auto& l_swapChain         = a_renderer.GetMutableREFSwapChain ();
-    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
+          auto& l_swapChain         = a_renderer.GetMutableREFSwapChain        ();
+    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
     const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 
     const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
@@ -157,6 +186,18 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
 
     // 描画先に設定したBackBufferを指定色でClearする。
     l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
+}
+
+bool FWK::Graphics::RenderGraph::ShouldExecutePass(const RenderGraphPassBase& a_pass, const Enum::RenderViewType a_viewType) const
+{
+    // メインビューでは、すべてのパスを実行する
+    // (スキニングのコンピュートや、画面に出す最後のパスのように、
+    //  メインビューだけで実行するパスも、ここで実行される)
+    if (a_viewType == Enum::RenderViewType::Main) { return true; }
+
+    // メイン以外のビューでは、「すべてのビューで実行する(AllViews)」と宣言されたパスだけを実行する
+    // 宣言されていないパスは、メインビューだけで実行するパスとして扱う
+    return a_pass.GetVALViewScope() == Enum::RenderGraphPassViewScope::AllViews;
 }
 
 void FWK::Graphics::RenderGraph::RemoveExpiredPassList()

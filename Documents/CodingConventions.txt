@@ -55,6 +55,8 @@
        Inspector/           XxxInspector
        Buffer/Constant/     XxxDynamicConstantBufferUploader
        Builder/ Loader/ Record/ Mode/ Popup/ Shortcut/ Clipboard/ Selection/ Factory/ など
+     ・1つのファイルのためだけの下位フォルダは作りません。同じ機能のフォルダにそのまま置きます。
+         Graphics/Render/Camera/CameraContext.h(Camera/Context/ の下には置きません)
      ・UndoRedo のコマンドは、ウィンドウの下ではなく Editor/Command/<対象>/<操作>/XxxCommand.h に置きます。
          Editor/Command/GameObject/Create/CreateGameObjectCommand.h
          Editor/Command/GameObject/Destroy/DestroyGameObjectCommand.h
@@ -177,6 +179,12 @@
          const auto& GetREFXxx() const { return m_xxx; }    const 参照を返す
          auto& GetMutableREFXxx() { return m_xxx; }          変更可能な参照を返す
          auto GetVALXxx() const { return m_xxx; }            値を返す(bool / float / weak_ptr などは型を明示します)
+     ・取得関数の名前は、Get(REF / Mutable / VAL)の後ろに、返す変数名または型名をそのまま付けます。
+       Active / Current / Main などの用途や状態を足した別名の取得関数は作りません。
+       「どの値を返すか」を切り替える必要が出たら、同じ名前の取得関数の中身で切り替えます。
+         OK : const auto& GetREFRenderGraphFrameResource() const { return m_renderGraphFrameResource; }
+         NG : const auto& GetREFActiveRenderGraphFrameResource() const { return m_renderGraphFrameResource; }
+     ・まだ使う場所がない取得関数・設定関数は作りません。使う処理を実装するときに、必要な分だけ足します。
      ・設定関数(Setter)の引数名は必ず a_set にします。
          void SetXxx(const float a_set) { m_xxx = a_set; }
          void SetXxx(const std::string& a_set) { m_xxx = a_set; }
@@ -597,6 +605,12 @@
      ・文字列の整形には std::format を使います。
 11-10. 次のものは使いません。
        例外(try / throw) / goto / typedef / mutable / [[nodiscard]] / using namespace / this->
+11-11. 取得関数(GetREF / GetMutableREF / GetVAL など)を続けて呼ぶ書き方はしません。1段ずつ変数で受けます。
+     ・weak_ptr を取り出す GetVALXxx().lock() の形だけは、続けて書いて構いません。
+         NG : auto& l_cameraContext = l_graphicsManager.GetMutableREFRenderer().GetMutableREFCameraContext();
+         OK : auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
+              auto& l_cameraContext = l_renderer.GetMutableREFCameraContext  ();
+         OK : const auto& l_scene = l_sceneManager.GetVALScene().lock();
 
 
 ================================================================================
@@ -862,6 +876,13 @@
 18-3. 型の情報は Xxx::GetREFTypeINFO().k_staticTypeID / GetREFRuntimeTypeINFO() で取得します。
 18-4. RenderGraph のパス・DrawRequest・Uploader は、Framework/CONFIG/Graphics/GraphicsCONFIG.json で宣言して登録します。
 18-5. 描画パスでは、コンストラクタの中で SetupExecutionLayer と Read / Write(RenderTarget / DepthStencil / ShadowMap)を宣言します。
+     ・プレビューなど、メイン以外のビューでも実行するパスは、SetupViewScope(Enum::RenderGraphPassViewScope::AllViews) を宣言します。
+       宣言しないパスは、メインビューだけで実行されます(エディター専用のパスが、プレビューへ混ざらないようにするためです)。
+     ・ビューごとに内容が変わる定数バッファ(カメラ・カスケードの行列・FinalColor など)のアップローダーは、
+       固定位置(DynamicConstantBufferFixedWritePositionUploaderBase)ではなく、書き込み位置を進める方式
+       (DynamicConstantBufferAdvancingWritePositionUploaderBase)にします。
+       CreateCount(GraphicsCONFIG.json)には、「1フレームで書き込む回数 × ビューの数」以上の値を書きます。
+       固定位置だと、後から書いた別のビューの値を、GPU が先に描いたビューでも読んでしまうためです。
 
 
 ================================================================================

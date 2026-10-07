@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-    class CameraPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBCameraPass>
+    class CameraPassDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBCameraPass>
     {
     public:
 

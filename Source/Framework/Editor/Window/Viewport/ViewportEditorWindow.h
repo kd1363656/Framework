@@ -47,6 +47,10 @@ namespace FWK::Editor
 
         void DrawViewportTexture(const ImVec2& a_viewportSize, const ImTextureID& a_textureID) const;
 
+        void DrawCameraPreview() const;
+
+        void RequestCameraPreview(const EditorManager& a_editorManager, const ImVec2& a_viewportSize) const;
+
         void RegisterDebugCamera     () const;
         void UpdateEditorCameraInput ();
 
@@ -57,6 +61,14 @@ namespace FWK::Editor
 
         static constexpr float k_minViewportSize = 1.0F;
 
+        static constexpr float k_cameraPreviewWidthRatio = 0.25F;
+
+        static constexpr float k_cameraPreviewMargin          = 8.0F;
+        static constexpr float k_cameraPreviewBorderThickness = 2.0F;
+        static constexpr float k_cameraPreviewBorderRounding  = 0.0F;
+
+        static constexpr ImDrawFlags k_cameraPreviewBorderFlags = ImDrawFlags_None;
+
         static constexpr float k_viewportUVMINX = 0.0F;
         static constexpr float k_viewportUVMINY = 0.0F;
         static constexpr float k_viewportUVMAXX = 1.0F;
@@ -65,6 +77,7 @@ namespace FWK::Editor
         static constexpr ImTextureID k_invalidViewportTextureID = {};
 
         std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList;
+        std::vector<TypeAlias::DescriptorIndex> m_previewImGuiSRVDescriptorIndexList;
 
         std::unique_ptr<EditorCamera> m_editorCamera;
 

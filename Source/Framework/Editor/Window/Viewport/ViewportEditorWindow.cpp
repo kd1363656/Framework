@@ -3,6 +3,7 @@
 
 FWK::Editor::ViewportEditorWindow::ViewportEditorWindow() :
     m_imGuiSRVDescriptorIndexList(),
+    m_previewImGuiSRVDescriptorIndexList(),
 
     m_editorCamera(std::make_unique<EditorCamera>()),
 
@@ -91,6 +92,13 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
     // Viewportの表示領域全体に、取得したTextureを描画する
     DrawViewportTexture(l_viewportSize, l_viewportTextureID);
 
+    // このフレームにプレビューを描いていれば、ビューポート画像の右下に重ねて表示する
+    // (直前のItemがビューポート画像のため、その範囲を基準に位置を決める)
+    DrawCameraPreview();
+
+    // カメラを持つGameObjectを選択している間は、そのカメラの映像をプレビューとして描くようRendererへ依頼する
+    RequestCameraPreview(a_editorManager, l_viewportSize);
+
     // Viewport画像上での入力をエディターカメラへ反映する
     UpdateEditorCameraInput();
 
@@ -146,6 +154,11 @@ void FWK::Editor::ViewportEditorWindow::SetupViewportTextureDescriptors()
         // SRVDescriptorIndexをアロケート
         m_imGuiSRVDescriptorIndexList.emplace_back(l_editorManager.AllocateImGuiSRVDescriptorIndex());
 
+        // プレビュー用のImGui用SRVDescriptorIndexも、フレームリソースごとにアロケートしておく
+        // プレビューのテクスチャは作成やサイズ変更のたびにSRVが変わるため、
+        // コピーは作成時ではなく、表示する毎フレームに行う(DrawCameraPreview)
+        m_previewImGuiSRVDescriptorIndexList.emplace_back(l_editorManager.AllocateImGuiSRVDescriptorIndex());
+
         const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext();
 
         // メイン描画用SRVDescriptorを、ImGui用SRVDescriptorへコピーする
@@ -187,13 +200,125 @@ void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImVec2& a_view
                  l_uvMAX);
 }
 
+void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
+{
+    const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
+    const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
+
+    // このフレームにプレビューを描いていなければ、何も表示しない
+    // (カメラを選択していない、選択を外した直後などは、右下に何も描かない)
+    if (!l_renderer.GetVALIsPreviewViewActive()) { return; }
+
+    // 現在のフレームリソースが、このフレームのプレビューを描いている
+    const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
+    const auto& l_frameResourceList         = l_renderer.GetREFFrameResourceList        ();
+
+    FWK_ASSERT_RETURN_IF(l_currentFrameResourceIndex >= m_previewImGuiSRVDescriptorIndexList.size(), "フレームリソースの数がプレビュー用ImGuiSRVDescriptorIndexListのサイズを超えているため、プレビューの表示に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_currentFrameResourceIndex >= l_frameResourceList.size(),                  "現在のフレームリソースのインデックスが範囲外のため、プレビューの表示に失敗しました。");
+
+    const auto& l_frameResource = l_frameResourceList[l_currentFrameResourceIndex];
+
+    FWK_ASSERT_RETURN_IF(!l_frameResource, "現在のフレームリソースが無効のため、プレビューの表示に失敗しました。");
+
+    // プレビューのFinalColor(ガンマ補正済みの最終的な色)のテクスチャを取得する
+    const auto& l_previewRenderGraphFrameResource = l_frameResource->GetREFPreviewRenderGraphFrameResource          ();
+    const auto& l_finalColorPassTexture           = l_previewRenderGraphFrameResource.FindVALRenderTargetPassTexture(Enum::RenderGraphRenderTargetType::FinalColor).lock();
+
+    if (!l_finalColorPassTexture) { return; }
+
+    const auto& l_renderTargetTexture = l_finalColorPassTexture->GetREFRenderTargetTexture();
+    const auto  l_srvDescriptorIndex  = l_renderTargetTexture.GetVALSRVDescriptorIndex    ();
+
+    if (l_srvDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return; }
+
+    // プレビューのSRVを、ImGui用のSRVへコピーする
+    // プレビューのテクスチャは作成・サイズ変更でSRVが変わり得るため、表示する毎フレームにコピーする
+    // このフレームリソース用のImGui用SRVは、GPUが前回の使用を終えているため、書き換えても安全
+    const auto& l_editorManager           = EditorManager::GetInstance                     ();
+    const auto& l_resourceContext         = l_graphicsManager.GetREFResourceContext        ();
+    const auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetREFCBVSRVUAVDescriptorPool();
+    const auto  l_imGuiSRVDescriptorIndex = m_previewImGuiSRVDescriptorIndexList[l_currentFrameResourceIndex];
+
+    FWK_ASSERT_RETURN_IF(!l_editorManager.CopyGraphicsSRVDescriptor(l_cbvSRVUAVDescriptorPool, l_srvDescriptorIndex, l_imGuiSRVDescriptorIndex), "プレビュー用SRVDescriptorのコピー処理に失敗しました。");
+
+    const auto& l_textureID = l_editorManager.FetchVALImGuiTextureID(l_imGuiSRVDescriptorIndex);
+
+    // ビューポート画像(直前のItem)の右下から、余白を空けた位置にプレビューを置く
+    // 大きさは、プレビュー用のテクスチャと同じ(ビューポートの幅の4分の1)
+    const auto& l_previewClientSize = l_renderer.GetREFPreviewClientSize();
+    const auto& l_viewportMAX       = ImGui::GetItemRectMax             ();
+
+    const ImVec2 l_previewMAX = { l_viewportMAX.x - k_cameraPreviewMargin, l_viewportMAX.y - k_cameraPreviewMargin };
+    const ImVec2 l_previewMIN = { l_previewMAX.x - static_cast<float>(l_previewClientSize.m_width), l_previewMAX.y - static_cast<float>(l_previewClientSize.m_height) };
+
+    // Item(ボタンなど)にはせず、描画リストへ直接描くため、
+    // ビューポート画像の入力(右クリックでのカメラ操作)の判定には影響しない
+    auto* l_drawList = ImGui::GetWindowDrawList();
+
+    const auto& l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
+    const auto& l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
+
+    l_drawList->AddImage(l_textureID, l_previewMIN, l_previewMAX, l_uvMIN, l_uvMAX);
+
+    // プレビューの範囲が分かるよう、アクセントカラーの枠線を描く
+    const auto l_borderColor = ImGui::ColorConvertFloat4ToU32(Constant::k_imguiAccentColor);
+
+    l_drawList->AddRect(l_previewMIN,
+                        l_previewMAX,
+                        l_borderColor,
+                        k_cameraPreviewBorderRounding,
+                        k_cameraPreviewBorderFlags,
+                        k_cameraPreviewBorderThickness);
+}
+
+void FWK::Editor::ViewportEditorWindow::RequestCameraPreview(const EditorManager& a_editorManager, const ImVec2& a_viewportSize) const
+{
+    // 最後に選択したGameObjectを取得する
+    // 何も選択していなければ、プレビューは依頼しない(右下に何も描かない)
+    const auto& l_gameObjectSelectionState = a_editorManager.GetREFGameObjectSelectionState          ();
+    const auto& l_selectedGameObject       = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
+
+    if (!l_selectedGameObject) { return; }
+
+    // 選択したGameObjectがカメラコンポーネントを持っていなければ、プレビューは依頼しない
+    const auto& l_componentContainer = l_selectedGameObject->GetREFComponentContainer                     ();
+    const auto& l_cameraComponent    = l_componentContainer.FindUniqueComponent<GameObjectCameraComponent>().lock();
+
+    if (!l_cameraComponent) { return; }
+
+    const auto& l_camera       = l_cameraComponent->GetREFCamera();
+    const auto& l_cbCameraPass = l_camera.GetREFCBCameraPass    ();
+
+    // プレビューの縦横比はカメラに合わせる
+    // カメラのアスペクト比が無効なら、サイズを決められないため依頼しない
+    const float l_aspectRatio = l_camera.GetVALAspectRatio();
+
+    if (l_aspectRatio <= Constant::k_cameraInvalidAspectRatio) { return; }
+
+    // プレビューの幅はビューポートの幅のk_cameraPreviewWidthRatio倍(4分の1)
+    // 高さはカメラの縦横比から求める
+    const auto l_previewWidth  = static_cast<UINT>(a_viewportSize.x * k_cameraPreviewWidthRatio);
+    const auto l_previewHeight = static_cast<UINT>(static_cast<float>(l_previewWidth) / l_aspectRatio);
+
+    // 0サイズのテクスチャは作れないため、小さすぎる場合は依頼しない
+    if (!Utility::IsValidTextureSize(l_previewWidth, l_previewHeight)) { return; }
+
+    const Struct::WindowClientSize l_previewClientSize = { l_previewWidth, l_previewHeight };
+
+    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
+    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+
+    l_renderer.RequestPreviewRenderView(l_cbCameraPass, l_previewClientSize);
+}
+
 void FWK::Editor::ViewportEditorWindow::RegisterDebugCamera() const
 {
     FWK_ASSERT_RETURN_IF(!m_editorCamera, "エディターカメラが無効です。");
 
-    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
-    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
-    auto& l_cameraContext   = l_renderer.GetMutableREFCameraContext  ();
+    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance     ();
+    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer    ();
+    auto& l_mainRenderView  = l_renderer.GetMutableREFMainRenderView     ();
+    auto& l_cameraContext   = l_mainRenderView.GetMutableREFCameraContext();
 
     // エディターカメラをデバッグカメラとして登録する
     // 描画にデバッグカメラとシーンカメラのどちらを使うかは、CameraContextがモードに合わせて決める
@@ -248,6 +373,13 @@ void FWK::Editor::ViewportEditorWindow::ReleaseViewportTextureDescriptors()
         l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
     }
 
+    // プレビュー用のImGui用SRVDescriptorIndexも、同じように返却する
+    for (const auto& l_srvDescriptorIndex : m_previewImGuiSRVDescriptorIndexList)
+    {
+        l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
+    }
+
     // 返却したIndexを参照しないようリストも空にする
-    m_imGuiSRVDescriptorIndexList.clear();
+    m_imGuiSRVDescriptorIndexList.clear       ();
+    m_previewImGuiSRVDescriptorIndexList.clear();
 }

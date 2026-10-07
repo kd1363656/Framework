@@ -26,6 +26,7 @@ namespace FWK::Graphics
         const auto& GetREFResourceAccessList() const { return m_resourceAccessList; }
 
         auto GetVALExecutionLayer() const { return m_executionLayer; }
+        auto GetVALViewScope     () const { return m_viewScope; }
 
     protected:
 
@@ -43,6 +44,7 @@ namespace FWK::Graphics
         std::weak_ptr<RootSignature> SetupComputeRenderPipeline (const Enum::PipelineStateType a_pipelineStateType, Renderer& a_renderer) const;
 
         void SetupExecutionLayer(const Enum::RenderGraphPassExecutionLayer a_executionLayer);
+        void SetupViewScope     (const Enum::RenderGraphPassViewScope      a_viewScope);
 
     private:
 
@@ -60,6 +62,7 @@ namespace FWK::Graphics
         std::vector<Struct::RenderGraphResourceAccess> m_resourceAccessList = {};
 
         Enum::RenderGraphPassExecutionLayer m_executionLayer = Enum::RenderGraphPassExecutionLayer::Invalid;
+        Enum::RenderGraphPassViewScope      m_viewScope      = Enum::RenderGraphPassViewScope::MainViewOnly;
 
         FWK_DEFINE_TYPE_INFO_ROOT(RenderGraphPassBase)
     };

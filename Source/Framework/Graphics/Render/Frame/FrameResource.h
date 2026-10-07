@@ -26,6 +26,12 @@ namespace FWK::Graphics
                     const UINT64&                   a_retiredFenceValue,
                           ResourceContext&          a_resourceContext) const;
 
+        bool PreparePreviewRenderGraphFrameResource(const Device&                   a_device,
+                                                    const GPUMemoryAllocator&       a_gpuMemoryAllocator,
+                                                    const Struct::WindowClientSize& a_previewClientSize,
+                                                    const UINT64&                   a_retiredFenceValue,
+                                                          ResourceContext&          a_resourceContext);
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         void BeginFrame();
@@ -33,6 +39,8 @@ namespace FWK::Graphics
         nlohmann::json Serialize() const;
 
         void AddDynamicBufferUploader(const std::shared_ptr<DynamicBufferUploaderBase>& a_dynamicBufferUploader);
+
+        void SetActiveViewType(const Enum::RenderViewType a_set) { m_activeViewType = a_set; }
 
         template <Concept::IsDerivedDynamicBufferUploaderBaseConcept Type>
         std::weak_ptr<Type> FindPTRDynamicBufferUploader() const
@@ -53,9 +61,13 @@ namespace FWK::Graphics
         const auto& GetREFDirectCommandAllocator () const { return m_directCommandAllocator; }
         const auto& GetREFComputeCommandAllocator() const { return m_computeCommandAllocator; }
 
-        const auto& GetREFRenderGraphFrameResource  () const { return m_renderGraphFrameResource; }
+        const auto& GetREFRenderGraphFrameResource() const { return m_activeViewType == Enum::RenderViewType::Preview ? m_previewRenderGraphFrameResource : m_renderGraphFrameResource; }
 
+        const auto& GetREFPreviewRenderGraphFrameResource() const { return m_previewRenderGraphFrameResource; }
+        
         auto& GetMutableREFRenderGraphFrameResource() { return m_renderGraphFrameResource; }
+
+        auto GetVALActiveViewType() const { return m_activeViewType; }
 
     private:
 
@@ -69,8 +81,15 @@ namespace FWK::Graphics
         std::shared_ptr<TypeAlias::DirectCommandAllocator>  m_directCommandAllocator  = nullptr;
         std::shared_ptr<TypeAlias::ComputeCommandAllocator> m_computeCommandAllocator = nullptr;
 
-        RenderGraphFrameResource m_renderGraphFrameResource = {};
+        RenderGraphFrameResource m_renderGraphFrameResource        = {};
+        RenderGraphFrameResource m_previewRenderGraphFrameResource = {};
 
         Converter::FrameResourceJsonConverter m_jsonConverter = {};
+
+        Struct::WindowClientSize m_previewClientSize = {};
+
+        Enum::RenderViewType m_activeViewType = Enum::RenderViewType::Main;
+
+        bool m_isPreviewCreated = false;
     };
 }

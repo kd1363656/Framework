@@ -108,8 +108,9 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
     // ConstantBufferUploaderの書き込みインデックスを先頭に戻す
     l_currentFrameResource->BeginFrame();
 
-    // 描画に使うカメラを、現在のモードに合わせて描画用の定数バッファとCascade計算へ反映する
-    m_cameraContext.ApplyViewCamera(m_renderGraph, m_shadowContext);
+    // メインビューが描画に使うカメラを、現在のモードに合わせて
+    // 描画用の定数バッファとCascade計算へ反映する
+    m_mainRenderView.ApplyViewCamera(m_renderGraph, m_shadowContext);
 
     // リソース遷移の実行
     m_renderGraph.BeginFrame(a_resourceContext, *this);
@@ -120,7 +121,11 @@ void FWK::Graphics::Renderer::Execute(const ResourceContext& a_resourceContext)
 
     FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
 
-    m_renderGraph.Execute(a_resourceContext, *this);
+    // メインビューを描画する
+    m_renderGraph.Execute(a_resourceContext, Enum::RenderViewType::Main, *this);
+
+    // プレビューが依頼されている場合は、メインビューの後にプレビュー用のビューを描画する
+    ExecutePreviewView(a_resourceContext, *l_currentFrameResource);
 }
 void FWK::Graphics::Renderer::EndFrame()
 {
@@ -212,6 +217,72 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Windo
     }
 }
 
+void FWK::Graphics::Renderer::RequestPreviewRenderView(const std::weak_ptr<Struct::CBCameraPass>& a_camera, const Struct::WindowClientSize& a_previewClientSize)
+{
+    // プレビュー用ビューが描画に使うカメラを登録する
+    // プレビュー用ビューは、依頼されたカメラだけを使うため、シーンカメラ側へ登録する
+    // (CameraContextの初期モードはシーンカメラ優先)
+    auto& l_cameraContext = m_previewRenderView.GetMutableREFCameraContext();
+
+    l_cameraContext.SetSceneCamera(a_camera);
+
+    // 依頼されたサイズを覚えておく
+    // 実際のテクスチャの作成とサイズ変更は、次のフレームの開始時(PreparePreviewRenderView)に行う
+    m_previewClientSize  = a_previewClientSize;
+    m_isPreviewRequested = true;
+}
+
+void FWK::Graphics::Renderer::PreparePreviewRenderView(const Device& a_device, ResourceContext& a_resourceContext)
+{
+    // 毎フレームの最初に、このフレームではプレビューを描かない状態へ戻す
+    // 依頼があったフレームだけtrueにすることで、依頼が途切れたら描画も止まる
+    m_isPreviewViewActive = false;
+
+    // 依頼が無ければ、プレビュー用のテクスチャは作らない
+    if (!m_isPreviewRequested) { return; }
+
+    // 依頼は1フレームで使い切る
+    // ビューポートが毎フレーム依頼し直すため、依頼が途切れたらここで止まる
+    m_isPreviewRequested = false;
+
+    const auto& l_currentFrameResource = m_currentFrameResource.lock();
+
+    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "現在のFrameResourceが無効のため、プレビュー用ビューの準備に失敗しました。");
+
+    const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator         ();
+    const auto& l_retiredFenceValue  = m_directCommandQueue.FetchREFLastSignaledFenceValue();
+
+    // 現在のフレームリソースが持つプレビュー用のテクスチャ一式を、依頼されたサイズで使える状態にする
+    FWK_ASSERT_RETURN_IF(!l_currentFrameResource->PreparePreviewRenderGraphFrameResource(a_device,
+                                                                                         l_gpuMemoryAllocator,
+                                                                                         m_previewClientSize,
+                                                                                         l_retiredFenceValue,
+                                                                                         a_resourceContext),
+                                                                                         "プレビュー用テクスチャの準備に失敗しました。");
+
+    // プレビュー用ビューの描画領域(ビューポートとシザー矩形)を、テクスチャと同じ大きさにする
+    auto& l_renderArea = m_previewRenderView.GetMutableREFRenderArea();
+
+    FWK_ASSERT_RETURN_IF(!l_renderArea.Setup(m_previewClientSize.m_width, m_previewClientSize.m_height), "プレビュー用ビューの描画領域の設定に失敗しました。");
+
+    m_isPreviewViewActive = true;
+}
+
+const FWK::Graphics::RenderView& FWK::Graphics::Renderer::FetchREFActiveRenderView() const
+{
+    // 現在描画しているビューの種類は、現在のフレームリソースが覚えている
+    // プレビューを描画中なら、プレビュー用のビューを返す
+    if (const auto& l_currentFrameResource = m_currentFrameResource.lock();
+        l_currentFrameResource &&
+        l_currentFrameResource->GetVALActiveViewType() == Enum::RenderViewType::Preview)
+    {
+        return m_previewRenderView;
+    }
+
+    // それ以外はメインビュー
+    return m_mainRenderView;
+}
+
 void FWK::Graphics::Renderer::AddFrameResource(const std::shared_ptr<FrameResource>& a_frameResource)
 {
     FWK_ASSERT_RETURN_IF(!a_frameResource, "FrameResourceが無効のため、FrameResourceListへの登録に失敗しました。");
@@ -246,12 +317,16 @@ bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Struct::WindowClientSi
 {
     FWK_ASSERT_RETURN_VALUE_IF(!m_cbSpritePass, "SpritePass用ConstantBufferが作成されておらず、ScreenRenderAreaの設定処理に失敗しました。", false);
 
+    // メインビューの描画領域を取り出す
+    // 描画領域はビューごとに持つため、メインビュー(画面全体に描くビュー)のものを設定する
+    auto& l_renderArea = m_mainRenderView.GetMutableREFRenderArea();
+
     // WindowのClientSizeから、
     // 画面描画専用のViewportとScissorRectを設定する
     // RenderArea自身はWindowやSwapChainを知らない
-    FWK_ASSERT_RETURN_VALUE_IF(!m_screenRenderArea.Setup(a_clientSize.m_width, a_clientSize.m_height), "WindowのClient Sizeを使用したScreenRenderAreaの設定処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_renderArea.Setup(a_clientSize.m_width, a_clientSize.m_height), "WindowのClient Sizeを使用したScreenRenderAreaの設定処理に失敗しました。", false);
 
-    const auto& l_viewport = m_screenRenderArea.GetREFViewport();
+    const auto& l_viewport = l_renderArea.GetREFViewport();
 
     // Sprite Passは画面のピクセル座標を使用するため、
     // ScreenRenderAreaと同じ幅と高さから正射影行列を作成する。
@@ -347,4 +422,29 @@ void FWK::Graphics::Renderer::SyncSpritePassDrawRequest()
 
     // 定数バッファの変更を反映するために定数バッファデータを送信する
     l_spriteScreenPassDrawRequest->SetSourceConstantBuffer(m_cbSpritePass);
+}
+
+void FWK::Graphics::Renderer::ExecutePreviewView(const ResourceContext& a_resourceContext, FrameResource& a_frameResource)
+{
+    // このフレームでプレビューを描かない場合は、何もしない
+    if (!m_isPreviewViewActive) { return; }
+
+    // プレビュー用ビューのカメラを、描画用の定数バッファとCascade計算へ反映する
+    // 使えるカメラが無い(選択していたカメラが消えたなど)場合は、プレビューを描かない
+    if (!m_previewRenderView.ApplyViewCamera(m_renderGraph, m_shadowContext))
+    {
+        // プレビューを描かなかったため、ビューポートが古い映像を表示しないよう、このフレームのプレビューを無効にする
+        m_isPreviewViewActive = false;
+
+        return;
+    }
+
+    // 描画の対象をプレビュー用のテクスチャ一式へ切り替えて、プレビューのビューを描画する
+    a_frameResource.SetActiveViewType(Enum::RenderViewType::Preview);
+
+    m_renderGraph.Execute(a_resourceContext, Enum::RenderViewType::Preview, *this);
+
+    // 描画が終わったので、メインビューへ戻す
+    // (ビューポートの表示などが、メインビューのテクスチャを参照するため)
+    a_frameResource.SetActiveViewType(Enum::RenderViewType::Main);
 }

@@ -35,6 +35,8 @@ namespace FWK::Graphics
                     const UINT64&                   a_retiredFenceValue,
                           ResourceContext&          a_resourceContext) const;
 
+        void CopyTextureSettingsFrom(const RenderGraphFrameResource& a_source);
+
         void AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture);
         void AddDepthStencilPassTexture(const std::shared_ptr<DepthStencilPassTexture>& a_depthStencilPassTexture);
 

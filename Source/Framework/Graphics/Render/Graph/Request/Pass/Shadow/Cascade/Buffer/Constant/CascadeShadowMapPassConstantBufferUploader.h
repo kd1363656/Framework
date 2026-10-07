@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-    class CascadeShadowMapPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBCascadeShadowMapPass>
+    class CascadeShadowMapPassDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBCascadeShadowMapPass>
     {
     public:
 

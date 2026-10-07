@@ -4,6 +4,9 @@ FWK::Graphics::FinalColorPass::FinalColorPass()
 {
     SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::PostEffect);
 
+    // プレビューなど、メイン以外のビューでもこのパスを実行する
+    SetupViewScope(Enum::RenderGraphPassViewScope::AllViews);
+
     // SceneColorはLinear色として読む
     ReadRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::PixelShaderResource, Enum::RenderGraphResourceUsage::RenderTarget);
 

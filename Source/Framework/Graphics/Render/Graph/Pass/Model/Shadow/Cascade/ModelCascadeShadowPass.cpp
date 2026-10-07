@@ -6,6 +6,9 @@ FWK::Graphics::ModelCascadeShadowPass::ModelCascadeShadowPass()
     // 通常のModel描画より前にShadowMap作成する
     SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::Shadow);
 
+    // プレビューなど、メイン以外のビューでもこのパスを実行する
+    SetupViewScope(Enum::RenderGraphPassViewScope::AllViews);
+
     // CascadeShadowMapへDepthを書き込むため
     // Pass実行前にResource全体をDEPTH_WRITEへ遷移する
     WriteShadowMap(Enum::RenderGraphShadowMapType::Cascade, Enum::RenderGraphResourceUsage::DepthWrite);

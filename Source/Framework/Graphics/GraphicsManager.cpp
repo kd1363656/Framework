@@ -50,6 +50,10 @@ void FWK::Graphics::GraphicsManager::BeginFrame()
     // 不要になったリソースの解放処理
     m_resourceContext.ReleaseCompletedDeferredResources(m_renderer.GetREFDirectCommandQueue());
 
+    // ビューポートから依頼されたプレビュー用ビューの準備(テクスチャの作成・サイズ変更)を行う
+    // GPUリソースの作成が必要なため、デバイスとリソースコンテキストを持つここで行う
+    m_renderer.PreparePreviewRenderView(m_device, m_resourceContext);
+
     m_renderer.BeginFrame(m_resourceContext);
 }
 void FWK::Graphics::GraphicsManager::Execute()

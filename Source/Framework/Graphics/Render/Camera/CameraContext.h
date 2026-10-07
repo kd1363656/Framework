@@ -15,7 +15,7 @@ namespace FWK::Graphics
          CameraContext() = default;
         ~CameraContext() = default;
 
-        void ApplyViewCamera(const RenderGraph& a_renderGraph, ShadowContext& a_shadowContext) const;
+        bool ApplyViewCamera(const RenderGraph& a_renderGraph, ShadowContext& a_shadowContext) const;
 
         void SetDebugCamera(const std::weak_ptr<Struct::CBCameraPass>& a_set) { m_debugCamera = a_set; }
         void SetSceneCamera(const std::weak_ptr<Struct::CBCameraPass>& a_set) { m_sceneCamera = a_set; }

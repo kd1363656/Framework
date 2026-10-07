@@ -337,6 +337,7 @@
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/Converter/Json/RenderTargetPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/RenderTarget/RenderTargetPassTexture.h"
 #include "Definition/Enum/Graphics/DepthStencilPassTextureEnum.h"
+#include "Definition/Enum/Graphics/RenderViewTypeEnum.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/Converter/Json/DepthStencilPassTextureJsonConverter.h"
 #include "Graphics/Render/Frame/RenderGraph/Pass/Texture/DepthStencil/DepthStencilPassTexture.h"
 #include "Graphics/Render/Frame/RenderGraph/Converter/Json/RenderGraphFrameResourceJsonConverter.h"
@@ -465,6 +466,7 @@
 
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"
+#include "Graphics/Render/View/RenderView.h"
 #include "Graphics/Render/Renderer.h"
 
 // グラフィックスマネージャー

@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-    class FinalColorRenderTargetPassDynamicConstantBufferUploader final : public DynamicConstantBufferFixedWritePositionUploaderBase<Struct::CBFinalColorRenderTargetPass>
+    class FinalColorRenderTargetPassDynamicConstantBufferUploader final : public DynamicConstantBufferAdvancingWritePositionUploaderBase<Struct::CBFinalColorRenderTargetPass>
     {
     public:
 

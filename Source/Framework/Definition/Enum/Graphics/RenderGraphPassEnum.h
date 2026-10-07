@@ -71,4 +71,12 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::FinalPresent),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Count)
     )
+
+    enum class RenderGraphPassViewScope
+    {
+        Invalid,
+        MainViewOnly,
+        AllViews,
+        Count
+    };
 }

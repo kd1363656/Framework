@@ -110,6 +110,20 @@ void FWK::Graphics::RenderGraphPassBase::SetupExecutionLayer(const Enum::RenderG
 
     m_executionLayer = a_executionLayer;
 }
+void FWK::Graphics::RenderGraphPassBase::SetupViewScope(const Enum::RenderGraphPassViewScope a_viewScope)
+{
+    // このパスを、どのビューで実行するかを設定する
+    // MainViewOnly : メインビュー(エディターの大きなビューポートや、ゲーム画面)だけで実行する
+    // AllViews     : プレビューなど、メイン以外のビューでも実行する
+    //                (モデルを描くパスや影を作るパスなど、ビューごとに描き直す必要があるもの)
+    // 設定しなかったパスはMainViewOnlyになる
+    // 宣言し忘れたパス(エディター専用の線の描画など)が、プレビューの映像へ混ざらないようにするため
+    FWK_ASSERT_RETURN_IF(a_viewScope == Enum::RenderGraphPassViewScope::Invalid ||
+                         a_viewScope == Enum::RenderGraphPassViewScope::Count,
+                         "RenderGraphPassViewScopeが無効となっており、RenderGraphPassViewScopeのセットに失敗しました。");
+
+    m_viewScope = a_viewScope;
+}
 
 void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGraphRenderTargetType a_renderTargetType,
                                                            const Enum::RenderGraphDepthStencilType a_depthStencilType,

@@ -43,9 +43,10 @@ void FWK::GameObjectCameraComponent::PostLateUpdate()
 
     // シーンカメラとしてCameraContextへ登録する
     // 描画にシーンカメラとデバッグカメラのどちらを使うかは、CameraContextがモードに合わせて決める
-    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
-    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
-    auto& l_cameraContext   = l_renderer.GetMutableREFCameraContext  ();
+    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance     ();
+    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer    ();
+    auto& l_mainRenderView  = l_renderer.GetMutableREFMainRenderView     ();
+    auto& l_cameraContext   = l_mainRenderView.GetMutableREFCameraContext();
 
     l_cameraContext.SetSceneCamera(m_camera.GetREFCBCameraPass());
 }

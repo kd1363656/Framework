@@ -94,6 +94,47 @@ bool FWK::Graphics::RenderGraphFrameResource::Resize(const Device&              
     return true;
 }
 
+void FWK::Graphics::RenderGraphFrameResource::CopyTextureSettingsFrom(const RenderGraphFrameResource& a_source)
+{
+    // 別のRenderGraphFrameResource(メインビュー用)と同じ種類・同じ設定のテクスチャ一式を、このリソースへ用意する
+    // コピーするのは「フォーマット・クリア色・種類」などの設定だけで、GPUリソース自体は作らない
+    // 大きさ(幅と高さ)はコピーしない
+    // 大きさは、Createへ渡すサイズ(プレビューなら、プレビュー用のサイズ)で決まる
+    // すでにテクスチャを持っている場合は、二重に登録しないよう何もしない
+    if (!m_renderTargetPassTextureList.empty() ||
+        !m_depthStencilPassTextureList.empty())
+    {
+        return;
+    }
+
+    for (const auto& l_sourceTexture : a_source.GetREFRenderTargetPassTextureList())
+    {
+        FWK_ASSERT_RETURN_IF(!l_sourceTexture, "コピー元のRenderTargetPassTextureが無効のため、テクスチャ設定のコピーに失敗しました。");
+
+        // コピー元と同じ設定を持つ、新しいRenderTargetPassTextureを作る
+        auto l_texture = std::make_shared<RenderTargetPassTexture>();
+
+        l_texture->SetClearColor                 (l_sourceTexture->GetREFClearColor());
+        l_texture->SetFormat                     (l_sourceTexture->GetVALFormat());
+        l_texture->SetRenderGraphRenderTargetType(l_sourceTexture->GetVALRenderGraphRenderTargetType());
+
+        AddRenderTargetPassTexture(l_texture);
+    }
+
+    for (const auto& l_sourceTexture : a_source.GetREFDepthStencilPassTextureList())
+    {
+        FWK_ASSERT_RETURN_IF(!l_sourceTexture, "コピー元のDepthStencilPassTextureが無効のため、テクスチャ設定のコピーに失敗しました。");
+
+        // コピー元と同じ設定を持つ、新しいDepthStencilPassTextureを作る
+        auto l_texture = std::make_shared<DepthStencilPassTexture>();
+
+        l_texture->SetDepthStencilTextureSettings(l_sourceTexture->GetREFDepthStencilTextureSettings());
+        l_texture->SetRenderGraphDepthStencilType(l_sourceTexture->GetVALRenderGraphDepthStencilType());
+
+        AddDepthStencilPassTexture(l_texture);
+    }
+}
+
 void FWK::Graphics::RenderGraphFrameResource::AddRenderTargetPassTexture(const std::shared_ptr<RenderTargetPassTexture>& a_renderTargetPassTexture)
 {
     FWK_ASSERT_RETURN_IF(!a_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");

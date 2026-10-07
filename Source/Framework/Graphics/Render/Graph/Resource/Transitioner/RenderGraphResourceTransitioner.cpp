@@ -44,6 +44,18 @@ void FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResourc
     a_backBuffer.m_currentResourceState = a_afterState;
 }
 
+void FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassTexture(const Renderer& a_renderer, const Enum::RenderGraphRenderTargetType a_renderTargetType, const Enum::RenderGraphResourceUsage a_usage) const
+{
+    // パスを通さずに、指定した種類のレンダーターゲットテクスチャだけを、指定した用途の状態へ遷移する
+    // 例 : プレビューを描き終えたFinalColorを、ImGuiが画面に表示できる(シェーダーから読める)状態にする
+    // 遷移の処理そのものは、パスの前後で行うものと同じ関数を使う
+    Struct::RenderGraphResourceAccess l_resourceAccess = {};
+
+    l_resourceAccess.m_renderTargetType = a_renderTargetType;
+
+    TransitionRenderTargetPassTextureResource(a_renderer, l_resourceAccess, a_usage);
+}
+
 bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResource(const Struct::RenderGraphResourceAccess& a_resourceAccess, const Enum::RenderGraphResourceUsage a_usage, Renderer& a_renderer) const
 {
     if (!a_resourceAccess.m_isBackBuffer) { return false; }
@@ -89,7 +101,7 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassT
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
     const auto l_beforeState = l_renderTargetTexture.GetVALCurrentResourceState();
-    const auto l_afterState  = ConvertVALD3D12ResourceState                   (a_usage);
+    const auto l_afterState  = ConvertVALD3D12ResourceState                    (a_usage);
 
     // 既に必要な状態ならResourceBarrierは不要
     if (l_beforeState == l_afterState) { return true; }

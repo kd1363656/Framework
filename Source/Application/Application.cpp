@@ -126,8 +126,9 @@ void Application::Execute()
 
         // エディターの表示状態に合わせて、描画に使うカメラを切り替える
         // エディター表示中 : デバッグカメラ(エディターカメラ) / エディター非表示 : シーンカメラ
-        auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
-        auto& l_cameraContext = l_renderer.GetMutableREFCameraContext  ();
+        auto& l_renderer       = l_graphicsManager.GetMutableREFRenderer    ();
+        auto& l_mainRenderView = l_renderer.GetMutableREFMainRenderView     ();
+        auto& l_cameraContext  = l_mainRenderView.GetMutableREFCameraContext();
 
         l_cameraContext.SetViewMode(l_editorManager.GetVALIsDisableDrawEditor() ? FWK::Enum::CameraViewMode::Scene : FWK::Enum::CameraViewMode::Debug);
 

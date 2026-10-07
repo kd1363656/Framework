@@ -26,7 +26,7 @@ namespace FWK::Graphics
         void Compile    ();
 
         void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
-        void Execute    (const ResourceContext& a_resourceContext, Renderer& a_renderer);
+        void Execute    (const ResourceContext& a_resourceContext, const Enum::RenderViewType a_viewType, Renderer& a_renderer);
         void EndFrame   (      Renderer&        a_renderer) const;
 
         nlohmann::json Serialize() const;
@@ -94,6 +94,8 @@ namespace FWK::Graphics
     private:
 
         void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
+
+        bool ShouldExecutePass(const RenderGraphPassBase& a_pass, const Enum::RenderViewType a_viewType) const;
 
         void RemoveExpiredPassList();
 
