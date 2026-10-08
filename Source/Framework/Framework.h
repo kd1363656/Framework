@@ -597,6 +597,7 @@
 #include "GameObject/Converter/Json/GameObjectJsonConverter.h"
 #include "Definition/Enum/GameObject/GameObjectEnum.h"
 #include "GameObject/GameObject.h"
+#include "Utility/GameObject/Fetch/Component/Transform/FetchSelfGameObjectTransformComponentHelper.h"
 
 //===============================================================================
 // 入力検知クラス

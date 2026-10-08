@@ -1546,6 +1546,15 @@
     <Filter Include="Source\Framework\Editor\Command\Scene\Rename">
       <UniqueIdentifier>{3ee093e4-402a-4f7b-bf0d-0f1d02b8afff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Utility\GameObject\Fetch">
+      <UniqueIdentifier>{d7e7791d-1120-4260-a2e3-6f8213b7c281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\GameObject\Fetch\Component">
+      <UniqueIdentifier>{e5a7136d-2de3-4e0a-b7dc-ede7fa92a7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Utility\GameObject\Fetch\Component\Transform">
+      <UniqueIdentifier>{07959221-5656-4ede-98a4-0a562aa4cb37}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Utility\GameObject">
       <UniqueIdentifier>{8de7417b-cf47-42bf-90fd-454e4074a1a8}</UniqueIdentifier>
     </Filter>
@@ -3138,6 +3147,9 @@
     <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h">
       <Filter>Source\Framework\Editor\Command\Scene\Rename</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Utility\GameObject\Fetch\Component\Transform\FetchSelfGameObjectTransformComponentHelper.h">
+      <Filter>Source\Framework\Utility\GameObject\Fetch\Component\Transform</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectHierarchyUtility.h">
       <Filter>Source\Framework\Utility\GameObject</Filter>
     </ClInclude>
@@ -3439,6 +3451,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Utility\GameObject\Fetch\Component\Transform\FetchSelfGameObjectTransformComponentHelper.cpp">
+      <Filter>Source\Framework\Utility\GameObject\Fetch\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\Sorter\Topological\TopologicalSorter.cpp">
       <Filter>Source\Framework\Utility\Sorter\Topological</Filter>

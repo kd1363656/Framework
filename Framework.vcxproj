@@ -852,6 +852,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Utility\SmartPointerVectorListStruct.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\TypeINFO\TypeINFORegistryStruct.h" />
     <ClInclude Include="Source\Framework\Editor\Command\Scene\Rename\RenameSceneCommand.h" />
+    <ClInclude Include="Source\Framework\Utility\GameObject\Fetch\Component\Transform\FetchSelfGameObjectTransformComponentHelper.h" />
     <ClInclude Include="Source\Framework\Utility\GameObject\GameObjectHierarchyUtility.h" />
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\PasteCut\PasteCutGameObjectCommand.h" />
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Command\ReparentGameObjectCommandStruct.h" />
@@ -1120,6 +1121,7 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Scene\Scene.cpp" />
     <ClCompile Include="Source\Framework\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Framework\TypeINFO\Registry\TypeINFORegistry.cpp" />
+    <ClCompile Include="Source\Framework\Utility\GameObject\Fetch\Component\Transform\FetchSelfGameObjectTransformComponentHelper.cpp" />
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp" />
     <ClCompile Include="Source\Framework\Utility\Sorter\Topological\TopologicalSorter.cpp" />
     <ClCompile Include="Source\Framework\Utility\Storage\Converter\Json\StorageIDAllocatorJsonConverter.cpp" />

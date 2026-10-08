@@ -28,7 +28,8 @@ namespace FWK
 
     private:
 
-        Graphics::Camera m_camera = {};
+        Graphics::Camera                                     m_camera                                      = {};
+        Utility::FetchSelfGameObjectTransformComponentHelper m_fetchSelfGameObjectTransformComponentHelper = {};
 
         GameObjectCameraComponentInspector m_inspector = {};
 

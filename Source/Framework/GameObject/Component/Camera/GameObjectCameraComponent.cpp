@@ -10,6 +10,11 @@ void FWK::GameObjectCameraComponent::Deserialize(const nlohmann::json& a_rootJso
 
 void FWK::GameObjectCameraComponent::PostDeserialize()
 {
+    // 自身のGameObjectが持つTransformComponentをキャッシュする
+    // PostLateUpdateで毎フレームGameObjectから取り直さなくて済むようにするため
+    // ※注意 : Ownerは、コンポーネントをGameObjectへ追加した時点で設定されているため、PostDeserializeで使える
+    m_fetchSelfGameObjectTransformComponentHelper.PostDeserialize(GetREFOwner());
+
     const auto& l_application = Application::GetInstance    ();
     const auto& l_window      = l_application.GetREFWindow  ();
 
@@ -33,11 +38,8 @@ void FWK::GameObjectCameraComponent::EarlyUpdate()
 }
 void FWK::GameObjectCameraComponent::PostLateUpdate()
 {
-    const auto& l_owner = GetREFOwner().lock();
-
-    if (!l_owner) { return; }
-
-    const auto& l_transformComponent = l_owner->GetVALTransformComponent().lock();
+    // PostDeserializeでキャッシュしたTransformComponentを使う
+    const auto& l_transformComponent = m_fetchSelfGameObjectTransformComponentHelper.GetREFTransformComponent().lock();
 
     if (!l_transformComponent) { return; }
 

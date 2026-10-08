@@ -100,6 +100,11 @@
          Utility::CollectDescendantGameObjectList(CreateGameObjectCommand と Operation から使います)
      ・1つのクラスの中でしか使わない処理は、そのクラスの private の関数として書きます。
          WorldOutlinerEditorWindowGameObjectOperation::FetchVALDestroyedGameObjectRecord
+     ・複数のクラスが同じ「持たせる処理」(キャッシュなど、状態を持つもの)を使う場合は、
+       Utility/<分類>/<動作>/ に XxxHelper クラスとして書き、使う側のクラスのメンバに持たせます(namespace FWK::Utility)。
+       inline 関数ではなく、状態を持つため、クラスにします。
+         Utility/GameObject/Fetch/Component/Transform/FetchSelfGameObjectTransformComponentHelper
+         (自身のGameObjectのTransformComponentを PostDeserialize で weak_ptr にキャッシュする。CameraComponent が m_xxxHelper として持つ)
 3-6. シェーダーのファイル名は <名前>_<ステージ>.hlsl(AS / MS / PS / VS / CS)にします。共通部分は .hlsli に書きます。
 
 
@@ -212,7 +217,7 @@
          AssetBrowserEditorWindowFolderPane / GameObjectTransformComponentInspector / GameObjectJsonConverter
        役割を表す語: Manager(シングルトン) System Context Registry Storage Record Builder Loader Extractor
                      Uploader Converter Inspector Pane PopupDrawer ShortcutHandler Clipboard SelectionState
-                     Operation Creator DrawRequest Pass Mode Command
+                     Operation Creator DrawRequest Pass Mode Command Helper
 6-4. 関数名の付け方
      ・取得関数(Getter)は次の3種類を使います。単なる Get は使いません。
          const auto& GetREFXxx() const { return m_xxx; }    const 参照を返す

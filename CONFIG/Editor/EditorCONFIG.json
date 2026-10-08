@@ -19,16 +19,16 @@
                     "MoveSpeed": 5.0,
                     "NearClip": 0.009999999776482582,
                     "Position": {
-                        "X": -8.143730163574219,
-                        "Y": 5.447219371795654,
-                        "Z": -10.231698036193848
+                        "X": -10.142711639404297,
+                        "Y": 4.750674247741699,
+                        "Z": -9.094586372375488
                     },
                     "RotateSpeed": 0.004999999888241291,
                     "Rotation": {
-                        "W": 0.7788417339324951,
-                        "X": 0.3088225722312927,
-                        "Y": 0.5074862837791443,
-                        "Z": -0.20122593641281128
+                        "W": 0.9909756779670715,
+                        "X": 0.07694922387599945,
+                        "Y": 0.10942442715167999,
+                        "Z": -0.008496470749378204
                     },
                     "Scale": {
                         "X": 1.0,
@@ -36,8 +36,8 @@
                         "Z": 1.0
                     }
                 },
-                "IsDrawCulledResult": false,
-                "IsDrawFrustum": false
+                "IsDrawCulledResult": true,
+                "IsDrawFrustum": true
             },
             "WindowTypeName": "ViewportEditorWindow"
         },
@@ -76,6 +76,10 @@
                             "IsOpen": true
                         },
                         {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Font",
                             "IsOpen": false
                         },
@@ -85,10 +89,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -104,11 +104,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
@@ -128,12 +128,12 @@
                             "IsOpen": true
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\BGM",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Prefab\\Camera",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Sound\\BGM",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Title",
