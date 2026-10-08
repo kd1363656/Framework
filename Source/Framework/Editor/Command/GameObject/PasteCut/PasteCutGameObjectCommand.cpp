@@ -9,7 +9,7 @@ FWK::Editor::PasteCutGameObjectCommand::~PasteCutGameObjectCommand() = default;
 void FWK::Editor::PasteCutGameObjectCommand::Undo()
 {
     // 貼り付けで生成した複製を取り外してから、Cutした元のGameObjectをシーンへ戻す
-    // 複製を取り外してから元のゲームオブジェクトを戻す 
+    // 複製を取り外してから元のゲームオブジェクトを戻す
     m_createGameObjectCommand.Undo ();
     m_destroyGameObjectCommand.Undo();
 }

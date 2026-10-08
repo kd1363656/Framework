@@ -4,7 +4,6 @@ FWK::Graphics::SkeletalAnimationModel::SkeletalAnimationModel() :
     m_skeletalAnimationModelRecord(),
     m_storageID                   (Constant::k_invalidStorageID)
 {
-
 }
 FWK::Graphics::SkeletalAnimationModel::SkeletalAnimationModel(const SkeletalAnimationModel& a_other) :
     m_skeletalAnimationModelRecord(a_other.m_skeletalAnimationModelRecord),

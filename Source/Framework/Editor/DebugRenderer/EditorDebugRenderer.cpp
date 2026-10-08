@@ -28,8 +28,8 @@ void FWK::Editor::EditorDebugRenderer::CollectSelectedCameraFrustum(const Editor
         }
 
         // カメラコンポーネントを持っていなければ、次のGameObjectへ
-        const auto& l_componentContainer = l_selectedGameObject->GetREFComponentContainer                     ();
-        const auto& l_cameraComponent    = l_componentContainer.FindUniqueComponent<GameObjectCameraComponent>().lock();
+        const auto& l_componentContainer = l_selectedGameObject->GetREFComponentContainer                        ();
+        const auto& l_cameraComponent    = l_componentContainer.FindVALUniqueComponent<GameObjectCameraComponent>().lock();
 
         if (!l_cameraComponent) { continue; }
 
@@ -42,7 +42,7 @@ void FWK::Editor::EditorDebugRenderer::CollectSelectedCameraFrustum(const Editor
 
         // 奥の面(far)が遠すぎると、線が画面に収まらず見づらい
         // そのため、描画する奥の面までの距離に上限を設ける
-        const auto l_farDistance = std::min(l_camera.GetVALFarClip(), Constant::k_editorFrustumDrawMaxDistance);
+        const auto l_farDistance = std::min(l_camera.GetVALFarClip(), Constant::k_editorFrustumDrawMAXDistance);
 
         // カメラ行列(カメラのワールド行列)を使って、カメラの位置と向きに合わせた視錐台を作る
         m_editorDebugRendererQueue.AddFrustum(l_camera.GetREFCameraMatrix(),

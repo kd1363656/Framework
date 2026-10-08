@@ -27,14 +27,15 @@ void FWK::Converter::RootSignatureJsonConverter::Deserialize(const nlohmann::jso
 
     // このルートシグネチャをパイプラインからどう使うかを決定するフラグ
     // どのシェーダーステージからアクセスするか、InputAssemblerを使うかLocalRootSignatureかを決める
-    const auto l_flags = a_rootJson.value(k_rootSignatureFlagsJsonKey, D3D12_ROOT_SIGNATURE_FLAG_NONE);
+    const auto& l_flags = a_rootJson.value(k_rootSignatureFlagsJsonKey, D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
     // どのバージョンのルートシグネチャ仕様でシリアライズするかを決める
-    const auto l_version = a_rootJson.value(k_rootSignatureVersionJsonKey, D3D_ROOT_SIGNATURE_VERSION_1);
+    const auto& l_version = a_rootJson.value(k_rootSignatureVersionJsonKey, D3D_ROOT_SIGNATURE_VERSION_1);
 
     a_rootSignature.SetRootSignatureFlags  (l_flags);
     a_rootSignature.SetRootSignatureVersion(l_version);
 }
+
 nlohmann::json FWK::Converter::RootSignatureJsonConverter::Serialize(const Graphics::RootSignature& a_rootSignature) const
 {
     nlohmann::json l_rootJson = {};
@@ -62,8 +63,8 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterIndexMa
 
     for (const auto& l_json : a_rootJson)
     {
-        const auto l_rootParameterType = l_json.value(k_rootParameterTypeJsonKey, Enum::RootParameterType::Invalid);
-        const auto l_index             = l_json.value(k_indexJsonKey,             k_invalidRootParameterIndex);
+        const auto& l_rootParameterType = l_json.value(k_rootParameterTypeJsonKey, Enum::RootParameterType::Invalid);
+        const auto& l_index             = l_json.value(k_indexJsonKey,             k_invalidRootParameterIndex);
 
         l_rootParameterIndexMap.try_emplace(l_rootParameterType, l_index);
     }
@@ -111,7 +112,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeRootParameterList(co
                 l_rootParameterRecord.Constants.RegisterSpace = l_json.value(k_registerSpaceJsonKey, k_defaultRegisterSpace);
 
                 // 32bit値の個数
-                l_rootParameterRecord.Constants.Num32BitValues = l_json.value(k_num32BitValuesJsonKey, k_defaultRootConstantsNum32BitValues);
+                l_rootParameterRecord.Constants.Num32BitValues = l_json.value(k_num32BitValuesJsonKey, k_defaultRootConstantsNUM32BitValues);
             }
             break;
 
@@ -231,7 +232,7 @@ nlohmann::json FWK::Converter::RootSignatureJsonConverter::SerializeRootParamete
         l_json[k_parameterTypeJsonKey]    = l_rootParameter.m_rootParameter.ParameterType;
         l_json[k_shaderVisibilityJsonKey] = l_rootParameter.m_rootParameter.ShaderVisibility;
 
-        switch(l_rootParameter.m_rootParameter.ParameterType)
+        switch (l_rootParameter.m_rootParameter.ParameterType)
         {
             case D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE:
             {

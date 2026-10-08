@@ -33,7 +33,7 @@ bool FWK::Graphics::ResourceContext::PostDeserialize(const Device& a_device)
 void FWK::Graphics::ResourceContext::ProcessPendingTextureUploads()
 {
     // TextureSystemにPending中のテクスチャがあれば、
-    // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のTextureResourceへコピーする。
+    // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のTextureResourceへコピーする
     // コピーが完了した後、TextureRecordをTextureStorageへ正式登録する
     m_uploadSystem.SubmitPendingTextureCopyBatchIfNeededAndWait(m_textureSystem);
     m_textureSystem.RegisterPendingTextures                    ();
@@ -41,7 +41,7 @@ void FWK::Graphics::ResourceContext::ProcessPendingTextureUploads()
 void FWK::Graphics::ResourceContext::ProcessPendingStaticModelUploads()
 {
     // StaticModelSystemにPending中のスタティックモデルがあれば、
-    // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のBufferResourceへコピーする。
+    // UPLOADヒープ上の中間バッファからDEFAULTヒープ上のBufferResourceへコピーする
     // コピーが完了した後、StaticModelRecordをStaticModelStorageへ正式登録する
     m_uploadSystem.SubmitPendingStaticModelBatchIfNeededAndWait(m_staticModelSystem);
     m_staticModelSystem.RegisterPendingStaticModels            ();

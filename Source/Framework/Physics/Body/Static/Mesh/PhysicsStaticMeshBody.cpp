@@ -69,7 +69,7 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
 
     const auto& l_currentScaledShape = static_cast<const JPH::ScaledShape&> (*l_currentShape);
     const auto& l_physicsWorldScale  = Utility::DirectXMathVector3ToJoltVec3(l_worldScale);
-    const auto& l_currentWorldScale = l_currentScaledShape.GetScale         ();
+    const auto& l_currentWorldScale  = l_currentScaledShape.GetScale        ();
 
     // スケールが変更されていれば変更を適用
     if (const bool l_isWorldScaleChanged = std::abs(l_currentWorldScale.GetX() - l_physicsWorldScale.GetX()) > std::numeric_limits<float>::epsilon() ||
@@ -129,7 +129,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
         FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                               "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
         FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
 
-        const auto l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
+        const auto& l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
 
         for (const auto& l_modelVertex : l_modelVertexList)
         {
@@ -142,9 +142,9 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
 
         for (std::size_t l_indexOffset = 0ULL; l_indexOffset < l_modelIndexList.size(); l_indexOffset += Constant::k_triangleVertexCount)
         {
-            const auto l_localIndexZero = l_modelIndexList[l_indexOffset + k_triangleIndexZeroOffset];
-                  auto l_localIndexOne  = l_modelIndexList[l_indexOffset + k_triangleIndexOneOffset];
-                  auto l_localIndexTwo  = l_modelIndexList[l_indexOffset + k_triangleIndexTwoOffset];
+            const auto& l_localIndexZero = l_modelIndexList[l_indexOffset + k_triangleIndexZeroOffset];
+                  auto  l_localIndexOne  = l_modelIndexList[l_indexOffset + k_triangleIndexOneOffset];
+                  auto  l_localIndexTwo  = l_modelIndexList[l_indexOffset + k_triangleIndexTwoOffset];
 
             const bool l_isIndexInvalid = l_localIndexZero >= l_modelVertexList.size() ||
                                           l_localIndexOne  >= l_modelVertexList.size() ||

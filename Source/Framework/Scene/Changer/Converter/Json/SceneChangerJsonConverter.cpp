@@ -85,7 +85,7 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
     }
 }
 
-nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(const AssetFilePathRegistry & a_assetFilePathRegistry, const SceneChanger & a_sceneChanger) const
+nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(const AssetFilePathRegistry& a_assetFilePathRegistry, const SceneChanger& a_sceneChanger) const
 {
     auto l_rootJsonArray = nlohmann::json::array();
 
@@ -111,15 +111,15 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
 
         // 読み込めないファイルならシリアライズしない
         if (const auto& l_filePath = l_assetFilePathData->m_assetFilePath;
-            !Utility::CanLoadFilePath(l_filePath)) 
+            !Utility::CanLoadFilePath(l_filePath))
         {
-            continue; 
+            continue;
         }
 
         nlohmann::json l_json = {};
 
         Utility::UpdateJson(Utility::SerializeUUID(l_sceneUUID, k_uuidJsonKey), l_json);
-        
+
         l_rootJsonArray.emplace_back(l_json);
     }
 

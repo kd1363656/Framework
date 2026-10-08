@@ -26,12 +26,12 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
     FWK_ASSERT_RETURN_VALUE_IF(!l_rootSignature, "ルートシグネチャが作成されておらず、パイプラインステートの作成処理に失敗しました。", false);
 
     const auto& l_rtvFormatList = GetREFRTVFormatList();
-    const auto  l_dsvFormat     = GetVALDSVFormat    ();
+    const auto& l_dsvFormat     = GetVALDSVFormat    ();
 
     const bool l_hasRenderTarget = !l_rtvFormatList.empty();
     const bool l_hasDepthStencil = l_dsvFormat != DXGI_FORMAT_UNKNOWN;
 
-    // ColorまたはDepthのどちらにも出力しないPipelineは作成しない。
+    // ColorまたはDepthのどちらにも出力しないPipelineは作成しない
     FWK_ASSERT_RETURN_VALUE_IF(!l_hasRenderTarget &&
                                !l_hasDepthStencil,
                                "RTVFormatとDSVFormatの両方が無効なため、出力先を持たないMeshShaderPipelineStateは作成できません。",
@@ -42,7 +42,7 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
 
     // 使用するシェーダーをコンパイルする
     // AmplificationShaderとPixelShaderは任意なので、
-    // 存在するときだけコンパイルする。
+    // 存在するときだけコンパイルする
     // MeshShaderはこのPSOで必須なので必ずコンパイルする
     if (m_amplificationShader)
     {
@@ -64,19 +64,19 @@ bool FWK::Graphics::MeshShaderPipelineState::Create(const Device& a_device, cons
     // 使わない場合は設定しなくてもよい
     if (m_amplificationShader)
     {
-        l_pipelineStateDesc.AS = FetchShaderByteCode(*m_amplificationShader);
+        l_pipelineStateDesc.AS = FetchVALShaderByteCode(*m_amplificationShader);
     }
 
     // MS(MeshShader)を設定する
     // メッシュシェーダーパイプラインの中心になる必須シェーダー
-    l_pipelineStateDesc.MS = FetchShaderByteCode(m_meshShader);
+    l_pipelineStateDesc.MS = FetchVALShaderByteCode(m_meshShader);
 
     // PS(PixelShader)を設定する
     // ピクセルの最終色を決めるシェーダー
     // 使わない構成もあるため任意
     if (m_pixelShader)
     {
-        l_pipelineStateDesc.PS = FetchShaderByteCode(*m_pixelShader);
+        l_pipelineStateDesc.PS = FetchVALShaderByteCode(*m_pixelShader);
     }
 
     // このPSOで使用するルートシグネチャを設定する

@@ -29,7 +29,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
         return false;
     }
 
-    // Model用.assetではないなら読まない。
+    // Model用.assetではないなら読まない
     if (l_modelBinaryHeader.m_assetTypeID != k_modelAssetTypeID)
     {
         FailLoadAsset(l_staticModelData);
@@ -45,7 +45,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
         return false;
     }
 
-    // Headerに保存されたファイルサイズと実際の.assetサイズが違う場合は、壊れた.asssetの可能性が高いため読み込まない。
+    // Headerに保存されたファイルサイズと実際の.assetサイズが違う場合は、壊れた.asssetの可能性が高いため読み込まない
     if (l_modelBinaryHeader.m_fileSize != GetVALMappedDataSize())
     {
         FailLoadAsset(l_staticModelData);
@@ -138,7 +138,7 @@ bool FWK::Converter::StaticModelBinaryConverter::SaveAsset(const std::filesystem
 
 void FWK::Converter::StaticModelBinaryConverter::FailLoadAsset(Struct::StaticModelData& a_modelData)
 {
-    // 中途半端に読み込んだModelMeshが残らないように空にする。
+    // 中途半端に読み込んだModelMeshが残らないように空にする
     a_modelData.m_modelMeshList.clear();
 
     // 読み込み途中で失敗した場合も、MemoryMappedFileは必ず閉じる

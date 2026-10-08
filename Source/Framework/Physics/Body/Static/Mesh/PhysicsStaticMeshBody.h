@@ -2,12 +2,8 @@
 
 namespace FWK::Physics
 {
-    class PhysicsStaticMeshBody : public PhysicsStaticBodyBase
+    class PhysicsStaticMeshBody final : public PhysicsStaticBodyBase
     {
-    private:
-
-        friend class Scene;
-
     public:
 
          PhysicsStaticMeshBody()          = default;

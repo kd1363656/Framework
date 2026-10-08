@@ -33,7 +33,7 @@ bool FWK::Graphics::SkeletalAnimationModelBatchUploadRecordBuilder::CreateSkelet
                                                                          l_modelMeshRuntimeData))
         {
             // 現在作成中のl_modelMeshRuntimeDataは、
-            // この関数を抜ける際に自動的にReleaseされる。
+            // この関数を抜ける際に自動的にReleaseされる
             // ここでは前のModelMeshまでに完成しているBufferを解放する
             ReleaseCreatedSkeletalAnimationModelStructuredBuffer(l_modelMeshList);
 

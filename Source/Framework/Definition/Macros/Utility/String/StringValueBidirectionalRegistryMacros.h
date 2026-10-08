@@ -3,7 +3,7 @@
 namespace FWK
 {
     // テンプレートの明示的特殊化で初期化が完了する変数
-    template <typename Type, Type RegisterValue>
+    template <typename Type, Type RegisterValueType>
     inline const bool k_isStringValueBidirectionalRegistered = false;
 }
 

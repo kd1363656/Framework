@@ -9,8 +9,8 @@ void FWK::GameObjectPrefab::Load(const std::filesystem::path& a_filePath)
     m_jsonConverter.Load(l_rootJson, *this);
 }
 
-bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath, 
-                                 const boost::uuids::uuid&          a_prefabUUID, 
+bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath,
+                                 const boost::uuids::uuid&          a_prefabUUID,
                                        SceneGameObjectPrefabSystem& a_prefabSystem,
                                        GameObject&                  a_gameObject)
 {
@@ -28,15 +28,15 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath,
     if (a_prefabUUID.is_nil())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDがnilのためGameObjectPrefabを保存できません。");
-     
+
         return false;
     }
-     
+
     // 自身とすべての子をIsPrefabOrigin=trueにしてPrefabUUIDを設定する
     // PrefabHierarchyNodeUUIDがnilなら生成する
     // 既に別のPrefabのインスタンスである子には伝播しない
     a_gameObject.ConvertToPrefab(a_prefabUUID);
-    
+
     // PrefabのルートノードはHierarchy内の子ではないため
     // 子照合用のPrefabHierarchyNodeUUIDはnilへ戻す
     // (ConvertToPrefabでnilなら自動発行されるため発行後にnilへ戻す)
@@ -49,8 +49,8 @@ bool FWK::GameObjectPrefab::Save(const std::filesystem::path&       a_filePath,
     // プレハブは新しい「元」なので差分（削除）情報を保持しない
     a_gameObject.ClearAllPrefabRemovedUUIDSet();
 
-    return m_jsonConverter.Save(a_filePath, 
-                                a_gameObject, 
+    return m_jsonConverter.Save(a_filePath,
+                                a_gameObject,
                                 a_prefabSystem,
                                 *this);
 }

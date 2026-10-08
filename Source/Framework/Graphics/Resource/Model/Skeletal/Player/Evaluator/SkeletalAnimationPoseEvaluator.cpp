@@ -9,18 +9,18 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::Create(Struct::SkeletalAnima
     std::vector<std::vector<std::uint32_t>> l_boneMotionTrackIndexList     = {};
     std::vector<LocalTransform>             l_bindPoseLocalTransformList   = {};
 
-    // 各BoneのBindPoseをLocalTransformとして保存する。
+    // 各BoneのBindPoseをLocalTransformとして保存する
     // また、MotionIndexとBoneIndexからBoneMotionTrackIndexを直接取得できる
-    // Animation検索用テーブルを作成する。
+    // Animation検索用テーブルを作成する
     // この検索用テーブルを作成しておくことで、
-    // Animation再生中にBoneMotionTrackList全体を毎フレーム検索する必要がなくなる。
+    // Animation再生中にBoneMotionTrackList全体を毎フレーム検索する必要がなくなる
     FWK_ASSERT_RETURN_VALUE_IF(!CreateAnimationLookupData(l_bindPoseLocalTransformList, l_boneMotionTrackIndexList, a_modelData), "Animation検索用Dataの作成に失敗しました。",                         false);
     FWK_ASSERT_RETURN_VALUE_IF(l_bindPoseLocalTransformList.size() != l_modelBoneList.size(),                                     "BindPoseLocalTransformListの要素数がModelBoneListと一致しません。", false);
 
     // Animationが再生されていない状態でもBindPoseを使用できるように、
-    // BindPoseのGlobalBoneMatrixを作成する。
+    // BindPoseのGlobalBoneMatrixを作成する
     // ModelBoneListは親Boneから子Boneの順番で格納されているため、
-    // 配列の先頭から計算することで親BoneのGlobalMatrixを利用できる。
+    // 配列の先頭から計算することで親BoneのGlobalMatrixを利用できる
     std::vector<TypeAlias::Math::Matrix>    l_bindPoseGlobalBoneMatrixList = {};
 
     l_bindPoseGlobalBoneMatrixList.resize(l_modelBoneList.size(), TypeAlias::Math::Matrix::Identity);
@@ -74,8 +74,8 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
     // MotionSequenceListと同じ要素数でなければならない
     FWK_ASSERT_RETURN_VALUE_IF(m_boneMotionTrackIndexList.size() != l_motionSequenceList.size(), "BoneMotionTrackIndexListの要素数がMotionSequenceListと一致しません。", false);
 
-    // GlobalBoneMatrixはBoneごとに1つ必要。
-    // Create()でModelBoneListと同じ要素数に初期化している。
+    // GlobalBoneMatrixはBoneごとに1つ必要
+    // Create()でModelBoneListと同じ要素数に初期化している
     FWK_ASSERT_RETURN_VALUE_IF(a_globalBoneMatrixList.size() != l_modelBoneList.size(), "GlobalBoneMatrixListの要素数がModelBoneListと一致しません。", false);
 
     const bool l_hasCurrentMotion = a_motionIndex != k_invalidMotionIndex;
@@ -88,7 +88,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
     if (a_isBlending)
     {
         // Blend元となる現在Motionがなければ、
-        // 2つのAnimationを補間できない。
+        // 2つのAnimationを補間できない
         FWK_ASSERT_RETURN_VALUE_IF(!l_hasCurrentMotion,                          "現在Motionが存在しないためAnimationをBlendできません。",          false);
         FWK_ASSERT_RETURN_VALUE_IF(a_blendTargetMotionIndex == k_invalidMotionIndex,        "Blend先AnimationのMotionIndexが無効です。",                       false);
         FWK_ASSERT_RETURN_VALUE_IF(a_blendTargetMotionIndex >= l_motionSequenceList.size(), "Blend先AnimationのMotionIndexがMotionSequenceListの範囲外です。", false);
@@ -104,17 +104,17 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
         const auto& l_modelBone = l_modelBoneList[l_boneIndex];
 
         // Motionが存在しない場合や、
-        // BoneMotionTrackが存在しない場合に使用する初期値。
+        // BoneMotionTrackが存在しない場合に使用する初期値
         LocalTransform l_localTransform = m_bindPoseLocalTransformList[l_boneIndex];
 
         // Motionが存在しない場合や、
-        // BoneMotionTrackが存在しない場合に使用する初期値。
+        // BoneMotionTrackが存在しない場合に使用する初期値
         if (l_hasCurrentMotion)
         {
             const auto& l_currentMotionSequence = l_motionSequenceList[a_motionIndex];
 
             // 現在Motionの再生時刻から、
-            // このBoneのLocalTransformを取得する。
+            // このBoneのLocalTransformを取得する
             l_localTransform = SampleLocalTransform(l_currentMotionSequence,
                                                     a_animationTimeSecond,
                                                     a_motionIndex,
@@ -125,22 +125,22 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
         {
             const auto& l_blendTargetMotionSequence = l_motionSequenceList[a_blendTargetMotionIndex];
 
-            // Blend先Motionから同じBoneのLocalTransformを取得する。
+            // Blend先Motionから同じBoneのLocalTransformを取得する
             const auto& l_blendTargetLocalTransform = SampleLocalTransform(l_blendTargetMotionSequence,
-                                                                          a_blendTargetAnimationTimeSecond,
-                                                                          a_blendTargetMotionIndex,
-                                                                          static_cast<std::uint32_t>(l_boneIndex));
+                                                                           a_blendTargetAnimationTimeSecond,
+                                                                           a_blendTargetMotionIndex,
+                                                                           static_cast<std::uint32_t>(l_boneIndex));
 
 
             // Matrix同士を直接補間すると、
             // Scale・Rotation・Translationを正しく分離できず
-            // Boneが歪む可能性がある。
-            // そのためLocalTransformの状態でBlendする。
+            // Boneが歪む可能性がある
+            // そのためLocalTransformの状態でBlendする
             l_localTransform = InterpolateLocalTransform(l_localTransform, l_blendTargetLocalTransform, a_blendWeight);
         }
 
         // 補間後のLocalTransformから、
-        // 親Boneに対するLocalMatrixを作成する。
+        // 親Boneに対するLocalMatrixを作成する
         const auto& l_localMatrix     = CreateLocalMatrix(l_localTransform);
         const auto  l_parentBoneIndex = l_modelBone.m_parentBoneIndex;
 
@@ -153,12 +153,12 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
             continue;
         }
 
-        // 親Boneは子Boneより先に計算されている必要がある。
-        // この検証により、未計算のGlobalMatrix参照も防ぐ。
+        // 親Boneは子Boneより先に計算されている必要がある
+        // この検証により、未計算のGlobalMatrix参照も防ぐ
         FWK_ASSERT_RETURN_VALUE_IF(static_cast<std::size_t>(l_parentBoneIndex) >= l_boneIndex, "親Boneが子Boneより後ろへ格納されています。", false);
 
         // SimpleMathの行ベクトル方式では、
-        // LocalMatrix × ParentGlobalMatrixの順番でGlobalMatrixを作る。
+        // LocalMatrix × ParentGlobalMatrixの順番でGlobalMatrixを作る
         a_globalBoneMatrixList[l_boneIndex] = l_localMatrix * a_globalBoneMatrixList[l_parentBoneIndex];
     }
 
@@ -168,7 +168,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
 bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(std::vector<LocalTransform>& a_bindPoseLocalTransformList, std::vector<std::vector<std::uint32_t>>& a_boneMotionTrackIndexList, Struct::SkeletalAnimationModelData& a_modelData) const
 {
     // 出力先に以前のデータが残っている可能性があるため、
-    // 新しいModelの検索用データを作成する前に初期化する。
+    // 新しいModelの検索用データを作成する前に初期化する
     a_bindPoseLocalTransformList.clear();
     a_boneMotionTrackIndexList.clear  ();
 
@@ -190,23 +190,23 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
         if (const auto  l_parentBoneIndex = l_modelBone.m_parentBoneIndex;
             l_parentBoneIndex != Constant::k_invalidBoneIndex)
         {
-            // 存在しない親Boneを参照していないか検証する。
+            // 存在しない親Boneを参照していないか検証する
             FWK_ASSERT_RETURN_VALUE_IF(static_cast<std::size_t>(l_parentBoneIndex) >= l_modelBoneList.size(), "ParentBoneIndexがModelBoneListの範囲外です。", false);
 
-            // GlobalBoneMatrixは親BoneのGlobalBoneMatrixを利用して計算する。
-            // そのため、親Boneが子Boneより前へ格納されている必要がある。
+            // GlobalBoneMatrixは親BoneのGlobalBoneMatrixを利用して計算する
+            // そのため、親Boneが子Boneより前へ格納されている必要がある
             FWK_ASSERT_RETURN_VALUE_IF(static_cast<std::size_t>(l_parentBoneIndex) >= l_boneIndex, "親Boneが子Boneより後ろへ格納されています。", false);
         }
 
         LocalTransform l_bindPoseLocalTransform = {};
 
         // BindPoseLocalMatrixを、
-        // Scale・Rotation・Translationへ分解して保存する。
+        // Scale・Rotation・Translationへ分解して保存する
         // AnimationTrackが存在しないBoneでは、
-        // ここで作成したBindPoseLocalTransformを使用する。
-        FWK_ASSERT_RETURN_VALUE_IF(!l_modelBone.m_bindPoseLocalMatrix.Decompose(l_bindPoseLocalTransform.m_scale, l_bindPoseLocalTransform.m_rotation, l_bindPoseLocalTransform.m_translation),
-                                                                                "BindPoseLocalMatrixをScale、Rotation、Translationへ分解できません。",
-                                                                                false);
+        // ここで作成したBindPoseLocalTransformを使用する
+        const bool l_isDecomposed = l_modelBone.m_bindPoseLocalMatrix.Decompose(l_bindPoseLocalTransform.m_scale, l_bindPoseLocalTransform.m_rotation, l_bindPoseLocalTransform.m_translation);
+
+        FWK_ASSERT_RETURN_VALUE_IF(!l_isDecomposed, "BindPoseLocalMatrixをScale、Rotation、Translationへ分解できません。", false);
 
         l_bindPoseLocalTransform.m_rotation.Normalize();
 
@@ -225,8 +225,8 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
         FWK_ASSERT_RETURN_VALUE_IF(l_boneMotionTrackList.size() > static_cast<std::size_t>(std::numeric_limits<std::uint32_t>::max()), "BoneMotionTrackListの要素数がuint32_tで表現できる範囲を超えています。", false);
 
         // Motion内にTrackが存在しないBoneは、
-        // k_invalidBoneMotionTrackIndexのまま残る。
-        // その場合、Pose計算ではBindPoseを使用する。
+        // k_invalidBoneMotionTrackIndexのまま残る
+        // その場合、Pose計算ではBindPoseを使用する
         std::vector<std::uint32_t> l_motionBoneMotionTrackIndexList = {};
 
         l_motionBoneMotionTrackIndexList.resize(l_modelBoneList.size(), k_invalidBoneMotionTrackIndex);
@@ -237,14 +237,14 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
             const auto& l_keyFrameList    = l_boneMotionTrack.m_keyFrameList;
             const auto  l_boneIndex       = l_boneMotionTrack.m_boneIndex;
 
-            // BoneMotionTrackが存在しないBoneを参照していないか検証する。
+            // BoneMotionTrackが存在しないBoneを参照していないか検証する
             FWK_ASSERT_RETURN_VALUE_IF(l_boneIndex >= l_modelBoneList.size(), "BoneMotionTrackのBoneIndexがModelBoneListの範囲外です。", false);
 
             // 同じMotion内で1つのBoneへ複数のTrackが割り当てられると、
-            // どちらを再生するか判断できないためエラーとする。
+            // どちらを再生するか判断できないためエラーとする
             FWK_ASSERT_RETURN_VALUE_IF(l_motionBoneMotionTrackIndexList[l_boneIndex] != k_invalidBoneMotionTrackIndex, "同じBoneを参照するBoneMotionTrackが重複しています。", false);
 
-            // TrackにKeyFrameが存在しなければ補間処理を行えない。
+            // TrackにKeyFrameが存在しなければ補間処理を行えない
             FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameList.empty(), "BoneMotionTrackのKeyFrameListが空です。", false);
 
             // 全KeyFrameの時刻がMotionの有効時間内に存在するか検証する
@@ -257,7 +257,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
             }
 
             // 時刻から直接算出したKeyFrameIndexの前後を安全に補間できるように、
-            // KeyFrameListが時刻の昇順で並んでいるか検証する。
+            // KeyFrameListが時刻の昇順で並んでいるか検証する
             for (auto l_keyFrameIndex = k_firstKeyFrameIndex + k_nextKeyFrameOffset; l_keyFrameIndex < l_keyFrameList.size(); ++l_keyFrameIndex)
             {
                 const auto& l_previousKeyFrameIndex = l_keyFrameIndex - k_nextKeyFrameOffset;
@@ -265,11 +265,11 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::CreateAnimationLookupData(st
                 FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameList[l_keyFrameIndex].m_timeSecond < l_keyFrameList[l_previousKeyFrameIndex].m_timeSecond, "KeyFrameListが時刻順に並んでいません。", false);
             }
 
-            // BoneIndexからBoneMotionTrackIndexを直接取得できるように登録する。
+            // BoneIndexからBoneMotionTrackIndexを直接取得できるように登録する
             l_motionBoneMotionTrackIndexList[l_boneIndex] = static_cast<std::uint32_t>(l_boneMotionTrackIndex);
         }
 
-        // 完成した1Motion分の検索用配列を保存する。
+        // 完成した1Motion分の検索用配列を保存する
         a_boneMotionTrackIndexList.emplace_back(std::move(l_motionBoneMotionTrackIndexList));
     }
 
@@ -289,21 +289,21 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
                                                                                                                                   const std::uint32_t a_boneIndex) const
 {
 // BoneIndexが範囲外の場合は、
-    // BindPoseにもアクセスできないため初期値を返す。
+    // BindPoseにもアクセスできないため初期値を返す
     FWK_ASSERT_RETURN_VALUE_IF(a_boneIndex >= m_bindPoseLocalTransformList.size(), "BoneIndexがBindPoseLocalTransformListの範囲外です。", {});
 
     const auto& l_bindPoseLocalTransform = m_bindPoseLocalTransformList[a_boneIndex];
 
     FWK_ASSERT_RETURN_VALUE_IF(a_timeSecond < Constant::k_initialAnimationTimeSecond, "AnimationTimeSecondが0未満です。", l_bindPoseLocalTransform);
 
-    // Loopや再生時間内へのClampはAdvanceTime()で行う。
+    // Loopや再生時間内へのClampはAdvanceTime()で行う
     FWK_ASSERT_RETURN_VALUE_IF(a_timeSecond                 > a_motionSequence.m_durationSecond,  "AnimationTimeSecondがMotionの再生時間を超えています。", l_bindPoseLocalTransform);
     FWK_ASSERT_RETURN_VALUE_IF(a_motionSequence.m_frameRate <= std::numeric_limits<float>::min(), "AnimationFrameRateが0以下です。",                       l_bindPoseLocalTransform);
     FWK_ASSERT_RETURN_VALUE_IF(a_motionIndex                == k_invalidMotionIndex,              "MotionIndexが無効です。",                               l_bindPoseLocalTransform);
     FWK_ASSERT_RETURN_VALUE_IF(a_motionIndex                >= m_boneMotionTrackIndexList.size(), "MotionIndexがBoneMotionTrackIndexListの範囲外です。",   l_bindPoseLocalTransform);
 
     // CreateAnimationLookupData()で作成した検索表から、
-    // BoneMotionTrackIndexを直接取得する。
+    // BoneMotionTrackIndexを直接取得する
     // 配列の関係：
     // m_boneMotionTrackIndexList[MotionIndex][BoneIndex]
     const auto& l_motionBoneMotionTrackIndexList = m_boneMotionTrackIndexList[a_motionIndex];
@@ -313,7 +313,7 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     const auto l_boneMotionTrackIndex = l_motionBoneMotionTrackIndexList[a_boneIndex];
 
     // Motion内にこのBoneを動かすTrackが存在しない場合は、
-    // BindPoseのLocalTransformを使用する。
+    // BindPoseのLocalTransformを使用する
     if (l_boneMotionTrackIndex == k_invalidBoneMotionTrackIndex) { return l_bindPoseLocalTransform; }
 
     const auto& l_boneMotionTrackList = a_motionSequence.m_boneMotionTrackList;
@@ -325,7 +325,7 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     FWK_ASSERT_RETURN_VALUE_IF(l_keyFrameList.empty(), "KeyFrameListが空のためLocalTransformを取得できません。", l_bindPoseLocalTransform);
 
     // KeyFrameが1つだけの場合は、
-    // 再生時刻に関係なく同じPoseを使用する。
+    // 再生時刻に関係なく同じPoseを使用する
     if (l_keyFrameList.size() == k_singleKeyFrameCount)
     {
         const auto& l_keyFrame = l_keyFrameList[k_firstKeyFrameIndex];
@@ -371,7 +371,10 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     auto l_endKeyFrameIndex = l_startKeyFrameIndex + k_nextKeyFrameOffset;
 
     // 最後のKeyFrameを超えないようにClampする
-    if (l_endKeyFrameIndex > l_lastKeyFrameIndex) { l_endKeyFrameIndex = l_lastKeyFrameIndex; }
+    if (l_endKeyFrameIndex > l_lastKeyFrameIndex)
+    {
+        l_endKeyFrameIndex = l_lastKeyFrameIndex;
+    }
 
     const auto& l_startKeyFrame = l_keyFrameList[l_startKeyFrameIndex];
 
@@ -396,22 +399,22 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
 
     l_endLocalTransform.m_rotation.Normalize();
 
-    const auto l_keyFrameTimeRange = l_endKeyFrame.m_timeSecond - l_startKeyFrame.m_timeSecond;
+    const auto& l_keyFrameTimeRange = l_endKeyFrame.m_timeSecond - l_startKeyFrame.m_timeSecond;
 
-    // 最後のKeyFrameはMotion終了時刻へClampされる場合がある。
+    // 最後のKeyFrameはMotion終了時刻へClampされる場合がある
     // そのため補間率にはFramePositionの小数部分を直接使わず、
     // 実際に保存されているKeyFrame時刻から計算する
     if (l_keyFrameTimeRange <= k_minKeyFrameTimeRange) { return l_startLocalTransform; }
 
-    const auto l_interpolationWeight = (a_timeSecond - l_startKeyFrame.m_timeSecond) / l_keyFrameTimeRange;
+    const auto& l_interpolationWeight = (a_timeSecond - l_startKeyFrame.m_timeSecond) / l_keyFrameTimeRange;
 
     return InterpolateLocalTransform(l_startLocalTransform, l_endLocalTransform, l_interpolationWeight);
 }
 
 FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::SkeletalAnimationPoseEvaluator::InterpolateLocalTransform(const LocalTransform& a_startLocalTransform, const LocalTransform& a_endLocalTransform, const float a_interpolationWeight) const
 {
-// 補間率が0以下の場合は開始Transformをそのまま返す。
-    // 範囲外の値を許可しないことで、意図しない外挿を防ぐ。
+// 補間率が0以下の場合は開始Transformをそのまま返す
+    // 範囲外の値を許可しないことで、意図しない外挿を防ぐ
     if (a_interpolationWeight <= k_minInterpolationWeight) { return a_startLocalTransform; }
 
     // 補完率が1以上の場合は終了Transformをそのまま返す
@@ -431,7 +434,7 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     l_endRotation.Normalize  ();
 
     // RotationはQuaternionを単純に線形補間すると、
-    // 回転速度が不均一になったりQuaternionの長さが崩れたりする。
+    // 回転速度が不均一になったりQuaternionの長さが崩れたりする
     // そのため、回転補間にはSlerpを使用する
     l_interpolatedLocalTransform.m_rotation = TypeAlias::Math::Quaternion::Slerp(l_startRotation, l_endRotation, a_interpolationWeight);
 
@@ -439,7 +442,7 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     // 小さな浮動小数点誤差が行列へ蓄積されることを防ぐ
     l_interpolatedLocalTransform.m_rotation.Normalize();
 
-    // Translationは各成分を線形補間する。
+    // Translationは各成分を線形補間する
     l_interpolatedLocalTransform.m_translation = TypeAlias::Math::Vector3::Lerp(a_startLocalTransform.m_translation, a_endLocalTransform.m_translation, a_interpolationWeight);
 
     return l_interpolatedLocalTransform;

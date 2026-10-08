@@ -23,7 +23,7 @@ namespace FWK::Struct
         TypeAlias::DescriptorIndex m_uniqueVertexIndexBufferSRVDescriptorIndex = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         TypeAlias::DescriptorIndex m_primitiveIndexBufferSRVDescriptorIndex    = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
         TypeAlias::DescriptorIndex m_meshletBoundsBufferSRVDescriptorIndex     = Graphics::DescriptorHeap::k_invalidDescriptorIndex;
-        float                      m_worldMaxScale                             = Constant::k_defaultMeshletBoundWorldMaxScale;
+        float                      m_worldMAXScale                             = Constant::k_defaultMeshletBoundWorldMAXScale;
 
         float                    m_worldOrientationSign = Constant::k_normalModelWorldOrientationSign;
         std::uint32_t            m_meshletCount         = Constant::k_defaultMeshletCount;

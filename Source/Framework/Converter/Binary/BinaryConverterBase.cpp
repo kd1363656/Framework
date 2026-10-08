@@ -1,6 +1,6 @@
 ﻿#include "BinaryConverterBase.h"
 
-FWK::Converter::BinaryConverterBase::BinaryConverterBase() : 
+FWK::Converter::BinaryConverterBase::BinaryConverterBase() :
     m_fileHandle       (INVALID_HANDLE_VALUE),
     m_fileMappingHandle(nullptr),
 
@@ -22,7 +22,7 @@ bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesys
     std::error_code l_sourceErrorCode = {};
     std::error_code l_binaryErrorCode = {};
 
-    // 元ファイルとバイナリーファイルの最終更新時刻を取得する。
+    // 元ファイルとバイナリーファイルの最終更新時刻を取得する
     const auto& l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
     const auto& l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
 
@@ -79,13 +79,13 @@ bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::
     // ファイルサイズを上位、下位32bitで取得している
     // GetFileSize(ファイルハンドル、
     //             ファイルサイズ上位32bitの受取先);
-    const auto l_fileSizeLow = GetFileSize(m_fileHandle, &l_fileSizeHigh);
+    const auto& l_fileSizeLow = GetFileSize(m_fileHandle, &l_fileSizeHigh);
 
     // GetFileSize()の戻り値である下位32bitがINVALID_FILE_SIZEだった場合、
     // それが本当にエラーなのか、またはファイルサイズの下位32bitがたまたま0xFFFFFFFFなのかをGetLastError()で確認する
     if (l_fileSizeLow == INVALID_FILE_SIZE)
     {
-        const auto l_error = GetLastError();
+        const auto& l_error = GetLastError();
 
         if (l_error != NO_ERROR)
         {
@@ -114,8 +114,8 @@ bool FWK::Converter::BinaryConverterBase::CreateReadMemoryMappedFile(const std::
     m_fileMappingHandle = CreateFileMappingW(m_fileHandle,
                                              nullptr,
                                              PAGE_READONLY,
-                                             k_mappingMaxSizeHighUseFileSize,
-                                             k_mappingMaxSizeLowUseFileSize,
+                                             k_mappingMAXSizeHighUseFileSize,
+                                             k_mappingMAXSizeLowUseFileSize,
                                              nullptr);
 
     if (!m_fileMappingHandle)
@@ -187,27 +187,27 @@ bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std:
         FWK_ASSERT_RETURN_VALUE("BinaryFileの書き込み用ファイルハンドル作成に失敗しました。", false);
     }
 
-    const auto l_fileSizeLow  = static_cast<DWORD>(a_fileSize);
-          auto l_fileSizeHigh = static_cast<LONG> (a_fileSize >> k_highDWORDShiftBitCount);
+    const auto& l_fileSizeLow  = static_cast<DWORD>(a_fileSize);
+          auto  l_fileSizeHigh = static_cast<LONG> (a_fileSize >> k_highDWORDShiftBitCount);
 
     SetLastError(NO_ERROR);
 
     // MemoryMappedFileで書き込むには、先に書き込み先ファイルのサイズを確保しておく必要がある、
     // SetFilePointerでファイル先頭からa_fileSizeバイトの位置へ移動し、
-    // この後のSetEndOfFileでその位置をファイル終端として確定させる。
+    // この後のSetEndOfFileでその位置をファイル終端として確定させる
     // SetFilePointerの戻り値がINVALID_SET_FILE_POINTERでも、
-    // 移動後の下位32bitがたまたま0xFFFFFFFFの可能性があるため、GetLastError()で本当に失敗したか確認する。
+    // 移動後の下位32bitがたまたま0xFFFFFFFFの可能性があるため、GetLastError()で本当に失敗したか確認する
     // SetFilePointer(ファイルハンドル、
     //                移動距離下位32bit、
     //                移動距離上位32bit、
     //                ファイル先頭から移動する指定);
-    if (const auto l_setFilePointerResult = SetFilePointer(m_fileHandle,
-                                                           l_fileSizeLow,
-                                                           &l_fileSizeHigh,
-                                                           FILE_BEGIN);
+    if (const auto& l_setFilePointerResult = SetFilePointer(m_fileHandle,
+                                                            l_fileSizeLow,
+                                                            &l_fileSizeHigh,
+                                                            FILE_BEGIN);
         l_setFilePointerResult == INVALID_SET_FILE_POINTER)
     {
-        const auto l_error = GetLastError();
+        const auto& l_error = GetLastError();
 
         if (l_error != NO_ERROR)
         {
@@ -225,7 +225,7 @@ bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std:
     }
 
     m_mappedDataSize = a_fileSize;
-    
+
     // ファイルをメモリ空間へ対応付けるための中間管理オブジェクトを作成する
     // この時点ではまだファイル内容のポインタは取得していない
     // CreateFileMappingW(マッピング対象のファイルハンドル、
@@ -237,8 +237,8 @@ bool FWK::Converter::BinaryConverterBase::CreateWriteMemoryMappedFile(const std:
     m_fileMappingHandle = CreateFileMappingW(m_fileHandle,
                                              nullptr,
                                              PAGE_READWRITE,
-                                             k_mappingMaxSizeHighUseFileSize,
-                                             k_mappingMaxSizeLowUseFileSize,
+                                             k_mappingMAXSizeHighUseFileSize,
+                                             k_mappingMAXSizeLowUseFileSize,
                                              nullptr);
 
     if (!m_fileMappingHandle)
@@ -320,16 +320,16 @@ void FWK::Converter::BinaryConverterBase::DestroyMemoryMappedFile()
 
 bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t& a_memoryReadOffset) const
 {
-    if (a_wStringBinaryFileSize == k_emptyReadDataSize) 
+    if (a_wStringBinaryFileSize == k_emptyReadDataSize)
     {
         a_destinationString.clear();
 
         return true;
     }
 
-    // wchar_t単位で保存しているため、バイト数がwchar_tサイズで割り切れない場合は破損扱い。
-    if ((a_wStringBinaryFileSize % sizeof(wchar_t)) != 0ULL) { return false; }
-    
+    // wchar_t単位で保存しているため、バイト数がwchar_tサイズで割り切れない場合は破損扱い
+    if ((a_wStringBinaryFileSize % sizeof(wchar_t)) != k_noRemainder) { return false; }
+
     // 読み込めるバイナリーデータかどうかを検証
     if (!CanReadBinaryData(a_memoryReadOffset, a_wStringBinaryFileSize)) { return false; }
 

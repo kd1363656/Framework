@@ -54,7 +54,7 @@ bool FWK::Graphics::SwapChain::Resize(const Device&                       a_devi
     FWK_ASSERT_RETURN_VALUE_IF(!m_swapChain,                             "スワップチェインが作成されていないため、リサイズ処理に失敗しました。",     false);
     FWK_ASSERT_RETURN_VALUE_IF(!IsValidBackBufferSize(a_clientSize), "リサイズ後のバックバッファサイズが無効です、リサイズ処理に失敗しました。", false);
 
-    // ResizeBuffers()は、古いBackBufferへの参照が残っていると失敗する。
+    // ResizeBuffers()は、古いBackBufferへの参照が残っていると失敗する
     // そのため、先にBackBufferのComPtrとRTV用DescriptorIndexを解放する
     for (auto& l_backBuffer : m_backBufferList)
     {
@@ -67,16 +67,16 @@ bool FWK::Graphics::SwapChain::Resize(const Device&                       a_devi
     //               新しい縦幅、
     //               バックバッファのフォーマット、
     //               スワップチェイン作成時と同じ追加フラグ);
-    const auto l_hr = m_swapChain->ResizeBuffers(static_cast<UINT>(m_backBufferList.size()),
-                                                 a_clientSize.m_width,
-                                                 a_clientSize.m_height,
-                                                 k_defaultBackBufferFormat,
-                                                 k_swapChainDescFlags);
+    const auto& l_hr = m_swapChain->ResizeBuffers(static_cast<UINT>(m_backBufferList.size()),
+                                                  a_clientSize.m_width,
+                                                  a_clientSize.m_height,
+                                                  k_defaultBackBufferFormat,
+                                                  k_swapChainDescFlags);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインのResizeBufferに失敗しており、リサイズ処理に失敗しました。", false);
 
-    // ResizeBuffers後は、SwapChain内部のBackBuffersが新しくなっている。
-    // そのため、GetBufferで新しいBackBufferを取得し直し、RTVも作り直す。
+    // ResizeBuffers後は、SwapChain内部のBackBuffersが新しくなっている
+    // そのため、GetBufferで新しいBackBufferを取得し直し、RTVも作り直す
     FWK_ASSERT_RETURN_VALUE_IF(!CreateBackBufferList(a_device, a_rtvDescriptorPool), "リサイズ後のバックバッファリスト作成に失敗しており、リサイズ処理に失敗しました。", false);
 
     return true;
@@ -104,12 +104,12 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_commandQueue, "コマンドキューの作成がされていないためスワップチェインが作成できません、スワップチェインの作成に失敗しました。", false);
 
-    // バックバッファ枚数が0だと表示用バッファを一枚も持てないので作成できない。
+    // バックバッファ枚数が0だと表示用バッファを一枚も持てないので作成できない
     // 通常は2枚以上にすることが多い
     FWK_ASSERT_RETURN_VALUE_IF(m_backBufferList.empty(), "バックバッファリストの中身が空になっており、スワップチェインの作成に失敗しました。", false);
 
     // スワップチェインの作成設定をまとめた構造体
-    // バッファサイズ、バッファ枚数、入れ替え方式などをここで指定する。
+    // バッファサイズ、バッファ枚数、入れ替え方式などをここで指定する
     DXGI_SWAP_CHAIN_DESC1 l_desc = {};
 
     const auto& l_clientSize = a_window.GetREFClientSize();
@@ -121,7 +121,7 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
     l_desc.Height = l_clientSize.m_height;
 
     // バックバッファの画素フォーマット
-    // 1ピクセルをどういう並びの色データとして持つかを表す。
+    // 1ピクセルをどういう並びの色データとして持つかを表す
     // R8G8B8A8_UNORMは、RGBA各8bitの標準的なカラー形式
     // ※注意 : RTVを作るときのフォーマットとも基本的にそろえる必要がある
     l_desc.Format = k_defaultBackBufferFormat;
@@ -146,13 +146,13 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
     l_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
     // バックバッファの枚数
-    // 2ならダブルバッファ、3ならトリプルバッファになる。
+    // 2ならダブルバッファ、3ならトリプルバッファになる
     // 枚数を増やすとGPU / CPUとの並列性が上がる場合があるが、
     // その分メモリも使用する
     l_desc.BufferCount = static_cast<UINT>(m_backBufferList.size());
 
     // バックバッファサイズと表示サイズが違うときの拡大縮小方法
-    //STRETCHは表示先に合わせて引き延ばす設定
+    // STRETCHは表示先に合わせて引き延ばす設定
     l_desc.Scaling = DXGI_SCALING_STRETCH;
 
     // バックバッファの入れ替え方式
@@ -160,7 +160,7 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
     // 昔のDISCARD \ SEQUENTIALより現代的な方法で、基本的にこれを使うことが多い
     l_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
-    // α合成の扱い。
+    // α合成の扱い
     // 通常のウィンドウ描画ではUNSPECIFIEDで問題ないことが多い
     l_desc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 
@@ -187,7 +187,7 @@ bool FWK::Graphics::SwapChain::CreateSwapChain(const Window& a_window, const Fac
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインの作成に失敗しました。", false);
 
-    // As関数はCOMのQueryInterfaceを使って安全に型変換する。
+    // As関数はCOMのQueryInterfaceを使って安全に型変換する
     // ここではIDXGISwapChain1からメンバーが持つ方へ変換している
     l_hr = l_swapChain.As(&m_swapChain);
 
@@ -214,7 +214,7 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
     // ※注意 : バックバッファの実際のフォーマットと基本的にそろえる必要がある
     l_rtvDesc.Format = k_defaultBackBufferFormat;
 
-    // このRTVが「2Dテクスチャ」としてバックバッファを見ることを指定する。
+    // このRTVが「2Dテクスチャ」としてバックバッファを見ることを指定する
     // スワップチェインのバックバッファは通常2Dテクスチャとして扱う
     l_rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
@@ -227,12 +227,12 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
         // GetBuffer(取得したいバックバッファーのインデックス、
         //           受け取りたいCOMインターフェース型のID、
         //           作成結果のポインタを書き込むアドレス);
-        const auto l_hr = m_swapChain->GetBuffer(l_backBufferIndex, IID_PPV_ARGS(m_backBufferList[l_backBufferIndex].m_backBufferResource.ReleaseAndGetAddressOf()));
+        const auto& l_hr = m_swapChain->GetBuffer(l_backBufferIndex, IID_PPV_ARGS(m_backBufferList[l_backBufferIndex].m_backBufferResource.ReleaseAndGetAddressOf()));
 
         FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "スワップチェインとバックバッファーの紐づけに失敗ており、バックバッファーの作成に失敗しました。。", false);
 
         // レンダーターゲット用アロケータを進める
-        const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
+        const auto& l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
         FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "バックバッファ用RTVIndexの確保に失敗しており、バッファーの作成に失敗しました。", false);
 

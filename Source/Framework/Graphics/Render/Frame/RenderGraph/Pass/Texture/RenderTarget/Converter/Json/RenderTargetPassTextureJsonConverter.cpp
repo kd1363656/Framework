@@ -6,14 +6,14 @@ void FWK::Converter::RenderTargetPassTextureJsonConverter::Deserialize(const nlo
 
     const auto& l_clearColor = Utility::DeserializeColor(a_rootJson, k_clearColorJsonKey);
 
-    const auto l_format = a_rootJson.value(k_formatJsonKey, Graphics::RenderTargetTexture::k_defaultRenderTargetTextureFormat);
+    const auto& l_format = a_rootJson.value(k_formatJsonKey, Graphics::RenderTargetTexture::k_defaultRenderTargetTextureFormat);
 
-    const auto l_renderGraphRenderTargetType = a_rootJson.value(k_renderGraphRenderTargetTypeJsonKey, Enum::RenderGraphRenderTargetType::Invalid);
+    const auto& l_renderGraphRenderTargetType = a_rootJson.value(k_renderGraphRenderTargetTypeJsonKey, Enum::RenderGraphRenderTargetType::Invalid);
 
-    const auto l_width  = a_rootJson.value(k_widthJsonKey,  Constant::k_invalidTextureWidth);
-    const auto l_height = a_rootJson.value(k_heightJsonKey, Constant::k_invalidTextureHeight);
+    const auto& l_width  = a_rootJson.value(k_widthJsonKey,  Constant::k_invalidTextureWidth);
+    const auto& l_height = a_rootJson.value(k_heightJsonKey, Constant::k_invalidTextureHeight);
 
-    const auto l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
+    const auto& l_isFixedSize = a_rootJson.value(k_isFixedSizeJsonKey, false);
 
     a_renderTargetPassTexture.SetClearColor(l_clearColor);
 
@@ -35,7 +35,7 @@ nlohmann::json FWK::Converter::RenderTargetPassTextureJsonConverter::Serialize(c
 
     l_rootJson[k_formatJsonKey]                      = a_renderTargetPassTexture.GetVALFormat                     ();
     l_rootJson[k_renderGraphRenderTargetTypeJsonKey] = a_renderTargetPassTexture.GetVALRenderGraphRenderTargetType();
-    l_rootJson[k_widthJsonKey]                       = a_renderTargetPassTexture.GetVALWidth                          ();
+    l_rootJson[k_widthJsonKey]                       = a_renderTargetPassTexture.GetVALWidth                      ();
     l_rootJson[k_heightJsonKey]                      = a_renderTargetPassTexture.GetVALHeight                     ();
     l_rootJson[k_isFixedSizeJsonKey]                 = a_renderTargetPassTexture.GetVALIsFixedSize                ();
 

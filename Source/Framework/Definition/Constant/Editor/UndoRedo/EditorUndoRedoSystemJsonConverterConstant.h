@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-    inline constexpr std::size_t k_initialEditorUndoResoSystemListCapacity = 500ULL;
+    inline constexpr std::size_t k_initialEditorUndoRedoSystemListCapacity = 500ULL;
 }

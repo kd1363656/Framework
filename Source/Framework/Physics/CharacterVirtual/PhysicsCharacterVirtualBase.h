@@ -6,8 +6,6 @@ namespace FWK::Physics
     {
     private:
 
-        friend class Scene;
-
         class PhysicsCharacterVirtualInstance final : public JPH::CharacterVirtual
         {
 
@@ -54,15 +52,15 @@ namespace FWK::Physics
 
         void SetCapsuleHalfHeightOfCylinder(const float a_set) { m_capsuleHalfHeightOfCylinder = a_set; }
         void SetCapsuleRadius              (const float a_set) { m_capsuleRadius               = a_set; }
-        void SetMaxSlopeAngleRadians       (const float a_set) { m_maxSlopeAngleRadians        = a_set; }
+        void SetMAXSlopeAngleRadians       (const float a_set) { m_maxSlopeAngleRadians        = a_set; }
 
         void SetIsEnhancedInternalEdgeRemovalDisabled(const bool a_set) { m_isEnhancedInternalEdgeRemovalDisabled = a_set; }
 
         float GetVALCapsuleHalfHeightOfCylinder() const { return m_capsuleHalfHeightOfCylinder; }
         float GetVALCapsuleRadius              () const { return m_capsuleRadius; }
-        float GetVALMaxSlopeAngleRadius        () const { return m_maxSlopeAngleRadians; }
+        float GetVALMAXSlopeAngleRadians       () const { return m_maxSlopeAngleRadians; }
 
-        bool GetIsEnhancedInternalEdgeRemovalDisabled() const { return m_isEnhancedInternalEdgeRemovalDisabled; }
+        bool GetVALIsEnhancedInternalEdgeRemovalDisabled() const { return m_isEnhancedInternalEdgeRemovalDisabled; }
 
         static constexpr float k_characterVirtualMovingTowardsGroundTolerance = 0.1F;
 
@@ -86,8 +84,8 @@ namespace FWK::Physics
         static constexpr float k_minCharacterVirtualDeltaTime                   = 0.0F;
         static constexpr float k_minCharacterVirtualCapsuleHalfHeightOfCylinder = 0.0F;
         static constexpr float k_minCharacterVirtualCapsuleRadius               = 0.0F;
-        static constexpr float k_minCharacterVirtualMaxSlopeAngleRadians        = 0.0F;
-        static constexpr float k_maxCharacterVirtualMaxSlopeAngleRadians        = DirectX::XM_PIDIV2;
+        static constexpr float k_minCharacterVirtualMAXSlopeAngleRadians        = 0.0F;
+        static constexpr float k_maxCharacterVirtualMAXSlopeAngleRadians        = DirectX::XM_PIDIV2;
         static constexpr float k_minCharacterVirtualJumpSpeed                   = 0.0F;
 
         static constexpr float k_characterVirtualShapeChangePenetrationSlopScale = 1.5F;

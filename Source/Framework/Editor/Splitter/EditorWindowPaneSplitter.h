@@ -15,8 +15,8 @@ namespace FWK::Editor
 
         void PreparePaneSize(const ImVec2&                                  a_availableContentRegion,
                              const Enum::EditorWindowPaneSplitterResizeAxis a_resizeAxis           = Enum::EditorWindowPaneSplitterResizeAxis::X,
-                             const float                                    a_minPrimaryPaneSize   = k_defaultMinPrimaryPaneSize,
-                             const float                                    a_minSecondaryPaneSize = k_defaultMinSecondaryPaneSize);
+                             const float                                    a_minPrimaryPaneSize   = k_defaultMINPrimaryPaneSize,
+                             const float                                    a_minSecondaryPaneSize = k_defaultMINSecondaryPaneSize);
 
         // PrimaryPaneとSecondaryPaneの間へSplitterを描画する
         // ResizeAxis::X : 左右Drag可能な縦Splitter
@@ -25,8 +25,8 @@ namespace FWK::Editor
         void Draw(const std::string_view&                        a_label,
                   const ImVec2&                                  a_availableContentRegion,
                   const Enum::EditorWindowPaneSplitterResizeAxis a_resizeAxis           = Enum::EditorWindowPaneSplitterResizeAxis::X,
-                  const float                                    a_minPrimaryPaneSize   = k_defaultMinPrimaryPaneSize,
-                  const float                                    a_minSecondaryPaneSize = k_defaultMinSecondaryPaneSize);
+                  const float                                    a_minPrimaryPaneSize   = k_defaultMINPrimaryPaneSize,
+                  const float                                    a_minSecondaryPaneSize = k_defaultMINSecondaryPaneSize);
 
         void SetPrimaryPaneSize(const float a_set) { m_primaryPaneSize = a_set; }
 
@@ -34,8 +34,8 @@ namespace FWK::Editor
 
     private:
 
-        static constexpr float k_defaultMinPrimaryPaneSize   = 100.0F;
-        static constexpr float k_defaultMinSecondaryPaneSize = 100.0F;
+        static constexpr float k_defaultMINPrimaryPaneSize   = 100.0F;
+        static constexpr float k_defaultMINSecondaryPaneSize = 100.0F;
 
         static constexpr float k_splitterHitThickness = 6.0F;
 

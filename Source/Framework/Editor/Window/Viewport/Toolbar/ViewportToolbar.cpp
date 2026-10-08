@@ -10,6 +10,7 @@ void FWK::Editor::ViewportToolbar::Draw(ViewportEditorWindow& a_viewportEditorWi
                            ImGuiWindowFlags_NoScrollWithMouse))
     {
         ImGui::EndChild();
+
         return;
     }
 

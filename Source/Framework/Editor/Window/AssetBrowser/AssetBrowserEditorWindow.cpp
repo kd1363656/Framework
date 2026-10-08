@@ -1,5 +1,4 @@
-﻿
-#include "AssetBrowserEditorWindow.h"
+﻿#include "AssetBrowserEditorWindow.h"
 #include "../../../../Application/Application.h"
 
 void FWK::Editor::AssetBrowserEditorWindow::Deserialize(const nlohmann::json& a_rootJson)
@@ -135,7 +134,7 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
     // ImGui::IsWindowFocused : AssetBrowserウィンドウがフォーカスされているか
     // 別のエディタウィンドウにフォーカスがあるときの誤発火を防ぐ
     if (const auto& l_io = ImGui::GetIO();
-        a_editorManager.GetVALCurrentActiveWindowStaticTpeID() == AssetBrowserEditorWindow::GetREFTypeINFO().k_staticTypeID &&
+        a_editorManager.GetVALCurrentActiveWindowStaticTypeID() == AssetBrowserEditorWindow::GetREFTypeINFO().k_staticTypeID &&
         ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)                                                              &&
         !l_io.WantTextInput                                                                                                 &&
         !m_deleteConfirmState.m_isActive)
@@ -177,12 +176,12 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
                 // 未選択の場合は現在参照中フォルダ、それも空なAssetルート
                 std::filesystem::path l_operationTargetFolderPath = {};
                 std::error_code       l_errorCode                 = {};
-                
+
                 if (!l_selectedFilePathList.empty())
                 {
                     l_operationTargetFolderPath = std::filesystem::is_directory(l_operationTargetFilePath, l_errorCode) ? l_operationTargetFilePath : l_operationTargetFilePath.parent_path();
                 }
-                else 
+                else
                 {
                     const auto& l_currentPath = m_currentSelectFolderPath;
 
@@ -195,9 +194,9 @@ void FWK::Editor::AssetBrowserEditorWindow::Draw(EditorManager& a_editorManager)
                 const auto& l_selectedFilePath = l_operationTargetFilePath;
 
                 m_shortcutHandler.HandleAssetPane(*this);
-                m_shortcutHandler.Handle         (l_selectedFilePathList, 
+                m_shortcutHandler.Handle         (l_selectedFilePathList,
                                                   l_selectedFilePath,
-                                                  l_operationTargetFolderPath, 
+                                                  l_operationTargetFolderPath,
                                                   *this);
             }
             break;
@@ -238,10 +237,10 @@ void FWK::Editor::AssetBrowserEditorWindow::BuildFolderHierarchyMap(const std::f
     // 子フォルダをソート
     // directory_iteratorの順序は未既定(Os依存)のため
     // UI表示順を安定させるためにソートする
-    std::ranges::sort(l_childFolderList, 
+    std::ranges::sort(l_childFolderList,
                       [](const auto& a_lhs, const auto& a_rhs)
                       {
-                          //generic_string()でプラットフォーム共通のスラッシュ区切りを獲得
+                          // generic_string()でプラットフォーム共通のスラッシュ区切りを獲得
                           // 大文字小文字を区別しない比較を行う
                           const auto& l_lhsSTR = a_lhs.generic_string();
                           const auto& l_rhsSTR = a_rhs.generic_string();

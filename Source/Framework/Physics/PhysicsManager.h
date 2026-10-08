@@ -47,9 +47,9 @@ namespace FWK::Physics
 
         void SetupJoltDebugCallback() const;
 
-        static constexpr size_t k_joltTraceBufferSize = 2048U;
+        static constexpr std::size_t k_joltTraceBufferSize = 2048ULL;
 
-#ifdef JPH_ENABLE_ASSERTS
+#if defined(JPH_ENABLE_ASSERTS)
 
         static bool HandleJoltAssertFailed(const char*     a_expression,
                                            const char*     a_message,
@@ -67,9 +67,9 @@ namespace FWK::Physics
 
         static constexpr JPH::uint k_maxContactConstraintCount = 1024U;
 
-        static constexpr uint32_t k_tempAllocatorSizeMB = 10U;
-        static constexpr uint32_t k_kiloBytePerMB       = 1024U;
-        static constexpr uint32_t k_bytePerKB           = 1024U;
+        static constexpr std::uint32_t k_tempAllocatorSizeMB = 10U;
+        static constexpr std::uint32_t k_kiloBytePerMB       = 1024U;
+        static constexpr std::uint32_t k_bytePerKB           = 1024U;
 
         inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Physics/PhysicsCONFIG.json";
 
@@ -83,7 +83,7 @@ namespace FWK::Physics
 
         JPH::PhysicsSystem m_physicsSystem;
 
-        Converter::PhyisicsManagerJsonConverter m_jsonConverter;
+        Converter::PhysicsManagerJsonConverter m_jsonConverter;
 
         bool m_isInitialized;
 

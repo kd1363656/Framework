@@ -76,7 +76,7 @@ void FWK::Graphics::GraphicsManager::ProcessWindowResizeRequest(const Struct::Wi
 {
     // window側でサイズ変更が起きていない場合は、何もしない
     // 最小化中はクライアント領域が0になることがある
-    // この状態でSwapChainやRenderTargetを作り直すと、0サイズのGPUリソース作成になって失敗してしまう。
+    // この状態でSwapChainやRenderTargetを作り直すと、0サイズのGPUリソース作成になって失敗してしまう
     if (!a_windowResizeRequest.m_isRequested ||
         a_windowResizeRequest.m_isMinimized)
     {

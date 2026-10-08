@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-    class ComputePipelineState : public PipelineStateBase
+    class ComputePipelineState final : public PipelineStateBase
     {
     public:
 

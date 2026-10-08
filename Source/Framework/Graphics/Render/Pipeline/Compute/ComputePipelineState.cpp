@@ -34,7 +34,7 @@ bool FWK::Graphics::ComputePipelineState::Create(const Device& a_device, const S
     l_pipelineStateDesc.pRootSignature = l_rootSignature.Get();
 
     // 実際に実行するComputeShaderのDXILBytecodeを設定する
-    l_pipelineStateDesc.CS = FetchShaderByteCode(m_computeShader);
+    l_pipelineStateDesc.CS = FetchVALShaderByteCode(m_computeShader);
 
     // ノード数
     l_pipelineStateDesc.NodeMask = UploadBuffer::k_defaultGPUNodeMask;
@@ -45,7 +45,7 @@ bool FWK::Graphics::ComputePipelineState::Create(const Device& a_device, const S
 
     auto& l_pipelineState = GetMutableREFPipelineState();
 
-    const auto l_hr = l_device->CreateComputePipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
+    const auto& l_hr = l_device->CreateComputePipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "ComputePipelineStateの作成に失敗しました。", false);
 

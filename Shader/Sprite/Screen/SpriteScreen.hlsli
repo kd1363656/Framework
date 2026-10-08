@@ -17,18 +17,18 @@ static const uint k_invalidSourceRECTSize = 0U;
 
 static const float2 k_positionRateList[k_vertexCount] =
 {
-	float2(k_rectMIN, k_rectMIN),
-	float2(k_rectMAX, k_rectMIN),
-	float2(k_rectMIN, k_rectMAX),
-	float2(k_rectMAX, k_rectMAX),
+    float2(k_rectMIN, k_rectMIN),
+    float2(k_rectMAX, k_rectMIN),
+    float2(k_rectMIN, k_rectMAX),
+    float2(k_rectMAX, k_rectMAX),
 };
 
 static const float2 k_uvRateList[k_vertexCount] =
 {
-	float2(k_rectMIN, k_rectMIN),
-	float2(k_rectMAX, k_rectMIN),
-	float2(k_rectMIN, k_rectMAX),
-	float2(k_rectMAX, k_rectMAX),
+    float2(k_rectMIN, k_rectMIN),
+    float2(k_rectMAX, k_rectMIN),
+    float2(k_rectMIN, k_rectMAX),
+    float2(k_rectMAX, k_rectMAX),
 };
 
 struct VSOutput
@@ -45,15 +45,15 @@ cbuffer CBSpritePass : register(b0)
 cbuffer CBSpritePerObject : register(b1)
 {
     float4 g_color;
-    
+
     float2 g_position;
     float2 g_scale;
-    
+
     float2 g_pivot;
     float2 g_firstPadding;
-    
+
     uint4 g_sourceRECT;
-    
+
     uint   g_baseColorTextureSRVIndex;
     float3 g_secondPadding;
 }

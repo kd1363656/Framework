@@ -28,6 +28,6 @@ namespace FWK::Converter
         static constexpr std::string_view k_dynamicBufferUploaderTypeNameJsonKey = "DynamicBufferUploaderTypeName";
         static constexpr std::string_view k_dynamicBufferUploaderJsonKey         = "DynamicBufferUploader";
 
-        static constexpr std::string_view k_renderGraphFrameResourceJsonkey = "RenderGraphFrameResource";
+        static constexpr std::string_view k_renderGraphFrameResourceJsonKey = "RenderGraphFrameResource";
     };
 }

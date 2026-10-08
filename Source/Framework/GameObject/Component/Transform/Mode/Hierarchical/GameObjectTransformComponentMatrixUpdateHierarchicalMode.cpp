@@ -13,7 +13,7 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 
     if (!l_owner) { return; }
 
-    const auto& l_ownerHierarchy  = l_owner->GetREFHierarchy      ();
+    const auto& l_ownerHierarchy   = l_owner->GetREFHierarchy     ();
     const auto& l_parentGameObject = l_ownerHierarchy.GetREFParent().lock();
 
     if (!l_parentGameObject) { return; }
@@ -27,7 +27,7 @@ void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::PostDeserial
 
 void FWK::GameObjectTransformComponentMatrixUpdateHierarchicalMode::UpdateMatrix(GameObjectTransformComponent& a_transformComponent)
 {
-    // 親の行列が先に更新されていることを前提にしている処理です。
+    // 親の行列が先に更新されていることを前提にしている処理
     auto l_resultMatrix = TypeAlias::Math::Matrix::Identity;
 
     // 回転してから移動するか、移動してから回転する違い
@@ -88,7 +88,7 @@ FWK::TypeAlias::Math::Matrix FWK::GameObjectTransformComponentMatrixUpdateHierar
     // この順序はApplyParentの逆行列計算と一致させるため必ずこの関数経由にする
     auto l_resultMatrix = TypeAlias::Math::Matrix::Identity;
 
-    
+
     if (m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Scale)    ||
         m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Rotation) ||
         m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Position))

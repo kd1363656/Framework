@@ -17,5 +17,7 @@ namespace FWK::Graphics
         bool CreateModelBone       (const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,  const ufbx_node*                                           a_fbxBoneNode,      Struct::SkeletalAnimationModelBone& a_modelBone) const;
 
         bool CollectModelBoneNodes(const ufbx_scene* a_fbxScene, std::vector<const ufbx_node*>& a_modelBoneNodeList) const;
+
+        static constexpr std::size_t k_emptySkinClusterCount = 0ULL;
     };
 }

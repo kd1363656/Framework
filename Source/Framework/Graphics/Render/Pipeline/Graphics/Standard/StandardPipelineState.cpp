@@ -64,10 +64,16 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
         FWK_ASSERT_RETURN_VALUE_IF(!m_pixelShader->CreateFromFile(a_shaderCompiler), "PixelShaderの作成に失敗したため、StandardPipelineStateの作成処理に失敗しました。", false);
     }
 
-    // HullShaderとDomainShaderは基本的にセットで使う。
-    // 片方だけ設定されている場合は、テッセレーションPipelineとして不完全。
-    FWK_ASSERT_RETURN_VALUE_IF( m_hullShader && !m_domainShader, "HullShaderが設定されていますがDomainShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader &&  m_domainShader, "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。", false);
+    // HullShaderとDomainShaderは基本的にセットで使う
+    // 片方だけ設定されている場合は、テッセレーションPipelineとして不完全
+    FWK_ASSERT_RETURN_VALUE_IF(m_hullShader &&
+                               !m_domainShader,
+                               "HullShaderが設定されていますがDomainShaderが無いため、StandardPipelineStateの作成処理に失敗しました。",
+                               false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader &&
+                               m_domainShader,
+                               "DomainShaderが設定されていますがHullShaderが無いため、StandardPipelineStateの作成処理に失敗しました。",
+                               false);
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC l_pipelineStateDesc = {};
 
@@ -77,26 +83,26 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
     l_pipelineStateDesc.pRootSignature = l_rootSignature.Get();
 
     // 各シェーダーをセット
-    l_pipelineStateDesc.VS = FetchShaderByteCode(m_vertexShader);
+    l_pipelineStateDesc.VS = FetchVALShaderByteCode(m_vertexShader);
 
     if (m_hullShader)
     {
-        l_pipelineStateDesc.HS = FetchShaderByteCode(*m_hullShader);
+        l_pipelineStateDesc.HS = FetchVALShaderByteCode(*m_hullShader);
     }
 
     if (m_domainShader)
     {
-        l_pipelineStateDesc.DS = FetchShaderByteCode(*m_domainShader);
+        l_pipelineStateDesc.DS = FetchVALShaderByteCode(*m_domainShader);
     }
 
     if (m_geometryShader)
     {
-        l_pipelineStateDesc.GS = FetchShaderByteCode(*m_geometryShader);
+        l_pipelineStateDesc.GS = FetchVALShaderByteCode(*m_geometryShader);
     }
 
     if (m_pixelShader)
     {
-        l_pipelineStateDesc.PS = FetchShaderByteCode(*m_pixelShader);
+        l_pipelineStateDesc.PS = FetchVALShaderByteCode(*m_pixelShader);
     }
 
     l_pipelineStateDesc.InputLayout.pInputElementDescs = m_inputElementDescList.empty() ? nullptr : m_inputElementDescList.data();
@@ -123,7 +129,7 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
     auto& l_pipelineState = GetMutableREFPipelineState();
 
     // パイプラインステートの作成
-    const auto l_hr = l_device->CreateGraphicsPipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
+    const auto& l_hr = l_device->CreateGraphicsPipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "StandardPipelineStateの作成処理に失敗しました。", false);
 

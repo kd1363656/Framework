@@ -82,7 +82,7 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPassList(co
     {
         std::shared_ptr<Graphics::DrawRequestPassBase> l_drawRequestPass = nullptr;
 
-        // ファクトリーからDrawRequestPassを作成する。
+        // ファクトリーからDrawRequestPassを作成する
         Utility::DeserializeInstanceType<TypeAlias::DrawRequestPassSharedFactory>(l_json, k_drawRequestPassTypeNameJsonKey, l_drawRequestPass);
 
         if (!l_drawRequestPass)
@@ -109,7 +109,7 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeComputeRequestPerObjec
 
         if (!l_computeRequestPerObject)
         {
-            assert(false && "ComputeRequestPerObjectのインスタンス化に失敗しました.");
+            assert(false && "ComputeRequestPerObjectのインスタンス化に失敗しました。");
 
             continue;
         }
@@ -126,7 +126,7 @@ void FWK::Converter::RenderGraphJsonConverter::DeserializeDrawRequestPerObjectLi
     {
         std::shared_ptr<Graphics::DrawRequestPerObjectBase> l_drawRequestPerObject = nullptr;
 
-        // ファクトリーからDrawRequestPassを作成する。
+        // ファクトリーからDrawRequestPassを作成する
         Utility::DeserializeInstanceType<TypeAlias::DrawRequestPerObjectSharedFactory>(l_json, k_drawRequestPerObjectTypeNameJsonKey, l_drawRequestPerObject);
 
         if (!l_drawRequestPerObject)

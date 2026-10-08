@@ -2,7 +2,7 @@
 
 bool FWK::Graphics::ShaderCompiler::Create()
 {
-    // 今回はDxcUtilsを作成している。
+    // 今回はDxcUtilsを作成している
     // DxcUtilsはファイル読み込みや文字コード変換、include処理補助など、
     // DXCを使う周辺処理で使う便利機能用オブジェクト
     // DXC(DX Shader Compiler)関連のCOMオブジェクト作成する関数
@@ -14,8 +14,8 @@ bool FWK::Graphics::ShaderCompiler::Create()
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DxcUtilsの作成に失敗しており、作成処理に失敗しました。", false);
 
     // DXC本体のコンパイラオブジェクトを作成する
-    // CLSID_DxcCompilerは「シェーダーをコンパイルする本体」を表す識別子。
-    // これを作成することで、HLSLコードをDXILへコンパイルできるようになる。
+    // CLSID_DxcCompilerは「シェーダーをコンパイルする本体」を表す識別子
+    // これを作成することで、HLSLコードをDXILへコンパイルできるようになる
     l_hr = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(m_dxcCompiler.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DxcCompilerの作成に失敗しており、作成処理に失敗しました。", false);
@@ -42,13 +42,14 @@ FWK::TypeAlias::ComPtr<IDxcBlob> FWK::Graphics::ShaderCompiler::LoadBinaryFromFi
 #if defined(_DEBUG)
         OutputDebugStringA("シェーダーバイナリファイルの読み込みに失敗しました。");
 #endif
+
         return nullptr;
     }
 
     TypeAlias::ComPtr<IDxcBlob> l_dxcBlob = nullptr;
 
     // IDxcBlobEncodingはIDxcBlobを継承しているため、
-    // PSO作成で使うD3D12_SHADER_BYTECODE用のIDxcBlobとして扱えるように変換する。
+    // PSO作成で使うD3D12_SHADER_BYTECODE用のIDxcBlobとして扱えるように変換する
     l_hr = l_binaryBlob.As(&l_dxcBlob);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "IDxcBlobEncodingからIDxcBlobへの変換に失敗しており、バイナリファイルの読み込みに失敗しました。", nullptr);

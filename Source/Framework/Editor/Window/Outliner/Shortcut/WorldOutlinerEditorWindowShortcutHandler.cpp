@@ -22,7 +22,7 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
                    a_editorManager);
 
     // F2で選択中のGameObject、またはSceneの名前変更を開始する
-    if (ImGui::IsKeyPressed(ImGuiKey_F2)) 
+    if (ImGui::IsKeyPressed(ImGuiKey_F2))
     {
         HandleRename(a_editorWindow, a_editorManager);
     }
@@ -48,14 +48,14 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
     {
         HandleCut(a_editorWindow, a_editorManager);
     }
- 
+
     // Ctrl + Dで選択中のGameObjectを複製する
     if (l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_D))
     {
         HandleDuplicate(a_editorWindow, a_editorManager);
     }
- 
+
     // Ctrl + VでクリップボードのGameObjectを張り付ける
     if (l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_V))
@@ -103,37 +103,37 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleCopy(WorldOutl
 {
     const auto& l_gameObjectSelectionState = a_editorManager.GetREFGameObjectSelectionState();
     const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation      ();
- 
+
     l_gameObjectOperation.CopySelectedGameObjects(l_gameObjectSelectionState, a_editorWindow.GetMutableREFClipboard());
 }
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleCut(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
           auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
     const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();
- 
+
     l_gameObjectOperation.CutSelectedGameObjects(a_editorWindow.GetMutableREFClipboard(), l_gameObjectSelectionState);
 }
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandleDuplicate(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
- 
+
           auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
     const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();
- 
+
     l_gameObjectOperation.DuplicateSelectedGameObjects(l_gameObjectSelectionState, *l_scene);
 }
 void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::HandlePaste(WorldOutlinerEditorWindow& a_editorWindow, EditorManager& a_editorManager) const
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
- 
+
           auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState();
     const auto& l_gameObjectOperation      = a_editorWindow.GetREFGameObjectOperation             ();
- 
+
     l_gameObjectOperation.PasteGameObjects(a_editorWindow.GetMutableREFClipboard(), l_gameObjectSelectionState, *l_scene);
 }

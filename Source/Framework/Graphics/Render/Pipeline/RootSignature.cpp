@@ -97,9 +97,9 @@ nlohmann::json FWK::Graphics::RootSignature::Serialize() const
 
 UINT FWK::Graphics::RootSignature::FindVALRootParameterIndex(const Enum::RootParameterType a_rootParameterType) const
 {
-    const auto& l_itr = m_rootParameterIndexMap.find(a_rootParameterType);
+    const auto& l_rootParameterIndexITR = m_rootParameterIndexMap.find(a_rootParameterType);
 
-    if (l_itr == m_rootParameterIndexMap.end()) { return Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex; }
+    if (l_rootParameterIndexITR == m_rootParameterIndexMap.end()) { return Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex; }
 
-    return l_itr->second;
+    return l_rootParameterIndexITR->second;
 }

@@ -10,10 +10,10 @@ namespace FWK
     class GameObjectComponentContainer final
     {
     public:
-    
+
          GameObjectComponentContainer() = default;
         ~GameObjectComponentContainer() = default;
-    
+
         void INIT();
 
         void DeserializeScene (const nlohmann::json& a_rootJson, const nlohmann::json& a_prefabJson = nlohmann::json{});
@@ -25,7 +25,7 @@ namespace FWK
         void Update        () const;
         void LateUpdate    () const;
         void PostLateUpdate() const;
-        
+
         nlohmann::json Serialize    ()                                   const;
         nlohmann::json SerializeDiff(const nlohmann::json& a_prefabJson) const;
 
@@ -41,7 +41,7 @@ namespace FWK
         void SweepExpiredComponents();
 
         void RemoveComponent(const std::weak_ptr<GameObjectComponentBase>& a_component);
-        
+
         void ClearPrefabRemovedComponentUUIDSet();
 
         bool IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const;
@@ -49,14 +49,14 @@ namespace FWK
         void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
 
         template <Concept::IsDerivedGameObjectComponentBaseConcept ComponentType>
-        std::weak_ptr<ComponentType> FindUniqueComponent() const
+        std::weak_ptr<ComponentType> FindVALUniqueComponent() const
         {
             const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
 
-            if (auto l_itr = m_uniqueComponentMap.find(l_staticTypeID);
-                l_itr != m_uniqueComponentMap.end())
+            if (auto l_uniqueComponentITR = m_uniqueComponentMap.find(l_staticTypeID);
+                l_uniqueComponentITR != m_uniqueComponentMap.end())
             {
-                if (auto l_component = l_itr->second.lock())
+                if (auto l_component = l_uniqueComponentITR->second.lock())
                 {
                     return std::static_pointer_cast<ComponentType>(l_component);
                 }
@@ -66,24 +66,24 @@ namespace FWK
         }
 
         template <Concept::IsDerivedGameObjectComponentBaseConcept ComponentType>
-        std::vector<std::weak_ptr<ComponentType>> FindMultiComponent() const
+        std::vector<std::weak_ptr<ComponentType>> FindVALMultiComponent() const
         {
             const auto l_staticTypeID = ComponentType::GetREFTypeINFO().k_staticTypeID;
 
-            std::vector<std::weak_ptr<ComponentType>> l_list = {};
+            std::vector<std::weak_ptr<ComponentType>> l_componentList = {};
 
-            if (auto l_itr = m_multiComponentMap.find(l_staticTypeID);
-                l_itr != m_multiComponentMap.end())
+            if (auto l_multiComponentITR = m_multiComponentMap.find(l_staticTypeID);
+                l_multiComponentITR != m_multiComponentMap.end())
             {
-                l_list.reserve(l_itr->second.size());
+                l_componentList.reserve(l_multiComponentITR->second.size());
 
-                for (const auto& l_component : l_itr->second)
+                for (const auto& l_component : l_multiComponentITR->second)
                 {
-                    l_list.emplace_back(l_component);
+                    l_componentList.emplace_back(l_component);
                 }
             }
 
-            return l_list;
+            return l_componentList;
         }
 
         std::weak_ptr<GameObjectComponentBase> FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const;
@@ -91,7 +91,7 @@ namespace FWK
         const auto& GetREFComponentSmartPointerVectorList() const { return m_componentSmartPointerVectorList; }
 
     private:
-   
+
         boost::uuids::uuid GenerateVALComponentUUID() const;
 
         std::unordered_map<std::uint32_t, std::weak_ptr<GameObjectComponentBase>>              m_uniqueComponentMap = {};

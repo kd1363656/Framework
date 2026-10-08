@@ -54,18 +54,18 @@ void FWK::Graphics::DefaultTexture::ApplyColorChannel(const Enum::DefaultTexture
 {
     const auto& l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
-    FWK_ASSERT_RETURN_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。");
+    FWK_ASSERT_RETURN_IF(l_colorChannelIndex >= m_colorChannelList.size(), "DefaultTextureColorChannelが範囲外です。");
 
-    m_color[l_colorChannelIndex] = a_colorValue;
+    m_colorChannelList[l_colorChannelIndex] = a_colorValue;
 }
 
 std::uint8_t FWK::Graphics::DefaultTexture::FetchVALColorChannel(const Enum::DefaultTextureColorChannel a_colorChannel) const
 {
     const auto& l_colorChannelIndex = static_cast<std::size_t>(a_colorChannel);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_color.size(), "DefaultTextureColorChannelが範囲外です。", Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue);
+    FWK_ASSERT_RETURN_VALUE_IF(l_colorChannelIndex >= m_colorChannelList.size(), "DefaultTextureColorChannelが範囲外です。", Converter::DefaultTextureJsonConverter::k_maxDefaultTextureColorChannelValue);
 
-    return m_color[l_colorChannelIndex];
+    return m_colorChannelList[l_colorChannelIndex];
 }
 
 bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_scratchImage) const
@@ -76,16 +76,16 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
     //                            縦幅,
     //                            配列数,
     //                            MIP数)
-    const auto l_hr = a_scratchImage.Initialize2D(m_format,
-                                                  k_defaultTextureWidth,
-                                                  k_defaultTextureHeight,
-                                                  Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-                                                  Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels);
+    const auto& l_hr = a_scratchImage.Initialize2D(m_format,
+                                                   k_defaultTextureWidth,
+                                                   k_defaultTextureHeight,
+                                                   Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
+                                                   Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "DefaultTexture用ScratchImageの初期化に失敗しました。", false);
 
     // 作成したScratchImageから、実際のピクセルデータを書き込むためのImageを取得する
-    const auto* l_image = a_scratchImage.GetImage(k_defaultTextureMipIndex, k_defaultTextureItemIndex, k_defaultTextureSliceIndex);
+    const auto* l_image = a_scratchImage.GetImage(k_defaultTextureMIPIndex, k_defaultTextureItemIndex, k_defaultTextureSliceIndex);
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_image,         "DefaultTexture用Imageの取得に失敗しました。",     false);
     FWK_ASSERT_RETURN_VALUE_IF(!l_image->pixels, "DefaultTexture用Pixel領域の取得に失敗しました。", false);
@@ -94,7 +94,7 @@ bool FWK::Graphics::DefaultTexture::CreateScratchImage(DirectX::ScratchImage& a_
     // 1チャンネル8bit、合計4byteのRGBAピクセルとして扱える
     // m_colorはDefaultTextureColorChannel::R/G/B/Aの順番で並ぶstd::array
     // そのため、配列の先頭から4byteをそのまま1ピクセルとして書き込める
-    std::memcpy(l_image->pixels, m_color.data(), m_color.size() * sizeof(DefaultTextureColor::value_type));
+    std::memcpy(l_image->pixels, m_colorChannelList.data(), m_colorChannelList.size() * sizeof(DefaultTextureColor::value_type));
 
     return true;
 }

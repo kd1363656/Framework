@@ -17,7 +17,7 @@ void FWK::Converter::GameObjectTransformComponentJsonConverter::Deserialize(cons
     Utility::DeserializeInstanceType<TypeAlias::GameObjectTransformComponentMatrixUpdateModeUniqueFactory>(a_rootJson, k_matrixUpdateModeJsonKey, l_matrixUpdateMode);
 
     // インスタンス化出来なければreturn(デシリアライズの意味がないから)
-    if (!l_matrixUpdateMode) 
+    if (!l_matrixUpdateMode)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "TransformComponentのMatrixUpdateModeのデシリアライズに失敗。");
 
@@ -41,7 +41,7 @@ nlohmann::json FWK::Converter::GameObjectTransformComponentJsonConverter::Serial
     Utility::UpdateJson(Utility::SerializeVector3(k_scaleJsonKey, l_transform.m_scale), l_rootJson);
     Utility::UpdateJson(Utility::SerializeQuaternion(k_rotationJsonKey, l_transform.m_rotation), l_rootJson);
     Utility::UpdateJson(Utility::SerializeVector3(k_positionJsonKey, l_transform.m_position), l_rootJson);
-    
+
     if (!l_matrixUpdateMode) { return l_rootJson; }
 
     // 行列更新モードのシリアライズ

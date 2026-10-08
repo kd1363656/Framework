@@ -41,7 +41,7 @@ namespace FWK::Converter
                 if (l_json.is_null()) { continue; }
 
                 // AddBitShiftFlag内で重複チェックとビット値の同期が行われる
-                const auto l_bitShiftFlag = l_json.value(k_bitShiftFlagJsonKey, Type::Invalid);
+                const auto& l_bitShiftFlag = l_json.value(k_bitShiftFlagJsonKey, Type::Invalid);
 
                 a_enumBitShift.AddBitShiftFlag(l_bitShiftFlag);
             }

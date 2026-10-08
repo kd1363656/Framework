@@ -34,7 +34,7 @@ void FWK::Graphics::UploadSystem::SubmitPendingTextureCopyBatchIfNeededAndWait(c
     FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、バッチテクスチャコピー送信処理に失敗しました。");
 
     // コマンドリストなどのリセットなどを行う
-    BeforSubmitResourceProcess(*l_copyCommandAllocator);
+    BeforeSubmitResourceProcess(*l_copyCommandAllocator);
 
     // UploadBuffer内に配置した各サブリソースの画像データを
     // D3D12_PLACED_SUBRESOURCE_FOOTPRINTの配置情報に従って、DEFAULTヒープ上のテクスチャリソースへコピーする
@@ -64,7 +64,7 @@ void FWK::Graphics::UploadSystem::SubmitPendingStaticModelBatchIfNeededAndWait(c
     FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、StaticModel用BufferResourceのバッチコピーに失敗しました。");
 
     // コマンドリストなどのリセットなどを行う
-    BeforSubmitResourceProcess(*l_copyCommandAllocator);
+    BeforeSubmitResourceProcess(*l_copyCommandAllocator);
 
     for (const auto& [l_filePath, l_pendingStaticModelBatchUploadRecord] : l_pendingModelBatchUploadRecordMap)
     {
@@ -91,7 +91,7 @@ void FWK::Graphics::UploadSystem::SubmitPendingSkeletalAnimationModelBatchIfNeed
     FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "使用可能なコピーコマンドアロケータが取得できず、SkeletalAnimationModel用BufferResourceのバッチコピーに失敗しました。");
 
     // CommandAllocatorとCommandListをリセットする
-    BeforSubmitResourceProcess(*l_copyCommandAllocator);
+    BeforeSubmitResourceProcess(*l_copyCommandAllocator);
 
     for (const auto& [l_filePath, l_pendingModelBatchUploadRecord] : l_pendingModelBatchUploadRecordMap)
     {
@@ -121,7 +121,7 @@ void FWK::Graphics::UploadSystem::AddCommandAllocator(const std::shared_ptr<Type
     m_copyCommandAllocatorList.emplace_back(a_copyCommandAllocator);
 }
 
-void FWK::Graphics::UploadSystem::BeforSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator)
+void FWK::Graphics::UploadSystem::BeforeSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator)
 {
     // 命令を格納できるようにするためリセット
     a_copyCommandAllocator.Reset();

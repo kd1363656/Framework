@@ -67,14 +67,14 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::
 
         return false;
     }
-    
+
     if (a_newName.empty())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectPrefabの新しい名前が空のため、PrefabUUIDの付け替えを中止しました。\nFilePath : {}", a_filePath.string());
 
         return false;
     }
-    
+
     auto l_rootJson = Utility::LoadJsonFile(a_filePath);
 
     if (l_rootJson.is_null())
@@ -88,7 +88,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(const std::
     l_rootJson[Constant::k_gameObjectJsonConverterNameJsonKey] = a_newName;
 
     // Prefabキー以下の各ノードが持つPrefabUUIDを差し替える
-    if (const auto l_prefabJsonITR = l_rootJson.find(k_prefabJsonKey);
+    if (const auto& l_prefabJsonITR = l_rootJson.find(k_prefabJsonKey);
         l_prefabJsonITR != l_rootJson.end())
     {
         ReplacePrefabUUIDRecursively(a_oldPrefabUUID, a_newPrefabUUID, *l_prefabJsonITR);
@@ -137,9 +137,9 @@ void FWK::Converter::GameObjectPrefabJsonConverter::Load(const nlohmann::json& a
     a_prefab.SetJson(std::move(l_json));
 }
 
-bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::path&       a_filePath, 
+bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::path&       a_filePath,
                                                          const GameObject&                  a_gameObject,
-                                                               SceneGameObjectPrefabSystem& a_prefabSystem, 
+                                                               SceneGameObjectPrefabSystem& a_prefabSystem,
                                                                GameObjectPrefab&            a_prefab) const
 {
     // 読み込めるファイルでなければ保存しない
@@ -165,7 +165,7 @@ bool FWK::Converter::GameObjectPrefabJsonConverter::Save(const std::filesystem::
     // 残したままだとPrefab由来の子がインスタンス化される際に
     // 同じUUIDがSceneへ再登録されUUID重複エラーになる
     RemoveSceneInstanceUUIDRecursively(l_rootJson[k_prefabJsonKey]);
- 
+
     // ファイル書き込みに失敗した場合は
     // GameObjectPrefab内部のキャッシュも更新しない
     if (!Utility::SaveJsonFile(l_rootJson, a_filePath))

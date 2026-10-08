@@ -17,7 +17,7 @@ void FWK::Converter::AssetBrowserEditorWindowJsonConverter::Deserialize(const nl
     // 従来FolderPaneJsonConverterにあったロジックをWindow側へ移動
     // 空or存在しない場合はAssetルートをデフォルトとする
     auto l_currentSelectFolderPath = a_rootJson.value(k_currentSelectFolderPathJsonKey, std::filesystem::path{});
-    
+
     // パスが空、またはディスク上に存在しない場合はAssetルートをデフォルトとする
     // std::error_code版のexistsで例外を殴図に存在確認
     if (std::error_code l_errorCode = {};
@@ -29,7 +29,7 @@ void FWK::Converter::AssetBrowserEditorWindowJsonConverter::Deserialize(const nl
 
     // Windowのpublicセッタ経由で現在参照中のフォルダをセット
     a_assetBrowserEditorWindow.SetCurrentSelectFolderPath(l_currentSelectFolderPath);
-    
+
     // フォルダペインのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_folderPaneJsonKey, nlohmann::json{});
         !l_json.is_null())

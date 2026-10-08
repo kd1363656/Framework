@@ -8,7 +8,7 @@ namespace FWK
 
          GameObjectInputComponent() = default;
         ~GameObjectInputComponent() = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson) override;
 
         nlohmann::json Serialize() const override;
@@ -16,6 +16,6 @@ namespace FWK
         std::shared_ptr<GameObjectComponentBase> Clone() const override;
 
     private:
-    
+
     };
 }

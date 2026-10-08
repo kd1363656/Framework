@@ -9,7 +9,7 @@ FWK::Physics::PhysicsCharacterVirtualBase::PhysicsCharacterVirtualBase() :
 
     m_capsuleHalfHeightOfCylinder(Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder),
     m_capsuleRadius              (Constant::k_defaultCharacterVirtualCapsuleRadius),
-    m_maxSlopeAngleRadians       (Constant::k_defaultCharacterVirtualMaxSlopeAngleRadians),
+    m_maxSlopeAngleRadians       (Constant::k_defaultCharacterVirtualMAXSlopeAngleRadians),
 
     m_isEnhancedInternalEdgeRemovalDisabled(false)
 {}
@@ -24,8 +24,8 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
     FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CharacterVirtualのCapsuleHalfHeightOfCylinderが0以下のため、作成に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CharacterVirtualのCapsuleRadiusが0以下のため、作成に失敗しました。",               false);
 
-    FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMaxSlopeAngleRadians ||
-                               m_maxSlopeAngleRadians > k_maxCharacterVirtualMaxSlopeAngleRadians,
+    FWK_ASSERT_RETURN_VALUE_IF(m_maxSlopeAngleRadians < k_minCharacterVirtualMAXSlopeAngleRadians ||
+                               m_maxSlopeAngleRadians > k_maxCharacterVirtualMAXSlopeAngleRadians,
                                "CharacterVirtualのMaxSlopeAngleが0度から90度の範囲外のため、作成に失敗しました。",
                                false);
 
@@ -47,8 +47,8 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "CharacterVirtual用CapsuleShapeが無効なため、作成に失敗しました。", false);
 
-    auto& l_physicsManager = PhysicsManager::GetInstance               ();
-    auto& l_physicsSystem = l_physicsManager.GetMutableREFPhysicsSystem();
+    auto& l_physicsManager = PhysicsManager::GetInstance                ();
+    auto& l_physicsSystem  = l_physicsManager.GetMutableREFPhysicsSystem();
 
     JPH::CharacterVirtualSettings l_characterVirtualSettings = {};
 
@@ -118,7 +118,7 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
 
     // CharacterVirtualの衝突Queryで使用するObjectLayerへ登録するわけはなく
     // 「どのLayerを探索してよいか」を判断するために使用する
-    const auto l_characterObjectLayer = l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject);
+    const auto& l_characterObjectLayer = l_physicsLayerSetting->FetchVALObjectLayer(Enum::PhysicsObjectLayerType::CharacterObject);
 
     // BroadPhaseのどの領域をCharacterVirtualが探索するかを決めるFilter
     const auto& l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
@@ -187,8 +187,6 @@ void FWK::Physics::PhysicsCharacterVirtualBase::DrawDebug(const JPH::ColorArg a_
                   a_color,
                   false,
                   true);
-
-
 }
 
 nlohmann::json FWK::Physics::PhysicsCharacterVirtualBase::Serialize() const
@@ -265,9 +263,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape
     // Chacactervirtualの座標を足元として扱えるように上方向へずらす
     const float l_capsuleCenterOffsetY = m_capsuleHalfHeightOfCylinder + m_capsuleRadius;
 
-    const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3(JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ()),
-                                                                           JPH::Quat::sIdentity(),
-                                                                           l_capsuleShape.GetPtr() };
+    const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3(JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ()), JPH::Quat::sIdentity(), l_capsuleShape.GetPtr() };
 
     const auto& l_characterShapeResult = l_characterShapeSettings.Create();
 
@@ -311,18 +307,18 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
     //                                 Shape交換時の衝突確認で使用する一時Allocator);
     if (const float l_maxPenetrationDepth = k_characterVirtualShapeChangePenetrationSlopScale * l_physicsSystem.GetPhysicsSettings().mPenetrationSlop;
         !m_characterVirtual->SetShape(l_shape.GetPtr(),
-                                     l_maxPenetrationDepth,
-                                     l_broadPhaseLayerFilter,
-                                     l_objectLayerFilter,
-                                     l_bodyFilter,
-                                     l_shapeFilter,
-                                     *l_tempAllocator))
+                                      l_maxPenetrationDepth,
+                                      l_broadPhaseLayerFilter,
+                                      l_objectLayerFilter,
+                                      l_bodyFilter,
+                                      l_shapeFilter,
+                                      *l_tempAllocator))
     {
         return false;
     }
 
     // Radiusが変更されると、CharacterVirtualを支える床の判定範囲も変わるため、
-    // 新しいRadiusから作成したSupportingVolumeへ更新する。
+    // 新しいRadiusから作成したSupportingVolumeへ更新する
     m_characterVirtual->SetSupportingVolume(JPH::Plane{ JPH::Vec3::sAxisY(), -m_capsuleRadius });
 
     return true;

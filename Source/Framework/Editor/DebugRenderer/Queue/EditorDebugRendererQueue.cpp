@@ -28,10 +28,10 @@ void FWK::Editor::EditorDebugRendererQueue::AddFrustum(const TypeAlias::Math::Ma
     // カメラのローカル空間 : 前がZ+、右がX+、上がY+
     // カメラから距離dだけ離れた面の、中心から右端・上端までの長さは、
     // d * tan(視野角の半分)で求まる(tanHalfFOVX/Yは、あらかじめ計算済みの値)
-    const auto l_nearHalfWidth  = a_nearDistance * a_tanHalfFOVX;
-    const auto l_nearHalfHeight = a_nearDistance * a_tanHalfFOVY;
-    const auto l_farHalfWidth   = a_farDistance  * a_tanHalfFOVX;
-    const auto l_farHalfHeight  = a_farDistance  * a_tanHalfFOVY;
+    const auto& l_nearHalfWidth  = a_nearDistance * a_tanHalfFOVX;
+    const auto& l_nearHalfHeight = a_nearDistance * a_tanHalfFOVY;
+    const auto& l_farHalfWidth   = a_farDistance  * a_tanHalfFOVX;
+    const auto& l_farHalfHeight  = a_farDistance  * a_tanHalfFOVY;
 
     // 面の4つの角(左下 → 右下 → 右上 → 左上の順)
     // この順に並べると、隣り合う角同士を結ぶだけで面の枠になる
@@ -65,7 +65,7 @@ void FWK::Editor::EditorDebugRendererQueue::AddFrustum(const TypeAlias::Math::Ma
     for (std::size_t l_cornerIndex = 0ULL; l_cornerIndex < k_planeCornerCount; ++l_cornerIndex)
     {
         // 最後の角(左上)の次は、最初の角(左下)に戻して、面の枠を閉じる
-        const auto l_nextCornerIndex = (l_cornerIndex + k_nextCornerOffset) % k_planeCornerCount;
+        const auto& l_nextCornerIndex = (l_cornerIndex + k_nextCornerOffset) % k_planeCornerCount;
 
         AddLine(l_nearWorldCornerList[l_cornerIndex], l_nearWorldCornerList[l_nextCornerIndex], a_color);
         AddLine(l_farWorldCornerList [l_cornerIndex], l_farWorldCornerList [l_nextCornerIndex], a_color);

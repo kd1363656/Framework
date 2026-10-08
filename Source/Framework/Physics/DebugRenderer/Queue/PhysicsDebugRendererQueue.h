@@ -28,14 +28,14 @@ namespace FWK::Physics
 
     private:
 
-        struct AABBCornerSelector
+        struct AABBCornerSelector final
         {
-            bool m_useMAXX = false;
-            bool m_useMAXY = false;
-            bool m_useMAXZ = false;
+            bool m_shouldUseMAXX = false;
+            bool m_shouldUseMAXY = false;
+            bool m_shouldUseMAXZ = false;
         };
 
-        struct AABBEdgeIndex
+        struct AABBEdgeIndex final
         {
             std::size_t m_startCornerIndex = k_initialCornerIndex;
             std::size_t m_endCornerIndex   = k_initialCornerIndex;

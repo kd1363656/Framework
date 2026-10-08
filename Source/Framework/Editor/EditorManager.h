@@ -11,7 +11,7 @@ namespace FWK::Editor
     {
     private:
 
-        using ImGuiSRVDescriptorIndexMap = std::unordered_map<std::uint64_t,           TypeAlias::DescriptorIndex>;
+        using IMGUISRVDescriptorIndexMap = std::unordered_map<std::uint64_t,           TypeAlias::DescriptorIndex>;
         using EditorWindowMap            = std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<EditorWindowBase>>;
 
         friend class SingletonBase<EditorManager>;
@@ -37,11 +37,11 @@ namespace FWK::Editor
 
         void ClearCommandHistory();
 
-        TypeAlias::DescriptorIndex AllocateImGuiSRVDescriptorIndex();
+        TypeAlias::DescriptorIndex AllocateIMGUISRVDescriptorIndex();
 
-        void ReleaseImGuiSRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
+        void ReleaseIMGUISRVDescriptorIndex(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex);
 
-        template <class... Args>
+        template <typename... Args>
         void AddLog(const std::string_view&       a_format,
                     const TypeAlias::Math::Color& a_textColor,
                     const std::source_location&   a_location,
@@ -72,22 +72,22 @@ namespace FWK::Editor
         {
             const auto l_staticTypeID = WindowType::GetREFTypeINFO().k_staticTypeID;
 
-            const auto& l_itr = m_editorWindowMap.find(l_staticTypeID);
+            const auto& l_editorWindowITR = m_editorWindowMap.find(l_staticTypeID);
 
-            if (l_itr == m_editorWindowMap.end()) { return {}; }
+            if (l_editorWindowITR == m_editorWindowMap.end()) { return {}; }
 
-            const auto& l_editorWindow = l_itr->second.lock();
+            const auto& l_editorWindow = l_editorWindowITR->second.lock();
 
             if (!l_editorWindow) { return {}; }
 
             return std::static_pointer_cast<WindowType>(l_editorWindow);
         }
 
-        void SetCurrentActiveWindowStaticTpeID(const TypeAlias::StaticTypeID a_set) { m_currentActiveWindowStaticTpeID = a_set; }
+        void SetCurrentActiveWindowStaticTypeID(const TypeAlias::StaticTypeID a_set) { m_currentActiveWindowStaticTypeID = a_set; }
 
         void SetIsDisableDrawEditor(const bool a_set) { m_isDisableDrawEditor = a_set; }
 
-        ImTextureID FetchVALImGuiTextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
+        ImTextureID FetchVALIMGUITextureID(const TypeAlias::DescriptorIndex a_imGuiSRVDescriptorIndex) const;
 
         const auto& GetREFEditorWindowList() const { return m_editorWindowList; }
 
@@ -105,7 +105,7 @@ namespace FWK::Editor
 
         auto& GetMutableREFGameObjectSelectionState() { return m_gameObjectSelectionState; }
 
-        auto GetVALCurrentActiveWindowStaticTpeID() const { return m_currentActiveWindowStaticTpeID; }
+        auto GetVALCurrentActiveWindowStaticTypeID() const { return m_currentActiveWindowStaticTypeID; }
 
         bool GetVALIsDisableDrawEditor() const { return m_isDisableDrawEditor; }
 
@@ -115,7 +115,7 @@ namespace FWK::Editor
 
         static void ReleaseSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE a_gpuHandle);
 
-        bool CreateImGuiSRVDescriptorPool(const Graphics::Device& a_device);
+        bool CreateIMGUISRVDescriptorPool(const Graphics::Device& a_device);
 
         void DrawDockingSpace() const;
         void DrawEditorWindow();
@@ -142,7 +142,7 @@ namespace FWK::Editor
 
         TypeAlias::CBVSRVUAVDescriptorPool m_imGuiCBVSRVUAVDescriptorPool;
 
-        ImGuiSRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
+        IMGUISRVDescriptorIndexMap m_imGuiSRVDescriptorIndexMap;
 
         LogEditorWindow m_logEditorWindow;
 
@@ -160,7 +160,7 @@ namespace FWK::Editor
 
         Converter::EditorManagerJsonConverter m_jsonConverter;
 
-        TypeAlias::StaticTypeID m_currentActiveWindowStaticTpeID;
+        TypeAlias::StaticTypeID m_currentActiveWindowStaticTypeID;
 
         bool m_isInitialized;
         bool m_isDisableDrawEditor;
@@ -173,4 +173,4 @@ do                                                                              
 {                                                                                                                                   \
     FWK::Editor::EditorManager::GetInstance().AddLog(Format, TextColor, std::source_location::current() __VA_OPT__(,) __VA_ARGS__); \
 }                                                                                                                                   \
-while(false)
+while (false)

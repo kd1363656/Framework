@@ -371,7 +371,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::TryReadModelMeshBina
     if (l_bonePaletteCount > std::numeric_limits<std::uint32_t>::max()) { return false; }
 
     // このModelMeshの頂点が実際に使用するBoneだけで
-    // 構成されたBonePaletteを読み込む。
+    // 構成されたBonePaletteを読み込む
     if (!TryReadBinaryDataList(l_bonePaletteCount, a_modelMesh.m_bonePaletteList, a_memoryReadOffset)) { return false; }
 
     return IsValidModelMesh(a_modelMesh, a_boneCount);
@@ -491,8 +491,8 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(con
 
     for (const auto& l_modelVertex : a_modelMesh.m_modelVertexList)
     {
-        // k_invalidPaletteIndexとの個別比較は不要。
-        // Invalid値もこの範囲比較で検出される。
+        // k_invalidPaletteIndexとの個別比較は不要
+        // Invalid値もこの範囲比較で検出される
         if (l_modelVertex.m_bonePaletteIndexZero  >= l_bonePaletteCount) { return false; }
         if (l_modelVertex.m_bonePaletteIndexOne   >= l_bonePaletteCount) { return false; }
         if (l_modelVertex.m_bonePaletteIndexTwo   >= l_bonePaletteCount) { return false; }

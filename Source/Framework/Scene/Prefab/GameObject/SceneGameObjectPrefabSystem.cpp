@@ -29,18 +29,18 @@ void FWK::SceneGameObjectPrefabSystem::RemovePrefab(const boost::uuids::uuid& a_
 {
     // nilの場合hはPrefabSystemへ登録されないので
     // Map検索を行わず終了する
-    if (a_prefabUUID.is_nil()) 
+    if (a_prefabUUID.is_nil())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "PrefabUUIDが無効だったため、PrefabSystemのプレハブマップから削除できませんでした。");
 
-        return; 
+        return;
     }
 
-    const auto& l_itr = m_prefabMap.find(a_prefabUUID);
+    const auto& l_prefabITR = m_prefabMap.find(a_prefabUUID);
 
-    if (l_itr == m_prefabMap.end()) { return; }
+    if (l_prefabITR == m_prefabMap.end()) { return; }
 
-    m_prefabMap.erase(l_itr);
+    m_prefabMap.erase(l_prefabITR);
 
     FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "PrefabUUID : {}\nのプレハブを削除しました。", boost::uuids::to_string(a_prefabUUID));
 }
@@ -55,11 +55,11 @@ const FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindPTRPrefab(con
     // NilUUIDからPrefabを検索することはできない
     if (a_prefabUUID.is_nil()) { return nullptr; }
 
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
+    auto l_prefabITR = m_prefabMap.find(a_prefabUUID);
 
-    if (l_itr == m_prefabMap.end()) { return nullptr; }
+    if (l_prefabITR == m_prefabMap.end()) { return nullptr; }
 
-    return &l_itr->second;
+    return &l_prefabITR->second;
 }
 
 FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindMutablePTRPrefab(const boost::uuids::uuid& a_prefabUUID)
@@ -67,9 +67,9 @@ FWK::GameObjectPrefab* FWK::SceneGameObjectPrefabSystem::FindMutablePTRPrefab(co
     // NilUUIDからPrefabを検索することはできない
     if (a_prefabUUID.is_nil()) { return nullptr; }
 
-    auto l_itr = m_prefabMap.find(a_prefabUUID);
+    auto l_prefabITR = m_prefabMap.find(a_prefabUUID);
 
-    if (l_itr == m_prefabMap.end()) { return nullptr; }
+    if (l_prefabITR == m_prefabMap.end()) { return nullptr; }
 
-    return &l_itr->second;
+    return &l_prefabITR->second;
 }

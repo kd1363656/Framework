@@ -7,7 +7,7 @@ namespace FWK::Utility
                  std::is_unsigned_v<FlagType>
     inline FlagType EnableFlag(EnumType a_enableFlag, FlagType a_flags)
     {
-        const auto l_enableFlag = static_cast<FlagType>(a_enableFlag);
+        const auto& l_enableFlag = static_cast<FlagType>(a_enableFlag);
 
         return a_flags | l_enableFlag;
     }
@@ -17,7 +17,7 @@ namespace FWK::Utility
                  std::is_unsigned_v<FlagType>
     inline FlagType DisableFlag(EnumType a_disableFlag, FlagType a_flags)
     {
-        const auto l_disableFlag = static_cast<FlagType>(a_disableFlag);
+        const auto& l_disableFlag = static_cast<FlagType>(a_disableFlag);
 
         return a_flags & ~l_disableFlag;
     }
@@ -38,7 +38,7 @@ namespace FWK::Utility
                  std::is_unsigned_v<FlagType>
     inline bool IsFlagEnabled(EnumType a_checkFlag, FlagType a_flags)
     {
-        const auto l_checkFlag = static_cast<FlagType>(a_checkFlag);
+        const auto& l_checkFlag = static_cast<FlagType>(a_checkFlag);
 
         return (a_flags & l_checkFlag) != static_cast<FlagType>(Constant::k_noFlagValue);
     }

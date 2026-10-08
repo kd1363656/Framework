@@ -6,7 +6,7 @@ namespace FWK::Constant
                                                               0.50F,
                                                               1.00F,
                                                               1.00F };
-                                                              
+
     inline constexpr ImVec4 k_imguiAccentTranslucentColor = { k_imguiAccentColor.x,
                                                               k_imguiAccentColor.y,
                                                               k_imguiAccentColor.z,

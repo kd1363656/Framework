@@ -88,14 +88,14 @@ void FWK::MouseController::Update()
 
 bool FWK::MouseController::IsButtonDown(const MouseButton a_button) const
 {
-    const auto l_buttonState = FetchVALButtonState(a_button);
+    const auto& l_buttonState = FetchVALButtonState(a_button);
 
     return l_buttonState == DirectX::Mouse::ButtonStateTracker::PRESSED ||
            l_buttonState == DirectX::Mouse::ButtonStateTracker::HELD;
 }
 bool FWK::MouseController::IsButtonUp(const MouseButton a_button) const
 {
-    const auto l_buttonState = FetchVALButtonState(a_button);
+    const auto& l_buttonState = FetchVALButtonState(a_button);
 
     return l_buttonState == DirectX::Mouse::ButtonStateTracker::UP ||
            l_buttonState == DirectX::Mouse::ButtonStateTracker::RELEASED;

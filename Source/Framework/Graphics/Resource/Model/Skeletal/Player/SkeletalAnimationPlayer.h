@@ -68,7 +68,7 @@ namespace FWK::Graphics
 
         void ResetPlaybackState();
 
-        float FetchMotionDurationSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation) const;
+        float FetchVALMotionDurationSecond(const Struct::SkeletalAnimationPlayerAnimation& a_animation) const;
 
         static constexpr float k_initialBlendElapsedSecond = 0.0F;
         static constexpr float k_completeBlendWeight       = 1.0F;

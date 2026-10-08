@@ -5,10 +5,10 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
     const auto& l_writtenByteSize                 = static_cast<std::size_t>  (a_writtenByteSize);
     const auto& l_previousDirectoryChangeListSize = m_directoryChangeList.size();
           auto  l_bufferOffset                    = k_initialBufferOffset;
-          bool  l_requiresFolderTreeRefresh       = false;
+          bool  l_shouldRefreshFolderTree         = false;
 
     // Windowsが今回使用したと報告したバイト数が
-    // 自身が確保している通知Buffer容量を超えることは正常ではありえない。
+    // 自身が確保している通知Buffer容量を超えることは正常ではありえない
     // そのような状態で解析するとBuffer外Accessになる危険があるため中断する
     if (l_writtenByteSize > m_notificationBufferList.size())
     {
@@ -21,7 +21,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
         return true;
     }
 
-    // FILE_NOTIFY_EXTENDED_INFORMATIONは、FileNameだけが可変長になっている。
+    // FILE_NOTIFY_EXTENDED_INFORMATIONは、FileNameだけが可変長になっている
     // offsetof(Type, Member)を使うと、FILE_NOTIFY_EXTENDED_INFORMATION先頭から
     // 可変長FileNameの直前までの固定Sizeを取得できる
     const auto& l_notificationFixedByteSize = offsetof(FILE_NOTIFY_EXTENDED_INFORMATION, FileName);
@@ -60,7 +60,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
         // .Action
         // .FileID
         // .FileNameLength
-        // のようにMemberへAccessできない。
+        // のようにMemberへAccessできない
         // そこでFilenameを除いた固定部分だけを、
         // FILE_NOTIFY_EXTENDED_INFORMATION型のLocal変数へコピーする
         FILE_NOTIFY_EXTENDED_INFORMATION l_notificationInformation = {};
@@ -124,11 +124,11 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
 
         // 生バッファーから1件の通知を安全に取り出したためそのファイルが
         // ADDED/REMOVED\REBAME_OLD_NAME/RENAME_NEW_NAME七日の判別を行う
-        l_requiresFolderTreeRefresh = ProcessNotification(l_filePath, l_notificationInformation) ||
-                                      l_requiresFolderTreeRefresh;
+        l_shouldRefreshFolderTree = ProcessNotification(l_filePath, l_notificationInformation) ||
+                                      l_shouldRefreshFolderTree;
 
         // 0なら現在Recordが最後に取得できるFILE_NOTIFY_EXTENDED_INFORMATION
-        if (l_notificationInformation.NextEntryOffset == k_lastNotificationEntryOffset) { return l_requiresFolderTreeRefresh; }
+        if (l_notificationInformation.NextEntryOffset == k_lastNotificationEntryOffset) { return l_shouldRefreshFolderTree; }
 
         const auto& l_nextEntryOffset = static_cast<std::size_t>(l_notificationInformation.NextEntryOffset);
 
@@ -159,7 +159,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
         l_bufferOffset += l_nextEntryOffset;
     }
 
-    return l_requiresFolderTreeRefresh;
+    return l_shouldRefreshFolderTree;
 }
 
 bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessExpiredPendingFilePathChange()
@@ -171,8 +171,8 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
     const auto& l_currentTime = std::chrono::steady_clock::now();
 
     // unordered_mapから期限切れ要素をerase(9子ながら進む為にIteratorを使用する
-    auto l_pendingFilePathChangeITR  = m_pendingFilePathChangeDataMap.begin();
-    bool l_requiresFolderTreeRefresh = false;
+    auto l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.begin();
+    bool l_shouldRefreshFolderTree  = false;
 
     while (l_pendingFilePathChangeITR != m_pendingFilePathChangeDataMap.end())
     {
@@ -202,8 +202,8 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
                 // Directoryが削除された場合
                 // AssetBrowser左側のFolderTreeも実状態と変わるため
                 // Refreshが必要になる
-                l_requiresFolderTreeRefresh = l_pendingFilePathChangeData.m_isDirectory ||
-                                              l_requiresFolderTreeRefresh;
+                l_shouldRefreshFolderTree = l_pendingFilePathChangeData.m_isDirectory ||
+                                              l_shouldRefreshFolderTree;
             }
             break;
 
@@ -218,7 +218,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
                 // DirectoryのRenameだった場合は勿論FolderTreeを再構築する必要がある
                 // Fileの場合も通知系列が壊れている異常状態のなので、
                 // 現段階ではtrueを返してAssetBrowser側へ再確認が必要な状態として伝える
-                l_requiresFolderTreeRefresh = true;
+                l_shouldRefreshFolderTree = true;
             }
             break;
 
@@ -230,7 +230,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
                 // Registryを推測で変更せず警告だけ出す
                 FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "DirectoryNotificationProcessorにInvalid状態のPendingFilePathChangeDataが残っています。");
 
-                l_requiresFolderTreeRefresh = true;
+                l_shouldRefreshFolderTree = true;
             }
             break;
 
@@ -242,7 +242,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
         l_pendingFilePathChangeITR = m_pendingFilePathChangeDataMap.erase(l_pendingFilePathChangeITR);
     }
 
-    return l_requiresFolderTreeRefresh;
+    return l_shouldRefreshFolderTree;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ApplyDirectoryChangeList(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager)
@@ -269,7 +269,10 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ApplyD
         // 他ProcessがFileを使用中で削除できなかった場合などは
         // Change側がRetry = trueにする
         // この場合、次Frameでも同じChangeを再度Applyする
-        if (l_directoryChange->GetVALIsRequiresRetry()) { break; }
+        if (l_directoryChange->GetVALIsRequiresRetry())
+        {
+            break;
+        }
 
         l_directoryChangeITR = m_directoryChangeList.erase(l_directoryChangeITR);
     }

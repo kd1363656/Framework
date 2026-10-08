@@ -1,4 +1,4 @@
-﻿#include "DynamicBufferUploaderJsonConverter.h"
+﻿#include "DynamicBufferUploaderBaseJsonConverter.h"
 
 void FWK::Converter::DynamicBufferUploaderBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::DynamicBufferUploaderBase& a_dynamicBufferUploaderBase) const
 {

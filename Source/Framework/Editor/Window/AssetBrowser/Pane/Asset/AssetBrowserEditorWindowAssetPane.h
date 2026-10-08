@@ -43,7 +43,7 @@ namespace FWK::Editor
         void DrawCardBackground(const ImVec2&     a_cardMIN,
                                 const ImVec2&     a_cardMAX,
                                 const bool        a_isSelected,
-                                const bool        a_isHovered, 
+                                const bool        a_isHovered,
                                 const bool        a_isActivePane,
                                 const bool        a_isCutTarget,
                                       ImDrawList& a_drawList);
@@ -88,7 +88,7 @@ namespace FWK::Editor
 
         std::uint32_t CalculateCardPerRow(const float a_availableWidth) const;
 
-        std::string FetchIcon(const std::filesystem::path& a_filePath) const;
+        std::string FetchVALIcon(const std::filesystem::path& a_filePath) const;
 
         static constexpr std::string_view k_imguiFontAwesomeImageIcon    = "\xEF\x80\xBE";
         static constexpr std::string_view k_imguiFontAwesomeFBXModelIcon = "\xEF\x86\xB2";
@@ -105,7 +105,10 @@ namespace FWK::Editor
         static constexpr std::string_view k_paneTitleLabel                = "アセット";
         static constexpr std::string_view k_ellipsis                      = "...";
 
-        static constexpr ImVec4 k_cardDefaultGrayColor = { 0.22F, 0.22F, 0.22F, 1.0F };
+        static constexpr ImVec4 k_cardDefaultGrayColor = { 0.22F,
+                                                           0.22F,
+                                                           0.22F,
+                                                           1.0F };
 
         static constexpr float k_cardWidth      = 100.0F;
         static constexpr float k_cardHeight     = 120.0F;

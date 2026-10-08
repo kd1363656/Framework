@@ -7,20 +7,20 @@ namespace FWK
 
 namespace FWK
 {
-    class GameObjectHierarchy
+    class GameObjectHierarchy final
     {
     public:
 
          GameObjectHierarchy() = default;
         ~GameObjectHierarchy() = default;
-    
+
         void INIT();
 
         void DeserializeScene (const nlohmann::json&              a_rootJson,
                                const nlohmann::json&              a_prefabJson,
                                const SceneGameObjectPrefabSystem& a_prefabSystem,
                                      Scene&                       a_scene);
- 
+
         void DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene);
 
         void PostDeserialize();
@@ -43,7 +43,7 @@ namespace FWK
         void ClearPrefabRemovedChildUUIDSet();
 
         void ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent);
-        
+
         void AddPrefabRemovedUUID(const boost::uuids::uuid& a_uuid);
 
         void SetOwner (const std::weak_ptr<GameObject>& a_set) { m_owner  = a_set; }

@@ -7,9 +7,9 @@ struct SkeletalAnimationModelVertex
     float3 normal;
     float4 tangent;
     float2 uv;
-    
+
     float4 boneWeight;
-    
+
     uint bonePaletteIndexZero;
     uint bonePaletteIndexOne;
     uint bonePaletteIndexTwo;
@@ -19,7 +19,7 @@ struct SkeletalAnimationModelVertex
 struct SkeletalAnimationModelBonePaletteElement
 {
     row_major float4x4 inverseBindPoseMatrix;
-    
+
     uint boneIndex;
 };
 

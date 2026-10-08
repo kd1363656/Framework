@@ -17,7 +17,7 @@ namespace FWK
         virtual void INIT();
 
         virtual void Deserialize(const nlohmann::json& a_rootJson);
-        
+
         virtual void PostDeserialize() { /*必要に応じてオーバーライドしてください*/ };
 
         virtual void EarlyUpdate   () { /*必要に応じてオーバーライドしてください*/ };
@@ -48,7 +48,7 @@ namespace FWK
 
         bool GetVALIsDisable     () const { return m_isDisable; }
         bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
-        
+
     private:
 
         std::weak_ptr<GameObject> m_owner = {};

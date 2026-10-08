@@ -1,10 +1,10 @@
-﻿#include "LightSystemJsonConverrter.h"
+﻿#include "LightSystemJsonConverter.h"
 
 void FWK::Converter::LightSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::LightSystem& a_lightSystem) const
 {
     auto& l_cbLightPass = a_lightSystem.GetMutableREFCbLightPass();
 
-    if (!l_cbLightPass) 
+    if (!l_cbLightPass)
     {
         l_cbLightPass = std::make_shared<Struct::CBLightPass>();
     }

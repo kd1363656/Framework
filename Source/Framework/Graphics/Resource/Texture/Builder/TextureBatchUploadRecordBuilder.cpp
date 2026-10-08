@@ -57,10 +57,10 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const
     //       配列数、
     //       MIP数);
     const auto& l_textureResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(a_texMetadata.format,
-                                                                    a_texMetadata.width,
-                                                                    static_cast<UINT>(a_texMetadata.height),
-                                                                    static_cast<UINT16>(a_texMetadata.arraySize),
-                                                                    static_cast<UINT16>(a_texMetadata.mipLevels));
+                                                                     a_texMetadata.width,
+                                                                     static_cast<UINT>(a_texMetadata.height),
+                                                                     static_cast<UINT16>(a_texMetadata.arraySize),
+                                                                     static_cast<UINT16>(a_texMetadata.mipLevels));
 
     // CopyCommandQueueでCopyTextureRegionのコピー先として使うため、
     // CopyCommandQueueが要求するD3D12_RESOURCE_STATE_COMMONで作成する
@@ -91,7 +91,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
     FWK_ASSERT_RETURN_VALUE_IF(!l_textureResource, "TextureResourceが作成されておらず、テクスチャサブリソースアップロード情報作成処理に失敗しました。", false);
 
     const auto& l_textureResourceDesc = l_textureResource->GetDesc();
-    const auto  l_subresourceCount    = static_cast<UINT>         (a_scratchImage.GetImageCount());
+    const auto& l_subresourceCount    = static_cast<UINT>         (a_scratchImage.GetImageCount());
 
     auto& l_textureUploadRecord = a_textureBatchUploadRecord.m_textureUploadRecord;
 
@@ -100,7 +100,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 
     // 念のため要素をclear()してからサブリソース分の容量を確保
     l_layoutList.clear ();
-    l_layoutList.resize(static_cast<size_t>(l_subresourceCount));
+    l_layoutList.resize(static_cast<std::size_t>(l_subresourceCount));
 
     // 各サブリソースの行数
     auto l_rowCountList = std::vector<UINT>(l_subresourceCount);
@@ -225,7 +225,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
         // MostDetailedMIP     : 読み始めるMIP番号
         // MIPLevels           : 読めるMIP数
         // FirstArraySlice     : Shaderから読み始めるArraySlice番号
-        // ArraySize           : Shaderから読めるArraySlice数。
+        // ArraySize           : Shaderから読めるArraySlice数
         // PlaneSlice          : 参照するPlane番号
         // ResourceMINLODCLAMP : 最小LOD制限
         l_srvDesc.Texture2DArray.MostDetailedMip     = k_mostDetailedMIP;
@@ -251,7 +251,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
     }
 
     // SRVストレージIDを格納
-    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRV用ストレージIDの確保に失敗したため、TextureSRV作成処理に失敗しました。", false);
 

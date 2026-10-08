@@ -31,7 +31,7 @@ namespace FWK::Editor
         const auto& GetREFPopupDrawer       () const { return m_popupDrawer; }
         const auto& GetREFAssetCreator      () const { return m_assetCreator; }
         const auto& GetREFDeleteConfirmPopup() const { return m_deleteConfirmPopup; }
-        
+
         const auto& GetREFCurrentSelectFolderPath() const { return m_currentSelectFolderPath; }
 
         const auto& GetREFRenameState       () const { return m_renameState; }
@@ -44,7 +44,7 @@ namespace FWK::Editor
         auto& GetMutableREFClipboard     () { return m_clipboard; }
         auto& GetMutableREFFileOperation () { return m_fileOperation; }
         auto& GetMutableREFPopupDrawer   () { return m_popupDrawer; }
-        
+
         auto& GetMutableREFRenameState       () { return m_renameState; }
         auto& GetMutableREFDeleteConfirmState() { return m_deleteConfirmState; }
 

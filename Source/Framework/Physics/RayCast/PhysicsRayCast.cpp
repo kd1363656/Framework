@@ -14,7 +14,7 @@ std::vector<FWK::Struct::PhysicsRayCastHitResult> FWK::Physics::PhysicsRayCast::
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、全BodyのRayCastに失敗しました。", l_hitResultList);
 
-    const auto  l_rayQueryObjectLayer   = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::RayQueryObject);
+    const auto& l_rayQueryObjectLayer   = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::RayQueryObject);
     const auto& l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_rayQueryObjectLayer);
     const auto& l_objectLayerFilter     = l_physicsSystem.GetDefaultLayerFilter          (l_rayQueryObjectLayer);
     const auto& l_narrowPhaseQuery      = l_physicsSystem.GetNarrowPhaseQuery            ();
@@ -69,7 +69,7 @@ FWK::Struct::PhysicsRayCastHitResult FWK::Physics::PhysicsRayCast::CastClosestHi
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、最短距離のRayCastに失敗しました。", l_hitResult);
 
-    const auto  l_rayQueryObjectLayer   = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::RayQueryObject);
+    const auto& l_rayQueryObjectLayer   = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::RayQueryObject);
     const auto& l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_rayQueryObjectLayer);
     const auto& l_objectLayerFilter     = l_physicsSystem.GetDefaultLayerFilter          (l_rayQueryObjectLayer);
     const auto& l_narrowPhaseQuery      = l_physicsSystem.GetNarrowPhaseQuery            ();
@@ -124,8 +124,9 @@ FWK::Struct::PhysicsRayCastHitResult FWK::Physics::PhysicsRayCast::CreateHitResu
 {
     Struct::PhysicsRayCastHitResult l_hitResult = {};
 
-    const auto& l_phisicsSystem     = PhysicsManager::GetInstance         ().GetREFPhysicsSystem();
-    const auto& l_bodyLockInterface = l_phisicsSystem.GetBodyLockInterface();
+    const auto& l_physicsManager    = PhysicsManager::GetInstance         ();
+    const auto& l_physicsSystem     = l_physicsManager.GetREFPhysicsSystem();
+    const auto& l_bodyLockInterface = l_physicsSystem.GetBodyLockInterface();
 
     // RayCast結果取得後にBodyが別Threadで破棄される可能性を考慮し、
     // BodyIDからBodyへアクセスする間はReadLockを取得する

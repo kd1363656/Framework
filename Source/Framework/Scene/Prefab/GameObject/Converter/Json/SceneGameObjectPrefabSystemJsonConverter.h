@@ -8,12 +8,12 @@ namespace FWK
 
 namespace FWK::Converter
 {
-    class ScenePrefabSystemJsonConverter final
+    class SceneGameObjectPrefabSystemJsonConverter final
     {
     public:
 
-         ScenePrefabSystemJsonConverter() = default;
-        ~ScenePrefabSystemJsonConverter() = default;
+         SceneGameObjectPrefabSystemJsonConverter() = default;
+        ~SceneGameObjectPrefabSystemJsonConverter() = default;
 
         void Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const;
 

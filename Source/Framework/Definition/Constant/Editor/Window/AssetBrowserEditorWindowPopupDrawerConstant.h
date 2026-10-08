@@ -4,7 +4,7 @@ namespace FWK::Constant
 {
     inline constexpr std::string_view k_imguiFontAwesomePrefabIcon = "\xEF\x86\xB3";
     inline constexpr std::string_view k_imguiFontAwesomeSceneIcon  = "\xEF\x82\xAC";
-    
+
     inline constexpr std::size_t k_imguiInputTextBufferSize = 256ULL;
 
     inline constexpr std::size_t k_inputBufferLastSizeOffsetForCopy = 1ULL;

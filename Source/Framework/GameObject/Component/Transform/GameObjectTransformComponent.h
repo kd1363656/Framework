@@ -14,7 +14,7 @@ namespace FWK
 
          GameObjectTransformComponent() = default;
         ~GameObjectTransformComponent() = default;
- 
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         void PostDeserialize();
@@ -33,7 +33,7 @@ namespace FWK
 
         void ApplyParent    ();
         void ApplyStandalone();
-        
+
         void ApplyTransformScale   (const TypeAlias::Math::Vector3&    a_scale);
         void ApplyTransformRotation(const TypeAlias::Math::Quaternion& a_rotation);
         void ApplyTransformPosition(const TypeAlias::Math::Vector3&    a_position);
@@ -61,9 +61,9 @@ namespace FWK
         auto& GetMutableREFMatrix() { return m_matrix; }
 
     private:
-    
+
         void UpdateMatrix();
-        
+
         void ConfirmMatrixFromRootToSelf() const;
 
         std::unique_ptr<GameObjectTransformComponentMatrixUpdateModeBase> m_matrixUpdateMode = nullptr;

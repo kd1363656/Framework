@@ -17,7 +17,7 @@ void FWK::Graphics::FinalPresentPass::Execute(const ResourceContext&, Renderer& 
 {
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-    // FinalPresent用のPSO/RootSignatureをセットする。
+    // FinalPresent用のPSO/RootSignatureをセットする
     const auto& l_rootSignature = SetupGraphicsRenderPipeline(Enum::PipelineStateType::FinalPresent, a_renderer).lock();
 
     FWK_ASSERT_RETURN_IF(!l_rootSignature, "FinalPresent用RootSignatureが無効のため、FinalPresentPassの実行に失敗しました。");

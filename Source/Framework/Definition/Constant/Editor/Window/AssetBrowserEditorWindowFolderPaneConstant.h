@@ -13,8 +13,8 @@ namespace FWK::Constant
                                                    0.31F,
                                                    1.00F };
 
-    inline constexpr float k_imguiInputTextHightPaddingAlignHight = 0.50F;
-    inline constexpr float k_imguiImVec4ToImU32                   = 255.0F;
+    inline constexpr float k_imguiInputTextHeightPaddingAlignHeight = 0.50F;
+    inline constexpr float k_imguiImVec4ToImU32                     = 255.0F;
 
     inline constexpr float k_imguiDragDropUpperZoneRatio = 0.33F;
 }

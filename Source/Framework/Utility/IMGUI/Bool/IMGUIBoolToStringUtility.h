@@ -2,8 +2,8 @@
 
 namespace FWK::Utility
 {
-    inline constexpr auto& IMGUIBoolToString(const bool a_flag)
+    inline constexpr auto& IMGUIBoolToString(const bool a_isTrue)
     {
-        return a_flag ? Constant::k_imguiIsTrueString : Constant::k_imguiIsFalseString;
+        return a_isTrue ? Constant::k_imguiIsTrueString : Constant::k_imguiIsFalseString;
     };
 }

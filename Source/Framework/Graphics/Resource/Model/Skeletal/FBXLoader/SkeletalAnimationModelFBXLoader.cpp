@@ -77,9 +77,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
     FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "有効なSkeletalAnimationModelMeshが存在しません。", false);
 
     // FBX内のAnimationStackをMotionSequenceへ変換する
-    FWK_ASSERT_RETURN_VALUE_IF(!m_motionExtractor.ExtractModelMotionSequenceList(l_boneNodeIndexMap, a_fbxScene, a_modelData.m_motionSequenceList),
-                                "FBXシーンからMotionSequenceListの抽出に失敗しました。",
-                                false);
+    const bool l_isExtracted = m_motionExtractor.ExtractModelMotionSequenceList(l_boneNodeIndexMap, a_fbxScene, a_modelData.m_motionSequenceList);
+
+    FWK_ASSERT_RETURN_VALUE_IF(!l_isExtracted, "FBXシーンからMotionSequenceListの抽出に失敗しました。", false);
+
     return true;
 }
 
@@ -148,7 +149,6 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
     }
 
     return true;
-
 }
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluence(const std::unordered_map<const ufbx_node*, std::uint32_t>&           a_boneNodeIndexMap,
@@ -188,13 +188,19 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
     for (std::uint32_t l_skinWeightOffset = 0U; l_skinWeightOffset < l_fbxSkinVertex.num_weights; ++l_skinWeightOffset)
     {
         // ModelVertexへ格納するInfluenceはWeightが大きい先頭4件まで
-        if (l_appliedBoneInfluenceCount >= k_maxBoneInfluenceCount) { break; }
+        if (l_appliedBoneInfluenceCount >= k_maxBoneInfluenceCount)
+        {
+            break;
+        }
 
-        const auto  l_skinWeightIndex = l_fbxSkinVertex.weight_begin + l_skinWeightOffset;
+        const auto& l_skinWeightIndex = l_fbxSkinVertex.weight_begin + l_skinWeightOffset;
         const auto& l_fbxSkinWeight   = a_fbxSkinDeformer->weights.data[l_skinWeightIndex];
 
         // Weightは降順なので0以下になった時点で終了する
-        if (l_fbxSkinWeight.weight <= k_emptyBoneWeight) { break; }
+        if (l_fbxSkinWeight.weight <= k_emptyBoneWeight)
+        {
+            break;
+        }
 
         FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinWeight.cluster_index >= a_fbxSkinDeformer->clusters.count, "SkinWeightが参照するClusterIndexが範囲外です。", false);
 
@@ -260,7 +266,7 @@ void FWK::Graphics::SkeletalAnimationModelFBXLoader::ApplyModelVertexBoneInfluen
                                                                                        const std::uint32_t                         a_bonePaletteIndex,
                                                                                              Struct::SkeletalAnimationModelVertex& a_modelVertex) const
 {
-    switch(a_slotIndex)
+    switch (a_slotIndex)
     {
         case k_firstBoneInfluenceSlot:
         {
@@ -353,10 +359,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
             if (l_faceMaterialIndex != a_materialIndex) { continue; }
         }
 
-        const auto l_triangleCount = ufbx_triangulate_face(l_triangleIndexList.data(),
-                                                           l_triangleIndexList.size(),
-                                                           l_fbxMesh,
-                                                           l_fbxFace);
+        const auto& l_triangleCount = ufbx_triangulate_face(l_triangleIndexList.data(),
+                                                            l_triangleIndexList.size(),
+                                                            l_fbxMesh,
+                                                            l_fbxFace);
 
         for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
         {
@@ -370,10 +376,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
                 Struct::SkeletalAnimationModelVertex l_modelVertex = {};
 
                 // 頂点はMeshローカル空間のまま保持する
-                l_modelVertex.m_position = FetchLocalVertexPosition(l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_uv       = FetchVertexUV           (l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_normal   = FetchLocalVertexNormal  (l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_tangent  = FetchLocalVertexTangent (l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_position = FetchVALLocalVertexPosition(l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_uv       = FetchVALVertexUV           (l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_normal   = FetchVALLocalVertexNormal  (l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_tangent  = FetchVALLocalVertexTangent (l_fbxMesh, l_fbxVertexIndex);
 
                 FWK_ASSERT_RETURN_VALUE_IF(!ApplyModelVertexBoneInfluence(a_boneNodeIndexMap,
                                                                           l_fbxMesh,
@@ -397,7 +403,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
 
 bool FWK::Graphics::SkeletalAnimationModelFBXLoader::NormalizeModelVertexBoneWeight(Struct::SkeletalAnimationModelVertex& a_modelVertex) const
 {
-    const auto l_boneWeightSum = a_modelVertex.m_boneWeight.x + a_modelVertex.m_boneWeight.y + a_modelVertex.m_boneWeight.z + a_modelVertex.m_boneWeight.w;
+    const auto& l_boneWeightSum = a_modelVertex.m_boneWeight.x + a_modelVertex.m_boneWeight.y + a_modelVertex.m_boneWeight.z + a_modelVertex.m_boneWeight.w;
 
     FWK_ASSERT_RETURN_VALUE_IF(l_boneWeightSum <= k_emptyBoneWeight, "ModelVertexのBoneWeight合計が0以下です。", false);
 
@@ -409,7 +415,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::NormalizeModelVertexBoneWei
     return true;
 }
 
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchLocalVertexPosition(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchVALLocalVertexPosition(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点座標の取得に失敗しました。", {});
 
@@ -417,7 +423,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::Fe
 
     return Utility::ConvertUFBXVector3ToVector3(l_localPosition);
 }
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchLocalVertexNormal(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchVALLocalVertexNormal(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点法線の取得に失敗しました。", {});
 
@@ -428,7 +434,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::SkeletalAnimationModelFBXLoader::Fe
 
     return Utility::ConvertUFBXVector3ToVector3(l_normalizedNormal);
 }
-FWK::TypeAlias::Math::Vector4 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchLocalVertexTangent(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector4 FWK::Graphics::SkeletalAnimationModelFBXLoader::FetchVALLocalVertexTangent(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ローカル頂点接線の取得に失敗しました。", {});
 

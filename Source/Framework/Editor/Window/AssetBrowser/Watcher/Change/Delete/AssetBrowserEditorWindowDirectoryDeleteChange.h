@@ -21,9 +21,9 @@ namespace FWK::Editor
                                      AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
         void ApplySceneDelete(const std::filesystem::path&  a_deleteFilePath,
-                               const boost::uuids::uuid&    a_sceneUUID,
-                                     AssetFilePathRegistry& a_assetFilePathRegistry,
-                                     SceneManager&          a_sceneManager) const;
+                              const boost::uuids::uuid&    a_sceneUUID,
+                                    AssetFilePathRegistry& a_assetFilePathRegistry,
+                                    SceneManager&          a_sceneManager) const;
 
 
         void ApplyDirectoryDelete(const std::filesystem::path& a_deleteFilePath, AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager) const;

@@ -12,7 +12,7 @@ void FWK::Converter::FrameResourceJsonConverter::Deserialize(const nlohmann::jso
     }
 
     // レンダーグラフ用レンダーターゲットテクスチャのデシリアライズ
-    if (const auto& l_json = a_rootJson.value(k_renderGraphFrameResourceJsonkey, nlohmann::json{});
+    if (const auto& l_json = a_rootJson.value(k_renderGraphFrameResourceJsonKey, nlohmann::json{});
         !l_json.is_null())
     {
         auto& l_renderGraphFrameResource = a_frameResource.GetMutableREFRenderGraphFrameResource();
@@ -31,7 +31,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::Serialize(const Graph
     l_rootJson[k_dynamicBufferUploaderListJsonKey] = SerializeDynamicBuffer(a_frameResource);
 
     // レンダーグラフ用レンダーターゲットテクスチャのシリアライズ
-    l_rootJson[k_renderGraphFrameResourceJsonkey] = l_renderGraphFrameResource.Serialize();
+    l_rootJson[k_renderGraphFrameResourceJsonKey] = l_renderGraphFrameResource.Serialize();
 
     return l_rootJson;
 }

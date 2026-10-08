@@ -58,7 +58,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserE
         ImGui::OpenPopup(k_titleLabel.data());
 
         l_deleteConfirmState.m_isOpenRequested = false;
-        l_isOpenPopup = true;
+        l_isOpenPopup                          = true;
     }
 
     // キャンセルボタンの横幅を事前に決める
@@ -118,7 +118,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::Draw(AssetBrowserE
 
     // 削除/キャンセルボタン描画 + ホバー状態更新
     // DrawButtonsは描画結果をButtonDrawResult構造体で値返しする
-    const auto l_buttonDrawResult = DrawButtons(l_cancelButtonWidth, l_deleteConfirmState);
+    const auto& l_buttonDrawResult = DrawButtons(l_cancelButtonWidth, l_deleteConfirmState);
 
     // Enter/クリックで確定
     HandleConfirm(l_buttonDrawResult, a_editorWindow, l_deleteConfirmState);
@@ -147,7 +147,7 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     ButtonDrawResult l_result = {};
 
     // ボタン行を描画し始める地点のX座標を保持する
-    //この位置はPopupのコンテンツ領域左端になる
+    // この位置はPopupのコンテンツ領域左端になる
     const float l_buttonRowStartX = ImGui::GetCursorPosX();
 
     // 現在位置から使用可能なコンテンツ領域横幅を取得する
@@ -184,7 +184,7 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     else if (l_isDeleteSelected)
     {
         ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);   
+        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);
     }
 
     l_result.m_isDeleteClicked = ImGui::Button(k_deleteLabel.data());
@@ -211,9 +211,9 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     // コンテンツ領域右端         = ボタン行開始X + コンテンツ領域幅
     // キャンセルボタン左幅       = コンテンツ領域右幅 + キャンセルボタン幅
     // 従ってキャンセルボタン右端 = ChildWindow右端となる
-    const float l_cancelButtonnPositionX = l_buttonRowStartX + l_contentRegionWidth - a_cancelButtonWidth;
+    const float l_cancelButtonPositionX = l_buttonRowStartX + l_contentRegionWidth - a_cancelButtonWidth;
 
-    ImGui::SetCursorPosX(l_cancelButtonnPositionX);
+    ImGui::SetCursorPosX(l_cancelButtonPositionX);
 
     // キャンセルボタン
     // ホバー中         : 内部をStrongBlueTranslucentで着色 + 縁をStrongBlueで着色
@@ -223,18 +223,18 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     {
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered,        Constant::k_imguiAccentTranslucentColor);
         ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);      
+        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);
     }
     else if (l_isCancelSelected)
     {
         ImGui::PushStyleColor(ImGuiCol_Border,               Constant::k_imguiAccentColor);
-        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);  
+        ImGui::PushStyleVar  (ImGuiStyleVar_FrameBorderSize, k_buttonFrameBorderSize);
     }
 
     l_result.m_isCancelClicked = ImGui::Button(k_cancelLabel.data());
 
     // キャンセルボタンのホバー判定を取得
-    const bool l_isCancelItermHovered = ImGui::IsItemHovered();
+    const bool l_isCancelItemHovered = ImGui::IsItemHovered();
 
     if (l_isCancelHovered)
     {
@@ -255,7 +255,7 @@ FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::ButtonDrawResult FWK::E
     {
         a_deleteConfirmState.m_mouseHoveredButton = Enum::AssetBrowserDeleteConfirmSelectedButton::Delete;
     }
-    else if (l_isCancelItermHovered)
+    else if (l_isCancelItemHovered)
     {
         a_deleteConfirmState.m_mouseHoveredButton = Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
     }

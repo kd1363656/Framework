@@ -114,12 +114,12 @@ void FWK::Converter::RendererJsonConverter::DeserializeRootSignatureMap(const nl
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson))
     {
-         return; 
+         return;
     }
-    
+
     for (const auto& l_json : a_rootJson)
     {
-        const auto l_rootSignatureType = l_json.value(k_rootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
+        const auto& l_rootSignatureType = l_json.value(k_rootSignatureTypeJsonKey, Enum::RootSignatureType::Invalid);
 
         if (l_rootSignatureType == Enum::RootSignatureType::Invalid ||
             !l_json.contains(k_rootSignatureJsonKey))
@@ -145,7 +145,7 @@ void FWK::Converter::RendererJsonConverter::DeserializePipelineStateMap(const nl
 
     for (const auto& l_json : a_rootJson)
     {
-        const auto l_pipelineStateType = l_json.value(k_pipelineStateTypeJsonKey, Enum::PipelineStateType::Invalid);
+        const auto& l_pipelineStateType = l_json.value(k_pipelineStateTypeJsonKey, Enum::PipelineStateType::Invalid);
 
         if (l_pipelineStateType == Enum::PipelineStateType::Invalid ||
             !l_json.contains(k_pipelineStateJsonKey))

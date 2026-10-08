@@ -29,7 +29,7 @@ void FWK::AudioManager::INIT()
     // リスナーの方向を真正面にしておく
     m_audioListener.OrientFront = TypeAlias::Math::Vector3::Forward;
 
-    FWK_ASSERT_RETURN_IF(!CreateAudioEngine(), "AudioEngineの作成に失敗しました");
+    FWK_ASSERT_RETURN_IF(!CreateAudioEngine(), "AudioEngineの作成に失敗しました。");
 }
 
 void FWK::AudioManager::LoadCONFIG()
@@ -143,10 +143,10 @@ std::weak_ptr<FWK::SoundEffect> FWK::AudioManager::AddSoundEffect(const std::fil
     if (!m_audioEngine) { return {}; }
 
     // もし同じFilePathのSoundEffectが既にマップに含まれていたら対応するSoundEffectを返す
-    if (const auto& l_itr = m_soundEffectMap.find(a_filePath);
-        l_itr != m_soundEffectMap.end())
+    if (const auto& l_soundEffectITR = m_soundEffectMap.find(a_filePath);
+        l_soundEffectITR != m_soundEffectMap.end())
     {
-        return l_itr->second;
+        return l_soundEffectITR->second;
     }
 
     if (a_filePath.empty() ||

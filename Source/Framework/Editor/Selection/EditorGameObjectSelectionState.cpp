@@ -3,9 +3,9 @@
 void FWK::Editor::EditorGameObjectSelectionState::SelectSingleGameObject(const std::weak_ptr<GameObject>& a_gameObject)
 {
     if (const auto& l_gameObject = a_gameObject;
-        l_gameObject.expired()) 
+        l_gameObject.expired())
     {
-        return; 
+        return;
     }
 
     // 複数選択していた場合ように複数選択をクリアしてから
@@ -23,11 +23,11 @@ void FWK::Editor::EditorGameObjectSelectionState::SelectGameObjectRange(const st
     // 範囲選択は表示順に並んだ範囲をそのまま選択状態へ置き換える
     // アンカーは更新しない(開始地点が動くと連続したShift選択ができなくなるため)
     m_selectedGameObjectList.clear();
- 
+
     for (const auto& l_gameObject : a_gameObjectList)
     {
         if (l_gameObject.expired()) { continue; }
- 
+
         m_selectedGameObjectList.emplace_back(l_gameObject);
     }
 }
@@ -37,7 +37,7 @@ void FWK::Editor::EditorGameObjectSelectionState::ToggleSelectedGameObject(const
     if (const auto& l_gameObject = a_gameObject;
         l_gameObject.expired())
     {
-        return; 
+        return;
     }
 
     // Ctrl + クリックで選択済みなら解除、未選択なら追加
@@ -67,9 +67,9 @@ void FWK::Editor::EditorGameObjectSelectionState::AddSelectedGameObject(const st
 void FWK::Editor::EditorGameObjectSelectionState::RemoveSelectedGameObject(const std::weak_ptr<GameObject>& a_gameObject)
 {
     const auto& l_gameObject = a_gameObject.lock();
- 
+
     if (!l_gameObject) { return; }
- 
+
     // weak_ptr同士は直接比較できないため
     // lock()したshared_ptrのアドレスで同一性を判定する
     std::erase_if(m_selectedGameObjectList,
@@ -92,13 +92,14 @@ void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
     // Undoで生成が取り消されたGameObjectはコマンドがshared_ptrを保持し続けるため
     // 実体が消えずlock()も成功するが、SceneのUUIDRegistryからは外れている
     // 「シーン管理下にあるか」をRegistry解決で判定して選択対象から外す
-    const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+    const auto& l_sceneManager = SceneManager::GetInstance ();
+    const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
     std::erase_if(m_selectedGameObjectList,
                   [&l_scene](const auto& a_gameObjectWeak)
                   {
                       const auto& l_gameObject = a_gameObjectWeak.lock();
- 
+
                       // Destroy()されたGameObjectはScene::EarlyUpdateでリストから外れるまで
                       // 生存しているためexpiredだけでなくIsDestroyedも判定対象にする
                       if (!l_gameObject ||
@@ -106,16 +107,16 @@ void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
                       {
                           return true;
                       }
- 
+
                       // Sceneそのものが無ければ全て無効扱い
                       if (!l_scene) { return true; }
- 
+
                       // シーンのUUIDRegistryで自分自身が解決できるか確認する
                       // 取り外されたGameObjectはRegistryから消えているため
                       // 同一UUIDで検索しても自分が返らない
                       return l_scene->FindVALGameObject(l_gameObject->GetREFSceneInstanceUUID()).lock() != l_gameObject;
                   });
- 
+
     // アンカーも同じ判定で確認する
     if (const auto& l_anchor = m_rangeSelectionAnchor.lock();
         !l_anchor                     ||
@@ -132,30 +133,30 @@ void FWK::Editor::EditorGameObjectSelectionState::RestoreState(const std::vector
     // SceneManager経由で現在のSceneを取得する
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
- 
+
     // 選択リストをクリアしてからUUIDリストから再構築する
     m_selectedGameObjectList.clear  ();
     m_selectedGameObjectList.reserve(a_uuidList.size());
- 
+
     for (const auto& l_uuid : a_uuidList)
     {
         // nil UUIDは無視する
         if (l_uuid.is_nil()) { continue; }
- 
+
         const auto& l_gameObject = l_scene->FindVALGameObject(l_uuid).lock();
- 
+
         // 破棄済みまたは存在しないGameObjectは選択対象から外す
         if (!l_gameObject ||
             l_gameObject->GetVALIsDestroyed())
         {
             continue;
         }
- 
+
         m_selectedGameObjectList.emplace_back(l_gameObject);
     }
- 
+
     // アンカーUUIDからGameObjectを検索して設定する
     if (!a_anchorUUID.is_nil())
     {
@@ -177,9 +178,9 @@ std::weak_ptr<FWK::GameObject> FWK::Editor::EditorGameObjectSelectionState::Find
 bool FWK::Editor::EditorGameObjectSelectionState::FindVALIsSelected(const std::weak_ptr<GameObject>& a_gameObject) const
 {
     const auto& l_gameObject = a_gameObject.lock();
- 
+
     if (!l_gameObject) { return false; }
- 
+
     // std::ranges::anu_ofでリスト内に同じアドレスを持つ要素があるか確認する
     return std::ranges::any_of(m_selectedGameObjectList,
                                [&l_gameObject](const auto& a_selectedGameObjectWeak)

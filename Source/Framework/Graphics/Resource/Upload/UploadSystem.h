@@ -24,8 +24,8 @@ namespace FWK::Graphics
 
     private:
 
-        void BeforSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
-        void AfterSubmitResourceProcess(      TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
+        void BeforeSubmitResourceProcess(const TypeAlias::CopyCommandAllocator& a_copyCommandAllocator);
+        void AfterSubmitResourceProcess (      TypeAlias::CopyCommandAllocator&  a_copyCommandAllocator);
 
         void RecordTextureCopy(const std::vector<D3D12_PLACED_SUBRESOURCE_FOOTPRINT>& a_layoutList,          const TypeAlias::ComPtr<ID3D12Resource2>& a_textureResource, const TypeAlias::ComPtr<ID3D12Resource2>& a_uploadBuffer) const;
         void RecordBufferCopy (const Struct::BufferUploadCommand&                     a_bufferUploadCommand)                                                                                                                        const;

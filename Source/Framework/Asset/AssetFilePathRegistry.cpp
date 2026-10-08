@@ -2,8 +2,8 @@
 
 void FWK::AssetFilePathRegistry::INIT()
 {
-    m_assetFilePathToUUIDMap.clear ();
-    m_uuidToAssetFilePathData.clear();
+    m_assetFilePathToUUIDMap.clear    ();
+    m_uuidToAssetFilePathDataMap.clear();
 
     m_jsonConverter = {};
 }
@@ -47,7 +47,7 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
     }
 
     if (Struct::AssetFilePathData l_assetFilePathData = { a_assetFilePath, a_assetFilePathRegisterType };
-        !m_uuidToAssetFilePathData.try_emplace(a_assetUUID, l_assetFilePathData).second)
+        !m_uuidToAssetFilePathDataMap.try_emplace(a_assetUUID, l_assetFilePathData).second)
     {
         // 2爪のMap登録に失敗したら一つ目のマップから削除
         m_assetFilePathToUUIDMap.erase(a_assetFilePath);
@@ -93,10 +93,10 @@ bool FWK::AssetFilePathRegistry::ReplaceFilePath(const std::filesystem::path& a_
     l_filePathNode.key() = a_newAssetFilePath;
 
     // UUID -> AssetFilePathData側も同じUUIDを使って検索する
-    const auto& l_assetUUID            = l_filePathNode.mapped         ();
-    const auto& l_assetFilePathDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
+    const auto& l_assetUUID            = l_filePathNode.mapped            ();
+    const auto& l_assetFilePathDataITR = m_uuidToAssetFilePathDataMap.find(l_assetUUID);
 
-    if (l_assetFilePathDataITR == m_uuidToAssetFilePathData.end()) 
+    if (l_assetFilePathDataITR == m_uuidToAssetFilePathDataMap.end())
     {
         // 内部Registryの対応関係がおかしいので
         // Keyを書き換える前のPathへ戻してRegistryへ復元する
@@ -124,9 +124,9 @@ bool FWK::AssetFilePathRegistry::Erase(const std::filesystem::path& a_assetFileP
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、AssetFilePathRegistryから削除できませんでした。", false);
 
-    const auto& l_itr = m_assetFilePathToUUIDMap.find(a_assetFilePath);
+    const auto& l_assetFilePathToUUIDITR = m_assetFilePathToUUIDMap.find(a_assetFilePath);
 
-    if (l_itr == m_assetFilePathToUUIDMap.end())
+    if (l_assetFilePathToUUIDITR == m_assetFilePathToUUIDMap.end())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "指定されたAssetFilePathがAssetFilePathRegistryへ登録されていません。");
 
@@ -134,10 +134,10 @@ bool FWK::AssetFilePathRegistry::Erase(const std::filesystem::path& a_assetFileP
     }
 
     // UUID重複確認用Setから削除予定のマップのUUIDを削除
-    auto l_uuid = l_itr->second;
+    auto l_uuid = l_assetFilePathToUUIDITR->second;
 
-    m_uuidToAssetFilePathData.erase(l_uuid);
-    m_assetFilePathToUUIDMap.erase (l_itr);
+    m_uuidToAssetFilePathDataMap.erase(l_uuid);
+    m_assetFilePathToUUIDMap.erase    (l_assetFilePathToUUIDITR);
 
     return true;
 }
@@ -146,24 +146,24 @@ const boost::uuids::uuid* FWK::AssetFilePathRegistry::FindPTRAssetUUID(const std
 {
     if (a_assetFilePath.empty()) { return nullptr; }
 
-    const auto& l_itr = m_assetFilePathToUUIDMap.find(a_assetFilePath);
+    const auto& l_assetFilePathToUUIDITR = m_assetFilePathToUUIDMap.find(a_assetFilePath);
 
-    if (l_itr == m_assetFilePathToUUIDMap.end()) { return nullptr; }
+    if (l_assetFilePathToUUIDITR == m_assetFilePathToUUIDMap.end()) { return nullptr; }
 
-    return &l_itr->second;
+    return &l_assetFilePathToUUIDITR->second;
 }
 const FWK::Struct::AssetFilePathData* FWK::AssetFilePathRegistry::FindPTRAssetFilePathData(const boost::uuids::uuid& a_uuid) const
 {
     if (a_uuid.is_nil()) { return nullptr; }
 
-    const auto& l_itr = m_uuidToAssetFilePathData.find(a_uuid);
+    const auto& l_uuidToAssetFilePathDataITR = m_uuidToAssetFilePathDataMap.find(a_uuid);
 
-    if (l_itr == m_uuidToAssetFilePathData.end()) { return nullptr; }
+    if (l_uuidToAssetFilePathDataITR == m_uuidToAssetFilePathDataMap.end()) { return nullptr; }
 
-    return &l_itr->second;
+    return &l_uuidToAssetFilePathDataITR->second;
 }
 
 bool FWK::AssetFilePathRegistry::ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const
 {
-    return m_uuidToAssetFilePathData.contains(a_assetUUID);
+    return m_uuidToAssetFilePathDataMap.contains(a_assetUUID);
 }

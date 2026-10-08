@@ -13,28 +13,28 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     {
         g_modelVisibleMeshletCount = k_modelAmplificationInitialVisibleMeshletCount;
     }
-    
+
     // 初期化が完了するまで全threadを待機させる
     GroupMemoryBarrierWithGroupSync();
-    
+
     // 1つのthreadが1つのMeshletを担当する
     const uint l_meshletIndex   = a_dispatchThreadID.x;
           bool l_shouldDispatch = false;
-    
+
     // 最後のASGroupで範囲外となるThreadは、
     // 動的MeshletBoundsBufferへアクセスさせない
     if (l_meshletIndex < g_meshletCount)
     {
         l_shouldDispatch = ShouldDispatchModelMeshlet(l_meshletIndex);
     }
-    
+
     if (l_shouldDispatch)
     {
         uint l_payloadMeshletIndex = k_modelAmplificationInitialVisibleMeshletCount;
-        
+
         // 可視Meshletを書き込むPayload配列位置を確認する
         InterlockedAdd(g_modelVisibleMeshletCount, k_modelAmplificationVisibleMeshletCountIncrement, l_payloadMeshletIndex);
-        
+
         g_modelAmplificationPayload.meshletIndexList[l_payloadMeshletIndex] = l_meshletIndex;
     }
 

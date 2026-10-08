@@ -29,7 +29,7 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupBackBufferRenderTarget(const
     const auto& l_swapChain         = a_renderer.GetREFSwapChain        ();
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-    const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
     const auto& l_backBufferList  = l_swapChain.GetREFBackBufferList          ();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferの描画先設定に失敗しました。",      false);

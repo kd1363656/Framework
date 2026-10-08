@@ -7,7 +7,7 @@ namespace FWK::Editor
 
 namespace FWK::Converter
 {
-    class MainMenuBarEditorJsonConverter
+    class MainMenuBarEditorJsonConverter final
     {
     public:
 

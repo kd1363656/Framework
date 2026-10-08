@@ -2,13 +2,13 @@
 
 namespace FWK
 {
-    class AssetFilePath
+    class AssetFilePath final
     {
     public:
 
          AssetFilePath() = default;
         ~AssetFilePath() = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         nlohmann::json Serialize() const;
@@ -29,7 +29,7 @@ namespace FWK
         bool GetVALIsFilePathChangedDirty() const { return m_isFilePathChangedDirty; }
 
     private:
-    
+
 
         std::filesystem::path m_allowedFileExtension = {};
         std::filesystem::path m_assetFilePath        = {};

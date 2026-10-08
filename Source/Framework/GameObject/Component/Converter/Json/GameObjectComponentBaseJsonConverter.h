@@ -15,9 +15,9 @@ namespace FWK::Converter
         ~GameObjectComponentBaseJsonConverter() = default;
 
         void Deserialize(const nlohmann::json& a_rootJson, GameObjectComponentBase& a_gameObjectComponentBase) const;
-        
+
         nlohmann::json Serialize(const GameObjectComponentBase& a_gameObjectComponentBase) const;
-        
+
     private:
 
         static constexpr std::string_view k_uuidKey               = "UUID";

@@ -23,10 +23,10 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
         if (!l_staticModelRecord) { continue; }
 
         const auto& l_modelData            = l_staticModelRecord->GetREFModelData    ();
-        const float l_worldMaxScale        = Utility::CalculateWorldMaxScale         (l_drawRequest->m_worldMatrix);
+        const float l_worldMAXScale        = Utility::CalculateWorldMAXScale         (l_drawRequest->m_worldMatrix);
         const float l_worldOrientationSign = l_drawRequest->m_worldMatrix.Determinant() < Constant::k_modelWorldOrientationDeterminantBoundary ? Constant::k_mirrorModelWorldOrientationSign : Constant::k_normalModelWorldOrientationSign;
 
-        for(const auto& l_modelMesh : l_modelData.m_modelMeshList)
+        for (const auto& l_modelMesh : l_modelData.m_modelMeshList)
         {
             // メッシュ単位で実行
             const auto& l_modelMeshletData         = l_modelMesh.m_modelMeshletData;
@@ -34,11 +34,11 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
             const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
             const auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
 
-            FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、StaticModelのPerObject定数バッファを設定できませんでした");
+            FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、StaticModelのPerObject定数バッファの設定に失敗しました。");
 
             Struct::CBModelPerObject l_cbModelPerObject = {};
 
-            const auto l_meshletCount = static_cast<UINT>(l_modelMeshletData.m_meshletList.size());
+            const auto& l_meshletCount = static_cast<UINT>(l_modelMeshletData.m_meshletList.size());
 
             // モデル1体ごとのワールド行列
             l_cbModelPerObject.m_worldMatrix = l_drawRequest->m_worldMatrix;
@@ -48,7 +48,7 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
             l_cbModelPerObject.m_worldInverseTransposeMatrix = l_drawRequest->m_worldInverseTransposeMatrix;
 
             // MehsletBoundsのradiusをWorld空間へ変換するための最大スケール
-            l_cbModelPerObject.m_worldMaxScale = l_worldMaxScale;
+            l_cbModelPerObject.m_worldMAXScale = l_worldMAXScale;
 
             // ObjectのWorldTransformがMirror状態なら-1
             // 通常なら+1をシェーダーに送る
@@ -76,10 +76,10 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
             FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_primitiveIndexBufferSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "PrimitiveIndexBufferのSRVDescriptorIndexが無効です。");
             FWK_ASSERT_RETURN_IF(l_cbModelPerObject.m_meshletBoundsBufferSRVDescriptorIndex     == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBoundsBufferのSRVDescriptorIndexが無効です。");
 
-            const auto l_baseColorTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
-            const auto l_normalTextureSRVDescriptorIndex    = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
-            const auto l_metallicTextureSRVDescriptorIndex  = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
-            const auto l_roughnessTextureSRVDescriptorIndex = FetchTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
+            const auto& l_baseColorTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_baseColorTexture);
+            const auto& l_normalTextureSRVDescriptorIndex    = FetchVALTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_normalTexture);
+            const auto& l_metallicTextureSRVDescriptorIndex  = FetchVALTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_metallicTexture);
+            const auto& l_roughnessTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(l_modelMaterialRuntimeData.m_roughnessTexture);
 
             FWK_ASSERT_RETURN_IF(l_baseColorTextureSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BaseColorTextureのSRVDescriptorIndexが無効です。");
             FWK_ASSERT_RETURN_IF(l_normalTextureSRVDescriptorIndex    == DescriptorHeap::k_invalidDescriptorIndex, "NormalTextureのSRVDescriptorIndexが無効です。");
@@ -118,7 +118,7 @@ bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const
 
     FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "Meshletが存在しないため、StaticModelを描画できませんでした。", false);
 
-    const auto l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
+    const auto& l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
 
     // 1つのAmplificationShaderGroupが、
     // 32個のMeshletを並列に処理する
@@ -126,7 +126,7 @@ bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const
 
     // Meshlet数が32の倍数でない場合は、
     // 余ったMeshletを処理するGroupを1つ追加する
-    if (const auto l_meshletCountRemainder = l_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup;
+    if (const auto& l_meshletCountRemainder = l_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup;
         l_meshletCountRemainder != Constant::k_noRemainder)
     {
         ++l_amplificationShaderGroupCount;

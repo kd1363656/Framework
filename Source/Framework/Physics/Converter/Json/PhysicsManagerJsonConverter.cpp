@@ -1,6 +1,6 @@
-﻿#include "PhysicsManagerConverterJson.h"
+﻿#include "PhysicsManagerJsonConverter.h"
 
-void FWK::Converter::PhyisicsManagerJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Physics::PhysicsManager& a_physicsManager) const
+void FWK::Converter::PhysicsManagerJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Physics::PhysicsManager& a_physicsManager) const
 {
     if (a_rootJson.is_null()) { return; }
 
@@ -9,7 +9,7 @@ void FWK::Converter::PhyisicsManagerJsonConverter::Deserialize(const nlohmann::j
     a_physicsManager.SetIsDisableDebugDraw(l_isDisableDebugDrawJsonKey);
 }
 
-nlohmann::json FWK::Converter::PhyisicsManagerJsonConverter::Serialize(const Physics::PhysicsManager& a_physicsManager) const
+nlohmann::json FWK::Converter::PhysicsManagerJsonConverter::Serialize(const Physics::PhysicsManager& a_physicsManager) const
 {
     nlohmann::json l_rootJson = {};
 

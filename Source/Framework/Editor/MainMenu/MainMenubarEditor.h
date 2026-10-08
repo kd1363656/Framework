@@ -2,7 +2,7 @@
 
 namespace FWK::Editor
 {
-    class MainMenuBarEditor
+    class MainMenuBarEditor final
     {
     public:
 

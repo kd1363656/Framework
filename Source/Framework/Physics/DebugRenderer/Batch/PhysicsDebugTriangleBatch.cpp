@@ -106,7 +106,7 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
 
             FWK_ASSERT_RETURN("PhysicsDebug用IndexがVertex数の範囲を超えています。");
         }
-        
+
         auto& l_triangle = m_triangleList[l_triangleIndex];
 
         // インデックスから頂点を取得

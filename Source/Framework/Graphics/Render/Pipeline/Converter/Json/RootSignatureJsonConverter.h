@@ -74,7 +74,7 @@ namespace FWK::Converter
         static constexpr FLOAT k_defaultStaticSamplerMIPLODBias = 0.0F;
         static constexpr FLOAT k_defaultMINLOD                  = 0.0F;
 
-        static constexpr UINT k_defaultRootConstantsNum32BitValues = 0U;
+        static constexpr UINT k_defaultRootConstantsNUM32BitValues = 0U;
 
         static constexpr UINT k_defaultStaticSamplerMAXAnisotropy = 1U;
 

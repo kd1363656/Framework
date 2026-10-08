@@ -61,10 +61,10 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResourc
     if (!a_resourceAccess.m_isBackBuffer) { return false; }
 
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
-    const auto  l_afterState        = ConvertVALD3D12ResourceState      (a_usage);
+    const auto& l_afterState        = ConvertVALD3D12ResourceState      (a_usage);
           auto& l_swapChain         = a_renderer.GetMutableREFSwapChain ();
 
-    const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList   ();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(),                                            "BackBufferListが空のため、BackBufferの自動リソース遷移に失敗しました。",      true);
@@ -100,8 +100,8 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionRenderTargetPassT
 
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-    const auto l_beforeState = l_renderTargetTexture.GetVALCurrentResourceState();
-    const auto l_afterState  = ConvertVALD3D12ResourceState                    (a_usage);
+    const auto& l_beforeState = l_renderTargetTexture.GetVALCurrentResourceState();
+    const auto& l_afterState  = ConvertVALD3D12ResourceState                    (a_usage);
 
     // 既に必要な状態ならResourceBarrierは不要
     if (l_beforeState == l_afterState) { return true; }
@@ -135,8 +135,8 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionDepthStencilPassT
 
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-    const auto l_beforeState = l_depthStencilTexture.GetVALCurrentResourceState();
-    const auto l_afterState  = ConvertVALD3D12ResourceState                    (a_usage);
+    const auto& l_beforeState = l_depthStencilTexture.GetVALCurrentResourceState();
+    const auto& l_afterState  = ConvertVALD3D12ResourceState                    (a_usage);
 
     if (l_beforeState == l_afterState) { return true; }
 
@@ -161,8 +161,8 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionShadowMapResource
     FWK_ASSERT_RETURN_VALUE_IF(!l_gpuResource.m_resource, "CascadeShadowMapのGPUResourceが無効のため、自動リソース遷移に失敗しました。", true);
 
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList              ();
-    const auto  l_beforeState       = l_depthStencilTexture.GetVALCurrentResourceState();
-    const auto  l_afterState        = ConvertVALD3D12ResourceState                    (a_usage);
+    const auto& l_beforeState       = l_depthStencilTexture.GetVALCurrentResourceState();
+    const auto& l_afterState        = ConvertVALD3D12ResourceState                    (a_usage);
 
     // Texture2DArray全体が同じ用途で使われるため、
     // Resource全体を一度に遷移する

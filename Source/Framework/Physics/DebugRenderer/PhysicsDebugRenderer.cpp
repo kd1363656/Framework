@@ -3,7 +3,7 @@
 FWK::Physics::PhysicsDebugRenderer::PhysicsDebugRenderer() :
     m_debugRendererQueue()
 {
-    // JoltのDebugRendererは、派生クラスのコンストラクタでInitialize()を呼ぶ必要がある。
+    // JoltのDebugRendererは、派生クラスのコンストラクタでInitialize()を呼ぶ必要がある
     // これによりJoltの内部のDebugRenderer::sInstanceなどが準備される
     Initialize();
 }
@@ -71,7 +71,7 @@ void FWK::Physics::PhysicsDebugRenderer::DrawGeometry(      JPH::RMat44Arg      
     FWK_ASSERT_RETURN_IF(!a_geometryREF.GetPtr(),      "PhysicsDebug用Geometryが無効なため、DrawGeometryに失敗しました。");
     FWK_ASSERT_RETURN_IF(a_geometryREF->mLODs.empty(), "PhysicsDebug用GeometryにLODが存在しません。");
 
-    // 最も表際なLODを使用する。
+    // 最も表際なLODを使用する
     const auto& l_lod = a_geometryREF->mLODs.back();
 
     FWK_ASSERT_RETURN_IF(!l_lod.mTriangleBatch.GetPtr(), "PhysicsDebug用TriangleBacthが無効です。");

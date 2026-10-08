@@ -35,31 +35,31 @@ void FWK::Editor::EditorCamera::HandleInput(const bool a_isHovered)
     auto l_localDirection = TypeAlias::Math::Vector3::Zero;
 
     // X軸Z軸に移動
-    if (ImGui::IsKeyDown(ImGuiKey_W)) 
+    if (ImGui::IsKeyDown(ImGuiKey_W))
     {
-        l_localDirection.z += TypeAlias::Math::Vector3::UnitZ.z; 
+        l_localDirection.z += TypeAlias::Math::Vector3::UnitZ.z;
     }
     if (ImGui::IsKeyDown(ImGuiKey_S))
     {
-        l_localDirection.z -= TypeAlias::Math::Vector3::UnitZ.z; 
+        l_localDirection.z -= TypeAlias::Math::Vector3::UnitZ.z;
     }
     if (ImGui::IsKeyDown(ImGuiKey_D))
     {
-        l_localDirection.x += TypeAlias::Math::Vector3::UnitX.x; 
+        l_localDirection.x += TypeAlias::Math::Vector3::UnitX.x;
     }
     if (ImGui::IsKeyDown(ImGuiKey_A))
     {
-        l_localDirection.x -= TypeAlias::Math::Vector3::UnitX.x; 
+        l_localDirection.x -= TypeAlias::Math::Vector3::UnitX.x;
     }
-    
+
     // Y軸に移動
-    if (ImGui::IsKeyDown(ImGuiKey_E)) 
+    if (ImGui::IsKeyDown(ImGuiKey_E))
     {
-        l_localDirection.y += TypeAlias::Math::Vector3::UnitY.y; 
+        l_localDirection.y += TypeAlias::Math::Vector3::UnitY.y;
     }
     if (ImGui::IsKeyDown(ImGuiKey_Q))
     {
-        l_localDirection.y -= TypeAlias::Math::Vector3::UnitY.y; 
+        l_localDirection.y -= TypeAlias::Math::Vector3::UnitY.y;
     }
 
     // 何も押されていない場合は、移動しない

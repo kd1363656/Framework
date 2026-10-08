@@ -7,7 +7,7 @@ namespace FWK::Editor
 
 namespace FWK::Converter
 {
-    class AssetBrowserEditorWindowJsonConverter
+    class AssetBrowserEditorWindowJsonConverter final
     {
     public:
 

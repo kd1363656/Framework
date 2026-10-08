@@ -48,7 +48,7 @@ private:
     inline static const std::wstring k_windowClassName = L"Window";
 
     inline static const std::filesystem::path k_configFileIOPath       = "CONFIG/Application/ApplicationCONFIG.json";
-    inline static const std::filesystem::path k_firstLoadSceneFilepath = "Asset/Data/Scene/Title/Title.json";
+    inline static const std::filesystem::path k_firstLoadSceneFilePath = "Asset/Data/Scene/Title/Title.json";
     inline static const std::filesystem::path k_firstLoadSceneName     = "Title";
 
     std::unique_ptr<Converter::ApplicationJsonConverter> m_jsonConverter;

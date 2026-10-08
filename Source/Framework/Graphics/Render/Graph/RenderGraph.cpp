@@ -59,9 +59,7 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
         // 前のフレームで、ImGuiが読めるようPIXEL_SHADER_RESOURCEにしたFinalColorを、
         // クリアと書き込みができるRENDER_TARGETへ戻す
         // (すでにRENDER_TARGETなら、何もしない)
-        m_resourceTransitioner.TransitionRenderTargetPassTexture(a_renderer,
-                                                                 Enum::RenderGraphRenderTargetType::FinalColor,
-                                                                 Enum::RenderGraphResourceUsage::RenderTarget);
+        m_resourceTransitioner.TransitionRenderTargetPassTexture(a_renderer, Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::RenderTarget);
 
         m_resourceClearer.ClearCurrentFramePassTextureList(a_resourceContext, a_renderer);
     }
@@ -91,9 +89,7 @@ void FWK::Graphics::RenderGraph::Execute(const ResourceContext& a_resourceContex
     // (メインビューのFinalColorは、FinalPresentPassが読んで画面へ出すため、ここでは何もしない)
     if (a_viewType != Enum::RenderViewType::Main)
     {
-        m_resourceTransitioner.TransitionRenderTargetPassTexture(a_renderer,
-                                                                 Enum::RenderGraphRenderTargetType::FinalColor,
-                                                                 Enum::RenderGraphResourceUsage::PixelShaderResource);
+        m_resourceTransitioner.TransitionRenderTargetPassTexture(a_renderer, Enum::RenderGraphRenderTargetType::FinalColor, Enum::RenderGraphResourceUsage::PixelShaderResource);
     }
 }
 void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
@@ -101,7 +97,7 @@ void FWK::Graphics::RenderGraph::EndFrame(Renderer& a_renderer) const
           auto& l_swapChain         = a_renderer.GetMutableREFSwapChain ();
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 
-    const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList   ();
 
     FWK_ASSERT_RETURN_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferのPresent遷移に失敗しました。");
@@ -168,7 +164,7 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList       ();
     const auto& l_rtvDescriptorPool = a_resourceContext.GetREFRTVDescriptorPool();
 
-    const auto  l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList   ();
 
     FWK_ASSERT_RETURN_IF(l_backBufferList.empty(), "BackBufferListが空のため、BackBufferのClearに失敗しました。");
@@ -184,7 +180,7 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
     // このバックバッファを描画先として設定する
     l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 
-    // 描画先に設定したBackBufferを指定色でClearする。
+    // 描画先に設定したBackBufferを指定色でClearする
     l_directCommandList.ClearRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 }
 

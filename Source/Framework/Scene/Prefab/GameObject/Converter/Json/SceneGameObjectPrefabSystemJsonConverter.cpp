@@ -1,6 +1,6 @@
 ﻿#include "SceneGameObjectPrefabSystemJsonConverter.h"
 
-void FWK::Converter::ScenePrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const
+void FWK::Converter::SceneGameObjectPrefabSystemJsonConverter::Deserialize(const nlohmann::json& a_rootJson, const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const
 {
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson, k_prefabMapJsonKey))
@@ -67,7 +67,7 @@ void FWK::Converter::ScenePrefabSystemJsonConverter::Deserialize(const nlohmann:
     }
 }
 
-nlohmann::json FWK::Converter::ScenePrefabSystemJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const
+nlohmann::json FWK::Converter::SceneGameObjectPrefabSystemJsonConverter::Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry, SceneGameObjectPrefabSystem& a_sceneGameObjectPrefabSystem) const
 {
     nlohmann::json l_rootJson  = {};
     auto           l_jsonArray = nlohmann::json::array();
@@ -103,7 +103,7 @@ nlohmann::json FWK::Converter::ScenePrefabSystemJsonConverter::Serialize(const A
         nlohmann::json l_json = {};
 
         Utility::UpdateJson(Utility::SerializeUUID(l_prefabUUID, k_uuidJsonKey), l_json);
-        
+
         l_jsonArray.emplace_back(l_json);
     }
 

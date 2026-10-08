@@ -35,6 +35,6 @@ namespace FWK
 
         std::unordered_map<boost::uuids::uuid, GameObjectPrefab> m_prefabMap = {};
 
-        Converter::ScenePrefabSystemJsonConverter m_jsonConverter = {};
+        Converter::SceneGameObjectPrefabSystemJsonConverter m_jsonConverter = {};
     };
 }

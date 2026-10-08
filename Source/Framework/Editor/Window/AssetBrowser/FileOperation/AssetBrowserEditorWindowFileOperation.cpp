@@ -1,12 +1,12 @@
 ﻿#include "AssetBrowserEditorWindowFileOperation.h"
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::filesystem::path&                a_targetFilePath, 
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::filesystem::path&                a_targetFilePath,
                                                                 const std::string&                          a_newName,
                                                                 const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
                                                                       AssetFilePathRegistry&                a_assetFilePathRegistry) const
 {
     // 新しいPath = 親フォルダ / 新しい名前 + 拡張子
-    const auto& l_extension   = a_targetFilePath.extension().string();
+    const auto& l_extension   = a_targetFilePath.extension  ().string();
     const auto& l_newFilePath = a_targetFilePath.parent_path() / (a_newName + l_extension);
 
     // 名前が変わっていなければ何もしない
@@ -92,8 +92,8 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Delete(const std::vecto
         if (!std::filesystem::remove_all(l_filePath, l_errorCode) &&
             l_errorCode)
         {
-            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, 
-                        "ファイルの削除に失敗しました。\nFilePath : {}\nErrorCode : {}", 
+            FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
+                        "ファイルの削除に失敗しました。\nFilePath : {}\nErrorCode : {}",
                         l_filePath.string(),
                         l_errorCode.value());
         }
@@ -111,9 +111,9 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Cut(const std::vector<s
     a_clipboard.Apply(a_filePathList, Enum::AssetBrowserFileClipboardOperationType::Cut);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>&   a_destinationFolderPathList, 
-                                                               const AssetBrowserEditorWindowAssetCreator& a_assetCreator, 
-                                                                     AssetBrowserEditorWindowClipboard&    a_clipboard, 
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector<std::filesystem::path>&   a_destinationFolderPathList,
+                                                               const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
+                                                                     AssetBrowserEditorWindowClipboard&    a_clipboard,
                                                                      AssetFilePathRegistry&                a_assetFilePathRegistry) const
 {
     // Clipboardが空なら何もしない
@@ -122,7 +122,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
     // 貼り付け先フォルダが一つもなければ何もしない
     if (a_destinationFolderPathList.empty()) { return; }
 
-    const auto l_operationType = a_clipboard.GetVALOperationType();
+    const auto& l_operationType = a_clipboard.GetVALOperationType();
 
     // 操作種別がInvalidなら何もしない
     if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) { return; }
@@ -141,22 +141,22 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
                                                                   [](const std::filesystem::path& a_destinationFolderPath)
                                                                   {
                                                                       std::error_code l_errorCode = {};
-                                                                  
+
                                                                       return std::filesystem::is_directory(a_destinationFolderPath, l_errorCode);
                                                                   });
-        
+
         if (l_destinationFolderITR == a_destinationFolderPathList.end())
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "切り取りの貼り付け先フォルダが見つかりませんでした。");
-        
+
             return;
         }
-        
+
         Move(l_clipboardFilePathList, *l_destinationFolderITR);
-        
+
         // 移動したファイルは元の場所に存在しないためClipboardをクリアする
         a_clipboard.Clear();
-        
+
         return;
     }
 
@@ -262,9 +262,9 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
             // Watcherの同期はAssetBrowserEditorWindow::Drawの先頭で行われるため
             // 同じFrame内で登録しておけば、次FrameのWatcher同期時には正式なアセットとして扱われる
             // (フォルダの一部だけコピーに成功した場合も、コピーできた分は登録しておく)
-            RegisterCopiedAssetList(l_sourceFilePath, 
+            RegisterCopiedAssetList(l_sourceFilePath,
                                     l_destinationFilePath,
-                                    a_assetCreator, 
+                                    a_assetCreator,
                                     a_assetFilePathRegistry);
         }
     }
@@ -303,7 +303,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Duplicate(const std::ve
         // 複製されたPrefab/Sceneを新しいUUIDでRegistryへ登録する
         // 登録しないと次FrameのWatcher同期で未登録Jsonとして物理削除されてしまう
         RegisterCopiedAssetList(l_sourceFilePath,
-                                l_duplicateFilePath, 
+                                l_duplicateFilePath,
                                 a_assetCreator,
                                 a_assetFilePathRegistry);
     }
@@ -314,7 +314,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Move(const std::vector<
     for (const auto& l_sourceFilePath : a_sourceFilePathList)
     {
         std::error_code l_errorCode = {};
- 
+
         // 既に移動先フォルダの直下にある場合はスキップ
         // 例 : AssetPane空白へドロップして
         //      表示中フォルダ内のアイテムを同じフォルダへ移動しようとした場合
@@ -325,60 +325,60 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Move(const std::vector<
         // 「Asset/A」と「Asset/A/B」を同時選択して移動した場合
         // 先にAが移動するとA/Bの旧パスは存在しなくなる
         if (!std::filesystem::exists(l_sourceFilePath, l_errorCode)) { continue; }
- 
+
         l_errorCode.clear();
- 
+
         // 移動先が移動元の中(または自分自身)にある場合はスキップ
         // Asset/DataをAsset/Data/Sub へ移動すると入れ子が循環する
         // Paste()と同様に移動先の親パスを遡り、equivalent()でOSレベルの同一判定を行う
         bool l_isDestinationInsideSource = false;
- 
+
         auto l_parent = a_destinationFolderPath;
-        
+
         while (!l_parent.empty())
         {
             if (std::filesystem::equivalent(l_parent, l_sourceFilePath, l_errorCode))
             {
                 l_isDestinationInsideSource = true;
-        
+
                 l_errorCode.clear();
-        
+
                 break;
             }
-        
+
             l_errorCode.clear();
-        
+
             l_parent = l_parent.parent_path();
         }
- 
+
         if (l_isDestinationInsideSource)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
                         "移動先が移動元の中にあるため、移動をスキップしました。\nSourceFilePath : {}\nDestinationFolderPath : {}",
                         l_sourceFilePath.string(),
                         a_destinationFolderPath.string());
- 
+
             continue;
         }
- 
+
         // 移動先パス = ドロップ先フォルダ / 移動元の名前
         // 例 : l_sourceFilePath        = "Asset/Data"
         //      a_destinationFolderPath = "Asset/Sound"
         //      移動先                  = "Asset/Sound/Data"
         auto l_destinationFilePath = a_destinationFolderPath / l_sourceFilePath.filename();
- 
+
         // 同名が存在する場合は番号付与したパスへ移動(上書きしない)
         // 例 : "Asset/Sound"にDataがすでにある->Asset/Sound/Data1
         if (std::filesystem::exists(l_destinationFilePath, l_errorCode))
         {
             l_destinationFilePath = Utility::ResolveFilePathConflictByNumberSuffix(l_destinationFilePath);
         }
- 
+
         // std::filesystem::renameでフォルダごと移動(中身含む)
         // 同じボリューム内ならアトミックな移動(コピー + 削除よりも高速)
         // Asset内の移動なので同じボリューム前提
         std::filesystem::rename(l_sourceFilePath, l_destinationFilePath, l_errorCode);
- 
+
         if (l_errorCode)
         {
             FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
@@ -418,7 +418,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::CopyRecursiveSkippingDe
 
     if (l_errorCode)
     {
-        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, 
+        FWK_ADD_LOG(Constant::k_imguiDebugWarningColor,
                     "ファイルの貼り付け(フォルダ作成)に失敗しました。\nDestinationFilePath : {}\nErrorCode : {}",
                     a_destination.string(),
                     l_errorCode.value());
@@ -442,7 +442,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::CopyRecursiveSkippingDe
         {
             l_errorCode.clear();
 
-            continue; 
+            continue;
         }
 
         l_errorCode.clear();
@@ -474,9 +474,9 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::CopyRecursiveSkippingDe
     }
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFileOperation::RegisterCopiedAssetList(const std::filesystem::path&                a_sourceRootPath, 
-                                                                                 const std::filesystem::path&                a_copiedRootPath, 
-                                                                                 const AssetBrowserEditorWindowAssetCreator& a_assetCreator, 
+void FWK::Editor::AssetBrowserEditorWindowFileOperation::RegisterCopiedAssetList(const std::filesystem::path&                a_sourceRootPath,
+                                                                                 const std::filesystem::path&                a_copiedRootPath,
+                                                                                 const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
                                                                                        AssetFilePathRegistry&                a_assetFilePathRegistry)
 {
     std::error_code l_errorCode = {};
@@ -489,7 +489,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::RegisterCopiedAssetList
         // 登録すると存在しないPathがRegistryに残ってしまう
         // (is_directory()は存在しないPathでもエラーにならずfalseを返すため、別途確認する)
         if (!Utility::CanLoadFilePath(a_copiedRootPath, Constant::k_lowerJsonExtension)) { return; }
-        
+
         a_assetCreator.RegisterCopiedAsset(a_sourceRootPath, a_copiedRootPath, a_assetFilePathRegistry);
 
         return;

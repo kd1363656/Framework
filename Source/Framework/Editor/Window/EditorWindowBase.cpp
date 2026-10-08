@@ -9,6 +9,6 @@ void FWK::Editor::EditorWindowBase::ReportActiveWindowIfMouseClicked(EditorManag
     {
         const auto& l_typeINFO = GetREFRuntimeTypeINFO();
 
-        a_editorManager.SetCurrentActiveWindowStaticTpeID(l_typeINFO.k_staticTypeID);
+        a_editorManager.SetCurrentActiveWindowStaticTypeID(l_typeINFO.k_staticTypeID);
     }
 }

@@ -12,7 +12,7 @@ float CalculateModelFrustumPlaneRadius(const float a_worldRadius, const float a_
     return a_worldRadius * sqrt(k_modelFrustumPlaneNormalBaseLength + a_tanHalfFOV * a_tanHalfFOV);
 }
 
-// View空間のBoundingSphereがカメラのFrustumに入っているか判定する。
+// View空間のBoundingSphereがカメラのFrustumに入っているか判定する
 // 完全に外ならfalse
 // 少しでも重なっているならtrue
 bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_worldRadius)
@@ -26,41 +26,41 @@ bool IsVisibleViewSpaceBoundingSphere(const float3 a_viewCenter, const float a_w
     }
 
     // カメラに近すぎるMeshletでは、center.zがnearClipより小さくなることがある
-    // そのままcenter.z * tanFovを使うと、見える範囲が小さすぎて誤カリングする。
+    // そのままcenter.z * tanFovを使うと、見える範囲が小さすぎて誤カリングする
     // そこで、横幅・縦幅の判定に使うZは最低でもnearClipにする
     // これは近距離では安全側に倒して消しすぎない為の処理
     const float l_frustumTestDepth = max(a_viewCenter.z, g_cullingNearClip);
-    
+
     // View空間のZ位置における、画面右端までの距離
     // Zが大きいほど、見える横幅は広がる
     const float l_halfViewWidth = l_frustumTestDepth * g_cullingTanHalfFOVX;
-    
+
     // Frustum側面は斜めのPlaneなのでSphere半径を少し補正する
     const float l_horizontalPlaneRadius = CalculateModelFrustumPlaneRadius(a_worldRadius, g_cullingTanHalfFOVX);
-    
-    // Sphere全体が左外側、右外側にあるなら見えない。
+
+    // Sphere全体が左外側、右外側にあるなら見えない
     if (a_viewCenter.x + l_horizontalPlaneRadius < -l_halfViewWidth ||
         a_viewCenter.x - l_horizontalPlaneRadius >  l_halfViewWidth)
     {
         return false;
     }
-    
-    // View空間のz位置における、画面上端までの距離。
+
+    // View空間のz位置における、画面上端までの距離
     // Zが大きいほど、みえる縦幅は広がる
     const float l_halfViewHeight      = l_frustumTestDepth * g_cullingTanHalfFOVY;
     const float l_verticalPlaneRadius = CalculateModelFrustumPlaneRadius(a_worldRadius, g_cullingTanHalfFOVY);
-    
+
     // Sphere全体が下外側、上外側にあるなら見えない
     if (a_viewCenter.y + l_verticalPlaneRadius < -l_halfViewHeight ||
         a_viewCenter.y - l_verticalPlaneRadius >  l_halfViewHeight)
     {
         return false;
     }
-    
+
     return true;
 }
 
-// カメラがMeshletのBoundingSphere内に入っているか判定する。
+// カメラがMeshletのBoundingSphere内に入っているか判定する
 bool IsCameraInsideModelMeshletBoundingSphere(const float3 a_worldCenter, const float a_worldRadius)
 {
     const float3 l_cameraToCenter        = a_worldCenter - g_cullingCameraWorldPosition;
@@ -69,7 +69,7 @@ bool IsCameraInsideModelMeshletBoundingSphere(const float3 a_worldCenter, const 
     // 境界付近の誤差で判定が揺れないよう、
     // Sphereを少し広げる
     const float l_safeWorldRadius = a_worldRadius + k_modelMeshletCullingEpsilon;
-    
+
     return l_cameraDistanceSquared <= l_safeWorldRadius * l_safeWorldRadius;
 }
 
@@ -78,16 +78,16 @@ bool IsVisibleModelMeshletByFrustum(const ModelMeshletBounds a_modelMeshletBound
 {
     const float3 l_worldCenter = TransformModelLocalPositionToWorld(a_modelMeshletBounds.center);
     const float  l_worldRadius = a_modelMeshletBounds.radius * g_worldMaxScale;
-    
+
     // カメラがBoundingSphere内にいる場合は
     // NearPlaneやFrustum側面で誤カリングされないよう
     // Frustum内として扱う
     if (IsCameraInsideModelMeshletBoundingSphere(l_worldCenter, l_worldRadius)) { return true; }
 
     const float4 l_worldCenterPosition = float4(l_worldCenter, k_modelPositionElementW);
-    
+
     const float4 l_viewCenter = mul(l_worldCenterPosition, g_cullingViewMatrix);
-    
+
     return IsVisibleViewSpaceBoundingSphere(l_viewCenter.xyz, l_worldRadius);
 }
 
@@ -104,7 +104,7 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
     if (a_meshletBounds.coneCutoff >= k_modelDisabledMeshletConeCutoff) { return false; }
 
     const float l_coneAxisLengthSquared = dot(a_meshletBounds.coneAxis, a_meshletBounds.coneAxis);
-    
+
     // ConeAxisがZero付近なら方向を決められないため
     // 描画する安全側へ倒す
     if (l_coneAxisLengthSquared <= k_modelMeshletConeAxisLengthSquaredEpsilon) { return false; }
@@ -115,7 +115,7 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
     // カメラをModelLocal空間へ変換する
     const float4 l_worldCameraPosition = float4(g_cullingCameraWorldPosition, k_modelPositionElementW);
     const float4 l_localCameraPosition = float4(mul(l_worldCameraPosition, transpose(g_worldInverseTransposeMatrix)));
-    
+
     // BoundingSphere式で使用するCenter - Camera
     const float3 l_localCameraToCenter   = a_meshletBounds.center - l_localCameraPosition.xyz;
     const float  l_cameraDistanceSquared = dot(l_localCameraToCenter, l_localCameraToCenter);
@@ -123,23 +123,23 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
     // 境界付近で見えているMeshletを消しにくくするため、
     // BoundingSphereを少し広げる
     const float l_safeBoundingSphereRadius = a_meshletBounds.radius + k_modelMeshletCullingEpsilon;
-    
+
     // カメラがSphere内または境界付近にいる場合は、
     // Meshlet全体が裏向きだと安全に断定できない
     if (l_cameraDistanceSquared <= l_safeBoundingSphereRadius * l_safeBoundingSphereRadius) { return false; }
 
     const float l_cameraDistance        = sqrt (l_cameraDistanceSquared);
     const float l_inverseConeAxisLength = rsqrt(l_coneAxisLengthSquared);
-    
+
     const float3 l_coneAxisDirection      = a_meshletBounds.coneAxis * l_inverseConeAxisLength;
     const float  l_cameraDirectionAxisDot = dot(l_localCameraToCenter, l_coneAxisDirection);
-        
+
     // Perspective用BoundingSphere判定式
     // dot(Center - Camera, Axis) >= Cutoff * Distance + Radius
     // 条件を満たす場合、
     // Meshlet内のすべてのTriangleが裏向き
     const float l_backfaceCullingThreshold = a_meshletBounds.coneCutoff * l_cameraDistance + l_safeBoundingSphereRadius;
-    
+
     return l_cameraDirectionAxisDot >= l_backfaceCullingThreshold;
 }
 
@@ -148,15 +148,15 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
 bool ShouldDispatchModelMeshlet(const uint a_meshletIndex)
 {
     StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
-    
+
     const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
-    
+
     // Frustum外ならBackface判定を行わず描画しない
     if (!IsVisibleModelMeshletByFrustum(l_meshletBounds)) { return false; }
 
     // Frustum内でも全Triangleが裏向きなら描画しない
     if (IsBackfaceModelMeshletByCone(l_meshletBounds)) { return false; }
-    
+
     return true;
 }
 

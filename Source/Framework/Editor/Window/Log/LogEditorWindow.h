@@ -49,7 +49,7 @@ namespace FWK::Editor
         static constexpr bool k_enableCanScrollToBottom = true;
 
         std::vector<TypeAlias::Math::Color> m_textLineColorList;
-        ImVector<int>                       m_textLineOffsets;
+        ImVector<int>                       m_textLineOffsetList;
 
         ImGuiTextBuffer m_textBuffer;
         ImGuiTextFilter m_textFilter;

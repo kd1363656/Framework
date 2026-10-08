@@ -1,18 +1,18 @@
 ﻿#include "SpriteScreenPass.h"
 
-FWK::Graphics::ScreenSpritePass::ScreenSpritePass()
+FWK::Graphics::SpriteScreenPass::SpriteScreenPass()
 {
     // このPassは画面スプライト描画なのでSpriteレイヤーにする
-    // Modelより後、PostEffectより前に実行される。
+    // Modelより後、PostEffectより前に実行される
     SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::Sprite);
 
     // シーンカラー用レンダーターゲットテクスチャのリソース状態をRENDER_TARGETに遷移してから
     // シーンカラーテクスチャに書き込む
     WriteRenderTarget(Enum::RenderGraphRenderTargetType::SceneColor, Enum::RenderGraphResourceUsage::RenderTarget);
 }
-FWK::Graphics::ScreenSpritePass::~ScreenSpritePass() = default;
+FWK::Graphics::SpriteScreenPass::~SpriteScreenPass() = default;
 
-void FWK::Graphics::ScreenSpritePass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
+void FWK::Graphics::SpriteScreenPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph)
 {
     const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
 

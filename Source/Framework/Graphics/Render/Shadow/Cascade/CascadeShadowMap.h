@@ -94,7 +94,7 @@ namespace FWK::Graphics
 
         static constexpr float k_orthographicDiameterScale      = 2.0F;
         static constexpr float k_cascadeRadiusPaddingTexelCount = 1.0F;
-        
+
         static constexpr std::size_t k_cascadeNumberOffset     = 1ULL;
         static constexpr std::size_t k_frustumPlaneCornerCount = 4ULL;
 

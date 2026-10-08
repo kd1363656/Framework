@@ -1,8 +1,8 @@
 ﻿#include "LogEditorWindow.h"
 
 FWK::Editor::LogEditorWindow::LogEditorWindow() :
-    m_textLineColorList(),
-    m_textLineOffsets  (),
+    m_textLineColorList (),
+    m_textLineOffsetList(),
 
     m_textBuffer(),
     m_textFilter(),
@@ -27,12 +27,12 @@ void FWK::Editor::LogEditorWindow::Draw(EditorManager& a_editorManager)
     // 左クリックまたは右クリックされた場合
     // 派生クラスのStaticTypeIDを取得しそれをActiveWindowとする
     if (ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows) &&
-       (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
-        ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
+        (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
+         ImGui::IsMouseClicked(ImGuiMouseButton_Right)))
     {
         const auto& l_typeINFO = GetREFTypeINFO();
 
-        a_editorManager.SetCurrentActiveWindowStaticTpeID(l_typeINFO.k_staticTypeID);
+        a_editorManager.SetCurrentActiveWindowStaticTypeID(l_typeINFO.k_staticTypeID);
     }
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
@@ -57,12 +57,12 @@ void FWK::Editor::LogEditorWindow::AddLog(const std::string& a_text, const TypeA
     // 「まだ何も書かれていない次の行」を表している
     // その行へ今回のログを書き始めるため
     // その行の色を今回指定された色へ変更する
-    if (m_textLineOffsets.Size > k_emptyTextLineOffsetCount &&
+    if (m_textLineOffsetList.Size > k_emptyTextLineOffsetCount &&
         !m_textLineColorList.empty())
     {
-        const int l_lastLineIndex = m_textLineOffsets.Size - k_nextLineIndexOffset;
+        const int l_lastLineIndex = m_textLineOffsetList.Size - k_nextLineIndexOffset;
 
-        if (m_textLineOffsets[l_lastLineIndex] == l_oldSize)
+        if (m_textLineOffsetList[l_lastLineIndex] == l_oldSize)
         {
             m_textLineColorList[static_cast<std::size_t>(l_lastLineIndex)] = a_textColor;
         }
@@ -81,7 +81,7 @@ void FWK::Editor::LogEditorWindow::AddLog(const std::string& a_text, const TypeA
         if (m_textBuffer[l_oldSize] != '\n') { continue; }
 
         // 改行の次の位置が次行の開始位置
-        m_textLineOffsets.push_back(l_oldSize + k_nextLineStartOffset);
+        m_textLineOffsetList.push_back(l_oldSize + k_nextLineStartOffset);
 
         // 今回追加した一つのログは、
         // 複数行になっていてもすべて同じ色として扱う
@@ -155,10 +155,10 @@ void FWK::Editor::LogEditorWindow::DrawLog()
     // フィルターが有効かどうかを確認
     if (m_textFilter.IsActive())
     {
-        for (int l_lineNUM = 0; l_lineNUM < m_textLineOffsets.Size; ++l_lineNUM)
+        for (int l_lineNUM = 0; l_lineNUM < m_textLineOffsetList.Size; ++l_lineNUM)
         {
-            const char* l_lineStart = l_buffer + m_textLineOffsets[l_lineNUM];
-            const char* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
+            const char* l_lineStart = l_buffer + m_textLineOffsetList[l_lineNUM];
+            const char* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsetList.Size) ? (l_buffer + m_textLineOffsetList[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
 
             // フィルター条件に合わない行はスキップ
             if (!m_textFilter.PassFilter(l_lineStart , l_lineEnd)) { continue; }
@@ -184,14 +184,14 @@ void FWK::Editor::LogEditorWindow::DrawLog()
         // ユーザーが見ている部分だけ描画するクリッパー
         ImGuiListClipper l_clipper = {};
 
-        l_clipper.Begin(m_textLineOffsets.Size);
+        l_clipper.Begin(m_textLineOffsetList.Size);
 
         while (l_clipper.Step())
         {
-            for (int l_lineNUM = l_clipper.DisplayStart; l_lineNUM < l_clipper.DisplayEnd; l_lineNUM++)
+            for (int l_lineNUM = l_clipper.DisplayStart; l_lineNUM < l_clipper.DisplayEnd; ++l_lineNUM)
             {
-                const char* l_lineStart = l_buffer + m_textLineOffsets[l_lineNUM];
-                const char* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsets.Size) ? (l_buffer + m_textLineOffsets[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
+                const char* l_lineStart = l_buffer + m_textLineOffsetList[l_lineNUM];
+                const char* l_lineEnd   = (l_lineNUM + k_nextLineIndexOffset < m_textLineOffsetList.Size) ? (l_buffer + m_textLineOffsetList[l_lineNUM + k_nextLineIndexOffset] + k_excludeNewLineOffset) : l_bufferEnd;
 
                 const auto& l_textColor = m_textLineColorList[static_cast<std::size_t>(l_lineNUM)];
 
@@ -223,12 +223,12 @@ void FWK::Editor::LogEditorWindow::DrawLog()
 
 void FWK::Editor::LogEditorWindow::ClearLog()
 {
-    m_textBuffer.clear       ();
-    m_textLineOffsets.clear  ();
-    m_textLineColorList.clear();
+    m_textBuffer.clear        ();
+    m_textLineOffsetList.clear();
+    m_textLineColorList.clear ();
 
     // 一行目の開始位置を保証するためにpush_back
-    m_textLineOffsets.push_back(k_ensureFirstLine);
+    m_textLineOffsetList.push_back(k_ensureFirstLine);
 
     m_textLineColorList.emplace_back(Constant::k_imguiDebugINFOColor);
 }

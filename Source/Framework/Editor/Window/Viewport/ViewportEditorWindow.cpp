@@ -3,7 +3,7 @@
 
 FWK::Editor::ViewportEditorWindow::ViewportEditorWindow() :
     m_imGuiSRVDescriptorIndexList(),
-    m_previewImGuiSRVDescriptorIndexList(),
+    m_previewIMGUISRVDescriptorIndexList(),
 
     m_editorCamera(std::make_unique<EditorCamera>()),
 
@@ -58,7 +58,7 @@ void FWK::Editor::ViewportEditorWindow::Draw(EditorManager& a_editorManager)
 
     Utility::IMGUIDelayedTooltip(k_thisWindowExplanationLabel);
 
-    // Viewport画像より先にツールバーを書く。
+    // Viewport画像より先にツールバーを書く
     // これにより画面へ重ならず、Viewport上部へ工程表示される
     m_toolbar.Draw  (*this);
     ImGui::Separator();
@@ -154,19 +154,19 @@ void FWK::Editor::ViewportEditorWindow::SetupViewportTextureDescriptors()
 
         // ImGuiでTextureを表示するにはTextureをShaderから読めるSRVが必要になる
         // ここではRenderTargetTextureに割り当てられているSRVのDescriptorIndexを取得する
-        const auto l_srvDescriptorIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
+        const auto& l_srvDescriptorIndex = l_renderTargetTexture.GetVALSRVDescriptorIndex();
 
         FWK_ASSERT_RETURN_IF(l_srvDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexが無効値になっており、PostDeserialize処理に失敗しました。");
 
         auto& l_editorManager = EditorManager::GetInstance();
 
         // SRVDescriptorIndexをアロケート
-        m_imGuiSRVDescriptorIndexList.emplace_back(l_editorManager.AllocateImGuiSRVDescriptorIndex());
+        m_imGuiSRVDescriptorIndexList.emplace_back(l_editorManager.AllocateIMGUISRVDescriptorIndex());
 
         // プレビュー用のImGui用SRVDescriptorIndexも、フレームリソースごとにアロケートしておく
         // プレビューのテクスチャは作成やサイズ変更のたびにSRVが変わるため、
         // コピーは作成時ではなく、表示する毎フレームに行う(DrawCameraPreview)
-        m_previewImGuiSRVDescriptorIndexList.emplace_back(l_editorManager.AllocateImGuiSRVDescriptorIndex());
+        m_previewIMGUISRVDescriptorIndexList.emplace_back(l_editorManager.AllocateIMGUISRVDescriptorIndex());
 
         const auto& l_resourceContext = l_graphicsManager.GetREFResourceContext();
 
@@ -187,12 +187,12 @@ ImTextureID FWK::Editor::ViewportEditorWindow::FetchVALViewportTextureID() const
     const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
 
     // レンダーラーから現在のFrameResourceのインデックスを取得
-    FWK_ASSERT_RETURN_VALUE_IF(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えています", k_invalidViewportTextureID);
+    FWK_ASSERT_RETURN_VALUE_IF(m_imGuiSRVDescriptorIndexList.size() <= l_currentFrameResourceIndex, "フレームリソースの数がimGuiSRVDescriptorIndexListのサイズを超えているため、ビューポートのTextureIDの取得に失敗しました。", k_invalidViewportTextureID);
 
     // もし無効なDescriptorIndexならreturn
     if (m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex] == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return k_invalidViewportTextureID; }
 
-    return l_editorManager.FetchVALImGuiTextureID(m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex]);
+    return l_editorManager.FetchVALIMGUITextureID(m_imGuiSRVDescriptorIndexList[l_currentFrameResourceIndex]);
 }
 
 void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImVec2& a_viewportSize, const ImTextureID& a_textureID) const
@@ -222,7 +222,7 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
     const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
     const auto& l_frameResourceList         = l_renderer.GetREFFrameResourceList        ();
 
-    FWK_ASSERT_RETURN_IF(l_currentFrameResourceIndex >= m_previewImGuiSRVDescriptorIndexList.size(), "フレームリソースの数がプレビュー用ImGuiSRVDescriptorIndexListのサイズを超えているため、プレビューの表示に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_currentFrameResourceIndex >= m_previewIMGUISRVDescriptorIndexList.size(), "フレームリソースの数がプレビュー用ImGuiSRVDescriptorIndexListのサイズを超えているため、プレビューの表示に失敗しました。");
     FWK_ASSERT_RETURN_IF(l_currentFrameResourceIndex >= l_frameResourceList.size(),                  "現在のフレームリソースのインデックスが範囲外のため、プレビューの表示に失敗しました。");
 
     const auto& l_frameResource = l_frameResourceList[l_currentFrameResourceIndex];
@@ -236,7 +236,7 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
     if (!l_finalColorPassTexture) { return; }
 
     const auto& l_renderTargetTexture = l_finalColorPassTexture->GetREFRenderTargetTexture();
-    const auto  l_srvDescriptorIndex  = l_renderTargetTexture.GetVALSRVDescriptorIndex    ();
+    const auto& l_srvDescriptorIndex  = l_renderTargetTexture.GetVALSRVDescriptorIndex    ();
 
     if (l_srvDescriptorIndex == Graphics::DescriptorHeap::k_invalidDescriptorIndex) { return; }
 
@@ -246,11 +246,11 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
     const auto& l_editorManager           = EditorManager::GetInstance                     ();
     const auto& l_resourceContext         = l_graphicsManager.GetREFResourceContext        ();
     const auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetREFCBVSRVUAVDescriptorPool();
-    const auto  l_imGuiSRVDescriptorIndex = m_previewImGuiSRVDescriptorIndexList[l_currentFrameResourceIndex];
+    const auto  l_imGuiSRVDescriptorIndex = m_previewIMGUISRVDescriptorIndexList[l_currentFrameResourceIndex];
 
     FWK_ASSERT_RETURN_IF(!l_editorManager.CopyGraphicsSRVDescriptor(l_cbvSRVUAVDescriptorPool, l_srvDescriptorIndex, l_imGuiSRVDescriptorIndex), "プレビュー用SRVDescriptorのコピー処理に失敗しました。");
 
-    const auto& l_textureID = l_editorManager.FetchVALImGuiTextureID(l_imGuiSRVDescriptorIndex);
+    const auto& l_textureID = l_editorManager.FetchVALIMGUITextureID(l_imGuiSRVDescriptorIndex);
 
     // ビューポート画像(直前のItem)の右下から、余白を空けた位置にプレビューを置く
     // 大きさは、プレビュー用のテクスチャと同じ(ビューポートの幅の4分の1)
@@ -267,10 +267,14 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
     const auto& l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
     const auto& l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
 
-    l_drawList->AddImage(l_textureID, l_previewMIN, l_previewMAX, l_uvMIN, l_uvMAX);
+    l_drawList->AddImage(l_textureID,
+                         l_previewMIN,
+                         l_previewMAX,
+                         l_uvMIN,
+                         l_uvMAX);
 
     // プレビューの範囲が分かるよう、アクセントカラーの枠線を描く
-    const auto l_borderColor = ImGui::ColorConvertFloat4ToU32(Constant::k_imguiAccentColor);
+    const auto& l_borderColor = ImGui::ColorConvertFloat4ToU32(Constant::k_imguiAccentColor);
 
     l_drawList->AddRect(l_previewMIN,
                         l_previewMAX,
@@ -290,8 +294,8 @@ void FWK::Editor::ViewportEditorWindow::RequestCameraPreview(const EditorManager
     if (!l_selectedGameObject) { return; }
 
     // 選択したGameObjectがカメラコンポーネントを持っていなければ、プレビューは依頼しない
-    const auto& l_componentContainer = l_selectedGameObject->GetREFComponentContainer                     ();
-    const auto& l_cameraComponent    = l_componentContainer.FindUniqueComponent<GameObjectCameraComponent>().lock();
+    const auto& l_componentContainer = l_selectedGameObject->GetREFComponentContainer                        ();
+    const auto& l_cameraComponent    = l_componentContainer.FindVALUniqueComponent<GameObjectCameraComponent>().lock();
 
     if (!l_cameraComponent) { return; }
 
@@ -306,8 +310,8 @@ void FWK::Editor::ViewportEditorWindow::RequestCameraPreview(const EditorManager
 
     // プレビューの幅はビューポートの幅のk_cameraPreviewWidthRatio倍(4分の1)
     // 高さはカメラの縦横比から求める
-    const auto l_previewWidth  = static_cast<UINT>(a_viewportSize.x * k_cameraPreviewWidthRatio);
-    const auto l_previewHeight = static_cast<UINT>(static_cast<float>(l_previewWidth) / l_aspectRatio);
+    const auto& l_previewWidth  = static_cast<UINT>(a_viewportSize.x * k_cameraPreviewWidthRatio);
+    const auto& l_previewHeight = static_cast<UINT>(static_cast<float>(l_previewWidth) / l_aspectRatio);
 
     // 0サイズのテクスチャは作れないため、小さすぎる場合は依頼しない
     if (!Utility::IsValidTextureSize(l_previewWidth, l_previewHeight)) { return; }
@@ -344,16 +348,16 @@ void FWK::Editor::ViewportEditorWindow::ReleaseViewportTextureDescriptors()
     // 無効値(確保に失敗したIndex)はReleaseImGuiSRVDescriptorIndex内部で無視される
     for (const auto& l_srvDescriptorIndex : m_imGuiSRVDescriptorIndexList)
     {
-        l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
+        l_editorManager.ReleaseIMGUISRVDescriptorIndex(l_srvDescriptorIndex);
     }
 
     // プレビュー用のImGui用SRVDescriptorIndexも、同じように返却する
-    for (const auto& l_srvDescriptorIndex : m_previewImGuiSRVDescriptorIndexList)
+    for (const auto& l_srvDescriptorIndex : m_previewIMGUISRVDescriptorIndexList)
     {
-        l_editorManager.ReleaseImGuiSRVDescriptorIndex(l_srvDescriptorIndex);
+        l_editorManager.ReleaseIMGUISRVDescriptorIndex(l_srvDescriptorIndex);
     }
 
     // 返却したIndexを参照しないようリストも空にする
     m_imGuiSRVDescriptorIndexList.clear       ();
-    m_previewImGuiSRVDescriptorIndexList.clear();
+    m_previewIMGUISRVDescriptorIndexList.clear();
 }

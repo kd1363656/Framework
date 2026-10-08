@@ -31,11 +31,11 @@ nlohmann::json FWK::Converter::AssetBrowserEditorWindowSelectionStateJsonConvert
 void FWK::Converter::AssetBrowserEditorWindowSelectionStateJsonConverter::DeserializeSelectedFilePathList(const nlohmann::json& a_rootJson, Editor::AssetBrowserEditorWindowSelectionState& a_assetBrowserEditorWindowSelectionState) const
 {
     if (a_rootJson.is_null() ||
-        !Utility::IsJsonArray(a_rootJson)) 
+        !Utility::IsJsonArray(a_rootJson))
     {
-        return; 
+        return;
     }
-    
+
     std::vector<std::filesystem::path> l_selectedFilePathList = {};
 
     for (const auto& l_json : a_rootJson)

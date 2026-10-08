@@ -7,7 +7,7 @@ namespace FWK::Editor
 
 namespace FWK::Converter
 {
-    class EditorWindowPaneSplitterJsonConverter
+    class EditorWindowPaneSplitterJsonConverter final
     {
     public:
 

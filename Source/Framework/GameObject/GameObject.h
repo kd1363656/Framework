@@ -8,7 +8,7 @@ namespace FWK
 
          GameObject() = default;
         ~GameObject() = default;
-    
+
         void INIT();
 
         void DeserializeScene(const nlohmann::json&              a_rootJson,
@@ -28,15 +28,15 @@ namespace FWK
 
         nlohmann::json Serialize     (      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeScene(      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
-        nlohmann::json SerializeDIFF (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
-        
+        nlohmann::json SerializeDiff (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;
+
         void Destroy();
 
-        std::shared_ptr<GameObject> Clone(const std::weak_ptr<GameObject>& a_newParent, 
+        std::shared_ptr<GameObject> Clone(const std::weak_ptr<GameObject>& a_newParent,
                                                 Scene&                     a_scene,
                                           const boost::uuids::uuid&        a_prefabHierarchyNodeUUID = {},
                                                 bool                       a_isCloneSubtreeRoot      = true) const;
-        
+
         void ConvertToPrefab(const boost::uuids::uuid& a_prefabUUID);
 
         void DetachFromPrefab();
@@ -71,7 +71,7 @@ namespace FWK
         bool GetVALIsPrefabOrigin() const { return m_isPrefabOrigin; }
 
     private:
-    
+
         // ポインタの共有したいが絶対に存在すべきコンポーネントなのでメンバイニシャライザで生成
         std::shared_ptr<GameObjectTransformComponent> m_transformComponent = std::make_shared<GameObjectTransformComponent>();
 

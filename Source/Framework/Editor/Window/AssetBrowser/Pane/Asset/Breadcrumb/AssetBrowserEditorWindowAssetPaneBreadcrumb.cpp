@@ -6,7 +6,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
     // Window側のm_currentSelectFolderPathを参照
     // 空の場合はAssetルートデフォルトとする
     const auto& l_currentSelectFolderPath = a_editorWindow.GetREFCurrentSelectFolderPath();
-    const auto& l_breadcrumbPath          = l_currentSelectFolderPath.empty() ? Constant::k_assetRootFolderPath : l_currentSelectFolderPath;
+    const auto& l_breadcrumbPath          = l_currentSelectFolderPath.empty             () ? Constant::k_assetRootFolderPath : l_currentSelectFolderPath;
 
     // 絶対パスで書くのされている場合に備えてカレントディレクトリからの相対パスへ変換
     // std::filesystem::pathのイテレータは絶対パスの場合
@@ -25,8 +25,8 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
     //                   ImGuiWindowFlags_HorizontalScrollbarで幅超過時に水平スクロール
     // 戻り値がfalseの場合は領域が描画されていないためEndChildしてreturn
     if (const float l_childHeight = ImGui::GetTextLineHeight();
-        !ImGui::BeginChild(k_childLabel.data(), 
-                           ImVec2{ Constant::k_imguiRemainingSize.x, l_childHeight}, 
+        !ImGui::BeginChild(k_childLabel.data(),
+                           ImVec2{ Constant::k_imguiRemainingSize.x, l_childHeight},
                            false,
                            ImGuiWindowFlags_HorizontalScrollbar))
     {
@@ -69,7 +69,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
         // セグメント名を取得
         // l_pathElementはpathの要素一つ分(フォルダ名)
         // generic_string()でstd::stringへ変換
-        const auto& l_segmentName     = l_pathElement.generic_string();
+        const auto& l_segmentName     = l_pathElement.generic_string                           ();
         const auto& l_selectableLabel = l_segmentName + "##" + l_accumulatedPath.generic_string();
 
         // テキストサイズを取得
@@ -87,7 +87,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPaneBreadcrumb::Draw(AssetBrowser
 
         // Selectable描画
         ImGui::Selectable(l_selectableLabel.c_str(),
-                          false, 
+                          false,
                           ImGuiSelectableFlags_None,
                           l_selectableSize);
 

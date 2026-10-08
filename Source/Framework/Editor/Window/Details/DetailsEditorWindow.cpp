@@ -24,7 +24,7 @@ void FWK::Editor::DetailsEditorWindow::Draw(EditorManager& a_editorManager)
     // 最後に選択したGameObjectを取得
     // 複数選択時は最後に選択したGameObjectのみインスペクター描画の対象にする
     const auto& l_selectedGameObject = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
- 
+
     // 未選択、または無効なら何も描画しない
     if (!l_selectedGameObject ||
         l_selectedGameObject->GetVALIsDestroyed())

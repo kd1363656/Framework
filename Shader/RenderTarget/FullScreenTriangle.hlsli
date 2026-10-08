@@ -19,14 +19,14 @@ static const uint k_triangleVertexIndexRightTop   = 1U;
 static const uint k_triangleVertexIndexLeftBottom = 2U;
 
 // 左上、右上、左下のNDC座標での位置
-static const float2 k_trianglePositionList[k_triangleVertexCount] = 
+static const float2 k_trianglePositionList[k_triangleVertexCount] =
 {
     float2(k_trianglePositionXLeft,  k_trianglePositionYTop),
     float2(k_trianglePositionXRight, k_trianglePositionYTop),
     float2(k_trianglePositionXLeft,  k_trianglePositionYBottom),
 };
 
-static const float2 k_triangleUVList[k_triangleVertexCount] = 
+static const float2 k_triangleUVList[k_triangleVertexCount] =
 {
     float2(k_triangleUVMIN, k_triangleUVMIN),
     float2(k_triangleUVMAX, k_triangleUVMIN),

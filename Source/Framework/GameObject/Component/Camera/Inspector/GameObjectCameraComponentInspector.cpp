@@ -6,7 +6,7 @@ void FWK::GameObjectCameraComponentInspector::EditInspector(GameObjectCameraComp
 
     ImGui::BeginDisabled();
 
-    ImGui::Text(k_aspectoRatioLabel.data(), l_camera.GetVALAspectRatio());
+    ImGui::Text(k_aspectRatioLabel.data(), l_camera.GetVALAspectRatio());
 
     ImGui::EndDisabled();
 

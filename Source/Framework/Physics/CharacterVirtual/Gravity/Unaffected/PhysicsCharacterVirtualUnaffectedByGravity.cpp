@@ -17,10 +17,10 @@ JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualUnaffectedByGravity::FetchVALUpda
 void FWK::Physics::PhysicsCharacterVirtualUnaffectedByGravity::ApplyExtendedUpdateSettings(const JPH::CharacterVirtual&, JPH::CharacterVirtual::ExtendedUpdateSettings& a_extendedUpdateSettings) const
 {
     // 重力を受けない自由移動CharacterVirtualを、
-    // 床方向へ自動的に引き寄せないようにする。
+    // 床方向へ自動的に引き寄せないようにする
     a_extendedUpdateSettings.mStickToFloorStepDown = JPH::Vec3::sZero();
 
     // 空中を自由移動しているときに、
-    // 階段昇降処理が実行されないようにする。
+    // 階段昇降処理が実行されないようにする
     a_extendedUpdateSettings.mWalkStairsStepUp = JPH::Vec3::sZero();
 }

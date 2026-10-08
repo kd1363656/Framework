@@ -199,7 +199,7 @@ void FWK::Graphics::Renderer::Resize(const Device& a_device, const Struct::Windo
                                              "バックバッファのリサイズ処理に失敗しており、リサイズ処理に失敗しました");
 
     // リサイズ後のClientSizeから、
-    // 画面用Viewport、ScissorRECT、Sprite用正射影行列を更新する。
+    // 画面用Viewport、ScissorRECT、Sprite用正射影行列を更新する
     FWK_ASSERT_RETURN_IF(!SetupScreenRenderArea(a_clientSize), "リサイズ後のScreenRenderArea設定処理に失敗しました。");
 
     const auto& l_retiredFenceValue = m_directCommandQueue.FetchREFLastSignaledFenceValue();
@@ -291,11 +291,11 @@ void FWK::Graphics::Renderer::AddPipelineState(const std::shared_ptr<PipelineSta
 
 std::weak_ptr<FWK::Graphics::RootSignature> FWK::Graphics::Renderer::FindVALRootSignature(const Enum::RootSignatureType a_rootSignatureType) const
 {
-    const auto& l_itr = m_rootSignatureMap.find(a_rootSignatureType);
+    const auto& l_rootSignatureITR = m_rootSignatureMap.find(a_rootSignatureType);
 
-    if (l_itr == m_rootSignatureMap.end()) { return {}; }
+    if (l_rootSignatureITR == m_rootSignatureMap.end()) { return {}; }
 
-    return l_itr->second;
+    return l_rootSignatureITR->second;
 }
 
 const FWK::Graphics::RenderView& FWK::Graphics::Renderer::FetchREFActiveRenderView() const
@@ -329,10 +329,10 @@ bool FWK::Graphics::Renderer::SetupScreenRenderArea(const Struct::WindowClientSi
     const auto& l_viewport = l_renderArea.GetREFViewport();
 
     // Sprite Passは画面のピクセル座標を使用するため、
-    // ScreenRenderAreaと同じ幅と高さから正射影行列を作成する。
+    // ScreenRenderAreaと同じ幅と高さから正射影行列を作成する
     //
     // この定数バッファはShadow用RenderAreaとは関係しないため、
-    // Rendererが所有して更新する。
+    // Rendererが所有して更新する
     m_cbSpritePass->m_projectionMatrix = TypeAlias::Math::Matrix::CreateOrthographic(l_viewport.Width,
                                                                                      l_viewport.Height,
                                                                                      Constant::k_renderAreaMINViewportDepth,
@@ -377,7 +377,7 @@ void FWK::Graphics::Renderer::DecideNextFrameUseFrameResource()
 bool FWK::Graphics::Renderer::PrepareForSwapChainResize()
 {
     // ResizeBuffers()の前に、GPUが直前までの描画命令を使い終わっている必要がある、
-    // ここでは最後にSignalしたFenceまで待機して、GPU側のBackBuffer使用が終わるのを待つ。
+    // ここでは最後にSignalしたFenceまで待機して、GPU側のBackBuffer使用が終わるのを待つ
     m_directCommandQueue.WaitForGPUIdleIfNeeded();
 
     // フレームリソースにバックバッファ情報を残していてはいけないので全てのフレームリソースに対してリセット処理を行う
@@ -404,10 +404,10 @@ bool FWK::Graphics::Renderer::PrepareForSwapChainResize()
     FWK_ASSERT_RETURN_VALUE_IF(!l_commandAllocator, "ダイレクトコマンドアロケータが無効になっており、スワップチェインリサイズ前処理に失敗しました。", false);
 
     // DirectCommandListをリセット
-    // これにより、前フレームで記録したBackBufferへのResourceBarrierなどの参照を外す。
+    // これにより、前フレームで記録したBackBufferへのResourceBarrierなどの参照を外す
     m_directCommandList.Reset(*l_commandAllocator);
 
-    // Resetした直後のコマンドリストは「記録中」の状態になる。
+    // Resetした直後のコマンドリストは「記録中」の状態になる
     // このままにすると次のBeginDraw()で再度Reset出来なくなるため、空のままCloseしておく
     m_directCommandList.Close();
 

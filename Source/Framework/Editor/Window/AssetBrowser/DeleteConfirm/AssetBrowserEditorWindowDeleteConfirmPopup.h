@@ -11,7 +11,7 @@ namespace FWK::Editor
     {
     private:
 
-        struct ButtonDrawResult
+        struct ButtonDrawResult final
         {
             bool m_isDeleteClicked = false;
             bool m_isCancelClicked = false;

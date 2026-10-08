@@ -50,6 +50,18 @@
 ================================================================================
 
 3-1. 1つのクラスにつき1つのファイルを作り、ファイル名はクラス名と同じにします。
+     ・大文字・小文字も含めて、完全に同じにします(MainMenuBarEditor.h。MainMenubarEditor.h とは書きません)。
+     ・クラス名を変えたとき、またはファイル名が違っていたときは、ファイル名をクラス名に合わせ、
+       vcxproj・filters・Framework.h・.cpp の #include も同時に直します(第1章 1-5)。
+         CameraPassConstantBufferUploader.h → CameraPassDynamicConstantBufferUploader.h(クラス名に合わせる)
+     ・Definition のファイルは、中身が1つだけでも <クラス名>Constant.h / <クラス名>Enum.h のように種別を付けます。
+         Definition/Enum/Editor/Splitter/EditorWindowPaneSplitterEnum.h
+       型エイリアスのファイルも同じで、ファクトリーの別名は XxxFactoryTypeAlias.h にします。
+         Definition/Type/Alias/Factory/Shared/EditorWindowSharedFactoryTypeAlias.h
+     ・Framework.h などに書く #include のパスも、ファイル名と大文字・小文字まで同じにします。
+       Windows では大文字・小文字が違っていてもビルドが通るため、ファイル名を変えたときは include も必ず確認します。
+         NG : #include "Editor/MainMenu/MainMenubarEditor.h"
+         OK : #include "Editor/MainMenu/MainMenuBarEditor.h"
 3-2. .h と .cpp は同じフォルダに置きます。テンプレートやインライン関数だけのクラスは .h のみで構いません。
 3-3. フォルダは「機能 / 下位機能」の階層で分けます。付属クラスは役割ごとのサブフォルダに置きます。
        Converter/Json/      XxxJsonConverter
@@ -160,11 +172,18 @@
        HLSL の cbuffer のメンバ・groupshared 変数   g_xxx
      プレフィックスの直後に来る語は、略語であっても小文字で書きます。
        m_srvDescriptorIndex / m_cbCameraPass / k_maxMeshletVertexCount
+     ・関数の中で宣言する constexpr の変数は、定数でもローカル変数なので l_ を付けます(k_ ではありません)。
+         constexpr auto l_kind = TypeTrait::PTRType<PayloadType>::k_kind;
+     ・Undo / Redo 用に「変更前」「変更後」の値を組で持つ変数は、before / after を先頭に置きます。
+       bool の場合も before / after の後ろに Is を続けます(is で始まらなくても構いません)。
+         m_beforeName / m_afterName / m_beforeIsSceneSelected / m_afterIsSceneSelected
 6-2. 型と関数の名前は次のとおりです。
        クラス / 構造体 / 列挙型 / 関数    PascalCase
        列挙型の値                         PascalCase (enum class のみ使います)
        テンプレート引数                   Type、または XxxType (ComponentType / DerivedType / FactoryType など)
-                                          可変長引数は Args
+                                          値のテンプレート引数も XxxType にします(CommandType / HeapType)
+                                          Argument / Value のように Type で終わらない名前は使いません(ArgumentType / ValueType)
+                                          可変長引数は Args(template <typename... Args>。class... とは書きません)
        Concept                            IsXxxConcept / IsDerivedXxxConcept
        マクロ                             FWK_ + 大文字のスネークケース (FWK_ASSERT_RETURN_IF など)
        基底クラス                         XxxBase (インターフェースだけは I を付けます: ICommand)
@@ -172,8 +191,23 @@
 6-3. 名前の付け方
      ・コンテナの変数名は種類に合わせます。
          vector / deque / array → XxxList、unordered_map → XxxMap、unordered_set → XxxSet、queue → XxxQueue
+         ImVector などの外部ライブラリの配列も XxxList にします(m_textLineOffsetList)。
+         XxxToYyy の形の名前でも、最後に種類を付けます(m_uuidToAssetFilePathDataMap)。
+         std::span は、配列の一部を指す「範囲」なので XxxRange にします(a_elementRange / l_vertexRange)。
+         char の配列を文字の入力欄として使うものは XxxBuffer / XxxText で構いません(m_inputBuffer)。
      ・bool は is / can / should / was / has で始めます(m_isDestroyed / m_canAutoScroll / m_shouldUpdateMatrixDirty)。
-     ・イテレータは l_xxxITR とします。
+       引数・ローカル変数も同じです。contains / requires / use などの動詞で始めず、言い換えます。
+         l_containsRoot → l_hasRoot / l_requiresFolderTreeRefresh → l_shouldRefreshFolderTree /
+         a_updateCurrentFolderPath → a_shouldUpdateCurrentFolderPath / m_useMAXX → m_shouldUseMAXX
+       引数の値の意味を名前で表すための bool の定数は、この限りではありません(k_advanceWritePosition / k_useMINSide)。
+       bool の初期値の定数は k_initialIsXxx の形にします(k_initialIsActive / k_initialIsSuccess)。
+     ・イテレータは l_xxxITR とします。l_itr のように中身の分からない名前にはしません。
+       xxx には、検索したコンテナの名前から m_ / l_ / a_ と List / Map / Set を除いたものを使います。
+         m_prefabMap.find(...)        → l_prefabITR
+         m_folderOpenStateMap.find()  → l_folderOpenStateITR
+       範囲を順にたどるイテレータは l_cursorITR にします(for (auto l_cursorITR = l_startITR; ...))。
+     ・名前の綴りを間違えないようにします。英単語は略さずに書き、略語は 6-6 の一覧のものだけを使います。
+         Pos → Position(l_cursorPositionY)/ Settingss・Removeal・Movig などの綴りの誤りは書きません
      ・役割を持つクラスは「持ち主の名前 + 役割」をつなげた名前にします。
          AssetBrowserEditorWindowFolderPane / GameObjectTransformComponentInspector / GameObjectJsonConverter
        役割を表す語: Manager(シングルトン) System Context Registry Storage Record Builder Loader Extractor
@@ -189,6 +223,11 @@
        「どの値を返すか」を切り替える必要が出たら、同じ名前の取得関数の中身で切り替えます。
          OK : const auto& GetREFRenderGraphFrameResource() const { return m_renderGraphFrameResource; }
          NG : const auto& GetREFActiveRenderGraphFrameResource() const { return m_renderGraphFrameResource; }
+       変数名の一部を省いたり、別の語に変えたりもしません。
+         OK : GetREFClipboardFilePathList() { return m_clipboardFilePathList; }
+         NG : GetREFFilePathList        () { return m_clipboardFilePathList; }
+         NG : GetVALMaxSlopeAngleRadius () { return m_maxSlopeAngleRadians; }
+       メンバ変数の名前が m_num / m_size のように短すぎる場合は、メンバ変数のほうを m_descriptorNUM のように直します。
      ・まだ使う場所がない取得関数・設定関数は作りません。使う処理を実装するときに、必要な分だけ足します。
      ・設定関数(Setter)の引数名は必ず a_set にします。
          void SetXxx(const float a_set) { m_xxx = a_set; }
@@ -196,6 +235,9 @@
          void SetXxx(Struct::GPUResource&& a_set) { m_xxx = std::move(a_set); }
      ・Fetch は、計算や探索を伴う取得関数で、.cpp に実装するものに使います。
          FetchVALXxx / FetchPTRXxx / FetchREFXxx / FetchMutablePTRXxx
+       Fetch / Find の後ろには、必ず VAL / PTR / REF などの返し方を付けます。
+         NG : FetchIcon / FetchVertexUV / FindUniqueComponent
+         OK : FetchVALIcon / FetchVALVertexUV / FindVALUniqueComponent
      ・Find はコンテナからの検索に使います。
          FindPTRXxx (見つからなければ nullptr) / FindMutablePTRXxx / FindVALXxx (weak_ptr や値) / FindXxxITR (イテレータ)
      ・Generate は生成に使います(GenerateVALUUID など)。
@@ -215,10 +257,15 @@
        SRV UAV RTV DSV CBV CB VB GPU CPU FPS FBX UFBX IMGUI MIP LOD HWND IO OP FUNC STR
      例: GetREFTypeINFO / FindPTRPrefab / l_cursorITR / k_invalidStaticTypeID / k_defaultSpriteRECTX
          SaveCONFIG / k_imguiDebugINFOColor / FetchVALCPUDescriptorHandle / k_fovYDegreeMAX
+         DeserializeDepthStencilOPDesc / k_defaultMIPLevels / k_executeListNUM / l_baseJsonPTR / a_targetRECT
+     ・MIN / MAX は、識別子の途中では必ず大文字にします。プレフィックスの直後は 6-1 のとおり小文字です。
+         CalculateWorldMAXScale / k_defaultMINPrimaryPaneSize / k_maxCharacterVirtualMAXSlopeAngleRadians
+       D3D12 の構造体のメンバ(ResourceMinLODClamp)や Jolt のメンバ(mMaxSlopeAngle)など、外部ライブラリの名前はそのまま使います。
      ・Json は常に Json と書きます(JsonKey / JsonConverter)。
      ・Diff は Diff と書きます(SerializeDiff / DetectJsonDiff)。
      ・ImGui は、プレフィックスの直後では imgui / imGui(k_imguiAccentColor / m_imGuiSRVDescriptorIndexMap)、
-       関数名では IMGUI(IMGUIDelayedTooltip)と書きます。
+       関数名・型名・識別子の途中では IMGUI(IMGUIDelayedTooltip / AllocateIMGUISRVDescriptorIndex /
+       IMGUISRVDescriptorIndexMap / m_previewIMGUISRVDescriptorIndexList)と書きます。
 
 
 ================================================================================
@@ -234,6 +281,11 @@
      ・シングルトンや private の using を持つクラスは、private(using / friend / コンストラクタ)→ public → private の順にします。
      ・protected は必要なときだけ、public と private の間に書きます。
      ・アクセス指定子の前後には必ず空行を入れます。
+     ・friend は、シングルトンの基底クラス(Utility::SingletonBase)を継承するクラスだけに使います。
+         friend class SingletonBase<XxxManager>;
+       それ以外の目的では friend を使いません。他のクラスから呼ぶ関数は public にします。
+       ※注意 : namespace FWK::Physics の中に friend class Scene; と書くと、FWK::Scene ではなく、
+                存在しない FWK::Physics::Scene を指すことになり、何の効果もありません。
 7-3. public の宣言は次の順に並べます。
        コンストラクタ / デストラクタ
        コピー・ムーブの禁止
@@ -253,6 +305,16 @@
        GetMutablePTR
        GetVAL
        public の static constexpr 定数
+     ・同じアクセス指定子(public / protected / private)の中では、処理関数 → Is / Can / Has → Apply → Set → Fetch / Find →
+       GetREF → GetMutableREF → GetPTR → GetMutablePTR → GetVAL の順に、上から下へ並べます。
+       取得関数・設定関数・判定関数(Is / Can / Has)の後ろに、処理関数を書きません。
+         NG : Find... の後ろに Set... を書く / GetREF... の後ろに Fetch... や Has... を書く / Apply... や Is... の後ろに Add... などの処理関数を書く
+       アクセス指定子で区切られていれば、別のグループとして扱います(private の処理関数を public の GetREF... より下に書いてよい)。
+       並びを合わせるためだけに、アクセス指定子を増やしません。
+     ・Deserialize / Load は処理フローの最初、Serialize / Save は最後に行う処理なので、隣り合わせにせず、必ず空行を入れて離します。
+         bool Load(const std::filesystem::path& a_filePath, Graphics::ModelMaterialBase& a_material);
+
+         bool Save(const std::filesystem::path& a_filePath, const Graphics::ModelMaterialBase& a_material);
      ・.cpp の関数の定義も、ヘッダーで宣言した順に書きます(第8章 8-2)。
 7-4. private の宣言は次の順に並べます。
        private 関数 → static constexpr 定数(k_) → メンバ変数(m_) → 型情報マクロ
@@ -316,6 +378,10 @@
           GameObjectHierarchy          m_hierarchy          = {};
           GameObjectComponentContainer m_componentContainer = {};
      ・同じ種類の宣言は空行を入れずにまとめ、種類(動詞・役割)が変わるところで空行を入れます。
+     ・空行を入れずに上下で隣り合う関数は、似た処理の関数だけにします。似ていない関数との間には空行を入れてグループを分けます。
+         似ている例  : Undo と Redo / Add と Remove / BeginFrame・Execute・EndFrame /
+                       INIT・Deserialize・PostDeserialize・Create / 同じ動詞で始まる関数(DrawCard と DrawCardIcon)
+         似ていない例: CanUpdateFrame と UpdateWindowTitleBar(判定と更新) / DrawMenuFile と UpdateShortCutKey(描画と更新)
 7-9. クラスの最後には型情報マクロを書き、ファクトリーへの登録は namespace の外に書きます。
           namespace FWK::Graphics
           {
@@ -353,6 +419,9 @@
           ...
 7-11. 構造体
      ・namespace FWK::Struct に struct Xxx final で定義し、メンバには m_ を付けて宣言の位置で初期化します。
+     ・構造体は継承しません(Xxx final : public YyyBase のような構造体の継承は書きません)。
+       共通部分と派生を持つものは、専用のクラス(XxxBase と派生クラス)にして、private のメンバと GetREF / GetMutableREF で公開します。
+         ModelMeshBase -> StaticModelMesh / SkeletalAnimationModelMesh
      ・既定値の定数は、構造体の中に static constexpr k_initialXxx / k_defaultXxx として置きます。
      ・GPU の定数バッファ用は CBXxx、頂点用は VBXxx という名前にします。
        HLSL の16バイト境界に合わせるためのパディングは m_padding / m_xxxPadding として明示します。
@@ -370,6 +439,8 @@
 
 8-1. 先頭に #include "Xxx.h" を書き、空行を1行入れてから関数の定義を書きます。
 8-2. 関数はヘッダーで宣言した順に定義します。
+     ・ヘッダーで上下に隣り合っていた関数は、.cpp でも間に別の関数を挟まずに、隣り合わせに定義します。
+     ・ヘッダーの宣言の順番を変えたときは、.cpp の定義の順番も同時に変えます。
 8-3. 関数と関数の間は空行を1行入れます。
      ただし、関連が強い関数は空行を入れずに続けて書きます。
        コンストラクタとその直後のデストラクタ / EarlyUpdate・Update・LateUpdate・PostLateUpdate /
@@ -444,6 +515,19 @@
      return 文や代入の右辺でも同じように書きます。
          return a_storageID < m_storageIDCapacity &&
                 a_storageID < static_cast<TypeAlias::StorageID>(m_isAllocatedList.size());
+     条件が2つだけの短い場合や、本体が return だけの1行 if の場合も、1行にまとめずに改行します。
+     条件の行どうしでは、関数呼び出しの ( の位置は揃えません(条件の先頭だけを揃えます)。
+         if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) &&
+             ImGui::IsKeyPressed(ImGuiKey_P, false))
+     2行目以降の条件は ( の次の位置から書きます。先頭の ! の有無に合わせて、1文字ずらすことはしません。
+         FWK_ASSERT_RETURN_VALUE_IF(!m_hullShader &&
+                                    m_domainShader,
+     && / || を含む式は、関数の引数に直接書きません。先に bool の変数へ受けてから渡します。
+         NG : l_cameraContext.SetIsCullingBySceneCamera(l_viewportEditorWindow && l_viewportEditorWindow->GetVALIsDrawCulledResult());
+         OK : const bool l_isCullingBySceneCamera = l_viewportEditorWindow &&
+                                                    l_viewportEditorWindow->GetVALIsDrawCulledResult();
+
+              l_cameraContext.SetIsCullingBySceneCamera(l_isCullingBySceneCamera);
 9-6. if の初期化文は ; の後で改行し、条件を ( の次の位置に揃えます。
          if (const auto& l_json = a_rootJson.value(k_xxxJsonKey, nlohmann::json{});
              !l_json.is_null())
@@ -466,6 +550,15 @@
          NG : Rotate(l_io.MouseDelta.x * m_rotateSpeed,
                      l_io.MouseDelta.y * m_rotateSpeed);
          OK : Rotate(l_io.MouseDelta.x * m_rotateSpeed, l_io.MouseDelta.y * m_rotateSpeed);
+     ・FWK_ASSERT の条件に長い関数呼び出しを書く場合も同じです。結果を bool の変数に受けてから、1行で書きます。
+         NG : FWK_ASSERT_RETURN_VALUE_IF(!m_motionExtractor.ExtractModelMotionSequenceList(l_boneNodeIndexMap, a_fbxScene, a_modelData.m_motionSequenceList),
+                                         "FBXシーンからMotionSequenceListの抽出に失敗しました。",
+                                         false);
+         OK : const bool l_isExtracted = m_motionExtractor.ExtractModelMotionSequenceList(l_boneNodeIndexMap, a_fbxScene, a_modelData.m_motionSequenceList);
+
+              FWK_ASSERT_RETURN_VALUE_IF(!l_isExtracted, "FBXシーンからMotionSequenceListの抽出に失敗しました。", false);
+     ・2行目以降の引数は、必ず ( の次の位置に揃えます。const auto → const auto& のように、行の前半の長さを変えたときは、
+       続く行の位置も同時に直します。
 9-8. 縦揃え
      ・続けて並ぶ代入や初期化は、= の位置を揃えます。
      ・続けて並ぶ関数呼び出しは、( の位置を揃えます。
@@ -493,6 +586,10 @@
      ・return の前には空行を入れます(ブロックの最初の文が return の場合は除きます)。
      ・FWK_ASSERT の後には空行を入れます。FWK_ASSERT が続く場合は、詰めて並べます。
      ・1行で書いた if の後には空行を入れます。
+       ただし1行の if が続くときは、間に空行を入れずに上下に詰めて並べ、{ の位置を縦に揃えます(最後の1行 if の後に空行を入れます)。
+         if (!a_converter.TryReadMaterialValue(m_roughnessFactor, a_memoryReadOffset)) { return false; }
+         if (!a_converter.TryReadMaterialValue(m_metallicFactor, a_memoryReadOffset))  { return false; }
+       間にコメントを書く場合は、コメントの前に空行を入れて、別のまとまりとして扱います。
      ・文の種類が変わるところ(宣言から呼び出しへ、代入から宣言へ など)には空行を入れます。
        同じ種類の文(宣言の連続、代入の連続、同じ関数の呼び出しの連続)は詰めてまとめます。
      ・コメントの前には空行を入れます(ブロックの先頭は除きます)。
@@ -542,6 +639,11 @@
        また、元の値がこの後で変わったり消えたりするため、コピーを取っておく必要がある場合も値で受け取ります。
          // この後eraseするとイテレータが無効化されるため、要素をコピーしておく
          const auto l_moveData = *l_moveITR;
+       変更前の値を残しておく変数(l_beforeName / l_oldPrefabUUID)、front() の後で pop する要素、
+       この後で増やすメンバの値(m_nextStorageID)を受け取る変数も、同じ理由で値で受け取ります。
+     ・auto&& は使いません。後で std::move する変数は auto で受け取ります。
+         NG : auto&& l_rootJson = Utility::LoadJsonFile(a_filePath);
+         OK : auto   l_rootJson = Utility::LoadJsonFile(a_filePath);
 10-2. 変数の型名を書くか auto にするかは、右辺で型が決まっているかどうかで決めます。
      ・右辺がリテラル(0ULL / 1.0F / 0U など)の場合は、型がサフィックスでしか決まらないため、必ず型名を書きます。
          std::size_t l_bufferOffset = 0ULL;
@@ -570,6 +672,8 @@
      ・float には大文字の F を付け、小数点も必ず書きます: 1.0F / 0.5F
      ・符号なし整数には大文字の U / UL / ULL を付けます: 0U / 0UL / 0ULL
      ・接尾辞は型に合わせます。std::size_t / UINT64 / std::uint64_t は ULL、UINT / std::uint32_t は U、DWORD は UL です。
+     ・固定幅の整数型は、必ず std:: を付けて書きます(std::uint8_t / std::uint32_t)。uint32_t のように std:: を省きません。
+       列挙型の基になる型も同じです: enum class XxxTag : std::uint8_t
 10-6. マジックナンバーは書きません。0 や 1 であっても、意味が分かる名前の定数にします。
          k_noRemainder = 0U / k_halfMagnification = 0.5F / k_singleElementCount = 1ULL
          k_firstBoneIndex = 0ULL / k_invalidStorageID = std::numeric_limits<...>::max()
@@ -578,6 +682,9 @@
      ・ヘッダーで定義する定数・メンバ変数は、auto を使わず必ず型名を書きます: inline constexpr std::size_t k_xxx = 1ULL;(constexpr auto k_xxx とは書きません)
      ・そのクラスだけで使う定数は、クラスの private に static constexpr で書きます。
      ・複数のファイルで使う定数は、Definition/Constant に inline constexpr で書きます。
+       namespace の中に static constexpr とは書きません(static はクラスの中の定数だけに使います)。
+         NG : namespace FWK::Constant { static constexpr float k_epsilon = 0.000001F; }
+         OK : namespace FWK::Constant { inline constexpr float k_epsilon = 0.000001F; }
      ・文字列の定数は static constexpr std::string_view で書きます。
      ・列挙型の値や、ImGui / D3D12 などが用意している定数(ImDrawFlags_None など)のためだけに、static constexpr の定数は作りません。
        使う場所で、その値をそのまま書きます。
@@ -630,14 +737,26 @@
      ・要素の削除は std::erase_if、検索は std::ranges::find / any_of / find_if を使います。
      ・オブジェクトの生成は std::make_shared / std::make_unique を使い、new は使いません。
      ・文字列の整形には std::format を使います。
+     ・外部ライブラリの型が決めている場合だけ、次の書き方を使って構いません。
+         ImVector(ImGui)の要素の追加 → push_back(ImVector には emplace_back がないため)
+         Jolt の参照カウント付きのオブジェクト(JPH::Ref / DebugRenderer::Batch など)の生成 → new(Jolt が delete するため)
 11-10. 次のものは使いません。
        例外(try / throw) / goto / typedef / mutable / [[nodiscard]] / using namespace / this->
+     ・this-> は、テンプレートの基底クラスのメンバを呼ぶとき(基底クラスがテンプレート引数で決まる場合)だけ使います。
+       この場合は this-> がないとコンパイルできないためです(DirectAndComputeCommandListBase)。
+       テンプレートではないクラスでは、this-> を書かずに呼びます。
+     ・nullptr との比較の結果を bool に入れるときも == nullptr / != nullptr は書かず、static_cast<bool>(...) にします。
+         const bool l_isDragging = static_cast<bool>(ImGui::GetDragDropPayload());
 11-11. 取得関数(GetREF / GetMutableREF / GetVAL など)を続けて呼ぶ書き方はしません。1段ずつ変数で受けます。
      ・weak_ptr を取り出す GetVALXxx().lock() の形だけは、続けて書いて構いません。
          NG : auto& l_cameraContext = l_graphicsManager.GetMutableREFRenderer().GetMutableREFCameraContext();
          OK : auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
               auto& l_cameraContext = l_renderer.GetMutableREFCameraContext  ();
          OK : const auto& l_scene = l_sceneManager.GetVALScene().lock();
+     ・シングルトンの GetInstance() の後ろにも、取得関数を続けて書きません。先にシングルトンを変数で受けます。
+         NG : const auto& l_scene = SceneManager::GetInstance().GetVALScene().lock();
+         OK : const auto& l_sceneManager = SceneManager::GetInstance ();
+              const auto& l_scene        = l_sceneManager.GetVALScene().lock();
 
 
 ================================================================================
@@ -843,6 +962,9 @@
      ・<機能>/Inspector/XxxInspector に void EditInspector(Xxx& a_xxx) を作り、本体の EditInspector から呼び出します。
      ・画面に表示する文字列は private の static constexpr std::string_view k_xxxLabel = "日本語"; として定義します。
      ・ImGui の ID は "##ClassName" の形の定数にします。
+       アイコンだけのボタンは、アイコンの後ろに ID を続けた1つの定数にします。
+         static constexpr std::string_view k_clearSearchButtonLabel = "\xEF\x80\x8D##DetailsEditorGameObjectAddComponentClearSearch";
+       幅を計算するときは ImGui::CalcTextSize(ラベル, nullptr, true) として、"##" より後ろを幅に含めません。
      ・ImGui の Push / Begin と Pop / End は必ず対にし、途中で return する場合もその前に End / Pop を呼びます。
 
 
@@ -1064,6 +1186,9 @@
 [ ] class Xxx final(基底クラスは XxxBase で final なし)、public → private の順、アクセス指定子の前後に空行
 [ ] コンストラクタ / デストラクタは「 X() = default;」「~X() = default;」で ~ の位置を揃えている
 [ ] public は INIT → Deserialize → Update 系 → Draw → Serialize → 操作 → Is → Set → Find → Fetch → GetREF → GetMutableREF → GetVAL の順
+[ ] 空行なしで隣り合う関数は似た処理だけで、.cpp の定義の順番はヘッダーの宣言の順番と同じ(間に別の関数を挟まない)
+[ ] 同じアクセス指定子の中で 処理関数 → Is / Can / Has → Apply → Set → Fetch / Find → GetREF → GetMutableREF → GetPTR → GetMutablePTR → GetVAL の順で、Load / Save と Deserialize / Serialize は空行で離している
+[ ] friend は SingletonBase のためだけに使っている
 [ ] private は 関数 → static constexpr k_ → m_ メンバ(初期化子は {} / nullptr / 定数) → 型情報マクロ の順
 [ ] ヘッダーで定義するものと、リテラルで初期値を与える変数は、auto を使わず型名を書いている
 [ ] 8バイト以上の引数は const 参照、8バイト以上のローカル変数は const auto& で受け取っている
@@ -1075,33 +1200,46 @@
 [ ] 続けて並ぶ = と ( を縦に揃え、const 付きと const なしの宣言は型の位置を揃えている
 [ ] Allman スタイル、波括弧は必ず付け、return / continue の1文だけは1行 if で書いてよい(break や他の文はブロック)、else は改行
 [ ] && / || は1行に1条件、演算子は行末
-[ ] return の前、FWK_ASSERT の後、1行 if の後、文の種類が変わるところに空行がある
+[ ] return の前、FWK_ASSERT の後、1行 if の後(1行 if が続くときは詰めて { を揃える)、文の種類が変わるところに空行がある
 [ ] 数値はすべて k_ の定数(接尾辞は大文字の F / U / ULL)、文字列は std::string_view の定数
 [ ] エラーは FWK_ASSERT_RETURN(_VALUE)_IF で判定し、メッセージは「〜のため、〜に失敗しました。」
 [ ] weak_ptr は先頭で lock() して if (!l_x) { return; } で確認している
 [ ] .cpp のコメントは // + 日本語の常体で、行末コメントはなく、コメントの前に空行がある
 [ ] Converter / Inspector をメンバに持って処理を任せ、JSON のキーは k_xxxJsonKey にしている
 [ ] 新しいファイルを vcxproj / filters / Framework.h に登録している
+[ ] ファイル名とクラス名が大文字・小文字まで同じで、Definition のファイルには Constant / Enum などの種別が付いている
+[ ] bool は is / can / should / was / has で始まり、イテレータは l_xxxITR(l_itr にしない)、std::span は XxxRange
+[ ] Fetch / Find の後ろに VAL / PTR / REF が付き、取得関数の名前が返すメンバ変数の名前と一致している
+[ ] 識別子の途中の MIN / MAX / OP / MIP / RECT / NUM / PTR / ITR / IMGUI は大文字、std:: の付いた固定幅整数型を使っている
+[ ] GetInstance() や取得関数を続けて呼ばず、1段ずつ変数で受けている
+[ ] 英単語の綴りが正しい(Settings / Removal / Moving / Batch / Before / Next / TypeID / Height など)
 
 
 ================================================================================
  第22章 統一されていない箇所(新しく書くときは避けてください)
 ================================================================================
 
-・メンバ変数を宣言だけして、.cpp の初期化子リストで初期化しているクラス
-  (EditorManager / AudioManager / PhysicsManager / Window / BinaryConverterBase など)
-  → 宣言の位置で初期化します。
-・コメントが書かれたヘッダー → 第1章 1-1 のとおりヘッダーにはコメントを書きません。
-・BOM のないファイル、末尾に改行があるファイル
-・C スタイルのキャスト、後置インクリメント、push_back、new、if( / switch( のようにスペースのない書き方、行末の {
-・1行に書かれた && の条件、{ が [ の位置に揃っていないラムダ
-・#ifdef JPH_ENABLE_ASSERTS → #if defined(...) に揃えます。
-・Get で始まる取得関数(GetRERHalfExtent / GetIsEnhancedInternalEdgeRemovalDisabled)
-・SerializeDIFF と SerializeDiff の混在 → Diff を使います。
-・MIN / MAX と Min / Max の混在 → MIN / MAX を使います。
-・名前のスペルミス(新しいコードでは正しい綴りで書きます)
-    StaticTpeID / FetchPTRNexScene / Removeal / ForBachUpload / BeforSubmit / PhyisicsManager / ResoSystem / RuntimTexture
-    ファイル名: LightSystemJsonConverrter.h / SceneManagerJsonConveter.h / AssetRecordBaseCosntant.h /
-                IMGUIXxxUtilityCosntant.h / SwapChainJsonConverterConstasnt.h / EditorWindowPainSplitter.h / Sorter/Topologycal/
-・アクセス指定子以下のインデントがずれている箇所(GameObjectJsonConverter の private 部)
-・コンストラクタの前のスペースがなく、~ と揃っていない箇所(PhysicsCharacterVirtualBaseJsonConverter)
+2026-10-08(2回目)に全ソースを検査用のスクリプトで見直し、次の不統一を直しました。
+  名前の綴り・略語・MIN/MAX・IMGUI・Fetch/Find/Get の返し方・bool とコンテナの名前・イテレータの名前 /
+  ファイル名とクラス名の一致・Definition の種別 / BOM・CRLF・末尾改行・行末の空白・タブ /
+  縦揃え(= と ( の位置・複数行の引数の位置)/ const auto → const auto& / 1行の && 条件 / 1行 if の break /
+  return の前の空行 / 関数の先頭と末尾の空行 / コメントの句点 / final / friend / public・protected の入れ子構造体
+残っているのは次の箇所です。
+
+・コメントが書かれたヘッダー(約90ファイル、約1000行。Definition/Macros のマクロの説明を除く)
+  → 第1章 1-1 のとおりヘッダーにはコメントを書きません。内容を .cpp へ移すかどうかを決めてから直します。
+・assert(false && "...") を直接書いている箇所(RenderGraphJsonConverter / GraphicsPipelineStateBaseJsonConverter)
+  → ループの continue / break と組み合わせているため、FWK_ASSERT_RETURN_IF に置き換えられません。
+    return しない FWK_ASSERT 系のマクロを用意するかどうかを決めてから直します。
+・vcxproj に登録されていない作業中のファイル(GameObjectInputComponent)
+・.cpp で空行なしに隣り合っている関数のうち、ヘッダーでは空行で分かれているもの(約40組)
+  → 同じ動詞で始まる関数(DrawCopyMenu / DrawCutMenu など)が多く、似ている(7-8)とも言えるため、
+    ヘッダーと .cpp のどちらに合わせるかを決めてから直します。
+・FWK_ASSERT のメッセージのうち「{原因}のため、{処理}に失敗しました。」の形になっていないもの
+  (「~が無効です。」「~が作成されていません。」など)
+・新しく書くときは、次のような以前の書き方をしないでください。
+    SerializeDIFF(→ SerializeDiff)/ Min・Max(→ MIN・MAX)/ l_itr(→ l_xxxITR)/ FetchIcon(→ FetchVALIcon)/
+    uint32_t(→ std::uint32_t)/ #ifdef(→ #if defined(...))/ 1行の && 条件 / { が [ に揃っていないラムダ /
+    スペルミス(StaticTpeID / Removeal / ForBachUpload / BeforSubmit / PhyisicsManager / Converrter / Cosntant / Topologycal など)/
+    auto&&(→ auto)/ 引数に直接書いた && 条件(→ bool の変数に受ける)/ Definition/Constant の static constexpr(→ inline constexpr)/
+    ImGuiSRV のような識別子の途中の ImGui(→ IMGUISRV)/ 0ULL などの直書き(→ k_noRemainder / k_emptyXxxCount)

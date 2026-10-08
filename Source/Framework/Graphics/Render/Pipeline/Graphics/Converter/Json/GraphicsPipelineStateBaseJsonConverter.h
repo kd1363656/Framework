@@ -25,7 +25,7 @@ namespace FWK::Converter
         void DeserializeDepthStencilDesc  (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
         void DeserializeRTVFormatList     (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
         void DeserializeSampleDesc        (const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
-        void DeserializeDepthStencilOpDesc(const nlohmann::json& a_rootJson, D3D12_DEPTH_STENCILOP_DESC&          a_depthStencilOPDesc) const;
+        void DeserializeDepthStencilOPDesc(const nlohmann::json& a_rootJson, D3D12_DEPTH_STENCILOP_DESC&          a_depthStencilOPDesc) const;
 
         nlohmann::json SerializeRasterizerDesc    (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
         nlohmann::json SerializeBlendDesc         (const Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const;
@@ -85,9 +85,9 @@ namespace FWK::Converter
         static constexpr std::string_view k_backFaceJsonKey         = "BackFace";
 
         // DepthStencilOpDesc
-        static constexpr std::string_view k_stencilFailOpJsonKey      = "StencilFailOp";
-        static constexpr std::string_view k_stencilDepthFailOpJsonKey = "StencilDepthFailOp";
-        static constexpr std::string_view k_stencilPassOpJsonKey      = "StencilPassOp";
+        static constexpr std::string_view k_stencilFailOPJsonKey      = "StencilFailOp";
+        static constexpr std::string_view k_stencilDepthFailOPJsonKey = "StencilDepthFailOp";
+        static constexpr std::string_view k_stencilPassOPJsonKey      = "StencilPassOp";
         static constexpr std::string_view k_stencilFUNCJsonKey        = "StencilFunc";
 
         // SampleDesc

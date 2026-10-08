@@ -63,7 +63,7 @@ bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a
 
     // D3D12_RESOURCE_DESCについての説明
     // Buffer(作成するバッファサイズ)
-    // 今回はテクスチャではなく単純な線形メモリとして扱うアップロード用バッファを作成する。
+    // 今回はテクスチャではなく単純な線形メモリとして扱うアップロード用バッファを作成する
     auto l_resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(a_bufferSize);
 
     // CreateCommittedResource(ヒープ設定、
@@ -77,12 +77,12 @@ bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a
     // UploadBufferは転送用の一時バッファであり、管理を複雑にしなくてよいためこの方式で十分
     // 初期状態にD3D12_RESOURCE_STATE_GENERIC_READを指定している理由
     // UploadHeap上のリソースはCPUから書き込み、GPUから読み取ってコピー元として使う想定のため
-    const auto l_hr = l_device->CreateCommittedResource(&l_heapProperties,
-                                                        D3D12_HEAP_FLAG_NONE,
-                                                        &l_resourceDesc,
-                                                        D3D12_RESOURCE_STATE_GENERIC_READ,
-                                                        nullptr,
-                                                        IID_PPV_ARGS(m_uploadBuffer.ReleaseAndGetAddressOf()));
+    const auto& l_hr = l_device->CreateCommittedResource(&l_heapProperties,
+                                                         D3D12_HEAP_FLAG_NONE,
+                                                         &l_resourceDesc,
+                                                         D3D12_RESOURCE_STATE_GENERIC_READ,
+                                                         nullptr,
+                                                         IID_PPV_ARGS(m_uploadBuffer.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "UploadBufferの作成に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(!Map(),       "UploadBufferのMapに失敗しました。",  false);
@@ -117,7 +117,7 @@ bool FWK::Graphics::UploadBuffer::Map()
     FWK_ASSERT_RETURN_VALUE_IF(!m_uploadBuffer, "UploadBufferが作成されておらず、Mapに失敗しました。", false);
 
     // 既にMap済みなら成功扱いにする
-    // UploadBufferは永続Mapする方針なので、二重マップはしない。
+    // UploadBufferは永続Mapする方針なので、二重マップはしない
     if (m_mappedData) { return true; }
 
     // Map成功時にCPUから書き込める先頭アドレスを受け取る
@@ -128,7 +128,7 @@ bool FWK::Graphics::UploadBuffer::Map()
     //     マップした先頭アドレスの受取先);
     // Bufferリソースなのでサブリソースは0固定で扱う
     // UploadBufferはCPUから書き込みたい用途なのでMapして生ポインタを取得する
-    const auto l_hr = m_uploadBuffer->Map(k_firstSubresourceIndex, nullptr, &l_mappedData);
+    const auto& l_hr = m_uploadBuffer->Map(k_firstSubresourceIndex, nullptr, &l_mappedData);
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "UploadBufferのMapに失敗しました。", false);
 
@@ -139,7 +139,11 @@ bool FWK::Graphics::UploadBuffer::Map()
 
 void FWK::Graphics::UploadBuffer::UnMap()
 {
-    if (!m_uploadBuffer || !m_mappedData) { return; }
+    if (!m_uploadBuffer ||
+        !m_mappedData)
+    {
+        return;
+    }
 
     m_uploadBuffer->Unmap(k_firstSubresourceIndex, nullptr);
 

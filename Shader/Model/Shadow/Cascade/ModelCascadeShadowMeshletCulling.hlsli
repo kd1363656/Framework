@@ -5,13 +5,13 @@
 
 // MeshletのBoundingSphereが、
 // 現在のCascadeのLightOrthographic領域へ
-// 少しでも重なっているか判定する。
+// 少しでも重なっているか判定する
 bool IsVisibleModelMeshletByCascadeFrustum(const ModelMeshletBounds a_meshletBounds)
 {
     const float3 l_worldCenter     = TransformModelLocalPositionToWorld(a_meshletBounds.center);
     const float  l_worldRadius     = a_meshletBounds.radius * g_worldMaxScale;
     const float4 l_lightViewCenter = mul(float4(l_worldCenter, k_modelPositionElementW), g_cascadeViewMatrix);
-    
+
     // Sphere全体がCascadeの左側または右側なら除外する
     if (l_lightViewCenter.x + l_worldRadius < g_cascadeOrthographicMIN.x ||
         l_lightViewCenter.x - l_worldRadius > g_cascadeOrthographicMAX.x)
@@ -33,7 +33,7 @@ bool IsVisibleModelMeshletByCascadeFrustum(const ModelMeshletBounds a_meshletBou
     {
         return false;
     }
- 
+
     return true;
 }
 
@@ -48,7 +48,7 @@ bool IsBackfaceModelMeshletByDirectionalLightCone(const ModelMeshletBounds a_mes
 
     const float4 l_localConeAxis = float4(a_meshletBounds.coneAxis, k_modelDirectionElementW);
     const float3 l_worldConeAxis = normalize(mul(l_localConeAxis, g_worldInverseTransposeMatrix).xyz);
-    
+
     // DirectionalLightが進む方向は
     // LightCameraからSceneを見るView方向と一致する
     return dot(g_directionalLightDirection, l_worldConeAxis) >= a_meshletBounds.coneCutoff;
@@ -57,16 +57,16 @@ bool IsBackfaceModelMeshletByDirectionalLightCone(const ModelMeshletBounds a_mes
 bool ShouldDispatchModelCascadeShadowMeshlet(const uint a_meshletIndex)
 {
     StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
-    
+
     const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
-    
+
     if (!IsVisibleModelMeshletByCascadeFrustum(l_meshletBounds) ||
         IsBackfaceModelMeshletByDirectionalLightCone(l_meshletBounds))
-    
+
     {
         return false;
     }
-    
+
     return true;
 }
 

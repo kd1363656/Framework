@@ -28,8 +28,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::Apply(AssetFilePat
         // AssetFilePathData -> 同じFilePath
         // の3つが成立して初めて正式登録済みAssetとして扱う
         if (const auto* l_assetFilePathData = a_assetFilePathRegistry.FindPTRAssetFilePathData(*l_assetUUID);
-           l_assetFilePathData &&
-           l_assetFilePathData->m_assetFilePath == l_filePath)
+            l_assetFilePathData &&
+            l_assetFilePathData->m_assetFilePath == l_filePath)
         {
             switch (l_assetFilePathData->m_type)
             {
@@ -86,31 +86,31 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplyPrefabAdd(con
     {
         return;
     }
- 
+
     const auto& l_scene = a_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
- 
+
     auto& l_gameObjectPrefabSystem = l_scene->GetMutableREFGameObjectPrefabSystem();
- 
+
     // すでにPrefabSystemへ同じPrefabUUIDが存在する場合は、
     // 同じPrefabを二重登録しない
     if (l_gameObjectPrefabSystem.FindPTRPrefab(a_prefabUUID)) { return; }
- 
+
     GameObjectPrefab l_gameObjectPrefab = {};
- 
+
     // Add通知はJson生成直後に届く可能性がある
     // Prefab::Load()内部でJsonを実際に読み込ませ、
     // 書き込み途中の不完全なPrefabをPrefabSystemへ登録しない
     l_gameObjectPrefab.Load(a_filePath);
- 
+
     if (l_gameObjectPrefab.GetREFJson().is_null())
     {
         SetIsRequiresRetry(true);
- 
+
         return;
     }
- 
+
     l_gameObjectPrefabSystem.AddPrefab(l_gameObjectPrefab, a_prefabUUID);
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(const std::filesystem::path& a_filePath, const boost::uuids::uuid& a_sceneUUID, SceneManager& a_sceneManager)
@@ -120,18 +120,18 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::ApplySceneAdd(cons
     {
         return;
     }
- 
+
     // CurrentSceneの新規保存によるADD通知ならここでは何もしない
     if (a_sceneManager.GetREFCurrentSceneFilePath() == a_filePath) { return; }
- 
+
     const auto& l_scene = a_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
- 
+
     auto& l_sceneChanger = l_scene->GetMutableREFSceneChanger();
- 
+
     // 既にNextSceneMapへ登録済みなら何もしない
-    if (l_sceneChanger.FetchPTRNexScene(a_sceneUUID)) { return; }
+    if (l_sceneChanger.FetchPTRNextScene(a_sceneUUID)) { return; }
 
     NextScene l_nextScene = {};
 

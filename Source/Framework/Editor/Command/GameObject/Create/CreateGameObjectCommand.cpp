@@ -23,7 +23,7 @@ void FWK::Editor::CreateGameObjectCommand::Undo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
 
     // Undo時点の子孫を集め直す
@@ -68,9 +68,9 @@ void FWK::Editor::CreateGameObjectCommand::Redo()
 {
     const auto& l_sceneManager = SceneManager::GetInstance ();
     const auto& l_scene        = l_sceneManager.GetVALScene().lock();
- 
+
     if (!l_scene) { return; }
- 
+
     // m_parentUUIDListと添字を揃えるため添字でループする
     for (std::size_t l_i = 0ULL; l_i < m_createdGameObjectList.size(); ++l_i)
     {
@@ -87,7 +87,7 @@ void FWK::Editor::CreateGameObjectCommand::Redo()
         const auto& l_parent = l_scene->FindVALGameObject(m_parentUUIDList[l_i]).lock();
 
         if (!l_parent) { continue; }
-        
+
         auto& l_hierarchy = l_created->GetMutableREFHierarchy();
 
         l_hierarchy.ApplyParent(l_parent);

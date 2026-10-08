@@ -1,4 +1,4 @@
-#include "ChangeSelectionCommand.h"
+﻿#include "ChangeSelectionCommand.h"
 
 FWK::Editor::ChangeSelectionCommand::ChangeSelectionCommand(const boost::uuids::uuid&               a_beforeAnchorUUID,
                                                             const boost::uuids::uuid&               a_afterAnchorUUID,

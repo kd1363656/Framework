@@ -2,20 +2,20 @@
 
 namespace FWK
 {
-    class TaggedGameObjectComponentFactory final : public Utility::SingletonBase<TaggedGameObjectComponentFactory>
+    class GameObjectComponentTaggedFactory final : public Utility::SingletonBase<GameObjectComponentTaggedFactory>
     {
     private:
 
-        friend class Utility::SingletonBase<TaggedGameObjectComponentFactory>;
+        friend class Utility::SingletonBase<GameObjectComponentTaggedFactory>;
 
-         TaggedGameObjectComponentFactory()          = default;
-        ~TaggedGameObjectComponentFactory() override = default;
+         GameObjectComponentTaggedFactory()          = default;
+        ~GameObjectComponentTaggedFactory() override = default;
 
     public:
 
         template <typename DerivedType>
             requires Concept::IsDerivedBaseConcept<DerivedType, GameObjectComponentBase>
-        void Register(const Enum::GameObjectComponentFactoryTag a_tag)
+        void Register(const std::string_view& a_tag)
         {
             const auto& l_typeINFO = DerivedType::GetREFTypeINFO();
 
@@ -27,7 +27,7 @@ namespace FWK
         const auto& GetREFTaggedGameObjectComponentMap() const { return m_taggedGameObjectComponentMap; }
 
     private:
-    
-        std::unordered_map<Enum::GameObjectComponentFactoryTag, std::vector<std::string>> m_taggedGameObjectComponentMap = {};
+
+        std::unordered_map<std::string_view, std::vector<std::string>> m_taggedGameObjectComponentMap = {};
     };
 }

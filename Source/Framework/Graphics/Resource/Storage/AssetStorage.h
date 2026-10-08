@@ -87,7 +87,7 @@ namespace FWK::Graphics
             const auto& l_filePath = l_record->GetREFFilePath ();
 
             // マップで管理していたレコードのストレージIDをリリース
-            if (const auto  l_storageID = l_record->GetVALStorageID();
+            if (const auto& l_storageID = l_record->GetVALStorageID();
                 l_storageID != Constant::k_invalidStorageID)
             {
                 m_storageIDAllocator.Release(l_storageID);
@@ -102,11 +102,11 @@ namespace FWK::Graphics
         TypeAlias::StorageID FindVALStorageIDFromFilePath(const std::wstring& a_filePath) const
         {
             // ファイルパスからストレージクラスを取得
-            const auto& l_itr = m_recordMap.find(a_filePath);
+            const auto& l_recordITR = m_recordMap.find(a_filePath);
 
-            if (l_itr == m_recordMap.end()) { return Constant::k_invalidStorageID; }
+            if (l_recordITR == m_recordMap.end()) { return Constant::k_invalidStorageID; }
 
-            const auto& l_record = l_itr->second;
+            const auto& l_record = l_recordITR->second;
 
             if (!l_record) { return Constant::k_invalidStorageID; }
 
@@ -118,11 +118,11 @@ namespace FWK::Graphics
         {
             FWK_ASSERT_RETURN_VALUE_IF(a_filePath.empty(), "ファイルパスが空のため、Recordの取得に失敗しました。", {});
 
-            const auto& l_itr = m_recordMap.find(a_filePath);
+            const auto& l_recordITR = m_recordMap.find(a_filePath);
 
-            if (l_itr == m_recordMap.end()) { return {}; }
+            if (l_recordITR == m_recordMap.end()) { return {}; }
 
-            return l_itr->second;
+            return l_recordITR->second;
         }
 
         const auto& GetREFStorageIDAllocator() const { return m_storageIDAllocator; }

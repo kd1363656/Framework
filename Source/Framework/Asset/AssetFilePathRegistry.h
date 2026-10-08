@@ -30,8 +30,8 @@ namespace FWK
 
     private:
 
-        std::unordered_map<std::filesystem::path, boost::uuids::uuid>        m_assetFilePathToUUIDMap  = {};
-        std::unordered_map<boost::uuids::uuid,    Struct::AssetFilePathData> m_uuidToAssetFilePathData = {};
+        std::unordered_map<std::filesystem::path, boost::uuids::uuid>        m_assetFilePathToUUIDMap     = {};
+        std::unordered_map<boost::uuids::uuid,    Struct::AssetFilePathData> m_uuidToAssetFilePathDataMap = {};
 
         Converter::AssetFilePathRegistryJsonConverter m_jsonConverter = {};
     };

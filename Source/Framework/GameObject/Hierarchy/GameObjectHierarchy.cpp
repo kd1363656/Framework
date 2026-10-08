@@ -14,35 +14,35 @@ void FWK::GameObjectHierarchy::INIT()
     m_jsonConverter = {};
 }
 
-void FWK::GameObjectHierarchy::DeserializeScene(const nlohmann::json&              a_rootJson, 
+void FWK::GameObjectHierarchy::DeserializeScene(const nlohmann::json&              a_rootJson,
                                                 const nlohmann::json&              a_prefabJson,
-                                                const SceneGameObjectPrefabSystem& a_prefabSystem, 
+                                                const SceneGameObjectPrefabSystem& a_prefabSystem,
                                                       Scene&                       a_scene)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializeScene(a_rootJson, 
-                                     a_prefabJson, 
+    m_jsonConverter.DeserializeScene(a_rootJson,
+                                     a_prefabJson,
                                      a_prefabSystem,
-                                     *this, 
+                                     *this,
                                      a_scene);
 }
 void FWK::GameObjectHierarchy::DeserializePrefab(const nlohmann::json& a_rootJson, const SceneGameObjectPrefabSystem& a_prefabSystem, Scene& a_scene)
 {
     if (a_rootJson.is_null()) { return; }
 
-    m_jsonConverter.DeserializePrefab(a_rootJson, 
+    m_jsonConverter.DeserializePrefab(a_rootJson,
                                       a_prefabSystem,
-                                      *this, 
+                                      *this,
                                       a_scene);
 }
 
 void FWK::GameObjectHierarchy::PostDeserialize()
 {
     if (const auto& l_gameObject = m_owner.lock();
-        !l_gameObject) 
+        !l_gameObject)
     {
-        return; 
+        return;
     }
 
     const auto& l_childDataList = m_childSmartPointerVectorList.GetMutableREFElementDataList();
@@ -60,7 +60,7 @@ void FWK::GameObjectHierarchy::PostDeserialize()
 void FWK::GameObjectHierarchy::Destroy()
 {
     const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
- 
+
     for (const auto& l_childData : l_childDataList)
     {
         const auto& l_child = l_childData.m_type.lock();
@@ -89,25 +89,25 @@ void FWK::GameObjectHierarchy::Clone(GameObjectHierarchy& a_cloneHierarchy, Scen
     {
         a_cloneHierarchy.AddPrefabRemovedUUID(l_removedUUID);
     }
- 
+
     // クローン側HierarchyのOwnerがクローンされた子たちの親になる
     const auto& l_cloneParent = a_cloneHierarchy.GetREFOwner();
- 
+
     FWK_ASSERT_RETURN_IF(l_cloneParent.expired(), "クローン側HierarchyのOwnerが無効なため、子のクローンに失敗しました。");
- 
+
     const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
- 
+
     for (const auto& l_childData : l_childDataList)
     {
         const auto& l_child = l_childData.m_type.lock();
- 
+
         // 無効または破棄済みの子はクローン対象から外す
         if (!l_child ||
             l_child->GetVALIsDestroyed())
         {
             continue;
         }
- 
+
         const auto& l_childPrefabHierarchyNodeUUID = l_child->GetREFPrefabHierarchyNodeUUID();
 
         // 子自身のCloneが生成・接続・Scene登録・子孫の再帰までを行う
@@ -154,17 +154,17 @@ void FWK::GameObjectHierarchy::DetachFromPrefab(const boost::uuids::uuid& a_oldP
     // 子がPrefabUUIDを持ち続けると差分形式でシリアライズされ
     // PrefabルートJsonを基底とした誤った差分が作られてしまう
     const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
- 
+
     for (const auto& l_childData : l_childDataList)
     {
         const auto& l_child = l_childData.m_type.lock();
- 
+
         if (!l_child) { continue; }
- 
+
         // 別Prefabのインスタンスである子は剥がさない
         // (ネストしたPrefabインスタンスとしての紐付けは維持する)
         if (l_child->GetREFPrefabUUID() != a_oldPrefabUUID) { continue; }
- 
+
         l_child->DetachFromPrefab();
     }
 }
@@ -216,7 +216,7 @@ bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_pa
 void FWK::GameObjectHierarchy::ClearParent()
 {
     const auto& l_owner = m_owner.lock ();
-    
+
     if (const auto& l_parent = m_parent.lock();
         l_parent)
     {
@@ -243,13 +243,13 @@ void FWK::GameObjectHierarchy::ClearPrefabRemovedChildUUIDSet()
 
     // 子も再帰的にクリアする
     const auto& l_childDataList = m_childSmartPointerVectorList.GetREFElementDataList();
- 
+
     for (const auto& l_childData : l_childDataList)
     {
         const auto& l_child = l_childData.m_type.lock();
- 
+
         if (!l_child) { continue; }
- 
+
         l_child->ClearAllPrefabRemovedUUIDSet();
     }
 }
@@ -258,20 +258,20 @@ void FWK::GameObjectHierarchy::ConnectParentForDeserialize(const std::weak_ptr<G
 {
     const auto& l_owner  = m_owner.lock ();
     const auto& l_parent = a_parent.lock();
- 
+
     if (!l_owner ||
         !l_parent)
     {
-        return; 
+        return;
     }
- 
+
     // 親子リンクを直接設定する
     // ApplyParentと違いTransform::ApplyParentは呼ばない
     // TransformのMatrixUpdateModeは既にDeserializeで復元済みのため
     m_parent = a_parent;
- 
+
     auto& l_parentHierarchy = l_parent->GetMutableREFHierarchy();
- 
+
     l_parentHierarchy.AddChild(m_owner);
 }
 
@@ -295,24 +295,24 @@ void FWK::GameObjectHierarchy::AddChild(const std::weak_ptr<GameObject>& a_child
     // （シーンで追加した子はnilなのでUUID管理対象外）
     auto l_uuid = l_child->GetREFPrefabHierarchyNodeUUID();
 
-    if (l_uuid.is_nil()) 
+    if (l_uuid.is_nil())
     {
         l_uuid = GenerateVALChildUUID();
 
         l_child->SetPrefabHierarchyNodeUUID(l_uuid);
     }
-    
+
     m_childUUIDRegistry.Add(l_child, l_uuid);
 }
 
 void FWK::GameObjectHierarchy::RemoveChild(const std::weak_ptr<GameObject>& a_child)
 {
     const auto& l_child = a_child.lock();
- 
+
     if (!l_child) { return; }
 
     auto l_uuid = l_child->GetREFPrefabHierarchyNodeUUID();
-    
+
     if (l_uuid.is_nil()) { return; }
 
     // Prefab由来の子を削除した場合は削除済みUUIDとして記録する
@@ -322,10 +322,10 @@ void FWK::GameObjectHierarchy::RemoveChild(const std::weak_ptr<GameObject>& a_ch
     {
         m_prefabRemovedChildUUIDSet.emplace(l_uuid);
     }
- 
+
     // UUIDRegistryからも削除
     m_childUUIDRegistry.Erase(l_uuid);
-    
+
     m_childSmartPointerVectorList.RemoveSameElement(a_child);
 }
 

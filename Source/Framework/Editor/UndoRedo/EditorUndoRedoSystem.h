@@ -5,10 +5,10 @@ namespace FWK::Editor
     class EditorUndoRedoSystem final
     {
     public:
-    
+
          EditorUndoRedoSystem() = default;
         ~EditorUndoRedoSystem() = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         void HandleUndoRedoShortcut();
@@ -48,6 +48,6 @@ namespace FWK::Editor
 
         Converter::EditorUndoRedoSystemJsonConverter m_jsonConverter = {};
 
-        std::size_t m_capacity = Constant::k_initialEditorUndoResoSystemListCapacity;
+        std::size_t m_capacity = Constant::k_initialEditorUndoRedoSystemListCapacity;
     };
 }

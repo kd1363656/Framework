@@ -2,7 +2,7 @@
 
 namespace FWK::Utility
 {
-    inline float CalculateWorldMaxScale(const TypeAlias::Math::Matrix& a_worldMatrix)
+    inline float CalculateWorldMAXScale(const TypeAlias::Math::Matrix& a_worldMatrix)
     {
         // MeshletBoundsは球なので、非均一スケールでも安全になるように最大スケールを使う
         const float l_scaleXSquared = a_worldMatrix._11 * a_worldMatrix._11 + a_worldMatrix._12 * a_worldMatrix._12 + a_worldMatrix._13 * a_worldMatrix._13;

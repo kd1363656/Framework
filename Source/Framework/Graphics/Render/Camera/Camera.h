@@ -23,7 +23,7 @@ namespace FWK::Graphics
                                    const float a_fovYDegree  = Constant::k_cameraDefaultFOVYDegree,
                                    const float a_farClip     = Constant::k_cameraDefaultFarClip,
                                    const float a_nearClip    = Constant::k_cameraDefaultNearClip);
-                                   
+
 
         void ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 

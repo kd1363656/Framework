@@ -39,25 +39,25 @@ bool FWK::SceneChanger::RemoveNextScene(const boost::uuids::uuid& a_sceneUUID)
 {
     // nilの場合hはPrefabSystemへ登録されないので
     // Map検索を行わず終了する
-    if (a_sceneUUID.is_nil()) 
+    if (a_sceneUUID.is_nil())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "SceneUUIDが無効だったため、SceneChangerのNextSceneMapから削除できませんでした。");
 
-        return false; 
+        return false;
     }
 
-    const auto& l_itr = m_nextSceneMap.find(a_sceneUUID);
+    const auto& l_nextSceneITR = m_nextSceneMap.find(a_sceneUUID);
 
-    if (l_itr == m_nextSceneMap.end()) { return false; }
+    if (l_nextSceneITR == m_nextSceneMap.end()) { return false; }
 
-    m_nextSceneMap.erase(l_itr);
+    m_nextSceneMap.erase(l_nextSceneITR);
 
     FWK_ADD_LOG(Constant::k_imguiDebugSuccessColor, "SceneUUID : {}\nのNextSceneを削除しました。", boost::uuids::to_string(a_sceneUUID));
 
     return true;
 }
 
-const FWK::NextScene* FWK::SceneChanger::FetchPTRNexScene(const boost::uuids::uuid& a_sceneUUID) const
+const FWK::NextScene* FWK::SceneChanger::FetchPTRNextScene(const boost::uuids::uuid& a_sceneUUID) const
 {
     if (a_sceneUUID.is_nil())
     {
@@ -66,11 +66,11 @@ const FWK::NextScene* FWK::SceneChanger::FetchPTRNexScene(const boost::uuids::uu
         return nullptr;
     }
 
-    const auto& l_itr = m_nextSceneMap.find(a_sceneUUID);
+    const auto& l_nextSceneITR = m_nextSceneMap.find(a_sceneUUID);
 
-    if (l_itr == m_nextSceneMap.end()) { return nullptr; }
+    if (l_nextSceneITR == m_nextSceneMap.end()) { return nullptr; }
 
-    return &l_itr->second;
+    return &l_nextSceneITR->second;
 }
 
 FWK::NextScene* FWK::SceneChanger::FetchMutablePTRNextScene(const boost::uuids::uuid& a_sceneUUID)
@@ -82,9 +82,9 @@ FWK::NextScene* FWK::SceneChanger::FetchMutablePTRNextScene(const boost::uuids::
         return nullptr;
     }
 
-    const auto& l_itr = m_nextSceneMap.find(a_sceneUUID);
+    const auto& l_nextSceneITR = m_nextSceneMap.find(a_sceneUUID);
 
-    if (l_itr == m_nextSceneMap.end()) { return nullptr; }
+    if (l_nextSceneITR == m_nextSceneMap.end()) { return nullptr; }
 
-    return &l_itr->second;
+    return &l_nextSceneITR->second;
 }

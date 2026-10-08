@@ -65,7 +65,7 @@ void FWK::Graphics::Fence::WaitForFenceValueIfNeeded(const UINT64& a_fenceValue)
     // GPUがa_fenceValueに到達したらm_fenceEventを通知状態にする関数
     // SetEventOnCompletion(CPUが待ちたい目標のフェンス値、
     //                      GPUが完了通知を受け取るイベント);
-    const auto l_hr = m_fence->SetEventOnCompletion(a_fenceValue, m_event);
+    const auto& l_hr = m_fence->SetEventOnCompletion(a_fenceValue, m_event);
 
     FWK_ASSERT_RETURN_IF(FAILED(l_hr), "フェンス完了イベントの設定に失敗しました。");
 
@@ -73,7 +73,7 @@ void FWK::Graphics::Fence::WaitForFenceValueIfNeeded(const UINT64& a_fenceValue)
     // INFINITEは時間制限なしで待つ指定
     // WaitForSingleObject(待機対象のイベント、
     //                     待機時間);
-    const auto l_waitResult = WaitForSingleObject(m_event, INFINITE);
+    const auto& l_waitResult = WaitForSingleObject(m_event, INFINITE);
 
     FWK_ASSERT_RETURN_IF(l_waitResult != WAIT_OBJECT_0, "フェンスの待機処理に失敗しました。");
 }

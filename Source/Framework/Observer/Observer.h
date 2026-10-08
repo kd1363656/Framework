@@ -38,27 +38,27 @@ namespace FWK
 
         void NotifyEvent(const Type a_type, const Enum::EventLaneBitShiftFlag a_eventLaneBitShiftFlag, const bool a_isEnabled)
         {
-            auto l_itr = m_eventMap.find(a_type);
+            auto l_eventITR = m_eventMap.find(a_type);
 
-            if (l_itr == m_eventMap.end()) { return; }
+            if (l_eventITR == m_eventMap.end()) { return; }
 
             if (a_isEnabled)
             {
-                l_itr->second = Utility::EnableFlag(a_eventLaneBitShiftFlag, l_itr->second);
+                l_eventITR->second = Utility::EnableFlag(a_eventLaneBitShiftFlag, l_eventITR->second);
             }
             else
             {
-                l_itr->second = Utility::DisableFlag(a_eventLaneBitShiftFlag, l_itr->second);
+                l_eventITR->second = Utility::DisableFlag(a_eventLaneBitShiftFlag, l_eventITR->second);
             }
         }
 
         bool IsEventMatching(const Type a_type, const Enum::EventLaneBitShiftFlag a_isMatchEventLaneBitShiftFlag)
         {
-            auto l_itr = m_eventMap.find(a_type);
+            auto l_eventITR = m_eventMap.find(a_type);
 
-            if (l_itr == m_eventMap.end()) { return false; }
+            if (l_eventITR == m_eventMap.end()) { return false; }
 
-            return Utility::IsFlagEnabled(a_isMatchEventLaneBitShiftFlag, l_itr->second);
+            return Utility::IsFlagEnabled(a_isMatchEventLaneBitShiftFlag, l_eventITR->second);
         }
 
         bool EditInspector(const std::string_view& a_label)

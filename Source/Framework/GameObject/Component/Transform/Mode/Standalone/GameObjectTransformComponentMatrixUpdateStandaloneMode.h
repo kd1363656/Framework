@@ -8,7 +8,7 @@ namespace FWK
 
          GameObjectTransformComponentMatrixUpdateStandaloneMode()          = default;
         ~GameObjectTransformComponentMatrixUpdateStandaloneMode() override = default;
-    
+
         void UpdateMatrix(GameObjectTransformComponent& a_transformComponent) override;
 
         void PreserveWorldMatrix(const TypeAlias::Math::Matrix&, GameObjectTransformComponent& a_transformComponent, TypeAlias::Math::Matrix& a_previousWorldMatrix) override;

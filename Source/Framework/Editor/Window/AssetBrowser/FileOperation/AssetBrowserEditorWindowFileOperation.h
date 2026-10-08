@@ -14,8 +14,8 @@ namespace FWK::Editor
          AssetBrowserEditorWindowFileOperation() = default;
         ~AssetBrowserEditorWindowFileOperation() = default;
 
-        void Rename(const std::filesystem::path&                a_targetFilePath, 
-                    const std::string&                          a_newName, 
+        void Rename(const std::filesystem::path&                a_targetFilePath,
+                    const std::string&                          a_newName,
                     const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
                           AssetFilePathRegistry&                a_assetFilePathRegistry) const;
 
@@ -26,7 +26,7 @@ namespace FWK::Editor
 
         void Paste(const std::vector<std::filesystem::path>&   a_destinationFolderPathList,
                    const AssetBrowserEditorWindowAssetCreator& a_assetCreator,
-                         AssetBrowserEditorWindowClipboard&    a_clipboard,            
+                         AssetBrowserEditorWindowClipboard&    a_clipboard,
                          AssetFilePathRegistry&                a_assetFilePathRegistry) const;
 
         void Duplicate(const std::vector<std::filesystem::path>& a_filePathList, const AssetBrowserEditorWindowAssetCreator& a_assetCreator, AssetFilePathRegistry& a_assetFilePathRegistry) const;

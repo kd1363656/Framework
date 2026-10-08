@@ -44,11 +44,11 @@ namespace FWK::Graphics
         template <Concept::IsDerivedPipelineStateBaseConcept PipelineStateType>
         std::weak_ptr<PipelineStateType> FindVALPipelineState(const Enum::PipelineStateType a_pipelineStateType) const
         {
-            const auto& l_itr = m_pipelineStateMap.find(a_pipelineStateType);
+            const auto& l_pipelineStateITR = m_pipelineStateMap.find(a_pipelineStateType);
 
-            if (l_itr == m_pipelineStateMap.end()) { return {}; }
+            if (l_pipelineStateITR == m_pipelineStateMap.end()) { return {}; }
 
-            auto& l_pipelineState = l_itr->second;
+            auto& l_pipelineState = l_pipelineStateITR->second;
 
             if (!l_pipelineState) { return {}; }
 

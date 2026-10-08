@@ -13,7 +13,7 @@ namespace FWK::Converter
 
          GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter() = default;
         ~GameObjectTransformComponentMatrixUpdateModeBaseJsonConverter() = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson, GameObjectTransformComponentMatrixUpdateModeBase& a_gameObjectTransformComponentMatrixUpdateModeBase) const;
 
         nlohmann::json Serialize(const GameObjectTransformComponentMatrixUpdateModeBase& a_gameObjectTransformComponentMatrixUpdateModeBase) const;

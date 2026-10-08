@@ -9,11 +9,11 @@ namespace FWK::Graphics
          TextureRecord()          = default;
         ~TextureRecord() override = default;
 
-        TextureRecord(const TextureRecord&) = delete;
-        TextureRecord(      TextureRecord&&) = default;
+        TextureRecord(const TextureRecord&)           = delete;
+        TextureRecord(      TextureRecord&&) noexcept = default;
 
-        TextureRecord& operator=(const TextureRecord&)  = delete;
-        TextureRecord& operator=(      TextureRecord&&) = default;
+        TextureRecord& operator=(const TextureRecord&)           = delete;
+        TextureRecord& operator=(      TextureRecord&&) noexcept = default;
 
         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
 

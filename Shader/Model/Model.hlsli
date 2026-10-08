@@ -12,7 +12,7 @@ static const float k_modelNormalWorldOrientationSign = 1.0F;
 static const float k_modelMirroredWorldOrientationSign = -1.0F;
 
 // Frustumの側面Planeに対するSphere半径補正で使う
-// sqrt(1.0 + tanFOV * tanFOV)の1.0部分。
+// sqrt(1.0 + tanFOV * tanFOV)の1.0部分
 static const float k_modelFrustumPlaneNormalBaseLength = 1.0F;
 
 static const uint k_modelMeshShaderThreadCountX = 32U;
@@ -46,26 +46,26 @@ struct ModelAmplificationPayload
 cbuffer CBModelPerObject : register(b1)
 {
     row_major matrix g_worldMatrix;
-    
+
     row_major matrix g_worldInverseTransposeMatrix;
-    
+
     float4 g_baseColorFactor;
-    
+
     float g_roughnessFactor;
     float g_metallicFactor;
     uint  g_baseColorTextureSRVDescriptorIndex;
     uint  g_normalTextureSRVDescriptorIndex;
-    
+
     uint g_metallicTextureSRVDescriptorIndex;
     uint g_roughnessTextureSRVDescriptorIndex;
     uint g_vertexBufferSRVDescriptorIndex;
     uint g_meshletBufferSRVDescriptorIndex;
-    
+
     uint  g_uniqueVertexIndexBufferSRVDescriptorIndex;
     uint  g_primitiveIndexBufferSRVDescriptorIndex;
     uint  g_meshletBoundsBufferSRVDescriptorIndex;
     float g_worldMaxScale;
-    
+
     float  g_worldOrientationSign;
     uint   g_meshletCount;
     float2 g_padding;
@@ -81,21 +81,21 @@ cbuffer CBModelPerObject : register(b1)
 // 16 : 3個目のPrimitiveIndex
 // 24 : 未使用
 // 戻り値のuint3は、元VertexBufferのIndexではなく、
-// MeshShaderが出力したa_vertexListの何番目を使うかを表す。
+// MeshShaderが出力したa_vertexListの何番目を使うかを表す
 uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
 {
     StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
-    
+
     // uint一個に三角形一個分の
     // 三つのPrimitiveIndexがPackされている
     const uint  l_packedValue    = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
     const uint3 l_primitiveIndex = DecodeModelPackedPrimitiveIndex(l_packedValue);
-    
+
     // determinantが負のWorldMatrixでは
     // (0, 1, 2)のTriangleを、(0, 2, 1)
     // へ変更することでWindingを元に戻す
     if (g_worldOrientationSign == k_modelMirroredWorldOrientationSign) { return uint3(l_primitiveIndex.x, l_primitiveIndex.z, l_primitiveIndex.y); }
-    
+
     return l_primitiveIndex;
 }
 

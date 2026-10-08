@@ -7,12 +7,12 @@ namespace FWK::Physics
 
 namespace FWK::Converter
 {
-    class PhyisicsManagerJsonConverter final
+    class PhysicsManagerJsonConverter final
     {
     public:
 
-         PhyisicsManagerJsonConverter() = default;
-        ~PhyisicsManagerJsonConverter() = default;
+         PhysicsManagerJsonConverter() = default;
+        ~PhysicsManagerJsonConverter() = default;
 
         void Deserialize(const nlohmann::json& a_rootJson, Physics::PhysicsManager& a_physicsManager) const;
 

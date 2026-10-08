@@ -45,11 +45,11 @@ namespace FWK::Graphics
         template <Concept::IsDerivedDynamicBufferUploaderBaseConcept Type>
         std::weak_ptr<Type> FindPTRDynamicBufferUploader() const
         {
-            const auto& l_itr = m_dynamicBufferUploaderMap.find(Type::GetREFTypeINFO().k_staticTypeID);
+            const auto& l_dynamicBufferUploaderITR = m_dynamicBufferUploaderMap.find(Type::GetREFTypeINFO().k_staticTypeID);
 
-            if (l_itr == m_dynamicBufferUploaderMap.end()) { return std::weak_ptr<Type>(); }
+            if (l_dynamicBufferUploaderITR == m_dynamicBufferUploaderMap.end()) { return std::weak_ptr<Type>(); }
 
-            const auto& l_dynamicBufferUploader = l_itr->second.lock();
+            const auto& l_dynamicBufferUploader = l_dynamicBufferUploaderITR->second.lock();
 
             if (!l_dynamicBufferUploader) { return std::weak_ptr<Type>(); }
 
@@ -64,7 +64,7 @@ namespace FWK::Graphics
         const auto& GetREFRenderGraphFrameResource() const { return m_activeViewType == Enum::RenderViewType::Preview ? m_previewRenderGraphFrameResource : m_renderGraphFrameResource; }
 
         const auto& GetREFPreviewRenderGraphFrameResource() const { return m_previewRenderGraphFrameResource; }
-        
+
         auto& GetMutableREFRenderGraphFrameResource() { return m_renderGraphFrameResource; }
 
         auto GetVALActiveViewType() const { return m_activeViewType; }

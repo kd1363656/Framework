@@ -68,12 +68,12 @@ std::vector<std::size_t> FWK::Utility::TopologicalSorter::Sort(const std::vector
             // まだ持つべきノードがあるなら、まだキューに入れない
             if (l_inDegreeList[l_nextNodeIndex] != k_emptyInDegree) { continue; }
 
-            // 入り時数が0になったので、次に実行可能な候補に入れる。
+            // 入り時数が0になったので、次に実行可能な候補に入れる
             l_visitQueue.push(l_nextNodeIndex);
         }
     }
 
-    // 全てのノードを結果に入れられなかった場合は循環依存。
+    // 全てのノードを結果に入れられなかった場合は循環依存
     FWK_ASSERT_RETURN_VALUE_IF(l_sortedIndexList.size() != l_nodeCount, "トポロジカルソートに失敗しました。循環依存があります。", {});
 
     return l_sortedIndexList;

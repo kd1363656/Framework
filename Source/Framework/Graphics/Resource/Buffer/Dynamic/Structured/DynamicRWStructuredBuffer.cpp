@@ -14,7 +14,7 @@ FWK::Graphics::DynamicRWStructuredBuffer::~DynamicRWStructuredBuffer()
     Release();
 }
 
-FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer(DynamicRWStructuredBuffer && a_other) noexcept :
+FWK::Graphics::DynamicRWStructuredBuffer::DynamicRWStructuredBuffer(DynamicRWStructuredBuffer&& a_other) noexcept :
     StructuredBufferBase(std::move(a_other)),
 
     m_currentResourceState(D3D12_RESOURCE_STATE_COMMON),
@@ -133,7 +133,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DynamicRWStructuredBuffer::Create
     FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                "ElementCountが0のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。",        DescriptorHeap::k_invalidDescriptorIndex);
     FWK_ASSERT_RETURN_VALUE_IF(a_structureByteStride == k_invalidStructuredByteStride, "StructureByteStrideが0のため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
-    const auto l_uavDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto& l_uavDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_uavDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "UAV用DescriptorIndexの確保に失敗したため、DynamicRWStructuredBuffer用UAVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 

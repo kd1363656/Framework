@@ -13,7 +13,7 @@ namespace FWK
 
          GameObjectTransformComponentMatrixUpdateHierarchicalMode()          = default;
         ~GameObjectTransformComponentMatrixUpdateHierarchicalMode() override = default;
-    
+
         void Deserialize(const nlohmann::json& a_rootJson);
 
         void PostDeserialize(const GameObjectTransformComponent& a_transformComponent) override;

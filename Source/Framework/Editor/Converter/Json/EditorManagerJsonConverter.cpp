@@ -45,7 +45,7 @@ nlohmann::json FWK::Converter::EditorManagerJsonConverter::Serialize(const Edito
 
     // メインメニューバーのシリアライズ
     l_rootJson[k_mainMenuBarJsonKey] = l_mainMenuBar.Serialize();
-    
+
     // アンドゥリドゥシステムのシリアライズ
     l_rootJson[k_undoRedoSystemJsonKey] = l_undoRedoSystem.Serialize();
 

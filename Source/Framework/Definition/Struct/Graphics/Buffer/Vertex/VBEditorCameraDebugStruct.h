@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-    struct VBEditorCameraDebug
+    struct VBEditorCameraDebug final
     {
         TypeAlias::Math::Vector3 m_position = TypeAlias::Math::Vector3::Zero;
         TypeAlias::Math::Color   m_color    = Constant::k_whiteColor;

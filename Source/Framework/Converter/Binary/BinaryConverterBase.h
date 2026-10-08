@@ -22,7 +22,7 @@ namespace FWK::Converter
     protected:
 
         bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
-        
+
         std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath) const;
 
         bool CreateReadMemoryMappedFile (const std::filesystem::path& a_filePath);
@@ -61,7 +61,7 @@ namespace FWK::Converter
             // 読み込むサイズ分リストを確保
             a_destinationDataList.resize(a_readDataCount);
 
-            if (!TryReadBinaryData(a_readDataCount, a_memoryReadOffset, a_destinationDataList.data())) 
+            if (!TryReadBinaryData(a_readDataCount, a_memoryReadOffset, a_destinationDataList.data()))
             {
                 a_destinationDataList.clear();
 
@@ -98,7 +98,7 @@ namespace FWK::Converter
         }
 
         bool TryReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_destinationString, std::uint64_t& a_memoryReadOffset) const;
-        
+
         void WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const;
         void WriteStringBinaryData (const std::string&  a_string,  std::uint64_t& a_memoryWriteOffset) const;
 
@@ -153,10 +153,11 @@ namespace FWK::Converter
 
         static constexpr std::uint64_t k_emptyReadDataSize  = 0ULL;
         static constexpr std::uint64_t k_emptyWriteDataSize = 0ULL;
+        static constexpr std::uint64_t k_noRemainder        = 0ULL;
 
         static constexpr DWORD k_fileSizeHigh                  = 0UL;
-        static constexpr DWORD k_mappingMaxSizeHighUseFileSize = 0UL;
-        static constexpr DWORD k_mappingMaxSizeLowUseFileSize  = 0UL;
+        static constexpr DWORD k_mappingMAXSizeHighUseFileSize = 0UL;
+        static constexpr DWORD k_mappingMAXSizeLowUseFileSize  = 0UL;
         static constexpr DWORD k_viewFileOffsetHighFromBegin   = 0UL;
         static constexpr DWORD k_viewFileOffsetLowFromBegin    = 0UL;
         static constexpr DWORD k_noFileShareMode               = 0UL;

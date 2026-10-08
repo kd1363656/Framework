@@ -101,7 +101,10 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
         }
 
         // 使用可能なGPUが見つかったので、これ以上探さずループ終了
-        if (l_isFound) { break; }
+        if (l_isFound)
+        {
+            break;
+        }
 
         ++l_adapterIndex;
     }

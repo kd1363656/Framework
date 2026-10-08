@@ -2,19 +2,19 @@
 
 namespace FWK::Graphics
 {
-    class ScreenSpritePass final : public RenderGraphPassBase
+    class SpriteScreenPass final : public RenderGraphPassBase
     {
     public:
 
-         ScreenSpritePass();
-        ~ScreenSpritePass() override;
+         SpriteScreenPass();
+        ~SpriteScreenPass() override;
 
         void Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph& a_renderGraph) override;
 
     private:
 
-        FWK_DEFINE_TYPE_INFO(ScreenSpritePass, RenderGraphPassBase)
+        FWK_DEFINE_TYPE_INFO(SpriteScreenPass, RenderGraphPassBase)
     };
 }
 
-FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::ScreenSpritePass)
+FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::Graphics::SpriteScreenPass)

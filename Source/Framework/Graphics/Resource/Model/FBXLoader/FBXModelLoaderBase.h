@@ -17,16 +17,16 @@ namespace FWK::Graphics
 
         void DestroyFBXScene(ufbx_scene* a_fbxScene) const;
 
-        TypeAlias::Math::Vector3 FetchWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
-        TypeAlias::Math::Vector2 FetchVertexUV           (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex)                                const;
-        TypeAlias::Math::Vector3 FetchWorldVertexNormal  (const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
-        TypeAlias::Math::Vector4 FetchWorldVertexTangent (const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
+        TypeAlias::Math::Vector3 FetchVALWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
+        TypeAlias::Math::Vector2 FetchVALVertexUV           (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex)                                const;
+        TypeAlias::Math::Vector3 FetchVALWorldVertexNormal  (const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
+        TypeAlias::Math::Vector4 FetchVALWorldVertexTangent (const ufbx_node* a_fbxNode, const ufbx_mesh*    a_fbxMesh, const std::uint32_t a_vertexIndex) const;
 
-        std::wstring FetchMaterialTextureFilePath(const ufbx_material_map& a_materialMap) const;
+        std::wstring FetchVALMaterialTextureFilePath(const ufbx_material_map& a_materialMap) const;
 
-        TypeAlias::Math::Color FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const;
+        TypeAlias::Math::Color FetchVALBaseColorFactor(const ufbx_material_map& a_materialMap) const;
 
-        float FetchMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const;
+        float FetchVALMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const;
 
     private:
 
@@ -38,7 +38,7 @@ namespace FWK::Graphics
 
         static constexpr ufbx_real k_modelFBXTargetUnitMeters = 1.0;
 
-        static constexpr float k_uvCoordinateMax = 1.0F;
+        static constexpr float k_uvCoordinateMAX = 1.0F;
 
         static constexpr float k_defaultTangentX = 1.0F;
         static constexpr float k_defaultTangentY = 0.0F;

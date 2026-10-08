@@ -139,7 +139,7 @@ void FWK::Graphics::RenderGraphFrameResource::AddRenderTargetPassTexture(const s
 {
     FWK_ASSERT_RETURN_IF(!a_renderTargetPassTexture, "RenderTargetPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
 
-    const auto l_renderTargetType = a_renderTargetPassTexture->GetVALRenderGraphRenderTargetType();
+    const auto& l_renderTargetType = a_renderTargetPassTexture->GetVALRenderGraphRenderTargetType();
 
     FWK_ASSERT_RETURN_IF(l_renderTargetType == Enum::RenderGraphRenderTargetType::Invalid, "RenderTargetPassTextureのRenderGraphRenderTargetTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
     FWK_ASSERT_RETURN_IF(m_renderTargetPassTextureMap.contains(l_renderTargetType),        "同じRenderGraphRenderTargetTypeのRenderTargetPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
@@ -152,7 +152,7 @@ void FWK::Graphics::RenderGraphFrameResource::AddDepthStencilPassTexture(const s
 {
     FWK_ASSERT_RETURN_IF(!a_depthStencilPassTexture, "DepthStencilPassTextureが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
 
-    const auto l_depthStencilType = a_depthStencilPassTexture->GetVALRenderGraphDepthStencilType();
+    const auto& l_depthStencilType = a_depthStencilPassTexture->GetVALRenderGraphDepthStencilType();
 
     FWK_ASSERT_RETURN_IF(l_depthStencilType == Enum::RenderGraphDepthStencilType::Invalid, "DepthStencilPassTextureのRenderGraphDepthStencilTypeが無効のため、RenderGraphFrameResourceへの登録に失敗しました。");
     FWK_ASSERT_RETURN_IF(m_depthStencilPassTextureMap.contains(l_depthStencilType),        "同じRenderGraphDepthStencilTypeのDepthStencilPassTextureを二重登録しようとしており、RenderGraphFrameResourceへの登録に失敗しました。");
@@ -163,17 +163,17 @@ void FWK::Graphics::RenderGraphFrameResource::AddDepthStencilPassTexture(const s
 
 std::weak_ptr<FWK::Graphics::RenderTargetPassTexture> FWK::Graphics::RenderGraphFrameResource::FindVALRenderTargetPassTexture(const Enum::RenderGraphRenderTargetType a_renderGraphRenderTargetType) const
 {
-    const auto& l_itr = m_renderTargetPassTextureMap.find(a_renderGraphRenderTargetType);
+    const auto& l_renderTargetPassTextureITR = m_renderTargetPassTextureMap.find(a_renderGraphRenderTargetType);
 
-    if (l_itr == m_renderTargetPassTextureMap.end()) { return {}; }
+    if (l_renderTargetPassTextureITR == m_renderTargetPassTextureMap.end()) { return {}; }
 
-    return l_itr->second;
+    return l_renderTargetPassTextureITR->second;
 }
 std::weak_ptr<FWK::Graphics::DepthStencilPassTexture> FWK::Graphics::RenderGraphFrameResource::FindVALDepthStencilPassTexture(const Enum::RenderGraphDepthStencilType a_renderGraphDepthStencilType) const
 {
-    const auto& l_itr = m_depthStencilPassTextureMap.find(a_renderGraphDepthStencilType);
+    const auto& l_depthStencilPassTextureITR = m_depthStencilPassTextureMap.find(a_renderGraphDepthStencilType);
 
-    if (l_itr == m_depthStencilPassTextureMap.end()) { return {}; }
+    if (l_depthStencilPassTextureITR == m_depthStencilPassTextureMap.end()) { return {}; }
 
-    return l_itr->second;
+    return l_depthStencilPassTextureITR->second;
 }

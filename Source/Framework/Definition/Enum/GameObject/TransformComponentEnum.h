@@ -9,7 +9,7 @@ namespace FWK::Enum
         Rotation = 1U << 1U,
         Position = 1U << 2U,
     };
- 
+
     FWK_JSON_SERIALIZE_ENUM
     (
         ApplyCalculateWorldMatrixBitShiftFlag,

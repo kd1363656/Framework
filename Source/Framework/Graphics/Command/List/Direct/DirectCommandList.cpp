@@ -135,7 +135,7 @@ void FWK::Graphics::DirectCommandList::SetupRenderArea(const RenderArea& a_rende
     // ScissorRectは実際に描画してよいピクセル範囲を制限する四角形
     // RSSetScissorRects(設定するScissorRectの数、
     //                   ScissorRectの先頭アドレス)
-    l_directCommandList->RSSetScissorRects(k_setScissorRectNUM, &a_renderArea.GetREFScissorRECT());
+    l_directCommandList->RSSetScissorRects(k_setScissorRECTNUM, &a_renderArea.GetREFScissorRECT());
 }
 
 void FWK::Graphics::DirectCommandList::SetupRenderPipeline(const std::weak_ptr<GraphicsPipelineStateBase>& a_pipelineState)
@@ -149,7 +149,7 @@ void FWK::Graphics::DirectCommandList::SetupConstantBufferView(const RootSignatu
 
     FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
 
-    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、定数バッファビュー設定に失敗しました。");
 
@@ -167,7 +167,7 @@ void FWK::Graphics::DirectCommandList::SetupPrimitiveTopology(const D3D12_PRIMIT
     FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、プリミティブトポロジーの設定に失敗しました。");
 
     // InputAssemblerに、これから描画する頂点をどの形として扱うかを設定する
-    // SpriteScreenはTriangleStripで四角形を描画する。
+    // SpriteScreenはTriangleStripで四角形を描画する
     l_directCommandList->IASetPrimitiveTopology(a_primitiveTopology);
 }
 
@@ -211,7 +211,7 @@ void FWK::Graphics::DirectCommandList::DrawInstanced(const UINT a_vertexCount,
     FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、DrawInstanceの実行に失敗しました。");
 
     // 通常のVS/PSパイプラインで描画する
-    // SpriteScreenではVertexBufferを使わず、VS側のSV_VertexIDから4頂点を生成する。
+    // SpriteScreenではVertexBufferを使わず、VS側のSV_VertexIDから4頂点を生成する
     l_directCommandList->DrawInstanced(a_vertexCount,
                                        a_instanceCount,
                                        a_startVertexLocation,

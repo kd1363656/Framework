@@ -32,34 +32,34 @@ namespace FWK::Utility
     {
         // 完全に一致するなら差分なし
         if (a_baseJson == a_currentJson) { return nlohmann::json{}; }
-     
+
         // 両方objectならキー単位で再帰比較
         if (a_baseJson.is_object() &&
             a_currentJson.is_object())
         {
             auto l_diffJson = nlohmann::json::object();
-        
+
             for (const auto& [l_key, l_value] : a_currentJson.items())
             {
                 // baseに存在しないキーは丸ごと差分
                 if (!a_baseJson.contains(l_key))
                 {
                     l_diffJson[l_key] = l_value;
-        
+
                     continue;
                 }
-        
+
                 const auto& l_childDiffJson = DetectJsonDiff(a_baseJson[l_key], l_value);
-        
+
                 if (!l_childDiffJson.is_null())
                 {
                     l_diffJson[l_key] = l_childDiffJson;
                 }
             }
-        
+
             return l_diffJson.empty() ? nlohmann::json{} : l_diffJson;
         }
-     
+
         // object同士でなければcurrent側がそのまま差分
         return a_currentJson;
     }
@@ -68,18 +68,18 @@ namespace FWK::Utility
     inline nlohmann::json ApplyJsonDiff(const nlohmann::json& a_baseJson, const nlohmann::json& a_diffJson)
     {
         if (a_diffJson.is_null()) { return a_baseJson; }
-     
+
         if (a_baseJson.is_object() &&
             a_diffJson.is_object())
         {
             nlohmann::json l_mergedJson = a_baseJson;
-     
+
             // 第二引数trueでobject同士を再帰マージする
             l_mergedJson.update(a_diffJson, true);
-     
+
             return l_mergedJson;
         }
-     
+
         return a_diffJson;
     }
 
@@ -173,7 +173,7 @@ namespace FWK::Utility
         if (a_json.is_null()) { return; }
 
         const auto& l_factory    = FactoryType::GetInstance();
-        const auto& l_createName = a_json.value(a_key, std::string());
+        const auto& l_createName = a_json.value            (a_key, std::string());
 
         a_instance = l_factory.Create(l_createName);
     }

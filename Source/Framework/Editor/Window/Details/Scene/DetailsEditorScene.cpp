@@ -1,1 +1,1 @@
-#include "DetailsEditorScene.h"
+﻿#include "DetailsEditorScene.h"

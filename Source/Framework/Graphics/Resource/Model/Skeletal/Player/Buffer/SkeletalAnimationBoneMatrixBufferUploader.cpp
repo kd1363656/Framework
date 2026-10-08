@@ -19,9 +19,9 @@ bool FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::Create(const Devi
 bool FWK::Graphics::SkeletalAnimationBoneMatrixBufferUploader::Write(const std::vector<TypeAlias::Math::Matrix>& a_boneMatrixList)
 {
     // vectorが保持するMatrixを複製せず、
-    // 連続した範囲としてUploadBufferへ書き込む。
+    // 連続した範囲としてUploadBufferへ書き込む
     // 固定位置Uploaderなので、
-    // 毎回UploadBufferの先頭から上書きする。
+    // 毎回UploadBufferの先頭から上書きする
     const std::span<const TypeAlias::Math::Matrix> l_boneMatrixRange = { a_boneMatrixList };
 
     return WriteElementRange(l_boneMatrixRange) != k_invalidGPUVirtualAddress;

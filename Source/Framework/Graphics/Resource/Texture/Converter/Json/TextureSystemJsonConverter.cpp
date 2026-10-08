@@ -75,7 +75,7 @@ nlohmann::json FWK::Converter::TextureSystemJsonConverter::SerializeDefaultTextu
         // 名前が空かどうかを確認
         if (l_defaultTexture->GetREFTextureName().empty()) { continue; }
 
-        const auto l_defaultTextureType = static_cast<Enum::DefaultTextureType>(l_i);
+        const auto& l_defaultTextureType = static_cast<Enum::DefaultTextureType>(l_i);
 
         // Countは実態を持つDefaultTextureではないので保存しない
         if (static_cast<std::size_t>(l_defaultTextureType) >= static_cast<std::size_t>(Enum::DefaultTextureType::Count)) { continue; }

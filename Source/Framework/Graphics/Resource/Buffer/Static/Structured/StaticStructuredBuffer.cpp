@@ -10,7 +10,7 @@ FWK::Graphics::StaticStructuredBuffer::StaticStructuredBuffer(StaticStructuredBu
     StructuredBufferBase(std::move(a_other))
 {}
 
-FWK::Graphics::StaticStructuredBuffer& FWK::Graphics::StaticStructuredBuffer::operator=(StaticStructuredBuffer && a_other) noexcept
+FWK::Graphics::StaticStructuredBuffer& FWK::Graphics::StaticStructuredBuffer::operator=(StaticStructuredBuffer&& a_other) noexcept
 {
     if (this == &a_other) { return *this; }
 

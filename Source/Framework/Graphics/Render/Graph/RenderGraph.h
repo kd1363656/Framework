@@ -42,11 +42,11 @@ namespace FWK::Graphics
         {
             const auto l_staticTypeID = DrawRequestPassType::GetREFTypeINFO().k_staticTypeID;
 
-            const auto& l_itr = m_drawRequestPassMap.find(l_staticTypeID);
+            const auto& l_drawRequestPassITR = m_drawRequestPassMap.find(l_staticTypeID);
 
-            if (l_itr == m_drawRequestPassMap.end()) { return {}; }
+            if (l_drawRequestPassITR == m_drawRequestPassMap.end()) { return {}; }
 
-            const auto& l_drawRequestPass = l_itr->second.lock();
+            const auto& l_drawRequestPass = l_drawRequestPassITR->second.lock();
 
             if (!l_drawRequestPass) { return {}; }
 
@@ -58,11 +58,11 @@ namespace FWK::Graphics
         {
             const auto l_staticTypeID = ComputeRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
 
-            const auto& l_itr = m_computeRequestPerObjectMap.find(l_staticTypeID);
+            const auto& l_computeRequestPerObjectITR = m_computeRequestPerObjectMap.find(l_staticTypeID);
 
-            if (l_itr == m_computeRequestPerObjectMap.end()) { return {}; }
+            if (l_computeRequestPerObjectITR == m_computeRequestPerObjectMap.end()) { return {}; }
 
-            const auto& l_computeRequestPerObject = l_itr->second.lock();
+            const auto& l_computeRequestPerObject = l_computeRequestPerObjectITR->second.lock();
 
             if (!l_computeRequestPerObject) { return {}; }
 
@@ -74,11 +74,11 @@ namespace FWK::Graphics
         {
             const auto l_staticTypeID = DrawRequestPerObjectType::GetREFTypeINFO().k_staticTypeID;
 
-            const auto& l_itr = m_drawRequestPerObjectMap.find(l_staticTypeID);
+            const auto& l_drawRequestPerObjectITR = m_drawRequestPerObjectMap.find(l_staticTypeID);
 
-            if (l_itr == m_drawRequestPerObjectMap.end()) { return {}; }
+            if (l_drawRequestPerObjectITR == m_drawRequestPerObjectMap.end()) { return {}; }
 
-            const auto& l_drawRequestPerObject = l_itr->second.lock();
+            const auto& l_drawRequestPerObject = l_drawRequestPerObjectITR->second.lock();
 
             if (!l_drawRequestPerObject) { return {}; }
 

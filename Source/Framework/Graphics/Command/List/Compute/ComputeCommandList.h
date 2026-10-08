@@ -54,7 +54,7 @@ namespace FWK::Graphics
                                      const UINT                    a_rootConstantCount,
                                      const UINT                    a_destinationOffset) const;
 
-        static constexpr std::size_t k_rootConstantStartOffset = 0U;
+        static constexpr std::size_t k_rootConstantStartOffset = 0ULL;
 
         static constexpr UINT k_invalidRootConstantCount = 0U;
     };

@@ -52,22 +52,22 @@ void FWK::Converter::SceneJsonConverter::Deserialize(const nlohmann::json& a_roo
 nlohmann::json FWK::Converter::SceneJsonConverter::Serialize(Scene& a_scene) const
 {
     nlohmann::json l_rootJson = {};
- 
+
     const auto& l_sceneChanger           = a_scene.GetREFSceneChanger                 ();
           auto& l_gameObjectPrefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
-    const auto& l_lightSystem            = a_scene.GetREFLightSystem                  ();    
+    const auto& l_lightSystem            = a_scene.GetREFLightSystem                  ();
     const auto& l_application            = Application::GetInstance                   ();
     const auto& l_assetFilePathRegistry  = l_application.GetREFAssetFilePathRegistry  ();
 
     // シーン名のシリアライズ
     l_rootJson[Constant::k_sceneJsonConverterNameJsonKey] = a_scene.GetREFName();
- 
+
     // シーンチェンジャーのシリアライズ
     l_rootJson[k_sceneChanger] = l_sceneChanger.Serialize(l_assetFilePathRegistry);
- 
+
     // プレハブシステムのシリアライズ
     l_rootJson[k_gameObjectPrefabSystemJsonKey] = l_gameObjectPrefabSystem.Serialize(l_assetFilePathRegistry);
- 
+
     // ゲームオブジェクトリストのシリアライズ
     l_rootJson[k_gameObjectListJsonKey] = SerializeGameObjectList(a_scene);
 
@@ -82,7 +82,7 @@ void FWK::Converter::SceneJsonConverter::DeserializeGameObjectList(const nlohman
     if (a_rootJson.is_null() ||
         !Utility::IsJsonArray(a_rootJson))
     {
-        return; 
+        return;
     }
 
     const auto& l_prefabSystem = a_scene.GetREFGameObjectPrefabSystem();
@@ -118,9 +118,9 @@ nlohmann::json FWK::Converter::SceneJsonConverter::SerializeGameObjectList(Scene
         // m_gameObjectListは子も含むフラットなリストだが、
         // 子は親のChildList経由で再帰的に保存されるためルートのみを書き出す
         if (const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
-            !l_hierarchy.GetREFParent().expired()) 
+            !l_hierarchy.GetREFParent().expired())
         {
-            continue; 
+            continue;
         }
 
         // Prefab由来なら差分形式、非Prefabならフル形式になるのはGameObject側で判定する

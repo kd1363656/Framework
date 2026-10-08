@@ -13,7 +13,7 @@ namespace FWK::Editor
 
          WorldOutlinerEditorWindowSelectionState() = default;
         ~WorldOutlinerEditorWindowSelectionState() = default;
-    
+
         void SelectSingleScene(EditorGameObjectSelectionState& a_gameObjectSelectionState);
 
         void ToggleSceneSelect(EditorGameObjectSelectionState& a_gameObjectSelectionState);
@@ -23,7 +23,7 @@ namespace FWK::Editor
         bool GetVALIsSceneSelected() const { return m_isSceneSelected; }
 
     private:
-    
+
         bool m_isSceneSelected = false;
     };
 }

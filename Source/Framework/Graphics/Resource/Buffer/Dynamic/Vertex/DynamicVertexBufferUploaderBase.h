@@ -25,9 +25,9 @@ namespace FWK::Graphics
         {
             FWK_ASSERT_RETURN_VALUE_IF(a_vertexList.empty(), "VertexListの要素数が空のため、DynamicVertexBufferUploaderの書き込みに失敗しました。", {});
 
-            const std::span<const VertexType> l_vertexRanges = { a_vertexList };
+            const std::span<const VertexType> l_vertexRange = { a_vertexList };
 
-            const auto& l_gpuVirtualAddress = WriteElementRange(l_vertexRanges);
+            const auto& l_gpuVirtualAddress = WriteElementRange(l_vertexRange);
 
             FWK_ASSERT_RETURN_VALUE_IF(l_gpuVirtualAddress == k_invalidGPUVirtualAddress, "VertexListの書き込みに失敗したため、VertexBufferViewの作成に失敗しました。", {});
 

@@ -20,7 +20,7 @@ bool FWK::Graphics::GPUMemoryAllocator::Create(const Device& a_device)
 
     // D3D12MA::CreateAllocator(アロケータ作成設定、
     //                          作成されたD3D12MAアロケータの受け取り先);
-    const auto l_hr = D3D12MA::CreateAllocator(&l_allocatorDesc, m_allocator.ReleaseAndGetAddressOf());
+    const auto& l_hr = D3D12MA::CreateAllocator(&l_allocatorDesc, m_allocator.ReleaseAndGetAddressOf());
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAアロケータの作成に失敗しており、、GPUメモリアロケータの作成に失敗しました。", false);
 
@@ -47,12 +47,12 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateTextureResource(const D3D12_RESOUR
     //                                    D3D12MA側Allocationの受取先、
     //                                    受け取りたいResourceインターフェース型ID、
     //                                    作成されたResourceの受取先);
-    const auto l_hr = m_allocator->CreateResource(&l_allocationDesc,
-                                                  &a_resourceDesc,
-                                                  a_initialResourceState,
-                                                  a_clearValue,
-                                                  a_gpuResource.m_allocation.ReleaseAndGetAddressOf(),
-                                                  IID_PPV_ARGS(a_gpuResource.m_resource.ReleaseAndGetAddressOf()));
+    const auto& l_hr = m_allocator->CreateResource(&l_allocationDesc,
+                                                   &a_resourceDesc,
+                                                   a_initialResourceState,
+                                                   a_clearValue,
+                                                   a_gpuResource.m_allocation.ReleaseAndGetAddressOf(),
+                                                   IID_PPV_ARGS(a_gpuResource.m_resource.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAによるTextureResourceの作成に失敗しました。", false);
 
@@ -84,12 +84,12 @@ bool FWK::Graphics::GPUMemoryAllocator::CreateBufferResource(const UINT64&      
     //                                    D3D12MA側Allocationの受取先、
     //                                    受け取りたいResourceインターフェース型ID、
     //                                    作成されたResourceの受取先);
-    const auto l_hr = m_allocator->CreateResource(&l_allocationDesc,
-                                                  &l_resourceDesc,
-                                                  a_initialResourceState,
-                                                  nullptr,
-                                                  a_gpuResource.m_allocation.ReleaseAndGetAddressOf(),
-                                                  IID_PPV_ARGS(a_gpuResource.m_resource.ReleaseAndGetAddressOf()));
+    const auto& l_hr = m_allocator->CreateResource(&l_allocationDesc,
+                                                   &l_resourceDesc,
+                                                   a_initialResourceState,
+                                                   nullptr,
+                                                   a_gpuResource.m_allocation.ReleaseAndGetAddressOf(),
+                                                   IID_PPV_ARGS(a_gpuResource.m_resource.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "D3D12MAによるBufferResourceの作成に失敗しました。", false);
 

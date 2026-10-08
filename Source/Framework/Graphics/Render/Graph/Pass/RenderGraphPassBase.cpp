@@ -156,7 +156,7 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGra
                          "BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
 
     // afterUsageはNoneを許可する
-    // Noneは「Pass実行後は状態遷移しない」という意味。
+    // Noneは「Pass実行後は状態遷移しない」という意味
     FWK_ASSERT_RETURN_IF(a_afterUsage == Enum::RenderGraphResourceUsage::Invalid ||
                          a_afterUsage == Enum::RenderGraphResourceUsage::Count,
                          "AfterUsageが無効です、ResourceAccessの追加に失敗しました。");
@@ -166,21 +166,21 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGra
     const bool l_hasShadowMap    = a_shadowMapType    != Enum::RenderGraphShadowMapType::None;
 
         // 一つのResourceAccessへ複数種類のResourceが
-    // 同時指定されることを防ぐ。
+    // 同時指定されることを防ぐ
     FWK_ASSERT_RETURN_IF((a_isBackBuffer     &&
-                         (l_hasRenderTarget  ||
-                          l_hasDepthStencil  ||
-                          l_hasShadowMap))   ||
-                         (l_hasRenderTarget  &&
-                         (l_hasDepthStencil  ||
-                          l_hasShadowMap))   ||
-                         (l_hasDepthStencil  &&
-                          l_hasShadowMap)    ||
-                         (!a_isBackBuffer    &&
-                          !l_hasRenderTarget &&
-                          !l_hasDepthStencil &&
-                          !l_hasShadowMap),
-                         "ResourceAccessへ指定されたResourceの組み合わせが無効です。");
+                          (l_hasRenderTarget  ||
+                           l_hasDepthStencil  ||
+                           l_hasShadowMap))   ||
+                          (l_hasRenderTarget  &&
+                           (l_hasDepthStencil  ||
+                            l_hasShadowMap))   ||
+                          (l_hasDepthStencil  &&
+                           l_hasShadowMap)    ||
+                          (!a_isBackBuffer    &&
+                           !l_hasRenderTarget &&
+                           !l_hasDepthStencil &&
+                           !l_hasShadowMap),
+                          "ResourceAccessへ指定されたResourceの組み合わせが無効です。");
 
     Struct::RenderGraphResourceAccess l_resourceAccess = {};
 

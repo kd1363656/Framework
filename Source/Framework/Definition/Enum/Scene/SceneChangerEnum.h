@@ -8,7 +8,7 @@ namespace FWK::Enum
 
         Title,
         Game,
-        Gameover,   
+        Gameover,
     };
 
     FWK_JSON_SERIALIZE_ENUM

@@ -421,7 +421,7 @@
     <Filter Include="Source\Framework\Utility\Sorter">
       <UniqueIdentifier>{200d5985-647e-40e1-ab4b-66a768ffad36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Utility\Sorter\Topologycal">
+    <Filter Include="Source\Framework\Utility\Sorter\Topological">
       <UniqueIdentifier>{41c48eb4-b70c-4506-ad12-5de1d288cb02}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit">
@@ -969,6 +969,9 @@
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Viewport\Converter\Json">
       <UniqueIdentifier>{c4e8a2b3-7d5f-4b8c-9e4a-3f7d6b0e2a58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Window\Details\GameObject\Popup">
+      <UniqueIdentifier>{92e3eec7-7ff0-4e05-ad95-9aad492f73b7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Editor\Window\Details\GameObject">
       <UniqueIdentifier>{f4c2a817-3e9b-4d51-8a76-2b1e9c5d8f30}</UniqueIdentifier>
@@ -1734,9 +1737,6 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\FrameResourceJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Frame\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Frame\Converter\Json\Utility\FrameResourceJsonUtility.h">
-      <Filter>Source\Framework\Graphics\Resource\Converter\Json\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\RenderGraphPassBase.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass</Filter>
     </ClInclude>
@@ -1869,8 +1869,8 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.h">
-      <Filter>Source\Framework\Utility\Sorter\Topologycal</Filter>
+    <ClInclude Include="Source\Framework\Utility\Sorter\Topological\TopologicalSorter.h">
+      <Filter>Source\Framework\Utility\Sorter\Topological</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit</Filter>
@@ -1899,10 +1899,10 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\ComPTRTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\EditorWindowSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\PipelineStateSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\DescriptorPoolTypeAlias.h">
@@ -1911,13 +1911,13 @@
     <ClInclude Include="Source\Framework\Definition\Type\Alias\StorageIDTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DynamicBufferSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DynamicBufferSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPassSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\DrawRequestPerObjectSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Trait\PTR\TypeTraitPTR.h">
@@ -2061,7 +2061,7 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.h">
+    <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderBaseJsonConverter.h">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StaticStructuredBuffer.h">
@@ -2103,7 +2103,7 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBFinalPresentRenderTargetPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.h">
+    <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConverter.h">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.h">
@@ -2124,7 +2124,7 @@
     <ClInclude Include="Source\Framework\Editor\MainMenu\File\FileMainMenuEditor.h">
       <Filter>Source\Framework\Editor\MainMenu\File</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\EditorMainMenuUniqueFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Physics\DebugRenderer\PhysicsDebugRenderer.h">
@@ -2241,7 +2241,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Json\JsonUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\RenderGraphPassUniqueFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Utility\Math\MathQuaternionUtility.h">
@@ -2272,6 +2272,9 @@
       <Filter>Source\Framework\Definition\Constant\Graphics\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\GPUResourceStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelBinaryConverterBaseStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCommonStruct.h">
@@ -2355,7 +2358,7 @@
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedComputeRequestPerObjectBaseConcept.h">
       <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComputeRequestPerObjectSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComputeRequestPerObjectSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h">
@@ -2403,7 +2406,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsStaticCapsuleBodyConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.h">
+    <ClInclude Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualBaseJsonConverter.h">
       <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsCharacterVirtualBaseConstant.h">
@@ -2412,7 +2415,7 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\DepthStencilTextureStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstasnt.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.h">
@@ -2460,19 +2463,19 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Constant\SpriteScreenPerObjectDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Object\Sprite\Screen\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\Constant\CameraPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\Constant\CameraPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\Constant\LightPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\Constant\LightPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Light\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant\FinalColorRenderTargetPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant\FinalColorRenderTargetPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant\FinalPresentRenderTargetPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant\FinalPresentRenderTargetPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant\SpriteScreenPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant\SpriteScreenPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Sprite\Screen\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelCascadeShadowPassStruct.h">
@@ -2499,7 +2502,7 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCascadeShadowMapPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant\CascadeShadowMapPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant\CascadeShadowMapPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Shadow\Cascade\CascadeShadowMapPassDrawRequest.h">
@@ -2580,6 +2583,9 @@
     <ClInclude Include="Source\Framework\Editor\Window\Details\GameObject\DetailsEditorGameObject.h">
       <Filter>Source\Framework\Editor\Window\Details\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Window\Details\GameObject\Popup\DetailsEditorGameObjectAddComponentPopupDrawer.h">
+      <Filter>Source\Framework\Editor\Window\Details\GameObject\Popup</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.h">
       <Filter>Source\Framework\Editor\Window\Details\Scene</Filter>
     </ClInclude>
@@ -2595,13 +2601,13 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.h">
+    <ClInclude Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.h">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicaManagerJsonConverterConstant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Physics\PhysicsManagerJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseCosntant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\AssetRecordBaseConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h">
@@ -2724,7 +2730,7 @@
     <ClInclude Include="Source\Framework\Editor\Splitter\EditorWindowPaneSplitter.h">
       <Filter>Source\Framework\Editor\Splitter</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Splitter\EditorWindowPaneSplitter.h">
+    <ClInclude Include="Source\Framework\Definition\Enum\Editor\Splitter\EditorWindowPaneSplitterEnum.h">
       <Filter>Source\Framework\Definition\Enum\Editor\Splitter</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Splitter\Converter\Json\EditorWindowPaneSplitterJsonConverter.h">
@@ -2769,13 +2775,13 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Editor\Window\AssetBrowserEditorWindowPopupDrawerStruct.h">
       <Filter>Source\Framework\Definition\Struct\Editor\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityCosntant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIBoolToStringUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIItemHighlightUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityCosntant.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUIFactoryUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Camera\EditorCameraConstant.h">
@@ -2802,7 +2808,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\IMGUI\IMGUITooltipUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPainSplitter.h">
+    <ClInclude Include="Source\Framework\Definition\Constant\Editor\Splitter\EditorWindowPaneSplitterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\Splitter</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\Window\AssetBrowserEditorWindowPopupDrawerConstant.h">
@@ -2862,7 +2868,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Editor\UndoRedo\EditorUndoRedoSystemJsonConverterConstant.h">
       <Filter>Source\Framework\Definition\Constant\Editor\UndoRedo</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorListUtility.h">
+    <ClInclude Include="Source\Framework\Utility\List\SmartPointerVectorList.h">
       <Filter>Source\Framework\Utility\List</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\WorldOutlinerEditorWindowOperationEnum.h">
@@ -2886,7 +2892,7 @@
     <ClInclude Include="Source\Framework\GameObject\GameObject.h">
       <Filter>Source\Framework\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\GameObjectComponentSharedFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\GameObjectComponentSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Converter\Json\GameObjectJsonConverter.h">
@@ -2964,7 +2970,7 @@
     <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectTransformComponentStruct.h">
       <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\GameObjectTransformComponentMatrixUpdateModeUniqueFactory.h">
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Unique\GameObjectTransformComponentMatrixUpdateModeUniqueFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Unique</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Standalone\GameObjectTransformComponentMatrixUpdateStandaloneMode.h">
@@ -2973,7 +2979,7 @@
     <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\GameObjectTransformComponentMatrixUpdateHierarchicalMode.h">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json\GameObjectTransformComponentHierarchicalMatrixUpdateModeJsonConverter.h">
+    <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json\GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter.h">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector\GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.h">
@@ -2994,7 +3000,7 @@
     <ClInclude Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.h">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Light\Converter\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Converter\Json\ApplicationJsonConverter.h">
@@ -3174,7 +3180,7 @@
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCullingCameraPassStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant\CullingCameraPassConstantBufferUploader.h">
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant\CullingCameraPassDynamicConstantBufferUploader.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.h">
@@ -3434,8 +3440,8 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Resource\Binder\RenderGraphResourceBinder.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Resource\Binder</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Utility\Sorter\Topologycal\TopologicalSorter.cpp">
-      <Filter>Source\Framework\Utility\Sorter\Topologycal</Filter>
+    <ClCompile Include="Source\Framework\Utility\Sorter\Topological\TopologicalSorter.cpp">
+      <Filter>Source\Framework\Utility\Sorter\Topological</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit\StaticModelStandardLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Static\Standard\Lit</Filter>
@@ -3455,7 +3461,7 @@
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\DynamicBufferUploaderBase.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json\DynamicBufferUploaderBaseJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Resource\Buffer\Dynamic\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Buffer\Static\Structured\StaticStructuredBuffer.cpp">
@@ -3467,7 +3473,7 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final\FinalPresentRenderTargetPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\RenderTarget\Final</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConveter.cpp">
+    <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneManagerJsonConverter.cpp">
       <Filter>Source\Framework\Scene\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Scene\Converter\Json\SceneJsonConverter.cpp">
@@ -3617,7 +3623,7 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit\SkeletalAnimationModelStandardUnLitPass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\Standard\UnLit</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\Physics\CharacterVirtual\Converter\Json\PhysicsCharacterVirtualBaseJsonConverter.cpp">
       <Filter>Source\Framework\Physics\CharacterVirtual\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\ShadowContext.cpp">
@@ -3668,6 +3674,9 @@
     <ClCompile Include="Source\Framework\Editor\Window\Details\GameObject\DetailsEditorGameObject.cpp">
       <Filter>Source\Framework\Editor\Window\Details\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Window\Details\GameObject\Popup\DetailsEditorGameObjectAddComponentPopupDrawer.cpp">
+      <Filter>Source\Framework\Editor\Window\Details\GameObject\Popup</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Window\Details\Scene\DetailsEditorScene.cpp">
       <Filter>Source\Framework\Editor\Window\Details\Scene</Filter>
     </ClCompile>
@@ -3683,7 +3692,7 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json\CascadeShadowMapJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Shadow\Cascade\Converter\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerConverterJson.cpp">
+    <ClCompile Include="Source\Framework\Physics\Converter\Json\PhysicsManagerJsonConverter.cpp">
       <Filter>Source\Framework\Physics\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Utility\IMGUI\DragDrop\IMGUIDragDropPayloadStorage.cpp">
@@ -3884,7 +3893,7 @@
     <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\GameObjectTransformComponentMatrixUpdateHierarchicalMode.cpp">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json\GameObjectTransformComponentHierarchicalMatrixUpdateModeJsonConverter.cpp">
+    <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json\GameObjectTransformComponentMatrixUpdateHierarchicalModeJsonConverter.cpp">
       <Filter>Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\GameObject\Component\Transform\Mode\Hierarchical\Inspector\GameObjectTransformComponentMatrixUpdateHierarchicalModeInspector.cpp">
@@ -3899,7 +3908,7 @@
     <ClCompile Include="Source\Framework\Editor\Window\Outliner\Selection\WorldOutlinerEditorWindowSelectionState.cpp">
       <Filter>Source\Framework\Editor\Window\Outliner\Selection</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverrter.cpp">
+    <ClCompile Include="Source\Framework\Graphics\Render\Light\Converter\Json\LightSystemJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Light\Converter\Json</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Converter\Json\ApplicationJsonConverter.cpp">

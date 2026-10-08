@@ -8,7 +8,7 @@ namespace FWK
 
          NextScene() = default;
         ~NextScene() = default;
-    
+
         void Load(const std::filesystem::path& a_filePath);
 
         void SetJson(nlohmann::json&& a_set) { m_json = std::move(a_set); }
@@ -20,7 +20,7 @@ namespace FWK
         const auto& GetREFName() const { return m_name; }
 
     private:
-    
+
         nlohmann::json m_json = {};
 
         std::string m_name = {};

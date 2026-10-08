@@ -111,12 +111,12 @@ namespace FWK::Utility
             }
             else
             {
-                const auto& l_itr = std::ranges::find_if(a_valueList, [&l_value](const auto& a_value)
-                                                         {
-                                                            return a_value == l_value;
-                                                         });
+                const auto& l_valueITR = std::ranges::find_if(a_valueList, [&l_value](const auto& a_value)
+                                                              {
+                                                                 return a_value == l_value;
+                                                              });
 
-                a_valueList.erase(l_itr);
+                a_valueList.erase(l_valueITR);
 
                 l_isChanged = true;
             }

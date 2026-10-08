@@ -8,7 +8,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::BeginPopup(const std::str
     ImGui::OpenPopup(a_openPopupLabel.data());
 }
 
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<std::filesystem::path>& a_selectedFilePathList, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<std::filesystem::path>& a_selectedFilePathList,
                                                             const std::filesystem::path&              a_targetFilePath,
                                                             const std::string_view&                   a_openPopupLabel,
                                                             const Enum::AssetBrowserPopupContextType  a_contextType,
@@ -35,7 +35,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     const bool l_isRootFolder = a_targetFilePath == Constant::k_assetRootFolderPath;
 
     // 選択中リストにルートフォルダが含まれているかどうか
-    const bool l_containsRoot = std::find(a_selectedFilePathList.begin(), a_selectedFilePathList.end(), Constant::k_assetRootFolderPath) != a_selectedFilePathList.end();
+    const bool l_hasRoot = std::find(a_selectedFilePathList.begin(), a_selectedFilePathList.end(), Constant::k_assetRootFolderPath) != a_selectedFilePathList.end();
 
     // 新規フォルダ作成可能かどうか
     const bool l_canCreateFolder = !l_isMultiSelection &&
@@ -44,8 +44,10 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
                                     a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty);
 
     // 新規プレハブ・新規シーンが作成可能か
-    const bool l_canCreatePrefab = l_isAssetPaneEmpty && !l_isMultiSelection;
-    const bool l_canCreateScene  = l_isAssetPaneEmpty && !l_isMultiSelection;
+    const bool l_canCreatePrefab = l_isAssetPaneEmpty &&
+                                   !l_isMultiSelection;
+    const bool l_canCreateScene  = l_isAssetPaneEmpty &&
+                                   !l_isMultiSelection;
 
     // 名前変更可能か
     // OnFolder(両Pane)・OnFile(AssetPane)で可能
@@ -105,19 +107,19 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
 
         DrawRenameMenu(a_targetFilePath, l_canRename, l_renameState);
 
-        DrawCopyMenu(a_selectedFilePathList, 
+        DrawCopyMenu(a_selectedFilePathList,
                      l_fileOperation,
-                     l_hasSelection && 
-                     !l_containsRoot,
+                     l_hasSelection &&
+                     !l_hasRoot,
                      l_clipboard);
 
         DrawCutMenu(a_selectedFilePathList,
                     l_fileOperation,
                     l_hasSelection &&
-                    !l_containsRoot,
+                    !l_hasRoot,
                     l_clipboard);
 
-        DrawPasteMenu(l_pasteDestinationFolderPathList, 
+        DrawPasteMenu(l_pasteDestinationFolderPathList,
                       l_fileOperation,
                       l_assetCreator,
                       l_canPaste,
@@ -128,12 +130,12 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
                           l_fileOperation,
                           l_assetCreator,
                           l_hasSelection &&
-                          !l_containsRoot,
+                          !l_hasRoot,
                           l_assetFilePathRegistry);
 
-        DrawDeleteMenu(a_selectedFilePathList, 
+        DrawDeleteMenu(a_selectedFilePathList,
                        l_hasSelection &&
-                       !l_containsRoot,
+                       !l_hasRoot,
                        a_editorWindow);
     }
     else
@@ -143,7 +145,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
         // 貼り付けのみ表示する
         ImGui::Separator();
 
-        DrawPasteMenu(l_pasteDestinationFolderPathList, 
+        DrawPasteMenu(l_pasteDestinationFolderPathList,
                       l_fileOperation,
                       l_assetCreator,
                       l_canPaste,
@@ -154,9 +156,9 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     ImGui::EndPopup();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const std::filesystem::path&             a_targetFolderPath, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(const std::filesystem::path&             a_targetFolderPath,
                                                                             const Enum::AssetBrowserPopupContextType a_contextPopup,
-                                                                            const bool                               a_canCreate, 
+                                                                            const bool                               a_canCreate,
                                                                                   AssetBrowserEditorWindow&          a_assetBrowserEditorWindow) const
 {
     // アイコン + ラベル文字列を構築
@@ -169,14 +171,14 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
     //                 ショートカット文字列、
     //                 選択状態、
     //                 有効/無効(falseでグレーアウト))
-    // MenuItem(label, 
+    // MenuItem(label,
     //          shortcut,
     //          selected,
     //          enabled)
     // enabled = falseの場合、項目はグレーアウトされクリックしても反応しない
-    if (ImGui::MenuItem(l_label.c_str(), 
+    if (ImGui::MenuItem(l_label.c_str(),
                         k_createNewFolderShortcutLabel.data(),
-                        false, 
+                        false,
                         a_canCreate))
     {
         const auto& l_result = l_assetCreator.CreateFolder(a_targetFolderPath);
@@ -195,7 +197,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
             // 選択状態になることでハイライト表示され
             // 次の操作(コピー/切り取り/複製等)の対象になる
             auto& l_selectionState = l_folderPane.GetMutableREFSelectionState();
-            
+
             // コンテキストに応じて現在参照中フォルダパス(m_currentSelectFolderPath)を制御
             // AssetPane_OnEmpty   : 変更しない(現在のフォルダに留まり新規フォルダをカード表示)
             // AssetPane_OnFolder  : 作成先(選択フォルダ)へ移動し新規フォルダをカード表示
@@ -215,16 +217,16 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateFolderMenu(cons
             {
                 // AssetPaneOn_Empty    : 現在参照中フォルダを変更しない            (false)
                 // FolderPane_OnFolder : 新規フォルダを現在参照中のファイルダにする(true)
-                const bool l_updateCurrentFolderPath = a_contextPopup != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
+                const bool l_shouldUpdateCurrentFolderPath = a_contextPopup != Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty;
 
-                l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, l_updateCurrentFolderPath);
+                l_selectionState.SelectSingleFolder(l_result.m_createdFilePath, a_assetBrowserEditorWindow, l_shouldUpdateCurrentFolderPath);
             }
 
             // 作成性孤児、名前変更モードへ移行
             // ユーザーがすぐにフォルダ名を編集できるようにする
             StartRename(l_result.m_createdFilePath, l_renameState);
         }
-    }  
+    }
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(const std::filesystem::path&                       a_targetFolderPath,
                                                                             const AssetBrowserEditorWindowAssetCreator&        a_assetCreator,
@@ -234,7 +236,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreatePrefabMenu(cons
 {
     const auto& l_label = std::string{ Constant::k_imguiFontAwesomePrefabIcon } + " " + std::string{ k_createNewPrefabLabel };
 
-    if (ImGui::MenuItem(l_label.c_str(), 
+    if (ImGui::MenuItem(l_label.c_str(),
                         nullptr,
                         false,
                         a_canCreate))
@@ -257,7 +259,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCreateSceneMenu(const
 {
     const auto& l_label = std::string{ Constant::k_imguiFontAwesomeSceneIcon } + " " + std::string{ k_createNewSceneLabel };
 
-    if (ImGui::MenuItem(l_label.c_str(), 
+    if (ImGui::MenuItem(l_label.c_str(),
                         nullptr,
                         false,
                         a_canCreate))
@@ -278,7 +280,7 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawRenameMenu(const std:
     // ショートカット : F2
     // a_canRename = falseの場合、グレーアウトされクリックしても反応しない
     const auto& l_label = std::string{ k_imguiFontAwesomeEditIcon } + " " + std::string{ k_renameLabel };
-    
+
     if (ImGui::MenuItem(l_label.c_str(),
                         k_renameShortcutLabel.data(),
                         false,
@@ -288,16 +290,16 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawRenameMenu(const std:
         StartRename(a_targetFilePath, a_renameState);
     }
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                                                                     const AssetBrowserEditorWindowFileOperation& a_fileOperation,
-                                                                    const bool                                   a_hasSelection, 
+                                                                    const bool                                   a_hasSelection,
                                                                           AssetBrowserEditorWindowClipboard&     a_clipboard) const
 {
     // ショートカット : Ctrl + C
     // 選択中のファイルがない場合はグレーアウト
     const auto& l_label = std::string{ k_imguiFontAwesomeCopyIcon } + " " + std::string{ k_copyLabel };
-    
-    if (ImGui::MenuItem(l_label.c_str(), 
+
+    if (ImGui::MenuItem(l_label.c_str(),
                         k_copyShortcutLabel.data(),
                         false,
                         a_hasSelection))
@@ -306,17 +308,16 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCopyMenu(const std::v
         // コピー元ファイルは削除されない
         a_fileOperation.Copy(a_selectedFilePathList, a_clipboard);
     }
-
 }
-void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList, 
-                                                                   const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
+void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
+                                                                   const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                                                                    const bool                                   a_hasSelection,
                                                                          AssetBrowserEditorWindowClipboard&     a_clipboard) const
 {
     // ショートカット : Ctrl + X
     const auto& l_label = std::string{ k_imguiFontAwesomeCutIcon } + " " + std::string{ k_cutLabel };
-    
-    if (ImGui::MenuItem(l_label.c_str(), 
+
+    if (ImGui::MenuItem(l_label.c_str(),
                         k_cutShortcutLabel.data(),
                         false,
                         a_hasSelection))
@@ -327,17 +328,17 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawCutMenu(const std::ve
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::vector<std::filesystem::path>&    a_destinationFolderPathList,
-                                                                     const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
-                                                                     const AssetBrowserEditorWindowAssetCreator&  a_assetCreator, 
-                                                                     const bool                                   a_canPaste, 
+                                                                     const AssetBrowserEditorWindowFileOperation& a_fileOperation,
+                                                                     const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
+                                                                     const bool                                   a_canPaste,
                                                                            AssetBrowserEditorWindowClipboard&     a_clipboard,
                                                                            AssetFilePathRegistry&                 a_assetFilePathRegistry) const
 {
     // ショートカット : Ctrl + V
     // クリップボードが空の場合はグレーアウト
     const auto& l_label = std::string{ k_imguiFontAwesomePasteIcon } + " " + std::string{ k_pasteLabel };
-    
-    if (ImGui::MenuItem(l_label.c_str(), 
+
+    if (ImGui::MenuItem(l_label.c_str(),
                         k_pasteShortcutLabel.data(),
                         false,
                         a_canPaste))
@@ -346,13 +347,13 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawPasteMenu(const std::
         // Copyの場合は新しいUUIDを発行して複製し、Registryへ登録する
         // Cutの場合はrenameで移動し、RegistryのPathはWatcher経由で付け替えられる
         a_fileOperation.Paste(a_destinationFolderPathList,
-                              a_assetCreator, 
-                              a_clipboard, 
+                              a_assetCreator,
+                              a_clipboard,
                               a_assetFilePathRegistry);
     }
 }
 void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
-                                                                         const AssetBrowserEditorWindowFileOperation& a_fileOperation, 
+                                                                         const AssetBrowserEditorWindowFileOperation& a_fileOperation,
                                                                          const AssetBrowserEditorWindowAssetCreator&  a_assetCreator,
                                                                          const bool                                   a_hasSelection,
                                                                                AssetFilePathRegistry&                 a_assetFilePathRegistry) const
@@ -360,8 +361,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDuplicateMenu(const s
     // ショートカット : Ctrl + D
     // 選択中のファイルがない場合はグレーアウト
     const auto& l_label = std::string{ k_imguiFontAwesomeCloneIcon } + " " + std::string{ k_duplicateLabel };
-    
-    if (ImGui::MenuItem(l_label.c_str(), 
+
+    if (ImGui::MenuItem(l_label.c_str(),
                         k_duplicateShortcutLabel.data(),
                         false,
                         a_hasSelection))
@@ -377,8 +378,8 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::DrawDeleteMenu(const std:
     // ショートカット : Del
     // 選択中のファイルがない場合はグレーアウト
     const auto& l_label = std::string{ k_imguiFontAwesomeTrashIcon } + " " + std::string{ k_deleteLabel };
-    
-    if (ImGui::MenuItem(l_label.c_str(), 
+
+    if (ImGui::MenuItem(l_label.c_str(),
                         k_deleteShortcutLabel.data(),
                         false,
                         a_hasSelection))

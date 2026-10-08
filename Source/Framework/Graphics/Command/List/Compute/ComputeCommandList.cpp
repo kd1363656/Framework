@@ -9,7 +9,7 @@ void FWK::Graphics::ComputeCommandList::UAVResourceBarrier(const TypeAlias::ComP
 {
     FWK_ASSERT_RETURN_IF(!a_resource, "UAVBarrierを設定するGPUResourceが無効です。");
 
-    const auto& l_commandList = this->GetREFCommandList();
+    const auto& l_commandList = GetREFCommandList();
 
     FWK_ASSERT_RETURN_IF(!l_commandList, "CommandListが作成されておらず、UAV Barrierの設定に失敗しました。");
 
@@ -30,7 +30,7 @@ void FWK::Graphics::ComputeCommandList::SetupConstantBufferView(const RootSignat
 
     FWK_ASSERT_RETURN_IF(!l_computeCommandList, "コンピュートコマンドリストが作成されておらず、定数バッファビュー設定に失敗しました。");
 
-    const auto l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、コンピュート用定数バッファービュー設定に失敗しました。");
 
@@ -65,7 +65,7 @@ void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignat
 
     FWK_ASSERT_RETURN_IF(!l_computeCommandList, "コンピュートコマンドリストが作成されておらず、Root32BitConstantsの設定に失敗しました。");
 
-    const auto  l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
 
     FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "パラメータインデックスが無効なため、Root32BitConstantsの設定に失敗しました。");
 
@@ -80,7 +80,7 @@ void FWK::Graphics::ComputeCommandList::SetupRoot32BitConstants(const RootSignat
 
     // 先にOffsetを検査しているため、
     // Num32BitValues - Offsetで符号なし整数の
-    // アンダーフローは発生しない。
+    // アンダーフローは発生しない
     FWK_ASSERT_RETURN_IF(a_rootConstantCount > l_rootParameter.Constants.Num32BitValues - a_destinationOffset, "Root32BitConstantsの設定数がRootSignatureで確保した個数を超えています。");
 
     // SetComputeRoot32BitConstants(RootParameterIndex,

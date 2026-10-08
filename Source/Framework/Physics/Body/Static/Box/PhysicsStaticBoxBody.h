@@ -4,11 +4,6 @@ namespace FWK::Physics
 {
     class PhysicsStaticBoxBody final : public PhysicsStaticBodyBase
     {
-    private:
-
-        // TODO
-        friend class Scene;
-
     public:
 
          PhysicsStaticBoxBody()          = default;
@@ -20,7 +15,7 @@ namespace FWK::Physics
 
         void SetHalfExtent(const TypeAlias::Math::Vector3& a_set) { m_halfExtent = a_set; }
 
-        const auto& GetRERHalfExtent() const { return m_halfExtent; }
+        const auto& GetREFHalfExtent() const { return m_halfExtent; }
 
     private:
 

@@ -21,7 +21,7 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::ClearSelectedFilePathL
     m_selectedFilePathList.clear();
 }
 
-void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow, const bool a_updateCurrentFolderPath)
+void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow, const bool a_shouldUpdateCurrentFolderPath)
 {
     m_selectedFilePathList.clear       ();
     m_selectedFilePathList.emplace_back(a_folderPath);
@@ -30,7 +30,7 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::SelectSingleFolder(con
     // 現在フォルダを更新
     // 単一選択時は現在フォルダを選択フォルダにする
     // AssetPaneはこのm_currentFolderPathを参照して内容を表示する
-    if (a_updateCurrentFolderPath)
+    if (a_shouldUpdateCurrentFolderPath)
     {
         a_editorWindow.SetCurrentSelectFolderPath(a_folderPath);
     }
@@ -69,7 +69,7 @@ void FWK::Editor::AssetBrowserEditorWindowSelectionState::AddSelectedFilePath(co
     m_selectedFilePathList.emplace_back(a_set);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowSelectionState::EraseSelectedFilePath(const std::vector<std::filesystem::path>::const_iterator& a_itr)
+void FWK::Editor::AssetBrowserEditorWindowSelectionState::EraseSelectedFilePath(const std::vector<std::filesystem::path>::const_iterator& a_selectedFilePathITR)
 {
-    m_selectedFilePathList.erase(a_itr);
+    m_selectedFilePathList.erase(a_selectedFilePathITR);
 }

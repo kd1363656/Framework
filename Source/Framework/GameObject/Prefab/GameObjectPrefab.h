@@ -16,9 +16,9 @@ namespace FWK
 
         void Load(const std::filesystem::path& a_filePath);
 
-        bool Save(const std::filesystem::path&       a_filePath, 
+        bool Save(const std::filesystem::path&       a_filePath,
                   const boost::uuids::uuid&          a_prefabUUID,
-                        SceneGameObjectPrefabSystem& a_prefabSystem, 
+                        SceneGameObjectPrefabSystem& a_prefabSystem,
                         GameObject&                  a_gameObject);
 
         void SetJson(nlohmann::json&& a_set) { m_json = std::move(a_set); }

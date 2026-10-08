@@ -55,7 +55,7 @@ bool FWK::SceneManager::LoadNextSceneIfNeeded()
     if (!m_scene) { return false; }
 
     const auto& l_nextSceneLoadFilePath = m_scene->FetchVALNextLoadSceneFilePath();
-    
+
     // 毎フレーム確認してもしファイルのパスが空なら
     // ファイルパスが返されていないという意味なのでreturn;
     if (l_nextSceneLoadFilePath.empty()) { return false; }

@@ -38,7 +38,7 @@ void FWK::Graphics::ResourceReleaseContext::ReleaseAvailableDeferredResources(co
     const auto& l_completedFenceValue = a_directCommandQueue.FetchVALCompletedFenceValue();
 
     // GPUResource本体を解放
-    // ComPtrを保持しているRecordをpop_backすることで、GPUResourceの参照が外れる。
+    // ComPtrを保持しているRecordをpop_backすることで、GPUResourceの参照が外れる
     ReleaseAvailableGPUResources(l_completedFenceValue);
 
     // DescriptorのDescriptorIndexを、それぞれ対応するDescriptorPoolへ返す

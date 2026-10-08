@@ -5,7 +5,7 @@ namespace FWK
     class SceneChanger final
     {
     public:
-    
+
          SceneChanger() = default;
         ~SceneChanger() = default;
 
@@ -15,10 +15,10 @@ namespace FWK
 
         nlohmann::json Serialize(const AssetFilePathRegistry& a_assetFilePathRegistry) const;
 
-        bool AddNextScene   (const NextScene& a_nextScene, const boost::uuids::uuid& a_sceneUUID);        
+        bool AddNextScene   (const NextScene& a_nextScene, const boost::uuids::uuid& a_sceneUUID);
         bool RemoveNextScene(const boost::uuids::uuid& a_sceneUUID);
-        
-        const NextScene* FetchPTRNexScene(const boost::uuids::uuid& a_sceneUUID) const;
+
+        const NextScene* FetchPTRNextScene(const boost::uuids::uuid& a_sceneUUID) const;
 
         NextScene* FetchMutablePTRNextScene(const boost::uuids::uuid& a_sceneUUID);
 
@@ -31,7 +31,7 @@ namespace FWK
         auto& GetMutableREFSceneChangeEventObserver() { return m_sceneChangeEventObserver; }
 
     private:
-    
+
         std::unordered_map<boost::uuids::uuid, NextScene> m_nextSceneMap = {};
 
         Observer<Enum::SceneChangeEvent> m_sceneChangeEventObserver = {};

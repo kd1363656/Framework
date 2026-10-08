@@ -4,24 +4,6 @@ namespace FWK::Converter
 {
     class ModelBinaryConverterBase : public BinaryConverterBase
     {
-    protected:
-
-        struct ModelMeshBinaryHeader final
-        {
-            std::uint64_t m_vertexCount = Constant::k_emptyModelVertexCount;
-            std::uint64_t m_indexCount  = Constant::k_emptyModelIndexCount;
-
-            std::uint64_t m_baseColorTextureFilePathSize = k_emptyTextureFilePathSize;
-            std::uint64_t m_normalTextureFilePathSize    = k_emptyTextureFilePathSize;
-            std::uint64_t m_roughnessTextureFilePathSize = k_emptyTextureFilePathSize;
-            std::uint64_t m_metallicTextureFilePathSize  = k_emptyTextureFilePathSize;
-
-            std::uint64_t m_meshletCount           = k_emptyModelMeshletCount;
-            std::uint64_t m_uniqueVertexIndexCount = k_emptyModelUniqueVertexIndexCount;
-            std::uint64_t m_primitiveIndexCount    = k_emptyModelPrimitiveIndexCount;
-            std::uint64_t m_meshletBoundsCount     = k_emptyModelMeshletBoundsCount;
-        };
-
     public:
 
          ModelBinaryConverterBase()          = default;
@@ -32,16 +14,16 @@ namespace FWK::Converter
         bool CanLoadAsset(const std::filesystem::path& a_filePath) const;
 
         template <typename ModelMeshType>
-        ModelMeshBinaryHeader CreateModelMeshBinaryHeader(const ModelMeshType& a_modelMesh) const
+        Struct::ModelMeshBinaryHeader CreateModelMeshBinaryHeader(const ModelMeshType& a_modelMesh) const
         {
-            ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
+            Struct::ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
 
             const auto& l_modelMaterialAssetData = a_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
             const auto& l_modelMeshletData       = a_modelMesh.m_modelMeshletData;
 
             // 頂点・Index数。
             l_modelMeshBinaryHeader.m_vertexCount = a_modelMesh.m_modelVertexList.size();
-            l_modelMeshBinaryHeader.m_indexCount  = a_modelMesh.m_indexList.size();
+            l_modelMeshBinaryHeader.m_indexCount  = a_modelMesh.m_indexList.size      ();
 
             // Materialが参照しているTexturePathのバイナリ保存サイズ。
             // std::wstringは可変長なので、Headerに保存サイズを持たせておく
@@ -51,10 +33,10 @@ namespace FWK::Converter
             l_modelMeshBinaryHeader.m_metallicTextureFilePathSize  = CalculateWStringBinaryFileSize(l_modelMaterialAssetData.m_metallicTextureFilePath);
 
             // Meshlet関連データ数。
-            l_modelMeshBinaryHeader.m_meshletCount           = l_modelMeshletData.m_meshletList.size();
+            l_modelMeshBinaryHeader.m_meshletCount           = l_modelMeshletData.m_meshletList.size          ();
             l_modelMeshBinaryHeader.m_uniqueVertexIndexCount = l_modelMeshletData.m_uniqueVertexIndexList.size();
-            l_modelMeshBinaryHeader.m_primitiveIndexCount    = l_modelMeshletData.m_primitiveIndexList.size();
-            l_modelMeshBinaryHeader.m_meshletBoundsCount     = l_modelMeshletData.m_meshletBoundsList.size();
+            l_modelMeshBinaryHeader.m_primitiveIndexCount    = l_modelMeshletData.m_primitiveIndexList.size   ();
+            l_modelMeshBinaryHeader.m_meshletBoundsCount     = l_modelMeshletData.m_meshletBoundsList.size    ();
 
             return l_modelMeshBinaryHeader;
         }
@@ -62,7 +44,7 @@ namespace FWK::Converter
         template <typename ModelMeshType>
         bool TryReadModelMeshBinaryDataCommon(ModelMeshType& a_modelMesh, std::uint64_t& a_memoryReadOffset) const
         {
-            ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
+            Struct::ModelMeshBinaryHeader l_modelMeshBinaryHeader = {};
 
             // ModelMesh単位Headerを読み込む
             // 頂点数、Index数、TexturePathサイズ、Meshlet関連配列数が入っている
@@ -167,7 +149,7 @@ namespace FWK::Converter
             const auto& l_modelMeshletData       = a_modelMesh.m_modelMeshletData;
 
             // ヘッダーサイズの計算(indexSizeなどの入っているヘッダー)
-            auto l_modelMeshBinaryFileSize = CalculateBinaryDataSize<ModelMeshBinaryHeader>(k_singleBinaryElementCount);
+            auto l_modelMeshBinaryFileSize = CalculateBinaryDataSize<Struct::ModelMeshBinaryHeader>(k_singleBinaryElementCount);
 
             // モデル頂点、インデックスリストのサイズ計算
             l_modelMeshBinaryFileSize += CalculateBinaryDataSize<ModelVertexType>(a_modelMesh.m_modelVertexList.size());
@@ -192,11 +174,5 @@ namespace FWK::Converter
 
             return l_modelMeshBinaryFileSize;
         }
-
-        static constexpr std::uint64_t k_emptyTextureFilePathSize         = 0ULL;
-        static constexpr std::uint64_t k_emptyModelMeshletCount           = 0ULL;
-        static constexpr std::uint64_t k_emptyModelUniqueVertexIndexCount = 0ULL;
-        static constexpr std::uint64_t k_emptyModelPrimitiveIndexCount    = 0ULL;
-        static constexpr std::uint64_t k_emptyModelMeshletBoundsCount     = 0ULL;
     };
 }

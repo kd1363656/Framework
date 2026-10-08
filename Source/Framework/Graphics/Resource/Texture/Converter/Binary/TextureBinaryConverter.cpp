@@ -9,7 +9,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
     const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
 
     // .assetを読み込み専用のMemoryMappedFileとして開く
-    FWK_ASSERT_RETURN_VALUE_IF(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFile作成に失敗しており。バイナリーファイルの読み込みに失敗しました", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFileの作成に失敗したため、バイナリーファイルの読み込みに失敗しました。", false);
 
     // 現在の読み込み位置、ファイルの先頭なので0からスタート
     auto l_memoryReadOffset = k_initialMemoryReadOffset;
@@ -55,7 +55,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
         return false;
     }
 
-    // Headerに保存されたファイルサイズと、実際のファイルサイズが違うなら壊れている。
+    // Headerに保存されたファイルサイズと、実際のファイルサイズが違うなら壊れている
     if (l_textureBinaryHeader.m_fileSize != GetVALMappedDataSize())
     {
 #if defined(_DEBUG)
@@ -71,9 +71,9 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
     // HeaderからDirectXTex用のTexMetadataを復元する
     a_texMetadata = CreateTexMetadata(l_textureBinaryHeader);
 
-    // TexMetadataを使ってScratchImageの内部メモリを確保する。
+    // TexMetadataを使ってScratchImageの内部メモリを確保する
     // この時点では「画像を入れる箱」を作るだけで、実際のピクセル値はまだ入っていない
-    const auto l_hr = a_scratchImage.Initialize(a_texMetadata);
+    const auto& l_hr = a_scratchImage.Initialize(a_texMetadata);
 
     if (FAILED(l_hr))
     {
@@ -142,7 +142,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
         }
 
         // rowPitch確認
-        // rowPitchは1行分のバイト数。
+        // rowPitchは1行分のバイト数
         // フォーマットや幅違うと一致しなくなる
         if (l_textureBinarySubresourceHeader.m_rowPitch != l_image.rowPitch)
         {
@@ -254,7 +254,7 @@ bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::file
     // .assetが存在しないなら、FBXから読み込んで生成する
     if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
 
-    if(IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
+    if (IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
 
     return true;
 }

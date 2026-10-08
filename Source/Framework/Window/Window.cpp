@@ -215,16 +215,17 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
         break;
     }
 
-    if (ImGui::GetCurrentContext() && ImGui_ImplWin32_WndProcHandler(a_hwnd,
-                                                                     a_message,
-                                                                     a_wPARAM,
-                                                                     a_lPARAM))
+    if (ImGui::GetCurrentContext() &&
+        ImGui_ImplWin32_WndProcHandler(a_hwnd,
+                                       a_message,
+                                       a_wPARAM,
+                                       a_lPARAM))
     {
         return k_windowProcedureHandledResult;
     }
 
     // Windowsから送られてきたメッセージの種類ごとに処理を分ける
-    switch(a_message)
+    switch (a_message)
     {
         // ユーザーがウィンドウ右上の×ボタンを押したときに
         // 自分で作成したウィンドウ開放処理を実行
@@ -248,8 +249,8 @@ LRESULT FWK::Window::WindowProcedure(const HWND   a_hwnd,
         // ウィンドウのクライアント領域サイズが変更されたときに届くメッセージ
         case WM_SIZE:
         {
-            // WM_SIZEのLPARAMには、クライアント領域の横幅と縦幅がまとめて入っている。
-            // LOWORDで下位側の値、横幅を取り出し、HIWORDで上位側の値、縦幅を取り出す。
+            // WM_SIZEのLPARAMには、クライアント領域の横幅と縦幅がまとめて入っている
+            // LOWORDで下位側の値、横幅を取り出し、HIWORDで上位側の値、縦幅を取り出す
             const Struct::WindowClientSize l_changedClientSize = { static_cast<UINT>(LOWORD(a_lPARAM)) , static_cast<UINT>(HIWORD(a_lPARAM)) };
 
             ApplyClientSizeFromWMSize(l_changedClientSize, a_wPARAM);
@@ -357,6 +358,7 @@ bool FWK::Window::CreateWindowInstance(const std::wstring& a_windowClassName, co
     if (!m_hwnd)
     {
         UnregisterClass(a_windowClassName.c_str(), l_hInstance);
+
         return false;
     }
 
@@ -382,8 +384,8 @@ void FWK::Window::SetupNormalWindowClientSize()
     // 欲しいクライアント領域からウィンドウ全体サイズを逆算する
     FWK_ASSERT_RETURN_IF(!AdjustWindowRect(&l_clientRECT, k_generalWindowStyle, FALSE), "通常ウィンドウのサイズ調整に失敗しました。");
 
-    const auto l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
-    const auto l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
+    const auto& l_windowWidth  = static_cast<int>(l_clientRECT.right  - l_clientRECT.left);
+    const auto& l_windowHeight = static_cast<int>(l_clientRECT.bottom - l_clientRECT.top);
 
     SetWindowPos(m_hwnd,
                  nullptr,
@@ -472,8 +474,8 @@ void FWK::Window::ApplyNormalWindowStyle()
     // ウィンドウの見た目を通常ウィンドウへ戻す
     SetWindowLongPtr(m_hwnd, GWL_STYLE, k_generalWindowStyle);
 
-    const auto l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
-    const auto l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
+    const auto& l_saveWindowWidth  = static_cast<int>(m_normalWindowRECT.right  - m_normalWindowRECT.left);
+    const auto& l_saveWindowHeight = static_cast<int>(m_normalWindowRECT.bottom - m_normalWindowRECT.top);
 
     if (const bool l_hasSavedWindowRECT = l_saveWindowWidth  > Constant::k_invalidClientWidth &&
                                           l_saveWindowHeight > Constant::k_invalidClientHeight;
@@ -522,8 +524,8 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
 
     const RECT& l_monitorRECT = l_monitorINFO.rcMonitor;
 
-    const auto l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
-    const auto l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);
+    const auto& l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
+    const auto& l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);
 
     // モニター全体を覆う位置とサイズに変更する
     SetWindowPos(m_hwnd,
@@ -544,7 +546,7 @@ void FWK::Window::StoreNormalWindowRECT()
 {
     if (!m_hwnd) { return; }
 
-    // すでにボーダーレスフルスクリーン状態なら保存しない。
+    // すでにボーダーレスフルスクリーン状態なら保存しない
     if (m_style != Enum::WindowStyle::BorderlessFullScreen) { return; }
 
     RECT l_windowRECT = {};

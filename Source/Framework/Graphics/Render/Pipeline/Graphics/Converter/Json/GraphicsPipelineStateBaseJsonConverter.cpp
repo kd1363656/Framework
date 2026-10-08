@@ -40,9 +40,9 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::Deserialize(const n
         DeserializeSampleDesc(l_json, a_graphicsPipelineStateBase);
     }
 
-    const auto l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
-    const auto l_dsvFormat             = a_rootJson.value(k_dsvFormatJsonKey,             DXGI_FORMAT_UNKNOWN);
-    const auto l_sampleMask            = a_rootJson.value(k_sampleMaskJsonKey,            UINT_MAX);
+    const auto& l_primitiveTopologyType = a_rootJson.value(k_primitiveTopologyTypeJsonKey, D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
+    const auto& l_dsvFormat             = a_rootJson.value(k_dsvFormatJsonKey,             DXGI_FORMAT_UNKNOWN);
+    const auto& l_sampleMask            = a_rootJson.value(k_sampleMaskJsonKey,            UINT_MAX);
 
     a_graphicsPipelineStateBase.SetPrimitiveTopologyType(l_primitiveTopologyType);
     a_graphicsPipelineStateBase.SetDSVFormat            (l_dsvFormat);
@@ -181,7 +181,6 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeBlendDes
     }
 
     a_graphicsPipelineStateBase.SetBlendDesc(l_blendDesc);
-
 }
 void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeDepthStencilDesc(const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const
 {
@@ -210,7 +209,7 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeDepthSte
     // FrontFace : 前面ポリゴンに対するステンシル動作
     if (a_rootJson.contains(k_frontFaceJsonKey))
     {
-        DeserializeDepthStencilOpDesc(a_rootJson[k_frontFaceJsonKey], l_depthStencilDesc.FrontFace);
+        DeserializeDepthStencilOPDesc(a_rootJson[k_frontFaceJsonKey], l_depthStencilDesc.FrontFace);
     }
     else
     {
@@ -223,7 +222,7 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeDepthSte
     // BackFace : 背面ポリゴンに対するステンシル動作
     if (a_rootJson.contains(k_backFaceJsonKey))
     {
-        DeserializeDepthStencilOpDesc(a_rootJson[k_backFaceJsonKey], l_depthStencilDesc.BackFace);
+        DeserializeDepthStencilOPDesc(a_rootJson[k_backFaceJsonKey], l_depthStencilDesc.BackFace);
     }
     else
     {
@@ -251,15 +250,15 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeSampleDe
 
     DXGI_SAMPLE_DESC l_sampleDesc = {};
 
-    // MSAAのサンプル数。通常描画の既定値は1。
+    // MSAAのサンプル数。通常描画の既定値は1
     l_sampleDesc.Count = a_rootJson.value(k_countJsonKey, Constant::k_defaultSampleCount);
 
-    // サンプル品質レベル通常の既定値は0。
+    // サンプル品質レベル通常の既定値は0
     l_sampleDesc.Quality = a_rootJson.value(k_qualityJsonKey, Constant::k_defaultSampleQuality);
 
     a_graphicsPipelineStateBase.SetSampleDesc(l_sampleDesc);
 }
-void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeDepthStencilOpDesc(const nlohmann::json& a_rootJson, D3D12_DEPTH_STENCILOP_DESC& a_depthStencilOPDesc) const
+void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeDepthStencilOPDesc(const nlohmann::json& a_rootJson, D3D12_DEPTH_STENCILOP_DESC& a_depthStencilOPDesc) const
 {
     if (a_rootJson.is_null())
     {
@@ -272,13 +271,13 @@ void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::DeserializeDepthSte
     }
 
     // StencilFailOp : ステンシルテスト失敗時の動作
-    a_depthStencilOPDesc.StencilFailOp = a_rootJson.value(k_stencilFailOpJsonKey, D3D12_STENCIL_OP_KEEP);
+    a_depthStencilOPDesc.StencilFailOp = a_rootJson.value(k_stencilFailOPJsonKey, D3D12_STENCIL_OP_KEEP);
 
     // StencilDepthFailOp : ステンシル成功かつ深度失敗時の動作
-    a_depthStencilOPDesc.StencilDepthFailOp = a_rootJson.value(k_stencilDepthFailOpJsonKey, D3D12_STENCIL_OP_KEEP);
+    a_depthStencilOPDesc.StencilDepthFailOp = a_rootJson.value(k_stencilDepthFailOPJsonKey, D3D12_STENCIL_OP_KEEP);
 
     // StencilPassOp : ステンシル成功かつ深度成功時の動作
-    a_depthStencilOPDesc.StencilPassOp = a_rootJson.value(k_stencilPassOpJsonKey, D3D12_STENCIL_OP_KEEP);
+    a_depthStencilOPDesc.StencilPassOp = a_rootJson.value(k_stencilPassOPJsonKey, D3D12_STENCIL_OP_KEEP);
 
     // StencilFunc : ステンシル比較方法
     a_depthStencilOPDesc.StencilFunc = a_rootJson.value(k_stencilFUNCJsonKey, D3D12_COMPARISON_FUNC_ALWAYS);
@@ -414,13 +413,13 @@ nlohmann::json FWK::Converter::GraphicsPipelineStateBaseJsonConverter::Serialize
     nlohmann::json l_rootJson = {};
 
     // StencilFailOp : ステンシルテスト失敗時の動作
-    l_rootJson[k_stencilFailOpJsonKey] = a_depthStencilOPDesc.StencilFailOp;
+    l_rootJson[k_stencilFailOPJsonKey] = a_depthStencilOPDesc.StencilFailOp;
 
     // StencilDepthFail : ステンシル成功かつ深度失敗時の動作
-    l_rootJson[k_stencilDepthFailOpJsonKey] = a_depthStencilOPDesc.StencilDepthFailOp;
+    l_rootJson[k_stencilDepthFailOPJsonKey] = a_depthStencilOPDesc.StencilDepthFailOp;
 
     // StencilPassOp : ステンシル成功かつ深度成功時の動作
-    l_rootJson[k_stencilPassOpJsonKey] = a_depthStencilOPDesc.StencilPassOp;
+    l_rootJson[k_stencilPassOPJsonKey] = a_depthStencilOPDesc.StencilPassOp;
 
     // StencilFunc : ステンシル比較方法
     l_rootJson[k_stencilFUNCJsonKey] = a_depthStencilOPDesc.StencilFunc;

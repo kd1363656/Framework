@@ -42,8 +42,8 @@ namespace FWK::Graphics
             a_directCommandList.SetupConstantBufferView(a_rootSignature, l_gpuVirtualAddress, a_rootParameterType);
         }
 
-        TypeAlias::DescriptorIndex FetchTextureSRVDescriptorIndex(const std::weak_ptr<TextureRecord>& a_textureRecord) const;
-        TypeAlias::DescriptorIndex FetchTextureSRVDescriptorIndex(const std::shared_ptr<Texture>&     a_texture) const;
+        TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::weak_ptr<TextureRecord>& a_textureRecord) const;
+        TypeAlias::DescriptorIndex FetchVALTextureSRVDescriptorIndex(const std::shared_ptr<Texture>&     a_texture) const;
 
         FWK_DEFINE_TYPE_INFO_ROOT(DrawRequestPerObjectBase)
     };

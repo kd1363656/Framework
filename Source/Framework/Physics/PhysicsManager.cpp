@@ -32,14 +32,14 @@ void FWK::Physics::PhysicsManager::INIT()
     if (!SetupJoltCore())
     {
         Release          ();
-        FWK_ASSERT_RETURN("Joltのメモリアロケータなどの設定に失敗しており、初期化に失敗しました");
+        FWK_ASSERT_RETURN("Joltのメモリアロケータなどの設定に失敗したため、初期化に失敗しました。");
     }
 
     // Joltの物理ワールド本体をセットアップ
     if (!SetupSystem())
     {
         Release          ();
-        FWK_ASSERT_RETURN("Joltの物理システムの設定に失敗しており、初期化に失敗しました");
+        FWK_ASSERT_RETURN("Joltの物理システムの設定に失敗したため、初期化に失敗しました。");
     }
 
     if (!m_debugRenderer)
@@ -64,7 +64,7 @@ void FWK::Physics::PhysicsManager::OptimizeBroadPhase()
 {
     if (!m_isInitialized) { return; }
 
-    // JoltのBroadPhase空間分割を最適化する。
+    // JoltのBroadPhase空間分割を最適化する
     // 毎フレーム呼ぶものではなく、
     // ステージ読み込み後など、大量のStaticObjectを追加した後に呼ぶ
     m_physicsSystem.OptimizeBroadPhase();
@@ -115,7 +115,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 {
     FWK_ASSERT_RETURN_VALUE_IF(JPH::Factory::sInstance, "JPH::Factory::sInstanceが既に存在しており、コア設定に失敗しました。", false);
 
-    // Joltのメモリアロケータを登録する。
+    // Joltのメモリアロケータを登録する
     // Joltの機能を使う前に必要
     JPH::RegisterDefaultAllocator();
 
@@ -127,7 +127,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_factory, "JPH::Factoryの作成に失敗しました。", false);
 
-    // Jolt内部はFactoryをstaticなraw pointerとして要求する。
+    // Jolt内部はFactoryをstaticなraw pointerとして要求する
     // ただし、所有権はm_factoryのstd::unique_ptrが持つ
     JPH::Factory::sInstance = m_factory.get();
 
@@ -137,7 +137,7 @@ bool FWK::Physics::PhysicsManager::SetupJoltCore()
     // UnregisterTypesをReleaseで呼べるようにしておく
     m_isJoltTypeRegistered = true;
 
-    const auto l_tempAllocatorSize = k_tempAllocatorSizeMB * k_kiloBytePerMB * k_bytePerKB;
+    const auto& l_tempAllocatorSize = k_tempAllocatorSizeMB * k_kiloBytePerMB * k_bytePerKB;
 
     // Joltの一時作業用メモリの作成
     m_tempAllocator = std::make_shared<JPH::TempAllocatorImpl>(l_tempAllocatorSize);
@@ -212,7 +212,7 @@ void FWK::Physics::PhysicsManager::SetupJoltDebugCallback() const
     // これを設定しないと、Jolt内部のDummyTrace()が呼ばれ、IssueReporting.cpp内のJPH_ASSERT(false)で止まる
     JPH::Trace = TraceJoltMessage;
 
-#ifdef JPH_ENABLE_ASSERTS
+#if defined(JPH_ENABLE_ASSERTS)
 
     // JoltのAssert内容をVisualStudioの出力ウィンドウに流す
     // VersionのMismatchの原因となっているdefineを確認するために使う
@@ -220,7 +220,7 @@ void FWK::Physics::PhysicsManager::SetupJoltDebugCallback() const
 #endif
 }
 
-#ifdef JPH_ENABLE_ASSERTS
+#if defined(JPH_ENABLE_ASSERTS)
 bool FWK::Physics::PhysicsManager::HandleJoltAssertFailed(const char*     a_expression,
                                                           const char*     a_message,
                                                           const char*     a_file,

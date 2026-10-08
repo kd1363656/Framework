@@ -1,4 +1,4 @@
-﻿#include "PhysicsCharacterVirtualJsonConverter.h"
+﻿#include "PhysicsCharacterVirtualBaseJsonConverter.h"
 
 void FWK::Converter::PhysicsCharacterVirtualBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Physics::PhysicsCharacterVirtualBase& a_physicsCharacterVirtualBase) const
 {
@@ -6,9 +6,9 @@ void FWK::Converter::PhysicsCharacterVirtualBaseJsonConverter::Deserialize(const
 
     a_physicsCharacterVirtualBase.SetCapsuleHalfHeightOfCylinder(a_rootJson.value(k_capsuleHalfHeightOfCylinderJsonKey, Constant::k_defaultCharacterVirtualCapsuleHalfHeightOfCylinder));
     a_physicsCharacterVirtualBase.SetCapsuleRadius              (a_rootJson.value(k_capsuleRadiusJsonKey,               Constant::k_defaultCharacterVirtualCapsuleRadius));
-    a_physicsCharacterVirtualBase.SetMaxSlopeAngleRadians       (a_rootJson.value(k_maxSlopeRadiansJsonKey,             Constant::k_defaultCharacterVirtualMaxSlopeAngleRadians));
+    a_physicsCharacterVirtualBase.SetMAXSlopeAngleRadians       (a_rootJson.value(k_maxSlopeRadiansJsonKey,             Constant::k_defaultCharacterVirtualMAXSlopeAngleRadians));
 
-    a_physicsCharacterVirtualBase.SetIsEnhancedInternalEdgeRemovalDisabled(a_rootJson.value(k_isEnhancedInternalEdgeRemovealDisabledeJsonKey, false));
+    a_physicsCharacterVirtualBase.SetIsEnhancedInternalEdgeRemovalDisabled(a_rootJson.value(k_isEnhancedInternalEdgeRemovalDisabledJsonKey, false));
 }
 
 nlohmann::json FWK::Converter::PhysicsCharacterVirtualBaseJsonConverter::Serialize(const Physics::PhysicsCharacterVirtualBase& a_physicsCharacterVirtualBase) const
@@ -17,9 +17,9 @@ nlohmann::json FWK::Converter::PhysicsCharacterVirtualBaseJsonConverter::Seriali
 
     l_rootJson[k_capsuleHalfHeightOfCylinderJsonKey] = a_physicsCharacterVirtualBase.GetVALCapsuleHalfHeightOfCylinder();
     l_rootJson[k_capsuleRadiusJsonKey]               = a_physicsCharacterVirtualBase.GetVALCapsuleRadius              ();
-    l_rootJson[k_maxSlopeRadiansJsonKey]             = a_physicsCharacterVirtualBase.GetVALMaxSlopeAngleRadius        ();
+    l_rootJson[k_maxSlopeRadiansJsonKey]             = a_physicsCharacterVirtualBase.GetVALMAXSlopeAngleRadians       ();
 
-    l_rootJson[k_isEnhancedInternalEdgeRemovealDisabledeJsonKey] = a_physicsCharacterVirtualBase.GetIsEnhancedInternalEdgeRemovalDisabled();
+    l_rootJson[k_isEnhancedInternalEdgeRemovalDisabledJsonKey] = a_physicsCharacterVirtualBase.GetVALIsEnhancedInternalEdgeRemovalDisabled();
 
     return l_rootJson;
 }

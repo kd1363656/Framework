@@ -22,7 +22,7 @@ int WINAPI WinMain(_In_     HINSTANCE,
     return Application::k_exitCodeSuccess;
 }
 
-Application::Application() : 
+Application::Application() :
     m_jsonConverter(nullptr),
 
     m_window(),
@@ -58,7 +58,7 @@ void Application::Execute()
     l_editorManager.LoadCONFIG  ();
     l_physicsManager.LoadCONFIG ();
     l_audioManager.LoadCONFIG   ();
-    
+
     PostLoadCONFIG                  ();
     l_graphicsManager.PostLoadCONFIG(m_window);
 
@@ -70,7 +70,7 @@ void Application::Execute()
     l_editorManager.PostLoadCONFIG();
 
     // 最初に読み込むべきシーンを読み込む
-    l_sceneManager.Load(k_firstLoadSceneFilepath);
+    l_sceneManager.Load(k_firstLoadSceneFilePath);
 
     // while分に入る前にもう一度計測時間をリセットしておく
     m_fpsController.PostLoadCONFIG();
@@ -79,7 +79,10 @@ void Application::Execute()
     {
         // ウィンドウメッセージやアプリケーションを終了するかの処理をしているので
         // falseが戻り値ならbreakする
-        if (!BeginFrame()) { break; }
+        if (!BeginFrame())
+        {
+            break;
+        }
 
         // AudioEngineや内部のVoice管理やAudioDevice状態の更新は、
         // Sceneや描画を停止している場合でも行う
@@ -92,7 +95,7 @@ void Application::Execute()
         // 最小化中など、描画やゲームの更新を進めていけない状態なら
         // アプリは終了せずに、次のメッセージ処理へ進む
         // ここで描画と更新をやめるのでFPSを計測
-        if (!CanUpdateFrame()) 
+        if (!CanUpdateFrame())
         {
             // リサイズ要求フラグをクリア(サイズ変更時に一回だけ検知してほしいため)
             ClearWindowResizeRequest();
@@ -102,7 +105,7 @@ void Application::Execute()
         }
 
         l_inputManager.Update();
-        
+
         // CharacterVirtualのDraw内容も受け取るため、ここでクリア
         l_physicsManager.ClearFrame();
 
@@ -111,7 +114,7 @@ void Application::Execute()
         l_sceneManager.Update        ();
         l_sceneManager.LateUpdate    ();
         l_sceneManager.PostLateUpdate();
-        
+
         // ロードが完了したということは前回のシーンのコマンド履歴も消すべきなので消す
         if (l_sceneManager.LoadNextSceneIfNeeded())
         {
@@ -141,7 +144,10 @@ void Application::Execute()
         // エディター非表示のときはデバッグモードにならないため、CameraContext側でシーンカメラ基準にはならない
         const auto& l_viewportEditorWindow = l_editorManager.FindVALWindowEditor<FWK::Editor::ViewportEditorWindow>().lock();
 
-        l_cameraContext.SetIsCullingBySceneCamera(l_viewportEditorWindow && l_viewportEditorWindow->GetVALIsDrawCulledResult());
+        const bool l_isCullingBySceneCamera = l_viewportEditorWindow &&
+                                              l_viewportEditorWindow->GetVALIsDrawCulledResult();
+
+        l_cameraContext.SetIsCullingBySceneCamera(l_isCullingBySceneCamera);
 
         // 描画処理
         l_graphicsManager.BeginFrame();

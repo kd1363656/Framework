@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-    template<D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
+    template <D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
     class DescriptorPool final
     {
     public:
@@ -19,7 +19,7 @@ namespace FWK::Graphics
         bool Create(const Device& a_device)
         {
             // DescriptorHeapの作成数はDescriptorHeapIndexAllocatorの管理数に依存させる
-            const auto l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
+            const auto& l_capacity = m_descriptorIndexAllocator.GetVALCapacity();
 
             // 容量が0ならassert
             FWK_ASSERT_RETURN_VALUE_IF(l_capacity == DescriptorHeap::k_invalidDescriptorIndex, "DescriptorHeapIndexAllocatorの管理数が無効のため、DescriptorPoolの作成に失敗しました。", false);
@@ -87,7 +87,7 @@ namespace FWK::Graphics
 
         bool CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
         {
-            FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,                      "ShaderVisibleDescriptorHeapが作成されておらず、Descriptorのコピーに失敗しました", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,                      "ShaderVisibleDescriptorHeapが作成されていないため、Descriptorのコピーに失敗しました。", false);
             FWK_ASSERT_RETURN_VALUE_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
 
             const auto& l_device = a_device.GetREFDevice();

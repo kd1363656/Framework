@@ -43,7 +43,7 @@ void FWK::GameObjectComponentContainer::PostDeserialize()
         if (!l_component ||
             l_component->GetVALIsDisable())
         {
-            continue; 
+            continue;
         }
 
         l_component->PostDeserialize();
@@ -142,20 +142,20 @@ void FWK::GameObjectComponentContainer::Clone(GameObjectComponentContainer& a_cl
     }
 
     const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
- 
+
     for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
- 
+
         if (!l_component) { continue; }
- 
+
         // 各ComponentのCloneがSerialize/Deserialize往復で値コピーを行う
         // UUIDもComponentDataに含まれるためそのまま複写される
         // (Prefab差分照合にUUIDが必要なため再発行しない)
         const auto& l_cloneComponent = l_component->Clone();
- 
+
         if (!l_cloneComponent) { continue; }
- 
+
         // Owner設定・UUIDRegistry登録・Unique/Multiマップ振り分け・追加順序の保持はすべてAddComponentが行う
         // クローン側のRegistryは空なのでUUIDはそのまま採用される
         if (!a_cloneComponentContainer.AddComponent(l_cloneComponent))
@@ -189,16 +189,16 @@ void FWK::GameObjectComponentContainer::DetachFromPrefab()
     // m_prefabRemovedComponentUUIDSetへ削除記録が残ってしまい、
     // Prefab由来でもないGameObjectが削除差分を持ち続けるため
     const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
- 
+
     for (const auto& l_componentData : l_componentDataList)
     {
         const auto& l_component = l_componentData.m_type;
- 
+
         if (!l_component) { continue; }
- 
+
         l_component->SetIsPrefabOrigin(Constant::k_gameObjectComponentBaseInitialValueIsPrefabOrigin);
     }
- 
+
     // Prefab更新伝播用の削除追跡はPrefab由来ではなくなったため不要
     m_prefabRemovedComponentUUIDSet.clear();
 }
@@ -213,7 +213,7 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameO
     }
 
     const auto  l_staticTypeID = a_component->GetREFRuntimeTypeINFO().k_staticTypeID;
-    
+
     // 未発行、または既に使用履歴のあるUUIDなら新規発行する
     // Prefabで消されたUUIDと同じUUIDを持つシーン側コンポーネントが
     // Prefabコンポーネントと誤認されないようにするため
@@ -223,7 +223,7 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameO
         m_prefabRemovedComponentUUIDSet.contains(l_uuid))
     {
         const auto& l_generatedUUID = GenerateVALComponentUUID();
-        
+
         //  m_componentUUIDRegistry、m_removedUUIDSetどちらともかぶっていないUUIDをセット
         a_component->SetUUID(l_generatedUUID);
     }
@@ -263,22 +263,22 @@ void FWK::GameObjectComponentContainer::SweepExpiredComponents()
 {
     m_componentSmartPointerVectorList.RemoveExpiredElements();
 
-    std::erase_if(m_uniqueComponentMap, 
-                 [](const auto& a_pair)
-                 {
-                     return a_pair.second.expired();
-                 });
- 
+    std::erase_if(m_uniqueComponentMap,
+                  [](const auto& a_pair)
+                  {
+                      return a_pair.second.expired();
+                  });
+
     for (auto& [l_staticTypeID, l_componentList] : m_multiComponentMap)
     {
-        std::erase_if(l_componentList, 
+        std::erase_if(l_componentList,
                       [](const auto& a_weakComponent)
                       {
                           return a_weakComponent.expired();
                       });
     }
- 
-    std::erase_if(m_multiComponentMap, 
+
+    std::erase_if(m_multiComponentMap,
                   [](const auto& a_pair)
                   {
                       return a_pair.second.empty();
@@ -302,16 +302,16 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Game
 
     if (!l_component->IsAllowMultiple())
     {
-        const auto& l_itr = m_uniqueComponentMap.find(l_staticTypeID);
+        const auto& l_uniqueComponentITR = m_uniqueComponentMap.find(l_staticTypeID);
 
         // イテレータらから探索して、もしなければreturn
-        if (l_itr == m_uniqueComponentMap.end()) { return; }
+        if (l_uniqueComponentITR == m_uniqueComponentMap.end()) { return; }
 
-        auto l_registeredComponent = l_itr->second.lock();
+        auto l_registeredComponent = l_uniqueComponentITR->second.lock();
 
         if (!l_registeredComponent)
         {
-            m_uniqueComponentMap.erase(l_itr);
+            m_uniqueComponentMap.erase(l_uniqueComponentITR);
 
             return;
         }
@@ -319,7 +319,7 @@ void FWK::GameObjectComponentContainer::RemoveComponent(const std::weak_ptr<Game
         // 同一アドレスでない場合return
         if (l_registeredComponent != l_component) { return; }
 
-        m_uniqueComponentMap.erase(l_itr);
+        m_uniqueComponentMap.erase(l_uniqueComponentITR);
 
         l_isRemovedFromTypeMap = true;
     }

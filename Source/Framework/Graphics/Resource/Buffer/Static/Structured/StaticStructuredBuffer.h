@@ -57,11 +57,11 @@ namespace FWK::Graphics
                                                                   false);
 
             // ストラクチャードバッファー用のSRVを作成
-            const auto l_srvDescriptorIndex = CreateSRV(a_device,
-                                                        l_bufferGPUResource,
-                                                        static_cast<UINT>(a_bufferList.size()),
-                                                        static_cast<UINT>(sizeof(Type)),
-                                                        a_cbvSRVUAVDescriptorPool);
+            const auto& l_srvDescriptorIndex = CreateSRV(a_device,
+                                                         l_bufferGPUResource,
+                                                         static_cast<UINT>(a_bufferList.size()),
+                                                         static_cast<UINT>(sizeof(Type)),
+                                                         a_cbvSRVUAVDescriptorPool);
 
             FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "StaticStructuredBuffer用SRVの作成に失敗しました。", false);
 

@@ -94,7 +94,6 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
         default:
         break;
     }
-
 }
 void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyPrefabFilePathChange(const std::filesystem::path& a_oldFilePath,
                                                                                              const std::filesystem::path& a_newFilePath,
@@ -145,13 +144,13 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyDirector
     // Registryを走査中にReplaceFilePath()すると
     // unordered_map内部の要素が変更されるため、
     // まず変更対象となるOldPathだけを別Containerへコピーする
-    std::unordered_set<std::filesystem::path> l_oldeAssetFilePathSet = {};
+    std::unordered_set<std::filesystem::path> l_oldAssetFilePathSet = {};
 
     for (const auto& [l_assetFilePath, l_uuid] : a_assetFilePathRegistry.GetREFAssetFilePathToUUIDMap())
     {
         if (!IsChildFilePath(l_assetFilePath, a_oldFilePath)) { continue; }
 
-        l_oldeAssetFilePathSet.emplace(l_assetFilePath);
+        l_oldAssetFilePathSet.emplace(l_assetFilePath);
     }
 
     // CurrentSceneのPathは別途Path一覧へ追加しておく
@@ -159,10 +158,10 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyDirector
         !l_currentSceneFilePath.empty() &&
         IsChildFilePath(l_currentSceneFilePath, a_oldFilePath))
     {
-        l_oldeAssetFilePathSet.emplace(l_currentSceneFilePath);
+        l_oldAssetFilePathSet.emplace(l_currentSceneFilePath);
     }
 
-    for (const auto& l_oldAssetFilePath : l_oldeAssetFilePathSet)
+    for (const auto& l_oldAssetFilePath : l_oldAssetFilePathSet)
     {
         // OldDirectoryから見た相対Pathを取得する
         const auto& l_relativeAssetFilePath = l_oldAssetFilePath.lexically_relative(a_oldFilePath);

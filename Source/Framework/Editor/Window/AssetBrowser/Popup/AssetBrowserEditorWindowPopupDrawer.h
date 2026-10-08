@@ -16,7 +16,7 @@ namespace FWK::Editor
 
         void BeginPopup(const std::string_view& a_openPopupLabel) const;
 
-        void Draw(const std::vector<std::filesystem::path>& a_selectedFilePathList, 
+        void Draw(const std::vector<std::filesystem::path>& a_selectedFilePathList,
                   const std::filesystem::path&              a_targetFilePath,
                   const std::string_view&                   a_openPopupLabel,
                   const Enum::AssetBrowserPopupContextType  a_contextType,
@@ -25,7 +25,7 @@ namespace FWK::Editor
     private:
 
         void DrawCreateFolderMenu(const std::filesystem::path&             a_targetFolderPath,
-                                  const Enum::AssetBrowserPopupContextType a_contextPopup, 
+                                  const Enum::AssetBrowserPopupContextType a_contextPopup,
                                   const bool                               a_canCreate,
                                         AssetBrowserEditorWindow&          a_assetBrowserEditorWindow) const;
 
@@ -45,7 +45,7 @@ namespace FWK::Editor
 
         void DrawCopyMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
                           const AssetBrowserEditorWindowFileOperation& a_fileOperation,
-                          const bool                                   a_hasSelection, 
+                          const bool                                   a_hasSelection,
                                 AssetBrowserEditorWindowClipboard&     a_clipboard) const;
 
         void DrawCutMenu(const std::vector<std::filesystem::path>&    a_selectedFilePathList,
@@ -77,7 +77,7 @@ namespace FWK::Editor
         static constexpr std::string_view k_imguiFontAwesomePasteIcon      = "\xEF\x83\xAA";
         static constexpr std::string_view k_imguiFontAwesomeCloneIcon      = "\xEF\x89\x8D";
         static constexpr std::string_view k_imguiFontAwesomeTrashIcon      = "\xEF\x87\xB8";
-    
+
         static constexpr std::string_view k_createNewFolderLabel = "新規フォルダ";
         static constexpr std::string_view k_createNewPrefabLabel = "新規プレハブ";
         static constexpr std::string_view k_createNewSceneLabel  = "新規シーン";

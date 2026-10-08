@@ -114,10 +114,10 @@ namespace FWK::Utility
 
             // Mapのキーだけを信用するのではなく
             // 実際に保持しているInstanceのRuntimeTypeInfoとFactory型のStaticTypeIDを比較する
-            if (const auto& l_itr = a_selectedMap.find(l_staticTypeID);
-                l_itr != a_selectedMap.end())
+            if (const auto& l_selectedITR = a_selectedMap.find(l_staticTypeID);
+                l_selectedITR != a_selectedMap.end())
             {
-                const auto& l_instance = l_itr->second;
+                const auto& l_instance = l_selectedITR->second;
 
                 if (l_instance)
                 {

@@ -2,7 +2,7 @@
 
 namespace FWK
 {
-    class SoundEffect
+    class SoundEffect final
     {
     public:
 

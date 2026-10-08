@@ -4,7 +4,7 @@ void FWK::Converter::EditorUndoRedoSystemJsonConverter::Deserialize(const nlohma
 {
     if (a_rootJson.is_null()) { return; }
 
-    const auto& l_capacity = a_rootJson.value(k_capacityJsonKey, Constant::k_initialEditorUndoResoSystemListCapacity);
+    const auto& l_capacity = a_rootJson.value(k_capacityJsonKey, Constant::k_initialEditorUndoRedoSystemListCapacity);
 
     a_editorUndoRedoSystem.SetCapacity(l_capacity);
 }

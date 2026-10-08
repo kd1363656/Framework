@@ -55,7 +55,7 @@ namespace FWK::Graphics
             FWK_ASSERT_RETURN_VALUE_IF(l_maxMeshletCount == k_emptyMeshletCount, "Meshletの最大数が0のため、ModelMeshletData作成に失敗しました。", false);
 
             std::vector<meshopt_Meshlet> l_meshoptMeshletList        = {};
-            std::vector<uint8_t>         l_meshoptPrimitiveIndexList = {};
+            std::vector<std::uint8_t>    l_meshoptPrimitiveIndexList = {};
 
             // メッシュレット情報を最大Meshlet数分確保する
             l_meshoptMeshletList.resize(l_maxMeshletCount);
@@ -90,16 +90,16 @@ namespace FWK::Graphics
             //                       Meshlet内の最大三角形数、
             //                       ConeCulling用の重み);
             const auto& l_meshletCount = meshopt_buildMeshlets(l_meshoptMeshletList.data(),
-                                                              l_modelMeshletData.m_uniqueVertexIndexList.data(),
-                                                              l_meshoptPrimitiveIndexList.data(),
-                                                              a_modelMesh.m_indexList.data(),
-                                                              a_modelMesh.m_indexList.size(),
-                                                              l_vertexPositionData,
-                                                              a_modelMesh.m_modelVertexList.size(),
-                                                              l_modelVertexSize,
-                                                              Constant::k_maxMeshletVertexCount,
-                                                              Constant::k_maxMeshletPrimitiveCount,
-                                                              k_defaultMeshletConeWeight);
+                                                               l_modelMeshletData.m_uniqueVertexIndexList.data(),
+                                                               l_meshoptPrimitiveIndexList.data(),
+                                                               a_modelMesh.m_indexList.data(),
+                                                               a_modelMesh.m_indexList.size(),
+                                                               l_vertexPositionData,
+                                                               a_modelMesh.m_modelVertexList.size(),
+                                                               l_modelVertexSize,
+                                                               Constant::k_maxMeshletVertexCount,
+                                                               Constant::k_maxMeshletPrimitiveCount,
+                                                               k_defaultMeshletConeWeight);
 
             FWK_ASSERT_RETURN_VALUE_IF(l_meshletCount == k_emptyMeshletCount, "MeshletData作成結果のMeshlet数が0です。", false);
 
@@ -111,7 +111,7 @@ namespace FWK::Graphics
             // 頂点インデックスリストに必要な分のみ要素を確保(最後のメッシュレットのオフセットと頂点数を足した数が必要なサイズ)
             l_modelMeshletData.m_uniqueVertexIndexList.resize(l_lastMeshlet.vertex_offset + l_lastMeshlet.vertex_count);
 
-            const auto l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Constant::k_triangleVertexCount;
+            const auto& l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Constant::k_triangleVertexCount;
 
             // meshoptimizerのPrimitiveIndex配列は4byte境界にそろえて扱うため、
             // 最後のMeshletで実際に使用したPrimitiveIndex数を4byte境界へ切り上げる
@@ -157,11 +157,11 @@ namespace FWK::Graphics
                 //                              入力頂点数、
                 //                              入力頂点1個分のbyteサイズ);
                 const auto& l_meshoptBounds = meshopt_computeMeshletBounds(l_modelMeshletData.m_uniqueVertexIndexList.data() + l_meshoptMeshlet.vertex_offset,
-                                                                          l_meshoptPrimitiveIndexList.data()                + l_meshoptMeshlet.triangle_offset,
-                                                                          l_meshoptMeshlet.triangle_count,
-                                                                          l_vertexPositionData,
-                                                                          a_modelMesh.m_modelVertexList.size(),
-                                                                          l_modelVertexSize);
+                                                                           l_meshoptPrimitiveIndexList.data()                + l_meshoptMeshlet.triangle_offset,
+                                                                           l_meshoptMeshlet.triangle_count,
+                                                                           l_vertexPositionData,
+                                                                           a_modelMesh.m_modelVertexList.size(),
+                                                                           l_modelVertexSize);
 
                 // メッシュレットカリング用情報を格納
                 auto& l_modelMeshletBounds = l_modelMeshletData.m_meshletBoundsList[l_meshletIndex];
@@ -219,9 +219,9 @@ namespace FWK::Graphics
                 // uint32_t1個にuint8_t3個を入れるため、3倍する
                 const auto& l_sourcePrimitiveIndex = l_triangleIndex * Constant::k_triangleVertexCount;
 
-                const auto l_firstPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_firstPrimitiveVertexOffset];
-                const auto l_secondPrimitiveIndex = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_secondPrimitiveVertexOffset];
-                const auto l_thirdPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_thirdPrimitiveVertexOffset];
+                const auto& l_firstPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_firstPrimitiveVertexOffset];
+                const auto& l_secondPrimitiveIndex = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_secondPrimitiveVertexOffset];
+                const auto& l_thirdPrimitiveIndex  = a_sourcePrimitiveIndexList[l_sourcePrimitiveIndex + k_thirdPrimitiveVertexOffset];
 
                 // uint32_t1個に、三角形1個分のPrimitiveIndex3個をPackする。
                 // bits 0  : 1個目
@@ -230,7 +230,7 @@ namespace FWK::Graphics
                 // bits 24 : 未使用(詰めることはできるがシェーダーで扱いにくいため詰めない)
 
                 // PrimitiveIndexが4個入ったリストとして扱う
-                const auto l_packedValue = (l_firstPrimitiveIndex  << k_firstPackedPrimitiveIndexShiftBit)  |
+                const auto& l_packedValue = (l_firstPrimitiveIndex  << k_firstPackedPrimitiveIndexShiftBit)  |
                                            (l_secondPrimitiveIndex << k_secondPackedPrimitiveIndexShiftBit) |
                                            (l_thirdPrimitiveIndex  << k_thirdPackedPrimitiveIndexShiftBit);
 

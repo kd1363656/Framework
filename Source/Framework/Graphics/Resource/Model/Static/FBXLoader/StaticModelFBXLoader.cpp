@@ -32,7 +32,7 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelData(const ufbx_scene* a_f
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene, "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。", false);
 
     // StaticModelではufbx_node::geometry_to_worldを使って
-    // NodeTransformを頂点へ焼きこむ。
+    // NodeTransformを頂点へ焼きこむ
     // ただし、Camera/Light/BoneなどMeshを持たない要素を除外するため、
     // Nodeを走査してMeshが接続されているNodeだけを処理する
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyModelMeshCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
@@ -180,10 +180,10 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
         //                       書き込み先配列の要素数、
         //                       三角形化するメッシュ、
         //                       三角形化するFace);
-        const auto l_triangleCount = ufbx_triangulate_face(l_triangleIndexList.data(),
-                                                           l_triangleIndexList.size(),
-                                                           l_fbxMesh,
-                                                           l_fbxFace);
+        const auto& l_triangleCount = ufbx_triangulate_face(l_triangleIndexList.data(),
+                                                            l_triangleIndexList.size(),
+                                                            l_fbxMesh,
+                                                            l_fbxFace);
 
         for (std::size_t l_triangleIndex = 0ULL; l_triangleIndex < l_triangleCount; ++l_triangleIndex)
         {
@@ -199,12 +199,12 @@ bool FWK::Graphics::StaticModelFBXLoader::ExtractModelMeshByMaterial(const std::
 
                 Struct::StaticModelVertex l_modelVertex = {};
 
-                // ufbx_load_opts側で、+XRight/+YForward/+Z Upとcm->m変換を行っている。
-                // ここではさらにNodeTransformをgeometry_to_worldで反映する。
-                l_modelVertex.m_position = FetchWorldVertexPosition(a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_uv     = FetchVertexUV           (l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_normal   = FetchWorldVertexNormal  (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
-                l_modelVertex.m_tangent  = FetchWorldVertexTangent (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
+                // ufbx_load_opts側で、+XRight/+YForward/+Z Upとcm->m変換を行っている
+                // ここではさらにNodeTransformをgeometry_to_worldで反映する
+                l_modelVertex.m_position = FetchVALWorldVertexPosition(a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_uv       = FetchVALVertexUV           (l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_normal   = FetchVALWorldVertexNormal  (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
+                l_modelVertex.m_tangent  = FetchVALWorldVertexTangent (a_fbxNode, l_fbxMesh, l_fbxVertexIndex);
 
                 // 今は重複頂点削除をまだ行わないため、三角形の頂点をそのまま追加する
                 // Indexは追加した頂点の順番をそのまま示す

@@ -27,7 +27,7 @@ void FWK::Graphics::PipelineStateBase::PrepareCommonPipelineStateCreate(const De
     SetUseRootSignature(l_useRootSignatureWeak);
 }
 
-D3D12_SHADER_BYTECODE FWK::Graphics::PipelineStateBase::FetchShaderByteCode(const Shader& a_shader) const
+D3D12_SHADER_BYTECODE FWK::Graphics::PipelineStateBase::FetchVALShaderByteCode(const Shader& a_shader) const
 {
     const auto& l_blob = a_shader.GetREFDXCBlob();
 

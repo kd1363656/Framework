@@ -42,11 +42,11 @@ namespace FWK
         Type Create(const std::string& a_className) const
         {
             // マップから登録されているファクトリーメソッドを取得
-            const auto& l_itr = m_factoryMap.find(a_className);
+            const auto& l_factoryITR = m_factoryMap.find(a_className);
 
-            if (l_itr == m_factoryMap.end()) { return {}; }
+            if (l_factoryITR == m_factoryMap.end()) { return {}; }
 
-            return l_itr->second();
+            return l_factoryITR->second();
         }
 
         const auto& GetREFFactoryMap() const { return m_factoryMap; }

@@ -70,11 +70,11 @@ namespace FWK::Editor
         static constexpr float k_viewportUVMINY = 0.0F;
         static constexpr float k_viewportUVMAXX = 1.0F;
         static constexpr float k_viewportUVMAXY = 1.0F;
-        
+
         static constexpr ImTextureID k_invalidViewportTextureID = {};
 
         std::vector<TypeAlias::DescriptorIndex> m_imGuiSRVDescriptorIndexList;
-        std::vector<TypeAlias::DescriptorIndex> m_previewImGuiSRVDescriptorIndexList;
+        std::vector<TypeAlias::DescriptorIndex> m_previewIMGUISRVDescriptorIndexList;
 
         std::unique_ptr<EditorCamera> m_editorCamera;
 

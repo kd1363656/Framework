@@ -8,7 +8,7 @@ namespace FWK::Editor
 
          AssetBrowserEditorWindowAssetPaneBreadcrumb() = default;
         ~AssetBrowserEditorWindowAssetPaneBreadcrumb() = default;
-        
+
         void Draw(AssetBrowserEditorWindow& a_editorWindow);
 
     private:

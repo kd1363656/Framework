@@ -15,7 +15,7 @@ namespace FWK                                                                   
     template <>                                                                                                                                                                                   \
     inline const bool k_isTaggedGameObjectComponentFactoryRegistered<DerivedType> = []()                                                                                                          \
     {                                                                                                                                                                                             \
-        TaggedGameObjectComponentFactory::GetInstance().Register<DerivedType>(Tag);                                                                                                               \
+        GameObjectComponentTaggedFactory::GetInstance().Register<DerivedType>(Tag);                                                                                                               \
         FWK_ADD_LOG                                  (Constant::k_imguiDebugSuccessColor, "[タグ付け後コンポーネントファクトリー登録]\nName : {}\nファクトリーへの登録に成功しました。\n", #Tag); \
                                                                                                                                                                                                   \
         return true;                                                                                                                                                                              \

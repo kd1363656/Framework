@@ -25,7 +25,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
     // 成功したらキャッシュ内容が入っているのでreturn
     if (TryResolveCachedStaticModelResult(a_filePath, l_staticModelLoadResult)) { return l_staticModelLoadResult; }
 
-    const auto l_allocateStorageID = m_modelStorage.AllocateStorageID();
+    const auto& l_allocateStorageID = m_modelStorage.AllocateStorageID();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_allocateStorageID == Constant::k_invalidStorageID, "StorageIDの割り当てに失敗したため、StaticModel読み込み処理に失敗しました。", l_staticModelLoadResult);
 
@@ -125,13 +125,12 @@ void FWK::Graphics::StaticModelSystem::BuildStaticModelRuntimeData(const std::sh
                                                                          TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                                          Struct::StaticModelLoadResult&      a_staticModelLoadResult)
 {
-
     FWK_ASSERT_RETURN_IF(!a_staticModelRecord, "StaticModelRecordが無効なため、RuntimeData構築処理処理に失敗しました。");
 
     Struct::StaticModelBatchUploadRecord l_staticModelBatchUploadRecord = {};
 
     // マテリアルで使用するテクスチャを読み込む
-    m_materialRuntimTextureBuilder.BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
+    m_materialRuntimeTextureBuilder.BuildMaterialRuntimeTextures(a_filePath, *a_staticModelRecord);
 
     // バッチアップロード用情報の作成
     if (!CreateStaticBatchUploadRecord(a_staticModelRecord,
@@ -192,10 +191,10 @@ bool FWK::Graphics::StaticModelSystem::TryResolveCachedStaticModelResult(const s
     }
 
     // 既にPending中のStaticModelなら再度ロード申請する必要がないのでreturn
-    if (const auto& l_itr = m_pendingModelBatchUploadRecordMap.find(l_filePath);
-        l_itr != m_pendingModelBatchUploadRecordMap.end())
+    if (const auto& l_pendingModelBatchUploadRecordITR = m_pendingModelBatchUploadRecordMap.find(l_filePath);
+        l_pendingModelBatchUploadRecordITR != m_pendingModelBatchUploadRecordMap.end())
     {
-        const auto& l_staticModelRecord = l_itr->second.m_staticModelRecord;
+        const auto& l_staticModelRecord = l_pendingModelBatchUploadRecordITR->second.m_staticModelRecord;
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_staticModelRecord, "Pending中のStaticModelRecordが無効のため、StaticModel読み込み処理に失敗しました。", false);
 

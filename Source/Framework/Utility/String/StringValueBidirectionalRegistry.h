@@ -31,22 +31,22 @@ namespace FWK::Utility
 
         const Type FindVALValueByKey(const std::string_view& a_key) const
         {
-            const auto& l_itr = m_stringToValueMap.find(a_key);
+            const auto& l_stringToValueITR = m_stringToValueMap.find(a_key);
 
             // 該当する名前の値を取得できなければreturn;
-            if (l_itr == m_stringToValueMap.end()) { return {}; }
+            if (l_stringToValueITR == m_stringToValueMap.end()) { return {}; }
 
-            return l_itr->second;
+            return l_stringToValueITR->second;
         }
 
         const std::string_view FindVALKeyByValue(const Type a_type) const
         {
-            const auto& l_itr = m_valueToStringMap.find(a_type);
+            const auto& l_valueToStringITR = m_valueToStringMap.find(a_type);
 
             // 該当する名前の値を取得できなければreturn;
-            if (l_itr == m_valueToStringMap.end()) { return {}; }
+            if (l_valueToStringITR == m_valueToStringMap.end()) { return {}; }
 
-            return l_itr->second;
+            return l_valueToStringITR->second;
         }
 
         const auto& GetREFStringToValueMap() const { return m_stringToValueMap; }

@@ -2,7 +2,7 @@
 
 namespace FWK::Struct
 {
-    struct StandardPipelineInputElement
+    struct StandardPipelineInputElement final
     {
         std::string m_semanticName = {};
 

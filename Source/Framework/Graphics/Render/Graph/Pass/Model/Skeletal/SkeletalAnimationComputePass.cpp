@@ -32,10 +32,11 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
 
     FWK_ASSERT_RETURN_IF(!l_meshletBoundsUpdateConstantBufferUploader, "SkeletalAnimationMeshletBoundsUpdate用DynamicConstantBufferUploaderを取得できません。");
 
-    const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorList().GetREFElementDataList();
+    const auto& l_skeletalAnimationPlayerSmartPointerVectorList  = l_skeletalAnimationPerObjectComputeRequest->GetREFSkeletalAnimationPlayerSmartPointerVectorList();
+    const auto& l_skeletalAnimationPlayerSmartPointerVectorArray = l_skeletalAnimationPlayerSmartPointerVectorList.GetREFElementDataList                          ();
     const auto& l_computeCommandList                             = a_renderer.GetREFComputeCommandList                                                            ();
 
-    // 最初にすべてのPlayerへVertex Skinningを行う。
+    // 最初にすべてのPlayerへVertex Skinningを行う
     // PlayerごとにVertexSkinningとBounds更新のPSOを
     // 交互に切り替えず、同じPSOの処理をまとめて実行する
     const auto& l_vertexSkinningRootSignature = SetupComputeRenderPipeline(Enum::PipelineStateType::SkeletalAnimationVertexSkinning, a_renderer).lock();
@@ -61,7 +62,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
         // CPUで計算した現在のPoseのBoneMatrixをGPUへ転送する
         FWK_ASSERT_RETURN_IF(!UploadBoneMatrix(l_computeCommandList, *l_frameData), "BoneMatrixのGPU転送に失敗しました。");
 
-        // Model内の各MeshへLBSVertexSkinningを実行する。
+        // Model内の各MeshへLBSVertexSkinningを実行する
         FWK_ASSERT_RETURN_IF(!DispatchVertexSkinning(*l_vertexSkinningRootSignature,
                                                      l_computeCommandList,
                                                      l_skeletalAnimationModelRecord->GetREFModelData(),
@@ -93,7 +94,7 @@ void FWK::Graphics::SkeletalAnimationComputePass::Execute(const ResourceContext&
         FWK_ASSERT_RETURN_IF(!l_frameData, "現在FrameDataを取得できないため、MeshletBoundsを更新できません。");
 
         // Model内の各Meshについて、
-        // スキニング後頂点から現在PoseのMeshletBoundsを計算する。
+        // スキニング後頂点から現在PoseのMeshletBoundsを計算する
         FWK_ASSERT_RETURN_IF(!DispatchMeshletBoundsUpdate(*l_meshletBoundsUpdateRootSignature,
                                                           l_computeCommandList,
                                                           l_skeletalAnimationModelRecord->GetREFModelData(),
@@ -119,8 +120,9 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     // 現在FrameData専用のUploadBufferへ書き込む
     FWK_ASSERT_RETURN_VALUE_IF(!l_boneMatrixBufferUploader.Write(l_globalBoneMatrixList), "BoneMatrixのUploadBufferへの書き込みに失敗しました。", false);
 
+    const auto& l_boneMatrixUploadBuffer         = l_boneMatrixBufferUploader.GetREFUploadBuffer();
     const auto& l_boneMatrixBufferResource       = l_boneMatrixBuffer.GetREFBufferGPUResource   ().m_resource;
-    const auto& l_boneMatrixUploadBufferResource = l_boneMatrixBufferUploader.GetREFUploadBuffer().GetREFUploadBuffer();
+    const auto& l_boneMatrixUploadBufferResource = l_boneMatrixUploadBuffer.GetREFUploadBuffer  ();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_boneMatrixBufferResource,       "BoneMatrixBufferのGPUResourceが無効です。",         false);
     FWK_ASSERT_RETURN_VALUE_IF(!l_boneMatrixUploadBufferResource, "BoneMatrix用UploadBufferのGPUResourceが無効です。", false);
@@ -128,7 +130,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::UploadBoneMatrix(const Compute
     // Matrix1個のByteSizeとBone数から、
     // 今回コピーするBuffer全体のByteSizeを求める
     const auto& l_boneMatrixBufferSize    = sizeof                                       (TypeAlias::Math::Matrix) * l_globalBoneMatrixList.size();
-    const auto  l_beforeCopyResourceState = l_boneMatrixBuffer.GetVALCurrentResourceState();
+    const auto& l_beforeCopyResourceState = l_boneMatrixBuffer.GetVALCurrentResourceState();
 
     // CopyBufferRegionのコピー先として使用するため
     // BoneMatrixBufferをCOPY_DEST状態へ遷移
@@ -160,14 +162,14 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
     const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
           auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelMeshListが空のため、VertexSkinningを実行出来ません", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelMeshListが空のため、VertexSkinningの実行に失敗しました。", false);
 
     // Player作成時にはModelMesh一個につき、
     // SkinnedVertexBufferを一個作成している
     FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
 
     const auto& l_boneMatrixBuffer                   = a_frameData.m_boneMatrixBuffer;
-    const auto  l_boneMatrixBufferSRVDescriptorIndex = l_boneMatrixBuffer.GetVALSRVDescriptorIndex();
+    const auto& l_boneMatrixBufferSRVDescriptorIndex = l_boneMatrixBuffer.GetVALSRVDescriptorIndex();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_boneMatrixBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BoneMatrixBufferのSRVDescriptorIndexが無効です。", false);
 
@@ -186,9 +188,9 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
 
         FWK_ASSERT_RETURN_VALUE_IF(l_skinnedVertexBuffer.GetVALElementCount() != l_modelVertexList.size(), "SkinnedVertexBufferとModelVertexListの要素数が一致しません。", false);
 
-        const auto l_sourceVertexBufferSRVDescriptorIndex  = l_sourceVertexBuffer.GetVALSRVDescriptorIndex ();
-        const auto l_bonePaletteBufferSRVDescriptorIndex   = l_bonePaletteBuffer.GetVALSRVDescriptorIndex  ();
-        const auto l_skinnedVertexBufferUAVDescriptorIndex = l_skinnedVertexBuffer.GetVALUAVDescriptorIndex();
+        const auto& l_sourceVertexBufferSRVDescriptorIndex  = l_sourceVertexBuffer.GetVALSRVDescriptorIndex ();
+        const auto& l_bonePaletteBufferSRVDescriptorIndex   = l_bonePaletteBuffer.GetVALSRVDescriptorIndex  ();
+        const auto& l_skinnedVertexBufferUAVDescriptorIndex = l_skinnedVertexBuffer.GetVALUAVDescriptorIndex();
 
         FWK_ASSERT_RETURN_VALUE_IF(l_sourceVertexBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex,  "SourceVertexBufferのSRVDescriptorIndexが無効です。",  false);
         FWK_ASSERT_RETURN_VALUE_IF(l_bonePaletteBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex,   "BonePaletteBufferのSRVDescriptorIndexが無効です。",   false);
@@ -198,7 +200,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_skinnedVertexBufferResource, "SkinnedVertexBufferのGPUResourceが無効です。", false);
 
-        const auto l_currentResourceState = l_skinnedVertexBuffer.GetVALCurrentResourceState();
+        const auto& l_currentResourceState = l_skinnedVertexBuffer.GetVALCurrentResourceState();
 
         // ComputeShaderから書き込めるように
         // SkinnedVertexBufferをUNORDERED_ACCESSへ遷移する
@@ -228,16 +230,16 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
         // 完全に割り切れなかった場合だけ一つThread Groupを追加する
         // VertexCount + ThreadCount - Oneという計算を使わないため、
         // uint32_t最大値付近でも加算Overflowが起きない
-        const auto l_completeThreadGroupCount    = l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount / k_vertexSkinningThreadCountX;
-        const auto l_remainingVertexCount        = l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount % k_vertexSkinningThreadCountX;
-        const auto l_additionalThreadGroupCount  = l_remainingVertexCount == Constant::k_noRemainder ? Constant::k_noRemainder : k_singleThreadGroupCount;
-        const auto l_threadGroupCountX           = l_completeThreadGroupCount + l_additionalThreadGroupCount;
+        const auto& l_completeThreadGroupCount    = l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount / k_vertexSkinningThreadCountX;
+        const auto& l_remainingVertexCount        = l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount % k_vertexSkinningThreadCountX;
+        const auto& l_additionalThreadGroupCount  = l_remainingVertexCount == Constant::k_noRemainder ? Constant::k_noRemainder : k_singleThreadGroupCount;
+        const auto& l_threadGroupCountX           = l_completeThreadGroupCount + l_additionalThreadGroupCount;
 
         // 一つのThreadが一つの頂点を処理する
         // Y方向とZ方向には一つのThread Groupだけを使用する
         a_computeCommandList.Dispatch(l_threadGroupCountX, k_singleThreadGroupCount, k_singleThreadGroupCount);
 
-        // UAV書き込み後、Mesh ShaderからSRVとして読み取れる状態へ遷移する。
+        // UAV書き込み後、Mesh ShaderからSRVとして読み取れる状態へ遷移する
         // UAVからNON_PIXEL_SHADER_RESOURCEへのTransition Barrierが
         // 書き込み完了と後続読み取りの順序を保証するため、
         // 追加のUAV Barrierは不要
@@ -277,11 +279,11 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
         const auto& l_meshletBuffer                             = l_modelMeshRuntimeData.m_meshletBuffer;
         const auto& l_uniqueVertexIndexBuffer                   = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer;
         const auto& l_primitiveIndexBuffer                      = l_modelMeshRuntimeData.m_primitiveIndexBuffer;
-        const auto  l_vertexBufferSRVDescriptorIndex            = l_skinnedVertexBuffer.GetVALSRVDescriptorIndex    ();
-        const auto  l_meshletBufferSRVDescriptorIndex           = l_meshletBuffer.GetVALSRVDescriptorIndex          ();
-        const auto  l_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();
-        const auto  l_primitiveIndexBufferSRVDescriptorIndex    = l_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
-        const auto  l_meshletBoundsBufferUAVDescriptorIndex     = l_meshletBoundsBuffer.GetVALUAVDescriptorIndex    ();
+        const auto& l_vertexBufferSRVDescriptorIndex            = l_skinnedVertexBuffer.GetVALSRVDescriptorIndex    ();
+        const auto& l_meshletBufferSRVDescriptorIndex           = l_meshletBuffer.GetVALSRVDescriptorIndex          ();
+        const auto& l_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();
+        const auto& l_primitiveIndexBufferSRVDescriptorIndex    = l_primitiveIndexBuffer.GetVALSRVDescriptorIndex   ();
+        const auto& l_meshletBoundsBufferUAVDescriptorIndex     = l_meshletBoundsBuffer.GetVALUAVDescriptorIndex    ();
 
         FWK_ASSERT_RETURN_VALUE_IF(l_vertexBufferSRVDescriptorIndex            == DescriptorHeap::k_invalidDescriptorIndex, "SkinnedVertexBufferのSRVDescriptorIndexが無効です。",     false);
         FWK_ASSERT_RETURN_VALUE_IF(l_meshletBufferSRVDescriptorIndex           == DescriptorHeap::k_invalidDescriptorIndex, "MeshletBufferのSRVDescriptorIndexが無効です。",           false);
@@ -293,7 +295,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBufferResource, "MeshletBoundsBufferのGPUResourceが無効です。", false);
 
-        const auto l_beforeWriteResourceState = l_meshletBoundsBuffer.GetVALCurrentResourceState();
+        const auto& l_beforeWriteResourceState = l_meshletBoundsBuffer.GetVALCurrentResourceState();
 
         // Bounds更新ComputeShaderから書き込めるように
         // MeshletBoundsBufferをUAV状態へ遷移する
@@ -315,7 +317,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
 
         a_computeCommandList.SetupConstantBufferView(a_rootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject);
 
-        const auto l_meshletCount = l_meshletBoundsBuffer.GetVALElementCount();
+        const auto& l_meshletCount = l_meshletBoundsBuffer.GetVALElementCount();
 
         FWK_ASSERT_RETURN_VALUE_IF(l_meshletCount > D3D12_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION, "Meshlet数がCompute ShaderのX方向最大Dispatch Group数を超えています。", false);
 

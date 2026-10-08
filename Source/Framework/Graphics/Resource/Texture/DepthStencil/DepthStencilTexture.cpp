@@ -15,9 +15,9 @@ bool FWK::Graphics::DepthStencilTexture::Create(const Device&                   
     FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_mipLevels <       k_minMIPLevelCount,    "DepthStencilTextureのMipLevelsが無効のため、作成処理に失敗しました。",      false);
     FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_sampleCount <     k_minSampleCount,      "DepthStencilTextureのSampleCountが無効のため、作成処理に失敗しました。",    false);
 
-    // DirectX12のMSAATextureはMipMapを複数持てない。
+    // DirectX12のMSAATextureはMipMapを複数持てない
     // SampleCountが1より大きい場合は、
-    // MipLevelsを必ず1にする必要がある。
+    // MipLevelsを必ず1にする必要がある
     FWK_ASSERT_RETURN_VALUE_IF(a_depthStencilTextureSettings.m_sampleCount > k_nonMultisampleCount &&
                                a_depthStencilTextureSettings.m_mipLevels != k_singleMIPLevelCount,
                                "MSAAを使用するDepthStencilTextureはMipLevelsをOneにする必要があります。",
@@ -118,13 +118,13 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::DepthStencilTexture::FetchVALDSVD
         return DescriptorHeap::k_invalidDescriptorIndex;
     }
 
-    // DSVの格納順は次のとおり。
+    // DSVの格納順は次のとおり
     // Array Zero / Mip Zero
     // Array Zero / Mip One
     // Array One  / Mip Zero
     // Array One  / Mip One
     // そのためArray IndexにMip数を掛け、
-    // その後へMip Sliceを加えることで一次元配列の位置を求める。
+    // その後へMip Sliceを加えることで一次元配列の位置を求める
     const auto& l_descriptorIndex = a_arrayIndex * m_depthStencilTextureSettings.m_mipLevels + a_mipSlice;
 
     if (l_descriptorIndex >= m_dsvDescriptorIndexList.size()) { return DescriptorHeap::k_invalidDescriptorIndex; }
@@ -152,9 +152,9 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
     D3D12_RESOURCE_FLAGS l_resourceFlags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
     // SRVFormatがUNKNOWNなら、
-    // このTextureはShaderから読み取らないDepth専用Resourceになる。
+    // このTextureはShaderから読み取らないDepth専用Resourceになる
     // D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCEを付けることで、
-    // ShaderResourceとして使用しないことをDirectX12へ明示する。
+    // ShaderResourceとして使用しないことをDirectX12へ明示する
     if (m_depthStencilTextureSettings.m_srvFormat == DXGI_FORMAT_UNKNOWN)
     {
         l_resourceFlags |= D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE;
@@ -171,13 +171,13 @@ bool FWK::Graphics::DepthStencilTexture::CreateGPUResource(const GPUMemoryAlloca
     //       サンプル品質、
     //       リソースフラグ);
     const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_depthStencilTextureSettings.m_resourceFormat,
-                                                             a_width,
-                                                             a_height,
-                                                             m_depthStencilTextureSettings.m_arraySize,
-                                                             m_depthStencilTextureSettings.m_mipLevels,
-                                                             m_depthStencilTextureSettings.m_sampleCount,
-                                                             m_depthStencilTextureSettings.m_sampleQuality,
-                                                             l_resourceFlags);
+                                                              a_width,
+                                                              a_height,
+                                                              m_depthStencilTextureSettings.m_arraySize,
+                                                              m_depthStencilTextureSettings.m_mipLevels,
+                                                              m_depthStencilTextureSettings.m_sampleCount,
+                                                              m_depthStencilTextureSettings.m_sampleQuality,
+                                                              l_resourceFlags);
 
     FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,
                                                                            &l_clearValue,
@@ -197,7 +197,7 @@ D3D12_DEPTH_STENCIL_VIEW_DESC FWK::Graphics::DepthStencilTexture::CreateDSVDesc(
     D3D12_DEPTH_STENCIL_VIEW_DESC l_dsvDesc = {};
 
     l_dsvDesc.Format = m_depthStencilTextureSettings.m_dsvFormat;
-    l_dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
+    l_dsvDesc.Flags  = D3D12_DSV_FLAG_NONE;
 
     const bool l_isTextureArray = m_depthStencilTextureSettings.m_arraySize   > k_singleTextureArraySize;
     const bool l_isMultisample  = m_depthStencilTextureSettings.m_sampleCount > k_nonMultisampleCount;
@@ -225,7 +225,8 @@ D3D12_DEPTH_STENCIL_VIEW_DESC FWK::Graphics::DepthStencilTexture::CreateDSVDesc(
     }
 
     // MSAAを使用する配列ではないTexture2D
-    if (!l_isTextureArray && l_isMultisample)
+    if (!l_isTextureArray &&
+        l_isMultisample)
     {
         l_dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2DMS;
 
@@ -302,18 +303,18 @@ bool FWK::Graphics::DepthStencilTexture::CreateDSVList(const Device& a_device, T
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが無効のため、DepthStencilTexture用DSVListの作成に失敗しました。", false);
 
     // Array SliceとMip Sliceのすべての組み合わせに対して、
-    // 個別のDSVを一つずつ作成する。
-    // CSMが4Cascade、MipがOneならDSVは4個になる。
+    // 個別のDSVを一つずつ作成する
+    // CSMが4Cascade、MipがOneならDSVは4個になる
     const auto& l_dsvCount = static_cast<std::size_t>(m_depthStencilTextureSettings.m_arraySize * m_depthStencilTextureSettings.m_mipLevels);
 
     m_dsvDescriptorIndexList.clear  ();
     m_dsvDescriptorIndexList.reserve(l_dsvCount);
 
-    for (UINT l_arrayIndex = 0ULL; l_arrayIndex < m_depthStencilTextureSettings.m_arraySize; ++l_arrayIndex)
+    for (UINT l_arrayIndex = 0U; l_arrayIndex < m_depthStencilTextureSettings.m_arraySize; ++l_arrayIndex)
     {
         for (UINT l_mipSlice = k_firstMIPSlice; l_mipSlice < m_depthStencilTextureSettings.m_mipLevels; ++l_mipSlice)
         {
-            const auto l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
+            const auto& l_dsvDescriptorIndex = a_dsvDescriptorPool.Allocate();
 
             if (l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex)
             {
@@ -349,7 +350,7 @@ bool FWK::Graphics::DepthStencilTexture::CreateSRV(const Device& a_device, TypeA
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource,                                        "GPUResourceが無効のため、DepthStencilTexture用SRVの作成に失敗しました。", false);
     FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_srvFormat == DXGI_FORMAT_UNKNOWN, "DepthStencilTextureのSRVFormatが無効のため、SRVの作成に失敗しました。",   false);
 
-    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "DepthStencilTexture用SRVDescriptorIndexの確保に失敗しまた。", false);
 
@@ -434,9 +435,9 @@ bool FWK::Graphics::DepthStencilTexture::ReserveReleaseCurrentResource(const UIN
 void FWK::Graphics::DepthStencilTexture::ReleaseCreatedDSVDescriptorIndexList(TypeAlias::DSVDescriptorPool& a_dsvDescriptorPool)
 {
     // Create()途中で失敗した場合は、
-    // まだGPUがDescriptorを参照していない。
+    // まだGPUがDescriptorを参照していない
     // そのためFenceを待たず、
-    // DescriptorPoolへ即座に返却できる。
+    // DescriptorPoolへ即座に返却できる
     for (const auto l_dsvDescriptorIndex : m_dsvDescriptorIndexList)
     {
         if (l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex) { continue; }

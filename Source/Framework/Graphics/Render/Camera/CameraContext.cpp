@@ -54,10 +54,10 @@ std::weak_ptr<FWK::Struct::CBCameraPass> FWK::Graphics::CameraContext::FetchVALC
     // デバッグモードで、カリング結果の確認がONで、シーンカメラが使えるなら、シーンカメラでカリングする
     // 描画はエディターカメラのまま、「シーンカメラに映る物だけが描かれる」様子をエディターカメラから確認できる
     if (m_viewMode == Enum::CameraViewMode::Debug &&
-        m_isCullingBySceneCamera && 
+        m_isCullingBySceneCamera &&
         !m_sceneCamera.expired())
     {
-        return m_sceneCamera; 
+        return m_sceneCamera;
     }
 
     // それ以外は、描画に使うカメラでカリングする(今までと同じ動き)

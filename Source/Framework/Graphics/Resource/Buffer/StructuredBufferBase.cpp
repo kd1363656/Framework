@@ -36,7 +36,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(c
     FWK_ASSERT_RETURN_VALUE_IF(a_elementCount == k_invalidElementCount,                "ElementCountが0のため、StructuredBuffer用SRVの作成に失敗しました。",        DescriptorHeap::k_invalidDescriptorIndex);
     FWK_ASSERT_RETURN_VALUE_IF(a_structureByteStride == k_invalidStructuredByteStride, "StructureByteStrideが0のため、StructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
-    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
@@ -106,7 +106,7 @@ bool FWK::Graphics::StructuredBufferBase::ReserveReleaseCurrentResource(const UI
     FWK_ASSERT_RETURN_VALUE_IF(!a_resourceReleaseContext.ReserveDeferredReleaseCBVSRVUAVDescriptorIndex(std::move(l_srvDescriptorIndexReleaseRecord)), "StructuredBufferのSRVDescriptorIndexを遅延解放Queueへ登録できませんでした。", false);
 
     // もう一度処理が走らないように初期化
-    m_bufferGPUResource = {};
+    m_bufferGPUResource  = {};
     m_srvDescriptorIndex = DescriptorHeap::k_invalidDescriptorIndex;
 
     return true;

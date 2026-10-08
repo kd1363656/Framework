@@ -56,16 +56,16 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // GameObjectはINIT内でweak_from_thisを使うため
     // shared_ptr管理でなければbad_weak_ptrが投げられる
     const auto& l_gameObject = std::make_shared<GameObject>();
-     
+
     l_gameObject->INIT   ();
     l_gameObject->SetName(l_prefabFilePath.stem().string());
-     
+
     // 新規の空GameObjectにはPrefabインスタンスの子が存在しないため
     // シリアライズ用の一時的なPrefabSystemで十分
     SceneGameObjectPrefabSystem l_prefabSystem = {};
-     
+
     l_prefabSystem.INIT();
-     
+
     // Save内部でConvertToPrefabが呼ばれ
     // GameObjectと子孫へPrefabUUID/IsPrefabOriginが設定されてから
     // GameObjectJsonConverter::Serializeでフル形式のPrefabJsonが作られる
@@ -78,17 +78,17 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         // Registryだけにエントリが残るとWatcherが間違って
         // ファイルを削除しないようになるため、Registryから削除して登録前の状態へ戻す
         a_assetFilePathRegistry.Erase(l_prefabFilePath);
-     
+
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_prefabFilePath.string());
-     
+
         return {};
     }
-     
+
     Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
-     
+
     l_result.m_createdFilePath = l_prefabFilePath;
     l_result.m_isSuccess       = true;
-     
+
     return l_result;
 }
 FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreateScene(const std::filesystem::path& a_parentFolderPath, AssetFilePathRegistry& a_assetFilePathRegistry) const
@@ -98,7 +98,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
 
     // SceneUUIDを生成
     auto& l_uuidManager = Utility::UUIDManager::GetInstance();
-    
+
     // AssetFilePathRegistryへ先登録
     // WatcherはRegistryへ未登録のJSONがディスクに現れると物理削除するため
     // ファイル書き込みの前に必ずRegistryへ登録する
@@ -158,8 +158,8 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     return l_result;
 }
 
-std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObjectDrop(const std::weak_ptr<GameObject>&         a_droppedGameObject, 
-                                                                                                                                                        const std::filesystem::path&             a_parentFolderPath, 
+std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObjectDrop(const std::weak_ptr<GameObject>&         a_droppedGameObject,
+                                                                                                                                                        const std::filesystem::path&             a_parentFolderPath,
                                                                                                                                                                           Scene&                 a_scene,
                                                                                                                                                                           AssetFilePathRegistry& a_assetFilePathRegistry) const
 {
@@ -167,11 +167,11 @@ std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Edito
     // 親子を同時選択していた場合は子を除外する
     // (親のPrefab内部ノードとして既に含まれるため)
     const auto& l_targetList = CollectPrefabTargetGameObjectList(a_droppedGameObject);
- 
+
     std::vector<Struct::AssetBrowserEditorWindowAssetCreationResult> l_resultList = {};
- 
+
     l_resultList.reserve(l_targetList.size());
- 
+
     for (const auto& l_gameObject : l_targetList)
     {
         const auto& l_prefab = CreatePrefabFromGameObject(l_gameObject,
@@ -181,7 +181,7 @@ std::vector<FWK::Struct::AssetBrowserEditorWindowAssetCreationResult> FWK::Edito
 
         l_resultList.emplace_back(l_prefab);
     }
- 
+
     return l_resultList;
 }
 
@@ -263,7 +263,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
     {
         case Enum::AssetFilePathRegistryType::Prefab:
         {
-            if (const auto& l_prefabName = a_copiedFilePath.stem().string(); 
+            if (const auto& l_prefabName = a_copiedFilePath.stem().string();
                 !Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(a_copiedFilePath,
                                                                             l_prefabName,
                                                                             l_sourceUUID,
@@ -290,7 +290,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
         default:
         break;
     }
-    
+
     return true;
 }
 
@@ -318,7 +318,7 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFil
     {
         // ファイル名に使用できない文字をアンダースコアに変換する
         if (k_invalidFileNameCharacters.find(l_char) == std::string_view::npos) { continue; }
-        
+
         l_char = k_underScoreChar;
     }
 
@@ -329,14 +329,14 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFil
     {
         l_fileName.pop_back();
     }
- 
+
     if (l_fileName.empty()) { return std::string{ k_defaultPrefabName }; }
- 
+
     return l_fileName;
 }
 
-FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject, 
-                                                                                                                                       const std::filesystem::path&     a_parentFolderPath, 
+FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject,
+                                                                                                                                       const std::filesystem::path&     a_parentFolderPath,
                                                                                                                                              Scene&                     a_scene,
                                                                                                                                              AssetFilePathRegistry&     a_assetFilePathRegistry) const
 {
@@ -348,21 +348,21 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     {
         return {};
     }
- 
+
     // ファイル名はGameObject名ベースで一意化する
     // 空名やファイル名に使えない文字は代替名・置換で回避する
     const auto& l_prefabFilePath = ResolveDefaultFilePath(a_parentFolderPath, Constant::k_lowerJsonExtension, FetchVALPrefabFileName(a_gameObject));
- 
+
           auto& l_uuidManager = Utility::UUIDManager::GetInstance();
     const auto& l_prefabUUID  = l_uuidManager.GenerateVALUUID    ();
- 
+
     // Editor側のAssetFilePathRegistryへ先に登録
     // WatcherはRegistryへ未登録のJsonがディスクに現れると物理削除するため
     // ファイルを書き込む前に必ずRegistryへ登録する
     if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへのPrefab登録に失敗したため、Prefabファイルを作成しませんでした。\nFilePath : {}", l_prefabFilePath.string());
- 
+
         return {};
     }
 
@@ -373,7 +373,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         !l_hierarchy.GetREFParent().expired())
     {
         l_hierarchy.ClearParent();
- 
+
         // 階層の深さが変わったため実行レベルを再構築する
         a_scene.RebuildGameObjectExecutionLevelList();
     }
@@ -385,7 +385,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // GameObjectJsonConverter::Serializeでフル形式のPrefabJsonが作られる
     // シーンのPrefabSystemを渡して別Prefabのネストインスタンスを正しく差分保存する
     auto& l_prefabSystem = a_scene.GetMutableREFGameObjectPrefabSystem();
- 
+
     if (!l_gameObjectPrefab.Save(l_prefabFilePath,
                                  l_prefabUUID,
                                  l_prefabSystem,
@@ -394,25 +394,25 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
         // Registryだけにエントリが残るとWatcherが間違って
         // ファイルを削除しないようになるため、Registryから削除して登録前の状態へ戻す
         a_assetFilePathRegistry.Erase(l_prefabFilePath);
- 
+
         // ConvertToPrefabでPrefabUUIDが設定済みのため
         // 失敗時はPrefabとの紐付けを剥がして元の状態へ戻す
         l_gameObject->DetachFromPrefab();
- 
+
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Prefabファイルの保存に失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_prefabFilePath.string());
- 
+
         return {};
     }
 
     // シーン側のPrefabSystemへも登録する
     // 未登録のままだとScene保存時にPrefabとの差分が作れずフル形式になってしまう
     l_prefabSystem.AddPrefab(l_gameObjectPrefab, l_prefabUUID);
- 
+
     Struct::AssetBrowserEditorWindowAssetCreationResult l_result = {};
- 
+
     l_result.m_createdFilePath = l_prefabFilePath;
     l_result.m_isSuccess       = true;
- 
+
     return l_result;
 }
 
@@ -438,7 +438,7 @@ std::vector<std::shared_ptr<FWK::GameObject>> FWK::Editor::AssetBrowserEditorWin
                                  return a_selectedWeak.lock() == l_dropped;
                              }))
     {
-        return { l_dropped }; 
+        return { l_dropped };
     }
 
     std::vector<std::shared_ptr<GameObject>> l_targetList = {};
@@ -449,19 +449,19 @@ std::vector<std::shared_ptr<FWK::GameObject>> FWK::Editor::AssetBrowserEditorWin
     for (const auto& l_selectedWeak : l_selectedList)
     {
         const auto& l_selected = l_selectedWeak.lock();
- 
+
         if (!l_selected ||
             l_selected->GetVALIsDestroyed())
         {
             continue;
         }
- 
+
         // 選択リスト内に自身の祖先がいる場合は除外する
         // 祖先側のPrefabへ内部ノードとして既に含まれるため二重にPrefab化しない
         if (Utility::HasAncestorInList(l_selectedList, l_selected)) { continue; }
- 
+
         l_targetList.emplace_back(l_selected);
     }
- 
+
     return l_targetList;
 }

@@ -22,10 +22,10 @@ namespace FWK::Converter
                                      const boost::uuids::uuid&    a_oldPrefabUUID,
                                      const boost::uuids::uuid&    a_newPrefabUUID);
 
-        void Load(const nlohmann::json& a_rootJson, GameObjectPrefab& a_gameObejctPrefab) const;
+        void Load(const nlohmann::json& a_rootJson, GameObjectPrefab& a_gameObjectPrefab) const;
 
-        bool Save(const std::filesystem::path&       a_filePath, 
-                  const GameObject&                  a_gameObject, 
+        bool Save(const std::filesystem::path&       a_filePath,
+                  const GameObject&                  a_gameObject,
                         SceneGameObjectPrefabSystem& a_prefabSystem,
                         GameObjectPrefab&            a_prefab) const;
 

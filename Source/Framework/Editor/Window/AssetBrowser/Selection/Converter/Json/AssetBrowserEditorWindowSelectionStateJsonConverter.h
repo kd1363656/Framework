@@ -10,16 +10,16 @@ namespace FWK::Converter
     class AssetBrowserEditorWindowSelectionStateJsonConverter final
     {
     public:
-    
+
          AssetBrowserEditorWindowSelectionStateJsonConverter() = default;
         ~AssetBrowserEditorWindowSelectionStateJsonConverter() = default;
-        
+
         void Deserialize(const nlohmann::json& a_rootJson, Editor::AssetBrowserEditorWindowSelectionState& a_assetBrowserEditorWindowSelectionState) const;
-        
+
         nlohmann::json Serialize(const Editor::AssetBrowserEditorWindowSelectionState& a_assetBrowserEditorWindowSelectionState) const;
-    
+
     private:
-    
+
         void DeserializeSelectedFilePathList(const nlohmann::json& a_rootJson, Editor::AssetBrowserEditorWindowSelectionState& a_assetBrowserEditorWindowSelectionState) const;
 
         nlohmann::json SerializeSelectedFilePathList(const Editor::AssetBrowserEditorWindowSelectionState& a_assetBrowserEditorWindowSelectionState) const;

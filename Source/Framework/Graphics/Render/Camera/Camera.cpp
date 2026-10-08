@@ -92,7 +92,7 @@ void FWK::Graphics::Camera::ApplyPerspectiveAspectRatio(const float a_aspectRati
 
     if (!m_cbCameraPass) { return; }
 
-    // Viewportの形状変更で変えるのはAspectRatioだけ。
+    // Viewportの形状変更で変えるのはAspectRatioだけ
     // FOVY,NearClip,FarClipは以前の値を維持する
     m_aspectRatio = a_aspectRatio;
 

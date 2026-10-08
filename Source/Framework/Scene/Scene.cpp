@@ -23,6 +23,7 @@ void FWK::Scene::Deserialize(const nlohmann::json& a_rootJson)
     if (a_rootJson.is_null())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Jsonの中身が空となっておりシーンのデシリアライズ処理に失敗しました。");
+
         return;
     }
 
@@ -62,12 +63,12 @@ void FWK::Scene::PostDeserialize()
 
     auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
 
-    // StaticBodyをまとめて追加した後なので、BroadPhaseを最適化しておく。
-    // 毎フレーム呼ぶものではなく、ステージ読み込み後などに呼ぶ。
+    // StaticBodyをまとめて追加した後なので、BroadPhaseを最適化しておく
+    // 毎フレーム呼ぶものではなく、ステージ読み込み後などに呼ぶ
     l_physicsManager.OptimizeBroadPhase();
 }
 
-void FWK::Scene::EarlyUpdate() 
+void FWK::Scene::EarlyUpdate()
 {
     // 削除要求があったゲームオブジェクトがあればここで削除
     RemoveDestroyedGameObjects();
@@ -177,6 +178,7 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
     if (!a_gameObject)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "GameObjectクラスが無効となっており、ゲームオブジェクトの追加処理に失敗しました。");
+
         return;
     }
 
@@ -184,10 +186,10 @@ void FWK::Scene::AddGameObject(const std::shared_ptr<GameObject>& a_gameObject)
     if (a_gameObject->GetREFSceneInstanceUUID().is_nil())
     {
         auto& l_uuidManager = Utility::UUIDManager::GetInstance();
- 
+
         a_gameObject->SetSceneInstanceUUID(l_uuidManager.GenerateVALUUID());
     }
-    
+
     // GameObject自身を識別するSceneInstanceUUIDをUUIDRegistryへ登録する
     // 新規GameObjectでUUIDがnilの場合はUUIDRegistry内で新規発行する
     // Deserialize済みで既にUUIDを持っている場合は、そのUUIDを維持したまま
@@ -229,7 +231,7 @@ void FWK::Scene::UnregisterGameObject(const std::weak_ptr<GameObject>& a_gameObj
 
     std::erase(m_gameObjectList,           l_gameObject);
     std::erase(m_pendingAddGameObjectList, l_gameObject);
- 
+
     // 実行階層リストからも外す
     for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
     {
@@ -280,7 +282,7 @@ std::string FWK::Scene::FetchVALNextSceneName() const
     // 次のに移行するシーンの名前が空なら移行しない
     if (m_nextSceneUUID.is_nil()) { return {}; }
 
-    const auto* l_nextScene = m_sceneChanger.FetchPTRNexScene(m_nextSceneUUID);
+    const auto* l_nextScene = m_sceneChanger.FetchPTRNextScene(m_nextSceneUUID);
 
     if (!l_nextScene) { return {}; }
 
@@ -303,36 +305,36 @@ void FWK::Scene::AddGameObjectToExecutionLevelList(const std::weak_ptr<GameObjec
 void FWK::Scene::RemoveDestroyedGameObjects()
 {
     // Scene所有リストから削除
-    std::erase_if(m_gameObjectList, 
-                 [this](const auto& a_gameObject)
-                 {
-                     if (!a_gameObject) { return true; }
-                 
-                     a_gameObject->GetREFSceneInstanceUUID();
+    std::erase_if(m_gameObjectList,
+                  [this](const auto& a_gameObject)
+                  {
+                      if (!a_gameObject) { return true; }
 
-                     if (a_gameObject->GetVALIsDestroyed())
-                     {
-                         FWK_ASSERT_RETURN_VALUE_IF(!m_gameObjectUUIDRegistry.Erase(a_gameObject->GetREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。", false);
-                     }
-                 
-                     return a_gameObject->GetVALIsDestroyed();
-                 });
+                      a_gameObject->GetREFSceneInstanceUUID();
+
+                      if (a_gameObject->GetVALIsDestroyed())
+                      {
+                          FWK_ASSERT_RETURN_VALUE_IF(!m_gameObjectUUIDRegistry.Erase(a_gameObject->GetREFSceneInstanceUUID()), "削除対象GameObjectのUUID登録解除に失敗しました。", false);
+                      }
+
+                      return a_gameObject->GetVALIsDestroyed();
+                  });
 
     // 階層実行リストから削除
     for (auto& l_gameObjectExecutionLevel : m_gameObjectExecutionLevelList)
     {
-        std::erase_if(l_gameObjectExecutionLevel, 
+        std::erase_if(l_gameObjectExecutionLevel,
                       [](const auto& a_gameObjectWeak)
                       {
                           const auto& l_gameObject = a_gameObjectWeak.lock();
-                      
+
                           // weak_ptrの参照先がなくなっている場合も実行リストから削除する
                           return !l_gameObject;
                       });
     }
 
     // 最後尾が空にならずそれより上の階層が空になる現象などありえないため
-    // pop_backを使用する。
+    // pop_backを使用する
     // 後方に残った空階層を削除
     // 階層が0,1,2,3とあった時に急に2を含む要素が
     // 消えてしまっても問題がないようにpop_backで後ろから削除
@@ -387,6 +389,6 @@ std::size_t FWK::Scene::CalculateGameObjectExecutionLevel(const std::weak_ptr<Ga
 
         l_parent = l_parentHierarchy.GetREFParent().lock();
     }
-    
+
     return l_executionLevel;
 }

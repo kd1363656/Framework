@@ -47,12 +47,12 @@ namespace FWK::Editor
 
         void BuildDisplayedFolderList(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, const std::filesystem::path& a_folderPath, std::vector<std::filesystem::path>& a_displayedList);
 
-        void SelectFolder(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap, 
-                          const std::filesystem::path&                                                         a_folderPath, 
+        void SelectFolder(const std::unordered_map<std::filesystem::path, std::vector<std::filesystem::path>>& a_folderHierarchyMap,
+                          const std::filesystem::path&                                                         a_folderPath,
                                 AssetBrowserEditorWindow&                                                      a_editorWindow,
-                          const bool                                                                           a_isRangeSelection           = false, 
+                          const bool                                                                           a_isRangeSelection           = false,
                           const bool                                                                           a_isToggleSelection          = false,
-                          const bool                                                                           a_updateCurrentFolderPath = true);
+                          const bool                                                                           a_shouldUpdateCurrentFolderPath = true);
 
         bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
 
@@ -67,7 +67,7 @@ namespace FWK::Editor
         static constexpr ImVec2 k_banIconOffset = { 4.0F, 4.0F };
 
         static constexpr float k_banIconSizeOffset = 2.0F;
-        
+
         static constexpr int k_keyboardFocusNextItem = 0;
 
         std::unordered_map<std::filesystem::path, bool> m_folderOpenStateMap = {};

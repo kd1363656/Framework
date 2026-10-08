@@ -6,5 +6,4 @@ void FWK::AssetFilePathInspector::EditInspector(AssetFilePath& a_assetFilePath) 
     a_assetFilePath.SetIsFilePathChangedDirty(false);
 
     a_assetFilePath.SetIsFilePathChangedDirty(true);
-
 }

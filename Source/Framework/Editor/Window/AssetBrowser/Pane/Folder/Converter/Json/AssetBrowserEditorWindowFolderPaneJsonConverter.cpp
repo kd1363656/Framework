@@ -35,7 +35,7 @@ nlohmann::json FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::
 void FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::DeserializeOpenStateMap(const nlohmann::json& a_rootJson, Editor::AssetBrowserEditorWindowFolderPane& a_assetBrowserEditorWindowFolderPane) const
 {
     if (a_rootJson.is_null() ||
-        !Utility::IsJsonArray(a_rootJson)) 
+        !Utility::IsJsonArray(a_rootJson))
     {
         return;
     }
@@ -43,7 +43,7 @@ void FWK::Converter::AssetBrowserEditorWindowFolderPaneJsonConverter::Deserializ
     for (const auto& l_json : a_rootJson)
     {
         const auto& l_folderPath = l_json.value(k_folderOpenStateFilePathJsonKey, std::filesystem::path{});
-        const auto  l_isOpen     = l_json.value(k_folderOpenStateIsOpenJsonKey,   k_initialIsFolderOpen);
+        const auto& l_isOpen     = l_json.value(k_folderOpenStateIsOpenJsonKey,   k_initialIsFolderOpen);
 
         // ファイルが存在しなければMapには追加しない
         if (l_folderPath.empty() ||

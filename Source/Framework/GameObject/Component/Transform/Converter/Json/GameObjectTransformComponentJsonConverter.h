@@ -19,7 +19,7 @@ namespace FWK::Converter
         nlohmann::json Serialize(const GameObjectTransformComponent& a_transformComponent) const;
 
     private:
-    
+
         static constexpr std::string_view k_scaleJsonKey                = "Scale";
         static constexpr std::string_view k_rotationJsonKey             = "Rotation";
         static constexpr std::string_view k_positionJsonKey             = "Position";

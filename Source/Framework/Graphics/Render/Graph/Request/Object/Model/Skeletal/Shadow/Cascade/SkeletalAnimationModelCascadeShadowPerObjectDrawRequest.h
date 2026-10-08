@@ -2,7 +2,7 @@
 
 namespace FWK::Graphics
 {
-    class SkeletalAnimationModelCascadeShadowPerObjectDrawRequest : public DrawRequestPerObjectBase
+    class SkeletalAnimationModelCascadeShadowPerObjectDrawRequest final : public DrawRequestPerObjectBase
     {
     public:
 

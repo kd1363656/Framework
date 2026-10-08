@@ -11,7 +11,7 @@ static const float k_finalColorGamma     = 1.0F / k_finalColorGammaBase;
 float3 ConvertLinearColorToSimpleSRGB(const float3 a_linearColor)
 {
     const float3 l_clampedLinearColor = saturate(a_linearColor);
-    
+
     return pow(l_clampedLinearColor, k_finalColorGamma);
 }
 

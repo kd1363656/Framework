@@ -20,8 +20,8 @@ bool FWK::Graphics::DepthStencilPassTexture::Create(const Device&               
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_resourceFormat == DXGI_FORMAT_UNKNOWN, "DepthStencilPassTextureのFormatが無効のため、作成処理に失敗しました。", false);
 
-    const auto l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
-    const auto l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
+    const auto& l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
+    const auto& l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
 
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(l_width, l_height), "DepthStencilTextureの作成サイズが無効のため、作成処理に失敗しました。", false);
 
@@ -46,8 +46,8 @@ bool FWK::Graphics::DepthStencilPassTexture::Resize(const Device&               
                                                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
                                                           ResourceReleaseContext&             a_resourceReleaseContext)
 {
-    const auto l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
-    const auto l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
+    const auto& l_width  = FetchVALPassTextureWidth (a_clientSize.m_width);
+    const auto& l_height = FetchVALPassTextureHeight(a_clientSize.m_height);
 
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(l_width, l_height), "DepthStencilTextureの作成サイズが無効のため、リサイズ処理に失敗しました。", false);
 

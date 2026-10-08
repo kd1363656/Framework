@@ -39,6 +39,7 @@ bool FWK::Graphics::FrameResource::Create(const Device&                   a_devi
 
     return true;
 }
+
 bool FWK::Graphics::FrameResource::Resize(const Device&                   a_device,
                                           const GPUMemoryAllocator&       a_gpuMemoryAllocator,
                                           const Struct::WindowClientSize& a_clientSize,
@@ -55,6 +56,7 @@ bool FWK::Graphics::FrameResource::Resize(const Device&                   a_devi
 
     return true;
 }
+
 bool FWK::Graphics::FrameResource::PreparePreviewRenderGraphFrameResource(const Device&                   a_device,
                                                                           const GPUMemoryAllocator&       a_gpuMemoryAllocator,
                                                                           const Struct::WindowClientSize& a_previewClientSize,
@@ -104,6 +106,7 @@ bool FWK::Graphics::FrameResource::PreparePreviewRenderGraphFrameResource(const 
 
     return true;
 }
+
 void FWK::Graphics::FrameResource::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
@@ -166,16 +169,16 @@ void FWK::Graphics::FrameResource::RemoveExpiredConstantBufferUploaderList()
 }
 void FWK::Graphics::FrameResource::RemoveExpiredConstantBufferUploaderMap()
 {
-    auto l_itr = m_dynamicBufferUploaderMap.begin();
+    auto l_dynamicBufferUploaderITR = m_dynamicBufferUploaderMap.begin();
 
-    while (l_itr != m_dynamicBufferUploaderMap.end())
+    while (l_dynamicBufferUploaderITR != m_dynamicBufferUploaderMap.end())
     {
-        if (!l_itr->second.expired())
+        if (!l_dynamicBufferUploaderITR->second.expired())
         {
-            ++l_itr;
+            ++l_dynamicBufferUploaderITR;
             continue;
         }
 
-        l_itr = m_dynamicBufferUploaderMap.erase(l_itr);
+        l_dynamicBufferUploaderITR = m_dynamicBufferUploaderMap.erase(l_dynamicBufferUploaderITR);
     }
 }

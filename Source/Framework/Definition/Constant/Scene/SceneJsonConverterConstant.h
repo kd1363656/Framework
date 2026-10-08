@@ -2,5 +2,5 @@
 
 namespace FWK::Constant
 {
-    static constexpr std::string_view k_sceneJsonConverterNameJsonKey = "Name";
+    inline constexpr std::string_view k_sceneJsonConverterNameJsonKey = "Name";
 }

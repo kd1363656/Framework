@@ -52,8 +52,8 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsDebugRendererQueue::CreateAAB
 {
     return TypeAlias::Math::Vector3
     {
-        a_cornerSelector.m_useMAXX ? a_maxPosition.x : a_minPosition.x,
-        a_cornerSelector.m_useMAXY ? a_maxPosition.y : a_minPosition.y,
-        a_cornerSelector.m_useMAXZ ? a_maxPosition.z : a_minPosition.z,
+        a_cornerSelector.m_shouldUseMAXX ? a_maxPosition.x : a_minPosition.x,
+        a_cornerSelector.m_shouldUseMAXY ? a_maxPosition.y : a_minPosition.y,
+        a_cornerSelector.m_shouldUseMAXZ ? a_maxPosition.z : a_minPosition.z,
     };
 }

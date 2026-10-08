@@ -17,8 +17,8 @@ namespace FWK::Utility
 
         // ファイル名のStemと拡張子を取得
         // 例: "Player.png" -> stem = "Player", extension = ".png"
-        const auto& l_stem       = a_desiredPath.stem      ().string();
-        const auto& l_extension  = a_desiredPath.extension ().string();
+        const auto& l_stem       = a_desiredPath.stem       ().string();
+        const auto& l_extension  = a_desiredPath.extension  ().string();
         const auto& l_parentPath = a_desiredPath.parent_path();
 
         // Stemの末尾が" (数字)"の形になっている場合だけ、その数字を番号として取り出して
@@ -40,8 +40,8 @@ namespace FWK::Utility
             // " ("と")"に挟まれた部分を取り出す
             // 例 : "Player (12)" -> "12"
             const auto& l_numberBegin  = l_openPosition + Constant::k_numberSuffixOpenStringForFilePathConflict.size();
-            const auto& l_numberLength = l_stem.size() - l_numberBegin - Constant::k_numberSuffixCloseStringForFilePathConflict.size();
-            const auto& l_numberString = l_stem.substr(l_numberBegin, l_numberLength);
+            const auto& l_numberLength = l_stem.size                                                                () - l_numberBegin - Constant::k_numberSuffixCloseStringForFilePathConflict.size();
+            const auto& l_numberString = l_stem.substr                                                              (l_numberBegin, l_numberLength);
 
             // 括弧の中がすべて数字の場合だけ番号として扱う
             // "Player (abc)"のような名前は、名前全体をbaseNameとして扱う

@@ -58,7 +58,8 @@ namespace FWK::Graphics
             // 未使用フェンス値なら、待機対象がないことを表す
             if (a_waitFenceValue == Fence::k_unusedFenceValue) { return true; }
 
-            const auto& l_waitFence = a_waitCommandQueue.GetREFFence().GetREFFence();
+            const auto& l_waitCommandQueueFence = a_waitCommandQueue.GetREFFence     ();
+            const auto& l_waitFence             = l_waitCommandQueueFence.GetREFFence();
 
             FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "待機命令を登録するCommandQueueが作成されていません。", false);
             FWK_ASSERT_RETURN_VALUE_IF(!l_waitFence,    "待機対象CommandQueueのFenceが作成されていません。",    false);
@@ -68,7 +69,7 @@ namespace FWK::Graphics
             // ComputeShaderの書き込み完了後に、
             // DirectQueueの描画処理を開始する
             // 反対方向に待機させれば、前回の描画がBufferを読み終えるまで次回のCompute書き込みを開始しないようにできる
-            const auto l_hr = m_commandQueue->Wait(l_waitFence.Get(), a_waitFenceValue);
+            const auto& l_hr = m_commandQueue->Wait(l_waitFence.Get(), a_waitFenceValue);
 
             FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueue間のGPU待機命令登録に失敗しました。", false);
 
@@ -100,7 +101,7 @@ namespace FWK::Graphics
             // ExecuteCommandLists(実行するコマンドリストの数、
             //                     コマンドリスト配列の先頭アドレス)
             // ※注意 : ExecuteCommandListをする前にコマンドリストはClose()関数を呼び出す必要がある
-            l_commandQueue->ExecuteCommandLists(k_executeListNum, l_list);
+            l_commandQueue->ExecuteCommandLists(k_executeListNUM, l_list);
         }
 
         void SignalAndTrackAllocator(CommandAllocator<CommandType>& a_commandAllocator)
@@ -183,7 +184,7 @@ namespace FWK::Graphics
             FWK_ASSERT_RETURN_VALUE_IF(!m_commandQueue, "CommandQueueが作成されておらず、Fence Signalに失敗しました。", Fence::k_unusedFenceValue);
 
             const auto& l_signaledFenceValue = FetchREFLastSignaledFenceValue() + k_incrementFenceValue;
-            const auto  l_hr                 = m_commandQueue->Signal        (l_fence.Get(), l_signaledFenceValue);
+            const auto& l_hr                 = m_commandQueue->Signal        (l_fence.Get(), l_signaledFenceValue);
 
             FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "CommandQueueへのFence Signalに失敗しました。", Fence::k_unusedFenceValue);
 
@@ -195,7 +196,7 @@ namespace FWK::Graphics
 
         static constexpr UINT64 k_incrementFenceValue = 1ULL;
 
-        static constexpr UINT k_executeListNum = 1U;
+        static constexpr UINT k_executeListNUM = 1U;
 
         TypeAlias::ComPtr<ID3D12CommandQueue> m_commandQueue;
 

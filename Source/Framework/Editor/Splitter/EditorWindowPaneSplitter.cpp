@@ -84,14 +84,14 @@ void FWK::Editor::EditorWindowPaneSplitter::Draw(const std::string_view&        
     }
     else
     {
-        const float l_cursorPOSY = ImGui::GetCursorPosY();
-        const float l_spacingY   = ImGui::GetStyle     ().ItemSpacing.y;
+        const float l_cursorPositionY = ImGui::GetCursorPosY();
+        const float l_spacingY        = ImGui::GetStyle     ().ItemSpacing.y;
 
         // Y軸の場合、通常のImGuiLayoutでは
         // 直前のItemの下へItemSpacing.yが追加される
         // PaneとSplitterを密着させるため
         // 追加済みのSpacing分だけCursorを戻す
-        ImGui::SetCursorPosY(l_cursorPOSY - l_spacingY);
+        ImGui::SetCursorPosY(l_cursorPositionY - l_spacingY);
     }
 
     // Splitterと直交する方向の長さを取得する

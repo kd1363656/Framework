@@ -46,16 +46,16 @@ void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material
 
     if (!a_fbxMaterial) { return; }
 
-    // PBRのベースカラー係数。
-    a_modelMaterialAssetData.m_baseColorFactor = FetchBaseColorFactor(a_fbxMaterial->pbr.base_color);
+    // PBRのベースカラー係数
+    a_modelMaterialAssetData.m_baseColorFactor = FetchVALBaseColorFactor(a_fbxMaterial->pbr.base_color);
 
-    // Roughnessは表面の粗さ。
-    // 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる。
-    a_modelMaterialAssetData.m_roughnessFactor = FetchMaterialFactor(a_fbxMaterial->pbr.roughness, Struct::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor);
+    // Roughnessは表面の粗さ
+    // 0に近いほど鏡のように鋭く反射し、1に近いほどぼやけた反射になる
+    a_modelMaterialAssetData.m_roughnessFactor = FetchVALMaterialFactor(a_fbxMaterial->pbr.roughness, Struct::ModelMaterialAssetData::k_defaultModelMaterialRoughnessFactor);
 
     // Metallicは金属度
     // 0なら非金属、1なら金属としてPBR計算する
-    a_modelMaterialAssetData.m_metallicFactor = FetchMaterialFactor(a_fbxMaterial->pbr.metalness, Struct::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor);
+    a_modelMaterialAssetData.m_metallicFactor = FetchVALMaterialFactor(a_fbxMaterial->pbr.metalness, Struct::ModelMaterialAssetData::k_defaultModelMaterialMetallicFactor);
 
     // ベースカラー
     {
@@ -63,11 +63,11 @@ void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material
         auto& l_textureFilePath = a_modelMaterialAssetData.m_baseColorTextureFilePath;
 
         // 通常のFBXMaterialならfbx.diffuse_colorに入っていることが多い
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.base_color);
+        l_textureFilePath = FetchVALMaterialTextureFilePath(a_fbxMaterial->pbr.base_color);
 
         if (l_textureFilePath.empty())
         {
-            l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.diffuse_color);
+            l_textureFilePath = FetchVALMaterialTextureFilePath(a_fbxMaterial->fbx.diffuse_color);
         }
     }
 
@@ -75,11 +75,11 @@ void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material
     {
         auto& l_textureFilePath = a_modelMaterialAssetData.m_normalTextureFilePath;
 
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.normal_map);
+        l_textureFilePath = FetchVALMaterialTextureFilePath(a_fbxMaterial->pbr.normal_map);
 
         if (l_textureFilePath.empty())
         {
-            l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->fbx.normal_map);
+            l_textureFilePath = FetchVALMaterialTextureFilePath(a_fbxMaterial->fbx.normal_map);
         }
     }
 
@@ -87,14 +87,14 @@ void FWK::Graphics::FBXModelLoaderBase::ExtractModelMaterial(const ufbx_material
     {
         auto& l_textureFilePath = a_modelMaterialAssetData.m_roughnessTextureFilePath;
 
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.roughness);
+        l_textureFilePath = FetchVALMaterialTextureFilePath(a_fbxMaterial->pbr.roughness);
     }
 
     // Metallicテクスチャ
     {
         auto& l_textureFilePath = a_modelMaterialAssetData.m_metallicTextureFilePath;
 
-        l_textureFilePath = FetchMaterialTextureFilePath(a_fbxMaterial->pbr.metalness);
+        l_textureFilePath = FetchVALMaterialTextureFilePath(a_fbxMaterial->pbr.metalness);
     }
 }
 
@@ -107,7 +107,7 @@ void FWK::Graphics::FBXModelLoaderBase::DestroyFBXScene(ufbx_scene* a_fbxScene) 
     ufbx_free_scene(a_fbxScene);
 }
 
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchVALWorldVertexPosition(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点座標の取得に失敗しました。", {});
@@ -115,12 +115,12 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
     const auto& l_localPosition = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_position, a_vertexIndex);
 
     // geometry_to_worldは、Geometry空間からWorld空間へ変換する行列
-    // target_axes/target_unit_metersの結果も、ufbx側の変換済み空間として扱う。
+    // target_axes/target_unit_metersの結果も、ufbx側の変換済み空間として扱う
     const auto& l_worldPosition = ufbx_transform_position(&a_fbxNode->geometry_to_world, l_localPosition);
 
     return Utility::ConvertUFBXVector3ToVector3(l_worldPosition);
 }
-FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVALVertexUV(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、UVの取得に失敗しました。", {});
 
@@ -136,11 +136,11 @@ FWK::TypeAlias::Math::Vector2 FWK::Graphics::FBXModelLoaderBase::FetchVertexUV(c
 
     // DirectXのUV座標に合わせるため、V座標を反転する
     // BlenderなどのDCCツールとDirectXでは、テクスチャの上下方向の扱いが異なる場合がある
-    l_convertedUV.y = k_uvCoordinateMax - l_convertedUV.y;
+    l_convertedUV.y = k_uvCoordinateMAX - l_convertedUV.y;
 
     return l_convertedUV;
 }
-FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexNormal(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchVALWorldVertexNormal(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点法線の取得に失敗しました。", {});
@@ -149,7 +149,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 
     const auto& l_localNormal = ufbx_get_vertex_vec3(&a_fbxMesh->vertex_normal, a_vertexIndex);
 
-    // 法線は通常の位置変換行列をそのまま使わない。
+    // 法線は通常の位置変換行列をそのまま使わない
     // ufbx_matrix_for_normals()で法線用行列を作る
     const auto& l_normalMatrix = ufbx_matrix_for_normals(&a_fbxNode->geometry_to_world);
 
@@ -159,7 +159,7 @@ FWK::TypeAlias::Math::Vector3 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
 
     return Utility::ConvertUFBXVector3ToVector3(l_worldNormal);
 }
-FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchWorldVertexTangent(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
+FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchVALWorldVertexTangent(const ufbx_node* a_fbxNode, const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const
 {
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxNode, "ufbx_nodeがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxMesh, "ufbx_meshがnullptrのため、ワールド頂点接線の取得に失敗しました。", {});
@@ -186,7 +186,7 @@ FWK::TypeAlias::Math::Vector4 FWK::Graphics::FBXModelLoaderBase::FetchWorldVerte
     };
 }
 
-std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(const ufbx_material_map& a_materialMap) const
+std::wstring FWK::Graphics::FBXModelLoaderBase::FetchVALMaterialTextureFilePath(const ufbx_material_map& a_materialMap) const
 {
     const auto* l_fbxTexture = a_materialMap.texture;
 
@@ -216,7 +216,7 @@ std::wstring FWK::Graphics::FBXModelLoaderBase::FetchMaterialTextureFilePath(con
     return l_textureFilePath.wstring();
 }
 
-FWK::TypeAlias::Math::Color FWK::Graphics::FBXModelLoaderBase::FetchBaseColorFactor(const ufbx_material_map& a_materialMap) const
+FWK::TypeAlias::Math::Color FWK::Graphics::FBXModelLoaderBase::FetchVALBaseColorFactor(const ufbx_material_map& a_materialMap) const
 {
     if (!a_materialMap.has_value) { return Struct::ModelMaterialAssetData::k_defaultModelMaterialBaseColorFactor; }
 
@@ -229,7 +229,7 @@ FWK::TypeAlias::Math::Color FWK::Graphics::FBXModelLoaderBase::FetchBaseColorFac
     };
 }
 
-float FWK::Graphics::FBXModelLoaderBase::FetchMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const
+float FWK::Graphics::FBXModelLoaderBase::FetchVALMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const
 {
     if (!a_materialMap.has_value) { return a_defaultValue; }
 
@@ -255,7 +255,7 @@ ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const
 
     // normalize_tangetns
     // これを true にしておくと、NormalMapを使ったPBRライティングで
-    // 接線の長さが原因のライティング崩れを防ぎやすくなる。
+    // 接線の長さが原因のライティング崩れを防ぎやすくなる
     l_loadOptions.normalize_tangents = true;
 
     // 単位変換

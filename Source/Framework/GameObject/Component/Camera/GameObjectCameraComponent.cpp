@@ -32,11 +32,11 @@ void FWK::GameObjectCameraComponent::PostLateUpdate()
     const auto& l_owner = GetREFOwner().lock();
 
     if (!l_owner) { return; }
-    
+
     const auto& l_transformComponent = l_owner->GetVALTransformComponent().lock();
 
     if (!l_transformComponent) { return; }
-    
+
     // エディター表示中もシーンカメラの定数バッファ内容は最新へ保つ
     // (カリング可視化などがシーンカメラの値を参照するため)
     m_camera.ApplyCameraMatrix(l_transformComponent->GetREFMatrix());

@@ -30,9 +30,9 @@ FWK::Graphics::DynamicBufferUploaderBase::DynamicBufferUploaderBase(DynamicBuffe
     m_currentElementIndex(a_other.m_currentElementIndex),
     m_elementStrideSize  (a_other.m_elementStrideSize)
 {
-    // UploadBufferの所有権は移動先へ渡っている。
+    // UploadBufferの所有権は移動先へ渡っている
     // 移動元が作成済み状態に見えないよう、
-    // 可変状態を初期値へ戻す。
+    // 可変状態を初期値へ戻す
     a_other.m_createCount = k_invalidCreateCount;
 
     a_other.m_currentElementIndex = k_initialElementBufferIndex;

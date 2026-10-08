@@ -28,7 +28,7 @@ namespace FWK::Editor
         void PasteGameObjects            (      WorldOutlinerEditorWindowClipboard& a_clipboard,                EditorGameObjectSelectionState&     a_gameObjectSelectionState, Scene& a_scene) const;
 
     private:
-    
+
         static constexpr std::size_t k_rootPasteParentCount = 1ULL;
 
         Struct::DestroyedGameObjectRecord FetchVALDestroyedGameObjectRecord(const std::weak_ptr<GameObject>& a_gameObject) const;

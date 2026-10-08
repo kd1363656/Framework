@@ -37,9 +37,9 @@ namespace FWK::Graphics
 
         bool NormalizeModelVertexBoneWeight(Struct::SkeletalAnimationModelVertex& a_modelVertex) const;
 
-        TypeAlias::Math::Vector3 FetchLocalVertexPosition(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
-        TypeAlias::Math::Vector3 FetchLocalVertexNormal  (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
-        TypeAlias::Math::Vector4 FetchLocalVertexTangent (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
+        TypeAlias::Math::Vector3 FetchVALLocalVertexPosition(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
+        TypeAlias::Math::Vector3 FetchVALLocalVertexNormal  (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
+        TypeAlias::Math::Vector4 FetchVALLocalVertexTangent (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
 
         static constexpr float k_emptyBoneWeight = 0.0F;
 

@@ -50,13 +50,13 @@ namespace FWK::Graphics
 
         bool CreateDefaultTexturesForBatchUpload(const Device& a_device, const GPUMemoryAllocator& a_gpuMemoryAllocator, TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-        void CreateAndRegisterPendingTextureForBachUpload(const DirectX::ScratchImage&              a_scratchImage,
-                                                          const std::filesystem::path&              a_filePath,
-                                                          const Device&                             a_device,
-                                                          const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                                                          const DirectX::TexMetadata&               a_texMetadata,
-                                                                TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
-                                                                Struct::TextureLoadResult&          a_textureLoadResult);
+        void CreateAndRegisterPendingTextureForBatchUpload(const DirectX::ScratchImage&              a_scratchImage,
+                                                           const std::filesystem::path&              a_filePath,
+                                                           const Device&                             a_device,
+                                                           const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
+                                                           const DirectX::TexMetadata&               a_texMetadata,
+                                                                 TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool,
+                                                                 Struct::TextureLoadResult&          a_textureLoadResult);
 
         bool TryResolveCachedTextureResult(const std::filesystem::path& a_filePath, Struct::TextureLoadResult& a_textureLoadResult);
 

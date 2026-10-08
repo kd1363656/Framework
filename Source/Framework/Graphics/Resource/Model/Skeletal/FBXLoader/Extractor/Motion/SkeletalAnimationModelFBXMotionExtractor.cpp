@@ -1,6 +1,6 @@
 ﻿#include "SkeletalAnimationModelFBXMotionExtractor.h"
 
-bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::ExtractModelMotionSequenceList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_scene* a_fbxScene, std::vector<Struct::SkeletalAnimationModelMotionSequence>& a_modelMotionSequenceList) const
+bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::ExtractModelMotionSequenceList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_scene * a_fbxScene, std::vector<Struct::SkeletalAnimationModelMotionSequence>& a_modelMotionSequenceList) const
 {
     a_modelMotionSequenceList.clear();
 
@@ -36,7 +36,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::ExtractModelMotion
     return true;
 }
 
-FWK::Struct::SkeletalAnimationModelKeyFrame FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelKeyFrame(const double& a_timeSecond, const ufbx_baked_node* a_fbxBakedNode) const
+FWK::Struct::SkeletalAnimationModelKeyFrame FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelKeyFrame(const double& a_timeSecond, const ufbx_baked_node * a_fbxBakedNode) const
 {
     Struct::SkeletalAnimationModelKeyFrame l_modelKeyFrame = {};
 
@@ -178,7 +178,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
     auto* l_fbxBakedAnimation = ufbx_bake_anim(a_fbxScene,
                                                a_fbxAnimationStack->anim,
                                                &l_bakeOptions,
-                                               &l_error );
+                                               &l_error);
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_fbxBakedAnimation, "ufbx_bake_animによるAnimationのBakeに失敗しました。", false);
 
@@ -186,10 +186,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
     a_modelMotionSequence.m_frameRate  = static_cast<float>                 (l_animationFrameRate);
 
     // Bake済みAnimationからMotionSequenceを作成する
-    const auto l_isCreated = CreateModelMotionSequenceFromBakedAnimation(a_boneNodeIndexMap,
-                                                                         a_fbxScene,
-                                                                         l_fbxBakedAnimation,
-                                                                         a_modelMotionSequence);
+    const auto& l_isCreated = CreateModelMotionSequenceFromBakedAnimation(a_boneNodeIndexMap,
+                                                                          a_fbxScene,
+                                                                          l_fbxBakedAnimation,
+                                                                          a_modelMotionSequence);
 
     // ufbx_bake_anim()で確保されたAnimationを明示的に解放する
     ufbx_free_baked_anim(l_fbxBakedAnimation);

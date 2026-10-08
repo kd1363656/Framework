@@ -69,8 +69,8 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
     // CreateFileW(開くDirectoryの絶対Path、
     //             Directory変更通知を取得するためのAccess権、
     //             他ProcessがこのDirectoryをRead/ Write / Deleteできる共有設定、
-    //             Security設定、nullptrなら既定Securityを使用する。
-    //             既に存在するDirectoryだけを開く設定。
+    //             Security設定、nullptrなら既定Securityを使用する
+    //             既に存在するDirectoryだけを開く設定
     //             Directoryを開く設定 + 非同期I/を有効化する設定
     //             TemplateHandle今回は使用しないためnullptr);
     m_directoryHandle = CreateFileW(l_absoluteDirectoryPath.c_str(),
@@ -122,7 +122,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Prepare(const std::f
     // windowsへ最初のDirectory変更通知Readを登録する
     //  CreateFileW()でHandleを取得下だけでは、Directory変更追加はまだ取得できない
     // PrepareNotificationRead()内部でReadDirectoryChangesExW()を呼ぶことで、
-    // このDirectoryに変更が発生したらNotificationBufferへ書き込んでください
+    // このDirectoryに変更が発生したらNotificationBufferへ書き込んでもらう
     // とWindowsへ非同期Readを登録する
     if (PrepareNotificationRead()) { return; }
 
@@ -141,27 +141,27 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
         return false;
     }
 
-    bool l_requiresFolderTreeRefresh = false;
+    bool l_shouldRefreshFolderTree = false;
 
     // ReadDirectoryChangesExW()の非同期Readが完了したか確認する
     // WaitForSingleObject(状態を確認するNotificationEventHandle,
     //                     最大待機時間);
-    const auto l_waitResult = WaitForSingleObject(m_notificationEventHandle, k_noWaitMilliseconds);
+    const auto& l_waitResult = WaitForSingleObject(m_notificationEventHandle, k_noWaitMilliseconds);
 
     // WAIT_TIMEOUTは、NotificationEventがまだSignal状態ではない
     // つまり今Frameでは新しいWindows通知が届いていない状態
     if (l_waitResult == WAIT_TIMEOUT)
     {
-        l_requiresFolderTreeRefresh = m_notificationProcessor.ProcessExpiredPendingFilePathChange();
+        l_shouldRefreshFolderTree = m_notificationProcessor.ProcessExpiredPendingFilePathChange();
 
         // 前FrameでFile削除等に失敗しRetryになったChangeは
         // 新しいWindows通知がなくても再度Applyする必要がある
         m_notificationProcessor.ApplyDirectoryChangeList(a_assetFilePathRegistry, a_sceneManager);
 
-        return l_requiresFolderTreeRefresh;
+        return l_shouldRefreshFolderTree;
     }
 
-    // WaitForSingleObject()事態が失敗した場合。
+    // WaitForSingleObject()事態が失敗した場合
     // EventHandle等の監視状態を信頼できないため
     // 現在のWatcherをReleaseして中途半端な状態を残さない
     if (l_waitResult == WAIT_FAILED)
@@ -285,16 +285,16 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
     }
 
     // Watcher自身は、
-    // ADDED / REMOVED / RENAMED_OLD_NAME / RENAMED_NEW_NAMEを解釈しない。
+    // ADDED / REMOVED / RENAMED_OLD_NAME / RENAMED_NEW_NAMEを解釈しない
     // NotificationProcessorへ
     // 監視RootPathとWindowsが書いたByte数を渡して、
-    // Add/Delete/Rename/Move判定を任せる。
-    l_requiresFolderTreeRefresh = m_notificationProcessor.ProcessNotificationBuffer(m_directoryPath, l_writtenByteSize);
+    // Add/Delete/Rename/Move判定を任せる
+    l_shouldRefreshFolderTree = m_notificationProcessor.ProcessNotificationBuffer(m_directoryPath, l_writtenByteSize);
 
     // Buffer内のNew側通知を全て先に処理した後で、
     // 期限切れPendingを確認する
-    l_requiresFolderTreeRefresh = m_notificationProcessor.ProcessExpiredPendingFilePathChange() ||
-                                  l_requiresFolderTreeRefresh;
+    l_shouldRefreshFolderTree = m_notificationProcessor.ProcessExpiredPendingFilePathChange() ||
+                                  l_shouldRefreshFolderTree;
 
     // AddChange等のApply()では、
     // 不正Assetをstd::filesystem::remove()する場合がある
@@ -316,7 +316,7 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Synchronize(AssetFil
         return true;
     }
 
-    return l_requiresFolderTreeRefresh;
+    return l_shouldRefreshFolderTree;
 }
 
 void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
@@ -399,7 +399,6 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::Release()
     m_notificationProcessor.Release();
 
     m_isNotificationReadPending = false;
-
 }
 
 bool FWK::Editor::AssetBrowserEditorWindowDirectoryWatcher::PrepareNotificationRead()

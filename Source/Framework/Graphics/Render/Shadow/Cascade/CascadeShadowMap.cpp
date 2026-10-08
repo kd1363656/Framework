@@ -13,7 +13,7 @@ bool FWK::Graphics::CascadeShadowMap::Create(const Device&                      
                                                    TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     // Cascade Shadow Mapは通常描画時にShaderから読み取るため、
-    // SRVFormatが必須になる。
+    // SRVFormatが必須になる
     FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_srvFormat == DXGI_FORMAT_UNKNOWN,                                                         "CascadeShadowMapのSRVFormatが無効のため、作成処理に失敗しました。",                       false);
     FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_mipLevels != k_requiredMIPLevelCount,                                                     "CascadeShadowMapのMIPLevelsがOneではないため、作成処理に失敗しました。",                  false);
     FWK_ASSERT_RETURN_VALUE_IF(m_depthStencilTextureSettings.m_sampleCount != k_requiredSampleCount,                                                     "CascadeShadowMapのSampleCountがOneではないため、作成処理に失敗しました。",                false);
@@ -27,7 +27,7 @@ bool FWK::Graphics::CascadeShadowMap::Create(const Device&                      
     m_cascadeDataList.resize(m_depthStencilTextureSettings.m_arraySize);
 
     // ShadowMapの解像度から、
-    // Shadow描画専用のViewportとScissorRECTを設定する。
+    // Shadow描画専用のViewportとScissorRECTを設定する
     FWK_ASSERT_RETURN_VALUE_IF(!m_renderArea.Setup(m_resolution, m_resolution), "CascadeShadowMap用RenderAreaの設定処理に失敗しました。", false);
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_depthStencilTexture.Create(a_device,
@@ -110,7 +110,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     }
 
     // Directional LightのDirectionは、
-    // 光が進んでいく方向を表す。
+    // 光が進んでいく方向を表す
     // LightCameraは、この方向とは反対側に配置して
     // Cascadeの中心を見るようにする
     auto l_lightDirection = l_cbLightPass->m_directionalLight.m_direction;
@@ -152,10 +152,10 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
     l_stableLightUp.Normalize();
 
-    // 現在作成されているCascade数を取得する。
+    // 現在作成されているCascade数を取得する
     // Cascadeの番号をCameraFrustum全体に対する
-    // Zeroより大きくOne以下の割合へ変換する際に使用する。
-    const auto l_cascadeCount = static_cast<float>(m_cascadeDataList.size());
+    // Zeroより大きくOne以下の割合へ変換する際に使用する
+    const auto& l_cascadeCount = static_cast<float>(m_cascadeDataList.size());
 
     // 最初のCascadeはCameraのNearPlaneから始まる
     // Camera Frustum全体におけるNearPlaneの位置は、
@@ -171,12 +171,12 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
         // Logarithmic分割によるCascadeの終端距離
         // Cameraに近い部分を細かく、
-        // 遠い部分を広く分割する。
+        // 遠い部分を広く分割する
         // これにより、見た目への影響が大きい近距離へ
         // ShadowMapの解像度を多く割り当てられる
         const float l_logarithmicSplitDepth = l_cbCameraPass->m_nearClip * std::pow(l_shadowClipRatio, l_cascadePosition);
 
-        // Uniform分割によるCascadeの終端距離。
+        // Uniform分割によるCascadeの終端距離
         // CameraのNearClipからFarClipまでを、
         // 完全に等間隔で分割する
         const float l_uniformSplitDepth = l_cbCameraPass->m_nearClip + l_shadowClipRange * l_cascadePosition;
@@ -194,21 +194,21 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         const float l_currentSplitRatio = (l_splitDepth - l_cbCameraPass->m_nearClip) / l_cameraClipRange;
 
         // 現在のCascadeが担当する範囲だけを切り出した、
-        // World空間のFrustum Cornerを保存する。
+        // World空間のFrustum Cornerを保存する
         std::array<TypeAlias::Math::Vector3, k_frustumCornerCount> l_cascadeFrustumCornerList = {};
 
         // 全体FrustumのNearPlaneとFarPlaneの対応するCornerを使い、
-        // 現在のCascadeの開始位置と終了位置を補間して求める。
+        // 現在のCascadeの開始位置と終了位置を補間して求める
         for (std::size_t l_cornerIndex = 0ULL; l_cornerIndex < k_frustumPlaneCornerCount; ++l_cornerIndex)
         {
             const auto& l_nearCorner = l_worldFrustumCornerList[l_cornerIndex];
-            const auto& l_farCorner = l_worldFrustumCornerList[l_cornerIndex + k_frustumPlaneCornerCount];
+            const auto& l_farCorner  = l_worldFrustumCornerList[l_cornerIndex + k_frustumPlaneCornerCount];
 
             // CameraFrustum全体のNearCornerから
             // 対応するFarCornerへ向かうベクトル
             const auto& l_nearToFar = l_farCorner - l_nearCorner;
 
-            // 現在のCascadeのNear側Corner。
+            // 現在のCascadeのNear側Corner
             // 最初のCascadeではCameraのNearPlane、
             // それ以降は一つ前のCascadeの終端位置になる
             l_cascadeFrustumCornerList[l_cornerIndex] = l_nearCorner + l_nearToFar * l_previousSplitRatio;
@@ -218,8 +218,8 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         }
 
         // 現在のCascadeの8つのCornerを合計し、
-        // その平均からCascade領域の中心を求める。
-        // この中心をLightCameraが見るTargetとして使用する。
+        // その平均からCascade領域の中心を求める
+        // この中心をLightCameraが見るTargetとして使用する
         auto l_cascadeCenter = TypeAlias::Math::Vector3::Zero;
 
         for (const auto& l_corner : l_cascadeFrustumCornerList)
@@ -244,7 +244,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         // ShadowProjectionが毎Frame拡大縮小しないようにする
         l_cascadeRadius = std::ceil(l_cascadeRadius * k_cascadeRadiusQuantizationScale) / k_cascadeRadiusQuantizationScale;
 
-        const auto l_shadowMapResolution = static_cast<float>(m_resolution);
+        const auto& l_shadowMapResolution = static_cast<float>(m_resolution);
 
         // 量子化済みRadiusから、最初の一TexelのWorldサイズを求める
         const float l_initialWorldUnitPerTexel = (l_cascadeRadius * k_orthographicDiameterScale) / l_shadowMapResolution;
@@ -290,14 +290,10 @@ bool FWK::Graphics::CascadeShadowMap::Update()
         const auto& l_lightViewMatrix = DirectX::XMMatrixLookAtLH(DirectX::XMLoadFloat3(&l_lightPosition), DirectX::XMLoadFloat3(&l_stableCascadeCenter), DirectX::XMLoadFloat3(&l_stableLightUp));
 
         // Light View空間へ変換したCascadeFrustumを囲む
-        // AxisAlignedBoundingBoxの最小座標。
-        TypeAlias::Math::Vector3 l_min = { -l_cascadeRadius,
-                                           -l_cascadeRadius,
-                                           std::numeric_limits<float>::max() };
+        // AxisAlignedBoundingBoxの最小座標
+        TypeAlias::Math::Vector3 l_min = { -l_cascadeRadius, -l_cascadeRadius, std::numeric_limits<float>::max() };
 
-        TypeAlias::Math::Vector3 l_max = { l_cascadeRadius,
-                                           l_cascadeRadius,
-                                           std::numeric_limits<float>::lowest() };
+        TypeAlias::Math::Vector3 l_max = { l_cascadeRadius, l_cascadeRadius, std::numeric_limits<float>::lowest() };
 
         // Cascadeの8つのCornerをLight View空間へ変換し、
         // そのすべてを収める最小・最大範囲を求める
@@ -354,7 +350,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
         // 現在のCascadeがCameraからどの距離までを担当するか保存する
         // 後のLitShaderでPixelのView空間Depthと比較し、
-        // 使用するCascadeを選択する。
+        // 使用するCascadeを選択する
         l_cascadeData.m_splitDepth = l_splitDepth;
 
         // 次のCascadeは、現在のCascadeの終端から開始する

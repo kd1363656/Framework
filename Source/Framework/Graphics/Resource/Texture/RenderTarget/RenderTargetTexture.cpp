@@ -23,6 +23,7 @@ bool FWK::Graphics::RenderTargetTexture::Create(const Device&                   
 
     return true;
 }
+
 bool FWK::Graphics::RenderTargetTexture::Resize(const Device&                             a_device,
                                                 const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                                 const UINT64&                             a_retiredFenceValue,
@@ -78,13 +79,13 @@ bool FWK::Graphics::RenderTargetTexture::CreateGPUResource(const GPUMemoryAlloca
     l_clearValue.Color[k_clearColorIndexA] = m_clearColor.A();
 
     const auto& l_resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_format,
-                                                             a_width,
-                                                             a_height,
-                                                             Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
-                                                             Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels,
-                                                             Constant::k_defaultSampleCount,
-                                                             Constant::k_defaultSampleQuality,
-                                                             D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+                                                              a_width,
+                                                              a_height,
+                                                              Converter::TextureBinaryConverter::k_defaultTexture2DArraySize,
+                                                              Converter::TextureBinaryConverter::k_defaultTexture2DMIPLevels,
+                                                              Constant::k_defaultSampleCount,
+                                                              Constant::k_defaultSampleQuality,
+                                                              D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
     FWK_ASSERT_RETURN_VALUE_IF(!a_gpuMemoryAllocator.CreateTextureResource(l_resourceDesc,
                                                                            &l_clearValue,
@@ -105,7 +106,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateRTV(const Device& a_device, TypeA
     FWK_ASSERT_RETURN_VALUE_IF(!l_device,                 "デバイスが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。",    false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のRTVの作成に失敗しました。", false);
 
-    const auto l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
+    const auto& l_rtvDescriptorIndex = a_rtvDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_rtvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "RTVDescriptorIndexの確保に失敗しました。", false);
 
@@ -135,7 +136,7 @@ bool FWK::Graphics::RenderTargetTexture::CreateSRV(const Device& a_device, TypeA
     FWK_ASSERT_RETURN_VALUE_IF(!l_device,                 "デバイスが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。",    false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_gpuResource.m_resource, "GPUResourceが作成されておらず、RenderTargetTexture用のSRVの作成に失敗しました。", false);
 
-    const auto l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
+    const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRVDescriptorIndexの確保に失敗しました。", false);
 

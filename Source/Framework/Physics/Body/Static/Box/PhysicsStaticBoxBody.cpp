@@ -27,9 +27,9 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticBoxBody::CreateShape() cons
                                {});
 
     const auto&                 l_halfExtent = Utility::DirectXMathVector3ToJoltVec3(m_halfExtent);
-    const JPH::BoxShapeSettings l_boxShapeSettingss{ l_halfExtent };
+    const JPH::BoxShapeSettings l_boxShapeSettings{ l_halfExtent };
 
-    const auto& l_shapeResult = l_boxShapeSettingss.Create();
+    const auto& l_shapeResult = l_boxShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_shapeResult.HasError(), "StaticBoxBody用BoxShapeの作成に失敗しました。", {});
 

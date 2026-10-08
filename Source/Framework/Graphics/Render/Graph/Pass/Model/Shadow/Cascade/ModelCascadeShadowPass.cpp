@@ -54,7 +54,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
     // StaticModelとSkeletalAnimationModelのDepthを書き込む
     for (UINT l_cascadeIndex = 0U; l_cascadeIndex < l_depthStencilTextureSettings.m_arraySize; ++l_cascadeIndex)
     {
-        const auto l_dsvDescriptorIndex = l_cascadeShadowMap.FetchVALCascadeDSVDescriptorIndex(l_cascadeIndex);
+        const auto& l_dsvDescriptorIndex = l_cascadeShadowMap.FetchVALCascadeDSVDescriptorIndex(l_cascadeIndex);
 
         FWK_ASSERT_RETURN_IF(l_dsvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "Cascadeに知王するDSVDescriptorIndexが無効なため、ModelCascadeShadowPassを実行できませんでした。");
 
@@ -91,7 +91,7 @@ void FWK::Graphics::ModelCascadeShadowPass::Execute(const ResourceContext& a_res
         FWK_ASSERT_RETURN_IF(!l_skeletalAnimationModelRootSignature, "SkeletalAnimationModelCascadeShadow用RootSignatureを取得できないため、ModelCascadeShadowPassを実行できません。");
 
         // StaticとSkeletalのShadowPipelineは、
-        // 同じModelCascadeShadowRootSignatureを使う設計。
+        // 同じModelCascadeShadowRootSignatureを使う設計
         FWK_ASSERT_RETURN_IF(l_staticModelRootSignature != l_skeletalAnimationModelRootSignature, "StaticとSkeletalのCascade Shadow Pipeline Stateが異なるRootSignatureを使用しています。");
 
         // SkeletalAnimationShadowの定数バッファを書き込む

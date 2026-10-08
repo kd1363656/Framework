@@ -40,16 +40,16 @@ namespace FWK
         {
             FWK_ASSERT_RETURN_VALUE_IF(a_uuid.is_nil(), "UUIDが無効値を指し示しており、UUIDMapからの削除に失敗しました。", false);
 
-            const auto& l_itr = m_uuidMap.find(a_uuid);
+            const auto& l_uuidITR = m_uuidMap.find(a_uuid);
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_itr == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_uuidITR == m_uuidMap.end(), "指定されたUUIDが登録されていないため、UUIDMapからの削除に失敗しました。", false);
 
-            m_uuidMap.erase(l_itr);
+            m_uuidMap.erase(l_uuidITR);
 
             return true;
         }
 
-        bool Contains(const boost::uuids::uuid& a_uuid) const 
+        bool Contains(const boost::uuids::uuid& a_uuid) const
         {
             return m_uuidMap.contains(a_uuid);
         }
@@ -63,11 +63,11 @@ namespace FWK
         {
             if (a_uuid.is_nil()) { return {}; }
 
-            const auto& l_itr = m_uuidMap.find(a_uuid);
+            const auto& l_uuidITR = m_uuidMap.find(a_uuid);
 
-            if (l_itr == m_uuidMap.end()) { return {}; }
+            if (l_uuidITR == m_uuidMap.end()) { return {}; }
 
-            return l_itr->second;
+            return l_uuidITR->second;
         }
 
     private:

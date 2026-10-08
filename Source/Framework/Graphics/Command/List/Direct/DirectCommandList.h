@@ -68,7 +68,7 @@ namespace FWK::Graphics
         static constexpr UINT k_allRECTClear               = 0U;
 
         static constexpr UINT k_setViewportNUM       = 1U;
-        static constexpr UINT k_setScissorRectNUM    = 1U;
+        static constexpr UINT k_setScissorRECTNUM    = 1U;
 
         static constexpr UINT k_invalidSizeInBytes        = 0U;
         static constexpr UINT k_vertexBufferViewStartSlot = 0U;

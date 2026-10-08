@@ -38,8 +38,8 @@ namespace FWK::Editor
         AssetBrowserEditorWindowDirectoryNotificationProcessor(const AssetBrowserEditorWindowDirectoryNotificationProcessor&)  = delete;
         AssetBrowserEditorWindowDirectoryNotificationProcessor(      AssetBrowserEditorWindowDirectoryNotificationProcessor&&) = delete;
 
-        AssetBrowserEditorWindowDirectoryNotificationProcessor& operator=(const AssetBrowserEditorWindowDirectoryNotificationProcessor&) = delete;
-        AssetBrowserEditorWindowDirectoryNotificationProcessor& operator=(AssetBrowserEditorWindowDirectoryNotificationProcessor&&)      = delete;
+        AssetBrowserEditorWindowDirectoryNotificationProcessor& operator=(const AssetBrowserEditorWindowDirectoryNotificationProcessor&)  = delete;
+        AssetBrowserEditorWindowDirectoryNotificationProcessor& operator=(      AssetBrowserEditorWindowDirectoryNotificationProcessor&&) = delete;
 
         bool ProcessNotificationBuffer(const std::filesystem::path& a_directoryPath, const DWORD a_writtenByteSize);
 
