@@ -10,7 +10,11 @@ void FWK::GameObjectCameraComponent::Deserialize(const nlohmann::json& a_rootJso
 
 void FWK::GameObjectCameraComponent::PostDeserialize()
 {
-    m_camera.Setup();
+    const auto& l_application = Application::GetInstance    ();
+    const auto& l_window      = l_application.GetREFWindow  ();
+
+    m_camera.SetAspectRatio(l_window.GetVALAspectRatio());
+    m_camera.Setup         ();
 }
 
 void FWK::GameObjectCameraComponent::EarlyUpdate()

@@ -1,0 +1,46 @@
+{
+    "Name": "Camera",
+    "Prefab": {
+        "ChildList": [],
+        "ComponentList": [
+            {
+                "ComponentData": {
+                    "FarClip": 2000.0,
+                    "FovYDegree": 60.0,
+                    "IsDisable": false,
+                    "IsPrefabOrigin": true,
+                    "NearClip": 0.009999999776482582,
+                    "UUID": "c346fe24-1df8-4f68-b0e9-b374c97ac9eb"
+                },
+                "ComponentType": "GameObjectCameraComponent",
+                "ComponentUUID": "c346fe24-1df8-4f68-b0e9-b374c97ac9eb"
+            }
+        ],
+        "IsPrefabOrigin": true,
+        "Name": "Camera",
+        "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
+        "PrefabUUID": "a66a9320-d61d-45bc-8e3f-94cdd5836f90",
+        "TransformComponent": {
+            "MatrixUpdateMode": "GameObjectTransformComponentMatrixUpdateStandaloneMode",
+            "MatrixUpdateModeData": {
+                "IsRotateAroundPosition": false
+            },
+            "Position": {
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0
+            },
+            "Rotation": {
+                "W": 1.0,
+                "X": -0.0,
+                "Y": 0.0,
+                "Z": -0.0
+            },
+            "Scale": {
+                "X": 1.0,
+                "Y": 1.0,
+                "Z": 1.0
+            }
+        }
+    }
+}

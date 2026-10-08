@@ -1,6 +1,6 @@
 ﻿#include "GameObjectCameraComponentInspector.h"
 
-void FWK::GameObjectCameraComponentInspector::EditInspector(GameObjectCameraComponent& a_cameraComponent)
+void FWK::GameObjectCameraComponentInspector::EditInspector(GameObjectCameraComponent& a_cameraComponent) const
 {
     auto& l_camera = a_cameraComponent.GetMutableREFCamera();
 
@@ -22,6 +22,12 @@ void FWK::GameObjectCameraComponentInspector::EditInspector(GameObjectCameraComp
     if (float l_nearClip = l_camera.GetVALNearClip();
         ImGui::DragFloat(k_nearClipLabel.data(), &l_nearClip, Constant::k_imguiDefaultDragValue))
     {
+        // 0.0以下になられるとパースペクティブFOVを作成できないから
+        if (l_nearClip <= Constant::k_cameraDefaultNearClip)
+        {
+            l_nearClip = Constant::k_cameraDefaultNearClip;
+        }
+
         l_camera.SetNearClip(l_nearClip);
         l_camera.Setup      ();
     }

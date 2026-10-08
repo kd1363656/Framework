@@ -117,15 +117,11 @@ void FWK::Graphics::Renderer::BeginFrame(const ResourceContext& a_resourceContex
 }
 void FWK::Graphics::Renderer::Execute(const ResourceContext& a_resourceContext)
 {
-    const auto& l_currentFrameResource = m_currentFrameResource.lock();
-
-    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画開始処理に失敗しました。");
-
     // メインビューを描画する
-    m_renderGraph.Execute(a_resourceContext, Enum::RenderViewType::Main, *this);
+    m_renderGraph.Execute(a_resourceContext, *this);
 
     // プレビューが依頼されている場合は、メインビューの後にプレビュー用のビューを描画する
-    ExecutePreviewView(a_resourceContext, *l_currentFrameResource);
+    ExecutePreviewView(a_resourceContext);
 }
 void FWK::Graphics::Renderer::EndFrame()
 {
@@ -424,7 +420,7 @@ void FWK::Graphics::Renderer::SyncSpritePassDrawRequest()
     l_spriteScreenPassDrawRequest->SetSourceConstantBuffer(m_cbSpritePass);
 }
 
-void FWK::Graphics::Renderer::ExecutePreviewView(const ResourceContext& a_resourceContext, FrameResource& a_frameResource)
+void FWK::Graphics::Renderer::ExecutePreviewView(const ResourceContext& a_resourceContext)
 {
     // このフレームでプレビューを描かない場合は、何もしない
     if (!m_isPreviewViewActive) { return; }
@@ -439,12 +435,8 @@ void FWK::Graphics::Renderer::ExecutePreviewView(const ResourceContext& a_resour
         return;
     }
 
-    // 描画の対象をプレビュー用のテクスチャ一式へ切り替えて、プレビューのビューを描画する
-    a_frameResource.SetActiveViewType(Enum::RenderViewType::Preview);
-
-    m_renderGraph.Execute(a_resourceContext, Enum::RenderViewType::Preview, *this);
-
-    // 描画が終わったので、メインビューへ戻す
-    // (ビューポートの表示などが、メインビューのテクスチャを参照するため)
-    a_frameResource.SetActiveViewType(Enum::RenderViewType::Main);
+    // プレビューのビューを描画する
+    // 描画の対象をプレビュー用のテクスチャ一式へ切り替える処理と、
+    // 描き終えた後にメインビューとバックバッファへ戻す処理は、RenderGraph::ExecutePreviewViewが行う
+    m_renderGraph.ExecutePreviewView(a_resourceContext, *this);
 }

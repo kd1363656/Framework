@@ -65,9 +65,8 @@ void FWK::Editor::DetailsEditorGameObjectAddComponentPopupDrawer::DrawSearchBar(
 
     ImGui::SameLine();
 
-    const bool l_isSearching = IsSearching();
-
-    float l_inputTextWidth = ImGui::GetContentRegionAvail().x;
+    const bool  l_isSearching    = IsSearching                 ();
+          float l_inputTextWidth = ImGui::GetContentRegionAvail().x;
 
     // 1文字でも入力されているときは、検索欄の右に×ボタンを置くため、その分だけ検索欄を短くする
     // ×ボタンの幅 = アイコンの幅 + 左右の余白(FramePadding) + 検索欄との間隔(ItemSpacing)
@@ -316,10 +315,12 @@ void FWK::Editor::DetailsEditorGameObjectAddComponentPopupDrawer::AddComponent(c
         return;
     }
 
-    auto& l_componentContainer = a_gameObject.GetMutableREFComponentContainer();
-
     // Owner・UUIDの発行・Unique/Multiのマップへの振り分けはAddComponentが行う
-    if (!l_componentContainer.AddComponent(l_component)) { return; }
+    if (auto& l_componentContainer = a_gameObject.GetMutableREFComponentContainer();
+        !l_componentContainer.AddComponent(l_component))
+    {
+        return;
+    }
 
     // シーンを読み込んだときと同じく、追加した後にPostDeserializeを呼んで初期設定を終える
     // 例 : カメラコンポーネントはここでカメラの行列を準備する

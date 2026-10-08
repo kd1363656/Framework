@@ -5,6 +5,11 @@
                 "FilePath": "Asset/Data/Scene/Title/Title.json",
                 "FilePathRegistryType": "AssetFilePathRegistryType::Scene",
                 "UUID": "81d90966-31c3-400c-ae00-8c9e81706a55"
+            },
+            {
+                "FilePath": "Asset\\Data\\Prefab\\Camera\\Camera.json",
+                "FilePathRegistryType": "AssetFilePathRegistryType::Prefab",
+                "UUID": "a66a9320-d61d-45bc-8e3f-94cdd5836f90"
             }
         ]
     }

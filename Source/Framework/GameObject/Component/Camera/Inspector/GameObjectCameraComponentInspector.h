@@ -15,7 +15,7 @@ namespace FWK
         ~GameObjectCameraComponentInspector() = default;
 
 
-        void EditInspector(GameObjectCameraComponent& a_cameraComponent);
+        void EditInspector(GameObjectCameraComponent& a_cameraComponent) const;
 
     private:
 

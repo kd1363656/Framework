@@ -393,7 +393,10 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawSceneNode(Scene& a_scene, Edito
 
     // 選択中・ホバー中の背景色をエディタ共通ルールでPushする
     // 他ウィンドウのアイテムと同じ選択色で描画される
-    Utility::IMGUIPushItemHighlightColors(m_sceneSelectionState.GetVALIsSceneSelected(), a_editorManager.GetVALCurrentActiveWindowStaticTypeID() == GetREFTypeINFO().k_staticTypeID);
+    Utility::IMGUIPushItemHighlightColors(m_sceneSelectionState.GetVALIsSceneSelected(),
+                                          a_editorManager.GetVALCurrentActiveWindowStaticTypeID() == GetREFTypeINFO().k_staticTypeID,
+                                          false,
+                                          l_isRenaming);
 
     const bool l_isNodeOpen = ImGui::TreeNodeEx(l_nodeLabel.c_str(), l_treeNodeFlags);
 
@@ -582,18 +585,20 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
 
     ImGui::PushStyleColor(ImGuiCol_Text, l_textColor);
 
-    // 選択中・ホバー中・Cut対象の背景色をエディタ共通ルールでPushする
+    // 選択中・ホバー中・Cut対象・リネーム対象の背景色をエディタ共通ルールでPushする
     // 他ウィンドウのアイテムと同じ選択色で描画される
+    // リネーム対象かどうかは、背景色の決定にも使うため、Pushする前に調べる
     const bool l_isSelected  = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
     const bool l_isCutTarget = m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
                                m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut;
+    const bool l_isRenaming  = m_renameState.m_isActive       &&
+                               !m_renameState.m_isSceneTarget &&
+                               m_renameState.m_targetGameObject.lock() == l_gameObject;
 
-    Utility::IMGUIPushItemHighlightColors(l_isSelected, a_editorManager.GetVALCurrentActiveWindowStaticTypeID() == GetREFTypeINFO().k_staticTypeID, l_isCutTarget);
-
-    // このノードがリネーム対象かどうか
-    const bool l_isRenaming = m_renameState.m_isActive       &&
-                              !m_renameState.m_isSceneTarget &&
-                              m_renameState.m_targetGameObject.lock() == l_gameObject;
+    Utility::IMGUIPushItemHighlightColors(l_isSelected,
+                                          a_editorManager.GetVALCurrentActiveWindowStaticTypeID() == GetREFTypeINFO().k_staticTypeID,
+                                          l_isCutTarget,
+                                          l_isRenaming);
 
     const auto& l_name  = l_gameObject->GetREFName();
           auto  l_label = l_name.empty            () ? std::string{ Constant::k_gameObjectString } : l_name;

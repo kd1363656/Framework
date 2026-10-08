@@ -19,16 +19,16 @@
                     "MoveSpeed": 5.0,
                     "NearClip": 0.009999999776482582,
                     "Position": {
-                        "X": 0.0,
-                        "Y": 0.0,
-                        "Z": 0.0
+                        "X": -8.143730163574219,
+                        "Y": 5.447219371795654,
+                        "Z": -10.231698036193848
                     },
                     "RotateSpeed": 0.004999999888241291,
                     "Rotation": {
-                        "W": 0.9309290647506714,
-                        "X": -0.030265679582953453,
-                        "Y": 0.3637515902519226,
-                        "Z": 0.011826022528111935
+                        "W": 0.7788417339324951,
+                        "X": 0.3088225722312927,
+                        "Y": 0.5074862837791443,
+                        "Z": -0.20122593641281128
                     },
                     "Scale": {
                         "X": 1.0,
@@ -53,20 +53,13 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "Asset\\Data\\NewFolder (1)",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Data\\NewFolder"
-                            },
-                            {
-                                "SelectedFilePath": "Asset\\Data\\NewFolder (1)"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 },
-                "CurrentSelectFolderPath": "Asset\\Data",
+                "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Camera",
                 "EditorWindowPaneSplitter": {
-                    "PrimaryPaneSize": 100.0
+                    "PrimaryPaneSize": 210.0
                 },
                 "FolderPane": {
                     "FolderOpenStateMap": [
@@ -132,11 +125,15 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": false
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Camera",
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Title",
@@ -172,10 +169,10 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\NewFolder (1)",
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Camera",
                         "SelectedFilePathList": [
                             {
-                                "SelectedFilePath": "Asset\\Data\\NewFolder (1)"
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Camera"
                             }
                         ]
                     }

@@ -2,14 +2,26 @@
 
 namespace FWK::Utility
 {
-    inline void IMGUIPushItemHighlightColors(const bool a_isSelected, const bool a_isActiveTarget, const bool a_isCutTarget = false)
+    inline void IMGUIPushItemHighlightColors(const bool a_isSelected,
+                                             const bool a_isActiveTarget,
+                                             const bool a_isCutTarget    = false,
+                                             const bool a_isRenameTarget = false)
     {
         // デフォルトは未選択アイテムのニュートラルなグレー系
         ImVec4 l_headerColor  = Constant::k_imguiItemColor;
         ImVec4 l_hoveredColor = Constant::k_imguiItemHoveredColor;
         ImVec4 l_activeColor  = Constant::k_imguiItemActiveColor;
 
-        if (a_isCutTarget)
+        if (a_isRenameTarget)
+        {
+            // リネーム中のアイテムは、他の状態より優先して、未選択のアイテムにマウスを乗せたときと同じ色にする
+            // 選択色(青)のままだと、InputTextの選択範囲の青と重なって見分けにくいため
+            // 3色とも同じ色にして、マウスの位置で色が変わらないようにする
+            l_headerColor  = Constant::k_imguiItemHoveredColor;
+            l_hoveredColor = Constant::k_imguiItemHoveredColor;
+            l_activeColor  = Constant::k_imguiItemHoveredColor;
+        }
+        else if (a_isCutTarget)
         {
             // Cut対象は選択状態より優先してCut色を使う
             // Cut色は選択色へ半分倍率を掛けて暗くしたもの

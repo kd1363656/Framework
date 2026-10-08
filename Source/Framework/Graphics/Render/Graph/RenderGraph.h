@@ -25,9 +25,10 @@ namespace FWK::Graphics
         void Deserialize(const nlohmann::json& a_rootJson);
         void Compile    ();
 
-        void BeginFrame (const ResourceContext& a_resourceContext, Renderer& a_renderer);
-        void Execute    (const ResourceContext& a_resourceContext, const Enum::RenderViewType a_viewType, Renderer& a_renderer);
-        void EndFrame   (      Renderer&        a_renderer) const;
+        void BeginFrame        (const ResourceContext& a_resourceContext, Renderer& a_renderer);
+        void Execute           (const ResourceContext& a_resourceContext, Renderer& a_renderer);
+        void ExecutePreviewView(const ResourceContext& a_resourceContext, Renderer& a_renderer);
+        void EndFrame          (      Renderer&        a_renderer) const;
 
         nlohmann::json Serialize() const;
 
@@ -93,9 +94,12 @@ namespace FWK::Graphics
 
     private:
 
-        void BeginBackBuffer(const ResourceContext& a_resourceContext, Renderer& a_renderer) const;
+        void BeginBackBuffer              (const ResourceContext& a_resourceContext,       Renderer& a_renderer) const;
+        void RestoreBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
 
-        bool ShouldExecutePass(const RenderGraphPassBase& a_pass, const Enum::RenderViewType a_viewType) const;
+        void SetupDescriptorHeap(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
+
+        void ExecutePass(const ResourceContext& a_resourceContext, RenderGraphPassBase& a_pass, Renderer& a_renderer);
 
         void RemoveExpiredPassList();
 

@@ -573,15 +573,20 @@
          l_rootList.emplace_back    (l_gameObject);
          auto& l_physicsManager  = FWK::Physics::PhysicsManager::GetInstance  ();
          auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
+       std::min / std::max / static_cast のような関数や、後ろに .x などのメンバが続く呼び出しが混ざっても同じです。
+         const float l_regionWidth = ImGui::GetContentRegionAvail().x;
+         const auto  l_buttonWidth = std::min                    (k_addComponentButtonWidth, l_regionWidth);
      ・const 付きと const なしの宣言が並ぶときは、const なしの行を6文字下げて型の位置を揃えます。
                auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
          const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
      ・FWK_ASSERT が続くときは、メッセージの開始位置も揃えます。
-     ・色や座標の初期化子は、要素を縦に並べます。
+     ・{ } の初期化子は、要素が4つ以上なら縦に並べ、3つ以下なら1行に書きます(色・座標・大きさなど、すべて同じです)。
          inline constexpr ImVec4 k_imguiAccentColor = { 0.20F,
                                                         0.50F,
                                                         1.00F,
                                                         1.00F };
+         static constexpr ImVec2 k_itemListChildSize = { 0.0F, 240.0F };
+       要素が3つ以下なら、式が長くなっても改行して並べません(9-7 の引数と同じです)。
 9-9. 関数の中の空行
      ・return の前には空行を入れます(ブロックの最初の文が return の場合は除きます)。
      ・FWK_ASSERT の後には空行を入れます。FWK_ASSERT が続く場合は、詰めて並べます。
@@ -592,6 +597,13 @@
        間にコメントを書く場合は、コメントの前に空行を入れて、別のまとまりとして扱います。
      ・文の種類が変わるところ(宣言から呼び出しへ、代入から宣言へ など)には空行を入れます。
        同じ種類の文(宣言の連続、代入の連続、同じ関数の呼び出しの連続)は詰めてまとめます。
+       変数の宣言が続くときは、型や const の有無、右辺の内容が違っても空行を入れずにまとめ、
+       const なしの行を6文字下げて型と名前の位置を揃え、= と右辺の ( の位置も揃えます(9-8)。
+         NG : const bool l_isSearching = IsSearching();
+
+              float l_inputTextWidth = ImGui::GetContentRegionAvail().x;
+         OK : const bool  l_isSearching    = IsSearching                 ();
+                    float l_inputTextWidth = ImGui::GetContentRegionAvail().x;
      ・コメントの前には空行を入れます(ブロックの先頭は除きます)。
      ・関数の先頭と末尾には空行を入れません。
 9-10. switch は次のように書きます。
@@ -1197,7 +1209,8 @@
 [ ] GetREF / GetMutableREF / GetVAL / FetchVAL / FindPTR を使い分け、略語は大文字(REF VAL PTR ITR INFO UUID ID MIN MAX など)
 [ ] 引数が4個以上の宣言・呼び出しは1行に1引数ずつ書き、位置を揃えている(3個以下は1行で書いている)
 [ ] クラス・構造体のメンバ・引数・定数を「外部APIのクラス → std のクラス → 自作クラス → 外部APIの構造体 → std の構造体 → 自作の構造体」の順で並べている
-[ ] 続けて並ぶ = と ( を縦に揃え、const 付きと const なしの宣言は型の位置を揃えている
+[ ] 続けて並ぶ = と ( を縦に揃え(std::min などが混ざっても揃える)、const 付きと const なしの宣言は型の位置を揃えている
+[ ] { } の初期化子は、要素が4つ以上なら縦に並べ、3つ以下なら1行に書いている
 [ ] Allman スタイル、波括弧は必ず付け、return / continue の1文だけは1行 if で書いてよい(break や他の文はブロック)、else は改行
 [ ] && / || は1行に1条件、演算子は行末
 [ ] return の前、FWK_ASSERT の後、1行 if の後(1行 if が続くときは詰めて { を揃える)、文の種類が変わるところに空行がある

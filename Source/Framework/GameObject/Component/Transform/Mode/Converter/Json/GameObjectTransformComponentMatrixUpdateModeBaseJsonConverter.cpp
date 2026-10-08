@@ -14,7 +14,7 @@ nlohmann::json FWK::Converter::GameObjectTransformComponentMatrixUpdateModeBaseJ
           nlohmann::json l_rootJson               = {};
     const bool           l_isRotateAroundPosition = a_gameObjectTransformComponentMatrixUpdateModeBase.GetVALIsRotateAroundPosition();
 
-    l_rootJson[Constant::k_gameObjectTransformComponentMatrixUpdateModeBaseInitialVALIsRotateAroundPosition] = l_isRotateAroundPosition;
+    l_rootJson[k_isRotateAroundPositionJsonKey] = l_isRotateAroundPosition;
 
     return l_rootJson;
 }

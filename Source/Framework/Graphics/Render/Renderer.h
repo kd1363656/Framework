@@ -121,7 +121,7 @@ namespace FWK::Graphics
 
         void SyncSpritePassDrawRequest();
 
-        void ExecutePreviewView(const ResourceContext& a_resourceContext, FrameResource& a_frameResource);
+        void ExecutePreviewView(const ResourceContext& a_resourceContext);
 
         static constexpr std::size_t k_initialFrameResourceIndex   = 0ULL;
         static constexpr std::size_t k_frameResourceIndexIncrement = 1ULL;

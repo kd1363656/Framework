@@ -22,15 +22,14 @@ void FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTarget(const Resou
     }
 }
 
-bool FWK::Graphics::RenderGraphResourceBinder::SetupBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const
+bool FWK::Graphics::RenderGraphResourceBinder::SetupBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const
 {
-    if (!a_resourceAccess.m_isBackBuffer) { return false; }
-
-    const auto& l_swapChain         = a_renderer.GetREFSwapChain        ();
-    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList();
-
-    const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
-    const auto& l_backBufferList  = l_swapChain.GetREFBackBufferList          ();
+    // 現在のフレームで使うバックバッファを、描画先(OMのレンダーターゲット)に設定する
+    // FinalPresentPassのほかに、プレビューを描いた後で描画先をバックバッファへ戻すときにも使う
+    const auto& l_swapChain         = a_renderer.GetREFSwapChain                ();
+    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList        ();
+    const auto& l_backBufferIndex   = l_swapChain.FetchVALCurrentBackBufferIndex();
+    const auto& l_backBufferList    = l_swapChain.GetREFBackBufferList          ();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferの描画先設定に失敗しました。",      false);
     FWK_ASSERT_RETURN_VALUE_IF(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferの描画先設定に失敗しました。", false);
@@ -48,6 +47,15 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupBackBufferRenderTarget(const
     l_directCommandList.SetupRenderTarget(l_rtvDescriptorPool, l_backBuffer.m_rtvDescriptorIndex);
 
     return true;
+}
+
+bool FWK::Graphics::RenderGraphResourceBinder::SetupBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const
+{
+    if (!a_resourceAccess.m_isBackBuffer) { return false; }
+
+    // バックバッファへの書き込みを宣言しているパスなら、描画先をバックバッファにする
+    // 本体はパス以外(プレビューを描いた後に描画先を戻す処理)からも呼べるよう、引数の少ない関数にまとめてある
+    return SetupBackBufferRenderTarget(a_resourceContext, a_renderer);
 }
 bool FWK::Graphics::RenderGraphResourceBinder::SetupRenderTargetPassTextureRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {

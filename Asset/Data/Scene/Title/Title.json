@@ -1,7 +1,30 @@
 {
-    "GameObjectList": [],
+    "GameObjectList": [
+        {
+            "Diff": {
+                "ChildList": {
+                    "Added": [],
+                    "Modified": [],
+                    "RemovedUUIDList": []
+                },
+                "ComponentList": {
+                    "Added": [],
+                    "Modified": [],
+                    "RemovedUUIDList": []
+                }
+            },
+            "Name": "Camera",
+            "PrefabHierarchyNodeUUID": "00000000-0000-0000-0000-000000000000",
+            "PrefabUUID": "a66a9320-d61d-45bc-8e3f-94cdd5836f90",
+            "SceneInstanceUUID": "8f0e301e-86a7-489a-b42b-6effbae3817f"
+        }
+    ],
     "GameObjectPrefabSystem": {
-        "PrefabMap": []
+        "PrefabMap": [
+            {
+                "UUID": "a66a9320-d61d-45bc-8e3f-94cdd5836f90"
+            }
+        ]
     },
     "LightSystem": {
         "AmbientLight": {
@@ -19,9 +42,9 @@
                 "Z": 1.0
             },
             "Direction": {
-                "X": 0.40824827551841736,
-                "Y": -0.8164965510368347,
-                "Z": 0.40824827551841736
+                "X": 0.40824830532073975,
+                "Y": -0.8164966106414795,
+                "Z": 0.40824830532073975
             },
             "Intensity": 1.0
         }

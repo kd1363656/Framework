@@ -11,6 +11,8 @@ namespace FWK::Graphics
 
         void SetupPassRenderTarget(const ResourceContext& a_resourceContext, const RenderGraphPassBase& a_pass, const Renderer& a_renderer) const;
 
+        bool SetupBackBufferRenderTarget(const ResourceContext& a_resourceContext, const Renderer& a_renderer) const;
+
     private:
 
         bool SetupBackBufferRenderTarget             (const ResourceContext& a_resourceContext, const Renderer&            a_renderer, const Struct::RenderGraphResourceAccess& a_resourceAccess) const;
