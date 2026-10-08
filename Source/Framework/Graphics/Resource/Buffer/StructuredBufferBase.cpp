@@ -61,7 +61,7 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(c
     l_srvDesc.Buffer.StructureByteStride = a_structureByteStride;
     l_srvDesc.Buffer.Flags               = D3D12_BUFFER_SRV_FLAG_NONE;
 
-    const auto& l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex));
+    const auto& l_cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE{ a_cbvSRVUAVDescriptorPool.FetchVALCPUDescriptorHandle(l_srvDescriptorIndex) };
 
     // CreateShaderResourceView(BufferResource,
     //                          SRV設定、

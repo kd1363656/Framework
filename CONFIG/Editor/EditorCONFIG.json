@@ -65,7 +65,7 @@
                     "FolderOpenStateMap": [
                         {
                             "FilePath": "Asset",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Font\\Icon",
@@ -73,10 +73,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -92,6 +88,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Scene",
                             "IsOpen": false
                         },
@@ -104,11 +104,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
@@ -125,15 +125,15 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Prefab",
-                            "IsOpen": true
-                        },
-                        {
-                            "FilePath": "Asset\\Data\\Prefab\\Camera",
-                            "IsOpen": true
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound\\BGM",
                             "IsOpen": false
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Prefab\\Camera",
+                            "IsOpen": true
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Title",
@@ -169,12 +169,8 @@
                         }
                     ],
                     "SelectionState": {
-                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Camera",
-                        "SelectedFilePathList": [
-                            {
-                                "SelectedFilePath": "Asset\\Data\\Prefab\\Camera"
-                            }
-                        ]
+                        "RangeSelectionStartPath": "",
+                        "SelectedFilePathList": []
                     }
                 }
             },

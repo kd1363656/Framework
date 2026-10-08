@@ -59,7 +59,7 @@ bool FWK::Graphics::UploadBuffer::Create(const Device& a_device, const UINT64& a
     // UploadBufferはCPUでデータを書き込み、
     // その後CopyBufferRegionやCopyTextureRegionで本番リソースへ転送するため、
     // D3D12_HEAP_TYPE_UPLOADで作成する
-    auto l_heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD, l_nodeMask, l_nodeMask);
+    auto l_heapProperties = CD3DX12_HEAP_PROPERTIES{ D3D12_HEAP_TYPE_UPLOAD, l_nodeMask, l_nodeMask };
 
     // D3D12_RESOURCE_DESCについての説明
     // Buffer(作成するバッファサイズ)

@@ -82,9 +82,9 @@ void FWK::Physics::PhysicsDebugRenderer::DrawGeometry(      JPH::RMat44Arg      
     {
         // Bach内の頂点はShapwのローカル座標なので、
         // Joltから渡されたModelMatrixでワールド座標へ変換する
-        const JPH::RVec3 l_vertexZero = a_modelMatrix * JPH::Vec3(l_triangle.mV[k_triangleVertexZeroIndex].mPosition);
-        const JPH::RVec3 l_vertexOne  = a_modelMatrix * JPH::Vec3(l_triangle.mV[k_triangleVertexOneIndex].mPosition);
-        const JPH::RVec3 l_vertexTwo  = a_modelMatrix * JPH::Vec3(l_triangle.mV[k_triangleVertexTwoIndex].mPosition);
+        const JPH::RVec3 l_vertexZero = a_modelMatrix * JPH::Vec3{ l_triangle.mV[k_triangleVertexZeroIndex].mPosition };
+        const JPH::RVec3 l_vertexOne  = a_modelMatrix * JPH::Vec3{ l_triangle.mV[k_triangleVertexOneIndex].mPosition };
+        const JPH::RVec3 l_vertexTwo  = a_modelMatrix * JPH::Vec3{ l_triangle.mV[k_triangleVertexTwoIndex].mPosition };
 
         // Joltのモデル色とBach側の頂点色を乗算する
         const JPH::Color l_triangleColor = a_modelColor * l_triangle.mV[k_triangleVertexZeroIndex].mColor;

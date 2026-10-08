@@ -54,12 +54,12 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // シーンノードを描画する
     // 子ノードとしてルートGameObjectが続く
     // ノードの行の高さを規定より大きくして見やすくする
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, k_nodeFramePaddingHeight));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ l_style.FramePadding.x, k_nodeFramePaddingHeight });
 
     // ノード間の隙間をドロップゾーンの高さ分だけにするため
     // アイテム間の垂直スペースを0にする
     // (0にしないとノードとドロップゾーン両方にItemSpacingが掛かり間隔が開きすぎる)
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(l_style.ItemSpacing.x, Constant::k_imguiRemainingSize.y));
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ l_style.ItemSpacing.x, Constant::k_imguiRemainingSize.y });
 
     DrawSceneNode(*l_scene, a_editorManager);
 
@@ -769,7 +769,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
     const auto& l_style = ImGui::GetStyle();
 
     // InputTextのフレームパディングを小さくしてTreeNodeExのテキスト高さに近づける
-    ImGui::PushStyleVar    (ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHeightPaddingAlignHeight));
+    ImGui::PushStyleVar    (ImGuiStyleVar_FramePadding, ImVec2{ l_style.FramePadding.x, Constant::k_imguiInputTextHeightPaddingAlignHeight });
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
 
     const bool l_isEnterPressed = ImGui::InputText(k_renameInputTextLabel.data(),
@@ -811,7 +811,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
     // SceneInstanceUUIDと上下どちらのゾーンかを埋めて一意にする
     const auto& l_dropZoneLabel = std::string{ k_gameObjectDragDropZoneLabel } + boost::uuids::to_string(l_targetGameObject->GetREFSceneInstanceUUID()) + (a_isDropAfter ? std::string{ k_gameObjectDragDropZoneAfterLabel } : std::string{ k_gameObjectDragDropZoneBeforeLabel });
 
-    ImGui::InvisibleButton(l_dropZoneLabel.c_str(), ImVec2(Constant::k_imguiRemainingSize.x, k_dropZoneHeight));
+    ImGui::InvisibleButton(l_dropZoneLabel.c_str(), ImVec2{ Constant::k_imguiRemainingSize.x, k_dropZoneHeight });
 
     // ドラッグ中のPayloadを取得
     // 非ドラッグ中はnullptr、別種別のPayloadならIsDataTypeがfalseになる

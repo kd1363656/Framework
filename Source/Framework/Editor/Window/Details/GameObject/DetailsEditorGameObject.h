@@ -9,11 +9,11 @@ namespace FWK::Editor
          DetailsEditorGameObject() = default;
         ~DetailsEditorGameObject() = default;
 
-        void Draw(GameObject& a_gameObject);
+        void Draw(const std::weak_ptr<GameObject>& a_gameObject);
 
     private:
 
-        void DrawAddComponentButton(GameObject& a_gameObject);
+        void DrawAddComponentButton(const std::weak_ptr<GameObject>& a_gameObject);
 
         static constexpr std::string_view k_gameObjectHeaderLabel        = "ゲームオブジェクト基本情報    ";
         static constexpr std::string_view k_gameObjectNameLabel          = "名前                          ";

@@ -662,7 +662,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // デフォルトのFramePadding.yは3-4pxだが
         // TreeNodeExはテキストベースなので高さが低い
         // Y方向のパディングを1pxにして高さ合わせる
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(l_style.FramePadding.x, Constant::k_imguiInputTextHeightPaddingAlignHeight));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ l_style.FramePadding.x, Constant::k_imguiInputTextHeightPaddingAlignHeight });
 
         // InputTextの幅を残り領域いっぱいに広げる
         ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);

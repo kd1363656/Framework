@@ -1,14 +1,18 @@
 ﻿#include "DetailsEditorGameObject.h"
 
-void FWK::Editor::DetailsEditorGameObject::Draw(GameObject& a_gameObject)
+void FWK::Editor::DetailsEditorGameObject::Draw(const std::weak_ptr<GameObject>& a_gameObject)
 {
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
     // GameObject名をヘッダとして表示(編集不可)
     // 名前変更はOutlinerのF2で行うためここでは参照表示のみ
-    const auto& l_gameObjectName               = a_gameObject.GetREFName();
-    const auto& l_headerLabel                  = std::format            ("{} : {}", k_gameObjectNameLabel,          l_gameObjectName.empty() ? std::string{ Constant::k_gameObjectString } : l_gameObjectName);
-    const auto& l_prefabUUIDLabel              = std::format            ("{} : {}", k_prefabUUIDLabel,              boost::uuids::to_string(a_gameObject.GetREFPrefabUUID()));
-    const auto& l_prefabHierarchyNodeUUIDLabel = std::format            ("{} : {}", k_prefabHierarchyNodeUUIDLabel, boost::uuids::to_string(a_gameObject.GetREFPrefabHierarchyNodeUUID()));
-    const auto& l_sceneInstanceUUIDLabel       = std::format            ("{} : {}", k_sceneInstanceUUIDLabel,       boost::uuids::to_string(a_gameObject.GetREFSceneInstanceUUID()));
+    const auto& l_gameObjectName               = l_gameObject->GetREFName();
+    const auto& l_headerLabel                  = std::format             ("{} : {}", k_gameObjectNameLabel,          l_gameObjectName.empty() ? std::string{ Constant::k_gameObjectString } : l_gameObjectName);
+    const auto& l_prefabUUIDLabel              = std::format             ("{} : {}", k_prefabUUIDLabel,              boost::uuids::to_string(l_gameObject->GetREFPrefabUUID()));
+    const auto& l_prefabHierarchyNodeUUIDLabel = std::format             ("{} : {}", k_prefabHierarchyNodeUUIDLabel, boost::uuids::to_string(l_gameObject->GetREFPrefabHierarchyNodeUUID()));
+    const auto& l_sceneInstanceUUIDLabel       = std::format             ("{} : {}", k_sceneInstanceUUIDLabel,       boost::uuids::to_string(l_gameObject->GetREFSceneInstanceUUID()));
 
     // 名前から描画
     ImGui::TextUnformatted(l_headerLabel.c_str());
@@ -19,7 +23,7 @@ void FWK::Editor::DetailsEditorGameObject::Draw(GameObject& a_gameObject)
     ImGui::Separator();
 
     // 選択中GameObjectのTransform + 全Componentのインスペクターを描画
-    if (const auto& l_transformComponent = a_gameObject.GetVALTransformComponent().lock();
+    if (const auto& l_transformComponent = l_gameObject->GetVALTransformComponent().lock();
         l_transformComponent)
     {
         if (const auto& l_componentHeaderName = GameObjectTransformComponent::GetREFTypeINFO().k_name;
@@ -29,7 +33,7 @@ void FWK::Editor::DetailsEditorGameObject::Draw(GameObject& a_gameObject)
         }
     }
 
-    const auto& l_componentContainer              = a_gameObject.GetREFComponentContainer                     ();
+    const auto& l_componentContainer              = l_gameObject->GetREFComponentContainer                    ();
     const auto& l_componentSmartPointerVectorList = l_componentContainer.GetREFComponentSmartPointerVectorList();
     const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList   ();
 
@@ -54,7 +58,7 @@ void FWK::Editor::DetailsEditorGameObject::Draw(GameObject& a_gameObject)
     DrawAddComponentButton(a_gameObject);
 }
 
-void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(GameObject& a_gameObject)
+void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(const std::weak_ptr<GameObject>& a_gameObject)
 {
     ImGui::Separator();
 
@@ -68,7 +72,7 @@ void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(GameObject& a_
 
     // OpenPopupは呼び出した時点のIDスタックでポップアップのIDを作るため
     // BeginPopupを呼ぶPopupDrawer::Drawと同じスコープ(このウィンドウの中)で呼ぶ
-    if (ImGui::Button(k_addComponentButtonLabel.data(), ImVec2(l_buttonWidth, k_autoFitButtonHeight)))
+    if (ImGui::Button(k_addComponentButtonLabel.data(), ImVec2{ l_buttonWidth, k_autoFitButtonHeight }))
     {
         ImGui::OpenPopup(k_addComponentPopupLabel.data());
     }
@@ -78,8 +82,8 @@ void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(GameObject& a_
     const auto& l_buttonMIN = ImGui::GetItemRectMin();
     const auto& l_buttonMAX = ImGui::GetItemRectMax();
 
-    m_addComponentPopupDrawer.Draw(k_addComponentPopupLabel,
-                                   ImVec2(l_buttonMIN.x, l_buttonMAX.y),
-                                   l_buttonWidth,
-                                   a_gameObject);
+    m_addComponentPopupDrawer.Draw(a_gameObject,
+                                   k_addComponentPopupLabel,
+                                   ImVec2{ l_buttonMIN.x, l_buttonMAX.y },
+                                   l_buttonWidth);
 }

@@ -263,7 +263,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape
     // Chacactervirtualの座標を足元として扱えるように上方向へずらす
     const float l_capsuleCenterOffsetY = m_capsuleHalfHeightOfCylinder + m_capsuleRadius;
 
-    const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3(JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ()), JPH::Quat::sIdentity(), l_capsuleShape.GetPtr() };
+    const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3{ JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ() }, JPH::Quat::sIdentity(), l_capsuleShape.GetPtr() };
 
     const auto& l_characterShapeResult = l_characterShapeSettings.Create();
 

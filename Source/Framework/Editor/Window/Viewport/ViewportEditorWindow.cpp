@@ -198,8 +198,8 @@ ImTextureID FWK::Editor::ViewportEditorWindow::FetchVALViewportTextureID() const
 void FWK::Editor::ViewportEditorWindow::DrawViewportTexture(const ImVec2& a_viewportSize, const ImTextureID& a_textureID) const
 {
     // Texture全体を表示するため、UV範囲は左上から右下までを指定する
-    const auto& l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
-    const auto& l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
+    const auto& l_uvMIN = ImVec2{ k_viewportUVMINX, k_viewportUVMINY };
+    const auto& l_uvMAX = ImVec2{ k_viewportUVMAXX, k_viewportUVMAXY };
 
     // 取得したTextureをViewportの表示領域いっぱいに描画する
     // a_viewportSizeにGetContentRegionAvailの値を渡しているため、Dockingの拡縮に追従する
@@ -264,8 +264,8 @@ void FWK::Editor::ViewportEditorWindow::DrawCameraPreview() const
     // ビューポート画像の入力(右クリックでのカメラ操作)の判定には影響しない
     auto* l_drawList = ImGui::GetWindowDrawList();
 
-    const auto& l_uvMIN = ImVec2(k_viewportUVMINX, k_viewportUVMINY);
-    const auto& l_uvMAX = ImVec2(k_viewportUVMAXX, k_viewportUVMAXY);
+    const auto& l_uvMIN = ImVec2{ k_viewportUVMINX, k_viewportUVMINY };
+    const auto& l_uvMAX = ImVec2{ k_viewportUVMAXX, k_viewportUVMAXY };
 
     l_drawList->AddImage(l_textureID,
                          l_previewMIN,

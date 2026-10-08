@@ -37,7 +37,7 @@ void FWK::Editor::DetailsEditorWindow::Draw(EditorManager& a_editorManager)
         return;
     }
 
-    m_gameObjectDetails.Draw(*l_selectedGameObject);
+    m_gameObjectDetails.Draw(l_selectedGameObject);
 
     ImGui::End();
 }
