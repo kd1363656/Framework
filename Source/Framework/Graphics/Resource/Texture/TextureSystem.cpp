@@ -37,16 +37,20 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
         return l_textureLoadResult;
     }
 
+    // 同じPNGでも読み込みモードごとに別のテクスチャとして扱うため、
+    // キャッシュのキーには読み込みモードを末尾に付けた.texのパスを使う
+    const auto& l_textureFilePath = m_binaryConverter.CreateTextureFilePath(a_filePath, a_textureLoadColorSpace);
+
     // 成功したらキャッシュ内容が入っているのでreturn
-    if (TryResolveCachedTextureResult(a_filePath, l_textureLoadResult)) { return l_textureLoadResult; }
+    if (TryResolveCachedTextureResult(l_textureFilePath, l_textureLoadResult)) { return l_textureLoadResult; }
 
     DirectX::ScratchImage l_scratchImage = {};
     DirectX::TexMetadata  l_texMetadata  = {};
 
-    // .assetが存在していて、PNGより更新が古くなければ.assetを優先して読み込む
-    if (!m_binaryConverter.LoadTextureAsset(a_filePath, l_scratchImage, l_texMetadata))
+    // .texが存在していて、PNGより更新が古くなければ.texを優先して読み込む
+    if (!m_binaryConverter.Load(a_filePath, a_textureLoadColorSpace, l_scratchImage, l_texMetadata))
     {
-        // .assetが読み込めなければテクスチャをロードする、失敗したらassert
+        // .texが読み込めなければテクスチャをロードする、失敗したらassert
         FWK_ASSERT_RETURN_VALUE_IF(!m_loader.LoadTextureFile(a_filePath,
                                                              a_textureLoadColorSpace,
                                                              l_scratchImage,
@@ -56,7 +60,7 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
 
         // テクスチャの管理、アップロードを行うための情報を作成
         CreateAndRegisterPendingTextureForBatchUpload(l_scratchImage,
-                                                      a_filePath,
+                                                      l_textureFilePath,
                                                       a_device,
                                                       a_gpuMemoryAllocator,
                                                       l_texMetadata,
@@ -64,14 +68,14 @@ FWK::Struct::TextureLoadResult FWK::Graphics::TextureSystem::LoadTextureForBatch
                                                       l_textureLoadResult);
 
         // 読み込んだテクスチャのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-        FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveTextureAsset(l_scratchImage, a_filePath), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
+        FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.Save(l_scratchImage, a_filePath, a_textureLoadColorSpace), "TextureAssetの保存に失敗しました。", l_textureLoadResult);
 
         return l_textureLoadResult;
     }
 
     // テクスチャの管理、アップロードを行うための情報を作成
     CreateAndRegisterPendingTextureForBatchUpload(l_scratchImage,
-                                                  a_filePath,
+                                                  l_textureFilePath,
                                                   a_device,
                                                   a_gpuMemoryAllocator,
                                                   l_texMetadata,

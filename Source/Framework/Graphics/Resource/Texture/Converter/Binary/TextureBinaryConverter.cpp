@@ -1,22 +1,27 @@
 ﻿#include "TextureBinaryConverter.h"
 
-bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata)
+bool FWK::Converter::TextureBinaryConverter::Load(const std::filesystem::path&      a_filePath,
+                                                  const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+                                                        DirectX::ScratchImage&      a_scratchImage,
+                                                        DirectX::TexMetadata&       a_texMetadata)
 {
-    // 読み込める.assetかどうかを確認する
+    // 読み込める.texかどうかを確認する
     // 読み込めなければ.pngから再生成する
-    if (!CanLoadTextureAsset(a_filePath)) { return false; }
+    if (!CanLoad(a_filePath, a_textureLoadColorSpace)) { return false; }
 
-    const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
+    // 読み込みモードごとに別の.texを使う
+    // 例 : HumanSkin.pngをSRGBで読み込む → HumanSkin_SRGB.tex
+    const auto& l_textureFilePath = CreateTextureFilePath(a_filePath, a_textureLoadColorSpace);
 
-    // .assetを読み込み専用のMemoryMappedFileとして開く
-    FWK_ASSERT_RETURN_VALUE_IF(!CreateReadMemoryMappedFile(l_textureAssetFilePath), "TextureAssetの読み込み用MemoryMappedFileの作成に失敗したため、バイナリーファイルの読み込みに失敗しました。", false);
+    // .texを読み込み専用のMemoryMappedFileとして開く
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateReadMemoryMappedFile(l_textureFilePath), "TextureAssetの読み込み用MemoryMappedFileの作成に失敗したため、バイナリーファイルの読み込みに失敗しました。", false);
 
     // 現在の読み込み位置、ファイルの先頭なので0からスタート
     auto l_memoryReadOffset = k_initialMemoryReadOffset;
 
     TextureBinaryHeader l_textureBinaryHeader = {};
 
-    // Header分のバイト数を安全に読めるかを確認し.asset先頭の内容から読み込む
+    // Header分のバイト数を安全に読めるかを確認し.tex先頭の内容から読み込む
     if (!TryReadSingleBinaryData(l_textureBinaryHeader, l_memoryReadOffset))
     {
 #if defined(_DEBUG)
@@ -29,7 +34,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
         return false;
     }
 
-    // Texture用.assetかどうか確認する
+    // Texture用.texかどうか確認する
     if (l_textureBinaryHeader.m_assetTypeID != k_textureAssetTypeID)
     {
 #if defined(_DEBUG)
@@ -42,7 +47,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
         return false;
     }
 
-    // 保存形式のバージョンが違うなら、古い.assetとして扱いPNGから再生成する
+    // 保存形式のバージョンが違うなら、古い.texとして扱いPNGから再生成する
     if (l_textureBinaryHeader.m_version != k_textureAssetVersion)
     {
 #if defined(_DEBUG)
@@ -125,7 +130,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
             FWK_ASSERT_RETURN_VALUE("TextureAssetのPixelDataSizeがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
         }
 
-        // .assetに保存されていた幅と、ScratchImage側で作られたImageの幅が一致するか確認する
+        // .texに保存されていた幅と、ScratchImage側で作られたImageの幅が一致するか確認する
         if (l_textureBinarySubresourceHeader.m_width != l_image.width)
         {
             DestroyMemoryMappedFile();
@@ -160,7 +165,7 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
             FWK_ASSERT_RETURN_VALUE("TextureAssetのSlicePitchがScratchImageと一致しておらず、バイナリーファイルの読み込みに失敗しました。", false);
         }
 
-        // .asset内のピクセルデータを、ScratchImageが確保した画像メモリへコピーする
+        // .tex内のピクセルデータを、ScratchImageが確保した画像メモリへコピーする
         if (!TryReadBinaryData(l_textureBinarySubresourceHeader.m_pixelDataSize, l_memoryReadOffset, l_image.pixels))
         {
             DestroyMemoryMappedFile();
@@ -182,18 +187,18 @@ bool FWK::Converter::TextureBinaryConverter::LoadTextureAsset(const std::filesys
     return true;
 }
 
-bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath)
+bool FWK::Converter::TextureBinaryConverter::Save(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace)
 {
     // 保存元のPNGが存在するかどうか、DirectXTexで読み込んだScratchImageが正常かを確認する
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension), "TextureAssetの元になるPNGファイルが無効となっており、バイナリーファイルの保存に失敗しました。", false);
 
-    // PNGと同じ場所・同じ名前で拡張子だけ.assetにしたパスを作る
-    const auto& l_textureAssetFilePath = CreateAssetFilePath          (a_filePath);
+    // PNGと同じ場所に、読み込みモードを末尾に付けた名前の.texのパスを作る
+    const auto& l_textureFilePath      = CreateTextureFilePath        (a_filePath, a_textureLoadColorSpace);
     const auto& l_textureAssetFileSize = CalculateTextureAssetFileSize(a_scratchImage);
 
     // 書き込み用メモリマップドファイルの作成
-    FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryConverterBase::k_emptyAssetFileSize,          "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",        false);
-    FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureAssetFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryConverterBase::k_emptyAssetFileSize,     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",        false);
+    FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
     auto l_memoryWriteOffset = k_initialMemoryWriteOffset;
 
@@ -240,6 +245,19 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const DirectX::Scr
     DestroyMemoryMappedFile();
 
     return true;
+}
+
+std::filesystem::path FWK::Converter::TextureBinaryConverter::CreateTextureFilePath(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const
+{
+    // 拡張子を除いた名前(HumanSkin)に、読み込みモードの末尾(_SRGB)と.texを付ける
+    // 同じPNGでも読み込みモードが違えば中身(DXGI_FORMAT)が違うため、別のファイルとして保存する
+    auto l_textureFileName = a_filePath.stem();
+
+    l_textureFileName += FetchVALFileNameSuffix(a_textureLoadColorSpace);
+    l_textureFileName += Constant::k_lowerTextureExtension;
+
+    // 元のPNGと同じフォルダに置く
+    return a_filePath.parent_path() / l_textureFileName;
 }
 
 FWK::Converter::TextureBinaryConverter::TextureBinaryHeader FWK::Converter::TextureBinaryConverter::CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_fileSize) const
@@ -322,19 +340,43 @@ std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileS
     return l_textureAssetFileSize;
 }
 
-bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::filesystem::path& a_filePath) const
+bool FWK::Converter::TextureBinaryConverter::CanLoad(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const
 {
     // まず元のPNGが存在していて、拡張子も.pngか確認する
     if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
 
-    // もし元ファイルが更新されていたらバイナリーファイルも更新する
-    // PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
-    const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
+    // 読み込みモードを末尾に付けた.texのパスを作成する
+    const auto& l_textureFilePath = CreateTextureFilePath(a_filePath, a_textureLoadColorSpace);
 
-    // .assetが存在しないなら、FBXから読み込んで生成する
-    if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
-
-    if (IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
+    // .texが存在しない、または元のPNGのほうが新しいなら、PNGから読み込んで作り直す
+    if (!Utility::CanLoadFilePath(l_textureFilePath, Constant::k_lowerTextureExtension)) { return false; }
+    if (IsUpdatedSourceFile(a_filePath, l_textureFilePath))                              { return false; }
 
     return true;
+}
+
+std::string_view FWK::Converter::TextureBinaryConverter::FetchVALFileNameSuffix(const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const
+{
+    switch (a_textureLoadColorSpace)
+    {
+        case Enum::TextureLoadColorSpace::SRGB:
+        {
+            return k_srgbFileNameSuffix;
+        }
+        break;
+
+        case Enum::TextureLoadColorSpace::Linear:
+        {
+            return k_linearFileNameSuffix;
+        }
+        break;
+
+        case Enum::TextureLoadColorSpace::Auto:
+        default:
+        {
+            // DirectXTex側の判定に任せた結果は、SRGB / Linear のどちらとも限らないため別の名前にする
+            return k_autoFileNameSuffix;
+        }
+        break;
+    }
 }

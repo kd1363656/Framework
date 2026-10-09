@@ -46,9 +46,14 @@ namespace FWK::Converter
          TextureBinaryConverter()          = default;
         ~TextureBinaryConverter() override = default;
 
-        bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
+        bool Load(const std::filesystem::path&      a_filePath,
+                  const Enum::TextureLoadColorSpace a_textureLoadColorSpace,
+                        DirectX::ScratchImage&      a_scratchImage,
+                        DirectX::TexMetadata&       a_texMetadata);
 
-        bool SaveTextureAsset(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath);
+        bool Save(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace);
+
+        std::filesystem::path CreateTextureFilePath(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
 
         static constexpr std::uint64_t k_defaultTexture2DArraySize = 1ULL;
         static constexpr std::uint64_t k_defaultTexture2DMIPLevels = 1ULL;
@@ -63,7 +68,13 @@ namespace FWK::Converter
 
         std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const;
 
-        bool CanLoadTextureAsset(const std::filesystem::path& a_filePath) const;
+        bool CanLoad(const std::filesystem::path& a_filePath, const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
+
+        std::string_view FetchVALFileNameSuffix(const Enum::TextureLoadColorSpace a_textureLoadColorSpace) const;
+
+        static constexpr std::string_view k_srgbFileNameSuffix   = "_SRGB";
+        static constexpr std::string_view k_linearFileNameSuffix = "_Linear";
+        static constexpr std::string_view k_autoFileNameSuffix   = "_Auto";
 
         static constexpr std::uint64_t k_emptyTextureDepth            = 0ULL;
         static constexpr std::uint64_t k_emptyTextureSubresourceCount = 0ULL;
