@@ -13,7 +13,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
     const auto& l_meshList      = l_modelData.m_meshList;
 
     FWK_ASSERT_RETURN_VALUE_IF(l_modelBoneList.empty(), "ModelBoneListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.empty(), "ModelMeshListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.empty(),      "ModelMeshListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
     // CPUPose計算に必要なBindPoseと、BoneMotionTrack検索用Dataを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!m_poseEvaluator.Create(l_modelData), "SkeletalAnimationPoseEvaluatorの作成に失敗しました。", false);
@@ -90,11 +90,11 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
         for (const auto& l_modelMesh : l_meshList)
         {
-            const auto& l_vertexList       = l_modelMesh.m_vertexList;
-            const auto& l_modelMeshletList = l_modelMesh.m_meshletData.m_meshletList;
+            const auto& l_vertexList  = l_modelMesh.m_vertexList;
+            const auto& l_meshletList = l_modelMesh.m_meshletData.m_meshletList;
 
             FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),  "ModelVertexListが空のため、SkinnedVertexBufferの作成に失敗しました。",  false);
-            FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "ModelMeshletListが空のため、MeshletBoundsBufferの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_meshletList.empty(), "ModelMeshletListが空のため、MeshletBoundsBufferの作成に失敗しました。", false);
 
             // ComputeShaderがスキニング結果を書き込むための
             // VertexBufferを作成する
@@ -113,7 +113,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
             FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create<Struct::ModelMeshletBounds>(l_device,
                                                                                                  l_gpuMemoryAllocator,
-                                                                                                 l_modelMeshletList.size(),
+                                                                                                 l_meshletList.size(),
                                                                                                  l_cbvSRVUAVDescriptorPool),
                                                                                                  "MeshletBounds用DynamicRWStructuredBufferの作成に失敗しました。",
                                                                                                  false);

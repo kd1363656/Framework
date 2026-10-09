@@ -59,7 +59,7 @@ namespace FWK::Graphics
             // 3つとも同じ向き(0.577,0.577,0.577)を持たせて、同じ位置へ押し出されるようにする
             auto& l_vertexList = a_modelMesh.m_vertexList;
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),       "ModelMeshの頂点リストが空のため、平滑化法線の作成に失敗しました。",         false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),            "ModelMeshの頂点リストが空のため、平滑化法線の作成に失敗しました。",         false);
             FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.empty(), "ModelMeshのインデックスリストが空のため、平滑化法線の作成に失敗しました。", false);
 
             // 1. 同じ位置にある頂点を、同じグループにまとめる

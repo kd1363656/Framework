@@ -72,7 +72,7 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::SetupPerObje
             // Mesh ShaderはNON_PIXEL Shaderに含まれるため、
             // この状態でStructuredBufferとして読み取れる
             FWK_ASSERT_RETURN_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMesh Shaderから読み取れるResource Stateではありません。");
-            FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_meshletData.m_meshletList.size(),                "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
+            FWK_ASSERT_RETURN_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_meshletData.m_meshletList.size(),                     "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。");
 
             // スキニング後の頂点構造はStatic Modelの頂点構造と同じため、
             // 既存のModel描画用定数バッファを共有する
@@ -143,11 +143,11 @@ void FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::AddDrawReque
 
 bool FWK::Graphics::SkeletalAnimationModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::SkeletalAnimationModelMesh& a_modelMesh) const
 {
-    const auto& l_modelMeshletList = a_modelMesh.m_meshletData.m_meshletList;
+    const auto& l_meshletList = a_modelMesh.m_meshletData.m_meshletList;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshletList.empty(), "Meshletが存在しないため、Skeletal Animation Modelを描画できません。", false);
 
-    const auto& l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
+    const auto& l_meshletCount = static_cast<UINT>(l_meshletList.size());
 
     // 1つのAmplification Shader Groupが、最大32個のMeshletを並列に処理する
     auto l_amplificationShaderGroupCount = l_meshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;

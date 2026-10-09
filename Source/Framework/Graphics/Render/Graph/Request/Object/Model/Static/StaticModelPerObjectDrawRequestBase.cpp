@@ -113,11 +113,11 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::AddDrawRequest(const st
 
 bool FWK::Graphics::StaticModelPerObjectDrawRequestBase::DispatchModelMesh(const DirectCommandList& a_directCommandList, const Struct::StaticModelMesh& a_modelMesh) const
 {
-    const auto& l_modelMeshletList = a_modelMesh.m_meshletData.m_meshletList;
+    const auto& l_meshletList = a_modelMesh.m_meshletData.m_meshletList;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(), "Meshletが存在しないため、StaticModelを描画できませんでした。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshletList.empty(), "Meshletが存在しないため、StaticModelを描画できませんでした。", false);
 
-    const auto& l_meshletCount = static_cast<UINT>(l_modelMeshletList.size());
+    const auto& l_meshletCount = static_cast<UINT>(l_meshletList.size());
 
     // 1つのAmplificationShaderGroupが、
     // 32個のMeshletを並列に処理する

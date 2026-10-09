@@ -51,7 +51,7 @@ bool FWK::Graphics::SwapChain::Resize(const Device&                       a_devi
                                       const Struct::WindowClientSize&     a_clientSize,
                                             TypeAlias::RTVDescriptorPool& a_rtvDescriptorPool)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!m_swapChain,                             "スワップチェインが作成されていないため、リサイズ処理に失敗しました。",     false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_swapChain,                         "スワップチェインが作成されていないため、リサイズ処理に失敗しました。",     false);
     FWK_ASSERT_RETURN_VALUE_IF(!IsValidBackBufferSize(a_clientSize), "リサイズ後のバックバッファサイズが無効です、リサイズ処理に失敗しました。", false);
 
     // ResizeBuffers()は、古いBackBufferへの参照が残っていると失敗する

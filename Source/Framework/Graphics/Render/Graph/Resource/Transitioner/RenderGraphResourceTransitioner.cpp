@@ -66,7 +66,7 @@ bool FWK::Graphics::RenderGraphResourceTransitioner::TransitionBackBufferResourc
     const auto& l_backBufferIndex   = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList    = l_swapChain.GetMutableREFBackBufferList   ();
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(),                                            "BackBufferListが空のため、BackBufferの自動リソース遷移に失敗しました。",      true);
+    FWK_ASSERT_RETURN_VALUE_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferの自動リソース遷移に失敗しました。",      true);
     FWK_ASSERT_RETURN_VALUE_IF(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferの自動リソース遷移に失敗しました。", true);
 
     auto& l_backBuffer = l_backBufferList[l_backBufferIndex];

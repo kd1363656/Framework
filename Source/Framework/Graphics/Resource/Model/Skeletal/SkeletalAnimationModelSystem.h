@@ -63,8 +63,9 @@ namespace FWK::Graphics
         SkeletalAnimationModelFBXLoader                                  m_loader                        = {};
         ModelMaterialRuntimeTextureBuilder<SkeletalAnimationModelRecord> m_materialRuntimeTextureBuilder = {};
 
-        ModelMeshOptimizer<SkeletalAnimationModelRecord>  m_meshOptimizer  = {};
-        ModelMeshletBuilder<SkeletalAnimationModelRecord> m_meshletBuilder = {};
+        ModelMeshOptimizer<SkeletalAnimationModelRecord>         m_meshOptimizer         = {};
+        ModelSmoothedNormalBuilder<SkeletalAnimationModelRecord> m_smoothedNormalBuilder = {};
+        ModelMeshletBuilder<SkeletalAnimationModelRecord>        m_meshletBuilder        = {};
 
         Converter::SkeletalAnimationModelSystemJsonConverter m_jsonConverter   = {};
         Converter::SkeletalAnimationModelBinaryConverter     m_binaryConverter = {};

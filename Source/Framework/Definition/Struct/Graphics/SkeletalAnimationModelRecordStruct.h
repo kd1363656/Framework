@@ -20,6 +20,8 @@ namespace FWK::Struct
         std::uint32_t m_bonePaletteIndexOne   = Constant::k_invalidPaletteIndex;
         std::uint32_t m_bonePaletteIndexTwo   = Constant::k_invalidPaletteIndex;
         std::uint32_t m_bonePaletteIndexThree = Constant::k_invalidPaletteIndex;
+
+        TypeAlias::Math::Vector3 m_smoothedNormal = {};
     };
 
     struct SkeletalAnimationModelBonePaletteElement final

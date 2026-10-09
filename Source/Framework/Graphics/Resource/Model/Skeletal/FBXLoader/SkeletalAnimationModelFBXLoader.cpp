@@ -165,9 +165,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
 
     const auto* l_fbxMesh = a_fbxNode->mesh;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->skin_deformers.count != Constant::k_supportedSkinDeformerCount,  "一つのufbx_meshに設定されたSkinDeformer数が1個ではありません。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Constant::k_emptyUFBXElementCount,                "三角形化できるFaceが存在しません。",                             false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount,           "三角形化できるFaceが存在しません。",                             false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->skin_deformers.count != Constant::k_supportedSkinDeformerCount, "一つのufbx_meshに設定されたSkinDeformer数が1個ではありません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->faces.count == Constant::k_emptyUFBXElementCount,               "三角形化できるFaceが存在しません。",                             false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_fbxMesh->max_face_triangles == Constant::k_emptyModelMeshCount,          "三角形化できるFaceが存在しません。",                             false);
 
     FWK_ASSERT_RETURN_VALUE_IF(a_materialIndex != k_invalidMaterialIndex &&
                                l_fbxMesh->face_material.count != l_fbxMesh->faces.count,

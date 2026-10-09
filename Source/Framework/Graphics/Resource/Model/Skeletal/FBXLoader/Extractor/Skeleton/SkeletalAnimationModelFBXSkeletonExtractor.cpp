@@ -100,7 +100,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXSkeletonExtractor::CollectModelBone
 
         const auto* l_fbxSkinDeformer = l_fbxMesh->skin_deformers.data[Constant::k_initialSkinDeformerIndex];
 
-        FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinDeformer,                                           "ufbx_skin_deformerがnullptrです。",    false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_fbxSkinDeformer,                                           "ufbx_skin_deformerがnullptrです。",         false);
         FWK_ASSERT_RETURN_VALUE_IF(l_fbxSkinDeformer->clusters.count == k_emptySkinClusterCount, "SkinDeformerにSkinClusterが存在しません。", false);
 
         for (std::size_t l_clusterIndex = 0ULL; l_clusterIndex < l_fbxSkinDeformer->clusters.count; ++l_clusterIndex)

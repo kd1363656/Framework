@@ -32,7 +32,7 @@ namespace FWK::Graphics
         bool OptimizeModelMesh(typename ModelRecordType::ModelMesh& a_modelMesh) const
         {
             FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_vertexList.empty(), "ModelMeshの頂点リストが空のため、ModelMeshの最適化に失敗しました。",         false);
-            FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.empty(),       "ModelMeshのインデックスリストが空のため、ModelMeshの最適化に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.empty(),  "ModelMeshのインデックスリストが空のため、ModelMeshの最適化に失敗しました。", false);
 
             std::vector<std::uint32_t> l_vertexRemapList = {};
 

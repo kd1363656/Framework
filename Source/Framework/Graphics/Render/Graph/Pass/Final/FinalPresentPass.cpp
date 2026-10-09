@@ -28,6 +28,6 @@ void FWK::Graphics::FinalPresentPass::Execute(const ResourceContext&, Renderer& 
 
     const auto& l_finalPresentDrawRequest = a_renderGraph.FindVALDrawRequestPass<FinalPresentRenderTargetPassDrawRequest>().lock();
 
-    FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest,                                                                                              "FinalPresentRenderTargetPassDrawRequestが無効のため、FinalPresentPassの実行に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest,                                                                                          "FinalPresentRenderTargetPassDrawRequestが無効のため、FinalPresentPassの実行に失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_finalPresentDrawRequest->SetupPassConstantBuffer(*l_rootSignature, l_directCommandList, *l_currentFrameResource), "FinalPresentPass定数バッファの設定に失敗しました。");
 }

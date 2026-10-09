@@ -17,7 +17,7 @@ void FWK::Graphics::RenderGraphResourceClearer::ClearCurrentFrameRenderTargetPas
 {
     for (const auto& l_renderTargetPassTexture : a_renderGraphFrameResource.GetREFRenderTargetPassTextureList())
     {
-        FWK_ASSERT_RETURN_IF(!l_renderTargetPassTexture,                                                                   "RenderTargetPassTextureが無効のため、RenderTargetPassTextureのClearに失敗しました。");
+        FWK_ASSERT_RETURN_IF(!l_renderTargetPassTexture,                                                               "RenderTargetPassTextureが無効のため、RenderTargetPassTextureのClearに失敗しました。");
         FWK_ASSERT_RETURN_IF(!ClearRenderTargetPassTexture(a_resourceContext, a_renderer, *l_renderTargetPassTexture), "RenderTargetPassTextureのClearに失敗しました。");
     }
 }
@@ -25,7 +25,7 @@ void FWK::Graphics::RenderGraphResourceClearer::ClearCurrentFrameDepthStencilPas
 {
     for (const auto& l_depthStencilPassTexture : a_renderGraphFrameResource.GetREFDepthStencilPassTextureList())
     {
-        FWK_ASSERT_RETURN_IF(!l_depthStencilPassTexture,                                                                   "DepthStencilPassTextureが無効のため、DepthStencilPassTextureのClearに失敗しました。");
+        FWK_ASSERT_RETURN_IF(!l_depthStencilPassTexture,                                                               "DepthStencilPassTextureが無効のため、DepthStencilPassTextureのClearに失敗しました。");
         FWK_ASSERT_RETURN_IF(!ClearDepthStencilPassTexture(a_resourceContext, a_renderer, *l_depthStencilPassTexture), "DepthStencilPassTextureのClearに失敗しました。");
     }
 }

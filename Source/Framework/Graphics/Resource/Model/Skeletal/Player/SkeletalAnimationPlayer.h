@@ -9,10 +9,11 @@ namespace FWK::Graphics
 
         struct SkinnedVertexBufferElement final
         {
-            TypeAlias::Math::Vector3 m_position = TypeAlias::Math::Vector3::Zero;
-            TypeAlias::Math::Vector3 m_normal   = TypeAlias::Math::Vector3::Zero;
-            TypeAlias::Math::Vector4 m_tangent  = TypeAlias::Math::Vector4::Zero;
-            TypeAlias::Math::Vector2 m_uv       = TypeAlias::Math::Vector2::Zero;
+            TypeAlias::Math::Vector3 m_position       = TypeAlias::Math::Vector3::Zero;
+            TypeAlias::Math::Vector3 m_normal         = TypeAlias::Math::Vector3::Zero;
+            TypeAlias::Math::Vector4 m_tangent        = TypeAlias::Math::Vector4::Zero;
+            TypeAlias::Math::Vector2 m_uv             = TypeAlias::Math::Vector2::Zero;
+            TypeAlias::Math::Vector3 m_smoothedNormal = TypeAlias::Math::Vector3::Zero;
         };
 
     public:

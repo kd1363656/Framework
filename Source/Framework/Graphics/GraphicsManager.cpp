@@ -18,8 +18,8 @@ void FWK::Graphics::GraphicsManager::LoadCONFIG()
 }
 bool FWK::Graphics::GraphicsManager::PostLoadCONFIG(const Window& a_window)
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!m_factory.Create(),                         "ファクトリーの作成に失敗しました。",                          false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_device.Create(m_factory),                 "デバイスの作成処理に失敗しました。",                          false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_factory.Create(),                          "ファクトリーの作成に失敗しました。",                           false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_device.Create(m_factory),                  "デバイスの作成処理に失敗しました。",                           false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_resourceContext.PostDeserialize(m_device), "リソースコンテキストのデシリアライズ後の処理に失敗しました。", false);
 
     FWK_ASSERT_RETURN_VALUE_IF(!m_renderer.PostDeserialize(m_device,

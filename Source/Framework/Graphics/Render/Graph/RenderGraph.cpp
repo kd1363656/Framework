@@ -172,7 +172,7 @@ void FWK::Graphics::RenderGraph::BeginBackBuffer(const ResourceContext& a_resour
     const auto& l_backBufferIndex = l_swapChain.FetchVALCurrentBackBufferIndex();
           auto& l_backBufferList  = l_swapChain.GetMutableREFBackBufferList   ();
 
-    FWK_ASSERT_RETURN_IF(l_backBufferList.empty(), "BackBufferListが空のため、BackBufferのClearに失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_backBufferList.empty(),                                        "BackBufferListが空のため、BackBufferのClearに失敗しました。");
     FWK_ASSERT_RETURN_IF(l_backBufferIndex >= static_cast<UINT>(l_backBufferList.size()), "BackBufferIndexが範囲外のため、BackBufferのClearに失敗しました。");
 
     auto& l_backBuffer = l_backBufferList[l_backBufferIndex];

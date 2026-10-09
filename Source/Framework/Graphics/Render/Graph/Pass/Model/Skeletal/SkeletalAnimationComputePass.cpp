@@ -268,13 +268,13 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
     {
         const auto& l_modelMesh           = l_meshList[l_modelMeshIndex];
         const auto& l_meshRuntimeData     = l_modelMesh.m_meshRuntimeData;
-        const auto& l_modelMeshletList    = l_modelMesh.m_meshletData.m_meshletList;
+        const auto& l_meshletList         = l_modelMesh.m_meshletData.m_meshletList;
         const auto& l_skinnedVertexBuffer = l_skinnedVertexBufferList[l_modelMeshIndex];
               auto& l_meshletBoundsBuffer = l_meshletBoundsBufferList[l_modelMeshIndex];
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(),                                                                           "ModelMeshletListが空のため、MeshletBoundsを更新できません。",                                    false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_meshletList.empty(),                                                                                "ModelMeshletListが空のため、MeshletBoundsを更新できません。",                                    false);
         FWK_ASSERT_RETURN_VALUE_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMeshlet Bounds Compute Shaderから読み取れるResource Stateではありません。", false);
-        FWK_ASSERT_RETURN_VALUE_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletList.size(),                              "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。",                                  false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_meshletList.size(),                                   "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。",                                  false);
 
         const auto& l_meshletBuffer                             = l_meshRuntimeData.m_meshletBuffer;
         const auto& l_uniqueVertexIndexBuffer                   = l_meshRuntimeData.m_uniqueVertexIndexBuffer;

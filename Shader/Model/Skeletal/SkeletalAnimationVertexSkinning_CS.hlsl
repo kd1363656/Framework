@@ -122,9 +122,10 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     // BoneWeightとして許可する最小値へ補正する
     const float4 l_boneWeightList = max(l_sourceVertex.boneWeight, k_minBoneWeight);
 
-    float4 l_accumulatedPosition = k_initialAccumulatedPosition;
-    float3 l_accumulatedNormal   = k_initialAccumulatedDirection;
-    float3 l_accumulatedTangent = k_initialAccumulatedDirection;
+    float4 l_accumulatedPosition       = k_initialAccumulatedPosition;
+    float3 l_accumulatedNormal         = k_initialAccumulatedDirection;
+    float3 l_accumulatedTangent        = k_initialAccumulatedDirection;
+    float3 l_accumulatedSmoothedNormal = k_initialAccumulatedDirection;
 
     // 実際に使用できたBone Weightの合計
     // 無効なPalette IndexやBone Indexを持つInfluenceは除外するため、
@@ -180,6 +181,10 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
         // xyzだけを行列変換し、wは後で元の値を引き継ぐ
         const float4 l_skinnedTangent = mul(float4(l_sourceVertex.tangent.xyz, k_directionHomogeneousElement), l_skinningMatrix);
 
+        // 平滑化法線も、法線と同じく方向なので平行移動を適用せずにBoneで変換する
+        // こうしておくと、腕を曲げたときもアウトラインを押し出す向きが、曲がった後の面に合う
+        const float4 l_skinnedSmoothedNormal = mul(float4(l_sourceVertex.smoothedNormal, k_directionHomogeneousElement), l_skinningMatrix);
+
         // Boneで変換した頂点座標にWeightを掛けて加算する
         l_accumulatedPosition += l_skinnedPosition * l_boneWeight;
 
@@ -188,6 +193,9 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
 
         // Boneで変換した接線にWeightを掛けて加算する
         l_accumulatedTangent += l_skinnedTangent.xyz * l_boneWeight;
+
+        // Boneで変換した平滑化法線にWeightを掛けて加算する
+        l_accumulatedSmoothedNormal += l_skinnedSmoothedNormal.xyz * l_boneWeight;
 
         // 正常に使用できたBoneWeightを合計する
         l_validBoneWeightTotal += l_boneWeight;
@@ -201,10 +209,11 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     // 元頂点の情報をそのまま出力する
     if (l_validBoneWeightTotal <= k_boneWeightEpsilon)
     {
-        l_skinnedVertex.position = l_sourceVertex.position;
-        l_skinnedVertex.normal   = l_sourceVertex.normal;
-        l_skinnedVertex.tangent  = l_sourceVertex.tangent;
-        l_skinnedVertex.uv       = l_sourceVertex.uv;
+        l_skinnedVertex.position       = l_sourceVertex.position;
+        l_skinnedVertex.normal         = l_sourceVertex.normal;
+        l_skinnedVertex.tangent        = l_sourceVertex.tangent;
+        l_skinnedVertex.uv             = l_sourceVertex.uv;
+        l_skinnedVertex.smoothedNormal = l_sourceVertex.smoothedNormal;
 
         l_skinnedVertexBuffer[l_vertexIndex] = l_skinnedVertex;
 
@@ -233,6 +242,10 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID)
     // UV座標はBoneTransformの影響を受けないため、
     // 元頂点からそのままコピーする
     l_skinnedVertex.uv = l_sourceVertex.uv;
+
+    // 加算した平滑化法線も、法線と同じくWeight合計で補正してから安全に正規化する
+    // 長さがほぼゼロになった場合は、元頂点の平滑化法線をそのまま使う
+    l_skinnedVertex.smoothedNormal = NormalizeSkinningDirection(l_accumulatedSmoothedNormal * l_inverseValidBoneWeightTotal, l_sourceVertex.smoothedNormal);
 
     // 完成したスキニング済み頂点をUAVBufferへ書き込む
     // 後続の描画Passでは、このBufferをSRVとして読み取る

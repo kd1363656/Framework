@@ -62,9 +62,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelBoneMot
 {
     a_modelBoneMotionTrack = {};
 
-    FWK_ASSERT_RETURN_VALUE_IF(!a_fbxBakedNode,                                        "ModelBoneMotionTrackへ変換するufbx_baked_nodeがnullptrです。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_animationDurationSecond < Constant::k_initialAnimationDurationSecond, "Animation再生時間が0未満です。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_animationFrameRate <= k_invalidAnimationFrameRate,     "AnimationFrameRateが0以下です。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_fbxBakedNode,                                                        "ModelBoneMotionTrackへ変換するufbx_baked_nodeがnullptrです。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animationDurationSecond < Constant::k_initialAnimationDurationSecond, "Animation再生時間が0未満です。",                               false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_animationFrameRate <= k_invalidAnimationFrameRate,                    "AnimationFrameRateが0以下です。",                              false);
 
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxBakedNode->scale_keys.count == Constant::k_emptyUFBXElementCount,       "Bake済みScaleKeyが存在しません。",       false);
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxBakedNode->rotation_keys.count == Constant::k_emptyUFBXElementCount,    "Bake済みRotationKeyが存在しません。",    false);
@@ -101,9 +101,9 @@ bool FWK::Graphics::SkeletalAnimationModelFBXMotionExtractor::CreateModelMotionS
                                                                                                           const ufbx_baked_anim*                                     a_fbxBakedAnimation,
                                                                                                                 Struct::SkeletalAnimationModelMotionSequence&        a_modelMotionSequence) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,          "Bake済みAnimationを変換するufbx_sceneがnullptrです。",                               false);
-    FWK_ASSERT_RETURN_VALUE_IF(!a_fbxBakedAnimation, "変換するufbx_baked_animがnullptrです。",                                             false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_modelMotionSequence.m_frameRate <= k_invalidAnimationFrameRate, "MotionSequenceのFrameRateが0以下です。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,                                                      "Bake済みAnimationを変換するufbx_sceneがnullptrです。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!a_fbxBakedAnimation,                                             "変換するufbx_baked_animがnullptrです。",               false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_modelMotionSequence.m_frameRate <= k_invalidAnimationFrameRate, "MotionSequenceのFrameRateが0以下です。",               false);
 
     const auto& l_animationDurationSecond = a_fbxBakedAnimation->playback_duration;
     const auto& l_animationFrameRate      = static_cast<double>(a_modelMotionSequence.m_frameRate);

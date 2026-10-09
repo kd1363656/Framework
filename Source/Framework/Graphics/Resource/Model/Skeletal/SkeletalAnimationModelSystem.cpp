@@ -109,6 +109,10 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAss
     // 頂点とインデックスをGPUで扱いやすい配置へ最適化する
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshOptimizer.OptimizeModelRecord(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshの最適化に失敗しました。", false);
 
+    // アウトライン用の平滑化法線を作る
+    // 最適化で重複した頂点をまとめた後に行うことで、計算する頂点の数を減らす
+    FWK_ASSERT_RETURN_VALUE_IF(!m_smoothedNormalBuilder.BuildModelRecordSmoothedNormal(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshの平滑化法線の作成に失敗しました。", false);
+
     // 最適化済みの頂点とインデックスからMeshletDataを作成する
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshletDataの作成に失敗しました。", false);
 

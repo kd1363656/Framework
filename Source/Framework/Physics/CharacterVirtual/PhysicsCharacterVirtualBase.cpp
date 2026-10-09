@@ -246,7 +246,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::FetchVALIsOnGround() const
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape() const
 {
     FWK_ASSERT_RETURN_VALUE_IF(m_capsuleHalfHeightOfCylinder <= k_minCharacterVirtualCapsuleHalfHeightOfCylinder, "CapsuleHalfHeightOfCylinderが0以下のため、Shapeの作成に失敗しました。", {});
-    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。",               {});
 
     const JPH::CapsuleShapeSettings l_capsuleShapeSettings = { m_capsuleHalfHeightOfCylinder, m_capsuleRadius };
     const auto&                     l_capsuleShapeResult   = l_capsuleShapeSettings.Create();

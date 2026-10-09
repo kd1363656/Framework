@@ -20,7 +20,7 @@ namespace FWK::Graphics
         bool Create(const Device& a_device)
         {
             FWK_ASSERT_RETURN_VALUE_IF(!CreateCommandQueue(a_device), "コマンドキューの作成に失敗しました。", false);
-            FWK_ASSERT_RETURN_VALUE_IF(!CreateFence(a_device),       "フェンスの作成に失敗しました。",         false);
+            FWK_ASSERT_RETURN_VALUE_IF(!CreateFence(a_device),        "フェンスの作成に失敗しました。",       false);
 
             return true;
         }

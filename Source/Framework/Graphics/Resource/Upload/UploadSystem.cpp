@@ -191,7 +191,7 @@ void FWK::Graphics::UploadSystem::RecordBufferCopy(const Struct::BufferUploadCom
 
 std::weak_ptr<FWK::TypeAlias::CopyCommandAllocator> FWK::Graphics::UploadSystem::FetchMutablePTRCopyCommandAllocator()
 {
-    FWK_ASSERT_RETURN_VALUE_IF(m_copyCommandAllocatorList.empty(),                                      "コピーコマンドアロケータリストが空のため、コピーコマンドアロケータ取得処理に失敗しました。",                         {});
+    FWK_ASSERT_RETURN_VALUE_IF(m_copyCommandAllocatorList.empty(),                                      "コピーコマンドアロケータリストが空のため、コピーコマンドアロケータ取得処理に失敗しました。",                       {});
     FWK_ASSERT_RETURN_VALUE_IF(m_currentCopyCommandAllocatorIndex >= m_copyCommandAllocatorList.size(), "コピーコマンドアロケータリストの容量を超えたインデックスのため、コピーコマンドアロケータ取得処理に失敗しました。", {});
 
     const auto& l_copyCommandAllocator = m_copyCommandAllocatorList[m_currentCopyCommandAllocatorIndex];

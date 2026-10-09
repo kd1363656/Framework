@@ -124,7 +124,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
         const auto& l_vertexList     = l_modelMesh.m_vertexList;
         const auto& l_modelIndexList = l_modelMesh.m_indexList;
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),                                                              "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
+        FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),                                                                   "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
         FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                               "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
         FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
 

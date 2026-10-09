@@ -89,7 +89,7 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
     {
         // Blend元となる現在Motionがなければ、
         // 2つのAnimationを補間できない
-        FWK_ASSERT_RETURN_VALUE_IF(!l_hasCurrentMotion,                          "現在Motionが存在しないためAnimationをBlendできません。",          false);
+        FWK_ASSERT_RETURN_VALUE_IF(!l_hasCurrentMotion,                                     "現在Motionが存在しないためAnimationをBlendできません。",          false);
         FWK_ASSERT_RETURN_VALUE_IF(a_blendTargetMotionIndex == k_invalidMotionIndex,        "Blend先AnimationのMotionIndexが無効です。",                       false);
         FWK_ASSERT_RETURN_VALUE_IF(a_blendTargetMotionIndex >= l_motionSequenceList.size(), "Blend先AnimationのMotionIndexがMotionSequenceListの範囲外です。", false);
 

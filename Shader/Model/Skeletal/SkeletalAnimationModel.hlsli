@@ -14,6 +14,8 @@ struct SkeletalAnimationModelVertex
     uint bonePaletteIndexOne;
     uint bonePaletteIndexTwo;
     uint bonePaletteIndexThree;
+    
+    float3 smoothedNormal;
 };
 
 struct SkeletalAnimationModelBonePaletteElement
@@ -34,6 +36,8 @@ struct SkeletalAnimationSkinnedVertex
     float3 normal;
     float4 tangent;
     float2 uv;
+    
+    float3 smoothedNormal;
 };
 
 #endif // MODEL_SKELETAL_ANIMATION_MODEL_HLSLI

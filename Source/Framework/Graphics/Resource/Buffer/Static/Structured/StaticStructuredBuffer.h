@@ -87,7 +87,7 @@ namespace FWK::Graphics
                                              Struct::BufferUploadCommand& a_bufferUploadCommand)
         {
             FWK_ASSERT_RETURN_VALUE_IF(!a_bufferGPUResource.m_resource,                   "StaticStructuredBuffer用GPUResourceが無効のため、UploadCommandの作成に失敗しました。", false);
-            FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                              "BufferListが空のため、UploadCommandの作成に失敗しました。",                           false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_bufferList.empty(),                              "BufferListが空のため、UploadCommandの作成に失敗しました。",                            false);
             FWK_ASSERT_RETURN_VALUE_IF(a_bufferSize == UploadBuffer::k_invalidBufferSize, "BufferSizeが0のため、UploadCommandの作成に失敗しました。",                             false);
 
             // 作成し終わったデフォルトヒープ上にあるリソースをコピー先として扱う

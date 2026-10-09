@@ -88,7 +88,7 @@ namespace FWK::Graphics
         bool CopyCPUDescriptorToShaderVisibleDescriptor(const Device& a_device, const TypeAlias::DescriptorIndex a_index) const
         {
             FWK_ASSERT_RETURN_VALUE_IF(!m_shaderVisibleDescriptorHeap,                      "ShaderVisibleDescriptorHeapが作成されていないため、Descriptorのコピーに失敗しました。", false);
-            FWK_ASSERT_RETURN_VALUE_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",       false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_index == DescriptorHeap::k_invalidDescriptorIndex, "無効なDescriptorIndexが指定されており、Descriptorのコピーに失敗しました。",             false);
 
             const auto& l_device = a_device.GetREFDevice();
 

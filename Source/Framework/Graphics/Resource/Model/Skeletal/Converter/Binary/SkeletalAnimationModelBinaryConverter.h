@@ -84,6 +84,6 @@ namespace FWK::Converter
         // 'S' = 0x53、'A' = 0x41のため、0x5341で"SA"を表す
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5341U;
 
-        static constexpr std::uint16_t k_modelAssetVersion = 1U;
+        static constexpr std::uint16_t k_modelAssetVersion = 2U;
     };
 }

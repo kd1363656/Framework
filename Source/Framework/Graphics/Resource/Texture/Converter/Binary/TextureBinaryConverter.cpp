@@ -197,7 +197,7 @@ bool FWK::Converter::TextureBinaryConverter::Save(const DirectX::ScratchImage& a
     const auto& l_textureAssetFileSize = CalculateTextureAssetFileSize(a_scratchImage);
 
     // 書き込み用メモリマップドファイルの作成
-    FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryConverterBase::k_emptyAssetFileSize,     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",        false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_textureAssetFileSize == BinaryConverterBase::k_emptyAssetFileSize,     "TextureAssetへ保持するScratchImageが無効となっており、バイナリーファイルの保存に失敗しました。",       false);
     FWK_ASSERT_RETURN_VALUE_IF(!CreateWriteMemoryMappedFile(l_textureFilePath, l_textureAssetFileSize), "TextureAssetの書き込み用MemoryMappedFile作成に失敗ており、バイナリーファイルの保存に失敗しました。。", false);
 
     auto l_memoryWriteOffset = k_initialMemoryWriteOffset;

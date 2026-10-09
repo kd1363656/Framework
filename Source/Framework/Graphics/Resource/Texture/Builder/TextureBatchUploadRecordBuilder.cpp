@@ -45,7 +45,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureBatchUploadRec
 
 bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureResource(const GPUMemoryAllocator& a_gpuMemoryAllocator, const DirectX::TexMetadata& a_texMetadata, Graphics::TextureRecord& a_textureRecord) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF(a_texMetadata.format   == DXGI_FORMAT_UNKNOWN,              "テクスチャフォーマットが無効のため、TextureResource作成処理に失敗しました。",                  false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_texMetadata.format   == DXGI_FORMAT_UNKNOWN,               "テクスチャフォーマットが無効のため、TextureResource作成処理に失敗しました。",                 false);
     FWK_ASSERT_RETURN_VALUE_IF(a_texMetadata.dimension != DirectX::TEX_DIMENSION_TEXTURE2D, "TextureResource作成処理はTexture2Dのみ対応しており、TextureResource作成処理に失敗しました。", false);
 
     Struct::GPUResource l_gpuResource = {};
@@ -200,7 +200,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureSRV(const Devi
 {
     const auto& l_textureResource = a_textureRecord.GetREFGPUResource().m_resource;
 
-    FWK_ASSERT_RETURN_VALUE_IF(!l_textureResource,                        "TextureResourceが無効のため、TextureSRV作成処理に失敗しました。",          false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_textureResource,                          "TextureResourceが無効のため、TextureSRV作成処理に失敗しました。",        false);
     FWK_ASSERT_RETURN_VALUE_IF(a_texMetadata.format == DXGI_FORMAT_UNKNOWN, "テクスチャフォーマットが無効のため、TextureSRV作成処理に失敗しました。", false);
 
     const auto& l_device = a_device.GetREFDevice();
