@@ -77,6 +77,9 @@
      ・UndoRedo のコマンドは、ウィンドウの下ではなく Editor/Command/<対象>/<操作>/XxxCommand.h に置きます。
          Editor/Command/GameObject/Create/CreateGameObjectCommand.h
          Editor/Command/GameObject/Destroy/DestroyGameObjectCommand.h
+       GameObject の下位の対象(コンポーネント)も、同じ形で GameObject の下に置きます。
+         Editor/Command/GameObject/Component/Add/AddGameObjectComponentCommand.h
+         Editor/Command/GameObject/Component/Remove/RemoveGameObjectComponentCommand.h
      ・コマンドは、操作を終えてから EditorUndoRedoSystem::PushUndoCommand<XxxCommand>(...) で履歴へ積みます。
        履歴へ積む場所は、操作を行う関数の中の1箇所だけにします。
      ・Undo で位置(並び順)を元に戻すコマンドは、添字(index)をメンバに持ちません。
@@ -84,6 +87,9 @@
        リストの内容が多少変わっていても位置がずれず、範囲外の添字によるエラーも起きません。
          Struct::ReparentGameObjectState(m_parentUUID / m_siblingUUIDList)
          Utility::FetchVALReparentGameObjectState / Utility::ApplyGameObjectSiblingOrder
+     ・削除したオブジェクトを Undo で戻すコマンドは、実体を std::shared_ptr で持ちます。
+       UUID と JSON から作り直す方法は、手間と処理時間がかかるためです(CreateGameObjectCommand / RemoveGameObjectComponentCommand)。
+       持たせるのは実体だけで、追加先の GameObject・親・並び順は、これまでどおり UUID で持ちます。
      ・1回の操作で複数のコマンドが必要なときは、既存のコマンドをメンバに持つコマンドにまとめて、1回の Undo で戻せるようにします。
          PasteCutGameObjectCommand(CreateGameObjectCommand と DestroyGameObjectCommand をメンバに持ちます)
 3-4. 定数・列挙型・構造体などの定義は Source/Framework/Definition/ にまとめます。

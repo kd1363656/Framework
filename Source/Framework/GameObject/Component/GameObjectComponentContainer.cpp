@@ -387,6 +387,13 @@ void FWK::GameObjectComponentContainer::ClearPrefabRemovedComponentUUIDSet()
 {
     m_prefabRemovedComponentUUIDSet.clear();
 }
+void FWK::GameObjectComponentContainer::RemovePrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid)
+{
+    // Prefab由来のコンポーネントを削除すると、削除済みUUIDとして記録される
+    // 削除を取り消して同じUUIDのままコンポーネントを戻すとき、この記録が残っていると、
+    // AddComponentが「削除済みUUIDと重なる」と判断して新しいUUIDを発行し、Prefabとの対応が切れてしまうため、記録を消す
+    m_prefabRemovedComponentUUIDSet.erase(a_uuid);
+}
 
 bool FWK::GameObjectComponentContainer::IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const
 {
@@ -395,11 +402,68 @@ bool FWK::GameObjectComponentContainer::IsPrefabRemovedComponentUUID(const boost
     return m_prefabRemovedComponentUUIDSet.contains(a_uuid);
 }
 
+void FWK::GameObjectComponentContainer::ApplyComponentOrder(const std::vector<boost::uuids::uuid>& a_componentUUIDList)
+{
+    // UUIDの並びから、UUIDごとの順位(先頭が0)を作る
+    std::unordered_map<boost::uuids::uuid, std::size_t> l_rankMap = {};
+
+    l_rankMap.reserve(a_componentUUIDList.size());
+
+    for (std::size_t l_rank = 0ULL; l_rank < a_componentUUIDList.size(); ++l_rank)
+    {
+        l_rankMap.try_emplace(a_componentUUIDList[l_rank], l_rank);
+    }
+
+    auto& l_componentDataList = m_componentSmartPointerVectorList.GetMutableREFElementDataList();
+
+    // 順位の小さい順に並べ替える
+    // std::ranges::stable_sort : 順位が同じ要素の、元の順番を保つ
+    // 並びに無いコンポーネントは最後尾の順位になり、元の順番のまま末尾に残る
+    std::ranges::stable_sort(l_componentDataList,
+                             [this, &l_rankMap](const auto& a_left, const auto& a_right)
+                             {
+                                 return FetchVALComponentRank(l_rankMap, a_left.m_type) < FetchVALComponentRank(l_rankMap, a_right.m_type);
+                             });
+}
+
+std::vector<boost::uuids::uuid> FWK::GameObjectComponentContainer::FetchVALComponentUUIDList() const
+{
+    std::vector<boost::uuids::uuid> l_componentUUIDList = {};
+
+    const auto& l_componentDataList = m_componentSmartPointerVectorList.GetREFElementDataList();
+
+    l_componentUUIDList.reserve(l_componentDataList.size());
+
+    // 今のコンポーネントの並びのまま、UUIDだけを集める
+    for (const auto& l_componentData : l_componentDataList)
+    {
+        const auto& l_component = l_componentData.m_type;
+
+        if (!l_component) { continue; }
+
+        l_componentUUIDList.emplace_back(l_component->GetREFUUID());
+    }
+
+    return l_componentUUIDList;
+}
+
 std::weak_ptr<FWK::GameObjectComponentBase> FWK::GameObjectComponentContainer::FindVALComponentByUUID(const boost::uuids::uuid& a_uuid) const
 {
     if (a_uuid.is_nil()) { return {}; }
 
     return m_componentUUIDRegistry.FindVALRegisteredType(a_uuid);
+}
+
+std::size_t FWK::GameObjectComponentContainer::FetchVALComponentRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::shared_ptr<GameObjectComponentBase>& a_component) const
+{
+    // 無効なコンポーネント、並びに無いコンポーネントは、最後尾の順位にする
+    if (!a_component) { return k_lastComponentRank; }
+
+    const auto& l_rankITR = a_rankMap.find(a_component->GetREFUUID());
+
+    if (l_rankITR == a_rankMap.end()) { return k_lastComponentRank; }
+
+    return l_rankITR->second;
 }
 
 boost::uuids::uuid FWK::GameObjectComponentContainer::GenerateVALComponentUUID() const

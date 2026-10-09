@@ -37,6 +37,11 @@ void FWK::Editor::DetailsEditorGameObject::Draw(const std::weak_ptr<GameObject>&
     const auto& l_componentSmartPointerVectorList = l_componentContainer.GetREFComponentSmartPointerVectorList();
     const auto& l_componentDataList               = l_componentSmartPointerVectorList.GetREFElementDataList   ();
 
+    // メニューで「削除」が選ばれたコンポーネント
+    // 描画のループの途中でコンテナのリストを変更すると、回している最中のリストが壊れるため、
+    // ここへ覚えておき、ループが終わってから削除する
+    std::shared_ptr<GameObjectComponentBase> l_removeTarget = nullptr;
+
     // 他のコンポーネントも描画
     for (const auto& l_componentData : l_componentDataList)
     {
@@ -44,14 +49,35 @@ void FWK::Editor::DetailsEditorGameObject::Draw(const std::weak_ptr<GameObject>&
 
         if (!l_component) { continue; }
 
-        // CollapsingHeaderが開かれなければ処理を続けない
-        if (const auto& l_componentHeaderName = l_component->GetREFRuntimeTypeINFO().k_name;
-            !ImGui::CollapsingHeader(l_componentHeaderName.data()))
+        // 同じ型のコンポーネントを複数持つ場合、ヘッダーの文字が同じでImGuiのIDが重なるため、
+        // コンポーネントのUUIDでIDを分ける
+        ImGui::PushID(boost::uuids::to_string(l_component->GetREFUUID()).c_str());
+
+        // 同じ行の右端に置くメニューボタンが、ヘッダーの上でもクリックを受け取れるようにする
+        ImGui::SetNextItemAllowOverlap();
+
+        const auto& l_componentHeaderName = l_component->GetREFRuntimeTypeINFO().k_name;
+        const bool  l_isHeaderOpen        = ImGui::CollapsingHeader           (l_componentHeaderName.data());
+
+        // ヘッダーの右端に縦三点のメニューボタンを置く。「削除」が選ばれたら覚えておく
+        if (DrawComponentMenuButton())
         {
-            continue;
+            l_removeTarget = l_component;
         }
 
-        l_component->EditInspector();
+        // CollapsingHeaderが開かれているときだけ、インスペクターを描画する
+        if (l_isHeaderOpen)
+        {
+            l_component->EditInspector();
+        }
+
+        ImGui::PopID();
+    }
+
+    // ループが終わったので、削除が選ばれていれば削除する
+    if (l_removeTarget)
+    {
+        RemoveComponent(a_gameObject, l_removeTarget);
     }
 
     // すべてのコンポーネントのEditInspectorが終わった後に、コンポーネント追加ボタンを描画する
@@ -86,4 +112,65 @@ void FWK::Editor::DetailsEditorGameObject::DrawAddComponentButton(const std::wea
                                    k_addComponentPopupLabel,
                                    ImVec2{ l_buttonMIN.x, l_buttonMAX.y },
                                    l_buttonWidth);
+}
+
+bool FWK::Editor::DetailsEditorGameObject::DrawComponentMenuButton() const
+{
+    const auto& l_style = ImGui::GetStyle();
+
+    // ヘッダーの右端にボタンを置く
+    // CollapsingHeaderの直後はカーソルが次の行にあるが、SameLineで位置を指定すると、ヘッダーと同じ行の右端へ戻れる
+    // ボタンのX座標 = カーソルのX + 残りの幅 - ボタンの幅
+    // ボタンの幅 = アイコンの幅 + 左右の余白(FramePadding)
+    // CalcTextSizeの第3引数をtrueにすると、ラベルの"##"より後ろ(ImGuiのID)を幅に含めない
+    const float l_buttonWidth     = ImGui::CalcTextSize (k_componentMenuButtonLabel.data(), nullptr, true).x + l_style.FramePadding.x * k_framePaddingBothSidesNUM;
+    const float l_buttonPositionX = ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - l_buttonWidth;
+
+    ImGui::SameLine(l_buttonPositionX);
+
+    // ボタンの背景は透明にして、ヘッダーの上にアイコンだけが見えるようにする
+    ImGui::PushStyleColor(ImGuiCol_Button, Constant::k_imguiTransparentColor);
+
+    const bool l_isClicked = ImGui::SmallButton(k_componentMenuButtonLabel.data());
+
+    ImGui::PopStyleColor();
+
+    // OpenPopupは呼び出した時点のIDスタックでポップアップのIDを作るため、BeginPopupと同じスコープ(同じコンポーネントのID)で呼ぶ
+    if (l_isClicked)
+    {
+        ImGui::OpenPopup(k_componentMenuPopupLabel.data());
+    }
+
+    bool l_isRemoveSelected = false;
+
+    if (ImGui::BeginPopup(k_componentMenuPopupLabel.data()))
+    {
+        // MenuItemは、選ばれたフレームだけtrueを返し、選ぶとポップアップも閉じる
+        l_isRemoveSelected = ImGui::MenuItem(k_removeMenuLabel.data());
+
+        ImGui::EndPopup();
+    }
+
+    return l_isRemoveSelected;
+}
+
+void FWK::Editor::DetailsEditorGameObject::RemoveComponent(const std::weak_ptr<GameObject>& a_gameObject, const std::shared_ptr<GameObjectComponentBase>& a_component) const
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
+    auto& l_componentContainer = l_gameObject->GetMutableREFComponentContainer();
+
+    // Undoで元の位置へ戻せるよう、削除する前のコンポーネントの並び(UUID)を記録しておく
+    const auto& l_beforeComponentUUIDList = l_componentContainer.FetchVALComponentUUIDList();
+
+    l_componentContainer.RemoveComponent(a_component);
+
+    // 削除を終えてから、履歴へ積む
+    // コマンドがshared_ptrを持つため、コンテナから外れたコンポーネントもUndoまで消えない
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<RemoveGameObjectComponentCommand>(l_beforeComponentUUIDList, a_component, l_gameObject->GetREFSceneInstanceUUID());
 }

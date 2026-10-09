@@ -26,6 +26,11 @@ namespace FWK::Constant
                                                         0.38F,
                                                         1.00F };
 
+    inline constexpr ImVec4 k_imguiTransparentColor = { 0.00F,
+                                                        0.00F,
+                                                        0.00F,
+                                                        0.00F };
+
     inline constexpr ImVec4 k_imguiItemSelectedColor         = k_imguiAccentColor;
     inline constexpr ImVec4 k_imguiItemSelectedInactiveColor = k_imguiAccentTranslucentColor;
 }

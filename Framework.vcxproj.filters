@@ -1495,6 +1495,15 @@
     <Filter Include="Source\Framework\Editor\Command">
       <UniqueIdentifier>{d4fcf196-da8d-4ff1-81de-084786bb0179}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component">
+      <UniqueIdentifier>{45eebe3e-43dd-4a54-9f4e-24936d3e782d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component\Add">
+      <UniqueIdentifier>{1833c3bc-aade-4c39-97d5-5b9773e5f258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Editor\Command\GameObject\Component\Remove">
+      <UniqueIdentifier>{67f66308-7ebc-4b6a-8d57-059d500ab056}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Editor\Command\GameObject">
       <UniqueIdentifier>{fbc9dd56-8d77-4bea-adf1-ed50c1b8fdee}</UniqueIdentifier>
     </Filter>
@@ -3063,6 +3072,12 @@
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Add</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentCommand.h">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Remove</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.h">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>
     </ClInclude>
@@ -3964,6 +3979,12 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Create</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Add</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentCommand.cpp">
+      <Filter>Source\Framework\Editor\Command\GameObject\Component\Remove</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Reparent\ReparentGameObjectCommand.cpp">
       <Filter>Source\Framework\Editor\Command\GameObject\Reparent</Filter>

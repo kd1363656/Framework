@@ -436,6 +436,13 @@ void FWK::Editor::DetailsEditorGameObjectAddComponentPopupDrawer::AddComponent(c
     // シーンを読み込んだときと同じく、追加した後にPostDeserializeを呼んで初期設定を終える
     // 例 : カメラコンポーネントはここでカメラの行列を準備する
     l_component->PostDeserialize();
+
+    // 追加を終えてから、履歴へ積む
+    // コマンドがshared_ptrを持つため、Undoでコンテナから外れたコンポーネントもRedoまで消えない
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<AddGameObjectComponentCommand>(l_component, l_gameObject->GetREFSceneInstanceUUID());
 }
 
 bool FWK::Editor::DetailsEditorGameObjectAddComponentPopupDrawer::IsSearching() const

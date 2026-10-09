@@ -99,6 +99,8 @@
 #include "Editor/Command/GameObject/Rename/RenameGameObjectCommand.h"
 #include "Editor/Command/Scene/Rename/RenameSceneCommand.h"
 #include "Editor/Command/GameObject/Create/CreateGameObjectCommand.h"
+#include "Editor/Command/GameObject/Component/Add/AddGameObjectComponentCommand.h"
+#include "Editor/Command/GameObject/Component/Remove/RemoveGameObjectComponentCommand.h"
 #include "Editor/Command/GameObject/PasteCut/PasteCutGameObjectCommand.h"
 #include "Editor/Selection/EditorGameObjectSelectionState.h"
 #include "Definition/Constant/Utility/Json/JsonUtilityConstant.h"

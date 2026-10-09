@@ -519,6 +519,8 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\Camera\EditorCamera.h" />
     <ClInclude Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentCommand.h" />
+    <ClInclude Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentCommand.h" />
     <ClInclude Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.h" />
     <ClInclude Include="Source\Framework\Editor\EditorManager.h" />
     <ClInclude Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.h" />
@@ -889,6 +891,8 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\Camera\Converter\Json\EditorCameraJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\Camera\EditorCamera.cpp" />
     <ClCompile Include="Source\Framework\Editor\Command\GameObject\Create\CreateGameObjectCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Add\AddGameObjectComponentCommand.cpp" />
+    <ClCompile Include="Source\Framework\Editor\Command\GameObject\Component\Remove\RemoveGameObjectComponentCommand.cpp" />
     <ClCompile Include="Source\Framework\Editor\Converter\Json\EditorManagerJsonConverter.cpp" />
     <ClCompile Include="Source\Framework\Editor\EditorManager.cpp" />
     <ClCompile Include="Source\Framework\Editor\MainMenu\Converter\Json\MainMenuBarEditorJsonConverter.cpp" />

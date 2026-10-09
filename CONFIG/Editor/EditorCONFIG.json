@@ -53,8 +53,12 @@
             "Window": {
                 "AssetPane": {
                     "SelectedFilePathList": {
-                        "RangeSelectionStartPath": "",
-                        "SelectedFilePathList": []
+                        "RangeSelectionStartPath": "Asset\\Data\\Prefab\\Camera\\Camera.json",
+                        "SelectedFilePathList": [
+                            {
+                                "SelectedFilePath": "Asset\\Data\\Prefab\\Camera\\Camera.json"
+                            }
+                        ]
                     }
                 },
                 "CurrentSelectFolderPath": "Asset\\Data\\Prefab\\Camera",

@@ -43,10 +43,15 @@ namespace FWK
         void RemoveComponent(const std::weak_ptr<GameObjectComponentBase>& a_component);
 
         void ClearPrefabRemovedComponentUUIDSet();
+        void RemovePrefabRemovedComponentUUID  (const boost::uuids::uuid& a_uuid);
 
         bool IsPrefabRemovedComponentUUID(const boost::uuids::uuid& a_uuid) const;
 
+        void ApplyComponentOrder(const std::vector<boost::uuids::uuid>& a_componentUUIDList);
+
         void SetOwner(const std::weak_ptr<GameObject>& a_set) { m_owner = a_set; }
+
+        std::vector<boost::uuids::uuid> FetchVALComponentUUIDList() const;
 
         template <Concept::IsDerivedGameObjectComponentBaseConcept ComponentType>
         std::weak_ptr<ComponentType> FindVALUniqueComponent() const
@@ -92,7 +97,11 @@ namespace FWK
 
     private:
 
+        std::size_t FetchVALComponentRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::shared_ptr<GameObjectComponentBase>& a_component) const;
+
         boost::uuids::uuid GenerateVALComponentUUID() const;
+
+        static constexpr std::size_t k_lastComponentRank = std::numeric_limits<std::size_t>::max();
 
         std::unordered_map<std::uint32_t, std::weak_ptr<GameObjectComponentBase>>              m_uniqueComponentMap = {};
         std::unordered_map<std::uint32_t, std::vector<std::weak_ptr<GameObjectComponentBase>>> m_multiComponentMap  = {};
