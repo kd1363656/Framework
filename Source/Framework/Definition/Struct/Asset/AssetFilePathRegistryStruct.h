@@ -6,6 +6,6 @@ namespace FWK::Struct
     {
         std::filesystem::path m_assetFilePath = {};
 
-        Enum::AssetFilePathRegistryType m_type = Enum::AssetFilePathRegistryType::Invalid;
+        Enum::AssetFilePathType m_type = Enum::AssetFilePathType::Invalid;
     };
 }

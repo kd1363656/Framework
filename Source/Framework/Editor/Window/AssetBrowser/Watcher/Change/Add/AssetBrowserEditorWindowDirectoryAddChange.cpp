@@ -32,7 +32,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::Apply(AssetFilePat
         {
             switch (l_assetFilePathData->m_type)
             {
-                case Enum::AssetFilePathRegistryType::Prefab:
+                case Enum::AssetFilePathType::Prefab:
                 {
                     ApplyPrefabAdd(l_filePath, a_sceneManager, *l_assetUUID);
 
@@ -40,7 +40,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::Apply(AssetFilePat
                 }
                 break;
 
-                case Enum::AssetFilePathRegistryType::Scene:
+                case Enum::AssetFilePathType::Scene:
                 {
                     ApplySceneAdd(l_filePath, *l_assetUUID, a_sceneManager);
 

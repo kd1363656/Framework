@@ -86,8 +86,8 @@ namespace FWK::Struct
         std::uint32_t m_triangleCount = k_initialMeshletTriangleCount;
     };
 
-    // Meshlet 1個分のカリング用境界情報
-    // Meshlet単位のFrustumCullingやBackface Cone Cullingで使用する
+    // Meshlet1個分のカリング用境界情報
+    // Meshlet単位のFrustumCullingやBackfaceConeCullingで使用する
     struct ModelMeshletBounds final
     {
         static constexpr float k_initialMeshletBoundsRadius     = 0.0F;

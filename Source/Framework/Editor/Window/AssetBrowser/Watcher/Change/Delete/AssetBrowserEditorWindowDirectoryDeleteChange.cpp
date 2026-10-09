@@ -36,7 +36,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
 
         switch (l_assetFilePathData->m_type)
         {
-            case Enum::AssetFilePathRegistryType::Prefab:
+            case Enum::AssetFilePathType::Prefab:
             {
                 ApplyPrefabDelete(a_deleteFilePath,
                                   a_sceneManager,
@@ -47,12 +47,22 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
             }
             break;
 
-            case Enum::AssetFilePathRegistryType::Scene:
+            case Enum::AssetFilePathType::Scene:
             {
                 ApplySceneDelete(a_deleteFilePath,
                                  l_copiedAssetUUID,
                                  a_assetFilePathRegistry,
                                  a_sceneManager);
+
+                return;
+            }
+            break;
+
+            case Enum::AssetFilePathType::Texture:
+            {
+                // テクスチャは他のデータから参照を外す処理がないため、Registryから取り除くだけでよい
+                // 取り除くと、このUUIDを持つAssetFilePathは「不明なパス」として表示される
+                a_assetFilePathRegistry.Erase(a_deleteFilePath);
 
                 return;
             }

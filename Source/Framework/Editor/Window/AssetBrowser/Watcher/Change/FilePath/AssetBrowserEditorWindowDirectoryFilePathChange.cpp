@@ -68,7 +68,7 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
 
     switch (l_assetFilePathData->m_type)
     {
-        case Enum::AssetFilePathRegistryType::Prefab:
+        case Enum::AssetFilePathType::Prefab:
         {
             ApplyPrefabFilePathChange(a_oldFilePath,
                                       a_newFilePath,
@@ -79,13 +79,23 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
         }
         break;
 
-        case Enum::AssetFilePathRegistryType::Scene:
+        case Enum::AssetFilePathType::Scene:
         {
             ApplySceneFilePathChange(a_oldFilePath,
                                      a_newFilePath,
                                      l_copiedAssetUUID,
                                      a_assetFilePathRegistry,
                                      a_sceneManager);
+
+            return;
+        }
+        break;
+
+        case Enum::AssetFilePathType::Texture:
+        {
+            // UUIDはそのままで、Registry側のパスだけを新しいパスへ書き換える
+            // AssetFilePathはUUIDを持っているため、名前変更や移動の後も同じテクスチャを辿れる
+            a_assetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath);
 
             return;
         }

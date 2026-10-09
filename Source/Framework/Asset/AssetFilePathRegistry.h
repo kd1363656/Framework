@@ -15,7 +15,7 @@ namespace FWK
 
         nlohmann::json Serialize() const;
 
-        bool Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType);
+        bool Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathType a_assetFilePathRegisterType);
 
         bool ReplaceFilePath(const std::filesystem::path& a_oldAssetFilePath, const std::filesystem::path& a_newAssetFilePath);
 

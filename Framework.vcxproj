@@ -363,7 +363,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedPipelineStateBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\IsDerivedBaseConcept.h" />
     <ClInclude Include="Source\Framework\Definition\Concept\IsSmartPTR\IsSmartPTRConcept.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Asset\AssetFilePathInspectorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\AudioManagerConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstance2DConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Audio\SoundEffectInstanceBaseConstant.h" />
@@ -426,7 +425,7 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\Storage\StorageIDAllocatorUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\StringUtilityConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\String\WStringUtilityConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h" />
+    <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Axis\AxisEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Splitter\EditorWindowPaneSplitterEnum.h" />
     <ClInclude Include="Source\Framework\Definition\Enum\Editor\Window\AssetBrowserEditorWindowClipboardEnum.h" />

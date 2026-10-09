@@ -266,7 +266,7 @@ std::filesystem::path FWK::Scene::FetchVALNextLoadSceneFilePath() const
 
     // 次のシーンのファイルパスが空なら移行しない
     if (l_assetFilePathData->m_assetFilePath.empty() ||
-        l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene)
+        l_assetFilePathData->m_type != Enum::AssetFilePathType::Scene)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "次のシーンへの情報が無効です、SceneManagerのマップ内部を確認してください。");
 

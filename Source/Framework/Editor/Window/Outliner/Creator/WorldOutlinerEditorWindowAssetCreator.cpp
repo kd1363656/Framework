@@ -72,7 +72,7 @@ std::shared_ptr<FWK::GameObject> FWK::Editor::WorldOutlinerEditorWindowAssetCrea
 
     // PrefabUUIDからアセットレジストリーにあるファイルパスを参照する
     if (!l_assetFilePathData ||
-        l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab)
+        l_assetFilePathData->m_type != Enum::AssetFilePathType::Prefab)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugINFOColor, "Prefabではないファイルのため、GameObject生成をスキップしました。\nFilePath : {}", a_prefabFilePath.string());
 

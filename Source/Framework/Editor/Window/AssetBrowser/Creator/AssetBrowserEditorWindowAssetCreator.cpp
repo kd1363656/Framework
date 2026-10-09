@@ -45,7 +45,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // WatcherはRegistryへ未登録のJSOnがディスクに現れると物理削除するため
     // ファイルを書き込み前に必ずRegistryへ登録する
     // ファイルパスに対応するUUIDを生成数r
-    if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
+    if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathType::Prefab))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへのPrefab登録に失敗したため、Prefabファイルを作成しませんでした。\nFilePath : {}", l_prefabFilePath.string());
 
@@ -103,7 +103,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // WatcherはRegistryへ未登録のJSONがディスクに現れると物理削除するため
     // ファイル書き込みの前に必ずRegistryへ登録する
     if (const auto& l_sceneUUID = l_uuidManager.GenerateVALUUID    ();
-        !a_assetFilePathRegistry.Add(l_sceneFilePath, l_sceneUUID, Enum::AssetFilePathRegistryType::Scene))
+        !a_assetFilePathRegistry.Add(l_sceneFilePath, l_sceneUUID, Enum::AssetFilePathType::Scene))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへのScene登録に失敗したため、Sceneファイルを作成しませんでした。\nFilePath : {}", l_sceneFilePath.string());
 
@@ -260,7 +260,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
 
     switch (l_assetType)
     {
-        case Enum::AssetFilePathRegistryType::Prefab:
+        case Enum::AssetFilePathType::Prefab:
         {
             if (const auto& l_prefabName = a_copiedFilePath.stem().string();
                 !Converter::GameObjectPrefabJsonConverter::RebindPrefabUUID(a_copiedFilePath,
@@ -278,7 +278,7 @@ bool FWK::Editor::AssetBrowserEditorWindowAssetCreator::RegisterCopiedAsset(cons
         }
         break;
 
-        case Enum::AssetFilePathRegistryType::Scene:
+        case Enum::AssetFilePathType::Scene:
         {
             // SceneのUUIDはRegistryのみが保持しJson内には存在しないため
             // Json側は名前だけ更新すればよい
@@ -325,7 +325,7 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     // Editor側のAssetFilePathRegistryへ先に登録
     // WatcherはRegistryへ未登録のJsonがディスクに現れると物理削除するため
     // ファイルを書き込む前に必ずRegistryへ登録する
-    if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathRegistryType::Prefab))
+    if (!a_assetFilePathRegistry.Add(l_prefabFilePath, l_prefabUUID, Enum::AssetFilePathType::Prefab))
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryへのPrefab登録に失敗したため、Prefabファイルを作成しませんでした。\nFilePath : {}", l_prefabFilePath.string());
 

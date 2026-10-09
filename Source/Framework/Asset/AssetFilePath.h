@@ -11,27 +11,20 @@ namespace FWK
 
         void Deserialize(const nlohmann::json& a_rootJson);
 
+        bool EditInspector();
+
         nlohmann::json Serialize() const;
 
-        void EditInspector();
+        void SetAllowedType      (const Enum::AssetFilePathType a_set) { m_allowedType       = a_set; }
+        void SetAssetFilePathUUID(const boost::uuids::uuid&     a_set) { m_assetFilePathUUID = a_set; }
 
-        void SetAllowedFileExtension(const std::filesystem::path& a_set) { m_allowedFileExtension = a_set; }
-        void SetAssetFilePath       (const std::filesystem::path& a_set) { m_assetFilePath        = a_set; }
-
-        void SetAssetFilePathUUID(const boost::uuids::uuid& a_set) { m_assetFilePathUUID = a_set; }
-
-        void SetIsFilePathChangedDirty(const bool a_set) { m_isFilePathChangedDirty = a_set; }
-
-        const auto& GetREFAssetFilePath() const { return m_assetFilePath; }
+        std::filesystem::path FetchVALFilePath() const;
 
         const auto& GetREFAssetFilePathUUID() const { return m_assetFilePathUUID; }
 
-        bool GetVALIsFilePathChangedDirty() const { return m_isFilePathChangedDirty; }
+        auto GetVALAllowedType() const { return m_allowedType; }
 
     private:
-
-        std::filesystem::path m_allowedFileExtension = {};
-        std::filesystem::path m_assetFilePath        = {};
 
         Converter::AssetFilePathJsonConverter m_jsonConverter = {};
 
@@ -39,6 +32,6 @@ namespace FWK
 
         boost::uuids::uuid m_assetFilePathUUID = {};
 
-        bool m_isFilePathChangedDirty = false;
+        Enum::AssetFilePathType m_allowedType = Enum::AssetFilePathType::Invalid;
     };
 }

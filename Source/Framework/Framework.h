@@ -233,11 +233,10 @@
 //===============================================================================
 // アセットファイルパスレジストリー
 //===============================================================================
-#include "Definition/Enum/Asset/AssetFilePathRegistryEnum.h"
+#include "Definition/Enum/Asset/AssetFilePathEnum.h"
 #include "Definition/Struct/Asset/AssetFilePathRegistryStruct.h"
 #include "Asset/Converter/Json/AssetFilePathRegistryJsonConverter.h"
 #include "Asset/AssetFilePathRegistry.h"
-#include "Definition/Constant/Asset/AssetFilePathInspectorConstant.h"
 #include "Asset/Converter/Json/AssetFilePathJsonConverter.h"
 #include "Asset/Inspector/AssetFilePathInspector.h"
 #include "Asset/AssetFilePath.h"

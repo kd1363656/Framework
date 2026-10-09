@@ -1306,13 +1306,13 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALIcon(const s
 
     switch (l_assetFilePathData->m_type)
     {
-        case Enum::AssetFilePathRegistryType::Prefab:
+        case Enum::AssetFilePathType::Prefab:
         {
             return std::string{ Constant::k_imguiFontAwesomePrefabIcon };
         }
         break;
 
-        case Enum::AssetFilePathRegistryType::Scene:
+        case Enum::AssetFilePathType::Scene:
         {
             return std::string{ Constant::k_imguiFontAwesomeSceneIcon };
         }

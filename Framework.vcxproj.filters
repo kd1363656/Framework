@@ -1486,9 +1486,6 @@
     <Filter Include="Source\Framework\Editor\Window\Outliner\Operation\Scene">
       <UniqueIdentifier>{dd7ec834-52dc-41eb-889d-df1c7ab3d9a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Framework\Definition\Constant\Asset">
-      <UniqueIdentifier>{fb9790a6-99e1-4b52-8734-20637f89b9c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Framework\Asset\Inspector">
       <UniqueIdentifier>{5ce34741-5c7a-4b0d-9e2c-03db72554600}</UniqueIdentifier>
     </Filter>
@@ -2685,7 +2682,7 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Utility\File\ResolveFilePathConflictByNumberSuffixUtilityConstant.h">
       <Filter>Source\Framework\Definition\Constant\Utility\File</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathRegistryEnum.h">
+    <ClInclude Include="Source\Framework\Definition\Enum\Asset\AssetFilePathEnum.h">
       <Filter>Source\Framework\Definition\Enum\Asset</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Asset\AssetFilePathRegistry.h">
@@ -3050,9 +3047,6 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Asset\AssetFilePath.h">
       <Filter>Source\Framework\Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Constant\Asset\AssetFilePathInspectorConstant.h">
-      <Filter>Source\Framework\Definition\Constant\Asset</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Asset\Converter\Json\AssetFilePathJsonConverter.h">
       <Filter>Source\Framework\Asset\Converter\Json</Filter>

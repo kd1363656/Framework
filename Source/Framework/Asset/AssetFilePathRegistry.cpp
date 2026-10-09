@@ -20,7 +20,7 @@ nlohmann::json FWK::AssetFilePathRegistry::Serialize() const
     return m_jsonConverter.Serialize(*this);
 }
 
-bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathRegistryType a_assetFilePathRegisterType)
+bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePath, const boost::uuids::uuid& a_assetUUID, Enum::AssetFilePathType a_assetFilePathRegisterType)
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_assetFilePath.empty(), "AssetFilePathが空のため、AssetFilePathRegistryへの登録に失敗しました。", false);
 
@@ -32,7 +32,7 @@ bool FWK::AssetFilePathRegistry::Add(const std::filesystem::path& a_assetFilePat
         return false;
     }
 
-    if (a_assetFilePathRegisterType == Enum::AssetFilePathRegistryType::Invalid)
+    if (a_assetFilePathRegisterType == Enum::AssetFilePathType::Invalid)
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "AssetFilePathRegistryに追加する予定のAssetFilePathRegistryTypeが無効値を示しており、AssetFilePathRegistryへの登録に失敗しました。");
 

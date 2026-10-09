@@ -40,7 +40,7 @@ void FWK::Converter::SceneGameObjectPrefabSystemJsonConverter::Deserialize(const
         }
 
         // プレハブじゃないファイルパスならcontinue
-        if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab) { continue; }
+        if (l_assetFilePathData->m_type != Enum::AssetFilePathType::Prefab) { continue; }
 
               GameObjectPrefab l_gameObjectPrefab = {};
         const auto&            l_assetFilePath    = l_assetFilePathData->m_assetFilePath;
@@ -89,7 +89,7 @@ nlohmann::json FWK::Converter::SceneGameObjectPrefabSystemJsonConverter::Seriali
         }
 
         // プレハブじゃないファイルパスならcontinue
-        if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Prefab) { continue; }
+        if (l_assetFilePathData->m_type != Enum::AssetFilePathType::Prefab) { continue; }
 
         // 読み込めないファイルならシリアライズしない
         if (const auto& l_filePath = l_assetFilePathData->m_assetFilePath;

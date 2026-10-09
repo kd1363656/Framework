@@ -64,13 +64,13 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Rename(const std::files
     // AssetCreator::RenamePrefab/RenameSceneは既存UUIDを保持したままJSON内の名前だけ更新する
     switch (l_assetFilePathData->m_type)
     {
-        case Enum::AssetFilePathRegistryType::Prefab:
+        case Enum::AssetFilePathType::Prefab:
         {
             a_assetCreator.RenamePrefab(l_resolvedNewFilePath, l_resolvedNewFilePath);
         }
         break;
 
-        case Enum::AssetFilePathRegistryType::Scene:
+        case Enum::AssetFilePathType::Scene:
         {
             a_assetCreator.RenameScene(l_resolvedNewFilePath, l_resolvedNewFilePath);
         }

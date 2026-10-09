@@ -553,6 +553,22 @@
          if (const auto& l_json = a_rootJson.value(k_xxxJsonKey, nlohmann::json{});
              !l_json.is_null())
          {
+     ・その if の条件(と本体)でしか使わない値は、if の前で宣言せず、初期化文の中で宣言します。
+       if の後でも使う値だけを、if の前に宣言します。
+         NG : const auto* l_assetFilePathData = l_registry.FindPTRAssetFilePathData(*l_assetUUID);
+
+              if (!l_assetFilePathData ||
+                  l_assetFilePathData->m_type != a_allowedType)
+              {
+                  return false;
+              }
+         OK : if (const auto* l_assetFilePathData = l_registry.FindPTRAssetFilePathData(*l_assetUUID);
+                  !l_assetFilePathData ||
+                  l_assetFilePathData->m_type != a_allowedType)
+              {
+                  return false;
+              }
+     ・初期化文の値が必要なのが条件だけでなく本体の中でも同じ値なら、そのまま初期化文に置きます(スコープは if / else の全体です)。
 9-7. 引数の改行
      ・宣言では、引数が3個以下なら1行で書き、4個以上なら1行に1引数ずつ書いて名前の位置を揃えます。
        引数が3個以下のときに改行して並べることはしません(引数そのものが複数行になるラムダや && / || の条件は除きます)。
@@ -1262,7 +1278,8 @@
 [ ] bool を返す判定の関数は Is / Can / Has で始まっている(Contains などを使っていない)
 [ ] 数値はすべて k_ の定数(接尾辞は大文字の F / U / ULL)、文字列は std::string_view の定数
 [ ] エラーは FWK_ASSERT_RETURN(_VALUE)_IF で判定し、メッセージは「〜のため、〜に失敗しました。」
-[ ] weak_ptr は先頭で lock() して if (!l_x) { return; } で確認している
+[ ] weak_ptr は先頭で lock() して if (!l_x) { return; } で確認している(その後も使うので if の前に宣言する)
+[ ] その if でしか使わない値は、if の初期化文の中で宣言している
 [ ] .cpp のコメントは // + 日本語の常体で、行末コメントはなく、コメントの前に空行がある
 [ ] Converter / Inspector をメンバに持って処理を任せ、JSON のキーは k_xxxJsonKey にしている
 [ ] 新しいファイルを vcxproj / filters / Framework.h に登録している

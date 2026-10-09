@@ -70,7 +70,7 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
         }
 
         // プレハブじゃないファイルパスならcontinue
-        if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene) { continue; }
+        if (l_assetFilePathData->m_type != Enum::AssetFilePathType::Scene) { continue; }
 
               NextScene l_nextScene     = {};
         const auto&     l_assetFilePath = l_assetFilePathData->m_assetFilePath;
@@ -106,7 +106,7 @@ nlohmann::json FWK::Converter::SceneChangerJsonConverter::SerializeNextSceneMap(
         }
 
         // プレハブじゃないファイルパスならcontinue
-        if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene) { continue; }
+        if (l_assetFilePathData->m_type != Enum::AssetFilePathType::Scene) { continue; }
 
         // 読み込めないファイルならシリアライズしない
         if (const auto& l_filePath = l_assetFilePathData->m_assetFilePath;
