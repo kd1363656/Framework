@@ -110,7 +110,8 @@
        Utility/<分類>/<動作>/ に XxxHelper クラスとして書き、使う側のクラスのメンバに持たせます(namespace FWK::Utility)。
        inline 関数ではなく、状態を持つため、クラスにします。
          Utility/GameObject/Fetch/Component/Transform/FetchSelfGameObjectTransformComponentHelper
-         (自身のGameObjectのTransformComponentを PostDeserialize で weak_ptr にキャッシュする。CameraComponent が m_xxxHelper として持つ)
+         (自身のGameObjectのTransformComponentを PostDeserialize で weak_ptr にキャッシュする。
+          GameObjectCameraComponent が m_fetchSelfGameObjectTransformComponentHelper として持つ)
 3-6. シェーダーのファイル名は <名前>_<ステージ>.hlsl(AS / MS / PS / VS / CS)にします。共通部分は .hlsli に書きます。
 
 
@@ -253,6 +254,11 @@
          FindPTRXxx (見つからなければ nullptr) / FindMutablePTRXxx / FindVALXxx (weak_ptr や値) / FindXxxITR (イテレータ)
      ・Generate は生成に使います(GenerateVALUUID など)。
      ・Is / Can / Has は bool を返す判定に使います。
+       bool を返す判定の関数は、必ず Is / Can / Has のどれかで始めます。
+       Contains / Exists / Check などの動詞では始めず、Has に言い換えます(6-3 の bool の変数と同じ考え方です)。
+         NG : bool Contains(const boost::uuids::uuid& a_uuid) const; / bool ContainsAssetUUID(...) const;
+         OK : bool Has     (const boost::uuids::uuid& a_uuid) const; / bool HasAssetUUID     (...) const;
+       処理の成否を返す関数(Create / Load / Setup / EnableDebugLayer など)は判定ではないため、この限りではありません。
      ・Apply は、値を設定するとともに関連する状態(Dirty フラグなど)も更新する処理に使います(ApplyTransformPosition)。
      ・Setup は GPU へのバインドや初期設定に使い、Set とは区別します。
      ・Try は失敗する可能性がある処理で、bool を返します(TryReadBinaryData)。
@@ -323,9 +329,9 @@
        アクセス指定子で区切られていれば、別のグループとして扱います(private の処理関数を public の GetREF... より下に書いてよい)。
        並びを合わせるためだけに、アクセス指定子を増やしません。
      ・Deserialize / Load は処理フローの最初、Serialize / Save は最後に行う処理なので、隣り合わせにせず、必ず空行を入れて離します。
-         bool Load(const std::filesystem::path& a_filePath, Graphics::ModelMaterialBase& a_material);
+         bool LoadTextureAsset(const std::filesystem::path& a_filePath, DirectX::ScratchImage& a_scratchImage, DirectX::TexMetadata& a_texMetadata);
 
-         bool Save(const std::filesystem::path& a_filePath, const Graphics::ModelMaterialBase& a_material);
+         bool SaveTextureAsset(const DirectX::ScratchImage& a_scratchImage, const std::filesystem::path& a_filePath);
      ・.cpp の関数の定義も、ヘッダーで宣言した順に書きます(第8章 8-2)。
 7-4. private の宣言は次の順に並べます。
        private 関数 → static constexpr 定数(k_) → メンバ変数(m_) → 型情報マクロ
@@ -432,7 +438,6 @@
      ・namespace FWK::Struct に struct Xxx final で定義し、メンバには m_ を付けて宣言の位置で初期化します。
      ・構造体は継承しません(Xxx final : public YyyBase のような構造体の継承は書きません)。
        共通部分と派生を持つものは、専用のクラス(XxxBase と派生クラス)にして、private のメンバと GetREF / GetMutableREF で公開します。
-         ModelMeshBase -> StaticModelMesh / SkeletalAnimationModelMesh
      ・既定値の定数は、構造体の中に static constexpr k_initialXxx / k_defaultXxx として置きます。
      ・GPU の定数バッファ用は CBXxx、頂点用は VBXxx という名前にします。
        HLSL の16バイト境界に合わせるためのパディングは m_padding / m_xxxPadding として明示します。
@@ -528,6 +533,11 @@
                 a_storageID < static_cast<TypeAlias::StorageID>(m_isAllocatedList.size());
      条件が2つだけの短い場合や、本体が return だけの1行 if の場合も、1行にまとめずに改行します。
      条件の行どうしでは、関数呼び出しの ( の位置は揃えません(条件の先頭だけを揃えます)。
+     行末の && / || の前は半角スペース1つにします。演算子の位置を縦に揃えるための空白は入れません。
+         NG : if (l_uuid.is_nil()                    ||
+                  m_componentUUIDRegistry.Has(l_uuid) ||
+         OK : if (l_uuid.is_nil() ||
+                  m_componentUUIDRegistry.Has(l_uuid) ||
          if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) &&
              ImGui::IsKeyPressed(ImGuiKey_P, false))
      2行目以降の条件は ( の次の位置から書きます。先頭の ! の有無に合わせて、1文字ずらすことはしません。
@@ -603,8 +613,10 @@
      ・FWK_ASSERT の後には空行を入れます。FWK_ASSERT が続く場合は、詰めて並べます。
      ・1行で書いた if の後には空行を入れます。
        ただし1行の if が続くときは、間に空行を入れずに上下に詰めて並べ、{ の位置を縦に揃えます(最後の1行 if の後に空行を入れます)。
-         if (!a_converter.TryReadMaterialValue(m_roughnessFactor, a_memoryReadOffset)) { return false; }
-         if (!a_converter.TryReadMaterialValue(m_metallicFactor, a_memoryReadOffset))  { return false; }
+         if (a_modelMesh.m_modelVertexList.empty()) { return false; }
+         if (a_modelMesh.m_indexList.empty())       { return false; }
+         if (a_modelMesh.m_bonePaletteList.empty()) { return false; }
+       { を揃える必要がないとき(条件の長さが同じとき、1行だけのとき)は、) と { の間は半角スペース1つです。
        間にコメントを書く場合は、コメントの前に空行を入れて、別のまとまりとして扱います。
      ・文の種類が変わるところ(宣言から呼び出しへ、代入から宣言へ など)には空行を入れます。
        同じ種類の文(宣言の連続、代入の連続、同じ関数の呼び出しの連続)は詰めてまとめます。
@@ -617,6 +629,7 @@
                     float l_inputTextWidth = ImGui::GetContentRegionAvail().x;
      ・コメントの前には空行を入れます(ブロックの先頭は除きます)。
      ・関数の先頭と末尾には空行を入れません。
+     ・空行は2行以上続けて入れません。関数の中・関数と関数の間・アクセス指定子の前後・#include の後も、空行は1行だけです。
 9-10. switch は次のように書きます。
          switch (l_assetFilePathData->m_type)
          {
@@ -664,7 +677,7 @@
      ・8バイト以上の変数(std::size_t / UINT64 / double / 数学の型 / UUID / 文字列 / イテレータ / スマートポインタなど)は、
        後で変更しないのであれば必ず const auto& で受け取ります。値で受け取ることはしません。
          const auto& l_index        = static_cast<std::size_t>(a_defaultTextureType);
-         const auto& l_assetDataITR = m_uuidToAssetFilePathData.find(l_assetUUID);
+         const auto& l_assetDataITR = m_uuidToAssetFilePathDataMap.find(l_assetUUID);
        ただし、std::min / std::max のように引数の参照を返す関数に一時オブジェクトを渡した場合は、
        参照先が文の終わりで消えてしまうため値で受け取ります。
          const auto l_copySize = std::min(l_name.size(), l_bufferSize - k_lastOffset);
@@ -1068,6 +1081,15 @@
      ・中身が同じでも、別の名前の構造体にします(VBPhysicsDebug と VBEditorCameraDebug など)。
        片方だけを変更したときに、もう片方の描画が壊れるのを防ぐためです。
      ・パイプラインステートなどを共有していて、レイアウトを合わせる必要がある場合は、static_assert で大きさの一致を確認します。
+18-7. 派生クラスのインスタンスを「型」で取り出す仕組みは、次の形で作ります(EditorManager / RenderGraph が先例です)。
+     ・所有は std::vector<std::shared_ptr<XxxBase>> の XxxList、検索用は
+       std::unordered_map<TypeAlias::StaticTypeID, std::weak_ptr<XxxBase>> の XxxMap(private の using)で持ちます。
+     ・登録は AddXxx(const std::shared_ptr<XxxBase>&) で、List に加えて Map に k_staticTypeID をキーとして登録します。
+     ・取り出しはテンプレートの FindVALXxx<Type>() で、Type::GetREFTypeINFO().k_staticTypeID で探し、
+       lock() してから std::static_pointer_cast<Type> で返します。見つからないときは {} を返します。
+         template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
+         std::weak_ptr<WindowType> FindVALWindowEditor() const
+     ・dynamic_cast は使いません(11-6)。テンプレート引数は Concept で XxxBase の派生に制限します。
 
 
 ================================================================================
@@ -1217,7 +1239,7 @@
 [ ] namespace FWK::Xxx のネスト記法で書き、.cpp は完全修飾名で定義している(namespace ブロックなし)
 [ ] class Xxx final(基底クラスは XxxBase で final なし)、public → private の順、アクセス指定子の前後に空行
 [ ] コンストラクタ / デストラクタは「 X() = default;」「~X() = default;」で ~ の位置を揃えている
-[ ] public は INIT → Deserialize → Update 系 → Draw → Serialize → 操作 → Is → Set → Find → Fetch → GetREF → GetMutableREF → GetVAL の順
+[ ] public は INIT → Deserialize → Update 系 → Draw → EditInspector → Serialize → その他の処理関数 の順で、その後ろに取得・設定・判定の関数が続く
 [ ] 空行なしで隣り合う関数は似た処理だけで、.cpp の定義の順番はヘッダーの宣言の順番と同じ(間に別の関数を挟まない)
 [ ] 同じアクセス指定子の中で 処理関数 → Is / Can / Has → Apply → Set → Fetch / Find → GetREF → GetMutableREF → GetPTR → GetMutablePTR → GetVAL の順で、Load / Save と Deserialize / Serialize は空行で離している
 [ ] friend は SingletonBase のためだけに使っている
@@ -1233,8 +1255,11 @@
 [ ] { } の初期化子は、要素が4つ以上なら縦に並べ、3つ以下なら1行に書いている
 [ ] 型名を書いて値を作るときは ImVec2{ x, y } のように { } を使っている(コンテナ・文字列は除く)
 [ ] Allman スタイル、波括弧は必ず付け、return / continue の1文だけは1行 if で書いてよい(break や他の文はブロック)、else は改行
-[ ] && / || は1行に1条件、演算子は行末
+[ ] && / || は1行に1条件、演算子は行末で、演算子の前の空白は1つ(演算子の位置は揃えない)
 [ ] return の前、FWK_ASSERT の後、1行 if の後(1行 if が続くときは詰めて { を揃える)、文の種類が変わるところに空行がある
+[ ] 変数の宣言が続くところに空行を入れず、const の有無で6文字ずらして型・名前・= ・( を揃えている
+[ ] 空行を2行以上続けていない
+[ ] bool を返す判定の関数は Is / Can / Has で始まっている(Contains などを使っていない)
 [ ] 数値はすべて k_ の定数(接尾辞は大文字の F / U / ULL)、文字列は std::string_view の定数
 [ ] エラーは FWK_ASSERT_RETURN(_VALUE)_IF で判定し、メッセージは「〜のため、〜に失敗しました。」
 [ ] weak_ptr は先頭で lock() して if (!l_x) { return; } で確認している
@@ -1258,10 +1283,24 @@
   ファイル名とクラス名の一致・Definition の種別 / BOM・CRLF・末尾改行・行末の空白・タブ /
   縦揃え(= と ( の位置・複数行の引数の位置)/ const auto → const auto& / 1行の && 条件 / 1行 if の break /
   return の前の空行 / 関数の先頭と末尾の空行 / コメントの句点 / final / friend / public・protected の入れ子構造体
+2026-10-09 に、さらに次の不統一を直しました。
+  宣言の並び順(7-3。取得・設定・判定の後ろにあった処理関数など、約30ファイル。.cpp の定義の順番も合わせました)/
+  取得関数の名前と変数名の不一致(GetREFClipboardFilePathList / m_descriptorNUM など)/ 重複した別名の取得関数 /
+  Contains → Has(6-4)/ 空行を挟んで続いていた1行の変数宣言(69箇所、9-9)/ 行末の && / || の前の余分な空白(82行)/
+  2行続いた空行(39箇所)/ 1行 if の ) と { の間の余分な空白 / const char* の文字列定数(→ std::string_view)/
+  Application の既定メンバ初期化子と初期化子リストの混在(7-6)/ CD3DX12_CPU_DESCRIPTOR_HANDLE { → {(9-11)
 残っているのは次の箇所です。
 
-・コメントが書かれたヘッダー(約90ファイル、約1000行。Definition/Macros のマクロの説明を除く)
+・コメントが書かれたヘッダー(約120ファイル、約1000行。Definition/Macros のマクロの説明を除く)
   → 第1章 1-1 のとおりヘッダーにはコメントを書きません。内容を .cpp へ移すかどうかを決めてから直します。
+・空行を挟んで続いている変数の宣言のうち、複数行にわたる宣言を含むもの(約100箇所、9-9)
+  → 続く行の位置も直す必要があるため、1つずつ直します。
+・使う場所のない取得関数・設定関数(約40個。GetREFMouseController / SetHalfExtent など、6-4)
+  → 今後使う予定があるかを決めてから削除します。
+・継承している構造体(Struct::SkeletalAnimationModelMeshRuntimeData : Struct::ModelMeshRuntimeDataBase、7-11)
+  → メッシュをクラスにする作業(ModelMeshBase)と一緒に直します。
+・EditorManager のメンバ変数の並び(配列がオブジェクトより後ろにある、20-2)
+  → 破棄の順番(ImGui の SRV ディスクリプタの解放など)に関わる可能性があるため、20-6 の例外として残しています。
 ・assert(false && "...") を直接書いている箇所(RenderGraphJsonConverter / GraphicsPipelineStateBaseJsonConverter)
   → ループの continue / break と組み合わせているため、FWK_ASSERT_RETURN_IF に置き換えられません。
     return しない FWK_ASSERT 系のマクロを用意するかどうかを決めてから直します。

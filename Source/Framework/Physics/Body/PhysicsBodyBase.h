@@ -14,7 +14,6 @@ namespace FWK::Physics
                  PhysicsBodyBase();
         virtual ~PhysicsBodyBase();
 
-
         PhysicsBodyBase(const PhysicsBodyBase&)  = delete;
         PhysicsBodyBase(      PhysicsBodyBase&&) = delete;
 

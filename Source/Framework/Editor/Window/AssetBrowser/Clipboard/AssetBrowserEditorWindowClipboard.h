@@ -9,15 +9,15 @@ namespace FWK::Editor
          AssetBrowserEditorWindowClipboard() = default;
         ~AssetBrowserEditorWindowClipboard() = default;
 
-        void Apply(const std::vector<std::filesystem::path>& a_filePathList, const Enum::AssetBrowserFileClipboardOperationType a_operationType);
-
         void Clear();
 
-        bool Contains(const std::filesystem::path& a_filePath) const;
+        bool Has(const std::filesystem::path& a_filePath) const;
 
         bool IsEmpty() const;
 
-        const auto& GetREFFilePathList() const { return m_clipboardFilePathList; }
+        void Apply(const std::vector<std::filesystem::path>& a_filePathList, const Enum::AssetBrowserFileClipboardOperationType a_operationType);
+
+        const auto& GetREFClipboardFilePathList() const { return m_clipboardFilePathList; }
 
         auto GetVALOperationType() const { return m_operationType; }
 

@@ -127,7 +127,7 @@ void FWK::Editor::AssetBrowserEditorWindowFileOperation::Paste(const std::vector
     // 操作種別がInvalidなら何もしない
     if (l_operationType == Enum::AssetBrowserFileClipboardOperationType::Invalid) { return; }
 
-    const auto& l_clipboardFilePathList = a_clipboard.GetREFFilePathList();
+    const auto& l_clipboardFilePathList = a_clipboard.GetREFClipboardFilePathList();
 
     // 切り取りは「移動」であり、コピー + 削除で実装すると
     // コピーはWatcherに未登録Jsonとして削除され、

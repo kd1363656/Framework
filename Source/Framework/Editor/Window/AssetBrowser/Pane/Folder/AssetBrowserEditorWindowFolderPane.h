@@ -27,9 +27,9 @@ namespace FWK::Editor
 
         nlohmann::json Serialize() const;
 
-        void ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
-
         void AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
+
+        void ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen);
 
         std::vector<std::filesystem::path> FetchVALDisplayedFolderList(const AssetBrowserEditorWindow& a_editorWindow);
 
@@ -54,9 +54,9 @@ namespace FWK::Editor
                           const bool                                                                           a_isToggleSelection          = false,
                           const bool                                                                           a_shouldUpdateCurrentFolderPath = true);
 
-        bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
-
         void ToggleFolderOpen(const std::filesystem::path& a_folderPath);
+
+        bool IsFolderOpen(const std::filesystem::path& a_folderPath) const;
 
         static constexpr std::string_view k_childLabel                     = "##AssetBrowserEditorWindowFolderPane";
         static constexpr std::string_view k_paneTitleLabel                 = "ファイル";

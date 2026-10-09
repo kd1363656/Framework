@@ -54,7 +54,6 @@ namespace FWK::Graphics
                                                  TypeAlias::CBVSRVUAVDescriptorPool&   a_cbvSRVUAVDescriptorPool,
                                                  Struct::StaticModelBatchUploadRecord& a_staticModelBatchUploadRecord) const;
 
-
         bool TryResolveCachedStaticModelResult(const std::filesystem::path& a_filePath, Struct::StaticModelLoadResult& a_staticModelLoadResult);
 
         PendingStaticModelBatchUploadRecordMap m_pendingModelBatchUploadRecordMap = {};

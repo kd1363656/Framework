@@ -169,50 +169,6 @@ void FWK::GameObjectHierarchy::DetachFromPrefab(const boost::uuids::uuid& a_oldP
     }
 }
 
-bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)
-{
-    const auto& l_owner  = m_owner.lock ();
-    const auto& l_parent = a_parent.lock();
-
-    FWK_ASSERT_RETURN_VALUE_IF(!l_owner, "GameObjectHierarchyのOwnerが無効なため、SetParentに失敗しました。", false);
-
-    // 無効な親が渡されたらルート化と同じ意味にする
-    if (!l_parent)
-    {
-        ClearParent();
-
-        return true;
-    }
-
-    // 自分自身への親付けは禁止
-    FWK_ASSERT_RETURN_VALUE_IF(l_parent == l_owner, "自分自身を親に指定することはできません。", false);
-
-    // 既に同じ親なら何もしない
-    if (m_parent.lock() == l_parent) { return true; }
-
-    // 指定した親が自分の子孫なら循環になるので禁止
-    FWK_ASSERT_RETURN_VALUE_IF(IsAncestorChainContainsOwner(a_parent), "子孫GameObjectを親に指定することはできません。", false);
-
-    // 旧親の子リストから自分を外してローカル=ワールドへ戻す
-    ClearParent();
-
-    // 双方向リンクを張る
-    auto& l_parentHierarchy = l_parent->GetMutableREFHierarchy();
-
-    l_parentHierarchy.AddChild(m_owner);
-
-    m_parent = a_parent;
-
-    // Transformへ親を適用してワールド行列の整合を取る
-    const auto& l_transform = l_owner->GetVALTransformComponent().lock();
-
-    FWK_ASSERT_RETURN_VALUE_IF(!l_transform, "TransformComponentが無効なため、親Transformの適用に失敗しました。", false);
-
-    l_transform->ApplyParent();
-
-    return true;
-}
-
 void FWK::GameObjectHierarchy::ClearParent()
 {
     const auto& l_owner = m_owner.lock ();
@@ -282,6 +238,50 @@ void FWK::GameObjectHierarchy::AddPrefabRemovedUUID(const boost::uuids::uuid& a_
     m_prefabRemovedChildUUIDSet.emplace(a_uuid);
 }
 
+bool FWK::GameObjectHierarchy::ApplyParent(const std::weak_ptr<GameObject>& a_parent)
+{
+    const auto& l_owner  = m_owner.lock ();
+    const auto& l_parent = a_parent.lock();
+
+    FWK_ASSERT_RETURN_VALUE_IF(!l_owner, "GameObjectHierarchyのOwnerが無効なため、SetParentに失敗しました。", false);
+
+    // 無効な親が渡されたらルート化と同じ意味にする
+    if (!l_parent)
+    {
+        ClearParent();
+
+        return true;
+    }
+
+    // 自分自身への親付けは禁止
+    FWK_ASSERT_RETURN_VALUE_IF(l_parent == l_owner, "自分自身を親に指定することはできません。", false);
+
+    // 既に同じ親なら何もしない
+    if (m_parent.lock() == l_parent) { return true; }
+
+    // 指定した親が自分の子孫なら循環になるので禁止
+    FWK_ASSERT_RETURN_VALUE_IF(IsAncestorChainContainsOwner(a_parent), "子孫GameObjectを親に指定することはできません。", false);
+
+    // 旧親の子リストから自分を外してローカル=ワールドへ戻す
+    ClearParent();
+
+    // 双方向リンクを張る
+    auto& l_parentHierarchy = l_parent->GetMutableREFHierarchy();
+
+    l_parentHierarchy.AddChild(m_owner);
+
+    m_parent = a_parent;
+
+    // Transformへ親を適用してワールド行列の整合を取る
+    const auto& l_transform = l_owner->GetVALTransformComponent().lock();
+
+    FWK_ASSERT_RETURN_VALUE_IF(!l_transform, "TransformComponentが無効なため、親Transformの適用に失敗しました。", false);
+
+    l_transform->ApplyParent();
+
+    return true;
+}
+
 void FWK::GameObjectHierarchy::AddChild(const std::weak_ptr<GameObject>& a_child)
 {
     const auto& l_child = a_child.lock();
@@ -329,6 +329,27 @@ void FWK::GameObjectHierarchy::RemoveChild(const std::weak_ptr<GameObject>& a_ch
     m_childSmartPointerVectorList.RemoveSameElement(a_child);
 }
 
+boost::uuids::uuid FWK::GameObjectHierarchy::GenerateVALChildUUID() const
+{
+    boost::uuids::uuid l_uuid        = {};
+    auto&              l_uuidManager = Utility::UUIDManager::GetInstance();
+
+    while (l_uuid.is_nil())
+    {
+        l_uuid = l_uuidManager.GenerateVALUUID();
+
+        // m_childUUIDRegistryまたはm_prefabRemovedChildUUIDSetに含まれているUUID
+        // なら意図的にnil値にしてもう一度UUIDを生成する
+        if (m_childUUIDRegistry.Has(l_uuid) ||
+            m_prefabRemovedChildUUIDSet.contains(l_uuid))
+        {
+            l_uuid = {};
+        }
+    }
+
+    return l_uuid;
+}
+
 bool FWK::GameObjectHierarchy::IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const
 {
     const auto& l_owner   = m_owner.lock     ();
@@ -348,25 +369,4 @@ bool FWK::GameObjectHierarchy::IsAncestorChainContainsOwner(const std::weak_ptr<
     }
 
     return false;
-}
-
-boost::uuids::uuid FWK::GameObjectHierarchy::GenerateVALChildUUID() const
-{
-    boost::uuids::uuid l_uuid        = {};
-    auto&              l_uuidManager = Utility::UUIDManager::GetInstance();
-
-    while (l_uuid.is_nil())
-    {
-        l_uuid = l_uuidManager.GenerateVALUUID();
-
-        // m_childUUIDRegistryまたはm_prefabRemovedChildUUIDSetに含まれているUUID
-        // なら意図的にnil値にしてもう一度UUIDを生成する
-        if (m_childUUIDRegistry.Contains(l_uuid) ||
-            m_prefabRemovedChildUUIDSet.contains(l_uuid))
-        {
-            l_uuid = {};
-        }
-    }
-
-    return l_uuid;
 }

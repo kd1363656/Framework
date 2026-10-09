@@ -141,9 +141,9 @@ namespace FWK::Utility
             const auto* l_imGuiPayload = ImGui::AcceptDragDropPayload(a_label.data());
 
             // Payloadを受信していない
-            if (!l_imGuiPayload               ||
+            if (!l_imGuiPayload ||
                 !l_imGuiPayload->IsDelivery() ||
-                !l_imGuiPayload->Data         ||
+                !l_imGuiPayload->Data ||
                 l_imGuiPayload->DataSize != sizeof(std::uint64_t))
             {
                 ImGui::EndDragDropTarget();

@@ -11,9 +11,9 @@ namespace FWK::Graphics
 
         void Deserialize(const nlohmann::json& a_rootJson);
 
-        void ApplyDefaultSettings();
-
         nlohmann::json Serialize() const;
+
+        void ApplyDefaultSettings();
 
         const auto& GetREFCbLightPass() const { return m_cbLightPass; }
 

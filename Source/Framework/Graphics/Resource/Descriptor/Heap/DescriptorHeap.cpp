@@ -17,7 +17,7 @@ bool FWK::Graphics::DescriptorHeap::Create(const Device&                        
 
     m_descriptorHeapType  = a_type;
     m_descriptorHeapFlags = a_flags;
-    m_num                 = a_num;
+    m_descriptorNUM       = a_num;
 
     // ディスクリプタヒープ作成設定を入れる構造体
     D3D12_DESCRIPTOR_HEAP_DESC l_desc = {};
@@ -26,7 +26,7 @@ bool FWK::Graphics::DescriptorHeap::Create(const Device&                        
     l_desc.Type = a_type;
 
     // このヒープに何個ディスクリプタを入れるか
-    l_desc.NumDescriptors = m_num;
+    l_desc.NumDescriptors = m_descriptorNUM;
 
     // ヒープをシェーダーから見えるようにするかどうか
     l_desc.Flags = m_descriptorHeapFlags;
@@ -44,9 +44,9 @@ bool FWK::Graphics::DescriptorHeap::Create(const Device&                        
 
     // DescriptorHandleをindexから計算するために、
     // Descriptor一個分のHandleサイズを取得する
-    m_size = l_device->GetDescriptorHandleIncrementSize(m_descriptorHeapType);
+    m_descriptorSize = l_device->GetDescriptorHandleIncrementSize(m_descriptorHeapType);
 
-    FWK_ASSERT_RETURN_VALUE_IF(m_size == k_invalidSize, "DescriptorHandleの増分サイズ取得に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_descriptorSize == k_invalidSize, "DescriptorHandleの増分サイズ取得に失敗しました。", false);
 
     return true;
 }
@@ -58,7 +58,7 @@ bool FWK::Graphics::DescriptorHeap::IsShaderVisible() const
 bool FWK::Graphics::DescriptorHeap::IsValidDescriptorIndex(const TypeAlias::DescriptorIndex a_index) const
 {
     if (a_index == k_invalidDescriptorIndex ||
-        a_index >= m_num)
+        a_index >= m_descriptorNUM)
     {
         return false;
     }
@@ -72,7 +72,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE FWK::Graphics::DescriptorHeap::FetchVALCPUDescriptor
     FWK_ASSERT_RETURN_VALUE_IF(!IsValidDescriptorIndex(a_index), "DescriptorIndexが範囲外のため、CPUDescriptorHandleの取得に失敗しました。",    {});
 
     // ディスクリプタヒープの先頭CPUHandleからa_descriptorIndex個分だけ進めたCPUHandleを作ってくれる
-    return CD3DX12_CPU_DESCRIPTOR_HANDLE { m_descriptorHeap->GetCPUDescriptorHandleForHeapStart(), static_cast<INT>(a_index), m_size };
+    return CD3DX12_CPU_DESCRIPTOR_HANDLE{ m_descriptorHeap->GetCPUDescriptorHandleForHeapStart(), static_cast<INT>(a_index), m_descriptorSize };
 }
 D3D12_GPU_DESCRIPTOR_HANDLE FWK::Graphics::DescriptorHeap::FetchVALGPUDescriptorHandle(const TypeAlias::DescriptorIndex a_index) const
 {
@@ -83,7 +83,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE FWK::Graphics::DescriptorHeap::FetchVALGPUDescriptor
     FWK_ASSERT_RETURN_VALUE_IF(!IsShaderVisible(), "ShaderVisibleでないディスクリプタヒープがGPUDescriptorHandleを取得しており、GPUDescriptorHandleの取得に失敗しました。", {});
 
     // ディスクリプタヒープの先頭GPUHandleからa_descriptorIndex個分だけ進めたCPUHandleを作ってくれる
-    return CD3DX12_GPU_DESCRIPTOR_HANDLE { m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), static_cast<INT>(a_index), m_size };
+    return CD3DX12_GPU_DESCRIPTOR_HANDLE{ m_descriptorHeap->GetGPUDescriptorHandleForHeapStart(), static_cast<INT>(a_index), m_descriptorSize };
 }
 
 bool FWK::Graphics::DescriptorHeap::CanUseShaderVisibleFlag(const D3D12_DESCRIPTOR_HEAP_TYPE a_type) const

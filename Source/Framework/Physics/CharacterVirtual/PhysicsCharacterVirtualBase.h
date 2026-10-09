@@ -45,16 +45,16 @@ namespace FWK::Physics
 
         bool ApplyWorldTransform(const TypeAlias::Math::Vector3& a_worldPosition, const TypeAlias::Math::Quaternion& a_worldRotation);
 
-        TypeAlias::Math::Vector3 FetchVALWorldPosition () const;
-        TypeAlias::Math::Vector3 FetchVALLinearVelocity() const;
-
-        bool FetchVALIsOnGround() const;
-
         void SetCapsuleHalfHeightOfCylinder(const float a_set) { m_capsuleHalfHeightOfCylinder = a_set; }
         void SetCapsuleRadius              (const float a_set) { m_capsuleRadius               = a_set; }
         void SetMAXSlopeAngleRadians       (const float a_set) { m_maxSlopeAngleRadians        = a_set; }
 
         void SetIsEnhancedInternalEdgeRemovalDisabled(const bool a_set) { m_isEnhancedInternalEdgeRemovalDisabled = a_set; }
+
+        TypeAlias::Math::Vector3 FetchVALWorldPosition () const;
+        TypeAlias::Math::Vector3 FetchVALLinearVelocity() const;
+
+        bool FetchVALIsOnGround() const;
 
         float GetVALCapsuleHalfHeightOfCylinder() const { return m_capsuleHalfHeightOfCylinder; }
         float GetVALCapsuleRadius              () const { return m_capsuleRadius; }
@@ -71,9 +71,9 @@ namespace FWK::Physics
                                                   const float                                      a_deltaTime,
                                                         JPH::CharacterVirtual&                     a_characterVirtual) = 0;
 
-        virtual JPH::Vec3 FetchVALUpdateGravity(const JPH::Vec3& a_physicsGravity) const = 0;
-
         virtual void ApplyExtendedUpdateSettings(const JPH::CharacterVirtual& a_characterVirtual, JPH::CharacterVirtual::ExtendedUpdateSettings& a_extendedUpdateSettings) const = 0;
+
+        virtual JPH::Vec3 FetchVALUpdateGravity(const JPH::Vec3& a_physicsGravity) const = 0;
 
     private:
 

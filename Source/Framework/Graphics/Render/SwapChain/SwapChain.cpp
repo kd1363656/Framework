@@ -252,7 +252,6 @@ bool FWK::Graphics::SwapChain::CreateBackBufferList(const Device& a_device, Type
         l_device->CreateRenderTargetView(l_backBuffer.m_backBufferResource.Get(), &l_rtvDesc, l_rtvHandle);
     }
 
-
     return true;
 }
 

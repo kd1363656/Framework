@@ -79,7 +79,7 @@ void FWK::Physics::PhysicsLayerSetting::EnableObjectLayerCollision(const Enum::P
 {
     FWK_ASSERT_RETURN_IF(a_layerA == Enum::PhysicsObjectLayerType::Invalid ||
                          a_layerB == Enum::PhysicsObjectLayerType::Invalid ||
-                         a_layerA == Enum::PhysicsObjectLayerType::Count   ||
+                         a_layerA == Enum::PhysicsObjectLayerType::Count ||
                          a_layerB == Enum::PhysicsObjectLayerType::Count,
                          "無効なPhysicsObjectLayerType同士の衝突を有効化しようとしました");
 

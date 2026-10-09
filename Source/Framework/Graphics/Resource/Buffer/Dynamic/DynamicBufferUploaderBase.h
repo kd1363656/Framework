@@ -43,8 +43,7 @@ namespace FWK::Graphics
         {
             FWK_ASSERT_RETURN_VALUE_IF(a_elementRange.empty(), "ElementRangeが空のため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);
 
-            const auto& l_elementCount = a_elementRange.size();
-
+            const auto& l_elementCount          = a_elementRange.size();
             const auto& l_remainingElementCount = m_createCount - m_currentElementIndex;
 
             FWK_ASSERT_RETURN_VALUE_IF(l_elementCount > l_remainingElementCount, "ElementRangeが書き込み可能な残りElement数を超えているため、書き込み処理に失敗しました。", k_invalidGPUVirtualAddress);

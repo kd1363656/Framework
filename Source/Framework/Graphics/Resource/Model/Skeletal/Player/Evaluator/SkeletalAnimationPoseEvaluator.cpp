@@ -131,7 +131,6 @@ bool FWK::Graphics::SkeletalAnimationPoseEvaluator::EvaluatePose(const Struct::S
                                                                            a_blendTargetMotionIndex,
                                                                            static_cast<std::uint32_t>(l_boneIndex));
 
-
             // Matrix同士を直接補間すると、
             // Scale・Rotation・Translationを正しく分離できず
             // Boneが歪む可能性がある
@@ -376,9 +375,8 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
         l_endKeyFrameIndex = l_lastKeyFrameIndex;
     }
 
-    const auto& l_startKeyFrame = l_keyFrameList[l_startKeyFrameIndex];
-
-    LocalTransform l_startLocalTransform = {};
+    const auto&          l_startKeyFrame       = l_keyFrameList[l_startKeyFrameIndex];
+          LocalTransform l_startLocalTransform = {};
 
     l_startLocalTransform.m_scale       = l_startKeyFrame.m_scale;
     l_startLocalTransform.m_rotation    = l_startKeyFrame.m_rotation;
@@ -389,9 +387,8 @@ FWK::Graphics::SkeletalAnimationPoseEvaluator::LocalTransform FWK::Graphics::Ske
     // 開始と終了が同じKeyFrameなら補間は不要
     if (l_startKeyFrameIndex == l_endKeyFrameIndex) { return l_startLocalTransform; }
 
-    const auto& l_endKeyFrame = l_keyFrameList[l_endKeyFrameIndex];
-
-    LocalTransform l_endLocalTransform = {};
+    const auto&          l_endKeyFrame       = l_keyFrameList[l_endKeyFrameIndex];
+          LocalTransform l_endLocalTransform = {};
 
     l_endLocalTransform.m_scale       = l_endKeyFrame.m_scale;
     l_endLocalTransform.m_rotation    = l_endKeyFrame.m_rotation;

@@ -97,9 +97,9 @@ namespace FWK
 
     private:
 
-        std::size_t FetchVALComponentRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::shared_ptr<GameObjectComponentBase>& a_component) const;
-
         boost::uuids::uuid GenerateVALComponentUUID() const;
+
+        std::size_t FetchVALComponentRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::shared_ptr<GameObjectComponentBase>& a_component) const;
 
         static constexpr std::size_t k_lastComponentRank = std::numeric_limits<std::size_t>::max();
 

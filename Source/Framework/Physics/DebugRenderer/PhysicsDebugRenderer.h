@@ -42,7 +42,7 @@ namespace FWK::Physics
                               JPH::ColorArg     a_color,
                         const float             a_height) override;
 
-        const auto& GetREFPhysicsDebugRendererQueue() const { return m_debugRendererQueue; }
+        const auto& GetREFDebugRendererQueue() const { return m_debugRendererQueue; }
 
     private:
 

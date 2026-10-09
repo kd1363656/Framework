@@ -20,8 +20,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         return false;
     }
 
-    auto l_memoryReadOffset = k_initialMemoryReadOffset;
-
+    auto              l_memoryReadOffset  = k_initialMemoryReadOffset;
     ModelBinaryHeader l_modelBinaryHeader = {};
 
     // ファイル先頭の全体Headerを読み込む

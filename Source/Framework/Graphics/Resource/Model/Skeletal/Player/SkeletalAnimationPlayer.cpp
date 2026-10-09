@@ -22,17 +22,13 @@ bool FWK::Graphics::SkeletalAnimationPlayer::Create(const SkeletalAnimationModel
 
     FWK_ASSERT_RETURN_VALUE_IF(l_bindPoseGlobalBoneMatrixList.size() != l_modelBoneList.size(), "BindPoseGlobalBoneMatrixListの要素数がModelBoneListと一致しません。", false);
 
-    auto& l_graphicsManager = GraphicsManager::GetInstance();
-
-    const auto& l_device   = l_graphicsManager.GetREFDevice  ();
-    const auto& l_renderer = l_graphicsManager.GetREFRenderer();
-
-    auto& l_resourceContext = l_graphicsManager.GetMutableREFResourceContext();
-
+          auto& l_graphicsManager         = GraphicsManager::GetInstance                          ();
+    const auto& l_device                  = l_graphicsManager.GetREFDevice                        ();
+    const auto& l_renderer                = l_graphicsManager.GetREFRenderer                      ();
+          auto& l_resourceContext         = l_graphicsManager.GetMutableREFResourceContext        ();
     const auto& l_gpuMemoryAllocator      = l_resourceContext.GetREFGPUMemoryAllocator            ();
           auto& l_cbvSRVUAVDescriptorPool = l_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
-
-    const auto& l_frameResourceList = l_renderer.GetREFFrameResourceList();
+    const auto& l_frameResourceList       = l_renderer.GetREFFrameResourceList                    ();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_frameResourceList.empty(), "FrameResourceListが空のため、SkeletalAnimationPlayerの作成に失敗しました。", false);
 
@@ -194,6 +190,24 @@ void FWK::Graphics::SkeletalAnimationPlayer::AdvanceTime(const float a_deltaTime
     FWK_ASSERT_RETURN_IF(!EvaluateCurrentPose(), "現在Poseの計算に失敗しました。");
 }
 
+void FWK::Graphics::SkeletalAnimationPlayer::Stop()
+{
+    // ModelRecordとBoneMatrixBufferは次のMotionでも使用するため保持し、
+    // Animationの再生状態だけを初期化する
+    ResetPlaybackState();
+
+    const auto& l_bindPoseGlobalBoneMatrixList = m_poseEvaluator.GetREFBindPoseGlobalBoneMatrixList();
+
+    // FrameResourceはフレームごとに切り替わる
+    // 現在FrameDataだけをBindPoseへ戻すと、
+    // 別のFrameResourceへ切り替わった際に停止前のPoseが再び現れてしまう
+    // そのため、全FrameDataのCPU側GlobalBoneMatrixをBindPoseへ戻す
+    for (auto& l_frameData : m_frameDataList)
+    {
+        l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
+    }
+}
+
 bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
 {
     // Motionが設定されいない場合は
@@ -218,24 +232,6 @@ bool FWK::Graphics::SkeletalAnimationPlayer::IsAnimationEnd() const
     return m_animationTimeSecond >= l_motionDurationSecond;
 }
 
-void FWK::Graphics::SkeletalAnimationPlayer::Stop()
-{
-    // ModelRecordとBoneMatrixBufferは次のMotionでも使用するため保持し、
-    // Animationの再生状態だけを初期化する
-    ResetPlaybackState();
-
-    const auto& l_bindPoseGlobalBoneMatrixList = m_poseEvaluator.GetREFBindPoseGlobalBoneMatrixList();
-
-    // FrameResourceはフレームごとに切り替わる
-    // 現在FrameDataだけをBindPoseへ戻すと、
-    // 別のFrameResourceへ切り替わった際に停止前のPoseが再び現れてしまう
-    // そのため、全FrameDataのCPU側GlobalBoneMatrixをBindPoseへ戻す
-    for (auto& l_frameData : m_frameDataList)
-    {
-        l_frameData.m_globalBoneMatrixList = l_bindPoseGlobalBoneMatrixList;
-    }
-}
-
 bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Struct::SkeletalAnimationPlayerAnimation& a_animation)
 {
     const auto& l_skeletalAnimationModelRecord = m_skeletalAnimationModelRecord.lock();
@@ -254,7 +250,7 @@ bool FWK::Graphics::SkeletalAnimationPlayer::ApplyAnimation(const Struct::Skelet
     FWK_ASSERT_RETURN_VALUE_IF(a_animation.m_blendDurationSecond < Constant::k_initialAnimationTimeSecond, "AnimationのBlendDurationSecondが0未満のため、Animationを適用できません。",                  false);
 
     if (m_animation.m_motionIndex == SkeletalAnimationPoseEvaluator::k_invalidMotionIndex ||
-        m_animation.m_motionIndex >= l_motionSequenceList.size()                          ||
+        m_animation.m_motionIndex >= l_motionSequenceList.size() ||
         a_animation.m_blendDurationSecond == Struct::SkeletalAnimationPlayerAnimation::k_initialBlendDurationSecond)
     {
         m_animation = a_animation;

@@ -9,7 +9,6 @@ namespace FWK::Graphics
          DynamicRWStructuredBuffer();
         ~DynamicRWStructuredBuffer() override;
 
-
         DynamicRWStructuredBuffer(const DynamicRWStructuredBuffer&) = delete;
         DynamicRWStructuredBuffer(      DynamicRWStructuredBuffer&& a_other) noexcept;
 
@@ -105,7 +104,7 @@ namespace FWK::Graphics
 
         auto GetVALElementCount() const { return m_elementCount; }
 
-        auto GetVALStructuredByteStride() const { return m_structureByteStride; }
+        auto GetVALStructureByteStride() const { return m_structureByteStride; }
 
     private:
 

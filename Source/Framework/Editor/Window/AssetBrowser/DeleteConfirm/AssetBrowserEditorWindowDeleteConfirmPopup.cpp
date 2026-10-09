@@ -293,7 +293,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::HandleConfirm(cons
     const bool l_isCancelSelected = a_deleteConfirmState.m_keySelectedButton == Enum::AssetBrowserDeleteConfirmSelectedButton::Cancel;
 
     if (a_buttonDrawResult.m_isDeleteClicked ||
-        (l_isEnterPressed                    &&
+        (l_isEnterPressed &&
          l_isDeleteSelected))
     {
         // fileOperationはEditorWindowが所有しているため
@@ -311,7 +311,7 @@ void FWK::Editor::AssetBrowserEditorWindowDeleteConfirmPopup::HandleConfirm(cons
         ImGui::CloseCurrentPopup();
     }
     else if (a_buttonDrawResult.m_isCancelClicked ||
-             (l_isEnterPressed                    &&
+             (l_isEnterPressed &&
               l_isCancelSelected))
     {
         // キャンセルされたため

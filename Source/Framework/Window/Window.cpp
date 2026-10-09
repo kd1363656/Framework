@@ -100,11 +100,6 @@ void FWK::Window::SaveCONFIG() const
     Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-bool FWK::Window::IsMinimized() const
-{
-    return m_resizeRequest.m_isMinimized;
-}
-
 void FWK::Window::SetupStyle(const Enum::WindowStyle a_style)
 {
     if (m_style == a_style) { return; }
@@ -122,6 +117,11 @@ void FWK::Window::SetupStyle(const Enum::WindowStyle a_style)
     if (!m_hwnd) { return; }
 
     ApplyWindowStyle();
+}
+
+bool FWK::Window::IsMinimized() const
+{
+    return m_resizeRequest.m_isMinimized;
 }
 
 LRESULT FWK::Window::CallWindowProcedure(const HWND   a_hwnd,
@@ -415,6 +415,36 @@ void FWK::Window::Release()
     m_hwnd = nullptr;
 }
 
+void FWK::Window::StoreNormalWindowRECT()
+{
+    if (!m_hwnd) { return; }
+
+    // すでにボーダーレスフルスクリーン状態なら保存しない
+    if (m_style != Enum::WindowStyle::BorderlessFullScreen) { return; }
+
+    RECT l_windowRECT = {};
+
+    if (!GetWindowRect(m_hwnd, &l_windowRECT)) { return; }
+
+    m_normalWindowRECT = l_windowRECT;
+}
+
+void FWK::Window::RequestResizeFromClientSize(const Struct::WindowClientSize& a_clientSize)
+{
+    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
+        a_clientSize.m_height == Constant::k_invalidClientHeight)
+    {
+        return;
+    }
+
+    m_resizeRequest.m_clientSize  = a_clientSize;
+    m_resizeRequest.m_isRequested = true;
+    m_resizeRequest.m_isMinimized = false;
+
+    // ウィンドウサイズの変更に伴ってアスペクト比率を変更する
+    m_aspectRatio = static_cast<float>(a_clientSize.m_width) / static_cast<float>(a_clientSize.m_height);
+}
+
 void FWK::Window::ApplyClientSizeFromWMSize(const Struct::WindowClientSize& a_clientSize, const WPARAM& a_wPARAM)
 {
     const bool l_isMinimized = a_wPARAM == SIZE_MINIMIZED;
@@ -522,8 +552,7 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
 
     FWK_ASSERT_RETURN_IF(!GetMonitorInfo(l_monitor, &l_monitorINFO), "モニター情報の取得に失敗しました。");
 
-    const RECT& l_monitorRECT = l_monitorINFO.rcMonitor;
-
+    const RECT& l_monitorRECT   = l_monitorINFO.rcMonitor;
     const auto& l_monitorWidth  = static_cast<int>(l_monitorRECT.right  - l_monitorRECT.left);
     const auto& l_monitorHeight = static_cast<int>(l_monitorRECT.bottom - l_monitorRECT.top);
 
@@ -540,36 +569,6 @@ void FWK::Window::ApplyBorderlessFullScreenWindowStyle()
     m_clientSize.m_height = static_cast<UINT>(l_monitorHeight);
 
     RequestResizeFromClientSize(m_clientSize);
-}
-
-void FWK::Window::StoreNormalWindowRECT()
-{
-    if (!m_hwnd) { return; }
-
-    // すでにボーダーレスフルスクリーン状態なら保存しない
-    if (m_style != Enum::WindowStyle::BorderlessFullScreen) { return; }
-
-    RECT l_windowRECT = {};
-
-    if (!GetWindowRect(m_hwnd, &l_windowRECT)) { return; }
-
-    m_normalWindowRECT = l_windowRECT;
-}
-
-void FWK::Window::RequestResizeFromClientSize(const Struct::WindowClientSize& a_clientSize)
-{
-    if (a_clientSize.m_width  == Constant::k_invalidClientWidth ||
-        a_clientSize.m_height == Constant::k_invalidClientHeight)
-    {
-        return;
-    }
-
-    m_resizeRequest.m_clientSize  = a_clientSize;
-    m_resizeRequest.m_isRequested = true;
-    m_resizeRequest.m_isMinimized = false;
-
-    // ウィンドウサイズの変更に伴ってアスペクト比率を変更する
-    m_aspectRatio = static_cast<float>(a_clientSize.m_width) / static_cast<float>(a_clientSize.m_height);
 }
 
 HINSTANCE FWK::Window::FetchVALInstanceHandle() const

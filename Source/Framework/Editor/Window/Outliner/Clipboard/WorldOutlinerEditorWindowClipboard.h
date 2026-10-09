@@ -9,15 +9,15 @@ namespace FWK::Editor
          WorldOutlinerEditorWindowClipboard() = default;
         ~WorldOutlinerEditorWindowClipboard() = default;
 
-        void Apply(const std::vector<boost::uuids::uuid>& a_gameObjectUUIDList, const Enum::WorldOutlinerClipboardOperationType a_operationType);
-
         void Clear();
 
-        bool Contains(const boost::uuids::uuid& a_gameObjectUUID) const;
+        bool Has(const boost::uuids::uuid& a_gameObjectUUID) const;
 
         bool IsEmpty() const;
 
-        const auto& GetREFGameObjectUUIDList() const { return m_clipboardGameObjectUUIDList; }
+        void Apply(const std::vector<boost::uuids::uuid>& a_gameObjectUUIDList, const Enum::WorldOutlinerClipboardOperationType a_operationType);
+
+        const auto& GetREFClipboardGameObjectUUIDList() const { return m_clipboardGameObjectUUIDList; }
 
         auto GetVALOperationType() const { return m_operationType; }
 

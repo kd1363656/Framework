@@ -72,9 +72,8 @@ void FWK::Converter::SceneChangerJsonConverter::DeserializeNextSceneMap(const nl
         // プレハブじゃないファイルパスならcontinue
         if (l_assetFilePathData->m_type != Enum::AssetFilePathRegistryType::Scene) { continue; }
 
-        NextScene l_nextScene = {};
-
-        const auto& l_assetFilePath = l_assetFilePathData->m_assetFilePath;
+              NextScene l_nextScene     = {};
+        const auto&     l_assetFilePath = l_assetFilePathData->m_assetFilePath;
 
         if (!Utility::CanLoadFilePath(l_assetFilePath, Constant::k_lowerJsonExtension)) { continue; }
 

@@ -41,8 +41,9 @@ private:
 
     void ClearWindowResizeRequest();
 
-    bool CanUpdateFrame      () const;
     void UpdateWindowTitleBar() const;
+
+    bool CanUpdateFrame() const;
 
     inline static const std::string  k_titleName       = "MRI_FRAMEWORK";
     inline static const std::wstring k_windowClassName = L"Window";
@@ -53,7 +54,7 @@ private:
 
     std::unique_ptr<Converter::ApplicationJsonConverter> m_jsonConverter;
 
-    FWK::AssetFilePathRegistry m_assetFilePathRegistry = {};
+    FWK::AssetFilePathRegistry m_assetFilePathRegistry;
 
     FWK::Window        m_window;
     FWK::FPSController m_fpsController;

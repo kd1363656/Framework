@@ -47,9 +47,8 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::CreateCharacterVirtual(const Typ
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "CharacterVirtual用CapsuleShapeが無効なため、作成に失敗しました。", false);
 
-    auto& l_physicsManager = PhysicsManager::GetInstance                ();
-    auto& l_physicsSystem  = l_physicsManager.GetMutableREFPhysicsSystem();
-
+    auto&                         l_physicsManager           = PhysicsManager::GetInstance                ();
+    auto&                         l_physicsSystem            = l_physicsManager.GetMutableREFPhysicsSystem();
     JPH::CharacterVirtualSettings l_characterVirtualSettings = {};
 
     // CharacterVirtualにとっての上方向
@@ -106,12 +105,10 @@ void FWK::Physics::PhysicsCharacterVirtualBase::Update(const Struct::PhysicsChar
     FWK_ASSERT_RETURN_IF(a_deltaTime <= k_minCharacterVirtualDeltaTime,             "DeltaTimeが0以下のため、CharacterVirtualの更新に失敗しました。");
     FWK_ASSERT_RETURN_IF(a_updateData.m_jumpSpeed < k_minCharacterVirtualJumpSpeed, "JumpSpeedが0未満のため、CharacterVirtualの更新に失敗しました。");
 
-    const auto& l_physicsManager = PhysicsManager::GetInstance();
-
+    const auto& l_physicsManager      = PhysicsManager::GetInstance               ();
     const auto& l_tempAllocator       = l_physicsManager.GetREFTempAllocator      ();
     const auto& l_physicsLayerSetting = l_physicsManager.GetREFPhysicsLayerSetting();
-
-    const auto& l_physicsSystem = l_physicsManager.GetREFPhysicsSystem();
+    const auto& l_physicsSystem       = l_physicsManager.GetREFPhysicsSystem      ();
 
     FWK_ASSERT_RETURN_IF(!l_tempAllocator,       "TempAllocatorが無効なため、CharacterVirtualの更新に失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、CharacterVirtualの更新に失敗しました。");
@@ -252,8 +249,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape
     FWK_ASSERT_RETURN_VALUE_IF(m_capsuleRadius               <= k_minCharacterVirtualCapsuleRadius,               "CapsuleRadiusが0以下のため、Shapeの作成に失敗しました。", {});
 
     const JPH::CapsuleShapeSettings l_capsuleShapeSettings = { m_capsuleHalfHeightOfCylinder, m_capsuleRadius };
-
-    const auto& l_capsuleShapeResult = l_capsuleShapeSettings.Create();
+    const auto&                     l_capsuleShapeResult   = l_capsuleShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_capsuleShapeResult.HasError(), "CharacterVirtual用CapsuleShapeの作成に失敗しました。", {});
 
@@ -264,8 +260,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsCharacterVirtualBase::CreateShape
     const float l_capsuleCenterOffsetY = m_capsuleHalfHeightOfCylinder + m_capsuleRadius;
 
     const JPH::RotatedTranslatedShapeSettings l_characterShapeSettings = { JPH::Vec3{ JPH::Vec3::sZero().GetX(), l_capsuleCenterOffsetY, JPH::Vec3::sZero().GetZ() }, JPH::Quat::sIdentity(), l_capsuleShape.GetPtr() };
-
-    const auto& l_characterShapeResult = l_characterShapeSettings.Create();
+    const auto&                               l_characterShapeResult   = l_characterShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_characterShapeResult.HasError(), "CharacterVirtual用の足元原点CapsuleShapeの作成に失敗しました。", {});
 
@@ -280,8 +275,7 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_shape, "変更後のCharacterVirtual用CapsuleShapeが無効です。", false);
 
-    const auto& l_physicsManager = PhysicsManager::GetInstance();
-
+    const auto& l_physicsManager      = PhysicsManager::GetInstance               ();
     const auto& l_tempAllocator       = l_physicsManager.GetREFTempAllocator      ();
     const auto& l_physicsLayerSetting = l_physicsManager.GetREFPhysicsLayerSetting();
     const auto& l_physicsSystem       = l_physicsManager.GetREFPhysicsSystem      ();
@@ -289,12 +283,11 @@ bool FWK::Physics::PhysicsCharacterVirtualBase::ApplyShapeChange()
     FWK_ASSERT_RETURN_VALUE_IF(!l_tempAllocator,       "TempAllocatorが無効なため、Shape変更に失敗しました。",       false);
     FWK_ASSERT_RETURN_VALUE_IF(!l_physicsLayerSetting, "PhysicsLayerSettingが無効なため、Shape変更に失敗しました。", false);
 
-    const auto& l_characterObjectLayer  = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::CharacterObject);
-    const auto& l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
-    const auto& l_objectLayerFilter     = l_physicsSystem.GetDefaultLayerFilter          (l_characterObjectLayer);
-
-    const JPH::BodyFilter  l_bodyFilter  = {};
-    const JPH::ShapeFilter l_shapeFilter = {};
+    const auto&            l_characterObjectLayer  = l_physicsLayerSetting->FetchVALObjectLayer     (Enum::PhysicsObjectLayerType::CharacterObject);
+    const auto&            l_broadPhaseLayerFilter = l_physicsSystem.GetDefaultBroadPhaseLayerFilter(l_characterObjectLayer);
+    const auto&            l_objectLayerFilter     = l_physicsSystem.GetDefaultLayerFilter          (l_characterObjectLayer);
+    const JPH::BodyFilter  l_bodyFilter            = {};
+    const JPH::ShapeFilter l_shapeFilter           = {};
 
     // 変更がなければreturn
     // l_maxPenetrationDepthは新しいShapgeへ交換した直後に、周囲のBodyへどの程度めり込んでいても許容するのか

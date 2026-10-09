@@ -25,6 +25,8 @@ int WINAPI WinMain(_In_     HINSTANCE,
 Application::Application() :
     m_jsonConverter(nullptr),
 
+    m_assetFilePathRegistry(),
+
     m_window(),
     m_fpsController()
 {}
@@ -235,14 +237,6 @@ void Application::ClearWindowResizeRequest()
     m_window.ClearResizeRequest();
 }
 
-bool Application::CanUpdateFrame() const
-{
-    // 最小化中なら描画をしないし、勝手にゲーム
-    // を更新されても困るのでfalseを返す
-    if (m_window.IsMinimized()) { return false; }
-
-    return true;
-}
 void Application::UpdateWindowTitleBar() const
 {
     // タイトル名 + FPSのテキスト
@@ -250,4 +244,13 @@ void Application::UpdateWindowTitleBar() const
 
     // ウィンドウバーに表示
     SetWindowTextA(m_window.GetREFHWND(), l_text.c_str());
+}
+
+bool Application::CanUpdateFrame() const
+{
+    // 最小化中なら描画をしないし、勝手にゲーム
+    // を更新されても困るのでfalseを返す
+    if (m_window.IsMinimized()) { return false; }
+
+    return true;
 }

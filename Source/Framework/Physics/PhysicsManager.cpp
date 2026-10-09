@@ -158,7 +158,7 @@ bool FWK::Physics::PhysicsManager::SetupSystem()
 
     m_physicsLayerSetting->INIT();
 
-    const auto& l_objectVsBroadPhaseLayerFilter = m_physicsLayerSetting->GetREFObjectVSBroadPhaseLayerFilter();
+    const auto& l_objectVsBroadPhaseLayerFilter = m_physicsLayerSetting->GetREFObjectVsBroadPhaseLayerFilter();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_objectVsBroadPhaseLayerFilter, "ObjectVSBroadPhaseLayerFilterがnullptrです。", false);
 

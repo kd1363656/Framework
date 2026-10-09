@@ -181,9 +181,8 @@ ImTextureID FWK::Editor::ViewportEditorWindow::FetchVALViewportTextureID() const
 {
     const auto& l_editorManager = EditorManager::GetInstance();
 
-    const auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance();
-    const auto& l_renderer        = l_graphicsManager.GetREFRenderer      ();
-
+    const auto& l_graphicsManager           = Graphics::GraphicsManager::GetInstance    ();
+    const auto& l_renderer                  = l_graphicsManager.GetREFRenderer          ();
     const auto& l_currentFrameResourceIndex = l_renderer.GetREFCurrentFrameResourceIndex();
 
     // レンダーラーから現在のFrameResourceのインデックスを取得
@@ -317,9 +316,8 @@ void FWK::Editor::ViewportEditorWindow::RequestCameraPreview(const EditorManager
     if (!Utility::IsValidTextureSize(l_previewWidth, l_previewHeight)) { return; }
 
     const Struct::WindowClientSize l_previewClientSize = { l_previewWidth, l_previewHeight };
-
-    auto& l_graphicsManager = Graphics::GraphicsManager::GetInstance ();
-    auto& l_renderer        = l_graphicsManager.GetMutableREFRenderer();
+          auto&                    l_graphicsManager   = Graphics::GraphicsManager::GetInstance ();
+          auto&                    l_renderer          = l_graphicsManager.GetMutableREFRenderer();
 
     l_renderer.RequestPreviewRenderView(l_cbCameraPass, l_previewClientSize);
 }

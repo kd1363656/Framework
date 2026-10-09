@@ -83,7 +83,6 @@ namespace FWK::Editor
 
         void NavigateToFolder(const std::filesystem::path& a_folderPath, AssetBrowserEditorWindow& a_editorWindow);
 
-
         std::string TruncateText(const std::string& a_text, const float a_maxWidth) const;
 
         std::uint32_t CalculateCardPerRow(const float a_availableWidth) const;

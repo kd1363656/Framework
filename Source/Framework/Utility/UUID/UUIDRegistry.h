@@ -49,7 +49,7 @@ namespace FWK
             return true;
         }
 
-        bool Contains(const boost::uuids::uuid& a_uuid) const
+        bool Has(const boost::uuids::uuid& a_uuid) const
         {
             return m_uuidMap.contains(a_uuid);
         }

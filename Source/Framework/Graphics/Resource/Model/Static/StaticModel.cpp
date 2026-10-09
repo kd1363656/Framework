@@ -112,13 +112,12 @@ void FWK::Graphics::StaticModel::SubtractReferenceCount()
         return;
     }
 
-          auto& l_graphicsManager    = GraphicsManager::GetInstance                    ();
-          auto& l_resourceContext    = l_graphicsManager.GetMutableREFResourceContext  ();
-    const auto& l_renderer           = l_graphicsManager.GetREFRenderer   ();
-    const auto& l_directCommandQueue = l_renderer.GetREFDirectCommandQueue();
-
-    auto& l_staticModelSystem      = l_resourceContext.GetMutableREFStaticModelSystem     ();
-    auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
+          auto& l_graphicsManager        = GraphicsManager::GetInstance                         ();
+          auto& l_resourceContext        = l_graphicsManager.GetMutableREFResourceContext       ();
+    const auto& l_renderer               = l_graphicsManager.GetREFRenderer                     ();
+    const auto& l_directCommandQueue     = l_renderer.GetREFDirectCommandQueue                  ();
+          auto& l_staticModelSystem      = l_resourceContext.GetMutableREFStaticModelSystem     ();
+          auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
 
     FWK_ASSERT_RETURN_IF(!l_staticModelSystem.SubtractStaticModelReferenceCount(m_staticModelRecord, l_directCommandQueue, l_resourceReleaseContext), "StaticModelの参照数減算に失敗しました。");
 

@@ -31,7 +31,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ImGui::IsWindowHovered : このChildWindow上にマウスがあるか
     // ImGui::IsMouseClicked  : このフレームでクリックされたか
     // 左クリック・右クリックどちらも出アクティブPaneを切り替える
-    if (ImGui::IsWindowHovered()                      &&
+    if (ImGui::IsWindowHovered() &&
         (ImGui::IsMouseClicked(ImGuiMouseButton_Left, false) ||
          ImGui::IsMouseClicked(ImGuiMouseButton_Right, false)))
     {
@@ -56,7 +56,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ImGui::IsMouseClicked : このフレームで左クリックされたか
     // ClearSelectionは選択リストと範囲選択の開始地点の両方を消す
     // 現在参照中のフォルダ(m_currentSelectFolderPath)は変更しないため、AssetPaneの表示は変わらない
-    if (ImGui::IsWindowHovered()   &&
+    if (ImGui::IsWindowHovered() &&
         !ImGui::IsAnyItemHovered() &&
         ImGui::IsMouseClicked(ImGuiMouseButton_Left, false))
     {
@@ -72,7 +72,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::Draw(AssetBrowserEditorWin
     // ノード上で右クリックした場合はDrawTreeNode側でOpenPopupされるため
     // ここでは空スペースを場合のみポップアップを開く
     // ImGui::IsMouseClicked : このフレームで右クリックされたか
-    if (ImGui::IsWindowHovered()   &&
+    if (ImGui::IsWindowHovered() &&
         !ImGui::IsAnyItemHovered() &&
         ImGui::IsMouseClicked(ImGuiMouseButton_Right, false))
     {
@@ -327,15 +327,6 @@ nlohmann::json FWK::Editor::AssetBrowserEditorWindowFolderPane::Serialize() cons
     return m_jsonConverter.Serialize(*this);
 }
 
-void FWK::Editor::AssetBrowserEditorWindowFolderPane::ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen)
-{
-    const auto& l_folderOpenStateITR = m_folderOpenStateMap.find(a_folderPath);
-
-    if (l_folderOpenStateITR == m_folderOpenStateMap.end()) { return; }
-
-    l_folderOpenStateITR->second = a_isOpen;
-}
-
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::AddFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen)
 {
     std::error_code l_errorCode = {};
@@ -349,6 +340,15 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::AddFolderOpenState(const s
     FWK_ASSERT_RETURN_IF(l_errorCode, "フォルダパスの存在確認に失敗しました。");
 
     m_folderOpenStateMap.try_emplace(a_folderPath, a_isOpen);
+}
+
+void FWK::Editor::AssetBrowserEditorWindowFolderPane::ApplyFolderOpenState(const std::filesystem::path& a_folderPath, const bool a_isOpen)
+{
+    const auto& l_folderOpenStateITR = m_folderOpenStateMap.find(a_folderPath);
+
+    if (l_folderOpenStateITR == m_folderOpenStateMap.end()) { return; }
+
+    l_folderOpenStateITR->second = a_isOpen;
 }
 
 std::vector<std::filesystem::path> FWK::Editor::AssetBrowserEditorWindowFolderPane::FetchVALDisplayedFolderList(const AssetBrowserEditorWindow& a_editorWindow)
@@ -434,7 +434,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
 
     const auto& l_clipboard   = a_editorWindow.GetREFClipboard();
     const bool  l_isCutTarget = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) &&
-                                 l_clipboard.Contains(a_currentFolderPath);
+                                 l_clipboard.Has(a_currentFolderPath);
 
     // ハイライト強弱の制御
     // 描画先ペインがアクティブなら不透明の選択色
@@ -474,7 +474,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
     const bool  l_isDisplayedAsCard       = !l_currentSelectFolderPath.empty() &&
                                              a_currentFolderPath.parent_path() == l_currentSelectFolderPath;
 
-    const bool l_isRenaming = l_constRenameState.m_isActive                              &&
+    const bool l_isRenaming = l_constRenameState.m_isActive &&
                               l_constRenameState.m_targetFilePath == a_currentFolderPath &&
                               !l_isDisplayedAsCard;
 
@@ -568,9 +568,8 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
             // マウスカーソルに重ねないようにオフセットを掛ける
             const auto& l_mousePosition = ImGui::GetMousePos();
 
-            const ImVec2& l_iconPosition  = l_mousePosition + k_banIconOffset;
-
-            const auto& l_redColor = Constant::k_imguiDangerColor * Constant::k_imguiImVec4ToImU32;
+            const ImVec2& l_iconPosition = l_mousePosition + k_banIconOffset;
+            const auto&   l_redColor     = Constant::k_imguiDangerColor * Constant::k_imguiImVec4ToImU32;
 
             // ImGui::GetFontSizeで現在のフォントサイズを取得
             // BanIconを赤色で描画して禁止を明示する
@@ -690,7 +689,7 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // !ImGui::IsAnyItemHovered : いずれこのアイテム上にもマウスがない = 空白
         // ImGui::IsMouseClicked    : このフレームで左クリックされた
         // これにより空白をクリックしたときにリネームを確定する
-        const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
+        const bool l_isEmptySpaceClick = ImGui::IsWindowHovered() &&
                                          !ImGui::IsAnyItemHovered() &&
                                          ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
@@ -700,9 +699,9 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::DrawTreeNode(const std::fi
         // l_isEmptySpaceClickをm_isFocusedでガードしないと
         // 初回フレーム(フォーカス前)のクリックで
         // ドフォルト名のまま確定してしまう
-        if (l_isEnterPressed          ||
+        if (l_isEnterPressed ||
             (l_renameState.m_isFocused &&
-             (!ImGui::IsItemFocused()   ||
+             (!ImGui::IsItemFocused() ||
               l_isEmptySpaceClick)))
         {
             // 再帰にm_isActiveをfalseにして
@@ -987,19 +986,6 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::SelectFolder(const std::un
     m_selectionState.SetRangeSelectionStartPath(a_folderPath);
 }
 
-bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::filesystem::path& a_folderPath) const
-{
-    // m_folderOpenStateMapからa_folderPathの開閉状態を取得する
-    // std::unordered_map::findはキーが存在しない場合end()を返す
-    // 存在しない場合はデフォルトで「閉じている(false)」として扱う
-    const auto& l_folderOpenStateITR = m_folderOpenStateMap.find(a_folderPath);
-
-    // エントリが存在しない場合はfalse(閉じている)を返す
-    if (l_folderOpenStateITR == m_folderOpenStateMap.end()) { return false; }
-
-    return l_folderOpenStateITR->second;
-}
-
 void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std::filesystem::path& a_folderPath)
 {
     // 現在の開閉状態を反転させる
@@ -1017,4 +1003,17 @@ void FWK::Editor::AssetBrowserEditorWindowFolderPane::ToggleFolderOpen(const std
 
     // エントリが存在する場合は反転させる
     l_folderOpenStateITR->second = !l_folderOpenStateITR->second;
+}
+
+bool FWK::Editor::AssetBrowserEditorWindowFolderPane::IsFolderOpen(const std::filesystem::path& a_folderPath) const
+{
+    // m_folderOpenStateMapからa_folderPathの開閉状態を取得する
+    // std::unordered_map::findはキーが存在しない場合end()を返す
+    // 存在しない場合はデフォルトで「閉じている(false)」として扱う
+    const auto& l_folderOpenStateITR = m_folderOpenStateMap.find(a_folderPath);
+
+    // エントリが存在しない場合はfalse(閉じている)を返す
+    if (l_folderOpenStateITR == m_folderOpenStateMap.end()) { return false; }
+
+    return l_folderOpenStateITR->second;
 }

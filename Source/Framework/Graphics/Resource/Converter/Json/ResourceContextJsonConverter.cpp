@@ -72,10 +72,9 @@ nlohmann::json FWK::Converter::ResourceContextJsonConverter::Serialize(const Gra
 {
     nlohmann::json l_rootJson = {};
 
-    const auto& l_rtvDescriptorPool       = a_resourceContext.GetREFRTVDescriptorPool      ();
-    const auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetREFCBVSRVUAVDescriptorPool();
-    const auto& l_dsvDescriptorPool       = a_resourceContext.GetREFDSVDescriptorPool      ();
-
+    const auto& l_rtvDescriptorPool            = a_resourceContext.GetREFRTVDescriptorPool           ();
+    const auto& l_cbvSRVUAVDescriptorPool      = a_resourceContext.GetREFCBVSRVUAVDescriptorPool     ();
+    const auto& l_dsvDescriptorPool            = a_resourceContext.GetREFDSVDescriptorPool           ();
     const auto& l_uploadSystem                 = a_resourceContext.GetREFUploadSystem                ();
     const auto& l_textureSystem                = a_resourceContext.GetREFTextureSystem               ();
     const auto& l_staticModelSystem            = a_resourceContext.GetREFStaticModelSystem           ();

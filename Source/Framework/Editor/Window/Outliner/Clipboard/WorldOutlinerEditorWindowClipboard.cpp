@@ -1,5 +1,23 @@
 ﻿#include "WorldOutlinerEditorWindowClipboard.h"
 
+void FWK::Editor::WorldOutlinerEditorWindowClipboard::Clear()
+{
+    m_clipboardGameObjectUUIDList.clear();
+    m_clipboardGameObjectUUIDSet.clear ();
+
+    m_operationType = Enum::WorldOutlinerClipboardOperationType::Invalid;
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindowClipboard::Has(const boost::uuids::uuid& a_gameObjectUUID) const
+{
+    return m_clipboardGameObjectUUIDSet.contains(a_gameObjectUUID);
+}
+
+bool FWK::Editor::WorldOutlinerEditorWindowClipboard::IsEmpty() const
+{
+    return m_clipboardGameObjectUUIDList.empty();
+}
+
 void FWK::Editor::WorldOutlinerEditorWindowClipboard::Apply(const std::vector<boost::uuids::uuid>& a_gameObjectUUIDList, const Enum::WorldOutlinerClipboardOperationType a_operationType)
 {
     // 現在コピー、切り取り仕様としているUUIDに過去のコピー、切り取り用の
@@ -18,22 +36,4 @@ void FWK::Editor::WorldOutlinerEditorWindowClipboard::Apply(const std::vector<bo
         m_clipboardGameObjectUUIDList.emplace_back(l_gameObjectUUID);
         m_clipboardGameObjectUUIDSet.emplace      (l_gameObjectUUID);
     }
-}
-
-void FWK::Editor::WorldOutlinerEditorWindowClipboard::Clear()
-{
-    m_clipboardGameObjectUUIDList.clear();
-    m_clipboardGameObjectUUIDSet.clear ();
-
-    m_operationType = Enum::WorldOutlinerClipboardOperationType::Invalid;
-}
-
-bool FWK::Editor::WorldOutlinerEditorWindowClipboard::Contains(const boost::uuids::uuid& a_gameObjectUUID) const
-{
-    return m_clipboardGameObjectUUIDSet.contains(a_gameObjectUUID);
-}
-
-bool FWK::Editor::WorldOutlinerEditorWindowClipboard::IsEmpty() const
-{
-    return m_clipboardGameObjectUUIDList.empty();
 }

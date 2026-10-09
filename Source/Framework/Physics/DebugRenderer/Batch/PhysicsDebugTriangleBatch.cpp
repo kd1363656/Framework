@@ -71,9 +71,9 @@ void FWK::Physics::PhysicsDebugTriangleBatch::CopyIndexedTriangleList(const JPH:
 {
     m_triangleList.clear();
 
-    if (!a_vertexList                           ||
+    if (!a_vertexList ||
         a_vertexCount <= k_invalidTriangleCount ||
-        !a_indexList                            ||
+        !a_indexList ||
         a_indexCount <= k_invalidIndexCount)
     {
         return;

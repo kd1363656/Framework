@@ -133,9 +133,8 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const s
 
             const auto& l_isBeforeRead  = IsReadResourceAccess (l_beforeResourceAccess);
             const auto& l_isBeforeWrite = IsWriteResourceAccess(l_beforeResourceAccess);
-
-            const auto& l_isAfterRead  = IsReadResourceAccess (l_afterResourceAccess);
-            const auto& l_isAfterWrite = IsWriteResourceAccess(l_afterResourceAccess);
+            const auto& l_isAfterRead   = IsReadResourceAccess (l_afterResourceAccess);
+            const auto& l_isAfterWrite  = IsWriteResourceAccess(l_afterResourceAccess);
 
             // beforeが書いてafterが読む場合
             // afterはbeforeの書き込み結果を読む必要があるため、
@@ -161,7 +160,7 @@ void FWK::Graphics::RenderGraphPassSorter::AddPassResourceDependencyEdge(const s
             // 両方が同じリソースを書く場合
             // Json順を維持
             if (l_isBeforeWrite &&
-                l_isAfterWrite  &&
+                l_isAfterWrite &&
                 IsSamePassExecutionLayer(*l_beforePass, *l_afterPass))
             {
                 AddPassDependencyEdge(a_beforePassIndex, a_afterPassIndex, a_passDependencyList);

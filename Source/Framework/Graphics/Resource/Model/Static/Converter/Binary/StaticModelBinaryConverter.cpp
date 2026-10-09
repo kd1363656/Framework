@@ -17,8 +17,7 @@ bool FWK::Converter::StaticModelBinaryConverter::LoadAsset(const std::filesystem
         return false;
     }
 
-    auto l_memoryReadOffset = k_initialMemoryReadOffset;
-
+    auto              l_memoryReadOffset  = k_initialMemoryReadOffset;
     ModelBinaryHeader l_modelBinaryHeader = {};
 
     // バージョン、メッシュ数などを含むStaticModel全体Headerを読み込む

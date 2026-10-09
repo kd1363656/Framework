@@ -103,7 +103,7 @@ namespace FWK::Utility
     {
         // "json"を読み込めるか確認、読み込めなければ"return"
         if (a_json.is_null() ||
-            a_key.empty()    ||
+            a_key.empty() ||
             !a_json.contains(a_key.data()))
         {
             return {};
@@ -111,7 +111,7 @@ namespace FWK::Utility
 
         const auto& l_json = a_json[a_key.data()];
 
-        if (l_json.is_null())  { return {}; }
+        if (l_json.is_null()) { return {}; }
 
         return TypeAlias::Math::Vector3
         {
@@ -125,7 +125,7 @@ namespace FWK::Utility
     {
         // "json"を読み込めるか確認、読み込めなければ"return"
         if (a_json.is_null() ||
-            a_key.empty()    ||
+            a_key.empty() ||
             !a_json.contains(a_key.data()))
         {
             return {};
@@ -133,7 +133,7 @@ namespace FWK::Utility
 
         const auto& l_json = a_json[a_key.data()];
 
-        if (l_json.is_null())  { return {}; }
+        if (l_json.is_null()) { return {}; }
 
         return ImVec2
         {
@@ -146,7 +146,7 @@ namespace FWK::Utility
     {
         // "json"を読み込めるか確認、読み込めなければ"return"
         if (a_json.is_null() ||
-            a_key.empty()    ||
+            a_key.empty() ||
             !a_json.contains(a_key.data()))
         {
             return {};
@@ -238,7 +238,6 @@ namespace FWK::Utility
             }
         };
     }
-
 
     inline nlohmann::json SerializeQuaternion(const std::string_view& a_key, const TypeAlias::Math::Quaternion& a_value)
     {

@@ -141,9 +141,8 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeStaticSamplerDescLis
     if (a_rootJson.is_null())              { return; }
     if (!Utility::IsJsonArray(a_rootJson)) { return; }
 
-    auto& l_staticSamplerDescList = a_rootSignature.GetMutableREFStaticSamplerDescList();
-
-    const auto& l_jsonArraySize = a_rootJson.size();
+          auto& l_staticSamplerDescList = a_rootSignature.GetMutableREFStaticSamplerDescList();
+    const auto& l_jsonArraySize         = a_rootJson.size                                   ();
 
     // 要素が既にある可能性を考慮してClear
     l_staticSamplerDescList.clear();
@@ -356,8 +355,7 @@ void FWK::Converter::RootSignatureJsonConverter::DeserializeDescriptorRangeList(
         l_descriptorRangeList = std::make_shared<std::vector<D3D12_DESCRIPTOR_RANGE>>();
     }
 
-    const auto& l_jsonArray = a_rootJson[k_descriptorRangeListJsonKey];
-
+    const auto& l_jsonArray     = a_rootJson[k_descriptorRangeListJsonKey];
     const auto& l_jsonArraySize = l_jsonArray.size();
 
     // 要素が既にある可能性を考慮してClear

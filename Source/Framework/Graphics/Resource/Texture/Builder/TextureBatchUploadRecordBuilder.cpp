@@ -92,8 +92,7 @@ bool FWK::Graphics::TextureBatchUploadRecordBuilder::CreateTextureUploadRecord(c
 
     const auto& l_textureResourceDesc = l_textureResource->GetDesc();
     const auto& l_subresourceCount    = static_cast<UINT>         (a_scratchImage.GetImageCount());
-
-    auto& l_textureUploadRecord = a_textureBatchUploadRecord.m_textureUploadRecord;
+          auto& l_textureUploadRecord = a_textureBatchUploadRecord.m_textureUploadRecord;
 
     // 各サブリソースをUploadBufferの何バイト目からどんな形で置けばいいかを覚えておくリスト
     auto& l_layoutList = l_textureUploadRecord.m_layoutList;

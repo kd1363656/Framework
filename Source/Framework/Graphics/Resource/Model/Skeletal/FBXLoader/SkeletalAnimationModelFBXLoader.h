@@ -13,9 +13,15 @@ namespace FWK::Graphics
 
     private:
 
-
         bool ExtractModelData    (const ufbx_scene*                                          a_fbxScene,               Struct::SkeletalAnimationModelData& a_modelData) const;
         bool ExtractModelMeshList(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap, const ufbx_node*                               a_fbxNode, std::vector<Struct::SkeletalAnimationModelMesh>& a_modelMeshList) const;
+
+        bool ExtractModelMeshByMaterial(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
+                                        const std::size_t&                                         a_materialIndex,
+                                        const ufbx_node*                                           a_fbxNode,
+                                              Struct::SkeletalAnimationModelMesh&             a_modelMesh) const;
+
+        bool NormalizeModelVertexBoneWeight(Struct::SkeletalAnimationModelVertex& a_modelVertex) const;
 
         bool ApplyModelVertexBoneInfluence(const std::unordered_map<const ufbx_node*, std::uint32_t>&           a_boneNodeIndexMap,
                                            const ufbx_mesh*                                                     a_fbxMesh,
@@ -29,13 +35,6 @@ namespace FWK::Graphics
                                                const std::uint32_t                         a_slotIndex,
                                                const std::uint32_t                         a_bonePaletteIndex,
                                                      Struct::SkeletalAnimationModelVertex& a_modelVertex) const;
-
-        bool ExtractModelMeshByMaterial(const std::unordered_map<const ufbx_node*, std::uint32_t>& a_boneNodeIndexMap,
-                                        const std::size_t&                                         a_materialIndex,
-                                        const ufbx_node*                                           a_fbxNode,
-                                              Struct::SkeletalAnimationModelMesh&             a_modelMesh) const;
-
-        bool NormalizeModelVertexBoneWeight(Struct::SkeletalAnimationModelVertex& a_modelVertex) const;
 
         TypeAlias::Math::Vector3 FetchVALLocalVertexPosition(const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;
         TypeAlias::Math::Vector3 FetchVALLocalVertexNormal  (const ufbx_mesh* a_fbxMesh, const std::uint32_t a_vertexIndex) const;

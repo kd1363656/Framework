@@ -22,9 +22,6 @@ namespace FWK::Graphics
 
     private:
 
-        bool IsValidGPUResourceReleaseRecord    (const Struct::GPUResourceReleaseRecord&     a_releaseRecord) const;
-        bool IsValidDescriptorIndexReleaseRecord(const Struct::DescriptorIndexReleaseRecord& a_releaseRecord) const;
-
         void ReleaseAvailableGPUResources(const UINT64& a_completedFenceValue);
 
         template <D3D12_DESCRIPTOR_HEAP_TYPE HeapType>
@@ -54,6 +51,9 @@ namespace FWK::Graphics
                 a_releaseRecordList.pop_back();
             }
         }
+
+        bool IsValidGPUResourceReleaseRecord    (const Struct::GPUResourceReleaseRecord&     a_releaseRecord) const;
+        bool IsValidDescriptorIndexReleaseRecord(const Struct::DescriptorIndexReleaseRecord& a_releaseRecord) const;
 
         std::vector<Struct::GPUResourceReleaseRecord> m_gpuResourceReleaseRecordList = {};
 

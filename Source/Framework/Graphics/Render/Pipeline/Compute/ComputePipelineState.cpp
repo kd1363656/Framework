@@ -43,9 +43,8 @@ bool FWK::Graphics::ComputePipelineState::Create(const Device& a_device, const S
 
     l_pipelineStateDesc.CachedPSO = {};
 
-    auto& l_pipelineState = GetMutableREFPipelineState();
-
-    const auto& l_hr = l_device->CreateComputePipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
+          auto& l_pipelineState = GetMutableREFPipelineState();
+    const auto& l_hr            = l_device->CreateComputePipelineState(&l_pipelineStateDesc, IID_PPV_ARGS(l_pipelineState.ReleaseAndGetAddressOf()));
 
     FWK_ASSERT_RETURN_VALUE_IF(FAILED(l_hr), "ComputePipelineStateの作成に失敗しました。", false);
 

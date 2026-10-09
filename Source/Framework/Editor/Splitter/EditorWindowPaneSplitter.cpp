@@ -1,6 +1,5 @@
 ﻿#include "EditorWindowPaneSplitter.h"
 
-
 void FWK::Editor::EditorWindowPaneSplitter::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }

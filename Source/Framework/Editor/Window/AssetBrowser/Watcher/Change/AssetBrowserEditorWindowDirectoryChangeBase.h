@@ -19,13 +19,13 @@ namespace FWK::Editor
 
     protected:
 
+        static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath);
+
         void SetIsRequiresRetry(const bool a_set) { m_isRequiresRetry = a_set; }
 
         const auto& GetREFFilePath() const { return m_filePath; }
 
         bool GetVALIsDirectory() const { return m_isDirectory; }
-
-        static bool IsChildFilePath(const std::filesystem::path& a_filePath, const std::filesystem::path& a_parentDirectoryPath);
 
     private:
 

@@ -22,9 +22,9 @@ namespace FWK::Physics
 
         void AddAABB(const TypeAlias::Math::Vector3& a_minPosition, const TypeAlias::Math::Vector3& a_maxPosition, const TypeAlias::Math::Color& a_color);
 
-        const auto& GetREFLineVertexList() const { return m_lineVertexList; }
-
         bool HasLineVertex() const { return !m_lineVertexList.empty(); }
+
+        const auto& GetREFLineVertexList() const { return m_lineVertexList; }
 
     private:
 

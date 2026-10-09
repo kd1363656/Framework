@@ -75,12 +75,12 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // 作成可能か判定
     // AssetPane_OnFile(ファイル選択中)は作成不可
     // PopupDrawerのl_canCreateFolderと同じ条件
-    if (l_io.KeyCtrl                                                                     &&
-        l_io.KeyShift                                                                    &&
-        ImGui::IsKeyPressed(ImGuiKey_N, false)                                           &&
-        !l_isMultiSelection                                                              &&
+    if (l_io.KeyCtrl &&
+        l_io.KeyShift &&
+        ImGui::IsKeyPressed(ImGuiKey_N, false) &&
+        !l_isMultiSelection &&
        (l_createFolderContext == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
-        l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
+        l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder ||
         l_createFolderContext == Enum::AssetBrowserPopupContextType::AssetPane_OnEmpty))
     {
         HandleCreateFolder(a_targetFilePath, l_createFolderContext, a_editorWindow);
@@ -90,8 +90,8 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // F2 : 名前変更
     // 単一選択時のみ有効
     // ImGuiKey_F2はF2キーを表す
-    if (l_isSingleSelection                     &&
-        !l_isRootFolder                         &&
+    if (l_isSingleSelection &&
+        !l_isRootFolder &&
         ImGui::IsKeyPressed(ImGuiKey_F2, false) &&
         !l_isMultiSelection)
     {
@@ -100,9 +100,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + C : コピー
     // 選択中のファイルがある場合のみ
-    if (l_hasSelection  &&
+    if (l_hasSelection &&
         !l_hasRoot &&
-        l_io.KeyCtrl    &&
+        l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_C, false))
     {
         HandleCopy(a_selectedFilePathList, l_fileOperation, l_clipboard);
@@ -110,9 +110,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + X : 切り取り
     // 選択中のファイルがある場合のみ
-    if (l_hasSelection  &&
+    if (l_hasSelection &&
         !l_hasRoot &&
-        l_io.KeyCtrl    &&
+        l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_X, false))
     {
         HandleCut(a_selectedFilePathList, l_fileOperation, l_clipboard);
@@ -126,7 +126,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // FolderPane : 選択中フォルダ(なければAssetルート)
     // AssetPane  : フォルダ選択中ならそのフォルダ、ファイル選択中ならその親フォルダ、
     //              未選択なら現在参照中フォルダ
-    if (l_canPaste   &&
+    if (l_canPaste &&
         l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_V, false))
     {
@@ -141,9 +141,9 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
 
     // Ctrl + D : 複製
     // 選択中のファイルがある場合のみ
-    if (l_hasSelection  &&
+    if (l_hasSelection &&
         !l_hasRoot &&
-        l_io.KeyCtrl    &&
+        l_io.KeyCtrl &&
         ImGui::IsKeyPressed(ImGuiKey_D, false))
     {
         HandleDuplicate(a_selectedFilePathList,
@@ -155,7 +155,7 @@ void FWK::Editor::AssetBrowserEditorWindowShortcutHandler::Handle(const std::vec
     // Del : 削除
     // 選択中のファイルがある場合のみ
     // ImGuiKey_DeleteはDeleteキーを表す
-    if (l_hasSelection  &&
+    if (l_hasSelection &&
         !l_hasRoot &&
         ImGui::IsKeyPressed(ImGuiKey_Delete, false))
     {

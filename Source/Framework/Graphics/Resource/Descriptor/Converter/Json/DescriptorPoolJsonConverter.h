@@ -20,9 +20,8 @@ namespace FWK::Converter
         {
             if (a_rootJson.is_null()) { return; }
 
-            auto& l_descriptorHeapIndexAllocator = a_descriptorPool.GetMutableREFDescriptorIndexAllocator();
-
-            const auto& l_descriptorHeapIndexAllocatorJson = a_rootJson.value(k_descriptorHeapIndexAllocatorJsonKey, nlohmann::json{});
+                  auto& l_descriptorHeapIndexAllocator     = a_descriptorPool.GetMutableREFDescriptorIndexAllocator();
+            const auto& l_descriptorHeapIndexAllocatorJson = a_rootJson.value                                      (k_descriptorHeapIndexAllocatorJsonKey, nlohmann::json{});
 
             if (l_descriptorHeapIndexAllocatorJson.is_null()) { return; }
 

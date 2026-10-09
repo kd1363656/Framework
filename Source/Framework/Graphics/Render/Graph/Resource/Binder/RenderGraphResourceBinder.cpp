@@ -167,7 +167,7 @@ bool FWK::Graphics::RenderGraphResourceBinder::SetupPassRenderTargetAndDepthSten
 
 bool FWK::Graphics::RenderGraphResourceBinder::IsWriteBackBufferAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-    if (!a_resourceAccess.m_isBackBuffer                                     ||
+    if (!a_resourceAccess.m_isBackBuffer ||
         a_resourceAccess.m_accessType  != Enum::RenderGraphAccessType::Write ||
         a_resourceAccess.m_beforeUsage != Enum::RenderGraphResourceUsage::RenderTarget)
     {
@@ -178,9 +178,9 @@ bool FWK::Graphics::RenderGraphResourceBinder::IsWriteBackBufferAccess(const Str
 }
 bool FWK::Graphics::RenderGraphResourceBinder::IsWriteRenderTargetPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-    if (a_resourceAccess.m_isBackBuffer                                                ||
+    if (a_resourceAccess.m_isBackBuffer ||
         a_resourceAccess.m_renderTargetType == Enum::RenderGraphRenderTargetType::None ||
-        a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write      ||
+        a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write ||
         a_resourceAccess.m_beforeUsage      != Enum::RenderGraphResourceUsage::RenderTarget)
     {
         return false;
@@ -190,8 +190,8 @@ bool FWK::Graphics::RenderGraphResourceBinder::IsWriteRenderTargetPassTextureAcc
 }
 bool FWK::Graphics::RenderGraphResourceBinder::IsWriteDepthStencilPassTextureAccess(const Struct::RenderGraphResourceAccess& a_resourceAccess) const
 {
-    if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None  ||
-        a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write       ||
+    if (a_resourceAccess.m_depthStencilType == Enum::RenderGraphDepthStencilType::None ||
+        a_resourceAccess.m_accessType       != Enum::RenderGraphAccessType::Write ||
         a_resourceAccess.m_beforeUsage      != Enum::RenderGraphResourceUsage::DepthWrite)
     {
         return false;

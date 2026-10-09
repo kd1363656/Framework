@@ -40,7 +40,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::Draw(EditorManager& a_editorManager
     // WantTextInput中(リネームInputText編集中)は無効にする
     if (const auto& l_io = ImGui::GetIO();
         a_editorManager.GetVALCurrentActiveWindowStaticTypeID() == WorldOutlinerEditorWindow::GetREFTypeINFO().k_staticTypeID &&
-        ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)                                                               &&
+        ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows) &&
         !l_io.WantTextInput)
     {
         m_shortcutHandler.Handle(*this, a_editorManager);
@@ -208,9 +208,8 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectAllGameObjects(EditorManager&
 
     if (!l_scene) { return; }
 
-    const auto& l_sceneGameObjectList = l_scene->GetREFGameObjectList();
-
-    std::vector<std::weak_ptr<GameObject>> l_allGameObjectList = {};
+    const auto&                                  l_sceneGameObjectList = l_scene->GetREFGameObjectList();
+          std::vector<std::weak_ptr<GameObject>> l_allGameObjectList   = {};
 
     l_allGameObjectList.reserve(l_sceneGameObjectList.size());
 
@@ -576,7 +575,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // Cut対象なら文字色を半透明にする
     // AssetBrowserと同じくテキスト色へ半分倍率を掛けて暗くする
     // 左クリックでの選択は可能なまま維持する(選択フラグには影響しない)
-    if (m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
+    if (m_clipboard.Has(l_gameObject->GetREFSceneInstanceUUID()) &&
         m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut)
     {
         // 透明度含めすべて0.5を掛ける
@@ -589,9 +588,9 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // 他ウィンドウのアイテムと同じ選択色で描画される
     // リネーム対象かどうかは、背景色の決定にも使うため、Pushする前に調べる
     const bool l_isSelected  = l_gameObjectSelectionState.FindVALIsSelected(a_gameObject);
-    const bool l_isCutTarget = m_clipboard.Contains(l_gameObject->GetREFSceneInstanceUUID()) &&
+    const bool l_isCutTarget = m_clipboard.Has(l_gameObject->GetREFSceneInstanceUUID()) &&
                                m_clipboard.GetVALOperationType() == Enum::WorldOutlinerClipboardOperationType::Cut;
-    const bool l_isRenaming  = m_renameState.m_isActive       &&
+    const bool l_isRenaming  = m_renameState.m_isActive &&
                                !m_renameState.m_isSceneTarget &&
                                m_renameState.m_targetGameObject.lock() == l_gameObject;
 
@@ -679,7 +678,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
     // 押下時点で選択を潰さないので複数選択を維持したままドラッグ&ドロップできる
     // ドラッグが成立していた場合はGetDragDropPayloadが非nullのため選択を更新しない
     if (ImGui::IsItemDeactivated() &&
-        ImGui::IsItemHovered()     &&
+        ImGui::IsItemHovered() &&
         !ImGui::GetDragDropPayload())
     {
         const auto& l_io = ImGui::GetIO();
@@ -687,7 +686,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectNode(const std::weak_
         // Shift/Ctrlでの選択操作は押下時に更新済みのため解放時は無修飾のみ処理する
         // 既選択ノードへの無修飾クリックは単一選択へ潰す
         if (!l_io.KeyShift &&
-            !l_io.KeyCtrl  &&
+            !l_io.KeyCtrl &&
             l_gameObjectSelectionState.FindVALIsSelected(a_gameObject))
         {
             SelectGameObject(a_gameObject,
@@ -786,14 +785,14 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawRenameInputText(Scene& a_scene)
     }
 
     // 空白クリックでリネームを確定する
-    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
+    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered() &&
                                      !ImGui::IsAnyItemHovered() &&
                                      ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
     // 確定条件 : Enter押下かフォーカス取得後にフォーカス消失かフォーカス取得後の空白クリック
-    if (l_isEnterPressed          ||
+    if (l_isEnterPressed ||
         (m_renameState.m_isFocused &&
-         (!ImGui::IsItemFocused()   ||
+         (!ImGui::IsItemFocused() ||
           l_isEmptySpaceClick)))
     {
         CommitRename(a_scene);
@@ -821,7 +820,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
     // デフォルトのIsItemHovered()は別アイテムがActiveの間falseを返すため
     // このフラグを付けないとドロップ先のホバー判定が取れない
     if (const auto* l_imguiDragDropPayload = ImGui::GetDragDropPayload();
-        l_imguiDragDropPayload                                                                &&
+        l_imguiDragDropPayload &&
         l_imguiDragDropPayload->IsDataType(Constant::k_gameObjectDragDropPayloadLabel.data()) &&
         ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
     {
@@ -832,8 +831,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::DrawGameObjectDropZone(const std::w
         const auto& l_itemMIN = ImGui::GetItemRectMin();
         const auto& l_itemMAX = ImGui::GetItemRectMax();
 
-        const float l_centerY = (l_itemMIN.y + l_itemMAX.y) * Constant::k_halfMagnification;
-
+        const float   l_centerY      = (l_itemMIN.y + l_itemMAX.y) * Constant::k_halfMagnification;
         const ImVec2& l_highlightMIN = { l_itemMIN.x, l_centerY - k_dropZoneHighlightHeight * Constant::k_halfMagnification };
         const ImVec2& l_highlightMAX = { l_itemMAX.x, l_centerY + k_dropZoneHighlightHeight * Constant::k_halfMagnification };
 
@@ -970,32 +968,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::HandlePrefabFileDropTarget(Scene& a
     l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_createdList);
 }
 
-void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const
-{
-    // 現在の選択状態をUUIDリストとして取得する
-    const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
-    const auto& l_anchor       = a_gameObjectSelectionState.GetREFRangeSelectionAnchor  ().lock();
-
-    a_outUUIDList.clear  ();
-    a_outUUIDList.reserve(l_selectedList.size());
-
-    for (const auto& l_selectedWeak : l_selectedList)
-    {
-        const auto& l_selectedGameObject = l_selectedWeak.lock();
-
-        if (!l_selectedGameObject) { continue; }
-
-        a_outUUIDList.emplace_back(l_selectedGameObject->GetREFSceneInstanceUUID());
-    }
-
-    a_outAnchorUUID = {};
-
-    if (l_anchor)
-    {
-        a_outAnchorUUID = l_anchor->GetREFSceneInstanceUUID();
-    }
-}
-
 void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(const boost::uuids::uuid&               a_beforeAnchorUUID,
                                                                         const bool                              a_beforeIsSceneSelected,
                                                                               EditorGameObjectSelectionState&   a_gameObjectSelectionState,
@@ -1011,7 +983,7 @@ void FWK::Editor::WorldOutlinerEditorWindow::PushSelectionChangeCommand(const bo
 
     // 変更前後で選択状態が同じならコマンドをPushしない
     if (l_afterIsSceneSelected == a_beforeIsSceneSelected &&
-        l_afterUUIDList        == a_beforeUUIDList        &&
+        l_afterUUIDList        == a_beforeUUIDList &&
         l_afterAnchorUUID      == a_beforeAnchorUUID)
     {
         return;
@@ -1149,7 +1121,6 @@ void FWK::Editor::WorldOutlinerEditorWindow::SelectGameObject(const std::weak_pt
 
         return;
     }
-
 
     // Ctrl + クリック : 選択 / 選択解除のトグル
     if (a_isToggleSelection)
@@ -1295,6 +1266,32 @@ bool FWK::Editor::WorldOutlinerEditorWindow::IsGameObjectNodeOpen(const boost::u
     if (l_gameObjectOpenStateITR == m_gameObjectOpenStateMap.end()) { return true; }
 
     return l_gameObjectOpenStateITR->second;
+}
+
+void FWK::Editor::WorldOutlinerEditorWindow::FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const
+{
+    // 現在の選択状態をUUIDリストとして取得する
+    const auto& l_selectedList = a_gameObjectSelectionState.GetREFSelectedGameObjectList();
+    const auto& l_anchor       = a_gameObjectSelectionState.GetREFRangeSelectionAnchor  ().lock();
+
+    a_outUUIDList.clear  ();
+    a_outUUIDList.reserve(l_selectedList.size());
+
+    for (const auto& l_selectedWeak : l_selectedList)
+    {
+        const auto& l_selectedGameObject = l_selectedWeak.lock();
+
+        if (!l_selectedGameObject) { continue; }
+
+        a_outUUIDList.emplace_back(l_selectedGameObject->GetREFSceneInstanceUUID());
+    }
+
+    a_outAnchorUUID = {};
+
+    if (l_anchor)
+    {
+        a_outAnchorUUID = l_anchor->GetREFSceneInstanceUUID();
+    }
 }
 
 std::vector<std::weak_ptr<FWK::GameObject>>::const_iterator FWK::Editor::WorldOutlinerEditorWindow::FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const

@@ -116,7 +116,6 @@ namespace FWK::Graphics
 
     private:
 
-
         TypeAlias::ComPtr<ID3D12GraphicsCommandList6> m_commandList = nullptr;
     };
 }

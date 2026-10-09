@@ -27,12 +27,12 @@ namespace FWK
 
         void SaveCONFIG() const;
 
-        void ApplyMasterVolume(const float a_volume);
-
         std::weak_ptr<SoundEffect> AddSoundEffect   (const std::filesystem::path&                  a_filePath);
         void                       AddEffectInstance(const std::weak_ptr<SoundEffectInstanceBase>& a_soundEffectInstanceBase);
 
         void ClearMappedSound();
+
+        void ApplyMasterVolume(const float a_volume);
 
         const auto& GetREFAudioEngine() const { return m_audioEngine; }
 

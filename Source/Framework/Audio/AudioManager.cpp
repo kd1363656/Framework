@@ -123,21 +123,6 @@ void FWK::AudioManager::SaveCONFIG() const
     Utility::SaveJsonFile(l_rootJson, k_configFileIOPath);
 }
 
-void FWK::AudioManager::ApplyMasterVolume(const float a_volume)
-{
-    // AudioEngine生成前にVolumeだけを設定された場合でも、
-    // m_masterVolumeには値を保持しておく
-    // CreateAudioEngine()内でm_masterVolumeをAudioEngineへ反映するため、
-    // 後からAudioEngineが生成されても値が引き継がれる
-    m_masterVolume = std::clamp(a_volume, k_minMasterVolume, k_maxMasterVolume);
-
-    // AudioEngineが存在しなければ反映先が無いため、値の保持だけで終了する
-    // (先にreturnすると値まで保持されなくなるため、必ず代入の後で判定する)
-    if (!m_audioEngine) { return; }
-
-    m_audioEngine->SetMasterVolume(m_masterVolume);
-}
-
 std::weak_ptr<FWK::SoundEffect> FWK::AudioManager::AddSoundEffect(const std::filesystem::path& a_filePath)
 {
     if (!m_audioEngine) { return {}; }
@@ -177,6 +162,21 @@ void FWK::AudioManager::ClearMappedSound()
 
     m_soundEffectInstanceList.clear();
     m_soundEffectMap.clear         ();
+}
+
+void FWK::AudioManager::ApplyMasterVolume(const float a_volume)
+{
+    // AudioEngine生成前にVolumeだけを設定された場合でも、
+    // m_masterVolumeには値を保持しておく
+    // CreateAudioEngine()内でm_masterVolumeをAudioEngineへ反映するため、
+    // 後からAudioEngineが生成されても値が引き継がれる
+    m_masterVolume = std::clamp(a_volume, k_minMasterVolume, k_maxMasterVolume);
+
+    // AudioEngineが存在しなければ反映先が無いため、値の保持だけで終了する
+    // (先にreturnすると値まで保持されなくなるため、必ず代入の後で判定する)
+    if (!m_audioEngine) { return; }
+
+    m_audioEngine->SetMasterVolume(m_masterVolume);
 }
 
 bool FWK::AudioManager::CreateAudioEngine()

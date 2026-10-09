@@ -71,7 +71,7 @@ namespace FWK::Utility
             m_registeredAddressSet.clear();
         }
 
-        bool Contains(const Type& a_type)
+        bool Has(const Type& a_type)
             requires k_isWeakPTR
         {
             // weak_ptrから一時的にshared_ptrを取得する
@@ -91,7 +91,7 @@ namespace FWK::Utility
             return m_registeredAddressSet.contains(l_typeAddress);
         }
 
-        bool Contains(const Type& a_type)
+        bool Has(const Type& a_type)
             requires k_isSharedPTR
         {
             if (!a_type) { return false; }

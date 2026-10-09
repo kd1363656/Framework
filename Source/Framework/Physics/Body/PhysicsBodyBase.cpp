@@ -30,9 +30,8 @@ FWK::TypeAlias::Math::Vector3 FWK::Physics::PhysicsBodyBase::FetchVALWorldPositi
 
     const auto& l_graphicsManager = FWK::Physics::PhysicsManager::GetInstance();
     const auto& l_physicsSystem   = l_graphicsManager.GetREFPhysicsSystem    ();
-
-    const auto& l_bodyInterface = l_physicsSystem.GetBodyInterface();
-    const auto& l_worldPosition = l_bodyInterface.GetPosition     (m_bodyID);
+    const auto& l_bodyInterface   = l_physicsSystem.GetBodyInterface         ();
+    const auto& l_worldPosition   = l_bodyInterface.GetPosition              (m_bodyID);
 
     return Utility::JoltRVec3ToDirectXMathVector3(l_worldPosition);
 }
@@ -62,8 +61,7 @@ void FWK::Physics::PhysicsBodyBase::ReleaseBody()
 
     auto& l_graphicsManager = FWK::Physics::PhysicsManager::GetInstance   ();
     auto& l_physicsSystem   = l_graphicsManager.GetMutableREFPhysicsSystem();
-
-    auto& l_bodyInterface = l_physicsSystem.GetBodyInterface();
+    auto& l_bodyInterface   = l_physicsSystem.GetBodyInterface            ();
 
     // 追加されている者かどうかを判断して追加されているものならRemove
     if (l_bodyInterface.IsAdded(m_bodyID))

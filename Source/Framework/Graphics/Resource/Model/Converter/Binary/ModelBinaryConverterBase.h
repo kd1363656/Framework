@@ -117,7 +117,6 @@ namespace FWK::Converter
             WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_roughnessFactor, a_memoryWriteOffset);
             WriteBinaryData(k_singleBinaryElementCount, &l_modelMaterialAssetData.m_metallicFactor,  a_memoryWriteOffset);
 
-
             // Materialが参照するTexturePathを書き込む
             // Texture本体は.assetには保存しない
             WriteWStringBinaryData(l_modelMaterialAssetData.m_baseColorTextureFilePath, a_memoryWriteOffset);

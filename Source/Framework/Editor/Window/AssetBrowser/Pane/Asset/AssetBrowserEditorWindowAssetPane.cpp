@@ -88,7 +88,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
     // ImGui::IsWindowHovered   : このChildWindow上にマウスがあるか
     // !ImGui::IsAnyItemHovered : いずれのアイテム(カード)上にマウスがない = 空白
     // ImGui::IsMouseClicked    : このフレームで左クリックされたか
-    if (ImGui::IsWindowHovered()   &&
+    if (ImGui::IsWindowHovered() &&
         !ImGui::IsAnyItemHovered() &&
         ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
@@ -98,7 +98,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::Draw(AssetBrowserEditorWind
 
     // 空白スペース右クリック = コンテキストメニュー
     // 式フォルダ・新規プレハブ・新規シーン作成が可能
-    if (ImGui::IsWindowHovered()   &&
+    if (ImGui::IsWindowHovered() &&
         !ImGui::IsAnyItemHovered() &&
         ImGui::IsMouseClicked(ImGuiMouseButton_Right))
     {
@@ -228,7 +228,6 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::MoveSelectionDown(const Ass
 
         return;
     }
-
 
     const auto& l_cursorPath = m_currentCursorFilePath.empty() ? l_displayedList.front() : m_currentCursorFilePath;
     const auto& l_cursorITR  = std::find                    (l_displayedList.begin(), l_displayedList.end(), l_cursorPath);
@@ -458,7 +457,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCard(const std::vector<
     // 切り取り対象判定
     // クリップボードがCut操作で、かつこのファイルパスが含まれている場合
     const bool l_isCutTarget = (l_clipboard.GetVALOperationType() == Enum::AssetBrowserFileClipboardOperationType::Cut) &&
-                               l_clipboard.Contains(a_filePath);
+                               l_clipboard.Has(a_filePath);
 
     // リネームモード判定
     // m_renameState.m_isActiveがtrueかつ対象パスがこのカードと一致するか
@@ -810,7 +809,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     }
 
     // 空白クリック検知
-    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered()   &&
+    const bool l_isEmptySpaceClick = ImGui::IsWindowHovered() &&
                                      !ImGui::IsAnyItemHovered() &&
                                      ImGui::IsMouseClicked(ImGuiMouseButton_Left);
 
@@ -821,9 +820,9 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::DrawCardRename(const std::f
     // l_isEmptySpaceClickをm_isFocusedでガードしないと
     // 初回フレーム(フォーカス前)のクリックで
     // デフォルト名のまま確定してしまう
-    if (l_isEnterPressed          ||
+    if (l_isEnterPressed ||
         (l_renameState.m_isFocused &&
-         (!ImGui::IsItemFocused()   ||
+         (!ImGui::IsItemFocused() ||
           l_isEmptySpaceClick)))
     {
         // 先にm_isActiveをfalseにして
@@ -881,7 +880,7 @@ void FWK::Editor::AssetBrowserEditorWindowAssetPane::HandleCardClick(const std::
     // IsMouseDoubleClickedは画面全体でのダブルクリックを抽出するため、
     // IsItemHoveredで「このカード上で」ダブルクリックされたかを判定する
     if (std::error_code l_errorCode = {};
-        ImGui::IsItemHovered()                             &&
+        ImGui::IsItemHovered() &&
         ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) &&
         std::filesystem::is_directory(a_filePath, l_errorCode))
     {
@@ -1288,9 +1287,9 @@ std::string FWK::Editor::AssetBrowserEditorWindowAssetPane::FetchVALIcon(const s
 
     if (l_extension.empty()) { return std::string{}; }
 
-    if      (l_extension == Constant::k_lowerFBXExtension)  { return std::string{ k_imguiFontAwesomeFBXModelIcon }; }
-    else if (l_extension == Constant::k_lowerPNGExtension)  { return std::string{ k_imguiFontAwesomeImageIcon }; }
-    else if (l_extension == Constant::k_lowerWAVExtension)  { return std::string{ k_imguiFontAwesomeAudioIcon }; }
+    if      (l_extension == Constant::k_lowerFBXExtension) { return std::string{ k_imguiFontAwesomeFBXModelIcon }; }
+    else if (l_extension == Constant::k_lowerPNGExtension) { return std::string{ k_imguiFontAwesomeImageIcon }; }
+    else if (l_extension == Constant::k_lowerWAVExtension) { return std::string{ k_imguiFontAwesomeAudioIcon }; }
 
     // jsonファイルの場合シーンファイルなのかプレハブファイルなのかで
     // 表示するアイコンが変わるためEditor側のAssetRegistryに登録されている

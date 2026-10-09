@@ -30,7 +30,6 @@ namespace FWK
 
     private:
 
-
         std::filesystem::path m_allowedFileExtension = {};
         std::filesystem::path m_assetFilePath        = {};
 

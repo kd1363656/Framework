@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 namespace FWK::Editor
 {
     class WorldOutlinerEditorWindow;

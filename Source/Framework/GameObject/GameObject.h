@@ -25,7 +25,6 @@ namespace FWK
         void LateUpdate    () const;
         void PostLateUpdate() const;
 
-
         nlohmann::json Serialize     (      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeScene(      SceneGameObjectPrefabSystem& a_prefabSystem)                                          const;
         nlohmann::json SerializeDiff (const nlohmann::json&              a_baseJson, SceneGameObjectPrefabSystem& a_prefabSystem) const;

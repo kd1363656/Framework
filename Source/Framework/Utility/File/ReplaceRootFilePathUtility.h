@@ -4,7 +4,7 @@ namespace FWK::Utility
 {
     inline std::filesystem::path ReplaceRoot(const std::filesystem::path& a_filePath, const std::filesystem::path& a_oldRootDirectoryPath, const std::filesystem::path& a_newRootDirectoryPath)
     {
-        if (a_filePath.empty()             ||
+        if (a_filePath.empty() ||
             a_oldRootDirectoryPath.empty() ||
             a_newRootDirectoryPath.empty())
         {

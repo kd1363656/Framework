@@ -323,7 +323,7 @@ void FWK::Editor::DetailsEditorGameObjectAddComponentPopupDrawer::HandleShortcut
     // 検索欄に文字が入っているときは、カーソルの移動や文字の削除に使うため戻らない
     if ((ImGui::IsKeyPressed(ImGuiKey_LeftArrow) ||
         ImGui::IsKeyPressed(ImGuiKey_Backspace)) &&
-        !a_wasSearching                          &&
+        !a_wasSearching &&
         !m_selectedTag.empty())
     {
         ClearSelectedTag();
@@ -491,11 +491,10 @@ std::vector<std::string> FWK::Editor::DetailsEditorGameObjectAddComponentPopupDr
 
     if (!l_gameObject) { return {}; }
 
-    std::vector<std::string> l_itemList = {};
-
-    const auto& l_taggedFactory      = GameObjectComponentTaggedFactory::GetInstance     ();
-    const auto& l_taggedComponentMap = l_taggedFactory.GetREFTaggedGameObjectComponentMap();
-    const auto& l_componentContainer = l_gameObject->GetREFComponentContainer            ();
+          std::vector<std::string> l_itemList           = {};
+    const auto&                    l_taggedFactory      = GameObjectComponentTaggedFactory::GetInstance     ();
+    const auto&                    l_taggedComponentMap = l_taggedFactory.GetREFTaggedGameObjectComponentMap();
+    const auto&                    l_componentContainer = l_gameObject->GetREFComponentContainer            ();
 
     // 検索中は、すべての種類のコンポーネントから、型名が一致して追加できるものを集める
     if (IsSearching())

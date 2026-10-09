@@ -22,12 +22,11 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&                   a_
     // フレームリソースがないとコマンドアロケーターを使えないため"return"
     FWK_ASSERT_RETURN_VALUE_IF(m_frameResourceList.empty(), "フレームリソースリストが空になっており、フレームリソース作成処理に失敗しました。", false);
 
-    const auto& l_gpuMemoryAllocator = a_resourceContext.GetREFGPUMemoryAllocator();
-    const auto& l_shaderCompiler     = a_resourceContext.GetREFShaderCompiler    ();
-
-    auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
-    auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
-    auto& l_dsvDescriptorPool       = a_resourceContext.GetMutableREFDSVDescriptorPool      ();
+    const auto& l_gpuMemoryAllocator      = a_resourceContext.GetREFGPUMemoryAllocator            ();
+    const auto& l_shaderCompiler          = a_resourceContext.GetREFShaderCompiler                ();
+          auto& l_rtvDescriptorPool       = a_resourceContext.GetMutableREFRTVDescriptorPool      ();
+          auto& l_cbvSRVUAVDescriptorPool = a_resourceContext.GetMutableREFCBVSRVUAVDescriptorPool();
+          auto& l_dsvDescriptorPool       = a_resourceContext.GetMutableREFDSVDescriptorPool      ();
 
     for (const auto& l_frameResource : m_frameResourceList)
     {

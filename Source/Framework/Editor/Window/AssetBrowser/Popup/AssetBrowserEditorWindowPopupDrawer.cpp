@@ -54,9 +54,9 @@ void FWK::Editor::AssetBrowserEditorWindowPopupDrawer::Draw(const std::vector<st
     // OnEmptyでは対象がないため不可
     // 複数選択中は無効
     const bool l_canRename = !l_isMultiSelection &&
-                             !l_isRootFolder     &&
+                             !l_isRootFolder &&
                              (a_contextType == Enum::AssetBrowserPopupContextType::FolderPane_OnFolder ||
-                              a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder  ||
+                              a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFolder ||
                               a_contextType == Enum::AssetBrowserPopupContextType::AssetPane_OnFile);
 
     // 選択中のファイルがあるか(コピー / 切り取り / 複製 / 削除の判定に使用)

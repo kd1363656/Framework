@@ -262,10 +262,9 @@ void FWK::Converter::GameObjectJsonConverter::DeserializeCommon(const nlohmann::
         const auto& l_diffJson = a_rootJson.value    (k_diffJsonKey, nlohmann::json{});
         const auto& l_dataJson = l_diffJson.is_object() ? l_diffJson : a_rootJson;
 
-        const auto& l_baseTransformJson  = a_baseJson.is_object() ? a_baseJson.value(k_transformComponentJsonKey, nlohmann::json{}) : nlohmann::json{};
-        const auto& l_sceneTransformJson = l_dataJson.is_object() ? l_dataJson.value(k_transformComponentJsonKey, nlohmann::json{}) : nlohmann::json{};
-
-        const auto& l_diffMergedJson = Utility::ApplyJsonDiff(l_baseTransformJson, l_sceneTransformJson);
+        const auto& l_baseTransformJson  = a_baseJson.is_object  () ? a_baseJson.value(k_transformComponentJsonKey, nlohmann::json{}) : nlohmann::json{};
+        const auto& l_sceneTransformJson = l_dataJson.is_object  () ? l_dataJson.value(k_transformComponentJsonKey, nlohmann::json{}) : nlohmann::json{};
+        const auto& l_diffMergedJson     = Utility::ApplyJsonDiff(l_baseTransformJson, l_sceneTransformJson);
 
         l_transformComponent->Deserialize(l_diffMergedJson);
     }

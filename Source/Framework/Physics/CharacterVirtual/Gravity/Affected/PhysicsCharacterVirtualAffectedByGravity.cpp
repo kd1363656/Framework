@@ -53,11 +53,6 @@ JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::CalculateLinea
     return l_nextLinearVelocity;
 }
 
-JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::FetchVALUpdateGravity(const JPH::Vec3& a_physicsGravity) const
-{
-    return a_physicsGravity;
-}
-
 void FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::ApplyExtendedUpdateSettings(const JPH::CharacterVirtual& a_characterVirtual, JPH::CharacterVirtual::ExtendedUpdateSettings& a_extendedUpdateSettings) const
 {
     const auto& l_up = a_characterVirtual.GetUp();
@@ -69,4 +64,9 @@ void FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::ApplyExtendedUpdate
     // 現在設定されている階段昇降高さを維持したまま、
     // 方向だけをCharacterVirtualの上方向へ合わせる
     a_extendedUpdateSettings.mWalkStairsStepUp = l_up * a_extendedUpdateSettings.mWalkStairsStepUp.Length();
+}
+
+JPH::Vec3 FWK::Physics::PhysicsCharacterVirtualAffectedByGravity::FetchVALUpdateGravity(const JPH::Vec3& a_physicsGravity) const
+{
+    return a_physicsGravity;
 }

@@ -1,6 +1,5 @@
 ﻿#include "StandardPipelineState.h"
 
-
 void FWK::Graphics::StandardPipelineState::Deserialize(const nlohmann::json& a_rootJson)
 {
     if (a_rootJson.is_null()) { return; }
@@ -76,7 +75,6 @@ bool FWK::Graphics::StandardPipelineState::Create(const Device& a_device, const 
                                false);
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC l_pipelineStateDesc = {};
-
 
     // このPSOで使用するルートシグネチャを設定する
     // ルートシグネチャは「シェーダーへどのリソースをどう渡すか」のルール

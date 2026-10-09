@@ -88,8 +88,7 @@ FWK::TypeAlias::Math::Matrix FWK::GameObjectTransformComponentMatrixUpdateHierar
     // この順序はApplyParentの逆行列計算と一致させるため必ずこの関数経由にする
     auto l_resultMatrix = TypeAlias::Math::Matrix::Identity;
 
-
-    if (m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Scale)    ||
+    if (m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Scale) ||
         m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Rotation) ||
         m_calculateParentWorldMatrixEnumBitShift.IsFlagEnabled(Enum::ApplyCalculateWorldMatrixBitShiftFlag::Position))
     {

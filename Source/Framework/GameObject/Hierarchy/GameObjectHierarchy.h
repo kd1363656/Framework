@@ -36,15 +36,14 @@ namespace FWK
 
         void DetachFromPrefab(const boost::uuids::uuid& a_oldPrefabUUID);
 
-
-        bool ApplyParent(const std::weak_ptr<GameObject>& a_parent);
-
         void ClearParent                   ();
         void ClearPrefabRemovedChildUUIDSet();
 
         void ConnectParentForDeserialize(const std::weak_ptr<GameObject>& a_parent);
 
         void AddPrefabRemovedUUID(const boost::uuids::uuid& a_uuid);
+
+        bool ApplyParent(const std::weak_ptr<GameObject>& a_parent);
 
         void SetOwner (const std::weak_ptr<GameObject>& a_set) { m_owner  = a_set; }
         void SetParent(const std::weak_ptr<GameObject>& a_set) { m_parent = a_set; }
@@ -70,9 +69,9 @@ namespace FWK
 
         void RemoveChild(const std::weak_ptr<GameObject>& a_child);
 
-        bool IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const;
-
         boost::uuids::uuid GenerateVALChildUUID() const;
+
+        bool IsAncestorChainContainsOwner(const std::weak_ptr<GameObject>& a_gameObject) const;
 
         std::unordered_set<boost::uuids::uuid> m_prefabRemovedChildUUIDSet = {};
 

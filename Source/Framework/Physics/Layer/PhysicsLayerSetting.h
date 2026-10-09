@@ -11,11 +11,11 @@ namespace FWK::Physics
 
         void INIT();
 
-        const auto& GetREFBroadPhaseLayerInterface     () const { return m_broadPhaseLayerInterface; }
-        const auto& GetREFObjectVSBroadPhaseLayerFilter() const { return m_objectVsBroadPhaseLayerFilter; }
-        const auto& GetREFObjectLayerPairFilter        () const { return m_objectLayerPairFilter; }
-
         JPH::ObjectLayer FetchVALObjectLayer(const Enum::PhysicsObjectLayerType a_objectLayerType) const;
+
+        const auto& GetREFBroadPhaseLayerInterface     () const { return m_broadPhaseLayerInterface; }
+        const auto& GetREFObjectVsBroadPhaseLayerFilter() const { return m_objectVsBroadPhaseLayerFilter; }
+        const auto& GetREFObjectLayerPairFilter        () const { return m_objectLayerPairFilter; }
 
     private:
 

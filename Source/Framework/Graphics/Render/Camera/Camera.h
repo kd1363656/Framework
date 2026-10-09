@@ -24,14 +24,9 @@ namespace FWK::Graphics
                                    const float a_farClip     = Constant::k_cameraDefaultFarClip,
                                    const float a_nearClip    = Constant::k_cameraDefaultNearClip);
 
-
         void ApplyProjectionMatrix(const TypeAlias::Math::Matrix& a_projectionMatrix);
 
         void ApplyPerspectiveAspectRatio(const float a_aspectRatio);
-
-        const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
-
-        const auto& GetREFCBCameraPass() const { return m_cbCameraPass; }
 
         void SetCameraMatrix(const TypeAlias::Math::Matrix& a_set) { m_cameraMatrix = a_set; }
 
@@ -40,11 +35,14 @@ namespace FWK::Graphics
         void SetFarClip    (const float a_set) { m_farClip     = a_set; }
         void SetNearClip   (const float a_set) { m_nearClip    = a_set; }
 
+        const auto& GetREFCameraMatrix() const { return m_cameraMatrix; }
+
+        const auto& GetREFCBCameraPass() const { return m_cbCameraPass; }
+
         float GetVALAspectRatio() const { return m_aspectRatio; }
         float GetVALFovYDegree () const { return m_fovYDegree; }
         float GetVALFarClip    () const { return m_farClip; }
         float GetVALNearClip   () const { return m_nearClip; }
-
 
     private:
 

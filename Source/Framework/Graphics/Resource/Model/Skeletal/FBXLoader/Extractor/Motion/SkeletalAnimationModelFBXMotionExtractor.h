@@ -31,7 +31,6 @@ namespace FWK::Graphics
                                        const ufbx_anim_stack*                                     a_fbxAnimationStack,
                                              Struct::SkeletalAnimationModelMotionSequence&        a_modelMotionSequence) const;
 
-
         TypeAlias::Math::Quaternion ConvertUFBXQuaternionToQuaternion(const ufbx_quat& a_fbxQuaternion) const;
 
         static constexpr double k_invalidAnimationFrameRate = 0.0;

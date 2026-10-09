@@ -38,7 +38,6 @@ FWK::TypeAlias::DescriptorIndex FWK::Graphics::StructuredBufferBase::CreateSRV(c
 
     const auto& l_srvDescriptorIndex = a_cbvSRVUAVDescriptorPool.Allocate();
 
-
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "SRV用DescriptorIndexの確保に失敗したため、StructuredBuffer用SRVの作成に失敗しました。", DescriptorHeap::k_invalidDescriptorIndex);
 
     D3D12_SHADER_RESOURCE_VIEW_DESC l_srvDesc = {};

@@ -61,8 +61,7 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
     const auto& l_physicsManager = Physics::PhysicsManager::GetInstance();
     const auto& l_physicsSystem  = l_physicsManager.GetREFPhysicsSystem();
     const auto& l_bodyInterface  = l_physicsSystem.GetBodyInterface    ();
-
-    const auto& l_currentShape = l_bodyInterface.GetShape(GetREFBodyID());
+    const auto& l_currentShape   = l_bodyInterface.GetShape            (GetREFBodyID());
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_currentShape,                                            "StaticMeshBodyの現在Shapeが無効なため、WorldTransformの反映に失敗しました。",              false);
     FWK_ASSERT_RETURN_VALUE_IF(l_currentShape->GetSubType() != JPH::EShapeSubType::Scaled, "StaticMeshBodyの現在ShapeがScaledShapeではないため、WorldTransformの反映に失敗しました。", false);
@@ -182,8 +181,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
     FWK_ASSERT_RETURN_VALUE_IF(l_indexedTriangleList.empty(), "MeshShapeへ渡す三角形が存在しないため、MeshShapeの作成に失敗しました。", {});
 
     const JPH::MeshShapeSettings l_meshShapeSettings = { std::move(l_triangleVertexList), std::move(l_indexedTriangleList) };
-
-    const auto& l_shapeResult = l_meshShapeSettings.Create();
+    const auto&                  l_shapeResult       = l_meshShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_shapeResult.HasError(), "StaticModelDataからMeshShapeを作成できておらず、MeshShapeの作成に失敗しました。", {});
 

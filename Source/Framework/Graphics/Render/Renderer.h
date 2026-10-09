@@ -52,7 +52,6 @@ namespace FWK::Graphics
 
             if (!l_pipelineState) { return {}; }
 
-
             const auto* l_currentINFO  = &l_pipelineState->GetREFRuntimeTypeINFO();
             const auto& l_baseTypeINFO = PipelineStateType::GetREFTypeINFO      ();
                   bool  l_isDeriveFrom = false;

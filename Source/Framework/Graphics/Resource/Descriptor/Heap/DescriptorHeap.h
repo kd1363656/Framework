@@ -22,8 +22,8 @@ namespace FWK::Graphics
 
         const auto& GetREFDescriptorHeap() const { return m_descriptorHeap; }
 
-        UINT GetVALDescriptorNUM () const { return m_num; }
-        UINT GetVALDescriptorSize() const { return m_size; }
+        UINT GetVALDescriptorNUM () const { return m_descriptorNUM; }
+        UINT GetVALDescriptorSize() const { return m_descriptorSize; }
 
         static constexpr UINT k_invalidDescriptorNUM = 0U;
 
@@ -40,7 +40,7 @@ namespace FWK::Graphics
         D3D12_DESCRIPTOR_HEAP_TYPE  m_descriptorHeapType  = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
         D3D12_DESCRIPTOR_HEAP_FLAGS m_descriptorHeapFlags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-        UINT m_num  = k_invalidDescriptorNUM;
-        UINT m_size = k_invalidSize;
+        UINT m_descriptorNUM  = k_invalidDescriptorNUM;
+        UINT m_descriptorSize = k_invalidSize;
     };
 }

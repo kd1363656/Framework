@@ -124,8 +124,8 @@ namespace FWK::Editor
 
         inline static const std::filesystem::path k_configFileIOPath = "CONFIG/Editor/EditorCONFIG.json";
 
-        static constexpr const char* k_dockingWindowName = "DockSpace";
-        static constexpr const char* k_dockingSpaceName  = "DockSpace";
+        static constexpr std::string_view k_dockingWindowName = "DockSpace";
+        static constexpr std::string_view k_dockingSpaceName  = "DockSpace";
 
         static constexpr float k_dockingWindowRounding   = 0.0F;
         static constexpr float k_dockingWindowBorderSize = 0.0F;

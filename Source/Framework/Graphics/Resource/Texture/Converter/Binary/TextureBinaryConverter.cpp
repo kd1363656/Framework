@@ -242,23 +242,6 @@ bool FWK::Converter::TextureBinaryConverter::SaveTextureAsset(const DirectX::Scr
     return true;
 }
 
-bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::filesystem::path& a_filePath) const
-{
-    // まず元のPNGが存在していて、拡張子も.pngか確認する
-    if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
-
-    // もし元ファイルが更新されていたらバイナリーファイルも更新する
-    // PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
-    const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
-
-    // .assetが存在しないなら、FBXから読み込んで生成する
-    if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
-
-    if (IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
-
-    return true;
-}
-
 FWK::Converter::TextureBinaryConverter::TextureBinaryHeader FWK::Converter::TextureBinaryConverter::CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_fileSize) const
 {
     TextureBinaryHeader l_textureBinaryHeader = {};
@@ -337,4 +320,21 @@ std::uint64_t FWK::Converter::TextureBinaryConverter::CalculateTextureAssetFileS
     }
 
     return l_textureAssetFileSize;
+}
+
+bool FWK::Converter::TextureBinaryConverter::CanLoadTextureAsset(const std::filesystem::path& a_filePath) const
+{
+    // まず元のPNGが存在していて、拡張子も.pngか確認する
+    if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerPNGExtension)) { return false; }
+
+    // もし元ファイルが更新されていたらバイナリーファイルも更新する
+    // PNGと同じ場所・同じ名前で拡張子だけ.assetに変えたパスを作成する
+    const auto& l_textureAssetFilePath = CreateAssetFilePath(a_filePath);
+
+    // .assetが存在しないなら、FBXから読み込んで生成する
+    if (!Utility::CanLoadFilePath(l_textureAssetFilePath, Constant::k_lowerAssetExtension)) { return false; }
+
+    if (IsUpdatedSourceFile(a_filePath, l_textureAssetFilePath)) { return false; }
+
+    return true;
 }

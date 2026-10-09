@@ -57,25 +57,6 @@ void FWK::SoundEffectInstanceBase::Resume()
     m_instance->Resume();
 }
 
-void FWK::SoundEffectInstanceBase::ApplyVolume(const float a_volume)
-{
-    if (!m_instance) { return; }
-
-    // DirectXTKのVolumeとして扱える範囲へ制限する
-    const float l_volume = std::clamp(a_volume, Constant::k_soundEffectInstanceMINVolume, Constant::k_soundEffectInstanceMAXVolume);
-
-    m_instance->SetVolume(l_volume);
-}
-void FWK::SoundEffectInstanceBase::ApplyPitch(const float a_pitch)
-{
-    if (!m_instance) { return; }
-
-    // DirectXTKのPitchとして扱える範囲へ制限する
-    const float l_pitch = std::clamp(a_pitch, Constant::k_soundEffectInstanceMINPitch, Constant::k_soundEffectInstanceMAXPitch);
-
-    m_instance->SetPitch(l_pitch);
-}
-
 bool FWK::SoundEffectInstanceBase::IsPlaying() const
 {
     if (!m_instance) { return false; }
@@ -93,6 +74,25 @@ bool FWK::SoundEffectInstanceBase::IsStopped() const
     if (!m_instance) { return false; }
 
     return m_instance->GetState() == DirectX::SoundState::STOPPED;
+}
+
+void FWK::SoundEffectInstanceBase::ApplyVolume(const float a_volume)
+{
+    if (!m_instance) { return; }
+
+    // DirectXTKのVolumeとして扱える範囲へ制限する
+    const float l_volume = std::clamp(a_volume, Constant::k_soundEffectInstanceMINVolume, Constant::k_soundEffectInstanceMAXVolume);
+
+    m_instance->SetVolume(l_volume);
+}
+void FWK::SoundEffectInstanceBase::ApplyPitch(const float a_pitch)
+{
+    if (!m_instance) { return; }
+
+    // DirectXTKのPitchとして扱える範囲へ制限する
+    const float l_pitch = std::clamp(a_pitch, Constant::k_soundEffectInstanceMINPitch, Constant::k_soundEffectInstanceMAXPitch);
+
+    m_instance->SetPitch(l_pitch);
 }
 
 bool FWK::SoundEffectInstanceBase::CreateInstance(const DirectX::SOUND_EFFECT_INSTANCE_FLAGS a_flags)

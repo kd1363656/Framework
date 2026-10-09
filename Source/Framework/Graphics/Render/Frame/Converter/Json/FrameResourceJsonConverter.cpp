@@ -64,7 +64,7 @@ nlohmann::json FWK::Converter::FrameResourceJsonConverter::SerializeDynamicBuffe
 {
     nlohmann::json l_rootJsonArray = {};
 
-    const auto& l_dynamicBufferUploaderList = a_frameResource.GetREFConstantBufferUploaderList();
+    const auto& l_dynamicBufferUploaderList = a_frameResource.GetREFDynamicBufferUploaderList();
 
     // 生成する定数バッファの名前とその定数バッファに必要な情報をSerialize
     for (const auto& l_dynamicBufferUploader : l_dynamicBufferUploaderList)

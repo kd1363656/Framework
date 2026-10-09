@@ -25,11 +25,11 @@ namespace FWK::Physics
 
         void TogglePhysicsDebugDraw();
 
+        void SetIsDisableDebugDraw(const bool a_set) { m_isDisableDebugDraw = a_set; }
+
         const auto& GetREFTempAllocator      () const { return m_tempAllocator; }
         const auto& GetREFPhysicsLayerSetting() const { return m_physicsLayerSetting; }
         const auto& GetREFPhysicsSystem      () const { return m_physicsSystem; }
-
-        void SetIsDisableDebugDraw(const bool a_set) { m_isDisableDebugDraw = a_set; }
 
         auto& GetMutableREFPhysicsSystem() { return m_physicsSystem; }
 

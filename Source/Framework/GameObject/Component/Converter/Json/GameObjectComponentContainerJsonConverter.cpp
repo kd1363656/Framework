@@ -304,7 +304,6 @@ nlohmann::json FWK::Converter::GameObjectComponentContainerJsonConverter::Detect
         l_diffJson[k_orderUUIDListJsonKey] = std::move(l_orderJsonArray);
     }
 
-
     return l_diffJson;
 }
 

@@ -28,12 +28,12 @@ namespace FWK::Editor
 
         void RestoreState(const std::vector<boost::uuids::uuid>& a_uuidList, const boost::uuids::uuid& a_anchorUUID);
 
-        const auto& GetREFSelectedGameObjectList() const { return m_selectedGameObjectList; }
-        const auto& GetREFRangeSelectionAnchor  () const { return m_rangeSelectionAnchor;    }
-
         std::weak_ptr<GameObject> FindVALLastSelectedGameObject() const;
 
         bool FindVALIsSelected(const std::weak_ptr<GameObject>& a_gameObject) const;
+
+        const auto& GetREFSelectedGameObjectList() const { return m_selectedGameObjectList; }
+        const auto& GetREFRangeSelectionAnchor  () const { return m_rangeSelectionAnchor;    }
 
     private:
 

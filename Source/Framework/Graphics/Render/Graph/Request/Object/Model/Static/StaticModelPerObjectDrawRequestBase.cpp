@@ -36,9 +36,8 @@ void FWK::Graphics::StaticModelPerObjectDrawRequestBase::SetupPerObjectConstantB
 
             FWK_ASSERT_RETURN_IF(l_modelMeshletData.m_meshletList.empty(), "Meshletが存在しないため、StaticModelのPerObject定数バッファの設定に失敗しました。");
 
-            Struct::CBModelPerObject l_cbModelPerObject = {};
-
-            const auto& l_meshletCount = static_cast<UINT>(l_modelMeshletData.m_meshletList.size());
+                  Struct::CBModelPerObject l_cbModelPerObject = {};
+            const auto&                    l_meshletCount     = static_cast<UINT>(l_modelMeshletData.m_meshletList.size());
 
             // モデル1体ごとのワールド行列
             l_cbModelPerObject.m_worldMatrix = l_drawRequest->m_worldMatrix;

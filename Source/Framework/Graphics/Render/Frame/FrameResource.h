@@ -56,7 +56,7 @@ namespace FWK::Graphics
             return std::static_pointer_cast<Type>(l_dynamicBufferUploader);
         }
 
-        const auto& GetREFConstantBufferUploaderList() const { return m_dynamicBufferUploaderList; }
+        const auto& GetREFDynamicBufferUploaderList() const { return m_dynamicBufferUploaderList; }
 
         const auto& GetREFDirectCommandAllocator () const { return m_directCommandAllocator; }
         const auto& GetREFComputeCommandAllocator() const { return m_computeCommandAllocator; }

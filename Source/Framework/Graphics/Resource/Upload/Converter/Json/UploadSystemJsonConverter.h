@@ -20,14 +20,14 @@ namespace FWK::Converter
 
     private:
 
+        void DeserializeCopyCommandAllocator(const nlohmann::json& a_rootJson, Graphics::UploadSystem& a_uploadSystem) const;
+
+        nlohmann::json SerializeCopyCommandAllocator(const Graphics::UploadSystem& a_uploadSystem) const;
+
         static constexpr std::string_view k_copyCommandAllocatorListJsonKey      = "CopyCommandAllocatorList";
         static constexpr std::string_view k_copyCommandAllocatorListCountJsonKey = "Count";
 
         static constexpr std::size_t k_defaultCopyCommandAllocatorListCount = 4ULL;
         static constexpr std::size_t k_emptyCopyCommandAllocatorListCount   = 0ULL;
-
-        void DeserializeCopyCommandAllocator(const nlohmann::json& a_rootJson, Graphics::UploadSystem& a_uploadSystem) const;
-
-        nlohmann::json SerializeCopyCommandAllocator(const Graphics::UploadSystem& a_uploadSystem) const;
     };
 }

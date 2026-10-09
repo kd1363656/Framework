@@ -112,7 +112,6 @@ bool FWK::Graphics::Device::Create(const Factory& a_factory)
     // 使用可能なGPUが一つも見つからなかった場合は失敗
     FWK_ASSERT_RETURN_VALUE_IF(!l_isFound, "対応するGPUが見つかっておらず、デバイスの作成に失敗しました。", false);
 
-
 #if defined(_DEBUG)
     std::wstring l_outputLog = {};
 

@@ -218,8 +218,8 @@ bool FWK::GameObjectComponentContainer::AddComponent(const std::shared_ptr<GameO
     // Prefabで消されたUUIDと同じUUIDを持つシーン側コンポーネントが
     // Prefabコンポーネントと誤認されないようにするため
     if (const auto& l_uuid = a_component->GetREFUUID();
-        l_uuid.is_nil()                          ||
-        m_componentUUIDRegistry.Contains(l_uuid) ||
+        l_uuid.is_nil() ||
+        m_componentUUIDRegistry.Has(l_uuid) ||
         m_prefabRemovedComponentUUIDSet.contains(l_uuid))
     {
         const auto& l_generatedUUID = GenerateVALComponentUUID();
@@ -454,18 +454,6 @@ std::weak_ptr<FWK::GameObjectComponentBase> FWK::GameObjectComponentContainer::F
     return m_componentUUIDRegistry.FindVALRegisteredType(a_uuid);
 }
 
-std::size_t FWK::GameObjectComponentContainer::FetchVALComponentRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::shared_ptr<GameObjectComponentBase>& a_component) const
-{
-    // 無効なコンポーネント、並びに無いコンポーネントは、最後尾の順位にする
-    if (!a_component) { return k_lastComponentRank; }
-
-    const auto& l_rankITR = a_rankMap.find(a_component->GetREFUUID());
-
-    if (l_rankITR == a_rankMap.end()) { return k_lastComponentRank; }
-
-    return l_rankITR->second;
-}
-
 boost::uuids::uuid FWK::GameObjectComponentContainer::GenerateVALComponentUUID() const
 {
     boost::uuids::uuid l_uuid        = {};
@@ -477,7 +465,7 @@ boost::uuids::uuid FWK::GameObjectComponentContainer::GenerateVALComponentUUID()
 
         // もしm_componentUUIDRegistryまたはm_removedComponentsUUIDSetに含まれているUUID
         // なら意図的にnil値にしてもう一度UUIDを生成する
-        if (m_componentUUIDRegistry.Contains(l_uuid) ||
+        if (m_componentUUIDRegistry.Has(l_uuid) ||
             m_prefabRemovedComponentUUIDSet.contains(l_uuid))
         {
             l_uuid = {};
@@ -485,4 +473,16 @@ boost::uuids::uuid FWK::GameObjectComponentContainer::GenerateVALComponentUUID()
     }
 
     return l_uuid;
+}
+
+std::size_t FWK::GameObjectComponentContainer::FetchVALComponentRank(const std::unordered_map<boost::uuids::uuid, std::size_t>& a_rankMap, const std::shared_ptr<GameObjectComponentBase>& a_component) const
+{
+    // 無効なコンポーネント、並びに無いコンポーネントは、最後尾の順位にする
+    if (!a_component) { return k_lastComponentRank; }
+
+    const auto& l_rankITR = a_rankMap.find(a_component->GetREFUUID());
+
+    if (l_rankITR == a_rankMap.end()) { return k_lastComponentRank; }
+
+    return l_rankITR->second;
 }

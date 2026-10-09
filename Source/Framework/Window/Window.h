@@ -18,9 +18,9 @@ namespace FWK
 
         void SaveCONFIG() const;
 
-        bool IsMinimized() const;
-
         void SetupStyle(const Enum::WindowStyle a_style);
+
+        bool IsMinimized() const;
 
         void SetStyle(const Enum::WindowStyle a_set) { m_style = a_set; }
 
@@ -53,6 +53,10 @@ namespace FWK
 
         void Release();
 
+        void StoreNormalWindowRECT();
+
+        void RequestResizeFromClientSize(const Struct::WindowClientSize& a_clientSize);
+
         void ApplyClientSizeFromWMSize(const Struct::WindowClientSize& a_clientSize, const WPARAM& a_wPARAM);
 
         void ApplyWindowStyle();
@@ -60,10 +64,6 @@ namespace FWK
         void ApplyNormalWindowStyle();
 
         void ApplyBorderlessFullScreenWindowStyle();
-
-        void StoreNormalWindowRECT();
-
-        void RequestResizeFromClientSize(const Struct::WindowClientSize& a_clientSize);
 
         HINSTANCE FetchVALInstanceHandle() const;
 

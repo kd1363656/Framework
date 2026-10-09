@@ -43,7 +43,6 @@ namespace FWK::Graphics
                                                                "MeshletBuffer用StructuredBufferの作成に失敗しました。",
                                                                false);
 
-
             // ユニーク頂点インデックスストラクチャードバッファーの作成
             FWK_ASSERT_RETURN_VALUE_IF(!l_uniqueVertexIndexBuffer.Create(l_modelMeshletData.m_uniqueVertexIndexList,
                                                                          a_device,

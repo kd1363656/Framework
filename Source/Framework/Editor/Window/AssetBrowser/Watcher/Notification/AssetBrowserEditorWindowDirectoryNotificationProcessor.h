@@ -45,11 +45,11 @@ namespace FWK::Editor
 
         bool ProcessExpiredPendingFilePathChange();
 
-        void ApplyDirectoryChangeList(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager);
-
         void ResetPendingFilePathChange();
 
         void Release();
+
+        void ApplyDirectoryChangeList(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager);
 
         std::span<std::byte> GetVALNotificationBufferList() { return std::span<std::byte>{ m_notificationBufferList }; }
 

@@ -69,8 +69,7 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::Serialize(const
 {
     nlohmann::json l_rootJson = {};
 
-    auto l_jsonArray = nlohmann::json::array();
-
+          auto  l_jsonArray                   = nlohmann::json::array                                  ();
     const auto& l_childSmartPointerVectorList = a_gameObjectHierarchy.GetREFChildSmartPointerVectorList();
     const auto& l_childDataList               = l_childSmartPointerVectorList.GetREFElementDataList    ();
 
@@ -233,8 +232,6 @@ nlohmann::json FWK::Converter::GameObjectHierarchyJsonConverter::SerializeDiff(c
 
         l_diffJson[k_orderUUIDListJsonKey] = std::move(l_orderJsonArray);
     }
-
-
 
     return l_diffJson;
 }
@@ -503,7 +500,7 @@ void FWK::Converter::GameObjectHierarchyJsonConverter::DeserializeChild(const st
                                                                               Scene&                       a_scene) const
 {
     if (a_childJson.is_null() &&
-        a_baseJson.is_null()  ||
+        a_baseJson.is_null() ||
         a_parentGameObject.expired())
     {
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "親GameObjectが無効なため、子のデシリアライズをスキップしました。");

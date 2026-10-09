@@ -23,8 +23,7 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticCapsuleBody::CreateShape() 
     FWK_ASSERT_RETURN_VALUE_IF(m_radius <= std::numeric_limits<float>::epsilon(),               "StaticCapsuleBodyのRadiusが0以下のため、Shapeの作成に失敗しました。",               {});
 
     const JPH::CapsuleShapeSettings& l_capsuleShapeSettings = { m_halfHeightOfCylinder, m_radius };
-
-    const auto& l_shapeResult = l_capsuleShapeSettings.Create();
+    const auto&                      l_shapeResult          = l_capsuleShapeSettings.Create();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_shapeResult.HasError(), "StaticCapsuleBody用CapsuleShapeの作成に失敗しました。", {});
 

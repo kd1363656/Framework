@@ -63,8 +63,6 @@ namespace FWK::Editor
 
         void ClearSelection(EditorGameObjectSelectionState& a_gameObjectSelectionState);
 
-        void FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const;
-
         void SelectGameObject(const std::weak_ptr<GameObject>&      a_gameObject,
                               const bool                            a_isRangeSelection,
                               const bool                            a_isToggleSelection,
@@ -78,6 +76,8 @@ namespace FWK::Editor
         void CommitRename(Scene& a_scene);
 
         bool IsGameObjectNodeOpen(const boost::uuids::uuid& a_sceneInstanceUUID) const;
+
+        void FetchVALSelectionSnapshot(const EditorGameObjectSelectionState& a_gameObjectSelectionState, std::vector<boost::uuids::uuid>& a_outUUIDList, boost::uuids::uuid& a_outAnchorUUID) const;
 
         std::vector<std::weak_ptr<GameObject>>::const_iterator FindDisplayedGameObjectITR(const std::vector<std::weak_ptr<GameObject>>& a_displayedList, const std::shared_ptr<GameObject>& a_target) const;
 

@@ -129,7 +129,6 @@ FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrows
     {
         a_assetFilePathRegistry.Erase(l_sceneFilePath);
 
-
         FWK_ADD_LOG(Constant::k_imguiDebugWarningColor, "Sceneのシリアライズに失敗したため、Registry登録を取り消しました。\nFilePath : {}", l_sceneFilePath.string());
 
         return {};
@@ -302,39 +301,6 @@ std::filesystem::path FWK::Editor::AssetBrowserEditorWindowAssetCreator::Resolve
     return Utility::ResolveFilePathConflictByNumberSuffix(l_desiredFilePath);
 }
 
-std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFileName(const std::weak_ptr<GameObject>& a_gameObject)
-{
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject) { return std::string{ k_defaultPrefabName }; }
-
-    const auto& l_name = l_gameObject->GetREFName();
-
-    if (l_name.empty()) { return std::string{ k_defaultPrefabName }; }
-
-    auto l_fileName = l_name;
-
-    for (auto& l_char : l_fileName)
-    {
-        // ファイル名に使用できない文字をアンダースコアに変換する
-        if (k_invalidFileNameCharacters.find(l_char) == std::string_view::npos) { continue; }
-
-        l_char = k_underScoreChar;
-    }
-
-    // 末尾のドットと空白はWindowsのファイル名として使えないため取り除く
-    while (!l_fileName.empty()             &&
-           (l_fileName.back() == k_dotChar ||
-            l_fileName.back() == k_spaceChar))
-    {
-        l_fileName.pop_back();
-    }
-
-    if (l_fileName.empty()) { return std::string{ k_defaultPrefabName }; }
-
-    return l_fileName;
-}
-
 FWK::Struct::AssetBrowserEditorWindowAssetCreationResult FWK::Editor::AssetBrowserEditorWindowAssetCreator::CreatePrefabFromGameObject(const std::weak_ptr<GameObject>& a_gameObject,
                                                                                                                                        const std::filesystem::path&     a_parentFolderPath,
                                                                                                                                              Scene&                     a_scene,
@@ -464,4 +430,37 @@ std::vector<std::shared_ptr<FWK::GameObject>> FWK::Editor::AssetBrowserEditorWin
     }
 
     return l_targetList;
+}
+
+std::string FWK::Editor::AssetBrowserEditorWindowAssetCreator::FetchVALPrefabFileName(const std::weak_ptr<GameObject>& a_gameObject)
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return std::string{ k_defaultPrefabName }; }
+
+    const auto& l_name = l_gameObject->GetREFName();
+
+    if (l_name.empty()) { return std::string{ k_defaultPrefabName }; }
+
+    auto l_fileName = l_name;
+
+    for (auto& l_char : l_fileName)
+    {
+        // ファイル名に使用できない文字をアンダースコアに変換する
+        if (k_invalidFileNameCharacters.find(l_char) == std::string_view::npos) { continue; }
+
+        l_char = k_underScoreChar;
+    }
+
+    // 末尾のドットと空白はWindowsのファイル名として使えないため取り除く
+    while (!l_fileName.empty() &&
+           (l_fileName.back() == k_dotChar ||
+            l_fileName.back() == k_spaceChar))
+    {
+        l_fileName.pop_back();
+    }
+
+    if (l_fileName.empty()) { return std::string{ k_defaultPrefabName }; }
+
+    return l_fileName;
 }

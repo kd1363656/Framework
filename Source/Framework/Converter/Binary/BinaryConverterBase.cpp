@@ -17,23 +17,6 @@ FWK::Converter::BinaryConverterBase::~BinaryConverterBase()
     DestroyMemoryMappedFile();
 }
 
-bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const
-{
-    std::error_code l_sourceErrorCode = {};
-    std::error_code l_binaryErrorCode = {};
-
-    // 元ファイルとバイナリーファイルの最終更新時刻を取得する
-    const auto& l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
-    const auto& l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
-
-    if (l_sourceErrorCode)  { return false; }
-    if (l_binaryErrorCode)  { return false; }
-
-    // バイナリーファイルの更新時間が元ファイルの更新時間より速ければ
-    // ファイルの更新が発生したということ
-    return l_binaryLastWriteTime <= l_sourceLastWriteTime;
-}
-
 std::filesystem::path FWK::Converter::BinaryConverterBase::CreateAssetFilePath(const std::filesystem::path& a_filePath) const
 {
     return Utility::CreateFilePathByReplaceExtension(a_filePath, Constant::k_lowerAssetExtension);
@@ -373,17 +356,21 @@ std::uint64_t FWK::Converter::BinaryConverterBase::CalculateStringBinaryFileSize
     return a_string.size();
 }
 
-bool FWK::Converter::BinaryConverterBase::CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
+bool FWK::Converter::BinaryConverterBase::IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const
 {
-    // 現在の読み込み位置がファイルサイズを超えている場合、
-    // これ以上安全に読み込めない
-    if (a_memoryReadOffset > m_mappedDataSize) { return false; }
+    std::error_code l_sourceErrorCode = {};
+    std::error_code l_binaryErrorCode = {};
 
-    // 残りサイズを計算する
-    const auto& l_remainingDataSize = m_mappedDataSize - a_memoryReadOffset;
+    // 元ファイルとバイナリーファイルの最終更新時刻を取得する
+    const auto& l_sourceLastWriteTime = std::filesystem::last_write_time(a_sourceFilePath, l_sourceErrorCode);
+    const auto& l_binaryLastWriteTime = std::filesystem::last_write_time(a_binaryFilePath, l_binaryErrorCode);
 
-    // 読み込みたいサイズが残りサイズ以下なら安全に読める
-    return a_readDataSize <= l_remainingDataSize;
+    if (l_sourceErrorCode) { return false; }
+    if (l_binaryErrorCode) { return false; }
+
+    // バイナリーファイルの更新時間が元ファイルの更新時間より速ければ
+    // ファイルの更新が発生したということ
+    return l_binaryLastWriteTime <= l_sourceLastWriteTime;
 }
 
 void FWK::Converter::BinaryConverterBase::ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const
@@ -423,4 +410,17 @@ void FWK::Converter::BinaryConverterBase::ReadStringBinaryData(const std::uint64
     // メモリマップされたバイナリデータから、std::wstringの文字データを読み込む
     // ReadBinaryData内で、読み込んだバイト数分だけa_readOffsetが進む
     ReadBinaryData(a_stringBinaryFileSize, a_memoryReadOffset, a_string.data());
+}
+
+bool FWK::Converter::BinaryConverterBase::CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const
+{
+    // 現在の読み込み位置がファイルサイズを超えている場合、
+    // これ以上安全に読み込めない
+    if (a_memoryReadOffset > m_mappedDataSize) { return false; }
+
+    // 残りサイズを計算する
+    const auto& l_remainingDataSize = m_mappedDataSize - a_memoryReadOffset;
+
+    // 読み込みたいサイズが残りサイズ以下なら安全に読める
+    return a_readDataSize <= l_remainingDataSize;
 }

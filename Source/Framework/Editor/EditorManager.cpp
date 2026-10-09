@@ -315,7 +315,7 @@ void FWK::Editor::EditorManager::AddEditorWindow(const std::shared_ptr<EditorWin
 
 void FWK::Editor::EditorManager::AllocateSRVDescriptor(ImGui_ImplDX12_InitInfo* a_info, D3D12_CPU_DESCRIPTOR_HANDLE* a_outCPUHandle, D3D12_GPU_DESCRIPTOR_HANDLE* a_outGPUHandle)
 {
-    FWK_ASSERT_RETURN_IF(!a_info         ||
+    FWK_ASSERT_RETURN_IF(!a_info ||
                          !a_outCPUHandle ||
                          !a_outGPUHandle,
                          "ImGui用のSRVDescriptorIndexの確保に失敗しました。");
@@ -395,12 +395,12 @@ void FWK::Editor::EditorManager::DrawDockingSpace() const
     // Begin(ウィンドウ名、
     //       開閉状態を管理するboolポインタ(nullptrなら外部から閉じない)、
     //       ウィンドウの挙動フラグ);
-    ImGui::Begin(k_dockingWindowName, nullptr, l_windowFlag);
+    ImGui::Begin(k_dockingWindowName.data(), nullptr, l_windowFlag);
 
     ImGui::PopStyleVar(k_dockingStyleVarPopCount);
 
     // "DockSpace"の作成
-    ImGuiID l_dockSpaceID = ImGui::GetID(k_dockingSpaceName);
+    ImGuiID l_dockSpaceID = ImGui::GetID(k_dockingSpaceName.data());
     ImVec2  l_size        = {};
 
     ImGui::DockSpace(l_dockSpaceID, l_size, ImGuiDockNodeFlags_None);

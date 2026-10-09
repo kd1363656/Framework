@@ -52,7 +52,6 @@ bool FWK::Graphics::RenderTargetPassTexture::Resize(const Device&               
 
     FWK_ASSERT_RETURN_VALUE_IF(!Utility::IsValidTextureSize(l_width, l_height), "RenderTargetPassTextureのリサイズ後サイズが無効のため、リサイズ処理に失敗しました。", false);
 
-
     FWK_ASSERT_RETURN_VALUE_IF(!m_renderTargetTexture.Resize(a_device,
                                                              a_gpuMemoryAllocator,
                                                              a_retiredFenceValue,

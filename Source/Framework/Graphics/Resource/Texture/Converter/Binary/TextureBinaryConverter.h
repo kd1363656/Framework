@@ -55,8 +55,6 @@ namespace FWK::Converter
 
     private:
 
-        bool CanLoadTextureAsset(const std::filesystem::path& a_filePath) const;
-
         TextureBinaryHeader CreateTextureBinaryHeader(const DirectX::ScratchImage& a_scratchImage, const std::uint64_t& a_fileSize) const;
 
         TextureBinarySubresourceHeader CreateTextureBinarySubresourceHeader(const DirectX::Image& a_image) const;
@@ -64,6 +62,8 @@ namespace FWK::Converter
         DirectX::TexMetadata CreateTexMetadata(const TextureBinaryHeader& a_textureBinaryHeader) const;
 
         std::uint64_t CalculateTextureAssetFileSize(const DirectX::ScratchImage& a_scratchImage) const;
+
+        bool CanLoadTextureAsset(const std::filesystem::path& a_filePath) const;
 
         static constexpr std::uint64_t k_emptyTextureDepth            = 0ULL;
         static constexpr std::uint64_t k_emptyTextureSubresourceCount = 0ULL;

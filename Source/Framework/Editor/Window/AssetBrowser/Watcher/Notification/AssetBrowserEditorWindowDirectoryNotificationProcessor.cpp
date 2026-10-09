@@ -245,6 +245,19 @@ bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Proces
     return l_shouldRefreshFolderTree;
 }
 
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ResetPendingFilePathChange()
+{
+    m_pendingFilePathChangeDataMap.clear();
+}
+
+void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Release()
+{
+    ResetPendingFilePathChange();
+
+    m_directoryChangeList.clear  ();
+    m_notificationBufferList.fill(std::byte{});
+}
+
 void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ApplyDirectoryChangeList(AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager)
 {
     // ChangeListから完了済み要素をerase()しながら処理するためIteratorを使用する
@@ -276,19 +289,6 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ApplyD
 
         l_directoryChangeITR = m_directoryChangeList.erase(l_directoryChangeITR);
     }
-}
-
-void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ResetPendingFilePathChange()
-{
-    m_pendingFilePathChangeDataMap.clear();
-}
-
-void FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::Release()
-{
-    ResetPendingFilePathChange();
-
-    m_directoryChangeList.clear  ();
-    m_notificationBufferList.fill(std::byte{});
 }
 
 bool FWK::Editor::AssetBrowserEditorWindowDirectoryNotificationProcessor::ProcessNotification(const std::filesystem::path& a_filePath, const FILE_NOTIFY_EXTENDED_INFORMATION& a_notificationInformation)

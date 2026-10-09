@@ -19,12 +19,12 @@ namespace FWK
 
         void Resume();
 
-        void ApplyVolume(const float a_volume);
-        void ApplyPitch (const float a_pitch);
-
         bool IsPlaying() const;
         bool IsPause  () const;
         bool IsStopped() const;
+
+        void ApplyVolume(const float a_volume);
+        void ApplyPitch (const float a_pitch);
 
     protected:
 

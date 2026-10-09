@@ -32,9 +32,9 @@ namespace FWK::Graphics
 
         void AdvanceTime(const float a_deltaTime);
 
-        bool IsAnimationEnd() const;
-
         void Stop();
+
+        bool IsAnimationEnd() const;
 
         bool ApplyAnimation(const Struct::SkeletalAnimationPlayerAnimation& a_animation);
 

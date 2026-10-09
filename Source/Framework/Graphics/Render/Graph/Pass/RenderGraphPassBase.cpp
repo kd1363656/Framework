@@ -151,7 +151,7 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGra
 
     // beforeUsageはPass実行前に必ず使うStateなので、Noneは禁止
     FWK_ASSERT_RETURN_IF(a_beforeUsage == Enum::RenderGraphResourceUsage::Invalid ||
-                         a_beforeUsage == Enum::RenderGraphResourceUsage::None    ||
+                         a_beforeUsage == Enum::RenderGraphResourceUsage::None ||
                          a_beforeUsage == Enum::RenderGraphResourceUsage::Count,
                          "BeforeUsageが無効です、ResourceAccessの追加に失敗しました。");
 
@@ -167,16 +167,16 @@ void FWK::Graphics::RenderGraphPassBase::AddResourceAccess(const Enum::RenderGra
 
         // 一つのResourceAccessへ複数種類のResourceが
     // 同時指定されることを防ぐ
-    FWK_ASSERT_RETURN_IF((a_isBackBuffer     &&
-                          (l_hasRenderTarget  ||
-                           l_hasDepthStencil  ||
-                           l_hasShadowMap))   ||
-                          (l_hasRenderTarget  &&
-                           (l_hasDepthStencil  ||
-                            l_hasShadowMap))   ||
-                          (l_hasDepthStencil  &&
-                           l_hasShadowMap)    ||
-                          (!a_isBackBuffer    &&
+    FWK_ASSERT_RETURN_IF((a_isBackBuffer &&
+                          (l_hasRenderTarget ||
+                           l_hasDepthStencil ||
+                           l_hasShadowMap)) ||
+                          (l_hasRenderTarget &&
+                           (l_hasDepthStencil ||
+                            l_hasShadowMap)) ||
+                          (l_hasDepthStencil &&
+                           l_hasShadowMap) ||
+                          (!a_isBackBuffer &&
                            !l_hasRenderTarget &&
                            !l_hasDepthStencil &&
                            !l_hasShadowMap),

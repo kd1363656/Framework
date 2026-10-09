@@ -87,15 +87,12 @@ void FWK::Graphics::DynamicRWStructuredBuffer::Release()
         return;
     }
 
-    auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-
-    const auto& l_renderer           = l_graphicsManager.GetREFRenderer   ();
-    const auto& l_directCommandQueue = l_renderer.GetREFDirectCommandQueue();
-
-    auto& l_resourceContext        = l_graphicsManager.GetMutableREFResourceContext       ();
-    auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
-
-    const auto& l_retiredFenceValue = l_directCommandQueue.FetchREFLastSignaledFenceValue();
+          auto& l_graphicsManager        = FWK::Graphics::GraphicsManager::GetInstance          ();
+    const auto& l_renderer               = l_graphicsManager.GetREFRenderer                     ();
+    const auto& l_directCommandQueue     = l_renderer.GetREFDirectCommandQueue                  ();
+          auto& l_resourceContext        = l_graphicsManager.GetMutableREFResourceContext       ();
+          auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
+    const auto& l_retiredFenceValue      = l_directCommandQueue.FetchREFLastSignaledFenceValue  ();
 
     // StaticStructuredBufferと同じく、
     // 現在のDirectCommandQueueのFenceValueを基準に遅延解放する

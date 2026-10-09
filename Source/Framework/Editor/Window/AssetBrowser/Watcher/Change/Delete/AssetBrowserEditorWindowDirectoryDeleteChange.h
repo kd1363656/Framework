@@ -25,7 +25,6 @@ namespace FWK::Editor
                                     AssetFilePathRegistry& a_assetFilePathRegistry,
                                     SceneManager&          a_sceneManager) const;
 
-
         void ApplyDirectoryDelete(const std::filesystem::path& a_deleteFilePath, AssetFilePathRegistry& a_assetFilePathRegistry, SceneManager& a_sceneManager) const;
     };
 }

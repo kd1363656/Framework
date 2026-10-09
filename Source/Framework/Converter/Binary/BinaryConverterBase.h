@@ -21,16 +21,12 @@ namespace FWK::Converter
 
     protected:
 
-        bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
-
         std::filesystem::path CreateAssetFilePath(const std::filesystem::path& a_filePath) const;
 
         bool CreateReadMemoryMappedFile (const std::filesystem::path& a_filePath);
         bool CreateWriteMemoryMappedFile(const std::filesystem::path& a_filePath, const std::uint64_t& a_fileSize);
 
         void DestroyMemoryMappedFile();
-
-        std::uint64_t GetVALMappedDataSize() const { return m_mappedDataSize; }
 
         template <typename Type>
         bool TryReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
@@ -111,6 +107,10 @@ namespace FWK::Converter
         std::uint64_t CalculateWStringBinaryFileSize(const std::wstring& a_wString) const;
         std::uint64_t CalculateStringBinaryFileSize (const std::string&  a_string)   const;
 
+        bool IsUpdatedSourceFile(const std::filesystem::path& a_sourceFilePath, const std::filesystem::path& a_binaryFilePath) const;
+
+        std::uint64_t GetVALMappedDataSize() const { return m_mappedDataSize; }
+
         static constexpr std::uint64_t k_initialMemoryReadOffset  = 0ULL;
         static constexpr std::uint64_t k_initialMemoryWriteOffset = 0ULL;
 
@@ -119,8 +119,6 @@ namespace FWK::Converter
         static constexpr std::uint64_t k_emptyAssetFileSize = 0ULL;
 
     private:
-
-        bool CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const;
 
         template <typename Type>
         void ReadBinaryData(const std::uint64_t& a_readDataCount, std::uint64_t& a_memoryReadOffset, Type* a_destinationData) const
@@ -144,6 +142,8 @@ namespace FWK::Converter
 
         void ReadWStringBinaryData(const std::uint64_t& a_wStringBinaryFileSize, std::wstring& a_wString, std::uint64_t& a_memoryReadOffset) const;
         void ReadStringBinaryData (const std::uint64_t& a_stringBinaryFileSize,  std::string&  a_string,  std::uint64_t& a_memoryReadOffset) const;
+
+        bool CanReadBinaryData(const std::uint64_t& a_memoryReadOffset, const std::uint64_t& a_readDataSize) const;
 
         static constexpr SIZE_T k_mapEntireFileSize   = 0ULL;
         static constexpr SIZE_T k_flushEntireViewSize = 0ULL;

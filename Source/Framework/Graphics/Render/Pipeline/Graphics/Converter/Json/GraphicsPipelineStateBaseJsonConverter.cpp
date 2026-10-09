@@ -1,6 +1,5 @@
 ﻿#include "GraphicsPipelineStateBaseJsonConverter.h"
 
-
 void FWK::Converter::GraphicsPipelineStateBaseJsonConverter::Deserialize(const nlohmann::json& a_rootJson, Graphics::GraphicsPipelineStateBase& a_graphicsPipelineStateBase) const
 {
     if (a_rootJson.is_null()) { return; }

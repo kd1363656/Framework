@@ -119,8 +119,8 @@ void FWK::Editor::EditorGameObjectSelectionState::SweepUnavailableGameObjects()
 
     // アンカーも同じ判定で確認する
     if (const auto& l_anchor = m_rangeSelectionAnchor.lock();
-        !l_anchor                     ||
-        !l_scene                      ||
+        !l_anchor ||
+        !l_scene ||
         l_anchor->GetVALIsDestroyed() ||
         l_scene->FindVALGameObject(l_anchor->GetREFSceneInstanceUUID()).lock() != l_anchor)
     {

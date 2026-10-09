@@ -50,8 +50,6 @@ namespace FWK
 
         const auto& GetREFMatrix() const { return m_matrix; }
 
-        const auto& GetREFGameObjectTransformComponent() const { return m_transform; }
-
         const auto& GetREFTransform() const { return m_transform; }
 
         auto& GetMutableREFMatrixUpdateMode() { return m_matrixUpdateMode; }

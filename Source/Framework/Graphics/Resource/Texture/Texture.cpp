@@ -61,10 +61,8 @@ bool FWK::Graphics::Texture::Load(const std::filesystem::path& a_filePath, const
     // 既に別のStorageIDを持っている場合は先に参照を外す
     SubtractReferenceCount();
 
-    auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-
-    const auto& l_device = l_graphicsManager.GetREFDevice();
-
+          auto& l_graphicsManager         = FWK::Graphics::GraphicsManager::GetInstance           ();
+    const auto& l_device                  = l_graphicsManager.GetREFDevice                        ();
           auto& l_resourceContext         = l_graphicsManager.GetMutableREFResourceContext        ();
     const auto& l_gpuMemoryAllocator      = l_resourceContext.GetREFGPUMemoryAllocator            ();
           auto& l_textureSystem           = l_resourceContext.GetMutableREFTextureSystem          ();
@@ -96,8 +94,7 @@ void FWK::Graphics::Texture::AddReferenceCount() const
 {
     if (m_storageID == Constant::k_invalidStorageID) { return; }
 
-    auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-
+    auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance   ();
     auto& l_resourceContext = l_graphicsManager.GetMutableREFResourceContext();
     auto& l_textureSystem   = l_resourceContext.GetMutableREFTextureSystem  ();
 
@@ -112,14 +109,12 @@ void FWK::Graphics::Texture::SubtractReferenceCount()
         return;
     }
 
-    auto& l_graphicsManager = FWK::Graphics::GraphicsManager::GetInstance();
-
-    const auto& l_renderer           = l_graphicsManager.GetREFRenderer   ();
-    const auto& l_directCommandQueue = l_renderer.GetREFDirectCommandQueue();
-
-    auto& l_resourceContext        = l_graphicsManager.GetMutableREFResourceContext       ();
-    auto& l_textureSystem          = l_resourceContext.GetMutableREFTextureSystem         ();
-    auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
+          auto& l_graphicsManager        = FWK::Graphics::GraphicsManager::GetInstance          ();
+    const auto& l_renderer               = l_graphicsManager.GetREFRenderer                     ();
+    const auto& l_directCommandQueue     = l_renderer.GetREFDirectCommandQueue                  ();
+          auto& l_resourceContext        = l_graphicsManager.GetMutableREFResourceContext       ();
+          auto& l_textureSystem          = l_resourceContext.GetMutableREFTextureSystem         ();
+          auto& l_resourceReleaseContext = l_resourceContext.GetMutableREFResourceReleaseContext();
 
     // 参照カウントを減らす
     FWK_ASSERT_RETURN_IF(!l_textureSystem.SubtractTextureReferenceCount(m_textureRecord, l_directCommandQueue, l_resourceReleaseContext), "テクスチャ参照数解放に失敗しました。");

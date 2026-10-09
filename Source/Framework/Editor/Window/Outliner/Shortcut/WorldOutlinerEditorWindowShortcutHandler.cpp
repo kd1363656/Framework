@@ -7,7 +7,7 @@ void FWK::Editor::WorldOutlinerEditorWindowShortcutHandler::Handle(WorldOutliner
 
     // Ctrl + Aでシーン内の全GameObjectを選択する
     // Sceneは選択対象に含めない
-    if (l_io.KeyCtrl   &&
+    if (l_io.KeyCtrl &&
         !l_io.KeyShift &&
         ImGui::IsKeyPressed(ImGuiKey_A))
     {

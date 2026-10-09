@@ -142,6 +142,11 @@ bool FWK::AssetFilePathRegistry::Erase(const std::filesystem::path& a_assetFileP
     return true;
 }
 
+bool FWK::AssetFilePathRegistry::HasAssetUUID(const boost::uuids::uuid& a_assetUUID) const
+{
+    return m_uuidToAssetFilePathDataMap.contains(a_assetUUID);
+}
+
 const boost::uuids::uuid* FWK::AssetFilePathRegistry::FindPTRAssetUUID(const std::filesystem::path& a_assetFilePath) const
 {
     if (a_assetFilePath.empty()) { return nullptr; }
@@ -161,9 +166,4 @@ const FWK::Struct::AssetFilePathData* FWK::AssetFilePathRegistry::FindPTRAssetFi
     if (l_uuidToAssetFilePathDataITR == m_uuidToAssetFilePathDataMap.end()) { return nullptr; }
 
     return &l_uuidToAssetFilePathDataITR->second;
-}
-
-bool FWK::AssetFilePathRegistry::ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const
-{
-    return m_uuidToAssetFilePathDataMap.contains(a_assetUUID);
 }

@@ -21,10 +21,10 @@ namespace FWK
 
         bool Erase(const std::filesystem::path& a_assetFilePath);
 
+        bool HasAssetUUID(const boost::uuids::uuid& a_assetUUID) const;
+
         const boost::uuids::uuid*        FindPTRAssetUUID        (const std::filesystem::path& a_assetFilePath) const;
         const Struct::AssetFilePathData* FindPTRAssetFilePathData(const boost::uuids::uuid&    a_uuid)          const;
-
-        bool ContainsAssetUUID(const boost::uuids::uuid& a_assetUUID) const;
 
         const auto& GetREFAssetFilePathToUUIDMap() const { return m_assetFilePathToUUIDMap; }
 

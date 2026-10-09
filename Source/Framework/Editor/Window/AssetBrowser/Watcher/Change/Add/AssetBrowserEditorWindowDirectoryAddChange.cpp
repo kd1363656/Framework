@@ -11,7 +11,6 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryAddChange::Apply(AssetFilePat
 
     const auto& l_filePath = GetREFFilePath();
 
-
     // 現在AssetFilePathRegistryで管理しているPrefab/SceneはJsonなので
     // Json以外のFile追加はこのChangeでは同期対象にしない
     if (l_filePath.empty() ||

@@ -30,7 +30,6 @@ namespace FWK::Utility
 
     private:
 
-
         bool IsValidStorageID(const TypeAlias::StorageID a_storageID) const;
 
         std::vector<bool> m_isAllocatedList = {};

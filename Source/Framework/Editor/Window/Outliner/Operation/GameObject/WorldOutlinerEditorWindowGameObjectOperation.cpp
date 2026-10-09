@@ -64,7 +64,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ReparentGameObje
 
     // 無効な対象、自分自身への親付けは行わない
     if (!l_targetGameObject ||
-        !l_moveGameObject   ||
+        !l_moveGameObject ||
         l_targetGameObject == l_moveGameObject)
     {
         return;
@@ -97,7 +97,7 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::MoveGameObjectSi
     const auto& l_moveGameObject   = a_moveGameObject.lock  ();
 
     if (!l_targetGameObject ||
-        !l_moveGameObject   ||
+        !l_moveGameObject ||
         l_targetGameObject == l_moveGameObject)
     {
         return;
@@ -312,8 +312,8 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
      // クリップボードにゲームオブジェクトのUUIDがコピーされていなければreturn
     if (a_clipboard.IsEmpty()) { return; }
 
-    const auto& l_uuidList      = a_clipboard.GetREFGameObjectUUIDList();
-    const auto& l_operationType = a_clipboard.GetVALOperationType     ();
+    const auto& l_uuidList      = a_clipboard.GetREFClipboardGameObjectUUIDList();
+    const auto& l_operationType = a_clipboard.GetVALOperationType              ();
 
     // PasteしたGameObjectを選択状態にするためのリスト
     std::vector<std::weak_ptr<GameObject>> l_pastedList = {};
@@ -388,6 +388,29 @@ void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PasteGameObjects
     l_undoRedoSystem.PushUndoCommand<CreateGameObjectCommand>(l_pastedList);
 }
 
+void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentGameObjectCommand(const std::weak_ptr<GameObject>& a_gameObject, const Scene& a_scene, const Struct::ReparentGameObjectState& a_beforeState) const
+{
+    const auto& l_gameObject = a_gameObject.lock();
+
+    if (!l_gameObject) { return; }
+
+    // 変更後の親と兄弟の並びを記録する
+    const auto& l_afterState = Utility::FetchVALReparentGameObjectState(l_gameObject, a_scene);
+
+    // 親も兄弟の並びも変わらなかった場合はコマンドをPushしない
+    if (a_beforeState.m_parentUUID      == l_afterState.m_parentUUID &&
+        a_beforeState.m_siblingUUIDList == l_afterState.m_siblingUUIDList)
+    {
+        return;
+    }
+
+    // EditorManager経由でUndoRedoSystemへコマンドをPushする
+    auto& l_editorManager  = EditorManager::GetInstance                 ();
+    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
+
+    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObject->GetREFSceneInstanceUUID(), a_beforeState, l_afterState);
+}
+
 FWK::Struct::DestroyedGameObjectRecord FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FetchVALDestroyedGameObjectRecord(const std::weak_ptr<GameObject>& a_gameObject) const
 {
     Struct::DestroyedGameObjectRecord l_record = {};
@@ -413,29 +436,6 @@ FWK::Struct::DestroyedGameObjectRecord FWK::Editor::WorldOutlinerEditorWindowGam
     }
 
     return l_record;
-}
-
-void FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::PushReparentGameObjectCommand(const std::weak_ptr<GameObject>& a_gameObject, const Scene& a_scene, const Struct::ReparentGameObjectState& a_beforeState) const
-{
-    const auto& l_gameObject = a_gameObject.lock();
-
-    if (!l_gameObject) { return; }
-
-    // 変更後の親と兄弟の並びを記録する
-    const auto& l_afterState = Utility::FetchVALReparentGameObjectState(l_gameObject, a_scene);
-
-    // 親も兄弟の並びも変わらなかった場合はコマンドをPushしない
-    if (a_beforeState.m_parentUUID      == l_afterState.m_parentUUID      &&
-        a_beforeState.m_siblingUUIDList == l_afterState.m_siblingUUIDList)
-    {
-        return;
-    }
-
-    // EditorManager経由でUndoRedoSystemへコマンドをPushする
-    auto& l_editorManager  = EditorManager::GetInstance                 ();
-    auto& l_undoRedoSystem = l_editorManager.GetMutableREFUndoRedoSystem();
-
-    l_undoRedoSystem.PushUndoCommand<ReparentGameObjectCommand>(l_gameObject->GetREFSceneInstanceUUID(), a_beforeState, l_afterState);
 }
 
 FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::ChildGameObjectDataList::iterator FWK::Editor::WorldOutlinerEditorWindowGameObjectOperation::FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const

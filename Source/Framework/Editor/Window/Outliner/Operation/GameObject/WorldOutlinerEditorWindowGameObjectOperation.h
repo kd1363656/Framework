@@ -29,12 +29,12 @@ namespace FWK::Editor
 
     private:
 
-        static constexpr std::size_t k_rootPasteParentCount = 1ULL;
+        void PushReparentGameObjectCommand(const std::weak_ptr<GameObject>& a_gameObject, const Scene& a_scene, const Struct::ReparentGameObjectState& a_beforeState) const;
 
         Struct::DestroyedGameObjectRecord FetchVALDestroyedGameObjectRecord(const std::weak_ptr<GameObject>& a_gameObject) const;
 
-        void PushReparentGameObjectCommand(const std::weak_ptr<GameObject>& a_gameObject, const Scene& a_scene, const Struct::ReparentGameObjectState& a_beforeState) const;
-
         ChildGameObjectDataList::iterator FindChildGameObjectITR(const std::weak_ptr<GameObject>& a_gameObject, ChildGameObjectDataList& a_childDataList) const;
+
+        static constexpr std::size_t k_rootPasteParentCount = 1ULL;
     };
 }
