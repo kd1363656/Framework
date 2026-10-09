@@ -4,10 +4,11 @@ namespace FWK::Struct
 {
     struct StaticModelVertex final
     {
-        TypeAlias::Math::Vector3 m_position = {};
-        TypeAlias::Math::Vector3 m_normal   = {};
-        TypeAlias::Math::Vector4 m_tangent  = {};
-        TypeAlias::Math::Vector2 m_uv       = {};
+        TypeAlias::Math::Vector3 m_position       = {};
+        TypeAlias::Math::Vector3 m_normal         = {};
+        TypeAlias::Math::Vector4 m_tangent        = {};
+        TypeAlias::Math::Vector2 m_uv             = {};
+        TypeAlias::Math::Vector3 m_smoothedNormal = {};
     };
 
     struct StaticModelMesh final
@@ -21,18 +22,18 @@ namespace FWK::Struct
         StaticModelMesh& operator=(const StaticModelMesh&)           = delete;
         StaticModelMesh& operator=(      StaticModelMesh&&) noexcept = default;
 
-        std::vector<StaticModelVertex> m_modelVertexList = {};
-        std::vector<std::uint32_t>     m_indexList       = {};
+        std::vector<StaticModelVertex> m_vertexList = {};
+        std::vector<std::uint32_t>     m_indexList  = {};
 
-        Struct::ModelMaterial m_modelMaterial = {};
+        Struct::ModelMaterial m_material = {};
 
         // MeshShaderで描画するためのMeshletData
         // FBX読み込み後に、meshoptimizerで作成し、.asset保存/読み込み対象にする
-        Struct::ModelMeshletData m_modelMeshletData = {};
+        Struct::ModelMeshletData m_meshletData = {};
 
         // MeshShader描画時にGPU側で参照するBufferResource群
         // .asset保存対象ではなく、実行時にModelDataから作成する
-        Struct::ModelMeshRuntimeDataBase m_modelMeshRuntimeData = {};
+        Struct::ModelMeshRuntimeDataBase m_meshRuntimeData = {};
     };
 
     struct StaticModelData final
@@ -46,6 +47,6 @@ namespace FWK::Struct
         StaticModelData& operator=(const StaticModelData&)           = delete;
         StaticModelData& operator=(      StaticModelData&&) noexcept = default;
 
-        std::vector<StaticModelMesh> m_modelMeshList = {};
+        std::vector<StaticModelMesh> m_meshList = {};
     };
 }

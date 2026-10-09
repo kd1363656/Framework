@@ -58,8 +58,8 @@ namespace FWK::Struct
         ModelMaterial& operator=(const ModelMaterial&)           = delete;
         ModelMaterial& operator=(      ModelMaterial&&) noexcept = default;
 
-        ModelMaterialAssetData   m_modelMaterialAssetData   = {};
-        ModelMaterialRuntimeData m_modelMaterialRuntimeData = {};
+        ModelMaterialAssetData   m_assetData   = {};
+        ModelMaterialRuntimeData m_runtimeData = {};
     };
 
     // Meshlet1個分の参照範囲情報

@@ -159,34 +159,34 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
                                                                                SkeletalAnimationVertexSkinningPerObjectDynamicConstantBufferUploader& a_constantBufferUploader,
                                                                                Struct::SkeletalAnimationPlayerFrameData&                              a_frameData)
 {
-    const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
+    const auto& l_meshList                = a_modelData.m_meshList;
           auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelMeshListが空のため、VertexSkinningの実行に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.empty(), "ModelMeshListが空のため、VertexSkinningの実行に失敗しました。", false);
 
     // Player作成時にはModelMesh一個につき、
     // SkinnedVertexBufferを一個作成している
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
 
     const auto& l_boneMatrixBuffer                   = a_frameData.m_boneMatrixBuffer;
     const auto& l_boneMatrixBufferSRVDescriptorIndex = l_boneMatrixBuffer.GetVALSRVDescriptorIndex();
 
     FWK_ASSERT_RETURN_VALUE_IF(l_boneMatrixBufferSRVDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "BoneMatrixBufferのSRVDescriptorIndexが無効です。", false);
 
-    for (auto l_modelMeshIndex = k_firstModelMeshIndex; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
+    for (auto l_modelMeshIndex = k_firstModelMeshIndex; l_modelMeshIndex < l_meshList.size(); ++l_modelMeshIndex)
     {
-        const auto& l_modelMesh            = l_modelMeshList[l_modelMeshIndex];
-        const auto& l_modelMeshRuntimeData = l_modelMesh.m_modelMeshRuntimeData;
-        const auto& l_modelVertexList      = l_modelMesh.m_modelVertexList;
+        const auto& l_modelMesh       = l_meshList[l_modelMeshIndex];
+        const auto& l_meshRuntimeData = l_modelMesh.m_meshRuntimeData;
+        const auto& l_vertexList      = l_modelMesh.m_vertexList;
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),                                            "ModelVertexListが空のため、Vertex Skinningを実行できません。", false);
-        FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.size() > std::numeric_limits<std::uint32_t>::max(), "ModelVertexListの要素数がuint32_tの最大値を超えています。",    false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),                                            "ModelVertexListが空のため、Vertex Skinningを実行できません。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.size() > std::numeric_limits<std::uint32_t>::max(), "ModelVertexListの要素数がuint32_tの最大値を超えています。",    false);
 
-        const auto& l_sourceVertexBuffer  = l_modelMeshRuntimeData.m_vertexBuffer;
-        const auto& l_bonePaletteBuffer   = l_modelMeshRuntimeData.m_bonePaletteBuffer;
+        const auto& l_sourceVertexBuffer  = l_meshRuntimeData.m_vertexBuffer;
+        const auto& l_bonePaletteBuffer   = l_meshRuntimeData.m_bonePaletteBuffer;
               auto& l_skinnedVertexBuffer = l_skinnedVertexBufferList[l_modelMeshIndex];
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_skinnedVertexBuffer.GetVALElementCount() != l_modelVertexList.size(), "SkinnedVertexBufferとModelVertexListの要素数が一致しません。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(l_skinnedVertexBuffer.GetVALElementCount() != l_vertexList.size(), "SkinnedVertexBufferとModelVertexListの要素数が一致しません。", false);
 
         const auto& l_sourceVertexBufferSRVDescriptorIndex  = l_sourceVertexBuffer.GetVALSRVDescriptorIndex ();
         const auto& l_bonePaletteBufferSRVDescriptorIndex   = l_bonePaletteBuffer.GetVALSRVDescriptorIndex  ();
@@ -218,7 +218,7 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchVertexSkinning(const R
 
         // size_tからuint32_tへの返還は、
         // 上で最大値を検査済みなので安全
-        l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount = static_cast<std::uint32_t>(l_modelVertexList.size());
+        l_cbSkeletalAnimationVertexSkinningPerObject.m_vertexCount = static_cast<std::uint32_t>(l_vertexList.size());
 
         const auto& l_gpuVirtualAddress = a_constantBufferUploader.Write(l_cbSkeletalAnimationVertexSkinningPerObject);
 
@@ -256,29 +256,29 @@ bool FWK::Graphics::SkeletalAnimationComputePass::DispatchMeshletBoundsUpdate(co
                                                                                     SkeletalAnimationMeshletBoundsUpdatePerObjectDynamicConstantBufferUploader& a_constantBufferUploader,
                                                                                     Struct::SkeletalAnimationPlayerFrameData&                                   a_frameData) const
 {
-    const auto& l_modelMeshList           = a_modelData.m_modelMeshList;
+    const auto& l_meshList                = a_modelData.m_meshList;
     const auto& l_skinnedVertexBufferList = a_frameData.m_skinnedVertexBufferList;
           auto& l_meshletBoundsBufferList = a_frameData.m_meshletBoundsBufferList;
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(),                                    "ModelMeshListが空のため、MeshletBoundsを更新できません。",       false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.size() != l_meshletBoundsBufferList.size(), "ModelMeshListとMeshletBoundsBufferListの要素数が一致しません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.empty(),                                    "ModelMeshListが空のため、MeshletBoundsを更新できません。",       false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.size() != l_skinnedVertexBufferList.size(), "ModelMeshListとSkinnedVertexBufferListの要素数が一致しません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_meshList.size() != l_meshletBoundsBufferList.size(), "ModelMeshListとMeshletBoundsBufferListの要素数が一致しません。", false);
 
-    for (auto l_modelMeshIndex = k_firstModelMeshIndex; l_modelMeshIndex < l_modelMeshList.size(); ++l_modelMeshIndex)
+    for (auto l_modelMeshIndex = k_firstModelMeshIndex; l_modelMeshIndex < l_meshList.size(); ++l_modelMeshIndex)
     {
-        const auto& l_modelMesh            = l_modelMeshList[l_modelMeshIndex];
-        const auto& l_modelMeshRuntimeData = l_modelMesh.m_modelMeshRuntimeData;
-        const auto& l_modelMeshletList     = l_modelMesh.m_modelMeshletData.m_meshletList;
-        const auto& l_skinnedVertexBuffer  = l_skinnedVertexBufferList[l_modelMeshIndex];
-              auto& l_meshletBoundsBuffer  = l_meshletBoundsBufferList[l_modelMeshIndex];
+        const auto& l_modelMesh           = l_meshList[l_modelMeshIndex];
+        const auto& l_meshRuntimeData     = l_modelMesh.m_meshRuntimeData;
+        const auto& l_modelMeshletList    = l_modelMesh.m_meshletData.m_meshletList;
+        const auto& l_skinnedVertexBuffer = l_skinnedVertexBufferList[l_modelMeshIndex];
+              auto& l_meshletBoundsBuffer = l_meshletBoundsBufferList[l_modelMeshIndex];
 
         FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshletList.empty(),                                                                           "ModelMeshletListが空のため、MeshletBoundsを更新できません。",                                    false);
         FWK_ASSERT_RETURN_VALUE_IF(l_skinnedVertexBuffer.GetVALCurrentResourceState() != D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, "SkinnedVertexBufferがMeshlet Bounds Compute Shaderから読み取れるResource Stateではありません。", false);
         FWK_ASSERT_RETURN_VALUE_IF(l_meshletBoundsBuffer.GetVALElementCount() != l_modelMeshletList.size(),                              "MeshletBoundsBufferとModelMeshletListの要素数が一致しません。",                                  false);
 
-        const auto& l_meshletBuffer                             = l_modelMeshRuntimeData.m_meshletBuffer;
-        const auto& l_uniqueVertexIndexBuffer                   = l_modelMeshRuntimeData.m_uniqueVertexIndexBuffer;
-        const auto& l_primitiveIndexBuffer                      = l_modelMeshRuntimeData.m_primitiveIndexBuffer;
+        const auto& l_meshletBuffer                             = l_meshRuntimeData.m_meshletBuffer;
+        const auto& l_uniqueVertexIndexBuffer                   = l_meshRuntimeData.m_uniqueVertexIndexBuffer;
+        const auto& l_primitiveIndexBuffer                      = l_meshRuntimeData.m_primitiveIndexBuffer;
         const auto& l_vertexBufferSRVDescriptorIndex            = l_skinnedVertexBuffer.GetVALSRVDescriptorIndex    ();
         const auto& l_meshletBufferSRVDescriptorIndex           = l_meshletBuffer.GetVALSRVDescriptorIndex          ();
         const auto& l_uniqueVertexIndexBufferSRVDescriptorIndex = l_uniqueVertexIndexBuffer.GetVALSRVDescriptorIndex();

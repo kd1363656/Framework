@@ -280,6 +280,8 @@
 #include "Graphics/Resource/Model/Static/Converter/Binary/StaticModelBinaryConverter.h"
 #include "Graphics/Resource/Model/Static/FBXLoader/StaticModelFBXLoader.h"
 #include "Graphics/Resource/Model/Mesh/ModelMeshOptimizer.h"
+#include "Definition/Constant/Graphics/ModelSmoothedNormalBuilderConstant.h"
+#include "Graphics/Resource/Model/Mesh/ModelSmoothedNormalBuilder.h"
 #include "Definition/Constant/Graphics/ModelMeshletBuilderConstant.h"
 #include "Graphics/Resource/Model/Meshlet/ModelMeshletBuilder.h"
 #include "Graphics/Resource/Model/Builder/ModelBatchUploadRecordBuilder.h"

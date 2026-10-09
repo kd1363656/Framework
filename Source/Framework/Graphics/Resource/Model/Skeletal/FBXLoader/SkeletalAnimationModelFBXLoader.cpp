@@ -6,7 +6,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::LoadSkeletalAnimationModelF
 
     // 以前読み込んだデータと今回のデータが混在しないように
     // FBXを読み込む前にAssetDataを空にする
-    l_modelData.m_modelMeshList.clear     ();
+    l_modelData.m_meshList.clear          ();
     l_modelData.m_boneList.clear          ();
     l_modelData.m_motionSequenceList.clear();
 
@@ -20,7 +20,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::LoadSkeletalAnimationModelF
     {
         DestroyFBXScene(l_fbxScene);
 
-        l_modelData.m_modelMeshList.clear     ();
+        l_modelData.m_meshList.clear          ();
         l_modelData.m_boneList.clear          ();
         l_modelData.m_motionSequenceList.clear();
 
@@ -38,7 +38,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
     FWK_ASSERT_RETURN_VALUE_IF(!a_fbxScene,                                                  "ufbx_sceneが無効のため、ModelDataの抽出に失敗しました。",            false);
     FWK_ASSERT_RETURN_VALUE_IF(a_fbxScene->nodes.count == Constant::k_emptyUFBXElementCount, "FBXシーン内にNodeが存在しないため、ModelDataの抽出に失敗しました。", false);
 
-    a_modelData.m_modelMeshList.clear     ();
+    a_modelData.m_meshList.clear          ();
     a_modelData.m_boneList.clear          ();
     a_modelData.m_motionSequenceList.clear();
 
@@ -60,21 +60,21 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelData(const ufbx
         // SkinDeformerを持たないMeshは対象外
         if (l_fbxMesh->skin_deformers.count == Constant::k_emptyUFBXElementCount) { continue; }
 
-        std::vector<Struct::SkeletalAnimationModelMesh> l_modelMeshList = {};
+        std::vector<Struct::SkeletalAnimationModelMesh> l_meshList = {};
 
-        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_boneNodeIndexMap, l_fbxNode, l_modelMeshList), "ufbx_nodeからModelMeshListの抽出に失敗しました。", false);
+        FWK_ASSERT_RETURN_VALUE_IF(!ExtractModelMeshList(l_boneNodeIndexMap, l_fbxNode, l_meshList), "ufbx_nodeからModelMeshListの抽出に失敗しました。", false);
 
-        for (auto& l_modelMesh : l_modelMeshList)
+        for (auto& l_modelMesh : l_meshList)
         {
-            if (l_modelMesh.m_modelVertexList.empty()) { continue; }
+            if (l_modelMesh.m_vertexList.empty())      { continue; }
             if (l_modelMesh.m_indexList.empty())       { continue; }
             if (l_modelMesh.m_bonePaletteList.empty()) { continue; }
 
-            a_modelData.m_modelMeshList.emplace_back(std::move(l_modelMesh));
+            a_modelData.m_meshList.emplace_back(std::move(l_modelMesh));
         }
     }
 
-    FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "有効なSkeletalAnimationModelMeshが存在しません。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_meshList.empty(), "有効なSkeletalAnimationModelMeshが存在しません。", false);
 
     // FBX内のAnimationStackをMotionSequenceへ変換する
     const bool l_isExtracted = m_motionExtractor.ExtractModelMotionSequenceList(l_boneNodeIndexMap, a_fbxScene, a_modelData.m_motionSequenceList);
@@ -116,10 +116,10 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
                                                                "MaterialなしModelMeshの抽出に失敗しました。",
                                                                false);
 
-        if (!l_modelMesh.m_modelVertexList.empty() &&
+        if (!l_modelMesh.m_vertexList.empty() &&
             !l_modelMesh.m_indexList.empty())
         {
-            l_modelMesh.m_modelMaterial = {};
+            l_modelMesh.m_material = {};
 
             a_modelMeshList.emplace_back(std::move(l_modelMesh));
         }
@@ -136,14 +136,14 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshList(const 
                                                                a_fbxNode,
                                                                l_modelMesh), "Material別ModelMeshの抽出に失敗しました。", false);
 
-        if (l_modelMesh.m_modelVertexList.empty()) { continue; }
-        if (l_modelMesh.m_indexList.empty())       { continue; }
+        if (l_modelMesh.m_vertexList.empty()) { continue; }
+        if (l_modelMesh.m_indexList.empty())  { continue; }
 
         const auto* l_fbxMaterial = l_fbxMesh->materials.data[l_materialIndex];
 
-        ExtractModelMaterial(l_fbxMaterial, l_modelMesh.m_modelMaterial.m_modelMaterialAssetData);
+        ExtractModelMaterial(l_fbxMaterial, l_modelMesh.m_material.m_assetData);
 
-        l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData = {};
+        l_modelMesh.m_material.m_runtimeData = {};
 
         a_modelMeshList.emplace_back(std::move(l_modelMesh));
     }
@@ -156,7 +156,7 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
                                                                                 const ufbx_node*                                           a_fbxNode,
                                                                                       Struct::SkeletalAnimationModelMesh&             a_modelMesh) const
 {
-    a_modelMesh.m_modelVertexList.clear();
+    a_modelMesh.m_vertexList.clear     ();
     a_modelMesh.m_bonePaletteList.clear();
     a_modelMesh.m_indexList.clear      ();
 
@@ -238,8 +238,8 @@ bool FWK::Graphics::SkeletalAnimationModelFBXLoader::ExtractModelMeshByMaterial(
                                                                           false);
 
                 // 現在は重複頂点を削除せずに三角形頂点をそのまま追加する
-                a_modelMesh.m_modelVertexList.emplace_back(l_modelVertex);
-                a_modelMesh.m_indexList.emplace_back      (static_cast<std::uint32_t>(a_modelMesh.m_indexList.size()));
+                a_modelMesh.m_vertexList.emplace_back(l_modelVertex);
+                a_modelMesh.m_indexList.emplace_back (static_cast<std::uint32_t>(a_modelMesh.m_indexList.size()));
             }
         }
     }

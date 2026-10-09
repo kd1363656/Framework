@@ -117,7 +117,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
 
     // 長さがZeroに近いDirectionは正規化できず、
     // LightView行列も作成できない
-    FWK_ASSERT_RETURN_VALUE_IF(l_lightDirection.LengthSquared() <= Constant::k_epsilon, "DirectionalLightのDirectionがZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_lightDirection.LengthSquared() <= Constant::k_minNormalLengthSquared, "DirectionalLightのDirectionがZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
 
     // LightCameraの配置方向として使用するため、
     // Directionの長さを正規化する
@@ -140,7 +140,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     // LightView空間で使用するRight方向を作成する
     auto l_lightRight = l_lightUp.Cross(l_lightDirection);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_lightRight.LengthSquared() <= Constant::k_epsilon, "DirectionalLightのRight方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_lightRight.LengthSquared() <= Constant::k_minNormalLengthSquared, "DirectionalLightのRight方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
 
     l_lightRight.Normalize();
 
@@ -148,7 +148,7 @@ bool FWK::Graphics::CascadeShadowMap::Update()
     // 実際にViewMatrixへ渡すUp方向を作り直す
     auto l_stableLightUp = l_lightDirection.Cross(l_lightRight);
 
-    FWK_ASSERT_RETURN_VALUE_IF(l_stableLightUp.LengthSquared() <= Constant::k_epsilon, "DirectionalLightのUp方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_stableLightUp.LengthSquared() <= Constant::k_minNormalLengthSquared, "DirectionalLightのUp方向がZeroに近いため、CascadeShadowMapの更新処理に失敗しました。", false);
 
     l_stableLightUp.Normalize();
 

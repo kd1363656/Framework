@@ -17,7 +17,7 @@ namespace FWK::Graphics
                                                     TypeAlias::CBVSRVUAVDescriptorPool&       a_cbvSRVUAVDescriptorPool,
                                                     Struct::ModelMeshRuntimeDataBase&         a_modelMeshRuntimeData) const
         {
-            const auto& l_modelMeshletData     = a_modelMesh.m_modelMeshletData;
+            const auto& l_meshletData     = a_modelMesh.m_meshletData;
 
             auto& l_vertexBuffer            = a_modelMeshRuntimeData.m_vertexBuffer;
             auto& l_meshletBuffer           = a_modelMeshRuntimeData.m_meshletBuffer;
@@ -26,7 +26,7 @@ namespace FWK::Graphics
             auto& l_meshletBoundsBuffer     = a_modelMeshRuntimeData.m_meshletBoundsBuffer;
 
             // 頂点バッファーストラクチャードバッファーの作成
-            FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_modelMesh.m_modelVertexList,
+            FWK_ASSERT_RETURN_VALUE_IF(!l_vertexBuffer.Create(a_modelMesh.m_vertexList,
                                                               a_device,
                                                               a_gpuMemoryAllocator,
                                                               a_bufferUploadCommandList,
@@ -35,7 +35,7 @@ namespace FWK::Graphics
                                                               false);
 
             // メッシュレットストラクチャードバッファーの作成
-            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBuffer.Create(l_modelMeshletData.m_meshletList,
+            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBuffer.Create(l_meshletData.m_meshletList,
                                                                a_device,
                                                                a_gpuMemoryAllocator,
                                                                a_bufferUploadCommandList,
@@ -44,7 +44,7 @@ namespace FWK::Graphics
                                                                false);
 
             // ユニーク頂点インデックスストラクチャードバッファーの作成
-            FWK_ASSERT_RETURN_VALUE_IF(!l_uniqueVertexIndexBuffer.Create(l_modelMeshletData.m_uniqueVertexIndexList,
+            FWK_ASSERT_RETURN_VALUE_IF(!l_uniqueVertexIndexBuffer.Create(l_meshletData.m_uniqueVertexIndexList,
                                                                          a_device,
                                                                          a_gpuMemoryAllocator,
                                                                          a_bufferUploadCommandList,
@@ -53,7 +53,7 @@ namespace FWK::Graphics
                                                                          false);
 
             // プリミティブインデックスバッファストラクチャードバッファーの作成
-            FWK_ASSERT_RETURN_VALUE_IF(!l_primitiveIndexBuffer.Create(l_modelMeshletData.m_primitiveIndexList,
+            FWK_ASSERT_RETURN_VALUE_IF(!l_primitiveIndexBuffer.Create(l_meshletData.m_primitiveIndexList,
                                                                       a_device,
                                                                       a_gpuMemoryAllocator,
                                                                       a_bufferUploadCommandList,
@@ -62,7 +62,7 @@ namespace FWK::Graphics
                                                                       false);
 
             // メッシュレットカリングストラクチャードバッファーの作成
-            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create(l_modelMeshletData.m_meshletBoundsList,
+            FWK_ASSERT_RETURN_VALUE_IF(!l_meshletBoundsBuffer.Create(l_meshletData.m_meshletBoundsList,
                                                                      a_device,
                                                                      a_gpuMemoryAllocator,
                                                                      a_bufferUploadCommandList,

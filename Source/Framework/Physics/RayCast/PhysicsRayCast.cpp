@@ -104,7 +104,7 @@ bool FWK::Physics::PhysicsRayCast::CreateJoltRay(const Struct::PhysicsRay& a_phy
     FWK_ASSERT_RETURN_VALUE_IF(l_rayLength <= std::numeric_limits<float>::epsilon(), "Rayの長さが0以下、または短すぎるため、Rayの作成に失敗しました。", false);
 
     // 方向ベクトルがほぼゼロの場合は正規化できないため拒否する
-    FWK_ASSERT_RETURN_VALUE_IF(l_worldDirection.LengthSquared() <= std::numeric_limits<float>::epsilon(), "Rayの方向ベクトルが短すぎるため、Rayの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(l_worldDirection.LengthSquared() <= Constant::k_minNormalLengthSquared, "Rayの方向ベクトルが短すぎるため、Rayの作成に失敗しました。", false);
 
     auto l_normalizedWorldDirection = l_worldDirection;
 

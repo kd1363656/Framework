@@ -1,6 +1,6 @@
 ﻿#include "ModelBinaryConverterBase.h"
 
-bool FWK::Converter::ModelBinaryConverterBase::CanLoadAsset(const std::filesystem::path& a_filePath) const
+bool FWK::Converter::ModelBinaryConverterBase::CanLoad(const std::filesystem::path& a_filePath) const
 {
         // 元となるFBXが存在しない場合は、.assetの正当性を判断できないので読み込まない
     if (!Utility::CanLoadFilePath(a_filePath, Constant::k_lowerFBXExtension)) { return false; }

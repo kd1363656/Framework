@@ -17,9 +17,11 @@
 //================================================
 #include <cstring>
 #include <cstdint>
+#include <cmath>
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <map>
 #include <vector>
 #include <array>
 #include <deque>

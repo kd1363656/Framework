@@ -37,7 +37,7 @@ FWK::Struct::StaticModelLoadResult FWK::Graphics::StaticModelSystem::LoadStaticM
 
     // .assetが存在していて、FBXより更新が古くなければ.assetを優先して読み込む
     // 失敗したらUFBXから読み込む
-    if (!m_binaryConverter.LoadAsset(a_filePath, *l_staticModelRecord))
+    if (!m_binaryConverter.Load(a_filePath, *l_staticModelRecord))
     {
         // FBXの読み込みに失敗した場合
         // 割り当て済みのStorageIDを返却してからreturnする
@@ -108,11 +108,15 @@ bool FWK::Graphics::StaticModelSystem::BuildStaticModelAssetData(const std::file
     // meshoptimizerを使用して頂点とインデックスをGPUで扱いやすい配置へ最適化
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshOptimizer.OptimizeModelRecord(a_staticModelRecord), "StaticModelMeshの最適化に失敗しました。", false);
 
+    // アウトライン用の平滑化法線を作る
+    // 最適化で重複した頂点をまとめた後に行うことで、計算する頂点の数を減らす
+    FWK_ASSERT_RETURN_VALUE_IF(!m_smoothedNormalBuilder.BuildModelRecordSmoothedNormal(a_staticModelRecord), "StaticModelMeshの平滑化法線の作成に失敗しました。", false);
+
     // MeshShaderで扱うため、最適化済みの頂点とインデックスからMeshletDataを作成
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_staticModelRecord), "StaticModelMeshletDataの作成に失敗しました。", false);
 
     // 読み込んだFBXモデルのデータを保存、次回以降はバイナリーファイルで読み込めるようにする
-    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_filePath, a_staticModelRecord), "StaticModelAssetの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.Save(a_filePath, a_staticModelRecord), "StaticModelAssetの保存に失敗しました。", false);
 
     return true;
 }

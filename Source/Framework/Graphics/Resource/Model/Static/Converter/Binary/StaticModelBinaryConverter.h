@@ -20,13 +20,13 @@ namespace FWK::Converter
          StaticModelBinaryConverter()          = default;
         ~StaticModelBinaryConverter() override = default;
 
-        bool LoadAsset(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
+        bool Load(const std::filesystem::path& a_filePath, Graphics::StaticModelRecord& a_staticModelRecord);
 
-        bool SaveAsset(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord);
+        bool Save(const std::filesystem::path& a_filePath, const Graphics::StaticModelRecord& a_staticModelRecord);
 
     private:
 
-        void FailLoadAsset(Struct::StaticModelData& a_modelData);
+        void FailLoad(Struct::StaticModelData& a_modelData);
 
         ModelBinaryHeader CreateModelBinaryHeader(const Struct::StaticModelData& a_modelData, const std::uint64_t& a_fileSize) const;
 
@@ -36,6 +36,6 @@ namespace FWK::Converter
         static constexpr std::uint16_t k_modelAssetTypeID = 0x5354U;
 
         // ※ 注意 : Assetとして保存する構造体が変化したらバージョンを上げる
-        static constexpr std::uint16_t k_modelAssetVersion = 1U;
+        static constexpr std::uint16_t k_modelAssetVersion = 2U;
     };
 }

@@ -46,8 +46,9 @@ namespace FWK::Converter
          SkeletalAnimationModelBinaryConverter()          = default;
         ~SkeletalAnimationModelBinaryConverter() override = default;
 
-        bool LoadAsset(const std::filesystem::path& a_filePath,       Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
-        bool SaveAsset(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
+        bool Load(const std::filesystem::path& a_filePath, Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
+
+        bool Save(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord);
 
         static constexpr std::uint64_t k_emptyBonePaletteCount     = 0ULL;
         static constexpr std::uint64_t k_emptyBoneCount            = 0ULL;
@@ -55,7 +56,7 @@ namespace FWK::Converter
 
     private:
 
-        void FailLoadAsset(Struct::SkeletalAnimationModelData& a_modelData);
+        void FailLoad(Struct::SkeletalAnimationModelData& a_modelData);
 
         ModelBinaryHeader CreateModelBinaryHeader(const Struct::SkeletalAnimationModelData& a_modelData, const std::uint64_t& a_fileSize) const;
 

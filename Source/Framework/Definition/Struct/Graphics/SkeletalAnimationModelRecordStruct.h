@@ -48,17 +48,17 @@ namespace FWK::Struct
         SkeletalAnimationModelMesh& operator=(const SkeletalAnimationModelMesh&)           = delete;
         SkeletalAnimationModelMesh& operator=(      SkeletalAnimationModelMesh&&) noexcept = default;
 
-        std::vector<SkeletalAnimationModelVertex> m_modelVertexList = {};
+        std::vector<SkeletalAnimationModelVertex> m_vertexList = {};
 
         std::vector<SkeletalAnimationModelBonePaletteElement> m_bonePaletteList = {};
 
         std::vector<std::uint32_t> m_indexList = {};
 
-        Struct::ModelMaterial m_modelMaterial = {};
+        Struct::ModelMaterial m_material = {};
 
-        Struct::ModelMeshletData m_modelMeshletData = {};
+        Struct::ModelMeshletData m_meshletData = {};
 
-        SkeletalAnimationModelMeshRuntimeData m_modelMeshRuntimeData = {};
+        SkeletalAnimationModelMeshRuntimeData m_meshRuntimeData = {};
     };
 
     struct SkeletalAnimationModelBone final
@@ -108,7 +108,7 @@ namespace FWK::Struct
         SkeletalAnimationModelData& operator=(const SkeletalAnimationModelData&)           = delete;
         SkeletalAnimationModelData& operator=(      SkeletalAnimationModelData&&) noexcept = default;
 
-        std::vector<SkeletalAnimationModelMesh> m_modelMeshList = {};
+        std::vector<SkeletalAnimationModelMesh> m_meshList = {};
 
         std::vector<SkeletalAnimationModelBone> m_boneList = {};
 

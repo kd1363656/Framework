@@ -2316,10 +2316,16 @@
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelMeshOptimizer.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Mesh\ModelSmoothedNormalBuilder.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Mesh</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Meshlet\ModelMeshletBuilder.h">
       <Filter>Source\Framework\Graphics\Resource\Model\Meshlet</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMeshletBuilderConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelSmoothedNormalBuilderConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialRuntimeTextureBuilder.h">

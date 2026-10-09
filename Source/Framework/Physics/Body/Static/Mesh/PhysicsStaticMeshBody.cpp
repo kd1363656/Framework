@@ -96,17 +96,17 @@ bool FWK::Physics::PhysicsStaticMeshBody::ApplyWorldTransform(TypeAlias::Math::M
 
 JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const Struct::StaticModelData& a_modelData) const
 {
-    FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_modelMeshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
+    FWK_ASSERT_RETURN_VALUE_IF(a_modelData.m_meshList.empty(), "StaticModelDataのModelMeshリストが空のため、MeshShapeの作成に失敗しました。", {});
 
     std::size_t l_totalVertexCount = 0ULL;
     std::size_t l_totalIndexCount  = 0ULL;
 
     // Material単位などで分割されている複数Meshを、
     // 1つのJoltMeshShapeへまとめる
-    for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
+    for (const auto& l_modelMesh : a_modelData.m_meshList)
     {
-        l_totalVertexCount += l_modelMesh.m_modelVertexList.size();
-        l_totalIndexCount  += l_modelMesh.m_indexList.size      ();
+        l_totalVertexCount += l_modelMesh.m_vertexList.size();
+        l_totalIndexCount  += l_modelMesh.m_indexList.size ();
     }
 
     FWK_ASSERT_RETURN_VALUE_IF(l_totalVertexCount == k_invalidTotalVertexCount,              "StaticModelDataの頂点数が0のため、MeshShapeの作成に失敗しました。",                           {});
@@ -119,18 +119,18 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
     l_triangleVertexList.reserve (l_totalVertexCount);
     l_indexedTriangleList.reserve(l_totalIndexCount / Constant::k_triangleVertexCount);
 
-    for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
+    for (const auto& l_modelMesh : a_modelData.m_meshList)
     {
-        const auto& l_modelVertexList = l_modelMesh.m_modelVertexList;
-        const auto& l_modelIndexList  = l_modelMesh.m_indexList;
+        const auto& l_vertexList     = l_modelMesh.m_vertexList;
+        const auto& l_modelIndexList = l_modelMesh.m_indexList;
 
-        FWK_ASSERT_RETURN_VALUE_IF(l_modelVertexList.empty(),                                                              "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
+        FWK_ASSERT_RETURN_VALUE_IF(l_vertexList.empty(),                                                              "StaticModelMeshの頂点リストが空のため、MeshShapeの作成に失敗しました。",         {});
         FWK_ASSERT_RETURN_VALUE_IF(l_modelIndexList.empty(),                                                               "StaticModelMeshのIndexリストが空のため、MeshShapeの作成に失敗しました。",        {});
         FWK_ASSERT_RETURN_VALUE_IF((l_modelIndexList.size() % Constant::k_triangleVertexCount) != Constant::k_noRemainder, "StaticModelMeshのIndex数が3の倍数ではないため、MeshShapeの作成に失敗しました。", {});
 
         const auto& l_vertexOffset = static_cast<JPH::uint32>(l_triangleVertexList.size());
 
-        for (const auto& l_modelVertex : l_modelVertexList)
+        for (const auto& l_modelVertex : l_vertexList)
         {
             const auto& l_position = l_modelVertex.m_position;
 
@@ -145,26 +145,31 @@ JPH::RefConst<JPH::Shape> FWK::Physics::PhysicsStaticMeshBody::CreateShape(const
                   auto  l_localIndexOne  = l_modelIndexList[l_indexOffset + k_triangleIndexOneOffset];
                   auto  l_localIndexTwo  = l_modelIndexList[l_indexOffset + k_triangleIndexTwoOffset];
 
-            const bool l_isIndexInvalid = l_localIndexZero >= l_modelVertexList.size() ||
-                                          l_localIndexOne  >= l_modelVertexList.size() ||
-                                          l_localIndexTwo  >= l_modelVertexList.size();
+            const bool l_isIndexInvalid = l_localIndexZero >= l_vertexList.size() ||
+                                          l_localIndexOne  >= l_vertexList.size() ||
+                                          l_localIndexTwo  >= l_vertexList.size();
 
             FWK_ASSERT_RETURN_VALUE_IF(l_isIndexInvalid, "StaticModelMeshに頂点数を超えるIndexが存在するため、MeshShapeの作成に失敗しました。", {});
 
-            const auto& l_vertexZero = l_modelVertexList[l_localIndexZero];
-            const auto& l_vertexOne  = l_modelVertexList[l_localIndexOne];
-            const auto& l_vertexTwo  = l_modelVertexList[l_localIndexTwo];
+            const auto& l_vertexZero = l_vertexList[l_localIndexZero];
+            const auto& l_vertexOne  = l_vertexList[l_localIndexOne];
+            const auto& l_vertexTwo  = l_vertexList[l_localIndexTwo];
 
             // JoltのMeshShapeは反時計回りを表面として扱う
             // モデル法線と幾何法線が逆ならIndex順を反転する
-            const auto& l_faceNormal    = (l_vertexOne.m_position - l_vertexZero.m_position).Cross(l_vertexTwo.m_position - l_vertexZero.m_position);
-            const auto& l_averageNormal = (l_vertexZero.m_normal  + l_vertexOne.m_normal + l_vertexTwo.m_normal) / Constant::k_triangleVertexCount;
+            const auto& l_firstEdge                = l_vertexOne.m_position - l_vertexZero.m_position;
+            const auto& l_secondEdge               = l_vertexTwo.m_position - l_vertexZero.m_position;
+            const auto& l_faceNormal               = l_firstEdge.Cross(l_secondEdge);
+            const auto& l_averageNormal            = (l_vertexZero.m_normal + l_vertexOne.m_normal + l_vertexTwo.m_normal) / Constant::k_triangleVertexCount;
+            const float l_edgeLengthSquaredProduct = l_firstEdge.LengthSquared() * l_secondEdge.LengthSquared();
 
             // 現在のIndex順から求めた面法線と、
             // モデル頂点が持つ法線の方向が逆の場合は、
             // Index順を反転して三角形の表裏を合わせる
-            if (l_faceNormal.LengthSquared()      > std::numeric_limits<float>::epsilon() &&
-                l_averageNormal.LengthSquared()   > std::numeric_limits<float>::epsilon() &&
+            // 面法線(外積)の長さの2乗は三角形が小さいほど小さくなるため、
+            // 2辺の長さの2乗の積を掛けた値と比べて、三角形の大きさに左右されずに「一直線でないか」を判定する
+            if (l_faceNormal.LengthSquared()      > l_edgeLengthSquaredProduct * Constant::k_minNormalLengthSquared &&
+                l_averageNormal.LengthSquared()   > Constant::k_minNormalLengthSquared &&
                 l_faceNormal.Dot(l_averageNormal) < k_oppositeNormalDotThreshold)
             {
                 std::swap(l_localIndexOne, l_localIndexTwo);

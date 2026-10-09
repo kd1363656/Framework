@@ -63,6 +63,7 @@ namespace FWK::Graphics
         StaticModelFBXLoader                                  m_loader                        = {};
         ModelMaterialRuntimeTextureBuilder<StaticModelRecord> m_materialRuntimeTextureBuilder = {};
         ModelMeshOptimizer<StaticModelRecord>                 m_meshOptimizer                 = {};
+        ModelSmoothedNormalBuilder<StaticModelRecord>         m_smoothedNormalBuilder         = {};
         ModelMeshletBuilder<StaticModelRecord>                m_meshletBuilder                = {};
         StaticModelBatchUploadRecordBuilder                   m_batchUploadRecordBuilder      = {};
 

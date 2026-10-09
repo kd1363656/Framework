@@ -14,9 +14,9 @@ namespace FWK::Graphics
         {
             auto& l_modelData = a_modelRecord.GetMutableREFModelData();
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_modelData.m_modelMeshList.empty(), "ModelDataのMeshリストが空のため、ModelMeshの最適化に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_modelData.m_meshList.empty(), "ModelDataのMeshリストが空のため、ModelMeshの最適化に失敗しました。", false);
 
-            for (auto& l_modelMesh : l_modelData.m_modelMeshList)
+            for (auto& l_modelMesh : l_modelData.m_meshList)
             {
                 // ModelDataはMaterial単位などで複数のModelMeshを持つ。
                 // meshoptimizerはMesh単位のVertexList/IndexListに対して適用するため、
@@ -31,14 +31,14 @@ namespace FWK::Graphics
 
         bool OptimizeModelMesh(typename ModelRecordType::ModelMesh& a_modelMesh) const
         {
-            FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_modelVertexList.empty(), "ModelMeshの頂点リストが空のため、ModelMeshの最適化に失敗しました。",         false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_vertexList.empty(), "ModelMeshの頂点リストが空のため、ModelMeshの最適化に失敗しました。",         false);
             FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.empty(),       "ModelMeshのインデックスリストが空のため、ModelMeshの最適化に失敗しました。", false);
 
             std::vector<std::uint32_t> l_vertexRemapList = {};
 
             // Remap表は「古い頂点番号 -> 新しい頂点番号」の対応表。
             // そのため、Index数ではなく、元の頂点数と同じ要素数を確保する。
-            l_vertexRemapList.resize(a_modelMesh.m_modelVertexList.size());
+            l_vertexRemapList.resize(a_modelMesh.m_vertexList.size());
 
             // ModelRecordTypeに応じた頂点一つ分のバイトサイズを取得する
             const auto& l_modelVertexSize = sizeof(typename ModelRecordType::ModelVertex);
@@ -53,8 +53,8 @@ namespace FWK::Graphics
             const auto& l_optimizedVertexCount = meshopt_generateVertexRemap(l_vertexRemapList.data(),
                                                                              a_modelMesh.m_indexList.data(),
                                                                              a_modelMesh.m_indexList.size(),
-                                                                             a_modelMesh.m_modelVertexList.data(),
-                                                                             a_modelMesh.m_modelVertexList.size(),
+                                                                             a_modelMesh.m_vertexList.data(),
+                                                                             a_modelMesh.m_vertexList.size(),
                                                                              l_modelVertexSize);
 
             FWK_ASSERT_RETURN_VALUE_IF(l_optimizedVertexCount == k_invalidOptimizedVertexCount, "meshopt_generateVertexRemapによる頂点リマップ作成に失敗しました。", false);
@@ -84,8 +84,8 @@ namespace FWK::Graphics
             //                           頂点一つ分のバイトサイズ、
             //                           meshopt_generateVertexRemapで作成した対応表);
             meshopt_remapVertexBuffer(l_optimizedModelVertexList.data(),
-                                      a_modelMesh.m_modelVertexList.data(),
-                                      a_modelMesh.m_modelVertexList.size(),
+                                      a_modelMesh.m_vertexList.data(),
+                                      a_modelMesh.m_vertexList.size(),
                                       l_modelVertexSize,
                                       l_vertexRemapList.data());
 
@@ -114,8 +114,8 @@ namespace FWK::Graphics
                                         l_modelVertexSize);
 
             // 最適化後のインデックス、頂点のリストを格納
-            a_modelMesh.m_modelVertexList = std::move(l_optimizedModelVertexList);
-            a_modelMesh.m_indexList       = std::move(l_optimizedIndexList);
+            a_modelMesh.m_vertexList = std::move(l_optimizedModelVertexList);
+            a_modelMesh.m_indexList  = std::move(l_optimizedIndexList);
 
             return true;
         }

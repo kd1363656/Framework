@@ -13,34 +13,34 @@ namespace FWK::Graphics
         void BuildMaterialRuntimeTextures(const std::filesystem::path& a_filePath, ModelRecordType& a_modelRecord) const
         {
             // ランタイムパラメータを作成していく
-            for (auto& l_modelMesh : a_modelRecord.GetMutableREFModelData().m_modelMeshList)
+            for (auto& l_modelMesh : a_modelRecord.GetMutableREFModelData().m_meshList)
             {
-                const auto& l_modelMaterialAssetData   = l_modelMesh.m_modelMaterial.m_modelMaterialAssetData;
-                      auto& l_modelMaterialRuntimeData = l_modelMesh.m_modelMaterial.m_modelMaterialRuntimeData;
+                const auto& l_materialAssetData   = l_modelMesh.m_material.m_assetData;
+                      auto& l_materialRuntimeData = l_modelMesh.m_material.m_runtimeData;
 
                 // ベースカラーテクスチャの読み込み
-                l_modelMaterialRuntimeData.m_baseColorTexture = CreateSingleMaterialTexture(a_filePath,
-                                                                                            l_modelMaterialAssetData.m_baseColorTextureFilePath,
-                                                                                            Enum::TextureLoadColorSpace::SRGB,
-                                                                                            Enum::DefaultTextureType::BaseColor);
+                l_materialRuntimeData.m_baseColorTexture = CreateSingleMaterialTexture(a_filePath,
+                                                                                       l_materialAssetData.m_baseColorTextureFilePath,
+                                                                                       Enum::TextureLoadColorSpace::SRGB,
+                                                                                       Enum::DefaultTextureType::BaseColor);
 
                 // ノーマルテクスチャの読み込み
-                l_modelMaterialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath,
-                                                                                         l_modelMaterialAssetData.m_normalTextureFilePath,
-                                                                                         Enum::TextureLoadColorSpace::Linear,
-                                                                                         Enum::DefaultTextureType::Normal);
+                l_materialRuntimeData.m_normalTexture = CreateSingleMaterialTexture(a_filePath,
+                                                                                    l_materialAssetData.m_normalTextureFilePath,
+                                                                                    Enum::TextureLoadColorSpace::Linear,
+                                                                                    Enum::DefaultTextureType::Normal);
 
                 // メタリックテクスチャの読み込み
-                l_modelMaterialRuntimeData.m_metallicTexture = CreateSingleMaterialTexture(a_filePath,
-                                                                                           l_modelMaterialAssetData.m_metallicTextureFilePath,
-                                                                                           Enum::TextureLoadColorSpace::Linear,
-                                                                                           Enum::DefaultTextureType::Metallic);
+                l_materialRuntimeData.m_metallicTexture = CreateSingleMaterialTexture(a_filePath,
+                                                                                      l_materialAssetData.m_metallicTextureFilePath,
+                                                                                      Enum::TextureLoadColorSpace::Linear,
+                                                                                      Enum::DefaultTextureType::Metallic);
 
                 // ラフネステクスチャの読み込み
-                l_modelMaterialRuntimeData.m_roughnessTexture = CreateSingleMaterialTexture(a_filePath,
-                                                                                            l_modelMaterialAssetData.m_roughnessTextureFilePath,
-                                                                                            Enum::TextureLoadColorSpace::Linear,
-                                                                                            Enum::DefaultTextureType::Roughness);
+                l_materialRuntimeData.m_roughnessTexture = CreateSingleMaterialTexture(a_filePath,
+                                                                                       l_materialAssetData.m_roughnessTextureFilePath,
+                                                                                       Enum::TextureLoadColorSpace::Linear,
+                                                                                       Enum::DefaultTextureType::Roughness);
             }
         }
 

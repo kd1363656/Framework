@@ -12,11 +12,11 @@ namespace FWK::Graphics
 
         bool BuildModelRecordMeshletData(ModelRecordType& a_modelRecord) const
         {
-            auto& l_modelMeshList = a_modelRecord.GetMutableREFModelData().m_modelMeshList;
+            auto& l_meshList = a_modelRecord.GetMutableREFModelData().m_meshList;
 
-            FWK_ASSERT_RETURN_VALUE_IF(l_modelMeshList.empty(), "ModelDataのMeshリストが空のため、ModelMeshletDataの作成に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(l_meshList.empty(), "ModelDataのMeshリストが空のため、ModelMeshletDataの作成に失敗しました。", false);
 
-            for (auto& l_modelMesh : l_modelMeshList)
+            for (auto& l_modelMesh : l_meshList)
             {
                 // StaticModelRecord内の全StaticModelMeshに対して、
                 // MeshShader用のStaticModelMeshletDataを作成する
@@ -31,7 +31,7 @@ namespace FWK::Graphics
         bool BuildModelMeshletData(typename ModelRecordType::ModelMesh& a_modelMesh) const
         {
             // 頂点数とインデックス数のチェック
-            FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_modelVertexList.size() == Constant::k_emptyModelVertexCount, "ModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",         false);
+            FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_vertexList.size() == Constant::k_emptyModelVertexCount, "ModelMeshの頂点数が0のため、MeshletData作成に失敗しました。",         false);
             FWK_ASSERT_RETURN_VALUE_IF(a_modelMesh.m_indexList.size()       == Constant::k_emptyModelIndexCount,  "ModelMeshのインデックス数が0のため、MeshletData作成に失敗しました。", false);
 
             // インデックスリストの総数を3で割った時に余りが0でないと、三角形を構成するインデックスリストとして不適切
@@ -39,12 +39,12 @@ namespace FWK::Graphics
 
             // メッシュレットデータの初期化
             // 前回読み込んでいたモデルのメッシュレット情報が残るのを防ぐため
-            auto& l_modelMeshletData = a_modelMesh.m_modelMeshletData;
+            auto& l_meshletData = a_modelMesh.m_meshletData;
 
-            l_modelMeshletData.m_meshletList.clear          ();
-            l_modelMeshletData.m_uniqueVertexIndexList.clear();
-            l_modelMeshletData.m_primitiveIndexList.clear   ();
-            l_modelMeshletData.m_meshletBoundsList.clear    ();
+            l_meshletData.m_meshletList.clear          ();
+            l_meshletData.m_uniqueVertexIndexList.clear();
+            l_meshletData.m_primitiveIndexList.clear   ();
+            l_meshletData.m_meshletBoundsList.clear    ();
 
             // Meshlet作成に必要になる最大Meshlet数を取得する
             // meshopt_buildMeshletsBound(インデックス数、
@@ -63,7 +63,7 @@ namespace FWK::Graphics
             // 一つのMeshletが参照できる頂点数は最大64個、
             // そのため、最大Meshlet数 * 1Meshlet辺りの最大頂点数分の
             // 「元モデル頂点インデックス」を格納できるように確保する
-            l_modelMeshletData.m_uniqueVertexIndexList.resize(l_maxMeshletCount * Constant::k_maxMeshletVertexCount);
+            l_meshletData.m_uniqueVertexIndexList.resize(l_maxMeshletCount * Constant::k_maxMeshletVertexCount);
 
             // 1つのMeshletが持てる三角形数は最大128個。
             // 三角形1つにつき頂点インデックスが3個必要なので、
@@ -73,7 +73,7 @@ namespace FWK::Graphics
             // meshoptimizerは頂点座標をfloat*とstrideで受け取る
             // reinterpret_castでModelVertex全体をfloat*に見せるより、
             // 先頭頂点のm_position.xを直接渡す方が安全
-            const auto* l_vertexPositionData = &a_modelMesh.m_modelVertexList.front().m_position.x;
+            const auto* l_vertexPositionData = &a_modelMesh.m_vertexList.front().m_position.x;
 
             // 頂点一つ辺りのサイズ
             const auto& l_modelVertexSize = sizeof(typename ModelRecordType::ModelVertex);
@@ -90,12 +90,12 @@ namespace FWK::Graphics
             //                       Meshlet内の最大三角形数、
             //                       ConeCulling用の重み);
             const auto& l_meshletCount = meshopt_buildMeshlets(l_meshoptMeshletList.data(),
-                                                               l_modelMeshletData.m_uniqueVertexIndexList.data(),
+                                                               l_meshletData.m_uniqueVertexIndexList.data(),
                                                                l_meshoptPrimitiveIndexList.data(),
                                                                a_modelMesh.m_indexList.data(),
                                                                a_modelMesh.m_indexList.size(),
                                                                l_vertexPositionData,
-                                                               a_modelMesh.m_modelVertexList.size(),
+                                                               a_modelMesh.m_vertexList.size(),
                                                                l_modelVertexSize,
                                                                Constant::k_maxMeshletVertexCount,
                                                                Constant::k_maxMeshletPrimitiveCount,
@@ -109,7 +109,7 @@ namespace FWK::Graphics
             const auto& l_lastMeshlet = l_meshoptMeshletList.back();
 
             // 頂点インデックスリストに必要な分のみ要素を確保(最後のメッシュレットのオフセットと頂点数を足した数が必要なサイズ)
-            l_modelMeshletData.m_uniqueVertexIndexList.resize(l_lastMeshlet.vertex_offset + l_lastMeshlet.vertex_count);
+            l_meshletData.m_uniqueVertexIndexList.resize(l_lastMeshlet.vertex_offset + l_lastMeshlet.vertex_count);
 
             const auto& l_lastMeshletPrimitiveIndexCount = l_lastMeshlet.triangle_count * Constant::k_triangleVertexCount;
 
@@ -123,18 +123,18 @@ namespace FWK::Graphics
             // meshoptimizerが出力したuint8_tのPrimitiveIndexListを、
             // 4個ずつuint32_tへPackして保存する。
             // これによりGPUへ送るPrimitiveIndexBufferのサイズを約1/4にできる
-            FWK_ASSERT_RETURN_VALUE_IF(!PackPrimitiveIndexList(l_meshoptPrimitiveIndexList, l_usedPrimitiveIndexCount, l_modelMeshletData.m_primitiveIndexList), "PrimitiveIndexListのPack化に失敗しました。", false);
+            FWK_ASSERT_RETURN_VALUE_IF(!PackPrimitiveIndexList(l_meshoptPrimitiveIndexList, l_usedPrimitiveIndexCount, l_meshletData.m_primitiveIndexList), "PrimitiveIndexListのPack化に失敗しました。", false);
 
             // 最後にメッシュレット数とメッシュレットカリング用リストのリサイズを行い、オーバーヘッドが出ないようにする
-            l_modelMeshletData.m_meshletList.resize      (l_meshletCount);
-            l_modelMeshletData.m_meshletBoundsList.resize(l_meshletCount);
+            l_meshletData.m_meshletList.resize      (l_meshletCount);
+            l_meshletData.m_meshletBoundsList.resize(l_meshletCount);
 
             // メッシュレットの頂点情報、インデックス情報取得用パラメータやカリング用パラメータを格納
             for (std::size_t l_meshletIndex = 0ULL; l_meshletIndex < l_meshletCount; ++l_meshletIndex)
             {
                 const auto& l_meshoptMeshlet = l_meshoptMeshletList[l_meshletIndex];
 
-                auto& l_modelMeshlet = l_modelMeshletData.m_meshletList[l_meshletIndex];
+                auto& l_modelMeshlet = l_meshletData.m_meshletList[l_meshletIndex];
 
                 // 頂点情報を格納
                 l_modelMeshlet.m_vertexOffset = l_meshoptMeshlet.vertex_offset;
@@ -156,15 +156,15 @@ namespace FWK::Graphics
                 //                              入力頂点座標配列、
                 //                              入力頂点数、
                 //                              入力頂点1個分のbyteサイズ);
-                const auto& l_meshoptBounds = meshopt_computeMeshletBounds(l_modelMeshletData.m_uniqueVertexIndexList.data() + l_meshoptMeshlet.vertex_offset,
+                const auto& l_meshoptBounds = meshopt_computeMeshletBounds(l_meshletData.m_uniqueVertexIndexList.data() + l_meshoptMeshlet.vertex_offset,
                                                                            l_meshoptPrimitiveIndexList.data()                + l_meshoptMeshlet.triangle_offset,
                                                                            l_meshoptMeshlet.triangle_count,
                                                                            l_vertexPositionData,
-                                                                           a_modelMesh.m_modelVertexList.size(),
+                                                                           a_modelMesh.m_vertexList.size(),
                                                                            l_modelVertexSize);
 
                 // メッシュレットカリング用情報を格納
-                auto& l_modelMeshletBounds = l_modelMeshletData.m_meshletBoundsList[l_meshletIndex];
+                auto& l_modelMeshletBounds = l_meshletData.m_meshletBoundsList[l_meshletIndex];
 
                 // Meshletを囲むBoundingSphereの中心座標。
                 // 個の中心座標と半径を使うことで、Meshlet単位でFrustumCullingを行える

@@ -106,6 +106,11 @@
          Utility::CollectDescendantGameObjectList(CreateGameObjectCommand と Operation から使います)
      ・1つのクラスの中でしか使わない処理は、そのクラスの private の関数として書きます。
          WorldOutlinerEditorWindowGameObjectOperation::FetchVALDestroyedGameObjectRecord
+     ・新しく Utility のヘッダーを作るときは、その処理を最初に使ったクラスの名前に Utility を付けたファイル名にします。
+       置き場所は、そのクラスがある最上位のフォルダ名を <分類> にします。
+         AssetBrowserEditorWindowAssetCreator が最初に使った処理 → Utility/Editor/AssetBrowserEditorWindowAssetCreatorUtility.h
+       2つ目のクラスから使う必要が出たときに、private の関数をこのヘッダーへ移します。
+       (それまでに作られた、動作の名前のヘッダー(CanLoadFileUtility / JsonUtility など)は、そのままにします)
      ・複数のクラスが同じ「持たせる処理」(キャッシュなど、状態を持つもの)を使う場合は、
        Utility/<分類>/<動作>/ に XxxHelper クラスとして書き、使う側のクラスのメンバに持たせます(namespace FWK::Utility)。
        inline 関数ではなく、状態を持つため、クラスにします。
@@ -218,6 +223,10 @@
          m_prefabMap.find(...)        → l_prefabITR
          m_folderOpenStateMap.find()  → l_folderOpenStateITR
        範囲を順にたどるイテレータは l_cursorITR にします(for (auto l_cursorITR = l_startITR; ...))。
+     ・クラス・構造体のメンバの名前に、持ち主の型の名前を繰り返して付けません。
+         NG : StaticModelData::m_modelMeshList / StaticModelMesh::m_modelVertexList / m_modelMaterial
+         OK : StaticModelData::m_meshList      / StaticModelMesh::m_vertexList      / m_material
+       ただし、外さないと何を指しているか分からなくなる場合は付けて構いません。
      ・名前の綴りを間違えないようにします。英単語は略さずに書き、略語は 6-6 の一覧のものだけを使います。
          Pos → Position(l_cursorPositionY)/ Settingss・Removeal・Movig などの綴りの誤りは書きません
      ・役割を持つクラスは「持ち主の名前 + 役割」をつなげた名前にします。
@@ -617,6 +626,14 @@
                auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
          const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
      ・FWK_ASSERT が続くときは、メッセージの開始位置も揃えます。
+     ・続けて並ぶ定数や代入の右辺に負の数が混ざる場合は、正の数の前に半角スペースを1つ入れて、符号の位置を揃えます。
+       負の数がないまとまりでは、スペースを入れません。小数点の位置は揃えません。
+         static constexpr float k_positionQuantizeScale  =  100000.0F;
+         static constexpr float k_minNormalLengthSquared =  0.00000001F;
+         static constexpr float k_flipThresholdDot       =  0.0F;
+         static constexpr float k_minCosine              = -1.0F;
+         static constexpr float k_maxCosine              =  1.0F;
+       { } の初期化子の要素を縦や横に並べるときも同じです: TypeAlias::Math::Vector3{  1.0F, -1.0F, 0.0F }
      ・{ } の初期化子は、要素が4つ以上なら縦に並べ、3つ以下なら1行に書きます(色・座標・大きさなど、すべて同じです)。
          inline constexpr ImVec4 k_imguiAccentColor = { 0.20F,
                                                         0.50F,
@@ -675,7 +692,10 @@
        { } の中は、3つ以下なら1行、4つ以上なら縦に並べます(9-8 と同じです)。
        { } は小数から整数への変換(縮小変換)をコンパイルエラーにしてくれるため、値の入れ間違いに気づけます。
        次のものは ( ) のままにします。
-         ・std::vector / std::string など: { } だと「要素の並び」と解釈され、意味が変わります(std::vector<int>(5) と std::vector<int>{ 5 } は別物です)。
+         ・std::vector / std::string などを「個数」や「個数と値」で作るとき: { } だと「要素の並び」と解釈され、意味が変わります
+           (std::vector<int>(5) と std::vector<int>{ 5 } は別物です / std::string(3, 'a') は "aaa" です)。
+       std::string_view などから std::string を1つ作るときは、要素の並びと取り違えることがないため { } を使います。
+         return std::string{ k_unknownFilePathText };
          ・static_cast<Type>(...) のような変換、関数の呼び出し
      ・テンプレートは template <typename Type> と書きます(< の前にスペースを入れ、class ではなく typename を使います)。
      ・#if はインデントせずに行頭に書き、#if defined(_DEBUG) の形にします。
@@ -802,7 +822,9 @@
          ImVector(ImGui)の要素の追加 → push_back(ImVector には emplace_back がないため)
          Jolt の参照カウント付きのオブジェクト(JPH::Ref / DebugRenderer::Batch など)の生成 → new(Jolt が delete するため)
 11-10. 次のものは使いません。
-       例外(try / throw) / goto / typedef / mutable / [[nodiscard]] / using namespace / this->
+       例外(try / throw) / goto / typedef / mutable / [[nodiscard]] / using namespace / this-> / std::tuple
+     ・複数の値をまとめるときは std::tuple を使わず、名前の付いたメンバを持つ構造体にします(中身が名前で分かるようにするため)。
+       数学の値(位置など)は、TypeAlias::Math::Vector3 などの既存の型をそのまま使います。
      ・this-> は、テンプレートの基底クラスのメンバを呼ぶとき(基底クラスがテンプレート引数で決まる場合)だけ使います。
        この場合は this-> がないとコンパイルできないためです(DirectAndComputeCommandListBase)。
        テンプレートではないクラスでは、this-> を書かずに呼びます。
@@ -1269,6 +1291,7 @@
 [ ] クラス・構造体のメンバ・引数・定数を「外部APIのクラス → std のクラス → 自作クラス → 外部APIの構造体 → std の構造体 → 自作の構造体」の順で並べている
 [ ] 続けて並ぶ = と ( を縦に揃え(std::min などが混ざっても揃える)、const 付きと const なしの宣言は型の位置を揃えている
 [ ] { } の初期化子は、要素が4つ以上なら縦に並べ、3つ以下なら1行に書いている
+[ ] 続けて並ぶ数値に負の数が混ざるときは、正の数の前に空白を1つ入れて符号の位置を揃えている
 [ ] 型名を書いて値を作るときは ImVec2{ x, y } のように { } を使っている(コンテナ・文字列は除く)
 [ ] Allman スタイル、波括弧は必ず付け、return / continue の1文だけは1行 if で書いてよい(break や他の文はブロック)、else は改行
 [ ] && / || は1行に1条件、演算子は行末で、演算子の前の空白は1つ(演算子の位置は揃えない)

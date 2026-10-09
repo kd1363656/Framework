@@ -24,7 +24,7 @@ void FWK::Converter::LightSystemJsonConverter::Deserialize(const nlohmann::json&
         }
 
         // ディレクショナルライトには必ずベクトルを持たせる
-        if (l_directionalLight.m_direction.LengthSquared() <= Constant::k_epsilon)
+        if (l_directionalLight.m_direction.LengthSquared() <= Constant::k_minNormalLengthSquared)
         {
             l_directionalLight.m_direction = Constant::k_defaultDirectionalLightDirection;
         }

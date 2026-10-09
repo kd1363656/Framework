@@ -1,17 +1,17 @@
 ﻿#include "SkeletalAnimationModelBinaryConverter.h"
 
-bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std::filesystem::path& a_filePath, Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::Load(const std::filesystem::path& a_filePath, Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
 {
     auto& l_modelData = a_skeletalAnimationModelRecord.GetMutableREFModelData();
 
     // 途中まで読み込んだ古いデータが残らないように、最初に空にする
-    l_modelData.m_modelMeshList.clear     ();
+    l_modelData.m_meshList.clear          ();
     l_modelData.m_boneList.clear          ();
     l_modelData.m_motionSequenceList.clear();
 
     // .assetが存在しない、FBXより古い、元FBXが存在しない場合はfalse
     // 呼び出し側でFBXから再読み込みして、.assetを再生成する
-    if (!CanLoadAsset(a_filePath)) { return false; }
+    if (!CanLoad(a_filePath)) { return false; }
 
     // FBXと同名で拡張子だけ.assetにしたパスを作成し、読み込み用MemoryMappedFileを開く
     if (const auto& l_modelAssetFilePath = CreateAssetFilePath(a_filePath);
@@ -26,7 +26,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // ファイル先頭の全体Headerを読み込む
     if (!TryReadSingleBinaryData(l_modelBinaryHeader, l_memoryReadOffset))
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
@@ -34,7 +34,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // Model用.assertではないなら読み込まない
     if (l_modelBinaryHeader.m_assetTypeID != k_modelAssetTypeID)
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
@@ -43,7 +43,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // 呼び出し側でFBXから再生成する
     if (l_modelBinaryHeader.m_version != k_modelAssetVersion)
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
@@ -51,7 +51,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // Header内のファイルサイズと実際のファイルサイズが違うなら壊れている可能性がある
     if (l_modelBinaryHeader.m_fileSize != GetVALMappedDataSize())
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
@@ -59,7 +59,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // Meshが0個のSkeletalAnimationModelは描画できない
     if (l_modelBinaryHeader.m_modelMeshCount == Constant::k_emptyModelMeshCount)
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
@@ -67,19 +67,19 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // Boneが0個のSkeletalAnimationModelは成立しない
     if (l_modelBinaryHeader.m_boneCount == k_emptyBoneCount)
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
 
     // ModelMesh読み込み
-    l_modelData.m_modelMeshList.resize(l_modelBinaryHeader.m_modelMeshCount);
+    l_modelData.m_meshList.resize(l_modelBinaryHeader.m_modelMeshCount);
 
-    for (auto& l_modelMesh : l_modelData.m_modelMeshList)
+    for (auto& l_modelMesh : l_modelData.m_meshList)
     {
         if (!TryReadModelMeshBinaryData(l_modelBinaryHeader.m_boneCount, l_modelMesh, l_memoryReadOffset))
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -95,7 +95,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         // Bone単位Headerを読み込む
         if (!TryReadSingleBinaryData(l_modelBoneBinaryHeader, l_memoryReadOffset))
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -103,7 +103,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         // Bone名を読み込む
         if (!TryReadWStringBinaryData(l_modelBoneBinaryHeader.m_boneNameSize, l_modelBone.m_boneName, l_memoryReadOffset))
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -113,7 +113,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         if (l_modelBoneBinaryHeader.m_parentBoneIndex != Constant::k_invalidBoneIndex &&
             l_modelBoneBinaryHeader.m_parentBoneIndex >= l_modelBinaryHeader.m_boneCount)
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -123,7 +123,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         // BindPose時点のLocalMatrix
         if (!TryReadSingleBinaryData(l_modelBone.m_bindPoseLocalMatrix, l_memoryReadOffset))
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -139,7 +139,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         // MotionSequence単位Headerを読み込む
         if (!TryReadSingleBinaryData(l_modelMotionSequenceBinaryHeader, l_memoryReadOffset))
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -150,7 +150,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
         // Motion名を読み込む
         if (!TryReadWStringBinaryData(l_modelMotionSequenceBinaryHeader.m_motionNameSize, l_modelMotionSequence.m_motionName, l_memoryReadOffset))
         {
-            FailLoadAsset(l_modelData);
+            FailLoad(l_modelData);
 
             return false;
         }
@@ -165,7 +165,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
             // BoneMotionTrack単位Headerを読み込む
             if (!TryReadSingleBinaryData(l_modelBoneMotionTrackBinaryHeader, l_memoryReadOffset))
             {
-                FailLoadAsset(l_modelData);
+                FailLoad(l_modelData);
 
                 return false;
             }
@@ -174,7 +174,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
             // Invalidもこの範囲比較でまとめて検出される
             if (l_modelBoneMotionTrackBinaryHeader.m_boneIndex >= l_modelBinaryHeader.m_boneCount)
             {
-                FailLoadAsset(l_modelData);
+                FailLoad(l_modelData);
 
                 return false;
             }
@@ -185,7 +185,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
             // KeyFrameは固定長structなので、まとめて読み込める
             if (!TryReadBinaryDataList(l_modelBoneMotionTrackBinaryHeader.m_keyFrameCount, l_modelBoneMotionTrack.m_keyFrameList, l_memoryReadOffset))
             {
-                FailLoadAsset(l_modelData);
+                FailLoad(l_modelData);
 
                 return false;
             }
@@ -196,7 +196,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
     // 読み込み順かファイルサイズ計算が間違っている
     if (l_memoryReadOffset != l_modelBinaryHeader.m_fileSize)
     {
-        FailLoadAsset(l_modelData);
+        FailLoad(l_modelData);
 
         return false;
     }
@@ -205,7 +205,8 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::LoadAsset(const std:
 
     return true;
 }
-bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
+
+bool FWK::Converter::SkeletalAnimationModelBinaryConverter::Save(const std::filesystem::path& a_filePath, const Graphics::SkeletalAnimationModelRecord& a_skeletalAnimationModelRecord)
 {
     const auto& l_modelData = a_skeletalAnimationModelRecord.GetREFModelData();
 
@@ -234,7 +235,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
 
     // 各ModelMeshについて、
     // 共通MeshデータとInverseBindPose配列を書き込む
-    for (const auto& l_modelMesh : l_modelData.m_modelMeshList)
+    for (const auto& l_modelMesh : l_modelData.m_meshList)
     {
         WriteModelMeshBinaryData(l_modelMesh, l_memoryWriteOffset);
     }
@@ -291,10 +292,10 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::SaveAsset(const std:
     return true;
 }
 
-void FWK::Converter::SkeletalAnimationModelBinaryConverter::FailLoadAsset(Struct::SkeletalAnimationModelData& a_modelData)
+void FWK::Converter::SkeletalAnimationModelBinaryConverter::FailLoad(Struct::SkeletalAnimationModelData& a_modelData)
 {
     // 中途半端に読み込んだデータが残らないように空にする
-    a_modelData.m_modelMeshList.clear     ();
+    a_modelData.m_meshList.clear          ();
     a_modelData.m_boneList.clear          ();
     a_modelData.m_motionSequenceList.clear();
 
@@ -309,7 +310,7 @@ FWK::Converter::SkeletalAnimationModelBinaryConverter::ModelBinaryHeader FWK::Co
     l_modelBinaryHeader.m_fileSize            = a_fileSize;
     l_modelBinaryHeader.m_version             = k_modelAssetVersion;
     l_modelBinaryHeader.m_assetTypeID         = k_modelAssetTypeID;
-    l_modelBinaryHeader.m_modelMeshCount      = a_modelData.m_modelMeshList.size     ();
+    l_modelBinaryHeader.m_modelMeshCount      = a_modelData.m_meshList.size          ();
     l_modelBinaryHeader.m_boneCount           = a_modelData.m_boneList.size          ();
     l_modelBinaryHeader.m_motionSequenceCount = a_modelData.m_motionSequenceList.size();
 
@@ -409,7 +410,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateMo
 std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAssetFileSize(const Struct::SkeletalAnimationModelData& a_modelData) const
 {
     // Meshが一つもないModelDataは.asset化しない
-    if (a_modelData.m_modelMeshList.empty()) { return k_emptyAssetFileSize; }
+    if (a_modelData.m_meshList.empty()) { return k_emptyAssetFileSize; }
 
     // Boneが一つもないModelDataは,asset化しない
     if (a_modelData.m_boneList.empty()) { return k_emptyAssetFileSize; }
@@ -421,7 +422,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 
     // 各ModelMeshのBonePaletteと、
     // ModelVertexが参照するBonePaletteIndexが有効か確認する
-    for (const auto& l_modelMesh : a_modelData.m_modelMeshList)
+    for (const auto& l_modelMesh : a_modelData.m_meshList)
     {
         if (!IsValidModelMesh(l_modelMesh, l_boneCount)) { return k_emptyAssetFileSize; }
 
@@ -471,7 +472,7 @@ std::uint64_t FWK::Converter::SkeletalAnimationModelBinaryConverter::CalculateAs
 
 bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(const Struct::SkeletalAnimationModelMesh& a_modelMesh, const std::uint64_t& a_boneCount) const
 {
-    if (a_modelMesh.m_modelVertexList.empty()) { return false; }
+    if (a_modelMesh.m_vertexList.empty())      { return false; }
     if (a_modelMesh.m_indexList.empty())       { return false; }
     if (a_modelMesh.m_bonePaletteList.empty()) { return false; }
 
@@ -488,7 +489,7 @@ bool FWK::Converter::SkeletalAnimationModelBinaryConverter::IsValidModelMesh(con
         if (l_bonePaletteElement.m_boneIndex >= a_boneCount) { return false; }
     }
 
-    for (const auto& l_modelVertex : a_modelMesh.m_modelVertexList)
+    for (const auto& l_modelVertex : a_modelMesh.m_vertexList)
     {
         // k_invalidPaletteIndexとの個別比較は不要
         // Invalid値もこの範囲比較で検出される

@@ -38,7 +38,7 @@ FWK::Struct::SkeletalAnimationModelLoadResult FWK::Graphics::SkeletalAnimationMo
     l_skeletalAnimationModelRecord->SetReferenceCount(AssetRecordBase::k_initialAssetReferenceCount);
 
     // 有効な.assetを読み込めなかった場合はFBXから作成する
-    if (!m_binaryConverter.LoadAsset(a_filePath, *l_skeletalAnimationModelRecord))
+    if (!m_binaryConverter.Load(a_filePath, *l_skeletalAnimationModelRecord))
     {
         if (!m_loader.LoadSkeletalAnimationModelFile(a_filePath, *l_skeletalAnimationModelRecord))
         {
@@ -113,7 +113,7 @@ bool FWK::Graphics::SkeletalAnimationModelSystem::BuildSkeletalAnimationModelAss
     FWK_ASSERT_RETURN_VALUE_IF(!m_meshletBuilder.BuildModelRecordMeshletData(a_skeletalAnimationModelRecord), "SkeletalAnimationModelMeshletDataの作成に失敗しました。", false);
 
     // 次回以降FBX解析を省略できるように.assetへ保存する
-    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.SaveAsset(a_filePath, a_skeletalAnimationModelRecord), "SkeletalAnimationModelAssetの保存に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!m_binaryConverter.Save(a_filePath, a_skeletalAnimationModelRecord), "SkeletalAnimationModelAssetの保存に失敗しました。", false);
 
     return true;
 }
