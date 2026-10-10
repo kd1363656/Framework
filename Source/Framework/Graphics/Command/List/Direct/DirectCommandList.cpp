@@ -235,7 +235,44 @@ void FWK::Graphics::DirectCommandList::SetupRoot32BitConstants(const RootSignatu
                                                                const Enum::RootParameterType a_rootParameterType,
                                                                const UINT                    a_rootConstantCount,
                                                                const UINT                    a_destinationOffset) const
-{}
+{
+    FWK_ASSERT_RETURN_IF(!a_rootConstantData,                               "ルート定数のデータが無効のため、ルート定数の設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_rootConstantCount == k_invalidRootConstantCount, "ルート定数の個数が0のため、ルート定数の設定に失敗しました。");
+
+    const auto& l_directCommandList = GetREFCommandList();
+
+    FWK_ASSERT_RETURN_IF(!l_directCommandList, "ダイレクトコマンドリストが作成されておらず、ルート定数の設定に失敗しました。");
+
+    // ルートシグネチャの中で、この種類のルートパラメーターが何番目かを探す
+    // 例 : ModelStandardのルートシグネチャなら、RCModelDrawItemは1番
+    const auto& l_rootParameterIndex = a_rootSignature.FindVALRootParameterIndex(a_rootParameterType);
+
+    FWK_ASSERT_RETURN_IF(l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex, "ルートパラメーターの番号が無効なため、ルート定数の設定に失敗しました。");
+
+    const auto& l_rootParameterRecordList = a_rootSignature.GetREFRootParameterRecordList();
+
+    FWK_ASSERT_RETURN_IF(l_rootParameterIndex >= l_rootParameterRecordList.size(), "ルートパラメーターの番号が一覧の範囲外のため、ルート定数の設定に失敗しました。");
+
+    const auto& l_rootParameter = l_rootParameterRecordList[l_rootParameterIndex].m_rootParameter;
+
+    // 指定したルートパラメーターが、本当にルート定数かを確かめる
+    // CBVなどへ値を送ると、GPUが値をアドレスとして読んでしまい、描画の崩れやデバイスの消失になる
+    FWK_ASSERT_RETURN_IF(l_rootParameter.ParameterType != D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS, "指定したルートパラメーターがルート定数ではないため、ルート定数の設定に失敗しました。");
+    FWK_ASSERT_RETURN_IF(a_destinationOffset > l_rootParameter.Constants.Num32BitValues,             "書き込み開始位置がルート定数の数を超えているため、ルート定数の設定に失敗しました。");
+
+    // 先に開始位置を検査しているので、Num32BitValues - 開始位置は符号なし整数のアンダーフローを起こさない
+    FWK_ASSERT_RETURN_IF(a_rootConstantCount > l_rootParameter.Constants.Num32BitValues - a_destinationOffset, "送る値の数がルート定数の数を超えているため、ルート定数の設定に失敗しました。");
+
+    // SetGraphicsRoot32BitConstants(ルートパラメーターの番号、
+    //                               送る32ビットの値の個数、
+    //                               送る値の先頭アドレス、
+    //                               ルート定数の何番目の値から書くか);
+    // 値そのものがコマンドリストに書き込まれるため、UPLOADへ書く必要がない
+    l_directCommandList->SetGraphicsRoot32BitConstants(l_rootParameterIndex,
+                                                       a_rootConstantCount,
+                                                       a_rootConstantData,
+                                                       a_destinationOffset);
+}
 
 void FWK::Graphics::DirectCommandList::SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature)
 {

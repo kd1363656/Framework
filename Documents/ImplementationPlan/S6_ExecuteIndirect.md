@@ -1,5 +1,12 @@
 # S6 ExecuteIndirect(描画を GPU のバッファからまとめて投げる)
 
+> **2026-10-10 改訂** : コマンドシグネチャを一覧ごとではなく、ModelRenderSystem が「RCModelDrawItem を持つルートシグネチャ」ごとに1つ持つ形にした。
+> 改訂前は「影のパスか」で ModelStandard / ModelCascadeShadow のルートシグネチャを選ぶ分岐があり、ルートシグネチャ(トゥーンなど)を足すたびに書き足す必要があった。
+> 今は Renderer のルートシグネチャを全部見て、RCModelDrawItem を持つものに自動で作る。パスは自分のルートシグネチャを渡すだけで、合うコマンドシグネチャが選ばれる。
+>
+> **2026-10-10 確認** : S3 でテーブルのコピーを RenderGraph のパス(`ModelRenderTableUploadPass`、実行レイヤー `Upload`)にしたが、S6 は変更なし。
+> 引数のバッファは UPLOAD ヒープ(バリア不要)で `RecordDraw` の中で写すため、RenderGraph が扱うものは増えない(S3 の「S5 / S6 / P1 への影響」)。
+
 ## 目的
 
 S5 では、パスが描画項目を CPU で1つずつ回し、`SetGraphicsRoot32BitConstants` と `DispatchMesh` をコマンドリストへ積んでいる。
@@ -49,7 +56,8 @@ commandList->ExecuteIndirect(commandSignature, maxCommandCount, argumentBuffer, 
 
 - 1件の大きさ(`ByteStride`) = 24 バイト。S3 の `Struct::ModelDrawItem` と同じ並び・同じ大きさにしてある。
 - ルート定数(ルートシグネチャの中身)を書き換える種類を含むときは、**作るときにルートシグネチャを渡す必要がある**(どのルートパラメーターの番号に書くかを決めるため)。
-  そのため、ModelStandard 用と ModelCascadeShadow 用で別々のコマンドシグネチャを作る。
+  そのため、ルートシグネチャごとに別々のコマンドシグネチャを作る。ModelRenderSystem が、RCModelDrawItem を持つルートシグネチャ(今は ModelStandard と ModelCascadeShadow)を探して、自動で1つずつ作る。
+- 引数のバッファ(1件の並び)は、どのコマンドシグネチャでも同じ。そのため、Lit のパスと影のパスが同じ描画項目の一覧(引数のバッファ)を共有できる。
 
 ```
 引数のバッファ(1件 24 バイト)
@@ -82,8 +90,8 @@ commandList->ExecuteIndirect(commandSignature, maxCommandCount, argumentBuffer, 
 | ファイル | 変更 |
 |---|---|
 | `Graphics/Command/List/Direct/DirectCommandList.h/.cpp` | `ExecuteIndirect` |
-| `Graphics/Render/Model/DrawItem/ModelDrawItemList.h/.cpp` | コマンドシグネチャとフレームごとの引数のバッファ。`RecordDraw` を ExecuteIndirect にする |
-| `Graphics/Render/Model/ModelRenderSystem.h/.cpp` | `Create` にルートシグネチャを渡す(パスの種類 → ルートシグネチャの種類) |
+| `Graphics/Render/Model/DrawItem/ModelDrawItemList.h/.cpp` | フレームごとの引数のバッファ。`RecordDraw` でコマンドシグネチャを受け取り、ExecuteIndirect にする |
+| `Graphics/Render/Model/ModelRenderSystem.h/.cpp` | `Create` に Renderer のルートシグネチャの map を渡し、RCModelDrawItem を持つものごとにコマンドシグネチャを作る。描くときに選んで渡す |
 | `Graphics/Render/Renderer.cpp` | `m_modelRenderSystem.Create` を、ルートシグネチャを作った後へ移す |
 
 ### 登録
@@ -192,7 +200,7 @@ bool FWK::Graphics::ModelDrawCommandSignature::Create(const Device& a_device, co
     // (ずれたまま動かすと、GPUが1件の区切りを間違えて読み、壊れた描画やデバイスの消失になる)
     static_assert(sizeof(Struct::ModelDrawItem) == sizeof(Struct::RCModelDrawItem) + sizeof(D3D12_DISPATCH_MESH_ARGUMENTS), "Struct::ModelDrawItemの大きさが、コマンドシグネチャの1件の大きさと一致していません。");
 
-    const auto& l_device          = a_device.GetREFDevice           ();
+    const auto& l_device           = a_device.GetREFDevice              ();
     const auto& l_d3dRootSignature = a_rootSignature.GetREFRootSignature();
 
     FWK_ASSERT_RETURN_VALUE_IF(!l_device,           "デバイスが作成されておらず、コマンドシグネチャの作成に失敗しました。",           false);
@@ -259,9 +267,9 @@ bool FWK::Graphics::ModelDrawCommandSignature::Create(const Device& a_device, co
 ### Graphics/Render/Model/DrawItem/ModelDrawItemList.h(変更)
 
 ```cpp
-        bool Create(const Device& a_device, const RootSignature& a_rootSignature, const std::size_t& a_frameCount);
+        bool Create(const Device& a_device, const std::size_t& a_frameCount);
 
-        void RecordDraw(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex);
+        void RecordDraw(const ModelDrawCommandSignature& a_commandSignature, const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex);
 ```
 
 private:
@@ -292,8 +300,6 @@ private:
 
         RegistrationMap m_registrationMap;
 
-        ModelDrawCommandSignature m_commandSignature;
-
         std::size_t m_frameCount;
 
         std::uint64_t m_nextRegistrationID;
@@ -302,19 +308,19 @@ private:
         bool m_isDirty;
 ```
 
-> `RecordDraw` からルートシグネチャの引数が消える(コマンドシグネチャが、作るときにルートシグネチャを覚えている)。
+> - `RecordDraw` からルートシグネチャの引数が消え、代わりにコマンドシグネチャを受け取る。
+> - コマンドシグネチャは一覧には持たせない。一覧は「メッシュの種類 × マテリアル」の数だけあり(マテリアルを足すと増える)、
+>   影のパスは同じ一覧を別のルートシグネチャ(ModelCascadeShadow)で描くので、一覧ごとに1つでは足りないため。
+>   ModelRenderSystem が「ルートシグネチャごとに1つ」持ち、描くときに渡す(下の ModelRenderSystem)。
 
 ### Graphics/Render/Model/DrawItem/ModelDrawItemList.cpp(変更・写経)
 
-コンストラクタの初期化子リストに、足したメンバ(`m_argumentBufferList()` / `m_argumentBufferCapacityList()` / `m_uploadedVersionList()` / `m_commandSignature()` / `m_version(k_initialVersion)`)を宣言順に足す。
+コンストラクタの初期化子リストに、足したメンバ(`m_argumentBufferList()` / `m_argumentBufferCapacityList()` / `m_uploadedVersionList()` / `m_version(k_initialVersion)`)を宣言順に足す。
 
 ```cpp
-bool FWK::Graphics::ModelDrawItemList::Create(const Device& a_device, const RootSignature& a_rootSignature, const std::size_t& a_frameCount)
+bool FWK::Graphics::ModelDrawItemList::Create(const Device& a_device, const std::size_t& a_frameCount)
 {
     FWK_ASSERT_RETURN_VALUE_IF(a_frameCount == k_emptyFrameCount, "フレーム数が0のため、ModelDrawItemListの作成に失敗しました。", false);
-
-    // このパスのルートシグネチャ用のコマンドシグネチャを作る
-    FWK_ASSERT_RETURN_VALUE_IF(!m_commandSignature.Create(a_device, a_rootSignature), "コマンドシグネチャの作成に失敗したため、ModelDrawItemListの作成に失敗しました。", false);
 
     m_frameCount = a_frameCount;
 
@@ -336,7 +342,7 @@ bool FWK::Graphics::ModelDrawItemList::Create(const Device& a_device, const Root
     return true;
 }
 
-void FWK::Graphics::ModelDrawItemList::RecordDraw(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex)
+void FWK::Graphics::ModelDrawItemList::RecordDraw(const ModelDrawCommandSignature& a_commandSignature, const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex)
 {
     // 登録・解除があったら、CPU側の一覧を詰め直す
     RebuildFrameDrawItemListIfNeeded();
@@ -355,7 +361,8 @@ void FWK::Graphics::ModelDrawItemList::RecordDraw(const DirectCommandList& a_dir
 
     // 一覧の件数だけ、GPUに描画を繰り返させる
     // 例 : 500件なら、CPUが積む命令はこの1つだけで、GPUが500回「ルート定数を設定してDispatchMesh」を行う
-    a_directCommandList.ExecuteIndirect(m_commandSignature.GetREFCommandSignature(),
+    // コマンドシグネチャは、今のパスのルートシグネチャ用のもの(ModelRenderSystemが選んで渡す)
+    a_directCommandList.ExecuteIndirect(a_commandSignature.GetREFCommandSignature(),
                                         l_argumentBuffer.GetREFUploadBuffer      (),
                                         k_argumentBufferOffset,
                                         static_cast<UINT>(l_drawItemList.size()));
@@ -371,9 +378,9 @@ bool FWK::Graphics::ModelDrawItemList::UploadArgumentBufferIfNeeded(const std::s
     // 一覧が変わらない限り、毎フレームここで終わる
     if (m_uploadedVersionList[a_frameIndex] == m_version) { return true; }
 
-    const auto& l_drawItemList    = m_frameDrawItemList[a_frameIndex];
-          auto& l_argumentBuffer  = m_argumentBufferList[a_frameIndex];
-          auto& l_capacity        = m_argumentBufferCapacityList[a_frameIndex];
+    const auto& l_drawItemList   = m_frameDrawItemList[a_frameIndex];
+          auto& l_argumentBuffer = m_argumentBufferList[a_frameIndex];
+          auto& l_capacity       = m_argumentBufferCapacityList[a_frameIndex];
 
     // 件数が容量を超えたら、収まるまで2倍にして作り直す
     // 例 : 容量1024で1500件なら、2048件(48KB)のバッファを作り直す
@@ -385,9 +392,9 @@ bool FWK::Graphics::ModelDrawItemList::UploadArgumentBufferIfNeeded(const std::s
             l_capacity *= k_argumentBufferGrowthRate;
         }
 
-        const auto& l_graphicsManager    = GraphicsManager::GetInstance                               ();
-        const auto& l_device             = l_graphicsManager.GetREFDevice                             ();
-        const auto& l_argumentBufferSize = static_cast<UINT64>(l_capacity * sizeof(Struct::ModelDrawItem));
+        const auto& l_graphicsManager    = GraphicsManager::GetInstance  ();
+        const auto& l_device             = l_graphicsManager.GetREFDevice();
+        const auto& l_argumentBufferSize = static_cast<UINT64>           (l_capacity * sizeof(Struct::ModelDrawItem));
 
         FWK_ASSERT_RETURN_VALUE_IF(!l_argumentBuffer.Create(l_device, l_argumentBufferSize), "引数のバッファの作り直しに失敗しました。", false);
     }
@@ -407,61 +414,140 @@ bool FWK::Graphics::ModelDrawItemList::UploadArgumentBufferIfNeeded(const std::s
 
 > `UploadBuffer::Create` は中で `Release()` してから作り直すので、古いバッファは自動で手放される。
 
-### Graphics/Render/Model/ModelRenderSystem(変更・写経)
-
-`Create` の引数にルートシグネチャ2つを足す。
+### Graphics/Render/Model/ModelRenderSystem.h(変更)
 
 ```cpp
-        bool Create(const Device&                             a_device,
+    private:
+
+        using RootSignatureMap = std::unordered_map<Enum::RootSignatureType, std::shared_ptr<RootSignature>>;
+
+        using ModelRenderTableMap = std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<GPUElementTable>>;
+
+        using ModelDrawItemListMap         = std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<ModelDrawItemList>>;
+        using ModelMeshTypeDrawItemListMap = std::unordered_map<Enum::ModelMeshType, ModelDrawItemListMap>;
+
+        using ModelDrawCommandSignatureMap = std::unordered_map<const RootSignature*, ModelDrawCommandSignature>;
+
+    public:
+        ...
+
+        bool Create(const RootSignatureMap&                   a_rootSignatureMap,
+                    const Device&                             a_device,
                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
-                    const RootSignature&                      a_modelStandardRootSignature,
-                    const RootSignature&                      a_modelCascadeShadowRootSignature,
                     const std::size_t&                        a_frameCount,
                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
+        ...
+
+    private:
+
+        void RecordMaterialDraw(const RootSignature&          a_rootSignature,
+                                const DirectCommandList&      a_directCommandList,
+                                const std::size_t&            a_frameIndex,
+                                const Enum::ModelMeshType     a_meshType,
+                                const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const;
+
+        const ModelDrawCommandSignature* FindPTRCommandSignature(const RootSignature& a_rootSignature) const;
+
+        ModelRenderTableMap          m_tableMap                = {};
+        ModelMeshTypeDrawItemListMap m_meshTypeDrawItemListMap = {};
+        ModelDrawCommandSignatureMap m_commandSignatureMap     = {};
+
+        Converter::ModelRenderSystemJsonConverter m_jsonConverter = {};
 ```
 
-描画項目の一覧を作るループで、パスの種類に合ったルートシグネチャを渡す。
+> - `RootSignatureMap` は Renderer の `m_rootSignatureMap` と同じ型(Renderer の別名は private なので、こちらにも同じ別名を置く)。
+>   引数の並びは「配列(map)→ 自作クラス → 数値 → 参照」(規約 20-4)。
+> - コマンドシグネチャの map のキーは、ルートシグネチャの**アドレス**(`const RootSignature*`)。
+>   パスは `SetupGraphicsRenderPipeline` で受け取ったルートシグネチャ(の参照)を渡してくるので、そのアドレスでそのまま探せる。
+>   ルートシグネチャの実体は Renderer の map が `shared_ptr` でアプリの終了まで持つので、アドレスは変わらない。
+> - `ModelDrawCommandSignature` はコピー・ムーブ禁止。`std::unordered_map` は要素を動かさない(再ハッシュでも要素の場所は変わらない)ので、
+>   `try_emplace(キー)` で map の中に直接作れば、そのまま入れられる。
+
+### Graphics/Render/Model/ModelRenderSystem.cpp(変更・写経)
+
+**Create の先頭(テーブルを作るループの前)に追加:**
 
 ```cpp
-    for (auto l_passTypeValue = static_cast<std::size_t>(Enum::ModelRenderPassType::StaticStandardLit); l_passTypeValue < static_cast<std::size_t>(Enum::ModelRenderPassType::Count); ++l_passTypeValue)
+    // ExecuteIndirectのコマンドシグネチャを、RCModelDrawItem(描画ごとの番号)を持つルートシグネチャごとに1つ作る
+    // コマンドシグネチャは「ルート定数を、どのルートパラメーターの番号へ書くか」を覚えるため、ルートシグネチャごとに別のものが要る
+    // 例 : ModelStandard(Lit / UnLitのパス)と ModelCascadeShadow(影のパス)の2つ
+    // モデルを描くルートシグネチャを増やしても(トゥーンなど)、GraphicsCONFIG.jsonにRCModelDrawItemを書けば、ここで自動で作られる
+    for (const auto& [l_rootSignatureType, l_rootSignature] : a_rootSignatureMap)
     {
-        const auto l_passType = static_cast<Enum::ModelRenderPassType>(l_passTypeValue);
+        if (!l_rootSignature) { continue; }
 
-        // 影のパスはModelCascadeShadow、それ以外(Lit / UnLit)はModelStandardのルートシグネチャを使う
-        const bool  l_isShadowPass  = l_passType == Enum::ModelRenderPassType::StaticCascadeShadow ||
-                                      l_passType == Enum::ModelRenderPassType::SkeletalCascadeShadow;
-        const auto& l_rootSignature = l_isShadowPass ? a_modelCascadeShadowRootSignature : a_modelStandardRootSignature;
-              auto  l_drawItemList  = std::make_shared<ModelDrawItemList>();
+        // RCModelDrawItemを持たないルートシグネチャ(スプライトなど)には作らない
+        const auto l_rootParameterIndex = l_rootSignature->FindVALRootParameterIndex(Enum::RootParameterType::RCModelDrawItem);
 
-        FWK_ASSERT_RETURN_VALUE_IF(!l_drawItemList->Create(a_device, l_rootSignature, a_frameCount), "描画項目の一覧の作成に失敗したため、ModelRenderSystemの作成に失敗しました。", false);
+        if (l_rootParameterIndex == Converter::RootSignatureJsonConverter::k_invalidRootParameterIndex) { continue; }
 
-        m_drawItemListMap.try_emplace(l_passType, std::move(l_drawItemList));
+        // try_emplaceにキーだけを渡すと、値(コマンドシグネチャ)をmapの中で直接作る(コピー・ムーブ禁止のクラスでも入れられる)
+        // 戻り値の.firstは、入れた要素(既にあればその要素)を指すイテレータ
+        const auto  l_commandSignatureITR = m_commandSignatureMap.try_emplace(l_rootSignature.get()).first;
+              auto& l_commandSignature    = l_commandSignatureITR->second;
+
+        FWK_ASSERT_RETURN_VALUE_IF(!l_commandSignature.Create(a_device, *l_rootSignature), "コマンドシグネチャの作成に失敗したため、ModelRenderSystemの作成に失敗しました。", false);
     }
 ```
 
-`RecordDraw` の最後を `l_drawItemList->RecordDraw(a_directCommandList, a_frameIndex);` にする。
+> `l_rootSignature.get()` : `shared_ptr` が持っている実体のアドレス(生のポインタ)を返す。所有はしないので、map のキーに使うだけなら問題ない。
+
+**Create の描画項目の一覧を作るループ(S5 で、テーブルを作るループの後に足したもの)** : `l_drawItemList->Create(a_frameCount)` を `l_drawItemList->Create(a_device, a_frameCount)` にする(引数のバッファを作るため)。
+
+**RecordDrawWithoutMaterial / RecordMaterialDraw(変更・写経)** : どちらも、`SetupRoot32BitConstants` の前にコマンドシグネチャを探し、最後に渡す。
+
+```cpp
+    // このパスのルートシグネチャ用のコマンドシグネチャ(Createで作ったもの)を探す
+    // パスがセットしたルートシグネチャと違うコマンドシグネチャを使うと、ルート定数が違う番号へ書かれてしまう
+    const auto* l_commandSignature = FindPTRCommandSignature(a_rootSignature);
+
+    FWK_ASSERT_RETURN_IF(!l_commandSignature, "ルートシグネチャにRCModelDrawItemが無いため、モデルの描画に失敗しました。");
+```
+
+```cpp
+    // RecordDrawWithoutMaterialのループの中
+    l_drawItemList->RecordDraw(*l_commandSignature, a_directCommandList, a_frameIndex);
+```
+
+```cpp
+    // RecordMaterialDrawの最後
+    l_drawItemList->RecordDraw(*l_commandSignature, a_directCommandList, a_frameIndex);
+```
+
+**FindPTRCommandSignature(写経):**
+
+```cpp
+const FWK::Graphics::ModelDrawCommandSignature* FWK::Graphics::ModelRenderSystem::FindPTRCommandSignature(const RootSignature& a_rootSignature) const
+{
+    // パスが今セットしたルートシグネチャのアドレスで、そのルートシグネチャ用のコマンドシグネチャを探す
+    // 見つからなければ(RCModelDrawItemを持たないルートシグネチャなら)nullptr
+    const auto& l_commandSignatureITR = m_commandSignatureMap.find(&a_rootSignature);
+
+    if (l_commandSignatureITR == m_commandSignatureMap.end()) { return nullptr; }
+
+    return &l_commandSignatureITR->second;
+}
+```
+
+> 影のパス(ModelCascadeShadow のルートシグネチャ)と Lit のパス(ModelStandard)は、同じ「Static × StandardLit」の一覧を、
+> それぞれのコマンドシグネチャで ExecuteIndirect する。引数のバッファ(24 バイト × 件数)は一覧に1つだけで、共有できる
+> (コマンドシグネチャが違っても、1件の並びは同じ「ルート定数 3 つ + DispatchMesh の引数」なので)。
 
 ### Graphics/Render/Renderer.cpp(変更・写経)
 
 `m_modelRenderSystem.Create` を、ルートシグネチャの作成ループの後(パイプラインステートの作成の前でよい)へ移す。
 
 ```cpp
-    // モデルの描画に使うテーブルと描画項目の一覧を作る
-    // 描画項目の一覧はExecuteIndirectのコマンドシグネチャを作るため、ルートシグネチャを作った後に行う
-    const auto& l_modelStandardRootSignature      = FindVALRootSignature(Enum::RootSignatureType::ModelStandard     ).lock();
-    const auto& l_modelCascadeShadowRootSignature = FindVALRootSignature(Enum::RootSignatureType::ModelCascadeShadow).lock();
+    // モデルの描画に使うテーブル・描画項目の一覧・ExecuteIndirectのコマンドシグネチャを作る
+    // コマンドシグネチャはルートシグネチャから作るため、ルートシグネチャを作った後に行う
+    // どのルートシグネチャに作るかは、ModelRenderSystemがRCModelDrawItemの有無で決める(ここで種類を選ばない)
+    const bool l_isModelRenderSystemCreated = m_modelRenderSystem.Create(m_rootSignatureMap,
+                                                                         a_device,
+                                                                         l_gpuMemoryAllocator,
+                                                                         m_frameResourceList.size(),
+                                                                         l_cbvSRVUAVDescriptorPool);
 
-    FWK_ASSERT_RETURN_VALUE_IF(!l_modelStandardRootSignature,      "ModelStandardのルートシグネチャが無いため、ModelRenderSystemの作成に失敗しました。",      false);
-    FWK_ASSERT_RETURN_VALUE_IF(!l_modelCascadeShadowRootSignature, "ModelCascadeShadowのルートシグネチャが無いため、ModelRenderSystemの作成に失敗しました。", false);
-
-    FWK_ASSERT_RETURN_VALUE_IF(!m_modelRenderSystem.Create(a_device,
-                                                           l_gpuMemoryAllocator,
-                                                           *l_modelStandardRootSignature,
-                                                           *l_modelCascadeShadowRootSignature,
-                                                           m_frameResourceList.size(),
-                                                           l_cbvSRVUAVDescriptorPool),
-                                                           "ModelRenderSystemの作成処理に失敗しました。",
-                                                           false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_isModelRenderSystemCreated, "ModelRenderSystemの作成処理に失敗しました。", false);
 ```
 
 ---

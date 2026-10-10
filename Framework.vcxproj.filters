@@ -568,6 +568,24 @@
     <Filter Include="Source\Framework\Graphics\Render\Model">
       <UniqueIdentifier>{3900d8fe-8f51-46cc-b942-d18cc293ed5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Macros\Graphics">
+      <UniqueIdentifier>{bffbdcd7-1b0f-41c5-9910-9c5c78e186c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\IsModelRenderTableElement">
+      <UniqueIdentifier>{2a6d8052-7deb-4e68-80db-b4f019e8c23a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Model\Table">
+      <UniqueIdentifier>{894a90b8-839f-472c-bb5c-86e7c8d951a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Standard">
+      <UniqueIdentifier>{70c7fcb6-d559-4068-8804-1c69ffbfb244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Standard\Lit">
+      <UniqueIdentifier>{afdbf953-a4b8-4413-bead-4f038bd7afd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit">
+      <UniqueIdentifier>{4e698351-11b7-4833-85fa-144f9cce14af}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Model\Converter">
       <UniqueIdentifier>{2093f172-04a6-4878-898c-63e2110c8359}</UniqueIdentifier>
     </Filter>
@@ -792,6 +810,9 @@
     </Filter>
     <Filter Include="Source\Framework\Graphics\Resource\Model\Skeltal\Player">
       <UniqueIdentifier>{87d8dcf4-2cb5-4162-95cd-f1d655f9212c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Table">
+      <UniqueIdentifier>{82664f00-0f8f-419d-b390-7f3d214dfc2a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal">
       <UniqueIdentifier>{5471599d-ca50-4eb0-b98e-87a4e1b3e14b}</UniqueIdentifier>
@@ -2100,9 +2121,6 @@
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelRenderSystemConstant.h">
       <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Framework\Definition\Enum\Graphics\ModelRenderSystemEnum.h">
-      <Filter>Source\Framework\Definition\Enum\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Root\RCModelStruct.h">
       <Filter>Source\Framework\Definition\Struct\Graphics\Buffer\Root</Filter>
     </ClInclude>
@@ -2111,6 +2129,30 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Model\Converter\Json\ModelRenderSystemJsonConverter.h">
       <Filter>Source\Framework\Graphics\Render\Model\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\Graphics\ModelRenderTableINFORegistryStruct.h">
+      <Filter>Source\Framework\Definition\Struct\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsModelRenderTableElement\IsModelRenderTableElementConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsModelRenderTableElement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Macros\Graphics\ModelRenderTableINFORegistryMacros.h">
+      <Filter>Source\Framework\Definition\Macros\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Model\Table\ModelRenderTableINFORegistry.h">
+      <Filter>Source\Framework\Graphics\Render\Model\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Model\Table\ModelObjectGPUData.h">
+      <Filter>Source\Framework\Graphics\Render\Model\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Model\Table\ModelMeshGPUData.h">
+      <Filter>Source\Framework\Graphics\Render\Model\Table</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Standard\Lit\ModelStandardLitMaterialGPUData.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit\ModelStandardUnLitMaterialGPUData.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Model\ModelRenderSystem.h">
       <Filter>Source\Framework\Graphics\Render\Model</Filter>
@@ -2414,6 +2456,9 @@
     </ClInclude>
     <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ComputeRequestPerObjectSharedFactoryTypeAlias.h">
       <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Table\ModelRenderTableUploadPass.h">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Table</Filter>
     </ClInclude>
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>
@@ -3536,6 +3581,9 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Model\Converter\Json\ModelRenderSystemJsonConverter.cpp">
       <Filter>Source\Framework\Graphics\Render\Model\Converter\Json</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Model\Table\ModelRenderTableINFORegistry.cpp">
+      <Filter>Source\Framework\Graphics\Render\Model\Table</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Model\ModelRenderSystem.cpp">
       <Filter>Source\Framework\Graphics\Render\Model</Filter>
     </ClCompile>
@@ -3676,6 +3724,9 @@
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Resource\Model\Skeletal\Player\SkeletalAnimationPlayer.cpp">
       <Filter>Source\Framework\Graphics\Resource\Model\Skeltal\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Table\ModelRenderTableUploadPass.cpp">
+      <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Table</Filter>
     </ClCompile>
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal\SkeletalAnimationComputePass.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Pass\Model\Skeletal</Filter>

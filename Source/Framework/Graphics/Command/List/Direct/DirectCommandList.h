@@ -34,7 +34,20 @@ namespace FWK::Graphics
 
         template <typename RootConstantType>
         void SetupRoot32BitConstants(const RootConstantType& a_rootConstantData, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
-        {}
+        {
+            // 4バイト単位で送るため、memcpyできる型で、大きさが4で割り切れる型だけを許可する
+            static_assert(std::is_trivially_copyable_v<RootConstantType>, "Root32BitConstantsへ渡す型は、triviallyCopyableである必要があります。");
+            static_assert(sizeof(RootConstantType) % sizeof(std::uint32_t) == static_cast<std::size_t>(Constant::k_noRemainder));
+
+            // 例 : RCModelDrawItem(uint × 3 = 12バイト)なら3個の値として送る
+            constexpr auto l_rootConstantCount = static_cast<UINT>(sizeof(RootConstantType) / sizeof(std::uint32_t));
+
+            SetupRoot32BitConstants(a_rootSignature,
+                                    &a_rootConstantData,
+                                    a_rootParameterType,
+                                    l_rootConstantCount,
+                                    k_rootConstantStartOffset);
+        }
 
         void SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const;
 

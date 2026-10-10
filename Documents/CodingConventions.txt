@@ -1147,6 +1147,9 @@
          if (const auto& l_json = a_rootJson.value(k_key, nlohmann::json{});
              !l_json.is_null())
      ・配列は Utility::IsJsonArray(a_rootJson, k_key) で確認してからループします。
+     ・map で持つものは、読み込んだ1件ごとに本体の AddXxx を呼んで、その map へ直接入れて復元します。
+       設定を一時的に入れておくだけの vector(XxxSettingList など)は作りません。vector は追加した順番に意味があるときだけ使います。
+       Device が要る作成は Create で map を回して行います(Renderer の RootSignatureMap / ModelRenderSystem の TableMap)。
 15-3. Serialize は次のように書きます。
          nlohmann::json FWK::Converter::WindowJsonConverter::Serialize(const Window& a_window) const
          {
@@ -1263,6 +1266,33 @@
        SubtractReferenceCount(Record)のどちらを使うかをコンパイル時に決めます。
      ・書き忘れてもコンパイルエラーにはならず、すぐ解放する側で動いてしまいます(GPU が使用中のリソースを解放する危険があります)。
        GPU のリソースを持たせたときは、ReserveRelease を必ず一緒に追加します。
+18-9. クラス(種類)を足すたびに if / switch / enum が増えていく処理は、登録マクロにして、クラスを定義した場所に1行書く形にします。
+     ・NG : 種類の enum を作り、別のクラスの switch で「種類 → 大きさ / パス / 設定」を返す
+              (種類を足すたびに、定義したファイルとは別の場所を書き足す必要があり、書き忘れても動かすまで気づけないため)
+              switch (a_type) { case Enum::ModelRenderTableType::StandardLitMaterial: { return sizeof(...); } ... }
+       OK : クラスの一番下に登録マクロを書き、起動時(main より前)にレジストリへ自動で登録させる
+              class ModelStandardLitMaterialGPUData final
+              {
+                  ...
+                  FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFO(ModelStandardLitMaterialGPUData)
+              };
+     ・マクロは FWK_DEFINE_TYPE_INFO と同じ形で作ります(Definition/Macros/<分類>/XxxRegistryMacros.h)。
+         1. static const auto& GetREFXxxINFO() : 関数の中の static 変数で、型の名前(#Type)・StaticTypeID・sizeof などを持つ情報を返す
+         2. private の入れ子のクラス RegisterXxxINFO のコンストラクタで、レジストリ(Utility::SingletonBase)の Register を呼ぶ
+         3. inline static const RegisterXxxINFO k_autoRegisterXxxINFO = {}; で、main より前にコンストラクタを動かす
+       型に条件がある場合(memcpy できる・並びが決まっているなど)は、GetREFXxxINFO の中に static_assert を書きます
+       (クラスの { } の中では型が完成していないため、関数の本体の中に書きます)。
+     ・使う側は、種類の enum ではなく StaticTypeID(GetREFXxxINFO().k_staticTypeID)をキーにして探します。
+       型が決まっている所はテンプレート(FindVALTable<ModelMeshGPUData>())、実行時に決まる所は StaticTypeID で探す関数を使います。
+       テンプレート引数は、マクロを書いた型だけを受け付ける Concept で制限します(IsModelRenderTableElementConcept)。
+     ・レジストリの一覧から必要な物(テーブル・描画項目の一覧・コマンドシグネチャなど)を作り、種類ごとの分岐を書きません。
+       CONFIG で値を指定する場合は、型の名前(#Type)で探し、書いていなければ既定値にします(種類を足しても CONFIG を書かずに動くようにするため)。
+     ・先例 : FWK_DEFINE_MODEL_RENDER_TABLE_INFO / FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFO
+              (ModelRenderTableINFORegistry、ModelRenderSystem::Create がテーブルと描画項目の一覧を作る)
+     ・TypeINFO で足りる情報(名前・StaticTypeID)は FWK_DEFINE_TYPE_INFO(_SINGLE) に任せ、足りない情報(1要素の大きさ・マテリアルか など)だけを
+       別の構造体(ModelRenderTableINFO は TypeINFO への生ポインタを持つ)にして、同じマクロの中で登録します(情報を二重に持たない)。
+     ・パス・マテリアルのクラスのように、そのクラスの中で型を指定できる所(RecordDraw<ModelStandardLitMaterialGPUData>)は、
+       定義した場所に書いているので、この決まりを満たします。
 
 
 ================================================================================

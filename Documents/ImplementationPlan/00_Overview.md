@@ -68,7 +68,21 @@
 - `Struct::ModelDrawItem`(描画項目)を、ExecuteIndirect の1件(ルート定数 12 バイト + DispatchMesh の引数 12 バイト)と同じ並びにした。S6 は memcpy だけで済む。
 - Static と Skeletal が同じ `.asset` をキャッシュにしていたため、スケルタルの切り替えのたびに FBX を読み直していた。S4-3 で `.staticModel` / `.skeletalModel` に分ける。
 - Static と Skeletal の AS は中身が同じだったので、S3 で `Model/Model_AS.hlsl` の1つにまとめる。
+- テーブルのコピーは `Renderer::BeginFrame` ではなく、RenderGraph のパス `ModelRenderTableUploadPass`(実行レイヤー `Upload` = 一番前)で行う(2026-10-10)。
+  RenderGraph が並べる順番・S1 のプロファイラー・P1 のカリングのパスとの前後が、すべて実行レイヤーで決まる。S5 / S6 の設計は変わらない。
 - GraphicsCONFIG.json の `ModelPerObjectDynamicConstantBufferUploader`(300000 × 256 バイト × 3 フレーム ≒ 220MB の UPLOAD)は S5 で不要になる。
+
+## テーブルの種類を登録マクロにした改訂(2026-10-10 夜、ユーザー指示)
+
+- ユーザー指示 : 「クラスを足すと増えていく if / switch は、FWK_TYPE_INFO のようなマクロを用意して、定義した場所に書く形にする」(規約 18-9)。
+- S3 の写経の後に、テーブルの GPU データ(オブジェクト・メッシュ・マテリアル)をクラスにして、`FWK_DEFINE_MODEL_RENDER_TABLE_INFO` /
+  `FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFO` で登録する形に変えた。骨組み(マクロ・レジストリ・GPU データのクラス・登録・CONFIG)は書き換え済み。
+- その結果、消えた「種類ごとの分岐」:
+  - S3 : `Enum::ModelRenderTableType` と `FetchVALElementByteStride` の switch
+  - S4 : マテリアルの `FetchVALTableType`(enum を返す)→ `FetchREFTableINFO`(GPU データの型の情報を返す1行)
+  - S5 : `Enum::ModelRenderPassType` と、描き方の「マテリアル → パス」の switch(一覧は「メッシュの種類 × マテリアルのテーブル」で自動で作る)
+  - S6 : 「影のパスか」でルートシグネチャを選ぶ分岐(コマンドシグネチャは、RCModelDrawItem を持つルートシグネチャごとに自動で作る)
+- 写経し直すところは、S3 の文書の冒頭の表。
 
 ## 設計の決まり(2026-10-10 追加)
 

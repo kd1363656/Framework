@@ -48,6 +48,7 @@ namespace FWK::Enum
     enum class RenderGraphPassExecutionLayer
     {
         Invalid,
+        Upload,
         Animation,
         Shadow,
         Model,
@@ -63,6 +64,7 @@ namespace FWK::Enum
     (
         RenderGraphPassExecutionLayer,
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Invalid),
+        FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Upload),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Animation),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Shadow),
         FWK_JSON_ENUM_VALUE(RenderGraphPassExecutionLayer::Model),

@@ -139,22 +139,22 @@
             }
         },
         "ModelRenderSystem": {
-            "TableSettingList": [
+            "TableMap": [
                 {
                     "Capacity": 4096,
-                    "Type": "ModelRenderTableType::Object"
+                    "TypeName": "ModelObjectGPUData"
                 },
                 {
                     "Capacity": 16384,
-                    "Type": "ModelRenderTableType::Mesh"
+                    "TypeName": "ModelMeshGPUData"
                 },
                 {
                     "Capacity": 1024,
-                    "Type": "ModelRenderTableType::StandardLitMaterial"
+                    "TypeName": "ModelStandardLitMaterialGPUData"
                 },
                 {
                     "Capacity": 1024,
-                    "Type": "ModelRenderTableType::StandardUnLitMaterial"
+                    "TypeName": "ModelStandardUnLitMaterialGPUData"
                 }
             ]
         },
@@ -1908,6 +1908,9 @@
                 }
             ],
             "RenderGraphPassList": [
+                {
+                    "RenderGraphPassTypeName": "ModelRenderTableUploadPass"
+                },
                 {
                     "RenderGraphPassTypeName": "SkeletalAnimationComputePass"
                 },

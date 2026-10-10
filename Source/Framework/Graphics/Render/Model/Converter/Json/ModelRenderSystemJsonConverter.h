@@ -20,8 +20,10 @@ namespace FWK::Converter
 
     private:
 
-        static constexpr std::string_view k_tableSettingListJsonKey = "TableSettingList";
-        static constexpr std::string_view k_typeJsonKey             = "Type";
-        static constexpr std::string_view k_capacityJsonKey         = "Capacity";
+        static constexpr std::string_view k_tableMapJsonKey = "TableMap";
+        static constexpr std::string_view k_typeNameJsonKey = "TypeName";
+        static constexpr std::string_view k_capacityJsonKey = "Capacity";
+
+        static constexpr UINT k_defaultCapacity = 1024U;
     };
 }

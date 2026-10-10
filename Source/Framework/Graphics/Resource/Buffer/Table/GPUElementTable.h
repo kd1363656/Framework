@@ -18,8 +18,6 @@ namespace FWK::Graphics
         bool Create(const Device&                             a_device,
                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                     const std::size_t&                        a_frameCount,
-                    const UINT                                a_capacity,
-                    const UINT                                a_elementByteStride,
                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         std::uint32_t AllocateElementIndex();
@@ -51,6 +49,11 @@ namespace FWK::Graphics
 
         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
         void Release       ()                                                                                    override;
+
+        void SetCapacity         (const UINT a_set) { m_capacity          = a_set; }
+        void SetElementByteStride(const UINT a_set) { m_elementByteStride = a_set; }
+
+        UINT GetVALCapacity() const { return m_capacity; }
 
         static constexpr std::uint32_t k_invalidElementIndex = std::numeric_limits<std::uint32_t>::max();
 

@@ -1,5 +1,12 @@
 # S2 GPUElementTable(変わった要素だけ GPU へ送るテーブル)
 
+> **2026-10-10 改訂(容量と1要素の大きさは Create の前に Set する)** : ModelRenderSystem が `m_tableSettingList` を持たず、
+> Deserialize の時点でテーブルを作って map へ入れ、Create では map を回すだけにした(Renderer の RootSignatureMap と同じ形、S3 参照)。
+> そのため、容量と1要素の大きさは `SetCapacity` / `SetElementByteStride` で先に持たせ、`Create` の引数から外した。
+> Serialize で容量を書き出すために `GetVALCapacity` を足した。
+> **写経し直すところ** : `Create` の中で `a_capacity` / `a_elementByteStride` を使っていた所を `m_capacity` / `m_elementByteStride` にし(4か所)、
+> 最後の `m_capacity = a_capacity;` / `m_elementByteStride = a_elementByteStride;` の2行を消す。引数の宣言はこちらで消した。
+
 ## 目的
 
 今のモデル描画は、**毎フレーム・メッシュごと・パスごとに** `CBModelPerObject`(行列・マテリアルの値・SRV の番号)を作り直して書いている。
@@ -119,8 +126,6 @@ namespace FWK::Graphics
         bool Create(const Device&                             a_device,
                     const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                     const std::size_t&                        a_frameCount,
-                    const UINT                                a_capacity,
-                    const UINT                                a_elementByteStride,
                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
         std::uint32_t AllocateElementIndex();
@@ -152,6 +157,11 @@ namespace FWK::Graphics
 
         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
         void Release       ()                                                                                    override;
+
+        void SetCapacity         (const UINT a_set) { m_capacity          = a_set; }
+        void SetElementByteStride(const UINT a_set) { m_elementByteStride = a_set; }
+
+        UINT GetVALCapacity() const { return m_capacity; }
 
         static constexpr std::uint32_t k_invalidElementIndex = std::numeric_limits<std::uint32_t>::max();
 
@@ -216,21 +226,19 @@ FWK::Graphics::GPUElementTable::~GPUElementTable()
 bool FWK::Graphics::GPUElementTable::Create(const Device&                             a_device,
                                             const GPUMemoryAllocator&                 a_gpuMemoryAllocator,
                                             const std::size_t&                        a_frameCount,
-                                            const UINT                                a_capacity,
-                                            const UINT                                a_elementByteStride,
                                                   TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool)
 {
     const auto& l_currentBufferGPUResource = GetREFBufferGPUResource();
 
     FWK_ASSERT_RETURN_VALUE_IF(a_frameCount == k_emptyFrameCount,                                      "フレーム数が0のため、GPUElementTableの作成に失敗しました。",                         false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_capacity == k_initialCapacity,                                        "容量が0のため、GPUElementTableの作成に失敗しました。",                               false);
-    FWK_ASSERT_RETURN_VALUE_IF(a_elementByteStride == k_initialElementByteStride,                      "1要素の大きさが0のため、GPUElementTableの作成に失敗しました。",                      false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_capacity == k_initialCapacity,                                        "容量が0のため、GPUElementTableの作成に失敗しました。",                               false);
+    FWK_ASSERT_RETURN_VALUE_IF(m_elementByteStride == k_initialElementByteStride,                      "1要素の大きさが0のため、GPUElementTableの作成に失敗しました。",                      false);
     FWK_ASSERT_RETURN_VALUE_IF(l_currentBufferGPUResource.m_resource,                                  "既にGPUResourceを保持しているため、GPUElementTableの作成に失敗しました。",           false);
     FWK_ASSERT_RETURN_VALUE_IF(GetVALSRVDescriptorIndex() != DescriptorHeap::k_invalidDescriptorIndex, "既にSRVDescriptorIndexを保持しているため、GPUElementTableの作成に失敗しました。", false);
 
     // テーブル全体の大きさ = 容量 × 1要素の大きさ
     // 例 : 4096 × 136 = 557,056バイト
-    const auto& l_bufferSize = static_cast<UINT64>(a_capacity) * static_cast<UINT64>(a_elementByteStride);
+    const auto& l_bufferSize = static_cast<UINT64>(m_capacity) * static_cast<UINT64>(m_elementByteStride);
 
     // 失敗してもこのテーブルが中途半端な状態にならないように、まずはローカル変数で作る
     Struct::GPUResource l_bufferGPUResource = {};
@@ -252,8 +260,8 @@ bool FWK::Graphics::GPUElementTable::Create(const Device&                       
     // 作ったSRVはディスクリプタヒープの何番目かに置かれ、シェーダーはその番号でResourceDescriptorHeapから取り出す
     const auto& l_srvDescriptorIndex = CreateSRV(a_device,
                                                  l_bufferGPUResource,
-                                                 a_capacity,
-                                                 a_elementByteStride,
+                                                 m_capacity,
+                                                 m_elementByteStride,
                                                  a_cbvSRVUAVDescriptorPool);
 
     FWK_ASSERT_RETURN_VALUE_IF(l_srvDescriptorIndex == DescriptorHeap::k_invalidDescriptorIndex, "GPUElementTable用SRVの作成に失敗しました。", false);
@@ -286,9 +294,6 @@ bool FWK::Graphics::GPUElementTable::Create(const Device&                       
     // CPU側の写しも、テーブルと同じ大きさで持つ
     // WriteElementはまずここへ書き、RecordUploadでここからUPLOADへ写す
     m_cpuElementDataList.resize(static_cast<std::size_t>(l_bufferSize));
-
-    m_capacity          = a_capacity;
-    m_elementByteStride = a_elementByteStride;
 
     return true;
 }

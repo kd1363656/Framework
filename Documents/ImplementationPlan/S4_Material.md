@@ -15,6 +15,17 @@
 - スロットは名前で対応づけ、番号は保存しない。名前が見つからないスロットはエラーマテリアル(マゼンタ)。
 - JsonConverter / BinaryConverter は必ずメンバに持つ(関数の中でローカルに作らない)。
 
+### 2026-10-10 改訂(テーブルの種類をマクロで登録する形に合わせた)
+
+- マテリアルの GPU データ(`ModelStandardLitMaterialGPUData` など)は、S3 の改訂で **クラス + `FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFO`** にした(ファイルは作成済み)。
+- マテリアルのクラスは、`Enum::ModelRenderTableType` を返す代わりに、**自分の GPU データの型のテーブルの情報**を返す。
+  ```cpp
+  const Struct::ModelRenderTableINFO& FetchREFTableINFO() const override;   // return ModelStandardLitMaterialGPUData::GetREFModelRenderTableINFO();
+  ```
+  基底クラス(`CreateGPUData`)は、その情報の StaticTypeID でテーブルを探す。マテリアルの種類が増えても、基底クラスと ModelRenderSystem は書き換えない。
+- GPU データへの値は Set 関数で詰める(クラスにしたため)。
+- 描き方へ渡す `Struct::ModelDrawMaterial` は、テーブルの種類を enum ではなく StaticTypeID(`m_tableStaticTypeID`)で持つ。
+
 ### 撤回した設計の反省を反映した点
 
 - 前回は ModelMaterialSystem が GPU テーブルを持っていたため、アプリ終了時の破棄順でアサートが出た。
@@ -440,7 +451,7 @@ namespace FWK::Graphics
 
         void SetBaseColor(const TypeAlias::Math::Color& a_set) { m_baseColor = a_set; }
 
-        virtual Enum::ModelRenderTableType FetchVALTableType() const = 0;
+        virtual const Struct::ModelRenderTableINFO& FetchREFTableINFO() const = 0;
 
         const auto& GetREFBaseColorTexture() const { return m_baseColorTexture; }
 
@@ -569,16 +580,20 @@ bool FWK::Graphics::ModelMaterialBase::CreateGPUData()
         return true;
     }
 
-    const auto& l_graphicsManager   = GraphicsManager::GetInstance          ();
-    const auto& l_renderer          = l_graphicsManager.GetREFRenderer      ();
-    const auto& l_modelRenderSystem = l_renderer.GetREFModelRenderSystem     ();
+    const auto& l_graphicsManager   = GraphicsManager::GetInstance      ();
+    const auto& l_renderer          = l_graphicsManager.GetREFRenderer  ();
+    const auto& l_modelRenderSystem = l_renderer.GetREFModelRenderSystem();
 
-    // 自分の種類(StandardLitなど)のテーブルを探し、番号を1つもらう
-    m_table = l_modelRenderSystem.FindVALTable(FetchVALTableType());
+    // 自分の種類(StandardLitなど)のテーブルの情報を、派生クラスから受け取る
+    // 情報のStaticTypeID(GPUデータの型ごとに決まる番号)でテーブルを探し、番号を1つもらう
+    // 例 : ModelStandardLitMaterialなら、ModelStandardLitMaterialGPUData(40バイト)のテーブル
+    const auto& l_tableINFO = FetchREFTableINFO();
+
+    m_table = l_modelRenderSystem.FindVALTable(l_tableINFO.k_typeINFO->k_staticTypeID);
 
     const auto& l_table = m_table.lock();
 
-    FWK_ASSERT_RETURN_VALUE_IF(!l_table, "マテリアルの種類に対応するテーブルが無いため、マテリアルのGPUデータの作成に失敗しました。", false);
+    FWK_ASSERT_RETURN_VALUE_IF(!l_table, "マテリアルの種類に対応するテーブルが無いため(GraphicsCONFIG.jsonのTableMapに書いてあるか確認)、マテリアルのGPUデータの作成に失敗しました。", false);
 
     m_tableElementIndex = l_table->AllocateElementIndex();
 
@@ -668,7 +683,7 @@ namespace FWK::Graphics
         void SetMetallic (const float a_set) { m_metallic  = a_set; }
         void SetRoughness(const float a_set) { m_roughness = a_set; }
 
-        Enum::ModelRenderTableType FetchVALTableType() const override;
+        const Struct::ModelRenderTableINFO& FetchREFTableINFO() const override;
 
     protected:
 
@@ -703,7 +718,7 @@ FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ModelMaterialSharedFactory, FWK::Gra
 
 // 光の当たり方を計算する(Lit)標準のマテリアル
 // 基底の値(ベースカラー)に加えて、法線・メタリック・ラフネスのテクスチャと値を持つ
-// GPUへは、Struct::ModelStandardLitMaterialGPUData(40バイト)としてStandardLitのテーブルへ書く
+// GPUへは、ModelStandardLitMaterialGPUData(40バイト)としてStandardLitのテーブルへ書く
 FWK::Graphics::ModelStandardLitMaterial::ModelStandardLitMaterial() :
     m_normalTexture   (),
     m_metallicTexture (),
@@ -713,8 +728,8 @@ FWK::Graphics::ModelStandardLitMaterial::ModelStandardLitMaterial() :
     m_metallicRuntimeTexture (),
     m_roughnessRuntimeTexture(),
 
-    m_metallic (Struct::ModelStandardLitMaterialGPUData::k_defaultMetallic),
-    m_roughness(Struct::ModelStandardLitMaterialGPUData::k_defaultRoughness)
+    m_metallic (ModelStandardLitMaterialGPUData::k_defaultMetallic),
+    m_roughness(ModelStandardLitMaterialGPUData::k_defaultRoughness)
 {
     m_normalTexture.SetAllowedType   (Enum::AssetFilePathType::Texture);
     m_metallicTexture.SetAllowedType (Enum::AssetFilePathType::Texture);
@@ -764,25 +779,33 @@ void FWK::Graphics::ModelStandardLitMaterial::LoadRuntimeTextures()
     LoadRuntimeTexture(m_roughnessTexture, Enum::TextureLoadColorSpace::Linear, Enum::DefaultTextureType::Roughness, m_roughnessRuntimeTexture);
 }
 
-FWK::Enum::ModelRenderTableType FWK::Graphics::ModelStandardLitMaterial::FetchVALTableType() const
+const FWK::Struct::ModelRenderTableINFO& FWK::Graphics::ModelStandardLitMaterial::FetchREFTableINFO() const
 {
-    return Enum::ModelRenderTableType::StandardLitMaterial;
+    // このマテリアルがGPUへ送る型(ModelStandardLitMaterialGPUData)の、テーブルの情報を返す
+    // 情報は、その型に書いたマクロ(FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFO)が作ったもの
+    return ModelStandardLitMaterialGPUData::GetREFModelRenderTableINFO();
 }
 
 void FWK::Graphics::ModelStandardLitMaterial::WriteGPUData(GPUElementTable& a_table, const std::uint32_t a_tableElementIndex) const
 {
-    Struct::ModelStandardLitMaterialGPUData l_gpuData = {};
-
-    // シェーダー(ModelStandardLitMaterial.hlsli)のModelStandardLitMaterialDataと同じ並びで詰める
-    l_gpuData.m_baseColor = GetREFBaseColor();
-    l_gpuData.m_metallic  = m_metallic;
-    l_gpuData.m_roughness = m_roughness;
-
     // テクスチャは、SRVの番号だけを書く(シェーダーはResourceDescriptorHeap[番号]で取り出す)
-    l_gpuData.m_baseColorTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(GetREFBaseColorRuntimeTexture());
-    l_gpuData.m_normalTextureSRVDescriptorIndex    = FetchVALTextureSRVDescriptorIndex(m_normalRuntimeTexture);
-    l_gpuData.m_metallicTextureSRVDescriptorIndex  = FetchVALTextureSRVDescriptorIndex(m_metallicRuntimeTexture);
-    l_gpuData.m_roughnessTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(m_roughnessRuntimeTexture);
+    const auto& l_baseColorRuntimeTexture            = GetREFBaseColorRuntimeTexture    ();
+    const auto  l_baseColorTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(l_baseColorRuntimeTexture);
+    const auto  l_normalTextureSRVDescriptorIndex    = FetchVALTextureSRVDescriptorIndex(m_normalRuntimeTexture);
+    const auto  l_metallicTextureSRVDescriptorIndex  = FetchVALTextureSRVDescriptorIndex(m_metallicRuntimeTexture);
+    const auto  l_roughnessTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(m_roughnessRuntimeTexture);
+
+    // シェーダー(ModelStandardLitMaterial.hlsli)のModelStandardLitMaterialDataと同じ並びの型(ModelStandardLitMaterialGPUData)に、Set関数で詰める
+    ModelStandardLitMaterialGPUData l_gpuData = {};
+
+    l_gpuData.SetBaseColor(GetREFBaseColor());
+    l_gpuData.SetMetallic (m_metallic);
+    l_gpuData.SetRoughness(m_roughness);
+
+    l_gpuData.SetBaseColorTextureSRVDescriptorIndex(l_baseColorTextureSRVDescriptorIndex);
+    l_gpuData.SetNormalTextureSRVDescriptorIndex   (l_normalTextureSRVDescriptorIndex);
+    l_gpuData.SetMetallicTextureSRVDescriptorIndex (l_metallicTextureSRVDescriptorIndex);
+    l_gpuData.SetRoughnessTextureSRVDescriptorIndex(l_roughnessTextureSRVDescriptorIndex);
 
     a_table.WriteElement(l_gpuData, a_tableElementIndex);
 }
@@ -804,7 +827,7 @@ namespace FWK::Graphics
          ModelStandardUnLitMaterial()          = default;
         ~ModelStandardUnLitMaterial() override = default;
 
-        Enum::ModelRenderTableType FetchVALTableType() const override;
+        const Struct::ModelRenderTableINFO& FetchREFTableINFO() const override;
 
     protected:
 
@@ -825,19 +848,23 @@ FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::ModelMaterialSharedFactory, FWK::Gra
 // 光の当たり方を計算しない(UnLit)標準のマテリアル
 // ベースカラーとそのテクスチャだけを使う(基底の値だけで足りるため、追加の値はない)
 // エラーマテリアル(マゼンタ)もこの種類で作る
-FWK::Enum::ModelRenderTableType FWK::Graphics::ModelStandardUnLitMaterial::FetchVALTableType() const
+const FWK::Struct::ModelRenderTableINFO& FWK::Graphics::ModelStandardUnLitMaterial::FetchREFTableINFO() const
 {
-    return Enum::ModelRenderTableType::StandardUnLitMaterial;
+    // このマテリアルがGPUへ送る型(ModelStandardUnLitMaterialGPUData)の、テーブルの情報を返す
+    return ModelStandardUnLitMaterialGPUData::GetREFModelRenderTableINFO();
 }
 
 void FWK::Graphics::ModelStandardUnLitMaterial::WriteGPUData(GPUElementTable& a_table, const std::uint32_t a_tableElementIndex) const
 {
     // UnLitは色とテクスチャの番号だけ(20バイト)
     // Litの値(メタリックなど)は使わないので、送らない
-    Struct::ModelStandardUnLitMaterialGPUData l_gpuData = {};
+    const auto& l_baseColorRuntimeTexture            = GetREFBaseColorRuntimeTexture    ();
+    const auto  l_baseColorTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(l_baseColorRuntimeTexture);
 
-    l_gpuData.m_baseColor                          = GetREFBaseColor                  ();
-    l_gpuData.m_baseColorTextureSRVDescriptorIndex = FetchVALTextureSRVDescriptorIndex(GetREFBaseColorRuntimeTexture());
+    ModelStandardUnLitMaterialGPUData l_gpuData = {};
+
+    l_gpuData.SetBaseColor                         (GetREFBaseColor());
+    l_gpuData.SetBaseColorTextureSRVDescriptorIndex(l_baseColorTextureSRVDescriptorIndex);
 
     a_table.WriteElement(l_gpuData, a_tableElementIndex);
 }
@@ -1438,7 +1465,7 @@ cbuffer RCModelMaterialTable : register(b6)
 #include "../ModelStandardMaterial.hlsli"
 
 // StandardLitのテーブルの1要素
-// C++側のStruct::ModelStandardLitMaterialGPUDataと同じ並び(40バイト)にする
+// C++側のGraphics::ModelStandardLitMaterialGPUDataと同じ並び(40バイト)にする
 struct ModelStandardLitMaterialData
 {
     float4 baseColor;
@@ -1470,7 +1497,7 @@ ModelStandardLitMaterialData FetchModelStandardLitMaterialData()
 #include "../ModelStandardMaterial.hlsli"
 
 // StandardUnLitのテーブルの1要素
-// C++側のStruct::ModelStandardUnLitMaterialGPUDataと同じ並び(20バイト)にする
+// C++側のGraphics::ModelStandardUnLitMaterialGPUDataと同じ並び(20バイト)にする
 struct ModelStandardUnLitMaterialData
 {
     float4 baseColor;
@@ -1942,7 +1969,7 @@ namespace FWK::Struct
 
     struct ModelDrawMaterial final
     {
-        Enum::ModelRenderTableType m_tableType = Enum::ModelRenderTableType::Invalid;
+        TypeAlias::StaticTypeID m_tableStaticTypeID = StaticTypeIDGenerator::k_invalidStaticTypeID;
 
         std::uint32_t m_tableElementIndex = Graphics::GPUElementTable::k_invalidElementIndex;
     };
@@ -2079,7 +2106,7 @@ void FWK::GameObjectModelComponent::ApplyMaterialListToRenderer() const
     const auto& l_errorMaterial       = l_modelMaterialSystem.GetREFErrorMaterial    ();
     const auto& l_subMeshNameList     = m_renderer->FetchVALSubMeshNameList          ();
 
-    // メッシュごとに「マテリアルの種類(どのテーブルか)と、テーブルの何番目か」を並べる
+    // メッシュごとに「マテリアルの種類(どのテーブルか = GPUデータの型のStaticTypeID)と、テーブルの何番目か」を並べる
     // 例 : メッシュ0("Body") → StandardLitの3番 / メッシュ1("Face") → StandardLitの4番
     std::vector<Struct::ModelDrawMaterial> l_drawMaterialList = {};
 
@@ -2109,7 +2136,10 @@ void FWK::GameObjectModelComponent::ApplyMaterialListToRenderer() const
 
         if (l_material)
         {
-            l_drawMaterial.m_tableType         = l_material->FetchVALTableType      ();
+            // マテリアルの種類は、GPUデータの型のStaticTypeIDで渡す(S5で、どの描画項目の一覧に入れるかを決めるのに使う)
+            const auto& l_tableINFO = l_material->FetchREFTableINFO();
+
+            l_drawMaterial.m_tableStaticTypeID = l_tableINFO.k_typeINFO->k_staticTypeID;
             l_drawMaterial.m_tableElementIndex = l_material->GetVALTableElementIndex();
         }
 
@@ -2125,7 +2155,7 @@ boost::uuids::uuid FWK::GameObjectModelComponent::FetchVALDefaultMaterialUUID(co
     const auto& l_modelFilePath    = m_modelFilePath.FetchVALFilePath                                      ();
     const auto& l_materialFilePath = Graphics::ModelMaterialFileCreator::CreateDefaultModelMaterialFilePath(l_modelFilePath, a_subMeshName);
 
-    const auto& l_application           = Application::GetInstance             ();
+    const auto& l_application           = Application::GetInstance                 ();
     const auto& l_assetFilePathRegistry = l_application.GetREFAssetFilePathRegistry();
 
     if (const auto* l_assetUUID = l_assetFilePathRegistry.FindPTRAssetUUID(l_materialFilePath);

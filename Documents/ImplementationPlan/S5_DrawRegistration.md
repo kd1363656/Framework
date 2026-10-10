@@ -1,5 +1,9 @@
 # S5 描画の登録(状態が変わった時だけ描画項目を作る)
 
+> **2026-10-10 改訂** : 描画項目の一覧を「パスの種類(`Enum::ModelRenderPassType`)」ではなく、
+> 「メッシュの種類(`Enum::ModelMeshType`)× マテリアルのテーブル(GPU データの型の StaticTypeID)」で分ける形にした。
+> 一覧は、GraphicsCONFIG.json の TableMap に書いたマテリアルの数だけ自動で作られ、描き方の「マテリアル → パス」の switch も無くなった(下の「改訂前との比較」)。
+
 ## 目的
 
 今の描画パスは、毎フレーム、描画申請(オブジェクト)→ メッシュの二重ループで、オブジェクトの行列から CB を作っている。
@@ -45,10 +49,11 @@ S3・S4 で、行列・メッシュ・マテリアルはテーブルに置いた
 
 ```
 ModelRenderSystem(Renderer のメンバ)
- ├─ テーブル(S3・S4)                               std::shared_ptr<GPUElementTable> × 種類
- └─ 描画項目の一覧(パスの種類ごと)                  std::shared_ptr<ModelDrawItemList> × パスの種類
+ ├─ テーブル(S3・S4)       std::shared_ptr<GPUElementTable> × マクロで登録された型の数
+ └─ 描画項目の一覧         std::shared_ptr<ModelDrawItemList> × (メッシュの種類 × マテリアルのテーブル)
+       例 : Static × StandardLit / Static × StandardUnLit / Skeletal × StandardLit / Skeletal × StandardUnLit
        ModelDrawItemList
-        ├─ 登録の一覧   std::unordered_map<登録番号, フレームごとの項目の一覧>
+        ├─ 登録の一覧     std::unordered_map<登録番号, フレームごとの項目の一覧>
         └─ 詰め直した一覧 std::vector<std::vector<ModelDrawItem>>(フレームごと。パスはこれを回す)
 
 ModelComponent の描き方(Static / Skeletal)
@@ -57,9 +62,33 @@ ModelComponent の描き方(Static / Skeletal)
 
 - **フレームごとの項目** : Skeletal は、メッシュの要素をフレームの数だけ持つ(S3)。そのため、項目の一覧もフレームごとに持つ。
   Static はどのフレームも同じ項目を入れる。
-- **パスの種類** : `Enum::ModelRenderPassType`
-  - Lit / UnLit は、メッシュのマテリアルの種類(テーブル)で決まる。例 : StandardLit のマテリアル → `StaticStandardLit`。
-  - 影は、マテリアルに関係なく全メッシュ(`StaticCascadeShadow` / `SkeletalCascadeShadow`)。
+- **一覧の分け方** : 「メッシュの種類(`Enum::ModelMeshType` = Static / Skeletal)× マテリアルのテーブル(GPU データの型の StaticTypeID)」。
+  - `ModelRenderSystem::AddTable`(S3、CONFIG の `TableMap` の1件ごとに Deserialize から呼ばれる)が、**MATERIAL 版のマクロを書いた型** なら、メッシュの種類ごとに一覧を入れる。中身は `Create` で作る。
+    マテリアルの種類を足して CONFIG に1行書くと、一覧も自動で増える。
+  - 描き方は、メッシュのマテリアルの StaticTypeID(S4 の `Struct::ModelDrawMaterial::m_tableStaticTypeID`)の一覧へ、そのまま入れる。
+  - Lit / UnLit のパス : `RecordDraw<ModelStandardLitMaterialGPUData>(..., Enum::ModelMeshType::Static)` のように、**描くマテリアルの型をパスが指定する**。
+    パスはシェーダー(PSO)と1対1なので、パスのクラスの中に書けばよい(定義した場所に書く)。
+  - 影のパス : マテリアルに関係なく全部描くので、`RecordDrawWithoutMaterial(..., Enum::ModelMeshType::Static)` で、そのメッシュの種類の一覧を**全部**描く。
+- これで、「テーブルの種類 → パスの種類」の switch(旧 `FetchVALStandardPassType`)と `Enum::ModelRenderPassType` は無くなった。
+
+### 改訂前との比較(トゥーンのマテリアルを足すとき、書き足す場所)
+
+| | 改訂前 | 改訂後 |
+|---|---|---|
+| GPU データの型 | 構造体を足す | クラスを足し、一番下にマクロを1行書く |
+| テーブルの種類 | `ModelRenderTableType` と JSON の enum に1行ずつ | 書かない |
+| 1要素の大きさ | `FetchVALElementByteStride` の switch に case | 書かない(マクロの `sizeof`) |
+| パスの種類 | `ModelRenderPassType` に Static / Skeletal の2行 | 書かない(マテリアルの数だけ一覧が自動で増える) |
+| マテリアル → パス | 描き方の `FetchVALStandardPassType` の switch に case(Static / Skeletal の2か所) | 書かない |
+| コマンドシグネチャ(S6) | `l_isShadowPass ? ... : ...` の分岐 | 書かない(RCModelDrawItem を持つルートシグネチャ全部に自動で作る) |
+| マテリアルのクラス | `FetchVALTableType` | `FetchREFTableINFO`(GPU データの型を返す1行) |
+| パス | パスのクラス(シェーダーごとに必要) | 同じ(`RecordDraw<ModelToonMaterialGPUData>(...)` と書く) |
+
+### 影のパスで一覧を複数描くコスト
+
+- 影は「メッシュの種類の一覧を全部」描くので、マテリアルの種類が2つなら、1回の影の描画で一覧を2つ描く。
+- S6 では一覧1つにつき ExecuteIndirect が1回なので、影のカスケード3枚 × マテリアル2種類 = 6回(Static / Skeletal でそれぞれ)。
+  項目の数(1万など)には関係なく、マテリアルの種類の数だけ増える。トゥーンを足しても 9回で、CPU の負担はほぼ変わらない。
 
 ## ファイル一覧
 
@@ -67,7 +96,7 @@ ModelComponent の描き方(Static / Skeletal)
 
 | ファイル | 内容 |
 |---|---|
-| `Definition/Enum/Graphics/ModelRenderSystemEnum.h`(S3 のファイルに追記) | `Enum::ModelRenderPassType` |
+| `Definition/Enum/Graphics/ModelRenderSystemEnum.h`(新規。S3 の改訂で一度消したファイル) | `Enum::ModelMeshType`(Static / Skeletal) |
 | `Definition/Struct/Graphics/ModelRenderSystemStruct.h`(S3 のファイルに追記) | `Struct::ModelDrawRegistration` |
 | `Graphics/Render/Model/DrawItem/ModelDrawItemList.h/.cpp` | 描画項目の一覧 |
 
@@ -99,29 +128,36 @@ ModelComponent の描き方(Static / Skeletal)
 ### 登録
 
 - フィルター: `Source\Framework\Graphics\Render\Model\DrawItem`
+- `Definition/Enum/Graphics/ModelRenderSystemEnum.h` を vcxproj / filters(`Source\Framework\Definition\Enum\Graphics`)/ Framework.h(「モデルの描画テーブル」の `ModelRenderSystemConstant.h` の次)へ登録し直す。
+- `GameObjectModelComponentRendererBase.cpp` を vcxproj / filters へ登録する。
 - 削除したファイルは vcxproj / filters / Framework.h からも消す(フィルターが空になったら、フィルターも消す)。
 
 ---
 
 ## コード
 
-### Definition/Enum/Graphics/ModelRenderSystemEnum.h(追記)
+### Definition/Enum/Graphics/ModelRenderSystemEnum.h(新規)
+
+S3 の改訂で、テーブルの種類の enum(`ModelRenderTableType`)を消したので、このファイルは S5 で作り直す。
 
 ```cpp
-    enum class ModelRenderPassType
+#pragma once
+
+namespace FWK::Enum
+{
+    enum class ModelMeshType
     {
         Invalid,
-        StaticStandardLit,
-        StaticStandardUnLit,
-        SkeletalStandardLit,
-        SkeletalStandardUnLit,
-        StaticCascadeShadow,
-        SkeletalCascadeShadow,
+        Static,
+        Skeletal,
         Count,
     };
+}
 ```
 
-> JSON には保存しないので、`FWK_JSON_SERIALIZE_ENUM` は書かない。
+> - JSON には保存しないので、`FWK_JSON_SERIALIZE_ENUM` は書かない。
+> - Static と Skeletal は頂点の形(MS のシェーダー・PSO)が違うので、同じ一覧には入れられない。
+>   マテリアルと違って、種類は増えない(増やすときは、シェーダーとパスも一緒に作る)。
 
 ### Definition/Struct/Graphics/ModelRenderSystemStruct.h(追記)
 
@@ -312,65 +348,176 @@ void FWK::Graphics::ModelDrawItemList::RebuildFrameDrawItemListIfNeeded()
 ```cpp
     private:
 
-        using ModelRenderTableMap = std::unordered_map<Enum::ModelRenderTableType, std::shared_ptr<GPUElementTable>>;
+        using ModelRenderTableMap = std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<GPUElementTable>>;
 
-        using ModelDrawItemListMap = std::unordered_map<Enum::ModelRenderPassType, std::shared_ptr<ModelDrawItemList>>;
+        using ModelDrawItemListMap         = std::unordered_map<TypeAlias::StaticTypeID, std::shared_ptr<ModelDrawItemList>>;
+        using ModelMeshTypeDrawItemListMap = std::unordered_map<Enum::ModelMeshType, ModelDrawItemListMap>;
 
     public:
         ...
 
-        void RecordDraw(const RootSignature&             a_rootSignature,
-                        const DirectCommandList&         a_directCommandList,
-                        const std::size_t&               a_frameIndex,
-                        const Enum::ModelRenderPassType  a_passType,
-                        const Enum::ModelRenderTableType a_materialTableType) const;
+        void RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex) const;
+
+        template <Concept::IsModelMaterialRenderTableElementConcept MaterialElementType>
+        void RecordDraw(const RootSignature&      a_rootSignature,
+                        const DirectCommandList&  a_directCommandList,
+                        const std::size_t&        a_frameIndex,
+                        const Enum::ModelMeshType a_meshType) const
+        {
+            // パスが描くマテリアルの種類を、マテリアルのGPUデータの型で指定する
+            // 例 : StaticModelStandardLitPassなら RecordDraw<ModelStandardLitMaterialGPUData>(..., Enum::ModelMeshType::Static)
+            //      → 「Static × StandardLit」の描画項目の一覧だけを描く
+            // Conceptで、MATERIAL版のマクロを書いた型だけを受け付ける(ModelObjectGPUDataなどを渡すとコンパイルエラーになる)
+            const auto& l_materialTableINFO = MaterialElementType::GetREFModelRenderTableINFO();
+
+            RecordMaterialDraw(a_rootSignature,
+                               a_directCommandList,
+                               a_frameIndex,
+                               a_meshType,
+                               l_materialTableINFO.k_typeINFO->k_staticTypeID);
+        }
+
+        void RecordDrawWithoutMaterial(const RootSignature&      a_rootSignature,
+                                       const DirectCommandList&  a_directCommandList,
+                                       const std::size_t&        a_frameIndex,
+                                       const Enum::ModelMeshType a_meshType) const;
+
+        nlohmann::json Serialize() const;
 
         ...
 
-        std::weak_ptr<GPUElementTable> FindVALTable(const Enum::ModelRenderTableType a_type) const;
+        std::weak_ptr<GPUElementTable> FindVALTable(const TypeAlias::StaticTypeID a_tableStaticTypeID) const;
 
-        std::weak_ptr<ModelDrawItemList> FindVALDrawItemList(const Enum::ModelRenderPassType a_passType) const;
+        std::weak_ptr<ModelDrawItemList> FindVALDrawItemList(const Enum::ModelMeshType a_meshType, const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const;
+
+        const auto& GetREFTableMap() const { return m_tableMap; }
 
     private:
-        ...
 
-        ModelRenderTableMap  m_tableMap        = {};
-        ModelDrawItemListMap m_drawItemListMap = {};
+        void RecordMaterialDraw(const RootSignature&          a_rootSignature,
+                                const DirectCommandList&      a_directCommandList,
+                                const std::size_t&            a_frameIndex,
+                                const Enum::ModelMeshType     a_meshType,
+                                const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const;
+
+        ModelRenderTableMap          m_tableMap                = {};
+        ModelMeshTypeDrawItemListMap m_meshTypeDrawItemListMap = {};
+
+        Converter::ModelRenderSystemJsonConverter m_jsonConverter = {};
 ```
+
+> - `RecordDraw` をテンプレートにして、型 → StaticTypeID の変換だけをヘッダーで行い、本体(`RecordMaterialDraw`)は .cpp に書く。
+> - `ModelMeshTypeDrawItemListMap` : 「メッシュの種類 → (マテリアルの StaticTypeID → 一覧)」の2段の map。
+>   影のパスは1段目だけで探して、2段目を全部回す。
 
 ### Graphics/Render/Model/ModelRenderSystem.cpp(変更・写経)
 
-**Create の最後(テーブルを作った後)に追加:**
+**AddTable の最後(`m_tableMap.try_emplace(l_tableStaticTypeID, std::move(l_table));` の後)に追加:**
 
 ```cpp
-    // パスの種類ごとに、描画項目の一覧を作る
-    // 例 : StaticStandardLit(1) ~ SkeletalCascadeShadow(6)
-    for (auto l_passTypeValue = static_cast<std::size_t>(Enum::ModelRenderPassType::StaticStandardLit); l_passTypeValue < static_cast<std::size_t>(Enum::ModelRenderPassType::Count); ++l_passTypeValue)
+    // マテリアルのテーブル(FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFOを書いた型)なら、
+    // メッシュの種類(Static / Skeletal)ごとに、描画項目の一覧を入れる
+    // 例 : CONFIGにStandardLitとStandardUnLitが書かれていれば、
+    //      Static × StandardLit / Static × StandardUnLit / Skeletal × StandardLit / Skeletal × StandardUnLit の4つ
+    // テーブルと同じく、CONFIGに書いたマテリアルの分だけ入る(パスの種類のenumは要らない)
+    // ここでは入れるだけで、一覧の中身(フレームの数だけの入れ物)はCreateで作る(テーブルと同じ流れ)
+    if (!a_tableINFO.k_isMaterial) { return; }
+
+    for (auto l_meshTypeValue = static_cast<std::size_t>(Enum::ModelMeshType::Static); l_meshTypeValue < static_cast<std::size_t>(Enum::ModelMeshType::Count); ++l_meshTypeValue)
     {
-        auto l_drawItemList = std::make_shared<ModelDrawItemList>();
+        // operator[]は、まだ無いキー(メッシュの種類)なら空のmapを作ってから参照を返す
+        // その中へ、マテリアルのテーブルのStaticTypeIDをキーにして一覧を入れる
+        const auto  l_meshType        = static_cast<Enum::ModelMeshType>(l_meshTypeValue);
+              auto& l_drawItemListMap = m_meshTypeDrawItemListMap[l_meshType];
 
-        FWK_ASSERT_RETURN_VALUE_IF(!l_drawItemList->Create(a_frameCount), "描画項目の一覧の作成に失敗したため、ModelRenderSystemの作成に失敗しました。", false);
-
-        m_drawItemListMap.try_emplace(static_cast<Enum::ModelRenderPassType>(l_passTypeValue), std::move(l_drawItemList));
+        l_drawItemListMap.try_emplace(l_tableStaticTypeID, std::make_shared<ModelDrawItemList>());
     }
 ```
 
-**RecordDraw(写経):**
+**Create のテーブルを作るループの後(オブジェクトとメッシュのテーブルの確認の前)に追加:**
 
 ```cpp
-void FWK::Graphics::ModelRenderSystem::RecordDraw(const RootSignature&             a_rootSignature,
-                                                  const DirectCommandList&         a_directCommandList,
-                                                  const std::size_t&               a_frameIndex,
-                                                  const Enum::ModelRenderPassType  a_passType,
-                                                  const Enum::ModelRenderTableType a_materialTableType) const
+    // AddTableで入れた描画項目の一覧を、フレームの数で作る
+    // 1段目 = メッシュの種類、2段目 = マテリアルのテーブルのStaticTypeID
+    for (const auto& [l_meshType, l_drawItemListMap] : m_meshTypeDrawItemListMap)
+    {
+        for (const auto& [l_materialTableStaticTypeID, l_drawItemList] : l_drawItemListMap)
+        {
+            FWK_ASSERT_RETURN_VALUE_IF(!l_drawItemList,                       "描画項目の一覧が無効のため、ModelRenderSystemの作成に失敗しました。",           false);
+            FWK_ASSERT_RETURN_VALUE_IF(!l_drawItemList->Create(a_frameCount), "描画項目の一覧の作成に失敗したため、ModelRenderSystemの作成に失敗しました。", false);
+        }
+    }
+```
+
+> - S3 の形(Deserialize → `AddTable` で map に入れる → `Create` で map を回して作る)に合わせた。
+>   一覧はテーブルと同じ `AddTable` の中で入れるので、「テーブルはあるのに一覧が無い / 一覧はあるのにテーブルが無い」が起きない。
+> - `return` の後にマテリアル用の処理を書くのは、マテリアルではない種類(オブジェクト・メッシュ)を先に外して、字下げを浅くするため。
+> - CONFIG にマテリアルが1つも無いと、`m_meshTypeDrawItemListMap` にメッシュの種類のキーができない。そのときは描画で
+>   「メッシュの種類に対応する描画項目の一覧が無い」のアサートが出る(マテリアルが無いとモデルを描けないので、設定の誤りとして知らせる)。
+
+**RecordDrawWithoutMaterial(写経):**
+
+```cpp
+void FWK::Graphics::ModelRenderSystem::RecordDrawWithoutMaterial(const RootSignature&      a_rootSignature,
+                                                                 const DirectCommandList&  a_directCommandList,
+                                                                 const std::size_t&        a_frameIndex,
+                                                                 const Enum::ModelMeshType a_meshType) const
 {
-    const auto& l_drawItemListITR = m_drawItemListMap.find(a_passType);
+    const auto& l_meshTypeDrawItemListITR = m_meshTypeDrawItemListMap.find(a_meshType);
 
-    FWK_ASSERT_RETURN_IF(l_drawItemListITR == m_drawItemListMap.end(), "パスの種類に対応する描画項目の一覧が無いため、モデルの描画に失敗しました。");
+    FWK_ASSERT_RETURN_IF(l_meshTypeDrawItemListITR == m_meshTypeDrawItemListMap.end(), "メッシュの種類に対応する描画項目の一覧が無いため、モデルの描画に失敗しました。");
 
-    const auto& l_drawItemList = l_drawItemListITR->second;
+    // オブジェクトとメッシュのテーブルのSRVの番号を、パスの最初に1回だけ送る
+    const auto& l_rcModelTable = FetchVALRCModelTable();
 
-    FWK_ASSERT_RETURN_IF(!l_drawItemList, "描画項目の一覧が無効のため、モデルの描画に失敗しました。");
+    a_directCommandList.SetupRoot32BitConstants(l_rcModelTable, a_rootSignature, Enum::RootParameterType::RCModelTable);
+
+    // 影のパスのように、マテリアルを使わないパスは、このメッシュの種類の一覧を全部描く
+    // 例 : Staticの影なら、Static × StandardLit と Static × StandardUnLit の両方を描く
+    // マテリアルのテーブルの番号(RCModelMaterialTable)は送らない(影のルートシグネチャには無い)
+    const auto& l_drawItemListMap = l_meshTypeDrawItemListITR->second;
+
+    for (const auto& [l_materialTableStaticTypeID, l_drawItemList] : l_drawItemListMap)
+    {
+        if (!l_drawItemList) { continue; }
+
+        l_drawItemList->RecordDraw(a_rootSignature, a_directCommandList, a_frameIndex);
+    }
+}
+```
+
+**FindVALDrawItemList(写経):**
+
+```cpp
+std::weak_ptr<FWK::Graphics::ModelDrawItemList> FWK::Graphics::ModelRenderSystem::FindVALDrawItemList(const Enum::ModelMeshType a_meshType, const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const
+{
+    // 1. メッシュの種類(Static / Skeletal)で、マテリアルごとの一覧のmapを探す
+    const auto& l_meshTypeDrawItemListITR = m_meshTypeDrawItemListMap.find(a_meshType);
+
+    if (l_meshTypeDrawItemListITR == m_meshTypeDrawItemListMap.end()) { return {}; }
+
+    // 2. そのmapの中で、マテリアルのテーブル(GPUデータの型のStaticTypeID)の一覧を探す
+    const auto& l_drawItemListMap = l_meshTypeDrawItemListITR->second;
+    const auto& l_drawItemListITR = l_drawItemListMap.find(a_materialTableStaticTypeID);
+
+    if (l_drawItemListITR == l_drawItemListMap.end()) { return {}; }
+
+    return l_drawItemListITR->second;
+}
+```
+
+**RecordMaterialDraw(写経):**
+
+```cpp
+void FWK::Graphics::ModelRenderSystem::RecordMaterialDraw(const RootSignature&          a_rootSignature,
+                                                          const DirectCommandList&      a_directCommandList,
+                                                          const std::size_t&            a_frameIndex,
+                                                          const Enum::ModelMeshType     a_meshType,
+                                                          const TypeAlias::StaticTypeID a_materialTableStaticTypeID) const
+{
+    const auto& l_drawItemList = FindVALDrawItemList(a_meshType, a_materialTableStaticTypeID).lock();
+
+    FWK_ASSERT_RETURN_IF(!l_drawItemList, "メッシュの種類とマテリアルに対応する描画項目の一覧が無いため、モデルの描画に失敗しました。");
 
     // オブジェクトとメッシュのテーブルのSRVの番号を、パスの最初に1回だけ送る
     // 描画ごとに変わらないので、描画項目のループの外で送る
@@ -378,73 +525,57 @@ void FWK::Graphics::ModelRenderSystem::RecordDraw(const RootSignature&          
 
     a_directCommandList.SetupRoot32BitConstants(l_rcModelTable, a_rootSignature, Enum::RootParameterType::RCModelTable);
 
-    // Lit / UnLitのパスは、自分の種類のマテリアルのテーブルの番号も送る
-    // 影のパスはマテリアルを使わないため、Invalidが渡され、送らない
-    if (a_materialTableType != Enum::ModelRenderTableType::Invalid)
-    {
-        Struct::RCModelMaterialTable l_rcModelMaterialTable = {};
+    // このパスが描くマテリアルのテーブルのSRVの番号も送る
+    // PSは、描画ごとのマテリアルの番号(RCModelDrawItemのg_materialIndex)で、このテーブルを引く
+    Struct::RCModelMaterialTable l_rcModelMaterialTable = {};
 
-        l_rcModelMaterialTable.m_materialTableSRVDescriptorIndex = FetchVALTableSRVDescriptorIndex(a_materialTableType);
+    l_rcModelMaterialTable.m_materialTableSRVDescriptorIndex = FetchVALTableSRVDescriptorIndex(a_materialTableStaticTypeID);
 
-        a_directCommandList.SetupRoot32BitConstants(l_rcModelMaterialTable, a_rootSignature, Enum::RootParameterType::RCModelMaterialTable);
-    }
+    a_directCommandList.SetupRoot32BitConstants(l_rcModelMaterialTable, a_rootSignature, Enum::RootParameterType::RCModelMaterialTable);
 
     l_drawItemList->RecordDraw(a_rootSignature, a_directCommandList, a_frameIndex);
 }
 ```
 
-> `const auto&` で一時オブジェクト(戻り値)を受けると、その参照の寿命まで一時オブジェクトが延命される(C++ の決まり)。
-
-**FindVALDrawItemList(写経):**
-
-```cpp
-std::weak_ptr<FWK::Graphics::ModelDrawItemList> FWK::Graphics::ModelRenderSystem::FindVALDrawItemList(const Enum::ModelRenderPassType a_passType) const
-{
-    const auto& l_drawItemListITR = m_drawItemListMap.find(a_passType);
-
-    if (l_drawItemListITR == m_drawItemListMap.end()) { return {}; }
-
-    return l_drawItemListITR->second;
-}
-```
+> - `const auto&` で一時オブジェクト(戻り値)を受けると、その参照の寿命まで一時オブジェクトが延命される(C++ の決まり)。
+> - `FindVALDrawItemList(...).lock()` : weak_ptr の取得と lock は、1行で続けて書いてよい(規約の例外)。
 
 ### パス(5つ)の書き換え(写経)
 
 **StaticModelStandardLitPass::Execute** の最後の行を次に置き換え、描画申請を探す行(`l_staticModelStandardPerObjectDrawRequest`)と、その確認の行を消す。
 
 ```cpp
-    const auto& l_modelRenderSystem         = a_renderer.GetREFModelRenderSystem       ();
+    const auto& l_modelRenderSystem         = a_renderer.GetREFModelRenderSystem        ();
     const auto& l_currentFrameResourceIndex = a_renderer.GetREFCurrentFrameResourceIndex();
 
-    // StaticModelでStandardLitのマテリアルを使うメッシュを、登録済みの描画項目の一覧から描く
-    l_modelRenderSystem.RecordDraw(*l_rootSignature,
-                                   l_directCommandList,
-                                   l_currentFrameResourceIndex,
-                                   Enum::ModelRenderPassType::StaticStandardLit,
-                                   Enum::ModelRenderTableType::StandardLitMaterial);
+    // StaticModelで、StandardLitのマテリアルを使うメッシュの描画項目の一覧を描く
+    // 描くマテリアルは、マテリアルのGPUデータの型で指定する(このパスのPSが読む型)
+    l_modelRenderSystem.RecordDraw<ModelStandardLitMaterialGPUData>(*l_rootSignature,
+                                                                    l_directCommandList,
+                                                                    l_currentFrameResourceIndex,
+                                                                    Enum::ModelMeshType::Static);
 ```
 
-| パス | `ModelRenderPassType` | マテリアルのテーブル |
+| パス | テンプレート引数(マテリアルの GPU データの型) | `Enum::ModelMeshType` |
 |---|---|---|
-| `StaticModelStandardLitPass` | `StaticStandardLit` | `StandardLitMaterial` |
-| `StaticModelStandardUnLitPass` | `StaticStandardUnLit` | `StandardUnLitMaterial` |
-| `SkeletalAnimationModelStandardLitPass` | `SkeletalStandardLit` | `StandardLitMaterial` |
-| `SkeletalAnimationModelStandardUnLitPass` | `SkeletalStandardUnLit` | `StandardUnLitMaterial` |
+| `StaticModelStandardLitPass` | `ModelStandardLitMaterialGPUData` | `Static` |
+| `StaticModelStandardUnLitPass` | `ModelStandardUnLitMaterialGPUData` | `Static` |
+| `SkeletalAnimationModelStandardLitPass` | `ModelStandardLitMaterialGPUData` | `Skeletal` |
+| `SkeletalAnimationModelStandardUnLitPass` | `ModelStandardUnLitMaterialGPUData` | `Skeletal` |
 
 **ModelCascadeShadowPass::Execute** は、描画申請を探す2行と確認を消し、カスケードのループの中の2か所を次にする。
 
 ```cpp
         l_directCommandList.SetupConstantBufferView(*l_staticModelRootSignature, l_gpuVirtualAddress, Enum::RootParameterType::CBModelCascadeShadowPass);
 
-        // 影はマテリアルを使わないので、マテリアルのテーブルは送らない(Invalid)
-        l_modelRenderSystem.RecordDraw(*l_staticModelRootSignature,
-                                       l_directCommandList,
-                                       l_currentFrameResourceIndex,
-                                       Enum::ModelRenderPassType::StaticCascadeShadow,
-                                       Enum::ModelRenderTableType::Invalid);
+        // 影はマテリアルに関係なく、Staticの一覧を全部描く(マテリアルのテーブルは送らない)
+        l_modelRenderSystem.RecordDrawWithoutMaterial(*l_staticModelRootSignature,
+                                                      l_directCommandList,
+                                                      l_currentFrameResourceIndex,
+                                                      Enum::ModelMeshType::Static);
 ```
 
-(Skeletal も同じ形で `SkeletalCascadeShadow`)
+(Skeletal も同じ形で `Enum::ModelMeshType::Skeletal`)
 
 ### ModelComponent の描き方(変更・写経)
 
@@ -457,9 +588,16 @@ std::weak_ptr<FWK::Graphics::ModelDrawItemList> FWK::Graphics::ModelRenderSystem
 
     protected:
 
-        void RegisterDrawItemList(std::vector<std::vector<Struct::ModelDrawItem>>&& a_frameDrawItemList, const Enum::ModelRenderPassType a_passType);
+        void RegisterDrawItemList(const Enum::ModelMeshType                               a_meshType,
+                                  const TypeAlias::StaticTypeID                           a_materialTableStaticTypeID,
+                                        std::vector<std::vector<Struct::ModelDrawItem>>&& a_frameDrawItemList);
 
         void UnregisterDrawItemList();
+
+        std::size_t FetchVALFrameCount() const;
+
+        static constexpr UINT k_dispatchMeshThreadGroupCountY = 1U;
+        static constexpr UINT k_dispatchMeshThreadGroupCountZ = 1U;
 
     private:
 
@@ -468,8 +606,9 @@ std::weak_ptr<FWK::Graphics::ModelDrawItemList> FWK::Graphics::ModelRenderSystem
         FWK_DEFINE_TYPE_INFO_ROOT(GameObjectModelComponentRendererBase)
 ```
 
-> 基底クラスにメンバと .cpp の処理が増えるので、`GameObjectModelComponentRendererBase.cpp` を新しく作る(vcxproj に登録)。
-> デストラクタで `UnregisterDrawItemList()` を呼ぶため、デストラクタも .cpp に書く。
+> - 基底クラスにメンバと .cpp の処理が増えるので、`GameObjectModelComponentRendererBase.cpp` を新しく作る(vcxproj に登録)。
+>   デストラクタで `UnregisterDrawItemList()` を呼ぶため、デストラクタも .cpp に書く。
+> - 引数の並びは「const の値(メッシュの種類・StaticTypeID)→ 右辺値参照(一覧)」(規約 20-4)。
 
 **GameObjectModelComponentRendererBase.cpp(新規・写経)**
 
@@ -477,22 +616,26 @@ std::weak_ptr<FWK::Graphics::ModelDrawItemList> FWK::Graphics::ModelRenderSystem
 #include "GameObjectModelComponentRendererBase.h"
 
 // 描き方(Static / Skeletal)の基底クラス
-// 描画項目の登録と解除(どのパスの一覧に、どの登録番号で入れたか)を、ここでまとめて覚える
+// 描画項目の登録と解除(どの一覧に、どの登録番号で入れたか)を、ここでまとめて覚える
 // 描き方が破棄されると、デストラクタで登録を外す(参照が消えたら自動で描画から外れる)
 FWK::GameObjectModelComponentRendererBase::~GameObjectModelComponentRendererBase()
 {
     UnregisterDrawItemList();
 }
 
-void FWK::GameObjectModelComponentRendererBase::RegisterDrawItemList(std::vector<std::vector<Struct::ModelDrawItem>>&& a_frameDrawItemList, const Enum::ModelRenderPassType a_passType)
+void FWK::GameObjectModelComponentRendererBase::RegisterDrawItemList(const Enum::ModelMeshType                               a_meshType,
+                                                                     const TypeAlias::StaticTypeID                           a_materialTableStaticTypeID,
+                                                                           std::vector<std::vector<Struct::ModelDrawItem>>&& a_frameDrawItemList)
 {
-    const auto& l_graphicsManager   = Graphics::GraphicsManager::GetInstance  ();
-    const auto& l_renderer          = l_graphicsManager.GetREFRenderer        ();
-    const auto& l_modelRenderSystem = l_renderer.GetREFModelRenderSystem       ();
-    const auto& l_drawItemListWeak  = l_modelRenderSystem.FindVALDrawItemList (a_passType);
-    const auto& l_drawItemList      = l_drawItemListWeak.lock                 ();
+    // メッシュの種類 × マテリアルのテーブルの一覧を探す
+    // 例 : Static × StandardLit の一覧(StaticModelStandardLitPassと、Staticの影のパスが描く)
+    const auto& l_graphicsManager   = Graphics::GraphicsManager::GetInstance ();
+    const auto& l_renderer          = l_graphicsManager.GetREFRenderer       ();
+    const auto& l_modelRenderSystem = l_renderer.GetREFModelRenderSystem     ();
+    const auto& l_drawItemListWeak  = l_modelRenderSystem.FindVALDrawItemList(a_meshType, a_materialTableStaticTypeID);
+    const auto& l_drawItemList      = l_drawItemListWeak.lock                ();
 
-    FWK_ASSERT_RETURN_IF(!l_drawItemList, "パスの種類に対応する描画項目の一覧が無いため、描画項目の登録に失敗しました。");
+    FWK_ASSERT_RETURN_IF(!l_drawItemList, "メッシュの種類とマテリアルに対応する描画項目の一覧が無いため、描画項目の登録に失敗しました。");
 
     Struct::ModelDrawRegistration l_drawRegistration = {};
 
@@ -518,6 +661,16 @@ void FWK::GameObjectModelComponentRendererBase::UnregisterDrawItemList()
 
     m_drawRegistrationList.clear();
 }
+
+std::size_t FWK::GameObjectModelComponentRendererBase::FetchVALFrameCount() const
+{
+    // フレームリソースの数(描画項目をフレームごとに持つため、一覧の数を合わせる)
+    const auto& l_graphicsManager   = Graphics::GraphicsManager::GetInstance();
+    const auto& l_renderer          = l_graphicsManager.GetREFRenderer      ();
+    const auto& l_frameResourceList = l_renderer.GetREFFrameResourceList    ();
+
+    return l_frameResourceList.size();
+}
 ```
 
 **GameObjectModelComponentStaticRenderer(変更・写経)**
@@ -525,7 +678,7 @@ void FWK::GameObjectModelComponentRendererBase::UnregisterDrawItemList()
 ヘッダーのメンバ(S3 の分に足す):
 
 ```cpp
-        std::vector<Struct::ModelDrawMaterial> m_drawMaterialList                 = {};
+        std::vector<Struct::ModelDrawMaterial> m_drawMaterialList                  = {};
         std::vector<UINT>                      m_amplificationShaderGroupCountList = {};
 ```
 
@@ -535,10 +688,10 @@ void FWK::GameObjectModelComponentRendererBase::UnregisterDrawItemList()
         // ASのグループ数 = ceil(Meshletの数 ÷ 32)
         // 割り切れないときは1グループ足す(余りのMeshletを担当するグループ)
         // 例 : 100 Meshletなら 100 ÷ 32 = 3 余り 4 なので 4 グループ
-        const auto& l_meshletCount                = static_cast<UINT>(l_modelMesh.m_meshletData.m_meshletList.size());
-              auto  l_amplificationShaderGroupCount = l_meshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;
+        const auto l_amplificationShaderMeshletCount = static_cast<UINT>(l_modelMesh.m_meshletData.m_meshletList.size());
+              auto l_amplificationShaderGroupCount   = l_amplificationShaderMeshletCount / Constant::k_meshletCountPerAmplificationShaderGroup;
 
-        if (l_meshletCount % Constant::k_meshletCountPerAmplificationShaderGroup != Constant::k_noRemainder)
+        if (l_amplificationShaderMeshletCount % Constant::k_meshletCountPerAmplificationShaderGroup != Constant::k_noRemainder)
         {
             ++l_amplificationShaderGroupCount;
         }
@@ -546,7 +699,9 @@ void FWK::GameObjectModelComponentRendererBase::UnregisterDrawItemList()
         m_amplificationShaderGroupCountList.emplace_back(l_amplificationShaderGroupCount);
 ```
 
-`Register` / `Unregister` / `ApplyMaterialList` / `FetchVALSubMeshNameList`:
+> S3 の改訂で、同じループの中に `const auto l_meshletCount`(`std::uint32_t`)を作ったので、こちらは `l_amplificationShaderMeshletCount`(`UINT`)という名前にして重ならないようにした。
+
+`Register` / `Unregister` / `ApplyMaterialList`:
 
 ```cpp
 void FWK::GameObjectModelComponentStaticRenderer::Register()
@@ -562,13 +717,16 @@ void FWK::GameObjectModelComponentStaticRenderer::Register()
 
     const auto& l_frameCount = FetchVALFrameCount();
 
-    // パスの種類ごとに、フレームごとの項目の一覧を作る
-    // Staticはどのフレームも同じ項目なので、1フレーム分を作ってからフレームの数だけ複製する
-    std::unordered_map<Enum::ModelRenderPassType, std::vector<Struct::ModelDrawItem>> l_passDrawItemListMap = {};
+    // マテリアルの種類(テーブルのStaticTypeID)ごとに、描画項目を分けて集める
+    // 例 : Body・FaceがStandardLit、EyeがStandardUnLitなら、StandardLitに2項目、StandardUnLitに1項目
+    std::unordered_map<TypeAlias::StaticTypeID, std::vector<Struct::ModelDrawItem>> l_materialDrawItemListMap = {};
 
     for (std::size_t l_meshListIndex = 0ULL; l_meshListIndex < m_meshIndexList.size(); ++l_meshListIndex)
     {
         const auto& l_drawMaterial = m_drawMaterialList[l_meshListIndex];
+
+        // マテリアルの種類が決まっていないメッシュ(エラーマテリアルも作れなかったとき)は描かない
+        if (l_drawMaterial.m_tableStaticTypeID == StaticTypeIDGenerator::k_invalidStaticTypeID) { continue; }
 
         Struct::ModelDrawItem l_drawItem = {};
 
@@ -581,25 +739,19 @@ void FWK::GameObjectModelComponentStaticRenderer::Register()
         l_drawItem.m_dispatchMeshArguments.ThreadGroupCountY = k_dispatchMeshThreadGroupCountY;
         l_drawItem.m_dispatchMeshArguments.ThreadGroupCountZ = k_dispatchMeshThreadGroupCountZ;
 
-        // 見た目のパスは、マテリアルの種類で決まる
-        // 例 : StandardLitのマテリアル → StaticStandardLitのパスで描く
-        const auto l_passType = FetchVALStandardPassType(l_drawMaterial.m_tableType);
-
-        if (l_passType != Enum::ModelRenderPassType::Invalid)
-        {
-            l_passDrawItemListMap[l_passType].emplace_back(l_drawItem);
-        }
-
-        // 影は、マテリアルに関係なく全メッシュを描く(マテリアルの番号は使われない)
-        l_passDrawItemListMap[Enum::ModelRenderPassType::StaticCascadeShadow].emplace_back(l_drawItem);
+        // マテリアルのStaticTypeIDの一覧へ入れる
+        // その一覧は、そのマテリアルのパス(StaticModelStandardLitPassなど)と、Staticの影のパスが描く
+        // operator[]は、まだ無いキーなら空の一覧を作ってから参照を返す
+        l_materialDrawItemListMap[l_drawMaterial.m_tableStaticTypeID].emplace_back(l_drawItem);
     }
 
-    for (auto& [l_passType, l_drawItemList] : l_passDrawItemListMap)
+    for (const auto& [l_materialTableStaticTypeID, l_drawItemList] : l_materialDrawItemListMap)
     {
+        // Staticはどのフレームも同じ項目なので、1フレーム分をフレームの数だけ複製する
         // std::vectorを「フレームの数」個、同じ中身で作る(個数と値で作るので( )を使う、規約 9-11)
         std::vector<std::vector<Struct::ModelDrawItem>> l_frameDrawItemList(l_frameCount, l_drawItemList);
 
-        RegisterDrawItemList(std::move(l_frameDrawItemList), l_passType);
+        RegisterDrawItemList(Enum::ModelMeshType::Static, l_materialTableStaticTypeID, std::move(l_frameDrawItemList));
     }
 
     m_isRegistered = true;
@@ -615,7 +767,7 @@ void FWK::GameObjectModelComponentStaticRenderer::Unregister()
 
 void FWK::GameObjectModelComponentStaticRenderer::ApplyMaterialList(const std::vector<Struct::ModelDrawMaterial>& a_drawMaterialList)
 {
-    // マテリアルが変わると、使うパス(Lit / UnLit)とマテリアルの番号が変わるため、
+    // マテリアルが変わると、入れる一覧(Lit / UnLit)とマテリアルの番号が変わるため、
     // 登録済みなら一度外して、新しいマテリアルで登録し直す
     const bool l_wasRegistered = m_isRegistered;
 
@@ -629,12 +781,79 @@ void FWK::GameObjectModelComponentStaticRenderer::ApplyMaterialList(const std::v
 }
 ```
 
-> `k_dispatchMeshThreadGroupCountY` / `Z`(どちらも `1U`)は描き方の基底クラス(`GameObjectModelComponentRendererBase`)の protected の `static constexpr UINT` に置き、Static / Skeletal の両方から使う。
-> `FetchVALStandardPassType(tableType)` は private の関数(StandardLit → `StaticStandardLit`、StandardUnLit → `StaticStandardUnLit`、それ以外 → `Invalid`)。
-> `FetchVALFrameCount()` は基底の protected の関数で、`Renderer::GetREFFrameResourceList().size()` を返す(Skeletal も使う)。
+> - 「マテリアル → パス」の switch(旧 `FetchVALStandardPassType`)は無い。マテリアルの StaticTypeID が、そのまま一覧のキーになる。
+> - 影の一覧へ別に入れる必要も無い(影のパスが、Static の一覧を全部描く)。
 
-**GameObjectModelComponentSkeletalRenderer** は、`l_frameDrawItemList[フレーム]` を、`m_frameMeshIndexList[フレーム][メッシュ]` を使って
-フレームごとに作る(複製しない)ところだけが違う。パスの種類は `SkeletalStandardLit` / `SkeletalStandardUnLit` / `SkeletalCascadeShadow`。
+**GameObjectModelComponentSkeletalRenderer::Register(写経)**
+
+Skeletal は、フレームごとにメッシュの要素の番号が違う(スキニング後の頂点のバッファがフレームごとに別)ため、複製せずにフレームごとに作る。
+`Unregister` / `ApplyMaterialList` は Static と同じ。
+
+```cpp
+void FWK::GameObjectModelComponentSkeletalRenderer::Register()
+{
+    if (m_isRegistered) { return; }
+
+    if (m_frameMeshIndexList.empty()) { return; }
+
+    // マテリアルがまだ決まっていなければ(メッシュの数と合わなければ)、登録するものがない
+    const auto& l_firstFrameMeshIndexList = m_frameMeshIndexList.front();
+
+    if (m_drawMaterialList.size() != l_firstFrameMeshIndexList.size()) { return; }
+
+    const auto& l_frameCount = FetchVALFrameCount();
+
+    // マテリアルの種類ごとに、「フレームごとの項目の一覧」を集める
+    // 例 : フレーム3つ、Body(StandardLit)・Eye(StandardUnLit)なら
+    //      StandardLit   → [ [Body(フレーム0)], [Body(フレーム1)], [Body(フレーム2)] ]
+    //      StandardUnLit → [ [Eye (フレーム0)], [Eye (フレーム1)], [Eye (フレーム2)] ]
+    std::unordered_map<TypeAlias::StaticTypeID, std::vector<std::vector<Struct::ModelDrawItem>>> l_materialFrameDrawItemListMap = {};
+
+    for (std::size_t l_frameIndex = 0ULL; l_frameIndex < m_frameMeshIndexList.size(); ++l_frameIndex)
+    {
+        const auto& l_meshIndexList = m_frameMeshIndexList[l_frameIndex];
+
+        for (std::size_t l_meshListIndex = 0ULL; l_meshListIndex < l_meshIndexList.size(); ++l_meshListIndex)
+        {
+            const auto& l_drawMaterial = m_drawMaterialList[l_meshListIndex];
+
+            if (l_drawMaterial.m_tableStaticTypeID == StaticTypeIDGenerator::k_invalidStaticTypeID) { continue; }
+
+            Struct::ModelDrawItem l_drawItem = {};
+
+            // メッシュの番号だけがフレームごとに違う(オブジェクト・マテリアルの番号は同じ)
+            l_drawItem.m_rootConstant.m_objectIndex   = m_objectIndex;
+            l_drawItem.m_rootConstant.m_meshIndex     = l_meshIndexList[l_meshListIndex];
+            l_drawItem.m_rootConstant.m_materialIndex = l_drawMaterial.m_tableElementIndex;
+
+            l_drawItem.m_dispatchMeshArguments.ThreadGroupCountX = m_amplificationShaderGroupCountList[l_meshListIndex];
+            l_drawItem.m_dispatchMeshArguments.ThreadGroupCountY = k_dispatchMeshThreadGroupCountY;
+            l_drawItem.m_dispatchMeshArguments.ThreadGroupCountZ = k_dispatchMeshThreadGroupCountZ;
+
+            auto& l_frameDrawItemList = l_materialFrameDrawItemListMap[l_drawMaterial.m_tableStaticTypeID];
+
+            // 初めて出てきたマテリアルの種類なら、フレームの数だけ空の一覧を用意する
+            // (一覧の登録では、フレームの数が描画項目の一覧と同じである必要がある)
+            if (l_frameDrawItemList.empty())
+            {
+                l_frameDrawItemList.resize(l_frameCount);
+            }
+
+            l_frameDrawItemList[l_frameIndex].emplace_back(l_drawItem);
+        }
+    }
+
+    for (auto& [l_materialTableStaticTypeID, l_frameDrawItemList] : l_materialFrameDrawItemListMap)
+    {
+        RegisterDrawItemList(Enum::ModelMeshType::Skeletal, l_materialTableStaticTypeID, std::move(l_frameDrawItemList));
+    }
+
+    m_isRegistered = true;
+}
+```
+
+> - `m_frameMeshIndexList` のフレームの数は、S3 で `l_frameDataList.size()`(= フレームリソースの数)にしてあるので、`l_frameCount` と同じ。
+> - 最後のループは、一覧を `std::move` で渡す(中身を移すので、`const` を付けずに `auto&` で受ける)。
 
 ### Definition/Enum/Graphics/RootParameterEnum.h(変更)
 
@@ -657,4 +876,5 @@ void FWK::GameObjectModelComponentStaticRenderer::ApplyMaterialList(const std::v
 
 ## 次のステップへのつながり
 
-- S6 : `ModelDrawItemList::RecordDraw` の中身だけを、ExecuteIndirect(引数のバッファ + コマンドシグネチャ)に置き換える。パスと描き方は変えない。
+- S6 : `ModelDrawItemList::RecordDraw` の中身を、ExecuteIndirect(引数のバッファ + コマンドシグネチャ)に置き換える。パスと描き方は変えない。
+  コマンドシグネチャは ModelRenderSystem が「RCModelDrawItem を持つルートシグネチャ」ごとに持ち、描くときに渡す(一覧は種類が増えるので、一覧ごとには持たない)。

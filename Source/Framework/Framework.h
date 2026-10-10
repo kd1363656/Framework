@@ -457,6 +457,7 @@
 #include "Graphics/Render/Graph/Pass/Final/FinalPresentPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/UnLit/StaticModelStandardUnLitPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Static/Standard/Lit/StaticModelStandardLitPass.h"
+#include "Graphics/Render/Graph/Pass/Model/Table/ModelRenderTableUploadPass.h"
 #include "Graphics/Render/Graph/Pass/Model/Skeletal/SkeletalAnimationComputePass.h"
 #include "Graphics/Render/Graph/Pass/Model/Shadow/Cascade/ModelCascadeShadowPass.h"
 
@@ -480,9 +481,16 @@
 
 // モデルの描画テーブル
 #include "Definition/Constant/Graphics/ModelRenderSystemConstant.h"
-#include "Definition/Enum/Graphics/ModelRenderSystemEnum.h"
 #include "Definition/Struct/Graphics/Buffer/Root/RCModelStruct.h"
 #include "Definition/Struct/Graphics/ModelRenderSystemStruct.h"
+#include "Definition/Struct/Graphics/ModelRenderTableINFORegistryStruct.h"
+#include "Definition/Concept/IsModelRenderTableElement/IsModelRenderTableElementConcept.h"
+#include "Definition/Macros/Graphics/ModelRenderTableINFORegistryMacros.h"
+#include "Graphics/Render/Model/Table/ModelRenderTableINFORegistry.h"
+#include "Graphics/Render/Model/Table/ModelObjectGPUData.h"
+#include "Graphics/Render/Model/Table/ModelMeshGPUData.h"
+#include "Graphics/Resource/Model/Material/Standard/Lit/ModelStandardLitMaterialGPUData.h"
+#include "Graphics/Resource/Model/Material/Standard/UnLit/ModelStandardUnLitMaterialGPUData.h"
 #include "Graphics/Render/Model/Converter/Json/ModelRenderSystemJsonConverter.h"
 #include "Graphics/Render/Model/ModelRenderSystem.h"
 

@@ -41,6 +41,8 @@
 - **カウントバッファ** : `ExecuteIndirect(..., countBuffer, countBufferOffset)`。GPU が `min(最大件数, カウントの値)` 件だけ実行する。
 - **状態の遷移** : 詰めるときは `UNORDERED_ACCESS`、ExecuteIndirect で読むときは `INDIRECT_ARGUMENT`。カウントは毎フレーム 0 に戻す(`CopyBufferRegion` で 0 を書く、または `ClearUnorderedAccessViewUint`)。
 - コンピュートは **ダイレクトキューの上で** 動かす(描画の直前に、同じコマンドリストで)。コンピュートキューに分けるとフェンスの待ち合わせが増えるため。
+- 詰めた引数のバッファ・カウントバッファの状態の遷移は、今の RenderGraph ではバッファを扱わないので、カリングのパスと描画のパスが自分で張る。
+  このとき、バッファも RenderGraph に宣言させる(`ReadBuffer` / `WriteBuffer`)形にするかを決める(S3 の「テーブルのコピーを RenderGraph のパスにする」)。
 
 ### オブジェクトの境界球
 
@@ -53,7 +55,7 @@
 | ファイル | 内容 |
 |---|---|
 | `Graphics/Render/Model/Culling/ModelGPUCullingSystem.h/.cpp` | パスごとの「詰めた引数のバッファ(DEFAULT + UAV)」と「カウントバッファ」を持つ |
-| `Graphics/Render/Graph/Pass/Model/Culling/ModelGPUCullingPass.h/.cpp` | 描画パスの前に、コンピュートで詰める(実行レイヤーを `ModelCulling` として新設) |
+| `Graphics/Render/Graph/Pass/Model/Culling/ModelGPUCullingPass.h/.cpp` | 描画パスの前に、コンピュートで詰める(実行レイヤーを `ModelCulling` として `Animation` と `Shadow` の間に新設。S3 の `Upload` の後なので、コピー済みのオブジェクトのテーブルを読める) |
 | `Shader/Model/Culling/ModelGPUCulling_CS.hlsl` / `ModelGPUCulling.hlsli` | 1 スレッド = 1 描画項目。境界球と視錐台の判定 → 見えれば `InterlockedAdd` で位置を確保して写す |
 | `Definition/Struct/Graphics/Buffer/Constant/CBModelGPUCullingPassStruct.h` | 視錐台の6平面・件数 |
 | `ModelDrawItemList` の変更 | 「全件の引数のバッファ(UPLOAD、今のもの)」を、コンピュートの入力(SRV)にする |
@@ -146,7 +148,9 @@
 
 ### 段階陰影(セルシェーディング)
 
-- `ModelToonMaterial`(マテリアルの種類を1つ足す)と、`Enum::ModelRenderTableType::ToonMaterial` / `ModelRenderPassType::StaticToon` / `SkeletalToon`。
+- `ModelToonMaterial`(マテリアルの種類を1つ足す)と、`ModelToonMaterialGPUData`(クラスの一番下に `FWK_DEFINE_MODEL_MATERIAL_RENDER_TABLE_INFO`)。
+  2026-10-10 の改訂で、テーブル・描画項目の一覧(Static × Toon / Skeletal × Toon)・コマンドシグネチャは自動で増えるので、enum や switch は書き足さない。
+  パスは `RecordDraw<ModelToonMaterialGPUData>(..., Enum::ModelMeshType::Static)` で描く。
 - 値 : ベースカラー・影色・影の境目(しきい値)・境目のぼかし幅・影色のテクスチャ・影の出やすさのマスク(テクスチャのチャンネル)。
 - PS : `NdotL` を、しきい値とぼかし幅で 2 段(または 3 段)に分ける。カスケードの影も同じ段で扱う。
 - マテリアルの値の調整はテクスチャのマスクで行う(頂点カラーは使わない、2026-10-09 のユーザーの決定)。
@@ -161,7 +165,7 @@
 - MS で、頂点を **スムーズ法線**(`m_smoothedNormal`、Skeletal はスキニング後のもの)の方向へ押し出す。
 - PSO は **前面カリング**(`D3D12_CULL_MODE_FRONT`)にして、押し出した殻の裏側だけを描く。色は単色(マテリアルの値)。
 - 線の太さは、カメラからの距離で割って「画面上でほぼ一定」にする(遠くで線が太くなりすぎないため)。マスクのテクスチャで部分的に細くできるようにする。
-- 描画項目の登録で、トゥーンのマテリアルは「本体のパス」と「アウトラインのパス」の2つに登録する
-  → `ModelMaterialBase` に `virtual std::vector<Enum::ModelRenderPassType> FetchVALRenderPassTypeList(const bool a_isSkeletal) const` を足し、
-  描き方の `Register` はこの一覧のパスへ登録する(S5 の「テーブルの種類 → パス」の switch をここで置き換える)。
+- アウトラインのパスも、本体のパスと同じ「Static × Toon」の描画項目の一覧を `RecordDraw<ModelToonMaterialGPUData>` で描くだけでよい
+  (一覧はマテリアルごとなので、描き方の登録を2つにする必要がない。PSO だけがアウトライン用)。
+  アウトラインのルートシグネチャを別にするときも、`RCModelDrawItem` を持たせれば、コマンドシグネチャは ModelRenderSystem が自動で作る(S6)。
 - スムーズ法線の限界(マテリアルの境目で割れる)は、このときにモデル全体でグループ化する形に直す(メモリー `smoothed-normal-outline-notes.md`)。
