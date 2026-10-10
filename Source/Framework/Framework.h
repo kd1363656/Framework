@@ -219,6 +219,7 @@
 
 // Storageクラス
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
+#include "Definition/Concept/Graphics/IsDeferredReleaseRecordConcept.h"
 #include "Graphics/Resource/Storage/Converter/Json/AssetStorageJsonConverter.h"
 #include "Graphics/Resource/Storage/AssetStorage.h"
 
@@ -290,6 +291,7 @@
 #include "Definition/Struct/Graphics/StaticModelSystemStruct.h"
 #include "Graphics/Resource/Model/Static/Converter/Json/StaticModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Material/ModelMaterialRuntimeTextureBuilder.h"
+#include "Graphics/Resource/Model/Material/File/ModelMaterialFileCreator.h"
 #include "Graphics/Resource/Model/Static/StaticModelSystem.h"
 #include "Graphics/Resource/Model/Static/StaticModel.h"
 
@@ -308,6 +310,20 @@
 #include "Graphics/Resource/Model/Skeletal/Converter/Json/SkeletalAnimationModelSystemJsonConverter.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModelSystem.h"
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
+
+// モデル(マテリアル)
+#include "Definition/Constant/Graphics/ModelMaterialConstant.h"
+#include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedModelMaterialBaseConcept.h"
+#include "Definition/Type/Alias/Factory/Shared/ModelMaterialSharedFactoryTypeAlias.h"
+#include "Graphics/Resource/Model/Material/Converter/Binary/ModelMaterialBinaryConverter.h"
+#include "Graphics/Resource/Model/Material/ModelMaterialBase.h"
+#include "Graphics/Resource/Model/Material/Standard/Lit/ModelStandardLitMaterial.h"
+#include "Graphics/Resource/Model/Material/Standard/UnLit/ModelStandardUnLitMaterial.h"
+#include "Graphics/Resource/Model/Material/Record/ModelMaterialRecord.h"
+#include "Graphics/Resource/Model/Material/ModelMaterial.h"
+#include "Definition/Struct/GameObject/GameObjectModelComponentStruct.h"
+#include "Graphics/Resource/Model/Material/Converter/Json/ModelMaterialSystemJsonConverter.h"
+#include "Graphics/Resource/Model/Material/ModelMaterialSystem.h"
 
 // アップロードシステム
 #include "Graphics/Command/List/Copy/CopyCommandList.h"

@@ -20,8 +20,6 @@ namespace FWK::Graphics
 
         bool SubtractReferenceCount();
 
-        virtual bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) = 0;
-
         bool IsUnused() const;
 
         void SetFilePath(const std::wstring& a_set) { m_filePath = a_set; }

@@ -15,7 +15,7 @@ namespace FWK::Graphics
         TextureRecord& operator=(const TextureRecord&)           = delete;
         TextureRecord& operator=(      TextureRecord&&) noexcept = default;
 
-        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
+        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
         void SetGPUResource(Struct::GPUResource&& a_set) { m_gpuResource = std::move(a_set); }
 

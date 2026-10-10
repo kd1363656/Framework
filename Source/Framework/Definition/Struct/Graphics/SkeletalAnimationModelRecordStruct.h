@@ -56,6 +56,8 @@ namespace FWK::Struct
 
         std::vector<std::uint32_t> m_indexList = {};
 
+        std::wstring m_subMeshName = {};
+
         Struct::ModelMaterial m_material = {};
 
         Struct::ModelMeshletData m_meshletData = {};

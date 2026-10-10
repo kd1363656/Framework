@@ -18,7 +18,7 @@ namespace FWK::Graphics
         StaticModelRecord& operator=(const StaticModelRecord&)           = delete;
         StaticModelRecord& operator=(      StaticModelRecord&&) noexcept = default;
 
-        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
+        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
         void SetModelData(Struct::StaticModelData&& a_set) { m_modelData = std::move(a_set); }
 

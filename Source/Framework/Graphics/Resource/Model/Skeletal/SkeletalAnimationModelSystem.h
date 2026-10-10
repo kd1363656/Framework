@@ -67,6 +67,8 @@ namespace FWK::Graphics
         ModelSmoothedNormalBuilder<SkeletalAnimationModelRecord> m_smoothedNormalBuilder = {};
         ModelMeshletBuilder<SkeletalAnimationModelRecord>        m_meshletBuilder        = {};
 
+        ModelMaterialFileCreator m_materialFileCreator = {};
+
         Converter::SkeletalAnimationModelSystemJsonConverter m_jsonConverter   = {};
         Converter::SkeletalAnimationModelBinaryConverter     m_binaryConverter = {};
     };

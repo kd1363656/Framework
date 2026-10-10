@@ -12,7 +12,7 @@ namespace FWK::Graphics
          SkeletalAnimationModelRecord()          = default;
         ~SkeletalAnimationModelRecord() override = default;
 
-        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
+        bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
 
         void SetModelData(Struct::SkeletalAnimationModelData&& a_set) { m_modelData = std::move(a_set); }
 

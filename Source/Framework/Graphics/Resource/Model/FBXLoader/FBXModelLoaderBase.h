@@ -28,6 +28,8 @@ namespace FWK::Graphics
 
         float FetchVALMaterialFactor(const ufbx_material_map& a_materialMap, const float a_defaultValue) const;
 
+        std::wstring FetchVALSubMeshName(const ufbx_material* a_fbxMaterial) const;
+
     private:
 
         ufbx_load_opts CreateFBXLoadOptions() const;
@@ -35,6 +37,8 @@ namespace FWK::Graphics
 #if defined(_DEBUG)
         static constexpr std::size_t k_errorTextBufferSize = 1024ULL;
 #endif
+
+        static constexpr std::size_t k_emptyFBXNameLength = 0ULL;
 
         static constexpr ufbx_real k_modelFBXTargetUnitMeters = 1.0;
 

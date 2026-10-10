@@ -2,8 +2,12 @@
 
 namespace FWK::Constant
 {
+    inline const std::filesystem::path k_lowerStaticModelExtension   = ".staticModel";
+    inline const std::filesystem::path k_lowerSkeletalModelExtension = ".skeletalModel";
+
     inline constexpr std::uint64_t k_emptyModelVertexCount = 0ULL;
     inline constexpr std::uint64_t k_emptyModelIndexCount  = 0ULL;
+    inline constexpr std::uint64_t k_emptySubMeshNameSize  = 0ULL;
 
     inline constexpr std::uint64_t k_emptyTextureFilePathSize         = 0ULL;
     inline constexpr std::uint64_t k_emptyModelMeshletCount           = 0ULL;

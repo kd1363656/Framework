@@ -25,6 +25,8 @@ namespace FWK::Struct
         std::vector<StaticModelVertex> m_vertexList = {};
         std::vector<std::uint32_t>     m_indexList  = {};
 
+        std::wstring m_subMeshName = {};
+
         Struct::ModelMaterial m_material = {};
 
         // MeshShaderで描画するためのMeshletData

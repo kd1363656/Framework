@@ -1630,6 +1630,24 @@
     <Filter Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant">
       <UniqueIdentifier>{24a1123d-3ec2-4bdf-b7bd-fe12f1fe19a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework\Definition\Concept\Graphics">
+      <UniqueIdentifier>{7d9f2d84-19e8-41a5-b2da-5f0f04dc5037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Converter">
+      <UniqueIdentifier>{2bf6ddbe-bbef-4f9a-aea8-be5812a77f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Binary">
+      <UniqueIdentifier>{d549fd61-e7d9-49e6-917e-79ae369e0a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Record">
+      <UniqueIdentifier>{75377df7-e56a-4204-bd0f-edc620d8e8c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Json">
+      <UniqueIdentifier>{0ad59cb5-7daa-43df-a46f-7432ea350168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Framework\Graphics\Resource\Model\Material\File">
+      <UniqueIdentifier>{0f0525c5-b5dd-428c-bbd3-66a866f01050}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCH.h">
@@ -3288,6 +3306,48 @@
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.h">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMaterialConstant.h">
+      <Filter>Source\Framework\Definition\Constant\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedModelMaterialBaseConcept.h">
+      <Filter>Source\Framework\Definition\Concept\IsDerivedBase\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ModelMaterialSharedFactoryTypeAlias.h">
+      <Filter>Source\Framework\Definition\Type\Alias\Factory\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Concept\Graphics\IsDeferredReleaseRecordConcept.h">
+      <Filter>Source\Framework\Definition\Concept\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectModelComponentStruct.h">
+      <Filter>Source\Framework\Definition\Struct\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Binary\ModelMaterialBinaryConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Converter\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialBase.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Standard\Lit\ModelStandardLitMaterial.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Standard\Lit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit\ModelStandardUnLitMaterial.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Record\ModelMaterialRecord.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Record</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterial.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialSystem.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Json\ModelMaterialSystemJsonConverter.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Converter\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\File\ModelMaterialFileCreator.h">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\PCH.cpp">
@@ -4115,6 +4175,30 @@
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.cpp">
       <Filter>Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Binary\ModelMaterialBinaryConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Converter\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialBase.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Standard\Lit\ModelStandardLitMaterial.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Standard\Lit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit\ModelStandardUnLitMaterial.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterial.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialSystem.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Json\ModelMaterialSystemJsonConverter.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\Converter\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\File\ModelMaterialFileCreator.cpp">
+      <Filter>Source\Framework\Graphics\Resource\Model\Material\File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Documents\CodingConventions.txt">
@@ -4193,6 +4277,15 @@
     </None>
     <None Include="CONFIG\Application\ApplicationCONFIG.json">
       <Filter>CONFIG\Application</Filter>
+    </None>
+    <None Include="Shader\Model\Standard\ModelStandardMaterial.hlsli">
+      <Filter>Shader\Model\Standard</Filter>
+    </None>
+    <None Include="Shader\Model\Standard\Lit\ModelStandardLitMaterial.hlsli">
+      <Filter>Shader\Model\Standard\Lit</Filter>
+    </None>
+    <None Include="Shader\Model\Standard\UnLit\ModelStandardUnLitMaterial.hlsli">
+      <Filter>Shader\Model\Standard\UnLit</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -2292,6 +2292,13 @@
                 "Capacity": 10000
             }
         },
+        "ModelMaterialSystem": {
+            "MaterialStorage": {
+                "StorageIDAllocator": {
+                    "StorageIDAllocatorCapacity": 10000
+                }
+            }
+        },
         "RTVDescriptorPool": {
             "DescriptorHeapIndexAllocator": {
                 "Capacity": 10000

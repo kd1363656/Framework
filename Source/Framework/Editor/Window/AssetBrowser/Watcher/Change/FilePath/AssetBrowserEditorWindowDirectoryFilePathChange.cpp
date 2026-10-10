@@ -101,6 +101,16 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryFilePathChange::ApplyFilePath
         }
         break;
 
+        case Enum::AssetFilePathType::ModelMaterial:
+        {
+            // UUIDはそのままで、Registry側のパスだけを新しいパスへ書き換える
+            // モデルのスロットはUUIDで.matを指すため、名前変更や移動の後も同じマテリアルを辿れる
+            a_assetFilePathRegistry.ReplaceFilePath(a_oldFilePath, a_newFilePath);
+
+            return;
+        }
+        break;
+
         default:
         break;
     }

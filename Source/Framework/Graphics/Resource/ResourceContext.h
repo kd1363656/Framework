@@ -32,6 +32,7 @@ namespace FWK::Graphics
         const auto& GetREFTextureSystem               () const { return m_textureSystem; }
         const auto& GetREFStaticModelSystem           () const { return m_staticModelSystem; }
         const auto& GetREFSkeletalAnimationModelSystem() const { return m_skeletalAnimationModelSystem; }
+        const auto& GetREFModelMaterialSystem         () const { return m_modelMaterialSystem; }
 
         const auto& GetREFResourceReleaseContext() const { return m_resourceReleaseContext; }
 
@@ -43,6 +44,7 @@ namespace FWK::Graphics
         auto& GetMutableREFTextureSystem               () { return m_textureSystem; }
         auto& GetMutableREFStaticModelSystem           () { return m_staticModelSystem; }
         auto& GetMutableREFSkeletalAnimationModelSystem() { return m_skeletalAnimationModelSystem; }
+        auto& GetMutableREFModelMaterialSystem         () { return m_modelMaterialSystem; }
 
         auto& GetMutableREFResourceReleaseContext() { return m_resourceReleaseContext; }
 
@@ -60,6 +62,7 @@ namespace FWK::Graphics
         TextureSystem                m_textureSystem                = {};
         StaticModelSystem            m_staticModelSystem            = {};
         SkeletalAnimationModelSystem m_skeletalAnimationModelSystem = {};
+        ModelMaterialSystem          m_modelMaterialSystem          = {};
 
         ResourceReleaseContext m_resourceReleaseContext = {};
 

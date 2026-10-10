@@ -1155,6 +1155,16 @@ void FWK::GameObjectModelComponentInspector::EditInspector(GameObjectModelCompon
 
 ---
 
+## S4-4 で保留した分(ModelComponent のマテリアルのスロット)
+
+S4 を先に作ったため、ModelComponent 側は S0 で一緒に書く。コードは `S4_Material.md` の「S4-4」にある。
+
+- `GameObjectModelComponent` : `m_materialSlotList` / `m_materialAssignmentMap`、`BuildMaterialSlotList` / `ApplyMaterialListToRenderer` / `ApplyMaterialFilePath` / `FetchVALDefaultMaterialUUID`、`ReloadModel` の最後で `BuildMaterialSlotList()` → `ApplyMaterialListToRenderer()`
+- Renderer(Static / Skeletal)の基底 : `FetchVALSubMeshNameList` / `ApplyMaterialList`(`std::vector<Struct::ModelDrawMaterial>` を覚える。S5 で描画項目に使う)
+- JsonConverter : `"MaterialSlotList"`(名前と UUID の組。今のモデルに無い名前の組も残す)
+- インスペクター : スロットごとに、サブメッシュ名のラベルと .mat の `AssetFilePath` のボタン
+- `Struct::GameObjectModelComponentMaterialSlot` / `Struct::ModelDrawMaterial` は S4 の骨組みで作成済み(`Definition/Struct/GameObject/GameObjectModelComponentStruct.h`)
+
 ## テスト用のベンチマークのコンポーネントの登録(こちらが行う)
 
 `Source/Framework/GameObject/Component/Benchmark/` のファイルは作成済み(写経しない)。S0 の骨組みを書くときに、次も一緒に行う。

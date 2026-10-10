@@ -68,6 +68,16 @@ void FWK::Editor::AssetBrowserEditorWindowDirectoryDeleteChange::ApplyFileDelete
             }
             break;
 
+            case Enum::AssetFilePathType::ModelMaterial:
+            {
+                // マテリアル(.mat)も他のデータから参照を外す処理がないため、Registryから取り除くだけでよい
+                // 取り除くと、このUUIDを持つスロットは「不明なパス」になり、エラーマテリアルで描かれる
+                a_assetFilePathRegistry.Erase(a_deleteFilePath);
+
+                return;
+            }
+            break;
+
             default:
             break;
         }

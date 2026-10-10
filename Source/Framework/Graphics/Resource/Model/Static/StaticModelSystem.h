@@ -66,6 +66,7 @@ namespace FWK::Graphics
         ModelSmoothedNormalBuilder<StaticModelRecord>         m_smoothedNormalBuilder         = {};
         ModelMeshletBuilder<StaticModelRecord>                m_meshletBuilder                = {};
         StaticModelBatchUploadRecordBuilder                   m_batchUploadRecordBuilder      = {};
+        ModelMaterialFileCreator                              m_materialFileCreator           = {};
 
         Converter::StaticModelSystemJsonConverter m_jsonConverter   = {};
         Converter::StaticModelBinaryConverter     m_binaryConverter = {};

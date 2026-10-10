@@ -70,6 +70,7 @@ namespace FWK::Graphics
         }
 
         bool SubtractReferenceCount(const std::weak_ptr<RecordType>& a_record, const TypeAlias::DirectCommandQueue& a_directCommandQueue, ResourceReleaseContext& a_resourceReleaseContext)
+            requires Concept::IsDeferredReleaseRecordConcept<RecordType>
         {
             const auto& l_record = a_record.lock();
 
@@ -97,6 +98,11 @@ namespace FWK::Graphics
             m_recordMap.erase(l_filePath);
 
             return true;
+        }
+        bool SubtractReferenceCount(const std::weak_ptr<RecordType>& a_record)
+            requires (!Concept::IsDeferredReleaseRecordConcept<RecordType>)
+        {
+            return false;
         }
 
         TypeAlias::StorageID FindVALStorageIDFromFilePath(const std::wstring& a_filePath) const

@@ -322,6 +322,11 @@ bool FWK::Converter::BinaryConverterBase::TryReadWStringBinaryData(const std::ui
     return true;
 }
 
+bool FWK::Converter::BinaryConverterBase::TryReadStringBinaryData(const std::uint64_t& a_stringBinaryFileSize, std::string& a_destinationString, std::uint64_t& a_memoryReadOffset) const
+{
+    return false;
+}
+
 void FWK::Converter::BinaryConverterBase::WriteWStringBinaryData(const std::wstring& a_wString, std::uint64_t& a_memoryWriteOffset) const
 {
     if (a_wString.empty()) { return; }

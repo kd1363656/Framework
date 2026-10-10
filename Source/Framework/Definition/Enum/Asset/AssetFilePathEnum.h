@@ -8,6 +8,7 @@ namespace FWK::Enum
         Prefab,
         Scene,
         Texture,
+        ModelMaterial,
     };
 
     FWK_JSON_SERIALIZE_ENUM
@@ -17,5 +18,6 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(AssetFilePathType::Prefab),
         FWK_JSON_ENUM_VALUE(AssetFilePathType::Scene),
         FWK_JSON_ENUM_VALUE(AssetFilePathType::Texture),
+        FWK_JSON_ENUM_VALUE(AssetFilePathType::ModelMaterial),
     )
 }

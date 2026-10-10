@@ -11,7 +11,7 @@ namespace FWK::Converter
 
     protected:
 
-        bool CanLoad(const std::filesystem::path& a_filePath) const;
+        bool CanLoad(const std::filesystem::path& a_filePath, const std::filesystem::path& a_modelAssetFilePath) const;
 
         template <typename ModelMeshType>
         Struct::ModelMeshBinaryHeader CreateModelMeshBinaryHeader(const ModelMeshType& a_modelMesh) const

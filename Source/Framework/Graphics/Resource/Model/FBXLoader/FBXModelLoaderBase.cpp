@@ -236,6 +236,11 @@ float FWK::Graphics::FBXModelLoaderBase::FetchVALMaterialFactor(const ufbx_mater
     return static_cast<float>(a_materialMap.value_real);
 }
 
+std::wstring FWK::Graphics::FBXModelLoaderBase::FetchVALSubMeshName(const ufbx_material* a_fbxMaterial) const
+{
+    return {};
+}
+
 ufbx_load_opts FWK::Graphics::FBXModelLoaderBase::CreateFBXLoadOptions() const
 {
     // ufbx_load_optsは、ufbxでFBXを読み込むときの設定

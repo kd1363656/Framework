@@ -885,6 +885,20 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Struct\Graphics\Buffer\Constant\CBCullingCameraPassStruct.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\Buffer\Constant\CullingCameraPassDynamicConstantBufferUploader.h" />
     <ClInclude Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.h" />
+    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelMaterialConstant.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\IsDerivedBase\Graphics\IsDerivedModelMaterialBaseConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Type\Alias\Factory\Shared\ModelMaterialSharedFactoryTypeAlias.h" />
+    <ClInclude Include="Source\Framework\Definition\Concept\Graphics\IsDeferredReleaseRecordConcept.h" />
+    <ClInclude Include="Source\Framework\Definition\Struct\GameObject\GameObjectModelComponentStruct.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Binary\ModelMaterialBinaryConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialBase.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Standard\Lit\ModelStandardLitMaterial.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit\ModelStandardUnLitMaterial.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Record\ModelMaterialRecord.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterial.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialSystem.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Json\ModelMaterialSystemJsonConverter.h" />
+    <ClInclude Include="Source\Framework\Graphics\Resource\Model\Material\File\ModelMaterialFileCreator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\IMGUI\INC\imnodes.cpp" />
@@ -1161,6 +1175,14 @@ if "$(Configuration)"=="Debug" (
     <ClCompile Include="Source\Framework\Editor\DebugRenderer\EditorDebugRenderer.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Pass\Debug\Editor\EditorDebugPass.cpp" />
     <ClCompile Include="Source\Framework\Graphics\Render\Graph\Request\Pass\Camera\Culling\CullingCameraPassDrawRequest.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Binary\ModelMaterialBinaryConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialBase.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Standard\Lit\ModelStandardLitMaterial.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Standard\UnLit\ModelStandardUnLitMaterial.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterial.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\ModelMaterialSystem.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\Converter\Json\ModelMaterialSystemJsonConverter.cpp" />
+    <ClCompile Include="Source\Framework\Graphics\Resource\Model\Material\File\ModelMaterialFileCreator.cpp" />
     <ClCompile Include="Source\PCH.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level4</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level4</WarningLevel>
@@ -1212,6 +1234,9 @@ if "$(Configuration)"=="Debug" (
     <None Include="Shader\RenderTarget\Final\FinalColor.hlsli" />
     <None Include="Shader\RenderTarget\FullScreenTriangle.hlsli" />
     <None Include="Shader\Sprite\Screen\SpriteScreen.hlsli" />
+    <None Include="Shader\Model\Standard\ModelStandardMaterial.hlsli" />
+    <None Include="Shader\Model\Standard\Lit\ModelStandardLitMaterial.hlsli" />
+    <None Include="Shader\Model\Standard\UnLit\ModelStandardUnLitMaterial.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <DXCTask Include="Shader\Model\Model_AS.hlsl">

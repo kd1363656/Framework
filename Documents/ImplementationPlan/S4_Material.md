@@ -1,5 +1,47 @@
 # S4 マテリアル(.mat・ハンドル・GPU テーブル・スロット)
 
+## 骨組みの状況(2026-10-11 作成済み。次は写経)
+
+こちらが書いたもの(ビルドは S6 の後)。**空の関数(仮の return)の中身が写経の対象**。
+
+| 区分 | ファイル | 状態 |
+|---|---|---|
+| S4-1 | `Definition/Constant/Graphics/ModelMaterialConstant.h` / `Concept/IsDerivedBase/Graphics/IsDerivedModelMaterialBaseConcept.h` / `Type/Alias/Factory/Shared/ModelMaterialSharedFactoryTypeAlias.h` | 完成 |
+| S4-1 | `AssetFilePathEnum.h`(`ModelMaterial`)/ Watcher の削除・名前変更に `ModelMaterial` の case | 完成(case の中身も書いた) |
+| S4-1 | `BinaryConverterBase.h/.cpp` の `TryReadStringBinaryData` | 宣言と空の定義 |
+| S4-1 | `Material/Converter/Binary/ModelMaterialBinaryConverter.h/.cpp` | 全関数が空(テンプレート3つも空) |
+| S4-1 | `Material/ModelMaterialBase.h/.cpp` | ctor / dtor は完成、他は空 |
+| S4-1 | `Material/Standard/Lit/ModelStandardLitMaterial.h/.cpp` | ctor / dtor / `FetchREFTableINFO` は完成、他は空 |
+| S4-1 | `Material/Standard/UnLit/ModelStandardUnLitMaterial.h/.cpp` | `FetchREFTableINFO` は完成、`WriteGPUData` は空 |
+| S4-2 | `Definition/Concept/Graphics/IsDeferredReleaseRecordConcept.h` | 完成 |
+| S4-2 | `AssetRecordBase.h`(`ReserveRelease` を削除)/ Texture・StaticModel・SkeletalAnimationModel の Record(`override` を削除) | 完成 |
+| S4-2 | `Storage/AssetStorage.h` | 既存の `SubtractReferenceCount` に `requires` を付け、遅延解放なし版を追加(中身は `return false;` で空) |
+| S4-2 | `Material/Record/ModelMaterialRecord.h` | 完成 |
+| S4-2 | `Material/ModelMaterial.h/.cpp` | ctor(3つ)/ dtor は完成、`operator=`(2つ)と他は空 |
+| S4-2 | `Material/ModelMaterialSystem.h/.cpp` / `Converter/Json/ModelMaterialSystemJsonConverter.h/.cpp` | 全関数が空 |
+| S4-2 | `ResourceContext.h`(メンバとゲッター)/ `ResourceContextJsonConverter.h`(キー) | 完成。**`ResourceContext.cpp` の `PostDeserialize` と `ResourceContextJsonConverter.cpp` は写経** |
+| S4-2 | `Shader/Model/Standard/ModelStandardMaterial.hlsli` と `Lit/` `UnLit/` の `...Material.hlsli` | cbuffer と構造体は完成、取得関数は空(`(型)0` を返す仮の中身) |
+| S4-2 | `CONFIG/Graphics/GraphicsCONFIG.json` の `ResourceContext.ModelMaterialSystem` | 完成 |
+| S4-3 | `Struct::StaticModelMesh` / `SkeletalAnimationModelMesh` の `m_subMeshName`、`ModelMeshBinaryHeader::m_subMeshNameSize`、`ModelBinaryConverterConstant.h`(`.staticModel` / `.skeletalModel` / `k_emptySubMeshNameSize`) | 完成 |
+| S4-3 | `ModelBinaryConverterBase.h/.cpp` の `CanLoad` | **引数を2つにした(中身は今のまま。写経で書き換える)** |
+| S4-3 | `FBXModelLoaderBase.h/.cpp` の `FetchVALSubMeshName` と `k_emptyFBXNameLength` | 宣言と空の定義 |
+| S4-3 | `Material/File/ModelMaterialFileCreator.h/.cpp` | 全関数が空(テンプレートも空) |
+| S4-3 | `StaticModelSystem.h` / `SkeletalAnimationModelSystem.h` の `m_materialFileCreator` | メンバのみ |
+| S4-4 | `Definition/Struct/GameObject/GameObjectModelComponentStruct.h` | 完成(S5 の `ModelDrawMaterial` が使う) |
+
+**まだ触っていないもの(写経で書く)** : `ModelBinaryConverterBase` の4つのテンプレート関数、`Static|Skeletal の *BinaryConverter.cpp`、`Static|Skeletal の *FBXLoader.cpp`、`Static|Skeletal の *ModelSystem.cpp`、`GraphicsManager.cpp`、`ModelStandardLit_PS.hlsl` / `ModelStandardUnLit_PS.hlsl`(S3 の途中の形のまま。`FetchModelBaseColor` の引数が古い)。
+
+**S4-4 の ModelComponent 側(スロット・JSON・インスペクター・Renderer の `FetchVALSubMeshNameList` / `ApplyMaterialList`)は、S0 で ModelComponent を作るときに書く。** ModelComponent がまだ無いため。
+
+**Framework.h の位置** : `ModelMaterialFileCreator.h` は `ModelMaterialRuntimeTextureBuilder.h` の次(StaticModelSystem より前)。マテリアル一式は「モデル(マテリアル)」の区画として `SkeletalAnimationModel.h` の後・アップロードシステムの前(`ResourceContext.h` が `ModelMaterialSystem` を値で持つため)。`ModelMaterialBase.h` は `Struct::ModelRenderTableINFO` を前方宣言している(本体の定義は `ModelRenderSystem` の区画で、これより後ろ)。`IsDeferredReleaseRecordConcept.h` は `AssetStorage.h` の前。
+
+**写経の順番(おすすめ)**
+1. S4-1 : `TryReadStringBinaryData` → `ModelMaterialBinaryConverter` → `ModelMaterialBase` → Lit → UnLit
+2. S4-2 : `AssetStorage` → `ModelMaterial` → `ModelMaterialSystem` → JSON(System / ResourceContext)→ `GraphicsManager` → HLSL(hlsli → PS)
+3. S4-3 : `ModelBinaryConverterBase` → Static / Skeletal の BinaryConverter → `FBXModelLoaderBase` → 各 FBXLoader → `ModelMaterialFileCreator` → 各 ModelSystem
+
+**写経のとき合わせること** : 既存の `TryReadWStringBinaryData` は「`m_mappedData` の確認が無く、wchar_t で割り切れるかを確認する」形になっている。`TryReadStringBinaryData` は、この既存の形に合わせて書く(char は 1 バイトなので割り切れの確認は要らない)。
+
 ## 目的
 
 - メッシュに埋め込まれていた「取り込み時のマテリアル」(`Struct::ModelMaterial`)ではなく、**.mat ファイルのマテリアル**で描く。

@@ -27,6 +27,7 @@ namespace FWK::Converter
         static constexpr std::string_view k_textureSystemJsonKey                = "TextureSystem";
         static constexpr std::string_view k_staticModelSystemJsonKey            = "StaticModelSystem";
         static constexpr std::string_view k_skeletalAnimationModelSystemJsonKey = "SkeletalAnimationModelSystem";
+        static constexpr std::string_view k_modelMaterialSystemJsonKey          = "ModelMaterialSystem";
 
         static constexpr std::string_view k_uploadSystemJsonKey = "UploadSystem";
     };

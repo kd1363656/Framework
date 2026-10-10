@@ -35,6 +35,11 @@
   - S3 / S5 の「ModelComponent の StaticRenderer / SkeletalRenderer の変更」は、S0 を作るときにまとめて書く(S3 の骨組みでは書かない)。
   - 描画項目(ModelDrawItem)を出す側が無い間は、モデルは描かれない(ビルドも S6 の後)。
 
+## 進捗(2026-10-11)
+
+- S2 写経済み / S3 完了(C++ は写経済み、HLSL はこちらが一括で書いた)/ **S4 の骨組みを書いた(次は写経。詳細は `S4_Material.md` の冒頭の表)**。
+- S4-4 の ModelComponent 側(スロット・JSON・インスペクター・Renderer の2関数)は、S0 で ModelComponent を作るときに書く(`S0_ModelComponent.md` に追記済み)。
+
 ## ステップ一覧
 
 ### フェーズ1(高速化 + マテリアル)… 最後にビルド
