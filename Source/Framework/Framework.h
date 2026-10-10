@@ -229,6 +229,7 @@
 #include "Graphics/Resource/Buffer/StructuredBufferBase.h"
 #include "Definition/Struct/Graphics/Buffer/StaticStructuredBufferStruct.h"
 #include "Graphics/Resource/Buffer/Static/Structured/StaticStructuredBuffer.h"
+#include "Graphics/Resource/Buffer/Table/GPUElementTable.h"
 
 //===============================================================================
 // アセットファイルパスレジストリー
@@ -476,6 +477,14 @@
 #include "Graphics/Render/Graph/Resource/Binder/RenderGraphResourceBinder.h"
 #include "Graphics/Render/Graph/Sorter/RenderGraphPassSorter.h"
 #include "Graphics/Render/Graph/RenderGraph.h"
+
+// モデルの描画テーブル
+#include "Definition/Constant/Graphics/ModelRenderSystemConstant.h"
+#include "Definition/Enum/Graphics/ModelRenderSystemEnum.h"
+#include "Definition/Struct/Graphics/Buffer/Root/RCModelStruct.h"
+#include "Definition/Struct/Graphics/ModelRenderSystemStruct.h"
+#include "Graphics/Render/Model/Converter/Json/ModelRenderSystemJsonConverter.h"
+#include "Graphics/Render/Model/ModelRenderSystem.h"
 
 // レンダーラー
 #include "Graphics/Render/Converter/Json/RendererJsonConverter.h"

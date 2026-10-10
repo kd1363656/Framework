@@ -45,6 +45,8 @@ namespace FWK::Graphics
 
         float FetchVALBlendWeight() const;
 
+        const auto& GetREFFrameDataList() const { return m_frameDataList; }
+
         const auto& GetREFSkeletalAnimationModelRecord() const { return m_skeletalAnimationModelRecord; }
 
         const auto& GetREFAnimation() const { return m_animation; }

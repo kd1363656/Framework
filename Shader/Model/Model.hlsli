@@ -43,37 +43,65 @@ struct ModelAmplificationPayload
     uint meshletIndexList[k_modelAmplificationShaderThreadCountX];
 };
 
-cbuffer CBModelPerObject : register(b1)
+// 1回の描画(メッシュ1つ)ごとに、C++がルート定数で送る番号
+// C++側のStruct::RCModelDrawItemと同じ並びにする
+// g_objectIndex   : オブジェクトのテーブルの何番目か(行列など)
+// g_meshIndex     : メッシュのテーブルの何番目か(バッファのSRVの番号など)
+// g_materialIndex : マテリアルのテーブルの何番目か(影のパスでは使わない)
+cbuffer RCModelDrawItem : register(b1)
 {
-    row_major matrix g_worldMatrix;
-
-    row_major matrix g_worldInverseTransposeMatrix;
-
-    float4 g_baseColorFactor;
-
-    float g_roughnessFactor;
-    float g_metallicFactor;
-    uint  g_baseColorTextureSRVDescriptorIndex;
-    uint  g_normalTextureSRVDescriptorIndex;
-
-    uint g_metallicTextureSRVDescriptorIndex;
-    uint g_roughnessTextureSRVDescriptorIndex;
-    uint g_vertexBufferSRVDescriptorIndex;
-    uint g_meshletBufferSRVDescriptorIndex;
-
-    uint  g_uniqueVertexIndexBufferSRVDescriptorIndex;
-    uint  g_primitiveIndexBufferSRVDescriptorIndex;
-    uint  g_meshletBoundsBufferSRVDescriptorIndex;
-    float g_worldMaxScale;
-
-    float  g_worldOrientationSign;
-    uint   g_meshletCount;
-    float2 g_padding;
+    uint g_objectIndex;
+    uint g_meshIndex;
+    uint g_materialIndex;
 };
+
+// オブジェクトとメッシュのテーブルのSRVの番号
+// パスの最初に1回だけ送る
+// C++側のStruct::RCModelTableと同じ並びにする
+cbuffer RCModelTable : register(b5)
+{
+    uint g_objectTableSRVDescriptorIndex;
+    uint g_meshTableSRVDescriptorIndex;
+};
+
+// オブジェクトのテーブルの1要素
+// C++側のStruct::ModelObjectGPUDataと同じ並び(136バイト)にする
+// StructuredBufferの要素なので、cbufferのような16バイト境界のパディングは入れない
+struct ModelObjectData
+{
+    row_major float4x4 worldMatrix;
+    row_major float4x4 worldInverseTransposeMatrix;
+    float              worldMAXScale;
+    float              worldOrientationSign;
+};
+
+// メッシュのテーブルの1要素
+// C++側のStruct::ModelMeshGPUDataと同じ並び(24バイト)にする
+struct ModelMeshData
+{
+    uint vertexBufferSRVDescriptorIndex;
+    uint meshletBufferSRVDescriptorIndex;
+    uint uniqueVertexIndexBufferSRVDescriptorIndex;
+    uint primitiveIndexBufferSRVDescriptorIndex;
+    uint meshletBoundsBufferSRVDescriptorIndex;
+    uint meshletCount;
+};
+
+// この描画のオブジェクトの値(行列など)を、オブジェクトのテーブルから読む
+ModelObjectData FetchModelObjectData()
+{
+    return (ModelObjectData)0;
+}
+
+// この描画のメッシュの値(バッファのSRVの番号など)を、メッシュのテーブルから読む
+ModelMeshData FetchModelMeshData()
+{
+    return (ModelMeshData)0;
+}
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する
 // 3個Pack方式では、uint32_t1個に三角形1個分のPrimitiveIndexを入れている
-// また、WorldMatrixのdeterminant画布の場合は、
+// また、WorldMatrixのdeterminantが負の場合は、
 // WorldTransformによってTriangleのWindingが反転する
 // bit配置
 // 0  : 1個目のPrimitiveIndex
@@ -82,31 +110,16 @@ cbuffer CBModelPerObject : register(b1)
 // 24 : 未使用
 // 戻り値のuint3は、元VertexBufferのIndexではなく、
 // MeshShaderが出力したa_vertexListの何番目を使うかを表す
-uint3 FetchModelPackedPrimitiveIndex(const uint a_packedPrimitiveIndex)
+uint3 FetchModelPackedPrimitiveIndex(const ModelObjectData a_object, const ModelMeshData a_mesh, const uint a_packedPrimitiveIndex)
 {
-    StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[g_primitiveIndexBufferSRVDescriptorIndex];
-
-    // uint一個に三角形一個分の
-    // 三つのPrimitiveIndexがPackされている
-    const uint  l_packedValue    = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
-    const uint3 l_primitiveIndex = DecodeModelPackedPrimitiveIndex(l_packedValue);
-
-    // determinantが負のWorldMatrixでは
-    // (0, 1, 2)のTriangleを、(0, 2, 1)
-    // へ変更することでWindingを元に戻す
-    if (g_worldOrientationSign == k_modelMirroredWorldOrientationSign) { return uint3(l_primitiveIndex.x, l_primitiveIndex.z, l_primitiveIndex.y); }
-
-    return l_primitiveIndex;
+    return uint3(0U, 0U, 0U);
 }
 
-// StaticModelのLocal座標をWorld座標へ変換する
+// ModelのLocal座標をWorld座標へ変換する
 // PBRではライト方向やカメラ方向をWorld空間で計算するため、worldPositionが必要
-float3 TransformModelLocalPositionToWorld(const float3 a_localPosition)
+float3 TransformModelLocalPositionToWorld(const ModelObjectData a_object, const float3 a_localPosition)
 {
-    const float4 l_localPosition = float4(a_localPosition, k_modelPositionElementW);
-    const float4 l_worldPosition = mul   (l_localPosition, g_worldMatrix);
-
-    return l_worldPosition.xyz;
+    return float3(0.0F, 0.0F, 0.0F);
 }
 
 #endif // MODEL_HLSLI

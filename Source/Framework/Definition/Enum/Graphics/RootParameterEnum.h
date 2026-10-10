@@ -17,6 +17,9 @@ namespace FWK::Enum
         CBSkeletalAnimationMeshletBoundsUpdatePerObject,
         CBFinalColorPass,
         CBFinalPresentPass,
+        RCModelDrawItem,
+        RCModelTable,
+        RCModelMaterialTable,
         Count,
     };
 
@@ -36,6 +39,9 @@ namespace FWK::Enum
         FWK_JSON_ENUM_VALUE(RootParameterType::CBSkeletalAnimationMeshletBoundsUpdatePerObject),
         FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalColorPass),
         FWK_JSON_ENUM_VALUE(RootParameterType::CBFinalPresentPass),
+        FWK_JSON_ENUM_VALUE(RootParameterType::RCModelDrawItem),
+        FWK_JSON_ENUM_VALUE(RootParameterType::RCModelTable),
+        FWK_JSON_ENUM_VALUE(RootParameterType::RCModelMaterialTable),
         FWK_JSON_ENUM_VALUE(RootParameterType::Count),
     )
 }

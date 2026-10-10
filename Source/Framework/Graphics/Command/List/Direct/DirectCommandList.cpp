@@ -230,6 +230,13 @@ void FWK::Graphics::DirectCommandList::DispatchMesh(const UINT a_threadCountGrou
     l_directCommandList->DispatchMesh(a_threadCountGroupX, a_threadCountGroupY, a_threadCountGroupZ);
 }
 
+void FWK::Graphics::DirectCommandList::SetupRoot32BitConstants(const RootSignature&          a_rootSignature,
+                                                               const void*                   a_rootConstantData,
+                                                               const Enum::RootParameterType a_rootParameterType,
+                                                               const UINT                    a_rootConstantCount,
+                                                               const UINT                    a_destinationOffset) const
+{}
+
 void FWK::Graphics::DirectCommandList::SetupRootSignature(ID3D12GraphicsCommandList6& a_commandList, ID3D12RootSignature& a_rootSignature)
 {
     a_commandList.SetGraphicsRootSignature(&a_rootSignature);

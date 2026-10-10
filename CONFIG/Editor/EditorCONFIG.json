@@ -83,6 +83,10 @@
                             "IsOpen": false
                         },
                         {
+                            "FilePath": "Asset\\Model",
+                            "IsOpen": false
+                        },
+                        {
                             "FilePath": "Asset\\Data\\Font",
                             "IsOpen": false
                         },
@@ -92,10 +96,6 @@
                         },
                         {
                             "FilePath": "Asset\\Data\\Sound",
-                            "IsOpen": false
-                        },
-                        {
-                            "FilePath": "Asset\\Model",
                             "IsOpen": false
                         },
                         {
@@ -111,11 +111,11 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
+                            "FilePath": "Asset\\Data\\Sound\\Run",
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\Run",
+                            "FilePath": "Asset\\Data\\Sound\\Combat\\Player",
                             "IsOpen": false
                         },
                         {
@@ -135,12 +135,12 @@
                             "IsOpen": false
                         },
                         {
-                            "FilePath": "Asset\\Data\\Sound\\BGM",
-                            "IsOpen": false
-                        },
-                        {
                             "FilePath": "Asset\\Data\\Prefab\\Camera",
                             "IsOpen": true
+                        },
+                        {
+                            "FilePath": "Asset\\Data\\Sound\\BGM",
+                            "IsOpen": false
                         },
                         {
                             "FilePath": "Asset\\Data\\Scene\\Title",

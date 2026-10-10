@@ -32,6 +32,10 @@ namespace FWK::Graphics
 
         void SetupConstantBufferView(const RootSignature& a_rootSignature, const D3D12_GPU_VIRTUAL_ADDRESS& a_gpuVirtualAddress, const Enum::RootParameterType a_rootParameterType) const override;
 
+        template <typename RootConstantType>
+        void SetupRoot32BitConstants(const RootConstantType& a_rootConstantData, const RootSignature& a_rootSignature, const Enum::RootParameterType a_rootParameterType) const
+        {}
+
         void SetupPrimitiveTopology(const D3D12_PRIMITIVE_TOPOLOGY a_primitiveTopology) const;
 
         void SetupVertexBufferView(const D3D12_VERTEX_BUFFER_VIEW& a_vertexBufferView) const;
@@ -66,6 +70,15 @@ namespace FWK::Graphics
         static constexpr UINT k_emptySetupRenderTargetNUM  = 0U;
         static constexpr UINT k_singleSetupRenderTargetNUM = 1U;
         static constexpr UINT k_allRECTClear               = 0U;
+
+        void SetupRoot32BitConstants(const RootSignature&          a_rootSignature,
+                                     const void*                   a_rootConstantData,
+                                     const Enum::RootParameterType a_rootParameterType,
+                                     const UINT                    a_rootConstantCount,
+                                     const UINT                    a_destinationOffset) const;
+
+        static constexpr UINT k_rootConstantStartOffset  = 0U;
+        static constexpr UINT k_invalidRootConstantCount = 0U;
 
         static constexpr UINT k_setViewportNUM       = 1U;
         static constexpr UINT k_setScissorRECTNUM    = 1U;

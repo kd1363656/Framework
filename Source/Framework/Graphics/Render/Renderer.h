@@ -83,6 +83,7 @@ namespace FWK::Graphics
 
         const auto& GetREFSwapChain     () const { return m_swapChain; }
         const auto& GetREFShadowContext () const { return m_shadowContext; }
+        const auto& GetREFModelRenderSystem() const { return m_modelRenderSystem; }
         const auto& GetREFMainRenderView() const { return m_mainRenderView; }
 
         const auto& GetREFRenderGraph() const { return m_renderGraph; }
@@ -101,6 +102,7 @@ namespace FWK::Graphics
         auto& GetMutableREFRenderGraph() { return m_renderGraph; }
 
         auto& GetMutableREFShadowContext () { return m_shadowContext; }
+        auto& GetMutableREFModelRenderSystem() { return m_modelRenderSystem; }
         auto& GetMutableREFMainRenderView() { return m_mainRenderView; }
 
         auto& GetMutableREFDirectCommandList () { return m_directCommandList; }
@@ -138,6 +140,8 @@ namespace FWK::Graphics
         ShadowContext m_shadowContext     = {};
         RenderView    m_mainRenderView    = {};
         RenderView    m_previewRenderView = {};
+
+        ModelRenderSystem m_modelRenderSystem = {};
 
         TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
         TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
