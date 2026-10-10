@@ -17,6 +17,14 @@
      ・テンプレートや inline のように、そのヘッダーに処理の本体を書かなければならない関数の「中」は例外です。
        .cpp と同じように、処理にコメントを書きます(第16章 16-4 / 16-8)。
        それ以外のもの(.cpp に書けるもの)の中身を、コメントを書くためにヘッダーへ書くことはしません。
+     ・マクロ(#define)は .cpp に書けないため、マクロの説明だけはマクロの直前に書いて構いません(Definition/Macros / FWK_ADD_LOG)。
+     ・クラスの説明は、.cpp の #include の後の、最初の関数の定義のすぐ上に書きます(コメントと関数の間に空行を入れません)。
+         #include "Fence.h"
+
+         // コピーやムーブを許可すると、…ため、コピー・ムーブを禁止している
+         FWK::Graphics::Fence::Fence() :
+       構造体のメンバ・列挙型の値・定数の説明は、その値を設定したり使ったりする .cpp の処理の中に書きます。
+       テンプレートなど .cpp がないものは、そのクラスの代表的な関数(登録・取得など)の本体の先頭に書きます。
 1-2. .h / .cpp ともに、ファイルの最後の行の後ろには改行を入れません。
 1-3. 構造体を class の public に入れ子で定義しないでください。
      ・そのクラスの中だけで使う構造体は private に入れ子で定義します。
@@ -254,6 +262,23 @@
          void SetXxx(const float a_set) { m_xxx = a_set; }
          void SetXxx(const std::string& a_set) { m_xxx = a_set; }
          void SetXxx(Struct::GPUResource&& a_set) { m_xxx = std::move(a_set); }
+     ・処理を含まない軽い設定関数(Set)で済む値の設定に、GetMutableREF / GetMutablePTR を使いません。
+       可変の参照を取り出して代入したり、構造体のメンバへ代入したり、出力引数に渡して書き込ませたりせず、Set 関数を用意して設定します。
+         NG : ApplyTextureFilePath(a_modelFilePath, l_textureFilePath, l_material.GetMutableREFBaseColorTexture());  (中で UUID を書き込む)
+         OK : l_material.SetBaseColorTexture(CreateTextureAssetFilePath(a_modelFilePath, l_textureFilePath));
+         NG : auto& l_transform = a_transformComponent.GetMutableREFTransform(); l_transform.m_position = l_position;
+         OK : a_transformComponent.ApplyTransformPosition(l_position);  (値と一緒に Dirty も立てるなら Apply)
+       リストなどをまとめて読み込むときは、ローカル変数に読み込んでから std::move で Set します(ModelBinaryConverterBase)。
+       共有している実体(shared_ptr)の値を変えるときは、作り直さずに中身を書き換える Apply 関数にします(LightSystem::ApplyCBLightPass)。
+     ・読むだけのときは GetREF を使います。GetMutableREF で受け取って const auto& にすることはしません。
+     ・次の場合は GetMutableREF / GetMutablePTR を使って構いません(Set では済まないため)。
+       - 持っている子のオブジェクトの処理関数を呼んで、処理を任せるとき(GetMutableREFTextureSystem / GetMutableREFClipboard など)
+       - 処理用のクラスが、持ち主のデータをその場で加工するとき(ModelMeshletBuilder / Transform の更新モード / RenderGraph など)
+       - スマートポインタ(std::unique_ptr / std::shared_ptr)で持つ派生クラスを、TypeINFO で名前を表示しながら選び直して差し替えるとき
+           GameObjectTransformComponentInspector の MatrixUpdateMode(GetREF では差し替えられず、
+           ローカル変数に作ると今のモードの名前を取得できないため)
+       - エディターのウィンドウが持つ状態(RenameState など)を、Pane や PopupDrawer が読み書きするとき
+       使わなくなった GetMutable 関数は削除します。
      ・Fetch は、計算や探索を伴う取得関数で、.cpp に実装するものに使います。
          FetchVALXxx / FetchPTRXxx / FetchREFXxx / FetchMutablePTRXxx
        Fetch / Find の後ろには、必ず VAL / PTR / REF などの返し方を付けます。
@@ -452,6 +477,13 @@
        HLSL の16バイト境界に合わせるためのパディングは m_padding / m_xxxPadding として明示します。
 7-12. 1つの機能は複数の小さなクラスに分けます。
      ・JSON の変換は m_jsonConverter、インスペクタの表示は m_inspector としてメンバに持ち、処理を任せます。
+     ・JsonConverter / BinaryConverter は、必ずメンバ変数(m_jsonConverter / m_binaryConverter)として持ちます。
+       関数の中でローカル変数として作って使い捨てることはしません。
+         NG : Converter::ModelMaterialBinaryConverter l_binaryConverter = {};
+              return l_binaryConverter.Save(a_filePath, *this);
+         OK : return m_binaryConverter.Save(a_filePath, *this);
+       変換クラスの Load / Save は状態(開いたファイル)を変えるため、それを呼ぶ関数(Save など)には const を付けません
+       (TextureSystem / StaticModelSystem / ModelMaterialBase)。mutable は使いません(11-10)。
      ・エディターウィンドウは Pane / Clipboard / FileOperation / ShortcutHandler / PopupDrawer / AssetCreator
        などのメンバクラスに分けます。
      ・入力でカメラを動かす処理(移動・回転の更新)は、ウィンドウではなく、カメラのクラス(EditorCamera)が持ちます。
@@ -470,6 +502,15 @@
      ただし、関連が強い関数は空行を入れずに続けて書きます。
        コンストラクタとその直後のデストラクタ / EarlyUpdate・Update・LateUpdate・PostLateUpdate /
        LoadCONFIG・PostLoadCONFIG / DeserializeScene・DeserializePrefab / Undo・Redo / Add・Subtract など
+     ・空行を入れずに続けて書くのは、ヘッダーでも空行なしに上下で隣り合っている関数だけです。
+       ヘッダーで空行(またはアクセス指定子)を挟んで分かれている関数は、.cpp でも空行を1行入れて分けます。
+       反対に、ヘッダーで空行なしに隣り合っている関数を .cpp で続けて定義するときは、間に空行を入れません。
+       .cpp の関数の間の空行は、ヘッダーの宣言の間の空行と同じにします。ヘッダーのまとまりを変えたときは .cpp も合わせます。
+         ヘッダー : bool TryReadBinaryData(...) override;     .cpp : bool ...::TryReadBinaryData(...) { ... }
+                    void WriteBinaryData  (...) const override;     void ...::WriteBinaryData(...) const { ... }
+                                                                    (空行)
+                    std::uint64_t CalculateBinaryDataSize(...);     std::uint64_t ...::CalculateBinaryDataSize(...) { ... }
+       関数の宣言が複数行にわたるときは、ヘッダーでは前後に空行を入れて分けるので、.cpp でも空行を入れます。
      ・この例外は .cpp に書くクラスのメンバ関数だけに使います。
        Utility のように inline の関数が並ぶヘッダーでは、関連が強い関数でも必ず空行を1行入れて区切ります。
          inline void CollectDescendantGameObjectList(...)
@@ -622,6 +663,15 @@
        std::min / std::max / static_cast のような関数や、後ろに .x などのメンバが続く呼び出しが混ざっても同じです。
          const float l_regionWidth = ImGui::GetContentRegionAvail().x;
          const auto  l_buttonWidth = std::min                    (k_addComponentButtonWidth, l_regionWidth);
+     ・関数呼び出しだけの行が続き、引数の数が同じときは、( に加えて引数の位置(2つ目以降の引数の始まり)も揃えます。
+       引数の数が違う行どうしは揃えません(同じ数の行どうしで揃えます)。
+         ModelMaterialBase::WriteBinaryData  (a_binaryConverter,  a_memoryWriteOffset);
+         a_binaryConverter.WriteAssetFilePath(m_normalTexture,    a_memoryWriteOffset);
+         a_binaryConverter.WriteMaterialValue(m_metallic,         a_memoryWriteOffset);
+       1行の if が続くときは { の位置だけを揃え、条件の中の呼び出しの引数は揃えません(引数の間は「, 」の1つだけです)。
+         if (!a_binaryConverter.TryReadAssetFilePath(m_normalTexture, a_memoryReadOffset))    { return false; }
+         if (!a_binaryConverter.TryReadAssetFilePath(m_metallicTexture, a_memoryReadOffset))  { return false; }
+         if (!a_binaryConverter.TryReadMaterialValue(m_metallic, a_memoryReadOffset))         { return false; }
      ・const 付きと const なしの宣言が並ぶときは、const なしの行を6文字下げて型の位置を揃えます。
                auto& l_gameObjectSelectionState = a_editorManager.GetMutableREFGameObjectSelectionState   ();
          const auto& l_cursor                   = l_gameObjectSelectionState.FindVALLastSelectedGameObject().lock();
@@ -640,6 +690,7 @@
                                                         1.00F,
                                                         1.00F };
          static constexpr ImVec2 k_itemListChildSize = { 0.0F, 240.0F };
+       縦に並べるときは、2つ目以降の要素を最初の要素の位置(「{ 」の直後)にぴったり揃えます。1文字でもずらしません。
        要素が3つ以下なら、式が長くなっても改行して並べません(9-7 の引数と同じです)。
 9-9. 関数の中の空行
      ・return の前には空行を入れます(ブロックの最初の文が return の場合は除きます)。
@@ -805,6 +856,8 @@
                                     {
                                         return FetchVALGameObjectSiblingRank(l_rankMap, a_left) < FetchVALGameObjectSiblingRank(l_rankMap, a_right);
                                     });
+     ・処理を保存して後で呼ぶ場合(ファクトリーへの作成処理の登録など)も、ラムダではなく関数のアドレスを渡します。
+         m_factoryMap.try_emplace(a_typeName, &CreateInstance<DerivedType>);
      ・キャプチャは [&l_gameObject] / [this] / [] のように明示します。[&] や [=] は使いません。
      ・ラムダの引数にも a_ を付けます。
      ・ラムダを引数として渡すときは改行し、{ を [ の位置に揃えます。
@@ -818,6 +871,34 @@
      ・要素の削除は std::erase_if、検索は std::ranges::find / any_of / find_if を使います。
      ・オブジェクトの生成は std::make_shared / std::make_unique を使い、new は使いません。
      ・文字列の整形には std::format を使います。
+     ・本体が if 文だけの for 文(if が1つだけのもの、1行の if { return / continue } だけが並ぶもの)は書きません。
+       std::ranges のアルゴリズムや std::views で書きます。
+       for 文は「要素ごとに何かを処理する」ように見えるため、条件で探す・確かめる・絞り込むだけなら、それが分かる書き方にします。
+       (if / else や複数の if で、要素ごとに処理を振り分けるループは、要素ごとの処理なので for 文のままにします)
+         すべての要素が条件を満たすか / 1つでも満たすか → std::ranges::all_of / any_of / none_of
+         条件に合う要素を探す                          → std::ranges::find_if
+         条件に合う要素だけを処理する                  → std::views::filter で絞り込んだビューを for 文で回す
+         weak_ptr のリストを shared_ptr にする         → std::ranges::transform で lock() し、std::erase_if で無効なものを消す
+       NG : for (auto& l_staticModelMesh : l_staticModelData.m_meshList)
+            {
+                if (!TryReadModelMeshBinaryDataCommon(l_staticModelMesh, l_memoryReadOffset)) { ... return false; }
+            }
+       OK : const bool l_isModelMeshListRead = std::ranges::all_of(l_staticModelData.m_meshList,
+                                                                   [this, &l_memoryReadOffset](auto& a_staticModelMesh)
+                                                                   {
+                                                                       return TryReadModelMeshBinaryDataCommon(a_staticModelMesh, l_memoryReadOffset);
+                                                                   });
+       OK : auto l_closedFolderPathView = std::views::filter(l_selectedFilePathList,
+                                                             [this](const auto& a_selectedPath)
+                                                             {
+                                                                 return !IsFolderOpen(a_selectedPath);
+                                                             });
+
+            for (const auto& l_selectedPath : l_closedFolderPathView)
+            {
+                ToggleFolderOpen(l_selectedPath);
+            }
+       std::views::filter のビューは、回すときに中身を書き換えるため const を付けずに auto で受けます。
      ・外部ライブラリの型が決めている場合だけ、次の書き方を使って構いません。
          ImVector(ImGui)の要素の追加 → push_back(ImVector には emplace_back がないため)
          Jolt の参照カウント付きのオブジェクト(JPH::Ref / DebugRenderer::Batch など)の生成 → new(Jolt が delete するため)
@@ -830,8 +911,29 @@
        テンプレートではないクラスでは、this-> を書かずに呼びます。
      ・nullptr との比較の結果を bool に入れるときも == nullptr / != nullptr は書かず、static_cast<bool>(...) にします。
          const bool l_isDragging = static_cast<bool>(ImGui::GetDragDropPayload());
-11-11. 取得関数(GetREF / GetMutableREF / GetVAL など)を続けて呼ぶ書き方はしません。1段ずつ変数で受けます。
+11-11. 自作の関数(取得関数・GetInstance など)の戻り値に、続けて関数やメンバを書きません。1段ずつ変数で受けます。
+     ・関数を2つ続けて呼ぶ形(a.GetREFXxx().GetREFYyy())も、戻り値のメンバを続けて読む形(a.GetREFXxx().m_yyy / .size() / .k_name)も同じです。
+         NG : for (const auto& l_modelMesh : a_staticModelRecord.GetREFModelData().m_meshList)
+         OK : const auto& l_modelData = a_staticModelRecord.GetREFModelData();
+
+              for (const auto& l_modelMesh : l_modelData.m_meshList)
+              {
+                  const auto& l_material  = l_modelMesh.GetREFMaterial();
+                  const bool  l_isCreated = m_materialFileCreator.CreateDefaultModelMaterialFile(a_filePath, l_modelMesh.GetREFSubMeshName(), l_material.m_assetData);
+              }
+     ・if の条件の中で使う場合も、if の前で変数に受けてから条件に書きます。
+       if の初期化文で受けている変数の取得関数を続けて呼んでいる場合は、その変数を if の前に出し、初期化文では次の段を受けます。
+         NG : if (const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+                  !l_hierarchy.GetREFParent().expired())
+         OK : const auto& l_hierarchy = l_gameObject->GetREFHierarchy();
+
+              if (const auto& l_parent = l_hierarchy.GetREFParent();
+                  !l_parent.expired())
+     ・&& / || の後ろの条件にある場合は、前の条件で null などを確かめてから受けるように、if を分けます(先に受けると null を参照するため)。
+     ・マクロの中でも同じです(FWK_ADD_LOG / FWK_REGISTER_FACTORY_METHOD など)。
      ・weak_ptr を取り出す GetVALXxx().lock() の形だけは、続けて書いて構いません。
+     ・外部ライブラリ(std / ImGui / Jolt など)の関数の戻り値に続けて書くもの(path.stem().string() / try_emplace(...).second /
+       ImGui::GetContentRegionAvail().x など)は、この規則の対象にしません。
          NG : auto& l_cameraContext = l_graphicsManager.GetMutableREFRenderer().GetMutableREFCameraContext();
          OK : auto& l_renderer      = l_graphicsManager.GetMutableREFRenderer();
               auto& l_cameraContext = l_renderer.GetMutableREFCameraContext  ();
@@ -849,11 +951,25 @@
 12-1. エラーの判定には FWK_ASSERT_RETURN_IF / FWK_ASSERT_RETURN_VALUE_IF を使います。assert() は直接書きません。
      IF が付かない FWK_ASSERT_RETURN / FWK_ASSERT_RETURN_VALUE は、直前の if で判定を済ませている場合だけ使います。
          FWK_ASSERT_RETURN_IF(!l_rootSignature, "PhysicsDebugPass用RootSignatureが無効のため、PhysicsDebugPassの実行に失敗しました。");
+     ・ループの中で、知らせた後に continue / break で続けたい場合は、return しない FWK_ASSERT(Message) を if の中で使います。
+       (do-while で囲んだマクロの中に continue / break を書くと、外側のループではなくマクロの do-while に効いてしまうため)
+         if (!l_renderGraphPass)
+         {
+             FWK_ASSERT("RenderGraphPassのインスタンス化に失敗しました。");
+
+             continue;
+         }
 12-2. メッセージの書き方
      ・日本語で書き、最後に句点「。」を付けます。
      ・「{原因}のため、{処理}に失敗しました。」の形で書きます。
          "Deviceが無効のため、ImGuiの初期化処理に失敗しました。"
          "コマンドアロケータの作成に失敗しており、リセット処理に失敗しました。"
+       「〜が無効です。」「〜がnullptrです。」「〜できません。」のように原因だけ・結果だけで終わらせず、
+       「〜です、〜に失敗しました。」のように2つの文を読点でつなぐこともしません。
+         NG : "エディターカメラが無効です。"
+         OK : "エディターカメラが無効なため、デバッグカメラの登録に失敗しました。"
+       FAILED(l_hr) や !CreateXxx(...) のように、呼び出しの失敗そのものを判定する場合は、
+       原因が処理の名前と同じになるため「{処理}に失敗しました。」だけで構いません(12-4)。
      ・補足の情報は改行して「項目名 : {}」の形で付けます: "...に失敗しました。\nFilePath : {}"
 12-3. FWK_ADD_LOG の色は次のように使い分けます。
        警告: Constant::k_imguiDebugWarningColor
@@ -1128,6 +1244,17 @@
          template <Concept::IsDerivedEditorWindowBaseConcept WindowType>
          std::weak_ptr<WindowType> FindVALWindowEditor() const
      ・dynamic_cast は使いません(11-6)。テンプレート引数は Concept で XxxBase の派生に制限します。
+18-8. AssetStorage で管理する Record(AssetRecordBase の派生)の解放は、GPU のリソースを持つかどうかで分けます。
+     ・GPU のリソース(GPUResource / DescriptorIndex など)を持つ Record は、必ず
+         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext);
+       を持ちます(TextureRecord / StaticModelRecord / SkeletalAnimationModelRecord)。
+       参照数が0になると、GPU が使い終わるまで待ってから解放するよう、ResourceReleaseContext へ遅延解放を登録します。
+     ・GPU のリソースを持たない Record(ModelMaterialRecord)は、ReserveRelease を書きません。参照数が0になるとすぐに外れます。
+     ・ReserveRelease は AssetRecordBase の仮想関数ではありません。AssetStorage が Concept::IsDeferredReleaseRecordConcept で
+       ReserveRelease を持っているかを見分け、SubtractReferenceCount(Record, コマンドキュー, ResourceReleaseContext)と
+       SubtractReferenceCount(Record)のどちらを使うかをコンパイル時に決めます。
+     ・書き忘れてもコンパイルエラーにはならず、すぐ解放する側で動いてしまいます(GPU が使用中のリソースを解放する危険があります)。
+       GPU のリソースを持たせたときは、ReserveRelease を必ず一緒に追加します。
 
 
 ================================================================================
@@ -1149,6 +1276,16 @@
          StructuredBuffer<T> l_buffer = ResourceDescriptorHeap[g_xxxSRVDescriptorIndex];
 19-7. 書式は C++ と同じです(Allman スタイル、1行 if、縦揃え、日本語のコメント)。
      C++ 側と値を一致させる必要がある定数には、そのことをコメントで書いておきます。
+19-8. cbuffer(ルート定数を含む)の宣言は、その値を C++ 側で送るシェーダーだけが include する .hlsli に書きます。
+     送らないシェーダーが include すると、送られていない番号でディスクリプタヒープを読んでしまうためです。
+       Model.hlsli                    : CBModelPerObject / RCModelPerMesh(影を含むモデルの全シェーダーが使う)
+       Standard/ModelStandardMaterial.hlsli : RCModelMaterial(マテリアルを使う Lit / UnLit だけが include する)
+     共通の処理でディスクリプタヒープを読むときは、cbuffer の値を直接読まず、番号を引数で受け取ります。
+       float4 FetchModelBaseColor(const uint a_baseColorTextureSRVDescriptorIndex, const float4 a_baseColor, const float2 a_uv)
+19-9. ルート定数(32BIT_CONSTANTS)の cbuffer は RCXxx : register(bN) と書き、C++ 側は Struct::RCXxx にします。
+     メッシュごとに変わる数個の値など、定数バッファに書くほどではない値に使います(RCModelPerMesh)。
+19-10. StructuredBuffer の要素の構造体は、C++ 側の XxxGPUData 構造体と同じ並びにします。
+     StructuredBuffer は cbuffer と違い16バイト境界に合わせないため、パディングは入れません。
 
 
 ================================================================================
@@ -1291,6 +1428,12 @@
 [ ] クラス・構造体のメンバ・引数・定数を「外部APIのクラス → std のクラス → 自作クラス → 外部APIの構造体 → std の構造体 → 自作の構造体」の順で並べている
 [ ] 続けて並ぶ = と ( を縦に揃え(std::min などが混ざっても揃える)、const 付きと const なしの宣言は型の位置を揃えている
 [ ] { } の初期化子は、要素が4つ以上なら縦に並べ、3つ以下なら1行に書いている
+[ ] 呼び出しだけの行が続くときは ( と引数の位置を揃え、1行 if の中の引数は揃えていない
+[ ] JsonConverter / BinaryConverter をメンバに持ち、ローカル変数で作っていない
+[ ] Set で済む値の設定に GetMutableREF を使っておらず、読むだけなら GetREF を使っている
+[ ] 自作の関数の戻り値に、続けて関数やメンバを書いていない(lock() だけは可)
+[ ] 本体が if 文1つだけの for 文を書かず、std::ranges::all_of / any_of / find_if / std::views::filter で書いている
+[ ] .cpp の関数の間の空行が、ヘッダーの宣言の間の空行と同じになっている
 [ ] 続けて並ぶ数値に負の数が混ざるときは、正の数の前に空白を1つ入れて符号の位置を揃えている
 [ ] 型名を書いて値を作るときは ImVec2{ x, y } のように { } を使っている(コンテナ・文字列は除く)
 [ ] Allman スタイル、波括弧は必ず付け、return / continue の1文だけは1行 if で書いてよい(break や他の文はブロック)、else は改行
@@ -1329,27 +1472,20 @@
   Contains → Has(6-4)/ 空行を挟んで続いていた1行の変数宣言(69箇所、9-9)/ 行末の && / || の前の余分な空白(82行)/
   2行続いた空行(39箇所)/ 1行 if の ) と { の間の余分な空白 / const char* の文字列定数(→ std::string_view)/
   Application の既定メンバ初期化子と初期化子リストの混在(7-6)/ CD3DX12_CPU_DESCRIPTOR_HANDLE { → {(9-11)
+2026-10-09(3回目)に、さらに次の不統一を直しました。
+  関数の外側に書かれたヘッダーのコメント(75ファイル、約260行。.cpp の処理の中や、関数の本体の先頭へ移しました、1-1)/
+  空行を挟んで続いていた複数行の変数の宣言(103箇所、9-9)/ 使う場所のない取得関数・設定関数(39個、6-4)/
+  継承していた構造体(DescriptorIndexReleaseRecord / GPUResourceReleaseRecord、7-11)/
+  assert(false && "...") の直書き(→ FWK_ASSERT、12-1)/ .cpp とヘッダーで空行の入れ方が違う関数(44組、8-3)/
+  FWK_ASSERT のメッセージの形(約340件、12-2)/ 引数の途中に書いたラムダ(6箇所)・ラムダの保存(GenericFactory、11-8)/
+  C スタイルのキャスト(2箇所、11-6)/ while で使う添字・合計の 0ULL の直書き(5箇所、10-6)/
+  PhysicsLayerSetting のメンバ変数の並び(20-2)/ 変更履歴のコメント(2箇所)/ 呼び出しの ( の揃え(2箇所)
 残っているのは次の箇所です。
 
-・コメントが書かれたヘッダー(約120ファイル、約1000行。Definition/Macros のマクロの説明を除く)
-  → 第1章 1-1 のとおりヘッダーにはコメントを書きません。内容を .cpp へ移すかどうかを決めてから直します。
-・空行を挟んで続いている変数の宣言のうち、複数行にわたる宣言を含むもの(約100箇所、9-9)
-  → 続く行の位置も直す必要があるため、1つずつ直します。
-・使う場所のない取得関数・設定関数(約40個。GetREFMouseController / SetHalfExtent など、6-4)
-  → 今後使う予定があるかを決めてから削除します。
-・継承している構造体(Struct::SkeletalAnimationModelMeshRuntimeData : Struct::ModelMeshRuntimeDataBase、7-11)
-  → メッシュをクラスにする作業(ModelMeshBase)と一緒に直します。
 ・EditorManager のメンバ変数の並び(配列がオブジェクトより後ろにある、20-2)
-  → 破棄の順番(ImGui の SRV ディスクリプタの解放など)に関わる可能性があるため、20-6 の例外として残しています。
-・assert(false && "...") を直接書いている箇所(RenderGraphJsonConverter / GraphicsPipelineStateBaseJsonConverter)
-  → ループの continue / break と組み合わせているため、FWK_ASSERT_RETURN_IF に置き換えられません。
-    return しない FWK_ASSERT 系のマクロを用意するかどうかを決めてから直します。
+  → 破棄の順番(ImGui の SRV ディスクリプタの解放など)に関わるため、20-6 の例外として残しています。
 ・vcxproj に登録されていない作業中のファイル(GameObjectInputComponent)
-・.cpp で空行なしに隣り合っている関数のうち、ヘッダーでは空行で分かれているもの(約40組)
-  → 同じ動詞で始まる関数(DrawCopyMenu / DrawCutMenu など)が多く、似ている(7-8)とも言えるため、
-    ヘッダーと .cpp のどちらに合わせるかを決めてから直します。
-・FWK_ASSERT のメッセージのうち「{原因}のため、{処理}に失敗しました。」の形になっていないもの
-  (「~が無効です。」「~が作成されていません。」など)
+  → 作業中のため、登録と規約の確認は実装するときに行います。
 ・新しく書くときは、次のような以前の書き方をしないでください。
     SerializeDIFF(→ SerializeDiff)/ Min・Max(→ MIN・MAX)/ l_itr(→ l_xxxITR)/ FetchIcon(→ FetchVALIcon)/
     uint32_t(→ std::uint32_t)/ #ifdef(→ #if defined(...))/ 1行の && 条件 / { が [ に揃っていないラムダ /
