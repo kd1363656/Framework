@@ -45,7 +45,7 @@ namespace FWK::Graphics
             m_dirtyElementIndexSet.emplace(a_elementIndex);
         }
 
-        void RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex);
+        void RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex);
 
         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
         void Release       ()                                                                                    override;

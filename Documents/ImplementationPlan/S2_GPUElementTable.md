@@ -1,5 +1,11 @@
 # S2 GPUElementTable(変わった要素だけ GPU へ送るテーブル)
 
+> **2026-10-10 改訂(コピーはダイレクトではなくコピーコマンドリストで行う、ユーザー指示)** : `RecordUpload` の引数を `DirectCommandList` から `CopyCommandList` に変え、
+> コピーはコピーキューで実行する(S3 の「テーブルのコピーをコピーキューで行う」を参照)。
+> テーブルは**一度もバリアで状態を変えない**(いつも `COMMON` のまま)。そのため `RecordUpload` の `COMMON → COPY_DEST` / `COPY_DEST → ALL_SHADER_RESOURCE` の2つのバリアは消した。
+> 理由 : コピーキューは `COMMON` / `COPY_SOURCE` / `COPY_DEST` 以外の状態を扱えない。ダイレクトで読んだ後に `ALL_SHADER_RESOURCE` のまま残ると、次のフレームのコピーキューが扱えなくなる。
+> **写経し直すところ** : `RecordUpload` の引数名(`a_copyCommandList`)・`CopyBufferRegion` の呼び出しの引数の位置・バリア2つの削除・`ReleaseElementIndex` の最後のコメント(骨組みはこちらで書き換え済み)。
+
 > **2026-10-10 改訂(容量と1要素の大きさは Create の前に Set する)** : ModelRenderSystem が `m_tableSettingList` を持たず、
 > Deserialize の時点でテーブルを作って map へ入れ、Create では map を回すだけにした(Renderer の RootSignatureMap と同じ形、S3 参照)。
 > そのため、容量と1要素の大きさは `SetCapacity` / `SetElementByteStride` で先に持たせ、`Create` の引数から外した。
@@ -61,7 +67,7 @@ const ModelObjectData l_object = l_objectTable[g_objectIndex];
 - フレームリソースと同じ数(3 つ)の UPLOAD を持ち、フレームごとに使い分ける。
   フレーム 0 の UPLOAD を次に使うのは 3 フレーム後で、そのときには `EnsureAllocatorAvailable` で GPU の完了を待っている。
 
-### リソースバリア(状態の遷移)
+### リソースの状態と、コピーキューでのコピー
 
 D3D12 では、リソースを「今何に使っているか」を GPU に伝える必要がある。
 
@@ -69,22 +75,22 @@ D3D12 では、リソースを「今何に使っているか」を GPU に伝え
 |---|---|
 | `COMMON` | 何にも使っていない(バッファは、コマンドリストの実行が終わるたびに自動でここへ戻る = **状態の減衰**) |
 | `COPY_DEST` | コピー先として書かれる |
-| `NON_PIXEL_SHADER_RESOURCE` / `PIXEL_SHADER_RESOURCE` | シェーダーから読まれる(ピクセルシェーダー以外 / ピクセルシェーダー)。2つを合わせたのが `ALL_SHADER_RESOURCE` |
+| `NON_PIXEL_SHADER_RESOURCE` / `PIXEL_SHADER_RESOURCE` | シェーダーから読まれる(ピクセルシェーダー以外 / ピクセルシェーダー) |
 
-コピーの前後に、次の2つのバリアを積む。
-
-1. `COMMON → COPY_DEST` : これより前の「このテーブルを読む処理」(前のフレームの描画)が終わってからコピーする、と GPU に伝える。
-2. `COPY_DEST → ALL_SHADER_RESOURCE` : コピーが終わってから、後の描画がテーブルを読む、と GPU に伝える。
-
-- 書き換えが無いフレームは、バリアもコピーも積まない。テーブルは `COMMON` のままだが、
-  **バッファは `COMMON` から読む状態へ自動で切り替わる(暗黙の昇格)** ため、シェーダーはそのまま読める。
+- コピーキューで使えるリソースの状態は `COMMON` / `COPY_SOURCE` / `COPY_DEST` だけ。
+- **テーブルは一度もバリアを張らず、いつも `COMMON` のままにする。**
+  - コピーキュー : バッファは `COMMON` から `COPY_DEST` へ**自動で切り替わり(暗黙の昇格)**、コマンドリストの実行が終わると `COMMON` へ戻る(状態の減衰)。
+  - ダイレクトキュー : 同じく `COMMON` から読む状態(`NON_PIXEL_SHADER_RESOURCE | PIXEL_SHADER_RESOURCE`)へ自動で切り替わり、実行が終わると `COMMON` へ戻る。
+  - そのため、`RecordUpload` にも、描画する側にも、状態遷移のバリアは要らない。
+- 「前のフレームの描画が読み終わってからコピーする」「コピーが終わってから描画が読む」という**順番は、バリアではなくフェンスで守る**(S3 の「コピーキューとの同期」)。
+- 書き換えが無いフレームは、コピーを積まない。
 
 ### 要素番号の使い回し
 
 - 削除された番号は「空き番号の一覧」に戻し、次の割り当てで使い回す。
 - 前のフレームの描画が、その番号の古い値をまだ読んでいても問題ない。
-  新しい値のコピーは、次のフレームの `COMMON → COPY_DEST` のバリアの後に行われ、
-  同じダイレクトキューの上では「前のフレームの読み取りが終わってからコピーする」順番になる。
+  新しい値のコピーは、コピーキューが「ダイレクトキューの前のフレームの完了」をフェンスで待ってから実行されるので、
+  「前のフレームの読み取りが終わってからコピーする」順番になる。
 
 ## ファイル一覧
 
@@ -153,7 +159,7 @@ namespace FWK::Graphics
             m_dirtyElementIndexSet.emplace(a_elementIndex);
         }
 
-        void RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex);
+        void RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex);
 
         bool ReserveRelease(const UINT64& a_retiredFenceValue, ResourceReleaseContext& a_resourceReleaseContext) override;
         void Release       ()                                                                                    override;
@@ -330,12 +336,12 @@ void FWK::Graphics::GPUElementTable::ReleaseElementIndex(const std::uint32_t a_e
     m_dirtyElementIndexSet.erase(a_elementIndex);
 
     // 返した番号は、すぐに別の要素へ割り当ててよい
-    // 前のフレームの描画がまだこの番号を読んでいても、新しい値のコピーはRecordUploadのバリアの後に行われるため、
-    // GPUは「前のフレームの読み取りが終わってからコピーする」順番で実行する(同じダイレクトキューに積むため)
+    // 前のフレームの描画がまだこの番号を読んでいても、新しい値のコピーは、Rendererがコピーキューへ
+    // 「ダイレクトキューの前のフレームの完了を待つ」命令を積んでから実行するため、読み取りの途中で書き換わることはない
     m_freeElementIndexList.emplace_back(a_elementIndex);
 }
 
-void FWK::Graphics::GPUElementTable::RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex)
+void FWK::Graphics::GPUElementTable::RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex)
 {
     // 書き換えた要素が無いフレームは、何もしない(ほとんどのフレームはここで終わる)
     if (m_dirtyElementIndexSet.empty()) { return; }
@@ -351,12 +357,6 @@ void FWK::Graphics::GPUElementTable::RecordUpload(const DirectCommandList& a_dir
     FWK_ASSERT_RETURN_IF(!l_uploadResource,               "UploadBufferが無効なため、テーブルのGPUへのコピーに失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_mappedData,                   "UploadBufferのMap済みデータが無効なため、テーブルのGPUへのコピーに失敗しました。");
 
-    // リソースバリア(状態の遷移) : COMMON → COPY_DEST
-    // D3D12では、リソースを「今何に使っているか」をGPUへ伝える必要がある(シェーダーが読む / コピー先 など)
-    // このバリアを入れると、GPUは「これより前に積まれた、このテーブルを読む処理(前のフレームの描画)」が終わるまで待ってからコピーする
-    // そのため、描画の途中でテーブルの値が書き換わることはない
-    a_directCommandList.TransitionResourceBarrier(l_bufferGPUResource.m_resource, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
-
     for (const auto& l_elementIndex : m_dirtyElementIndexSet)
     {
         const auto& l_byteOffset = static_cast<UINT64>(l_elementIndex) * static_cast<UINT64>(m_elementByteStride);
@@ -367,17 +367,12 @@ void FWK::Graphics::GPUElementTable::RecordUpload(const DirectCommandList& a_dir
 
         // UPLOADバッファ → テーブル本体へ、書き換えた要素の範囲だけをコピーする命令を積む
         // 例 : 1要素136バイトで5番を書き換えたなら、680バイト目から136バイトだけをコピーする
-        a_directCommandList.CopyBufferRegion(l_byteOffset,
-                                             l_byteOffset,
-                                             m_elementByteStride,
-                                             *l_bufferGPUResource.m_resource.Get(),
-                                             *l_uploadResource.Get());
+        a_copyCommandList.CopyBufferRegion(l_byteOffset,
+                                           l_byteOffset,
+                                           m_elementByteStride,
+                                           *l_bufferGPUResource.m_resource.Get(),
+                                           *l_uploadResource.Get());
     }
-
-    // リソースバリア(状態の遷移) : COPY_DEST → シェーダーが読む状態
-    // NON_PIXEL_SHADER_RESOURCE(ピクセルシェーダー以外)とPIXEL_SHADER_RESOURCE(ピクセルシェーダー)のどちらからも読めるようにする
-    // このバリアより後の描画は、コピーが終わってから実行される
-    a_directCommandList.TransitionResourceBarrier(l_bufferGPUResource.m_resource, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
 
     m_dirtyElementIndexSet.clear();
 }

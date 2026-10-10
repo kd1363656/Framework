@@ -400,7 +400,6 @@ if "$(Configuration)"=="Debug" (
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SkeletalAnimationModelFBXMotionExtractorConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SpriteScreenConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelBinaryConverterConstant.h" />
-    <ClInclude Include="Source\Framework\Definition\Constant\Graphics\ModelPerObjectConstantBufferUploaderConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\SwapChainJsonConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TextureBinaryConverterConstant.h" />
     <ClInclude Include="Source\Framework\Definition\Constant\Graphics\TriangleVertexCountConstant.h" />

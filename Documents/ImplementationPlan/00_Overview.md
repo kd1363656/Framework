@@ -69,7 +69,9 @@
 - Static と Skeletal が同じ `.asset` をキャッシュにしていたため、スケルタルの切り替えのたびに FBX を読み直していた。S4-3 で `.staticModel` / `.skeletalModel` に分ける。
 - Static と Skeletal の AS は中身が同じだったので、S3 で `Model/Model_AS.hlsl` の1つにまとめる。
 - テーブルのコピーは `Renderer::BeginFrame` ではなく、RenderGraph のパス `ModelRenderTableUploadPass`(実行レイヤー `Upload` = 一番前)で行う(2026-10-10)。
-  RenderGraph が並べる順番・S1 のプロファイラー・P1 のカリングのパスとの前後が、すべて実行レイヤーで決まる。S5 / S6 の設計は変わらない。
+  RenderGraph が並べる順番・P1 のカリングのパスとの前後が、実行レイヤーで決まる。S5 / S6 の設計は変わらない。
+- そのコピーはダイレクトではなく**コピーキュー**(`CopyCommandList`)で行う(2026-10-10、ユーザー指示)。バリアは使わず(テーブルはいつも `COMMON`)、
+  `Renderer::EndFrame` のフェンスで「前のフレームの描画 → コピー → 今のフレームの描画」の順番を守る。S1 は `Upload` レイヤーを計測しない。P1 のカリング(コンピュート)はコピーのフェンスを待つ。
 - GraphicsCONFIG.json の `ModelPerObjectDynamicConstantBufferUploader`(300000 × 256 バイト × 3 フレーム ≒ 220MB の UPLOAD)は S5 で不要になる。
 
 ## テーブルの種類を登録マクロにした改訂(2026-10-10 夜、ユーザー指示)

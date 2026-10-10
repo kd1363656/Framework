@@ -756,6 +756,15 @@ private に追加:
 ```cpp
 void FWK::Graphics::RenderGraph::ExecutePass(const ResourceContext& a_resourceContext, RenderGraphPassBase& a_pass, Renderer& a_renderer)
 {
+    // テーブルのコピー(Uploadレイヤー)はコピーキューで動く
+    // コピーキューは、タイムスタンプを使えるかがGPUによって違うため測らず、パスだけを実行する
+    if (a_pass.GetVALExecutionLayer() == Enum::RenderGraphPassExecutionLayer::Upload)
+    {
+        a_pass.Execute(a_resourceContext, a_renderer, *this);
+
+        return;
+    }
+
     // スキニングなどのアニメーションのパスはコンピュートキュー、それ以外はダイレクトキューで動く
     // GPUの時計はキューごとに違うため、パスが動くキューのプロファイラーで測る
     const bool  l_isComputePass         = a_pass.GetVALExecutionLayer() == Enum::RenderGraphPassExecutionLayer::Animation;

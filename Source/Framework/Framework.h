@@ -214,8 +214,9 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
-// ダイレクトコマンドリスト
+// ダイレクト・コピーコマンドリスト
 #include "Graphics/Command/List/Direct/DirectCommandList.h"
+#include "Graphics/Command/List/Copy/CopyCommandList.h"
 
 // Storageクラス
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
@@ -310,7 +311,6 @@
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
 
 // アップロードシステム
-#include "Graphics/Command/List/Copy/CopyCommandList.h"
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 
@@ -431,7 +431,6 @@
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/Buffer/Constant/SpriteScreenPerObjectDynamicConstantBufferUploader.h"
 #include "Definition/Struct/Graphics/SpriteScreenPerObjectDrawRequestStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Sprite/Screen/SpriteScreenPerObjectDrawRequest.h"
-#include "Definition/Constant/Graphics/ModelPerObjectConstantBufferUploaderConstant.h"
 #include "Definition/Constant/Graphics/Buffer/Constant/CBModelPerObjectStructConstant.h"
 #include "Definition/Struct/Graphics/Buffer/Constant/CBModelPerObjectStruct.h"
 #include "Graphics/Render/Graph/Request/Object/Model/Buffer/Constant/ModelPerObjectDynamicConstantBufferUploader.h"

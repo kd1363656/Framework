@@ -356,7 +356,7 @@ void FWK::Graphics::ModelDrawItemList::RebuildFrameDrawItemListIfNeeded()
     public:
         ...
 
-        void RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex) const;
+        void RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex) const;
 
         template <Concept::IsModelMaterialRenderTableElementConcept MaterialElementType>
         void RecordDraw(const RootSignature&      a_rootSignature,

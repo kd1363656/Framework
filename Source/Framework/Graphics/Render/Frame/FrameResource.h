@@ -60,6 +60,7 @@ namespace FWK::Graphics
 
         const auto& GetREFDirectCommandAllocator () const { return m_directCommandAllocator; }
         const auto& GetREFComputeCommandAllocator() const { return m_computeCommandAllocator; }
+        const auto& GetREFCopyCommandAllocator   () const { return m_copyCommandAllocator; }
 
         const auto& GetREFRenderGraphFrameResource() const { return m_activeViewType == Enum::RenderViewType::Preview ? m_previewRenderGraphFrameResource : m_renderGraphFrameResource; }
 
@@ -80,6 +81,7 @@ namespace FWK::Graphics
 
         std::shared_ptr<TypeAlias::DirectCommandAllocator>  m_directCommandAllocator  = nullptr;
         std::shared_ptr<TypeAlias::ComputeCommandAllocator> m_computeCommandAllocator = nullptr;
+        std::shared_ptr<TypeAlias::CopyCommandAllocator>    m_copyCommandAllocator    = nullptr;
 
         RenderGraphFrameResource m_renderGraphFrameResource        = {};
         RenderGraphFrameResource m_previewRenderGraphFrameResource = {};

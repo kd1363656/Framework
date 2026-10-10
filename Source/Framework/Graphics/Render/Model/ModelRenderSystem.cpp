@@ -50,7 +50,7 @@ bool FWK::Graphics::ModelRenderSystem::Create(const Device&                     
     return true;
 }
 
-void FWK::Graphics::ModelRenderSystem::RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex) const
+void FWK::Graphics::ModelRenderSystem::RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex) const
 {
     // すべてのテーブルについて、このフレームに書き換えた要素だけをGPUへコピーする命令を積む
     // 書き換えが無いテーブルは、何もしない
@@ -58,7 +58,7 @@ void FWK::Graphics::ModelRenderSystem::RecordUpload(const DirectCommandList& a_d
     {
         if (!l_table) { continue; }
 
-        l_table->RecordUpload(a_directCommandList, a_frameIndex);
+        l_table->RecordUpload(a_copyCommandList, a_frameIndex);
     }
 }
 
