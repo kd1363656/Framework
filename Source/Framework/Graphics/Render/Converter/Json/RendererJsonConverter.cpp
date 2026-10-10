@@ -30,6 +30,19 @@ void FWK::Converter::RendererJsonConverter::Deserialize(const nlohmann::json& a_
         l_shadowContext.Deserialize(l_json);
     }
 
+    // ModelRenderSystem(モデルのテーブルの種類と容量)のデシリアライズ
+    // JSONのキーが無いときは何もしない(l_jsonがnullになる)
+    if (const auto& l_json = a_rootJson.value(k_modelRenderSystemJsonKey, nlohmann::json{});
+        !l_json.is_null())
+    {
+        // 書き換える側なので、constではないゲッターを使う
+        auto& l_modelRenderSystem = a_renderer.GetMutableREFModelRenderSystem();
+
+        // ModelRenderSystem::Deserialize → ModelRenderSystemJsonConverter::Deserialize が
+        // "TableMap" の1件ずつに対して AddTable を呼ぶ
+        l_modelRenderSystem.Deserialize(l_json);
+    }
+
     // ルートシグネチャのデシリアライズ
     if (const auto& l_json = a_rootJson.value(k_rootSignatureMapJsonKey, nlohmann::json{});
         !l_json.is_null() &&
@@ -59,9 +72,10 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
 {
     nlohmann::json l_rootJson = {};
 
-    const auto& l_swapChain     = a_renderer.GetREFSwapChain    ();
-    const auto& l_shadowContext = a_renderer.GetREFShadowContext();
-    const auto& l_renderGraph   = a_renderer.GetREFRenderGraph  ();
+    const auto& l_swapChain         = a_renderer.GetREFSwapChain        ();
+    const auto& l_shadowContext     = a_renderer.GetREFShadowContext    ();
+    const auto& l_modelRenderSystem = a_renderer.GetREFModelRenderSystem();
+    const auto& l_renderGraph       = a_renderer.GetREFRenderGraph      ();
 
     // フレームリソースのシリアライズ
     // 同じ設定を持つFrameResourceを個別にすべて保存せず、Count + Template形式で保存
@@ -76,8 +90,11 @@ nlohmann::json FWK::Converter::RendererJsonConverter::Serialize(const Graphics::
     // パイプラインステートのシリアライズ
     l_rootJson[k_pipelineStateMapJsonKey] = SerializePipelineStateMap(a_renderer);
 
-    // ShadwoContextのシリアライズ
+    // ShadowContextのシリアライズ
     l_rootJson[k_shadowContextJsonKey] = l_shadowContext.Serialize();
+
+    // ModelRenderSystemのシリアライズ(型の名前 + 容量の配列)
+    l_rootJson[k_modelRenderSystemJsonKey] = l_modelRenderSystem.Serialize();
 
     // RenderGraphのシリアライズ
     l_rootJson[k_renderGraphJsonKey] = l_renderGraph.Serialize();

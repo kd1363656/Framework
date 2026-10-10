@@ -48,6 +48,17 @@ bool FWK::Graphics::Renderer::PostDeserialize(const Device&                   a_
                                                        "ShadowContextの作成処理に失敗しました。",
                                                        false);
 
+    // モデルの描画に使うテーブル(オブジェクト / メッシュ / マテリアル)を作る
+    // テーブルはフレームの数だけUPLOADバッファを持つため、フレームリソースの数を渡す
+    // 例 : フレームリソースが3つで、ObjectGPUDataが136バイト × 4096なら、
+    //      DEFAULTが557,056バイト × 1 + UPLOADが557,056バイト × 3 を確保する
+    FWK_ASSERT_RETURN_VALUE_IF(!m_modelRenderSystem.Create(a_device,
+                                                           l_gpuMemoryAllocator,
+                                                           m_frameResourceList.size(),
+                                                           l_cbvSRVUAVDescriptorPool),
+                                                           "ModelRenderSystemの作成処理に失敗しました。",
+                                                           false);
+
     // ダイレクトコマンドキュー、リスト、コンピュートキュー、リストの作成処理
     FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandQueue.Create(a_device),  "ダイレクトコマンドキューの作成処理に失敗しました。",   false);
     FWK_ASSERT_RETURN_VALUE_IF(!m_directCommandList.Create(a_device),   "ダイレクトコマンドリストの作成処理に失敗しました。",   false);

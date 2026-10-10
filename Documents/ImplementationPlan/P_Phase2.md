@@ -55,7 +55,7 @@
 | ファイル | 内容 |
 |---|---|
 | `Graphics/Render/Model/Culling/ModelGPUCullingSystem.h/.cpp` | パスごとの「詰めた引数のバッファ(DEFAULT + UAV)」と「カウントバッファ」を持つ |
-| `Graphics/Render/Graph/Pass/Model/Culling/ModelGPUCullingPass.h/.cpp` | 描画パスの前に、コンピュートで詰める(実行レイヤーを `ModelCulling` として `Animation` と `Shadow` の間に新設。S3 の `Upload` の後なので、コピー済みのオブジェクトのテーブルを読める。ただしコピーはコピーキューで行うので、`Renderer::EndFrame` で `m_computeCommandQueue.Wait(m_copyCommandQueue, コピーの Signal の値)` をコンピュートの実行より前に足す) |
+| `Graphics/Render/Graph/Pass/Model/Culling/ModelGPUCullingPass.h/.cpp` | 描画パスの前に、コンピュートで詰める(実行レイヤーを `ModelCulling` として `Animation` と `Shadow` の間に新設。S3 の `Upload` の後なので、コピー済みのオブジェクトのテーブルを読める。ただしカリングはコンピュートキューで動くので、ダイレクトで書いたテーブルを読む前に、ダイレクトのコピー完了をコンピュートが待つ工夫が要る) |
 | `Shader/Model/Culling/ModelGPUCulling_CS.hlsl` / `ModelGPUCulling.hlsli` | 1 スレッド = 1 描画項目。境界球と視錐台の判定 → 見えれば `InterlockedAdd` で位置を確保して写す |
 | `Definition/Struct/Graphics/Buffer/Constant/CBModelGPUCullingPassStruct.h` | 視錐台の6平面・件数 |
 | `ModelDrawItemList` の変更 | 「全件の引数のバッファ(UPLOAD、今のもの)」を、コンピュートの入力(SRV)にする |

@@ -38,7 +38,7 @@ struct ModelMeshletBounds
     float3 center;
 
     // BoundingSphereの半径
-    // Local空間の半径なので、World空間ではg_worldMaxScaleを掛ける
+    // Local空間の半径なので、World空間ではworldMAXScaleを掛ける
     float radius;
 
     // BackfaceConeCulling用のコーン頂点位置

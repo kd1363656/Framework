@@ -74,10 +74,10 @@ bool IsCameraInsideModelMeshletBoundingSphere(const float3 a_worldCenter, const 
 }
 
 // 指定したMeshletがFrustum内にあるか判定する
-bool IsVisibleModelMeshletByFrustum(const ModelMeshletBounds a_modelMeshletBounds)
+bool IsVisibleModelMeshletByFrustum(const ModelObjectData a_object, const ModelMeshletBounds a_modelMeshletBounds)
 {
-    const float3 l_worldCenter = TransformModelLocalPositionToWorld(a_modelMeshletBounds.center);
-    const float  l_worldRadius = a_modelMeshletBounds.radius * g_worldMaxScale;
+    const float3 l_worldCenter = TransformModelLocalPositionToWorld(a_object, a_modelMeshletBounds.center);
+    const float  l_worldRadius = a_modelMeshletBounds.radius * a_object.worldMAXScale;
 
     // カメラがBoundingSphere内にいる場合は
     // NearPlaneやFrustum側面で誤カリングされないよう
@@ -97,7 +97,7 @@ bool IsVisibleModelMeshletByFrustum(const ModelMeshletBounds a_modelMeshletBound
 // BoundingSphereを使った判定式を共有する
 // WorldMatrixには正の非ZeroScaleを使用することを前提とし、
 // 負のScaleによるTriangleの表裏反転は考慮しない
-bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
+bool IsBackfaceModelMeshletByCone(const ModelObjectData a_object, const ModelMeshletBounds a_meshletBounds)
 {
     // Cutoffが無効の場合は
     // BackfaceConeCullingを行わない
@@ -109,12 +109,12 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
     // 描画する安全側へ倒す
     if (l_coneAxisLengthSquared <= k_modelMeshletConeAxisLengthSquaredEpsilon) { return false; }
 
-    // g_worldInverseTransposeMatrixには
+    // a_object.worldInverseTransposeMatrixには
     // transpose(inverse(WorldMatrix))が格納されている
     // 再びtransposeしてWorld逆行列へ戻し
     // カメラをModelLocal空間へ変換する
     const float4 l_worldCameraPosition = float4(g_cullingCameraWorldPosition, k_modelPositionElementW);
-    const float4 l_localCameraPosition = float4(mul(l_worldCameraPosition, transpose(g_worldInverseTransposeMatrix)));
+    const float4 l_localCameraPosition = float4(mul(l_worldCameraPosition, transpose(a_object.worldInverseTransposeMatrix)));
 
     // BoundingSphere式で使用するCenter - Camera
     const float3 l_localCameraToCenter   = a_meshletBounds.center - l_localCameraPosition.xyz;
@@ -145,17 +145,17 @@ bool IsBackfaceModelMeshletByCone(const ModelMeshletBounds a_meshletBounds)
 
 // FrustumCullingとBackfaceConeCullingを実行し、
 // MeshShaderを起動する必要があるかを判定する
-bool ShouldDispatchModelMeshlet(const uint a_meshletIndex)
+bool ShouldDispatchModelMeshlet(const ModelObjectData a_object, const ModelMeshData a_mesh, const uint a_meshletIndex)
 {
-    StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[g_meshletBoundsBufferSRVDescriptorIndex];
+    StructuredBuffer<ModelMeshletBounds> l_meshletBoundsBuffer = ResourceDescriptorHeap[a_mesh.meshletBoundsBufferSRVDescriptorIndex];
 
     const ModelMeshletBounds l_meshletBounds = l_meshletBoundsBuffer[a_meshletIndex];
 
     // Frustum外ならBackface判定を行わず描画しない
-    if (!IsVisibleModelMeshletByFrustum(l_meshletBounds)) { return false; }
+    if (!IsVisibleModelMeshletByFrustum(a_object, l_meshletBounds)) { return false; }
 
     // Frustum内でも全Triangleが裏向きなら描画しない
-    if (IsBackfaceModelMeshletByCone(l_meshletBounds)) { return false; }
+    if (IsBackfaceModelMeshletByCone(a_object, l_meshletBounds)) { return false; }
 
     return true;
 }

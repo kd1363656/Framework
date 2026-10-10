@@ -214,9 +214,8 @@
 #include "Definition/Struct/Graphics/Buffer/Constant/CBSpritePassStruct.h"
 #include "Graphics/Render/Rasterizer/RenderArea.h"
 
-// ダイレクト・コピーコマンドリスト
+// ダイレクトコマンドリスト
 #include "Graphics/Command/List/Direct/DirectCommandList.h"
-#include "Graphics/Command/List/Copy/CopyCommandList.h"
 
 // Storageクラス
 #include "Definition/Concept/IsDerivedBase/Graphics/IsDerivedAssetRecordBaseConcept.h"
@@ -311,6 +310,7 @@
 #include "Graphics/Resource/Model/Skeletal/SkeletalAnimationModel.h"
 
 // アップロードシステム
+#include "Graphics/Command/List/Copy/CopyCommandList.h"
 #include "Graphics/Resource/Upload/Converter/Json/UploadSystemJsonConverter.h"
 #include "Graphics/Resource/Upload/UploadSystem.h"
 

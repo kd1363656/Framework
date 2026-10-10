@@ -65,18 +65,19 @@ cbuffer RCModelTable : register(b5)
 };
 
 // オブジェクトのテーブルの1要素
-// C++側のStruct::ModelObjectGPUDataと同じ並び(136バイト)にする
+// C++側のGraphics::ModelObjectGPUDataと同じ並び(136バイト)にする
 // StructuredBufferの要素なので、cbufferのような16バイト境界のパディングは入れない
 struct ModelObjectData
 {
     row_major float4x4 worldMatrix;
     row_major float4x4 worldInverseTransposeMatrix;
-    float              worldMAXScale;
-    float              worldOrientationSign;
+    
+    float worldMAXScale;
+    float worldOrientationSign;
 };
 
 // メッシュのテーブルの1要素
-// C++側のStruct::ModelMeshGPUDataと同じ並び(24バイト)にする
+// C++側のGraphics::ModelMeshGPUDataと同じ並び(24バイト)にする
 struct ModelMeshData
 {
     uint vertexBufferSRVDescriptorIndex;
@@ -90,13 +91,20 @@ struct ModelMeshData
 // この描画のオブジェクトの値(行列など)を、オブジェクトのテーブルから読む
 ModelObjectData FetchModelObjectData()
 {
-    return (ModelObjectData)0;
+    // ResourceDescriptorHeap : ディスクリプタヒープ全体を配列のように引ける、SM6.6 の組み込み変数
+    // g_objectTableSRVDescriptorIndex 番目のSRVを、StructuredBufferとして取り出す
+    StructuredBuffer<ModelObjectData> l_objectTable = ResourceDescriptorHeap[g_objectTableSRVDescriptorIndex];
+
+    // g_objectIndex 番目の要素(1体ぶん・136バイト)を読む
+    return l_objectTable[g_objectIndex];
 }
 
 // この描画のメッシュの値(バッファのSRVの番号など)を、メッシュのテーブルから読む
 ModelMeshData FetchModelMeshData()
 {
-    return (ModelMeshData)0;
+    StructuredBuffer<ModelMeshData> l_meshTable = ResourceDescriptorHeap[g_meshTableSRVDescriptorIndex];
+
+    return l_meshTable[g_meshIndex];
 }
 
 // 三角形1個分のPrimitiveIndexをuint3で取得する
@@ -112,14 +120,31 @@ ModelMeshData FetchModelMeshData()
 // MeshShaderが出力したa_vertexListの何番目を使うかを表す
 uint3 FetchModelPackedPrimitiveIndex(const ModelObjectData a_object, const ModelMeshData a_mesh, const uint a_packedPrimitiveIndex)
 {
-    return uint3(0U, 0U, 0U);
+    StructuredBuffer<uint> l_packedPrimitiveIndexBuffer = ResourceDescriptorHeap[a_mesh.primitiveIndexBufferSRVDescriptorIndex];
+
+    // uint 1個に、三角形1個分の3つのPrimitiveIndexがPackされている
+    // 例 : 0x00030201 → (1, 2, 3)  ※下位8bitが1個目
+    const uint  l_packedValue    = l_packedPrimitiveIndexBuffer[a_packedPrimitiveIndex];
+    const uint3 l_primitiveIndex = DecodeModelPackedPrimitiveIndex(l_packedValue);
+
+    // determinantが負のWorldMatrixでは、三角形の頂点の並びが裏返る
+    // (0, 1, 2) を (0, 2, 1) に入れ替えて、元の表裏に戻す
+    if (a_object.worldOrientationSign == k_modelMirroredWorldOrientationSign) { return uint3(l_primitiveIndex.x, l_primitiveIndex.z, l_primitiveIndex.y); }
+
+    return l_primitiveIndex;
 }
 
 // ModelのLocal座標をWorld座標へ変換する
 // PBRではライト方向やカメラ方向をWorld空間で計算するため、worldPositionが必要
 float3 TransformModelLocalPositionToWorld(const ModelObjectData a_object, const float3 a_localPosition)
 {
-    return float3(0.0F, 0.0F, 0.0F);
+    // 位置なので w = 1(平行移動が効く)。方向なら w = 0 にする
+    const float4 l_localPosition = float4(a_localPosition, k_modelPositionElementW);
+
+    // mul(行ベクトル, 行列) : DirectXTK は「行ベクトル × 行列」の規約
+    const float4 l_worldPosition = mul(l_localPosition, a_object.worldMatrix);
+
+    return l_worldPosition.xyz;
 }
 
 #endif // MODEL_HLSLI

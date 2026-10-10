@@ -138,12 +138,12 @@ void FWK::Graphics::GPUElementTable::ReleaseElementIndex(const std::uint32_t a_e
     m_dirtyElementIndexSet.erase(a_elementIndex);
 
     // 返した番号は、すぐに別の要素へ割り当ててよい
-    // 前のフレームの描画がまだこの番号を読んでいても、新しい値のコピーは、Rendererがコピーキューへ
-    // 「ダイレクトキューの前のフレームの完了を待つ」命令を積んでから実行するため、読み取りの途中で書き換わることはない
+    // 前のフレームの描画がまだこの番号を読んでいても、新しい値のコピーはRecordUploadのバリアの後に行われるため、
+    // GPUは「前のフレームの読み取りが終わってからコピーする」順番で実行する(同じダイレクトキューに積むため)
     m_freeElementIndexList.emplace_back(a_elementIndex);
 }
 
-void FWK::Graphics::GPUElementTable::RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex)
+void FWK::Graphics::GPUElementTable::RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex)
 {
     // 書き換えた要素が無いフレームは、何もしない(ほとんどのフレームはここで終わる)
     if (m_dirtyElementIndexSet.empty()) { return; }
@@ -159,6 +159,12 @@ void FWK::Graphics::GPUElementTable::RecordUpload(const CopyCommandList& a_copyC
     FWK_ASSERT_RETURN_IF(!l_uploadResource,               "UploadBufferが無効なため、テーブルのGPUへのコピーに失敗しました。");
     FWK_ASSERT_RETURN_IF(!l_mappedData,                   "UploadBufferのMap済みデータが無効なため、テーブルのGPUへのコピーに失敗しました。");
 
+    // リソースバリア(状態の遷移) : COMMON → COPY_DEST
+    // D3D12では、リソースを「今何に使っているか」をGPUへ伝える必要がある(シェーダーが読む / コピー先 など)
+    // このバリアを入れると、GPUは「これより前に積まれた、このテーブルを読む処理(前のフレームの描画)」が終わるまで待ってからコピーする
+    // そのため、描画の途中でテーブルの値が書き換わることはない
+    a_directCommandList.TransitionResourceBarrier(l_bufferGPUResource.m_resource, D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
+
     for (const auto& l_elementIndex : m_dirtyElementIndexSet)
     {
         const auto& l_byteOffset = static_cast<UINT64>(l_elementIndex) * static_cast<UINT64>(m_elementByteStride);
@@ -169,12 +175,17 @@ void FWK::Graphics::GPUElementTable::RecordUpload(const CopyCommandList& a_copyC
 
         // UPLOADバッファ → テーブル本体へ、書き換えた要素の範囲だけをコピーする命令を積む
         // 例 : 1要素136バイトで5番を書き換えたなら、680バイト目から136バイトだけをコピーする
-        a_copyCommandList.CopyBufferRegion(l_byteOffset,
-                                           l_byteOffset,
-                                           m_elementByteStride,
-                                           *l_bufferGPUResource.m_resource.Get(),
-                                           *l_uploadResource.Get());
+        a_directCommandList.CopyBufferRegion(l_byteOffset,
+                                             l_byteOffset,
+                                             m_elementByteStride,
+                                             *l_bufferGPUResource.m_resource.Get(),
+                                             *l_uploadResource.Get());
     }
+
+    // リソースバリア(状態の遷移) : COPY_DEST → シェーダーが読む状態
+    // NON_PIXEL_SHADER_RESOURCE(ピクセルシェーダー以外)とPIXEL_SHADER_RESOURCE(ピクセルシェーダー)のどちらからも読めるようにする
+    // このバリアより後の描画は、コピーが終わってから実行される
+    a_directCommandList.TransitionResourceBarrier(l_bufferGPUResource.m_resource, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE);
 
     m_dirtyElementIndexSet.clear();
 }

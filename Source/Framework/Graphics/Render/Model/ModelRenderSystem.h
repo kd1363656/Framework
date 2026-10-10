@@ -26,7 +26,7 @@ namespace FWK::Graphics
                     const std::size_t&                        a_frameCount,
                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool) const;
 
-        void RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex) const;
+        void RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex) const;
 
         nlohmann::json Serialize() const;
 

@@ -13,12 +13,6 @@
 > **2026-10-10 追加改訂(テーブルのコピーを RenderGraph のパスにする)** : `Renderer::BeginFrame` で `RecordUpload` を呼ぶのをやめ、
 > `ModelRenderTableUploadPass`(実行レイヤー `Upload` = 一番前)にした。理由と S5 / S6 / P1 への影響は下の「テーブルのコピーを RenderGraph のパスにする」。
 >
-> **2026-10-10 追加改訂(テーブルのコピーはダイレクトではなくコピーキューで行う、ユーザー指示)** : 前の形は、ダイレクトコマンドリストにコピーとバリアを積んでいた。
-> コピーは `CopyCommandList`(コピーキュー)へ積む形に変えた。順番はバリアではなく、`Renderer::EndFrame` のフェンスで守る。テーブルはいつも `COMMON`(S2)。
-> 影響 : `GPUElementTable::RecordUpload` / `ModelRenderSystem::RecordUpload` の引数が `CopyCommandList` になりバリアは消えた(書き換え済み)。
-> `Renderer` がコピーキュー・コピーコマンドリストを、`FrameResource` がコピーコマンドアロケータを持つ。`ModelRenderTableUploadPass` はコピーコマンドリストへ積む。
-> 詳しくは下の「コピーキューで行う」。
->
 > **写経し直すところ(骨組みはこちらで書き換え済み)**
 >
 > | ファイル | 関数 |
@@ -26,10 +20,7 @@
 > | `Graphics/Render/Model/Table/ModelRenderTableINFORegistry.cpp`(新規) | `Register` |
 > | `Graphics/Render/Model/ModelRenderSystem.cpp` | クラスの説明のコメント / `Create` / `AddTable`(新規) / `FetchVALRCModelTable` |
 > | `Graphics/Render/Model/Converter/Json/ModelRenderSystemJsonConverter.cpp` | `Deserialize` / `Serialize`(まだ空なので、新しいコードで書く) |
-> | `Graphics/Render/Graph/Pass/Model/Table/ModelRenderTableUploadPass.cpp`(新規) | コンストラクタ / `Execute`(`Execute` は積む先をコピーコマンドリストにする) |
-| `Graphics/Render/Frame/FrameResource.cpp` | `INIT` / `Create` にコピーコマンドアロケータを足す(メンバと getter は書き換え済み) |
-| `Graphics/Render/Renderer.cpp` | `PostDeserialize`(コピーキュー・リストの作成)/ `ResetCommandObjects`(コピーのアロケータの待ちとリセット)/ `EndFrame`(コピーの実行とフェンスの同期)(メンバと getter は書き換え済み) |
-| `Graphics/Resource/Buffer/Table/GPUElementTable.cpp`(S2) | `RecordUpload` : 引数を `CopyCommandList` に・バリア2つを削除(書き換え済み)。写経するときは S2 のコードを見る |
+> | `Graphics/Render/Graph/Pass/Model/Table/ModelRenderTableUploadPass.cpp`(新規) | コンストラクタ / `Execute` |
 > | `Graphics/Render/Model/Table/ModelRenderTableINFORegistry.cpp` | `Register` の最初に `k_typeINFO` が nullptr かの確認を足した(下のコード) |
 > | `Graphics/Render/Model/Table/ModelRenderTableINFORegistry.cpp` | `Register` を vector + `any_of` から unordered_map + `try_emplace` に変更(2026-10-10、ヘッダーは書き換え済み) |
 > | `Graphics/Render/Model/ModelRenderSystem.cpp` | `Create` は `m_tableMap`(Deserialize で `AddTable` されたもの)を回して GPU に作るだけ(`FetchVALCapacity` は削除) |
@@ -142,83 +133,33 @@ cbuffer RCModelDrawItem : register(b1)
 
 ```
 RenderGraph::Execute(パスを実行順に)
-  ModelRenderTableUploadPass        レイヤー Upload     … ModelRenderSystem::RecordUpload(書き換えた要素だけを、コピーコマンドリストへ積む)
-  SkeletalAnimationComputePass      レイヤー Animation  … コンピュートコマンドリストへ積む
-  ModelCascadeShadowPass            レイヤー Shadow     … ダイレクトコマンドリストへ積む(テーブルを読む)
-  Static / Skeletal の Lit / UnLit  レイヤー Model      … ダイレクトコマンドリストへ積む(テーブルを読む)
+  ModelRenderTableUploadPass        レイヤー Upload     … ModelRenderSystem::RecordUpload(書き換えた要素だけコピー)
+  SkeletalAnimationComputePass      レイヤー Animation
+  ModelCascadeShadowPass            レイヤー Shadow     … テーブルを読む
+  Static / Skeletal の Lit / UnLit  レイヤー Model      … テーブルを読む
   ...
 RenderGraph::ExecutePreviewView(AllViews のパスだけ)
   影・Lit / UnLit …                                      … メインビューでコピー済みのテーブルを読む
-
-Renderer::EndFrame(キューへ流す順番)
-  1. コピーキュー     : ダイレクトキューの「前のフレームの完了」を待つ → コピーを実行 → フェンスを Signal
-  2. コンピュートキュー : スキニングを実行 → フェンスを Signal
-  3. ダイレクトキュー  : コンピュートとコピーのフェンスを待つ → 描画を実行 → フェンスを Signal
 ```
 
-- **実行レイヤー `Upload` を一番前に足す**だけで、すべてのパスより前に記録される。`ReadXxx` / `WriteXxx` は宣言しない(テーブルはテクスチャではない)。
-- パスが積む先は**コピーコマンドリスト**(`Renderer::GetREFCopyCommandList`)。ダイレクトコマンドリストには、コピーも状態遷移のバリアも積まない。
-- ビューの範囲は既定の `MainViewOnly`。プレビューはメインビューの**後**に同じフレームで描くので、メインビューで1回コピーすれば足りる。
+- **実行レイヤー `Upload` を一番前に足す**だけで、すべてのパスより前に動く。`ReadXxx` / `WriteXxx` は宣言しない(テーブルはテクスチャではない)。
+- バリア(`COMMON → COPY_DEST → ALL_SHADER_RESOURCE`)は、今までどおり `GPUElementTable::RecordUpload` の中で張る(S2)。
+- ビューの範囲は既定の `MainViewOnly`。プレビューはメインビューの**後**に同じコマンドリストで描くので、メインビューで1回コピーすれば足りる。
 
-### コピーキューで行う(2026-10-10 ユーザー指示)
+### コピーはダイレクトコマンドリストで行う(2026-10-11 ユーザー指示)
 
-前の形は、ダイレクトコマンドリストにコピーを積み、バリア(`COMMON → COPY_DEST → ALL_SHADER_RESOURCE`)で描画との順番を守っていた。
-コピーは「ダイレクトにやらせる仕事」ではなく、**コピーキューの仕事**なので、コピーコマンドリスト(`CopyCommandList`)へ積む形にした。
+- 一度、コピーキュー(`CopyCommandList`)で行う案にしたが、撤回した。Unity / Unreal もバッファの更新は通常グラフィックスキューで行い、
+  毎フレーム数百バイトのコピーのためにキュー・フェンス・アロケータを足すと、同期の手間のほうが大きいため。
+- コピーキューにするのは、大きなアセットを裏で読み込むとき(`UploadSystem` が既にしている)のような場合。
 
-| | ダイレクトにコピーを積む(前の形) | コピーキューで行う(今の形) |
-|---|---|---|
-| コピー命令を積む先 | `DirectCommandList` | `CopyCommandList` |
-| 「コピー → 描画」の順番を守るもの | バリア(状態遷移) | フェンス(ダイレクトキューがコピーキューを `Wait`) |
-| 「前のフレームの描画 → 次のコピー」の順番を守るもの | バリア | フェンス(コピーキューがダイレクトキューを `Wait`) |
-| テーブルの状態 | バリアのたびに変わる | **いつも `COMMON`** |
-| ダイレクトキューの仕事 | 描画 + コピー + バリア2つ | 描画だけ |
+### S5 / S6 / P1 / S1 への影響(確認した結果)
 
-#### テーブルの状態がいつも `COMMON` で済む理由
-
-- コピーキューは `COMMON` / `COPY_SOURCE` / `COPY_DEST` 以外の状態を扱えない。ダイレクトで `ALL_SHADER_RESOURCE` にしたままだと、次のフレームのコピーキューが扱えない。
-- バッファは、バリアを張らなくても **使うときに `COMMON` から必要な状態へ自動で切り替わり(暗黙の昇格)**、コマンドリストの実行が終わると `COMMON` へ戻る(状態の減衰)。
-  - コピーキュー : `COMMON → COPY_DEST`(自動)→ 実行後に `COMMON`
-  - ダイレクトキュー : `COMMON → NON_PIXEL_SHADER_RESOURCE | PIXEL_SHADER_RESOURCE`(自動)→ 実行後に `COMMON`
-- そのため `GPUElementTable::RecordUpload` にも描画のパスにも、バリアは1つも要らない(S2)。
-
-#### コピーキューとの同期(`Renderer::EndFrame`)
-
-2つの順番をフェンスで守る。
-
-1. **前のフレームの描画が読み終わってから、コピーする** : コピーキューが `Wait(ダイレクトキュー, 前のフレームの Signal の値)` を積んでから実行する。
-   描画の途中でテーブルの値が書き換わらない。
-2. **コピーが終わってから、描画が読む** : ダイレクトキューが `Wait(コピーキュー, コピーの Signal の値)` を積んでから描画を実行する。
-
-数値の例(フレーム N、ダイレクトの前のフレームの Signal が 10、コピーキューは自分のフェンスを持つ):
-
-```
-CPU が積む順番                              GPU が実行する順番
-copy.Wait(direct, 10)                       コピーキュー : direct が 10 に届くまで待つ → 10 体ぶんの行列(1,360 バイト)をコピー → Signal(5)
-copy.Execute / copy.Signal → 5
-compute.Execute / compute.Signal → 7        コンピュートキュー : スキニング → Signal(7)
-direct.Wait(compute, 7)                     ダイレクトキュー : compute が 7、copy が 5 に届くまで待つ → 描画 → Signal(11)
-direct.Wait(copy, 5)
-direct.Execute / direct.Signal → 11
-```
-
-- CPU は止まらない(どの `Wait` も GPU の中で待つ)。
-- ダイレクトキューは元々「前のフレーム → 今のフレーム」の順に実行されるので、コピーキューが前のフレームの完了を待っても、描画が遅くなることは増えない。
-- UPLOAD バッファ(フレーム数 3 つ)を3フレーム後に書き換える時は、`EnsureAllocatorAvailable` でダイレクトの完了を待っている。
-  ダイレクトはコピーの完了を待ってから実行されているので、その時点でコピーも終わっている。コピーキュー自身のアロケータにも `EnsureAllocatorAvailable` を行う。
-- コピーが1つも無いフレーム(書き換えた要素が無い)も、空のコピーコマンドリストを実行して Signal する(分岐を増やさず、フェンスの値を毎フレーム進めて同期を単純にする)。
-
-#### 計測(S1)
-
-コピーキューは、GPU のタイムスタンプを使えるかが GPU によって違う。`Upload` レイヤーのパスは計測しない(S1 の `ExecutePass`)。
-
-### S5 / S6 / P1 への影響(確認した結果)
-
-- **S5(描画の登録)** : 描画のパスは変更なし(`RecordDraw` はダイレクトコマンドリスト)。`ModelRenderSystem::RecordUpload` の引数だけ `CopyCommandList` になる。
-- **S6(ExecuteIndirect)** : 変更なし。引数のバッファは UPLOAD ヒープ(`GENERIC_READ` のまま、バリア不要)で、`RecordDraw` の中で写す。コピーキューは使わない。
-- **S1(GPU プロファイラー)** : `ExecutePass` が `Upload` レイヤーのパスをスキップする(上の「計測」)。
-- **P1(GPU カリング)** : `ModelGPUCullingPass`(レイヤー `ModelCulling`)はコンピュートキューで動き、オブジェクトのテーブル(境界球)を読む。
-  そのため `EndFrame` で、コンピュートの `ExecuteCommandLists` より前に **`m_computeCommandQueue.Wait(m_copyCommandQueue, コピーの Signal の値)`** を足す(P1 で足す)。
-  `EndFrame` の順番を「コピー → コンピュート → ダイレクト」にしてあるのは、このため。
+- **S5(描画の登録)** : 変更なし。パスは今までどおり `ModelRenderSystem::RecordDraw` を呼ぶ。描画項目の一覧は CPU だけのデータ。
+- **S6(ExecuteIndirect)** : 変更なし。引数のバッファは UPLOAD ヒープ(`GENERIC_READ` のまま、バリア不要)で、`RecordDraw` の中で写す。
+- **S1(GPU プロファイラー)** : 変更なし。`ExecutePass` は `Animation` 以外をダイレクトキューで測るので、`Upload` もそのまま測られる。
+- **P1(GPU カリング)** : 予定の `ModelGPUCullingPass`(レイヤー `ModelCulling`)が、オブジェクトのテーブル(境界球)を読む。
+  レイヤーの並びを `Upload → Animation → ModelCulling → Shadow → Model` にすれば、コピーの後にカリングが動く。
+  ただしカリングはコンピュートキューで動くので、ダイレクトで書いたテーブルを読むには、コンピュートがダイレクトのコピー完了を待つ工夫が P1 で要る(スキニングは今テーブルを読まない)。
   カリングで書く「詰めた引数のバッファ・カウントバッファ」もバッファなので、今の RenderGraph ではパスが自分でバリアを張る(スキニングと同じ)。
 
 ## C++ の解説 : テーブルの種類を、型に書いたマクロで登録する
@@ -324,9 +265,7 @@ ModelRenderSystem::Create
 |---|---|
 | `Definition/Enum/Graphics/RootParameterEnum.h` | `RCModelDrawItem` / `RCModelTable` / `RCModelMaterialTable` を追加(`CBModelPerObject` は S5 で消す) |
 | `Graphics/Command/List/Direct/DirectCommandList.h/.cpp` | `SetupRoot32BitConstants` |
-| `Graphics/Render/Renderer.h/.cpp` | `ModelRenderSystem` を持つ。PostDeserialize で作る(コピーは `ModelRenderTableUploadPass`)。`CopyCommandQueue` / `CopyCommandList` を持ち、`EndFrame` でフェンスの同期をする |
-| `Graphics/Render/Frame/FrameResource.h/.cpp` | `CopyCommandAllocator` を持つ(フレームごとに1つ) |
-| `Graphics/Resource/Buffer/Table/GPUElementTable.h/.cpp`(S2) | `RecordUpload` の引数を `CopyCommandList` に・バリアを削除 |
+| `Graphics/Render/Renderer.h/.cpp` | `ModelRenderSystem` を持つ。PostDeserialize で作る(コピーは `ModelRenderTableUploadPass`) |
 | `Definition/Enum/Graphics/RenderGraphPassEnum.h` | `RenderGraphPassExecutionLayer::Upload` を `Animation` の前に追加(骨組みで追加済み) |
 | `Graphics/Render/Converter/Json/RendererJsonConverter.h/.cpp` | `"ModelRenderSystem"` キー |
 | `Graphics/Resource/Model/Skeletal/Player/SkeletalAnimationPlayer.h` | `GetREFFrameDataList` |
@@ -345,7 +284,6 @@ ModelRenderSystem::Create
   / `Source\Framework\Graphics\Render\Graph\Pass\Model\Table`(登録済み)
 - Framework.h(「モデルの描画テーブル」の見出しの下、`GPUElementTable.h` より後、`Renderer.h` より前):
   - Constant : `ModelRenderSystemConstant.h`(`ModelPerObjectConstantBufferUploaderConstant.h` の行は消した)
-  - `CopyCommandList.h` : `GPUElementTable.h` が引数の型に使うため、「アップロードシステム」の見出しから「ダイレクト・コピーコマンドリスト」の見出し(`DirectCommandList.h` の次)へ移した
   - Struct : `RCModelStruct.h` → `ModelRenderSystemStruct.h` → `ModelRenderTableINFORegistryStruct.h`
   - Concept : `IsModelRenderTableElementConcept.h`
   - マクロ : `ModelRenderTableINFORegistryMacros.h`
@@ -797,7 +735,7 @@ namespace FWK::Graphics
                     const std::size_t&                        a_frameCount,
                           TypeAlias::CBVSRVUAVDescriptorPool& a_cbvSRVUAVDescriptorPool);
 
-        void RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex) const;
+        void RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex) const;
 
         nlohmann::json Serialize() const;
 
@@ -902,15 +840,15 @@ bool FWK::Graphics::ModelRenderSystem::Create(const Device&                     
     return true;
 }
 
-void FWK::Graphics::ModelRenderSystem::RecordUpload(const CopyCommandList& a_copyCommandList, const std::size_t& a_frameIndex) const
+void FWK::Graphics::ModelRenderSystem::RecordUpload(const DirectCommandList& a_directCommandList, const std::size_t& a_frameIndex) const
 {
-    // すべてのテーブルについて、このフレームに書き換えた要素だけをGPUへコピーする命令を、コピーコマンドリストへ積む
+    // すべてのテーブルについて、このフレームに書き換えた要素だけをGPUへコピーする命令を積む
     // 書き換えが無いテーブルは、何もしない
     for (const auto& [l_type, l_table] : m_tableMap)
     {
         if (!l_table) { continue; }
 
-        l_table->RecordUpload(a_copyCommandList, a_frameIndex);
+        l_table->RecordUpload(a_directCommandList, a_frameIndex);
     }
 }
 
@@ -1207,19 +1145,9 @@ void FWK::Graphics::DirectCommandList::SetupRoot32BitConstants(const RootSignatu
         ModelRenderSystem m_modelRenderSystem = {};
 
         TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
-        TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
-        TypeAlias::CopyCommandQueue    m_copyCommandQueue    = {};
-        DirectCommandList              m_directCommandList   = {};
-        ComputeCommandList             m_computeCommandList  = {};
-        CopyCommandList                m_copyCommandList     = {};
 ```
 
-```cpp
-        const auto& GetREFCopyCommandList() const { return m_copyCommandList; }
-```
-
-> - S1 のプロファイラーと同じ理由で、`m_modelRenderSystem` は**コマンドキューより前**に宣言する(キューのデストラクタが GPU の完了を待った後に、テーブルが解放される)。
-> - コピーのキューとリストは、コンピュートの次に宣言した(`GetREFCopyCommandList` は `ModelRenderTableUploadPass` が使う。キューの getter は使う所が無いので作らない)。
+> S1 のプロファイラーと同じ理由で、**コマンドキューより前**に宣言する。
 
 ### Graphics/Render/Renderer.cpp(変更・写経)
 
@@ -1236,135 +1164,7 @@ void FWK::Graphics::DirectCommandList::SetupRoot32BitConstants(const RootSignatu
                                                            false);
 ```
 
-> BeginFrame には何も足さない。テーブルのコピーは、下の `ModelRenderTableUploadPass` が RenderGraph の一番前で、コピーコマンドリストへ積む。
-
-**PostDeserialize(コンピュートのキュー・リストの作成の次):**
-
-```cpp
-    // ダイレクトコマンドキュー、リスト、コンピュートキュー、リスト、コピーキュー、リストの作成処理
-    FWK_ASSERT_RETURN_VALUE_IF(!m_copyCommandQueue.Create(a_device), "コピーコマンドキューの作成処理に失敗しました。", false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_copyCommandList.Create(a_device),  "コピーコマンドリストの作成処理に失敗しました。", false);
-```
-
-**ResetCommandObjects(コンピュートの次に足す):**
-
-```cpp
-void FWK::Graphics::Renderer::ResetCommandObjects(const FrameResource& a_frameResource)
-{
-    const auto& l_directCommandAllocator  = a_frameResource.GetREFDirectCommandAllocator ();
-
-    FWK_ASSERT_RETURN_IF(!l_directCommandAllocator, "ダイレクトコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
-
-    const auto& l_computeCommandAllocator = a_frameResource.GetREFComputeCommandAllocator();
-
-    FWK_ASSERT_RETURN_IF(!l_computeCommandAllocator, "コンピュートコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
-
-    const auto& l_copyCommandAllocator = a_frameResource.GetREFCopyCommandAllocator();
-
-    FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator, "コピーコマンドアロケータが無効になっており、描画開始処理に失敗しました。");
-
-    // コマンドアロケータからGPU処理が終わっているかどうかを確かめGPUの処理が終わっていればWait
-    m_directCommandQueue.EnsureAllocatorAvailable (*l_directCommandAllocator);
-    m_computeCommandQueue.EnsureAllocatorAvailable(*l_computeCommandAllocator);
-    m_copyCommandQueue.EnsureAllocatorAvailable   (*l_copyCommandAllocator);
-
-    // GPU同期処理が終わってからコマンドリスト、アロケータをリセット
-    l_directCommandAllocator->Reset ();
-    l_computeCommandAllocator->Reset();
-    l_copyCommandAllocator->Reset   ();
-
-    m_directCommandList.Reset (*l_directCommandAllocator);
-    m_computeCommandList.Reset(*l_computeCommandAllocator);
-    m_copyCommandList.Reset   (*l_copyCommandAllocator);
-}
-```
-
-**EndFrame(コピーを一番先に実行し、ダイレクトがコンピュートとコピーの両方を待つ):**
-
-```cpp
-void FWK::Graphics::Renderer::EndFrame()
-{
-    const auto& l_currentFrameResource = m_currentFrameResource.lock();
-
-    FWK_ASSERT_RETURN_IF(!l_currentFrameResource, "フレームリソースの取得に失敗しており、描画終了処理に失敗しました。");
-
-    const auto& l_directCommandAllocator  = l_currentFrameResource->GetREFDirectCommandAllocator ();
-    const auto& l_computeCommandAllocator = l_currentFrameResource->GetREFComputeCommandAllocator();
-    const auto& l_copyCommandAllocator    = l_currentFrameResource->GetREFCopyCommandAllocator   ();
-
-    FWK_ASSERT_RETURN_IF(!l_directCommandAllocator,  "ダイレクトコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_computeCommandAllocator, "コンピュートコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
-    FWK_ASSERT_RETURN_IF(!l_copyCommandAllocator,    "コピーコマンドアロケータが無効になっており、描画終了処理に失敗しました。");
-
-    // BackBufferをREBDER_TARGETからPRESENTへ遷移する命令を、
-    // DirectCommandListへ記録する
-    m_renderGraph.EndFrame(*this);
-
-    // 各CommandListへの命令記録を終了する
-    m_copyCommandList.Close   ();
-    m_computeCommandList.Close();
-    m_directCommandList.Close ();
-
-    // コピーキューへGPUWaitを登録する
-    // 前のフレームのダイレクト処理(テーブルを読む描画)が終わってから、テーブルへコピーする
-    // この時点のダイレクトキューの最後のSignalは、前のフレームの分(今のフレームのSignalは、この下で行う)
-    // 最初のフレームは未使用の値(0)なので、Waitは何もしない
-    const auto& l_previousDirectFenceValue = m_directCommandQueue.FetchREFLastSignaledFenceValue();
-
-    FWK_ASSERT_RETURN_IF(!m_copyCommandQueue.Wait(m_directCommandQueue, l_previousDirectFenceValue), "DirectQueueとCopyQueueの同期に失敗しました。");
-
-    // テーブルのコピーを実行する(書き換えが無いフレームは空のコマンドリスト)
-    m_copyCommandQueue.ExecuteCommandLists(m_copyCommandList);
-
-    // CopyCommandAllocatorが安全に再利用できるように、今回のコピー完了地点へFenceSignalを登録する
-    m_copyCommandQueue.SignalAndTrackAllocator(*l_copyCommandAllocator);
-
-    const auto& l_copyFenceValue = m_copyCommandQueue.FetchREFLastSignaledFenceValue();
-
-    FWK_ASSERT_RETURN_IF(l_copyFenceValue == Fence::k_unusedFenceValue, "CopyQueueのFenceSignalに失敗したため、DirectQueueとの同期に失敗しました。");
-
-    // AnimationComputeなどのGPU計算を実行する(ここは今までと同じ)
-    m_computeCommandQueue.ExecuteCommandLists(m_computeCommandList);
-
-    m_computeCommandQueue.SignalAndTrackAllocator(*l_computeCommandAllocator);
-
-    const auto& l_computeFenceValue = m_computeCommandQueue.FetchREFLastSignaledFenceValue();
-
-    FWK_ASSERT_RETURN_IF(l_computeFenceValue == Fence::k_unusedFenceValue, "ComputeQueueのFenceSignalに失敗したため、DirectQueueとの同期に失敗しました。");
-
-    // DirectQueueへGPUWaitを登録する(CPUスレッドは停止しない)
-    // ComputeQueueがBoneMatrixを書き終わり、CopyQueueがテーブルを書き終わってからDirectQueueの描画処理を開始する
-    FWK_ASSERT_RETURN_IF(!m_directCommandQueue.Wait(m_computeCommandQueue, l_computeFenceValue), "ComputeQueueとDirectQueueの同期に失敗しました。");
-    FWK_ASSERT_RETURN_IF(!m_directCommandQueue.Wait(m_copyCommandQueue, l_copyFenceValue),       "CopyQueueとDirectQueueの同期に失敗しました。");
-
-    // 以降(ExecuteCommandLists / SignalAndTrackAllocator / Present / DecideNextFrameUseFrameResource)は今までと同じ
-}
-```
-
-> - **`l_previousDirectFenceValue` は参照(`const auto&`)** : `FetchREFLastSignaledFenceValue` はキューのメンバを返す。`Wait` を呼ぶのは、今のフレームのダイレクトの `SignalAndTrackAllocator` より**前**なので、この値は前のフレームの分のまま。
-> - **順番の理由** : コピー → コンピュート → ダイレクト。P1 のカリング(コンピュート)がテーブルを読むとき、コンピュートの前にコピーのフェンスを待たせられるようにするため。
-> - `Wait` の第2引数が `Fence::k_unusedFenceValue`(0)のときは、何もせず `true` を返す(最初のフレーム)。
-> - `PrepareForSwapChainResize` は変更なし : ダイレクトのフェンスまで待つ → ダイレクトはコピーを待ってから実行されているので、コピーも終わっている。
-
-### Graphics/Render/Frame/FrameResource.cpp(変更・写経)
-
-```cpp
-void FWK::Graphics::FrameResource::INIT()
-{
-    ...(ダイレクト・コンピュートの次に足す)
-    if (!m_copyCommandAllocator)
-    {
-        m_copyCommandAllocator = std::make_shared<TypeAlias::CopyCommandAllocator>();
-    }
-}
-```
-
-```cpp
-    FWK_ASSERT_RETURN_VALUE_IF(!m_copyCommandAllocator,                    "コピーコマンドアロケータが無効です。",               false);
-    FWK_ASSERT_RETURN_VALUE_IF(!m_copyCommandAllocator->Create(a_device),  "コピーコマンドアロケータの作成処理に失敗しました。", false);
-```
-
-> `Create` は、コンピュートのアロケータの `FWK_ASSERT` の次に足す(メッセージの開始位置を揃える)。
+> BeginFrame には何も足さない。テーブルのコピーは、下の `ModelRenderTableUploadPass` が RenderGraph の一番前で行う。
 
 ### Definition/Enum/Graphics/RenderGraphPassEnum.h(変更・骨組みで追加済み)
 
@@ -1415,29 +1215,27 @@ FWK_REGISTER_FACTORY_METHOD(FWK::TypeAlias::RenderGraphPassUniqueFactory, FWK::G
 // ModelRenderSystemが持つテーブル(GPUElementTable)のうち、このフレームまでに書き換えた要素だけをGPUへコピーするパス
 // 実行レイヤーをUpload(一番前のレイヤー)にするので、RenderGraphがすべてのパスより前に実行する
 // 例 : 100体のうち10体の行列が変わったフレームは、10要素(136バイト × 10)だけをコピーし、変わらないフレームは何もしない
-// コピーはダイレクトではなくコピーコマンドリストへ積み、コピーキューで実行する
-// テーブルはRenderGraphが状態を管理するリソース(RenderTarget / DepthStencil / ShadowMap)ではなく、
-// いつもCOMMONのまま使う(バリアは要らない)ため、ReadXxx / WriteXxxは宣言しない
-// 「前のフレームの描画 → コピー → 今のフレームの描画」の順番は、Renderer::EndFrameがフェンスで守る
+// テーブルはRenderGraphが状態を管理するリソース(RenderTarget / DepthStencil / ShadowMap)ではないため、
+// ReadXxx / WriteXxxは宣言せず、バリアはGPUElementTable::RecordUploadの中で張る(SkeletalAnimationComputePassのバッファと同じ)
 FWK::Graphics::ModelRenderTableUploadPass::ModelRenderTableUploadPass()
 {
     // すべてのモデルのパス(スキニング・影・Lit / UnLit)より前に実行する
     SetupExecutionLayer(Enum::RenderGraphPassExecutionLayer::Upload);
 
     // ビューの範囲は既定のMainViewOnlyのままにする
-    // プレビューはメインビューの後に同じフレームで描くので、メインビューで1回コピーすれば、プレビューも新しい値を読む
+    // プレビューはメインビューの後に同じコマンドリストで描くので、メインビューで1回コピーすれば、プレビューも新しい値を読む
 }
 FWK::Graphics::ModelRenderTableUploadPass::~ModelRenderTableUploadPass() = default;
 
 void FWK::Graphics::ModelRenderTableUploadPass::Execute(const ResourceContext&, Renderer& a_renderer, RenderGraph&)
 {
     const auto& l_modelRenderSystem = a_renderer.GetREFModelRenderSystem        ();
-    const auto& l_copyCommandList   = a_renderer.GetREFCopyCommandList          ();
+    const auto& l_directCommandList = a_renderer.GetREFDirectCommandList        ();
     const auto& l_frameIndex        = a_renderer.GetREFCurrentFrameResourceIndex();
 
-    // 書き換えた要素だけを、このフレームのUPLOADバッファ経由でテーブル本体へコピーする命令を、コピーコマンドリストへ積む
-    // 描画との順番(コピー → 描画)は、コピーキューのフェンスをダイレクトキューが待つことで守られる(Renderer::EndFrame)
-    l_modelRenderSystem.RecordUpload(l_copyCommandList, l_frameIndex);
+    // 書き換えた要素だけを、このフレームのUPLOADバッファ経由でテーブル本体へコピーする命令を積む
+    // コピーとモデルのパスは同じダイレクトコマンドリストに積むので、GPUは積んだ順(コピー → 描画)に実行する
+    l_modelRenderSystem.RecordUpload(l_directCommandList, l_frameIndex);
 }
 ```
 

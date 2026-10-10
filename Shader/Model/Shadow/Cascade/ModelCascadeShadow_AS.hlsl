@@ -16,15 +16,19 @@ void main(const uint3 a_dispatchThreadID : SV_DispatchThreadID,
     // 初期化が完了するまでGroup内の全Threadを待機させる
     GroupMemoryBarrierWithGroupSync();
 
+    // この描画のオブジェクト(行列)とメッシュ(バッファの番号・Meshletの数)を、テーブルから読む
+    const ModelObjectData l_object = FetchModelObjectData();
+    const ModelMeshData   l_mesh   = FetchModelMeshData  ();
+
     // 1つのthreadが1つのMeshletを担当する
     const uint l_meshletIndex   = a_dispatchThreadID.x;
           bool l_shouldDispatch = false;
 
     // 最後のASGroupには実際のMeshlet数を超えるThreadが含まれる
     // 範囲内のThreadだけがMeshletBoundsを参照する
-    if (l_meshletIndex < g_meshletCount)
+    if (l_meshletIndex < l_mesh.meshletCount)
     {
-        l_shouldDispatch = ShouldDispatchModelCascadeShadowMeshlet(l_meshletIndex);
+        l_shouldDispatch = ShouldDispatchModelCascadeShadowMeshlet(l_object, l_mesh, l_meshletIndex);
     }
 
     if (l_shouldDispatch)

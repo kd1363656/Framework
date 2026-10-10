@@ -94,8 +94,6 @@ namespace FWK::Graphics
         const auto& GetREFComputeCommandQueue() const { return m_computeCommandQueue; }
         const auto& GetREFComputeCommandList () const { return m_computeCommandList; }
 
-        const auto& GetREFCopyCommandList() const { return m_copyCommandList; }
-
         const auto& GetREFCurrentFrameResourceIndex() const { return m_currentFrameResourceIndex; }
 
         const auto& GetREFPreviewClientSize() const { return m_previewClientSize; }
@@ -147,10 +145,8 @@ namespace FWK::Graphics
 
         TypeAlias::DirectCommandQueue  m_directCommandQueue  = {};
         TypeAlias::ComputeCommandQueue m_computeCommandQueue = {};
-        TypeAlias::CopyCommandQueue    m_copyCommandQueue    = {};
         DirectCommandList              m_directCommandList   = {};
         ComputeCommandList             m_computeCommandList  = {};
-        CopyCommandList                m_copyCommandList     = {};
 
         RenderGraph m_renderGraph = {};
 

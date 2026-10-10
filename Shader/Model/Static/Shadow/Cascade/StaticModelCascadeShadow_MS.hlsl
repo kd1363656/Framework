@@ -10,9 +10,13 @@ void main(in    payload  ModelAmplificationPayload a_payload,
                 const    uint3                     a_groupID : SV_GroupID,
                 const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {
-    StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
-    StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
-    StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
+    // この描画のオブジェクト(行列)とメッシュ(バッファの番号)を、テーブルから読む
+    const ModelObjectData l_object = FetchModelObjectData();
+    const ModelMeshData   l_mesh   = FetchModelMeshData  ();
+
+    StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[l_mesh.vertexBufferSRVDescriptorIndex];
+    StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[l_mesh.meshletBufferSRVDescriptorIndex];
+    StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[l_mesh.uniqueVertexIndexBufferSRVDescriptorIndex];
 
     // AmplificationShaderのカリングを通過したMeshletIndexを
     // Payloadから取得する
@@ -38,7 +42,7 @@ void main(in    payload  ModelAmplificationPayload a_payload,
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
 
         // StaticModelのLocal座標をWorld空間へ変換する
-        const float3 l_worldPosition = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float3 l_worldPosition = TransformModelLocalPositionToWorld(l_object, l_staticModelVertex.position);
 
         // World座標を現在のCascadeに対応する
         // LightClip空間へ変換する
@@ -51,6 +55,6 @@ void main(in    payload  ModelAmplificationPayload a_payload,
     {
         const uint l_packedPrimitiveIndex = l_modelMeshlet.triangleOffset + l_triangleIndex;
 
-        a_primitiveList[l_triangleIndex] = FetchModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
+        a_primitiveList[l_triangleIndex] = FetchModelPackedPrimitiveIndex(l_object, l_mesh, l_packedPrimitiveIndex);
     }
 }

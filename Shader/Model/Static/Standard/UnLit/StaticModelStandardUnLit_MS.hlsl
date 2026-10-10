@@ -10,9 +10,13 @@ void main(in  payload  ModelAmplificationPayload a_payload,
               const    uint3                     a_groupID : SV_GroupID,
               const    uint                      a_groupThreadIndex : SV_GroupIndex)
 {
-    StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[g_vertexBufferSRVDescriptorIndex];
-    StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[g_meshletBufferSRVDescriptorIndex];
-    StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[g_uniqueVertexIndexBufferSRVDescriptorIndex];
+    // この描画のオブジェクト(行列)とメッシュ(バッファの番号)を、テーブルから読む
+    const ModelObjectData l_object = FetchModelObjectData();
+    const ModelMeshData   l_mesh   = FetchModelMeshData  ();
+
+    StructuredBuffer<StaticModelVertex> l_staticModelVertexBuffer = ResourceDescriptorHeap[l_mesh.vertexBufferSRVDescriptorIndex];
+    StructuredBuffer<ModelMeshlet>      l_modelMeshletBuffer      = ResourceDescriptorHeap[l_mesh.meshletBufferSRVDescriptorIndex];
+    StructuredBuffer<uint>              l_uniqueVertexIndexBuffer = ResourceDescriptorHeap[l_mesh.uniqueVertexIndexBufferSRVDescriptorIndex];
 
     // ASからPayload経由で渡されたMeshletIndexを使う
     const uint         l_meshletIndex = a_payload.meshletIndexList[a_groupID.x];
@@ -33,7 +37,7 @@ void main(in  payload  ModelAmplificationPayload a_payload,
         // 取得した頂点番号から頂点情報を取得
         const StaticModelVertex l_staticModelVertex = l_staticModelVertexBuffer[l_modelVertexIndex];
 
-        const float3 l_worldPosition          = TransformModelLocalPositionToWorld(l_staticModelVertex.position);
+        const float3 l_worldPosition          = TransformModelLocalPositionToWorld(l_object, l_staticModelVertex.position);
         const float4 l_viewProjectionPosition = mul                               (float4(l_worldPosition, k_modelPositionElementW), g_viewProjectionMatrix);
 
         a_vertexList[l_vertexIndex].position = l_viewProjectionPosition;
@@ -48,6 +52,6 @@ void main(in  payload  ModelAmplificationPayload a_payload,
 
         // Packされたuint32_tから、元のuint8_tのPrimitiveIndexを3個取り出し、
         // MeshShaderの三角形Indexとしてuint3へ戻す
-        a_primitiveList[l_triangleIndex] = FetchModelPackedPrimitiveIndex(l_packedPrimitiveIndex);
+        a_primitiveList[l_triangleIndex] = FetchModelPackedPrimitiveIndex(l_object, l_mesh, l_packedPrimitiveIndex);
     }
 }
